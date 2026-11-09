@@ -2,10 +2,10 @@
   "base": "8c456709",
   "counts": {
     "files": 23,
-    "assertionAndFixtureInputChanges": 135,
+    "assertionAndFixtureInputChanges": 138,
     "consumedJsonFixtures": 2,
     "semanticFixtureChanges": 616,
-    "justified": 750,
+    "justified": 753,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -21,7 +21,8 @@
     "R23 Phase E: review diffSha256 values now hash length-delimited old/new file bytes, independent of core.abbrev, Git diff formatting or configuration. Frozen inventory content hashes and history-free tamper checks remain active. The five Mini single-source/notice expectations and the phase-2 contract fixture changes below preserve their original primary links, all 1061 Core card checks and both byte ceilings. The four execution locks and history-free loader now decompress the same frozen JSON bytes; no execution expectation changed. Picker and audit-helper generated JS are compacted after tsc to preserve package budgets.",
     "R23 Phase F retains all execution, picker-name, source URL/order/role, layout, value and modality-state assertions. Source-label expectations now include the unchanged curated card name or a readable page subject with numeric separators. The exact historical TokenDance hint changes to 渠道页无此型号. Branch-added Mini R22B/R22C expectations are reviewed against 1dcd8b13; existing follow-up bases remain intact. New client scans cover all 1064 cards, all Web evidence/notice dialogs and all Mini copy callbacks; both source byte ceilings are unchanged. Saved-ID/full-model equality is preserved in production code, without weakening that test.",
     "R23 Phase F3 adds catalog-backed dotted-version controls to both existing client scan tests and reviews the independent shared heuristic against fd29cf36. All pre-existing client assertions remain. Genuine known model hyphens are valid, and parameter tokens such as 31B are no longer mistaken for split versions. Known dotted corrections may differ from a slug-like picker label only in source titles. Both byte ceilings and all 1064 identity/name/URL assertions remain unchanged. Additional F3 cases retain complete BFL brackets and dotted FLUX.1.1 spelling, ignore escaped Markdown candidates on general pages, and keep short IDs from relabeling another model family.",
-    "R23 Phase H2 corrects two stale branch-added Core/Gateway channel-only expectations. Their files are byte-identical at fd29cf36 and operator HEAD c75aa00f, so the existing follow-up baseline applies. Expected appended URLs are derived from vendor-provenance fields (the fields labelled 源自原厂), with canonical deduplication, channel-first order, independent portal/OpenAPI/JSON rejection and 原厂规格 labels. Explicit deepseek-v4.1-flash and qwen3.6-plus cases tie the appended URL to maxOutputTokens. No product code, execution expectation or historical fallback changes; two follow-up entries are recorded separately from the main-existing counts."
+    "R23 Phase H2 corrects two stale branch-added Core/Gateway channel-only expectations. Their files are byte-identical at fd29cf36 and operator HEAD c75aa00f, so the existing follow-up baseline applies. Expected appended URLs are derived from vendor-provenance fields (the fields labelled 源自原厂), with canonical deduplication, channel-first order, independent portal/OpenAPI/JSON rejection and 原厂规格 labels. Explicit deepseek-v4.1-flash and qwen3.6-plus cases tie the appended URL to maxOutputTokens. No product code, execution expectation or historical fallback changes; two follow-up entries are recorded separately from the main-existing counts.",
+    "R24 Phase I1 replaces the R9/R10 self-derived title expectations with fixed literals (297 URL/label objects and the exact Kimi K3 title). The Core source filter gains a string type predicate after accurate .d.mts declarations expose nullable URLs; it changes no expected value. The Mini historical byte ceiling remains unchanged."
   ],
   "files": [
     {
@@ -52,7 +53,7 @@
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r12.test.cjs",
-      "diffSha256": "b99f5f0a9e2117e12f72a8d306c3dd05b22079d946f6a5dc26ee2a7aa89ed57b",
+      "diffSha256": "091de66ff37cdba896ee03bb12f32cc55efd36d8d12caf75d450ec5a522d8357",
       "changes": [
         {
           "line": 105,
@@ -507,6 +508,20 @@
             "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I1",
+          "comparisonBase": "4e18513c",
+          "line": 37,
+          "old": "    assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, staticModel) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source, staticModel)}))])\n    assert.deepEqual(structuredClone(presented.specSources), [{ url: finalUrl, label: label + ' · ' + sourceTitle(finalUrl, entry) }])\n    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source, entry)}))])\n        assert.equal(label, (primary ? '下线公告' : '原厂规格') + ' · ' + sourceTitle(url), channel + '/' + model.id)",
+          "new": "    assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, staticModel) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : '原厂规格 · '+sourceTitle(source, staticModel)}))])\n    assert.deepEqual(structuredClone(presented.specSources), [{ url: finalUrl, label: label + ' · ' + sourceTitle(finalUrl, entry) }])\n    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : '原厂规格 · '+sourceTitle(source, entry)}))])\n        assert.equal(label, '下线公告 · ' + sourceTitle(url), channel + '/' + model.id)",
+          "reason": "Preserve the specific retirement-notice role instead of treating vendor provenance as the link role. Fixed retirement URL/label expectations replace the old generic label only; exact URL matching, vendor provenance membership, source ordering, all-card counts and unknown states remain required.",
+          "evidence": [
+            "test-support/fixtures/model-card-r24.json",
+            "apps/miniprogram/tests/model-card-r24.test.cjs",
+            "apps/web/tests/model-card-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -702,9 +717,22 @@
             "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I1",
+          "comparisonBase": "4e18513c",
+          "line": 35,
+          "old": "assert.equal(link.textContent, '官方文档 · 百炼 · ' + card.sourceModel.displayName)",
+          "new": "assert.equal(link.textContent, '官方文档 · 百炼 · Kimi K3 (Bailian hosted)')",
+          "reason": "Use a fixed literal for both minimal and full live Kimi K3 cards. The title assertion no longer derives its expectation from the same card function used by the rendered component. URL, modality exclusions, provenance and date assertions remain intact.",
+          "evidence": [
+            "apps/web/tests/model-audit-r10.test.mjs",
+            "apps/web/tests/fixtures/kimi-k3-live-registry-model.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "0d458d2b3c4222cc3638889fb2fa2619027974157d64499a8c10111258cd49ed"
+      "diffSha256": "0d39f339725db8de07bbf1b838d08ea056d8d9f536f3120d014f265b2777f183"
     },
     {
       "file": "apps/web/tests/model-audit-r11.test.mjs",
@@ -1725,7 +1753,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r9.test.mjs",
-      "diffSha256": "adaa1c3b91fa1a162540836bb12010f65553ea212a0d5e00ad098e2c00e08f66",
+      "diffSha256": "22f04c3905c60586c06d5a6674703d143bef47b5068221bcb02f8831ea5c3931",
       "changes": [
         {
           "line": 90,
@@ -1826,6 +1854,19 @@
             "packages/api/src/card-presentation.mjs",
             "apps/web/tests/model-card-source-titles-r23.test.mjs",
             "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I1",
+          "comparisonBase": "4e18513c",
+          "line": 93,
+          "old": "assert.equal(screen.getByRole('link').textContent, modelSourceRows(data)[0].label)",
+          "new": "assert.deepEqual({url: screen.getByRole('link').getAttribute('href'), label: screen.getByRole('link').textContent}, expectedSourceRows[provider + '/' + model.id]); assert.equal(cards, Object.keys(expectedSourceRows).length)",
+          "reason": "Replace the self-referential source-row oracle with 297 committed literal URL/label objects. Every channel-backed card must be present; rendering regressions cannot update their own expectation. The reviewed fixture includes fixed source roles, curated names and destinations.",
+          "evidence": [
+            "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
+            "apps/web/tests/model-card-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -18680,7 +18721,7 @@
     {
       "file": "apps/auth-gateway/tests/model-modality-r21.test.js",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "9c6bb94a71453d37735f255f592c88cd7e9b9bd92714ea46fee1c0fe5703c215",
+      "diffSha256": "a7a1e22dcc832d8cb32c84ef073eaf5926f7d0f4ad6c13dd394ef67469df7875",
       "changes": [
         {
           "phase": "R23 Phase H2",
@@ -18697,13 +18738,27 @@
             "docs/model-modality-r23-verification.md"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I1",
+          "comparisonBase": "4e18513c",
+          "line": 38,
+          "old": "      assert.match(row.label, /^原厂规格 · /, id)",
+          "new": "      if (row.url === r24.noticeUrl) assert.equal(row.label, r24.noticeLabel, id)\n      else assert.match(row.label, /^原厂规格 · /, id)",
+          "reason": "Preserve the specific retirement-notice role instead of treating vendor provenance as the link role. Fixed retirement URL/label expectations replace the old generic label only; exact URL matching, vendor provenance membership, source ordering, all-card counts and unknown states remain required.",
+          "evidence": [
+            "test-support/fixtures/model-card-r24.json",
+            "apps/miniprogram/tests/model-card-r24.test.cjs",
+            "apps/web/tests/model-card-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/paperbanana-api/tests/model-modality-r21.test.ts",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "d37290ed191089034a042be45616c37ae587012d5ddd2d78ded4289ec1d5ca69",
+      "diffSha256": "e1a73f7abf40a321c887e9eef8057f1dfa53f14cc2949e398d8145d689c0efac",
       "changes": [
         {
           "phase": "R23 Phase H2",
@@ -18718,6 +18773,59 @@
             "apps/web/src/components/ModelSpecifications.jsx",
             "apps/web/tests/model-card-r23.test.mjs",
             "docs/model-modality-r23-verification.md"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I1",
+          "comparisonBase": "4e18513c",
+          "line": 54,
+          "old": ".flatMap(fact => fact.sourceUrls || [fact.sourceUrl]).filter(Boolean)",
+          "new": ".flatMap(fact => fact.sourceUrls || [fact.sourceUrl]).filter((url): url is string => typeof url === 'string')",
+          "reason": "Accurate module declarations expose nullable sourceUrl. A string type predicate narrows the real optional sourceUrls/string-or-null shape without casts or suppression. No expected values change.",
+          "evidence": [
+            "packages/api/src/model-audit.ts",
+            "packages/api/src/card-presentation.d.mts"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ]
+    },
+    {
+      "file": "apps/miniprogram/tests/model-card-r23.test.cjs",
+      "comparisonBase": "4e18513c",
+      "changes": [
+        {
+          "phase": "R24 Phase I1",
+          "comparisonBase": "4e18513c",
+          "line": 25,
+          "old": "   if(!card.specSources.some(s=>(s.role==='vendor'||s.label.startsWith('原厂规格 · '))&&vendorKeys.has(sourceIdentity(s.url))&&urls.includes(sourceIdentity(s.url))))offending.push(key+'/'+field)",
+          "new": "   if(!card.specSources.some(s=>(s.role==='vendor'||s.label.startsWith('原厂规格 · ')||s.url===r24.noticeUrl&&s.label===r24.noticeLabel)&&vendorKeys.has(sourceIdentity(s.url))&&urls.includes(sourceIdentity(s.url))))offending.push(key+'/'+field)",
+          "reason": "Preserve the specific retirement-notice role instead of treating vendor provenance as the link role. Fixed retirement URL/label expectations replace the old generic label only; exact URL matching, vendor provenance membership, source ordering, all-card counts and unknown states remain required.",
+          "evidence": [
+            "test-support/fixtures/model-card-r24.json",
+            "apps/miniprogram/tests/model-card-r24.test.cjs",
+            "apps/web/tests/model-card-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "4e21f8827cfcbce75fa98745c59366f19641735b356856c2452a831ebf458459"
+    },
+    {
+      "file": "apps/web/tests/model-card-r23.test.mjs",
+      "comparisonBase": "4e18513c",
+      "diffSha256": "315490b7d483c53af682ac93d63d0463200abe2c3770effb544ad5c6fdf926b0",
+      "changes": [
+        {
+          "phase": "R24 Phase I1",
+          "line": 42,
+          "old": "Every secondary vendor anchor must start with 原厂规格 · ",
+          "new": "The exact reviewed retirement URL must equal 下线公告 · 百炼 · 模型下线公告; other secondary vendor anchors must still start with 原厂规格 · ",
+          "reason": "A retirement-notice source can substantiate a vendor field without losing its specific page role. Keep all 1064 cards, all source URL identity/provenance checks, and zero missing vendor links; require the fixed full retirement title rather than permitting arbitrary labels.",
+          "evidence": [
+            "test-support/fixtures/model-card-r24.json",
+            "apps/web/tests/model-card-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }

@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url'
 import { productBundle } from '../test-support/execution-capability.mjs'
 import { titleBaseline, scanTitles, historicalIds, titleIssues, f3TitleExamples } from '../test-support/source-titles-r23.mjs'
 import { sourceTitle } from '../packages/api/src/card-presentation.mjs'
+import r24 from '../test-support/fixtures/model-card-r24.json' with { type: 'json' }
 const root = fileURLToPath(new URL('../', import.meta.url)), require = createRequire(import.meta.url)
 const web = await productBundle(`export {STATIC_MODEL_REGISTRY} from './apps/web/src/lib/staticModelCatalog.js'; export {modelCardSpecifications} from './apps/web/src/lib/modelCardSpecifications.js'; export {modelSourceRows} from './apps/web/src/lib/modelCardSources.js'`)
 const filename = require.resolve('../apps/miniprogram/miniprogram/components/model-picker/model-picker.js')
@@ -40,7 +41,8 @@ for (const client of ['web','mini']) {
     assert.equal(card.name,old.name,card.card)
     assert.deepEqual(card.rows.map(row=>row.url),old.rows.map(row=>row.url),card.card)
     for (const [i,row] of card.rows.entries()) {
-      assert.equal(row.label.split(' · ')[0],old.rows[i].label.split(' · ')[0],card.card)
+      const retirementCorrection = r24.noticeCards.includes(card.card) && row.url === r24.noticeUrl
+      assert.equal(row.label.split(' · ')[0], retirementCorrection ? '下线公告' : old.rows[i].label.split(' · ')[0], card.card)
       if(row.label!==old.rows[i].label) changes.push({client,card:card.card,url:row.url,before:old.rows[i].label,after:row.label})
       const subject=row.label.split(' · ').slice(2).join(' · ').replace(/（(?:Markdown|控制台|英文|文档)(?: \d+)?）$/,'').replace(/ API 文档$/,'')
       const reason = subject===card.name && /[-_/]|^[a-z]/.test(subject)
@@ -64,7 +66,7 @@ const report = [
   '| Client | Cards | Source rows | Changed titles | Changed cards | Unresolved heuristic findings |','| --- | ---: | ---: | ---: | ---: | ---: |',
   ...Object.entries(counts).map(([client,c])=>`| ${client} | ${c.cards} | ${c.sourceRows} | ${c.changedTitles} | ${c.changedCards} | ${c.suspiciousTitles} |`),'',
   `Also scanned **${notices.length} Web lifecycle dialogs**; **${notices.filter(row=>row.before!==row.after).length}** changed titles are listed separately below. Web tests open every rendered evidence dialog, check the card link/tooltip, and compare every anchor. Mini tests invoke every copy dialog and clipboard callback. Shared-helper parity is checked on all Mini rows.`, '',
-  'Heuristics cover collapsed/split numeric versions, hyphens replacing known dotted versions (letter/version tokens such as Qwen3-8, K2-7 and V4-1), raw hosts/paths, API-prefix subjects, case/punctuation differing from the curated name, leftover slug separators, trailing ellipses and repeated words. The dotted-version oracle independently reads every catalog ID/name, plus the current card ID/name. Genuine parameter/release hyphens such as Qwen3-8B, Qwen3.8-27B and DeepSeek-R1-0528 remain valid. Zero duplicate URLs/labels; role prefixes and source ordering are unchanged.', '',
+  'Heuristics cover collapsed/split numeric versions, hyphens replacing known dotted versions (letter/version tokens such as Qwen3-8, K2-7 and V4-1), raw hosts/paths, API-prefix subjects, case/punctuation differing from the curated name, leftover slug separators, trailing ellipses and repeated words. The dotted-version oracle independently reads every catalog ID/name, plus the current card ID/name. Genuine parameter/release hyphens such as Qwen3-8B, Qwen3.8-27B and DeepSeek-R1-0528 remain valid. Zero duplicate URLs/labels; source ordering is unchanged. R24 restores 下线公告 on the three explicitly reviewed vendor notice rows per client; every other role prefix remains unchanged.', '',
   'Title priority: curated card/picker name for its own model page, correcting a known dotted version even if its picker label encodes a slug; captured human page title for a general page; longest separator-normalized catalog name/ID match, including family prefixes and quickstart suffixes; readable path fallback. API documentation uses its model subject plus API 文档. Colliding labels get human format/language qualifiers, never a URL suffix. Mini reuses its existing catalog; package-local shared name data is generated from the same registry. Original captures remain unchanged.', '',
   '## R23 F3 corrections', '',
   'Shared/general pages now recover version dots from known model identities across providers, even when the current card is a dated or different model. Surrounding page words remain readable. These regression cases run against both shared Web and compiled Mini helpers:', '',
@@ -73,6 +75,7 @@ const report = [
   '**Stability confirmed:** `stable diffusion 35` → `Stable Diffusion 3.5`. The actual Web `stability/sd3.5-flash` row at `https://docs.stability.ai/api-reference/generate/stable-diffusion-35` is listed below; Mini tests also exercise that page with all four `sd3.5-*` cards. Mini currently exposes the existing generic API-reference link for those cards, so its generic title remains `API 文档`.', '',
   '**BFL casing:** the committed picker name is `FLUX-2-klein-4b`, so that own-page title stays exact. A separate shared/Mini regression supplies the curated name `FLUX.2 [klein] 4B` and requires that exact punctuation/casing. All 1,064 picker names remain unchanged. The two Replicate source rows whose picker name is `qwen3-7-plus` now say `Qwen3.7 Plus`; the picker itself remains unchanged.', '',
   'Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无此型号** with the existing verification date in Web tooltips/dialogs and Mini icon dialogs: '+historicalIds.map(id=>'`'+id+'`').join(', ')+'. Other hints and all modality states remain unchanged.', '',
+  '## R24 Phase I1 role corrections', '', 'The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciation retains 下线公告 on tokendance/qwen3.5-plus, qianfan/qwen-image-edit and siliconflow/Qwen/Qwen-Image-Edit in both clients. Vendor provenance and links remain intact. The role guard permits only these three card/URL pairs to differ from the frozen baseline. New R24 tests scan all 1,064 cards per client and require every retirement source to keep its role.', '',
   '## Every changed title','',
   '| Client | Card | URL | Before | After |','| --- | --- | --- | --- | --- |',
   ...changes.map(row=>`| ${[row.client,row.card,row.url,row.before,row.after].map(cell).join(' | ')} |`),'',

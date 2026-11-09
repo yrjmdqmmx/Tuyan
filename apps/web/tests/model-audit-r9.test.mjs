@@ -1,5 +1,4 @@
-import { modelSourceRows } from '../src/lib/modelCardSources.js'
-import { sourceTitle } from '../../../packages/api/src/card-presentation.mjs'
+import expectedSourceRows from './fixtures/model-audit-r9-source-rows-r24.json' with { type: 'json' }
 import test, { afterEach, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
@@ -9,7 +8,7 @@ import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
 import { modelCardSpecifications, modelCardName, safeOfficialSources } from '../src/lib/modelCardSpecifications.js'
 import { modelVersionDetail } from '../src/lib/modelPresentation.js'
 import { ModelSpecifications } from '../src/components/ModelSpecifications.jsx'
-import { isApiSource, modelSourceName } from '../src/lib/modelCardSources.js'
+import { isApiSource } from '../src/lib/modelCardSources.js'
 import * as web from '../src/lib/modelAudit.js'
 import * as core from '../../../packages/api/src/model-audit.ts'
 import * as gateway from '../../auth-gateway/src/model-audit.js'
@@ -91,10 +90,10 @@ test('R9 channel evidence remains available; R12 permits only notices, human pag
     else assert.ok(data.sources.includes(model.officialSourceUrl), 'secondary evidence is retained')
     const view = render(React.createElement(ModelSpecifications, { provider, model }))
     assert.equal(screen.getByRole('link').getAttribute('href'), first, provider + '/' + model.id)
-    assert.equal(screen.getByRole('link').textContent, modelSourceRows(data)[0].label)
+    assert.deepEqual({url: screen.getByRole('link').getAttribute('href'), label: screen.getByRole('link').textContent}, expectedSourceRows[provider + '/' + model.id])
     view.unmount(); cards++; channels.add(provider)
   }
-  assert.ok(cards > 100); assert.ok(channels.size > 10)
+  assert.equal(cards, Object.keys(expectedSourceRows).length); assert.ok(cards > 100); assert.ok(channels.size > 10)
   for (const officialSourceUrl of ['https://catalog.example/exact', 'http://unsafe.example', 'https://user:password@unsafe.example']) {
     const model = { id: 'r9-unaudited', officialSourceUrl }
     const data = modelCardSpecifications('r9-unknown', model)

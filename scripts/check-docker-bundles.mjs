@@ -74,6 +74,10 @@ export function checkDockerBundles() {
       const directory = path.join(temp, app), dockerfile = `apps/${app}/Dockerfile`
       const layout = copyLayout(dockerfile, directory)
       const base = path.join(directory, app === 'auth-gateway' ? '/app' : '/workspace')
+      if (app !== 'auth-gateway') assert.equal(
+        fs.readFileSync(path.join(base, 'packages/api/src/card-presentation.d.mts'), 'utf8'),
+        fs.readFileSync(path.join(root, 'packages/api/src/card-presentation.d.mts'), 'utf8'),
+        'Card presentation declarations must accompany the copied module')
       for (const relative of ['apps/paperbanana-api', 'apps/benchmark-worker', 'apps/auth-gateway', 'packages/benchmark-core', 'packages/tuyan-knowledge']) {
         if (fs.existsSync(path.join(base, relative, 'package.json'))) dependencies(relative, directory, base)
       }

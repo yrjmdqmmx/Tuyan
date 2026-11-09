@@ -1,3 +1,4 @@
+import r24 from '../../../test-support/fixtures/model-card-r24.json' with { type: 'json' }
 import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
 import React from 'react'
@@ -37,7 +38,10 @@ test('R23 every vendor field on all 1064 Web cards has its vendor href in the di
       const fact=data.fields[field], expected=(fact.sourceUrls || [fact.sourceUrl]).filter(Boolean).map(sourceIdentity)
       if (!anchors.some(a=>vendorKeys.has(sourceIdentity(a.href)) && expected.includes(sourceIdentity(a.href)))) offending.push(key+'/'+field)
     }
-    for (const anchor of anchors.slice(1)) if (vendorKeys.has(sourceIdentity(anchor.href))) assert.ok(anchor.textContent.startsWith('原厂规格 · '), key)
+    for (const anchor of anchors.slice(1)) if (vendorKeys.has(sourceIdentity(anchor.href))) {
+      if (anchor.href === r24.noticeUrl) assert.equal(anchor.textContent, r24.noticeLabel, key)
+      else assert.ok(anchor.textContent.startsWith('原厂规格 · '), key)
+    }
     for (const url of [...['sources','channelSources','vendorSources','lifecycleSources'].flatMap(k=>data[k]), ...Array.from(document.querySelectorAll('a[href]'),a=>a.href)])
       if (isApiSource(url)) apiLinks.push(key+': '+url)
     if (provider==='tokendance' && data.channelSources.length) assert.equal(anchors[0].href,'https://tokendance.space/models/'+model.id)

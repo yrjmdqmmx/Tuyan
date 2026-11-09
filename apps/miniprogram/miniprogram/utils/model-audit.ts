@@ -7,6 +7,7 @@ export interface AuditFact {
   state: 'known' | 'unknown' | 'unsupported' | 'not-applicable'
   provenance: 'channel' | 'vendor' | 'catalog' | 'product' | null
   sourceUrl: string | null
+  sourceUrls?: string[]
   verifiedAt: string | null
   suffix?: string
   unknownModalities?: string[]

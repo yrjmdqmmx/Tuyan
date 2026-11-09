@@ -1,3 +1,4 @@
+const r24 = require('../../../test-support/fixtures/model-card-r24.json')
 const test=require('node:test'), assert=require('node:assert/strict'), fs=require('node:fs'), vm=require('node:vm')
 const {createRequire}=require('node:module')
 const {STATIC_MODEL_REGISTRY}=require('../miniprogram/utils/static-model-catalog.js')
@@ -21,7 +22,7 @@ test('R23 all 1064 compiled Mini cards link vendor fields and expose no machine 
   const vendorKeys=new Set(expected.vendorSources.map(sourceIdentity))
   for(const [i,field]of Object.keys(expected.fields).entries())if(card.specRows[i].origin==='源自原厂'){
    vendorFields++;const fact=expected.fields[field],urls=(fact.sourceUrls||[fact.sourceUrl]).filter(Boolean).map(sourceIdentity)
-   if(!card.specSources.some(s=>(s.role==='vendor'||s.label.startsWith('原厂规格 · '))&&vendorKeys.has(sourceIdentity(s.url))&&urls.includes(sourceIdentity(s.url))))offending.push(key+'/'+field)
+   if(!card.specSources.some(s=>(s.role==='vendor'||s.label.startsWith('原厂规格 · ')||s.url===r24.noticeUrl&&s.label===r24.noticeLabel)&&vendorKeys.has(sourceIdentity(s.url))&&urls.includes(sourceIdentity(s.url))))offending.push(key+'/'+field)
   }
   for(const url of [audit.sourceUrl,...audit.sourceUrls,...audit.vendorSources,...card.specSources.map(s=>s.url)].filter(Boolean))if(isApiSource(url))apiLinks.push(key+': '+url)
   for(const source of card.specSources){

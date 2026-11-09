@@ -1,3 +1,4 @@
+const r24 = require('../../../test-support/fixtures/model-card-r24.json')
 const {sourceTitle}=require('../miniprogram/utils/card-presentation.js')
 const test = require('node:test')
 const assert = require('node:assert/strict')
@@ -33,7 +34,7 @@ test('R12 compiled Mini URLs and labels match full Web objects for 74 captured p
     assert.equal(modelSourceName(card, url), label); assert.equal(small.sourceLabel, label)
     const staticModel = STATIC_MODEL_REGISTRY[channel].models.find(m => m.id === id)
     const presented = context.present(staticModel, '', '', channel)
-    assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, staticModel) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source, staticModel)}))])
+    assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, staticModel) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : '原厂规格 · '+sourceTitle(source, staticModel)}))])
   }
 })
 
@@ -124,7 +125,7 @@ test('R13B compiled picker resolves full-model source priorities and retains not
     const entry = STATIC_MODEL_REGISTRY[channel].models.find(model => model.id === modelId)
     const small = auditedModelSpecs(channel, modelId)
     assert.equal(small.sourceUrl, url); assert.equal(small.sourceLabel, label)
-    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source, entry)}))])
+    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : '原厂规格 · '+sourceTitle(source, entry)}))])
   }
   let notices = 0
   const appendedNotices = []
@@ -134,7 +135,7 @@ test('R13B compiled picker resolves full-model source priorities and retains not
         notices++
         const primary = auditedModelSpecs(channel, model.id).sourceUrl === url
         if (!primary) appendedNotices.push(channel + '/' + model.id)
-        assert.equal(label, (primary ? '下线公告' : '原厂规格') + ' · ' + sourceTitle(url), channel + '/' + model.id)
+        assert.equal(label, '下线公告 · ' + sourceTitle(url), channel + '/' + model.id)
       }
     }
   }

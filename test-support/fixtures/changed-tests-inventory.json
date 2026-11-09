@@ -10,8 +10,8 @@
     {
       "file": "apps/miniprogram/tests/model-audit-r12.test.cjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "a7d80584f157b65bfd7101d876f4952d2d0601c63ab668c2363b99cd20cf4976",
-      "diffSha256": "b99f5f0a9e2117e12f72a8d306c3dd05b22079d946f6a5dc26ee2a7aa89ed57b"
+      "contentSha256": "5b4ea6a2a63b3ecc6323488f2bca848cee850a4efdae1491433edd74fe0fe9b7",
+      "diffSha256": "091de66ff37cdba896ee03bb12f32cc55efd36d8d12caf75d450ec5a522d8357"
     },
     {
       "file": "apps/miniprogram/tests/model-audit.test.cjs",
@@ -34,8 +34,8 @@
     {
       "file": "apps/web/tests/model-audit-r10.test.mjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "5e2c64e8912b7a31d290595107ae85c6abc2dc2e0defe098ef21657d650c6d48",
-      "diffSha256": "0d458d2b3c4222cc3638889fb2fa2619027974157d64499a8c10111258cd49ed"
+      "contentSha256": "2f88e9b6af8f0580f833310ac30ff7b03d5d9526a04e15f6ad57d4793a0b662d",
+      "diffSha256": "0d39f339725db8de07bbf1b838d08ea056d8d9f536f3120d014f265b2777f183"
     },
     {
       "file": "apps/web/tests/model-audit-r11.test.mjs",
@@ -82,8 +82,8 @@
     {
       "file": "apps/web/tests/model-audit-r9.test.mjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "086cbb0dc9da25f0dc034dc52255c79e545a17efa0b631cf0d0be947c51530de",
-      "diffSha256": "adaa1c3b91fa1a162540836bb12010f65553ea212a0d5e00ad098e2c00e08f66"
+      "contentSha256": "0c7b4f91ec31b01ad510f3183056bf661023ada52aa6af769b102414cac24741",
+      "diffSha256": "22f04c3905c60586c06d5a6674703d143bef47b5068221bcb02f8831ea5c3931"
     },
     {
       "file": "apps/web/tests/model-audit.test.mjs",
@@ -212,14 +212,26 @@
     {
       "file": "apps/auth-gateway/tests/model-modality-r21.test.js",
       "comparisonBase": "fd29cf36",
-      "contentSha256": "8086af1cc17ce58647d071e07062f9d1a1f9372f632b08a472bf63ad37336383",
-      "diffSha256": "9c6bb94a71453d37735f255f592c88cd7e9b9bd92714ea46fee1c0fe5703c215"
+      "contentSha256": "c559781e036aa2e44ed654e34b671d46cba08d5b730267a363da6427bc5fb160",
+      "diffSha256": "a7a1e22dcc832d8cb32c84ef073eaf5926f7d0f4ad6c13dd394ef67469df7875"
     },
     {
       "file": "apps/paperbanana-api/tests/model-modality-r21.test.ts",
       "comparisonBase": "fd29cf36",
-      "contentSha256": "73cbbf2fc4fb37e709bb60c4515d1bf040e93490627937fd71b34c118080ff2e",
-      "diffSha256": "d37290ed191089034a042be45616c37ae587012d5ddd2d78ded4289ec1d5ca69"
+      "contentSha256": "a28c9cece210e10feb68eb0844a35168c7c179295fe12c4613cf3cf7fe8e527f",
+      "diffSha256": "e1a73f7abf40a321c887e9eef8057f1dfa53f14cc2949e398d8145d689c0efac"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-card-r23.test.cjs",
+      "comparisonBase": "4e18513c",
+      "contentSha256": "529197ecf80a0b8d25ae68aa2484b165fd92dfd8da0b063cb7c614b233aabe58",
+      "diffSha256": "4e21f8827cfcbce75fa98745c59366f19641735b356856c2452a831ebf458459"
+    },
+    {
+      "file": "apps/web/tests/model-card-r23.test.mjs",
+      "comparisonBase": "4e18513c",
+      "contentSha256": "e99e79ccf99a2eae557a618618d3cbaa2510bb3c5f129c4d8819d368705611f7",
+      "diffSha256": "315490b7d483c53af682ac93d63d0463200abe2c3770effb544ad5c6fdf926b0"
     }
   ]
 }

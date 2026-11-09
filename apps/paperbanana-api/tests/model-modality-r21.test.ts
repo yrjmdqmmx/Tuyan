@@ -51,7 +51,7 @@ test('R21 Core source consumers reject machine evidence and keep channel pages b
     const audit = auditedModelSpecs('tokendance', id)
     // Vendor provenance is what makes a card field display 源自原厂.
     const vendorUrls = Object.values(audit.fields).filter(fact => fact.provenance === 'vendor')
-      .flatMap(fact => fact.sourceUrls || [fact.sourceUrl]).filter(Boolean)
+      .flatMap(fact => fact.sourceUrls || [fact.sourceUrl]).filter((url): url is string => typeof url === 'string')
     const channelUrl = 'https://tokendance.space/models/' + id
     const expected = [channelUrl, ...vendorUrls].filter((url, index, urls) =>
       urls.findIndex(other => sourceIdentity(other) === sourceIdentity(url)) === index)

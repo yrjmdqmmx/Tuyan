@@ -1,3 +1,4 @@
+import r24 from '../../../test-support/fixtures/model-card-r24.json' with { type: 'json' }
 import { expectedTokenDanceSources } from '../../../test-support/card-review-r22.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
@@ -34,7 +35,8 @@ test('R21 Gateway sources keep reviewed channel pages and labelled vendor field 
     }
     for (const row of modelSourceRows(data).slice(reviewed.length)) {
       assert.ok(vendorUrls.some(url => sourceIdentity(url) === sourceIdentity(row.url)), id + ': ' + row.url)
-      assert.match(row.label, /^原厂规格 · /, id)
+      if (row.url === r24.noticeUrl) assert.equal(row.label, r24.noticeLabel, id)
+      else assert.match(row.label, /^原厂规格 · /, id)
     }
     if (id === 'deepseek-v4.1-flash') {
       assert.equal(audit.fields.maxOutputTokens.provenance, 'vendor')

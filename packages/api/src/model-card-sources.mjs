@@ -131,5 +131,8 @@ const visibleSource = url => !isDeadSource(url) && !isApiSource(url)
 
 export function modelSourceRows(data) {
   const vendors = new Set(data.vendorSources.map(sourceIdentity))
-  return titleSourceRows(uniqueSources(data.sources).map((url, index) => ({url, label: index > 0 && vendors.has(sourceIdentity(url)) ? '原厂规格' : modelSourceName(data, url)})), data.sourceModel)
+  return titleSourceRows(uniqueSources(data.sources).map((url, index) => {
+    const role = modelSourceName(data, url)
+    return {url, label: index > 0 && vendors.has(sourceIdentity(url)) && role === '官方文档' ? '原厂规格' : role}
+  }), data.sourceModel)
 }

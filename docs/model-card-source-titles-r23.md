@@ -4,12 +4,12 @@ Baseline: `1dcd8b13` (pre-F), frozen in `test-support/fixtures/source-titles-1dc
 
 | Client | Cards | Source rows | Changed titles | Changed cards | Unresolved heuristic findings |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| web | 1064 | 2494 | 2198 | 1031 | 0 |
-| mini | 1064 | 1103 | 973 | 966 | 0 |
+| web | 1064 | 2494 | 2201 | 1031 | 0 |
+| mini | 1064 | 1103 | 976 | 967 | 0 |
 
 Also scanned **7 Web lifecycle dialogs**; **3** changed titles are listed separately below. Web tests open every rendered evidence dialog, check the card link/tooltip, and compare every anchor. Mini tests invoke every copy dialog and clipboard callback. Shared-helper parity is checked on all Mini rows.
 
-Heuristics cover collapsed/split numeric versions, hyphens replacing known dotted versions (letter/version tokens such as Qwen3-8, K2-7 and V4-1), raw hosts/paths, API-prefix subjects, case/punctuation differing from the curated name, leftover slug separators, trailing ellipses and repeated words. The dotted-version oracle independently reads every catalog ID/name, plus the current card ID/name. Genuine parameter/release hyphens such as Qwen3-8B, Qwen3.8-27B and DeepSeek-R1-0528 remain valid. Zero duplicate URLs/labels; role prefixes and source ordering are unchanged.
+Heuristics cover collapsed/split numeric versions, hyphens replacing known dotted versions (letter/version tokens such as Qwen3-8, K2-7 and V4-1), raw hosts/paths, API-prefix subjects, case/punctuation differing from the curated name, leftover slug separators, trailing ellipses and repeated words. The dotted-version oracle independently reads every catalog ID/name, plus the current card ID/name. Genuine parameter/release hyphens such as Qwen3-8B, Qwen3.8-27B and DeepSeek-R1-0528 remain valid. Zero duplicate URLs/labels; source ordering is unchanged. R24 restores 下线公告 on the three explicitly reviewed vendor notice rows per client; every other role prefix remains unchanged.
 
 Title priority: curated card/picker name for its own model page, correcting a known dotted version even if its picker label encodes a slug; captured human page title for a general page; longest separator-normalized catalog name/ID match, including family prefixes and quickstart suffixes; readable path fallback. API documentation uses its model subject plus API 文档. Colliding labels get human format/language qualifiers, never a URL suffix. Mini reuses its existing catalog; package-local shared name data is generated from the same registry. Original captures remain unchanged.
 
@@ -37,6 +37,10 @@ Shared/general pages now recover version dots from known model identities across
 **BFL casing:** the committed picker name is `FLUX-2-klein-4b`, so that own-page title stays exact. A separate shared/Mini regression supplies the curated name `FLUX.2 [klein] 4B` and requires that exact punctuation/casing. All 1,064 picker names remain unchanged. The two Replicate source rows whose picker name is `qwen3-7-plus` now say `Qwen3.7 Plus`; the picker itself remains unchanged.
 
 Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无此型号** with the existing verification date in Web tooltips/dialogs and Mini icon dialogs: `deepseek-v4-flash-vision-exp`, `deepseek-v4-flash`, `deepseek-v3.2`, `deepseek-chat-v3-0324`, `qwen3.6-max-preview`, `qwen3-30b-a3b-instruct-2507`, `qwen3-max`. Other hints and all modality states remain unchanged.
+
+## R24 Phase I1 role corrections
+
+The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciation retains 下线公告 on tokendance/qwen3.5-plus, qianfan/qwen-image-edit and siliconflow/Qwen/Qwen-Image-Edit in both clients. Vendor provenance and links remain intact. The role guard permits only these three card/URL pairs to differ from the frozen baseline. New R24 tests scan all 1,064 cards per client and require every retirement source to keep its role.
 
 ## Every changed title
 
@@ -140,6 +144,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | siliconflow/Qwen/Qwen-Image | https://www.siliconflow.cn/models | 官方文档 · siliconflow.cn · 模型列表 | 官方文档 · SiliconFlow · 模型列表 |
 | web | siliconflow/Qwen/Qwen-Image | https://docs.siliconflow.cn/docs/api/images-generations-post | 官方文档 · siliconflow.cn · images generations post | 官方文档 · SiliconFlow · Images Generations Post |
 | web | siliconflow/Qwen/Qwen-Image-Edit | https://huggingface.co/Qwen/Qwen-Image-Edit | 官方文档 · Hugging Face · Qwen Image Edit | 官方文档 · Hugging Face · Qwen-Image-Edit |
+| web | siliconflow/Qwen/Qwen-Image-Edit | https://help.aliyun.com/zh/model-studio/model-depreciation | 原厂规格 · 百炼 · 模型下线公告 | 下线公告 · 百炼 · 模型下线公告 |
 | web | siliconflow/Qwen/Qwen-Image-Edit | https://www.siliconflow.cn/models | 官方文档 · siliconflow.cn · 模型列表 | 官方文档 · SiliconFlow · 模型列表 |
 | web | siliconflow/Qwen/Qwen3.6-27B | https://huggingface.co/Qwen/Qwen3.6-27B | 官方文档 · Hugging Face · Qwen3.6 27B | 官方文档 · Hugging Face · Qwen3.6-27B |
 | web | siliconflow/Qwen/Qwen3.6-27B | https://www.siliconflow.cn/models | 官方文档 · siliconflow.cn · 模型列表 | 官方文档 · SiliconFlow · 模型列表 |
@@ -1550,6 +1555,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | tokendance/qwen3.5-35b-a3b | https://tokendance.space/models/qwen3.5-35b-a3b | 官方文档 · TokenDance · qwen3.5 35b a3b | 官方文档 · TokenDance · Qwen3.5-35B-A3B |
 | web | tokendance/qwen3.5-flash | https://tokendance.space/models/qwen3.5-flash | 官方文档 · TokenDance · qwen3.5 flash | 官方文档 · TokenDance · Qwen3.5 Flash |
 | web | tokendance/qwen3.5-plus | https://tokendance.space/models/qwen3.5-plus | 官方文档 · TokenDance · qwen3.5 plus | 官方文档 · TokenDance · Qwen3.5 Plus |
+| web | tokendance/qwen3.5-plus | https://help.aliyun.com/zh/model-studio/model-depreciation | 原厂规格 · 百炼 · 模型下线公告 | 下线公告 · 百炼 · 模型下线公告 |
 | web | tokendance/seed-2.1-pro | https://tokendance.space/models/seed-2.1-pro | 官方文档 · TokenDance · seed 2.1 pro | 官方文档 · TokenDance · Seed-2.1-Pro |
 | web | tokendance/seed-2.1-turbo | https://tokendance.space/models/seed-2.1-turbo | 官方文档 · TokenDance · seed 2.1 turbo | 官方文档 · TokenDance · Seed-2.1-Turbo |
 | web | tokendance/seed-2.0-code | https://tokendance.space/models/seed-2.0-code | 官方文档 · TokenDance · seed 2.0 code | 官方文档 · TokenDance · Seed-2.0-Code |
@@ -2105,6 +2111,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | qianfan/kimi-k2.6 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 模型列表 - 百度千帆·大模型服务及Agent开发平台 |
 | web | qianfan/qwen-image | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · Klqx7b1i5 |
 | web | qianfan/qwen-image | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 模型列表 - 百度千帆·大模型服务及Agent开发平台 |
+| web | qianfan/qwen-image-edit | https://help.aliyun.com/zh/model-studio/model-depreciation | 原厂规格 · 百炼 · 模型下线公告 | 下线公告 · 百炼 · 模型下线公告 |
 | web | qianfan/qwen-image-edit | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · Klqx7b1i5 |
 | web | qianfan/qwen-image-edit | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 模型列表 - 百度千帆·大模型服务及Agent开发平台 |
 | web | qianfan/qwen3.5-122b-a10b | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · Klqx7b1i5 |
@@ -2277,6 +2284,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | siliconflow/Pro/MiniMaxAI/MiniMax-M2.5 | https://huggingface.co/MiniMaxAI/MiniMax-M2.5 | 官方文档 · Hugging Face · MiniMax M2.5 | 官方文档 · Hugging Face · MiniMax-M2.5 |
 | mini | siliconflow/Qwen/Qwen-Image-Edit-2509 | https://huggingface.co/Qwen/Qwen-Image-Edit-2509 | 官方文档 · Hugging Face · Qwen Image Edit 2509 | 官方文档 · Hugging Face · Qwen-Image-Edit-2509 |
 | mini | siliconflow/Qwen/Qwen-Image-Edit | https://huggingface.co/Qwen/Qwen-Image-Edit | 官方文档 · Hugging Face · Qwen Image Edit | 官方文档 · Hugging Face · Qwen-Image-Edit |
+| mini | siliconflow/Qwen/Qwen-Image-Edit | https://help.aliyun.com/zh/model-studio/model-depreciation | 原厂规格 · 百炼 · 模型下线公告 | 下线公告 · 百炼 · 模型下线公告 |
 | mini | siliconflow/Qwen/Qwen3.6-27B | https://huggingface.co/Qwen/Qwen3.6-27B | 官方文档 · Hugging Face · Qwen3.6 27B | 官方文档 · Hugging Face · Qwen3.6-27B |
 | mini | siliconflow/Qwen/Qwen3.6-35B-A3B | https://huggingface.co/Qwen/Qwen3.6-35B-A3B | 官方文档 · Hugging Face · Qwen3.6 35B A3B | 官方文档 · Hugging Face · Qwen3.6-35B-A3B |
 | mini | siliconflow/Qwen/Qwen3.5-397B-A17B | https://huggingface.co/Qwen/Qwen3.5-397B-A17B | 官方文档 · Hugging Face · Qwen3.5 397B A17B | 官方文档 · Hugging Face · Qwen3.5-397B-A17B |
@@ -2894,6 +2902,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | tokendance/qwen3.5-35b-a3b | https://tokendance.space/models/qwen3.5-35b-a3b | 官方文档 · TokenDance · qwen3.5 35b a3b | 官方文档 · TokenDance · Qwen3.5-35B-A3B |
 | mini | tokendance/qwen3.5-flash | https://tokendance.space/models/qwen3.5-flash | 官方文档 · TokenDance · qwen3.5 flash | 官方文档 · TokenDance · Qwen3.5 Flash |
 | mini | tokendance/qwen3.5-plus | https://tokendance.space/models/qwen3.5-plus | 官方文档 · TokenDance · qwen3.5 plus | 官方文档 · TokenDance · Qwen3.5 Plus |
+| mini | tokendance/qwen3.5-plus | https://help.aliyun.com/zh/model-studio/model-depreciation | 原厂规格 · 百炼 · 模型下线公告 | 下线公告 · 百炼 · 模型下线公告 |
 | mini | tokendance/seed-2.1-pro | https://tokendance.space/models/seed-2.1-pro | 官方文档 · TokenDance · seed 2.1 pro | 官方文档 · TokenDance · Seed-2.1-Pro |
 | mini | tokendance/seed-2.1-turbo | https://tokendance.space/models/seed-2.1-turbo | 官方文档 · TokenDance · seed 2.1 turbo | 官方文档 · TokenDance · Seed-2.1-Turbo |
 | mini | tokendance/seed-2.0-code | https://tokendance.space/models/seed-2.0-code | 官方文档 · TokenDance · seed 2.0 code | 官方文档 · TokenDance · Seed-2.0-Code |
@@ -3151,6 +3160,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | qianfan/glm-5.1 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1 | 官方文档 · bigmodel.cn · glm 5.1 | 官方文档 · 智谱 · GLM-5.1 |
 | mini | qianfan/glm-5 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5 | 官方文档 · bigmodel.cn · glm 5 | 官方文档 · 智谱 · GLM-5 |
 | mini | qianfan/kimi-k2.6 | https://huggingface.co/moonshotai/Kimi-K2.6 | 官方文档 · Hugging Face · Kimi K2.6 | 官方文档 · Hugging Face · Kimi-K2.6 |
+| mini | qianfan/qwen-image-edit | https://help.aliyun.com/zh/model-studio/model-depreciation | 原厂规格 · 百炼 · 模型下线公告 | 下线公告 · 百炼 · 模型下线公告 |
 | mini | qianfan/qwen3.5-397b-a17b | https://huggingface.co/Qwen/Qwen3.5-397B-A17B | 官方文档 · Hugging Face · Qwen3.5 397B A17B | 官方文档 · Hugging Face · Qwen3.5-397B-A17B |
 | mini | qianfan/deepseek-ocr | https://huggingface.co/deepseek-ai/DeepSeek-OCR | 官方文档 · Hugging Face · DeepSeek OCR | 官方文档 · Hugging Face · DeepSeek-OCR |
 | mini | qianfan/ernie-4.5-turbo-128k | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 模型列表 - 百度千帆·大模型服务及Agent开发平台 |

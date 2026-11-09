@@ -1,0 +1,7 @@
+{
+  "historicalIds": ["deepseek-chat-v3-0324", "deepseek-v3.2", "deepseek-v4-flash", "deepseek-v4-flash-vision-exp", "qwen3-30b-a3b-instruct-2507", "qwen3-max", "qwen3.6-max-preview"],
+  "syntheticPages": {"extra-retired-model": {"verified": false}, "extra-current-model": {"verified": true}},
+  "noticeCards": ["tokendance/qwen3.5-plus", "qianfan/qwen-image-edit", "siliconflow/Qwen/Qwen-Image-Edit"],
+  "noticeUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+  "noticeLabel": "下线公告 · 百炼 · 模型下线公告"
+}

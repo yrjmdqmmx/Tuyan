@@ -26,6 +26,14 @@ export function uniqueSources(values) {
 }
 // Model subjects take the existing card name; general pages retain captured titles.
 // Keep this URL-parser-free implementation usable in the native Mini runtime.
+function sourceRole(value, role) {
+  if (!['官方文档', '原厂规格'].includes(role)) return role
+  const [host, ...parts] = value.replace(/^https?:\/\//, '').split(/[?#]/)[0].split('/')
+  const path = decodeURIComponent(parts.join('/'))
+  return /deprecat|depreciat|retire|sunset|下线/i.test(path)
+    || /(^|\.)aliyun\.com$/i.test(host) && /^notice\/\d+\/?$/.test(path)
+    || host === 'docs.x.ai' && /^developers\/migration\//.test(path) ? '下线公告' : role
+}
 const compactSubject = value => value.toLowerCase().replace(/(\d)p(?=\d)/g, '$1.').replace(/[^a-z0-9\u4e00-\u9fff]/g, '')
 const brands = 'OpenAI GPT ChatGPT DeepSeek Qwen GLM Kimi MiniMax MiMo FLUX Stable Diffusion SDXL Claude Grok Gemini Recraft Ideogram Seedream Wan Hunyuan ERNIE CogView LongCat SenseNova TokenDance Fireworks Hugging Face SiliconFlow Runware Replicate Novita StepFun BFL API HTTP VL OCR LoRA'.split(' ')
 function readableSubject(value) {
@@ -98,7 +106,7 @@ export function sourceTitle(value, model = {}) {
 }
 // Distinct human descriptions replace the old host/path collision suffix.
 export function titleSourceRows(rows, model = {}) {
-  const titled = rows.map(row => ({...row, label: row.label + ' · ' + sourceTitle(row.url, model)}))
+  const titled = rows.map(row => ({...row, label: sourceRole(row.url, row.label) + ' · ' + sourceTitle(row.url, model)}))
   const counts = new Map(), used = new Set()
   for (const row of titled) counts.set(row.label, (counts.get(row.label) || 0) + 1)
   return titled.map(row => {

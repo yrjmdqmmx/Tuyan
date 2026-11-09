@@ -1075,3 +1075,48 @@ No verification-proven product defect required a fix. Existing tests and the cha
 
 
 **R23 Phase H2 — stale Core/Gateway expectations corrected (HEAD `c75aa00f`, not deployed).** The operator logs exposed two channel-only assertions left behind by item 1. The extra DeepSeek pricing URL and Aliyun model-table URL are exactly the `maxOutputTokens` vendor sources labelled `源自原厂` on `deepseek-v4.1-flash` and `qwen3.6-plus`, respectively; neither is a portal API/JSON link or duplicate. Both tests now derive expected appended URLs from vendor fields and assert channel-first order, deduplication, machine-link exclusion and `原厂规格` row labels, with explicit DeepSeek examples. Two follow-up reviews and frozen hashes are recorded in `docs/model-modality-changed-tests.{md,json}` and `test-support/fixtures/changed-tests-inventory.json`; comparison base `fd29cf36` has byte-identical pre-edit test files to operator HEAD. Validation: Core R21 **3/3**, Gateway R21 **3/3**, all **four execution locks**, selected Web **109/109** across 16 files (including its lock), ledger regressions **2/2**, all **19 applicable maintenance checks**, and ledger `core.abbrev=7` / `12` — all pass, zero skips. Checks include the 11 Phase H checks plus offline page captures, reference-upload, thinking, version reports, frozen R10/R11/R12 reports and R12 fixture verification; `sync-agent-knowledge` / `sync-workflow` remain untouched and independent-repository distribution checks are out of scope. [Verification details](model-modality-r23-verification.md); local command/log inventory `.audit-input/r23/h2/validation.json`. Product code and execution behavior are unchanged; no Git writes, network, secrets, paid calls, deployment, image builds or other-worktree changes.
+
+
+## R24 Phase I1
+
+PM third review of PR #251, starting at `4e18513c` on `codex/model-modality-audit`, with main baseline `8c456709`. Items **2, 3a, 5 and 6** are implemented. No Git write commands were used.
+
+- **Item 2:** added an accurate adjacent `card-presentation.d.mts` covering every export; `AuditFact` includes optional plural source URLs, and the Core test narrows nullable URLs with a string predicate. Core `tsc --noEmit` has zero errors. Core/benchmark Docker layouts already COPY the entire API source directory; the offline bundle check now explicitly verifies declaration bytes in each copied layout. Core, Mini, benchmark-worker and benchmark-core typechecks pass; Gateway and tuyan-knowledge syntax-check scripts pass. Web has no check/typecheck script or tsconfig; its production build passes.
+- **Item 3a:** secondary vendor links retain specific page roles. The three reported cards now show **下线公告 · 百炼 · 模型下线公告** for the Alibaba notice URL in Web dialogs and Mini copy dialogs. All 1,064 cards per client are scanned, covering **51 Web / 19 Mini retirement rows**, with no wrong retirement labels. Non-generic role labels are preserved. Ordered source URLs, vendor attribution and picker names are unchanged. The title report's baseline guard permits only the three reviewed card/URL role corrections per client.
+- **Item 5:** the shared historical-ID set derives from the audited TokenDance page map (`verified:false`), replacing the hardcoded pipe-delimited IDs. Mini derives the same status from already-shipped catalog identities and primary audit URLs; the generator compares every one of the 74 statuses to captured evidence and fails on a mismatch. Both clients show **渠道页无此型号** for exactly the seven historical IDs. A synthetic eighth historical fixture receives the same hint, a synthetic verified page does not, and all unknown states remain unknown.
+- **Item 6:** R9's expected source row no longer calls the production formatter. It compares each of 297 channel-backed cards to committed literal URL/label objects, with complete fixture coverage. R10 requires the literal **官方文档 · 百炼 · Kimi K3 (Bailian hosted)** for both minimal and live objects. Existing URL, modality, provenance and date assertions remain intact.
+
+Changed pre-existing expectations in seven test files are recorded in [the Markdown ledger](model-modality-changed-tests.md), [JSON ledger](model-modality-changed-tests.json) and frozen inventory, including the older generic-vendor-label assertions corrected for this review. The new retirement/historical tests use fixed fixtures. The initial full suites found only those obsolete label assertions; they were updated to exact retirement URL/label expectations, with all URL/provenance checks retained. No byte ceiling or execution assertion was weakened.
+
+Mini source is **1,569,424 bytes**, unchanged from the starting checkout, with **3,440 bytes** below the user limit **1,572,864**. The older **1,569,427** assertion also remains unchanged and passes. To offset the helper/type additions, generated TokenDance quote subjects reference the existing catalog IDs by index and decode to the same strings; no evidence wording, dates, exports, features or model identities were removed.
+
+### pending real-browser verification
+
+The selected vendor fact for `tokendance/qwen3.5-plus` still stores **65536**, provenance **vendor**, and URL [model-depreciation](https://help.aliyun.com/zh/model-studio/model-depreciation). Its current HTTP 200 article is titled **“模型下线机制说明”** and contains no qwen3.5-plus or 65536 passage. It cannot substantiate this maximum-output value in the captured response.
+
+The archived R6A integer review instead cites [qwen3-5-plus](https://help.aliyun.com/zh/model-studio/qwen3-5-plus). The fresh HTTP 200 HTML contains the heading **“qwen3.5-plus”** and exact table passage **“最大输出长度65536”**, including the normal/thinking sections for the base model and two snapshots. The selected fact URL has not been silently changed. Full trace through channel input, canonical/vendor records, provider-model-details (no matching entry), curated C0178 card specifications, and the resolved card is in [.audit-input/r24/qwen35plus-evidence.md](../.audit-input/r24/qwen35plus-evidence.md) and its fact-chain JSON.
+
+The eight public unauthenticated curl GETs include both direct attribution pages, the two curated vendor table URLs, the TokenDance model page, its advertised llms.txt index/full Markdown, and a guessed per-model Markdown URL (404). Every response has requested/final URL, HTTP status, UTC/Asia-Shanghai fetch times, raw-body SHA-256 and exact relevant excerpts. The TokenDance model HTML is a JS shell. Its full public Markdown mentions Qwen3.5 Plus retirement; its sole 65536 example belongs to DeepSeek, not Qwen. No gateway/portal/catalog API endpoint was fetched.
+
+A real browser must still inspect the rendered TokenDance page and both direct vendor pages, capture dated screenshots, and reconcile the selected retirement-source URL with the R6A integer source. No browser/native rendering or account/model-quality result is claimed. The numeric value, all four execution locks, all 1,064 picker names and the founder's 15-model image-input decision remain unchanged. No secrets, inference/paid calls, deployment, Docker/image builds, other-worktree changes, or reads from `~/.codex`; `sync-agent-knowledge` and `sync-workflow` remain untouched.
+
+### R24 Phase I1 validation
+
+All final runs pass. [Machine-readable commands, exits, log hashes and initial/final attempts](model-modality-r24-validation.json) preserve the evidence; raw logs are in `.audit-input/r24/verification-logs/`.
+
+| Check | Final result |
+| --- | --- |
+| Full Web suite, requested NODE_OPTIONS/imports/concurrency | **1,485/1,485** |
+| Mini npm test | **173/173** |
+| scripts/*.test.mjs | **58/58** |
+| packages/api/src/*.test.js | **33/33** |
+| Targeted Core R21, execution lock, card projection and phase 2 | **7/7** |
+| Targeted Gateway R21, execution lock and phase 2 | **5/5** |
+| Main picker-name and 15-model decision invariants | **2/2** |
+| Web / Mini / Core builds | **3/3** |
+| Workspaces with check/typecheck scripts | **6/6**; Core/Mini/benchmark-worker/benchmark-core TypeScript and Gateway/tuyan-knowledge syntax checks |
+| Requested maintenance --check scripts | **11/11** |
+| Changed-test ledger | Green; 0 flagged |
+| Mini bytes / user limit | **1,569,424 / 1,572,864**; 3,440 remaining |
+
+This is **1,761 suite tests plus two invariant tests**, with zero final failures or skips in those runs. The four execution locks remain equal to main; the founder decision Markdown/JSON are byte-identical to the starting checkout. The 11 maintenance checks are sync-model-catalog, generate-model-audit, report-model-modality-r21, report-model-modality-phase2, sync-card-display, report-model-modality-r22b, report-changed-tests, freeze-execution-capability, check-docker-bundles, freeze-audit-sources and report-source-titles-r23. The Docker check only simulates COPY layouts and runs local esbuild; no Docker process or image build was performed.

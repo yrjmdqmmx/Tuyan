@@ -1,9 +1,15 @@
 import evidence from './card-data/modality-evidence.json' with { type: 'json' }
 import { sourceTitle } from './card-presentation.mjs'
+import tokenDancePages from './card-data/tokendance-pages.json' with { type: 'json' }
+
+export function historicalChannelIds(pages) {
+  return new Set(Object.keys(pages).filter(id => pages[id].verified === false))
+}
+const historicalIds = historicalChannelIds(tokenDancePages)
 
 const modalities = ['文本', '图像', '视频', '音频'].map((label, i) => ({ id: ['text', 'image', 'video', 'audio'][i], label }))
 // Presentation only. An omitted channel listing never proves a model exclusion.
-export function modalityIconStates(value, fact, provider, modelId) {
+export function modalityIconStates(value, fact, provider, modelId, missingIds = historicalIds) {
   let states
   if (fact?.state === 'known' && fact.displayValue) {
     states = modalityIconStates(fact.displayValue).map(item => item.state === 'unlisted' ? { ...item, state: 'unknown' } : item)
@@ -26,7 +32,7 @@ export function modalityIconStates(value, fact, provider, modelId) {
     const date = fact?.verifiedAt
     const source = { channel: '渠道资料', vendor: '原厂资料', catalog: '图研既有核实', product: '图研输入要求' }[fact?.provenance]
     const tooltip = ['unknown', 'unlisted'].includes(item.state)
-      ? (channel || provider === 'tokendance' || fact?.modalityMasks?.includes(item.id) ? `${provider === 'tokendance' && 'deepseek-v4-flash-vision-exp|deepseek-v4-flash|deepseek-v3.2|deepseek-chat-v3-0324|qwen3.6-max-preview|qwen3-30b-a3b-instruct-2507|qwen3-max'.split('|').includes(modelId) ? '渠道页无此型号' : '渠道未标注此模态'}${date ? `（核实日期 ${date}）` : ''}` : '暂无官方资料')
+      ? (channel || provider === 'tokendance' || fact?.modalityMasks?.includes(item.id) ? `${provider === 'tokendance' && missingIds.has(modelId) ? '渠道页无此型号' : '渠道未标注此模态'}${date ? `（核实日期 ${date}）` : ''}` : '暂无官方资料')
       : quote ? `渠道标注：${quote}（${date}）`
         : source ? `${source}${fact.sourceUrl ? ` · ${sourceTitle(fact.sourceUrl)}` : ''}${date ? `（${date}）` : ''}` : '暂无官方资料'
     return { ...item, accessibleLabel: `${item.label}：${wording}${item.detail && item.detail !== item.label ? ` · ${item.detail}` : ''}`, tooltip }
