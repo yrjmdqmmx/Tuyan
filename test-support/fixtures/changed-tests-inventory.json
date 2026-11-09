@@ -208,6 +208,18 @@
       "comparisonBase": "fd29cf36",
       "contentSha256": "3149cf63c1ce7a18f771dd1c8b37a1c1df479b53369524c4f9b8145b46f508b6",
       "diffSha256": "f01620e36b2251c000db8a7f4ded6c2e5447ff20659caf23afd43296438816dd"
+    },
+    {
+      "file": "apps/auth-gateway/tests/model-modality-r21.test.js",
+      "comparisonBase": "fd29cf36",
+      "contentSha256": "8086af1cc17ce58647d071e07062f9d1a1f9372f632b08a472bf63ad37336383",
+      "diffSha256": "9c6bb94a71453d37735f255f592c88cd7e9b9bd92714ea46fee1c0fe5703c215"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/model-modality-r21.test.ts",
+      "comparisonBase": "fd29cf36",
+      "contentSha256": "73cbbf2fc4fb37e709bb60c4515d1bf040e93490627937fd71b34c118080ff2e",
+      "diffSha256": "d37290ed191089034a042be45616c37ae587012d5ddd2d78ded4289ec1d5ca69"
     }
   ]
 }

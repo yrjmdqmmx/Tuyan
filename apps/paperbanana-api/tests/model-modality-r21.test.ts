@@ -5,6 +5,7 @@ import details from '../../../packages/api/src/provider-model-details.js'
 import { exactModelDetails, normalizeCatalogModel, mergeCatalogRows } from '../../../packages/api/src/provider-catalog.js'
 import { createRefineRuntime } from '../../../test-support/refine-runtime.mjs'
 import { assertTokenDanceFacts, tokenDanceSnapshot } from '../../../test-support/tokendance-modality-assertions.mjs'
+import { sourceIdentity } from '../../../packages/api/src/card-presentation.mjs'
 
 test('R21 Core exact channel specifications leave the base/vendor archive intact', () => {
   const base = structuredClone(details.models['tokendance/qwen3.6-plus'])
@@ -42,10 +43,33 @@ test('R21 real Core modelRegistry objects preserve channel facts through all enr
     assert.equal(runtime.providerCalls.length, 0)
   } finally { await runtime.close() }
 })
-test('R21 Core source consumers reject portal API evidence and show only channel model links', async () => {
-  const { isApiSource, modelCardSources } = await import(new URL('../../web/src/lib/modelCardSources.js', import.meta.url).href)
+test('R21 Core source consumers reject machine evidence and keep channel pages before labelled vendor field sources', async () => {
+  const { isApiSource, modelCardSources, modelSourceRows } = await import(new URL('../../web/src/lib/modelCardSources.js', import.meta.url).href)
   const api = 'https://tokendance.space/portal/api/models/qwen3.6-plus'
   assert.equal(isApiSource(api), true)
-  const audit = auditedModelSpecs('tokendance', 'qwen3.6-plus')
-  assert.deepEqual(modelCardSources({ channel: 'tokendance', model: { id: 'qwen3.6-plus' }, audit: { ...audit, sourceUrl: api }, fields: audit.fields }).sources, ['https://tokendance.space/models/qwen3.6-plus'])
+  for (const id of ['qwen3.6-plus', 'deepseek-v4.1-flash']) {
+    const audit = auditedModelSpecs('tokendance', id)
+    // Vendor provenance is what makes a card field display 源自原厂.
+    const vendorUrls = Object.values(audit.fields).filter(fact => fact.provenance === 'vendor')
+      .flatMap(fact => fact.sourceUrls || [fact.sourceUrl]).filter(Boolean)
+    const channelUrl = 'https://tokendance.space/models/' + id
+    const expected = [channelUrl, ...vendorUrls].filter((url, index, urls) =>
+      urls.findIndex(other => sourceIdentity(other) === sourceIdentity(url)) === index)
+    const data = modelCardSources({ channel: 'tokendance', model: { id }, audit: { ...audit, sourceUrl: api }, fields: audit.fields })
+    assert.deepEqual(data.sources, expected, id)
+    assert.equal(data.sources[0], channelUrl, id)
+    assert.equal(new Set(data.sources.map(sourceIdentity)).size, data.sources.length, id)
+    for (const url of data.sources) {
+      assert.doesNotMatch(decodeURIComponent(new URL(url).pathname), /\/portal\/api(?:\/|$)|\/openapi|\/swagger|\.(?:json|ya?ml)\/?$/i, id)
+      assert.equal(isApiSource(url), false, id + ': ' + url)
+    }
+    for (const row of modelSourceRows(data).slice(1)) {
+      assert.ok(vendorUrls.some(url => sourceIdentity(url) === sourceIdentity(row.url)), id + ': ' + row.url)
+      assert.match(row.label, /^原厂规格 · /, id)
+    }
+    assert.equal(audit.fields.maxOutputTokens.provenance, 'vendor', id)
+    assert.equal(audit.fields.maxOutputTokens.sourceUrl, id === 'deepseek-v4.1-flash'
+      ? 'https://api-docs.deepseek.com/quick_start/pricing/' : 'https://help.aliyun.com/zh/model-studio/models', id)
+    assert.equal(data.sources[1], audit.fields.maxOutputTokens.sourceUrl, id)
+  }
 })
