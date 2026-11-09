@@ -53,7 +53,7 @@ export function modelVersionLabel(model: PresentedModel): string {
 
 export function modelVersionDetail(model: PresentedModel): string {
   const version = normalizeModelVersion(model.version)
-  const current = version?.id ? (version.kind === 'unconfirmed' ? '目录版本：' : '已核对版本：') + version.id : '具体版本待确认'
+  const current = version?.id ? (version.kind === 'unconfirmed' ? '目录版本：' : '已核对版本：') + version.id : '具体版本未知'
   return [modelVersionLabel(model), current, version?.checkedAt ? '核对于 ' + version.checkedAt : ''].filter(Boolean).join(' · ')
 }
 
@@ -179,4 +179,12 @@ export function sortModelsNewestFirst<T extends PresentedModel>(models: readonly
     for (const next of node.next) if (--nodes[next].incoming === 0) ready.push(nodes[next])
   }
   return result
+}
+
+// Context cards favor readable magnitudes; source values and request limits stay exact.
+export const formatContextLimit = (value: number, approximate = false) => {
+  const unit = value >= 999_500 ? 1_000_000 : value >= 1_000 ? 1_000 : 1
+  const number = new Intl.NumberFormat('en-US', { useGrouping: false, maximumFractionDigits: unit === 1_000_000 ? 1 : 0 }).format(value / unit)
+  const rounded = Number(number) * unit !== value
+  return `${approximate || rounded ? '≈ ' : ''}${number}${unit === 1_000_000 ? 'M' : unit === 1_000 ? 'K' : ''}`
 }

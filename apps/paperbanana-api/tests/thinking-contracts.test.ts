@@ -1,3 +1,4 @@
+import { addedKeys } from './helpers/catalog-retirements.js'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -96,6 +97,20 @@ test('every full static catalog provider/model/role/protocol has exactly one aud
       const matching = sources.filter(p => p.provider === provider && p.modelIds.includes(model.id) && p.roles.includes(role) && p.protocols.includes(protocol))
       assert.equal(matching.length, 1, `${provider}/${model.id}/${role}/${protocol}`)
       assert.equal(thinkingProfile(provider, model.id, role, protocol)?.id, matching[0].id)
+      if (addedKeys.includes(provider + '/' + model.id)) {
+        const profile = thinkingProfile(provider, model.id, role, protocol)
+        assert.equal(profile.status, 'unconfirmed', 'new identities cannot inherit unaudited controls')
+        assert.deepEqual(profile.controls, [])
+        const identity = { provider, modelId: model.id, protocol }
+        assert.deepEqual(compileThinkingSelection({ ...identity, options: {} }, role).wire, {})
+        for (const options of [{ mode: true }, { effort: 'high' }, { budget: 4096 }] as ThinkingOptions[]) {
+          localRejection(() => compileThinkingSelection({ ...identity, options }, role))
+        }
+        if (provider === 'openai') {
+          assert.equal(model.selectable, false)
+          assert.match(model.disabledReason, /输出尺寸契约/)
+        }
+      }
       tuples++
     }
   }

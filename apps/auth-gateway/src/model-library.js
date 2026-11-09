@@ -1,4 +1,5 @@
 import { normalizeBailianWorkspace } from './bailian-workspace.js';
+import { assertModelLibraryAdditions } from './model-audit.js';
 import { normalizeUniversalConnection, normalizeUniversalRoute } from './universal-contract.js';
 import express from 'express';
 import { createHash, createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
@@ -43,6 +44,8 @@ export function createModelLibraryStore({ db, secret, assertActive = async () =>
       await assertActive(user);
       const _id = owner(user), previous = await collection.findOne({ _id });
       if ((previous?.revision || 0) !== input.revision) throw fail(409, '模型库已在其他页面更新，请刷新后重试。');
+      try { assertModelLibraryAdditions(data, previous, Date.now(), input.intent); }
+      catch (error) { throw Object.assign(error, {status:400, publicMessage:true}); }
       const sealed = Object.fromEntries(data.connections.filter(c => c.scope === 'account' && previous?.connections.some(old => old.id === c.id && old.provider === c.provider && old.region === c.region && old.scope === c.scope && JSON.stringify(old.custom) === JSON.stringify(c.custom) && JSON.stringify(old.bailian) === JSON.stringify(c.bailian)) && previous?.sealed?.[c.id]).map(c => [c.id, previous.sealed[c.id]]));
       for (const [connectionId, value] of Object.entries(input.credentials || {})) {
         const c = data.connections.find(c => c.id === connectionId);
@@ -80,6 +83,6 @@ export function createModelLibraryRouter({ auth, store, frontendOrigins, isMaint
   router.use(express.json({ limit: '256kb' }));
   router.get('/', (req, res, next) => store.get(req.modelOwner).then(data => res.json(data)).catch(next));
   router.put('/', (req, res, next) => store.put(req.modelOwner, req.body).then(data => res.json(data)).catch(next));
-  router.use((error, req, res, next) => res.status(error.status || 503).json({ error: error.publicMessage ? error.message : error.status === 400 ? '模型库请求格式无效' : error.status === 413 ? '模型库请求超过容量' : '模型库保存失败，请重试' }));
+  router.use((error, req, res, next) => res.status(error.status || 503).json({ error: error.publicMessage ? error.message : error.status === 400 ? '模型库请求格式无效' : error.status === 413 ? '模型库请求超过容量' : '模型库保存失败，请重试', ...(error.businessCode ? {businessCode:error.businessCode,replacement:error.replacement} : {}) }));
   return router;
 }

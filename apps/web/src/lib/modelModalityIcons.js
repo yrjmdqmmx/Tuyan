@@ -6,7 +6,10 @@ const modalities = [
 ]
 
 // Preserve uncertainty and qualifications instead of deriving capabilities from roles.
-export function modalityIconStates(value) {
+export function modalityIconStates(value, fact) {
+  if (fact?.state === 'known' && fact.displayValue) return modalityIconStates(fact.displayValue).map(item => item.state === 'unlisted' ? { ...item, state: 'unknown' } : item)
+  if (fact) return modalities.map(item => ({ ...item, detail: '', state: fact.state === 'unsupported' ? 'unsupported'
+    : fact.state !== 'known' ? 'unknown' : fact.value.includes(item.id) ? 'supported' : fact.unsupportedModalities?.includes(item.id) ? 'unsupported' : 'unknown' }))
   const known = typeof value === 'string' && modalities.some(({ label }) => value.includes(label))
   const items = value?.includes('文件') ? [...modalities, { id: 'file', label: '文件' }] : modalities
   return items.map(item => {

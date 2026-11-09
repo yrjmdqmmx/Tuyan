@@ -4,6 +4,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { once } from 'node:events';
 import { memoryDb } from './memory-db.mjs';
+import { tokenDanceCatalogResponse } from './tokendance-catalog.mjs';
 import { readFileSync } from 'node:fs';
 import { randomBytes } from 'node:crypto';
 import { createTokenDanceService } from '../apps/paperbanana-api/src/tokendance-service.ts';
@@ -36,7 +37,9 @@ function workflowTextResponse(body) {
   return 'Create a clear scientific workflow diagram with readable labels and directional arrows. Preserve all reference labels, values, colors and connections.';
 }
 
-export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDance = false, retrievalResponse = null, frontendOrigin = 'http://127.0.0.1:5173', database, authStores = {}, secondFrontendOrigin, secondaryAuthStores = {} } = {}) {
+export async function createRefineRuntime({ port = 0, startServer = true, providerDelay = 0, tokenDance = false, tokenDanceCatalogMode = process.env.TUYAN_PREVIEW_TOKENDANCE_CATALOG || 'snapshot', retrievalResponse = null, frontendOrigin = 'http://127.0.0.1:5173', database, authStores = {}, secondFrontendOrigin, secondaryAuthStores = {} } = {}) {
+  if (!['snapshot', 'empty', 'timeout'].includes(tokenDanceCatalogMode)) throw new Error('Invalid TUYAN_PREVIEW_TOKENDANCE_CATALOG mode');
+  if (!startServer && (tokenDance || secondFrontendOrigin)) throw new Error('HTTP fixture features require startServer');
   const db = database || memoryDb();
   const objects = new Map();
   const prepared = new Map();
@@ -88,7 +91,6 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
   const channelTasks = new Map();
   let tdFailure = '', tdPaid = false, tdSession = null;
   const tokenDanceCalls = [];
-  const catalog = tokenDance ? JSON.parse(readFileSync(new URL('../config/tokendance/catalog.json', import.meta.url), 'utf8')) : null;
   const localFetch = async (input, options = {}) => {
     const url = String(input);
     if (url.startsWith(baseUrl + '/objects/')) {
@@ -96,7 +98,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
       return new Response(object?.bytes || '', { status: object ? 200 : 404, headers: { 'Content-Type': object?.mimeType || 'text/plain' } });
     }
     if (url === 'https://openrouter.ai/api/v1/models') return Response.json({ data: [] });
-    if (url === 'https://tokendance.space/gateway/v1/models') return Response.json({ data: catalog?.models || [] });
+    if (url === 'https://tokendance.space/gateway/v1/models') return tokenDanceCatalogResponse(tokenDanceCatalogMode);
     if (tokenDance && url.startsWith('https://tokendance.space/')) {
       tokenDanceCalls.push({ url, options });
       if (url.endsWith('/auth/keys')) return Response.json({ key: 'fixture-tokendance-user-key' });
@@ -236,9 +238,9 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     cachedStatus: () => ({ ok: true }), ready: async () => ({ ok: true }),
   };
   app.use(createApp({ config, auth, backend, isMaintenance: () => false, logger: { info() {}, warn() {}, error() {} } }));
-  const server = app.listen(port, '127.0.0.1');
-  await once(server, 'listening');
-  baseUrl = 'http://127.0.0.1:' + server.address().port;
+  const server = startServer ? app.listen(port, '127.0.0.1') : null;
+  if (server) await once(server, 'listening');
+  baseUrl = server ? 'http://127.0.0.1:' + server.address().port : 'http://fixture.invalid';
   let secondServer, secondaryBaseUrl;
   if (secondFrontendOrigin) {
     secondServer = createApp({ config: { ...config, frontendOrigins: [secondFrontendOrigin] }, auth: { ...auth, ...secondaryAuthStores }, backend, isMaintenance: () => false, logger: { info() {}, warn() {}, error() {} } }).listen(0, '127.0.0.1');
@@ -257,7 +259,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     async close() {
       await legacy.drainJobAdmission(); legacy.configureRuntimeFetch();
       if (secondServer) await new Promise(resolve => { secondServer.close(resolve); secondServer.closeAllConnections(); });
-      await new Promise(resolve => { server.close(resolve); server.closeAllConnections(); });
+      if (server) await new Promise(resolve => { server.close(resolve); server.closeAllConnections(); });
       if (oldGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN;
       else process.env.PAPERBANANA_GATEWAY_TOKEN = oldGateway;
     },

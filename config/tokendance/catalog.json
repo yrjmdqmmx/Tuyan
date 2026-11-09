@@ -159,7 +159,12 @@
       "selectedProtocol": "openai:chat-completions",
       "vendorId": "deepseek",
       "lifecycle": "preview",
-      "lifecycleSourceUrl": "https://tokendance.space/models/deepseek-v4-flash"
+      "lifecycleSourceUrl": "https://tokendance.space/models/deepseek-v4-flash",
+      "catalogPresence": {
+        "status": "absent",
+        "checkedAt": "2026-11-09T11:43:00Z",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
     },
     {
       "id": "deepseek-v4-flash-0731",

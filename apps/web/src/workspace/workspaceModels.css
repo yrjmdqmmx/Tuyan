@@ -4,8 +4,8 @@
 .tw-connection-form { display:flex; flex-direction:column; gap:0; width:100%; min-height:0; }
 .tw-connection-fields { display:grid; align-content:start; gap:20px; padding:24px; min-height:0; overflow:auto; overscroll-behavior:contain; }
 .tw-connection-basics { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:16px; }
-.tw-connection-basics > label,.tw-connection-fields > label { display:grid; gap:8px; min-width:0; font-size:13px; font-weight:500; }
-.tw-connection-fields > label > span { display:flex; align-items:center; gap:7px; }
+.tw-connection-basics > :is(label, .control-field),.tw-connection-fields > :is(label, .control-field) { display:grid; gap:8px; min-width:0; font-size:13px; font-weight:500; }
+.tw-connection-fields > :is(label, .control-field) > :is(span, label) { display:flex; align-items:center; gap:7px; }
 .tw-connection-label { display:block; margin-bottom:8px; font-size:13px; font-weight:500; }
 .tw-connection-dialog .tw-connection-form input:not([type=radio]),.tw-connection-form select { min-height:44px; border-color:#dce1dc; }
 .tw-connection-form .tw-connection-hint { margin:0; font-size:12px; line-height:1.65; font-weight:400; color:var(--tw-muted); }
@@ -93,40 +93,43 @@
 .tw-catalog-caption { display:flex; justify-content:space-between; gap:12px; font-size:11px; color:#92998f; margin:6px 1px; min-height:26px; align-items:center; line-height:1.6; }
 .tw-catalog-caption > span:first-child { color:#667564; }
 .tw-catalog-caption strong { margin:0 3px; font-weight:500; }
-.tw-catalog-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; align-content:start; }
+.tw-catalog-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; align-content:start; align-items:start; }
 .tw-catalog-card { border:1px solid #e2e7df; border-radius:14px; padding:12px; background:#fff; min-width:0; box-sizing:border-box; display:flex; flex-direction:column; gap:6px; transition:border-color 160ms,box-shadow 160ms; }
 .tw-catalog-card:hover { border-color:#b2c4b3; box-shadow:0 4px 16px #28472c05; }
 .tw-catalog-card-head { display:flex; align-items:flex-start; gap:10px; }
 .tw-catalog-card-head > div { flex:1; min-width:0; }
-.tw-catalog-card-head h3 { margin:0 0 2px; font-size:14px; font-weight:600; line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tw-catalog-card-head h3 { margin:0 0 2px; font-size:14px; font-weight:600; line-height:1.4; white-space:normal; overflow-wrap:anywhere; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
 .tw-catalog-card-head p { margin:0; font-size:11px; line-height:1.5; color:#828a80; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .tw-catalog-card-head p > span { margin:0 4px; color:#c0c6bc; }
 .tw-catalog-logo { display:flex; align-items:center; justify-content:center; width:34px; height:34px; flex-shrink:0; border:1px solid #edf0e9; border-radius:9px; background:#fafbf8; }
 .tw-catalog-logo .model-brand-logo { width:22px; height:22px; object-fit:contain; }
 .tw-catalog-added { display:flex; align-items:center; gap:3px; white-space:nowrap; font-size:10px; color:#4e7864; }
-.tw-catalog-card-meta { display:flex; align-items:center; gap:8px; min-width:0; }
-.tw-catalog-card-meta > code { flex:1; min-width:0; margin:0; display:block; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; font-size:11px; color:#7e897d; overflow-wrap:anywhere; line-height:1.5; }
+.tw-catalog-title, .model-option-heading { display:flex; align-items:flex-start; gap:6px; min-width:0; }
+.tw-catalog-title h3, .model-option-heading > button { flex:1; min-width:0; }
+.tw-catalog-title > .tw-catalog-tags, .model-option-heading > .tw-catalog-tags { flex:none; }
+.tw-catalog-tags [role=button] { cursor:pointer; }
+.tw-catalog-card-meta { display:flex; flex-wrap:nowrap; align-items:center; gap:8px; min-width:0; }
+.tw-catalog-card-meta > code { flex:1 1 0; min-width:0; max-width:100%; margin:0; display:block; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; font-size:11px; color:#7e897d; overflow-wrap:anywhere; line-height:1.5; }
 .tw-catalog-tags { display:flex; flex:none; align-items:center; gap:5px; margin:0; min-width:0; overflow:hidden; }
 .tw-catalog-tags > span { border-radius:5px; padding:3px 6px; background:#f2f5ef; font-size:10px; color:#647360; line-height:1.4; }
 .tw-catalog-tags > .is-unavailable { color:#9a6642; background:#fbf4eb; }
-/* Single-line metadata and a shared source/action footer keep cards content-sized. */
+/* Compact metadata and a shared source/action footer keep cards content-sized. */
 .tw-catalog-card > .model-card-specifications { min-height:0; display:flex; flex-direction:column; gap:6px; border-top:1px solid #f0f2ec; padding-top:7px; }
 .tw-catalog-card .model-specs { border:0; padding:0; margin:0; gap:4px; font-size:12px; }
 .tw-catalog-card .model-specs > div { min-height:20px; grid-template-columns:auto minmax(0,1fr); gap:8px; }
-.tw-catalog-card .model-specs dt { color:#7d877a; white-space:nowrap; }
-.tw-catalog-card .model-specs dd { min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tw-catalog-card .model-specs dt { color:#7d877a; flex-wrap:wrap; }
+.tw-catalog-card .model-specs dd { min-width:0; white-space:normal; overflow-wrap:anywhere; }
 .tw-catalog-card .model-modality-icons { gap:7px; }
 .tw-catalog-card .model-modality-icon svg { width:18px; height:18px; }
-.tw-catalog-card .model-spec-footer { display:flex; align-items:center; gap:8px; min-width:0; }
-.tw-catalog-card .model-spec-sources.is-compact { display:flex; flex:1; min-width:0; flex-wrap:nowrap; align-items:center; gap:4px; height:24px; margin:0; padding:2px 0; overflow-x:auto; scrollbar-width:thin; }
-.tw-catalog-card .model-spec-sources.is-compact a { flex:none; white-space:nowrap; font-size:10px; min-width:18px; min-height:20px; justify-content:center; }
-.tw-catalog-card .model-spec-sources.is-compact a:first-child { flex:0 1 auto; min-width:60px; justify-content:flex-start; }
-.tw-catalog-card .model-spec-sources.is-compact a:first-child span { overflow:hidden; text-overflow:ellipsis; }
+.tw-catalog-card .model-spec-footer { display:flex; flex-wrap:wrap; align-items:center; gap:8px; min-width:0; }
+/* Wrap before shrinking the source; only a domain wider than the card is ellipsized. */
+.tw-catalog-card .model-spec-sources.is-compact { display:flex; flex:1 0 auto; width:max-content; min-width:auto; max-width:100%; flex-wrap:nowrap; align-items:center; gap:4px; min-height:24px; margin:0; padding:2px 0; }
+.tw-catalog-card .model-spec-sources.is-compact a { flex:0 1 auto; white-space:nowrap; font-size:10px; min-width:auto; max-width:100%; min-height:20px; justify-content:flex-start; }
 .tw-catalog-card .model-spec-sources.is-compact svg { flex-shrink:0; }
-.tw-catalog-card-actions { display:flex; flex:none; align-items:center; gap:6px; min-width:0; }
+.tw-catalog-card-actions { display:flex; flex:none; flex-wrap:nowrap; align-items:center; gap:6px; min-width:max-content; white-space:nowrap; }
 .tw-catalog-card-actions > button { margin-left:auto; }
 .tw-catalog-unavailable { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#9a6642; font-size:10px; }
-.tw-model-management .tw-catalog-card-actions > button { font-size:11px; min-height:29px; border-radius:7px; background:#f0f4ec; color:#436a50; padding:5px 10px; white-space:nowrap; }
+.tw-model-management .tw-catalog-card .tw-catalog-card-actions > button, .model-route-drawer .tw-catalog-card-actions > button { display:inline-flex; align-items:center; justify-content:center; gap:7px; border:0; font-size:11px; min-height:29px; border-radius:7px; background:#f0f4ec; color:#436a50; padding:5px 10px; white-space:nowrap; }
 .tw-catalog-more { display:flex!important; margin:24px auto 0; font-size:12px!important; color:#5d755d; }
 .tw-catalog-empty { padding:70px 20px; text-align:center; color:#87947f; }
 .tw-catalog-empty > svg { margin:auto; }
@@ -134,7 +137,7 @@
 .tw-catalog-empty p { font-size:12px; }
 .tw-catalog-add code { display:block; overflow-wrap:anywhere; color:#7b8677; font-size:12px; }
 .tw-catalog-add p { font-size:13px; line-height:1.8; }
-.tw-catalog-add label { display:grid; gap:8px; font-size:13px; margin:20px 0; }
+.tw-catalog-add > :is(label, .control-field) { display:grid; gap:8px; font-size:13px; margin:20px 0; }
 .tw-catalog-add :is(select, .ui-select) { width:100%; padding:10px; border:1px solid #dce2d7; border-radius:8px; background:#fff; color:inherit; }
 .tw-saved-models { margin-top:0; }
 .tw-model-management .tw-management-section { border:1px solid #e3e7df; border-radius:14px; padding:20px; margin:0 0 20px; }
@@ -149,10 +152,10 @@
   .tw-model-tabs { margin-bottom:8px; }
   .tw-model-tabs > button { padding:8px 2px; }
   .tw-model-management > .tw-info { margin:0 0 14px; padding:8px 12px; font-size:12px; line-height:1.6; }
-  .tw-model-management > .tw-info > button { display:inline-flex; min-height:0; padding:0 2px; font-size:inherit; line-height:inherit; vertical-align:baseline; }
+  .tw-model-management > .tw-info > button:not(.tw-secondary) { display:inline-flex; min-height:0; padding:0 2px; font-size:inherit; line-height:inherit; vertical-align:baseline; }
   .tw-catalog-grid { gap:18px; }
 }
-@media(min-width:1550px) { .tw-catalog-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media(min-width:1280px) { .tw-catalog-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
 @media(max-width:1250px) {
   .tw-catalog { grid-template-columns:145px minmax(0,1fr); grid-template-rows:auto minmax(0,1fr); gap:12px 18px; }
   .tw-catalog-channels { grid-row:1 / span 2; }
@@ -207,3 +210,11 @@
   .tw-model-tabs > button { padding-top:6px; padding-bottom:6px; }
   .tw-catalog-caption { margin:4px 1px; }
 }
+
+/* Reuse the secondary action in notices and configuration slots at every width. */
+.tw-secondary { font-size:14px; text-decoration:none; }
+.model-picker-empty.model-unavailable-notice > .tw-secondary { margin:0; }
+.tw-dialog.tw-model-reselect-dialog { min-height:0; height:auto; }
+.tw-model-reselect-dialog > .tw-dialog-body > p { font-size:14px; line-height:1.6; }
+
+.tw-catalog-card.is-paused { opacity: .6; }

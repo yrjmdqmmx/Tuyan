@@ -703,3 +703,8 @@ button::after {
   box-shadow: 0 24rpx 64rpx rgba(23, 21, 19, 0.22);
   box-sizing: border-box;
 }
+
+.model-name-nowrap{display:inline-block;white-space:nowrap;word-break:normal;overflow-wrap:normal}
+.model-unavailable-notice{display:flex;align-items:center;gap:8px}
+.model-unavailable-notice>button{width:auto;margin:0;flex:none}
+@media(max-width:480px){.model-unavailable-notice{flex-direction:column;align-items:flex-start;gap:8px}.model-unavailable-notice>button{align-self:flex-start}}

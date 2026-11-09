@@ -100,7 +100,7 @@ test('persistent partial anomalies escalate and recovery is observable without r
 })
 
 test('real Core registry isolates the regression and call adapters block bad and changed models before transport', async () => {
-  const runtime = await createRefineRuntime({ tokenDance: true })
+  const runtime = await createRefineRuntime({ startServer: false })
   const paid: string[] = []; let rows: unknown[] = [good(), { id: 'deepseek-chat-v3-0324', supported_protocols: null }]
   try {
     runtime.legacy.configureRuntimeFetch(async (input: any) => {

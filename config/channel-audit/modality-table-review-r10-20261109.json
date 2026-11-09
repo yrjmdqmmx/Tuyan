@@ -1,0 +1,192 @@
+{
+  "scope": "Current static catalog (1064 cards), exact channel/ID references to captured official input/output modality tables. R6 captures plus R10 public-document checks of the 25 uncached Bailian source URLs. Excludes prose/headings, inherited vendor pages and unverified pages; this review records no new exclusions.",
+  "pages": [
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text Image | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text Image | 输出模态 | Image |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text Image | 输出模态 | Image |",
+        "| 输入模态 | Image Text | 输出模态 | Image |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Image Text | 输出模态 | Image |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Image Text | 输出模态 | Image |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text | 输出模态 | Text |",
+        "| 输入模态 | Image Text Video | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text Image | 输出模态 | Image Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Image Text | 输出模态 | Image |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image-pro",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Image Text | 输出模态 | Image |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text、Image | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-5",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text Image Video | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Image Text Video | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text Image Video | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text Image Video Audio | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Image Text Video |\n| 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Image Text Video | 输出模态 | Text |",
+        "| 输入模态 | Text Image Video | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Image Text Video | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Image Text Video | 输出模态 | Text |"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+      "verifiedAt": "2026-11-09",
+      "quotes": [
+        "| 输入模态 | Text | 输出模态 | Text |"
+      ]
+    }
+  ]
+}

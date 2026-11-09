@@ -2,5 +2,5 @@
 import { unpackModelCatalog } from './unpack-model-catalog'
 const catalog = unpackModelCatalog(require('./static-model-catalog-data.js'))
 export const EXTENDED_MODEL_CHANNELS: Record<string, any> = catalog.channels
-export const STATIC_MODEL_REGISTRY_VERSION = "2026-10-31.v42"
+export const STATIC_MODEL_REGISTRY_VERSION = "2026-11-09.v43"
 export const STATIC_MODEL_REGISTRY: Record<string, any> = catalog.registry

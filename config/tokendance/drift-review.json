@@ -66,6 +66,17 @@
       "reviewedAt": "2026-10-26",
       "sourceUrl": "https://tokendance.space/gateway/v1/models",
       "reason": "Current complete public directory and official website reconciled by exact ID. Hide from current choices, preserve history and defaults, and keep invocation blocked while absent. Absence alone is not retirement. See docs/model-catalog/2026-10-26-tokendance-reconciliation.md."
+    },
+    {
+      "id": "deepseek-v4-flash",
+      "selectedProtocol": "openai:chat-completions",
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "reviewedAt": "2026-11-09",
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "reason": "Exact ID absent in the complete 119-row public snapshot config/channel-audit/tokendance-catalog-snapshot-20261109.json. Preserve audited absence on failed reads; successful reappearance may restore this non-retired identity. No inference or account verification."
     }
   ]
 }

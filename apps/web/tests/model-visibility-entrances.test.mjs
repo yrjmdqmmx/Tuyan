@@ -17,7 +17,7 @@ const roles = ['main', 'image', 'vision'];
 const present = { id: 'present', label: 'Present model', vendor: 'OpenAI', roles, selectable: true };
 // A current missing_live result overrides an older selectable flag.
 const missing = { ...present, id: 'missing', label: 'Missing model' };
-const registry = { thinkingContractVersion: 1, providers: { openai: { models: [present, missing] }, tokendance: { models: [{ ...missing, label: 'Other channel model' }] } }, catalogHealth: { openai: { issues: [{ id: 'missing', reason: 'missing_live' }] } } };
+const registry = { thinkingContractVersion: 1, providers: { openai: { models: [present, missing] }, tokendance: { models: [{ ...missing, label: 'Other channel model' }] } }, catalogHealth: { openai: { state: 'ready', issues: [{ id: 'missing', reason: 'missing_live' }] } } };
 const library = { connections: [{ id: 'direct', provider: 'openai', label: 'Direct', hasCredential: true }], models: [present, missing, { id: 'absent' }].map(m => ({ id: `saved-${m.id}`, modelId: m.id, connectionId: 'direct' })) };
 const models = { library, registry, ready: true, registryStatus: 'ready', userId: 'test', summary: {}, save() { throw new Error('visibility must not mutate the library'); } };
 
@@ -32,7 +32,7 @@ test('catalog and saved library hide missing entries with accurate counts and re
   view.rerender(React.createElement(WorkspaceModelManager, { models: { ...models, registry: null, registryStatus: 'loading' } }));
   assert.equal(document.querySelectorAll('.tw-catalog-card').length, 3, 'a load failure is not evidence of removal');
   assert.equal(library.models.length, 3);
-  view.rerender(React.createElement(WorkspaceModelManager, { models: { ...models, registry: { providers: {} } } }));
+  view.rerender(React.createElement(WorkspaceModelManager, { models: { ...models, registry: { providers: {}, catalogHealth: { openai: { state: 'ready' } } } } }));
   assert.equal(document.querySelectorAll('.tw-catalog-card').length, 0, 'removed channel has no selectable catalogue entries');
   view.rerender(React.createElement(WorkspaceModelManager, { models: { ...models, registry: { providers: {}, unavailableProviders: { openai: 'temporary failure' } } } }));
   assert.equal(document.querySelectorAll('.tw-catalog-card').length, 3, 'failed channel read preserves saved identities');
@@ -97,7 +97,7 @@ test('ordinary and professional generation and refine settings omit nonadjustabl
 
 test('missing channel models cannot expose thinking controls or enter ordinary presets', () => {
   const model = { id: 'gpt-5', roles: ['main'], protocol: 'openai-chat-completions', selectable: true };
-  const exactRegistry = { thinkingContractVersion: 1, providers: { openai: { defaults: { main: 'gpt-5' }, models: [model] } }, catalogHealth: { openai: { issues: [{ id: 'gpt-5', reason: 'missing_live' }] } } };
+  const exactRegistry = { thinkingContractVersion: 1, providers: { openai: { defaults: { main: 'gpt-5' }, models: [model] } }, catalogHealth: { openai: { state: 'ready', issues: [{ id: 'gpt-5', reason: 'missing_live' }] } } };
   const settings = { roles: { main: { provider: 'openai', modelId: 'gpt-5', protocol: 'openai-chat-completions', options: {} } } };
   const view = render(React.createElement(ThinkingSettings, { role: 'main', settings, registry: { thinkingContractVersion: 1 }, onChange() {} }));
   assert.ok(screen.getByRole('combobox'));
@@ -107,7 +107,7 @@ test('missing channel models cannot expose thinking controls or enter ordinary p
   assert.equal(modelMissingFromCatalog(registry, 'tokendance', 'missing'), false);
   assert.equal(modelMissingFromCatalog(registry, 'custom', 'absent'), false);
   assert.equal(modelMissingFromCatalog(null, 'openai', 'absent'), false);
-  assert.equal(modelMissingFromCatalog({ providers: { openai: { models: [{ id: 'missing', selectable: false, disabledReason: '当前目录未列出该模型：missing' }] } } }, 'openai', 'missing'), true, 'missing marker still works when issue details were truncated');
+  assert.equal(modelMissingFromCatalog({ providers: { openai: { models: [{ id: 'missing', selectable: false, catalogPresence: {status:'absent'}, disabledReason: '任意提示' }] } } }, 'openai', 'missing'), true, 'structured presence still works when issue details were truncated');
 });
 
 
