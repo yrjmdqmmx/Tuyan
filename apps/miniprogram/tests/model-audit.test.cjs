@@ -150,7 +150,7 @@ test('R6B compiled picker keeps all nine token qualifiers after the unit and sou
     Object.assign(p.data,{activeProvider:provider,activeVendor:modelDeveloper(provider,model).label});p.refreshModelLists();
     const card=p.data.visibleCompatibleModels.find(m=>m.id===model.id);
     assert.ok(card,model.id);assert.match(card.specRows[2].value,/ tokens（[^）]+）$/);
-    for(const source of card.specSources) assert.equal(source.label,'官方文档 · '+sourceTitle(source.url));
+    for(const source of card.specSources) assert.equal(source.label,'官方文档 · '+sourceTitle(source.url, model));
     assert.doesNotMatch(card.specRows.map(r=>r.unknownText).join(''),/\?/);
   }
   assert.deepEqual(counts,{siliconflow:6,runware:2,iflytek:1});

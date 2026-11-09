@@ -33,7 +33,7 @@ test('R12 compiled Mini URLs and labels match full Web objects for 74 captured p
     assert.equal(modelSourceName(card, url), label); assert.equal(small.sourceLabel, label)
     const staticModel = STATIC_MODEL_REGISTRY[channel].models.find(m => m.id === id)
     const presented = context.present(staticModel, '', '', channel)
-    assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source)}))])
+    assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, staticModel) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source, staticModel)}))])
   }
 })
 
@@ -82,7 +82,7 @@ test('R13 compiled picker shows all seven vendor replacements and no catalog car
     assert.equal(small.sourceUrl, finalUrl); assert.equal(small.sourceLabel, label)
     assert.equal(require('../miniprogram/utils/model-audit.js').removedModel(channel, modelId), null)
     const presented = context.present(entry, '', '', channel)
-    assert.deepEqual(structuredClone(presented.specSources), [{ url: finalUrl, label: label + ' · ' + sourceTitle(finalUrl) }])
+    assert.deepEqual(structuredClone(presented.specSources), [{ url: finalUrl, label: label + ' · ' + sourceTitle(finalUrl, entry) }])
   }
   let cards = 0
   for (const [channel, provider] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of provider.models) {
@@ -124,7 +124,7 @@ test('R13B compiled picker resolves full-model source priorities and retains not
     const entry = STATIC_MODEL_REGISTRY[channel].models.find(model => model.id === modelId)
     const small = auditedModelSpecs(channel, modelId)
     assert.equal(small.sourceUrl, url); assert.equal(small.sourceLabel, label)
-    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source)}))])
+    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source, entry)}))])
   }
   let notices = 0
   const appendedNotices = []

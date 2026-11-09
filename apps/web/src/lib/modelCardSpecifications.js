@@ -49,6 +49,7 @@ export function modelCardName(provider, model) {
 }
 
 export function modelCardSpecifications(provider, model, registry) {
+  const sourceModel = { id: model.id, displayName: modelCardName(provider, model.label ? model : resolveCardModel(provider, model, registry)) }
   model = resolveCardModel(provider, model, registry)
   const audit = auditedModelSpecs(provider, model.id)
   const { fields, conflicts } = mergeCardFacts(audit, catalogCardFacts(provider, model, reviewedModels, specificPages), model)
@@ -67,7 +68,7 @@ export function modelCardSpecifications(provider, model, registry) {
   const sources = modelCardSources({ channel: provider, model, audit, fields,
     lifecycle: lifecycle || (retired ? { ...retired, state: 'retired' } : null), checks: MODEL_AUDIT_DATA.sourceChecks })
   return {
-    fields, conflicts,
+    fields, conflicts, sourceModel,
     input: text(fields.inputModalities), output: text(fields.outputModalities), context, maxOutput,
     inputFact: fields.inputModalities, outputFact: fields.outputModalities,
     inputScope: scope(fields.inputModalities), outputScope: scope(fields.outputModalities),

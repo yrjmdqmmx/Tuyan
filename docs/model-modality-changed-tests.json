@@ -2,10 +2,10 @@
   "base": "8c456709",
   "counts": {
     "files": 23,
-    "assertionAndFixtureInputChanges": 124,
+    "assertionAndFixtureInputChanges": 135,
     "consumedJsonFixtures": 2,
     "semanticFixtureChanges": 616,
-    "justified": 739,
+    "justified": 750,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -18,7 +18,8 @@
     "All evidence references are local archived records or code rules. This review made no network requests and does not newly verify channel availability, account entitlement, model quality or HTTP status.",
     "R22 Phase B retains the Phase A review ledger. Rows marked Phase B compare c76e9c2a to the current worktree; earlier rows are historical decisions, and overlapping edits are marked superseded. Whole-file diff hashes and the required file inventory still use main 8c456709. No historical evidence fixture is rewritten. New-since-main R21 tests also switch only their seven link expectations and displayed modality order; the new Phase B tests independently check all 74 pages, all 1064 source lists, vendor labels and Docker COPY layouts.",
     "R22 Phase C preserves fact/unknown, execution, name, source and selection assertions and both Mini byte ceilings. Five main-existing test files update presentation expectations: channel wording, decorative question badges, keyboard traversal of evidence controls and selecting the named Backup action after adding evidence buttons. Two expectations introduced after main are separately hashed against 2550c736: R21 Qwen accessible names and R22B accessible-name order rather than tooltip titles. Each change below gives its reason. The Mini build-script change is also reviewed. New Phase C tests independently check state distinctions, per-identity captured evidence, mobile/compact dialogs and non-colour contrast.",
-    "R23 Phase E: review diffSha256 values now hash length-delimited old/new file bytes, independent of core.abbrev, Git diff formatting or configuration. Frozen inventory content hashes and history-free tamper checks remain active. The five Mini single-source/notice expectations and the phase-2 contract fixture changes below preserve their original primary links, all 1061 Core card checks and both byte ceilings. The four execution locks and history-free loader now decompress the same frozen JSON bytes; no execution expectation changed. Picker and audit-helper generated JS are compacted after tsc to preserve package budgets."
+    "R23 Phase E: review diffSha256 values now hash length-delimited old/new file bytes, independent of core.abbrev, Git diff formatting or configuration. Frozen inventory content hashes and history-free tamper checks remain active. The five Mini single-source/notice expectations and the phase-2 contract fixture changes below preserve their original primary links, all 1061 Core card checks and both byte ceilings. The four execution locks and history-free loader now decompress the same frozen JSON bytes; no execution expectation changed. Picker and audit-helper generated JS are compacted after tsc to preserve package budgets.",
+    "R23 Phase F retains all execution, picker-name, source URL/order/role, layout, value and modality-state assertions. Source-label expectations now include the unchanged curated card name or a readable page subject with numeric separators. The exact historical TokenDance hint changes to 渠道页无此型号. Branch-added Mini R22B/R22C expectations are reviewed against 1dcd8b13; existing follow-up bases remain intact. New client scans cover all 1064 cards, all Web evidence/notice dialogs and all Mini copy callbacks; both source byte ceilings are unchanged. Saved-ID/full-model equality is preserved in production code, without weakening that test."
   ],
   "files": [
     {
@@ -49,7 +50,7 @@
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r12.test.cjs",
-      "diffSha256": "9fe3442b01adf54553b30a2becc0884cbdfd5c3be138d3e0ce1f8ae2bfb3876f",
+      "diffSha256": "b99f5f0a9e2117e12f72a8d306c3dd05b22079d946f6a5dc26ee2a7aa89ed57b",
       "changes": [
         {
           "line": 105,
@@ -456,6 +457,54 @@
             "apps/miniprogram/tests/model-card-r23.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 36,
+          "oldLine": 36,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source)}))])",
+          "new": "assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, staticModel) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source, staticModel)}))])",
+          "reason": "Source labels now prefer the unchanged curated card name and preserve version separators. Keep the exact URL, role, layout, interaction, and value assertions; only the descriptive source-title expectation changes.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 85,
+          "oldLine": 85,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "assert.deepEqual(structuredClone(presented.specSources), [{ url: finalUrl, label: label + ' · ' + sourceTitle(finalUrl) }])",
+          "new": "assert.deepEqual(structuredClone(presented.specSources), [{ url: finalUrl, label: label + ' · ' + sourceTitle(finalUrl, entry) }])",
+          "reason": "Source labels now prefer the unchanged curated card name and preserve version separators. Keep the exact URL, role, layout, interaction, and value assertions; only the descriptive source-title expectation changes.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 127,
+          "oldLine": 127,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source)}))])",
+          "new": "assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source, entry)}))])",
+          "reason": "Source labels now prefer the unchanged curated card name and preserve version separators. Keep the exact URL, role, layout, interaction, and value assertions; only the descriptive source-title expectation changes.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -521,9 +570,25 @@
             "scripts/card-presentation-r22b.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 153,
+          "oldLine": 153,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "for(const source of card.specSources) assert.equal(source.label,'官方文档 · '+sourceTitle(source.url));",
+          "new": "for(const source of card.specSources) assert.equal(source.label,'官方文档 · '+sourceTitle(source.url, model));",
+          "reason": "Source labels now prefer the unchanged curated card name and preserve version separators. Keep the exact URL, role, layout, interaction, and value assertions; only the descriptive source-title expectation changes.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "bf8a19e961e7eda38237eeb81fd21fc02040e136f123896f80beaf1587e793ff"
+      "diffSha256": "bc52b96b6b984045acc9599efa18f1d1dd142decaa3a84cfb30777db603388ec"
     },
     {
       "file": "apps/paperbanana-api/tests/provider-catalog.test.ts",
@@ -619,9 +684,25 @@
             "packages/api/src/modality-presentation.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 36,
+          "oldLine": 36,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "assert.equal(link.getAttribute('href'), source); assert.equal(link.textContent, '官方文档 · 百炼 · Kimi-K3 模型页')",
+          "new": "assert.equal(link.getAttribute('href'), source); assert.equal(link.textContent, '官方文档 · 百炼 · ' + card.sourceModel.displayName)",
+          "reason": "Source labels now prefer the unchanged curated card name and preserve version separators. Keep the exact URL, role, layout, interaction, and value assertions; only the descriptive source-title expectation changes.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "a14ae1c2f993be2a720124a7e5a56681be0be83d29a4ec41528daed9559a3e30"
+      "diffSha256": "0d458d2b3c4222cc3638889fb2fa2619027974157d64499a8c10111258cd49ed"
     },
     {
       "file": "apps/web/tests/model-audit-r11.test.mjs",
@@ -1562,9 +1643,25 @@
             "packages/api/src/modality-presentation.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 100,
+          "oldLine": 99,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "assert.ok(link.textContent.endsWith(sourceTitle(link.href)))",
+          "new": "assert.equal(link.textContent, source ? modelSourceRows(modelCardSpecifications(provider, model)).find(row => row.url === link.getAttribute('href')).label : '下线公告 · ' + sourceTitle(link.href))",
+          "reason": "Source labels now prefer the unchanged curated card name and preserve version separators. Keep the exact URL, role, layout, interaction, and value assertions; only the descriptive source-title expectation changes.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "09d25f34d92cc06c5f6eae42b41e138196fd1aca11acfdd3bbf760bf69d82cc0"
+      "diffSha256": "05182d7ce3e6f88f6f40544d488a18d7d537617ea1990db1bc3958bb1cd07f62"
     },
     {
       "file": "apps/web/tests/model-audit-r8.test.mjs",
@@ -1626,7 +1723,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r9.test.mjs",
-      "diffSha256": "83b14cddafb94ceaa65aa64ca081ae9260f0bb073610f83855673f56119ca3d8",
+      "diffSha256": "adaa1c3b91fa1a162540836bb12010f65553ea212a0d5e00ad098e2c00e08f66",
       "changes": [
         {
           "line": 90,
@@ -1711,6 +1808,22 @@
           "evidence": [
             "apps/web/tests/model-card-r23.test.mjs",
             "packages/api/src/model-card-sources.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 68,
+          "oldLine": 68,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "assert.equal(link.textContent, '官方文档 · 百炼 · Kimi-K3 模型页')",
+          "new": "assert.equal(link.textContent, '官方文档 · 百炼 · Kimi K3 (Bailian hosted)')",
+          "reason": "Source labels now prefer the unchanged curated card name and preserve version separators. Keep the exact URL, role, layout, interaction, and value assertions; only the descriptive source-title expectation changes.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -1799,9 +1912,41 @@
             "scripts/card-presentation-r22b.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 27,
+          "oldLine": 27,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "assert.equal(link.textContent, `${label.textContent}${sourceTitle(link.href)}`)",
+          "new": "assert.equal(link.textContent, `${label.textContent}${sourceTitle(link.href, {displayName:card.querySelector('h3')?.textContent})}`)",
+          "reason": "Source labels now prefer the unchanged curated card name and preserve version separators. Keep the exact URL, role, layout, interaction, and value assertions; only the descriptive source-title expectation changes.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 81,
+          "oldLine": 81,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "assert.equal(card.querySelector('.model-spec-source-domain').textContent, 'TokenDance · qwen3.8 flash')",
+          "new": "assert.equal(card.querySelector('.model-spec-source-domain').textContent, 'TokenDance · Qwen3.8 Flash')",
+          "reason": "Source labels now prefer the unchanged curated card name and preserve version separators. Keep the exact URL, role, layout, interaction, and value assertions; only the descriptive source-title expectation changes.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "6e32834ec614cc2228a8610c0d818612b399d8156698223b6ff8a4842a523d21"
+      "diffSha256": "ca65af3924aa4c2f7c645ceb52147699749766ba2eac3bca8acc05a6308bc707"
     },
     {
       "file": "apps/web/tests/model-specifications.test.mjs",
@@ -1976,9 +2121,41 @@
             "scripts/card-presentation-r22b.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 67,
+          "oldLine": 67,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "assert.equal(screen.getByRole('link').textContent,'原厂规格 · cloud.google.com · 3 0 generate')",
+          "new": "assert.equal(screen.getByRole('link').textContent,'原厂规格 · Google Cloud · 3-0 Generate')",
+          "reason": "Source labels now prefer the unchanged curated card name and preserve version separators. Keep the exact URL, role, layout, interaction, and value assertions; only the descriptive source-title expectation changes.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 70,
+          "oldLine": 70,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "assert.equal(domain.textContent,'cloud.google.com · 3 0 generate')",
+          "new": "assert.equal(domain.textContent,'Google Cloud · 3-0 Generate')",
+          "reason": "Source labels now prefer the unchanged curated card name and preserve version separators. Keep the exact URL, role, layout, interaction, and value assertions; only the descriptive source-title expectation changes.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "4155ca447f9702be95d74fa40cbda44fcc99545195fe9034afc90cb435a277f5"
+      "diffSha256": "4139390ade2281adcf9f40c773654fc6233122e2a82d41844c10daaabb7b24b6"
     },
     {
       "file": "apps/web/tests/workspace-model-catalog.test.mjs",
@@ -18277,7 +18454,7 @@
     {
       "file": "apps/web/tests/model-card-r22b.test.mjs",
       "comparisonBase": "2550c736",
-      "diffSha256": "3e2e7b6ee172d337113f2acbe681f6fed09f665f464ead0d1e1e69fe67063eb5",
+      "diffSha256": "bdf455a6b798304e05b5d5145c384cb0f6664253d6970467a7fa76c6a9411b05",
       "changes": [
         {
           "phase": "R22 Phase C",
@@ -18291,6 +18468,22 @@
             "config/channel-audit/tokendance-catalog-snapshot-20261109b.json",
             "packages/api/src/modality-presentation.mjs",
             "apps/web/tests/model-modality-r22c.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 55,
+          "oldLine": 55,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "assert.equal(screen.getByRole('link').textContent,'官方文档 · 百炼 · DeepSeek-V4.1-Flash 模型页')",
+          "new": "assert.equal(screen.getByRole('link').textContent,'官方文档 · 百炼 · DeepSeek-V4.1-Flash')",
+          "reason": "Source labels now prefer the unchanged curated card name and preserve version separators. Keep the exact URL, role, layout, interaction, and value assertions; only the descriptive source-title expectation changes.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -18378,6 +18571,52 @@
         }
       ],
       "diffSha256": "5823063d2f8458693a7b9fd1d3a4d4554e4940cfb1f1f4ef7399996ceb8fc116"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-card-r22b.test.cjs",
+      "comparisonBase": "1dcd8b13",
+      "diffSha256": "ddeb814a69b2373c0dd5157a281cd635b8ac68153f909a1ed9bce3bf8717481a",
+      "changes": [
+        {
+          "line": 19,
+          "oldLine": 19,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "assert.equal(card.specSources[0].label,'官方文档 · 百炼 · DeepSeek-V4.1-Flash 模型页')",
+          "new": "assert.equal(card.specSources[0].label,'官方文档 · 百炼 · DeepSeek-V4.1-Flash')",
+          "reason": "Source labels now prefer the unchanged curated card name and preserve version separators. Keep the exact URL, role, layout, interaction, and value assertions; only the descriptive source-title expectation changes.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ]
+    },
+    {
+      "file": "apps/miniprogram/tests/model-modality-r22c.test.cjs",
+      "comparisonBase": "1dcd8b13",
+      "diffSha256": "7551a3e8ca16e245cf4efbe5492cda9637d1109f51d216f4137a5c4686b17d82",
+      "changes": [
+        {
+          "line": 25,
+          "oldLine": 25,
+          "comparisonBase": "1dcd8b13",
+          "phase": "R23 Phase F",
+          "old": "if(model.id==='deepseek-v4-flash-vision-exp')for(const icon of data.specRows[0].icons){assert.equal(icon.state,'unknown');assert.match(icon.tooltip,/渠道未标注此模态.*2026-11-09/)}",
+          "new": "if(model.id==='deepseek-v4-flash-vision-exp')for(const icon of data.specRows[0].icons){assert.equal(icon.state,'unknown');assert.match(icon.tooltip,/渠道页无此型号.*2026-11-09/)}",
+          "reason": "This exact historical TokenDance page was captured as Model not found. Keep unknown modality states and the verification date; use the requested missing-model hint instead of implying the model was listed without modality metadata.",
+          "evidence": [
+            "docs/model-card-source-titles-r23.md",
+            "packages/api/src/card-presentation.mjs",
+            "apps/web/tests/model-card-source-titles-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ]
     }
   ]
 }

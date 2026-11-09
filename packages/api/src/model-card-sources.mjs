@@ -1,4 +1,4 @@
-import { sourceIdentity, uniqueSources, sourceTitle } from './card-presentation.mjs'
+import { sourceIdentity, uniqueSources, titleSourceRows } from './card-presentation.mjs'
 import tokenDancePages from './card-data/tokendance-pages.json' with { type: 'json' }
 import { safeSources } from './catalog-card-facts.mjs'
 import deadLinks from './card-data/dead-links.json' with { type: 'json' }
@@ -131,8 +131,5 @@ const visibleSource = url => !isDeadSource(url) && !isApiSource(url)
 
 export function modelSourceRows(data) {
   const vendors = new Set(data.vendorSources.map(sourceIdentity))
-  const rows = uniqueSources(data.sources).map((url, index) => ({url, label: (index > 0 && vendors.has(sourceIdentity(url)) ? '原厂规格' : modelSourceName(data, url)) + ' · ' + sourceTitle(url)}))
-  const counts = new Map()
-  for (const row of rows) counts.set(row.label, (counts.get(row.label) || 0) + 1)
-  return rows.map(row => counts.get(row.label) > 1 ? { ...row, label: row.label + ' · ' + new URL(sourceIdentity(row.url)).host + new URL(sourceIdentity(row.url)).pathname + new URL(sourceIdentity(row.url)).search } : row)
+  return titleSourceRows(uniqueSources(data.sources).map((url, index) => ({url, label: index > 0 && vendors.has(sourceIdentity(url)) ? '原厂规格' : modelSourceName(data, url)})), data.sourceModel)
 }

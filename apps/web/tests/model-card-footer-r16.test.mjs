@@ -24,7 +24,7 @@ function assertSource(card) {
   const link = card.querySelector('.model-spec-sources a')
   const label = link.querySelector('.model-spec-source-label')
   const domain = link.querySelector('.model-spec-source-domain')
-  assert.equal(link.textContent, `${label.textContent}${sourceTitle(link.href)}`)
+  assert.equal(link.textContent, `${label.textContent}${sourceTitle(link.href, {displayName:card.querySelector('h3')?.textContent})}`)
   assert.match(label.textContent, /^(官方文档|原厂规格|下线公告) · $/)
   assert.equal(domain.title, link.href)
   assert.ok(link.title.includes(link.href))
@@ -78,7 +78,7 @@ for (const unverified of [false, true]) test(`R16 catalog ${unverified ? 'unveri
   render(React.createElement(WorkspaceModelCatalog, {models}))
   const card = screen.getByRole('article')
   assertFooter(card)
-  assert.equal(card.querySelector('.model-spec-source-domain').textContent, 'TokenDance · qwen3.8 flash')
+  assert.equal(card.querySelector('.model-spec-source-domain').textContent, 'TokenDance · Qwen3.8 Flash')
   const button = within(card).getByRole('button', {name: /^添加 /})
   assert.equal(button.disabled, unverified)
   if (unverified) {

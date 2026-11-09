@@ -1,3 +1,4 @@
+import { modelSourceRows } from '../src/lib/modelCardSources.js'
 import { sourceTitle } from '../../../packages/api/src/card-presentation.mjs'
 import test, {afterEach, beforeEach} from 'node:test'
 import assert from 'node:assert/strict'
@@ -96,7 +97,7 @@ test('R6B 9: touch evidence and deprecation sheets use content height and named 
       assert.equal(window.getComputedStyle(dialog).height,'auto')
       for(const link of within(dialog).getAllByRole('link')) {
         assert.match(link.textContent,/^(下线公告|官方文档|原厂规格) · /)
-        assert.ok(link.textContent.endsWith(sourceTitle(link.href)))
+        assert.equal(link.textContent, source ? modelSourceRows(modelCardSpecifications(provider, model)).find(row => row.url === link.getAttribute('href')).label : '下线公告 · ' + sourceTitle(link.href))
       }
       assert.doesNotMatch(dialog.textContent,/https:\/\//)
       view.unmount()

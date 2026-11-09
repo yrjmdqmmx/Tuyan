@@ -52,7 +52,7 @@ test('R22B normalized duplicates across evidence lists render once with Bailian 
   window.matchMedia = () => ({matches:true})
   t.after(() => { window.matchMedia = original })
   render(React.createElement(ModelSpecifications,{provider:'bailian',model:model('bailian','deepseek-v4.1-flash')}))
-  assert.equal(screen.getByRole('link').textContent,'官方文档 · 百炼 · DeepSeek-V4.1-Flash 模型页')
+  assert.equal(screen.getByRole('link').textContent,'官方文档 · 百炼 · DeepSeek-V4.1-Flash')
   fireEvent.click(screen.getByRole('link'))
   const dialog=screen.getByRole('dialog'), links=within(dialog).getAllByRole('link')
   assert.equal(links.length,4)

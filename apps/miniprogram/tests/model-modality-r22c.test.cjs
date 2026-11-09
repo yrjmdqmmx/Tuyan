@@ -22,7 +22,7 @@ test('R22C compiled Mini Qwen and historical cards use the same accessible label
   const data=context.present(model,'','','tokendance');assert.ok(data,model.id);assert.doesNotMatch(JSON.stringify(data.specRows),/不支持/,model.id)
   for(const row of data.specRows.slice(0,2))for(const icon of row.icons)if(icon.state==='unsupported')assert.match(icon.accessibleLabel,/渠道未开放/)
   if(model.id==='qwen3.6-plus')for(const row of data.specRows.slice(0,2))for(const icon of row.icons)assert.equal(icon.tooltip,'渠道标注：文本→文本（2026-11-09）')
-  if(model.id==='deepseek-v4-flash-vision-exp')for(const icon of data.specRows[0].icons){assert.equal(icon.state,'unknown');assert.match(icon.tooltip,/渠道未标注此模态.*2026-11-09/)}
+  if(model.id==='deepseek-v4-flash-vision-exp')for(const icon of data.specRows[0].icons){assert.equal(icon.state,'unknown');assert.match(icon.tooltip,/渠道页无此型号.*2026-11-09/)}
  }
 })
 test('R22C Mini WXML binds names, data states and separate strike/question marks; tap opens exact evidence without selecting',()=>{

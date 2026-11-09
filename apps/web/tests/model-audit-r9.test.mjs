@@ -65,7 +65,7 @@ test('R9 Bailian Kimi K3 visible official link and title use the channel source 
     const view = render(React.createElement(ModelSpecifications, { provider: 'bailian', model, compactSources }))
     const link = screen.getByRole('link')
     assert.equal(link.getAttribute('href'), 'https://help.aliyun.com/zh/model-studio/kimi-k3')
-    assert.equal(link.textContent, '官方文档 · 百炼 · Kimi-K3 模型页')
+    assert.equal(link.textContent, '官方文档 · 百炼 · Kimi K3 (Bailian hosted)')
     assert.match(link.title, /^核实日期 2026-11-09\n/)
     assert.match(link.title, /上下文窗口：1,048,576 tokens/)
     assert.match(link.title, /最大输出：1,048,576 tokens/)

@@ -971,3 +971,47 @@ Mini retains readable TS; only the generated picker and its audit helper are com
 The flow checked is model card → evidence dialog → vendor source link or copy action. Browser plugin is unavailable; the local browser-test server fails with `listen EPERM: operation not permitted 127.0.0.1:5183`. Browser screenshots/native WeChat rendering therefore remain unverified. DOM and compiled Mini interaction checks pass. No Core/Gateway test in the targeted run has a localhost EPERM failure; broader previously documented socket-suite failures were outside this run. An initial Core command at repository root could not resolve package-local `tsx`; the corrected command runs from `apps/paperbanana-api` and passes. Early regression failures (single-source assumptions and incomplete phase-2 registries) are fixed and listed in the ledger.
 
 Repository file-byte totals: **546,786,785 before → 533,872,981 after**, a **12,913,804-byte reduction**, including all seven new intended files without staging. Existing tracked paths alone total **533,279,693 bytes** after the deletion; the new intended files add **593,288 bytes**. Method: sum file sizes from `git ls-files -z`, omit deleted paths, and add `git ls-files --others --exclude-standard -z`; exclude `.git`, dependencies and ignored build outputs.
+
+
+## R23 Phase F
+
+PM re-review of PR #251, item 4, resumed from `1dcd8b13` and the uncommitted title/hint edits. Frozen main remains `8c456709`. Work stayed in this checkout, offline, with no Git write commands, network, secrets, paid calls, deployment or image builds. `sync-agent-knowledge` and `sync-workflow` are untouched.
+
+Source-link titles now use the unchanged curated card/picker name for the model's own page, captured human titles for general pages, then readable path subjects. Numeric separators and release codes survive, including 3.5, 3.8, 4.1, v2.6, 2507 and 0813. The Stability legacy `35` and BFL `flux11` spellings receive their explicit dotted subjects. fal API pages retain the model subject and append `API 文档`. Human format/language qualifiers distinguish colliding labels without appending raw hosts or paths. Role prefixes, ordered URL lists and canonical URL deduplication remain unchanged. Saved-ID resolution uses the resolved model's name for titles, retaining the existing full-object equality assertion and the separate main picker-name lock.
+
+The [complete source-title scan](model-card-source-titles-r23.md) lists every changed card, URL, before title and after title, plus each retained curated spelling, release code or opaque document identifier with its justification. The before inventory is frozen in `test-support/fixtures/source-titles-1dcd8b13.json.gz`; a digest check and all 1,064 identities/names per client run without Git history.
+
+| Surface | Cards | Scanned source rows | Changed titles | Changed cards | Unresolved heuristic findings |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Web card links, tooltips and evidence dialogs | 1,064 | 2,494 | 2,193 | 1,031 | 0 |
+| Compiled Mini rows and copy dialogs | 1,064 | 1,103 | 969 | 962 | 0 |
+| Web lifecycle dialogs | 7 | 7 | 3 | 3 | 0 |
+
+Tests open every Web evidence dialog and scheduled lifecycle dialog, compare actual anchors and full tooltip labels, and invoke all 1,103 Mini copy dialogs and clipboard callbacks. Scans reject collapsed/split versions, raw hosts/paths, API-only prefixes, mismatched curated case/punctuation, leftover slug separators, truncation and repeated words/phrases. Negative controls exercise these defects. Exact curated spellings and documented date codes are deliberately retained. All Mini row titles also match the shared helper.
+
+Exactly seven historical TokenDance IDs now show **渠道页无此型号（核实日期 2026-11-09）** for unknown modalities: `deepseek-v4-flash-vision-exp`, `deepseek-v4-flash`, `deepseek-v3.2`, `deepseek-chat-v3-0324`, `qwen3.6-max-preview`, `qwen3-30b-a3b-instruct-2507`, and `qwen3-max`. Tests cover Web tooltips/evidence dialogs and Mini icon-tap dialogs, while the other 67 TokenDance cards and existing nonhistorical unknown-hint controls retain their wording and states. No execution capabilities, model IDs/names, actions, environment variables, provider routing, modality decisions, provenance, source destinations or evidence captures change.
+
+The resumed **1,575,037-byte** Mini source is reduced to **1,568,946 bytes**, saving **6,091 bytes** and leaving **3,918 bytes** below the unchanged **1,572,864-byte** ceiling. It is also **153 bytes smaller than HEAD** (1,569,099) and **481 bytes below the older 1,569,427-byte guard**. Runtime source is **1,143,434 bytes**; media stays **189,978 bytes**. Both guards pass unchanged.
+
+The size reduction is confined to this PR's generated display data/helper compaction: `sync-card-display.mjs` compiles captured-title lookup entries against referenced card inputs, and Mini against its complete source projection, including vendor/field links. Capture-only authentication/protocol page titles remain in the original evidence files. Existing picker/audit-helper esbuild compaction now also minifies local identifiers, with CommonJS scope compaction for the audit helper; `card-presentation.js` remains generated and fully compacted. Readable TypeScript is retained, no feature is removed, and all 1,064 Mini cards, execution locks and copy interactions pass. No pre-existing main code path or package budget was altered to achieve the reduction.
+
+The changed-test ledger adds **14 reviewed assertion blocks across 10 test files** for curated subjects, readable versions and the historical hint. Branch-added Mini R22B/R22C expectations use `1dcd8b13` as their follow-up comparison base. Original URL/role/value/layout assertions remain; the saved-ID/full-object equality test was fixed in production code and is unchanged. The content-based ledger, frozen inventory and history-free tamper checks remain intact; there are **0 flagged** expectations. The current R22B source-label report was regenerated; earlier evidence and R21/phase-2 reports are unchanged.
+
+Validation (machine-readable commands and counts: [Phase F validation](model-modality-r23f-validation.json)):
+
+| Check | Result |
+| --- | --- |
+| Web full suite, requested command and concurrency | **1,482/1,482** |
+| Mini `npm test` | 171/171 |
+| `node --test scripts/*.test.mjs` | 58/58 |
+| `node --test packages/api/src/*.test.js` | 33/33 |
+| Targeted Core execution, R22B projection and phase-2 tests | 4/4 |
+| Targeted Gateway execution and phase-2 tests | 2/2 |
+| Web and Mini builds | Pass |
+| Four execution locks; main picker-name lock | All 1,064 models/names preserved |
+| Ten requested maintenance `--check` commands | All pass |
+| New source-title inventory `--check` | Pass |
+| Ledger, including core.abbrev 7 and 12 | Pass via existing script-suite checks |
+| Git whitespace/error check | Pass |
+
+The final scan also reruns after strengthening the host/duplicate-phrase negative controls. Earlier initial-run failures were the obsolete source-label/historical-hint expectations, the saved-ID title-resolution mismatch fixed above, and a new DOM test comparing encoded `href` properties to literal Unicode URLs (corrected to the actual `href` attribute). All changed expectations are recorded in the ledger. Browser screenshots and native WeChat rendering remain unverified from the earlier environment boundary; this phase validates DOM and compiled Mini interactions, with no new browser/native or production claim. Mini deployment remains paused.

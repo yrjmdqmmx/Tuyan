@@ -1,3 +1,12 @@
+## 2026-11-09 · R23 Phase F: readable source titles and historical hints (not deployed)
+
+- [x] Shared / Web / Mini: source-link subjects prefer the unchanged curated card name, then captured page titles, then readable paths with numeric separators preserved. Roles, ordered URLs and deduplication are retained. All 1,064 names and execution capabilities remain identical to main; no action/env/provider-routing contract changes.
+- [x] Web / Mini: scan all 1,064 cards per client, 2,494 Web source rows, 1,103 Mini copy dialogs and seven Web lifecycle dialogs. Changed titles: Web 2,193, Mini 969, lifecycle dialogs 3; zero unresolved heuristic findings. Exactly seven historical TokenDance IDs show 渠道页无此型号 in tooltips/dialogs; other unknown hints are unchanged. [Full before/after inventory](docs/model-card-source-titles-r23.md).
+- [x] Mini: compile captured-title metadata against referenced sources and compact this PR's generated helpers; source **1,568,946 / 1,572,864 bytes**, 3,918 bytes remaining. The older 1,569,427-byte guard also passes. No features or pre-existing main code paths removed; no budget changes.
+- [x] Review: 14 assertion blocks in 10 files recorded in the ledger; frozen source inventory, compressed execution fixture, all four execution locks, names, verified links, vendor provenance, icons and display order remain covered.
+- [x] Validation: Web 1,482/1,482, Mini 171/171, scripts 58/58, API 33/33, targeted Core 4/4 and Gateway 2/2; both builds, ten requested maintenance checks and the new title-report check pass. [Phase F audit](docs/model-modality-audit-20261109.md#r23-phase-f).
+- [ ] Existing browser/native boundary: screenshots and native WeChat rendering remain unverified; Mini deployment stays paused. No Git writes, network, secrets, paid calls, deployment, image builds or other-worktree work; `sync-agent-knowledge` and `sync-workflow` are untouched.
+
 ## 2026-11-09 · R23 Phase E: vendor evidence, registry validation and stable test artifacts (not deployed)
 
 - [x] Shared / Core / Gateway: display-only `cardSpecifications.vendorSources` carries deduplicated human vendor evidence; verified TokenDance pages remain first. API/OpenAPI/JSON/YAML/Swagger machine links are filtered. Execution fields, actions, environment variables and picker identities are unchanged.
