@@ -43,7 +43,7 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
     {url ? <a href={url} title={`${details}\n${data.sources.join('\n')}`} aria-label={details} target="_blank" rel="noopener noreferrer" onClick={event => {
       // Touch devices expose the same evidence through the existing dialog.
       if (window.matchMedia?.('(hover: none)').matches) { event.preventDefault(); setShowSources(true) }
-    }}><ExternalLink size={13} aria-hidden="true" /><span>{t(sourceName(url))} · {new URL(url).hostname}</span></a>
+    }}><ExternalLink size={13} aria-hidden="true" /><span className="model-spec-source-text"><span className="model-spec-source-label">{t(sourceName(url))} · </span><span className="model-spec-source-domain" title={url}>{new URL(url).hostname}</span></span></a>
       : <span title={`${details}\n${data.sources.join('\n')}`} aria-label={details}>{t('官方文档待确认')}</span>}
   </div>
   return <div className="model-card-specifications">

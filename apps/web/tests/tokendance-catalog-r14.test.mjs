@@ -54,11 +54,14 @@ test('R14 absence never depends on disabledReason wording and requires healthy e
     assert.equal(modelMissingFromCatalog(registry,'tokendance',{...model,catalogPresence:{status:'unverified'}}),false)
   }
 })
-test('R14 compact source keeps its full domain in the DOM and wraps without clipping',()=>{
+test('R14 compact source keeps its full domain and URL while R16 prevents letter wrapping',()=>{
   render(React.createElement(ModelSpecifications,{provider:'replicate',model:{id:'google/imagen-3'},compactSources:true}))
   assert.match(screen.getByRole('link').textContent,/docs\.cloud\.google\.com$/)
   const css=fs.readFileSync(new URL('../src/workspace/workspaceModels.css',import.meta.url),'utf8')
-  assert.match(css,/\.model-spec-sources\.is-compact a:first-child span\s*{[^}]*overflow:visible;[^}]*overflow-wrap:anywhere;/)
-  assert.match(css,/\.model-spec-sources\.is-compact a:first-child\s*{[^}]*white-space:normal;/)
+  const link=screen.getByRole('link'),domain=link.querySelector('.model-spec-source-domain')
+  assert.equal(domain.textContent,'docs.cloud.google.com')
+  assert.equal(domain.title,link.href)
+  assert.match(css,/\.model-spec-footer\s*{[^}]*flex-wrap:wrap;/)
+  assert.doesNotMatch(css,/\.model-spec-sources[^{}]*\{[^}]*(?:overflow-wrap:anywhere|word-break:break-all|white-space:normal)/)
   assert.match(css,/\.tw-catalog-card\.is-paused\s*{\s*opacity:\s*\.6/)
 })

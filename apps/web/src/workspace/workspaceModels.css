@@ -121,13 +121,12 @@
 .tw-catalog-card .model-specs dd { min-width:0; white-space:normal; overflow-wrap:anywhere; }
 .tw-catalog-card .model-modality-icons { gap:7px; }
 .tw-catalog-card .model-modality-icon svg { width:18px; height:18px; }
-.tw-catalog-card .model-spec-footer { display:flex; align-items:center; gap:8px; min-width:0; }
-.tw-catalog-card .model-spec-sources.is-compact { display:flex; flex:1; min-width:0; flex-wrap:nowrap; align-items:center; gap:4px; min-height:24px; margin:0; padding:2px 0; }
-.tw-catalog-card .model-spec-sources.is-compact a { flex:none; white-space:nowrap; font-size:10px; min-width:18px; min-height:20px; justify-content:center; }
-.tw-catalog-card .model-spec-sources.is-compact a:first-child { flex:0 1 auto; min-width:0; justify-content:flex-start; white-space:normal; }
-.tw-catalog-card .model-spec-sources.is-compact a:first-child span { overflow:visible; overflow-wrap:anywhere; }
+.tw-catalog-card .model-spec-footer { display:flex; flex-wrap:wrap; align-items:center; gap:8px; min-width:0; }
+/* Wrap before shrinking the source; only a domain wider than the card is ellipsized. */
+.tw-catalog-card .model-spec-sources.is-compact { display:flex; flex:1 0 auto; width:max-content; min-width:auto; max-width:100%; flex-wrap:nowrap; align-items:center; gap:4px; min-height:24px; margin:0; padding:2px 0; }
+.tw-catalog-card .model-spec-sources.is-compact a { flex:0 1 auto; white-space:nowrap; font-size:10px; min-width:auto; max-width:100%; min-height:20px; justify-content:flex-start; }
 .tw-catalog-card .model-spec-sources.is-compact svg { flex-shrink:0; }
-.tw-catalog-card-actions { display:flex; flex:none; align-items:center; gap:6px; min-width:0; }
+.tw-catalog-card-actions { display:flex; flex:none; flex-wrap:nowrap; align-items:center; gap:6px; min-width:max-content; white-space:nowrap; }
 .tw-catalog-card-actions > button { margin-left:auto; }
 .tw-catalog-unavailable { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#9a6642; font-size:10px; }
 .tw-model-management .tw-catalog-card .tw-catalog-card-actions > button, .model-route-drawer .tw-catalog-card-actions > button { display:inline-flex; align-items:center; justify-content:center; gap:7px; border:0; font-size:11px; min-height:29px; border-radius:7px; background:#f0f4ec; color:#436a50; padding:5px 10px; white-space:nowrap; }
