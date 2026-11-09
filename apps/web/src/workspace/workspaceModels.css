@@ -130,7 +130,7 @@
 .tw-catalog-card-actions { display:flex; flex:none; align-items:center; gap:6px; min-width:0; }
 .tw-catalog-card-actions > button { margin-left:auto; }
 .tw-catalog-unavailable { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#9a6642; font-size:10px; }
-.tw-model-management .tw-catalog-card-actions > button { font-size:11px; min-height:29px; border-radius:7px; background:#f0f4ec; color:#436a50; padding:5px 10px; white-space:nowrap; }
+.tw-model-management .tw-catalog-card .tw-catalog-card-actions > button, .model-route-drawer .tw-catalog-card-actions > button { display:inline-flex; align-items:center; justify-content:center; gap:7px; border:0; font-size:11px; min-height:29px; border-radius:7px; background:#f0f4ec; color:#436a50; padding:5px 10px; white-space:nowrap; }
 .tw-catalog-more { display:flex!important; margin:24px auto 0; font-size:12px!important; color:#5d755d; }
 .tw-catalog-empty { padding:70px 20px; text-align:center; color:#87947f; }
 .tw-catalog-empty > svg { margin:auto; }
@@ -153,7 +153,7 @@
   .tw-model-tabs { margin-bottom:8px; }
   .tw-model-tabs > button { padding:8px 2px; }
   .tw-model-management > .tw-info { margin:0 0 14px; padding:8px 12px; font-size:12px; line-height:1.6; }
-  .tw-model-management > .tw-info > button { display:inline-flex; min-height:0; padding:0 2px; font-size:inherit; line-height:inherit; vertical-align:baseline; }
+  .tw-model-management > .tw-info > button:not(.tw-secondary) { display:inline-flex; min-height:0; padding:0 2px; font-size:inherit; line-height:inherit; vertical-align:baseline; }
   .tw-catalog-grid { gap:18px; }
 }
 @media(min-width:1280px) { .tw-catalog-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
@@ -211,3 +211,8 @@
   .tw-model-tabs > button { padding-top:6px; padding-bottom:6px; }
   .tw-catalog-caption { margin:4px 1px; }
 }
+
+/* Reuse the secondary action in notices and configuration slots at every width. */
+.tw-secondary { font-size:14px; text-decoration:none; }
+.model-picker-empty > .tw-secondary { margin-inline-start:8px; }
+.tw-dialog.tw-model-reselect-dialog { min-height:0; height:auto; }

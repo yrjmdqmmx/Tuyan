@@ -29,15 +29,24 @@ export function auditedModelSpecs(channel: string, id: string) {
 export function removedModel(channel: string, id: string, now = Date.now()) {
   const key = channel + '/' + String(id).trim()
   const removed = MODEL_AUDIT_DATA.removed?.[key]
-  if (removed) return removed as { stopDate: string; replacementApiId: string | null; sourceUrl: string }
+  if (removed) return removed as { displayName: string; replacementDisplayName?: string; stopDate: string; replacementApiId: string | null; sourceUrl: string }
   const notice = MODEL_AUDIT_DATA.notices[key]
   return notice && now >= Date.parse(notice.stopDate)
-    ? { stopDate: notice.stopDate, replacementApiId: notice.replacement, sourceUrl: notice.sourceUrl } : null
+    ? { ...notice, replacementApiId: notice.replacement } : null
+}
+
+export function modelDisplayName(channel: string, id: string): string {
+  const key = channel + '/' + id
+  const row = MODEL_AUDIT_DATA.removed?.[key] || MODEL_AUDIT_DATA.notices[key]
+  if (row?.displayName) return row.displayName
+  const replacement: any = Object.entries({ ...MODEL_AUDIT_DATA.removed, ...MODEL_AUDIT_DATA.notices })
+    .find(([key, row]: [string, any]) => key.startsWith(channel + '/') && (row.replacementApiId || row.replacement) === id)?.[1]
+  return replacement?.replacementDisplayName || id
 }
 
 export function removedModelHint(channel: string, id: string, now = Date.now()) {
   const removed = removedModel(channel, id, now)
-  return removed ? `${modelDisplayName(channel, id)}：原型号已不可用，请重新选择。${removed.replacementApiId ? `推荐：${modelDisplayName(channel, removed.replacementApiId)}` : ''}` : ''
+  return removed ? `${removed.displayName}：原型号已不可用，请重新选择。${removed.replacementApiId ? `推荐：${removed.replacementDisplayName}` : ''}` : ''
 }
 
 // Date-only notices take effect at the start of the stated UTC calendar day.
@@ -49,14 +58,11 @@ export function auditedModelLifecycle(channel: string, id: string, now = Date.no
   if (elapsed) return null
   const replacement = notice.replacement || null
   const stopLabel = notice.stopDate.includes('T') ? notice.stopDate.replace('T', ' ').replace(':00+08:00', ' (UTC+8)') : notice.stopDate
-  return { ...notice, replacement, state: 'scheduled', label: '将下线', blocked: false, message: `将于${stopLabel}下线${replacement ? `；可改选 ${modelDisplayName(channel, replacement)}` : ''}` }
+  return { ...notice, replacement, state: 'scheduled', label: '将下线', blocked: false, message: `将于${stopLabel}下线${replacement ? `；可改选 ${notice.replacementDisplayName}` : ''}` }
 }
 
 export function withModelAudit<T extends { id: string }>(channel: string, model: T, now = Date.now()) {
   const lifecycle = auditedModelLifecycle(channel, model.id, now)
   return { ...model, auditChannel: channel, auditSpecifications: auditedModelSpecs(channel, model.id), auditLifecycle: lifecycle,
     ...(removedModel(channel, model.id, now) ? { selectable: false, disabledReason: removedModelHint(channel, model.id, now) } : {}) }
-}
-export function modelDisplayName(channel: string, id: string): string {
-  return require('./static-model-catalog.js').STATIC_MODEL_REGISTRY[channel]?.models.find((m: {id: string}) => m.id === id)?.label || id.replace(/^accounts\/[^/]+\/models\//, '')
 }

@@ -1,7 +1,115 @@
-# 模型卡审计验收 · 2026-11-09 R6B
+# 模型卡审计验收 · 2026-11-09 R8
+
+## R8：PM 小项修正（当前验收）
+
+基于 PR #245 的 `942f6078`。只读 Git；未执行 Git 写命令，未调用真实/付费模型，未提交、推送或部署。以下覆盖 R7/R6B 的显示名、错误文案、token 单位与百炼 Kimi K3 结论。
+
+1. **显示名**：68 个移除记录逐一补入 `displayName`，全部来自只读 `git show c7b6a2fc:apps/web/src/lib/staticModelCatalog.js` 的精确渠道与 ID 对应 `label`；替代名同源。保留 main 的原始大小写、空格与限定语，未按 API ID 猜测。小程序只携带消息/确认所需原名与替代名，复用现有压缩格式；没有下发完整历史目录或证据。Web 我的模型、角色 helper、小程序两个确认入口与 Core/Gateway/Web 错误均有全量移除表断言；原始 ID 仍用于机器字段，显示不泄漏 API ID（main 标签与 ID 逐字相同的条目除外）。
+2. **选择按钮**：目录与任务内 ModelPicker 页脚共用同一规则，修正目录通用字号覆盖；字号、最小高度、圆角、背景、颜色及 padding 在 DOM 计算样式中一致。
+3. **改选与确认**：我的模型去掉下划线及桌面专用按钮缩小规则；共用 `tw-secondary`。配置 helper 的按钮增加 8px 起始间距，对桌面/移动均生效；确认弹层 `min-height:0; height:auto`，保留通用最大高度与滚动。取消、角色隔离、原库条目及机器身份不变。
+4. **百炼 Kimi K3**：仅 `bailian/kimi-k3` 的 totalContextTokens 改为 1048576，maxOutputTokens 仍为 1048576；输入 text、image，输出 text。2026-11-09 官方精确规格原文、URL、日期写入版本化输入与[冲突补充](model-card-audit-20261109-conflicts.md#r8-百炼-kimi-k3-精确规格补充2026-11-09)。对比 `942f6078` 的全部审计字段，只有此精确身份的输入值/来源、输出来源和上下文值变化；其他渠道不变。
+5. **单位**：卡片保留官方数字、小数精度和限定语，单位后缀显示大写 K/M；源值及来源详情保留原标签。Web 真实 DOM 和小程序编译后 renderer 各逐卡覆盖 1064 项，既检查无小写单位，又确认原始标签仍在。
+6. **错误与文档**：MODEL_UNAVAILABLE 统一为 `模型 {displayName}：原型号已不可用，请重新选择。推荐：{replacementDisplayName}`，无替代时省略推荐段；businessCode/code/statusCode/replacement/sourceUrl 与 not_sent 均保留。只读核对 main 的 SiliconFlow `Qwen/Qwen3.8-27B` 无上下文窗口字段，冲突表、单位表及机器复核记录统一为撤回 1000000 后未知；卡片实测未知。
+
+### R8 验证
+
+| 验证 | 结果 |
+| --- | --- |
+| 审计生成器、目录同步、参考上传同步 | 已生成；三个 `--check` 均通过 |
+| Web 模型/目录/规格定向 | 95/95；最终 R8 文件再跑 4/4 |
+| Web 全量 | 1356/1368，12 失败，0 跳过 |
+| 只读 HEAD 基线复核 | `git archive 942f6078` 导出到 `/tmp/r8-baseline-7bz7h5cz`，同依赖、同环境跑上述四个失败文件：20/32，12 个失败名称与全量完全一致，无新增失败 |
+| 小程序 | 全量 134/134；build 通过；预算测试 2/2 |
+| Core model-audit 两文件 | 8/8；Core TypeScript check 通过 |
+| Gateway model-audit | 6/6 |
+| scripts 全量 | 30/30 |
+| Web build | 通过；既有大 chunk 警告保留 |
+| Git diff 空白检查 | 通过 |
+
+小程序源码 **1,568,055 bytes**，runtime **1,144,828**，媒体 **189,978**；相对 R7 源码增加 **3,727**，原上限 **1,572,864** 不变，余 **4,809 bytes**。所有 `.js` 已由 `.ts` 编译；预算测试未修改、未跳过。测试只使用本地夹具/模拟传输。
+
+Web 既有失败分布：inactive-route-ui 1、professional-custom-v381 8、workflow-v400-ui 2、workspace-migration 1。日志：`/tmp/r8-web-full.log`、`/tmp/r8-baseline-web.log`；定向及其他验证日志采用 `/tmp/r8-*.log`。没有将这些失败改为通过或跳过。
+
+Browser 插件未提供；`pnpm --dir apps/web exec playwright --version` 返回 command not found，未安装依赖。验证为 DOM/计算样式、编译后小程序组件与构建；1280/390 真浏览器截图、微信原生扫描未完成。小程序继续暂停发布。
+
+### R8 移除显示名逐项来源
+
+下表 68 项的来源均为 **`c7b6a2fc:apps/web/src/lib/staticModelCatalog.js` → `STATIC_MODEL_REGISTRY[channel].models` → 精确 `id` 的 `label`**。冻结测试夹具：`apps/web/tests/fixtures/removed-model-names-main-c7b6a2fc.json`。特别地，main 小米标签为 `MiMo-v2.5` / `MiMo-v2.5-pro`，逐字保留，没有替换为任务示例中的大写 V。
+
+| 精确渠道 / 型号 | displayName（逐字） |
+| --- | --- |
+| `bailian/MiniMax-M2.1` | `MiniMax-M2.1` |
+| `bailian/MiniMax/MiniMax-M2.1` | `MiniMax-M2.1` |
+| `bailian/Moonshot-Kimi-K2-Instruct` | `Moonshot-Kimi-K2-Instruct` |
+| `bailian/deepseek-r1` | `DeepSeek-r1` |
+| `bailian/deepseek-r1-0528` | `DeepSeek-r1-0528` |
+| `bailian/deepseek-r1-distill-qwen-14b` | `DeepSeek-r1-distill-qwen-14b` |
+| `bailian/deepseek-r1-distill-qwen-32b` | `DeepSeek-r1-distill-qwen-32b` |
+| `bailian/deepseek-r1-distill-qwen-7b` | `DeepSeek-r1-distill-qwen-7b` |
+| `bailian/deepseek-v3` | `DeepSeek-V3` |
+| `bailian/deepseek-v3.1` | `DeepSeek-V3.1` |
+| `bailian/deepseek-v3.2` | `DeepSeek-V3.2` |
+| `bailian/deepseek-v3.2-exp` | `DeepSeek-V3.2-exp` |
+| `bailian/deepseek-v4-flash` | `DeepSeek-V4-Flash（具体版本待确认）` |
+| `bailian/glm-4.5` | `GLM-4.5` |
+| `bailian/glm-4.5-air` | `GLM-4.5-air` |
+| `bailian/glm-4.7` | `GLM-4.7` |
+| `bailian/kimi-k2-thinking` | `Kimi-k2-thinking` |
+| `bailian/qvq-max` | `qvq-max` |
+| `bailian/qvq-plus` | `qvq-plus` |
+| `bailian/qwen-image-edit` | `Qwen-image-edit` |
+| `bailian/qwen-image-edit-max` | `Qwen-image-edit-max` |
+| `bailian/qwen-image-edit-max-2026-01-16` | `Qwen-image-edit-max-2026-01-16` |
+| `bailian/qwen-image-edit-plus` | `Qwen-image-edit-plus` |
+| `bailian/qwen-image-edit-plus-2025-10-30` | `Qwen-image-edit-plus-2025-10-30` |
+| `bailian/qwen-image-edit-plus-2025-12-15` | `Qwen-image-edit-plus-2025-12-15` |
+| `bailian/qwen-image-max` | `Qwen-image-max` |
+| `bailian/qwen-image-max-2025-12-30` | `Qwen-image-max-2025-12-30` |
+| `bailian/qwen-image-plus` | `Qwen-image-plus` |
+| `bailian/qwen-image-plus-2026-01-09` | `Qwen-image-plus-2026-01-09` |
+| `bailian/qwen-long-2025-01-25` | `Qwen-long-2025-01-25` |
+| `bailian/qwen-long-latest` | `Qwen-long-latest` |
+| `bailian/qwen-omni-turbo` | `Qwen-omni-turbo` |
+| `bailian/qwen-vl-max` | `Qwen-vl-max` |
+| `bailian/qwen-vl-plus` | `Qwen-vl-plus` |
+| `bailian/qwen2.5-omni-7b` | `Qwen2.5-omni-7b` |
+| `bailian/qwen3-14b` | `Qwen3-14b` |
+| `bailian/qwen3-235b-a22b` | `Qwen3-235b-a22b` |
+| `bailian/qwen3-235b-a22b-instruct-2507` | `Qwen3-235b-a22b-instruct-2507` |
+| `bailian/qwen3-235b-a22b-thinking-2507` | `Qwen3-235b-a22b-thinking-2507` |
+| `bailian/qwen3-30b-a3b` | `Qwen3-30b-a3b` |
+| `bailian/qwen3-30b-a3b-instruct-2507` | `Qwen3-30b-a3b-instruct-2507` |
+| `bailian/qwen3-30b-a3b-thinking-2507` | `Qwen3-30b-a3b-thinking-2507` |
+| `bailian/qwen3-32b` | `Qwen3-32b` |
+| `bailian/qwen3-8b` | `Qwen3-8b` |
+| `bailian/qwen3-coder-30b-a3b-instruct` | `Qwen3-coder-30b-a3b-instruct` |
+| `bailian/qwen3-coder-480b-a35b-instruct` | `Qwen3-coder-480b-a35b-instruct` |
+| `bailian/qwen3-coder-plus` | `Qwen3-coder-plus` |
+| `bailian/qwen3-coder-plus-2025-07-22` | `Qwen3-coder-plus-2025-07-22` |
+| `bailian/qwen3-coder-plus-2025-09-23` | `Qwen3-coder-plus-2025-09-23` |
+| `bailian/qwen3-next-80b-a3b-instruct` | `Qwen3-next-80b-a3b-instruct` |
+| `bailian/qwen3-next-80b-a3b-thinking` | `Qwen3-next-80b-a3b-thinking` |
+| `bailian/qwen3-omni-flash` | `Qwen3-omni-flash` |
+| `bailian/qwen3-omni-flash-2025-09-15` | `Qwen3-omni-flash-2025-09-15` |
+| `bailian/qwen3-omni-flash-2025-12-01` | `Qwen3-omni-flash-2025-12-01` |
+| `bailian/qwen3-vl-flash` | `Qwen3-vl-flash` |
+| `bailian/qwen3.6-max-preview` | `Qwen3.6-max-preview` |
+| `bailian/qwq-plus` | `qwq-plus` |
+| `fireworks/accounts/fireworks/models/deepseek-v4-flash-0731` | `DeepSeek V4 Flash (0731)` |
+| `fireworks/accounts/fireworks/models/deepseek-v4-flash-vision-exp` | `DeepSeek V4 Flash Vision Exp` |
+| `fireworks/accounts/fireworks/models/deepseek-v4-pro-0813` | `DeepSeek-V4-Pro-0813` |
+| `fireworks/accounts/fireworks/models/glm-5p2` | `GLM 5.2` |
+| `fireworks/accounts/fireworks/models/kimi-k2p6` | `Kimi K2.6` |
+| `fireworks/accounts/fireworks/models/kimi-k2p7-code` | `Kimi K2.7 Code` |
+| `fireworks/accounts/fireworks/models/muse-glimmer-30b` | `Muse Glimmer 30B` |
+| `stepfun/step-2x-large` | `Step 2x Large` |
+| `stepfun/step-image-edit-2` | `Step Image Edit 2` |
+| `xiaomi/mimo-v2.5` | `MiMo-v2.5` |
+| `xiaomi/mimo-v2.5-pro` | `MiMo-v2.5-pro` |
 
 
-## R6B：界面修正（当前验收）
+
+## R6B：界面修正（历史验收）
 
 基于已提交的 R6A `b418f1f7`，保留数据事实、任意角色空默认和执行合同。未运行 Git 写入命令，未调用真实/付费模型，未提交、推送或部署。下方 R6A/R5 等记录保留为历史；本节覆盖界面相关的旧文案和样式结论。
 

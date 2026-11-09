@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.auditedModelSpecs = auditedModelSpecs;
 exports.removedModel = removedModel;
+exports.modelDisplayName = modelDisplayName;
 exports.removedModelHint = removedModelHint;
 exports.auditedModelLifecycle = auditedModelLifecycle;
 exports.withModelAudit = withModelAudit;
-exports.modelDisplayName = modelDisplayName;
 // Generated card helpers from packages/api/src/model-audit.ts
 const MODEL_AUDIT_DATA = require('./model-audit-data.js');
 function auditedModelSpecs(channel, id) {
@@ -33,11 +33,21 @@ function removedModel(channel, id, now = Date.now()) {
         return removed;
     const notice = MODEL_AUDIT_DATA.notices[key];
     return notice && now >= Date.parse(notice.stopDate)
-        ? { stopDate: notice.stopDate, replacementApiId: notice.replacement, sourceUrl: notice.sourceUrl } : null;
+        ? { ...notice, replacementApiId: notice.replacement } : null;
+}
+function modelDisplayName(channel, id) {
+    var _a, _b;
+    const key = channel + '/' + id;
+    const row = ((_a = MODEL_AUDIT_DATA.removed) === null || _a === void 0 ? void 0 : _a[key]) || MODEL_AUDIT_DATA.notices[key];
+    if (row === null || row === void 0 ? void 0 : row.displayName)
+        return row.displayName;
+    const replacement = (_b = Object.entries({ ...MODEL_AUDIT_DATA.removed, ...MODEL_AUDIT_DATA.notices })
+        .find(([key, row]) => key.startsWith(channel + '/') && (row.replacementApiId || row.replacement) === id)) === null || _b === void 0 ? void 0 : _b[1];
+    return (replacement === null || replacement === void 0 ? void 0 : replacement.replacementDisplayName) || id;
 }
 function removedModelHint(channel, id, now = Date.now()) {
     const removed = removedModel(channel, id, now);
-    return removed ? `${modelDisplayName(channel, id)}：原型号已不可用，请重新选择。${removed.replacementApiId ? `推荐：${modelDisplayName(channel, removed.replacementApiId)}` : ''}` : '';
+    return removed ? `${removed.displayName}：原型号已不可用，请重新选择。${removed.replacementApiId ? `推荐：${removed.replacementDisplayName}` : ''}` : '';
 }
 // Date-only notices take effect at the start of the stated UTC calendar day.
 // Serverless notices apply only to the Fireworks adapter used by this product.
@@ -50,14 +60,10 @@ function auditedModelLifecycle(channel, id, now = Date.now()) {
         return null;
     const replacement = notice.replacement || null;
     const stopLabel = notice.stopDate.includes('T') ? notice.stopDate.replace('T', ' ').replace(':00+08:00', ' (UTC+8)') : notice.stopDate;
-    return { ...notice, replacement, state: 'scheduled', label: '将下线', blocked: false, message: `将于${stopLabel}下线${replacement ? `；可改选 ${modelDisplayName(channel, replacement)}` : ''}` };
+    return { ...notice, replacement, state: 'scheduled', label: '将下线', blocked: false, message: `将于${stopLabel}下线${replacement ? `；可改选 ${notice.replacementDisplayName}` : ''}` };
 }
 function withModelAudit(channel, model, now = Date.now()) {
     const lifecycle = auditedModelLifecycle(channel, model.id, now);
     return { ...model, auditChannel: channel, auditSpecifications: auditedModelSpecs(channel, model.id), auditLifecycle: lifecycle,
         ...(removedModel(channel, model.id, now) ? { selectable: false, disabledReason: removedModelHint(channel, model.id, now) } : {}) };
-}
-function modelDisplayName(channel, id) {
-    var _a, _b;
-    return ((_b = (_a = require('./static-model-catalog.js').STATIC_MODEL_REGISTRY[channel]) === null || _a === void 0 ? void 0 : _a.models.find((m) => m.id === id)) === null || _b === void 0 ? void 0 : _b.label) || id.replace(/^accounts\/[^/]+\/models\//, '');
 }

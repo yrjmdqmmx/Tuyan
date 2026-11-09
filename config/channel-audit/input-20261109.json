@@ -1367,36 +1367,41 @@
     {
       "channel": "bailian",
       "apiModelId": "kimi-k3",
-      "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
       "presenceStatus": "current",
       "inputModalities": [
-        "image",
         "text",
-        "video"
+        "image"
       ],
       "outputModalities": [
         "text"
       ],
-      "totalContextTokens": 1000000,
+      "totalContextTokens": 1048576,
       "maxOutputTokens": 1048576,
       "fieldProvenance": {
         "totalContextTokens": {
           "kind": "channel-published",
           "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
-          "quote": "100 万 token 上下文窗口"
+          "quote": "| 上下文长度 | 1048576 | 最大输入长度（思考模式下） | 1048576 |",
+          "verifiedAt": "2026-11-09"
         },
         "maxOutputTokens": {
           "kind": "channel-published",
           "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
-          "quote": "最大输出长度 1048576"
+          "quote": "| 最大输入长度 | 1048576 | 最大输出长度 | 1048576 |",
+          "verifiedAt": "2026-11-09"
         },
         "inputModalities": {
           "kind": "channel-published",
-          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models"
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+          "quote": "| 输入模态 | Text Image | 输出模态 | Text |",
+          "verifiedAt": "2026-11-09"
         },
         "outputModalities": {
           "kind": "channel-published",
-          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models"
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+          "quote": "| 输入模态 | Text Image | 输出模态 | Text |",
+          "verifiedAt": "2026-11-09"
         }
       }
     },
@@ -20217,7 +20222,9 @@
       "sourceUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
       "stopDate": "2027-01-19",
       "scope": "full",
-      "replacement": "qwen3.8-flash"
+      "replacement": "qwen3.8-flash",
+      "displayName": "Qwen3.5-397b-a17b",
+      "replacementDisplayName": "Qwen3.8 Flash"
     },
     {
       "channel": "bailian",
@@ -20225,7 +20232,9 @@
       "sourceUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
       "stopDate": "2027-01-19",
       "scope": "full",
-      "replacement": "qwen3.8-flash"
+      "replacement": "qwen3.8-flash",
+      "displayName": "Qwen3.5-plus",
+      "replacementDisplayName": "Qwen3.8 Flash"
     },
     {
       "channel": "bailian",
@@ -20233,7 +20242,9 @@
       "sourceUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
       "stopDate": "2027-01-19",
       "scope": "full",
-      "replacement": "qwen3.8-flash"
+      "replacement": "qwen3.8-flash",
+      "displayName": "Qwen3.5-plus-2026-02-15",
+      "replacementDisplayName": "Qwen3.8 Flash"
     },
     {
       "channel": "bailian",
@@ -20241,7 +20252,9 @@
       "sourceUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
       "stopDate": "2027-01-19",
       "scope": "full",
-      "replacement": "qwen3.8-flash"
+      "replacement": "qwen3.8-flash",
+      "displayName": "Qwen3.5-plus-2026-04-20",
+      "replacementDisplayName": "Qwen3.8 Flash"
     },
     {
       "channel": "bailian",

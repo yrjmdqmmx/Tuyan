@@ -1782,7 +1782,7 @@ import { MODEL_CHANNEL_LABELS, orderModelChannels, ModelVersion, normalizeModelV
 export * from '../../../packages/types/src/model-presentation.js'
 import { MODEL_AUDIT_DATA } from '../../../packages/api/src/model-audit-data.js'
 export * from '../../../packages/api/src/model-audit-data.js'
-import { AuditFact, auditedModelSpecs, removedModel, removedModelHint, auditedModelLifecycle, assertAuditedModelAvailable, withModelAudit, assertModelLibraryAdditions } from '../../../packages/api/src/model-audit.js'
+import { AuditFact, auditedModelSpecs, removedModel, modelDisplayName, removedModelHint, auditedModelLifecycle, assertAuditedModelAvailable, withModelAudit, assertModelLibraryAdditions } from '../../../packages/api/src/model-audit.js'
 export * from '../../../packages/api/src/model-audit.js'
 import { MODEL_PRESENTATION } from '../../../packages/types/src/model-presentation-data.js'
 export * from '../../../packages/types/src/model-presentation-data.js'

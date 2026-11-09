@@ -736,14 +736,14 @@
       "field": "totalContextTokens",
       "auditValue": 1000000,
       "auditState": "known",
-      "existingValue": 262144,
+      "existingValue": null,
       "sources": [
         "https://help.aliyun.com/zh/model-studio/models",
         "https://huggingface.co/Qwen/Qwen3.8-27B"
       ],
       "decision": "fallback",
       "evidence": null,
-      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。"
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 R8 只读核对 main c7b6a2fc 静态目录，该精确身份无上下文字段，卡片显示未知。"
     },
     {
       "number": 36,
@@ -976,9 +976,10 @@
       ],
       "decision": "verified",
       "evidence": {
-        "value": 1000000,
+        "value": 1048576,
         "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
-        "quote": "100 万 token 上下文窗口"
+        "quote": "| 上下文长度 | 1048576 | 最大输入长度（思考模式下） | 1048576 |",
+        "verifiedAt": "2026-11-09"
       },
       "reason": "采用该渠道官方原文；单位标签保持原样。"
     },

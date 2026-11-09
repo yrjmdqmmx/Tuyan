@@ -26,15 +26,24 @@ export function auditedModelSpecs(channel: string, id: string) {
 export function removedModel(channel: string, id: string, now = Date.now()) {
   const key = channel + '/' + String(id).trim()
   const removed = MODEL_AUDIT_DATA.removed?.[key]
-  if (removed) return removed as { stopDate: string; replacementApiId: string | null; sourceUrl: string }
+  if (removed) return removed as { displayName: string; replacementDisplayName?: string; stopDate: string; replacementApiId: string | null; sourceUrl: string }
   const notice = MODEL_AUDIT_DATA.notices[key]
   return notice && now >= Date.parse(notice.stopDate)
-    ? { stopDate: notice.stopDate, replacementApiId: notice.replacement, sourceUrl: notice.sourceUrl } : null
+    ? { ...notice, replacementApiId: notice.replacement } : null
+}
+
+export function modelDisplayName(channel: string, id: string): string {
+  const key = channel + '/' + id
+  const row = MODEL_AUDIT_DATA.removed?.[key] || MODEL_AUDIT_DATA.notices[key]
+  if (row?.displayName) return row.displayName
+  const replacement: any = Object.entries({ ...MODEL_AUDIT_DATA.removed, ...MODEL_AUDIT_DATA.notices })
+    .find(([key, row]: [string, any]) => key.startsWith(channel + '/') && (row.replacementApiId || row.replacement) === id)?.[1]
+  return replacement?.replacementDisplayName || id
 }
 
 export function removedModelHint(channel: string, id: string, now = Date.now()) {
   const removed = removedModel(channel, id, now)
-  return removed ? `原型号 ${id} 已不可用${removed.replacementApiId ? `，可改选 ${removed.replacementApiId}` : '，请重新选择'}` : ''
+  return removed ? `${removed.displayName}：原型号已不可用，请重新选择。${removed.replacementApiId ? `推荐：${removed.replacementDisplayName}` : ''}` : ''
 }
 
 // Date-only notices take effect at the start of the stated UTC calendar day.
@@ -46,12 +55,12 @@ export function auditedModelLifecycle(channel: string, id: string, now = Date.no
   if (elapsed) return null
   const replacement = notice.replacement || null
   const stopLabel = notice.stopDate.includes('T') ? notice.stopDate.replace('T', ' ').replace(':00+08:00', ' (UTC+8)') : notice.stopDate
-  return { ...notice, replacement, state: 'scheduled', label: '将下线', blocked: false, message: `将于${stopLabel}下线${replacement ? `；可改选 ${replacement}` : ''}` }
+  return { ...notice, replacement, state: 'scheduled', label: '将下线', blocked: false, message: `将于${stopLabel}下线${replacement ? `；可改选 ${notice.replacementDisplayName}` : ''}` }
 }
 
 export function assertAuditedModelAvailable(channel: string, id: string, now = Date.now()) {
   const removed = removedModel(channel, id, now)
-  if (removed) throw Object.assign(new Error(`模型 ${id}：${removedModelHint(channel, id, now)}。`), {
+  if (removed) throw Object.assign(new Error(`模型 ${removedModelHint(channel, id, now)}`), {
     businessCode: 'MODEL_UNAVAILABLE', code: 'MODEL_UNAVAILABLE',
     statusCode: 400, replacement: removed.replacementApiId, sourceUrl: removed.sourceUrl,
     requestState: 'not_sent', localInputFailure: true, retryable: false,

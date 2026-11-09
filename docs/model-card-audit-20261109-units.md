@@ -1,6 +1,6 @@
 # K/M 与 token 字段逐值复核 · 2026-11-09 R6A
 
-存储约定：官方给整数时保存整数；只给 K/k/M 标签时保存字面字符串，保留大小写和小数精度，不乘 1000 或 1024。同一来源同时给整数和括号标签时保留整数。卡片使用原标签；整数继续使用现有格式器并在详情保留精确整数。既有 reviewed catalog 的标签也不再先转换为整数。此为展示数据，不修改请求额度、模型参数或计费。
+存储约定：官方给整数时保存整数；只给 K/k/M 标签时保存字面字符串，保留大小写和小数精度，不乘 1000 或 1024。同一来源同时给整数和括号标签时保留整数。R8 卡片保留原数字及小数精度，只将单位后缀规范为大写 K/M；存储与详情仍保留原始标签；整数继续使用现有格式器并在详情保留精确整数。既有 reviewed catalog 的标签也不再先转换为整数。此为展示数据，不修改请求额度、模型参数或计费。
 
 静态全目录 126 张卡的 157 个 token 字段改变，其中 145 个改用官方/既有核实标签；其余为原文纠正或无证据回退。下面列出全部字段，完整源数据变更另列后表。整数复核清单在 review JSON 的 integerReview：300 个输入正整数字段均有处理决定，区分原厂参考、渠道整数、官方标签及无精确别名证据的回退；未将文档中的请求默认值当成最大输出。
 
@@ -29,7 +29,7 @@
 | `zhipu/glm-4v-flash` | totalContextTokens | 16000 | 16K | [原文](https://docs.bigmodel.cn/cn/guide/models/free/glm-4v-flash) |
 | `siliconflow/XingChenAGI/Xing4.0-29B` | totalContextTokens | 256000 | 256K | [原文](https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B) |
 | `siliconflow/tencent/Hy4-preview` | totalContextTokens | 1000000 | 1M | [原文](https://huggingface.co/tencent/Hy4-preview) |
-| `siliconflow/Qwen/Qwen3.8-27B` | totalContextTokens | 1000000 | null | 既有值缺项 / 未知 |
+| `siliconflow/Qwen/Qwen3.8-27B` | totalContextTokens | 1000000 | null | main c7b6a2fc 静态目录无窗口字段；卡片显示未知，与冲突表第 35 项一致 |
 | `siliconflow/deepseek-ai/DeepSeek-V4-Flash` | totalContextTokens | 1000000 | 1M | [原文](https://api-docs.deepseek.com/quick_start/pricing/) |
 | `siliconflow/deepseek-ai/DeepSeek-V4-Flash` | maxOutputTokens | 393216 | 384K | [原文](https://api-docs.deepseek.com/quick_start/pricing/) |
 | `siliconflow/deepseek-ai/DeepSeek-V4-Pro` | totalContextTokens | 1000000 | 1M | [原文](https://api-docs.deepseek.com/quick_start/pricing/) |
@@ -40,7 +40,7 @@
 | `siliconflow/THUDM/GLM-Z1-9B-0414` | totalContextTokens | 128000 | 128K | [原文](https://github.com/zai-org/GLM-4/blob/main/README.md) |
 | `bailian/deepseek-v4.1-flash` | totalContextTokens | 1000000 | 1M | [原文](https://api-docs.deepseek.com/quick_start/pricing/) |
 | `bailian/deepseek-v4.1-flash` | maxOutputTokens | 393216 | 384K | [原文](https://api-docs.deepseek.com/quick_start/pricing/) |
-| `bailian/kimi-k3` | totalContextTokens | 262144 | 1000000 | [原文](https://help.aliyun.com/zh/model-studio/kimi-k3) |
+| `bailian/kimi-k3` | totalContextTokens | 262144 | 1048576 | [原文](https://help.aliyun.com/zh/model-studio/kimi-k3) |
 | `bailian/kimi-k3` | maxOutputTokens | 16384 | 1048576 | [原文](https://help.aliyun.com/zh/model-studio/kimi-k3) |
 | `bailian/ZHIPU/GLM-5.3` | totalContextTokens | 1048576 | null | 既有值缺项 / 未知 |
 | `bailian/MiniMax/MiniMax-M3` | totalContextTokens | 1048576 | null | 既有值缺项 / 未知 |
@@ -184,7 +184,7 @@
 | `pairs/bailian/deepseek-v4.1-flash` | maxOutputTokens | 393216 | 384K |
 | `pairs/bailian/glm-5.2-fast-preview` | totalContextTokens | 1048576 | 1M |
 | `pairs/bailian/glm-5.2-fast-preview` | maxOutputTokens | 131072 | 131K |
-| `pairs/bailian/kimi-k3` | totalContextTokens | 262144 | 1000000 |
+| `pairs/bailian/kimi-k3` | totalContextTokens | 262144 | 1048576 |
 | `pairs/bailian/kimi-k3` | maxOutputTokens | 16384 | 1048576 |
 | `pairs/bailian/kimi/kimi-k2.6` | totalContextTokens | 262144 | null |
 | `pairs/bailian/kimi/kimi-k2.7-code` | totalContextTokens | 262144 | null |

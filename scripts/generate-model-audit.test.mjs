@@ -2,8 +2,38 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import { generateModelAudit } from './generate-model-audit.mjs'
+import { supplementModelAudit } from './lib/model-audit-supplement.mjs'
 
 const sourceUrl = 'https://vendor.example/models/exact'
+test('R8 all removed names match the frozen exact main labels and missing names fail generation', () => {
+  const read = path => JSON.parse(fs.readFileSync(new URL(path, import.meta.url), 'utf8'))
+  const removed = read('../config/removed-models.json')
+  const oracle = read('../apps/web/tests/fixtures/removed-model-names-main-c7b6a2fc.json')
+  const input = read('../config/model-audit.generated.json')
+  const supplement = read('../config/channel-audit/model-audit-supplement-20261109.json')
+  assert.equal(Object.keys(removed).length, 68)
+  for (const [key, row] of Object.entries(removed)) {
+    assert.ok(row.displayName?.trim(), key)
+    assert.equal(row.displayName, oracle.models[key].displayName, key)
+    assert.equal(row.replacementDisplayName, oracle.models[key].replacementDisplayName, key)
+    const missing = structuredClone(removed)
+    delete missing[key].displayName
+    assert.throws(() => supplementModelAudit(input, supplement, missing), /Missing display name/)
+  }
+})
+
+test('R8 Kimi exact fields keep the supplied source, verbatim quotes and verification date', () => {
+  const input = JSON.parse(fs.readFileSync(new URL('../config/channel-audit/input-20261109.json', import.meta.url), 'utf8'))
+  const row = input.pairs.find(row => row.channel === 'bailian' && row.apiModelId === 'kimi-k3')
+  assert.deepEqual(row.inputModalities, ['text', 'image']); assert.deepEqual(row.outputModalities, ['text'])
+  assert.equal(row.totalContextTokens, 1048576); assert.equal(row.maxOutputTokens, 1048576)
+  for (const fact of Object.values(row.fieldProvenance)) {
+    assert.equal(fact.sourceUrl, 'https://help.aliyun.com/zh/model-studio/kimi-k3')
+    assert.equal(fact.verifiedAt, '2026-11-09'); assert.match(fact.quote, /^\| .+ \|$/)
+  }
+  assert.equal(row.fieldProvenance.inputModalities.quote, '| 输入模态 | Text Image | 输出模态 | Text |')
+  assert.equal(row.fieldProvenance.totalContextTokens.quote, '| 上下文长度 | 1048576 | 最大输入长度（思考模式下） | 1048576 |')
+})
 const fixture = () => ({
   pairs: [], mappings: [], canonical: {}, deprecations: [],
   claims: [

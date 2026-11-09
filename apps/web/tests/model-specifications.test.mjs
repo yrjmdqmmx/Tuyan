@@ -207,7 +207,7 @@ test('verified catalog limits retain exact integers; similar names do not supply
     const before=structuredClone(model), data=modelCardSpecifications('custom',model)
     assert.equal(data.context,`${formatContextLimit(max)} tokens`);assert.equal(data.maxOutput,`${formatContextLimit(max)} tokens`);assert.equal(data.fields.totalContextTokens.value,max);assert.equal(data.fields.maxOutputTokens.value,max);assert.equal(data.contextScope,'图研既有核实');assert.deepEqual(model,before)
   }
-  for(const [id,expected] of [['xqwen14bchat','≈ 131K tokens（需 YaRN）'],['THUDM/GLM-4-9B-0414','128K tokens（需 YaRN；原生 32K）'],['xsparkx2','192k tokens']]) assert.equal(modelCardSpecifications('custom',{id}).context,expected)
+  for(const [id,expected] of [['xqwen14bchat','≈ 131K tokens（需 YaRN）'],['THUDM/GLM-4-9B-0414','128K tokens（需 YaRN；原生 32K）'],['xsparkx2','192K tokens']]) assert.equal(modelCardSpecifications('custom',{id}).context,expected)
   assert.equal(modelCardSpecifications('custom',{id:'unlisted-similar-GLM-4'}).context,'未知')
 })
 

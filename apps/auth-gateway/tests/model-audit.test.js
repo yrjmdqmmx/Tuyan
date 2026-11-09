@@ -12,6 +12,21 @@ function memoryDb() {
   })};
 }
 import {cleanModelLibrary,createModelLibraryStore} from '../src/model-library.js';
+import {assertAuditedModelAvailable} from '../src/model-audit.js';
+
+test('R8 generated gateway errors preserve machine fields and use main display names for all removals',()=>{
+  const rows=JSON.parse(fs.readFileSync(new URL('../../../config/removed-models.json',import.meta.url),'utf8'));
+  for(const [key,row] of Object.entries(rows)) {
+    const slash=key.indexOf('/'),provider=key.slice(0,slash),id=key.slice(slash+1);
+    assert.throws(()=>assertAuditedModelAvailable(provider,id),error=>{
+      assert.equal(error.message,`模型 ${row.displayName}：原型号已不可用，请重新选择。${row.replacementApiId ? `推荐：${row.replacementDisplayName}` : ''}`);
+      assert.equal(error.businessCode,'MODEL_UNAVAILABLE');assert.equal(error.code,'MODEL_UNAVAILABLE');assert.equal(error.statusCode,400);
+      assert.equal(error.replacement,row.replacementApiId);assert.equal(error.sourceUrl,row.sourceUrl);assert.equal(error.requestState,'not_sent');
+      for(const [apiId,name] of [[id,row.displayName],[row.replacementApiId,row.replacementDisplayName]]) if(apiId && apiId!==name) assert.ok(!error.message.includes(apiId),key);
+      return true;
+    });
+  }
+});
 
 test('first sync and explicit import preserve removed entries without a server archive',async()=>{
   const store=createModelLibraryStore({db:memoryDb(),secret:'isolated-test-only'});

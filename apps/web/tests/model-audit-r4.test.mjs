@@ -77,7 +77,7 @@ test('first sync and import save historical bindings; an explicit new removed bi
     await act(async()=>assert.equal(await hook.result.current.save({...hook.result.current.library,models:[...history.models,{id:'imported',connectionId:'c',modelId:'mimo-v2.5-pro'}]},undefined,{intent:'import'}),true))
     assert.equal(puts,2);assert.equal(stored.intent,'import')
     await act(async()=>assert.equal(await hook.result.current.save({...hook.result.current.library,models:[...stored.models,{id:'new',connectionId:'c',modelId:'mimo-v2.5'}]},undefined,{intent:'add'}),false))
-    assert.equal(puts,2);assert.match(hook.result.current.error,/mimo-v2.6-flash/)
+    assert.equal(puts,2);assert.match(hook.result.current.error,/MiMo-V2.6-Flash/)
     assert.deepEqual(stored.models.map(m=>m.modelId),['mimo-v2.5','mimo-v2.5-pro'])
   } finally {globalThis.fetch=original}
 })

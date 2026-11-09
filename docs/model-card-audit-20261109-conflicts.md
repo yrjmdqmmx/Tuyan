@@ -4,7 +4,7 @@
 
 **49 项由官方原文支持；36 项撤回审计覆盖，回退既有值/未知。** 模态始终保留既有支持项及图研输入要求，未列出的模态是未知。厂商 token 参考仍标“原厂”；第三方 DeepSeek Flash 的图像能力不能继承原厂页面。
 
-Qwen Plus 三个日期快照均逐一定位到该版本的“上下文限制”，不是取同页其他版本。Kimi K3 的 100 万上下文不再被覆盖为 262144。TokenDance LongCat-2.0 采用精确 ID 的 `context_length`；SiliconFlow Qwen3.8-27B 未取得渠道原文，撤回 1M 覆盖（静态卡无既有窗口时为未知，动态卡有既有值时回退）。Ling VL 使用其本节 256K 原文，普通 Flash 保留原生窗口和扩展窗口的区别。
+Qwen Plus 三个日期快照均逐一定位到该版本的“上下文限制”，不是取同页其他版本。R8 按百炼 Kimi K3 精确规格表采用 1048576 上下文（下方补充原文）。TokenDance LongCat-2.0 采用精确 ID 的 `context_length`；SiliconFlow Qwen3.8-27B 未取得渠道原文，撤回 1M 覆盖；只读 `git show c7b6a2fc:apps/web/src/lib/staticModelCatalog.js` 确认该精确身份无窗口字段，静态卡显示“未知”，不采用 262144。动态卡仅在自身提供已核实规格时回退。Ling VL 使用其本节 256K 原文，普通 Flash 保留原生窗口和扩展窗口的区别。
 
 | # | 渠道 / API ID | 字段 | 原审计值 | 既有值 | 官方原文 | 本轮决定 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -42,7 +42,7 @@ Qwen Plus 三个日期快照均逐一定位到该版本的“上下文限制”�
 | 32 | xiaomi / `mimo-v2.6-pro-ultraspeed` | maxOutputTokens | 128000 | 131072 | “最大输出：128K” [原文](https://mimo.mi.com/docs/zh-CN/quick-start/summary/model) | 采用 128K；模态取并集 |
 | 33 | sensenova / `deepseek-v4-flash` | inputModalities | ["text","image"] | ["text"] | 未取得支持原审计值的精确渠道原文；已查：[原文](https://api-docs.deepseek.com/quick_start/pricing/)、[原文](https://api-docs.deepseek.com/news/news260424/)、[原文](https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash) | 原厂页面不能证明第三方渠道的图像输入；撤回跨渠道继承，回退既有值/未知。 已知模态取并集；图研必需的图像输入独立保留。 |
 | 34 | qianfan / `deepseek-v4-flash` | inputModalities | ["text","image"] | ["text"] | 未取得支持原审计值的精确渠道原文；已查：[原文](https://api-docs.deepseek.com/quick_start/pricing/)、[原文](https://api-docs.deepseek.com/news/news260424/)、[原文](https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash) | 原厂页面不能证明第三方渠道的图像输入；撤回跨渠道继承，回退既有值/未知。 已知模态取并集；图研必需的图像输入独立保留。 |
-| 35 | siliconflow / `Qwen/Qwen3.8-27B` | totalContextTokens | 1000000 | 262144 | 未取得支持原审计值的精确渠道原文；已查：[原文](https://help.aliyun.com/zh/model-studio/models)、[原文](https://huggingface.co/Qwen/Qwen3.8-27B) | 未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 |
+| 35 | siliconflow / `Qwen/Qwen3.8-27B` | totalContextTokens | 1000000 | null（main 缺项） | 未取得支持原审计值的精确渠道原文；已查：[原文](https://help.aliyun.com/zh/model-studio/models)、[原文](https://huggingface.co/Qwen/Qwen3.8-27B) | 未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 |
 | 36 | siliconflow / `deepseek-ai/DeepSeek-V4-Flash` | inputModalities | ["text","image"] | ["text"] | 未取得支持原审计值的精确渠道原文；已查：[原文](https://api-docs.deepseek.com/quick_start/pricing/)、[原文](https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash) | 原厂页面不能证明第三方渠道的图像输入；撤回跨渠道继承，回退既有值/未知。 已知模态取并集；图研必需的图像输入独立保留。 |
 | 37 | xai / `grok-4.7` | inputModalities | ["text"] | ["text","image"] | “Modalities Text, Image Text” [原文](https://docs.x.ai/developers/models/grok-4.7) | 采用 ["text","image"]；模态取并集 |
 | 38 | xai / `grok-4.6` | inputModalities | ["text"] | ["text","image"] | “Modalities Text, Image Text” [原文](https://docs.x.ai/developers/models/grok-4.6) | 采用 ["text","image"]；模态取并集 |
@@ -51,7 +51,7 @@ Qwen Plus 三个日期快照均逐一定位到该版本的“上下文限制”�
 | 41 | xai / `grok-4.20-0309-non-reasoning` | inputModalities | ["text"] | ["text","image"] | “Modalities Text, Image Text” [原文](https://docs.x.ai/developers/models/grok-4.20-0309-non-reasoning) | 采用 ["text","image"]；模态取并集 |
 | 42 | xai / `grok-4.20-0309-reasoning` | inputModalities | ["text"] | ["text","image"] | “Modalities Text, Image Text” [原文](https://docs.x.ai/developers/models/grok-4.20-0309-reasoning) | 采用 ["text","image"]；模态取并集 |
 | 43 | xai / `grok-build-0.1` | inputModalities | ["text"] | ["text","image"] | “Modalities Text, Image Text” [原文](https://docs.x.ai/developers/models/grok-build-0.1) | 采用 ["text","image"]；模态取并集 |
-| 44 | bailian / `kimi-k3` | totalContextTokens | 262144 | 1000000 | “100 万 token 上下文窗口” [原文](https://help.aliyun.com/zh/model-studio/kimi-k3) | 采用 1000000；模态取并集 |
+| 44 | bailian / `kimi-k3` | totalContextTokens | 262144 | 1000000 | “上下文长度” / “1048576”（完整表格原文见 R8 补充） [原文](https://help.aliyun.com/zh/model-studio/kimi-k3) | R8 采用 1048576；输入仅 text、image，输出 text |
 | 45 | bailian / `qwen3.8-27b` | totalContextTokens | 1000000 | 262144 | “上下文长度 1000000” [原文](https://help.aliyun.com/zh/model-studio/qwen3-8-27b) | 采用 1000000；模态取并集 |
 | 46 | bailian / `ZHIPU/GLM-5.3` | totalContextTokens | 1048576 | 1000000 | 未取得支持原审计值的精确渠道原文；已查：[原文](https://help.aliyun.com/zh/model-studio/models)、[原文](https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3) | 未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 |
 | 47 | bailian / `qwen3.8-2.4t-a95b` | totalContextTokens | 1000000 | 262144 | “上下文长度 1000000” [原文](https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b) | 采用 1000000；模态取并集 |
@@ -93,3 +93,16 @@ Qwen Plus 三个日期快照均逐一定位到该版本的“上下文限制”�
 | 83 | tokenhub / `deepseek/deepseek-v4-flash` | inputModalities | ["text","image"] | ["text"] | 未取得支持原审计值的精确渠道原文；已查：[原文](https://api-docs.deepseek.com/quick_start/pricing/)、[原文](https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash) | 原厂页面不能证明第三方渠道的图像输入；撤回跨渠道继承，回退既有值/未知。 已知模态取并集；图研必需的图像输入独立保留。 |
 | 84 | antling / `Ling-3.0-flash-VL` | totalContextTokens | 262144 | 256000 | “上下文窗口 256K Token” [原文](https://developer.ant-ling.com/zh-CN/docs/models/ling/)（Ling-3.0-flash-VL） | 采用 256K；模态取并集 |
 | 85 | antling / `Ling-3.0-flash` | totalContextTokens | 262144 | 256000 | “原生 256K 上下文窗口，最高可扩展至 1M” [原文](https://developer.ant-ling.com/zh-CN/docs/models/ling/)（Ling-3.0-flash） | 采用 256K；模态取并集 |
+
+## R8 百炼 Kimi K3 精确规格补充（2026-11-09）
+
+仅作用于 `bailian/kimi-k3`，其他渠道与 `bailian/kimi/kimi-k3` 保持不变。来源：https://help.aliyun.com/zh/model-studio/kimi-k3 ，操作方于 2026-11-09 16:55（UTC+8）抓取，证据文件 `.audit-input/r8/kimi-k3-evidence.md`。版本化原文与日期同时记录在 `config/channel-audit/input-20261109.json` 的四个 fieldProvenance。
+
+```text
+| 输入模态 | Text Image | 输出模态 | Text |
+| 最大输入长度 | 1048576 | 最大输出长度 | 1048576 |
+| 上下文长度 | 1048576 | 最大输入长度（思考模式下） | 1048576 |
+| 最大输出长度（思考模式下） | 1048576 | 最大思维链长度 | 1048576 |
+```
+
+由“上下文长度”独立确认 totalContextTokens=1048576；maxOutputTokens 保持 1048576。输入为 text、image，输出为 text；移除之前误记的 video，不将“未列出”标记为明确不支持。字段覆盖华北 2（北京）等所有区域；此处仅改该精确渠道+型号的显示事实。

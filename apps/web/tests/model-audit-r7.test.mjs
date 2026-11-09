@@ -12,9 +12,9 @@ import WorkspaceModelPicker from '../src/workspace/WorkspaceModelPicker.jsx'
 beforeEach(t => t.mock.method(Date, 'now', () => Date.parse('2026-11-09')))
 afterEach(cleanup)
 const cases = [
-  ['xiaomi', 'mimo-v2.5', 'mimo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash'],
-  ['fireworks', 'accounts/fireworks/models/glm-5p2', 'glm-5p2：原型号已不可用，请重新选择。推荐：GLM 5.3'],
-  ['stepfun', 'step-2x-large', 'step-2x-large：原型号已不可用，请重新选择。'],
+  ['xiaomi', 'mimo-v2.5', 'MiMo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash'],
+  ['fireworks', 'accounts/fireworks/models/glm-5p2', 'GLM 5.2：原型号已不可用，请重新选择。推荐：GLM 5.3'],
+  ['stepfun', 'step-2x-large', 'Step 2x Large：原型号已不可用，请重新选择。'],
 ]
 
 test('R7 notice helpers use the same exact short names and punctuation with and without replacements', () => {
@@ -66,9 +66,9 @@ test('R7 an expired catalog model keeps its display name in both notice helpers'
   assert.equal(unavailableModelHint('antling', 'Ling-2.6-flash'), expected)
 })
 
-test('R7 notice formatting preserves existing MODEL_UNAVAILABLE error messages', () => {
+test('R8 MODEL_UNAVAILABLE errors share the display-name wording', () => {
   for (const [provider, id, message] of [
-    ['xiaomi', 'mimo-v2.5', '模型 mimo-v2.5：原型号 mimo-v2.5 已不可用，可改选 mimo-v2.6-flash。'],
-    ['stepfun', 'step-2x-large', '模型 step-2x-large：原型号 step-2x-large 已不可用，请重新选择。'],
+    ['xiaomi', 'mimo-v2.5', '模型 MiMo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash'],
+    ['stepfun', 'step-2x-large', '模型 Step 2x Large：原型号已不可用，请重新选择。'],
   ]) assert.throws(() => assertAuditedModelAvailable(provider, id), { message, code: 'MODEL_UNAVAILABLE', requestState: 'not_sent' })
 })

@@ -186,7 +186,7 @@ function presentModel(model, selectedProvider, selectedModel, providerId) {
     var _a, _b, _c;
     const audit = (0, model_audit_1.auditedModelSpecs)(providerId, model.id), lifecycle = (0, model_audit_1.auditedModelLifecycle)(providerId, model.id);
     const names = { text: '文本', image: '图像', audio: '音频', video: '视频', file: '文件', document: '文件' };
-    const display = (fact) => fact.state === 'known' ? Array.isArray(fact.value) ? fact.value.map(x => names[x]).join('、') : `${typeof fact.value === 'string' ? fact.value : (0, model_presentation_1.formatContextLimit)(Number(fact.value))} tokens${fact.suffix || ''}` : fact.state === 'unsupported' ? '不支持' : fact.state === 'not-applicable' ? '不适用' : '未知';
+    const display = (fact) => fact.state === 'known' ? Array.isArray(fact.value) ? fact.value.map(x => names[x]).join('、') : `${typeof fact.value === 'string' ? fact.value.replace(/[km]$/i, unit => unit.toUpperCase()) : (0, model_presentation_1.formatContextLimit)(Number(fact.value))} tokens${fact.suffix || ''}` : fact.state === 'unsupported' ? '不支持' : fact.state === 'not-applicable' ? '不适用' : '未知';
     const origin = (fact) => fact.provenance === 'catalog' ? '图研既有核实' : fact.provenance === 'product' ? '图研输入要求' : '';
     const image = model.roles.includes('image') && !(audit.fields.outputModalities.value || []).includes('text') && !['totalContextTokens', 'maxOutputTokens'].some(k => audit.fields[k].state === 'known');
     return {

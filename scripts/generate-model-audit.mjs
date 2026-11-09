@@ -45,7 +45,7 @@ export function generateModelAudit({ pairs, mappings, canonical, deprecations, c
   for (const row of [...pairs].sort((a,b) => keyOf(a).localeCompare(keyOf(b), 'en'))) record(row)
   for (const row of deprecations) {
     if (!https(row.sourceUrl) || !Number.isFinite(Date.parse(row.stopDate)) || !['full','serverless'].includes(row.scope)) throw new Error(`Invalid notice: ${keyOf(row)}`)
-    notices[keyOf(row)] = { stopDate: row.stopDate, scope: row.scope, replacement: row.replacement, sourceUrl: row.sourceUrl }
+    notices[keyOf(row)] = { stopDate: row.stopDate, scope: row.scope, replacement: row.replacement, sourceUrl: row.sourceUrl, displayName: row.displayName, replacementDisplayName: row.replacementDisplayName }
   }
   const additions = []
   function add(channel, id, claim, sourceUrl) {

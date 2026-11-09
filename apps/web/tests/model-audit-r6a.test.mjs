@@ -60,13 +60,13 @@ test('partial lists are unions, omissions stay unknown, and a source-image opera
   assert.equal(mergeCardFacts(audit, { inputModalities: qualified }).fields.inputModalities.displayValue, qualified.displayValue)
 })
 
-test('official labels render verbatim while published integers retain an exact accessible detail', t => {
+test('official numbers keep their precision with uppercase units and exact accessible details', t => {
   for (const { provider, model } of rows) {
     const card = modelCardSpecifications(provider, model)
     for (const [field, display] of [['totalContextTokens', 'context'], ['maxOutputTokens', 'maxOutput']]) {
       const fact = card.fields[field]
       if (fact.state === 'known' && typeof fact.value === 'string') {
-        assert.equal(card[display], `${fact.value} tokens${fact.suffix || ''}`, provider + '/' + model.id + '/' + field)
+        assert.equal(card[display], `${fact.value.replace(/[km]$/i, unit => unit.toUpperCase())} tokens${fact.suffix || ''}`, provider + '/' + model.id + '/' + field)
         assert.doesNotMatch(card[display], /≈/)
       }
     }

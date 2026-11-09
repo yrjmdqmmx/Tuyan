@@ -5,12 +5,15 @@ export function supplementModelAudit(snapshot, supplement, removed, addendum = {
     const index = list.findIndex(item => JSON.stringify(item) === JSON.stringify(value))
     return index < 0 ? list.push(value) - 1 : index
   }
-  for (const key of Object.keys(removed)) { delete data.rows[key]; delete data.notices[key] }
+  for (const [key, row] of Object.entries(removed)) {
+    if (!row.displayName?.trim() || row.replacementApiId && !row.replacementDisplayName?.trim()) throw new Error(`Missing display name: ${key}`)
+    delete data.rows[key]; delete data.notices[key]
+  }
   for (const notice of addendum.scheduledDeprecations) {
     const key = notice.channel + '/' + notice.apiModelId
     const url = new URL(notice.sourceUrl)
     if (!data.rows[key] || removed[key] || !Number.isFinite(Date.parse(notice.stopDate)) || url.protocol !== 'https:' || url.username || url.password) throw new Error(`Invalid scheduled notice: ${key}`)
-    data.notices[key] = { stopDate: notice.stopDate, scope: 'full', replacement: notice.replacement, sourceUrl: notice.sourceUrl }
+    data.notices[key] = { stopDate: notice.stopDate, scope: 'full', replacement: notice.replacement, sourceUrl: notice.sourceUrl, displayName: notice.displayName, replacementDisplayName: notice.replacementDisplayName }
   }
   data.details = {}
   for (const [key, model] of Object.entries(supplement.models)) {

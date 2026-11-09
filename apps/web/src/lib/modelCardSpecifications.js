@@ -38,7 +38,7 @@ export function modelCardSpecifications(provider, model) {
   const { fields, conflicts } = mergeCardFacts(audit, catalogCardFacts(provider, model, reviewedModels, specificPages), model)
   const labels = { unknown: '未知', unsupported: '不支持', 'not-applicable': '不适用' }
   const text = fact => fact.state === 'known'
-    ? Array.isArray(fact.value) ? fact.displayValue || formatModalities(fact.value) : `${typeof fact.value === 'string' ? fact.value : formatContextLimit(fact.value, fact.approximate)} tokens${fact.suffix || ''}`
+    ? Array.isArray(fact.value) ? fact.displayValue || formatModalities(fact.value) : `${typeof fact.value === 'string' ? fact.value.replace(/[km]$/i, unit => unit.toUpperCase()) : formatContextLimit(fact.value, fact.approximate)} tokens${fact.suffix || ''}`
     : labels[fact.state]
   const image = model.roles?.includes('image') || fields.outputModalities.value?.some?.(x => x === 'image' || x === 'video')
   const scope = fact => fact.provenance === 'vendor' ? '原厂' : fact.provenance === 'channel' ? '渠道' : fact.provenance === 'catalog' ? '图研既有核实' : fact.provenance === 'product' ? '图研输入要求' : ''

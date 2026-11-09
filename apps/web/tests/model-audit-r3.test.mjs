@@ -52,26 +52,26 @@ test('removed notices follow channel and vendor filters, including channels with
   const notice = container.querySelector('details.tw-info');
   assert.equal(notice.querySelector('summary').textContent, '2 个已保存型号已不可用');
   assert.equal(notice.hasAttribute('open'), false);
-  assert.deepEqual([...notice.querySelectorAll('p')].map(p => p.textContent), ['mimo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash', 'mimo-v2.5-pro：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Pro']);
+  assert.deepEqual([...notice.querySelectorAll('p')].map(p => p.textContent), ['MiMo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash', 'MiMo-v2.5-pro：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Pro']);
   assert.equal(notice.querySelectorAll('p').length, 2);
   assert.equal(container.querySelectorAll('article').length, 0);
   fireEvent.click(within(channels).getByRole('button', { name: /Fireworks/ }));
   const vendors = screen.getByRole('complementary', { name: '模型厂商筛选' });
   fireEvent.click(within(vendors).getByRole('button', { name: /智谱/ }));
   const hint = container.querySelector('.tw-catalog-scroll .tw-info');
-  assert.equal(hint.querySelector('span').textContent, 'glm-5p2：原型号已不可用，请重新选择。推荐：GLM 5.3');
+  assert.equal(hint.querySelector('span').textContent, 'GLM 5.2：原型号已不可用，请重新选择。推荐：GLM 5.3');
   assert.doesNotMatch(hint.textContent, /deepseek|accounts\/fireworks\/models\/glm-5p3/);
   fireEvent.click(within(channels).getByRole('button', { name: /阿里云百炼/ }));
   assert.equal(container.querySelector('.tw-catalog-scroll .tw-info'), null);
   assert.deepEqual(models.library, before);
 });
 
-test('replacement display names stay short even when labels are shared', () => {
+test('replacement uses verified display names even when dynamic labels are shared', () => {
   const models = makeModels([['fireworks','accounts/fireworks/models/glm-5p2']]);
   models.registry = structuredClone(models.registry);
   models.registry.providers.fireworks.models = [{id:'accounts/fireworks/models/glm-5p3',label:'Same'}, {id:'second',label:'Same'}];
   render(React.createElement(WorkspaceModelCatalog, { models, mode: 'library' }));
-  assert.match(screen.getByRole('status').textContent, /推荐：Same/);
+  assert.match(screen.getByRole('status').textContent, /推荐：GLM 5.3/);
 });
 
 test('removed slot has one helper and placeholder; cancel is inert and confirmation changes only that role', async () => {
@@ -83,7 +83,7 @@ test('removed slot has one helper and placeholder; cancel is inert and confirmat
   const main = screen.getByRole('button', { name: '主模型' }).closest('.tw-role-card');
   assert.equal(within(main).getByRole('button', { name: '主模型' }).textContent, '请选择');
   assert.equal(within(main).getAllByRole('status').length, 1);
-  assert.equal(within(main).getByRole('status').firstChild.textContent, 'mimo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
+  assert.equal(within(main).getByRole('status').firstChild.textContent, 'MiMo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
   assert.doesNotMatch(main.textContent, /所选模型当前不可用/);
   assert.equal(writes, 0); assert.equal(latest, undefined);
   fireEvent.click(within(main).getByRole('button', { name:'改选' }));
@@ -102,7 +102,7 @@ test('a replacement that cannot serve the slot does not offer an action, and no 
     const view = render(React.createElement(WorkspaceModelPicker, { models, role, path:'png', current:ref(models), onChange: () => assert.fail('No automatic change') }));
     assert.equal(screen.queryByRole('button', { name:'改选' }), null);
     assert.equal(screen.getAllByRole('status').length, 1);
-    if (provider === 'stepfun') assert.equal(screen.getByRole('status').textContent, 'step-2x-large：原型号已不可用，请重新选择。');
+    if (provider === 'stepfun') assert.equal(screen.getByRole('status').textContent, 'Step 2x Large：原型号已不可用，请重新选择。');
     view.unmount();
   }
 });

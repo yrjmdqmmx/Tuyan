@@ -167,7 +167,7 @@ function roleLabel(role: ModelRole): string { return role === 'image' ? '图像�
 function presentModel(model: RegistryModel, selectedProvider: unknown, selectedModel: unknown, providerId: ModelProviderId): ModelCard {
   const audit = auditedModelSpecs(providerId, model.id), lifecycle = auditedModelLifecycle(providerId, model.id)
   const names: Record<string,string> = {text:'文本',image:'图像',audio:'音频',video:'视频',file:'文件',document:'文件'}
-  const display = (fact: AuditFact) => fact.state === 'known' ? Array.isArray(fact.value) ? fact.value.map(x => names[x]).join('、') : `${typeof fact.value === 'string' ? fact.value : formatContextLimit(Number(fact.value))} tokens${fact.suffix || ''}` : fact.state === 'unsupported' ? '不支持' : fact.state === 'not-applicable' ? '不适用' : '未知'
+  const display = (fact: AuditFact) => fact.state === 'known' ? Array.isArray(fact.value) ? fact.value.map(x => names[x]).join('、') : `${typeof fact.value === 'string' ? fact.value.replace(/[km]$/i, unit => unit.toUpperCase()) : formatContextLimit(Number(fact.value))} tokens${fact.suffix || ''}` : fact.state === 'unsupported' ? '不支持' : fact.state === 'not-applicable' ? '不适用' : '未知'
   const origin = (fact: AuditFact) => fact.provenance === 'catalog' ? '图研既有核实' : fact.provenance === 'product' ? '图研输入要求' : ''
   const image = model.roles.includes('image') && !(audit.fields.outputModalities.value as string[] || []).includes('text') && !['totalContextTokens','maxOutputTokens'].some(k => audit.fields[k].state === 'known')
   return {

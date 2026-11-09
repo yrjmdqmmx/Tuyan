@@ -2,9 +2,9 @@
   "recordedAt": "2026-11-09T13:30:00+08:00",
   "note": "Addendum to verify-2026-11-09-r2; earlier snapshots are not modified.",
   "scheduledDeprecations": [
-    {"channel": "antling", "apiModelId": "Ling-2.6-1T", "stopDate": "2026-11-15T00:00:00+08:00", "replacement": "Ling-3.1-flash", "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/", "scheduled": true, "inTuyanCatalog": true},
-    {"channel": "antling", "apiModelId": "Ling-2.6-flash", "stopDate": "2026-11-15T00:00:00+08:00", "replacement": "Ling-3.1-flash", "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/", "scheduled": true, "inTuyanCatalog": true},
-    {"channel": "antling", "apiModelId": "Ring-2.6-1T", "stopDate": "2026-11-15T00:00:00+08:00", "replacement": "Ling-3.1-flash", "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/", "scheduled": true, "inTuyanCatalog": true}
+    {"channel": "antling", "apiModelId": "Ling-2.6-1T", "stopDate": "2026-11-15T00:00:00+08:00", "replacement": "Ling-3.1-flash", "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/", "scheduled": true, "inTuyanCatalog": true, "displayName": "Ling 2.6-1T", "replacementDisplayName": "Ling-3.1-flash"},
+    {"channel": "antling", "apiModelId": "Ling-2.6-flash", "stopDate": "2026-11-15T00:00:00+08:00", "replacement": "Ling-3.1-flash", "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/", "scheduled": true, "inTuyanCatalog": true, "displayName": "Ling 2.6-flash", "replacementDisplayName": "Ling-3.1-flash"},
+    {"channel": "antling", "apiModelId": "Ring-2.6-1T", "stopDate": "2026-11-15T00:00:00+08:00", "replacement": "Ling-3.1-flash", "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/", "scheduled": true, "inTuyanCatalog": true, "displayName": "Ring 2.6-1T", "replacementDisplayName": "Ling-3.1-flash"}
   ],
   "alreadyRetiredOnOfficialPage": [
     {"channel": "antling", "apiModelId": "Ling-1T", "stopDate": "2026-06-15T00:00:00+08:00", "replacement": "Ling-3.1-flash"},
