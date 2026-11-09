@@ -1,3 +1,4 @@
+import {expectedHumanUrl} from '../../../test-support/source-links-i3-r24.mjs'
 import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
@@ -92,7 +93,7 @@ test('Mini runtime projection agrees with Web for all four fields across the who
       assert.equal(small[field].provenance, web[field].provenance, provider + '/' + model.id + '/' + field)
       // R12B omits evidence URLs the picker never renders. Its retained field
       // reference must still be exact; the visible card source is tested below.
-      assert.equal(small[field].sourceUrl, web[field].sourceUrl === mini.auditedModelSpecs(provider, model.id).sourceUrl ? web[field].sourceUrl : null, provider + '/' + model.id + '/' + field + '/source')
+      assert.equal(small[field].sourceUrl, expectedHumanUrl(web[field].sourceUrl) === mini.auditedModelSpecs(provider, model.id).sourceUrl ? expectedHumanUrl(web[field].sourceUrl) : null, provider + '/' + model.id + '/' + field + '/source')
     }
     assert.equal(mini.auditedModelSpecs(provider, model.id).sourceUrl, modelCardSpecifications(provider, model).sources[0] || null, provider + '/' + model.id + '/visible-source')
   }

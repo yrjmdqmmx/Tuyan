@@ -21,7 +21,7 @@ export function titleIssues({ url, label }, name, id) {
   const repairedDottedName = knownNames.includes(subject) && /\d\.\d/.test(subject) && /[a-z]\d+-\d+(?![a-z\d])/i.test(name || '')
   const readableOwn = /^[A-Z]/.test(subject) && !/_|[a-z]-[a-z]|\d-[a-z]{2}/i.test(subject)
   if (!readableOwn && name && compact(subject) === compact(name) && subject !== name && !repairedDottedName) issues.push('curated case/punctuation')
-  const knownSpelling = knownNames.some(known => subject === known || subject.startsWith(known + ' '))
+  const knownSpelling = knownNames.some(known => subject === known || subject.startsWith(known + ' ') || subject.startsWith(known + '（'))
   if (subject !== name && !knownSpelling && /_|[a-z]-[a-z]/i.test(subject)) issues.push('slug separators')
   const ownDottedTokens = dottedTokens([name, id])
   // Independent of the generator's normalized-name index. Check complete

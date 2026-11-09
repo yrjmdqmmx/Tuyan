@@ -4,12 +4,12 @@
 .model-specs dt small { font-size: 10px; font-weight: 400; }
 .model-specs dd { margin: 0; min-width: 0; font-weight: 500; text-align: right; overflow-wrap: anywhere; }
 .model-spec-sources { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 0 0 4px; font-size: 12px; color: var(--text-secondary, #596671); }
-.model-spec-sources a { display: inline-flex; align-items: center; gap: 4px; min-width: auto; max-width: 100%; color: var(--accent, #267f68); white-space: nowrap; overflow-wrap: normal; word-break: normal; }
-.model-spec-sources a > svg, .model-evidence-dialog a > svg { flex-shrink: 0; }
+.model-card-specifications .model-spec-sources a { display: inline-flex; align-items: center; gap: 4px; min-width: auto; max-width: 100%; color: var(--accent, #267f68); white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.model-card-specifications .model-spec-sources a > svg, .tw-dialog.model-evidence-dialog a.model-evidence-source > svg { flex-shrink: 0; }
 .model-spec-source-text { display: flex; min-width: 0; white-space: nowrap; }
 .model-spec-source-label { flex: none; white-space: pre; }
 .model-spec-source-domain { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; overflow-wrap: normal; word-break: normal; }
-.model-spec-sources a:focus-visible, .model-evidence-dialog a:focus-visible { outline: 2px solid var(--accent, #267f68); outline-offset: 3px; border-radius: 3px; }
+.model-card-specifications .model-spec-sources a:focus-visible, .tw-dialog.model-evidence-dialog a.model-evidence-source:focus-visible { outline: 2px solid var(--accent, #267f68); outline-offset: 3px; border-radius: 3px; }
 .model-modality-icons { display: inline-flex; flex-wrap: wrap; max-width: 100%; align-items: center; justify-content: flex-end; gap: 8px; vertical-align: middle; }
 .model-modality-icon { position: relative; display: inline-flex; width: 20px; height: 20px; flex: 0 0 20px; color: var(--ink); }
 .model-modality-icon.is-unsupported, .model-modality-icon.is-unknown, .model-modality-icon.is-unlisted { color: var(--muted); }
@@ -35,6 +35,6 @@
 .model-specs .model-modality-trigger { all: unset; display: inline-flex; max-width: 100%; vertical-align: middle; cursor: help; }
 .model-specs .model-modality-trigger:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; border-radius: 3px; }
 
-.model-evidence-dialog a { display: inline-flex; align-items: baseline; gap: 4px; max-width: 100%; color: var(--accent, #267f68); white-space: normal; overflow-wrap: anywhere; text-decoration: underline; text-underline-offset: 3px; }
-.model-evidence-dialog a > span { min-width: 0; }
-.model-spec-sources a:hover, .model-evidence-dialog a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+.tw-dialog.model-evidence-dialog a.model-evidence-source { display: inline-flex; align-items: baseline; gap: 4px; max-width: 100%; color: var(--accent, #267f68); white-space: normal; overflow-wrap: anywhere; text-decoration: underline; text-underline-offset: 3px; }
+.tw-dialog.model-evidence-dialog a.model-evidence-source > span { min-width: 0; }
+.model-card-specifications .model-spec-sources a:hover, .tw-dialog.model-evidence-dialog a.model-evidence-source:hover { text-decoration: underline; text-decoration-thickness: 2px; }

@@ -83,6 +83,11 @@ const sourceTitles = Object.fromEntries(Object.entries(read('config/channel-audi
 for (const channel of ['qianfan', 'sensenova', 'stepfun']) for (const row of read('config/channel-audit/v24/' + channel + '.json').sources) {
   if (row.title && /[\u4e00-\u9fff]/.test(row.title) && !/[\/]|https?:|：/.test(row.title)) sourceTitles[row.url.replace(/\/+$/, '')] = row.title
 }
+// I3 captures resolve ambiguous legacy namespaces and opaque page identifiers.
+for (const row of read('config/channel-audit/source-titles-r24-i3.json').captures) {
+  assert.equal(row.httpStatus, 200); assert.match(row.sha256, /^[a-f0-9]{64}$/)
+  for (const url of [row.url, ...(row.aliases || [])]) sourceTitles[url] = row.displayTitle
+}
 // Compile only titles referenced by card inputs. Capture indexes also contain
 // authentication/protocol pages that no card links to; keep those in evidence,
 // not in either client. Include all fact/notice links, not just primary rows.
@@ -126,6 +131,6 @@ const combined = miniPages + `const knownModels = Object.values(catalog).flatMap
 const exports = [...combined.matchAll(/export (?:function|const) (\w+)/g)].map(match => match[1])
 const commonjs = combined.replace(/export /g, '') + '\nmodule.exports = {' + exports.join(',') + '};\n'
 write('apps/miniprogram/miniprogram/utils/card-presentation.js', '// Generated\n' + transformSync(commonjs, { minify: true, charset: 'utf8', format: 'cjs', target: 'es2019' }).code)
-write('apps/miniprogram/miniprogram/utils/card-presentation.d.ts', 'export function displayModalities(values: string[]): string[]\nexport function displayModalityText(value: string): string\nexport function historicalChannelIds(pages: Record<string, {verified: boolean}>): Set<string>\nexport function sourceTitle(value: string, model?: {id?: string; label?: string; displayName?: string}): string\nexport function titleSourceRows<T extends {url: string; label: string}>(rows: T[], model?: {id?: string; label?: string; displayName?: string}): T[]\nexport interface ModalityIcon { id: string; label: string; state: string; detail: string; accessibleLabel: string; tooltip: string }\nexport function modalityIconStates(value: string, fact?: object, provider?: string, modelId?: string): ModalityIcon[]\n'.replace(/[ \t]*([:;,{}<>?])[ \t]*/g, '$1').replace(/\b(values|value|model|rows|fact|provider|modelId)(?=[?:])/g, name => ({values:'v',value:'v',model:'m',rows:'r',fact:'f',provider:'p',modelId:'i'})[name]))
+write('apps/miniprogram/miniprogram/utils/card-presentation.d.ts', 'export function displayModalities(values: string[]): string[]\nexport function displayModalityText(value: string): string\nexport function historicalChannelIds(pages: Record<string, {verified: boolean}>): Set<string>\nexport function sourceTitle(value: string, model?: {id?: string; label?: string; displayName?: string}): string\nexport function humanSourceUrl(value: string): string\nexport function isMachineDocument(value: string): boolean\nexport function titleSourceRows<T extends {url: string; label: string}>(rows: T[], model?: {id?: string; label?: string; displayName?: string}): T[]\nexport interface ModalityIcon { id: string; label: string; state: string; detail: string; accessibleLabel: string; tooltip: string }\nexport function modalityIconStates(value: string, fact?: object, provider?: string, modelId?: string): ModalityIcon[]\n'.replace(/[ \t]*([:;,{}<>?])[ \t]*/g, '$1').replace(/\b(values|value|model|rows|fact|provider|modelId)(?=[?:])/g, name => ({values:'v',value:'v',model:'m',rows:'r',fact:'f',provider:'p',modelId:'i'})[name]))
 flushMini()
 console.log(`Shared card display data: ${check ? 'no drift' : 'generated'}; ${capture.pages.filter(row => row.verified).length}/74 verified TokenDance pages`)

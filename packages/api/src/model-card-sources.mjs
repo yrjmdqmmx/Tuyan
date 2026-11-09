@@ -1,10 +1,11 @@
-import { sourceIdentity, uniqueSources, titleSourceRows } from './card-presentation.mjs'
+import { sourceIdentity, uniqueSources, titleSourceRows, humanSourceUrl, isMachineDocument } from './card-presentation.mjs'
 import tokenDancePages from './card-data/tokendance-pages.json' with { type: 'json' }
-import { safeSources } from './catalog-card-facts.mjs'
+import { safeSources as rawSafeSources } from './catalog-card-facts.mjs'
 import deadLinks from './card-data/dead-links.json' with { type: 'json' }
 
 const sourcePath = value => { const url = new URL(value); return url.origin + url.pathname.replace(/\/$/, '') }
 const deadPaths = new Set(deadLinks.map(row => sourcePath(row.url)))
+const safeSources = values => rawSafeSources(values).map(humanSourceUrl)
 export function isDeadSource(value) {
   try { return deadPaths.has(sourcePath(value)) } catch { return false }
 }
@@ -15,7 +16,7 @@ export function isApiSource(value, checks = {}) {
     const url = new URL(value), check = checks[value] || {}
     const path = decodeURIComponent(url.pathname)
     const humanDocs = /^(?:docs|developers|api-docs)\./i.test(url.hostname) || /\/(?:docs|documentation|api-docs)(?:\/|$)/i.test(path)
-    return /\/openapi|\/swagger|\.(?:json|ya?ml)\/?$/i.test(path)
+    return isMachineDocument(value) || /\/openapi|\/swagger|\.(?:json|ya?ml)\/?$/i.test(path)
       || /(?:\/|\+)(?:json|yaml|x-yaml)(?:\s*;|$)/i.test(check.contentType || '')
       || /\/gateway(?:\/|$)|\/portal\/api(?:\/|$)|\/v\d+(?:alpha|beta)?\/models(?:\b|\/|$)/i.test(path)
       || !humanDocs && (/^api\./i.test(url.hostname) || /^\/api\/|\/api\/v\d+(?:\/|$)/i.test(path))

@@ -2,11 +2,15 @@ import fs from 'node:fs'
 import {gunzipSync} from 'node:zlib'
 import {titleIssues as previousIssues} from './source-titles-r23.mjs'
 export const reviewBaseline=JSON.parse(gunzipSync(fs.readFileSync(new URL('./fixtures/source-review-cd72eace.json.gz',import.meta.url))))
-export const titleRule='Require role · curated site · readable page. Reject opaque mixed letter/digit IDs, news/anchor fragments, site suffixes, lowercase or kebab/snake slugs, raw hosts/API paths, empty or leftover separators, repeated page brands, missing segments, and collapsed/split/hyphenated dotted versions. Genuine model/version/date hyphens remain valid; picker spelling is not an exemption for source slugs.'
+export const titleRule='Require role · curated site · readable page. Reject opaque mixed letter/digit IDs, news/anchor fragments, site suffixes, lowercase or kebab/snake slugs, raw hosts/API paths, empty or leftover separators, repeated page brands, missing segments, and collapsed/split/hyphenated dotted versions. Reject counter-only and format-only qualifiers including （文档）, （文档 2）, （Markdown）; meaningful interface versions, languages and release codes remain valid. Genuine model/version/date hyphens remain valid; picker spelling is not an exemption for source slugs.'
 const roles=new Set(['官方文档','原厂文档','原厂规格','渠道公告','下线公告'])
 const brands=/\b(?:OpenAI|GPT|ChatGPT|DeepSeek|Qwen|GLM|Kimi|MiniMax|MiMo|FLUX|Stable|Diffusion|SDXL|Claude|Grok|Gemini|Recraft|Ideogram|Seedream|Wan|Hunyuan|ERNIE|CogView|LongCat|SenseNova|TokenDance|Fireworks|SiliconFlow|Runware|Replicate|Novita|StepFun|BFL|Kling|Klingai|Nemotron|NVIDIA|Gemma|Llama|Txt2img|Img2img|Unisound|LLaVA|InternVL|OmniGen|Hy|Xing|Kolors|Ling|Ring|O[134])(?=v?\d|\b)/i
 export function titleIssues(row,name,id) {
-  const parts=row.label.split(' · '), page=(parts[2]||'').replace(/（(?:Markdown|控制台|英文|文档)(?: \d+)?）$/,''), issues=previousIssues(row,name,id).filter(issue=>issue!=='curated case/punctuation')
+  const parts=row.label.split(' · '), page=parts[2]||'', issues=previousIssues(row,name,id).filter(issue=>issue!=='curated case/punctuation')
+  const counter = [...row.label.matchAll(/[（(]((?:(?:文档|页面|资料|来源|链接|副本|版本|Document|Page|Source|Link|Copy)\s*)?\d+)[）)]/gi)].some(([,v]) => !/^\d{4}$/.test(v) || ![name,id].some(s => s?.includes(v)))
+  const numbered = [...row.label.matchAll(/[（(]([^（）()]*\s+\d+)[）)]/g)].some(([,v]) => ![name,id].some(s => s?.includes(v)))
+  if(/[（(](?:(?:Markdown|MDX?|HTML?|PDF|JSON|XML|YAML|TXT)(?:\s*(?:格式|文档|页面|版|版本))?|文档|文本|纯文本|网页|格式)(?:\s*\d+)?[）)]/i.test(row.label) || counter || numbered) issues.push('meaningless counter or format qualifier')
+  if(/\/(?:llms(?:-full)?\.txt|[^/]+\.(?:md|mdx))(?:[?#]|$)/i.test(row.url) && !/^https:\/\/(?:github\.com|huggingface\.co)\/[^/]+\/[^/]+\/blob\//.test(row.url)) issues.push('machine document link')
   if(parts.length!==3 || !roles.has(parts[0]) || parts.slice(1).some(s=>!s.trim())) issues.push('missing role/site/page segment or extra separator')
   if(/ - | \| | – |·(?:百度|阿里|DeepSeek)/.test(row.label)) issues.push('site suffix')
   if(/\bNews\d+\b|#[\w-]+/i.test(row.label)) issues.push('URL fragment')

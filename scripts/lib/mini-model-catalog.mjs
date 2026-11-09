@@ -1,5 +1,6 @@
 import { mergeCardFacts } from '../../apps/web/src/lib/catalogCardFacts.js'
 import { modelCardSources, modelSourceName } from '../../apps/web/src/lib/modelCardSources.js'
+import { humanSourceUrl } from '../../packages/api/src/card-presentation.mjs'
 // The Mini Program consumes display/selection fields, not the full evidence archive.
 // Execution capabilities, eligibility, exact IDs and ordering stay unchanged.
 export function miniModelCatalog(catalog) {
@@ -51,7 +52,7 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
       }
       // Per-field slots reference the primary URL when equal. Additional vendor
       // links are stored once in details; the full evidence stays in Web/API.
-      return intern(facts, [value, fact.state, fact.provenance, fact.sourceUrl && fact.sourceUrl === sourceUrl ? -1 : null, ...(prior !== undefined ? [prior] : [])])
+      return intern(facts, [value, fact.state, fact.provenance, fact.sourceUrl && humanSourceUrl(fact.sourceUrl) === sourceUrl ? -1 : null, ...(prior !== undefined ? [prior] : [])])
     }), sourceUrl === 'https://tokendance.space/models/' + model.id && channel === 'tokendance'
       && data.details[key]?.sourceLinks?.some(link => link.url === sourceUrl && link.kind === 'model-page' && link.checkedAt)
       ? -2 : sourceUrl ? intern(sources, sourceUrl) : null]

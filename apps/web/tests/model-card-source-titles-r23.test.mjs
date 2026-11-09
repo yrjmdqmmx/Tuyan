@@ -1,3 +1,4 @@
+import {expectedHumanRows} from '../../../test-support/source-links-i3-r24.mjs'
 import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
 import React from 'react'
@@ -43,7 +44,7 @@ test('R23F all 1064 rendered Web cards and evidence/notice dialogs pass the titl
     const data = modelCardSpecifications(provider, model), rows = modelSourceRows(data), card = provider + '/' + model.id
     const old = titleBaseline.web.find(row => row.card === card)
     assert.equal(data.sourceModel.displayName, old.name, card)
-    assert.deepEqual(rows.map(row => row.url), old.rows.map(row => row.url), card)
+    assert.deepEqual(rows.map(row => row.url), expectedHumanRows(old.rows).map(row => row.url), card)
     assert.equal(new Set(rows.map(row => row.label)).size, rows.length, card)
     assert.equal(new Set(rows.map(row => sourceIdentity(row.url))).size, rows.length, card)
     render(React.createElement(ModelSpecifications, {provider, model, compactSources:true}))

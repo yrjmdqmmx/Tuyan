@@ -18,7 +18,7 @@ test('R24 I2 strict scanner rejects each previously missed title class',()=>{
 })
 test('R24 I2 title examples preserve roles, versions and readable captured/fallback pages',()=>{
  for(const [url,expected]of [
-  ['https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5','百度千帆 · 模型列表'],
+  ['https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5','百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）'],
   ['https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j','百度千帆 · 模型列表'],
   ['https://api-docs.deepseek.com/news/news250325','DeepSeek · V3-0324 Release'],
   ['https://api-docs.deepseek.com/news/news260424','DeepSeek · 更新日志 2026-04-24']

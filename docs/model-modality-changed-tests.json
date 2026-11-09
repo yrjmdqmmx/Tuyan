@@ -2,10 +2,10 @@
   "base": "8c456709",
   "counts": {
     "files": 23,
-    "assertionAndFixtureInputChanges": 140,
+    "assertionAndFixtureInputChanges": 145,
     "consumedJsonFixtures": 2,
     "semanticFixtureChanges": 617,
-    "justified": 756,
+    "justified": 761,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -23,7 +23,9 @@
     "R23 Phase F3 adds catalog-backed dotted-version controls to both existing client scan tests and reviews the independent shared heuristic against fd29cf36. All pre-existing client assertions remain. Genuine known model hyphens are valid, and parameter tokens such as 31B are no longer mistaken for split versions. Known dotted corrections may differ from a slug-like picker label only in source titles. Both byte ceilings and all 1064 identity/name/URL assertions remain unchanged. Additional F3 cases retain complete BFL brackets and dotted FLUX.1.1 spelling, ignore escaped Markdown candidates on general pages, and keep short IDs from relabeling another model family.",
     "R23 Phase H2 corrects two stale branch-added Core/Gateway channel-only expectations. Their files are byte-identical at fd29cf36 and operator HEAD c75aa00f, so the existing follow-up baseline applies. Expected appended URLs are derived from vendor-provenance fields (the fields labelled 源自原厂), with canonical deduplication, channel-first order, independent portal/OpenAPI/JSON rejection and 原厂规格 labels. Explicit deepseek-v4.1-flash and qwen3.6-plus cases tie the appended URL to maxOutputTokens. No product code, execution expectation or historical fallback changes; two follow-up entries are recorded separately from the main-existing counts.",
     "R24 Phase I1 replaces the R9/R10 self-derived title expectations with fixed literals (297 URL/label objects and the exact Kimi K3 title). The Core source filter gains a string type predicate after accurate .d.mts declarations expose nullable URLs; it changes no expected value. The Mini historical byte ceiling remains unchanged.",
-    "R24 Phase I2 preserves all source URLs/order/roles and all picker/execution locks. Only source-title spelling and field-source attribution change. The strict scan replaces opaque-ID and picker-slug exemptions; Web and Mini dialog scans include duplicate lines, internal terms and source/no-source contradictions. Staged Mini compilation prevents temporary budget overruns; both old size guards stay unchanged."
+    "R24 Phase I2 preserves all source URLs/order/roles and all picker/execution locks. Only source-title spelling and field-source attribution change. The strict scan replaces opaque-ID and picker-slug exemptions; Web and Mini dialog scans include duplicate lines, internal terms and source/no-source contradictions. Staged Mini compilation prevents temporary budget overruns; both old size guards stay unchanged.",
+    "R24 Phase I3: the operator real-browser check found that I2 link selectors lost to the later workspace reset. Cascade tests parse all imported CSS with selector specificity and source order. Source title scans now reject counter/format qualifiers and machine-document URLs. Exact I3 row changes, captures and literal HTML mappings are recorded; all existing model names, execution locks, vendor coverage, 65536 and the 15-model decision remain asserted. The I2 report is preserved verbatim inside the historical fixture and I3 is appended as a new comparison.",
+    "R24 I3 local audit harness (not Git-tracked): .audit-input/r24/i3-invariants.test.mjs retains all six Phase H checks. Two expectations change: vendor raw fact URLs and archived screenshot URLs are mapped through the independent source-links-i3-r24.json literal table before matching human anchors. The old harness remains unchanged. This preserves 166 vendor-field checks, all 1064 picker names, all 15 image-input decisions and all 15 screenshot-card identities; it does not run screenshots. The original harness file SHA-256 is 20063c9788589720baa28451f24948d96e8df3bba56195f774bf608aae15992c."
   ],
   "files": [
     {
@@ -771,7 +773,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r12.test.mjs",
-      "diffSha256": "67ca5ae6d2701cc562211f5613ea244a8fd1df28d5f58dcf28484b4573099881",
+      "diffSha256": "6564e1d922f57fa5a6e139cb9af096849d579bbec99a4d4c59a65682e2268c0d",
       "changes": [
         {
           "line": 85,
@@ -1035,6 +1037,58 @@
             "docs/model-modality-r22b-results.json",
             "scripts/lib/pack-model-catalog.mjs",
             "scripts/card-presentation-r22b.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "OpenAI model .md URL is a human source",
+          "new": "OpenAI .md URL is a machine document; its HTML equivalent remains a human source",
+          "reason": "The operator explicitly requested hiding Markdown variants. Only the raw-format classification changes; other API/non-API rules remain exact.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "R11 OpenAI/Together/Replicate primary URL is retained verbatim",
+          "new": "Primary URL equals the independently frozen HTML mapping of R11 URL",
+          "reason": "Preserve the same model page while selecting its human format. All 71 OpenAI, 3 Together, 90 Replicate and 37 fal count assertions remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "R8 first-link delta equals the R21 expected URL list",
+          "new": "R8 first-link delta equals R21 plus the literal I3 HTML mapping",
+          "reason": "The 42 literal URL pairs account for the newly changed human links; every identity and URL still matches an independent oracle.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "HTTP-fixture test compares current delta to R21",
+          "new": "HTTP-fixture test compares current delta to R21 plus literal I3 HTML mapping",
+          "reason": "The historical 397 HTTP captures and their response/status/timestamp assertions remain unchanged; current display URLs are checked separately.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -1374,7 +1428,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r6a.test.mjs",
-      "diffSha256": "92c5df713c04ef05dfc881068cc29074c38ddcefdc6b2402b34c2bb28e85c1ef",
+      "diffSha256": "070b0fda7a02b7a07db02a51001f310dc452d3704ef1b96f2395d738e16f0251",
       "changes": [
         {
           "line": 35,
@@ -1610,6 +1664,19 @@
             "docs/model-modality-r22b-results.json",
             "scripts/lib/pack-model-catalog.mjs",
             "scripts/card-presentation-r22b.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "Mini per-field URL exists only when raw Web URL equals Mini primary URL",
+          "new": "Mini per-field URL exists when independently mapped human Web URL equals Mini primary URL",
+          "reason": "Retain attribution after a Markdown primary becomes HTML. All four values, states, provenances and visible primary equality remain asserted.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -18721,7 +18788,7 @@
     {
       "file": "apps/web/tests/model-card-source-titles-r23.test.mjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "65d043d78ebfed75d2b167f0df019bd0ca37a327998a0e3482d5fd170ec01a23",
+      "diffSha256": "63fbb4b7e0257efa51f629199852b67a8cfc0d279f106b687303c5e4b3c95a72",
       "changes": [
         {
           "line": 25,
@@ -18734,13 +18801,26 @@
             "packages/api/src/card-presentation.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "Ordered rendered URLs equal frozen pre-I3 URLs",
+          "new": "Ordered rendered URLs equal frozen URLs after the independent literal HTML mapping",
+          "reason": "Only documented Markdown replacements/removal and duplicate collapse are permitted; all 1064 identities/names, roles, title uniqueness, interactions and strict scans remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "b07946431100a4dd578659ab8d30da43d56c5335b1b8dc1e42e5e7b962b69b8a",
+      "diffSha256": "e1f833a60d1089dede47f2a9fc04270074386bf518e0fb1e44f3acaa9330eec9",
       "changes": [
         {
           "line": 16,
@@ -18753,13 +18833,26 @@
             "packages/api/src/card-presentation.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "Ordered rendered URLs equal frozen pre-I3 URLs",
+          "new": "Ordered rendered URLs equal frozen URLs after the independent literal HTML mapping",
+          "reason": "Only documented Markdown replacements/removal and duplicate collapse are permitted; all 1064 identities/names, roles, title uniqueness, interactions and strict scans remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "test-support/source-titles-r23.mjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "e53745efdfbe87fece1416b2337ce12a329991fd5cd0bdf3f802f696cd7d81b7",
+      "diffSha256": "4f9c7b450ea90a6a37c96f6eb18a37b9778de6e421267ad0fa1d42627d461c28",
       "changes": [
         {
           "line": 14,
@@ -18783,6 +18876,19 @@
           "evidence": [
             "test-support/source-titles-r24.mjs",
             "docs/model-card-source-titles-r24.md"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "Known model spelling recognizes only exact match or a trailing space",
+          "new": "Known model spelling also recognizes a following Chinese parenthesis",
+          "reason": "Meaningful section qualifiers must not cause GPT-OSS to be misclassified as a slug. The strict I3 scanner independently rejects counters and format-only parentheses.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -18878,14 +18984,27 @@
             "apps/web/tests/model-card-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "Vendor field evidence href matches its raw fact URL",
+          "new": "Vendor field href matches the independent literal human equivalent of its fact URL",
+          "reason": "A rendered HTML reader provides the same evidence as its Markdown representation. Every vendor field still requires an actual matching vendor anchor; no count or missing-link exemption added.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "4e21f8827cfcbce75fa98745c59366f19641735b356856c2452a831ebf458459"
+      "diffSha256": "bf4895cad1290642b21a7cfe4b0d5c0fe22f815dad14d1f35c54b004326e10c7"
     },
     {
       "file": "apps/web/tests/model-card-r23.test.mjs",
       "comparisonBase": "4e18513c",
-      "diffSha256": "315490b7d483c53af682ac93d63d0463200abe2c3770effb544ad5c6fdf926b0",
+      "diffSha256": "37e4d78e91f22def0f30af56b1e8eee3db0b3a636b58924e09b0426c66d2b468",
       "changes": [
         {
           "phase": "R24 Phase I1",
@@ -18896,6 +19015,19 @@
           "evidence": [
             "test-support/fixtures/model-card-r24.json",
             "apps/web/tests/model-card-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "Vendor field evidence href matches its raw fact URL",
+          "new": "Vendor field href matches the independent literal human equivalent of its fact URL",
+          "reason": "A rendered HTML reader provides the same evidence as its Markdown representation. Every vendor field still requires an actual matching vendor anchor; no count or missing-link exemption added.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -20016,9 +20148,581 @@
             "apps/web/tests/model-audit-r9.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-6-luna: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-6-luna.md\",\"label\":\"官方文档 · OpenAI · GPT-6 Luna（Markdown）\"}",
+          "new": "openai/gpt-6-luna: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-6-luna\",\"label\":\"官方文档 · OpenAI · GPT-6 Luna\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-6-sol: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-6-sol.md\",\"label\":\"官方文档 · OpenAI · GPT-6 Sol（Markdown）\"}",
+          "new": "openai/gpt-6-sol: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-6-sol\",\"label\":\"官方文档 · OpenAI · GPT-6 Sol\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-image-2.5-flare: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-image-2.5-flare.md\",\"label\":\"官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）（Markdown）\"}",
+          "new": "openai/gpt-image-2.5-flare: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-image-2.5-flare\",\"label\":\"官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-image-2.5-sunburst: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst.md\",\"label\":\"官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）（Markdown）\"}",
+          "new": "openai/gpt-image-2.5-sunburst: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst\",\"label\":\"官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-6-astra: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-6-astra.md\",\"label\":\"官方文档 · OpenAI · GPT-6 Astra（Markdown）\"}",
+          "new": "openai/gpt-6-astra: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-6-astra\",\"label\":\"官方文档 · OpenAI · GPT-6 Astra\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5.6-luna: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.6-luna.md\",\"label\":\"官方文档 · OpenAI · GPT-5.6 Luna（Markdown）\"}",
+          "new": "openai/gpt-5.6-luna: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.6-luna\",\"label\":\"官方文档 · OpenAI · GPT-5.6 Luna\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5.6-sol: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.6-sol.md\",\"label\":\"官方文档 · OpenAI · GPT-5.6 Sol\"}",
+          "new": "openai/gpt-5.6-sol: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.6-sol\",\"label\":\"官方文档 · OpenAI · GPT-5.6 Sol\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5.6-terra: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.6-terra.md\",\"label\":\"官方文档 · OpenAI · GPT-5.6 Terra（Markdown）\"}",
+          "new": "openai/gpt-5.6-terra: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.6-terra\",\"label\":\"官方文档 · OpenAI · GPT-5.6 Terra\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5.5: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.5.md\",\"label\":\"官方文档 · OpenAI · GPT-5.5（2026-04-23）（Markdown）\"}",
+          "new": "openai/gpt-5.5: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.5\",\"label\":\"官方文档 · OpenAI · GPT-5.5（2026-04-23）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5.5-pro: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.5-pro.md\",\"label\":\"官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）（Markdown）\"}",
+          "new": "openai/gpt-5.5-pro: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.5-pro\",\"label\":\"官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5.4: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.4.md\",\"label\":\"官方文档 · OpenAI · GPT-5.4（2026-03-05）（Markdown）\"}",
+          "new": "openai/gpt-5.4: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.4\",\"label\":\"官方文档 · OpenAI · GPT-5.4（2026-03-05）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5.4-mini: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.4-mini.md\",\"label\":\"官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）（Markdown）\"}",
+          "new": "openai/gpt-5.4-mini: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.4-mini\",\"label\":\"官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5.4-nano: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.4-nano.md\",\"label\":\"官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）（Markdown）\"}",
+          "new": "openai/gpt-5.4-nano: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.4-nano\",\"label\":\"官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5.4-pro: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.4-pro.md\",\"label\":\"官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）（Markdown）\"}",
+          "new": "openai/gpt-5.4-pro: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.4-pro\",\"label\":\"官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5.3-codex: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.3-codex.md\",\"label\":\"官方文档 · OpenAI · GPT 5.3 Codex（Markdown）\"}",
+          "new": "openai/gpt-5.3-codex: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.3-codex\",\"label\":\"官方文档 · OpenAI · GPT 5.3 Codex\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5.2: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.2.md\",\"label\":\"官方文档 · OpenAI · GPT-5.2（2025-12-11）（Markdown）\"}",
+          "new": "openai/gpt-5.2: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.2\",\"label\":\"官方文档 · OpenAI · GPT-5.2（2025-12-11）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5.2-pro: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.2-pro.md\",\"label\":\"官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）（Markdown）\"}",
+          "new": "openai/gpt-5.2-pro: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.2-pro\",\"label\":\"官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5.1: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.1.md\",\"label\":\"官方文档 · OpenAI · GPT-5.1（2025-11-13）（Markdown）\"}",
+          "new": "openai/gpt-5.1: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.1\",\"label\":\"官方文档 · OpenAI · GPT-5.1（2025-11-13）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5.md\",\"label\":\"官方文档 · OpenAI · GPT-5（2025-08-07）（Markdown）\"}",
+          "new": "openai/gpt-5: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5\",\"label\":\"官方文档 · OpenAI · GPT-5（2025-08-07）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5-mini: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5-mini.md\",\"label\":\"官方文档 · OpenAI · GPT 5 Mini（2025-08-07）（Markdown）\"}",
+          "new": "openai/gpt-5-mini: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5-mini\",\"label\":\"官方文档 · OpenAI · GPT 5 Mini（2025-08-07）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5-nano: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5-nano.md\",\"label\":\"官方文档 · OpenAI · GPT 5 Nano（2025-08-07）（Markdown）\"}",
+          "new": "openai/gpt-5-nano: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5-nano\",\"label\":\"官方文档 · OpenAI · GPT 5 Nano（2025-08-07）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-5-pro: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5-pro.md\",\"label\":\"官方文档 · OpenAI · GPT 5 Pro（2025-10-06）（Markdown）\"}",
+          "new": "openai/gpt-5-pro: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-5-pro\",\"label\":\"官方文档 · OpenAI · GPT 5 Pro（2025-10-06）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-4.1: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4.1.md\",\"label\":\"官方文档 · OpenAI · GPT-4.1（2025-04-14）（Markdown）\"}",
+          "new": "openai/gpt-4.1: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4.1\",\"label\":\"官方文档 · OpenAI · GPT-4.1（2025-04-14）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-4.1-mini: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4.1-mini.md\",\"label\":\"官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）（Markdown）\"}",
+          "new": "openai/gpt-4.1-mini: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4.1-mini\",\"label\":\"官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-4.1-nano: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4.1-nano.md\",\"label\":\"官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）（Markdown）\"}",
+          "new": "openai/gpt-4.1-nano: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4.1-nano\",\"label\":\"官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-4o: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4o.md\",\"label\":\"官方文档 · OpenAI · GPT-4o（2024-08-06）（Markdown）\"}",
+          "new": "openai/gpt-4o: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4o\",\"label\":\"官方文档 · OpenAI · GPT-4o（2024-08-06）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-4o-mini: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4o-mini.md\",\"label\":\"官方文档 · OpenAI · GPT 4o Mini（2024-07-18）（Markdown）\"}",
+          "new": "openai/gpt-4o-mini: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4o-mini\",\"label\":\"官方文档 · OpenAI · GPT 4o Mini（2024-07-18）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-4-turbo: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4-turbo.md\",\"label\":\"官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）（Markdown）\"}",
+          "new": "openai/gpt-4-turbo: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4-turbo\",\"label\":\"官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-4: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4.md\",\"label\":\"官方文档 · OpenAI · GPT-4（0613）（Markdown）\"}",
+          "new": "openai/gpt-4: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-4\",\"label\":\"官方文档 · OpenAI · GPT-4（0613）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-image-2: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-image-2.md\",\"label\":\"官方文档 · OpenAI · GPT Image 2（2026-04-21）（Markdown）\"}",
+          "new": "openai/gpt-image-2: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-image-2\",\"label\":\"官方文档 · OpenAI · GPT Image 2（2026-04-21）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-image-1.5: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-image-1.5.md\",\"label\":\"官方文档 · OpenAI · GPT Image 1.5（2025-12-16）（Markdown）\"}",
+          "new": "openai/gpt-image-1.5: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-image-1.5\",\"label\":\"官方文档 · OpenAI · GPT Image 1.5（2025-12-16）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-image-1: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-image-1.md\",\"label\":\"官方文档 · OpenAI · GPT Image 1（Markdown）\"}",
+          "new": "openai/gpt-image-1: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-image-1\",\"label\":\"官方文档 · OpenAI · GPT Image 1\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-image-1-mini: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-image-1-mini.md\",\"label\":\"官方文档 · OpenAI · GPT Image 1 Mini（Markdown）\"}",
+          "new": "openai/gpt-image-1-mini: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-image-1-mini\",\"label\":\"官方文档 · OpenAI · GPT Image 1 Mini\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/chat-latest: {\"url\":\"https://developers.openai.com/api/docs/models/chat-latest.md\",\"label\":\"官方文档 · OpenAI · Chat Latest（Markdown）\"}",
+          "new": "openai/chat-latest: {\"url\":\"https://developers.openai.com/api/docs/models/chat-latest\",\"label\":\"官方文档 · OpenAI · Chat Latest\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/chatgpt-image-latest: {\"url\":\"https://developers.openai.com/api/docs/models/chatgpt-image-latest.md\",\"label\":\"官方文档 · OpenAI · ChatGPT Image Latest（Markdown）\"}",
+          "new": "openai/chatgpt-image-latest: {\"url\":\"https://developers.openai.com/api/docs/models/chatgpt-image-latest\",\"label\":\"官方文档 · OpenAI · ChatGPT Image Latest\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/gpt-3.5-turbo: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-3.5-turbo.md\",\"label\":\"官方文档 · OpenAI · GPT 3.5 Turbo（0125）（Markdown）\"}",
+          "new": "openai/gpt-3.5-turbo: {\"url\":\"https://developers.openai.com/api/docs/models/gpt-3.5-turbo\",\"label\":\"官方文档 · OpenAI · GPT 3.5 Turbo（0125）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/o1: {\"url\":\"https://developers.openai.com/api/docs/models/o1.md\",\"label\":\"官方文档 · OpenAI · O1（2024-12-17）（Markdown）\"}",
+          "new": "openai/o1: {\"url\":\"https://developers.openai.com/api/docs/models/o1\",\"label\":\"官方文档 · OpenAI · O1（2024-12-17）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/o1-pro: {\"url\":\"https://developers.openai.com/api/docs/models/o1-pro.md\",\"label\":\"官方文档 · OpenAI · O1 Pro（2025-03-19）（Markdown）\"}",
+          "new": "openai/o1-pro: {\"url\":\"https://developers.openai.com/api/docs/models/o1-pro\",\"label\":\"官方文档 · OpenAI · O1 Pro（2025-03-19）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/o3: {\"url\":\"https://developers.openai.com/api/docs/models/o3.md\",\"label\":\"官方文档 · OpenAI · O3（2025-04-16）（Markdown）\"}",
+          "new": "openai/o3: {\"url\":\"https://developers.openai.com/api/docs/models/o3\",\"label\":\"官方文档 · OpenAI · O3（2025-04-16）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/o3-mini: {\"url\":\"https://developers.openai.com/api/docs/models/o3-mini.md\",\"label\":\"官方文档 · OpenAI · O3 Mini（2025-01-31）（Markdown）\"}",
+          "new": "openai/o3-mini: {\"url\":\"https://developers.openai.com/api/docs/models/o3-mini\",\"label\":\"官方文档 · OpenAI · O3 Mini（2025-01-31）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/o3-pro: {\"url\":\"https://developers.openai.com/api/docs/models/o3-pro.md\",\"label\":\"官方文档 · OpenAI · O3 Pro（2025-06-10）（Markdown）\"}",
+          "new": "openai/o3-pro: {\"url\":\"https://developers.openai.com/api/docs/models/o3-pro\",\"label\":\"官方文档 · OpenAI · O3 Pro（2025-06-10）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "openai/o4-mini: {\"url\":\"https://developers.openai.com/api/docs/models/o4-mini.md\",\"label\":\"官方文档 · OpenAI · O4 Mini（2025-04-16）（Markdown）\"}",
+          "new": "openai/o4-mini: {\"url\":\"https://developers.openai.com/api/docs/models/o4-mini\",\"label\":\"官方文档 · OpenAI · O4 Mini（2025-04-16）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4: {\"url\":\"https://fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4\",\"label\":\"官方文档 · Fireworks · Nemotron 3 Ultra Nvfp4（文档）\"}",
+          "new": "fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4: {\"url\":\"https://fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4\",\"label\":\"官方文档 · Fireworks · Nemotron 3 Ultra Nvfp4（模型库）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4: {\"url\":\"https://fireworks.ai/models/fireworks/step-3p7-flash-nvfp4\",\"label\":\"官方文档 · Fireworks · Step 3.7 Flash（NVFP4）（文档）\"}",
+          "new": "fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4: {\"url\":\"https://fireworks.ai/models/fireworks/step-3p7-flash-nvfp4\",\"label\":\"官方文档 · Fireworks · Step 3.7 Flash（NVFP4）（模型库）\"}",
+          "reason": "Frozen literal source object updated for an I3 human URL or meaningful page label. All 297 literal objects and the independent deep equality assertion remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f86f07ce175813ffc9823c4ace791e2d7eaf4ab2c46d780c7b3473db28b7b584"
+      "diffSha256": "98c07114058f65e5ca225fdaf3c1c9f04cc1da2596106ff67ac66a15ce32fe26"
     },
     {
       "file": "scripts/card-presentation-r22b.test.mjs",
@@ -20038,6 +20742,99 @@
         }
       ],
       "diffSha256": "4f61b9bf496d5d992121786b9e78569b886f34f3c39671b3fe1d512b540f6dab"
+    },
+    {
+      "file": "apps/web/tests/model-card-i2-r24.test.mjs",
+      "comparisonBase": "9a7128d6",
+      "changes": [
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "Ordered rendered URLs equal frozen pre-I3 URLs",
+          "new": "Ordered rendered URLs equal frozen URLs after the independent literal HTML mapping",
+          "reason": "Only documented Markdown replacements/removal and duplicate collapse are permitted; all 1064 identities/names, roles, title uniqueness, interactions and strict scans remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "Weak dialog CSS selectors; 2494 Web source anchors",
+          "new": "Specific dialog selectors with hover/focus hooks; 2450 Web source anchors",
+          "reason": "The new independent shipped-CSS test proves cascade precedence in both load orders. The 44-row decrease is exactly 43 Markdown duplicates plus one raw MiniMax document; Mini still has 1103 rows.",
+          "evidence": [
+            "apps/web/tests/model-card-i3-css-r24.test.mjs",
+            "docs/model-card-source-titles-r24.md"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "51ba214754c0febe419698ac38a999602de93d0c4ffd0282a6129806194027d2"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
+      "comparisonBase": "9a7128d6",
+      "changes": [
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "Ordered rendered URLs equal frozen pre-I3 URLs",
+          "new": "Ordered rendered URLs equal frozen URLs after the independent literal HTML mapping",
+          "reason": "Only documented Markdown replacements/removal and duplicate collapse are permitted; all 1064 identities/names, roles, title uniqueness, interactions and strict scans remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "a568288224f000413b9dc3693bde4154b632bf6e19b0be48e030ddb51e6e827c"
+    },
+    {
+      "file": "scripts/source-titles-r24.test.mjs",
+      "comparisonBase": "9a7128d6",
+      "changes": [
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "WENXINWORKSHOP page title 百度千帆 · 模型列表",
+          "new": "百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+          "reason": "A public documentation GET confirms that this legacy entry redirects to the Qianfan platform index. The captured current list remains independently labelled 模型列表.",
+          "evidence": [
+            "config/channel-audit/source-titles-r24-i3.json",
+            "docs/model-card-source-titles-r24.md"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "b62d09d065583140f9c56153af711c063ef4df78b1cdbcfd2fff24ab2579110a"
+    },
+    {
+      "file": "test-support/source-titles-r24.mjs",
+      "comparisonBase": "9a7128d6",
+      "changes": [
+        {
+          "phase": "R24 Phase I3",
+          "comparisonBase": "9a7128d6",
+          "line": 1,
+          "old": "Strip 文档/Markdown/counter qualifiers before scanning; ignore raw Markdown URLs",
+          "new": "Inspect qualifiers and reject counters/formats and raw Markdown/llms URLs",
+          "reason": "Closes the exact I2 blind spot. Real four-digit model/date codes are allowed only when independently present in the card identity; GitHub blob readers remain human.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "dcab355ea8a55a0d2ddb735888767060b6953c00471baaeba78314cbeaab4c75"
     }
   ]
 }

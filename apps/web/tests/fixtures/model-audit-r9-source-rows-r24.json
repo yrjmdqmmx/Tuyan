@@ -436,148 +436,148 @@
     "label": "官方文档 · 百炼 · 模型列表"
   },
   "openai/gpt-6-luna": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-6-luna.md",
-    "label": "官方文档 · OpenAI · GPT-6 Luna（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+    "label": "官方文档 · OpenAI · GPT-6 Luna"
   },
   "openai/gpt-6-sol": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-6-sol.md",
-    "label": "官方文档 · OpenAI · GPT-6 Sol（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-6-sol",
+    "label": "官方文档 · OpenAI · GPT-6 Sol"
   },
   "openai/gpt-image-2.5-flare": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare.md",
-    "label": "官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+    "label": "官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）"
   },
   "openai/gpt-image-2.5-sunburst": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst.md",
-    "label": "官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+    "label": "官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）"
   },
   "openai/gpt-6-astra": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-6-astra.md",
-    "label": "官方文档 · OpenAI · GPT-6 Astra（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+    "label": "官方文档 · OpenAI · GPT-6 Astra"
   },
   "openai/gpt-5.6-luna": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.6-luna.md",
-    "label": "官方文档 · OpenAI · GPT-5.6 Luna（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.6-luna",
+    "label": "官方文档 · OpenAI · GPT-5.6 Luna"
   },
   "openai/gpt-5.6-sol": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.6-sol.md",
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.6-sol",
     "label": "官方文档 · OpenAI · GPT-5.6 Sol"
   },
   "openai/gpt-5.6-terra": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.6-terra.md",
-    "label": "官方文档 · OpenAI · GPT-5.6 Terra（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.6-terra",
+    "label": "官方文档 · OpenAI · GPT-5.6 Terra"
   },
   "openai/gpt-5.5": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.5.md",
-    "label": "官方文档 · OpenAI · GPT-5.5（2026-04-23）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.5",
+    "label": "官方文档 · OpenAI · GPT-5.5（2026-04-23）"
   },
   "openai/gpt-5.5-pro": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.5-pro.md",
-    "label": "官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.5-pro",
+    "label": "官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）"
   },
   "openai/gpt-5.4": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.4.md",
-    "label": "官方文档 · OpenAI · GPT-5.4（2026-03-05）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.4",
+    "label": "官方文档 · OpenAI · GPT-5.4（2026-03-05）"
   },
   "openai/gpt-5.4-mini": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.4-mini.md",
-    "label": "官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.4-mini",
+    "label": "官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）"
   },
   "openai/gpt-5.4-nano": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.4-nano.md",
-    "label": "官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.4-nano",
+    "label": "官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）"
   },
   "openai/gpt-5.4-pro": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.4-pro.md",
-    "label": "官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.4-pro",
+    "label": "官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）"
   },
   "openai/gpt-5.3-codex": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.3-codex.md",
-    "label": "官方文档 · OpenAI · GPT 5.3 Codex（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.3-codex",
+    "label": "官方文档 · OpenAI · GPT 5.3 Codex"
   },
   "openai/gpt-5.2": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.2.md",
-    "label": "官方文档 · OpenAI · GPT-5.2（2025-12-11）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.2",
+    "label": "官方文档 · OpenAI · GPT-5.2（2025-12-11）"
   },
   "openai/gpt-5.2-pro": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.2-pro.md",
-    "label": "官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.2-pro",
+    "label": "官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）"
   },
   "openai/gpt-5.1": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.1.md",
-    "label": "官方文档 · OpenAI · GPT-5.1（2025-11-13）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.1",
+    "label": "官方文档 · OpenAI · GPT-5.1（2025-11-13）"
   },
   "openai/gpt-5": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5.md",
-    "label": "官方文档 · OpenAI · GPT-5（2025-08-07）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5",
+    "label": "官方文档 · OpenAI · GPT-5（2025-08-07）"
   },
   "openai/gpt-5-mini": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5-mini.md",
-    "label": "官方文档 · OpenAI · GPT 5 Mini（2025-08-07）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5-mini",
+    "label": "官方文档 · OpenAI · GPT 5 Mini（2025-08-07）"
   },
   "openai/gpt-5-nano": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5-nano.md",
-    "label": "官方文档 · OpenAI · GPT 5 Nano（2025-08-07）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5-nano",
+    "label": "官方文档 · OpenAI · GPT 5 Nano（2025-08-07）"
   },
   "openai/gpt-5-pro": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-5-pro.md",
-    "label": "官方文档 · OpenAI · GPT 5 Pro（2025-10-06）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-5-pro",
+    "label": "官方文档 · OpenAI · GPT 5 Pro（2025-10-06）"
   },
   "openai/gpt-4.1": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-4.1.md",
-    "label": "官方文档 · OpenAI · GPT-4.1（2025-04-14）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-4.1",
+    "label": "官方文档 · OpenAI · GPT-4.1（2025-04-14）"
   },
   "openai/gpt-4.1-mini": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-4.1-mini.md",
-    "label": "官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+    "label": "官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）"
   },
   "openai/gpt-4.1-nano": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-4.1-nano.md",
-    "label": "官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
+    "label": "官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）"
   },
   "openai/gpt-4o": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-4o.md",
-    "label": "官方文档 · OpenAI · GPT-4o（2024-08-06）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-4o",
+    "label": "官方文档 · OpenAI · GPT-4o（2024-08-06）"
   },
   "openai/gpt-4o-mini": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-4o-mini.md",
-    "label": "官方文档 · OpenAI · GPT 4o Mini（2024-07-18）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-4o-mini",
+    "label": "官方文档 · OpenAI · GPT 4o Mini（2024-07-18）"
   },
   "openai/gpt-4-turbo": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-4-turbo.md",
-    "label": "官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-4-turbo",
+    "label": "官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）"
   },
   "openai/gpt-4": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-4.md",
-    "label": "官方文档 · OpenAI · GPT-4（0613）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-4",
+    "label": "官方文档 · OpenAI · GPT-4（0613）"
   },
   "openai/gpt-image-2": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-image-2.md",
-    "label": "官方文档 · OpenAI · GPT Image 2（2026-04-21）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+    "label": "官方文档 · OpenAI · GPT Image 2（2026-04-21）"
   },
   "openai/gpt-image-1.5": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-image-1.5.md",
-    "label": "官方文档 · OpenAI · GPT Image 1.5（2025-12-16）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+    "label": "官方文档 · OpenAI · GPT Image 1.5（2025-12-16）"
   },
   "openai/gpt-image-1": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-image-1.md",
-    "label": "官方文档 · OpenAI · GPT Image 1（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-1",
+    "label": "官方文档 · OpenAI · GPT Image 1"
   },
   "openai/gpt-image-1-mini": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-image-1-mini.md",
-    "label": "官方文档 · OpenAI · GPT Image 1 Mini（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-1-mini",
+    "label": "官方文档 · OpenAI · GPT Image 1 Mini"
   },
   "openai/chat-latest": {
-    "url": "https://developers.openai.com/api/docs/models/chat-latest.md",
-    "label": "官方文档 · OpenAI · Chat Latest（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/chat-latest",
+    "label": "官方文档 · OpenAI · Chat Latest"
   },
   "openai/chatgpt-image-latest": {
-    "url": "https://developers.openai.com/api/docs/models/chatgpt-image-latest.md",
-    "label": "官方文档 · OpenAI · ChatGPT Image Latest（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/chatgpt-image-latest",
+    "label": "官方文档 · OpenAI · ChatGPT Image Latest"
   },
   "openai/gpt-3.5-turbo": {
-    "url": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo.md",
-    "label": "官方文档 · OpenAI · GPT 3.5 Turbo（0125）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo",
+    "label": "官方文档 · OpenAI · GPT 3.5 Turbo（0125）"
   },
   "openai/gpt-image-2.6-flare": {
     "url": "https://developers.openai.com/api/docs/models/gpt-image-2.6-flare",
@@ -588,28 +588,28 @@
     "label": "官方文档 · OpenAI · GPT Image 2.6 Sunburst"
   },
   "openai/o1": {
-    "url": "https://developers.openai.com/api/docs/models/o1.md",
-    "label": "官方文档 · OpenAI · O1（2024-12-17）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/o1",
+    "label": "官方文档 · OpenAI · O1（2024-12-17）"
   },
   "openai/o1-pro": {
-    "url": "https://developers.openai.com/api/docs/models/o1-pro.md",
-    "label": "官方文档 · OpenAI · O1 Pro（2025-03-19）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/o1-pro",
+    "label": "官方文档 · OpenAI · O1 Pro（2025-03-19）"
   },
   "openai/o3": {
-    "url": "https://developers.openai.com/api/docs/models/o3.md",
-    "label": "官方文档 · OpenAI · O3（2025-04-16）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/o3",
+    "label": "官方文档 · OpenAI · O3（2025-04-16）"
   },
   "openai/o3-mini": {
-    "url": "https://developers.openai.com/api/docs/models/o3-mini.md",
-    "label": "官方文档 · OpenAI · O3 Mini（2025-01-31）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/o3-mini",
+    "label": "官方文档 · OpenAI · O3 Mini（2025-01-31）"
   },
   "openai/o3-pro": {
-    "url": "https://developers.openai.com/api/docs/models/o3-pro.md",
-    "label": "官方文档 · OpenAI · O3 Pro（2025-06-10）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/o3-pro",
+    "label": "官方文档 · OpenAI · O3 Pro（2025-06-10）"
   },
   "openai/o4-mini": {
-    "url": "https://developers.openai.com/api/docs/models/o4-mini.md",
-    "label": "官方文档 · OpenAI · O4 Mini（2025-04-16）（Markdown）"
+    "url": "https://developers.openai.com/api/docs/models/o4-mini",
+    "label": "官方文档 · OpenAI · O4 Mini（2025-04-16）"
   },
   "ideogram/ideogram-v4": {
     "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
@@ -665,7 +665,7 @@
   },
   "fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4": {
     "url": "https://fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4",
-    "label": "官方文档 · Fireworks · Nemotron 3 Ultra Nvfp4（文档）"
+    "label": "官方文档 · Fireworks · Nemotron 3 Ultra Nvfp4（模型库）"
   },
   "fireworks/accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b": {
     "url": "https://fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b",
@@ -681,7 +681,7 @@
   },
   "fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4": {
     "url": "https://fireworks.ai/models/fireworks/step-3p7-flash-nvfp4",
-    "label": "官方文档 · Fireworks · Step 3.7 Flash（NVFP4）（文档）"
+    "label": "官方文档 · Fireworks · Step 3.7 Flash（NVFP4）（模型库）"
   },
   "fal/alibaba/qwen-image-3/text-to-image": {
     "url": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image",

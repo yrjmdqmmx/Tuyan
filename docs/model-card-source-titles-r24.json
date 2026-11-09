@@ -58249,5 +58249,4684 @@
         ]
       }
     }
-  ]
+  ],
+  "I3": {
+    "phase": "R24 Phase I3",
+    "baseline": "9a7128d613c339a999dad1e7dad50affe1ea230d",
+    "baselineSha256": "b6ab1064098c5d9baf8b743bbd3896f386caafeb4357466a63194c53ab8a8aa0",
+    "rule": "Require role · curated site · readable page. Reject opaque mixed letter/digit IDs, news/anchor fragments, site suffixes, lowercase or kebab/snake slugs, raw hosts/API paths, empty or leftover separators, repeated page brands, missing segments, and collapsed/split/hyphenated dotted versions. Reject counter-only and format-only qualifiers including （文档）, （文档 2）, （Markdown）; meaningful interface versions, languages and release codes remain valid. Genuine model/version/date hyphens remain valid; picker spelling is not an exemption for source slugs.",
+    "counts": {
+      "web": {
+        "hiddenMachineRows": 1,
+        "cards": 1064,
+        "sourceRowsBefore": 2494,
+        "sourceRows": 2450,
+        "changedRows": 310,
+        "renamedRows": 265,
+        "htmlReplacements": 44,
+        "titles": {
+          "before": {
+            "findings": 318,
+            "affectedCards": 153,
+            "byRule": {
+              "machine document link": 45,
+              "meaningless counter or format qualifier": 273
+            }
+          },
+          "after": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          }
+        },
+        "dialogs": {
+          "before": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          },
+          "after": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          }
+        }
+      },
+      "mini": {
+        "hiddenMachineRows": 0,
+        "cards": 1064,
+        "sourceRowsBefore": 1103,
+        "sourceRows": 1103,
+        "changedRows": 77,
+        "renamedRows": 33,
+        "htmlReplacements": 44,
+        "titles": {
+          "before": {
+            "findings": 44,
+            "affectedCards": 44,
+            "byRule": {
+              "machine document link": 44
+            }
+          },
+          "after": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          }
+        },
+        "dialogs": {
+          "before": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          },
+          "after": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          }
+        }
+      },
+      "notices": {
+        "hiddenMachineRows": 0,
+        "cards": 7,
+        "sourceRowsBefore": 7,
+        "sourceRows": 7,
+        "changedRows": 0,
+        "renamedRows": 0,
+        "htmlReplacements": 0,
+        "titles": {
+          "before": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          },
+          "after": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          }
+        },
+        "dialogs": {
+          "before": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          },
+          "after": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          }
+        }
+      }
+    },
+    "changes": [
+      {
+        "client": "web",
+        "card": "kimi/kimi-k2.7-code-highspeed",
+        "url": "https://www.kimi.com/code/docs/en/kimi-code/models",
+        "afterUrl": "https://www.kimi.com/code/docs/en/kimi-code/models",
+        "before": "官方文档 · Kimi · 模型列表（英文）",
+        "after": "官方文档 · Kimi · 模型列表（Kimi Code，英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "kimi/kimi-k2.7-code-highspeed",
+        "url": "https://platform.kimi.com/docs/models",
+        "afterUrl": "https://platform.kimi.com/docs/models",
+        "before": "官方文档 · Kimi · 模型列表（文档）",
+        "after": "官方文档 · Kimi · 模型列表（开放平台）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-4.5",
+        "url": "https://docs.x.ai/docs/models",
+        "afterUrl": "https://docs.x.ai/docs/models",
+        "before": "官方文档 · xAI · 模型列表（文档）",
+        "after": "官方文档 · xAI · 模型列表（模型指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-4.5",
+        "url": "https://docs.x.ai/developers/models",
+        "afterUrl": "https://docs.x.ai/developers/models",
+        "before": "官方文档 · xAI · 模型列表（文档 2）",
+        "after": "官方文档 · xAI · 模型列表（开发者指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-4.3",
+        "url": "https://docs.x.ai/docs/models",
+        "afterUrl": "https://docs.x.ai/docs/models",
+        "before": "官方文档 · xAI · 模型列表（文档）",
+        "after": "官方文档 · xAI · 模型列表（模型指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-4.3",
+        "url": "https://docs.x.ai/developers/models",
+        "afterUrl": "https://docs.x.ai/developers/models",
+        "before": "官方文档 · xAI · 模型列表（文档 2）",
+        "after": "官方文档 · xAI · 模型列表（开发者指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-4.20-0309-non-reasoning",
+        "url": "https://docs.x.ai/docs/models",
+        "afterUrl": "https://docs.x.ai/docs/models",
+        "before": "官方文档 · xAI · 模型列表（文档）",
+        "after": "官方文档 · xAI · 模型列表（模型指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-4.20-0309-non-reasoning",
+        "url": "https://docs.x.ai/developers/models",
+        "afterUrl": "https://docs.x.ai/developers/models",
+        "before": "官方文档 · xAI · 模型列表（文档 2）",
+        "after": "官方文档 · xAI · 模型列表（开发者指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-4.20-0309-reasoning",
+        "url": "https://docs.x.ai/docs/models",
+        "afterUrl": "https://docs.x.ai/docs/models",
+        "before": "官方文档 · xAI · 模型列表（文档）",
+        "after": "官方文档 · xAI · 模型列表（模型指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-4.20-0309-reasoning",
+        "url": "https://docs.x.ai/developers/models",
+        "afterUrl": "https://docs.x.ai/developers/models",
+        "before": "官方文档 · xAI · 模型列表（文档 2）",
+        "after": "官方文档 · xAI · 模型列表（开发者指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-4.20-multi-agent",
+        "url": "https://docs.x.ai/docs/models",
+        "afterUrl": "https://docs.x.ai/docs/models",
+        "before": "官方文档 · xAI · 模型列表（文档）",
+        "after": "官方文档 · xAI · 模型列表（模型指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-4.20-multi-agent",
+        "url": "https://docs.x.ai/developers/models",
+        "afterUrl": "https://docs.x.ai/developers/models",
+        "before": "官方文档 · xAI · 模型列表（文档 2）",
+        "after": "官方文档 · xAI · 模型列表（开发者指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-4.20-multi-agent-0309",
+        "url": "https://docs.x.ai/docs/models",
+        "afterUrl": "https://docs.x.ai/docs/models",
+        "before": "官方文档 · xAI · 模型列表（文档）",
+        "after": "官方文档 · xAI · 模型列表（模型指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-4.20-multi-agent-0309",
+        "url": "https://docs.x.ai/developers/models",
+        "afterUrl": "https://docs.x.ai/developers/models",
+        "before": "官方文档 · xAI · 模型列表（文档 2）",
+        "after": "官方文档 · xAI · 模型列表（开发者指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-imagine-image-2.0",
+        "url": "https://docs.x.ai/docs/models",
+        "afterUrl": "https://docs.x.ai/docs/models",
+        "before": "官方文档 · xAI · 模型列表（文档）",
+        "after": "官方文档 · xAI · 模型列表（模型指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-imagine-image-2.0",
+        "url": "https://docs.x.ai/developers/models",
+        "afterUrl": "https://docs.x.ai/developers/models",
+        "before": "官方文档 · xAI · 模型列表（文档 2）",
+        "after": "官方文档 · xAI · 模型列表（开发者指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-imagine-image",
+        "url": "https://docs.x.ai/docs/models",
+        "afterUrl": "https://docs.x.ai/docs/models",
+        "before": "官方文档 · xAI · 模型列表（文档）",
+        "after": "官方文档 · xAI · 模型列表（模型指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-imagine-image",
+        "url": "https://docs.x.ai/developers/models",
+        "afterUrl": "https://docs.x.ai/developers/models",
+        "before": "官方文档 · xAI · 模型列表（文档 2）",
+        "after": "官方文档 · xAI · 模型列表（开发者指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-imagine-image-quality",
+        "url": "https://docs.x.ai/developers/models/grok-imagine-image-quality",
+        "afterUrl": "https://docs.x.ai/developers/models/grok-imagine-image-quality",
+        "before": "官方文档 · xAI · Grok Imagine Image Quality（文档）",
+        "after": "官方文档 · xAI · Grok Imagine Image Quality（开发者指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-imagine-image-quality",
+        "url": "https://docs.x.ai/docs/models/grok-imagine-image-quality",
+        "afterUrl": "https://docs.x.ai/docs/models/grok-imagine-image-quality",
+        "before": "官方文档 · xAI · Grok Imagine Image Quality（文档 2）",
+        "after": "官方文档 · xAI · Grok Imagine Image Quality（模型指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-build-0.1",
+        "url": "https://docs.x.ai/developers/models/grok-build-0.1",
+        "afterUrl": "https://docs.x.ai/developers/models/grok-build-0.1",
+        "before": "官方文档 · xAI · Grok Build 0.1（文档）",
+        "after": "官方文档 · xAI · Grok Build 0.1（开发者指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "xai/grok-build-0.1",
+        "url": "https://docs.x.ai/docs/models/grok-build-0.1",
+        "afterUrl": "https://docs.x.ai/docs/models/grok-build-0.1",
+        "before": "官方文档 · xAI · Grok Build 0.1（文档 2）",
+        "after": "官方文档 · xAI · Grok Build 0.1（模型指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/MiniMax/MiniMax-M3",
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/zh/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（文档）",
+        "after": "官方文档 · 百炼 · 模型列表（中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/MiniMax/MiniMax-M3",
+        "url": "https://help.aliyun.com/en/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/en/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（英文）",
+        "after": "官方文档 · 百炼 · 模型列表（英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/qwen-image-3.0-pro",
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/zh/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（文档）",
+        "after": "官方文档 · 百炼 · 模型列表（中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/qwen-image-3.0-pro",
+        "url": "https://help.aliyun.com/en/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/en/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（英文）",
+        "after": "官方文档 · 百炼 · 模型列表（英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/qwen3.7-flash",
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/zh/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（文档）",
+        "after": "官方文档 · 百炼 · 模型列表（中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/qwen3.7-flash",
+        "url": "https://help.aliyun.com/en/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/en/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（英文）",
+        "after": "官方文档 · 百炼 · 模型列表（英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/deepseek-v4-pro",
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/zh/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（文档）",
+        "after": "官方文档 · 百炼 · 模型列表（中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/deepseek-v4-pro",
+        "url": "https://help.aliyun.com/en/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/en/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（英文）",
+        "after": "官方文档 · 百炼 · 模型列表（英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/glm-5.2",
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/zh/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（文档）",
+        "after": "官方文档 · 百炼 · 模型列表（中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/glm-5.2",
+        "url": "https://help.aliyun.com/en/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/en/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（英文）",
+        "after": "官方文档 · 百炼 · 模型列表（英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/kimi/kimi-k3",
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/zh/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（文档）",
+        "after": "官方文档 · 百炼 · 模型列表（中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/kimi/kimi-k3",
+        "url": "https://help.aliyun.com/en/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/en/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（英文）",
+        "after": "官方文档 · 百炼 · 模型列表（英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/qwen-image-2.0",
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/zh/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（文档）",
+        "after": "官方文档 · 百炼 · 模型列表（中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/qwen-image-2.0",
+        "url": "https://help.aliyun.com/en/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/en/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（英文）",
+        "after": "官方文档 · 百炼 · 模型列表（英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/qwen-image-2.0-pro",
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/zh/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（文档）",
+        "after": "官方文档 · 百炼 · 模型列表（中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/qwen-image-2.0-pro",
+        "url": "https://help.aliyun.com/en/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/en/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（英文）",
+        "after": "官方文档 · 百炼 · 模型列表（英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/qwen3.7-plus",
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/zh/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（文档）",
+        "after": "官方文档 · 百炼 · 模型列表（中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/qwen3.7-plus",
+        "url": "https://help.aliyun.com/en/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/en/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（英文）",
+        "after": "官方文档 · 百炼 · 模型列表（英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/wan2.7-image",
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/zh/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（文档）",
+        "after": "官方文档 · 百炼 · 模型列表（中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/wan2.7-image",
+        "url": "https://help.aliyun.com/en/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/en/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（英文）",
+        "after": "官方文档 · 百炼 · 模型列表（英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/wan2.7-image-pro",
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/zh/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（文档）",
+        "after": "官方文档 · 百炼 · 模型列表（中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/wan2.7-image-pro",
+        "url": "https://help.aliyun.com/en/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/en/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（英文）",
+        "after": "官方文档 · 百炼 · 模型列表（英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/z-image-turbo",
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/zh/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（文档）",
+        "after": "官方文档 · 百炼 · 模型列表（中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "bailian/z-image-turbo",
+        "url": "https://help.aliyun.com/en/model-studio/models",
+        "afterUrl": "https://help.aliyun.com/en/model-studio/models",
+        "before": "官方文档 · 百炼 · 模型列表（英文）",
+        "after": "官方文档 · 百炼 · 模型列表（英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-6-luna",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6-luna.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+        "before": "官方文档 · OpenAI · GPT-6 Luna（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-6 Luna",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-6-luna",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+        "before": "官方文档 · OpenAI · GPT-6 Luna（文档）",
+        "after": "官方文档 · OpenAI · GPT-6 Luna",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-6-sol",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6-sol.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-6-sol",
+        "before": "官方文档 · OpenAI · GPT-6 Sol（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-6 Sol",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-6-sol",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6-sol",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-6-sol",
+        "before": "官方文档 · OpenAI · GPT-6 Sol（文档）",
+        "after": "官方文档 · OpenAI · GPT-6 Sol",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-image-2.5-flare",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        "before": "官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-image-2.5-flare",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        "before": "官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）（文档）",
+        "after": "官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-image-2.5-sunburst",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+        "before": "官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-image-2.5-sunburst",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+        "before": "官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）（文档）",
+        "after": "官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-6-astra",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6-astra.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+        "before": "官方文档 · OpenAI · GPT-6 Astra（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-6 Astra",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-6-astra",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+        "before": "官方文档 · OpenAI · GPT-6 Astra（文档）",
+        "after": "官方文档 · OpenAI · GPT-6 Astra",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.6-luna",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.6-luna.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-luna",
+        "before": "官方文档 · OpenAI · GPT-5.6 Luna（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-5.6 Luna",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.6-luna",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.6-luna",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-luna",
+        "before": "官方文档 · OpenAI · GPT-5.6 Luna（文档）",
+        "after": "官方文档 · OpenAI · GPT-5.6 Luna",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.6-sol",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.6-sol.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-sol",
+        "before": "官方文档 · OpenAI · GPT-5.6 Sol",
+        "after": "官方文档 · OpenAI · GPT-5.6 Sol",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.6-terra",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.6-terra.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-terra",
+        "before": "官方文档 · OpenAI · GPT-5.6 Terra（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-5.6 Terra",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.6-terra",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.6-terra",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-terra",
+        "before": "官方文档 · OpenAI · GPT-5.6 Terra（文档）",
+        "after": "官方文档 · OpenAI · GPT-5.6 Terra",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.5",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.5.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.5",
+        "before": "官方文档 · OpenAI · GPT-5.5（2026-04-23）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-5.5（2026-04-23）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.5",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.5",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.5",
+        "before": "官方文档 · OpenAI · GPT-5.5（2026-04-23）（文档）",
+        "after": "官方文档 · OpenAI · GPT-5.5（2026-04-23）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.5-pro",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.5-pro.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.5-pro",
+        "before": "官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.5-pro",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.5-pro",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.5-pro",
+        "before": "官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）（文档）",
+        "after": "官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.4",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.4.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.4",
+        "before": "官方文档 · OpenAI · GPT-5.4（2026-03-05）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-5.4（2026-03-05）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.4",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.4",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.4",
+        "before": "官方文档 · OpenAI · GPT-5.4（2026-03-05）（文档）",
+        "after": "官方文档 · OpenAI · GPT-5.4（2026-03-05）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.4-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.4-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-mini",
+        "before": "官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.4-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.4-mini",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-mini",
+        "before": "官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）（文档）",
+        "after": "官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.4-nano",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.4-nano.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-nano",
+        "before": "官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.4-nano",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.4-nano",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-nano",
+        "before": "官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）（文档）",
+        "after": "官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.4-pro",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.4-pro.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-pro",
+        "before": "官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.4-pro",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.4-pro",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-pro",
+        "before": "官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）（文档）",
+        "after": "官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.3-codex",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.3-codex.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.3-codex",
+        "before": "官方文档 · OpenAI · GPT 5.3 Codex（Markdown）",
+        "after": "官方文档 · OpenAI · GPT 5.3 Codex",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.3-codex",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.3-codex",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.3-codex",
+        "before": "官方文档 · OpenAI · GPT 5.3 Codex（文档）",
+        "after": "官方文档 · OpenAI · GPT 5.3 Codex",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.2",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.2.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.2",
+        "before": "官方文档 · OpenAI · GPT-5.2（2025-12-11）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-5.2（2025-12-11）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.2",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.2",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.2",
+        "before": "官方文档 · OpenAI · GPT-5.2（2025-12-11）（文档）",
+        "after": "官方文档 · OpenAI · GPT-5.2（2025-12-11）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.2-pro",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.2-pro.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.2-pro",
+        "before": "官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.2-pro",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.2-pro",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.2-pro",
+        "before": "官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）（文档）",
+        "after": "官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.1",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.1.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.1",
+        "before": "官方文档 · OpenAI · GPT-5.1（2025-11-13）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-5.1（2025-11-13）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5.1",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.1",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.1",
+        "before": "官方文档 · OpenAI · GPT-5.1（2025-11-13）（文档）",
+        "after": "官方文档 · OpenAI · GPT-5.1（2025-11-13）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5",
+        "before": "官方文档 · OpenAI · GPT-5（2025-08-07）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-5（2025-08-07）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5",
+        "before": "官方文档 · OpenAI · GPT-5（2025-08-07）（文档）",
+        "after": "官方文档 · OpenAI · GPT-5（2025-08-07）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5-mini",
+        "before": "官方文档 · OpenAI · GPT 5 Mini（2025-08-07）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT 5 Mini（2025-08-07）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5-mini",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5-mini",
+        "before": "官方文档 · OpenAI · GPT 5 Mini（2025-08-07）（文档）",
+        "after": "官方文档 · OpenAI · GPT 5 Mini（2025-08-07）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5-nano",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5-nano.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5-nano",
+        "before": "官方文档 · OpenAI · GPT 5 Nano（2025-08-07）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT 5 Nano（2025-08-07）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5-nano",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5-nano",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5-nano",
+        "before": "官方文档 · OpenAI · GPT 5 Nano（2025-08-07）（文档）",
+        "after": "官方文档 · OpenAI · GPT 5 Nano（2025-08-07）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5-pro",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5-pro.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5-pro",
+        "before": "官方文档 · OpenAI · GPT 5 Pro（2025-10-06）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT 5 Pro（2025-10-06）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-5-pro",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5-pro",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5-pro",
+        "before": "官方文档 · OpenAI · GPT 5 Pro（2025-10-06）（文档）",
+        "after": "官方文档 · OpenAI · GPT 5 Pro（2025-10-06）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4.1",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4.1.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4.1",
+        "before": "官方文档 · OpenAI · GPT-4.1（2025-04-14）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-4.1（2025-04-14）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4.1",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4.1",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4.1",
+        "before": "官方文档 · OpenAI · GPT-4.1（2025-04-14）（文档）",
+        "after": "官方文档 · OpenAI · GPT-4.1（2025-04-14）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4.1-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4.1-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+        "before": "官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4.1-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+        "before": "官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）（文档）",
+        "after": "官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4.1-nano",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4.1-nano.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
+        "before": "官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4.1-nano",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
+        "before": "官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）（文档）",
+        "after": "官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4o",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4o.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4o",
+        "before": "官方文档 · OpenAI · GPT-4o（2024-08-06）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-4o（2024-08-06）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4o",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4o",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4o",
+        "before": "官方文档 · OpenAI · GPT-4o（2024-08-06）（文档）",
+        "after": "官方文档 · OpenAI · GPT-4o（2024-08-06）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4o-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4o-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4o-mini",
+        "before": "官方文档 · OpenAI · GPT 4o Mini（2024-07-18）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT 4o Mini（2024-07-18）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4o-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4o-mini",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4o-mini",
+        "before": "官方文档 · OpenAI · GPT 4o Mini（2024-07-18）（文档）",
+        "after": "官方文档 · OpenAI · GPT 4o Mini（2024-07-18）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4-turbo",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4-turbo.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4-turbo",
+        "before": "官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4-turbo",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4-turbo",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4-turbo",
+        "before": "官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）（文档）",
+        "after": "官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4",
+        "before": "官方文档 · OpenAI · GPT-4（0613）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT-4（0613）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-4",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4",
+        "before": "官方文档 · OpenAI · GPT-4（0613）（文档）",
+        "after": "官方文档 · OpenAI · GPT-4（0613）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-image-2",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-2",
+        "before": "官方文档 · OpenAI · GPT Image 2（2026-04-21）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT Image 2（2026-04-21）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-image-2",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-2",
+        "before": "官方文档 · OpenAI · GPT Image 2（2026-04-21）（文档）",
+        "after": "官方文档 · OpenAI · GPT Image 2（2026-04-21）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-image-1.5",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1.5.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+        "before": "官方文档 · OpenAI · GPT Image 1.5（2025-12-16）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT Image 1.5（2025-12-16）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-image-1.5",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+        "before": "官方文档 · OpenAI · GPT Image 1.5（2025-12-16）（文档）",
+        "after": "官方文档 · OpenAI · GPT Image 1.5（2025-12-16）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-image-1",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-1",
+        "before": "官方文档 · OpenAI · GPT Image 1（Markdown）",
+        "after": "官方文档 · OpenAI · GPT Image 1",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-image-1",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-1",
+        "before": "官方文档 · OpenAI · GPT Image 1（文档）",
+        "after": "官方文档 · OpenAI · GPT Image 1",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-image-1-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-1-mini",
+        "before": "官方文档 · OpenAI · GPT Image 1 Mini（Markdown）",
+        "after": "官方文档 · OpenAI · GPT Image 1 Mini",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-image-1-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1-mini",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-1-mini",
+        "before": "官方文档 · OpenAI · GPT Image 1 Mini（文档）",
+        "after": "官方文档 · OpenAI · GPT Image 1 Mini",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/chat-latest",
+        "url": "https://developers.openai.com/api/docs/models/chat-latest.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/chat-latest",
+        "before": "官方文档 · OpenAI · Chat Latest（Markdown）",
+        "after": "官方文档 · OpenAI · Chat Latest",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/chat-latest",
+        "url": "https://developers.openai.com/api/docs/models/chat-latest",
+        "afterUrl": "https://developers.openai.com/api/docs/models/chat-latest",
+        "before": "官方文档 · OpenAI · Chat Latest（文档）",
+        "after": "官方文档 · OpenAI · Chat Latest",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/chatgpt-image-latest",
+        "url": "https://developers.openai.com/api/docs/models/chatgpt-image-latest.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/chatgpt-image-latest",
+        "before": "官方文档 · OpenAI · ChatGPT Image Latest（Markdown）",
+        "after": "官方文档 · OpenAI · ChatGPT Image Latest",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/chatgpt-image-latest",
+        "url": "https://developers.openai.com/api/docs/models/chatgpt-image-latest",
+        "afterUrl": "https://developers.openai.com/api/docs/models/chatgpt-image-latest",
+        "before": "官方文档 · OpenAI · ChatGPT Image Latest（文档）",
+        "after": "官方文档 · OpenAI · ChatGPT Image Latest",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-3.5-turbo",
+        "url": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo",
+        "before": "官方文档 · OpenAI · GPT 3.5 Turbo（0125）（Markdown）",
+        "after": "官方文档 · OpenAI · GPT 3.5 Turbo（0125）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/gpt-3.5-turbo",
+        "url": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo",
+        "before": "官方文档 · OpenAI · GPT 3.5 Turbo（0125）（文档）",
+        "after": "官方文档 · OpenAI · GPT 3.5 Turbo（0125）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/o1",
+        "url": "https://developers.openai.com/api/docs/models/o1.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o1",
+        "before": "官方文档 · OpenAI · O1（2024-12-17）（Markdown）",
+        "after": "官方文档 · OpenAI · O1（2024-12-17）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/o1",
+        "url": "https://developers.openai.com/api/docs/models/o1",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o1",
+        "before": "官方文档 · OpenAI · O1（2024-12-17）（文档）",
+        "after": "官方文档 · OpenAI · O1（2024-12-17）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/o1-pro",
+        "url": "https://developers.openai.com/api/docs/models/o1-pro.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o1-pro",
+        "before": "官方文档 · OpenAI · O1 Pro（2025-03-19）（Markdown）",
+        "after": "官方文档 · OpenAI · O1 Pro（2025-03-19）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/o1-pro",
+        "url": "https://developers.openai.com/api/docs/models/o1-pro",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o1-pro",
+        "before": "官方文档 · OpenAI · O1 Pro（2025-03-19）（文档）",
+        "after": "官方文档 · OpenAI · O1 Pro（2025-03-19）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/o3",
+        "url": "https://developers.openai.com/api/docs/models/o3.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o3",
+        "before": "官方文档 · OpenAI · O3（2025-04-16）（Markdown）",
+        "after": "官方文档 · OpenAI · O3（2025-04-16）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/o3",
+        "url": "https://developers.openai.com/api/docs/models/o3",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o3",
+        "before": "官方文档 · OpenAI · O3（2025-04-16）（文档）",
+        "after": "官方文档 · OpenAI · O3（2025-04-16）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/o3-mini",
+        "url": "https://developers.openai.com/api/docs/models/o3-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o3-mini",
+        "before": "官方文档 · OpenAI · O3 Mini（2025-01-31）（Markdown）",
+        "after": "官方文档 · OpenAI · O3 Mini（2025-01-31）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/o3-mini",
+        "url": "https://developers.openai.com/api/docs/models/o3-mini",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o3-mini",
+        "before": "官方文档 · OpenAI · O3 Mini（2025-01-31）（文档）",
+        "after": "官方文档 · OpenAI · O3 Mini（2025-01-31）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/o3-pro",
+        "url": "https://developers.openai.com/api/docs/models/o3-pro.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o3-pro",
+        "before": "官方文档 · OpenAI · O3 Pro（2025-06-10）（Markdown）",
+        "after": "官方文档 · OpenAI · O3 Pro（2025-06-10）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/o3-pro",
+        "url": "https://developers.openai.com/api/docs/models/o3-pro",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o3-pro",
+        "before": "官方文档 · OpenAI · O3 Pro（2025-06-10）（文档）",
+        "after": "官方文档 · OpenAI · O3 Pro（2025-06-10）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "openai/o4-mini",
+        "url": "https://developers.openai.com/api/docs/models/o4-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o4-mini",
+        "before": "官方文档 · OpenAI · O4 Mini（2025-04-16）（Markdown）",
+        "after": "官方文档 · OpenAI · O4 Mini（2025-04-16）",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "openai/o4-mini",
+        "url": "https://developers.openai.com/api/docs/models/o4-mini",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o4-mini",
+        "before": "官方文档 · OpenAI · O4 Mini（2025-04-16）（文档）",
+        "after": "官方文档 · OpenAI · O4 Mini（2025-04-16）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/deepseek-v4-1-flash-260910",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/deepseek-v4-flash-260425",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/deepseek-v4-flash-ga-260731",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/deepseek-v4-pro-260425",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/deepseek-v4-pro-ga-260813",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-1-pro-260628",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-1-pro-260915",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-1-turbo-260628",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-code-preview-260215",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-code-preview-260215",
+        "url": "https://docs.volcengine.com/docs/82379/1330310?lang=zh",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310?lang=zh",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档，中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-lite-260215",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-lite-260215",
+        "url": "https://docs.volcengine.com/docs/82379/1330310?lang=zh",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310?lang=zh",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档，中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-lite-260428",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-mini-260215",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-mini-260215",
+        "url": "https://docs.volcengine.com/docs/82379/1330310?lang=zh",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310?lang=zh",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档，中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-mini-260428",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-pro-260215",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-pro-260215",
+        "url": "https://docs.volcengine.com/docs/82379/1330310?lang=zh",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310?lang=zh",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档，中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-8-251228",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-8-251228",
+        "url": "https://docs.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-250615",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-250615",
+        "url": "https://docs.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-251015",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-251015",
+        "url": "https://docs.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-flash-250615",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-flash-250615",
+        "url": "https://docs.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-flash-250828",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-flash-250828",
+        "url": "https://docs.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-vision-250815",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-vision-250815",
+        "url": "https://docs.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-1-5-lite-32k-250115",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-1-5-lite-32k-250115",
+        "url": "https://docs.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-1-5-pro-32k-250115",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-1-5-pro-32k-250115",
+        "url": "https://docs.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-1-5-vision-pro-32k-250115",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-1-5-vision-pro-32k-250115",
+        "url": "https://docs.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seedream-5-0-260128",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seedream-5-0-flash-260915",
+        "url": "https://docs.volcengine.com/docs/ark/image-generation-api?lang=en",
+        "afterUrl": "https://docs.volcengine.com/docs/ark/image-generation-api?lang=en",
+        "before": "官方文档 · 火山方舟 · Image Generation API（英文）",
+        "after": "官方文档 · 火山方舟 · Image Generation API（开发者文档，英文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seedream-5-0-flash-260915",
+        "url": "https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh",
+        "afterUrl": "https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh",
+        "before": "官方文档 · 火山方舟 · Image Generation API（文档）",
+        "after": "官方文档 · 火山方舟 · Image Generation API（开发者文档，中文版）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seedream-5-0-pro-260628",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seedream-4-5-251128",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seedream-4-0-250828",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/glm-5-3-flash-260828",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/glm-5-2-260617",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-code-preview-251028",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-code-preview-251028",
+        "url": "https://docs.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-evolving",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/glm-4-7-251222",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档）",
+        "after": "官方文档 · 火山方舟 · 模型列表（产品文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ark/glm-4-7-251222",
+        "url": "https://docs.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://docs.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310（文档 2）",
+        "after": "官方文档 · 火山方舟 · 模型列表（开发者文档）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-v4",
+        "url": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4",
+        "afterUrl": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4",
+        "before": "官方文档 · Ideogram · Generate V4（文档）",
+        "after": "官方文档 · Ideogram · Generate V4（V1 接口，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-v4",
+        "url": "https://developer.ideogram.ai/api-reference/generate-images/generate-v4",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/generate-images/generate-v4",
+        "before": "官方文档 · Ideogram · Generate V4（文档 2）",
+        "after": "官方文档 · Ideogram · Generate V4（API 参考，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-v4-transparent",
+        "url": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v4",
+        "afterUrl": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v4",
+        "before": "官方文档 · Ideogram · Generate Transparent V4（文档）",
+        "after": "官方文档 · Ideogram · Generate Transparent V4（V1 接口，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-v4-transparent",
+        "url": "https://developer.ideogram.ai/api-reference/generate-images/generate-transparent-v4",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/generate-images/generate-transparent-v4",
+        "before": "官方文档 · Ideogram · Generate Transparent V4（文档 2）",
+        "after": "官方文档 · Ideogram · Generate Transparent V4（API 参考，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-v3",
+        "url": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v3",
+        "afterUrl": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v3",
+        "before": "官方文档 · Ideogram · Generate V3（文档）",
+        "after": "官方文档 · Ideogram · Generate V3（V1 接口，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-v3",
+        "url": "https://developer.ideogram.ai/api-reference/generate-images/generate-v3",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/generate-images/generate-v3",
+        "before": "官方文档 · Ideogram · Generate V3（文档 2）",
+        "after": "官方文档 · Ideogram · Generate V3（API 参考，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-v3-transparent",
+        "url": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v3",
+        "afterUrl": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v3",
+        "before": "官方文档 · Ideogram · Generate Transparent V3（文档）",
+        "after": "官方文档 · Ideogram · Generate Transparent V3（V1 接口，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-v3-transparent",
+        "url": "https://developer.ideogram.ai/api-reference/generate-images/generate-transparent-v3",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/generate-images/generate-transparent-v3",
+        "before": "官方文档 · Ideogram · Generate Transparent V3（文档 2）",
+        "after": "官方文档 · Ideogram · Generate Transparent V3（API 参考，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/V_2A",
+        "url": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档）",
+        "after": "官方文档 · Ideogram · Generate（V1 接口，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/V_2A",
+        "url": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档 2）",
+        "after": "官方文档 · Ideogram · Generate（API 参考，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/V_2A_TURBO",
+        "url": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档）",
+        "after": "官方文档 · Ideogram · Generate（V1 接口，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/V_2A_TURBO",
+        "url": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档 2）",
+        "after": "官方文档 · Ideogram · Generate（API 参考，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/V_2",
+        "url": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档）",
+        "after": "官方文档 · Ideogram · Generate（V1 接口，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/V_2",
+        "url": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档 2）",
+        "after": "官方文档 · Ideogram · Generate（API 参考，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/V_2_TURBO",
+        "url": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档）",
+        "after": "官方文档 · Ideogram · Generate（V1 接口，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/V_2_TURBO",
+        "url": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档 2）",
+        "after": "官方文档 · Ideogram · Generate（API 参考，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/V_1",
+        "url": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档）",
+        "after": "官方文档 · Ideogram · Generate（V1 接口，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/V_1",
+        "url": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档 2）",
+        "after": "官方文档 · Ideogram · Generate（API 参考，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/V_1_TURBO",
+        "url": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档）",
+        "after": "官方文档 · Ideogram · Generate（V1 接口，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/V_1_TURBO",
+        "url": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档 2）",
+        "after": "官方文档 · Ideogram · Generate（API 参考，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/AUTO",
+        "url": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档）",
+        "after": "官方文档 · Ideogram · Generate（V1 接口，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/AUTO",
+        "url": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate",
+        "before": "官方文档 · Ideogram · Generate（文档 2）",
+        "after": "官方文档 · Ideogram · Generate（API 参考，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-4-5",
+        "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-5",
+        "afterUrl": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-5",
+        "before": "官方文档 · Ideogram · Ideogram 4.5（文档）",
+        "after": "官方文档 · Ideogram · Ideogram 4.5（V2 接口，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-4-5",
+        "url": "https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5",
+        "before": "官方文档 · Ideogram · Ideogram 4.5（文档 2）",
+        "after": "官方文档 · Ideogram · Ideogram 4.5（API 参考，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-4-5",
+        "url": "https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5",
+        "before": "官方文档 · Ideogram · Ideogram 4.5（文档 3）",
+        "after": "官方文档 · Ideogram · Ideogram 4.5（API 参考，精确编辑）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-edit",
+        "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/edit-with-prompt",
+        "afterUrl": "https://developer.ideogram.ai/v1/api-reference/edit-images/edit-with-prompt",
+        "before": "官方文档 · Ideogram · Edit With Prompt（文档）",
+        "after": "官方文档 · Ideogram · Edit With Prompt（V1 接口，图像编辑）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-edit",
+        "url": "https://developer.ideogram.ai/api-reference/edit-images/edit-with-prompt",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/edit-images/edit-with-prompt",
+        "before": "官方文档 · Ideogram · Edit With Prompt（文档 2）",
+        "after": "官方文档 · Ideogram · Edit With Prompt（API 参考，图像编辑）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/p-image-ideogram",
+        "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/p-image-ideogram",
+        "afterUrl": "https://developer.ideogram.ai/v2/api-reference/images/generate/p-image-ideogram",
+        "before": "官方文档 · Ideogram · P Image Ideogram（文档）",
+        "after": "官方文档 · Ideogram · P Image Ideogram（V2 接口，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "ideogram/p-image-ideogram",
+        "url": "https://developer.ideogram.ai/api-reference/generate-images/generate-p-image-ideogram",
+        "afterUrl": "https://developer.ideogram.ai/api-reference/generate-images/generate-p-image-ideogram",
+        "before": "官方文档 · Ideogram · P Image Ideogram（文档 2）",
+        "after": "官方文档 · Ideogram · P Image Ideogram（API 参考，图像生成）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "minimax/MiniMax-M3.1-Flash",
+        "url": "https://platform.minimax.io/docs/guides/text-generation",
+        "afterUrl": "https://platform.minimax.io/docs/guides/text-generation",
+        "before": "官方文档 · MiniMax · Text Generation（文档）",
+        "after": "官方文档 · MiniMax · Text Generation（国际站）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "minimax/MiniMax-M3.1-Flash",
+        "url": "https://platform.minimax.io/docs/api-reference/text-chat-openai.md",
+        "afterUrl": null,
+        "before": "官方文档 · MiniMax · Text Chat OpenAI",
+        "after": null,
+        "action": "hide machine document"
+      },
+      {
+        "client": "web",
+        "card": "minimax/MiniMax-M3.1-Flash",
+        "url": "https://platform.minimax.cn/docs/guides/text-generation",
+        "afterUrl": "https://platform.minimax.cn/docs/guides/text-generation",
+        "before": "官方文档 · MiniMax · Text Generation（文档 2）",
+        "after": "官方文档 · MiniMax · Text Generation（中国站）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "minimax/image-01-live",
+        "url": "https://platform.minimax.cn/docs/api-reference/image-generation-t2i",
+        "afterUrl": "https://platform.minimax.cn/docs/api-reference/image-generation-t2i",
+        "before": "官方文档 · MiniMax · Image Generation T2i（文档）",
+        "after": "官方文档 · MiniMax · Image Generation T2i（中国站）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "minimax/image-01-live",
+        "url": "https://platform.minimaxi.com/docs/api-reference/image-generation-t2i",
+        "afterUrl": "https://platform.minimaxi.com/docs/api-reference/image-generation-t2i",
+        "before": "官方文档 · MiniMax · Image Generation T2i（文档 2）",
+        "after": "官方文档 · MiniMax · Image Generation T2i（开放平台）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "together/openai/gpt-image-2",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-2",
+        "before": "原厂规格 · OpenAI · GPT Image 2",
+        "after": "原厂规格 · OpenAI · GPT Image 2",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "together/openai/gpt-image-2",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-2",
+        "before": "官方文档 · OpenAI · GPT Image 2",
+        "after": "原厂规格 · OpenAI · GPT Image 2",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "together/openai/gpt-image-1.5",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1.5.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+        "before": "原厂规格 · OpenAI · GPT Image 1.5",
+        "after": "原厂规格 · OpenAI · GPT Image 1.5",
+        "action": "hide machine duplicate; retain HTML"
+      },
+      {
+        "client": "web",
+        "card": "together/openai/gpt-image-1.5",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+        "before": "官方文档 · OpenAI · GPT Image 1.5",
+        "after": "原厂规格 · OpenAI · GPT Image 1.5",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/glm-5p3",
+        "url": "https://fireworks.ai/models/fireworks/glm-5p3",
+        "afterUrl": "https://fireworks.ai/models/fireworks/glm-5p3",
+        "before": "官方文档 · Fireworks · GLM 5.3（文档）",
+        "after": "官方文档 · Fireworks · GLM 5.3（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/glm-5p3-flash",
+        "url": "https://fireworks.ai/models/fireworks/glm-5p3-flash",
+        "afterUrl": "https://fireworks.ai/models/fireworks/glm-5p3-flash",
+        "before": "官方文档 · Fireworks · GLM 5.3 Flash（文档）",
+        "after": "官方文档 · Fireworks · GLM 5.3 Flash（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/kimi-k3",
+        "url": "https://fireworks.ai/models/fireworks/kimi-k3",
+        "afterUrl": "https://fireworks.ai/models/fireworks/kimi-k3",
+        "before": "官方文档 · Fireworks · Kimi K3（文档）",
+        "after": "官方文档 · Fireworks · Kimi K3（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/kimi-k2p5",
+        "url": "https://fireworks.ai/models/fireworks/kimi-k2p5",
+        "afterUrl": "https://fireworks.ai/models/fireworks/kimi-k2p5",
+        "before": "官方文档 · Fireworks · Kimi K2.5（文档）",
+        "after": "官方文档 · Fireworks · Kimi K2.5（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/minimax-m3",
+        "url": "https://fireworks.ai/models/fireworks/minimax-m3",
+        "afterUrl": "https://fireworks.ai/models/fireworks/minimax-m3",
+        "before": "官方文档 · Fireworks · MiniMax M3（文档）",
+        "after": "官方文档 · Fireworks · MiniMax M3（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/qwen3p8-max",
+        "url": "https://fireworks.ai/models/fireworks/qwen3p8-max",
+        "afterUrl": "https://fireworks.ai/models/fireworks/qwen3p8-max",
+        "before": "官方文档 · Fireworks · Qwen 3.8 Max（文档）",
+        "after": "官方文档 · Fireworks · Qwen 3.8 Max（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/qwen3p7-plus",
+        "url": "https://fireworks.ai/models/fireworks/qwen3p7-plus",
+        "afterUrl": "https://fireworks.ai/models/fireworks/qwen3p7-plus",
+        "before": "官方文档 · Fireworks · Qwen 3.7 Plus（文档）",
+        "after": "官方文档 · Fireworks · Qwen 3.7 Plus（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/qwen3-8b",
+        "url": "https://fireworks.ai/models/fireworks/qwen3-8b",
+        "afterUrl": "https://fireworks.ai/models/fireworks/qwen3-8b",
+        "before": "官方文档 · Fireworks · Qwen3 8B（文档）",
+        "after": "官方文档 · Fireworks · Qwen3 8B（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/gemma-4-31b-it",
+        "url": "https://fireworks.ai/models/fireworks/gemma-4-31b-it",
+        "afterUrl": "https://fireworks.ai/models/fireworks/gemma-4-31b-it",
+        "before": "官方文档 · Fireworks · Gemma 4-31b It（文档）",
+        "after": "官方文档 · Fireworks · Gemma 4-31b It（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/gpt-oss-120b",
+        "url": "https://fireworks.ai/models/fireworks/gpt-oss-120b",
+        "afterUrl": "https://fireworks.ai/models/fireworks/gpt-oss-120b",
+        "before": "官方文档 · Fireworks · GPT-OSS 120B（文档）",
+        "after": "官方文档 · Fireworks · GPT-OSS 120B（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4",
+        "url": "https://fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4",
+        "afterUrl": "https://fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4",
+        "before": "官方文档 · Fireworks · Nemotron 3 Ultra Nvfp4（文档）",
+        "after": "官方文档 · Fireworks · Nemotron 3 Ultra Nvfp4（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b",
+        "url": "https://fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b",
+        "afterUrl": "https://fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b",
+        "before": "官方文档 · Fireworks · Nemotron Lightning 3p5-30b A3b（文档）",
+        "after": "官方文档 · Fireworks · Nemotron Lightning 3p5-30b A3b（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b",
+        "url": "https://fireworks.ai/models/fireworks/nvidia-nemotron-3-nano-omni-30b-a3b",
+        "afterUrl": "https://fireworks.ai/models/fireworks/nvidia-nemotron-3-nano-omni-30b-a3b",
+        "before": "官方文档 · Fireworks · NVIDIA Nemotron 3 Nano Omni 30B A3B（文档）",
+        "after": "官方文档 · Fireworks · NVIDIA Nemotron 3 Nano Omni 30B A3B（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/qwen3-omni-30b-a3b-instruct",
+        "url": "https://fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct",
+        "afterUrl": "https://fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct",
+        "before": "官方文档 · Fireworks · Qwen3 Omni 30B A3B Instruct（文档）",
+        "after": "官方文档 · Fireworks · Qwen3 Omni 30B A3B Instruct（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4",
+        "url": "https://fireworks.ai/models/fireworks/step-3p7-flash-nvfp4",
+        "afterUrl": "https://fireworks.ai/models/fireworks/step-3p7-flash-nvfp4",
+        "before": "官方文档 · Fireworks · Step 3.7 Flash（NVFP4）（文档）",
+        "after": "官方文档 · Fireworks · Step 3.7 Flash（NVFP4）（模型库）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v4.1-flash",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v4.1-flash",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v4-pro-0813",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v4-pro-0813",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v4-flash-0731",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v4-flash-0731",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v4-flash",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v4-flash",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v4-pro",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v4-pro",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v3.2",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v3.2",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v3.2-think",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-v3.2-think",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/glm-5.3",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/glm-5.3",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/glm-5.3-flash",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/glm-5.3-flash",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/glm-5.2",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/glm-5.2",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/glm-5.1",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/glm-5.1",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/glm-5",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/glm-5",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/kimi-k2.6",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/kimi-k2.6",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qwen-image",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qwen-image",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qwen-image-edit",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qwen-image-edit",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qwen3.5-122b-a10b",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qwen3.5-122b-a10b",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qwen3.5-27b",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qwen3.5-27b",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qwen3.5-35b-a3b",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qwen3.5-35b-a3b",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qwen3.5-397b-a17b",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qwen3.5-397b-a17b",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-flash",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-flash",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-ocr",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/deepseek-ocr",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-4.5-turbo-128k",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-4.5-turbo-128k",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-4.5-turbo-20260402",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-4.5-turbo-20260402",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-4.5-turbo-32k",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-4.5-turbo-32k",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-4.5-turbo-vl",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-4.5-turbo-vl",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-4.5-turbo-vl-32k",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-4.5-turbo-vl-32k",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-5.0",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-5.0",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-5.0-thinking-exp",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-5.0-thinking-exp",
+        "url": "https://cloud.baidu.com/doc/qianfan-docs/s/Jm8r1826a",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan-docs/s/Jm8r1826a",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · AI 应用开发入门：价格",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-5.0-thinking-exp",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 3）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-5.0-thinking-latest",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-5.0-thinking-latest",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-5.0-thinking-preview",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-5.0-thinking-preview",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-5.1",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-5.1",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-x1.1",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-x1.1",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-x1.1-preview",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/ernie-x1.1-preview",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/internvl3-38b",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/internvl3-38b",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/musesteamer-air-image",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/musesteamer-air-image",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qianfan-ocr",
+        "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "afterUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档）",
+        "after": "官方文档 · 百度千帆 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qianfan-ocr",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表（文档 2）",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "antling/Ling-3.0-flash-VL",
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "afterUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "before": "官方文档 · 蚂蚁百灵 · OpenAI（文档）",
+        "after": "官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "antling/Ling-3.0-flash-VL",
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+        "afterUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+        "before": "官方文档 · 蚂蚁百灵 · OpenAI（文档 2）",
+        "after": "官方文档 · 蚂蚁百灵 · OpenAI（接口兼容指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "antling/Ling-3.0-tiny",
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "afterUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "before": "官方文档 · 蚂蚁百灵 · OpenAI（文档）",
+        "after": "官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "antling/Ling-3.0-tiny",
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+        "afterUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+        "before": "官方文档 · 蚂蚁百灵 · OpenAI（文档 2）",
+        "after": "官方文档 · 蚂蚁百灵 · OpenAI（接口兼容指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "antling/Ling-3.0-flash",
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "afterUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "before": "官方文档 · 蚂蚁百灵 · OpenAI（文档）",
+        "after": "官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）",
+        "action": "rename"
+      },
+      {
+        "client": "web",
+        "card": "antling/Ling-3.0-flash",
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+        "afterUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+        "before": "官方文档 · 蚂蚁百灵 · OpenAI（文档 2）",
+        "after": "官方文档 · 蚂蚁百灵 · OpenAI（接口兼容指南）",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-6-luna",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6-luna.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+        "before": "官方文档 · OpenAI · GPT-6 Luna",
+        "after": "官方文档 · OpenAI · GPT-6 Luna",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-6-sol",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6-sol.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-6-sol",
+        "before": "官方文档 · OpenAI · GPT-6 Sol",
+        "after": "官方文档 · OpenAI · GPT-6 Sol",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-image-2.5-flare",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        "before": "官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）",
+        "after": "官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-image-2.5-sunburst",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+        "before": "官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）",
+        "after": "官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-6-astra",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6-astra.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+        "before": "官方文档 · OpenAI · GPT-6 Astra",
+        "after": "官方文档 · OpenAI · GPT-6 Astra",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5.6-luna",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.6-luna.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-luna",
+        "before": "官方文档 · OpenAI · GPT-5.6 Luna",
+        "after": "官方文档 · OpenAI · GPT-5.6 Luna",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5.6-sol",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.6-sol.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-sol",
+        "before": "官方文档 · OpenAI · GPT-5.6 Sol",
+        "after": "官方文档 · OpenAI · GPT-5.6 Sol",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5.6-terra",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.6-terra.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-terra",
+        "before": "官方文档 · OpenAI · GPT-5.6 Terra",
+        "after": "官方文档 · OpenAI · GPT-5.6 Terra",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5.5",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.5.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.5",
+        "before": "官方文档 · OpenAI · GPT-5.5（2026-04-23）",
+        "after": "官方文档 · OpenAI · GPT-5.5（2026-04-23）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5.5-pro",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.5-pro.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.5-pro",
+        "before": "官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）",
+        "after": "官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5.4",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.4.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.4",
+        "before": "官方文档 · OpenAI · GPT-5.4（2026-03-05）",
+        "after": "官方文档 · OpenAI · GPT-5.4（2026-03-05）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5.4-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.4-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-mini",
+        "before": "官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）",
+        "after": "官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5.4-nano",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.4-nano.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-nano",
+        "before": "官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）",
+        "after": "官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5.4-pro",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.4-pro.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-pro",
+        "before": "官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）",
+        "after": "官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5.3-codex",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.3-codex.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.3-codex",
+        "before": "官方文档 · OpenAI · GPT 5.3 Codex",
+        "after": "官方文档 · OpenAI · GPT 5.3 Codex",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5.2",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.2.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.2",
+        "before": "官方文档 · OpenAI · GPT-5.2（2025-12-11）",
+        "after": "官方文档 · OpenAI · GPT-5.2（2025-12-11）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5.2-pro",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.2-pro.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.2-pro",
+        "before": "官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）",
+        "after": "官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5.1",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.1.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5.1",
+        "before": "官方文档 · OpenAI · GPT-5.1（2025-11-13）",
+        "after": "官方文档 · OpenAI · GPT-5.1（2025-11-13）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5",
+        "before": "官方文档 · OpenAI · GPT-5（2025-08-07）",
+        "after": "官方文档 · OpenAI · GPT-5（2025-08-07）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5-mini",
+        "before": "官方文档 · OpenAI · GPT 5 Mini（2025-08-07）",
+        "after": "官方文档 · OpenAI · GPT 5 Mini（2025-08-07）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5-nano",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5-nano.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5-nano",
+        "before": "官方文档 · OpenAI · GPT 5 Nano（2025-08-07）",
+        "after": "官方文档 · OpenAI · GPT 5 Nano（2025-08-07）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-5-pro",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5-pro.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-5-pro",
+        "before": "官方文档 · OpenAI · GPT 5 Pro（2025-10-06）",
+        "after": "官方文档 · OpenAI · GPT 5 Pro（2025-10-06）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-4.1",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4.1.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4.1",
+        "before": "官方文档 · OpenAI · GPT-4.1（2025-04-14）",
+        "after": "官方文档 · OpenAI · GPT-4.1（2025-04-14）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-4.1-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4.1-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+        "before": "官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）",
+        "after": "官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-4.1-nano",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4.1-nano.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
+        "before": "官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）",
+        "after": "官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-4o",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4o.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4o",
+        "before": "官方文档 · OpenAI · GPT-4o（2024-08-06）",
+        "after": "官方文档 · OpenAI · GPT-4o（2024-08-06）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-4o-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4o-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4o-mini",
+        "before": "官方文档 · OpenAI · GPT 4o Mini（2024-07-18）",
+        "after": "官方文档 · OpenAI · GPT 4o Mini（2024-07-18）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-4-turbo",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4-turbo.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4-turbo",
+        "before": "官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）",
+        "after": "官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-4",
+        "url": "https://developers.openai.com/api/docs/models/gpt-4.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-4",
+        "before": "官方文档 · OpenAI · GPT-4（0613）",
+        "after": "官方文档 · OpenAI · GPT-4（0613）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-image-2",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-2",
+        "before": "官方文档 · OpenAI · GPT Image 2（2026-04-21）",
+        "after": "官方文档 · OpenAI · GPT Image 2（2026-04-21）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-image-1.5",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1.5.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+        "before": "官方文档 · OpenAI · GPT Image 1.5（2025-12-16）",
+        "after": "官方文档 · OpenAI · GPT Image 1.5（2025-12-16）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-image-1",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-1",
+        "before": "官方文档 · OpenAI · GPT Image 1",
+        "after": "官方文档 · OpenAI · GPT Image 1",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-image-1-mini",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-1-mini",
+        "before": "官方文档 · OpenAI · GPT Image 1 Mini",
+        "after": "官方文档 · OpenAI · GPT Image 1 Mini",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/chat-latest",
+        "url": "https://developers.openai.com/api/docs/models/chat-latest.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/chat-latest",
+        "before": "官方文档 · OpenAI · Chat Latest",
+        "after": "官方文档 · OpenAI · Chat Latest",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/chatgpt-image-latest",
+        "url": "https://developers.openai.com/api/docs/models/chatgpt-image-latest.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/chatgpt-image-latest",
+        "before": "官方文档 · OpenAI · ChatGPT Image Latest",
+        "after": "官方文档 · OpenAI · ChatGPT Image Latest",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/gpt-3.5-turbo",
+        "url": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo",
+        "before": "官方文档 · OpenAI · GPT 3.5 Turbo（0125）",
+        "after": "官方文档 · OpenAI · GPT 3.5 Turbo（0125）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/o1",
+        "url": "https://developers.openai.com/api/docs/models/o1.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o1",
+        "before": "官方文档 · OpenAI · O1（2024-12-17）",
+        "after": "官方文档 · OpenAI · O1（2024-12-17）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/o1-pro",
+        "url": "https://developers.openai.com/api/docs/models/o1-pro.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o1-pro",
+        "before": "官方文档 · OpenAI · O1 Pro（2025-03-19）",
+        "after": "官方文档 · OpenAI · O1 Pro（2025-03-19）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/o3",
+        "url": "https://developers.openai.com/api/docs/models/o3.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o3",
+        "before": "官方文档 · OpenAI · O3（2025-04-16）",
+        "after": "官方文档 · OpenAI · O3（2025-04-16）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/o3-mini",
+        "url": "https://developers.openai.com/api/docs/models/o3-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o3-mini",
+        "before": "官方文档 · OpenAI · O3 Mini（2025-01-31）",
+        "after": "官方文档 · OpenAI · O3 Mini（2025-01-31）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/o3-pro",
+        "url": "https://developers.openai.com/api/docs/models/o3-pro.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o3-pro",
+        "before": "官方文档 · OpenAI · O3 Pro（2025-06-10）",
+        "after": "官方文档 · OpenAI · O3 Pro（2025-06-10）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "openai/o4-mini",
+        "url": "https://developers.openai.com/api/docs/models/o4-mini.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/o4-mini",
+        "before": "官方文档 · OpenAI · O4 Mini（2025-04-16）",
+        "after": "官方文档 · OpenAI · O4 Mini（2025-04-16）",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "ark/deepseek-v4-1-flash-260910",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/deepseek-v4-flash-260425",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/deepseek-v4-flash-ga-260731",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/deepseek-v4-pro-260425",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/deepseek-v4-pro-ga-260813",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-1-pro-260628",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-1-pro-260915",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-1-turbo-260628",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-0-code-preview-260215",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-0-lite-260215",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-0-lite-260428",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-0-mini-260215",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-0-mini-260428",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-0-pro-260215",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-1-6-250615",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-1-6-251015",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-1-6-flash-250615",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-1-6-flash-250828",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-1-6-vision-250815",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-1-5-lite-32k-250115",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-1-5-pro-32k-250115",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-1-5-vision-pro-32k-250115",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seedream-4-5-251128",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seedream-4-0-250828",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/glm-5-3-flash-260828",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/glm-5-2-260617",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-evolving",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "ark/glm-4-7-251222",
+        "url": "https://www.volcengine.com/docs/82379/1330310",
+        "afterUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "before": "官方文档 · 火山方舟 · 文档 1330310",
+        "after": "官方文档 · 火山方舟 · 模型列表",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "together/openai/gpt-image-2",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-2",
+        "before": "原厂规格 · OpenAI · GPT Image 2",
+        "after": "原厂规格 · OpenAI · GPT Image 2",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "together/openai/gpt-image-1.5",
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1.5.md",
+        "afterUrl": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+        "before": "原厂规格 · OpenAI · GPT Image 1.5",
+        "after": "原厂规格 · OpenAI · GPT Image 1.5",
+        "action": "replace machine link with HTML"
+      },
+      {
+        "client": "mini",
+        "card": "qianfan/deepseek-v3.2-think",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "qianfan/ernie-5.0-thinking-preview",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "qianfan/ernie-x1.1",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "qianfan/ernie-x1.1-preview",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      },
+      {
+        "client": "mini",
+        "card": "qianfan/musesteamer-air-image",
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "afterUrl": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+        "before": "官方文档 · 百度千帆 · 模型列表",
+        "after": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）",
+        "action": "rename"
+      }
+    ],
+    "dialogChanges": [
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-1-pro-260628",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-1-pro-260915",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：1024K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：1024K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-1-turbo-260628",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-code-preview-260215",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-lite-260215",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-lite-260428",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-mini-260215",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-mini-260428",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-2-0-pro-260215",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-250615",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-251015",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-flash-250615",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-flash-250828",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-1-6-vision-250815",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-1-5-lite-32k-250115",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：未知；视频：未知；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：未知；视频：未知；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-1-5-pro-32k-250115",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：未知；视频：未知；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：未知；视频：未知；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-1-5-vision-pro-32k-250115",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：未知；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：未知；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n未核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "web",
+        "card": "ark/doubao-seed-evolving",
+        "before": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：1024K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-10-16）"
+          ]
+        },
+        "after": {
+          "text": "核实日期 2026-11-09\n输入：图研既有核实 2026-10-16\n输出：图研既有核实 2026-10-16\n上下文窗口：图研既有核实 2026-10-16\n输入：文本：支持；图像：支持；视频：支持；音频：未知\n图研既有核实 · 火山方舟 · 模型列表（2026-10-16）\n输出：文本：支持；图像：未知；视频：未知；音频：未知\n上下文窗口：1024K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-10-16）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-1-pro-260628",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-1-pro-260915",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：1024K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：1024K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-1-turbo-260628",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-0-code-preview-260215",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-0-lite-260215",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-0-lite-260428",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-0-mini-260215",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-0-mini-260428",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-2-0-pro-260215",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：256K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-1-6-250615",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-1-6-251015",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-1-6-flash-250615",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-1-6-flash-250828",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-1-6-vision-250815",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-1-5-lite-32k-250115",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-1-5-pro-32k-250115",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-1-5-vision-pro-32k-250115",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      },
+      {
+        "client": "mini",
+        "card": "ark/doubao-seed-evolving",
+        "before": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：1024K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 文档 1330310（2026-11-09）"
+          ]
+        },
+        "after": {
+          "text": "输入：图研既有核实\n输出：图研既有核实\n上下文窗口：图研既有核实\n上下文窗口：1024K tokens",
+          "tooltips": [
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）",
+            "图研既有核实 · 火山方舟 · 模型列表（2026-11-09）"
+          ]
+        }
+      }
+    ]
+  }
 }

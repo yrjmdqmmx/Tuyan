@@ -26,6 +26,17 @@ export function uniqueSources(values) {
 }
 // Model subjects take the existing card name; general pages retain captured titles.
 // Keep this URL-parser-free implementation usable in the native Mini runtime.
+// These documentation Markdown URLs have the same human page without .md.
+// GitHub /blob/*.md is already an HTML reader, not a machine document.
+export function humanSourceUrl(value) {
+  if (/^https:\/\/developers\.openai\.com\/api\/docs\//.test(value)) return value.replace(/\.md(?=[?#]|$)/, '')
+  return value
+}
+export function isMachineDocument(value) {
+  const path = value.split(/[?#]/)[0]
+  return /\/(?:llms(?:-full)?\.txt|[^/]+\.(?:md|mdx))\/?$/i.test(path)
+    && !/^https:\/\/(?:github\.com\/[^/]+\/[^/]+\/blob\/|huggingface\.co\/[^/]+\/[^/]+\/blob\/)/.test(path)
+}
 function sourceRole(value, role) {
   if (!['官方文档', '原厂规格'].includes(role)) return role
   const [host, ...parts] = value.replace(/^https?:\/\//, '').split(/[?#]/)[0].split('/')
@@ -106,6 +117,8 @@ export function sourceTitle(value, model = {}) {
   if (own) return site + ' · ' + pageSubject(name) + (api ? ' API 文档' : '')
   const stored = storedTitles[value.split(/[?#]/)[0].replace(/\/+$/, '')]
   if (stored) return site + ' · ' + pageSubject(stored)
+  if (host === 'cloud.baidu.com' && slugs[1] === 'WENXINWORKSHOP') return site + ' · 千帆 ModelBuilder 旧版文档：' + pageSubject(stored || '模型列表')
+  if (host === 'cloud.baidu.com' && slugs[1] === 'qianfan-docs' && !stored) return site + ' · AI 应用开发入门：模型说明'
   const general = {models:'模型列表',model:'模型说明','model-list':'模型列表','models-overview':'模型概览','model-overview':'模型概览','models_overview':'模型概览','model-pricing':'模型定价',pricing:'价格与规格','newly-released-models':'模型更新','model-depreciation':'模型下线公告',deprecations:'模型下线公告',deprecation:'模型下线公告',deprecate:'模型下线公告','api-reference':'API 文档','api-docs':'API 文档',docs:'文档首页',documentation:'文档首页',welcome:'文档首页',overview:'概览','stable-diffusion-35':'Stable Diffusion 3.5'}
   const news = /^news(\d{2})(\d{2})(\d{2})$/i.exec(subject)
   const opaque = /^(?=[a-z0-9]*\d)(?=[a-z0-9]*[a-z])[a-z0-9]{8,}$/i.test(subject) && !modelSubjects.has(compactSubject(subject))
@@ -114,20 +127,34 @@ export function sourceTitle(value, model = {}) {
   if (/^\d+$/.test(title)) title = '文档 ' + title
   return site + ' · ' + pageSubject(title)
 }
-// Distinct human descriptions replace the old host/path collision suffix.
+// A collision describes a real namespace, operation, region or language. Never
+// turn a URL's position in an array or its serialization format into a title.
+function sourceSection(value) {
+  const [host, ...parts] = value.replace(/^https?:\/\//, '').split(/[?#]/)[0].split('/')
+  const path = parts.join('/')
+  const language = /[?&]lang=en|\/en\//.test(value) ? '英文版' : /[?&]lang=zh|\/zh\//.test(value) ? '中文版' : ''
+  let section = ''
+  if (host.endsWith('kimi.com')) section = path.startsWith('code/') ? 'Kimi Code' : '开放平台'
+  else if (host === 'docs.x.ai') section = parts[0] === 'developers' ? '开发者指南' : '模型指南'
+  else if (host.endsWith('volcengine.com')) section = host.startsWith('www.') ? '产品文档' : '开发者文档'
+  else if (host === 'developer.ideogram.ai') section = [/^v\d+$/.test(parts[0]) ? parts[0].toUpperCase() + ' 接口' : 'API 参考', /precise-edit/.test(path) ? '精确编辑' : /edit/.test(path) ? '图像编辑' : '图像生成'].join('，')
+  else if (/minimax/.test(host)) section = /\.io$/.test(host) ? '国际站' : /\.cn$/.test(host) ? '中国站' : '开放平台'
+  else if (host.endsWith('fireworks.ai')) section = host.startsWith('app.') ? '控制台' : '模型库'
+  else if (host === 'developer.ant-ling.com') section = parts.includes('chat') ? '对话接口兼容指南' : '接口兼容指南'
+  else if (!language) section = parts.slice(0, -1).filter(p => !/^(?:docs?|api|api-reference|[a-z]{2}(?:-[A-Z]{2})?)$/.test(p)).map(readableSubject).join('，')
+  return [section, language].filter(Boolean).join('，')
+}
 export function titleSourceRows(rows, model = {}) {
-  const titled = rows.map(row => ({...row, label: sourceRole(row.url, row.label) + ' · ' + sourceTitle(row.url, model)}))
-  const counts = new Map(), used = new Set()
+  const seen = new Set()
+  const human = rows.map(row => ({...row, url: humanSourceUrl(row.url)})).filter(row => {
+    if (isMachineDocument(row.url) || seen.has(row.url)) return false
+    seen.add(row.url); return true
+  })
+  const titled = human.map(row => ({...row, label: sourceRole(row.url, row.label) + ' · ' + sourceTitle(row.url, model)}))
+  const counts = new Map()
   for (const row of titled) counts.set(row.label, (counts.get(row.label) || 0) + 1)
   return titled.map(row => {
-    let label = row.label
-    if (counts.get(label) > 1) {
-      const kind = /\.md(?:[?#]|$)/.test(row.url) ? 'Markdown' : /https:\/\/app\./.test(row.url) ? '控制台' : /[?&]lang=en|\/en\//.test(row.url) ? '英文' : '文档'
-      label += '（' + kind + '）'
-      let n = 2
-      while (used.has(label)) label = row.label + '（' + kind + ' ' + n++ + '）'
-    }
-    used.add(label)
-    return {...row, label}
+    const section = counts.get(row.label) > 1 ? sourceSection(row.url) : ''
+    return {...row, label: row.label + (section ? '（' + section + '）' : '')}
   })
 }

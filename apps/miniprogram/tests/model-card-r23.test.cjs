@@ -9,6 +9,7 @@ const context={Component(value){definition=value},exports:{},require:createRequi
 vm.runInNewContext(fs.readFileSync(filename,'utf8')+'\nthis.present=presentModel',context,{filename})
 
 test('R23 all 1064 compiled Mini cards link vendor fields and expose no machine source in rows or copy dialogs',async t=>{
+ const {expectedHumanUrl}=await import('../../../test-support/source-links-i3-r24.mjs')
  const {isApiSource}=await import('../../../packages/api/src/model-card-sources.mjs')
  const {sourceIdentity}=await import('../../../packages/api/src/card-presentation.mjs')
  const {productBundle}=await import('../../../test-support/execution-capability.mjs')
@@ -21,7 +22,7 @@ test('R23 all 1064 compiled Mini cards link vendor fields and expose no machine 
   const expected=web.modelCardSpecifications(channel,web.STATIC_MODEL_REGISTRY[channel].models.find(m=>m.id===model.id))
   const vendorKeys=new Set(expected.vendorSources.map(sourceIdentity))
   for(const [i,field]of Object.keys(expected.fields).entries())if(card.specRows[i].origin==='源自原厂'){
-   vendorFields++;const fact=expected.fields[field],urls=(fact.sourceUrls||[fact.sourceUrl]).filter(Boolean).map(sourceIdentity)
+   vendorFields++;const fact=expected.fields[field],urls=(fact.sourceUrls||[fact.sourceUrl]).filter(Boolean).map(expectedHumanUrl).map(sourceIdentity)
    if(!card.specSources.some(s=>(s.role==='vendor'||s.label.startsWith('原厂规格 · ')||s.url===r24.noticeUrl&&s.label===r24.noticeLabel)&&vendorKeys.has(sourceIdentity(s.url))&&urls.includes(sourceIdentity(s.url))))offending.push(key+'/'+field)
   }
   for(const url of [audit.sourceUrl,...audit.sourceUrls,...audit.vendorSources,...card.specSources.map(s=>s.url)].filter(Boolean))if(isApiSource(url))apiLinks.push(key+': '+url)

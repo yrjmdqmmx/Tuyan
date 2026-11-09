@@ -1,3 +1,4 @@
+import {expectedHumanUrl} from '../../../test-support/source-links-i3-r24.mjs'
 import { expectedTokenDanceSources } from '../../../test-support/card-review-r22.mjs'
 import { sourceTitle } from '../../../packages/api/src/card-presentation.mjs'
 import test, { afterEach, beforeEach } from 'node:test'
@@ -27,7 +28,7 @@ const r21Url = row => row.channel === 'tokendance' ? expectedTokenDanceSources(r
   || (row.channel === 'tokendance' ? 'https://tokendance.space/models/' + row.modelId : row.finalUrl)
 const expectedR21Changes = before.rows.map(({ channel, modelId, oldUrl }) => {
   const archived = final.find(row => row.channel === channel && row.modelId === modelId)
-  return { channel, modelId, oldUrl, finalUrl: r21Url({ channel, modelId, finalUrl: archived?.finalUrl || oldUrl }) }
+  return { channel, modelId, oldUrl, finalUrl: expectedHumanUrl(r21Url({ channel, modelId, finalUrl: archived?.finalUrl || oldUrl })) }
 }).filter(row => row.oldUrl !== row.finalUrl)
 const changedLinksFromR8 = () => before.rows.map(({ channel, modelId, oldUrl }) => ({ channel, modelId, oldUrl,
   finalUrl: modelCardSpecifications(channel, models.get(channel + '/' + modelId)).sources[0] || null })).filter(row => row.oldUrl !== row.finalUrl)
@@ -92,11 +93,11 @@ test('R22B all 74 cards require rendered pages and retain seven main vendor fall
 test('R12 filters every specified endpoint pattern, JSON evidence and redirected API destinations', () => {
   for (const path of ['/v1/models', '/v12/models/a', '/v3/models-list', '/gateway/v1/list', '/api/v1/list', '/a/api/v2/detail', '/openapi.json', '/models/a/schema.json', '/a%2Fapi%2Fv1%2Fb'])
     assert.equal(isApiSource('https://example.test' + path), true, path)
-  for (const url of ['https://api.example.test/models', 'https://replicate.com/owner/model/api/schema?x=1']) assert.equal(isApiSource(url), true)
+  for (const url of ['https://developers.openai.com/api/docs/models/gpt-6.md', 'https://api.example.test/models', 'https://replicate.com/owner/model/api/schema?x=1']) assert.equal(isApiSource(url), true)
   for (const contentType of ['application/json', 'application/json; charset=utf-8', 'application/problem+json'])
     assert.equal(isApiSource('https://example.test/catalog', { 'https://example.test/catalog': { contentType } }), true)
   assert.equal(isApiSource('https://example.test/catalog', { 'https://example.test/catalog': { finalUrl: 'https://example.test/v2/models' } }), true)
-  for (const url of ['https://api-docs.deepseek.com/quick_start/pricing', 'https://example.test/api-reference/exact', 'https://example.test/models/exact', 'https://developers.openai.com/api/docs/models/gpt-6.md', 'https://developers.openai.com/api/docs/models/gpt-6', 'https://fal.ai/models/owner/model/api', 'https://example.test/api', 'https://example.test/a/api/detail', 'https://example.test/a%2Fapi%2Fb']) assert.equal(isApiSource(url), false)
+  for (const url of ['https://api-docs.deepseek.com/quick_start/pricing', 'https://example.test/api-reference/exact', 'https://example.test/models/exact', 'https://developers.openai.com/api/docs/models/gpt-6', 'https://fal.ai/models/owner/model/api', 'https://example.test/api', 'https://example.test/a/api/detail', 'https://example.test/a%2Fapi%2Fb']) assert.equal(isApiSource(url), false)
   for (const { channel, model: entry } of [...rows, ...rowsOf(STATIC_MODEL_REGISTRY)]) {
     const card = modelCardSpecifications(channel, entry)
     assert.ok(card.sources.length, channel + '/' + entry.id)
@@ -135,14 +136,14 @@ test('R12C keeps OpenAI/Together docs and replaces Replicate/fal endpoints with 
       || STATIC_MODEL_REGISTRY[row.channel].models.find(m => m.id === row.modelId)
     const url = modelCardSpecifications(row.channel, entry).sources[0]
     if (['openai', 'together'].includes(row.channel) && row.r11Url.startsWith('https://developers.openai.com/api/docs/models/')) {
-      assert.equal(url, row.r11Url, row.channel + '/' + row.modelId)
+      assert.equal(url, expectedHumanUrl(row.r11Url), row.channel + '/' + row.modelId)
       row.channel === 'openai' ? openai++ : together++
     }
     if (/^https:\/\/replicate\.com\/[^/]+\/[^/]+\/api\/schema/.test(row.r11Url)) {
       assert.equal(url, repairedLinks.find(item => item.channel === row.channel && item.modelId === row.modelId)?.finalUrl || row.r11Url.replace(/\/api\/schema(?:\?.*)?$/, '')); replicate++
     }
     if (row.channel === 'replicate' && row.r11Url.startsWith('https://developers.openai.com/api/docs/models/')) {
-      assert.equal(url, row.r11Url); replicateOpenAI++
+      assert.equal(url, expectedHumanUrl(row.r11Url)); replicateOpenAI++
     }
     if (row.channel === 'fal' && isApiSource(row.r11Url)) {
       assert.ok([`https://fal.ai/models/${entry.id}`, `https://fal.ai/models/${entry.id}/api`].includes(url), entry.id + ': ' + url); fal++

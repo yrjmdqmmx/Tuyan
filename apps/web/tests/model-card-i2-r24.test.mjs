@@ -1,3 +1,4 @@
+import {expectedHumanRows} from '../../../test-support/source-links-i3-r24.mjs'
 import test,{afterEach} from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -12,10 +13,10 @@ afterEach(cleanup)
 
 test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable styled links and clean copy',t=>{
  const css=fs.readFileSync(new URL('../src/components/ModelSpecifications.css',import.meta.url),'utf8')
- assert.match(css,/\.model-evidence-dialog a\s*\{[^}]*color: var\(--accent, #267f68\)/)
- assert.match(css,/\.model-evidence-dialog a:focus-visible\s*\{[^}]*outline: 2px solid var\(--accent, #267f68\)/)
- assert.match(css,/\.model-evidence-dialog a:hover\s*\{[^}]*text-decoration/)
- assert.match(css,/\.model-evidence-dialog a\s*\{[^}]*white-space: normal; overflow-wrap: anywhere/)
+ assert.match(css,/\.tw-dialog\.model-evidence-dialog a\.model-evidence-source\s*\{[^}]*color: var\(--accent, #267f68\)/)
+ assert.match(css,/\.tw-dialog\.model-evidence-dialog a\.model-evidence-source:focus-visible\s*\{[^}]*outline: 2px solid var\(--accent, #267f68\)/)
+ assert.match(css,/\.tw-dialog\.model-evidence-dialog a\.model-evidence-source:hover\s*\{[^}]*text-decoration/)
+ assert.match(css,/\.tw-dialog\.model-evidence-dialog a\.model-evidence-source\s*\{[^}]*white-space: normal; overflow-wrap: anywhere/)
  const style=document.createElement('style');style.textContent=css;document.head.append(style)
  let cards=0,rows=0,notices=0
  try {
@@ -27,7 +28,7 @@ test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable style
    fireEvent.click(screen.getByRole('button',{name:/^输入模态/}))
    const dialog=screen.getByRole('dialog'),links=within(dialog).queryAllByRole('link')
    assert.deepEqual(dialogIssues(dialog.querySelector('.tw-preserve-text').textContent),[],card)
-   assert.deepEqual(links.map(a=>a.getAttribute('href')),old.rows.map(r=>r.url),card)
+   assert.deepEqual(links.map(a=>a.getAttribute('href')),expectedHumanRows(old.rows).map(r=>r.url),card)
    assert.equal(new Set(links.map(a=>a.textContent)).size,links.length,card)
    for(const link of links) {
     assert.ok(link.classList.contains('model-evidence-source'),card)
@@ -54,7 +55,7 @@ test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable style
    }
   }
  }finally{style.remove()}
- assert.equal(cards,1064);assert.equal(rows,2494);assert.equal(notices,7)
+ assert.equal(cards,1064);assert.equal(rows,2450);assert.equal(notices,7)
  t.diagnostic(JSON.stringify({cards,rows,notices,titleFindings:0,copyFindings:0}))
 })
 

@@ -16,11 +16,12 @@ test('R24 I2 Mini source rows reuse the accent class and show a wrapping copy hi
 
 test('R24 I2 all 1064 compiled Mini cards, copy dialogs and modality dialogs pass strict scans',async t=>{
  const {titleIssues,dialogIssues,reviewBaseline}=await import('../../../test-support/source-titles-r24.mjs')
+ const {expectedHumanRows}=await import('../../../test-support/source-links-i3-r24.mjs')
  const shared=await import('../../../packages/api/src/card-presentation.mjs')
  let cards=0,rows=0,icons=0
  for(const [provider,entry]of Object.entries(STATIC_MODEL_REGISTRY))for(const model of entry.models) {
   const card=context.present(model,'','',provider),key=provider+'/'+model.id,old=reviewBaseline.mini.find(c=>c.card===key)
-  assert.equal(card.label,old.name);assert.equal(JSON.stringify(card.specSources.map(s=>s.url)),JSON.stringify(old.rows.map(s=>s.url)))
+  assert.equal(card.label,old.name);assert.equal(JSON.stringify(card.specSources.map(s=>s.url)),JSON.stringify(expectedHumanRows(old.rows).map(s=>s.url)))
   assert.equal(new Set(card.specSources.map(s=>s.label)).size,card.specSources.length)
   assert.deepEqual(dialogIssues(card.auditMessage),[],key)
   for(const row of card.specSources) {

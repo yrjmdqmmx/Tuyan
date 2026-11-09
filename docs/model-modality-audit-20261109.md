@@ -1178,3 +1178,35 @@ Final validation commands, exit codes, timestamps and log paths are recorded in 
 | Changed-test ledger | **0 flagged**, current content hashes and frozen inventory pass |
 
 Total: **1,777 tests**, zero failures/skips. The staged-build regression injects oversized compiler output only into a temporary directory, verifies the exact **1,572,875-byte** rejection message, and proves that the original source file remains byte-identical with no new source files. The actual Mini package stays at **1,563,042 bytes**. All three builds were completed before final acceptance suites. The final working HEAD remains `cd72eace3d35088a7509d9bf55bc444a50c00396`; no commit, checkout, reset, staging or push was performed.
+
+
+## R24 Phase I3
+
+Starting HEAD: `9a7128d613c339a999dad1e7dad50affe1ea230d` (I2 committed). The operator's Chrome check showed the later `.tw-shell a, .tw-dialog a` reset beating I2's equal-specificity source selectors. Dialog links now use `.tw-dialog.model-evidence-dialog a.model-evidence-source` (specificity 0,3,1); card-bottom links use `.model-card-specifications .model-spec-sources a` (0,2,1). Both outrank the reset (0,1,1) independently of load order. Dialog underlines, hover/focus-visible outlines, wrapping and Lucide external icons are retained with the existing `var(--accent, #267f68)` token. No `!important` is added.
+
+The new Web test parses `styles.css` imports in place, followed by the CSS imports of the lazy `WorkspaceRoot.jsx`, including `workspace.css`. Its independent cascade oracle computes selector specificity (including :is/:not/:has/:where), declaration order and source order. It demonstrates the old equal-specificity failure, then checks both clients' link rules with the actual reset and reversed order. Mini's existing `.model-panel .model-copy` already outranks applicable app WXSS, and its hint inherits the button accent; a new test checks both WXSS orders. No Mini WXSS change was needed. This is offline cascade/DOM verification, not new Chrome screenshots or native WeChat acceptance.
+
+I2's title heuristic explicitly stripped its generated 文档/Markdown/counter suffixes before scanning, so its zero claim missed those defects. I3 rejects counter-only and format-only qualifiers (including arbitrary numbered descriptions), raw Markdown/MDX/llms links, and all previously rejected slug/site/version cases. Actual model aliases and date codes are allowed only when independently present in the card name/ID. Meaningful path sections, API interface versions, languages and console/product entry points distinguish collisions; no numeric counter fallback remains.
+
+Three public documentation GET captures resolve missing page subjects. `qianfan-docs/s/Jm8r1826a` is **价格**, labelled **AI 应用开发入门：价格**. The WENXINWORKSHOP URL redirects to the platform index, labelled **千帆 ModelBuilder 旧版入口（平台首页）**. Volcengine `82379/1330310` redirects to `ark/model-list?lang=zh`, labelled **模型列表**. [Capture metadata](../config/channel-audit/source-titles-r24-i3.json) records original/final URLs, UTC time, response status, body hash and captured title (the Volcengine HTML title is empty, so its final path supplies the subject). These are display-title captures; they do not update model capabilities or token values. There were also three Web-tool opens of the same public pages, two unavailable; no authenticated or model-service request was made.
+
+The human URL projection uses 42 literal OpenAI Markdown/HTML pairs across 44 cards on each client. Web removes 43 duplicate Markdown rows and one raw MiniMax Markdown row, while one OpenAI primary gains its HTML counterpart without duplicate removal. Mini retains all 1,103 source rows through the 44 HTML replacements. GitHub/Hugging Face blob Markdown URLs are already HTML readers and remain visible. Raw evidence stays intact. The two Together HTML rows inherit their merged primary **原厂规格** role; specific retirement roles stay unchanged.
+
+| Check | Web | Mini |
+| --- | ---: | ---: |
+| Cards scanned | 1,064 | 1,064 |
+| Source rows before → after | 2,494 → 2,450 | 1,103 → 1,103 |
+| Strict title/link findings before → after | 318 → 0 | 44 → 0 |
+| Changed row instances | 310 | 77 |
+| Vendor-attributed cards / fields | 65 / 166 | 65 / 166 |
+| Missing vendor links | 0 | 0 |
+| Duplicate URL/label findings | 0 | 0 |
+| Dialog/tooltip copy findings | 0 | 0 |
+
+Seven Web lifecycle dialogs also pass. The [full I3 before/after inventory](model-card-source-titles-r24.md#r24-phase-i3) and [JSON I3 section](model-card-source-titles-r24.json) preserve the I2 report verbatim and append the new starting-HEAD comparison. All 297 independent R9 literal expectations remain, with 44 updated source objects; the [changed-expectation ledger](model-modality-changed-tests.md) records the new HTML projection, stronger CSS hooks and scanner rule. The old local Phase H audit harness remains unchanged; the I3 copy adapts only raw-link matching to the literal HTML mapping and keeps all six assertions, including all 15 screenshot-card identities (screenshots are not run).
+
+Mini source is **1,564,737 bytes**, **8,127 below 1,572,864** and **4,690 below the existing 1,569,427-byte guard**. The source grew 1,695 bytes from I2; staged build/preflight guards remain intact. All 1,064 picker names per client and all four execution locks match the reviewed main baseline `8c456709`; the qwen3.5-plus **65,536** value and all **15** image-input decisions remain untouched.
+
+Final validation: **1,783 tests, 0 failures** — Web **1,489/1,489** with `NODE_OPTIONS=--no-experimental-webstorage`; Mini **176/176**; scripts **67/67**; packages/api **33/33**; targeted Core **7/7**; Gateway **5/5**; local I3 audit **6/6**. Web, Mini and Core builds pass. All **six workspace checks** and the explicit Core `npx tsc --noEmit` pass with **0 errors**. All **12 maintenance checks** pass, including generated-source drift, Docker COPY-layout resolution (no image build), frozen evidence/execution locks, changed-test ledger, modality reports and both title reports.
+
+Validation results are recorded in [the I3 command log](model-modality-r24-i3-validation.json). No Git write commands, secret reads, paid/inference calls, deployment, Docker/image builds or other-worktree changes were performed. `sync-agent-knowledge` and `sync-workflow` are unchanged; Mini deployment remains paused. Operator Chrome/native visual acceptance remains pending.

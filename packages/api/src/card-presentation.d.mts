@@ -5,4 +5,6 @@ export function displayModalityText(value: string): string
 export function sourceIdentity(value: string): string
 export function uniqueSources(values: string[]): string[]
 export function sourceTitle(value: string, model?: SourceModel): string
+export function humanSourceUrl(value: string): string
+export function isMachineDocument(value: string): boolean
 export function titleSourceRows<T extends { url: string; label: string }>(rows: T[], model?: SourceModel): Array<Omit<T, 'label'> & { label: string }>

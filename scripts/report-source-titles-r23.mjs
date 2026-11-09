@@ -1,3 +1,4 @@
+import {expectedHumanRows} from '../test-support/source-links-i3-r24.mjs'
 // Offline, deterministic title inventory. --check reads only; no Git history
 // needed: the pre-F rows are losslessly frozen in the small gzip fixture.
 import fs from 'node:fs'
@@ -39,11 +40,11 @@ for (const client of ['web','mini']) {
   for (const card of cards) {
     const old = prior.find(row=>row.card===card.card)
     assert.equal(card.name,old.name,card.card)
-    assert.deepEqual(card.rows.map(row=>row.url),old.rows.map(row=>row.url),card.card)
+    assert.deepEqual(card.rows.map(row=>row.url),expectedHumanRows(old.rows).map(row=>row.url),card.card)
     for (const [i,row] of card.rows.entries()) {
       const retirementCorrection = r24.noticeCards.includes(card.card) && row.url === r24.noticeUrl
-      assert.equal(row.label.split(' · ')[0], retirementCorrection ? '下线公告' : old.rows[i].label.split(' · ')[0], card.card)
-      if(row.label!==old.rows[i].label) changes.push({client,card:card.card,url:row.url,before:old.rows[i].label,after:row.label})
+      assert.equal(row.label.split(' · ')[0], retirementCorrection ? '下线公告' : expectedHumanRows(old.rows)[i].label.split(' · ')[0], card.card)
+      if(row.label!==expectedHumanRows(old.rows)[i].label) changes.push({client,card:card.card,url:row.url,before:expectedHumanRows(old.rows)[i].label,after:row.label})
       const subject=row.label.split(' · ').slice(2).join(' · ').replace(/（(?:Markdown|控制台|英文|文档)(?: \d+)?）$/,'').replace(/ API 文档$/,'')
       const reason = subject===card.name && /[-_/]|^[a-z]/.test(subject)
         ? 'Exact curated picker name; required to retain its spelling and separators.'
@@ -63,12 +64,12 @@ const cell = value => String(value).replaceAll('|','&#124;').replaceAll('\n','<b
 const report = [
   '# R23 Phase F / F3 — source title scan','',
   '**R24 correction:** the earlier zero-bad-titles claim was incorrect. This older heuristic exempted opaque identifiers and curated slugs, and accepted captured titles with site suffixes. The stricter rule, starting-HEAD findings and complete Phase I2 changes are in [R24 source-title review](model-card-source-titles-r24.md) and its JSON. This report remains the cumulative comparison to pre-F, not the current acceptance scan.','',
-  'Baseline: `1dcd8b13` (pre-F), frozen in `test-support/fixtures/source-titles-1dcd8b13.json.gz`. The fixture contains every Web/Mini card name, URL and label; tests require all 1,064 identities, names and ordered URL lists per client to remain identical. No network or Git writes.','',
+  'Baseline: `1dcd8b13` (pre-F), frozen in `test-support/fixtures/source-titles-1dcd8b13.json.gz`. The fixture contains every Web/Mini card name, URL and label; tests require all 1,064 identities, names and ordered human URL lists per client to remain identical after the literal I3 Markdown-to-HTML mapping. No network or Git writes.','',
   '| Client | Cards | Source rows | Changed titles | Changed cards | Unresolved heuristic findings |','| --- | ---: | ---: | ---: | ---: | ---: |',
   ...Object.entries(counts).map(([client,c])=>`| ${client} | ${c.cards} | ${c.sourceRows} | ${c.changedTitles} | ${c.changedCards} | ${c.suspiciousTitles} |`),'',
   `Also scanned **${notices.length} Web lifecycle dialogs**; **${notices.filter(row=>row.before!==row.after).length}** changed titles are listed separately below. Web tests open every rendered evidence dialog, check the card link/tooltip, and compare every anchor. Mini tests invoke every copy dialog and clipboard callback. Shared-helper parity is checked on all Mini rows.`, '',
   'Heuristics cover collapsed/split numeric versions, hyphens replacing known dotted versions (letter/version tokens such as Qwen3-8, K2-7 and V4-1), raw hosts/paths, API-prefix subjects, case/punctuation differing from the curated name, leftover slug separators, trailing ellipses and repeated words. The dotted-version oracle independently reads every catalog ID/name, plus the current card ID/name. Genuine parameter/release hyphens such as Qwen3-8B, Qwen3.8-27B and DeepSeek-R1-0528 remain valid. Zero duplicate URLs/labels; source ordering is unchanged. R24 restores 下线公告 on the three explicitly reviewed vendor notice rows per client; every other role prefix remains unchanged.', '',
-  'Title priority: curated card/picker name for its own model page, correcting a known dotted version even if its picker label encodes a slug; captured human page title for a general page; longest separator-normalized catalog name/ID match, including family prefixes and quickstart suffixes; readable path fallback. API documentation uses its model subject plus API 文档. Colliding labels get human format/language qualifiers, never a URL suffix. Mini reuses its existing catalog; package-local shared name data is generated from the same registry. Original captures remain unchanged.', '',
+  'Title priority: curated card/picker name for its own model page, correcting a known dotted version even if its picker label encodes a slug; captured human page title for a general page; longest separator-normalized catalog name/ID match, including family prefixes and quickstart suffixes; readable path fallback. API documentation uses its model subject plus API 文档. I3 supersedes format/counter qualifiers with meaningful namespaces, operations, regions and languages; machine Markdown variants use their human HTML pages. See the I3 section in the R24 report. Mini reuses its existing catalog; package-local shared name data is generated from the same registry. Original captures remain unchanged.', '',
   '## R23 F3 corrections', '',
   'Shared/general pages now recover version dots from known model identities across providers, even when the current card is a dated or different model. Surrounding page words remain readable. These regression cases run against both shared Web and compiled Mini helpers:', '',
   '| Page slug | Corrected subject |', '| --- | --- |',

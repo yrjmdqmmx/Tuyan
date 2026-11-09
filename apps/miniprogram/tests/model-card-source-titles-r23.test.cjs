@@ -24,12 +24,13 @@ test('R23F3 compiled Mini restores known dotted versions and preserves curated/t
 
 test('R23F all 1064 compiled Mini cards and copy dialogs pass the title scan; generated titles match the shared helper',async t=>{
  const {scanTitles,titleBaseline}=await import('../../../test-support/source-titles-r23.mjs')
+ const {expectedHumanRows}=await import('../../../test-support/source-links-i3-r24.mjs')
  const shared=await import('../../../packages/api/src/card-presentation.mjs')
  const cards=[];let dialogs=0
  for(const [provider,entry]of Object.entries(STATIC_MODEL_REGISTRY))for(const model of entry.models){
   const card=provider+'/'+model.id,data=context.present(model,'','',provider),old=titleBaseline.mini.find(row=>row.card===card)
   const rows=structuredClone(data.specSources)
-  assert.equal(data.label,old.name,card);assert.deepEqual(rows.map(row=>row.url),old.rows.map(row=>row.url),card)
+  assert.equal(data.label,old.name,card);assert.deepEqual(rows.map(row=>row.url),expectedHumanRows(old.rows).map(row=>row.url),card)
   assert.equal(new Set(rows.map(row=>row.label)).size,rows.length,card)
   assert.equal(new Set(rows.map(row=>shared.sourceIdentity(row.url))).size,rows.length,card)
   const roles=rows.map(row=>({...row,label:row.label.split(' · ')[0]}))

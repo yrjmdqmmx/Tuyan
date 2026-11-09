@@ -2,18 +2,18 @@
 
 **R24 correction:** the earlier zero-bad-titles claim was incorrect. This older heuristic exempted opaque identifiers and curated slugs, and accepted captured titles with site suffixes. The stricter rule, starting-HEAD findings and complete Phase I2 changes are in [R24 source-title review](model-card-source-titles-r24.md) and its JSON. This report remains the cumulative comparison to pre-F, not the current acceptance scan.
 
-Baseline: `1dcd8b13` (pre-F), frozen in `test-support/fixtures/source-titles-1dcd8b13.json.gz`. The fixture contains every Web/Mini card name, URL and label; tests require all 1,064 identities, names and ordered URL lists per client to remain identical. No network or Git writes.
+Baseline: `1dcd8b13` (pre-F), frozen in `test-support/fixtures/source-titles-1dcd8b13.json.gz`. The fixture contains every Web/Mini card name, URL and label; tests require all 1,064 identities, names and ordered human URL lists per client to remain identical after the literal I3 Markdown-to-HTML mapping. No network or Git writes.
 
 | Client | Cards | Source rows | Changed titles | Changed cards | Unresolved heuristic findings |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| web | 1064 | 2494 | 2196 | 1031 | 0 |
+| web | 1064 | 2450 | 2152 | 1031 | 0 |
 | mini | 1064 | 1103 | 974 | 965 | 0 |
 
 Also scanned **7 Web lifecycle dialogs**; **3** changed titles are listed separately below. Web tests open every rendered evidence dialog, check the card link/tooltip, and compare every anchor. Mini tests invoke every copy dialog and clipboard callback. Shared-helper parity is checked on all Mini rows.
 
 Heuristics cover collapsed/split numeric versions, hyphens replacing known dotted versions (letter/version tokens such as Qwen3-8, K2-7 and V4-1), raw hosts/paths, API-prefix subjects, case/punctuation differing from the curated name, leftover slug separators, trailing ellipses and repeated words. The dotted-version oracle independently reads every catalog ID/name, plus the current card ID/name. Genuine parameter/release hyphens such as Qwen3-8B, Qwen3.8-27B and DeepSeek-R1-0528 remain valid. Zero duplicate URLs/labels; source ordering is unchanged. R24 restores 下线公告 on the three explicitly reviewed vendor notice rows per client; every other role prefix remains unchanged.
 
-Title priority: curated card/picker name for its own model page, correcting a known dotted version even if its picker label encodes a slug; captured human page title for a general page; longest separator-normalized catalog name/ID match, including family prefixes and quickstart suffixes; readable path fallback. API documentation uses its model subject plus API 文档. Colliding labels get human format/language qualifiers, never a URL suffix. Mini reuses its existing catalog; package-local shared name data is generated from the same registry. Original captures remain unchanged.
+Title priority: curated card/picker name for its own model page, correcting a known dotted version even if its picker label encodes a slug; captured human page title for a general page; longest separator-normalized catalog name/ID match, including family prefixes and quickstart suffixes; readable path fallback. API documentation uses its model subject plus API 文档. I3 supersedes format/counter qualifiers with meaningful namespaces, operations, regions and languages; machine Markdown variants use their human HTML pages. See the I3 section in the R24 report. Mini reuses its existing catalog; package-local shared name data is generated from the same registry. Original captures remain unchanged.
 
 ## R23 F3 corrections
 
@@ -62,8 +62,8 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | kimi/kimi-k2.7-code | https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart | 官方文档 · kimi.com · kimi k2 7 code quickstart | 官方文档 · Kimi · Kimi K2.7 Code Quickstart |
 | web | kimi/kimi-k2.7-code | https://platform.kimi.com/docs/get-api-key | 官方文档 · kimi.com · get api key | 官方文档 · Kimi · Get API Key |
 | web | kimi/kimi-k2.7-code-highspeed | https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart | 官方文档 · kimi.com · kimi k2 7 code quickstart | 官方文档 · Kimi · Kimi K2.7 Code Quickstart |
-| web | kimi/kimi-k2.7-code-highspeed | https://www.kimi.com/code/docs/en/kimi-code/models | 官方文档 · kimi.com · 模型列表 · www.kimi.com/code/docs/en/kimi-code/models | 官方文档 · Kimi · 模型列表（英文） |
-| web | kimi/kimi-k2.7-code-highspeed | https://platform.kimi.com/docs/models | 官方文档 · kimi.com · 模型列表 · platform.kimi.com/docs/models | 官方文档 · Kimi · 模型列表（文档） |
+| web | kimi/kimi-k2.7-code-highspeed | https://www.kimi.com/code/docs/en/kimi-code/models | 官方文档 · kimi.com · 模型列表 · www.kimi.com/code/docs/en/kimi-code/models | 官方文档 · Kimi · 模型列表（Kimi Code，英文版） |
+| web | kimi/kimi-k2.7-code-highspeed | https://platform.kimi.com/docs/models | 官方文档 · kimi.com · 模型列表 · platform.kimi.com/docs/models | 官方文档 · Kimi · 模型列表（开放平台） |
 | web | kimi/kimi-k2.7-code-highspeed | https://platform.kimi.com/docs/get-api-key | 官方文档 · kimi.com · get api key | 官方文档 · Kimi · Get API Key |
 | web | kimi/kimi-k2.6 | https://platform.kimi.com/docs/models | 官方文档 · kimi.com · 模型列表 | 官方文档 · Kimi · 模型列表 |
 | web | kimi/kimi-k2.6 | https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart | 官方文档 · kimi.com · kimi k2 6 quickstart | 官方文档 · Kimi · Kimi K2.6 Quickstart |
@@ -378,36 +378,36 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | xai/grok-4.6 | https://docs.x.ai/developers/models/grok-4.6 | 官方文档 · x.ai · grok 4.6 | 官方文档 · xAI · Grok 4.6 |
 | web | xai/grok-4.6 | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 | 官方文档 · xAI · 模型列表 |
 | web | xai/grok-4.5 | https://docs.x.ai/developers/models/grok-4.5 | 官方文档 · x.ai · grok 4.5 | 官方文档 · xAI · Grok-4.5 |
-| web | xai/grok-4.5 | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（文档） |
-| web | xai/grok-4.5 | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（文档 2） |
+| web | xai/grok-4.5 | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（模型指南） |
+| web | xai/grok-4.5 | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（开发者指南） |
 | web | xai/grok-4.3 | https://docs.x.ai/developers/models/grok-4.3 | 官方文档 · x.ai · grok 4.3 | 官方文档 · xAI · Grok-4.3 |
-| web | xai/grok-4.3 | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（文档） |
-| web | xai/grok-4.3 | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（文档 2） |
+| web | xai/grok-4.3 | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（模型指南） |
+| web | xai/grok-4.3 | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（开发者指南） |
 | web | xai/grok-4.20-0309-non-reasoning | https://docs.x.ai/developers/models/grok-4.20-0309-non-reasoning | 官方文档 · x.ai · grok 4.20 0309 non reasoning | 官方文档 · xAI · Grok 4.20-0309 Non Reasoning |
-| web | xai/grok-4.20-0309-non-reasoning | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（文档） |
-| web | xai/grok-4.20-0309-non-reasoning | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（文档 2） |
+| web | xai/grok-4.20-0309-non-reasoning | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（模型指南） |
+| web | xai/grok-4.20-0309-non-reasoning | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（开发者指南） |
 | web | xai/grok-4.20-0309-reasoning | https://docs.x.ai/developers/models/grok-4.20-0309-reasoning | 官方文档 · x.ai · grok 4.20 0309 reasoning | 官方文档 · xAI · Grok 4.20-0309 Reasoning |
-| web | xai/grok-4.20-0309-reasoning | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（文档） |
-| web | xai/grok-4.20-0309-reasoning | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（文档 2） |
+| web | xai/grok-4.20-0309-reasoning | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（模型指南） |
+| web | xai/grok-4.20-0309-reasoning | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（开发者指南） |
 | web | xai/grok-4.20-multi-agent | https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309 | 官方文档 · x.ai · grok 4.20 multi agent 0309 | 官方文档 · xAI · Grok 4.20 Multi Agent 0309 |
-| web | xai/grok-4.20-multi-agent | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（文档） |
-| web | xai/grok-4.20-multi-agent | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（文档 2） |
+| web | xai/grok-4.20-multi-agent | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（模型指南） |
+| web | xai/grok-4.20-multi-agent | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（开发者指南） |
 | web | xai/grok-4.20-multi-agent-0309 | https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309 | 官方文档 · x.ai · grok 4.20 multi agent 0309 | 官方文档 · xAI · Grok 4.20 Multi Agent 0309 |
-| web | xai/grok-4.20-multi-agent-0309 | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（文档） |
-| web | xai/grok-4.20-multi-agent-0309 | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（文档 2） |
+| web | xai/grok-4.20-multi-agent-0309 | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（模型指南） |
+| web | xai/grok-4.20-multi-agent-0309 | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（开发者指南） |
 | web | xai/grok-imagine-image-2.0 | https://docs.x.ai/developers/models/grok-imagine-image-2.0 | 官方文档 · x.ai · grok imagine image 2.0 | 官方文档 · xAI · Grok Imagine Image 2.0 |
-| web | xai/grok-imagine-image-2.0 | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（文档） |
-| web | xai/grok-imagine-image-2.0 | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（文档 2） |
+| web | xai/grok-imagine-image-2.0 | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（模型指南） |
+| web | xai/grok-imagine-image-2.0 | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（开发者指南） |
 | web | xai/grok-imagine-image | https://docs.x.ai/developers/models/grok-imagine-image | 官方文档 · x.ai · grok imagine image | 官方文档 · xAI · Grok Imagine Image |
-| web | xai/grok-imagine-image | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（文档） |
-| web | xai/grok-imagine-image | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（文档 2） |
-| web | xai/grok-imagine-image-quality | https://docs.x.ai/developers/models/grok-imagine-image-quality | 官方文档 · x.ai · grok imagine image quality · docs.x.ai/developers/models/grok-imagine-image-quality | 官方文档 · xAI · Grok Imagine Image Quality（文档） |
+| web | xai/grok-imagine-image | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/docs/models | 官方文档 · xAI · 模型列表（模型指南） |
+| web | xai/grok-imagine-image | https://docs.x.ai/developers/models | 官方文档 · x.ai · 模型列表 · docs.x.ai/developers/models | 官方文档 · xAI · 模型列表（开发者指南） |
+| web | xai/grok-imagine-image-quality | https://docs.x.ai/developers/models/grok-imagine-image-quality | 官方文档 · x.ai · grok imagine image quality · docs.x.ai/developers/models/grok-imagine-image-quality | 官方文档 · xAI · Grok Imagine Image Quality（开发者指南） |
 | web | xai/grok-imagine-image-quality | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 | 官方文档 · xAI · 模型列表 |
-| web | xai/grok-imagine-image-quality | https://docs.x.ai/docs/models/grok-imagine-image-quality | 官方文档 · x.ai · grok imagine image quality · docs.x.ai/docs/models/grok-imagine-image-quality | 官方文档 · xAI · Grok Imagine Image Quality（文档 2） |
+| web | xai/grok-imagine-image-quality | https://docs.x.ai/docs/models/grok-imagine-image-quality | 官方文档 · x.ai · grok imagine image quality · docs.x.ai/docs/models/grok-imagine-image-quality | 官方文档 · xAI · Grok Imagine Image Quality（模型指南） |
 | web | xai/grok-imagine-image-quality | https://docs.x.ai/developers/migration/imagine-image-quality-nov-2 | 下线公告 · x.ai · imagine image quality nov 2 | 下线公告 · xAI · Imagine Image Quality Nov 2 |
-| web | xai/grok-build-0.1 | https://docs.x.ai/developers/models/grok-build-0.1 | 官方文档 · x.ai · grok build 0.1 · docs.x.ai/developers/models/grok-build-0.1 | 官方文档 · xAI · Grok Build 0.1（文档） |
+| web | xai/grok-build-0.1 | https://docs.x.ai/developers/models/grok-build-0.1 | 官方文档 · x.ai · grok build 0.1 · docs.x.ai/developers/models/grok-build-0.1 | 官方文档 · xAI · Grok Build 0.1（开发者指南） |
 | web | xai/grok-build-0.1 | https://docs.x.ai/docs/models | 官方文档 · x.ai · 模型列表 | 官方文档 · xAI · 模型列表 |
-| web | xai/grok-build-0.1 | https://docs.x.ai/docs/models/grok-build-0.1 | 官方文档 · x.ai · grok build 0.1 · docs.x.ai/docs/models/grok-build-0.1 | 官方文档 · xAI · Grok Build 0.1（文档 2） |
+| web | xai/grok-build-0.1 | https://docs.x.ai/docs/models/grok-build-0.1 | 官方文档 · x.ai · grok build 0.1 · docs.x.ai/docs/models/grok-build-0.1 | 官方文档 · xAI · Grok Build 0.1（模型指南） |
 | web | gemini/gemini-4-argon | https://ai.google.dev/gemini-api/docs/models/gemini-4-argon | 官方文档 · ai.google.dev · gemini 4 argon | 官方文档 · Google · Gemini 4 Argon |
 | web | gemini/gemini-4-argon | https://ai.google.dev/gemini-api/docs/generate-content/thinking | 官方文档 · ai.google.dev · thinking | 官方文档 · Google · Thinking |
 | web | gemini/gemini-4-argon | https://ai.google.dev/gemini-api/docs/pricing | 官方文档 · ai.google.dev · 价格与规格 | 官方文档 · Google · 价格与规格 |
@@ -485,8 +485,8 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | bailian/qwen3.8-27b | https://help.aliyun.com/zh/model-studio/qwen3-8-27b | 官方文档 · 百炼 · qwen3 8 27b | 官方文档 · 百炼 · Qwen3.8 27B |
 | web | bailian/ZHIPU/GLM-5.3 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3 | 官方文档 · bigmodel.cn · glm 5.3 | 官方文档 · 智谱 · GLM 5.3 |
 | web | bailian/qwen3.8-2.4t-a95b | https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b | 官方文档 · 百炼 · qwen3 8 2 4t a95b | 官方文档 · 百炼 · Qwen3.8 2.4T A95B |
-| web | bailian/MiniMax/MiniMax-M3 | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
-| web | bailian/MiniMax/MiniMax-M3 | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
+| web | bailian/MiniMax/MiniMax-M3 | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（中文版） |
+| web | bailian/MiniMax/MiniMax-M3 | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文版） |
 | web | bailian/MiniMax/MiniMax-M2.7 | https://huggingface.co/MiniMaxAI/MiniMax-M2.7 | 官方文档 · Hugging Face · MiniMax M2.7 | 官方文档 · Hugging Face · MiniMax-M2.7 |
 | web | bailian/MiniMax/MiniMax-M2.7 | https://platform.minimax.io/docs/api-reference/text-openai-api | 官方文档 · minimax.io · text openai api | 官方文档 · MiniMax · Text OpenAI API |
 | web | bailian/MiniMax-M2.5 | https://huggingface.co/MiniMaxAI/MiniMax-M2.5 | 官方文档 · Hugging Face · MiniMax M2.5 | 官方文档 · Hugging Face · MiniMax-M2.5 |
@@ -505,18 +505,18 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | bailian/qwen-image-3.0 | https://help.aliyun.com/zh/model-studio/qwen-image-3-0 | 官方文档 · 百炼 · qwen image 3 0 | 官方文档 · 百炼 · Qwen Image 3.0 |
 | web | bailian/qwen-image-3.0 | https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference | 官方文档 · 百炼 · qwen image generation and editing api reference | 官方文档 · 百炼 · Qwen Image Generation And Editing API Reference |
 | web | bailian/qwen-image-3.0-pro | https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro | 官方文档 · 百炼 · qwen image 3 0 pro | 官方文档 · 百炼 · Qwen Image 3.0 Pro |
-| web | bailian/qwen-image-3.0-pro | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
-| web | bailian/qwen-image-3.0-pro | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
+| web | bailian/qwen-image-3.0-pro | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（中文版） |
+| web | bailian/qwen-image-3.0-pro | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文版） |
 | web | bailian/qwen3.8-max | https://help.aliyun.com/zh/model-studio/qwen3-8-max | 官方文档 · 百炼 · qwen3 8 max | 官方文档 · 百炼 · Qwen3.8 Max |
 | web | bailian/deepseek-v4-flash-0731 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731 | 官方文档 · Hugging Face · DeepSeek V4 Flash 0731 | 官方文档 · Hugging Face · DeepSeek-V4-Flash-0731 |
-| web | bailian/qwen3.7-flash | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
-| web | bailian/qwen3.7-flash | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
-| web | bailian/deepseek-v4-pro | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
-| web | bailian/deepseek-v4-pro | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
+| web | bailian/qwen3.7-flash | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（中文版） |
+| web | bailian/qwen3.7-flash | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文版） |
+| web | bailian/deepseek-v4-pro | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（中文版） |
+| web | bailian/deepseek-v4-pro | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文版） |
 | web | bailian/deepseek-v4-pro | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro | 官方文档 · Hugging Face · DeepSeek V4 Pro | 官方文档 · Hugging Face · DeepSeek-V4-Pro |
 | web | bailian/glm-5.2 | https://help.aliyun.com/zh/model-studio/glm-5-2 | 官方文档 · 百炼 · glm 5 2 | 官方文档 · 百炼 · GLM 5.2 |
-| web | bailian/glm-5.2 | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
-| web | bailian/glm-5.2 | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
+| web | bailian/glm-5.2 | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（中文版） |
+| web | bailian/glm-5.2 | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文版） |
 | web | bailian/glm-5.2 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2 | 官方文档 · bigmodel.cn · glm 5.2 | 官方文档 · 智谱 · GLM 5.2 |
 | web | bailian/glm-5.2-fast-preview | https://www.qianwenai.com/models/glm-5.2-fast-preview | 官方文档 · qianwenai.com · glm 5.2 fast preview | 官方文档 · 千问 · GLM 5.2 Fast Preview |
 | web | bailian/ZHIPU/GLM-5.1 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1 | 官方文档 · bigmodel.cn · glm 5.1 | 官方文档 · 智谱 · GLM-5.1 |
@@ -524,8 +524,8 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | bailian/glm-5.1 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1 | 官方文档 · bigmodel.cn · glm 5.1 | 官方文档 · 智谱 · GLM-5.1 |
 | web | bailian/ZHIPU/GLM-5 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5 | 官方文档 · bigmodel.cn · glm 5 | 官方文档 · 智谱 · GLM-5 |
 | web | bailian/glm-5 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5 | 官方文档 · bigmodel.cn · glm 5 | 官方文档 · 智谱 · GLM-5 |
-| web | bailian/kimi/kimi-k3 | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
-| web | bailian/kimi/kimi-k3 | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
+| web | bailian/kimi/kimi-k3 | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（中文版） |
+| web | bailian/kimi/kimi-k3 | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文版） |
 | web | bailian/kimi-k2.7-code | https://help.aliyun.com/zh/model-studio/kimi-k2-7-code | 官方文档 · 百炼 · kimi k2 7 code | 官方文档 · 百炼 · Kimi K2.7 Code |
 | web | bailian/kimi-k2.6 | https://help.aliyun.com/zh/model-studio/kimi-k2-6 | 官方文档 · 百炼 · kimi k2 6 | 官方文档 · 百炼 · Kimi-k2.6 |
 | web | bailian/kimi-k2.6 | https://huggingface.co/moonshotai/Kimi-K2.6 | 官方文档 · Hugging Face · Kimi K2.6 | 官方文档 · Hugging Face · Kimi-k2.6 |
@@ -539,12 +539,12 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | bailian/qwen-image-2.1-turbo | https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference | 官方文档 · 百炼 · qwen image generation and editing api reference | 官方文档 · 百炼 · Qwen Image Generation And Editing API Reference |
 | web | bailian/qwen-image-2.0-pro-2026-06-22 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2.0 Pro |
 | web | bailian/qwen-image-2.0 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0 | 官方文档 · 百炼 · qwen image 2 0 | 官方文档 · 百炼 · Qwen Image 2.0 |
-| web | bailian/qwen-image-2.0 | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
-| web | bailian/qwen-image-2.0 | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
+| web | bailian/qwen-image-2.0 | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（中文版） |
+| web | bailian/qwen-image-2.0 | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文版） |
 | web | bailian/qwen-image-2.0-2026-03-03 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0 | 官方文档 · 百炼 · qwen image 2 0 | 官方文档 · 百炼 · Qwen Image 2.0 |
 | web | bailian/qwen-image-2.0-pro | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2.0 Pro |
-| web | bailian/qwen-image-2.0-pro | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
-| web | bailian/qwen-image-2.0-pro | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
+| web | bailian/qwen-image-2.0-pro | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（中文版） |
+| web | bailian/qwen-image-2.0-pro | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文版） |
 | web | bailian/qwen-image-2.0-pro-2026-03-03 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2.0 Pro |
 | web | bailian/qwen-image-2.0-pro-2026-04-22 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2.0 Pro |
 | web | bailian/qwen-image | https://help.aliyun.com/zh/model-studio/qwen-image-api | 官方文档 · 百炼 · qwen image api | 官方文档 · 百炼 · Qwen Image API |
@@ -554,8 +554,8 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | bailian/qwen3.7-max-2026-06-08 | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3.7 Max |
 | web | bailian/qwen3.7-max-preview | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3.7 Max |
 | web | bailian/qwen3.7-plus | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3 7 plus | 官方文档 · 百炼 · Qwen3.7 Plus |
-| web | bailian/qwen3.7-plus | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
-| web | bailian/qwen3.7-plus | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
+| web | bailian/qwen3.7-plus | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（中文版） |
+| web | bailian/qwen3.7-plus | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文版） |
 | web | bailian/qwen3.7-plus-2026-05-26 | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3 7 plus | 官方文档 · 百炼 · Qwen3.7 Plus |
 | web | bailian/qwen3.6-27b | https://huggingface.co/Qwen/Qwen3.6-27B | 官方文档 · Hugging Face · Qwen3.6 27B | 官方文档 · Hugging Face · Qwen3.6-27b |
 | web | bailian/qwen3.6-35b-a3b | https://huggingface.co/Qwen/Qwen3.6-35B-A3B | 官方文档 · Hugging Face · Qwen3.6 35B A3B | 官方文档 · Hugging Face · Qwen3.6-35b-a3b |
@@ -581,11 +581,11 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | bailian/vanchin/deepseek-v3.1-terminus | https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin | 官方文档 · 百炼 · deepseek api by vanchin | 官方文档 · 百炼 · DeepSeek API By Vanchin |
 | web | bailian/vanchin/deepseek-v3 | https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin | 官方文档 · 百炼 · deepseek api by vanchin | 官方文档 · 百炼 · DeepSeek API By Vanchin |
 | web | bailian/wan2.7-image | https://help.aliyun.com/zh/model-studio/wan2-7-image | 官方文档 · 百炼 · wan2 7 image | 官方文档 · 百炼 · Wan 2.7 Image |
-| web | bailian/wan2.7-image | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
-| web | bailian/wan2.7-image | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
+| web | bailian/wan2.7-image | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（中文版） |
+| web | bailian/wan2.7-image | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文版） |
 | web | bailian/wan2.7-image-pro | https://help.aliyun.com/zh/model-studio/wan2-7-image-pro | 官方文档 · 百炼 · wan2 7 image pro | 官方文档 · 百炼 · Wan 2.7 Image Pro |
-| web | bailian/wan2.7-image-pro | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
-| web | bailian/wan2.7-image-pro | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
+| web | bailian/wan2.7-image-pro | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（中文版） |
+| web | bailian/wan2.7-image-pro | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文版） |
 | web | bailian/wan2.6-image | https://help.aliyun.com/zh/model-studio/wan2-6-image | 官方文档 · 百炼 · wan2 6 image | 官方文档 · 百炼 · Wan2.6 Image |
 | web | bailian/wan2.6-t2i | https://help.aliyun.com/zh/model-studio/wan2-6-t2i | 官方文档 · 百炼 · wan2 6 t2i | 官方文档 · 百炼 · Wan2.6 T2i |
 | web | bailian/wan2.2-t2i-flash | https://help.aliyun.com/zh/model-studio/wan2-2-t2i-flash | 官方文档 · 百炼 · wan2 2 t2i flash | 官方文档 · 百炼 · Wan2.2 T2i Flash |
@@ -613,110 +613,85 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | bailian/xiaomi/mimo-v2.6-pro-ultraspeed | https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed | 官方文档 · 百炼 · mimo v2 6 pro ultraspeed | 官方文档 · 百炼 · MiMo V2.6 Pro UltraSpeed |
 | web | bailian/xiaomi/mimo-v2.6-pro-ultraspeed | https://help.aliyun.com/zh/model-studio/mimo | 官方文档 · 百炼 · mimo | 官方文档 · 百炼 · MiMo |
 | web | bailian/xiaomi/mimo-v2.6-pro-ultraspeed | https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions | 官方文档 · 百炼 · qwen api via openai chat completions | 官方文档 · 百炼 · Qwen API Via OpenAI Chat Completions |
-| web | bailian/z-image-turbo | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
-| web | bailian/z-image-turbo | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
+| web | bailian/z-image-turbo | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（中文版） |
+| web | bailian/z-image-turbo | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文版） |
 | web | bailian/z-image-turbo | https://huggingface.co/Tongyi-MAI/Z-Image-Turbo | 官方文档 · Hugging Face · Z Image Turbo | 官方文档 · Hugging Face · Z-Image Turbo |
 | web | openai/gpt-6.1-sol | https://developers.openai.com/api/docs/models/gpt-6.1-sol | 官方文档 · developers.openai.com · gpt 6.1 sol | 官方文档 · OpenAI · GPT-6.1 Sol |
-| web | openai/gpt-6-luna | https://developers.openai.com/api/docs/models/gpt-6-luna.md | 官方文档 · developers.openai.com · gpt 6 luna.md | 官方文档 · OpenAI · GPT-6 Luna（Markdown） |
-| web | openai/gpt-6-luna | https://developers.openai.com/api/docs/models/gpt-6-luna | 官方文档 · developers.openai.com · gpt 6 luna | 官方文档 · OpenAI · GPT-6 Luna（文档） |
-| web | openai/gpt-6-sol | https://developers.openai.com/api/docs/models/gpt-6-sol.md | 官方文档 · developers.openai.com · gpt 6 sol.md | 官方文档 · OpenAI · GPT-6 Sol（Markdown） |
-| web | openai/gpt-6-sol | https://developers.openai.com/api/docs/models/gpt-6-sol | 官方文档 · developers.openai.com · gpt 6 sol | 官方文档 · OpenAI · GPT-6 Sol（文档） |
-| web | openai/gpt-image-2.5-flare | https://developers.openai.com/api/docs/models/gpt-image-2.5-flare.md | 官方文档 · developers.openai.com · gpt image 2.5 flare.md | 官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）（Markdown） |
-| web | openai/gpt-image-2.5-flare | https://developers.openai.com/api/docs/models/gpt-image-2.5-flare | 官方文档 · developers.openai.com · gpt image 2.5 flare | 官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）（文档） |
+| web | openai/gpt-6-luna | https://developers.openai.com/api/docs/models/gpt-6-luna | 官方文档 · developers.openai.com · gpt 6 luna.md | 官方文档 · OpenAI · GPT-6 Luna |
+| web | openai/gpt-6-sol | https://developers.openai.com/api/docs/models/gpt-6-sol | 官方文档 · developers.openai.com · gpt 6 sol.md | 官方文档 · OpenAI · GPT-6 Sol |
+| web | openai/gpt-image-2.5-flare | https://developers.openai.com/api/docs/models/gpt-image-2.5-flare | 官方文档 · developers.openai.com · gpt image 2.5 flare.md | 官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08） |
 | web | openai/gpt-image-2.5-flare-2026-09-08 | https://developers.openai.com/api/docs/models/gpt-image-2.5-flare | 官方文档 · developers.openai.com · gpt image 2.5 flare | 官方文档 · OpenAI · GPT Image 2.5 Flare |
 | web | openai/gpt-image-2.5-flare-2026-09-08 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-image-2.5-sunburst | https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst.md | 官方文档 · developers.openai.com · gpt image 2.5 sunburst.md | 官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）（Markdown） |
-| web | openai/gpt-image-2.5-sunburst | https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst | 官方文档 · developers.openai.com · gpt image 2.5 sunburst | 官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）（文档） |
+| web | openai/gpt-image-2.5-sunburst | https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst | 官方文档 · developers.openai.com · gpt image 2.5 sunburst.md | 官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08） |
 | web | openai/gpt-image-2.5-sunburst-2026-09-08 | https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst | 官方文档 · developers.openai.com · gpt image 2.5 sunburst | 官方文档 · OpenAI · GPT Image 2.5 Sunburst |
 | web | openai/gpt-image-2.5-sunburst-2026-09-08 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-6-astra | https://developers.openai.com/api/docs/models/gpt-6-astra.md | 官方文档 · developers.openai.com · gpt 6 astra.md | 官方文档 · OpenAI · GPT-6 Astra（Markdown） |
-| web | openai/gpt-6-astra | https://developers.openai.com/api/docs/models/gpt-6-astra | 官方文档 · developers.openai.com · gpt 6 astra | 官方文档 · OpenAI · GPT-6 Astra（文档） |
-| web | openai/gpt-5.6-luna | https://developers.openai.com/api/docs/models/gpt-5.6-luna.md | 官方文档 · developers.openai.com · gpt 5.6 luna.md | 官方文档 · OpenAI · GPT-5.6 Luna（Markdown） |
+| web | openai/gpt-6-astra | https://developers.openai.com/api/docs/models/gpt-6-astra | 官方文档 · developers.openai.com · gpt 6 astra.md | 官方文档 · OpenAI · GPT-6 Astra |
+| web | openai/gpt-5.6-luna | https://developers.openai.com/api/docs/models/gpt-5.6-luna | 官方文档 · developers.openai.com · gpt 5.6 luna.md | 官方文档 · OpenAI · GPT-5.6 Luna |
 | web | openai/gpt-5.6-luna | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5.6-luna | https://developers.openai.com/api/docs/models/gpt-5.6-luna | 官方文档 · developers.openai.com · gpt 5.6 luna | 官方文档 · OpenAI · GPT-5.6 Luna（文档） |
-| web | openai/gpt-5.6-sol | https://developers.openai.com/api/docs/models/gpt-5.6-sol.md | 官方文档 · developers.openai.com · gpt 5.6 sol.md | 官方文档 · OpenAI · GPT-5.6 Sol |
+| web | openai/gpt-5.6-sol | https://developers.openai.com/api/docs/models/gpt-5.6-sol | 官方文档 · developers.openai.com · gpt 5.6 sol.md | 官方文档 · OpenAI · GPT-5.6 Sol |
 | web | openai/gpt-5.6-sol | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-5.6-sol | https://developers.openai.com/api/docs/models/gpt-daybreak-blue-latest | 官方文档 · developers.openai.com · gpt daybreak blue latest | 官方文档 · OpenAI · GPT Daybreak Blue Latest |
-| web | openai/gpt-5.6-terra | https://developers.openai.com/api/docs/models/gpt-5.6-terra.md | 官方文档 · developers.openai.com · gpt 5.6 terra.md | 官方文档 · OpenAI · GPT-5.6 Terra（Markdown） |
+| web | openai/gpt-5.6-terra | https://developers.openai.com/api/docs/models/gpt-5.6-terra | 官方文档 · developers.openai.com · gpt 5.6 terra.md | 官方文档 · OpenAI · GPT-5.6 Terra |
 | web | openai/gpt-5.6-terra | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5.6-terra | https://developers.openai.com/api/docs/models/gpt-5.6-terra | 官方文档 · developers.openai.com · gpt 5.6 terra | 官方文档 · OpenAI · GPT-5.6 Terra（文档） |
-| web | openai/gpt-5.5 | https://developers.openai.com/api/docs/models/gpt-5.5.md | 官方文档 · developers.openai.com · gpt 5.5.md | 官方文档 · OpenAI · GPT-5.5（2026-04-23）（Markdown） |
+| web | openai/gpt-5.5 | https://developers.openai.com/api/docs/models/gpt-5.5 | 官方文档 · developers.openai.com · gpt 5.5.md | 官方文档 · OpenAI · GPT-5.5（2026-04-23） |
 | web | openai/gpt-5.5 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5.5 | https://developers.openai.com/api/docs/models/gpt-5.5 | 官方文档 · developers.openai.com · gpt 5.5 | 官方文档 · OpenAI · GPT-5.5（2026-04-23）（文档） |
-| web | openai/gpt-5.5-pro | https://developers.openai.com/api/docs/models/gpt-5.5-pro.md | 官方文档 · developers.openai.com · gpt 5.5 pro.md | 官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）（Markdown） |
+| web | openai/gpt-5.5-pro | https://developers.openai.com/api/docs/models/gpt-5.5-pro | 官方文档 · developers.openai.com · gpt 5.5 pro.md | 官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23） |
 | web | openai/gpt-5.5-pro | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5.5-pro | https://developers.openai.com/api/docs/models/gpt-5.5-pro | 官方文档 · developers.openai.com · gpt 5.5 pro | 官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）（文档） |
-| web | openai/gpt-5.4 | https://developers.openai.com/api/docs/models/gpt-5.4.md | 官方文档 · developers.openai.com · gpt 5.4.md | 官方文档 · OpenAI · GPT-5.4（2026-03-05）（Markdown） |
+| web | openai/gpt-5.4 | https://developers.openai.com/api/docs/models/gpt-5.4 | 官方文档 · developers.openai.com · gpt 5.4.md | 官方文档 · OpenAI · GPT-5.4（2026-03-05） |
 | web | openai/gpt-5.4 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5.4 | https://developers.openai.com/api/docs/models/gpt-5.4 | 官方文档 · developers.openai.com · gpt 5.4 | 官方文档 · OpenAI · GPT-5.4（2026-03-05）（文档） |
-| web | openai/gpt-5.4-mini | https://developers.openai.com/api/docs/models/gpt-5.4-mini.md | 官方文档 · developers.openai.com · gpt 5.4 mini.md | 官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）（Markdown） |
+| web | openai/gpt-5.4-mini | https://developers.openai.com/api/docs/models/gpt-5.4-mini | 官方文档 · developers.openai.com · gpt 5.4 mini.md | 官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17） |
 | web | openai/gpt-5.4-mini | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5.4-mini | https://developers.openai.com/api/docs/models/gpt-5.4-mini | 官方文档 · developers.openai.com · gpt 5.4 mini | 官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）（文档） |
-| web | openai/gpt-5.4-nano | https://developers.openai.com/api/docs/models/gpt-5.4-nano.md | 官方文档 · developers.openai.com · gpt 5.4 nano.md | 官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）（Markdown） |
+| web | openai/gpt-5.4-nano | https://developers.openai.com/api/docs/models/gpt-5.4-nano | 官方文档 · developers.openai.com · gpt 5.4 nano.md | 官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17） |
 | web | openai/gpt-5.4-nano | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5.4-nano | https://developers.openai.com/api/docs/models/gpt-5.4-nano | 官方文档 · developers.openai.com · gpt 5.4 nano | 官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）（文档） |
-| web | openai/gpt-5.4-pro | https://developers.openai.com/api/docs/models/gpt-5.4-pro.md | 官方文档 · developers.openai.com · gpt 5.4 pro.md | 官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）（Markdown） |
+| web | openai/gpt-5.4-pro | https://developers.openai.com/api/docs/models/gpt-5.4-pro | 官方文档 · developers.openai.com · gpt 5.4 pro.md | 官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05） |
 | web | openai/gpt-5.4-pro | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5.4-pro | https://developers.openai.com/api/docs/models/gpt-5.4-pro | 官方文档 · developers.openai.com · gpt 5.4 pro | 官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）（文档） |
-| web | openai/gpt-5.3-codex | https://developers.openai.com/api/docs/models/gpt-5.3-codex.md | 官方文档 · developers.openai.com · gpt 5.3 codex.md | 官方文档 · OpenAI · GPT 5.3 Codex（Markdown） |
+| web | openai/gpt-5.3-codex | https://developers.openai.com/api/docs/models/gpt-5.3-codex | 官方文档 · developers.openai.com · gpt 5.3 codex.md | 官方文档 · OpenAI · GPT 5.3 Codex |
 | web | openai/gpt-5.3-codex | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5.3-codex | https://developers.openai.com/api/docs/models/gpt-5.3-codex | 官方文档 · developers.openai.com · gpt 5.3 codex | 官方文档 · OpenAI · GPT 5.3 Codex（文档） |
-| web | openai/gpt-5.2 | https://developers.openai.com/api/docs/models/gpt-5.2.md | 官方文档 · developers.openai.com · gpt 5.2.md | 官方文档 · OpenAI · GPT-5.2（2025-12-11）（Markdown） |
+| web | openai/gpt-5.2 | https://developers.openai.com/api/docs/models/gpt-5.2 | 官方文档 · developers.openai.com · gpt 5.2.md | 官方文档 · OpenAI · GPT-5.2（2025-12-11） |
 | web | openai/gpt-5.2 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5.2 | https://developers.openai.com/api/docs/models/gpt-5.2 | 官方文档 · developers.openai.com · gpt 5.2 | 官方文档 · OpenAI · GPT-5.2（2025-12-11）（文档） |
 | web | openai/gpt-5.2-2025-12-11 | https://developers.openai.com/api/docs/models/gpt-5.2 | 官方文档 · developers.openai.com · gpt 5.2 | 官方文档 · OpenAI · GPT 5.2 |
 | web | openai/gpt-5.2-2025-12-11 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5.2-pro | https://developers.openai.com/api/docs/models/gpt-5.2-pro.md | 官方文档 · developers.openai.com · gpt 5.2 pro.md | 官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）（Markdown） |
+| web | openai/gpt-5.2-pro | https://developers.openai.com/api/docs/models/gpt-5.2-pro | 官方文档 · developers.openai.com · gpt 5.2 pro.md | 官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11） |
 | web | openai/gpt-5.2-pro | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5.2-pro | https://developers.openai.com/api/docs/models/gpt-5.2-pro | 官方文档 · developers.openai.com · gpt 5.2 pro | 官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）（文档） |
-| web | openai/gpt-5.1 | https://developers.openai.com/api/docs/models/gpt-5.1.md | 官方文档 · developers.openai.com · gpt 5.1.md | 官方文档 · OpenAI · GPT-5.1（2025-11-13）（Markdown） |
+| web | openai/gpt-5.1 | https://developers.openai.com/api/docs/models/gpt-5.1 | 官方文档 · developers.openai.com · gpt 5.1.md | 官方文档 · OpenAI · GPT-5.1（2025-11-13） |
 | web | openai/gpt-5.1 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5.1 | https://developers.openai.com/api/docs/models/gpt-5.1 | 官方文档 · developers.openai.com · gpt 5.1 | 官方文档 · OpenAI · GPT-5.1（2025-11-13）（文档） |
 | web | openai/gpt-5.1-2025-11-13 | https://developers.openai.com/api/docs/models/gpt-5.1 | 官方文档 · developers.openai.com · gpt 5.1 | 官方文档 · OpenAI · GPT-5.1 |
 | web | openai/gpt-5.1-2025-11-13 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-5 | https://developers.openai.com/api/docs/models/gpt-5.md | 官方文档 · developers.openai.com · gpt 5.md | 官方文档 · OpenAI · GPT-5（2025-08-07）（Markdown） |
+| web | openai/gpt-5 | https://developers.openai.com/api/docs/models/gpt-5 | 官方文档 · developers.openai.com · gpt 5.md | 官方文档 · OpenAI · GPT-5（2025-08-07） |
 | web | openai/gpt-5 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-5 | https://developers.openai.com/api/docs/models/gpt-5 | 官方文档 · developers.openai.com · gpt 5 | 官方文档 · OpenAI · GPT-5（2025-08-07）（文档） |
 | web | openai/gpt-5-2025-08-07 | https://developers.openai.com/api/docs/models/gpt-5 | 官方文档 · developers.openai.com · gpt 5 | 官方文档 · OpenAI · GPT 5 |
 | web | openai/gpt-5-2025-08-07 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-5-2025-08-07 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-5-mini | https://developers.openai.com/api/docs/models/gpt-5-mini.md | 官方文档 · developers.openai.com · gpt 5 mini.md | 官方文档 · OpenAI · GPT 5 Mini（2025-08-07）（Markdown） |
+| web | openai/gpt-5-mini | https://developers.openai.com/api/docs/models/gpt-5-mini | 官方文档 · developers.openai.com · gpt 5 mini.md | 官方文档 · OpenAI · GPT 5 Mini（2025-08-07） |
 | web | openai/gpt-5-mini | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-5-mini | https://developers.openai.com/api/docs/models/gpt-5-mini | 官方文档 · developers.openai.com · gpt 5 mini | 官方文档 · OpenAI · GPT 5 Mini（2025-08-07）（文档） |
 | web | openai/gpt-5-mini-2025-08-07 | https://developers.openai.com/api/docs/models/gpt-5-mini | 官方文档 · developers.openai.com · gpt 5 mini | 官方文档 · OpenAI · GPT 5 Mini |
 | web | openai/gpt-5-mini-2025-08-07 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-5-mini-2025-08-07 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-5-nano | https://developers.openai.com/api/docs/models/gpt-5-nano.md | 官方文档 · developers.openai.com · gpt 5 nano.md | 官方文档 · OpenAI · GPT 5 Nano（2025-08-07）（Markdown） |
+| web | openai/gpt-5-nano | https://developers.openai.com/api/docs/models/gpt-5-nano | 官方文档 · developers.openai.com · gpt 5 nano.md | 官方文档 · OpenAI · GPT 5 Nano（2025-08-07） |
 | web | openai/gpt-5-nano | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-5-nano | https://developers.openai.com/api/docs/models/gpt-5-nano | 官方文档 · developers.openai.com · gpt 5 nano | 官方文档 · OpenAI · GPT 5 Nano（2025-08-07）（文档） |
 | web | openai/gpt-5-nano-2025-08-07 | https://developers.openai.com/api/docs/models/gpt-5-nano | 官方文档 · developers.openai.com · gpt 5 nano | 官方文档 · OpenAI · GPT 5 Nano |
 | web | openai/gpt-5-nano-2025-08-07 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-5-nano-2025-08-07 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-5-pro | https://developers.openai.com/api/docs/models/gpt-5-pro.md | 官方文档 · developers.openai.com · gpt 5 pro.md | 官方文档 · OpenAI · GPT 5 Pro（2025-10-06）（Markdown） |
+| web | openai/gpt-5-pro | https://developers.openai.com/api/docs/models/gpt-5-pro | 官方文档 · developers.openai.com · gpt 5 pro.md | 官方文档 · OpenAI · GPT 5 Pro（2025-10-06） |
 | web | openai/gpt-5-pro | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-5-pro | https://developers.openai.com/api/docs/models/gpt-5-pro | 官方文档 · developers.openai.com · gpt 5 pro | 官方文档 · OpenAI · GPT 5 Pro（2025-10-06）（文档） |
 | web | openai/gpt-5-pro-2025-10-06 | https://developers.openai.com/api/docs/models/gpt-5-pro | 官方文档 · developers.openai.com · gpt 5 pro | 官方文档 · OpenAI · GPT 5 Pro |
 | web | openai/gpt-5-pro-2025-10-06 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-5-pro-2025-10-06 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-4.1 | https://developers.openai.com/api/docs/models/gpt-4.1.md | 官方文档 · developers.openai.com · gpt 4.1.md | 官方文档 · OpenAI · GPT-4.1（2025-04-14）（Markdown） |
+| web | openai/gpt-4.1 | https://developers.openai.com/api/docs/models/gpt-4.1 | 官方文档 · developers.openai.com · gpt 4.1.md | 官方文档 · OpenAI · GPT-4.1（2025-04-14） |
 | web | openai/gpt-4.1 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-4.1 | https://developers.openai.com/api/docs/models/gpt-4.1 | 官方文档 · developers.openai.com · gpt 4.1 | 官方文档 · OpenAI · GPT-4.1（2025-04-14）（文档） |
 | web | openai/gpt-4.1-2025-04-14 | https://developers.openai.com/api/docs/models/gpt-4.1 | 官方文档 · developers.openai.com · gpt 4.1 | 官方文档 · OpenAI · GPT 4.1 |
 | web | openai/gpt-4.1-2025-04-14 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-4.1-mini | https://developers.openai.com/api/docs/models/gpt-4.1-mini.md | 官方文档 · developers.openai.com · gpt 4.1 mini.md | 官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）（Markdown） |
+| web | openai/gpt-4.1-mini | https://developers.openai.com/api/docs/models/gpt-4.1-mini | 官方文档 · developers.openai.com · gpt 4.1 mini.md | 官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14） |
 | web | openai/gpt-4.1-mini | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-4.1-mini | https://developers.openai.com/api/docs/models/gpt-4.1-mini | 官方文档 · developers.openai.com · gpt 4.1 mini | 官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）（文档） |
 | web | openai/gpt-4.1-mini-2025-04-14 | https://developers.openai.com/api/docs/models/gpt-4.1-mini | 官方文档 · developers.openai.com · gpt 4.1 mini | 官方文档 · OpenAI · GPT-4.1 Mini |
 | web | openai/gpt-4.1-mini-2025-04-14 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-4.1-nano | https://developers.openai.com/api/docs/models/gpt-4.1-nano.md | 官方文档 · developers.openai.com · gpt 4.1 nano.md | 官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）（Markdown） |
+| web | openai/gpt-4.1-nano | https://developers.openai.com/api/docs/models/gpt-4.1-nano | 官方文档 · developers.openai.com · gpt 4.1 nano.md | 官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14） |
 | web | openai/gpt-4.1-nano | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-4.1-nano | https://developers.openai.com/api/docs/models/gpt-4.1-nano | 官方文档 · developers.openai.com · gpt 4.1 nano | 官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）（文档） |
 | web | openai/gpt-4.1-nano-2025-04-14 | https://developers.openai.com/api/docs/models/gpt-4.1-nano | 官方文档 · developers.openai.com · gpt 4.1 nano | 官方文档 · OpenAI · GPT 4.1 Nano |
 | web | openai/gpt-4.1-nano-2025-04-14 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-4.1-nano-2025-04-14 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-4o | https://developers.openai.com/api/docs/models/gpt-4o.md | 官方文档 · developers.openai.com · gpt 4o.md | 官方文档 · OpenAI · GPT-4o（2024-08-06）（Markdown） |
+| web | openai/gpt-4o | https://developers.openai.com/api/docs/models/gpt-4o | 官方文档 · developers.openai.com · gpt 4o.md | 官方文档 · OpenAI · GPT-4o（2024-08-06） |
 | web | openai/gpt-4o | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-4o | https://developers.openai.com/api/docs/models/gpt-4o | 官方文档 · developers.openai.com · gpt 4o | 官方文档 · OpenAI · GPT-4o（2024-08-06）（文档） |
 | web | openai/gpt-4o-2024-05-13 | https://developers.openai.com/api/docs/models/gpt-4o | 官方文档 · developers.openai.com · gpt 4o | 官方文档 · OpenAI · GPT 4o |
 | web | openai/gpt-4o-2024-05-13 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-4o-2024-05-13 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
@@ -724,47 +699,37 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | openai/gpt-4o-2024-08-06 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-4o-2024-11-20 | https://developers.openai.com/api/docs/models/gpt-4o | 官方文档 · developers.openai.com · gpt 4o | 官方文档 · OpenAI · GPT 4o |
 | web | openai/gpt-4o-2024-11-20 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-4o-mini | https://developers.openai.com/api/docs/models/gpt-4o-mini.md | 官方文档 · developers.openai.com · gpt 4o mini.md | 官方文档 · OpenAI · GPT 4o Mini（2024-07-18）（Markdown） |
+| web | openai/gpt-4o-mini | https://developers.openai.com/api/docs/models/gpt-4o-mini | 官方文档 · developers.openai.com · gpt 4o mini.md | 官方文档 · OpenAI · GPT 4o Mini（2024-07-18） |
 | web | openai/gpt-4o-mini | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-4o-mini | https://developers.openai.com/api/docs/models/gpt-4o-mini | 官方文档 · developers.openai.com · gpt 4o mini | 官方文档 · OpenAI · GPT 4o Mini（2024-07-18）（文档） |
 | web | openai/gpt-4o-mini-2024-07-18 | https://developers.openai.com/api/docs/models/gpt-4o-mini | 官方文档 · developers.openai.com · gpt 4o mini | 官方文档 · OpenAI · GPT 4o Mini |
 | web | openai/gpt-4o-mini-2024-07-18 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-4-turbo | https://developers.openai.com/api/docs/models/gpt-4-turbo.md | 官方文档 · developers.openai.com · gpt 4 turbo.md | 官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）（Markdown） |
+| web | openai/gpt-4-turbo | https://developers.openai.com/api/docs/models/gpt-4-turbo | 官方文档 · developers.openai.com · gpt 4 turbo.md | 官方文档 · OpenAI · GPT 4 Turbo（2024-04-09） |
 | web | openai/gpt-4-turbo | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-4-turbo | https://developers.openai.com/api/docs/models/gpt-4-turbo | 官方文档 · developers.openai.com · gpt 4 turbo | 官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）（文档） |
 | web | openai/gpt-4-turbo-2024-04-09 | https://developers.openai.com/api/docs/models/gpt-4-turbo | 官方文档 · developers.openai.com · gpt 4 turbo | 官方文档 · OpenAI · GPT 4 Turbo |
 | web | openai/gpt-4-turbo-2024-04-09 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-4-turbo-2024-04-09 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-4 | https://developers.openai.com/api/docs/models/gpt-4.md | 官方文档 · developers.openai.com · gpt 4.md | 官方文档 · OpenAI · GPT-4（0613）（Markdown） |
+| web | openai/gpt-4 | https://developers.openai.com/api/docs/models/gpt-4 | 官方文档 · developers.openai.com · gpt 4.md | 官方文档 · OpenAI · GPT-4（0613） |
 | web | openai/gpt-4 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-4 | https://developers.openai.com/api/docs/models/gpt-4 | 官方文档 · developers.openai.com · gpt 4 | 官方文档 · OpenAI · GPT-4（0613）（文档） |
 | web | openai/gpt-4-0613 | https://developers.openai.com/api/docs/models/gpt-4 | 官方文档 · developers.openai.com · gpt 4 | 官方文档 · OpenAI · GPT 4 |
 | web | openai/gpt-4-0613 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-4-0613 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
 | web | openai/gpt-4-1106-preview | https://developers.openai.com/api/docs/models/gpt-4-turbo-preview | 官方文档 · developers.openai.com · gpt 4 turbo preview | 官方文档 · OpenAI · GPT 4 Turbo Preview |
 | web | openai/gpt-4-1106-preview | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-4-1106-preview | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-image-2 | https://developers.openai.com/api/docs/models/gpt-image-2.md | 官方文档 · developers.openai.com · gpt image 2.md | 官方文档 · OpenAI · GPT Image 2（2026-04-21）（Markdown） |
+| web | openai/gpt-image-2 | https://developers.openai.com/api/docs/models/gpt-image-2 | 官方文档 · developers.openai.com · gpt image 2.md | 官方文档 · OpenAI · GPT Image 2（2026-04-21） |
 | web | openai/gpt-image-2 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-image-2 | https://developers.openai.com/api/docs/models/gpt-image-2 | 官方文档 · developers.openai.com · gpt image 2 | 官方文档 · OpenAI · GPT Image 2（2026-04-21）（文档） |
-| web | openai/gpt-image-1.5 | https://developers.openai.com/api/docs/models/gpt-image-1.5.md | 官方文档 · developers.openai.com · gpt image 1.5.md | 官方文档 · OpenAI · GPT Image 1.5（2025-12-16）（Markdown） |
+| web | openai/gpt-image-1.5 | https://developers.openai.com/api/docs/models/gpt-image-1.5 | 官方文档 · developers.openai.com · gpt image 1.5.md | 官方文档 · OpenAI · GPT Image 1.5（2025-12-16） |
 | web | openai/gpt-image-1.5 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-image-1.5 | https://developers.openai.com/api/docs/models/gpt-image-1.5 | 官方文档 · developers.openai.com · gpt image 1.5 | 官方文档 · OpenAI · GPT Image 1.5（2025-12-16）（文档） |
-| web | openai/gpt-image-1 | https://developers.openai.com/api/docs/models/gpt-image-1.md | 官方文档 · developers.openai.com · gpt image 1.md | 官方文档 · OpenAI · GPT Image 1（Markdown） |
+| web | openai/gpt-image-1 | https://developers.openai.com/api/docs/models/gpt-image-1 | 官方文档 · developers.openai.com · gpt image 1.md | 官方文档 · OpenAI · GPT Image 1 |
 | web | openai/gpt-image-1 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-image-1 | https://developers.openai.com/api/docs/models/gpt-image-1 | 官方文档 · developers.openai.com · gpt image 1 | 官方文档 · OpenAI · GPT Image 1（文档） |
-| web | openai/gpt-image-1-mini | https://developers.openai.com/api/docs/models/gpt-image-1-mini.md | 官方文档 · developers.openai.com · gpt image 1 mini.md | 官方文档 · OpenAI · GPT Image 1 Mini（Markdown） |
+| web | openai/gpt-image-1-mini | https://developers.openai.com/api/docs/models/gpt-image-1-mini | 官方文档 · developers.openai.com · gpt image 1 mini.md | 官方文档 · OpenAI · GPT Image 1 Mini |
 | web | openai/gpt-image-1-mini | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/gpt-image-1-mini | https://developers.openai.com/api/docs/models/gpt-image-1-mini | 官方文档 · developers.openai.com · gpt image 1 mini | 官方文档 · OpenAI · GPT Image 1 Mini（文档） |
-| web | openai/chat-latest | https://developers.openai.com/api/docs/models/chat-latest.md | 官方文档 · developers.openai.com · chat latest.md | 官方文档 · OpenAI · Chat Latest（Markdown） |
+| web | openai/chat-latest | https://developers.openai.com/api/docs/models/chat-latest | 官方文档 · developers.openai.com · chat latest.md | 官方文档 · OpenAI · Chat Latest |
 | web | openai/chat-latest | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/chat-latest | https://developers.openai.com/api/docs/models/chat-latest | 官方文档 · developers.openai.com · chat latest | 官方文档 · OpenAI · Chat Latest（文档） |
-| web | openai/chatgpt-image-latest | https://developers.openai.com/api/docs/models/chatgpt-image-latest.md | 官方文档 · developers.openai.com · chatgpt image latest.md | 官方文档 · OpenAI · ChatGPT Image Latest（Markdown） |
+| web | openai/chatgpt-image-latest | https://developers.openai.com/api/docs/models/chatgpt-image-latest | 官方文档 · developers.openai.com · chatgpt image latest.md | 官方文档 · OpenAI · ChatGPT Image Latest |
 | web | openai/chatgpt-image-latest | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
-| web | openai/chatgpt-image-latest | https://developers.openai.com/api/docs/models/chatgpt-image-latest | 官方文档 · developers.openai.com · chatgpt image latest | 官方文档 · OpenAI · ChatGPT Image Latest（文档） |
-| web | openai/gpt-3.5-turbo | https://developers.openai.com/api/docs/models/gpt-3.5-turbo.md | 官方文档 · developers.openai.com · gpt 3.5 turbo.md | 官方文档 · OpenAI · GPT 3.5 Turbo（0125）（Markdown） |
+| web | openai/gpt-3.5-turbo | https://developers.openai.com/api/docs/models/gpt-3.5-turbo | 官方文档 · developers.openai.com · gpt 3.5 turbo.md | 官方文档 · OpenAI · GPT 3.5 Turbo（0125） |
 | web | openai/gpt-3.5-turbo | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/gpt-3.5-turbo | https://developers.openai.com/api/docs/models/gpt-3.5-turbo | 官方文档 · developers.openai.com · gpt 3.5 turbo | 官方文档 · OpenAI · GPT 3.5 Turbo（0125）（文档） |
 | web | openai/gpt-3.5-turbo-0125 | https://developers.openai.com/api/docs/models/gpt-3.5-turbo | 官方文档 · developers.openai.com · gpt 3.5 turbo | 官方文档 · OpenAI · GPT 3.5 Turbo |
 | web | openai/gpt-3.5-turbo-0125 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-3.5-turbo-0125 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
@@ -773,119 +738,113 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | openai/gpt-3.5-turbo-1106 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
 | web | openai/gpt-image-2.6-flare | https://developers.openai.com/api/docs/models/gpt-image-2.6-flare | 官方文档 · developers.openai.com · gpt image 2.6 flare | 官方文档 · OpenAI · GPT Image 2.6 Flare |
 | web | openai/gpt-image-2.6-sunburst | https://developers.openai.com/api/docs/models/gpt-image-2.6-sunburst | 官方文档 · developers.openai.com · gpt image 2.6 sunburst | 官方文档 · OpenAI · GPT Image 2.6 Sunburst |
-| web | openai/o1 | https://developers.openai.com/api/docs/models/o1.md | 官方文档 · developers.openai.com · o1.md | 官方文档 · OpenAI · O1（2024-12-17）（Markdown） |
+| web | openai/o1 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · developers.openai.com · o1.md | 官方文档 · OpenAI · O1（2024-12-17） |
 | web | openai/o1 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/o1 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · developers.openai.com · o1 | 官方文档 · OpenAI · O1（2024-12-17）（文档） |
 | web | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · developers.openai.com · o1 | 官方文档 · OpenAI · O1 |
 | web | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/o1-pro | https://developers.openai.com/api/docs/models/o1-pro.md | 官方文档 · developers.openai.com · o1 pro.md | 官方文档 · OpenAI · O1 Pro（2025-03-19）（Markdown） |
+| web | openai/o1-pro | https://developers.openai.com/api/docs/models/o1-pro | 官方文档 · developers.openai.com · o1 pro.md | 官方文档 · OpenAI · O1 Pro（2025-03-19） |
 | web | openai/o1-pro | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/o1-pro | https://developers.openai.com/api/docs/models/o1-pro | 官方文档 · developers.openai.com · o1 pro | 官方文档 · OpenAI · O1 Pro（2025-03-19）（文档） |
 | web | openai/o1-pro-2025-03-19 | https://developers.openai.com/api/docs/models/o1-pro | 官方文档 · developers.openai.com · o1 pro | 官方文档 · OpenAI · O1 Pro |
 | web | openai/o1-pro-2025-03-19 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/o1-pro-2025-03-19 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/o3 | https://developers.openai.com/api/docs/models/o3.md | 官方文档 · developers.openai.com · o3.md | 官方文档 · OpenAI · O3（2025-04-16）（Markdown） |
+| web | openai/o3 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · developers.openai.com · o3.md | 官方文档 · OpenAI · O3（2025-04-16） |
 | web | openai/o3 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/o3 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · developers.openai.com · o3 | 官方文档 · OpenAI · O3（2025-04-16）（文档） |
 | web | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · developers.openai.com · o3 | 官方文档 · OpenAI · O3 |
 | web | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/o3-mini | https://developers.openai.com/api/docs/models/o3-mini.md | 官方文档 · developers.openai.com · o3 mini.md | 官方文档 · OpenAI · O3 Mini（2025-01-31）（Markdown） |
+| web | openai/o3-mini | https://developers.openai.com/api/docs/models/o3-mini | 官方文档 · developers.openai.com · o3 mini.md | 官方文档 · OpenAI · O3 Mini（2025-01-31） |
 | web | openai/o3-mini | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/o3-mini | https://developers.openai.com/api/docs/models/o3-mini | 官方文档 · developers.openai.com · o3 mini | 官方文档 · OpenAI · O3 Mini（2025-01-31）（文档） |
 | web | openai/o3-mini-2025-01-31 | https://developers.openai.com/api/docs/models/o3-mini | 官方文档 · developers.openai.com · o3 mini | 官方文档 · OpenAI · O3 Mini |
 | web | openai/o3-mini-2025-01-31 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/o3-mini-2025-01-31 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/o3-pro | https://developers.openai.com/api/docs/models/o3-pro.md | 官方文档 · developers.openai.com · o3 pro.md | 官方文档 · OpenAI · O3 Pro（2025-06-10）（Markdown） |
+| web | openai/o3-pro | https://developers.openai.com/api/docs/models/o3-pro | 官方文档 · developers.openai.com · o3 pro.md | 官方文档 · OpenAI · O3 Pro（2025-06-10） |
 | web | openai/o3-pro | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/o3-pro | https://developers.openai.com/api/docs/models/o3-pro | 官方文档 · developers.openai.com · o3 pro | 官方文档 · OpenAI · O3 Pro（2025-06-10）（文档） |
 | web | openai/o3-pro-2025-06-10 | https://developers.openai.com/api/docs/models/o3-pro | 官方文档 · developers.openai.com · o3 pro | 官方文档 · OpenAI · O3 Pro |
 | web | openai/o3-pro-2025-06-10 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/o3-pro-2025-06-10 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/o4-mini | https://developers.openai.com/api/docs/models/o4-mini.md | 官方文档 · developers.openai.com · o4 mini.md | 官方文档 · OpenAI · O4 Mini（2025-04-16）（Markdown） |
+| web | openai/o4-mini | https://developers.openai.com/api/docs/models/o4-mini | 官方文档 · developers.openai.com · o4 mini.md | 官方文档 · OpenAI · O4 Mini（2025-04-16） |
 | web | openai/o4-mini | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | openai/o4-mini | https://developers.openai.com/api/docs/models/o4-mini | 官方文档 · developers.openai.com · o4 mini | 官方文档 · OpenAI · O4 Mini（2025-04-16）（文档） |
 | web | openai/o4-mini-2025-04-16 | https://developers.openai.com/api/docs/models/o4-mini | 官方文档 · developers.openai.com · o4 mini | 官方文档 · OpenAI · O4 Mini |
 | web | openai/o4-mini-2025-04-16 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/o4-mini-2025-04-16 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
-| web | ark/deepseek-v4-1-flash-260910 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/deepseek-v4-1-flash-260910 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/deepseek-v4-1-flash-260910 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
 | web | ark/deepseek-v4-1-flash-261017 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
 | web | ark/deepseek-v4-1-flash-261017 | https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash | 官方文档 · ark.volcengine.com · DeepSeek-V4.1-Flash 模型页 | 官方文档 · 火山方舟 · DeepSeek V4.1 Flash |
 | web | ark/deepseek-v4-1-flash-economy-261017 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
 | web | ark/deepseek-v4-1-flash-economy-261017 | https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash | 官方文档 · ark.volcengine.com · DeepSeek-V4.1-Flash 模型页 | 官方文档 · 火山方舟 · DeepSeek V4.1 Flash |
-| web | ark/deepseek-v4-flash-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/deepseek-v4-flash-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/deepseek-v4-flash-260425 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
-| web | ark/deepseek-v4-flash-ga-260731 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/deepseek-v4-flash-ga-260731 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/deepseek-v4-flash-ga-260731 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
-| web | ark/deepseek-v4-pro-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/deepseek-v4-pro-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/deepseek-v4-pro-260425 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
-| web | ark/deepseek-v4-pro-ga-260813 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/deepseek-v4-pro-ga-260813 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/deepseek-v4-pro-ga-260813 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
-| web | ark/doubao-seed-2-1-pro-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/doubao-seed-2-1-pro-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/doubao-seed-2-1-pro-260628 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
-| web | ark/doubao-seed-2-1-pro-260915 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/doubao-seed-2-1-pro-260915 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/doubao-seed-2-1-pro-260915 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
-| web | ark/doubao-seed-2-1-turbo-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/doubao-seed-2-1-turbo-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/doubao-seed-2-1-turbo-260628 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
-| web | ark/doubao-seed-2-0-code-preview-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-seed-2-0-code-preview-260215 | https://docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
-| web | ark/doubao-seed-2-0-lite-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-seed-2-0-lite-260215 | https://docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
-| web | ark/doubao-seed-2-0-lite-260428 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| web | ark/doubao-seed-2-0-mini-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-seed-2-0-mini-260215 | https://docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
-| web | ark/doubao-seed-2-0-mini-260428 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| web | ark/doubao-seed-2-0-pro-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-seed-2-0-pro-260215 | https://docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
+| web | ark/doubao-seed-2-0-code-preview-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-seed-2-0-code-preview-260215 | https://docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · 火山方舟 · 模型列表（开发者文档，中文版） |
+| web | ark/doubao-seed-2-0-lite-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-seed-2-0-lite-260215 | https://docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · 火山方舟 · 模型列表（开发者文档，中文版） |
+| web | ark/doubao-seed-2-0-lite-260428 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| web | ark/doubao-seed-2-0-mini-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-seed-2-0-mini-260215 | https://docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · 火山方舟 · 模型列表（开发者文档，中文版） |
+| web | ark/doubao-seed-2-0-mini-260428 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| web | ark/doubao-seed-2-0-pro-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-seed-2-0-pro-260215 | https://docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · 火山方舟 · 模型列表（开发者文档，中文版） |
 | web | ark/doubao-seed-1-8-251228 | https://docs.volcengine.com/docs/ark/bytedance-seed-1-8?lang=zh | 官方文档 · volcengine.com · bytedance seed 1 8 | 官方文档 · 火山方舟 · Bytedance Seed 1-8 |
-| web | ark/doubao-seed-1-8-251228 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-seed-1-8-251228 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
-| web | ark/doubao-seed-1-6-250615 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-seed-1-6-250615 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
-| web | ark/doubao-seed-1-6-251015 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-seed-1-6-251015 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
-| web | ark/doubao-seed-1-6-flash-250615 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-seed-1-6-flash-250615 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
-| web | ark/doubao-seed-1-6-flash-250828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-seed-1-6-flash-250828 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
-| web | ark/doubao-seed-1-6-vision-250815 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-seed-1-6-vision-250815 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
-| web | ark/doubao-1-5-lite-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-1-5-lite-32k-250115 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
-| web | ark/doubao-1-5-pro-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-1-5-pro-32k-250115 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
-| web | ark/doubao-1-5-vision-pro-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-1-5-vision-pro-32k-250115 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
+| web | ark/doubao-seed-1-8-251228 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-seed-1-8-251228 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（开发者文档） |
+| web | ark/doubao-seed-1-6-250615 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-seed-1-6-250615 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（开发者文档） |
+| web | ark/doubao-seed-1-6-251015 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-seed-1-6-251015 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（开发者文档） |
+| web | ark/doubao-seed-1-6-flash-250615 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-seed-1-6-flash-250615 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（开发者文档） |
+| web | ark/doubao-seed-1-6-flash-250828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-seed-1-6-flash-250828 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（开发者文档） |
+| web | ark/doubao-seed-1-6-vision-250815 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-seed-1-6-vision-250815 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（开发者文档） |
+| web | ark/doubao-1-5-lite-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-1-5-lite-32k-250115 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（开发者文档） |
+| web | ark/doubao-1-5-pro-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-1-5-pro-32k-250115 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（开发者文档） |
+| web | ark/doubao-1-5-vision-pro-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-1-5-vision-pro-32k-250115 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（开发者文档） |
 | web | ark/doubao-seedream-5-0-260128 | https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh | 官方文档 · volcengine.com · seedream 4 0 5 0 | 官方文档 · 火山方舟 · Seedream 4-0-5-0 |
 | web | ark/doubao-seedream-5-0-260128 | https://docs.volcengine.com/docs/ark/image-generation-api?lang=en | 官方文档 · volcengine.com · image generation api | 官方文档 · 火山方舟 · Image Generation API |
-| web | ark/doubao-seedream-5-0-260128 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/doubao-seedream-5-0-260128 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/doubao-seedream-5-0-260128 | https://docs.volcengine.com/docs/82379/1824121?lang=zh | 官方文档 · volcengine.com · 1824121 | 官方文档 · 火山方舟 · 文档 1824121 |
 | web | ark/doubao-seedream-5-0-flash-260915 | https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh | 官方文档 · volcengine.com · seedream 4 0 5 0 | 官方文档 · 火山方舟 · Seedream 4-0-5-0 |
-| web | ark/doubao-seedream-5-0-flash-260915 | https://docs.volcengine.com/docs/ark/image-generation-api?lang=en | 官方文档 · volcengine.com · image generation api · docs.volcengine.com/docs/ark/image-generation-api?lang=en | 官方文档 · 火山方舟 · Image Generation API（英文） |
-| web | ark/doubao-seedream-5-0-flash-260915 | https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh | 官方文档 · volcengine.com · image generation api · docs.volcengine.com/docs/ark/image-generation-api?lang=zh | 官方文档 · 火山方舟 · Image Generation API（文档） |
+| web | ark/doubao-seedream-5-0-flash-260915 | https://docs.volcengine.com/docs/ark/image-generation-api?lang=en | 官方文档 · volcengine.com · image generation api · docs.volcengine.com/docs/ark/image-generation-api?lang=en | 官方文档 · 火山方舟 · Image Generation API（开发者文档，英文版） |
+| web | ark/doubao-seedream-5-0-flash-260915 | https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh | 官方文档 · volcengine.com · image generation api · docs.volcengine.com/docs/ark/image-generation-api?lang=zh | 官方文档 · 火山方舟 · Image Generation API（开发者文档，中文版） |
 | web | ark/doubao-seedream-5-0-pro-260628 | https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh | 官方文档 · volcengine.com · seedream 4 0 5 0 | 官方文档 · 火山方舟 · Seedream 4-0-5-0 |
 | web | ark/doubao-seedream-5-0-pro-260628 | https://docs.volcengine.com/docs/ark/image-generation-api?lang=en | 官方文档 · volcengine.com · image generation api | 官方文档 · 火山方舟 · Image Generation API |
-| web | ark/doubao-seedream-5-0-pro-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/doubao-seedream-5-0-pro-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/doubao-seedream-5-0-pro-260628 | https://docs.volcengine.com/docs/82379/1824121?lang=zh | 官方文档 · volcengine.com · 1824121 | 官方文档 · 火山方舟 · 文档 1824121 |
-| web | ark/doubao-seedream-4-5-251128 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/doubao-seedream-4-5-251128 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/doubao-seedream-4-5-251128 | https://docs.volcengine.com/docs/82379/1824121?lang=zh | 官方文档 · volcengine.com · 1824121 | 官方文档 · 火山方舟 · 文档 1824121 |
-| web | ark/doubao-seedream-4-0-250828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/doubao-seedream-4-0-250828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/doubao-seedream-4-0-250828 | https://api.volcengine.com/api-docs/view?action=ImageGenerations&serviceCode=ark&version=2024-01-01 | 官方文档 · api.volcengine.com · view | 官方文档 · 火山方舟 · View |
-| web | ark/glm-5-3-flash-260828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/glm-5-3-flash-260828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/glm-5-3-flash-260828 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
-| web | ark/glm-5-2-260617 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/glm-5-2-260617 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/glm-5-2-260617 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
 | web | ark/kimi-k3-1-pro-261024 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
 | web | ark/doubao-seed-code-preview-251028 | https://docs.volcengine.com/docs/ark/model-release-announcement-2025?lang=en | 官方文档 · volcengine.com · model release announcement 2025 | 官方文档 · 火山方舟 · Model Release Announcement 2025 |
 | web | ark/doubao-seed-code-preview-251028 | https://developer.volcengine.com/articles/7577301460712030258 | 官方文档 · developer.volcengine.com · 7577301460712030258 | 官方文档 · 火山方舟 · 文档 7577301460712030258 |
-| web | ark/doubao-seed-code-preview-251028 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/doubao-seed-code-preview-251028 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
-| web | ark/doubao-seed-evolving | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| web | ark/doubao-seed-code-preview-251028 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/doubao-seed-code-preview-251028 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（开发者文档） |
+| web | ark/doubao-seed-evolving | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/doubao-seed-evolving | https://docs.volcengine.com/docs/82379/2549861?lang=zh | 官方文档 · volcengine.com · 2549861 | 官方文档 · 火山方舟 · 文档 2549861 |
-| web | ark/glm-4-7-251222 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） |
-| web | ark/glm-4-7-251222 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） |
+| web | ark/glm-4-7-251222 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
+| web | ark/glm-4-7-251222 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（开发者文档） |
 | web | bfl/flux-2-flex | https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[flex] | 官方文档 · bfl.ml · generate or edit an image with flux2 [flex] | 官方文档 · BFL · FLUX 2 Flex |
 | web | bfl/flux-2-flex | https://docs.bfl.ai/ | 官方文档 · bfl.ai · 文档首页 | 官方文档 · BFL · 文档首页 |
 | web | bfl/flux-2-klein-4b | https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[klein]-4b | 官方文档 · bfl.ml · generate or edit an image with flux2 [klein] 4b | 官方文档 · BFL · FLUX 2 Klein 4b |
@@ -927,52 +886,52 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | stability/stable-image-ultra | https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1ultra/post | 官方文档 · stability.ai · api reference | 官方文档 · Stability · API 文档 |
 | web | stability/stable-image-ultra | https://platform.stability.ai/docs/getting-started/models | 官方文档 · stability.ai · 模型列表 | 官方文档 · Stability · 模型列表 |
 | web | ideogram/ideogram-v4 | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4 | 官方文档 · developer.ideogram.ai · ideogram 4 | 官方文档 · Ideogram · Ideogram 4 |
-| web | ideogram/ideogram-v4 | https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4 | 官方文档 · developer.ideogram.ai · generate v4 · developer.ideogram.ai/v1/api-reference/generate-images/generate-v4 | 官方文档 · Ideogram · Generate V4（文档） |
+| web | ideogram/ideogram-v4 | https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4 | 官方文档 · developer.ideogram.ai · generate v4 · developer.ideogram.ai/v1/api-reference/generate-images/generate-v4 | 官方文档 · Ideogram · Generate V4（V1 接口，图像生成） |
 | web | ideogram/ideogram-v4 | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/ideogram-v4 | https://developer.ideogram.ai/api-reference/generate-images/generate-v4 | 官方文档 · developer.ideogram.ai · generate v4 · developer.ideogram.ai/api-reference/generate-images/generate-v4 | 官方文档 · Ideogram · Generate V4（文档 2） |
+| web | ideogram/ideogram-v4 | https://developer.ideogram.ai/api-reference/generate-images/generate-v4 | 官方文档 · developer.ideogram.ai · generate v4 · developer.ideogram.ai/api-reference/generate-images/generate-v4 | 官方文档 · Ideogram · Generate V4（API 参考，图像生成） |
 | web | ideogram/ideogram-v4-transparent | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-transparent | 官方文档 · developer.ideogram.ai · ideogram 4 transparent | 官方文档 · Ideogram · Ideogram 4 Transparent |
-| web | ideogram/ideogram-v4-transparent | https://developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v4 | 官方文档 · developer.ideogram.ai · generate transparent v4 · developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v4 | 官方文档 · Ideogram · Generate Transparent V4（文档） |
+| web | ideogram/ideogram-v4-transparent | https://developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v4 | 官方文档 · developer.ideogram.ai · generate transparent v4 · developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v4 | 官方文档 · Ideogram · Generate Transparent V4（V1 接口，图像生成） |
 | web | ideogram/ideogram-v4-transparent | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/ideogram-v4-transparent | https://developer.ideogram.ai/api-reference/generate-images/generate-transparent-v4 | 官方文档 · developer.ideogram.ai · generate transparent v4 · developer.ideogram.ai/api-reference/generate-images/generate-transparent-v4 | 官方文档 · Ideogram · Generate Transparent V4（文档 2） |
+| web | ideogram/ideogram-v4-transparent | https://developer.ideogram.ai/api-reference/generate-images/generate-transparent-v4 | 官方文档 · developer.ideogram.ai · generate transparent v4 · developer.ideogram.ai/api-reference/generate-images/generate-transparent-v4 | 官方文档 · Ideogram · Generate Transparent V4（API 参考，图像生成） |
 | web | ideogram/ideogram-v3 | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-3 | 官方文档 · developer.ideogram.ai · ideogram 3 | 官方文档 · Ideogram · Ideogram 3 |
-| web | ideogram/ideogram-v3 | https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v3 | 官方文档 · developer.ideogram.ai · generate v3 · developer.ideogram.ai/v1/api-reference/generate-images/generate-v3 | 官方文档 · Ideogram · Generate V3（文档） |
+| web | ideogram/ideogram-v3 | https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v3 | 官方文档 · developer.ideogram.ai · generate v3 · developer.ideogram.ai/v1/api-reference/generate-images/generate-v3 | 官方文档 · Ideogram · Generate V3（V1 接口，图像生成） |
 | web | ideogram/ideogram-v3 | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/ideogram-v3 | https://developer.ideogram.ai/api-reference/generate-images/generate-v3 | 官方文档 · developer.ideogram.ai · generate v3 · developer.ideogram.ai/api-reference/generate-images/generate-v3 | 官方文档 · Ideogram · Generate V3（文档 2） |
+| web | ideogram/ideogram-v3 | https://developer.ideogram.ai/api-reference/generate-images/generate-v3 | 官方文档 · developer.ideogram.ai · generate v3 · developer.ideogram.ai/api-reference/generate-images/generate-v3 | 官方文档 · Ideogram · Generate V3（API 参考，图像生成） |
 | web | ideogram/ideogram-v3-transparent | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-3-transparent | 官方文档 · developer.ideogram.ai · ideogram 3 transparent | 官方文档 · Ideogram · Ideogram 3 Transparent |
-| web | ideogram/ideogram-v3-transparent | https://developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v3 | 官方文档 · developer.ideogram.ai · generate transparent v3 · developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v3 | 官方文档 · Ideogram · Generate Transparent V3（文档） |
+| web | ideogram/ideogram-v3-transparent | https://developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v3 | 官方文档 · developer.ideogram.ai · generate transparent v3 · developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v3 | 官方文档 · Ideogram · Generate Transparent V3（V1 接口，图像生成） |
 | web | ideogram/ideogram-v3-transparent | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/ideogram-v3-transparent | https://developer.ideogram.ai/api-reference/generate-images/generate-transparent-v3 | 官方文档 · developer.ideogram.ai · generate transparent v3 · developer.ideogram.ai/api-reference/generate-images/generate-transparent-v3 | 官方文档 · Ideogram · Generate Transparent V3（文档 2） |
-| web | ideogram/V_2A | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档） |
+| web | ideogram/ideogram-v3-transparent | https://developer.ideogram.ai/api-reference/generate-images/generate-transparent-v3 | 官方文档 · developer.ideogram.ai · generate transparent v3 · developer.ideogram.ai/api-reference/generate-images/generate-transparent-v3 | 官方文档 · Ideogram · Generate Transparent V3（API 参考，图像生成） |
+| web | ideogram/V_2A | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（V1 接口，图像生成） |
 | web | ideogram/V_2A | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/V_2A | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档 2） |
-| web | ideogram/V_2A_TURBO | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档） |
+| web | ideogram/V_2A | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（API 参考，图像生成） |
+| web | ideogram/V_2A_TURBO | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（V1 接口，图像生成） |
 | web | ideogram/V_2A_TURBO | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/V_2A_TURBO | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档 2） |
-| web | ideogram/V_2 | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档） |
+| web | ideogram/V_2A_TURBO | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（API 参考，图像生成） |
+| web | ideogram/V_2 | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（V1 接口，图像生成） |
 | web | ideogram/V_2 | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/V_2 | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档 2） |
-| web | ideogram/V_2_TURBO | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档） |
+| web | ideogram/V_2 | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（API 参考，图像生成） |
+| web | ideogram/V_2_TURBO | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（V1 接口，图像生成） |
 | web | ideogram/V_2_TURBO | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/V_2_TURBO | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档 2） |
-| web | ideogram/V_1 | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档） |
+| web | ideogram/V_2_TURBO | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（API 参考，图像生成） |
+| web | ideogram/V_1 | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（V1 接口，图像生成） |
 | web | ideogram/V_1 | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/V_1 | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档 2） |
-| web | ideogram/V_1_TURBO | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档） |
+| web | ideogram/V_1 | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（API 参考，图像生成） |
+| web | ideogram/V_1_TURBO | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（V1 接口，图像生成） |
 | web | ideogram/V_1_TURBO | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/V_1_TURBO | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档 2） |
-| web | ideogram/AUTO | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档） |
+| web | ideogram/V_1_TURBO | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（API 参考，图像生成） |
+| web | ideogram/AUTO | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（V1 接口，图像生成） |
 | web | ideogram/AUTO | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/AUTO | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（文档 2） |
-| web | ideogram/ideogram-4-5 | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 · developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-5 | 官方文档 · Ideogram · Ideogram 4.5（文档） |
-| web | ideogram/ideogram-4-5 | https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 · developer.ideogram.ai/api-reference/images/generate/ideogram-4-5 | 官方文档 · Ideogram · Ideogram 4.5（文档 2） |
-| web | ideogram/ideogram-4-5 | https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 · developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5 | 官方文档 · Ideogram · Ideogram 4.5（文档 3） |
+| web | ideogram/AUTO | https://developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate · developer.ideogram.ai/api-reference/legacy-endpoints/generate | 官方文档 · Ideogram · Generate（API 参考，图像生成） |
+| web | ideogram/ideogram-4-5 | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 · developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-5 | 官方文档 · Ideogram · Ideogram 4.5（V2 接口，图像生成） |
+| web | ideogram/ideogram-4-5 | https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 · developer.ideogram.ai/api-reference/images/generate/ideogram-4-5 | 官方文档 · Ideogram · Ideogram 4.5（API 参考，图像生成） |
+| web | ideogram/ideogram-4-5 | https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 · developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5 | 官方文档 · Ideogram · Ideogram 4.5（API 参考，精确编辑） |
 | web | ideogram/ideogram-edit | https://developer.ideogram.ai/v2/api-reference/images/precise-edit/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 | 官方文档 · Ideogram · Ideogram 4.5 |
-| web | ideogram/ideogram-edit | https://developer.ideogram.ai/v1/api-reference/edit-images/edit-with-prompt | 官方文档 · developer.ideogram.ai · edit with prompt · developer.ideogram.ai/v1/api-reference/edit-images/edit-with-prompt | 官方文档 · Ideogram · Edit With Prompt（文档） |
+| web | ideogram/ideogram-edit | https://developer.ideogram.ai/v1/api-reference/edit-images/edit-with-prompt | 官方文档 · developer.ideogram.ai · edit with prompt · developer.ideogram.ai/v1/api-reference/edit-images/edit-with-prompt | 官方文档 · Ideogram · Edit With Prompt（V1 接口，图像编辑） |
 | web | ideogram/ideogram-edit | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/ideogram-edit | https://developer.ideogram.ai/api-reference/edit-images/edit-with-prompt | 官方文档 · developer.ideogram.ai · edit with prompt · developer.ideogram.ai/api-reference/edit-images/edit-with-prompt | 官方文档 · Ideogram · Edit With Prompt（文档 2） |
-| web | ideogram/p-image-ideogram | https://developer.ideogram.ai/v2/api-reference/images/generate/p-image-ideogram | 官方文档 · developer.ideogram.ai · p image ideogram | 官方文档 · Ideogram · P Image Ideogram（文档） |
+| web | ideogram/ideogram-edit | https://developer.ideogram.ai/api-reference/edit-images/edit-with-prompt | 官方文档 · developer.ideogram.ai · edit with prompt · developer.ideogram.ai/api-reference/edit-images/edit-with-prompt | 官方文档 · Ideogram · Edit With Prompt（API 参考，图像编辑） |
+| web | ideogram/p-image-ideogram | https://developer.ideogram.ai/v2/api-reference/images/generate/p-image-ideogram | 官方文档 · developer.ideogram.ai · p image ideogram | 官方文档 · Ideogram · P Image Ideogram（V2 接口，图像生成） |
 | web | ideogram/p-image-ideogram | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/p-image-ideogram | https://developer.ideogram.ai/api-reference/generate-images/generate-p-image-ideogram | 官方文档 · developer.ideogram.ai · generate p image ideogram | 官方文档 · Ideogram · P Image Ideogram（文档 2） |
+| web | ideogram/p-image-ideogram | https://developer.ideogram.ai/api-reference/generate-images/generate-p-image-ideogram | 官方文档 · developer.ideogram.ai · generate p image ideogram | 官方文档 · Ideogram · P Image Ideogram（API 参考，图像生成） |
 | web | minimax/MiniMax-M3 | https://platform.minimax.io/docs/guides/models-intro | 官方文档 · minimax.io · models intro | 官方文档 · MiniMax · Models Intro |
 | web | minimax/MiniMax-M3 | https://platform.minimax.io/docs/api-reference/text-openai-api | 官方文档 · minimax.io · text openai api | 官方文档 · MiniMax · Text OpenAI API |
 | web | minimax/MiniMax-M2.7 | https://platform.minimax.io/docs/api-reference/text-openai-api | 官方文档 · minimax.io · text openai api | 官方文档 · MiniMax · Text OpenAI API |
@@ -992,17 +951,16 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | minimax/MiniMax-M2.1-highspeed | https://platform.minimax.io/docs/api-reference/text-openai-api | 官方文档 · minimax.io · text openai api | 官方文档 · MiniMax · Text OpenAI API |
 | web | minimax/MiniMax-M2 | https://platform.minimax.io/docs/api-reference/text-openai-api | 官方文档 · minimax.io · text openai api | 官方文档 · MiniMax · Text OpenAI API |
 | web | minimax/MiniMax-M2 | https://platform.minimax.io/docs/guides/models-intro | 官方文档 · minimax.io · models intro | 官方文档 · MiniMax · Models Intro |
-| web | minimax/MiniMax-M3.1-Flash | https://platform.minimax.io/docs/guides/text-generation | 官方文档 · minimax.io · text generation | 官方文档 · MiniMax · Text Generation（文档） |
-| web | minimax/MiniMax-M3.1-Flash | https://platform.minimax.io/docs/api-reference/text-chat-openai.md | 官方文档 · minimax.io · text chat openai.md | 官方文档 · MiniMax · Text Chat OpenAI |
+| web | minimax/MiniMax-M3.1-Flash | https://platform.minimax.io/docs/guides/text-generation | 官方文档 · minimax.io · text generation | 官方文档 · MiniMax · Text Generation（国际站） |
 | web | minimax/MiniMax-M3.1-Flash | https://platform.minimax.io/docs/pricing/overview | 官方文档 · minimax.io · overview | 官方文档 · MiniMax · 价格与规格 |
-| web | minimax/MiniMax-M3.1-Flash | https://platform.minimax.cn/docs/guides/text-generation | 官方文档 · minimax.cn · text generation | 官方文档 · MiniMax · Text Generation（文档 2） |
+| web | minimax/MiniMax-M3.1-Flash | https://platform.minimax.cn/docs/guides/text-generation | 官方文档 · minimax.cn · text generation | 官方文档 · MiniMax · Text Generation（中国站） |
 | web | minimax/image-01 | https://platform.minimax.io/docs/api-reference/image-generation-t2i | 官方文档 · minimax.io · image generation t2i | 官方文档 · MiniMax · Image Generation T2i |
 | web | minimax/image-01 | https://platform.minimax.io/docs/api-reference/image-generation-i2i | 官方文档 · minimax.io · image generation i2i | 官方文档 · MiniMax · Image Generation I2i |
 | web | minimax/image-01 | https://platform.minimax.io/docs/guides/models-intro | 官方文档 · minimax.io · models intro | 官方文档 · MiniMax · Models Intro |
-| web | minimax/image-01-live | https://platform.minimax.cn/docs/api-reference/image-generation-t2i | 官方文档 · minimax.cn · image generation t2i | 官方文档 · MiniMax · Image Generation T2i（文档） |
+| web | minimax/image-01-live | https://platform.minimax.cn/docs/api-reference/image-generation-t2i | 官方文档 · minimax.cn · image generation t2i | 官方文档 · MiniMax · Image Generation T2i（中国站） |
 | web | minimax/image-01-live | https://platform.minimax.cn/docs/api-reference/image-generation-i2i | 官方文档 · minimax.cn · image generation i2i | 官方文档 · MiniMax · Image Generation I2i |
 | web | minimax/image-01-live | https://platform.minimax.io/docs/guides/models-intro | 官方文档 · minimax.io · models intro | 官方文档 · MiniMax · Models Intro |
-| web | minimax/image-01-live | https://platform.minimaxi.com/docs/api-reference/image-generation-t2i | 官方文档 · minimaxi.com · image generation t2i | 官方文档 · MiniMax · Image Generation T2i（文档 2） |
+| web | minimax/image-01-live | https://platform.minimaxi.com/docs/api-reference/image-generation-t2i | 官方文档 · minimaxi.com · image generation t2i | 官方文档 · MiniMax · Image Generation T2i（开放平台） |
 | web | mistral/mistral-large-4 | https://docs.mistral.ai/models/mistral-large-4-0 | 官方文档 · mistral.ai · mistral large 4 0 | 官方文档 · Mistral · Mistral Large 4-0 |
 | web | mistral/zai-glm-5-3 | https://docs.mistral.ai/models/zai-glm-5-3 | 官方文档 · mistral.ai · zai glm 5 3 | 官方文档 · Mistral · Zai GLM 5-3 |
 | web | mistral/zai-glm-5-3 | https://docs.mistral.ai/getting-started/models/models_overview/ | 官方文档 · mistral.ai · models overview | 官方文档 · Mistral · 模型概览 |
@@ -1104,14 +1062,12 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | together/google/gemini-3-pro-image | https://docs.together.ai/docs/serverless/models | 官方文档 · together.ai · 模型列表 | 官方文档 · Together · 模型列表 |
 | web | together/moonshotai/Kimi-K3 | https://docs.together.ai/docs/serverless-models | 官方文档 · together.ai · serverless models | 官方文档 · Together · Serverless Models |
 | web | together/moonshotai/Kimi-K3 | https://docs.together.ai/docs/serverless/models | 官方文档 · together.ai · 模型列表 | 官方文档 · Together · 模型列表 |
-| web | together/openai/gpt-image-2 | https://developers.openai.com/api/docs/models/gpt-image-2.md | 原厂规格 · developers.openai.com · gpt image 2.md | 原厂规格 · OpenAI · GPT Image 2 |
+| web | together/openai/gpt-image-2 | https://developers.openai.com/api/docs/models/gpt-image-2 | 原厂规格 · developers.openai.com · gpt image 2.md | 原厂规格 · OpenAI · GPT Image 2 |
 | web | together/openai/gpt-image-2 | https://docs.together.ai/docs/serverless-models | 官方文档 · together.ai · serverless models | 官方文档 · Together · Serverless Models |
 | web | together/openai/gpt-image-2 | https://docs.together.ai/docs/serverless/models | 官方文档 · together.ai · 模型列表 | 官方文档 · Together · 模型列表 |
-| web | together/openai/gpt-image-2 | https://developers.openai.com/api/docs/models/gpt-image-2 | 官方文档 · developers.openai.com · gpt image 2 | 官方文档 · OpenAI · GPT Image 2 |
-| web | together/openai/gpt-image-1.5 | https://developers.openai.com/api/docs/models/gpt-image-1.5.md | 原厂规格 · developers.openai.com · gpt image 1.5.md | 原厂规格 · OpenAI · GPT Image 1.5 |
+| web | together/openai/gpt-image-1.5 | https://developers.openai.com/api/docs/models/gpt-image-1.5 | 原厂规格 · developers.openai.com · gpt image 1.5.md | 原厂规格 · OpenAI · GPT Image 1.5 |
 | web | together/openai/gpt-image-1.5 | https://docs.together.ai/docs/serverless-models | 官方文档 · together.ai · serverless models | 官方文档 · Together · Serverless Models |
 | web | together/openai/gpt-image-1.5 | https://docs.together.ai/docs/serverless/models | 官方文档 · together.ai · 模型列表 | 官方文档 · Together · 模型列表 |
-| web | together/openai/gpt-image-1.5 | https://developers.openai.com/api/docs/models/gpt-image-1.5 | 官方文档 · developers.openai.com · gpt image 1.5 | 官方文档 · OpenAI · GPT Image 1.5 |
 | web | together/stabilityai/stable-diffusion-xl-base-1.0 | https://docs.together.ai/docs/serverless-models | 官方文档 · together.ai · serverless models | 官方文档 · Together · Serverless Models |
 | web | together/stabilityai/stable-diffusion-xl-base-1.0 | https://docs.together.ai/docs/serverless/models | 官方文档 · together.ai · 模型列表 | 官方文档 · Together · 模型列表 |
 | web | together/zai-org/GLM-5.3 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3 | 官方文档 · bigmodel.cn · glm 5.3 | 官方文档 · 智谱 · GLM-5.3 |
@@ -1187,41 +1143,41 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | together/reflection/Beam-1.0-501B-A23B | https://docs.together.ai/docs/serverless/models | 官方文档 · together.ai · 模型列表 | 官方文档 · Together · 模型列表 |
 | web | together/thinkingmachines/Inkling | https://docs.together.ai/docs/serverless-models | 官方文档 · together.ai · serverless models | 官方文档 · Together · Serverless Models |
 | web | together/thinkingmachines/Inkling | https://docs.together.ai/docs/serverless/models | 官方文档 · together.ai · 模型列表 | 官方文档 · Together · 模型列表 |
-| web | fireworks/accounts/fireworks/models/glm-5p3 | https://fireworks.ai/models/fireworks/glm-5p3 | 官方文档 · fireworks.ai · glm 5p3 | 官方文档 · Fireworks · GLM 5.3（文档） |
+| web | fireworks/accounts/fireworks/models/glm-5p3 | https://fireworks.ai/models/fireworks/glm-5p3 | 官方文档 · fireworks.ai · glm 5p3 | 官方文档 · Fireworks · GLM 5.3（模型库） |
 | web | fireworks/accounts/fireworks/models/glm-5p3 | https://app.fireworks.ai/models/fireworks/glm-5p3 | 官方文档 · app.fireworks.ai · glm 5p3 | 官方文档 · Fireworks · GLM 5.3（控制台） |
-| web | fireworks/accounts/fireworks/models/glm-5p3-flash | https://fireworks.ai/models/fireworks/glm-5p3-flash | 官方文档 · fireworks.ai · glm 5p3 flash | 官方文档 · Fireworks · GLM 5.3 Flash（文档） |
+| web | fireworks/accounts/fireworks/models/glm-5p3-flash | https://fireworks.ai/models/fireworks/glm-5p3-flash | 官方文档 · fireworks.ai · glm 5p3 flash | 官方文档 · Fireworks · GLM 5.3 Flash（模型库） |
 | web | fireworks/accounts/fireworks/models/glm-5p3-flash | https://app.fireworks.ai/models/fireworks/glm-5p3-flash | 官方文档 · app.fireworks.ai · glm 5p3 flash | 官方文档 · Fireworks · GLM 5.3 Flash（控制台） |
-| web | fireworks/accounts/fireworks/models/kimi-k3 | https://fireworks.ai/models/fireworks/kimi-k3 | 官方文档 · fireworks.ai · Kimi-K3 模型页 | 官方文档 · Fireworks · Kimi K3（文档） |
+| web | fireworks/accounts/fireworks/models/kimi-k3 | https://fireworks.ai/models/fireworks/kimi-k3 | 官方文档 · fireworks.ai · Kimi-K3 模型页 | 官方文档 · Fireworks · Kimi K3（模型库） |
 | web | fireworks/accounts/fireworks/models/kimi-k3 | https://app.fireworks.ai/models/fireworks/kimi-k3 | 官方文档 · app.fireworks.ai · Kimi-K3 模型页 | 官方文档 · Fireworks · Kimi K3（控制台） |
-| web | fireworks/accounts/fireworks/models/kimi-k2p5 | https://fireworks.ai/models/fireworks/kimi-k2p5 | 官方文档 · fireworks.ai · kimi k2p5 | 官方文档 · Fireworks · Kimi K2.5（文档） |
+| web | fireworks/accounts/fireworks/models/kimi-k2p5 | https://fireworks.ai/models/fireworks/kimi-k2p5 | 官方文档 · fireworks.ai · kimi k2p5 | 官方文档 · Fireworks · Kimi K2.5（模型库） |
 | web | fireworks/accounts/fireworks/models/kimi-k2p5 | https://app.fireworks.ai/models/fireworks/kimi-k2p5 | 官方文档 · app.fireworks.ai · kimi k2p5 | 官方文档 · Fireworks · Kimi K2.5（控制台） |
-| web | fireworks/accounts/fireworks/models/minimax-m3 | https://fireworks.ai/models/fireworks/minimax-m3 | 官方文档 · fireworks.ai · minimax m3 | 官方文档 · Fireworks · MiniMax M3（文档） |
+| web | fireworks/accounts/fireworks/models/minimax-m3 | https://fireworks.ai/models/fireworks/minimax-m3 | 官方文档 · fireworks.ai · minimax m3 | 官方文档 · Fireworks · MiniMax M3（模型库） |
 | web | fireworks/accounts/fireworks/models/minimax-m3 | https://app.fireworks.ai/models/fireworks/minimax-m3 | 官方文档 · app.fireworks.ai · minimax m3 | 官方文档 · Fireworks · MiniMax M3（控制台） |
-| web | fireworks/accounts/fireworks/models/qwen3p8-max | https://fireworks.ai/models/fireworks/qwen3p8-max | 官方文档 · fireworks.ai · qwen3p8 max | 官方文档 · Fireworks · Qwen 3.8 Max（文档） |
+| web | fireworks/accounts/fireworks/models/qwen3p8-max | https://fireworks.ai/models/fireworks/qwen3p8-max | 官方文档 · fireworks.ai · qwen3p8 max | 官方文档 · Fireworks · Qwen 3.8 Max（模型库） |
 | web | fireworks/accounts/fireworks/models/qwen3p8-max | https://app.fireworks.ai/models/fireworks/qwen3p8-max | 官方文档 · app.fireworks.ai · qwen3p8 max | 官方文档 · Fireworks · Qwen 3.8 Max（控制台） |
-| web | fireworks/accounts/fireworks/models/qwen3p7-plus | https://fireworks.ai/models/fireworks/qwen3p7-plus | 官方文档 · fireworks.ai · qwen3p7 plus | 官方文档 · Fireworks · Qwen 3.7 Plus（文档） |
+| web | fireworks/accounts/fireworks/models/qwen3p7-plus | https://fireworks.ai/models/fireworks/qwen3p7-plus | 官方文档 · fireworks.ai · qwen3p7 plus | 官方文档 · Fireworks · Qwen 3.7 Plus（模型库） |
 | web | fireworks/accounts/fireworks/models/qwen3p7-plus | https://app.fireworks.ai/models/fireworks/qwen3p7-plus | 官方文档 · app.fireworks.ai · qwen3p7 plus | 官方文档 · Fireworks · Qwen 3.7 Plus（控制台） |
-| web | fireworks/accounts/fireworks/models/qwen3-8b | https://fireworks.ai/models/fireworks/qwen3-8b | 官方文档 · fireworks.ai · qwen3 8b | 官方文档 · Fireworks · Qwen3 8B（文档） |
+| web | fireworks/accounts/fireworks/models/qwen3-8b | https://fireworks.ai/models/fireworks/qwen3-8b | 官方文档 · fireworks.ai · qwen3 8b | 官方文档 · Fireworks · Qwen3 8B（模型库） |
 | web | fireworks/accounts/fireworks/models/qwen3-8b | https://app.fireworks.ai/models/fireworks/qwen3-8b | 官方文档 · app.fireworks.ai · qwen3 8b | 官方文档 · Fireworks · Qwen3 8B（控制台） |
 | web | fireworks/accounts/fireworks/models/deepseek-v4p1-flash | https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash | 官方文档 · fireworks.ai · deepseek v4p1 flash | 官方文档 · Fireworks · DeepSeek-V4.1-Flash |
 | web | fireworks/accounts/fireworks/models/deepseek-v4p1-flash-1017 | https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash-1017 | 官方文档 · fireworks.ai · deepseek v4p1 flash 1017 | 官方文档 · Fireworks · DeepSeek V4.1 Flash 1017 |
 | web | fireworks/accounts/fireworks/models/deepseek-v4p1-flash-1017 | https://fireworks.ai/models | 官方文档 · fireworks.ai · 模型列表 | 官方文档 · Fireworks · 模型列表 |
-| web | fireworks/accounts/fireworks/models/gemma-4-31b-it | https://fireworks.ai/models/fireworks/gemma-4-31b-it | 官方文档 · fireworks.ai · gemma 4 31b it | 官方文档 · Fireworks · Gemma 4-31b It（文档） |
+| web | fireworks/accounts/fireworks/models/gemma-4-31b-it | https://fireworks.ai/models/fireworks/gemma-4-31b-it | 官方文档 · fireworks.ai · gemma 4 31b it | 官方文档 · Fireworks · Gemma 4-31b It（模型库） |
 | web | fireworks/accounts/fireworks/models/gemma-4-31b-it | https://app.fireworks.ai/models/fireworks/gemma-4-31b-it | 官方文档 · app.fireworks.ai · gemma 4 31b it | 官方文档 · Fireworks · Gemma 4-31b It（控制台） |
-| web | fireworks/accounts/fireworks/models/gpt-oss-120b | https://fireworks.ai/models/fireworks/gpt-oss-120b | 官方文档 · fireworks.ai · gpt oss 120b | 官方文档 · Fireworks · GPT-OSS 120B（文档） |
+| web | fireworks/accounts/fireworks/models/gpt-oss-120b | https://fireworks.ai/models/fireworks/gpt-oss-120b | 官方文档 · fireworks.ai · gpt oss 120b | 官方文档 · Fireworks · GPT-OSS 120B（模型库） |
 | web | fireworks/accounts/fireworks/models/gpt-oss-120b | https://app.fireworks.ai/models/fireworks/gpt-oss-120b | 官方文档 · app.fireworks.ai · gpt oss 120b | 官方文档 · Fireworks · GPT-OSS 120B（控制台） |
 | web | fireworks/accounts/fireworks/models/kimi-k3p1-pro | https://fireworks.ai/models/fireworks/kimi-k3p1-pro | 官方文档 · fireworks.ai · kimi k3p1 pro | 官方文档 · Fireworks · Kimi K3.1 Pro |
 | web | fireworks/accounts/fireworks/models/minimax-m3p1-flash | https://fireworks.ai/models/fireworks/minimax-m3p1-flash | 官方文档 · fireworks.ai · minimax m3p1 flash | 官方文档 · Fireworks · MiniMax M3.1 Flash |
 | web | fireworks/accounts/fireworks/models/muse-spark-open | https://fireworks.ai/models/fireworks/muse-spark-open | 官方文档 · fireworks.ai · muse spark open | 官方文档 · Fireworks · Muse Spark Open |
-| web | fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4 | https://fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4 | 官方文档 · fireworks.ai · nemotron 3 ultra nvfp4 | 官方文档 · Fireworks · Nemotron 3 Ultra Nvfp4（文档） |
+| web | fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4 | https://fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4 | 官方文档 · fireworks.ai · nemotron 3 ultra nvfp4 | 官方文档 · Fireworks · Nemotron 3 Ultra Nvfp4（模型库） |
 | web | fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4 | https://app.fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4 | 官方文档 · app.fireworks.ai · nemotron 3 ultra nvfp4 | 官方文档 · Fireworks · Nemotron 3 Ultra Nvfp4（控制台） |
-| web | fireworks/accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b | https://fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b | 官方文档 · fireworks.ai · nemotron lightning 3p5 30b a3b | 官方文档 · Fireworks · Nemotron Lightning 3p5-30b A3b（文档） |
+| web | fireworks/accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b | https://fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b | 官方文档 · fireworks.ai · nemotron lightning 3p5 30b a3b | 官方文档 · Fireworks · Nemotron Lightning 3p5-30b A3b（模型库） |
 | web | fireworks/accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b | https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b | 官方文档 · app.fireworks.ai · nemotron lightning 3p5 30b a3b | 官方文档 · Fireworks · Nemotron Lightning 3p5-30b A3b（控制台） |
-| web | fireworks/accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b | https://fireworks.ai/models/fireworks/nvidia-nemotron-3-nano-omni-30b-a3b | 官方文档 · fireworks.ai · nvidia nemotron 3 nano omni 30b a3b | 官方文档 · Fireworks · NVIDIA Nemotron 3 Nano Omni 30B A3B（文档） |
+| web | fireworks/accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b | https://fireworks.ai/models/fireworks/nvidia-nemotron-3-nano-omni-30b-a3b | 官方文档 · fireworks.ai · nvidia nemotron 3 nano omni 30b a3b | 官方文档 · Fireworks · NVIDIA Nemotron 3 Nano Omni 30B A3B（模型库） |
 | web | fireworks/accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b | https://app.fireworks.ai/models/fireworks/nvidia-nemotron-3-nano-omni-30b-a3b | 官方文档 · app.fireworks.ai · nvidia nemotron 3 nano omni 30b a3b | 官方文档 · Fireworks · NVIDIA Nemotron 3 Nano Omni 30B A3B（控制台） |
-| web | fireworks/accounts/fireworks/models/qwen3-omni-30b-a3b-instruct | https://fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct | 官方文档 · fireworks.ai · qwen3 omni 30b a3b instruct | 官方文档 · Fireworks · Qwen3 Omni 30B A3B Instruct（文档） |
+| web | fireworks/accounts/fireworks/models/qwen3-omni-30b-a3b-instruct | https://fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct | 官方文档 · fireworks.ai · qwen3 omni 30b a3b instruct | 官方文档 · Fireworks · Qwen3 Omni 30B A3B Instruct（模型库） |
 | web | fireworks/accounts/fireworks/models/qwen3-omni-30b-a3b-instruct | https://app.fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct | 官方文档 · app.fireworks.ai · qwen3 omni 30b a3b instruct | 官方文档 · Fireworks · Qwen3 Omni 30B A3B Instruct（控制台） |
-| web | fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4 | https://fireworks.ai/models/fireworks/step-3p7-flash-nvfp4 | 官方文档 · fireworks.ai · step 3p7 flash nvfp4 | 官方文档 · Fireworks · Step 3.7 Flash（NVFP4）（文档） |
+| web | fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4 | https://fireworks.ai/models/fireworks/step-3p7-flash-nvfp4 | 官方文档 · fireworks.ai · step 3p7 flash nvfp4 | 官方文档 · Fireworks · Step 3.7 Flash（NVFP4）（模型库） |
 | web | fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4 | https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4 | 官方文档 · app.fireworks.ai · step 3p7 flash nvfp4 | 官方文档 · Fireworks · Step 3.7 Flash（NVFP4）（控制台） |
 | web | fal/alibaba/qwen-image-3/text-to-image | https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Qwen Image 3 API 文档 |
 | web | fal/bytedance/seedream/v5/flash/text-to-image | https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api | 官方文档 · fal.ai · api · fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api | 官方文档 · fal · Seedream v5 Flash API 文档 |
@@ -2068,98 +2024,98 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | stepfun/step-3.5-flash-2603 | https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create | 官方文档 · stepfun.com · chat completion create | 官方文档 · StepFun · Chat Completion Create |
 | web | stepfun/step-1o-turbo-vision | https://platform.stepfun.com/docs/zh/guides/models/list | 官方文档 · stepfun.com · list | 官方文档 · StepFun · List |
 | web | stepfun/step-1o-turbo-vision | https://platform.stepfun.com/docs/zh/welcome | 官方文档 · stepfun.com · welcome | 官方文档 · StepFun · 文档首页 |
-| web | qianfan/deepseek-v4.1-flash | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/deepseek-v4.1-flash | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/deepseek-v4.1-flash | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/deepseek-v4.1-flash | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/deepseek-v4.1-flash-1017 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/deepseek-v4-pro-0813 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 | 官方文档 · Hugging Face · DeepSeek V4 Pro 0813 | 官方文档 · Hugging Face · DeepSeek-V4-Pro-0813 |
-| web | qianfan/deepseek-v4-pro-0813 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/deepseek-v4-pro-0813 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/deepseek-v4-pro-0813 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/deepseek-v4-pro-0813 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/deepseek-v4-flash-0731 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731 | 官方文档 · Hugging Face · DeepSeek V4 Flash 0731 | 官方文档 · Hugging Face · DeepSeek-V4-Flash-0731 |
-| web | qianfan/deepseek-v4-flash-0731 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/deepseek-v4-flash-0731 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/deepseek-v4-flash-0731 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/deepseek-v4-flash-0731 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/deepseek-v4-flash | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash | 官方文档 · Hugging Face · DeepSeek V4 Flash | 官方文档 · Hugging Face · DeepSeek-V4-Flash |
-| web | qianfan/deepseek-v4-flash | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/deepseek-v4-flash | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/deepseek-v4-pro | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/deepseek-v4-pro | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/deepseek-v4-flash | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/deepseek-v4-flash | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/deepseek-v4-pro | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/deepseek-v4-pro | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/deepseek-v4-pro | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro | 官方文档 · Hugging Face · DeepSeek V4 Pro | 官方文档 · Hugging Face · DeepSeek-V4-Pro |
 | web | qianfan/deepseek-v3.2 | https://huggingface.co/deepseek-ai/DeepSeek-V3.2 | 官方文档 · Hugging Face · DeepSeek V3.2 | 官方文档 · Hugging Face · DeepSeek-V3.2 |
-| web | qianfan/deepseek-v3.2 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/deepseek-v3.2 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/deepseek-v3.2-think | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/deepseek-v3.2-think | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/deepseek-v3.2 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/deepseek-v3.2 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/deepseek-v3.2-think | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/deepseek-v3.2-think | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/glm-5.3 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3 | 官方文档 · bigmodel.cn · glm 5.3 | 官方文档 · 智谱 · GLM-5.3 |
-| web | qianfan/glm-5.3 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/glm-5.3 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/glm-5.3 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/glm-5.3 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/glm-5.3-flash | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash | 官方文档 · bigmodel.cn · glm 5.3 flash | 官方文档 · 智谱 · GLM-5.3-Flash |
-| web | qianfan/glm-5.3-flash | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/glm-5.3-flash | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/glm-5.3-flash | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/glm-5.3-flash | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/glm-5.2 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2 | 官方文档 · bigmodel.cn · glm 5.2 | 官方文档 · 智谱 · GLM-5.2 |
-| web | qianfan/glm-5.2 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/glm-5.2 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/glm-5.2 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/glm-5.2 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/glm-5.1 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1 | 官方文档 · bigmodel.cn · glm 5.1 | 官方文档 · 智谱 · GLM-5.1 |
-| web | qianfan/glm-5.1 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/glm-5.1 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/glm-5.1 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/glm-5.1 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/glm-5 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5 | 官方文档 · bigmodel.cn · glm 5 | 官方文档 · 智谱 · GLM-5 |
-| web | qianfan/glm-5 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/glm-5 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/glm-5 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/glm-5 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/kimi-k2.6 | https://huggingface.co/moonshotai/Kimi-K2.6 | 官方文档 · Hugging Face · Kimi K2.6 | 官方文档 · Hugging Face · Kimi-K2.6 |
-| web | qianfan/kimi-k2.6 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/kimi-k2.6 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/qwen-image | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/qwen-image | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/kimi-k2.6 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/kimi-k2.6 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/qwen-image | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/qwen-image | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/qwen-image-edit | https://help.aliyun.com/zh/model-studio/model-depreciation | 原厂规格 · 百炼 · 模型下线公告 | 下线公告 · 百炼 · 模型下线公告 |
-| web | qianfan/qwen-image-edit | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/qwen-image-edit | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/qwen3.5-122b-a10b | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/qwen3.5-122b-a10b | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/qwen-image-edit | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/qwen-image-edit | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/qwen3.5-122b-a10b | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/qwen3.5-122b-a10b | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/qwen3.5-122b-a10b | https://huggingface.co/Qwen/Qwen3.5-122B-A10B | 官方文档 · Hugging Face · Qwen3.5 122B A10B | 官方文档 · Hugging Face · Qwen3.5-122B-A10B |
-| web | qianfan/qwen3.5-27b | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/qwen3.5-27b | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/qwen3.5-27b | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/qwen3.5-27b | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/qwen3.5-27b | https://huggingface.co/Qwen/Qwen3.5-27B | 官方文档 · Hugging Face · Qwen3.5 27B | 官方文档 · Hugging Face · Qwen3.5-27B |
-| web | qianfan/qwen3.5-35b-a3b | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/qwen3.5-35b-a3b | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/qwen3.5-35b-a3b | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/qwen3.5-35b-a3b | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/qwen3.5-35b-a3b | https://huggingface.co/Qwen/Qwen3.5-35B-A3B | 官方文档 · Hugging Face · Qwen3.5 35B A3B | 官方文档 · Hugging Face · Qwen3.5-35B-A3B |
 | web | qianfan/qwen3.5-397b-a17b | https://huggingface.co/Qwen/Qwen3.5-397B-A17B | 官方文档 · Hugging Face · Qwen3.5 397B A17B | 官方文档 · Hugging Face · Qwen3.5-397B-A17B |
-| web | qianfan/qwen3.5-397b-a17b | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/qwen3.5-397b-a17b | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/deepseek-flash | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/deepseek-flash | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/qwen3.5-397b-a17b | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/qwen3.5-397b-a17b | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/deepseek-flash | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/deepseek-flash | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/deepseek-ocr | https://huggingface.co/deepseek-ai/DeepSeek-OCR | 官方文档 · Hugging Face · DeepSeek OCR | 官方文档 · Hugging Face · DeepSeek-OCR |
-| web | qianfan/deepseek-ocr | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/deepseek-ocr | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/ernie-4.5-turbo-128k | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/ernie-4.5-turbo-128k | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/ernie-4.5-turbo-20260402 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/ernie-4.5-turbo-20260402 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/ernie-4.5-turbo-32k | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/ernie-4.5-turbo-32k | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/ernie-4.5-turbo-vl | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/ernie-4.5-turbo-vl | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/ernie-4.5-turbo-vl-32k | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/ernie-4.5-turbo-vl-32k | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/ernie-5.0 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/ernie-5.0 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/ernie-5.0-thinking-exp | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/ernie-5.0-thinking-exp | https://cloud.baidu.com/doc/qianfan-docs/s/Jm8r1826a | 官方文档 · cloud.baidu.com · Jm8r1826a | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/ernie-5.0-thinking-exp | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档 3） |
-| web | qianfan/ernie-5.0-thinking-latest | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/ernie-5.0-thinking-latest | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/ernie-5.0-thinking-preview | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/ernie-5.0-thinking-preview | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/ernie-5.1 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/ernie-5.1 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/ernie-x1.1 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/ernie-x1.1 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/ernie-x1.1-preview | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/ernie-x1.1-preview | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/deepseek-ocr | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/deepseek-ocr | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/ernie-4.5-turbo-128k | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/ernie-4.5-turbo-128k | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/ernie-4.5-turbo-20260402 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/ernie-4.5-turbo-20260402 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/ernie-4.5-turbo-32k | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/ernie-4.5-turbo-32k | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/ernie-4.5-turbo-vl | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/ernie-4.5-turbo-vl | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/ernie-4.5-turbo-vl-32k | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/ernie-4.5-turbo-vl-32k | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/ernie-5.0 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/ernie-5.0 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/ernie-5.0-thinking-exp | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/ernie-5.0-thinking-exp | https://cloud.baidu.com/doc/qianfan-docs/s/Jm8r1826a | 官方文档 · cloud.baidu.com · Jm8r1826a | 官方文档 · 百度千帆 · AI 应用开发入门：价格 |
+| web | qianfan/ernie-5.0-thinking-exp | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/ernie-5.0-thinking-latest | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/ernie-5.0-thinking-latest | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/ernie-5.0-thinking-preview | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/ernie-5.0-thinking-preview | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/ernie-5.1 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/ernie-5.1 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/ernie-x1.1 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/ernie-x1.1 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/ernie-x1.1-preview | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/ernie-x1.1-preview | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | web | qianfan/internvl3-38b | https://huggingface.co/OpenGVLab/InternVL3-38B | 官方文档 · Hugging Face · InternVL3 38B | 官方文档 · Hugging Face · InternVL3-38B |
-| web | qianfan/internvl3-38b | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/internvl3-38b | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/musesteamer-air-image | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/musesteamer-air-image | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档 2） |
-| web | qianfan/qianfan-ocr | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表（文档） |
-| web | qianfan/qianfan-ocr | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表（文档 2） |
+| web | qianfan/internvl3-38b | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/internvl3-38b | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/musesteamer-air-image | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| web | qianfan/musesteamer-air-image | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/qianfan-ocr | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
+| web | qianfan/qianfan-ocr | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
 | web | iflytek/xop3qwen30b | https://www.xfyun.cn/doc/spark/HTTP调用文档.html | 官方文档 · xfyun.cn · HTTP调用文档 | 官方文档 · 讯飞星火 · HTTP调用文档 |
 | web | iflytek/xop3qwen32b | https://www.xfyun.cn/doc/spark/HTTP调用文档.html | 官方文档 · xfyun.cn · HTTP调用文档 | 官方文档 · 讯飞星火 · HTTP调用文档 |
 | web | iflytek/xop3qwen32bvl | https://www.xfyun.cn/doc/spark/HTTP调用文档.html | 官方文档 · xfyun.cn · HTTP调用文档 | 官方文档 · 讯飞星火 · HTTP调用文档 |
@@ -2201,23 +2157,23 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | web | longcat/LongCat-2.0 | https://longcat.chat/platform/docs/api/chat | 官方文档 · longcat.chat · chat | 官方文档 · LongCat · Chat |
 | web | longcat/LongCat-2.0 | https://longcat.chat/platform/docs/zh/api/models.html | 官方文档 · longcat.chat · models | 官方文档 · LongCat · 模型列表 |
 | web | longcat/LongCat-2.5 | https://longcat.chat/platform/docs/change-log | 官方文档 · longcat.chat · change log | 官方文档 · LongCat · Change Log |
-| web | antling/Ling-3.0-flash-VL | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 官方文档 · developer.ant-ling.com · openai · developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai | 官方文档 · 蚂蚁百灵 · OpenAI（文档） |
+| web | antling/Ling-3.0-flash-VL | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 官方文档 · developer.ant-ling.com · openai · developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai | 官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南） |
 | web | antling/Ling-3.0-flash-VL | https://developer.ant-ling.com/zh-CN/docs/models/ling/ | 官方文档 · developer.ant-ling.com · ling | 官方文档 · 蚂蚁百灵 · Ling |
 | web | antling/Ling-3.0-flash-VL | https://developer.ant-ling.com/zh-CN/docs/tutorials/multimodal-understanding/ | 官方文档 · developer.ant-ling.com · multimodal understanding | 官方文档 · 蚂蚁百灵 · Multimodal Understanding |
 | web | antling/Ling-3.0-flash-VL | https://developer.ant-ling.com/zh-CN/docs/api-reference/ | 官方文档 · developer.ant-ling.com · api reference | 官方文档 · 蚂蚁百灵 · API 文档 |
-| web | antling/Ling-3.0-flash-VL | https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/ | 官方文档 · developer.ant-ling.com · openai · developer.ant-ling.com/zh-CN/docs/api-reference/openai | 官方文档 · 蚂蚁百灵 · OpenAI（文档 2） |
+| web | antling/Ling-3.0-flash-VL | https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/ | 官方文档 · developer.ant-ling.com · openai · developer.ant-ling.com/zh-CN/docs/api-reference/openai | 官方文档 · 蚂蚁百灵 · OpenAI（接口兼容指南） |
 | web | antling/Ling-3.0-flash-VL | https://huggingface.co/inclusionAI/Ling-3.0-flash-VL | 官方文档 · Hugging Face · Ling 3.0 flash VL | 官方文档 · Hugging Face · Ling 3.0 Flash VL |
-| web | antling/Ling-3.0-tiny | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 官方文档 · developer.ant-ling.com · openai · developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai | 官方文档 · 蚂蚁百灵 · OpenAI（文档） |
+| web | antling/Ling-3.0-tiny | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 官方文档 · developer.ant-ling.com · openai · developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai | 官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南） |
 | web | antling/Ling-3.0-tiny | https://developer.ant-ling.com/zh-CN/docs/models/ling/ | 官方文档 · developer.ant-ling.com · ling | 官方文档 · 蚂蚁百灵 · Ling |
 | web | antling/Ling-3.0-tiny | https://developer.ant-ling.com/zh-CN/docs/tutorials/multimodal-understanding/ | 官方文档 · developer.ant-ling.com · multimodal understanding | 官方文档 · 蚂蚁百灵 · Multimodal Understanding |
 | web | antling/Ling-3.0-tiny | https://developer.ant-ling.com/zh-CN/docs/api-reference/ | 官方文档 · developer.ant-ling.com · api reference | 官方文档 · 蚂蚁百灵 · API 文档 |
-| web | antling/Ling-3.0-tiny | https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/ | 官方文档 · developer.ant-ling.com · openai · developer.ant-ling.com/zh-CN/docs/api-reference/openai | 官方文档 · 蚂蚁百灵 · OpenAI（文档 2） |
+| web | antling/Ling-3.0-tiny | https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/ | 官方文档 · developer.ant-ling.com · openai · developer.ant-ling.com/zh-CN/docs/api-reference/openai | 官方文档 · 蚂蚁百灵 · OpenAI（接口兼容指南） |
 | web | antling/Ling-3.0-tiny | https://huggingface.co/inclusionAI/Ling-3.0-tiny | 官方文档 · Hugging Face · Ling 3.0 tiny | 官方文档 · Hugging Face · Ling 3.0 Tiny |
-| web | antling/Ling-3.0-flash | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 官方文档 · developer.ant-ling.com · openai · developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai | 官方文档 · 蚂蚁百灵 · OpenAI（文档） |
+| web | antling/Ling-3.0-flash | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 官方文档 · developer.ant-ling.com · openai · developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai | 官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南） |
 | web | antling/Ling-3.0-flash | https://developer.ant-ling.com/zh-CN/docs/models/ling/ | 官方文档 · developer.ant-ling.com · ling | 官方文档 · 蚂蚁百灵 · Ling |
 | web | antling/Ling-3.0-flash | https://developer.ant-ling.com/zh-CN/docs/tutorials/multimodal-understanding/ | 官方文档 · developer.ant-ling.com · multimodal understanding | 官方文档 · 蚂蚁百灵 · Multimodal Understanding |
 | web | antling/Ling-3.0-flash | https://developer.ant-ling.com/zh-CN/docs/api-reference/ | 官方文档 · developer.ant-ling.com · api reference | 官方文档 · 蚂蚁百灵 · API 文档 |
-| web | antling/Ling-3.0-flash | https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/ | 官方文档 · developer.ant-ling.com · openai · developer.ant-ling.com/zh-CN/docs/api-reference/openai | 官方文档 · 蚂蚁百灵 · OpenAI（文档 2） |
+| web | antling/Ling-3.0-flash | https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/ | 官方文档 · developer.ant-ling.com · openai · developer.ant-ling.com/zh-CN/docs/api-reference/openai | 官方文档 · 蚂蚁百灵 · OpenAI（接口兼容指南） |
 | web | antling/Ling-3.0-flash | https://huggingface.co/inclusionAI/Ling-3.0-flash | 官方文档 · Hugging Face · Ling 3.0 flash | 官方文档 · Hugging Face · Ling 3.0 Flash |
 | web | antling/Ling-2.6-1T | https://developer.ant-ling.com/zh-CN/docs/models/deprecation/ | 下线公告 · developer.ant-ling.com · deprecation | 下线公告 · 蚂蚁百灵 · 模型下线公告 |
 | web | antling/Ling-2.6-1T | https://huggingface.co/inclusionAI/Ling-2.6-1T | 官方文档 · Hugging Face · Ling 2.6 1T | 官方文档 · Hugging Face · Ling 2.6-1T |
@@ -2473,112 +2429,112 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | mini | bailian/xiaomi/mimo-v2.5-pro | https://mimo.mi.com/docs/zh-CN/quick-start/summary/model | 原厂规格 · mimo.mi.com · model | 原厂规格 · MiMo · 模型说明 |
 | mini | bailian/xiaomi/mimo-v2.6-pro-ultraspeed | https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed | 官方文档 · 百炼 · mimo v2 6 pro ultraspeed | 官方文档 · 百炼 · MiMo V2.6 Pro UltraSpeed |
 | mini | openai/gpt-6.1-sol | https://developers.openai.com/api/docs/models/gpt-6.1-sol | 官方文档 · developers.openai.com · gpt 6.1 sol | 官方文档 · OpenAI · GPT-6.1 Sol |
-| mini | openai/gpt-6-luna | https://developers.openai.com/api/docs/models/gpt-6-luna.md | 官方文档 · developers.openai.com · gpt 6 luna.md | 官方文档 · OpenAI · GPT-6 Luna |
-| mini | openai/gpt-6-sol | https://developers.openai.com/api/docs/models/gpt-6-sol.md | 官方文档 · developers.openai.com · gpt 6 sol.md | 官方文档 · OpenAI · GPT-6 Sol |
-| mini | openai/gpt-image-2.5-flare | https://developers.openai.com/api/docs/models/gpt-image-2.5-flare.md | 官方文档 · developers.openai.com · gpt image 2.5 flare.md | 官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08） |
+| mini | openai/gpt-6-luna | https://developers.openai.com/api/docs/models/gpt-6-luna | 官方文档 · developers.openai.com · gpt 6 luna.md | 官方文档 · OpenAI · GPT-6 Luna |
+| mini | openai/gpt-6-sol | https://developers.openai.com/api/docs/models/gpt-6-sol | 官方文档 · developers.openai.com · gpt 6 sol.md | 官方文档 · OpenAI · GPT-6 Sol |
+| mini | openai/gpt-image-2.5-flare | https://developers.openai.com/api/docs/models/gpt-image-2.5-flare | 官方文档 · developers.openai.com · gpt image 2.5 flare.md | 官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08） |
 | mini | openai/gpt-image-2.5-flare-2026-09-08 | https://developers.openai.com/api/docs/models/gpt-image-2.5-flare | 官方文档 · developers.openai.com · gpt image 2.5 flare | 官方文档 · OpenAI · GPT Image 2.5 Flare |
-| mini | openai/gpt-image-2.5-sunburst | https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst.md | 官方文档 · developers.openai.com · gpt image 2.5 sunburst.md | 官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08） |
+| mini | openai/gpt-image-2.5-sunburst | https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst | 官方文档 · developers.openai.com · gpt image 2.5 sunburst.md | 官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08） |
 | mini | openai/gpt-image-2.5-sunburst-2026-09-08 | https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst | 官方文档 · developers.openai.com · gpt image 2.5 sunburst | 官方文档 · OpenAI · GPT Image 2.5 Sunburst |
-| mini | openai/gpt-6-astra | https://developers.openai.com/api/docs/models/gpt-6-astra.md | 官方文档 · developers.openai.com · gpt 6 astra.md | 官方文档 · OpenAI · GPT-6 Astra |
-| mini | openai/gpt-5.6-luna | https://developers.openai.com/api/docs/models/gpt-5.6-luna.md | 官方文档 · developers.openai.com · gpt 5.6 luna.md | 官方文档 · OpenAI · GPT-5.6 Luna |
-| mini | openai/gpt-5.6-sol | https://developers.openai.com/api/docs/models/gpt-5.6-sol.md | 官方文档 · developers.openai.com · gpt 5.6 sol.md | 官方文档 · OpenAI · GPT-5.6 Sol |
-| mini | openai/gpt-5.6-terra | https://developers.openai.com/api/docs/models/gpt-5.6-terra.md | 官方文档 · developers.openai.com · gpt 5.6 terra.md | 官方文档 · OpenAI · GPT-5.6 Terra |
-| mini | openai/gpt-5.5 | https://developers.openai.com/api/docs/models/gpt-5.5.md | 官方文档 · developers.openai.com · gpt 5.5.md | 官方文档 · OpenAI · GPT-5.5（2026-04-23） |
-| mini | openai/gpt-5.5-pro | https://developers.openai.com/api/docs/models/gpt-5.5-pro.md | 官方文档 · developers.openai.com · gpt 5.5 pro.md | 官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23） |
-| mini | openai/gpt-5.4 | https://developers.openai.com/api/docs/models/gpt-5.4.md | 官方文档 · developers.openai.com · gpt 5.4.md | 官方文档 · OpenAI · GPT-5.4（2026-03-05） |
-| mini | openai/gpt-5.4-mini | https://developers.openai.com/api/docs/models/gpt-5.4-mini.md | 官方文档 · developers.openai.com · gpt 5.4 mini.md | 官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17） |
-| mini | openai/gpt-5.4-nano | https://developers.openai.com/api/docs/models/gpt-5.4-nano.md | 官方文档 · developers.openai.com · gpt 5.4 nano.md | 官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17） |
-| mini | openai/gpt-5.4-pro | https://developers.openai.com/api/docs/models/gpt-5.4-pro.md | 官方文档 · developers.openai.com · gpt 5.4 pro.md | 官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05） |
-| mini | openai/gpt-5.3-codex | https://developers.openai.com/api/docs/models/gpt-5.3-codex.md | 官方文档 · developers.openai.com · gpt 5.3 codex.md | 官方文档 · OpenAI · GPT 5.3 Codex |
-| mini | openai/gpt-5.2 | https://developers.openai.com/api/docs/models/gpt-5.2.md | 官方文档 · developers.openai.com · gpt 5.2.md | 官方文档 · OpenAI · GPT-5.2（2025-12-11） |
+| mini | openai/gpt-6-astra | https://developers.openai.com/api/docs/models/gpt-6-astra | 官方文档 · developers.openai.com · gpt 6 astra.md | 官方文档 · OpenAI · GPT-6 Astra |
+| mini | openai/gpt-5.6-luna | https://developers.openai.com/api/docs/models/gpt-5.6-luna | 官方文档 · developers.openai.com · gpt 5.6 luna.md | 官方文档 · OpenAI · GPT-5.6 Luna |
+| mini | openai/gpt-5.6-sol | https://developers.openai.com/api/docs/models/gpt-5.6-sol | 官方文档 · developers.openai.com · gpt 5.6 sol.md | 官方文档 · OpenAI · GPT-5.6 Sol |
+| mini | openai/gpt-5.6-terra | https://developers.openai.com/api/docs/models/gpt-5.6-terra | 官方文档 · developers.openai.com · gpt 5.6 terra.md | 官方文档 · OpenAI · GPT-5.6 Terra |
+| mini | openai/gpt-5.5 | https://developers.openai.com/api/docs/models/gpt-5.5 | 官方文档 · developers.openai.com · gpt 5.5.md | 官方文档 · OpenAI · GPT-5.5（2026-04-23） |
+| mini | openai/gpt-5.5-pro | https://developers.openai.com/api/docs/models/gpt-5.5-pro | 官方文档 · developers.openai.com · gpt 5.5 pro.md | 官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23） |
+| mini | openai/gpt-5.4 | https://developers.openai.com/api/docs/models/gpt-5.4 | 官方文档 · developers.openai.com · gpt 5.4.md | 官方文档 · OpenAI · GPT-5.4（2026-03-05） |
+| mini | openai/gpt-5.4-mini | https://developers.openai.com/api/docs/models/gpt-5.4-mini | 官方文档 · developers.openai.com · gpt 5.4 mini.md | 官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17） |
+| mini | openai/gpt-5.4-nano | https://developers.openai.com/api/docs/models/gpt-5.4-nano | 官方文档 · developers.openai.com · gpt 5.4 nano.md | 官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17） |
+| mini | openai/gpt-5.4-pro | https://developers.openai.com/api/docs/models/gpt-5.4-pro | 官方文档 · developers.openai.com · gpt 5.4 pro.md | 官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05） |
+| mini | openai/gpt-5.3-codex | https://developers.openai.com/api/docs/models/gpt-5.3-codex | 官方文档 · developers.openai.com · gpt 5.3 codex.md | 官方文档 · OpenAI · GPT 5.3 Codex |
+| mini | openai/gpt-5.2 | https://developers.openai.com/api/docs/models/gpt-5.2 | 官方文档 · developers.openai.com · gpt 5.2.md | 官方文档 · OpenAI · GPT-5.2（2025-12-11） |
 | mini | openai/gpt-5.2-2025-12-11 | https://developers.openai.com/api/docs/models/gpt-5.2 | 官方文档 · developers.openai.com · gpt 5.2 | 官方文档 · OpenAI · GPT 5.2 |
-| mini | openai/gpt-5.2-pro | https://developers.openai.com/api/docs/models/gpt-5.2-pro.md | 官方文档 · developers.openai.com · gpt 5.2 pro.md | 官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11） |
-| mini | openai/gpt-5.1 | https://developers.openai.com/api/docs/models/gpt-5.1.md | 官方文档 · developers.openai.com · gpt 5.1.md | 官方文档 · OpenAI · GPT-5.1（2025-11-13） |
+| mini | openai/gpt-5.2-pro | https://developers.openai.com/api/docs/models/gpt-5.2-pro | 官方文档 · developers.openai.com · gpt 5.2 pro.md | 官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11） |
+| mini | openai/gpt-5.1 | https://developers.openai.com/api/docs/models/gpt-5.1 | 官方文档 · developers.openai.com · gpt 5.1.md | 官方文档 · OpenAI · GPT-5.1（2025-11-13） |
 | mini | openai/gpt-5.1-2025-11-13 | https://developers.openai.com/api/docs/models/gpt-5.1 | 官方文档 · developers.openai.com · gpt 5.1 | 官方文档 · OpenAI · GPT-5.1 |
-| mini | openai/gpt-5 | https://developers.openai.com/api/docs/models/gpt-5.md | 官方文档 · developers.openai.com · gpt 5.md | 官方文档 · OpenAI · GPT-5（2025-08-07） |
+| mini | openai/gpt-5 | https://developers.openai.com/api/docs/models/gpt-5 | 官方文档 · developers.openai.com · gpt 5.md | 官方文档 · OpenAI · GPT-5（2025-08-07） |
 | mini | openai/gpt-5-2025-08-07 | https://developers.openai.com/api/docs/models/gpt-5 | 官方文档 · developers.openai.com · gpt 5 | 官方文档 · OpenAI · GPT 5 |
-| mini | openai/gpt-5-mini | https://developers.openai.com/api/docs/models/gpt-5-mini.md | 官方文档 · developers.openai.com · gpt 5 mini.md | 官方文档 · OpenAI · GPT 5 Mini（2025-08-07） |
+| mini | openai/gpt-5-mini | https://developers.openai.com/api/docs/models/gpt-5-mini | 官方文档 · developers.openai.com · gpt 5 mini.md | 官方文档 · OpenAI · GPT 5 Mini（2025-08-07） |
 | mini | openai/gpt-5-mini-2025-08-07 | https://developers.openai.com/api/docs/models/gpt-5-mini | 官方文档 · developers.openai.com · gpt 5 mini | 官方文档 · OpenAI · GPT 5 Mini |
-| mini | openai/gpt-5-nano | https://developers.openai.com/api/docs/models/gpt-5-nano.md | 官方文档 · developers.openai.com · gpt 5 nano.md | 官方文档 · OpenAI · GPT 5 Nano（2025-08-07） |
+| mini | openai/gpt-5-nano | https://developers.openai.com/api/docs/models/gpt-5-nano | 官方文档 · developers.openai.com · gpt 5 nano.md | 官方文档 · OpenAI · GPT 5 Nano（2025-08-07） |
 | mini | openai/gpt-5-nano-2025-08-07 | https://developers.openai.com/api/docs/models/gpt-5-nano | 官方文档 · developers.openai.com · gpt 5 nano | 官方文档 · OpenAI · GPT 5 Nano |
-| mini | openai/gpt-5-pro | https://developers.openai.com/api/docs/models/gpt-5-pro.md | 官方文档 · developers.openai.com · gpt 5 pro.md | 官方文档 · OpenAI · GPT 5 Pro（2025-10-06） |
+| mini | openai/gpt-5-pro | https://developers.openai.com/api/docs/models/gpt-5-pro | 官方文档 · developers.openai.com · gpt 5 pro.md | 官方文档 · OpenAI · GPT 5 Pro（2025-10-06） |
 | mini | openai/gpt-5-pro-2025-10-06 | https://developers.openai.com/api/docs/models/gpt-5-pro | 官方文档 · developers.openai.com · gpt 5 pro | 官方文档 · OpenAI · GPT 5 Pro |
-| mini | openai/gpt-4.1 | https://developers.openai.com/api/docs/models/gpt-4.1.md | 官方文档 · developers.openai.com · gpt 4.1.md | 官方文档 · OpenAI · GPT-4.1（2025-04-14） |
+| mini | openai/gpt-4.1 | https://developers.openai.com/api/docs/models/gpt-4.1 | 官方文档 · developers.openai.com · gpt 4.1.md | 官方文档 · OpenAI · GPT-4.1（2025-04-14） |
 | mini | openai/gpt-4.1-2025-04-14 | https://developers.openai.com/api/docs/models/gpt-4.1 | 官方文档 · developers.openai.com · gpt 4.1 | 官方文档 · OpenAI · GPT 4.1 |
-| mini | openai/gpt-4.1-mini | https://developers.openai.com/api/docs/models/gpt-4.1-mini.md | 官方文档 · developers.openai.com · gpt 4.1 mini.md | 官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14） |
+| mini | openai/gpt-4.1-mini | https://developers.openai.com/api/docs/models/gpt-4.1-mini | 官方文档 · developers.openai.com · gpt 4.1 mini.md | 官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14） |
 | mini | openai/gpt-4.1-mini-2025-04-14 | https://developers.openai.com/api/docs/models/gpt-4.1-mini | 官方文档 · developers.openai.com · gpt 4.1 mini | 官方文档 · OpenAI · GPT-4.1 Mini |
-| mini | openai/gpt-4.1-nano | https://developers.openai.com/api/docs/models/gpt-4.1-nano.md | 官方文档 · developers.openai.com · gpt 4.1 nano.md | 官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14） |
+| mini | openai/gpt-4.1-nano | https://developers.openai.com/api/docs/models/gpt-4.1-nano | 官方文档 · developers.openai.com · gpt 4.1 nano.md | 官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14） |
 | mini | openai/gpt-4.1-nano-2025-04-14 | https://developers.openai.com/api/docs/models/gpt-4.1-nano | 官方文档 · developers.openai.com · gpt 4.1 nano | 官方文档 · OpenAI · GPT 4.1 Nano |
-| mini | openai/gpt-4o | https://developers.openai.com/api/docs/models/gpt-4o.md | 官方文档 · developers.openai.com · gpt 4o.md | 官方文档 · OpenAI · GPT-4o（2024-08-06） |
+| mini | openai/gpt-4o | https://developers.openai.com/api/docs/models/gpt-4o | 官方文档 · developers.openai.com · gpt 4o.md | 官方文档 · OpenAI · GPT-4o（2024-08-06） |
 | mini | openai/gpt-4o-2024-05-13 | https://developers.openai.com/api/docs/models/gpt-4o | 官方文档 · developers.openai.com · gpt 4o | 官方文档 · OpenAI · GPT 4o |
 | mini | openai/gpt-4o-2024-08-06 | https://developers.openai.com/api/docs/models/gpt-4o | 官方文档 · developers.openai.com · gpt 4o | 官方文档 · OpenAI · GPT 4o |
 | mini | openai/gpt-4o-2024-11-20 | https://developers.openai.com/api/docs/models/gpt-4o | 官方文档 · developers.openai.com · gpt 4o | 官方文档 · OpenAI · GPT 4o |
-| mini | openai/gpt-4o-mini | https://developers.openai.com/api/docs/models/gpt-4o-mini.md | 官方文档 · developers.openai.com · gpt 4o mini.md | 官方文档 · OpenAI · GPT 4o Mini（2024-07-18） |
+| mini | openai/gpt-4o-mini | https://developers.openai.com/api/docs/models/gpt-4o-mini | 官方文档 · developers.openai.com · gpt 4o mini.md | 官方文档 · OpenAI · GPT 4o Mini（2024-07-18） |
 | mini | openai/gpt-4o-mini-2024-07-18 | https://developers.openai.com/api/docs/models/gpt-4o-mini | 官方文档 · developers.openai.com · gpt 4o mini | 官方文档 · OpenAI · GPT 4o Mini |
-| mini | openai/gpt-4-turbo | https://developers.openai.com/api/docs/models/gpt-4-turbo.md | 官方文档 · developers.openai.com · gpt 4 turbo.md | 官方文档 · OpenAI · GPT 4 Turbo（2024-04-09） |
+| mini | openai/gpt-4-turbo | https://developers.openai.com/api/docs/models/gpt-4-turbo | 官方文档 · developers.openai.com · gpt 4 turbo.md | 官方文档 · OpenAI · GPT 4 Turbo（2024-04-09） |
 | mini | openai/gpt-4-turbo-2024-04-09 | https://developers.openai.com/api/docs/models/gpt-4-turbo | 官方文档 · developers.openai.com · gpt 4 turbo | 官方文档 · OpenAI · GPT 4 Turbo |
-| mini | openai/gpt-4 | https://developers.openai.com/api/docs/models/gpt-4.md | 官方文档 · developers.openai.com · gpt 4.md | 官方文档 · OpenAI · GPT-4（0613） |
+| mini | openai/gpt-4 | https://developers.openai.com/api/docs/models/gpt-4 | 官方文档 · developers.openai.com · gpt 4.md | 官方文档 · OpenAI · GPT-4（0613） |
 | mini | openai/gpt-4-0613 | https://developers.openai.com/api/docs/models/gpt-4 | 官方文档 · developers.openai.com · gpt 4 | 官方文档 · OpenAI · GPT 4 |
 | mini | openai/gpt-4-1106-preview | https://developers.openai.com/api/docs/models/gpt-4-turbo-preview | 官方文档 · developers.openai.com · gpt 4 turbo preview | 官方文档 · OpenAI · GPT 4 Turbo Preview |
-| mini | openai/gpt-image-2 | https://developers.openai.com/api/docs/models/gpt-image-2.md | 官方文档 · developers.openai.com · gpt image 2.md | 官方文档 · OpenAI · GPT Image 2（2026-04-21） |
-| mini | openai/gpt-image-1.5 | https://developers.openai.com/api/docs/models/gpt-image-1.5.md | 官方文档 · developers.openai.com · gpt image 1.5.md | 官方文档 · OpenAI · GPT Image 1.5（2025-12-16） |
-| mini | openai/gpt-image-1 | https://developers.openai.com/api/docs/models/gpt-image-1.md | 官方文档 · developers.openai.com · gpt image 1.md | 官方文档 · OpenAI · GPT Image 1 |
-| mini | openai/gpt-image-1-mini | https://developers.openai.com/api/docs/models/gpt-image-1-mini.md | 官方文档 · developers.openai.com · gpt image 1 mini.md | 官方文档 · OpenAI · GPT Image 1 Mini |
-| mini | openai/chat-latest | https://developers.openai.com/api/docs/models/chat-latest.md | 官方文档 · developers.openai.com · chat latest.md | 官方文档 · OpenAI · Chat Latest |
-| mini | openai/chatgpt-image-latest | https://developers.openai.com/api/docs/models/chatgpt-image-latest.md | 官方文档 · developers.openai.com · chatgpt image latest.md | 官方文档 · OpenAI · ChatGPT Image Latest |
-| mini | openai/gpt-3.5-turbo | https://developers.openai.com/api/docs/models/gpt-3.5-turbo.md | 官方文档 · developers.openai.com · gpt 3.5 turbo.md | 官方文档 · OpenAI · GPT 3.5 Turbo（0125） |
+| mini | openai/gpt-image-2 | https://developers.openai.com/api/docs/models/gpt-image-2 | 官方文档 · developers.openai.com · gpt image 2.md | 官方文档 · OpenAI · GPT Image 2（2026-04-21） |
+| mini | openai/gpt-image-1.5 | https://developers.openai.com/api/docs/models/gpt-image-1.5 | 官方文档 · developers.openai.com · gpt image 1.5.md | 官方文档 · OpenAI · GPT Image 1.5（2025-12-16） |
+| mini | openai/gpt-image-1 | https://developers.openai.com/api/docs/models/gpt-image-1 | 官方文档 · developers.openai.com · gpt image 1.md | 官方文档 · OpenAI · GPT Image 1 |
+| mini | openai/gpt-image-1-mini | https://developers.openai.com/api/docs/models/gpt-image-1-mini | 官方文档 · developers.openai.com · gpt image 1 mini.md | 官方文档 · OpenAI · GPT Image 1 Mini |
+| mini | openai/chat-latest | https://developers.openai.com/api/docs/models/chat-latest | 官方文档 · developers.openai.com · chat latest.md | 官方文档 · OpenAI · Chat Latest |
+| mini | openai/chatgpt-image-latest | https://developers.openai.com/api/docs/models/chatgpt-image-latest | 官方文档 · developers.openai.com · chatgpt image latest.md | 官方文档 · OpenAI · ChatGPT Image Latest |
+| mini | openai/gpt-3.5-turbo | https://developers.openai.com/api/docs/models/gpt-3.5-turbo | 官方文档 · developers.openai.com · gpt 3.5 turbo.md | 官方文档 · OpenAI · GPT 3.5 Turbo（0125） |
 | mini | openai/gpt-3.5-turbo-0125 | https://developers.openai.com/api/docs/models/gpt-3.5-turbo | 官方文档 · developers.openai.com · gpt 3.5 turbo | 官方文档 · OpenAI · GPT 3.5 Turbo |
 | mini | openai/gpt-3.5-turbo-1106 | https://developers.openai.com/api/docs/models/gpt-3.5-turbo | 官方文档 · developers.openai.com · gpt 3.5 turbo | 官方文档 · OpenAI · GPT 3.5 Turbo |
 | mini | openai/gpt-image-2.6-flare | https://developers.openai.com/api/docs/models/gpt-image-2.6-flare | 官方文档 · developers.openai.com · gpt image 2.6 flare | 官方文档 · OpenAI · GPT Image 2.6 Flare |
 | mini | openai/gpt-image-2.6-sunburst | https://developers.openai.com/api/docs/models/gpt-image-2.6-sunburst | 官方文档 · developers.openai.com · gpt image 2.6 sunburst | 官方文档 · OpenAI · GPT Image 2.6 Sunburst |
-| mini | openai/o1 | https://developers.openai.com/api/docs/models/o1.md | 官方文档 · developers.openai.com · o1.md | 官方文档 · OpenAI · O1（2024-12-17） |
+| mini | openai/o1 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · developers.openai.com · o1.md | 官方文档 · OpenAI · O1（2024-12-17） |
 | mini | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · developers.openai.com · o1 | 官方文档 · OpenAI · O1 |
-| mini | openai/o1-pro | https://developers.openai.com/api/docs/models/o1-pro.md | 官方文档 · developers.openai.com · o1 pro.md | 官方文档 · OpenAI · O1 Pro（2025-03-19） |
+| mini | openai/o1-pro | https://developers.openai.com/api/docs/models/o1-pro | 官方文档 · developers.openai.com · o1 pro.md | 官方文档 · OpenAI · O1 Pro（2025-03-19） |
 | mini | openai/o1-pro-2025-03-19 | https://developers.openai.com/api/docs/models/o1-pro | 官方文档 · developers.openai.com · o1 pro | 官方文档 · OpenAI · O1 Pro |
-| mini | openai/o3 | https://developers.openai.com/api/docs/models/o3.md | 官方文档 · developers.openai.com · o3.md | 官方文档 · OpenAI · O3（2025-04-16） |
+| mini | openai/o3 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · developers.openai.com · o3.md | 官方文档 · OpenAI · O3（2025-04-16） |
 | mini | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · developers.openai.com · o3 | 官方文档 · OpenAI · O3 |
-| mini | openai/o3-mini | https://developers.openai.com/api/docs/models/o3-mini.md | 官方文档 · developers.openai.com · o3 mini.md | 官方文档 · OpenAI · O3 Mini（2025-01-31） |
+| mini | openai/o3-mini | https://developers.openai.com/api/docs/models/o3-mini | 官方文档 · developers.openai.com · o3 mini.md | 官方文档 · OpenAI · O3 Mini（2025-01-31） |
 | mini | openai/o3-mini-2025-01-31 | https://developers.openai.com/api/docs/models/o3-mini | 官方文档 · developers.openai.com · o3 mini | 官方文档 · OpenAI · O3 Mini |
-| mini | openai/o3-pro | https://developers.openai.com/api/docs/models/o3-pro.md | 官方文档 · developers.openai.com · o3 pro.md | 官方文档 · OpenAI · O3 Pro（2025-06-10） |
+| mini | openai/o3-pro | https://developers.openai.com/api/docs/models/o3-pro | 官方文档 · developers.openai.com · o3 pro.md | 官方文档 · OpenAI · O3 Pro（2025-06-10） |
 | mini | openai/o3-pro-2025-06-10 | https://developers.openai.com/api/docs/models/o3-pro | 官方文档 · developers.openai.com · o3 pro | 官方文档 · OpenAI · O3 Pro |
-| mini | openai/o4-mini | https://developers.openai.com/api/docs/models/o4-mini.md | 官方文档 · developers.openai.com · o4 mini.md | 官方文档 · OpenAI · O4 Mini（2025-04-16） |
+| mini | openai/o4-mini | https://developers.openai.com/api/docs/models/o4-mini | 官方文档 · developers.openai.com · o4 mini.md | 官方文档 · OpenAI · O4 Mini（2025-04-16） |
 | mini | openai/o4-mini-2025-04-16 | https://developers.openai.com/api/docs/models/o4-mini | 官方文档 · developers.openai.com · o4 mini | 官方文档 · OpenAI · O4 Mini |
-| mini | ark/deepseek-v4-1-flash-260910 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| mini | ark/deepseek-v4-1-flash-260910 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | mini | ark/deepseek-v4-1-flash-261017 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
 | mini | ark/deepseek-v4-1-flash-economy-261017 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
-| mini | ark/deepseek-v4-flash-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/deepseek-v4-flash-ga-260731 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/deepseek-v4-pro-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/deepseek-v4-pro-ga-260813 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seed-2-1-pro-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seed-2-1-pro-260915 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seed-2-1-turbo-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seed-2-0-code-preview-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seed-2-0-lite-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seed-2-0-lite-260428 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seed-2-0-mini-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seed-2-0-mini-260428 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seed-2-0-pro-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| mini | ark/deepseek-v4-flash-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/deepseek-v4-flash-ga-260731 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/deepseek-v4-pro-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/deepseek-v4-pro-ga-260813 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seed-2-1-pro-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seed-2-1-pro-260915 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seed-2-1-turbo-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seed-2-0-code-preview-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seed-2-0-lite-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seed-2-0-lite-260428 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seed-2-0-mini-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seed-2-0-mini-260428 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seed-2-0-pro-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | mini | ark/doubao-seed-1-8-251228 | https://docs.volcengine.com/docs/ark/bytedance-seed-1-8?lang=zh | 官方文档 · volcengine.com · bytedance seed 1 8 | 官方文档 · 火山方舟 · Bytedance Seed 1-8 |
-| mini | ark/doubao-seed-1-6-250615 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seed-1-6-251015 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seed-1-6-flash-250615 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seed-1-6-flash-250828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seed-1-6-vision-250815 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-1-5-lite-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-1-5-pro-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-1-5-vision-pro-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| mini | ark/doubao-seed-1-6-250615 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seed-1-6-251015 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seed-1-6-flash-250615 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seed-1-6-flash-250828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seed-1-6-vision-250815 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-1-5-lite-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-1-5-pro-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-1-5-vision-pro-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | mini | ark/doubao-seedream-5-0-260128 | https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh | 官方文档 · volcengine.com · seedream 4 0 5 0 | 官方文档 · 火山方舟 · Seedream 4-0-5-0 |
 | mini | ark/doubao-seedream-5-0-flash-260915 | https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh | 官方文档 · volcengine.com · seedream 4 0 5 0 | 官方文档 · 火山方舟 · Seedream 4-0-5-0 |
 | mini | ark/doubao-seedream-5-0-pro-260628 | https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh | 官方文档 · volcengine.com · seedream 4 0 5 0 | 官方文档 · 火山方舟 · Seedream 4-0-5-0 |
-| mini | ark/doubao-seedream-4-5-251128 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/doubao-seedream-4-0-250828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/glm-5-3-flash-260828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/glm-5-2-260617 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| mini | ark/doubao-seedream-4-5-251128 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/doubao-seedream-4-0-250828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/glm-5-3-flash-260828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/glm-5-2-260617 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | mini | ark/kimi-k3-1-pro-261024 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
 | mini | ark/doubao-seed-code-preview-251028 | https://docs.volcengine.com/docs/ark/model-release-announcement-2025?lang=en | 官方文档 · volcengine.com · model release announcement 2025 | 官方文档 · 火山方舟 · Model Release Announcement 2025 |
-| mini | ark/doubao-seed-evolving | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
-| mini | ark/glm-4-7-251222 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
+| mini | ark/doubao-seed-evolving | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
+| mini | ark/glm-4-7-251222 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | mini | bfl/flux-2-flex | https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[flex] | 官方文档 · bfl.ml · generate or edit an image with flux2 [flex] | 官方文档 · BFL · FLUX 2 Flex |
 | mini | bfl/flux-2-klein-4b | https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[klein]-4b | 官方文档 · bfl.ml · generate or edit an image with flux2 [klein] 4b | 官方文档 · BFL · FLUX 2 Klein 4b |
 | mini | bfl/flux-2-klein-9b | https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[klein]-9b | 官方文档 · bfl.ml · generate or edit an image with flux2 [klein] 9b | 官方文档 · BFL · FLUX 2 Klein 9b |
@@ -2652,8 +2608,8 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | mini | together/deepseek-ai/DeepSeek-V4-Pro-0813 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 | 官方文档 · Hugging Face · DeepSeek V4 Pro 0813 | 官方文档 · Hugging Face · DeepSeek-V4-Pro-0813 |
 | mini | together/deepseek-ai/DeepSeek-V4-Flash-0731 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731 | 官方文档 · Hugging Face · DeepSeek V4 Flash 0731 | 官方文档 · Hugging Face · DeepSeek-V4-Flash-0731 |
 | mini | together/google/gemini-3-pro-image | https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image | 官方文档 · ai.google.dev · gemini 3 pro image | 官方文档 · Google · Gemini 3 Pro Image |
-| mini | together/openai/gpt-image-2 | https://developers.openai.com/api/docs/models/gpt-image-2.md | 原厂规格 · developers.openai.com · gpt image 2.md | 原厂规格 · OpenAI · GPT Image 2 |
-| mini | together/openai/gpt-image-1.5 | https://developers.openai.com/api/docs/models/gpt-image-1.5.md | 原厂规格 · developers.openai.com · gpt image 1.5.md | 原厂规格 · OpenAI · GPT Image 1.5 |
+| mini | together/openai/gpt-image-2 | https://developers.openai.com/api/docs/models/gpt-image-2 | 原厂规格 · developers.openai.com · gpt image 2.md | 原厂规格 · OpenAI · GPT Image 2 |
+| mini | together/openai/gpt-image-1.5 | https://developers.openai.com/api/docs/models/gpt-image-1.5 | 原厂规格 · developers.openai.com · gpt image 1.5.md | 原厂规格 · OpenAI · GPT Image 1.5 |
 | mini | together/stabilityai/stable-diffusion-xl-base-1.0 | https://docs.together.ai/docs/serverless-models | 官方文档 · together.ai · serverless models | 官方文档 · Together · Serverless Models |
 | mini | together/zai-org/GLM-5.3 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3 | 官方文档 · bigmodel.cn · glm 5.3 | 官方文档 · 智谱 · GLM-5.3 |
 | mini | together/zai-org/GLM-5.3-Flash | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash | 官方文档 · bigmodel.cn · glm 5.3 flash | 官方文档 · 智谱 · GLM-5.3 Flash |
@@ -3148,7 +3104,7 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | mini | qianfan/deepseek-v4-flash-0731 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731 | 官方文档 · Hugging Face · DeepSeek V4 Flash 0731 | 官方文档 · Hugging Face · DeepSeek-V4-Flash-0731 |
 | mini | qianfan/deepseek-v4-flash | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash | 官方文档 · Hugging Face · DeepSeek V4 Flash | 官方文档 · Hugging Face · DeepSeek-V4-Flash |
 | mini | qianfan/deepseek-v3.2 | https://huggingface.co/deepseek-ai/DeepSeek-V3.2 | 官方文档 · Hugging Face · DeepSeek V3.2 | 官方文档 · Hugging Face · DeepSeek-V3.2 |
-| mini | qianfan/deepseek-v3.2-think | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表 |
+| mini | qianfan/deepseek-v3.2-think | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
 | mini | qianfan/glm-5.3 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3 | 官方文档 · bigmodel.cn · glm 5.3 | 官方文档 · 智谱 · GLM-5.3 |
 | mini | qianfan/glm-5.3-flash | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash | 官方文档 · bigmodel.cn · glm 5.3 flash | 官方文档 · 智谱 · GLM-5.3-Flash |
 | mini | qianfan/glm-5.2 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2 | 官方文档 · bigmodel.cn · glm 5.2 | 官方文档 · 智谱 · GLM-5.2 |
@@ -3166,12 +3122,12 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 | mini | qianfan/ernie-5.0 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | mini | qianfan/ernie-5.0-thinking-exp | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | mini | qianfan/ernie-5.0-thinking-latest | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
-| mini | qianfan/ernie-5.0-thinking-preview | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表 |
+| mini | qianfan/ernie-5.0-thinking-preview | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
 | mini | qianfan/ernie-5.1 | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
-| mini | qianfan/ernie-x1.1 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表 |
-| mini | qianfan/ernie-x1.1-preview | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表 |
+| mini | qianfan/ernie-x1.1 | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
+| mini | qianfan/ernie-x1.1-preview | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
 | mini | qianfan/internvl3-38b | https://huggingface.co/OpenGVLab/InternVL3-38B | 官方文档 · Hugging Face · InternVL3 38B | 官方文档 · Hugging Face · InternVL3-38B |
-| mini | qianfan/musesteamer-air-image | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 模型列表 |
+| mini | qianfan/musesteamer-air-image | https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5 | 官方文档 · cloud.baidu.com · klqx7b1i5 | 官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页） |
 | mini | qianfan/qianfan-ocr | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j | 官方文档 · cloud.baidu.com · rmh4stp0j | 官方文档 · 百度千帆 · 模型列表 |
 | mini | iflytek/xop3qwen30b | https://www.xfyun.cn/doc/spark/HTTP调用文档.html | 官方文档 · xfyun.cn · HTTP调用文档 | 官方文档 · 讯飞星火 · HTTP调用文档 |
 | mini | iflytek/xop3qwen32b | https://www.xfyun.cn/doc/spark/HTTP调用文档.html | 官方文档 · xfyun.cn · HTTP调用文档 | 官方文档 · 讯飞星火 · HTTP调用文档 |
@@ -3224,7 +3180,7 @@ The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciat
 
 ## Retained spelling and opaque identifiers
 
-The following **634** source-row instances merit manual explanation but are not unresolved defects. These are exact curated spellings, release codes, or page identifiers with no captured human title; changing their model names would violate the picker-name lock.
+The following **554** source-row instances merit manual explanation but are not unresolved defects. These are exact curated spellings, release codes, or page identifiers with no captured human title; changing their model names would violate the picker-name lock.
 
 | Client | Card | URL | Retained title | Justification |
 | --- | --- | --- | --- | --- |
@@ -3327,78 +3283,26 @@ The following **634** source-row instances merit manual explanation but are not 
 | web | bailian/qwen3-coder-next | https://www.aliyun.com/notice/118345 | 下线公告 · 百炼 · 文档 118345 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | bailian/z-image-turbo | https://huggingface.co/Tongyi-MAI/Z-Image-Turbo | 官方文档 · Hugging Face · Z-Image Turbo | Exact curated picker name; required to retain its spelling and separators. |
 | web | openai/gpt-6.1-sol | https://developers.openai.com/api/docs/models/gpt-6.1-sol | 官方文档 · OpenAI · GPT-6.1 Sol | Exact curated picker name; required to retain its spelling and separators. |
-| web | openai/gpt-6-luna | https://developers.openai.com/api/docs/models/gpt-6-luna.md | 官方文档 · OpenAI · GPT-6 Luna（Markdown） | Exact curated picker name; required to retain its spelling and separators. |
-| web | openai/gpt-6-luna | https://developers.openai.com/api/docs/models/gpt-6-luna | 官方文档 · OpenAI · GPT-6 Luna（文档） | Exact curated picker name; required to retain its spelling and separators. |
-| web | openai/gpt-6-sol | https://developers.openai.com/api/docs/models/gpt-6-sol.md | 官方文档 · OpenAI · GPT-6 Sol（Markdown） | Exact curated picker name; required to retain its spelling and separators. |
-| web | openai/gpt-6-sol | https://developers.openai.com/api/docs/models/gpt-6-sol | 官方文档 · OpenAI · GPT-6 Sol（文档） | Exact curated picker name; required to retain its spelling and separators. |
-| web | openai/gpt-6-astra | https://developers.openai.com/api/docs/models/gpt-6-astra.md | 官方文档 · OpenAI · GPT-6 Astra（Markdown） | Exact curated picker name; required to retain its spelling and separators. |
-| web | openai/gpt-6-astra | https://developers.openai.com/api/docs/models/gpt-6-astra | 官方文档 · OpenAI · GPT-6 Astra（文档） | Exact curated picker name; required to retain its spelling and separators. |
-| web | openai/gpt-5.6-luna | https://developers.openai.com/api/docs/models/gpt-5.6-luna.md | 官方文档 · OpenAI · GPT-5.6 Luna（Markdown） | Exact curated picker name; required to retain its spelling and separators. |
-| web | openai/gpt-5.6-luna | https://developers.openai.com/api/docs/models/gpt-5.6-luna | 官方文档 · OpenAI · GPT-5.6 Luna（文档） | Exact curated picker name; required to retain its spelling and separators. |
-| web | openai/gpt-5.6-sol | https://developers.openai.com/api/docs/models/gpt-5.6-sol.md | 官方文档 · OpenAI · GPT-5.6 Sol | Exact curated picker name; required to retain its spelling and separators. |
-| web | openai/gpt-5.6-terra | https://developers.openai.com/api/docs/models/gpt-5.6-terra.md | 官方文档 · OpenAI · GPT-5.6 Terra（Markdown） | Exact curated picker name; required to retain its spelling and separators. |
-| web | openai/gpt-5.6-terra | https://developers.openai.com/api/docs/models/gpt-5.6-terra | 官方文档 · OpenAI · GPT-5.6 Terra（文档） | Exact curated picker name; required to retain its spelling and separators. |
+| web | openai/gpt-6-luna | https://developers.openai.com/api/docs/models/gpt-6-luna | 官方文档 · OpenAI · GPT-6 Luna | Exact curated picker name; required to retain its spelling and separators. |
+| web | openai/gpt-6-sol | https://developers.openai.com/api/docs/models/gpt-6-sol | 官方文档 · OpenAI · GPT-6 Sol | Exact curated picker name; required to retain its spelling and separators. |
+| web | openai/gpt-6-astra | https://developers.openai.com/api/docs/models/gpt-6-astra | 官方文档 · OpenAI · GPT-6 Astra | Exact curated picker name; required to retain its spelling and separators. |
+| web | openai/gpt-5.6-luna | https://developers.openai.com/api/docs/models/gpt-5.6-luna | 官方文档 · OpenAI · GPT-5.6 Luna | Exact curated picker name; required to retain its spelling and separators. |
+| web | openai/gpt-5.6-sol | https://developers.openai.com/api/docs/models/gpt-5.6-sol | 官方文档 · OpenAI · GPT-5.6 Sol | Exact curated picker name; required to retain its spelling and separators. |
+| web | openai/gpt-5.6-terra | https://developers.openai.com/api/docs/models/gpt-5.6-terra | 官方文档 · OpenAI · GPT-5.6 Terra | Exact curated picker name; required to retain its spelling and separators. |
 | web | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · OpenAI · O1 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · OpenAI · O3 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/deepseek-v4-1-flash-260910 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/deepseek-v4-flash-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/deepseek-v4-flash-260425 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/deepseek-v4-flash-ga-260731 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/deepseek-v4-flash-ga-260731 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/deepseek-v4-pro-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/deepseek-v4-pro-260425 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/deepseek-v4-pro-ga-260813 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/deepseek-v4-pro-ga-260813 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-1-pro-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/doubao-seed-2-1-pro-260628 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-1-pro-260915 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-1-turbo-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/doubao-seed-2-1-turbo-260628 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-0-code-preview-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-0-code-preview-260215 | https://docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-0-lite-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-0-lite-260215 | https://docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-0-lite-260428 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-0-mini-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-0-mini-260215 | https://docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-0-mini-260428 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-0-pro-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-0-pro-260215 | https://docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-1-8-251228 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-1-8-251228 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-1-6-250615 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-1-6-250615 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-1-6-251015 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-1-6-251015 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-1-6-flash-250615 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-1-6-flash-250615 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-1-6-flash-250828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-1-6-flash-250828 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-1-6-vision-250815 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-1-6-vision-250815 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-1-5-lite-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-1-5-lite-32k-250115 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-1-5-pro-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-1-5-pro-32k-250115 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-1-5-vision-pro-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-1-5-vision-pro-32k-250115 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seedream-5-0-260128 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/doubao-seedream-5-0-260128 | https://docs.volcengine.com/docs/82379/1824121?lang=zh | 官方文档 · 火山方舟 · 文档 1824121 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seedream-5-0-pro-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/doubao-seedream-5-0-pro-260628 | https://docs.volcengine.com/docs/82379/1824121?lang=zh | 官方文档 · 火山方舟 · 文档 1824121 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seedream-4-5-251128 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/doubao-seedream-4-5-251128 | https://docs.volcengine.com/docs/82379/1824121?lang=zh | 官方文档 · 火山方舟 · 文档 1824121 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seedream-4-0-250828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/glm-5-3-flash-260828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/glm-5-2-260617 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/glm-5-2-260617 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/doubao-seed-code-preview-251028 | https://developer.volcengine.com/articles/7577301460712030258 | 官方文档 · 火山方舟 · 文档 7577301460712030258 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-code-preview-251028 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-code-preview-251028 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-evolving | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/doubao-seed-evolving | https://docs.volcengine.com/docs/82379/2549861?lang=zh | 官方文档 · 火山方舟 · 文档 2549861 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/glm-4-7-251222 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/glm-4-7-251222 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310（文档 2） | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | mistral/codestral-2508 | https://docs.mistral.ai/models/codestral-25-08 | 官方文档 · Mistral · Codestral 2508 | 2508 is the curated release code; the page spells that date code 25-08. No model version was collapsed. |
 | web | mistral/codestral-latest | https://docs.mistral.ai/models/codestral-25-08 | 官方文档 · Mistral · Codestral（2508） | 2508 is the curated release code; the page spells that date code 25-08. No model version was collapsed. |
 | web | together/Qwen/Qwen3.8-2.4T-A95B | https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B | 官方文档 · Hugging Face · Qwen3.8-2.4T-A95B | Exact curated picker name; required to retain its spelling and separators. |
@@ -3699,42 +3603,14 @@ The following **634** source-row instances merit manual explanation but are not 
 | mini | bailian/qwen-turbo | https://www.aliyun.com/notice/118177 | 下线公告 · 百炼 · 文档 118177 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | mini | bailian/qwen3-coder-next | https://www.aliyun.com/notice/118345 | 下线公告 · 百炼 · 文档 118345 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | mini | openai/gpt-6.1-sol | https://developers.openai.com/api/docs/models/gpt-6.1-sol | 官方文档 · OpenAI · GPT-6.1 Sol | Exact curated picker name; required to retain its spelling and separators. |
-| mini | openai/gpt-6-luna | https://developers.openai.com/api/docs/models/gpt-6-luna.md | 官方文档 · OpenAI · GPT-6 Luna | Exact curated picker name; required to retain its spelling and separators. |
-| mini | openai/gpt-6-sol | https://developers.openai.com/api/docs/models/gpt-6-sol.md | 官方文档 · OpenAI · GPT-6 Sol | Exact curated picker name; required to retain its spelling and separators. |
-| mini | openai/gpt-6-astra | https://developers.openai.com/api/docs/models/gpt-6-astra.md | 官方文档 · OpenAI · GPT-6 Astra | Exact curated picker name; required to retain its spelling and separators. |
-| mini | openai/gpt-5.6-luna | https://developers.openai.com/api/docs/models/gpt-5.6-luna.md | 官方文档 · OpenAI · GPT-5.6 Luna | Exact curated picker name; required to retain its spelling and separators. |
-| mini | openai/gpt-5.6-sol | https://developers.openai.com/api/docs/models/gpt-5.6-sol.md | 官方文档 · OpenAI · GPT-5.6 Sol | Exact curated picker name; required to retain its spelling and separators. |
-| mini | openai/gpt-5.6-terra | https://developers.openai.com/api/docs/models/gpt-5.6-terra.md | 官方文档 · OpenAI · GPT-5.6 Terra | Exact curated picker name; required to retain its spelling and separators. |
+| mini | openai/gpt-6-luna | https://developers.openai.com/api/docs/models/gpt-6-luna | 官方文档 · OpenAI · GPT-6 Luna | Exact curated picker name; required to retain its spelling and separators. |
+| mini | openai/gpt-6-sol | https://developers.openai.com/api/docs/models/gpt-6-sol | 官方文档 · OpenAI · GPT-6 Sol | Exact curated picker name; required to retain its spelling and separators. |
+| mini | openai/gpt-6-astra | https://developers.openai.com/api/docs/models/gpt-6-astra | 官方文档 · OpenAI · GPT-6 Astra | Exact curated picker name; required to retain its spelling and separators. |
+| mini | openai/gpt-5.6-luna | https://developers.openai.com/api/docs/models/gpt-5.6-luna | 官方文档 · OpenAI · GPT-5.6 Luna | Exact curated picker name; required to retain its spelling and separators. |
+| mini | openai/gpt-5.6-sol | https://developers.openai.com/api/docs/models/gpt-5.6-sol | 官方文档 · OpenAI · GPT-5.6 Sol | Exact curated picker name; required to retain its spelling and separators. |
+| mini | openai/gpt-5.6-terra | https://developers.openai.com/api/docs/models/gpt-5.6-terra | 官方文档 · OpenAI · GPT-5.6 Terra | Exact curated picker name; required to retain its spelling and separators. |
 | mini | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · OpenAI · O1 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | mini | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · OpenAI · O3 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/deepseek-v4-1-flash-260910 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/deepseek-v4-flash-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/deepseek-v4-flash-ga-260731 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/deepseek-v4-pro-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/deepseek-v4-pro-ga-260813 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-2-1-pro-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-2-1-pro-260915 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-2-1-turbo-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-2-0-code-preview-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-2-0-lite-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-2-0-lite-260428 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-2-0-mini-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-2-0-mini-260428 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-2-0-pro-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-1-6-250615 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-1-6-251015 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-1-6-flash-250615 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-1-6-flash-250828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-1-6-vision-250815 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-1-5-lite-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-1-5-pro-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-1-5-vision-pro-32k-250115 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seedream-4-5-251128 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seedream-4-0-250828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/glm-5-3-flash-260828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/glm-5-2-260617 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/doubao-seed-evolving | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | ark/glm-4-7-251222 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 文档 1330310 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | mini | mistral/codestral-2508 | https://docs.mistral.ai/models/codestral-25-08 | 官方文档 · Mistral · Codestral 2508 | 2508 is the curated release code; the page spells that date code 25-08. No model version was collapsed. |
 | mini | mistral/codestral-latest | https://docs.mistral.ai/models/codestral-25-08 | 官方文档 · Mistral · Codestral（2508） | 2508 is the curated release code; the page spells that date code 25-08. No model version was collapsed. |
 | mini | together/deepseek-ai/DeepSeek-V4.1-Flash | https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash | 官方文档 · Hugging Face · DeepSeek-V4.1-Flash | Exact curated picker name; required to retain its spelling and separators. |
