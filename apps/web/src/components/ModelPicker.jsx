@@ -1,3 +1,5 @@
+import ModelUnavailableText from './ModelUnavailableText.jsx';
+import ControlField from './ControlField.jsx';
 import ThinkingStatus from './ThinkingStatus.jsx'
 import { thinkingProfile } from '../lib/thinking.js'
 import { removedModel, withModelAudit } from '../lib/modelAudit.js'
@@ -360,11 +362,9 @@ export default function ModelPicker({
         <div className="model-catalog-title"><Sparkles size={15} />{t(savedOnly ? "已添加模型" : " 服务端模型目录 ")}<small>{rows.length}</small>
           {catalogControls?.onLoad && ['public', 'key'].includes(catalogDefinition?.access) ? <button type="button" className="model-catalog-refresh" disabled={catalogState?.status === 'loading' || catalogDefinition.access === 'key' && !catalogControls.apiKeys?.[selectedProvider]} onClick={() => catalogControls.onLoad(selectedProvider)}>{t(catalogState?.status === 'loading' ? '正在刷新…' : '刷新目录')}</button> : null}
         </div>
-        <label className="model-picker-search">
-          <Search size={16} />
-          <span className="sr-only">{t("搜索")}{t(label)}</span>
-          <input type="search" autoComplete="off" name="model-catalog-search" value={query} onChange={(event) => { setQuery(event.target.value); resetModelList() }} placeholder={t("搜索模型、厂商或能力")} />
-        </label>
+        <ControlField className="model-picker-search" label={<><Search size={16} />
+          <span className="sr-only">{t("搜索")}{t(label)}</span></>}><input type="search" autoComplete="off" name="model-catalog-search" value={query} onChange={(event) => { setQuery(event.target.value); resetModelList() }} placeholder={t("搜索模型、厂商或能力")} />
+        </ControlField>
       </div>
       <div ref={windowRef} className="model-picker-window">
         <div ref={listRef} className="model-picker-list">
@@ -450,7 +450,7 @@ export default function ModelPicker({
         </span>
         <ChevronDown size={17} />
       </button>
-      {removedHint && <div className="model-picker-empty" role="status">{removedHint}{removedAction}</div>}
+      {removedHint && <div className="model-picker-empty model-unavailable-notice" role="status"><ModelUnavailableText provider={effectiveRoute.accessProvider} modelId={effectiveRoute.modelId}/>{removedAction}</div>}
       {!removedHint && visionMode !== 'none' && selectedModel?.selectable === false && selectedModel.disabledReason ? (
         <p className="model-picker-empty" role="status">{t("所选模型当前不可用，请重新选择。")}</p>
       ) : null}

@@ -28,6 +28,7 @@ Component({
     data: {
         savedLifecycle: '',
         removedHint: '',
+        removed: null,
         savedReplacement: '',
         replacementLabel: '',
         expandedModel: '',
@@ -66,6 +67,8 @@ Component({
         },
         resetFlow() {
             const registry = this.getRegistry();
+            const selectedProvider = this.properties.selectedProvider;
+            const selectedModel = this.properties.selectedModel;
             const providerCards = (0, model_presentation_1.orderModelChannels)(model_registry_1.MODEL_PROVIDER_IDS).map(id => {
                 var _a;
                 return ({
@@ -73,14 +76,13 @@ Component({
                     count: this.compatibleModels(id).length,
                 });
             }).filter(item => { var _a; return item.count > 0 || item.id === 'tokendance' && ((_a = registry === null || registry === void 0 ? void 0 : registry.providers.tokendance) === null || _a === void 0 ? void 0 : _a.models.some(m => m.catalogPresence)); });
-            const lifecycle = (0, model_audit_1.auditedModelLifecycle)(String(this.properties.selectedProvider), String(this.properties.selectedModel));
-            const removed = (0, model_audit_1.removedModel)(String(this.properties.selectedProvider), String(this.properties.selectedModel));
-            const replacement = this.compatibleModels(String(this.properties.selectedProvider)).find(model => !model.selectionDisabled && model.id === ((removed === null || removed === void 0 ? void 0 : removed.replacementApiId) || (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.replacement)));
-            this.setData({ removedHint: (0, model_audit_1.removedModelHint)(String(this.properties.selectedProvider), String(this.properties.selectedModel)), savedLifecycle: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.message) || '', savedReplacement: (replacement === null || replacement === void 0 ? void 0 : replacement.id) || '', replacementLabel: (replacement === null || replacement === void 0 ? void 0 : replacement.label) || '' });
-            const selectedProvider = String(this.properties.selectedProvider || '');
+            const lifecycle = (0, model_audit_1.auditedModelLifecycle)(selectedProvider, selectedModel);
+            const removed = (0, model_audit_1.removedModel)(selectedProvider, selectedModel);
+            const replacement = this.compatibleModels(selectedProvider).find(model => !model.selectionDisabled && model.id === ((removed === null || removed === void 0 ? void 0 : removed.replacementApiId) || (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.replacement)));
+            this.setData({ removed, removedHint: (0, model_audit_1.removedModelHint)(selectedProvider, selectedModel), savedLifecycle: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.message) || '', savedReplacement: (replacement === null || replacement === void 0 ? void 0 : replacement.id) || '', replacementLabel: (replacement === null || replacement === void 0 ? void 0 : replacement.label) || '' });
             const activeProvider = providerCards.some(item => item.id === selectedProvider) ? selectedProvider : '';
             const vendorCards = activeProvider ? this.vendorsFor(activeProvider) : [];
-            const selected = this.compatibleModels(activeProvider).find(model => model.id === this.properties.selectedModel);
+            const selected = this.compatibleModels(activeProvider).find(model => model.id === selectedModel);
             const activeVendor = selected ? (0, model_presentation_1.modelDeveloper)(activeProvider, selected).label : '';
             this.setData({
                 step: 'providers', roleLabel: roleLabel(normalizeRole(this.properties.role)), providerCards, vendorCards,
@@ -164,11 +166,11 @@ Component({
             this.triggerEvent('select', { provider: this.data.activeProvider, modelId });
         },
         confirmReplacement() {
-            const replacement = this.data.savedReplacement;
-            if (!replacement || !this.compatibleModels(String(this.properties.selectedProvider)).some(model => !model.selectionDisabled && model.id === replacement))
+            const replacement = this.data.savedReplacement, provider = this.properties.selectedProvider;
+            if (!replacement || !this.compatibleModels(provider).some(model => !model.selectionDisabled && model.id === replacement))
                 return;
-            wx.showModal({ title: '确认切换模型', content: `${(0, model_audit_1.modelDisplayName)(String(this.properties.selectedProvider), String(this.properties.selectedModel))} → ${(0, model_audit_1.modelDisplayName)(String(this.properties.selectedProvider), replacement)}。只修改当前选择，其他预设与历史记录保持不变。`, success: result => {
-                    if (result.confirm && this.compatibleModels(String(this.properties.selectedProvider)).some(model => !model.selectionDisabled && model.id === replacement))
+            wx.showModal({ title: '确认切换模型', content: `${(0, model_audit_1.modelDisplayName)(provider, this.properties.selectedModel)} → ${(0, model_audit_1.modelDisplayName)(provider, replacement)}。只修改当前选择，其他预设与历史记录保持不变。`, success: result => {
+                    if (result.confirm && this.compatibleModels(this.properties.selectedProvider).some(model => !model.selectionDisabled && model.id === replacement))
                         this.triggerEvent('select', { provider: this.properties.selectedProvider, modelId: replacement });
                 } });
         },

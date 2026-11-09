@@ -1,3 +1,4 @@
+import ControlField from '../components/ControlField.jsx';
 import { useEffect, useRef, useState } from 'react';
 import { PanelLeft, ArrowLeft, ChevronLeft, X } from 'lucide-react';
 import RatioCanvas from './RatioCanvas.jsx';
@@ -153,7 +154,7 @@ export default function TaskWorkspace({ plusEnabled=false, navigation, state, di
       {deleteError && <p role="alert">{deleteError}</p>}
       <div className="tw-delete-actions"><button type="button" data-autofocus disabled={deleting} onClick={()=>setDeletion(null)}>取消</button><button type="button" className="tw-danger" disabled={deleting} onClick={confirmDelete}>{deleting?'正在彻底删除…':'彻底删除'}</button></div>
     </WorkspaceDialog>}
-    {rename && <WorkspaceDialog title="重命名任务" onClose={() => setRename(null)}><form onSubmit={e => { e.preventDefault(); dispatch({ type: 'RENAME', taskId: rename.id, title, baseTitle: rename.title }); setRename(null); }}><label className="tw-field">任务名称<input data-autofocus value={title} maxLength={120} onChange={e => setTitle(e.target.value)} /></label><button type="submit" className="tw-primary">保存名称</button></form></WorkspaceDialog>}
+    {rename && <WorkspaceDialog title="重命名任务" onClose={() => setRename(null)}><form onSubmit={e => { e.preventDefault(); dispatch({ type: 'RENAME', taskId: rename.id, title, baseTitle: rename.title }); setRename(null); }}><ControlField className="tw-field" label={<>任务名称</>}><input data-autofocus value={title} maxLength={120} onChange={e => setTitle(e.target.value)} /></ControlField><button type="submit" className="tw-primary">保存名称</button></form></WorkspaceDialog>}
     {panel === 'models' && <WorkspaceDialog title="模型配置" returnFocusRef={composerDialogTriggerRef} onClose={() => setPanel(null)}>{renderModels?.({ management: false, onClose: () => setPanel(null), onManage: () => { setPanel(null); setPage('models'); } })}</WorkspaceDialog>}
     {panel === 'settings' && <WorkspaceDialog title="绘图设置" returnFocusRef={composerDialogTriggerRef} onClose={() => setPanel(null)}>{renderSettings?.({focusSection:settingsSection})}</WorkspaceDialog>}
     {panel === 'prompt-guide' && <WorkspacePromptGuide path={task.path} returnFocusRef={composerDialogTriggerRef} onClose={() => setPanel(null)} />}

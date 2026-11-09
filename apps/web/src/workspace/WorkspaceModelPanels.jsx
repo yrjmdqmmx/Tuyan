@@ -1,3 +1,4 @@
+import ControlField from '../components/ControlField.jsx';
 import { modelLifecycleMessage } from '../lib/modelUnavailablePresentation.js';
 import ModelReplacement from './ModelReplacement.jsx';
 import { removedModel, auditedModelLifecycle } from '../lib/modelAudit.js';
@@ -59,7 +60,7 @@ export function WorkspaceModelManager({ models, onSignIn, health, onUseApi, init
       {library.connections.map(c => <div className="tw-connection-card" key={c.id}><span className="tw-connection-logo"><ModelBrandLogo brand={c.provider} channel/></span><div className="tw-connection-identity"><strong>{c.label}</strong><small>{channelLabel(c.provider)} · {c.scope === 'browser' ? '当前浏览器' : c.scope === 'account' ? '图研账号' : '已有授权'} · {c.id.slice(0, 8)}</small></div><span className="tw-connection-status">{c.disabled ? '已停用' : c.scope === 'authorization' ? (summary?.tokenDance?.connected ? '授权已连接' : '需重新确认授权') : c.hasCredential ? '密钥已保存 · 调用结果见执行记录' : '缺少密钥'}</span>{c.scope !== 'authorization' && <div className="tw-connection-actions"><button onClick={() => openConnection(c)}>配置</button></div>}</div>)}
       {!library.connections.length && <p className="tw-muted">还没有添加连接。只保存配置不会调用模型。</p>}
     </section>
-    <section className="tw-management-section"><h3>自定义模型</h3><p className="tw-muted">标准渠道的型号可直接从模型目录添加。自定义连接可在此填写精确型号及能力。</p><div className="tw-library-controls"><label>自定义连接<MenuSelect value={connection?.provider==='custom'?connection.id:''} onChange={e => setConnectionId(e.target.value)}><option value="">选择连接</option>{library.connections.filter(c => !c.disabled && c.provider==='custom').map(c => <option key={c.id} value={c.id}>{c.label} · {c.id.slice(0, 8)}</option>)}</MenuSelect></label><label>模型角色<MenuSelect value={role} onChange={e => setRole(e.target.value)}>{Object.entries(ROLE_NAMES).map(([id,label])=><option key={id} value={id}>{label}</option>)}</MenuSelect></label></div>
+    <section className="tw-management-section"><h3>自定义模型</h3><p className="tw-muted">标准渠道的型号可直接从模型目录添加。自定义连接可在此填写精确型号及能力。</p><div className="tw-library-controls"><ControlField label={<>自定义连接</>}><MenuSelect value={connection?.provider==='custom'?connection.id:''} onChange={e => setConnectionId(e.target.value)}><option value="">选择连接</option>{library.connections.filter(c => !c.disabled && c.provider==='custom').map(c => <option key={c.id} value={c.id}>{c.label} · {c.id.slice(0, 8)}</option>)}</MenuSelect></ControlField><ControlField label={<>模型角色</>}><MenuSelect value={role} onChange={e => setRole(e.target.value)}>{Object.entries(ROLE_NAMES).map(([id,label])=><option key={id} value={id}>{label}</option>)}</MenuSelect></ControlField></div>
       {connection?.provider==='custom' && <WorkspaceCustomModel key={`${connection.id}-${role}`} connection={connection} role={role} models={models}/>}
     </section></div>}
     {tab==='library' && <WorkspaceModelCatalog key="library" mode="library" models={models} onBrowse={()=>setTab('catalog')} onEditCustom={setEditingCustom}/>}
@@ -69,14 +70,14 @@ export function WorkspaceModelManager({ models, onSignIn, health, onUseApi, init
     {form && <WorkspaceDialog className="tw-connection-dialog" title="配置渠道连接" onClose={() => { setForm(null); setSecret(''); }}><form className="tw-connection-form" onSubmit={saveConnection}>
       <div className="tw-connection-fields">
       <div className="tw-connection-basics">
-      <label>连接名称<input required maxLength={100} placeholder="例如：科研项目" value={form.label} onChange={e => setForm({ ...form, label: e.target.value })}/></label>
+      <ControlField label={<>连接名称</>}><input required maxLength={100} placeholder="例如：科研项目" value={form.label} onChange={e => setForm({ ...form, label: e.target.value })}/></ControlField>
       <WorkspaceChannelPicker value={form.provider} providers={providers.filter(p => p !== 'tokendance')} disabled={library.connections.some(c => c.id === form.id)} onChange={provider => setForm({ ...form, provider, ...(provider==='custom'?{custom:{version:1,connectionId:form.id,protocol:'openai-chat',baseUrl:'',auth:'bearer',catalogFormat:'none'}}:{}) })}/>
       </div>
       {form.provider==='custom'?<CustomConnectionFields value={form} onChange={next=>{setForm(next);setSecret('');}}/>:<p className="tw-muted tw-connection-hint">使用该渠道的官方 API 地址。</p>}
       {form.provider === 'bailian' && <WorkspaceBailianConnection value={form} onChange={next=>{setForm(next);setSecret('');}}/>}
-      {form.provider === 'minimax' && <label>服务区域<MenuSelect value={form.region} onChange={e => setForm({ ...form, region: e.target.value })}><option value="global">国际</option><option value="cn">国内</option></MenuSelect></label>}
+      {form.provider === 'minimax' && <ControlField label={<>服务区域</>}><MenuSelect value={form.region} onChange={e => setForm({ ...form, region: e.target.value })}><option value="global">国际</option><option value="cn">国内</option></MenuSelect></ControlField>}
       <fieldset><legend>密钥保存位置</legend>{[['browser', '保存在当前浏览器', '仅此浏览器可用；清除网站数据后需重新填写。'], ['account', '绑定图研账号', models.userId ? '同一图研账号可用；密钥在服务端加密保存。' : '登录图研后可用；密钥在服务端加密保存。']].map(([value, title, description]) => <label className={`tw-storage-option ${form.scope === value ? 'is-selected' : ''}`} key={value}><input type="radio" name="scope" checked={form.scope === value} disabled={value === 'account' && !models.userId} onChange={() => { setForm({ ...form, scope: value }); setSecret(''); }}/><span><strong>{title}</strong><small>{description}</small></span></label>)}</fieldset>
-      <label><span><KeyRound size={16} aria-hidden="true"/> API 密钥</span><input aria-label="API 密钥" type="password" autoComplete="off" value={secret} onChange={e => setSecret(e.target.value)} placeholder="输入 API 密钥" maxLength={16384}/><small className="tw-connection-hint">留空保留同一保存位置的已有密钥。切换位置不会自动复制或上传密钥。</small></label>
+      <ControlField label={<span><KeyRound size={16} aria-hidden="true"/> API 密钥</span>}><input aria-label="API 密钥" type="password" autoComplete="off" value={secret} onChange={e => setSecret(e.target.value)} placeholder="输入 API 密钥" maxLength={16384}/><small className="tw-connection-hint">留空保留同一保存位置的已有密钥。切换位置不会自动复制或上传密钥。</small></ControlField>
       <p className="tw-muted tw-connection-hint">保存仅记录连接配置，不会调用模型或验证调用权限。</p>
       </div>
       <div className="tw-connection-footer">
@@ -107,7 +108,7 @@ export function WorkspaceModelConfig({ models, draft, path, editing, onChange, o
     onChange({ ...settings, models: next, presetConnectionId: c.id });
   }
   return <div className="tw-model-config">{models.error && <p role="alert">{models.error}</p>}
-    {draft.mode === 'simple' && <section><label className="tw-field">普通预设<MenuSelect value={preset} onChange={e => setPreset(e.target.value)}><option value="">选择连接</option>{library.connections.filter(c => !c.disabled).map(c => <option value={c.id} key={c.id}>{c.label}</option>)}</MenuSelect></label><button disabled={!preset || models.registryStatus !== 'ready'} onClick={applyPreset}>应用此连接的默认组合</button><small>只使用该连接已添加且符合条件的默认型号，缺少角色会明确保留为空。</small></section>}
+    {draft.mode === 'simple' && <section className="tw-field tw-preset-group"><ControlField className="tw-field" label={<span className="model-picker-label">普通预设</span>}><MenuSelect value={preset} onChange={e => setPreset(e.target.value)}><option value="">选择连接</option>{library.connections.filter(c => !c.disabled).map(c => <option value={c.id} key={c.id}>{c.label}</option>)}</MenuSelect></ControlField><button disabled={!preset || models.registryStatus !== 'ready'} onClick={applyPreset}>应用此连接的默认组合</button><small>只使用该连接已添加且符合条件的默认型号，缺少角色会明确保留为空。</small></section>}
     {roles.map(role => {
       const options = library.models.map(m => modelOption(m, library, registry, role, path, editing, summary?.tokenDance));
       const current = selected[role], option = options.find(o => o.id === current?.libraryModelId);

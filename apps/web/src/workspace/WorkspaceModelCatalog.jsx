@@ -1,10 +1,11 @@
+import ModelUnavailableText from '../components/ModelUnavailableText.jsx';
+import ControlField from '../components/ControlField.jsx';
 import { removedModel, withModelAudit } from '../lib/modelAudit.js';
 import MenuSelect from '../components/MenuSelect.jsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Search, Plus, Check, ChevronDown, ArrowRight } from 'lucide-react';
 import { ModelBrandLogo } from '../components/ModelBrandLogo.jsx';
 import { modelCardName } from '../lib/modelCardSpecifications.js';
-import { unavailableModelHint } from '../lib/modelUnavailablePresentation.js';
 import ModelReplacement from './ModelReplacement.jsx';
 import { ModelSpecifications, ModelLifecycleBadge } from '../components/ModelSpecifications.jsx';
 import { MODEL_CHANNEL_LABELS, modelDeveloper, modelDeveloperAliases, orderModelChannels } from '../lib/modelPresentation.js';
@@ -84,7 +85,7 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
   const activeDeveloper = developers.find(item => item.id === developer) || developers[0];
   const developerId = activeDeveloper?.id || '';
   const removedHints = removedRows.filter(row => row.provider === providerId && (!developerId || modelDeveloper(row.provider, row.model).id === developerId)).map(row => {
-    return { ...row, id: row.entry.id, text: unavailableModelHint(row.provider, row.model.id, registry) };
+    return { ...row, id: row.entry.id };
   });
   useEffect(() => {
     if (!saved) { setProvider(providerId); setDeveloper(developerId); }
@@ -120,13 +121,13 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
     </aside>
     <div className="tw-catalog-content">
       <div className="tw-catalog-filters">
-        <label className="tw-catalog-search"><Search size={18}/><input aria-label={saved ? '搜索已添加模型' : '搜索模型目录'} placeholder={saved ? '搜索型号、厂商或连接名称' : '搜索模型名称、ID 或厂商'} value={query} onChange={e => { setQuery(e.target.value); setLimit(PAGE_SIZE); }}/></label>
+        <ControlField className="tw-catalog-search" label={<Search size={18}/>}><input aria-label={saved ? '搜索已添加模型' : '搜索模型目录'} placeholder={saved ? '搜索型号、厂商或连接名称' : '搜索模型名称、ID 或厂商'} value={query} onChange={e => { setQuery(e.target.value); setLimit(PAGE_SIZE); }}/></ControlField>
         <WorkspaceRoleFilter value={role} onChange={value => { setRole(value); setLimit(PAGE_SIZE); }}/>
       </div>
       <div className="tw-catalog-caption"><span>{providerId ? channelName(providerId, registry) : '模型目录'}{activeDeveloper && ` / ${activeDeveloper.label}`} <strong>{rows.length}</strong> 个型号</span>{saved ? <button className="tw-text-button" onClick={onBrowse}><Plus size={14}/>从目录添加</button> : <span>同一模型在不同渠道分别列出</span>}</div>
       <div className="tw-catalog-scroll" ref={scrollRef} tabIndex={0} aria-label={saved ? '已添加模型卡片' : '模型目录卡片'}>
-      {removedHints.length === 1 && <div className="tw-info" role="status"><span>{removedHints[0].text}</span><ModelReplacement provider={removedHints[0].provider} modelId={removedHints[0].model.id} entry={removedHints[0].entry} models={models}/></div>}
-      {removedHints.length > 1 && <details className="tw-info" key={`${providerId}:${developerId}`}><summary>{removedHints.length} 个已保存型号已不可用</summary>{removedHints.map(hint => <div key={hint.id} title={`${hint.connection.label} · ${hint.model.id}`}><p>{hint.text}</p><ModelReplacement provider={hint.provider} modelId={hint.model.id} entry={hint.entry} models={models}/></div>)}</details>}
+      {removedHints.length === 1 && <div className="tw-info model-unavailable-notice" role="status"><ModelUnavailableText provider={removedHints[0].provider} modelId={removedHints[0].model.id}/><ModelReplacement provider={removedHints[0].provider} modelId={removedHints[0].model.id} entry={removedHints[0].entry} models={models}/></div>}
+      {removedHints.length > 1 && <details className="tw-info" key={`${providerId}:${developerId}`}><summary>{removedHints.length} 个已保存型号已不可用</summary>{removedHints.map(hint => <div className="model-unavailable-notice" key={hint.id} title={`${hint.connection.label} · ${hint.model.id}`}><ModelUnavailableText as="p" provider={hint.provider} modelId={hint.model.id}/><ModelReplacement provider={hint.provider} modelId={hint.model.id} entry={hint.entry} models={models}/></div>)}</details>}
       <div className="tw-catalog-grid">
         {rows.slice(0, limit).map(({ provider: id, model, entry, connection: savedConnection }) => {
           const added = library.models.filter(m => m.modelId === model.id && library.connections.some(c => c.id === m.connectionId && c.provider === id)).length;
@@ -151,7 +152,7 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
       </div>
     </div>
     {adding && <WorkspaceDialog title="添加到模型库" onClose={() => setAdding(null)}><div className="tw-catalog-add"><h3>{adding.model.label || adding.model.id}</h3><code>{adding.model.id}</code><p>通过 {channelName(adding.provider, registry)} 接入，选择要绑定的连接。</p>
-      {connections.length ? <label>所属连接<MenuSelect value={connectionId} onChange={e => setConnectionId(e.target.value)}><option value="">选择连接</option>{connections.map(c => <option key={c.id} value={c.id}>{c.label} · {c.id.slice(0, 8)}{library.models.some(m => m.connectionId === c.id && m.modelId === adding.model.id) ? ' · 已添加' : ''}</option>)}</MenuSelect></label> : <div className="tw-info">还没有此渠道的连接。<button onClick={() => { onConnection(adding.provider); setAdding(null); }}>配置 {channelName(adding.provider, registry)} <ArrowRight size={14}/></button></div>}
+      {connections.length ? <ControlField label={<>所属连接</>}><MenuSelect value={connectionId} onChange={e => setConnectionId(e.target.value)}><option value="">选择连接</option>{connections.map(c => <option key={c.id} value={c.id}>{c.label} · {c.id.slice(0, 8)}{library.models.some(m => m.connectionId === c.id && m.modelId === adding.model.id) ? ' · 已添加' : ''}</option>)}</MenuSelect></ControlField> : <div className="tw-info">还没有此渠道的连接。<button onClick={() => { onConnection(adding.provider); setAdding(null); }}>配置 {channelName(adding.provider, registry)} <ArrowRight size={14}/></button></div>}
       <p className="tw-muted">添加后可在任务的“模型配置”中选用。是否能调用取决于连接凭据、授权与该型号的权限。</p>
       {(saveError || models.error) && <p role="alert">{saveError || models.error}</p>}
       {connections.length > 0 && <button className="tw-primary" disabled={!connection || duplicate || busy || !ready || registryStatus !== 'ready' || !available || modelUnavailableForSelection(available)} onClick={add}>{duplicate ? '此连接已添加该型号' : busy ? '正在添加…' : '确认添加'}</button>}

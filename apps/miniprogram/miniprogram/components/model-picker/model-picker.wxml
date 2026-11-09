@@ -1,7 +1,8 @@
+<import src="../../templates/model-unavailable.wxml"/>
 <view wx:if="{{show}}" class="model-modal" catchtouchmove="noop">
   <view class="model-panel" catchtap="noop">
     <view class="model-head"><view class="model-head-copy"><view class="model-kicker">选择{{roleLabel}}</view><view class="model-note">仅显示当前角色可用模型</view></view><button class="model-close" bindtap="close">关闭</button></view>
-    <view wx:if="{{removedHint}}" class="model-note">{{removedHint}}<button wx:if="{{savedReplacement}}" class="secondary-button" bindtap="confirmReplacement">改选</button></view>
+    <view wx:if="{{removedHint}}" class="model-note model-unavailable-notice"><template is="model-unavailable" data="{{removed:removed}}"/><button wx:if="{{savedReplacement}}" class="secondary-button" bindtap="confirmReplacement">改选</button></view>
     <view wx:if="{{savedLifecycle}}" class="model-note">{{selectedModel}} · {{savedLifecycle}}<button wx:if="{{savedReplacement}}" bindtap="confirmReplacement">切换到 {{replacementLabel}}</button></view>
     <view class="model-steps">
       <button class="flow-step {{step === 'providers' ? 'active' : ''}}" bindtap="showProviders" aria-label="第1步 接入渠道{{step === 'providers' ? '，当前步骤' : ''}}">① 接入渠道</button><text class="flow-arrow">→</text>

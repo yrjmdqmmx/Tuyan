@@ -1,3 +1,5 @@
+@import "./components/ControlField.css";
+@import "./components/modelUnavailable.css";
 @import './components/ModelSpecifications.css';
 :root {
   color-scheme: light;
@@ -341,7 +343,7 @@
 
 .model-picker-label {
   display: block;
-  margin-bottom: 7px;
+  margin-bottom: 8px;
   color: var(--ink-soft);
   font-size: 12px;
   font-weight: 760;
@@ -5531,7 +5533,7 @@ figcaption {
 .universal-capabilities label, .universal-confirm { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; line-height: 1.6; }
 .universal-size-row { display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 8px; margin: 10px 0; }
 .universal-size-row input { width: 100%; min-width: 0; border: 1px solid var(--hairline); border-radius: 7px; padding: 8px; }
-.universal-size-row label { font-size: 11px; min-width: 0; }
+.universal-size-row :is(label, .control-field) { font-size: 11px; min-width: 0; }
 .universal-confirm { margin-top: 14px; }
 .universal-save { width: 100%; }
 .universal-spinner { animation: universal-spin 1s linear infinite; }
@@ -5776,7 +5778,7 @@ figcaption {
 
 /* Refinement controls reuse the reference uploader, with the original kept separate. */
 .reference-purpose { display:grid; gap:8px; padding:0 10px 10px; }
-.reference-purpose label { display:grid; gap:4px; font-size:12px; }
+.reference-purpose :is(label, .control-field) { display:grid; gap:4px; font-size:12px; }
 .reference-purpose input, .reference-purpose :is(select, .ui-select) { width:100%; min-width:0; border:1px solid var(--border, #ddd); border-radius:6px; padding:7px; background:var(--surface, #fff); color:inherit; }
 .refine-mask-editor, .refine-structured { margin-top:18px; padding-top:16px; border-top:1px solid var(--border, #e2e5e0); }
 .refine-mask-editor p, .refine-structured p { font-size:12px; color:var(--text-secondary, #62675f); line-height:1.65; }
@@ -5789,7 +5791,7 @@ figcaption {
 .refine-mask-canvas canvas { position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:crosshair; }
 .refine-structured > label { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; }
 .refine-structured-fields { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
-.refine-structured-fields label { display:grid; gap:6px; font-size:12px; }
+.refine-structured-fields :is(label, .control-field) { display:grid; gap:6px; font-size:12px; }
 .refine-process-details pre { white-space:pre-wrap; overflow-wrap:anywhere; font-size:12px; }
 @media (max-width:600px) { .refine-structured-fields { grid-template-columns:1fr; } .refine-mask-tools { gap:8px; } }
 

@@ -1,0 +1,97 @@
+[
+  {
+    "file": "App.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "components/BenchmarkAdminPanel.jsx",
+    "type": "file",
+    "reason": "上传文字有意触发隐藏的文件输入"
+  },
+  {
+    "file": "components/BenchmarkPareto.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "components/MaterialUploadPanel.jsx",
+    "type": "file",
+    "reason": "上传文字有意触发隐藏的文件输入"
+  },
+  {
+    "file": "components/MaterialUploadPanel.jsx",
+    "type": "file",
+    "reason": "上传文字有意触发隐藏的文件输入"
+  },
+  {
+    "file": "components/ModelRoutingSettings.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "components/ReferenceUploadPanel.jsx",
+    "type": "file",
+    "reason": "上传文字有意触发隐藏的文件输入"
+  },
+  {
+    "file": "components/RefineMaskEditor.jsx",
+    "type": "range",
+    "reason": "紧凑工具栏滑杆，标签和滑杆共用操作区域，无下拉悬停样式"
+  },
+  {
+    "file": "components/RefinePanel.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "components/SvgEditorCanvas.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "components/SvgEditorCanvas.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "components/UniversalCapabilities.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "components/UniversalCapabilities.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "components/UniversalExtensions.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "components/WorkflowOptions.jsx",
+    "type": "radio",
+    "reason": "整项单选卡片作为点击目标"
+  },
+  {
+    "file": "ecosystem/ResearchEcosystem.jsx",
+    "type": "range",
+    "reason": "紧凑工具栏滑杆，标签和滑杆共用操作区域，无下拉悬停样式"
+  },
+  {
+    "file": "workspace/WorkspaceModelPanels.jsx",
+    "type": "radio",
+    "reason": "整项单选卡片作为点击目标"
+  },
+  {
+    "file": "workspace/WorkspaceRefineControls.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "workspace/WorkspaceSearch.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  }
+]

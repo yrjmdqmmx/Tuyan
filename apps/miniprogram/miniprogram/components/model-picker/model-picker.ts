@@ -31,6 +31,7 @@ Component({
   data: {
     savedLifecycle: '',
     removedHint: '',
+    removed: null as ReturnType<typeof removedModel>,
     savedReplacement: '',
     replacementLabel: '',
     expandedModel: '',
@@ -66,18 +67,19 @@ Component({
     },
     resetFlow() {
       const registry = this.getRegistry()
+      const selectedProvider = this.properties.selectedProvider as ModelProviderId
+      const selectedModel = this.properties.selectedModel
       const providerCards = orderModelChannels(MODEL_PROVIDER_IDS).map(id => ({
         id, label: PROVIDER_LABELS[id], kindText: registry?.providers[id]?.accessKind === 'aggregator' ? '聚合渠道' : '官方直连',
         count: this.compatibleModels(id).length,
       })).filter(item => item.count > 0 || item.id === 'tokendance' && registry?.providers.tokendance?.models.some(m => m.catalogPresence))
-      const lifecycle = auditedModelLifecycle(String(this.properties.selectedProvider), String(this.properties.selectedModel))
-      const removed = removedModel(String(this.properties.selectedProvider), String(this.properties.selectedModel))
-      const replacement = this.compatibleModels(String(this.properties.selectedProvider)).find(model => !model.selectionDisabled && model.id === (removed?.replacementApiId || lifecycle?.replacement))
-      this.setData({removedHint: removedModelHint(String(this.properties.selectedProvider), String(this.properties.selectedModel)), savedLifecycle: lifecycle?.message || '', savedReplacement: replacement?.id || '', replacementLabel: replacement?.label || ''})
-      const selectedProvider = String(this.properties.selectedProvider || '') as ModelProviderId
+      const lifecycle = auditedModelLifecycle(selectedProvider, selectedModel)
+      const removed = removedModel(selectedProvider, selectedModel)
+      const replacement = this.compatibleModels(selectedProvider).find(model => !model.selectionDisabled && model.id === (removed?.replacementApiId || lifecycle?.replacement))
+      this.setData({removed, removedHint: removedModelHint(selectedProvider, selectedModel), savedLifecycle: lifecycle?.message || '', savedReplacement: replacement?.id || '', replacementLabel: replacement?.label || ''})
       const activeProvider = providerCards.some(item => item.id === selectedProvider) ? selectedProvider : ''
       const vendorCards = activeProvider ? this.vendorsFor(activeProvider) : []
-      const selected = this.compatibleModels(activeProvider).find(model => model.id === this.properties.selectedModel)
+      const selected = this.compatibleModels(activeProvider).find(model => model.id === selectedModel)
       const activeVendor = selected ? modelDeveloper(activeProvider, selected).label : ''
       this.setData({
         step: 'providers', roleLabel: roleLabel(normalizeRole(this.properties.role)), providerCards, vendorCards,
@@ -149,10 +151,10 @@ Component({
       this.triggerEvent('select', { provider: this.data.activeProvider, modelId })
     },
     confirmReplacement() {
-      const replacement = this.data.savedReplacement
-      if (!replacement || !this.compatibleModels(String(this.properties.selectedProvider)).some(model => !model.selectionDisabled && model.id === replacement)) return
-      wx.showModal({title:'确认切换模型',content:`${modelDisplayName(String(this.properties.selectedProvider), String(this.properties.selectedModel))} → ${modelDisplayName(String(this.properties.selectedProvider), replacement)}。只修改当前选择，其他预设与历史记录保持不变。`,success: result => {
-        if (result.confirm && this.compatibleModels(String(this.properties.selectedProvider)).some(model => !model.selectionDisabled && model.id === replacement)) this.triggerEvent('select', {provider:this.properties.selectedProvider,modelId:replacement})
+      const replacement = this.data.savedReplacement, provider = this.properties.selectedProvider
+      if (!replacement || !this.compatibleModels(provider).some(model => !model.selectionDisabled && model.id === replacement)) return
+      wx.showModal({title:'确认切换模型',content:`${modelDisplayName(provider, this.properties.selectedModel)} → ${modelDisplayName(provider, replacement)}。只修改当前选择，其他预设与历史记录保持不变。`,success: result => {
+        if (result.confirm && this.compatibleModels(this.properties.selectedProvider).some(model => !model.selectionDisabled && model.id === replacement)) this.triggerEvent('select', {provider:this.properties.selectedProvider,modelId:replacement})
       }})
     },
     copySource(event: WechatMiniprogram.TouchEvent) { wx.showModal({title:'官方文档',content:[event.currentTarget.dataset.notice,event.currentTarget.dataset.source].filter(Boolean).join('\n'),confirmText:'复制链接',success: result => {if (result.confirm) wx.setClipboardData({data:String(event.currentTarget.dataset.url || '')})}}) },

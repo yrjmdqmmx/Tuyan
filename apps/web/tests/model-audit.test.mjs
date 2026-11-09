@@ -62,7 +62,11 @@ test('saved presets still show lifecycle and replacement when their library bind
   for(const [provider,modelId,label,replacement] of [['xiaomi','mimo-v2.5','原型号已不可用，请重新选择','MiMo-V2.6-Flash'],['bailian','qwen3.5-plus','将于2027-01-19下线','qwen3.8-flash']]){
     const draft={mode:'simple',settings:{simple:{models:{main:{libraryModelId:'missing',accessProvider:provider,modelId}}}}},before=structuredClone(draft);
     const view=render(React.createElement(WorkspaceModelConfig,{models,draft,path:'svg',onChange:()=>assert.fail('No automatic preset rewrite')}));
-    if(provider==='xiaomi') assert.ok(screen.getByText(text=>text.includes(label)&&text.includes(replacement)));
+    if(provider==='xiaomi') {
+      const notice=screen.getByRole('status');
+      assert.equal(notice.textContent, 'MiMo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
+      assert.deepEqual([...notice.querySelectorAll('.model-name-nowrap')].map(node=>node.textContent), ['MiMo-v2.5',replacement]);
+    }
     else assert.match(screen.getByText('将下线').title,/2027-01-19.*Qwen3.8 Flash/);
     assert.deepEqual(draft,before);view.unmount();
   }

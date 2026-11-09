@@ -113,7 +113,7 @@ Component({
     toggleCredentials() { this.setData({ credentialsExpanded: !this.data.credentialsExpanded }) },
     noop() {},
     onKeyFocus(event: WechatMiniprogram.InputFocus) { (this as any).focusedProvider = String(event.currentTarget.dataset.provider || ''); this.setData({ focusedKeyId: 'credential-' + (this as any).focusedProvider }) },
-    // Keep full capability metadata in the logic-layer store, outside setData.
+    // Keep capabilities outside setData.
     getRegistry(): ModelRegistry | null { return registryForRegions(getModelRegistryState().registry, this.data.draft?.providerRegions) },
     effectiveRoles(): ModelRole[] {
       const draft = this.data.draft
@@ -169,10 +169,11 @@ Component({
         const route = draft.modelRoutes[role]
         const model = findRegistryModel(registry, route.accessProvider, route.modelId)
         const removedHint = removedModelHint(route.accessProvider, route.modelId)
-        const replacementId = removedModel(route.accessProvider, route.modelId)?.replacementApiId
+        const removed = removedModel(route.accessProvider, route.modelId)
+        const replacementId = removed?.replacementApiId
         const replacement = replacementId && partitionRegistryModels(registry.providers[route.accessProvider as ModelProviderId]?.models || [], {role, outputFormat:draft.outputFormat}).compatible.find(m => m.id === replacementId)
         return {
-          removedHint, replacement: replacement ? replacement.id : '',
+          removed, removedHint, replacement: replacement ? replacement.id : '',
           role, label: role === 'main' ? '主模型' : role === 'image' ? '图像生成模型' : '参考图识别模型',
           provider: route.accessProvider, providerLabel: PROVIDER_LABELS[route.accessProvider] || route.accessProvider,
           modelId: route.modelId, modelLabel: removedHint ? '请选择' : model?.label || route.modelId || '请选择',

@@ -98,7 +98,7 @@ test('R8 Bailian Kimi K3 uses the supplied exact evidence and SiliconFlow main h
 
 test('R8 picker footer and catalog share button rules; reselect has one style, spacing and content height', () => {
   const style = document.createElement('style')
-  style.textContent = ['../src/workspace/workspace.css', '../src/workspace/workspaceModels.css'].map(path => fs.readFileSync(new URL(path, import.meta.url), 'utf8')).join('\n')
+  style.textContent = ['../src/workspace/workspace.css', '../src/workspace/workspaceModels.css', '../src/components/modelUnavailable.css'].map(path => fs.readFileSync(new URL(path, import.meta.url), 'utf8')).join('\n')
   document.head.append(style)
   try {
     const models = fixture('xiaomi', 'mimo-v2.5')
@@ -110,7 +110,8 @@ test('R8 picker footer and catalog share button rules; reselect has one style, s
     render(React.createElement(WorkspaceModelPicker, { models, role: 'main', path: 'svg', current: { libraryModelId: 'old', connectionId: 'c', accessProvider: 'xiaomi', modelId: 'mimo-v2.5' } }))
     const configButton = screen.getByRole('button', { name: '改选' }), configStyle = window.getComputedStyle(configButton)
     for (const [key, value] of Object.entries(buttonStyle)) assert.equal(configStyle[key], value, key)
-    assert.equal(configStyle.marginInlineStart, '8px')
+    assert.equal(configStyle.margin, '0px')
+    assert.equal(window.getComputedStyle(configButton.parentElement).gap, '8px')
     fireEvent.click(configButton)
     const dialog = screen.getByRole('dialog')
     assert.equal(window.getComputedStyle(dialog).minHeight, '0px')
