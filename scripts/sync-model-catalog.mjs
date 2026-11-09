@@ -305,7 +305,12 @@ const detailModule = { exports: {} }
 new Function('module', 'exports', 'require', detailBundle.outputFiles[0].text)(detailModule, detailModule.exports, createRequire(import.meta.url))
 for (const [channel, provider] of Object.entries(providers)) for (const model of provider.models) {
   const exact = detailModule.exports.exactModelDetails(channel, model.id)
-  if (exact) model.specificModelSpecifications = exact.specifications
+  if (exact) {
+    // Enrich static facts/sources without replacing the existing curated names.
+    // Live catalog objects retain their explicit alias/version name overrides.
+    const { resolvedModel, ...specifications } = exact.specifications
+    model.specificModelSpecifications = specifications
+  }
 }
 const fireworksEvidence = JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/model-audit-supplement-20261109.json'), 'utf8')).fireworksServerless
 for (const [key, notice] of Object.entries(modelAudit.removed)) {

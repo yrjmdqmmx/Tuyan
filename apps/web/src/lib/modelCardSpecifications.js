@@ -40,10 +40,10 @@ function reviewedSpecification(provider, model) {
 
 // Display only. Neither request IDs nor adapter capabilities/limits are changed here.
 export function modelCardName(provider, model) {
-  model = resolveCardModel(provider, model)
+  // Fact resolution must not introduce alias/version names into saved labels.
   const resolved = model.specificModelSpecifications?.resolvedModel
-  const name = reviewedSpecification(provider, model)?.displayName || (resolved?.modelId && resolved?.displayName && safeOfficialSources(resolved.sourceUrls).length
-    ? resolved.displayName : model.label || model.id)
+  const name = resolved?.modelId && resolved?.displayName && safeOfficialSources(resolved.sourceUrls).length
+    ? resolved.displayName : reviewedSpecification(provider, model)?.displayName || model.label || model.id
   return name.replace(/（具体版本待确认）|\(具体版本待确认\)/g, '').trim()
 }
 

@@ -1,3 +1,9 @@
+## 2026-11-09 · R21 Phase 3：恢复 Web 显示名与来源断言（未发布）
+
+- [x] 目录生成 / Web：静态规格补全不再复制 `resolvedModel` 名称覆盖；`modelCardName` 恢复 `8c456709` / `d1fe6ff6` 的名称规则，模态解析仍使用完整对象。31 渠道 / 1,064 个选择器标题与旧基线一致，保留完整 live 对象的显式版本名。无 API、action、env、模型 ID、角色或执行契约变更。
+- [x] Web：百炼仅 MiniMax M3.1 Flash / MiMo Ultraspeed 两个精确渠道表格改期望为“渠道”；带日期的 DeepSeek ID 仍为“图研既有核实”，其余事实断言保留。原版本标签测试未改，已有 TokenDance 测试改动保留；全量 1,466/1,466、构建、scripts 42/42 与四项生成/报告检查通过。
+- [x] 小程序 / Core / Gateway：无新增接入待办；小程序生成物未变，159/159、源码 1,569,244 bytes，原上限 1,572,864 不变。详细验收见 [Phase 3](docs/model-modality-audit-20261109.md#phase-3--full-suite-web-regressions)。无 Git 写命令、网络、付费调用或发布。
+
 ## 2026-11-09 · R21 Phase 2：渠道模态与完整模型展示（未发布）
 
 按 2 → 1 → 3 → 4 完成；仅公开官方文档/型号页无认证 GET，无 Git 写命令、其他工作树写入、登录、推理/付费调用或部署。逐项引文、HTTP 状态和复现命令见 [Phase 2](docs/model-modality-audit-20261109.md#phase-2)。

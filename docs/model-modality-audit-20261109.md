@@ -465,3 +465,21 @@ pnpm build
 pnpm check
 pnpm test
 ```
+
+## Phase 3 — full-suite Web regressions
+
+The name regression starts in Phase 2: static enrichment copied `specificModelSpecifications.resolvedModel`, while `modelCardName` began resolving ID-only objects and prioritizing curated names over explicit live version names. Read-only `git show` comparisons confirm `8c456709` and `d1fe6ff6` agree on all 1,064 static picker names; `e4de4f5d` changes three (DeepSeek, SiliconFlow and TokenHub). Static enrichment now omits only the newly copied name override, and name resolution restores the earlier rules. Modality facts, source URLs, live explicit alias names and submitted IDs remain intact. Regenerated Web catalog changes are confined to those name overrides on six objects; Mini output is unchanged.
+
+The frozen `model-picker-names-8c456709.json` fixture comes from the archived catalog and presentation functions. New tests render all **31 providers / 1,064 picker titles**, exercise option labels and submitted IDs for DeepSeek/Bailian/TokenDance, and protect explicit live-name precedence. `rendered-interactions.test.mjs` is unchanged; the pre-existing `provider-catalogs.test.mjs` channel-precedence edit is retained.
+
+For Bailian, the exact `MiniMax/MiniMax-M3.1-Flash` and `xiaomi/mimo-v2.6-pro-ultraspeed` tables in `config/channel-audit/model-modality-phase2-20261109.json` justify **渠道**. There is no exact table for `deepseek-v4.1-flash-1017`; it retains **图研既有核实**, without borrowing the undated alias table. Only that conditional scope assertion and its evidence comment changed; image, context, maximum output, product-input and audio assertions are unchanged.
+
+| Validation | Result |
+| --- | --- |
+| Full Web suite | **1,466/1,466**, zero failures/skips, using `NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2` in `apps/web`. |
+| Mini / scripts | 159/159 / 42/42. |
+| Web build | Pass; existing large-chunk advisory remains. |
+| Phase 2 / R21 / catalog sync / audit generation `--check` | All four pass; full-vs-ID modality/source differences remain zero. |
+| Mini source budget | **1,569,244 ≤ 1,572,864 bytes**, unchanged; **3,620 bytes** spare. |
+
+All work and validation are local: no Git writes, network, paid calls, other-worktree changes or deployment.
