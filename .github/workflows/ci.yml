@@ -39,8 +39,11 @@ jobs:
         run: |
           node scripts/sync-agent-knowledge.mjs --check
           node --test packages/tuyan-knowledge/tests/*.test.js skills/tuyan-scientific-figure/tests/*.test.mjs
-      - name: Shared reference upload policy stays synchronized
-        run: node scripts/sync-reference-upload.mjs --check
+      - name: Shared generated contracts stay synchronized
+        run: |
+          node scripts/sync-model-catalog.mjs --check
+          node scripts/sync-reference-upload.mjs --check
+          node --test scripts/pack-model-catalog.test.mjs
       - run: pnpm --filter @paperbanana/auth-gateway test
       - name: Account lifecycle with disposable Mongo replica set
         run: apps/auth-gateway/tests/integration/run-account-lifecycle.sh

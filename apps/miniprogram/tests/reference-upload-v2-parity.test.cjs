@@ -4,9 +4,9 @@ const { validateRefineFile, validateRefineModelInput, uploadRefineSource } = req
 const { referenceUploadContract, activeReferenceUploadPolicy, referenceUploadSelectionError, referenceUploadTimeout } = require('../miniprogram/utils/reference-upload-policy.js')
 const { normalizeModelRegistry } = require('../miniprogram/utils/model-registry.js')
 const contract = referenceUploadContract()
-const limits = { version: 2, mimeTypes: ['image/png', 'image/jpeg', 'image/webp'], maxBytes: 20971520, maxDimension: 16384, maxPixels: 32000000, modelMaxBytes: { 'tokendance/seedream-5.0-pro': 4194304 } }
+const limits = { version: 2, mimeTypes: ['image/png', 'image/jpeg', 'image/webp'], maxBytes: 10_000_000, maxDimension: 16384, maxPixels: 32000000, modelMaxBytes: { 'tokendance/seedream-5.0-pro': 4194304 } }
 const route = { accessProvider: 'tokendance', modelId: 'seedream-5.0-pro' }
-const file = { path: '/tmp/original.png', filename: 'original.png', mimeType: 'image/png', size: 20971520, width: 4000, height: 4000 }
+const file = { path: '/tmp/original.png', filename: 'original.png', mimeType: 'image/png', size: 10_000_000, width: 4000, height: 4000 }
 
 test('refine v2 accepts platform originals independently from model transfer quota and checks direct-edit dimensions', () => {
   validateRefineFile(file, limits, route)
@@ -21,8 +21,13 @@ test('generation v2 preserves files when count, total, SVG or selected model lim
   const images = Array.from({ length: 8 }, () => ({ ...file, size: 1000000 }))
   assert.equal(referenceUploadSelectionError(images, policy), '')
   assert.match(referenceUploadSelectionError([...images, file], policy), /最多提交 8 张/)
-  assert.match(referenceUploadSelectionError(Array(5).fill(file), policy), /原图合计/)
-  assert.match(referenceUploadSelectionError([{ ...file, size: 5242881, mimeType: 'image/svg+xml' }], policy), /SVG/)
+  assert.equal(referenceUploadSelectionError([file], policy), '')
+  assert.match(referenceUploadSelectionError([{ ...file, size: 10_000_001 }], policy), /单张原图/)
+  const lowerTotalPolicy = { ...policy, platform: { ...policy.platform, maxTotalBytes: 40_000_000 } }
+  assert.equal(referenceUploadSelectionError(Array(4).fill(file), lowerTotalPolicy), '')
+  assert.match(referenceUploadSelectionError(Array(5).fill(file), lowerTotalPolicy), /原图合计/)
+  assert.equal(referenceUploadSelectionError([{ ...file, mimeType: 'image/svg+xml' }], policy), '')
+  assert.match(referenceUploadSelectionError([{ ...file, size: 10_000_001, mimeType: 'image/svg+xml' }], policy), /SVG/)
   const fallback = activeReferenceUploadPolicy(contract, { accessProvider: 'unknown', modelId: 'unconfirmed' })
   assert.match(referenceUploadSelectionError(images, fallback), /文件已保留/)
   assert.equal(images.length, 8)

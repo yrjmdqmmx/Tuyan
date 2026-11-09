@@ -1,3 +1,11 @@
+## 2026-11-09 · main 模型目录及参考图派生文件同步
+
+- [x] Shared / Web / Core：共享源 `packages/api/src/reference-upload.ts` 和现有 Web 输出保持不变；沿用已存在的 10 张、单张 10,000,000 字节、合计 100,000,000 字节及 SVG 10,000,000 字节平台限制，不修改模型调用或上传 API。
+- [x] 小程序仓库一致性：同步现有 v42 目录、展示元数据、策略 TS/JS 和精确型号策略映射；允许服务端已有的空默认型号，保留用户显式选择，不自动替换成其他型号。边界回归保留模型自身更严格的张数限制，并验证服务端更低总量限制、超限文件保留及精修上传生命周期。此项不代表恢复小程序发布。
+- [x] 生成器 / CI：保留 Core 原有任务阶段记录包装；同步目录 TS 和 JS 版本。扩展本地目录无损编码，以有界记录差量压缩维持原有 1.5 MiB 源码包预算；解码器兼容旧格式，生成数据与解码器必须一起更新。Web / Gateway / Core 无 API 适配待办。
+- [x] 文档：重新生成参考图模型矩阵，与仓库已有目录 v42 一致；属于静态策略同步，不是新增官方审核、模型权益或真实推理证据。
+- [ ] 小程序仍暂停：恢复前仍须完成杭州 OSS 域名、真实设备及现有跨端待办验收。本次不部署、不发起真实模型调用。
+
 ## 2026-11-04 · 短信登录验收补齐（本地分支，默认关闭）
 
 - [x] Gateway：复用既有 `/api/auth/phone/{status,challenge,send-code,verify}`、Better Auth 用户/身份/会话和 Mongo 事务；新增规范变量 `SMS_LOGIN_ENABLED`、`ALIYUN_SMS_ACCESS_KEY_ID/ACCESS_KEY_SECRET/SIGN_NAME/TEMPLATE_CODE`，旧 `AUTH_SMS_ENABLED` / `ALIBABA_SMS_*` 仅在对应新变量缺失时兼容。保留 `AUTH_SMS_DELIVERY_ENABLED=false` 独立发送开关及全站额度，关闭变更接口返回 404 `PHONE_DISABLED`。
