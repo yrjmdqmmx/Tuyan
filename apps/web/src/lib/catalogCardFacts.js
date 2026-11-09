@@ -1,5 +1,5 @@
-// Display-only fallback from the previously verified catalog. Never infer facts
-// from adapter roles, request caps, or a model name.
+// Display-only facts. Product image-input requirements are a lower bound;
+// request caps and model names never establish official token limits.
 export const cardFields = ['inputModalities', 'outputModalities', 'totalContextTokens', 'maxOutputTokens']
 export function safeSources(values) {
   return [...new Set((values || []).filter(value => {
@@ -11,7 +11,8 @@ const positive = value => Number.isSafeInteger(value) && value > 0 ? value : nul
 function reviewedTokens(value) {
   if (typeof value === 'number') return positive(value)
   const match = /^([\d,]+(?:\.\d+)?)\s*([KM]?)/i.exec(value || '')
-  return match ? positive(Number(match[1].replaceAll(',', '')) * ({ K: 1000, M: 1000000 }[match[2].toUpperCase()] || 1)) : null
+  if (!match || !positive(Number(match[1].replaceAll(',', '')) * ({ K: 1000, M: 1000000 }[match[2].toUpperCase()] || 1))) return null
+  return match[2] ? match[1] + match[2] : Number(match[1].replaceAll(',', ''))
 }
 export function catalogCardFacts(provider, model, reviewedModels, specificPages = []) {
   const entry = reviewedModels.models.find(entry => entry.lookupIds.includes(model.id) && (!entry.providers || entry.providers.includes(provider)))
@@ -34,7 +35,7 @@ export function catalogCardFacts(provider, model, reviewedModels, specificPages 
       const value = layer === reviewed ? field.endsWith('Modalities')
         ? Object.entries(modalityNames).filter(([, name]) => displayValue?.includes(name)).map(([id]) => id)
         : reviewedTokens(field === 'totalContextTokens' ? layer.context : layer.maxOutputTokens) : raw(layer, field)
-      if (field.endsWith('Modalities') ? !Array.isArray(value) || !value.length : !positive(value)) continue
+      if (field.endsWith('Modalities') ? !Array.isArray(value) || !value.length : !reviewedTokens(value)) continue
       result[field] = { value, state: 'known', provenance: 'catalog', sourceUrl: sources[0], sourceUrls: sources,
         verifiedAt: layer.checkedAt || layer.reviewedAt || reviewedModels.reviewedAt || null,
         ...(displayValue ? { displayValue } : {}),
@@ -45,14 +46,34 @@ export function catalogCardFacts(provider, model, reviewedModels, specificPages 
   }
   return result
 }
-export function mergeCardFacts(audit, existing) {
+export function needsImageInput(model) {
+  const caps = model.capabilities || {}
+  return model.roles?.some(role => ['vision', 'edit', 'source-image', 'reference-image'].includes(role))
+    || !!(caps.referenceImages || caps.requiresSourceImage || caps.imageEditing || caps.imageEditMode === 'direct-edit')
+    || model.operations?.some?.(operation => operation.requiresSourceImage || operation.requiresImageInput)
+}
+export function supportedModalities(value, existing, image = false) {
+  return [...new Set([...(Array.isArray(value) ? value : []), ...(Array.isArray(existing) ? existing : []), ...(image ? ['image'] : [])])]
+}
+export function mergeCardFacts(audit, existing, model = {}) {
   const fields = {}, conflicts = []
   const comparable = value => JSON.stringify(Array.isArray(value) ? [...value].sort() : value)
   for (const field of cardFields) {
     const fact = audit.fields[field], prior = existing[field]
     fields[field] = fact.state === 'unknown' && !fact.suppressFallback && prior ? prior : fact
+    if (field.endsWith('Modalities') && prior?.state === 'known') {
+      const values = supportedModalities(fact.value, prior.value)
+      if (values.some(value => !fact.value?.includes?.(value))) fields[field] = {
+        ...prior, value: values,
+        ...(comparable(values) !== comparable(prior.value) ? { displayValue: undefined } : {}),
+      }
+    }
     if (fact.state !== 'unknown' && prior && (fact.state !== prior.state || comparable(fact.value) !== comparable(prior.value)))
       conflicts.push({ field, auditValue: fact.value, auditState: fact.state, existingValue: prior.value, sources: safeSources([fact.sourceUrl, ...prior.sourceUrls]) })
+  }
+  if (needsImageInput(model) && !fields.inputModalities.value?.includes?.('image')) {
+    const prior = fields.inputModalities
+    fields.inputModalities = { ...prior, value: supportedModalities(prior.value, [], true), state: 'known', provenance: 'product', sourceUrl: null, sourceUrls: [], displayValue: undefined }
   }
   return { fields, conflicts }
 }

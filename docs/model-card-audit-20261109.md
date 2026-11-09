@@ -1,4 +1,93 @@
-# 模型卡审计验收 · 2026-11-09 R4 / R5
+# 模型卡审计验收 · 2026-11-09 R6A / R6A2
+
+## R6A / R6A2：数据阻塞项完成（当前验收）
+
+继续保留工作区既有修改，完成任务 1、2、3、5、11；没有运行 Git 写命令，没有真实/付费模型调用、提交、推送或部署。main 基线仍为 `c7b6a2fc`，工作区 HEAD `5798720c`。以下是本轮结果；后面的 R4/R5 数字与“审计优先”规则仅为历史记录。
+
+### 1 · 模态合并与全目录下限
+
+共享显示层对输入/输出取已知支持项的并集；vision、编辑、源图、参考图及要求图像输入的 operation 至少保留图像输入。产品推导显示“图研输入要求”，不冒充“渠道公布”；未列出的模态仍为未知，明确不支持必须有官方原文。没有改变执行能力、角色、默认型号或请求参数。
+
+全量静态 **1064** 张卡检查通过，**345 张 / 351 个模态字段**修正；其中 **41** 张原来错误显示仅文本的卡已修复，另有此前未知的角色必需输入得到补全。与 main 的已核实支持项相比，原退化实际是 **9 个精确渠道+ID / 13 个字段**，全部恢复；任务举例的“12”把 fal 同卡的输入、输出分别计入，且全量另发现百炼 `qwen3.7-max-2026-06-08`。本轮测试对全部型号逐模态核对冻结 main 夹具，未降低已知支持项。
+
+| 渠道 | 修正卡数 | 原错误仅文本 | 原低于 main 的卡数 |
+| --- | --- | --- | --- |
+| zhipu | 2 | 0 | 0 |
+| siliconflow | 20 | 0 | 0 |
+| anthropic | 10 | 0 | 0 |
+| recraft | 14 | 0 | 0 |
+| xai | 10 | 8 | 1 |
+| bailian | 28 | 18 | 2 |
+| openai | 20 | 0 | 0 |
+| ark | 4 | 0 | 0 |
+| bfl | 10 | 0 | 0 |
+| stability | 5 | 0 | 0 |
+| ideogram | 3 | 0 | 0 |
+| minimax | 1 | 0 | 0 |
+| mistral | 11 | 0 | 0 |
+| together | 13 | 0 | 1 |
+| fal | 16 | 14 | 4 |
+| replicate | 45 | 0 | 0 |
+| tokendance | 8 | 1 | 1 |
+| runware | 93 | 0 | 0 |
+| tokenhub | 15 | 0 | 0 |
+| sensenova | 4 | 0 | 0 |
+| qianfan | 7 | 0 | 0 |
+| iflytek | 6 | 0 | 0 |
+
+全量 Web 与小程序投影的四字段 value/state/provenance 均一致；原对象不变断言覆盖每个型号。
+
+### 2 · 官方 K/M 标签和整数
+
+采用单一约定：官方给整数则存整数；只给 K/k/M 标签则存字面字符串，保留大小写、小数精度，不按 1000 或 1024 反推。两种写法并列时采用明确整数。已有 catalog 的文字标签也直接保留。整数依旧走现有 formatter，精确整数放在悬停和来源详情；标签不加 ≈。小程序仅存标签值，不再同时存一个不展示的推算整数。
+
+全目录 **126 张卡 / 157 个 token 字段**变化，其中 **145 个字段**改用标签；源输入、canonical、claims、supplement 共 **142 处**字段变更。300 个输入正整数字段逐项记录整数原文、原厂参考、标签转换或未证实别名回退。DeepSeek `384K` 不再显示为 `≈ 393K`；Fireworks `1040k`、Step 5 `64k`、GLM Fast Preview `131K` 等保留原文精度。百炼 Kimi K3 的新官方最大输出表值为 1048576；无精确别名证据的 `kimi/kimi-k3` 旧 16384 覆盖撤回。所有逐值清单见 [单位复核](model-card-audit-20261109-units.md) 和 `config/channel-audit/review-r6a-20261109.json`。
+
+### 3 · 图像角色的 token 展示
+
+静态目录 437 张 image 角色卡中，**24 张**恢复已核实最大输出（Gemini 5、Together 4、fal 5、Replicate 5、Runware 5）；**410 张**仍为不适用，另 3 张缺 token 证据但有文本输出语义，显示未知。这 24 张的最大输入上限不是总上下文窗口：上下文保持未知，不凭名称或 image 角色覆盖已知 token 值，也不把输入限制冒充窗口。
+
+### 5 · 原始 85 项冲突逐项保留
+
+[冲突表](model-card-audit-20261109-conflicts.md) 已为全部 85 行增加“官方原文”及决定，**49 项原文支持、36 项撤回覆盖并回退**。未取得可用原文的行明确写出未证实和已检查链接，未制造引文。三条 Qwen Plus 快照按各自章节确认 131072；百炼 Kimi K3 撤回 262144；TokenDance LongCat-2.0 按该渠道精确 JSON 行确认 1000000；SiliconFlow Qwen3.8-27B 无渠道原文，回退既有值/未知。第三方 DeepSeek Flash 图像输入已撤回原厂继承；产品角色要求独立保留。
+
+### 11 · 在线开关序列化恢复
+
+原 qwen3-omni-flash 及日期快照均已移除；当前 Omni 3.5 明确禁止思考。使用仍在库、同 `bailian-openai-chat` 协议的 **qwen3.8-flash**，对 main/vision × true/false/省略运行 **6 次真实适配器 + mock fetch**，保留响应、单次请求、完整 URL、model、stream、enable_thinking、audio/effort/budget/extra_body 缺省断言。Omni 当前型号的另外 4 个省略路径继续断言 `modalities=['text']`；这个 Omni 专属字段不能泄漏到 Qwen3.8。旧 ID 零传输/零工作流/零记录拒绝和旧思考快照的纯序列化断言仍在。
+
+### 全量计数：同一显示规则解析 main / head
+
+使用当前只读计数脚本分别运行 `node scripts/count-model-catalog.mjs ../Tuyan-wt-baseline --keys` 和 `node scripts/count-model-catalog.mjs . --keys`；两根都使用本轮共同显示规则，base 不存在审计层时为空。不是把历史 UI 截图计数当作当前规则计数。输入/输出数只表示至少一个已知模态，不等于全部模态已核实。
+
+| 分母 | 总数 main → head | 已知输入 | 已知输出 | 已知上下文 | 已知最大输出 |
+| --- | --- | --- | --- | --- | --- |
+| 静态目录 | 1125 → 1064 | 746 → 791 | 327 → 495 | 224 → 350 | 74 → 209 |
+| 可见目录 | 923 → 919 | 869 → 868 | 819 → 838 | 411 → 412 | 68 → 181 |
+| 完整 mock registry | 1122 → 1061 | 1032 → 997 | 968 → 967 | 534 → 519 | 74 → 209 |
+
+可选模型 884 → 878；目录仍为 1125 − 68 + 7 = 1064，7 项将下线。完整差异、逐渠道卡数与逐字段修改见 [R6A 计数 JSON](model-card-audit-20261109-count-r6a.json)。完整 mock 的部分总数减少来自移除集合及无原文覆盖撤回；没有恢复已移除型号，也未改变任意角色可空默认的 H 决策。
+
+### 小程序载荷与构建一致性
+
+继续复用原 pack/delta codec。模态值与既有 registry 相同则存引用，差异保存运算项并在运行时取并集；图像角色下限使用同一共享函数推导。相同字段来源引用行默认来源，避免每条事实重复存 URL 索引。未展示的审核标志和移除记录日期/证据不打包；显示用来源、说明、限制、精确身份和替代提示保持。
+
+源码包 **1,564,369 bytes**，比 main 的 1,570,043 少 **5,674 bytes**；比原上限 **1,572,864** 少 **8,495 bytes**。runtime **1,141,228 bytes**，媒体 **189,978 bytes**。未修改预算或预算测试，未压缩/混淆手写源码，已执行 tsc build，提交目录内 `.js` 与 `.ts` 一致。小程序仍暂停发布。
+
+### 最终验证
+
+| 范围 | 命令 / 结果 |
+| --- | --- |
+| 审计、目录、参考上传 | generate-model-audit；sync-model-catalog；sync-reference-upload，各自 --check 通过 |
+| scripts 全套 | `node --test scripts/*.test.mjs`：28/28 |
+| Web 模型、目录、思考 | `node --import tsx --import ./tests/dom-setup.mjs --test tests/*model*.test.mjs tests/catalog-isolation.test.mjs tests/provider-catalogs.test.mjs tests/*thinking*.test.mjs tests/workspace-catalog-v35.test.mjs`：179/179 |
+| 小程序 | `pnpm --dir apps/miniprogram test`：128/128；build/check 和原包体预算通过 |
+| 受影响 API | `thinking-bailian-console-54`、`model-audit`、`model-audit-http`：10/10；Core check 通过 |
+| Web 构建 | `pnpm --dir apps/web build` 通过；已有大 chunk 提示仍在 |
+| Git 只读检查 | `git diff --check` 通过；未运行 Git 写命令 |
+
+本轮没有重跑全部 Core/Web/Gateway；不将上述定向验证写成全量通过。Browser 插件未提供，按前端验证流程尝试现有 Playwright 时 `pnpm exec playwright --version` 返回 command not found，未安装新依赖；真实浏览器截图/移动实屏和微信原生扫描仍未完成，DOM 交互已覆盖标签、来源详情和选择行为。
+
+---
 
 本报告取代旧轮次的基线、计数和测试汇总。PR 基线为 **main `c7b6a2fc`**；第三轮 1–6 已在 `00d04cee`，main 已于 `fe5a764d` 合入。R4 修改留在工作区，未运行任何 Git 写命令、部署或真实/付费提供商调用；不更改价格、计费、许可、权限、凭据或服务器配置。
 

@@ -48,7 +48,7 @@ test('documented specifications never change adapted capabilities or request lim
   assert.equal(summary.maxInputTokens,131072)
   const card=modelCardSpecifications('gemini',model)
   assert.match(card.input,/视频/)
-  assert.equal(card.context,'不适用')
+  assert.equal(card.context,'未知');assert.equal(card.maxOutput,'≈ 33K tokens')
   render(React.createElement(ModelSpecifications,{provider:'gemini',model}))
   assert.ok(screen.getByText('上下文窗口'));assert.ok(screen.getByText('最大输出'))
   assert.equal(screen.queryByText('131.072K tokens'),null)
@@ -71,7 +71,7 @@ test('official cards separate context and output with verification and source li
 
 test('exact dates preserve different Seed 2.1 Pro context windows',()=>{
   assert.equal(modelCardSpecifications('ark',{id:'doubao-seed-2-1-pro-260628'}).context,'256K tokens')
-  assert.equal(modelCardSpecifications('ark',{id:'doubao-seed-2-1-pro-260915'}).context,'≈ 1M tokens')
+  assert.equal(modelCardSpecifications('ark',{id:'doubao-seed-2-1-pro-260915'}).context,'1024K tokens')
   assert.equal(modelCardSpecifications('tokendance',{id:'seed-2.1-pro'}).context,'256K tokens')
 })
 
@@ -95,10 +95,10 @@ test('malformed links and invalid context values remain unknown',()=>{
   assert.equal(screen.queryByRole('link'),null);assert.ok(screen.getByText('官方文档待确认'))
 })
 
-test('official facts are not inferred from application roles or output formats',()=>{
+test('product-required image input has its own provenance without inventing official outputs or tokens',()=>{
   const model={id:'unknown-image',roles:['image'],capabilities:{imageGeneration:true,referenceImages:true,outputFormats:['png']}}
   const data=modelCardSpecifications('custom',model)
-  assert.equal(data.input,'未知');assert.equal(data.output,'未知')
+  assert.equal(data.input,'图像');assert.equal(data.inputScope,'图研输入要求');assert.equal(data.output,'未知')
   assert.equal(modelSpecificationSummary(model).output.image,'supported')
 })
 
@@ -113,7 +113,7 @@ test('official alias migration never changes the same ID at another provider',()
 
 test('service-specific quantization and Prime specs do not leak to unrelated providers',()=>{
   const model={id:'glm-5.2-fast-preview'}
-  assert.equal(modelCardSpecifications('bailian',model).context,'≈ 1M tokens')
+  assert.equal(modelCardSpecifications('bailian',model).context,'1M tokens')
   assert.equal(modelCardSpecifications('bailian',model).contextScope,'渠道')
   assert.equal(modelCardSpecifications('custom',model).context,'未知')
 })
@@ -196,9 +196,9 @@ test('brand assets exist locally and model branding follows the vendor rather th
 test('image prompt limits remain in evidence without substituting for token windows',()=>{
   const model={id:'specific-image',roles:['image'],specifications:{version:1,contextWindowTokens:128000,sourceUrls:['https://example.com/model'],promptLimits:[{kind:'editing',max:4096,unit:'bytes',sourceUrls:['https://example.com/model']}]}}
   const before=structuredClone(model), data=modelCardSpecifications('custom',model)
-  assert.deepEqual(data.limitRows,[{label:'上下文窗口',value:'不适用'},{label:'最大输出',value:'不适用'}])
+  assert.deepEqual(data.limitRows,[{label:'上下文窗口',value:'128K tokens'},{label:'最大输出',value:'未知'}])
   const {container}=render(React.createElement(ModelSpecifications,{provider:'custom',model}))
-  assert.doesNotMatch(container.textContent,/128,000|4096|tokens/);assert.deepEqual(model,before)
+  assert.match(container.textContent,/128K tokens/);assert.equal(screen.getByText('128K tokens').title,'128,000 tokens');assert.doesNotMatch(container.textContent,/4096/);assert.deepEqual(model,before)
 })
 
 test('verified catalog limits retain exact integers; similar names do not supply facts',()=>{
@@ -207,7 +207,7 @@ test('verified catalog limits retain exact integers; similar names do not supply
     const before=structuredClone(model), data=modelCardSpecifications('custom',model)
     assert.equal(data.context,`${formatContextLimit(max)} tokens`);assert.equal(data.maxOutput,`${formatContextLimit(max)} tokens`);assert.equal(data.fields.totalContextTokens.value,max);assert.equal(data.fields.maxOutputTokens.value,max);assert.equal(data.contextScope,'图研既有核实');assert.deepEqual(model,before)
   }
-  for(const [id,expected] of [['xqwen14bchat','≈ 131K（需 YaRN） tokens'],['THUDM/GLM-4-9B-0414','128K（需 YaRN；原生 32K） tokens'],['xsparkx2','192K tokens']]) assert.equal(modelCardSpecifications('custom',{id}).context,expected)
+  for(const [id,expected] of [['xqwen14bchat','≈ 131K（需 YaRN） tokens'],['THUDM/GLM-4-9B-0414','128K（需 YaRN；原生 32K） tokens'],['xsparkx2','192k tokens']]) assert.equal(modelCardSpecifications('custom',{id}).context,expected)
   assert.equal(modelCardSpecifications('custom',{id:'unlisted-similar-GLM-4'}).context,'未知')
 })
 
@@ -225,7 +225,7 @@ test('verified alias display keeps the stored request identity',()=>{
 
 test('context and max output retain independent exact integers and per-value provenance',()=>{
   const data=modelCardSpecifications('tokendance',{id:'deepseek-v4-pro'})
-  assert.equal(data.context,'≈ 1M tokens');assert.equal(data.maxOutput,'≈ 393K tokens')
+  assert.equal(data.context,'≈ 1M tokens');assert.equal(data.maxOutput,'384K tokens')
   assert.equal(data.contextScope,'渠道');assert.equal(data.maxOutputScope,'原厂')
   const {container}=render(React.createElement(ModelSpecifications,{provider:'tokendance',model:{id:'deepseek-v4-pro'}}))
   assert.match(screen.getByRole('link').title,/源自原厂/);assert.match(screen.getByRole('link').title,/2026-11-09/)

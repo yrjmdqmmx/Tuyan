@@ -13,6 +13,32 @@ const fixture = () => ({
     { officialApiIdsObserved:['hy4'] }, {status:'official_GA_checked',pageMentions:{'LongCat-2.5':true}},
   ], channels:{antling:{catalogUrls:[sourceUrl]},longcat:{catalogUrls:[sourceUrl,sourceUrl]}},
 })
+test('all original 85 conflicts have an evidence decision and unproven exclusions are withdrawn', () => {
+  const read = name => JSON.parse(fs.readFileSync(new URL('../config/' + name, import.meta.url), 'utf8'))
+  const review = read('channel-audit/review-r6a-20261109.json')
+  const input = read('channel-audit/input-20261109.json')
+  const supplement = read('channel-audit/model-audit-supplement-20261109.json')
+  const pairs = new Map(input.pairs.map(row => [row.channel + '/' + row.apiModelId, row]))
+  assert.equal(review.conflicts.length, 85)
+  assert.deepEqual(review.conflicts.map(row => row.number), Array.from({ length: 85 }, (_, i) => i + 1))
+  for (const row of review.conflicts) {
+    const key = row.channel + '/' + row.id
+    if (row.decision === 'verified') {
+      assert.match(row.evidence.sourceUrl, /^https:\/\//)
+      assert.ok(row.evidence.quote.trim(), key)
+      assert.deepEqual((supplement.models[key] || pairs.get(key))[row.field], row.evidence.value, key)
+    } else {
+      assert.equal(row.decision, 'fallback')
+      const pair = pairs.get(key)
+      assert.ok(pair[row.field] === null || pair.fieldProvenance[row.field]?.kind === 'product-config', key)
+    }
+  }
+  for (const row of input.pairs) {
+    if (row.channel !== 'deepseek' && /deepseek.*flash/i.test(row.apiModelId)) {
+      assert.doesNotMatch(row.fieldProvenance.inputModalities?.sourceUrl || '', /api-docs\.deepseek\.com/)
+    }
+  }
+})
 test('Web identity projection restores every card fact and lifecycle without the generator inventory', async () => {
   const {MODEL_AUDIT_DATA} = await import('../apps/web/src/lib/modelAudit.js')
   const archive = JSON.parse(fs.readFileSync(new URL('../config/model-audit.generated.json',import.meta.url),'utf8'))
@@ -37,13 +63,15 @@ test('null, unsupported and N/A stay distinct; invalid numbers and request defau
   const input = fixture()
   input.pairs = [0,Infinity,-1,undefined].map((value,i) => ({channel:'host',apiModelId:String(i),totalContextTokens:value,fieldProvenance:{totalContextTokens:{kind:'channel-published',sourceUrl}}}))
   input.pairs.push({channel:'tokendance',apiModelId:'exact',maxOutputTokens:8192,fieldProvenance:{maxOutputTokens:{kind:'channel-published',sourceUrl}}})
-  input.pairs.push({channel:'host',apiModelId:'unsupported',inputModalities:false,fieldProvenance:{inputModalities:{kind:'channel-published',sourceUrl}}})
+  input.pairs.push({channel:'host',apiModelId:'unsupported',inputModalities:false,fieldProvenance:{inputModalities:{kind:'channel-published',sourceUrl,quote:'This endpoint does not accept input.'}}})
+  input.pairs.push({channel:'host',apiModelId:'unproven-exclusion',inputModalities:false,fieldProvenance:{inputModalities:{kind:'channel-published',sourceUrl}}})
   input.pairs.push({channel:'host',apiModelId:'unlisted',inputModalities:[],fieldProvenance:{inputModalities:{kind:'channel-published',sourceUrl}}})
   const data = generateModelAudit(input)
   assert.deepEqual(data.facts[data.rows['host/unlisted'][0]].slice(0,2),[null,'unknown'])
   for (let i=0;i<4;i++) assert.deepEqual(data.facts[data.rows[`host/${i}`][2]].slice(0,2),[null,'unknown'])
   assert.deepEqual(data.facts[data.rows['tokendance/exact'][3]].slice(0,2),[null,'unknown'])
   assert.deepEqual(data.facts[data.rows['host/unsupported'][0]].slice(0,2),[null,'unsupported'])
+  assert.deepEqual(data.facts[data.rows['host/unproven-exclusion'][0]].slice(0,2),[null,'unknown'])
   assert.deepEqual(data.facts[data.rows['openai/gpt-image-2.6-flare'][2]].slice(0,2),[null,'not-applicable'])
   assert.deepEqual(generateModelAudit(input), data)
 })
@@ -75,10 +103,10 @@ test('Ling supplementary evidence is deterministic, exact and does not infer uns
   const data=read('model-audit.generated.json'), supplement=read('channel-audit/model-audit-supplement-20261109.json'), removed=read('removed-models.json')
   assert.deepEqual(supplementModelAudit(data,supplement,removed),data)
   for(const [id,context,input,unknown] of [
-    ['Ling-3.2-flash',1048576,['text','image','video'],['audio']],
-    ['Ling-3.1-flash',1048576,['text'],['image','audio','video']],
-    ['Ling-3.0-flash-VL',262144,['text','image','video'],['audio']],
-    ['Ling-3.0-flash',262144,['text'],['image','audio','video']],
+    ['Ling-3.2-flash','1M',['text','image','video'],['audio']],
+    ['Ling-3.1-flash','1M',['text'],['image','audio','video']],
+    ['Ling-3.0-flash-VL','256K',['text','image','video'],['audio']],
+    ['Ling-3.0-flash','256K',['text'],['image','audio','video']],
     ['Ling-3.0-tiny',null,['text'],['image','audio','video']],
   ]) {
     const row=data.rows['antling/'+id]

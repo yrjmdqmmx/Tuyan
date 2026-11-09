@@ -1,3 +1,4 @@
+import { mergeCardFacts } from '../../apps/web/src/lib/catalogCardFacts.js'
 // The Mini Program consumes display/selection fields, not the full evidence archive.
 // Execution capabilities, eligibility, exact IDs and ordering stay unchanged.
 export function miniModelCatalog(catalog) {
@@ -20,20 +21,39 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
     const key = channel + '/' + model.id
     const row = data.rows[key] || [0, 0, 0, 0, 1, null]
     const existing = fallback(channel, model)
-    const source = data.rows[key] ? row[5] ?? row.slice(0, 4).map(i => data.facts[i][3]).find(i => i !== null) : null
-    rows[key] = [...data.fields.map((field, index) => {
+    const audit = { fields: Object.fromEntries(data.fields.map((field, index) => {
       const fact = data.rows[key] ? data.facts[row[index]] : [null, 'unknown', null, null]
-      const prior = existing[field]
-      return intern(facts, fact[1] === 'unknown' && prior && !data.details[key]?.suppressFallback?.includes(field)
-        ? [prior.value, 'known', 'catalog', intern(sources, prior.sourceUrl)]
-        : [...fact.slice(0, 3), fact[3] == null ? null : intern(sources, data.sources[fact[3]])])
-    }), row[4], source == null ? null : intern(sources, data.sources[source])]
+      return [field, { value: fact[0], state: fact[1], provenance: fact[2], sourceUrl: data.sources[fact[3]] || null, suppressFallback: data.details[key]?.suppressFallback?.includes(field) }]
+    })) }
+    // Roles are already in the registry: apply their image floor at runtime.
+    const merged = mergeCardFacts(audit, existing).fields
+    const source = data.rows[key] ? row[5] ?? row.slice(0, 4).map(i => data.facts[i][3]).find(i => i !== null) : null
+    const sourceUrl = data.sources[source] || Object.values(merged).find(fact => fact.sourceUrl)?.sourceUrl
+    rows[key] = [...data.fields.map((field, index) => {
+      const fact = merged[field]
+      let value = fact.value, prior
+      if (field.endsWith('Modalities')) {
+        const original = audit.fields[field]
+        // Store operands, never the union. Zero references the registry field.
+        if (original.state === 'known' && existing[field]?.value?.some(x => !original.value.includes(x))) {
+          value = original.value
+          prior = existing[field].value
+        }
+        // Product-config facts are derived from roles/capabilities at runtime.
+        if (fact.provenance === 'product') value = value?.filter(x => x !== 'image')
+        if (JSON.stringify(value) === JSON.stringify(model[field])) value = 0
+        if (prior && JSON.stringify(prior) === JSON.stringify(model[field])) prior = 0
+      }
+      return intern(facts, [value, fact.state, fact.provenance, fact.sourceUrl ? fact.sourceUrl === sourceUrl ? -1 : intern(sources, fact.sourceUrl) : null, ...(prior !== undefined ? [prior] : [])])
+    }), sourceUrl ? intern(sources, sourceUrl) : null]
     const note = [data.details[key]?.note, existing.totalContextTokens?.suffix].filter(Boolean).join('；')
     if (note) details[key] = { note }
   }
   // Reuse the static catalog's exact identities instead of shipping each ID twice.
   const keys = Object.entries(providers).flatMap(([channel, provider]) => provider.models.map(model => channel + '/' + model.id))
-  return { verifiedAt: data.verifiedAt, fields: data.fields, facts, sources, rows: keys.map(key => rows[key] || null), details, notices: data.notices, removed: data.removed }
+  // Unverified flags and tombstone evidence are not read by the Mini UI.
+  const removed = Object.fromEntries(Object.entries(data.removed).map(([key, value]) => [key, value.replacementApiId]))
+  return { verifiedAt: data.verifiedAt, fields: data.fields, facts, sources, rows: keys.map(key => rows[key] || null), details, notices: data.notices, removed }
 }
 
 export function webModelAudit(data, providers) {

@@ -9,7 +9,7 @@ test('mini program shares exact channel lifecycle and independently sourced outp
   assert.equal(removedModel('bailian','qwen3.5-plus',Date.parse('2027-01-19')).replacementApiId,'qwen3.8-flash');
   const spec=auditedModelSpecs('tokendance','deepseek-v4-pro');
   assert.ok(spec.fields.totalContextTokens.value>0);assert.equal(spec.fields.maxOutputTokens.provenance,'vendor');
-  assert.equal(auditedModelSpecs('antling','Ling-3.2-flash').fields.totalContextTokens.value,1048576);
+  assert.equal(auditedModelSpecs('antling','Ling-3.2-flash').fields.totalContextTokens.value,'1M');
   assert.equal(auditedModelSpecs('custom','deepseek-v4-pro').fields.maxOutputTokens.value,null);
 });
 
@@ -37,6 +37,27 @@ test('mini cards keep unlisted modalities neutral and preserve availability note
   assert.equal(card.specRows[1].unknownText,'图像?、音频?、视频?');
   assert.doesNotMatch(JSON.stringify(card.specRows),/不支持/);
   assert.ok(card.availabilityNotes.includes(model.availabilityNotes));
+});
+
+test('compiled picker preserves official labels and shows Gemini output tokens',()=>{
+  const {loadComponent}=require('./helpers/component.cjs');
+  const {STATIC_MODEL_REGISTRY}=require('../miniprogram/utils/static-model-catalog.js');
+  const {modelDeveloper}=require('../miniprogram/utils/model-presentation.js');
+  for(const [provider,id,role,expectedContext,expectedOutput,exact] of [
+    ['deepseek','deepseek-flash','main','1M tokens','384K tokens','384K tokens'],
+    ['gemini','gemini-nano-banana-2.1','image','未知','≈ 33K tokens','32768 tokens'],
+  ]) {
+    const picker=loadComponent('components/model-picker/model-picker.js').instance;
+    picker.getRegistry=()=>({providers:STATIC_MODEL_REGISTRY});
+    const model=STATIC_MODEL_REGISTRY[provider].models.find(m=>m.id===id);
+    Object.assign(picker.properties,{role,outputFormat:role==='image'?'png':'svg'});
+    Object.assign(picker.data,{activeProvider:provider,activeVendor:modelDeveloper(provider,model).label});
+    picker.refreshModelLists();
+    const card=picker.data.visibleCompatibleModels.find(m=>m.id===id);
+    assert.equal(card.specRows[2].value,expectedContext);
+    assert.equal(card.specRows[3].value,expectedOutput);
+    assert.ok(card.auditMessage.includes(exact));
+  }
 });
 
 test('mini removed picker offers explicit confirmation only for a compatible replacement',()=>{

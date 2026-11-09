@@ -35,24 +35,26 @@ export function modelCardName(provider, model) {
 
 export function modelCardSpecifications(provider, model) {
   const audit = auditedModelSpecs(provider, model.id)
-  const { fields, conflicts } = mergeCardFacts(audit, catalogCardFacts(provider, model, reviewedModels, specificPages))
+  const { fields, conflicts } = mergeCardFacts(audit, catalogCardFacts(provider, model, reviewedModels, specificPages), model)
   const labels = { unknown: '未知', unsupported: '不支持', 'not-applicable': '不适用' }
   const text = fact => fact.state === 'known'
-    ? Array.isArray(fact.value) ? fact.displayValue || formatModalities(fact.value) : `${formatContextLimit(fact.value, fact.approximate)}${fact.suffix || ''} tokens`
+    ? Array.isArray(fact.value) ? fact.displayValue || formatModalities(fact.value) : `${typeof fact.value === 'string' ? fact.value : formatContextLimit(fact.value, fact.approximate)}${fact.suffix || ''} tokens`
     : labels[fact.state]
   const image = model.roles?.includes('image') || fields.outputModalities.value?.some?.(x => x === 'image' || x === 'video')
-  const scope = fact => fact.provenance === 'vendor' ? '原厂' : fact.provenance === 'channel' ? '渠道' : fact.provenance === 'catalog' ? '图研既有核实' : ''
-  const context = image ? '不适用' : text(fields.totalContextTokens)
-  const maxOutput = image ? '不适用' : text(fields.maxOutputTokens)
+  const scope = fact => fact.provenance === 'vendor' ? '原厂' : fact.provenance === 'channel' ? '渠道' : fact.provenance === 'catalog' ? '图研既有核实' : fact.provenance === 'product' ? '图研输入要求' : ''
+  const pureImage = image && !fields.outputModalities.value?.includes?.('text') && !['totalContextTokens', 'maxOutputTokens'].some(key => fields[key].state === 'known')
+  const limit = fact => pureImage && fact.state === 'unknown' ? '不适用' : text(fact)
+  const context = limit(fields.totalContextTokens)
+  const maxOutput = limit(fields.maxOutputTokens)
   return {
     fields, conflicts,
     input: text(fields.inputModalities), output: text(fields.outputModalities), context, maxOutput,
     inputFact: fields.inputModalities, outputFact: fields.outputModalities,
     inputScope: scope(fields.inputModalities), outputScope: scope(fields.outputModalities),
     contextScope: scope(fields.totalContextTokens), maxOutputScope: scope(fields.maxOutputTokens),
-    contextExact: !image && fields.totalContextTokens.state === 'known' ? `${fields.totalContextTokens.value.toLocaleString('en-US')} tokens` : '',
-    maxOutputExact: !image && fields.maxOutputTokens.state === 'known' ? `${fields.maxOutputTokens.value.toLocaleString('en-US')} tokens` : '',
-    note: [audit.note, conflicts.length && '审计与既有规格有差异，显示审计值'].filter(Boolean).join('；'),
+    contextExact: fields.totalContextTokens.state === 'known' ? `${fields.totalContextTokens.value.toLocaleString('en-US')} tokens` : '',
+    maxOutputExact: fields.maxOutputTokens.state === 'known' ? `${fields.maxOutputTokens.value.toLocaleString('en-US')} tokens` : '',
+    note: [audit.note, conflicts.length && '审计与既有规格有差异；保留已知模态，未核实值回退'].filter(Boolean).join('；'),
     serviceDetails: model.specifications?.serviceDetails,
     productInput: model.capabilities?.referenceImages ? '文本、图像' : '文本',
     vendorSources: Object.values(fields).filter(fact => fact.provenance === 'vendor').map(fact => fact.sourceUrl),

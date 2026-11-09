@@ -7,7 +7,7 @@ import ts from '../apps/paperbanana-api/node_modules/typescript/lib/typescript.j
 import { packModelCatalog } from './lib/pack-model-catalog.mjs'
 import { supplementModelAudit } from './lib/model-audit-supplement.mjs'
 import { miniModelCatalog, miniModelAudit, webModelAudit } from './lib/mini-model-catalog.mjs'
-import { catalogCardFacts } from '../apps/web/src/lib/catalogCardFacts.js'
+import { catalogCardFacts, needsImageInput, supportedModalities } from '../apps/web/src/lib/catalogCardFacts.js'
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const check = process.argv.includes('--check')
 // Explicit opt-out for isolated Web/Core work while the Mini Program stream is paused.
@@ -318,8 +318,26 @@ const specificCards = JSON.parse(fs.readFileSync(path.join(root, 'config/channel
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-audit-data.js'), `// Generated picker display data; full evidence stays in config/model-audit.generated.json.
 const data = require('./unpack-model-catalog.js').unpackModelCatalog(${JSON.stringify(packModelCatalog(miniModelAudit(modelAudit, providers, (channel, model) => catalogCardFacts(channel, model, reviewedCards, specificCards))))})
 const registry = require('./static-model-catalog.js').STATIC_MODEL_REGISTRY
-const keys = Object.entries(registry).flatMap(([channel, provider]) => provider.models.map(model => channel + '/' + model.id))
-data.rows = Object.fromEntries(keys.flatMap((key, index) => data.rows[index] ? [[key, data.rows[index]]] : []))
+${needsImageInput.toString()}
+${supportedModalities.toString()}
+const models = Object.entries(registry).flatMap(([channel, provider]) => provider.models.map(model => [channel + '/' + model.id, model]))
+data.rows = Object.fromEntries(models.map(([key, model], index) => {
+  const row = data.rows[index]
+  row.splice(4, 0, 0)
+  for (let i = 0; i < 4; i++) {
+    const fact = [...data.facts[row[i]]], field = data.fields[i]
+    if (fact[3] === -1) fact[3] = row[5]
+    if (i >= 2) { row[i] = data.facts.push(fact) - 1; continue }
+    const value = fact[0] === 0 ? model[field] : fact[0]
+    const prior = fact[4] === 0 ? model[field] : fact[4]
+    const image = i === 0 && needsImageInput(model)
+    const values = supportedModalities(value, prior, image)
+    const product = image && !supportedModalities(value, prior).includes('image')
+    row[i] = data.facts.push([values.length ? values : null, values.length ? 'known' : fact[1], product ? 'product' : fact[2], product ? null : fact[3]]) - 1
+  }
+  return [key, row]
+}))
+data.removed = Object.fromEntries(Object.entries(data.removed).map(([key, replacementApiId]) => [key, {replacementApiId}]))
 module.exports = data
 `)
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/static-model-catalog-data.js'),

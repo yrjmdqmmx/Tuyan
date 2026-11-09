@@ -30,7 +30,7 @@ test('documented Omni snapshot supports strict boolean switches for text and vis
   assert.throws(() => compileThinkingSelection({ ...identity, protocol: 'openai-chat-completions', options: { mode: true } }, 'main'), localFailure)
 })
 
-test('actual Omni text and vision adapters preserve text-only streaming and omit unknown effort/budget', async () => {
+test('actual Bailian text and vision adapters serialize online toggles and preserve Omni text-only streaming', async () => {
   const liveModelId = 'qwen3.5-omni-plus'
   const liveIdentity = { ...identity, modelId: liveModelId }
   const model = catalog.bailian.models.find((row: any) => row.id === liveModelId)
@@ -55,13 +55,34 @@ test('actual Omni text and vision adapters preserve text-only streaming and omit
         ? runtime.legacy.callTextModel('bailian', modelId, 'fixture-key', 'system', 'user', [], { thinkingRole: 'main' })
         : runtime.legacy.callVisionModel('bailian', modelId, 'fixture-key', 'method', 'caption', [{ url: `data:image/png;base64,${png.toString('base64')}`, mimeType: 'image/png' }]),
       { businessCode: 'MODEL_UNAVAILABLE', requestState: 'not_sent' })
-      // The current Omni contract explicitly disallows thinking; keep the old
-      // snapshot's boolean serialization assertions in the pure test above.
+      // Current Omni contracts forbid thinking. The same live chat adapter's
+      // boolean serialization is exercised below with Qwen3.8 Flash.
       for (const mode of [true, false]) assert.throws(() => compileThinkingSelection({ ...liveIdentity, options: { mode } }, role), localFailure)
     }
     assert.equal(captured.length, 0)
     assert.equal(workflowCalls, 0)
     assert.equal(records, 0)
+    const toggleModelId = 'qwen3.8-flash'
+    const toggleModel = catalog.bailian.models.find((row: any) => row.id === toggleModelId)
+    assert.ok(toggleModel)
+    assert.deepEqual(toggleModel.roles, ['main', 'vision'])
+    assert.equal(toggleModel.protocol, identity.protocol)
+    for (const role of ['main', 'vision'] as const) for (const mode of [true, false, undefined]) {
+      snapshot = compileThinkingSelection({ ...identity, modelId: toggleModelId, options: mode === undefined ? {} : { mode } }, role)
+      captured = []
+      const output = role === 'main'
+        ? await runtime.legacy.callTextModel('bailian', toggleModelId, 'fixture-key', 'system', 'user', [], { thinkingRole: 'main' })
+        : await runtime.legacy.callVisionModel('bailian', toggleModelId, 'fixture-key', 'method', 'caption', [{ url: `data:image/png;base64,${png.toString('base64')}`, mimeType: 'image/png' }])
+      assert.equal(output, 'Visible fixture')
+      assert.equal(captured.length, 1)
+      const { body, url } = captured[0]
+      assert.equal(url, 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions')
+      assert.equal(body.model, toggleModelId)
+      assert.equal(body.stream, true)
+      assert.equal(body.modalities, undefined, 'the Omni-only field must not leak to another live chat model')
+      assert.equal(body.enable_thinking, mode)
+      for (const field of ['audio', 'reasoning_effort', 'thinking_budget', 'extra_body']) assert.equal(body[field], undefined)
+    }
     for (const role of ['main', 'vision'] as const) for (const options of [undefined, {}]) {
       snapshot = options === undefined ? undefined : compileThinkingSelection({ ...liveIdentity, options }, role)
       captured = []

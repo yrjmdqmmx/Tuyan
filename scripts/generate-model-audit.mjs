@@ -24,14 +24,16 @@ export function generateModelAudit({ pairs, mappings, canonical, deprecations, c
         const id = mapping.get(key)
         if (!id || id !== provenance.canonicalId || JSON.stringify(canonical[id]?.[field]) !== JSON.stringify(value)) throw new Error(`Unmapped inheritance: ${key}/${field}`)
         origin = 'vendor'; source = provenance.sourceUrl
+      } else if (provenance?.kind === 'product-config') {
+        origin = 'product'
       } else if (provenance?.kind === 'channel-published') {
         origin = 'channel'; source = provenance.sourceUrl
       }
       let state = 'unknown'
-      if (origin && https(source)) {
+      if (origin && (https(source) || origin === 'product' && field.endsWith('Modalities'))) {
         if (value === 'N/A') state = 'not-applicable'
-        else if (value === false || value === 'unsupported') state = 'unsupported'
-        else if (field.endsWith('Modalities') ? Array.isArray(value) && value.length > 0 && value.every(x => ['text','image','audio','video','file','document'].includes(x)) : Number.isSafeInteger(value) && value > 0) state = 'known'
+        else if ((value === false || value === 'unsupported') && provenance.quote?.trim()) state = 'unsupported'
+        else if (field.endsWith('Modalities') ? Array.isArray(value) && value.length > 0 && value.every(x => ['text','image','audio','video','file','document'].includes(x)) : Number.isSafeInteger(value) && value > 0 || typeof value === 'string' && /^(?:[1-9]\d*(?:\.\d+)?|0\.\d*[1-9]\d*)[KM]$/i.test(value)) state = 'known'
       }
       if (state !== 'known') value = null
       // A channel's request/default limits are never official output limits.

@@ -1,6 +1,6 @@
 {
   "verifiedAt": "2026-11-09",
-  "convention": "Published 1M and 256K use binary token multiples (1048576 and 262144), matching the audit snapshot. No shared-window claim. Unlisted modalities remain unknown.",
+  "convention": "Token limits: preserve positive integer literals only when published as integers; preserve official K/k/M labels verbatim without converting units. Missing modalities are unknown, never exclusions. Product input requirements and existing known modalities are lower bounds.",
   "models": {
     "antling/Ling-3.2-flash": {
       "inputModalities": [
@@ -14,7 +14,7 @@
       "outputModalities": [
         "text"
       ],
-      "totalContextTokens": 1048576,
+      "totalContextTokens": "1M",
       "maxOutputTokens": null,
       "sourceUrls": [
         "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
@@ -42,7 +42,7 @@
       "outputModalities": [
         "text"
       ],
-      "totalContextTokens": 1048576,
+      "totalContextTokens": "1M",
       "maxOutputTokens": null,
       "sourceUrls": [
         "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
@@ -70,7 +70,7 @@
       "outputModalities": [
         "text"
       ],
-      "totalContextTokens": 262144,
+      "totalContextTokens": "256K",
       "maxOutputTokens": null,
       "sourceUrls": [
         "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
@@ -98,7 +98,7 @@
       "outputModalities": [
         "text"
       ],
-      "totalContextTokens": 262144,
+      "totalContextTokens": "256K",
       "maxOutputTokens": null,
       "sourceUrls": [
         "https://developer.ant-ling.com/zh-CN/docs/models/ling/",

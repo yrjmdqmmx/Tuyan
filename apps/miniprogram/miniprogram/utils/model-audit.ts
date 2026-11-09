@@ -2,9 +2,9 @@
 const MODEL_AUDIT_DATA = require('./model-audit-data.js')
 
 export interface AuditFact {
-  value: string[] | number | null
+  value: string[] | string | number | null
   state: 'known' | 'unknown' | 'unsupported' | 'not-applicable'
-  provenance: 'channel' | 'vendor' | 'catalog' | null
+  provenance: 'channel' | 'vendor' | 'catalog' | 'product' | null
   sourceUrl: string | null
   verifiedAt: string | null
   unknownModalities?: string[]

@@ -1,0 +1,4330 @@
+{
+  "verifiedAt": "2026-11-09",
+  "base": "c7b6a2fc",
+  "conflicts": [
+    {
+      "number": 1,
+      "channel": "deepseek",
+      "id": "deepseek-flash",
+      "field": "maxOutputTokens",
+      "auditValue": 393216,
+      "auditState": "known",
+      "existingValue": 384000,
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/quick_start/pricing",
+        "https://api-docs.deepseek.com/news/news261017/"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "quote": "MAX OUTPUT MAXIMUM: 384K"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 2,
+      "channel": "deepseek",
+      "id": "deepseek-v4-flash-vision-exp",
+      "field": "maxOutputTokens",
+      "auditValue": 393216,
+      "auditState": "known",
+      "existingValue": 384000,
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/quick_start/pricing",
+        "https://api-docs.deepseek.com/news/news261017/"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "quote": "MAX OUTPUT MAXIMUM: 384K"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 3,
+      "channel": "deepseek",
+      "id": "deepseek-v4-pro",
+      "field": "maxOutputTokens",
+      "auditValue": 393216,
+      "auditState": "known",
+      "existingValue": 384000,
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/quick_start/pricing"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "quote": "MAX OUTPUT MAXIMUM: 384K"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 4,
+      "channel": "deepseek",
+      "id": "deepseek-v4-flash",
+      "field": "maxOutputTokens",
+      "auditValue": 393216,
+      "auditState": "known",
+      "existingValue": 384000,
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/quick_start/pricing",
+        "https://api-docs.deepseek.com/news/news261017/"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "quote": "MAX OUTPUT MAXIMUM: 384K"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 5,
+      "channel": "xai",
+      "id": "grok-4.20-multi-agent-0309",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": [
+          "text",
+          "image"
+        ],
+        "sourceUrl": "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309",
+        "quote": "Modalities Text, Image Text"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 6,
+      "channel": "bailian",
+      "id": "qwen3.8-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image",
+        "video"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/vision-model",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 7,
+      "channel": "bailian",
+      "id": "glm-5.2-fast-preview",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://www.qianwenai.com/models/glm-5.2-fast-preview",
+        "https://platform.qianwenai.com/docs/developer-guides/run-and-scale/prime-mode"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": "1M",
+        "sourceUrl": "https://www.qianwenai.com/models/glm-5.2-fast-preview",
+        "quote": "支持 1M 超长上下文"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 8,
+      "channel": "bailian",
+      "id": "qwen3.7-max-2026-06-08",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image",
+        "video"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 9,
+      "channel": "bailian",
+      "id": "qwen-max",
+      "field": "totalContextTokens",
+      "auditValue": 32768,
+      "auditState": "known",
+      "existingValue": 32000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": "32k",
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "quote": "qwen-max 32k"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 10,
+      "channel": "bailian",
+      "id": "qwen-plus-2025-01-25",
+      "field": "totalContextTokens",
+      "auditValue": 131072,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 131072,
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+        "quote": "上下文长度 131072",
+        "section": "qwen-plus-2025-01-25 / 上下文限制"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 11,
+      "channel": "bailian",
+      "id": "qwen-plus-2025-04-28",
+      "field": "totalContextTokens",
+      "auditValue": 131072,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 131072,
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+        "quote": "上下文长度 131072",
+        "section": "qwen-plus-2025-04-28 / 上下文限制"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 12,
+      "channel": "bailian",
+      "id": "qwen-plus-2025-07-14",
+      "field": "totalContextTokens",
+      "auditValue": 131072,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 131072,
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+        "quote": "上下文长度 131072",
+        "section": "qwen-plus-2025-07-14 / 上下文限制"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 13,
+      "channel": "together",
+      "id": "Qwen/Qwen3.8-Flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image",
+        "video"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/vision-model",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 14,
+      "channel": "fal",
+      "id": "fal-ai/nano-banana-2",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 15,
+      "channel": "fal",
+      "id": "fal-ai/nano-banana-2",
+      "field": "outputModalities",
+      "auditValue": [
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 16,
+      "channel": "fal",
+      "id": "google/nano-banana-2-lite",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 17,
+      "channel": "fal",
+      "id": "google/nano-banana-2-lite",
+      "field": "outputModalities",
+      "auditValue": [
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 18,
+      "channel": "fal",
+      "id": "fal-ai/nano-banana-pro",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 19,
+      "channel": "fal",
+      "id": "fal-ai/nano-banana-pro",
+      "field": "outputModalities",
+      "auditValue": [
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 20,
+      "channel": "fal",
+      "id": "fal-ai/nano-banana",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 21,
+      "channel": "fal",
+      "id": "fal-ai/nano-banana",
+      "field": "outputModalities",
+      "auditValue": [
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 22,
+      "channel": "tokendance",
+      "id": "deepseek-v4-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text",
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text"
+      ],
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/news/news260424/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "原厂页面不能证明第三方渠道的图像输入；撤回跨渠道继承，回退既有值/未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 23,
+      "channel": "tokendance",
+      "id": "deepseek-v4-pro",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://api-docs.deepseek.com/news/news260424/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 1048576,
+        "quote": "\"context_length\":1048576",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 24,
+      "channel": "tokendance",
+      "id": "hy4-preview",
+      "field": "totalContextTokens",
+      "auditValue": 1024000,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://huggingface.co/tencent/Hy4-preview"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 1024000,
+        "quote": "\"context_length\":1024000",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 25,
+      "channel": "tokendance",
+      "id": "qwen3.8-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image",
+        "video"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/vision-model",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 26,
+      "channel": "tokendance",
+      "id": "qwen3.5-35b-a3b",
+      "field": "totalContextTokens",
+      "auditValue": 256000,
+      "auditState": "known",
+      "existingValue": 262144,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://huggingface.co/Qwen/Qwen3.5-35B-A3B"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 256000,
+        "quote": "\"context_length\":256000",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 27,
+      "channel": "tokendance",
+      "id": "seed-evolving",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 1024000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 1000000,
+        "quote": "\"context_length\":1000000",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 28,
+      "channel": "tokenhub",
+      "id": "deepseek-v4-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text",
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text"
+      ],
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/news/news260424/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "原厂页面不能证明第三方渠道的图像输入；撤回跨渠道继承，回退既有值/未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 29,
+      "channel": "xiaomi",
+      "id": "mimo-v2.6-flash",
+      "field": "maxOutputTokens",
+      "auditValue": 128000,
+      "auditState": "known",
+      "existingValue": 131072,
+      "sources": [
+        "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "https://mimo.mi.com/docs/zh-CN/api/chat/openai-api",
+        "https://mimo.mi.com/docs/zh-CN/usage-guide/multimodal-understanding/image-understanding"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": "128K",
+        "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "quote": "最大输出：128K"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 30,
+      "channel": "xiaomi",
+      "id": "mimo-v2.6-pro",
+      "field": "maxOutputTokens",
+      "auditValue": 128000,
+      "auditState": "known",
+      "existingValue": 131072,
+      "sources": [
+        "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "https://mimo.mi.com/docs/zh-CN/api/chat/openai-api",
+        "https://mimo.mi.com/docs/zh-CN/usage-guide/multimodal-understanding/image-understanding"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": "128K",
+        "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "quote": "最大输出：128K"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 31,
+      "channel": "xiaomi",
+      "id": "mimo-v2.6-pro-ultraspeed",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 1048576,
+      "sources": [
+        "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": "1M",
+        "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "quote": "上下文窗口：1M"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 32,
+      "channel": "xiaomi",
+      "id": "mimo-v2.6-pro-ultraspeed",
+      "field": "maxOutputTokens",
+      "auditValue": 128000,
+      "auditState": "known",
+      "existingValue": 131072,
+      "sources": [
+        "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": "128K",
+        "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "quote": "最大输出：128K"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 33,
+      "channel": "sensenova",
+      "id": "deepseek-v4-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text",
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text"
+      ],
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/news/news260424/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "原厂页面不能证明第三方渠道的图像输入；撤回跨渠道继承，回退既有值/未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 34,
+      "channel": "qianfan",
+      "id": "deepseek-v4-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text",
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text"
+      ],
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/news/news260424/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "原厂页面不能证明第三方渠道的图像输入；撤回跨渠道继承，回退既有值/未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 35,
+      "channel": "siliconflow",
+      "id": "Qwen/Qwen3.8-27B",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 262144,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/Qwen/Qwen3.8-27B"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。"
+    },
+    {
+      "number": 36,
+      "channel": "siliconflow",
+      "id": "deepseek-ai/DeepSeek-V4-Flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text",
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text"
+      ],
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "原厂页面不能证明第三方渠道的图像输入；撤回跨渠道继承，回退既有值/未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 37,
+      "channel": "xai",
+      "id": "grok-4.7",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.7"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": [
+          "text",
+          "image"
+        ],
+        "sourceUrl": "https://docs.x.ai/developers/models/grok-4.7",
+        "quote": "Modalities Text, Image Text"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 38,
+      "channel": "xai",
+      "id": "grok-4.6",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.6"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": [
+          "text",
+          "image"
+        ],
+        "sourceUrl": "https://docs.x.ai/developers/models/grok-4.6",
+        "quote": "Modalities Text, Image Text"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 39,
+      "channel": "xai",
+      "id": "grok-4.5",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.5"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": [
+          "text",
+          "image"
+        ],
+        "sourceUrl": "https://docs.x.ai/developers/models/grok-4.5",
+        "quote": "Modalities Text, Image Text"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 40,
+      "channel": "xai",
+      "id": "grok-4.3",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.3"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": [
+          "text",
+          "image"
+        ],
+        "sourceUrl": "https://docs.x.ai/developers/models/grok-4.3",
+        "quote": "Modalities Text, Image Text"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 41,
+      "channel": "xai",
+      "id": "grok-4.20-0309-non-reasoning",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.20-0309-non-reasoning"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": [
+          "text",
+          "image"
+        ],
+        "sourceUrl": "https://docs.x.ai/developers/models/grok-4.20-0309-non-reasoning",
+        "quote": "Modalities Text, Image Text"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 42,
+      "channel": "xai",
+      "id": "grok-4.20-0309-reasoning",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.20-0309-reasoning"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": [
+          "text",
+          "image"
+        ],
+        "sourceUrl": "https://docs.x.ai/developers/models/grok-4.20-0309-reasoning",
+        "quote": "Modalities Text, Image Text"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 43,
+      "channel": "xai",
+      "id": "grok-build-0.1",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-build-0.1"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": [
+          "text",
+          "image"
+        ],
+        "sourceUrl": "https://docs.x.ai/developers/models/grok-build-0.1",
+        "quote": "Modalities Text, Image Text"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 44,
+      "channel": "bailian",
+      "id": "kimi-k3",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K3"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 1000000,
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+        "quote": "100 万 token 上下文窗口"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 45,
+      "channel": "bailian",
+      "id": "qwen3.8-27b",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 262144,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/Qwen/Qwen3.8-27B"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 1000000,
+        "quote": "上下文长度 1000000",
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b"
+      },
+      "reason": "精确渠道型号页逐字段核对，以服务上下文表的整数为准。"
+    },
+    {
+      "number": 46,
+      "channel": "bailian",
+      "id": "ZHIPU/GLM-5.3",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。"
+    },
+    {
+      "number": 47,
+      "channel": "bailian",
+      "id": "qwen3.8-2.4t-a95b",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 262144,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 1000000,
+        "quote": "上下文长度 1000000",
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b"
+      },
+      "reason": "精确渠道型号页逐字段核对，以服务上下文表的整数为准。"
+    },
+    {
+      "number": 48,
+      "channel": "bailian",
+      "id": "MiniMax/MiniMax-M3",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/MiniMaxAI/MiniMax-M3"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。"
+    },
+    {
+      "number": 49,
+      "channel": "bailian",
+      "id": "ZHIPU/GLM-5.2",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。"
+    },
+    {
+      "number": 50,
+      "channel": "bailian",
+      "id": "qwen-image-3.0",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "image",
+        "text"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen-image-3-0"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 51,
+      "channel": "bailian",
+      "id": "qwen-image-3.0-pro",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "image",
+        "text"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 52,
+      "channel": "bailian",
+      "id": "glm-5.2",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 1048576,
+        "quote": "上下文长度 1048576",
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2"
+      },
+      "reason": "精确渠道型号页逐字段核对，以服务上下文表的整数为准。"
+    },
+    {
+      "number": 53,
+      "channel": "bailian",
+      "id": "ZHIPU/GLM-5.1",
+      "field": "totalContextTokens",
+      "auditValue": 202745,
+      "auditState": "known",
+      "existingValue": 200000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。"
+    },
+    {
+      "number": 54,
+      "channel": "bailian",
+      "id": "glm-5.1",
+      "field": "totalContextTokens",
+      "auditValue": 202745,
+      "auditState": "known",
+      "existingValue": 200000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 202745,
+        "quote": "上下文长度 202745",
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1"
+      },
+      "reason": "精确渠道型号页逐字段核对，以服务上下文表的整数为准。"
+    },
+    {
+      "number": 55,
+      "channel": "bailian",
+      "id": "kimi/kimi-k3",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K3"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。"
+    },
+    {
+      "number": 56,
+      "channel": "bailian",
+      "id": "kimi-k2.7-code",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K2.7-Code"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 262144,
+        "quote": "上下文长度 262144",
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code"
+      },
+      "reason": "精确渠道型号页逐字段核对，以服务上下文表的整数为准。"
+    },
+    {
+      "number": 57,
+      "channel": "bailian",
+      "id": "kimi/kimi-k2.7-code",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K2.7-Code"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。"
+    },
+    {
+      "number": 58,
+      "channel": "bailian",
+      "id": "kimi-k2.6",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K2.6"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 262144,
+        "quote": "上下文长度 262144",
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6"
+      },
+      "reason": "精确渠道型号页逐字段核对，以服务上下文表的整数为准。"
+    },
+    {
+      "number": 59,
+      "channel": "bailian",
+      "id": "kimi/kimi-k2.6",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K2.6"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。"
+    },
+    {
+      "number": 60,
+      "channel": "bailian",
+      "id": "kimi-k2.5",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K2.5"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 262144,
+        "quote": "上下文长度 262144",
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-5"
+      },
+      "reason": "精确渠道型号页逐字段核对，以服务上下文表的整数为准。"
+    },
+    {
+      "number": 61,
+      "channel": "bailian",
+      "id": "qwen-image-2.0",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen-image-2-0"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": [
+          "text",
+          "image"
+        ],
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+        "quote": "输入模态 Text Image"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 62,
+      "channel": "bailian",
+      "id": "qwen-image-2.0-pro",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": [
+          "text",
+          "image"
+        ],
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+        "quote": "输入模态 Text Image"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 63,
+      "channel": "bailian",
+      "id": "wan2.7-image",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "image",
+        "text"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wan2-7-image"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 64,
+      "channel": "bailian",
+      "id": "wan2.7-image-pro",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "image",
+        "text"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wan2-7-image-pro"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 65,
+      "channel": "bailian",
+      "id": "wan2.6-image",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wan2-6-image"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": [
+          "text",
+          "image"
+        ],
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+        "quote": "输入模态 Text Image"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 66,
+      "channel": "bailian",
+      "id": "wan2.6-image",
+      "field": "outputModalities",
+      "auditValue": [
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "image",
+        "text"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wan2-6-image"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": [
+          "text",
+          "image"
+        ],
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+        "quote": "输出模态 Image Text"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 67,
+      "channel": "bailian",
+      "id": "wanx2.1-imageedit",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wanx-image-edit",
+        "https://help.aliyun.com/zh/model-studio/wanx-image-edit-api-reference"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": [
+          "text",
+          "image"
+        ],
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/wanx-image-edit-api-reference",
+        "quote": "base_image_url string （必选） 输入图像的 URL 或 Base64 编码数据。"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 68,
+      "channel": "together",
+      "id": "Qwen/Qwen-Image-2.0",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen-image-2-0"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 69,
+      "channel": "together",
+      "id": "Qwen/Qwen-Image-2.0-Pro",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 70,
+      "channel": "together",
+      "id": "Qwen/Qwen3.8-2.4T-A95B",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 262144,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。"
+    },
+    {
+      "number": 71,
+      "channel": "together",
+      "id": "Wan-AI/Wan2.6-image",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wan2-6-image"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 72,
+      "channel": "together",
+      "id": "Wan-AI/Wan2.6-image",
+      "field": "outputModalities",
+      "auditValue": [
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "image",
+        "text"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wan2-6-image"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 73,
+      "channel": "fal",
+      "id": "openai/gpt-image-2",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://developers.openai.com/api/docs/models/gpt-image-2"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "未获得支持原审计值的精确渠道原文；撤回该审计字段，使用既有值，缺项为未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 74,
+      "channel": "tokendance",
+      "id": "deepseek-v4-pro-0813",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 1048576,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813/blob/main/config.json"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 1000000,
+        "quote": "\"context_length\":1000000",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 75,
+      "channel": "tokendance",
+      "id": "deepseek-v4-flash-0731",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://tokendance.space/models/deepseek-v4-flash-0731"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 1048576,
+        "quote": "\"context_length\":1048576",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 76,
+      "channel": "tokendance",
+      "id": "glm-5.1",
+      "field": "totalContextTokens",
+      "auditValue": 202752,
+      "auditState": "known",
+      "existingValue": 200000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 202752,
+        "quote": "\"context_length\":202752",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 77,
+      "channel": "tokendance",
+      "id": "glm-5v-turbo",
+      "field": "totalContextTokens",
+      "auditValue": 202752,
+      "auditState": "known",
+      "existingValue": 200000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5v-turbo"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 202752,
+        "quote": "\"context_length\":202752",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 78,
+      "channel": "tokendance",
+      "id": "minimax-m2.7",
+      "field": "totalContextTokens",
+      "auditValue": 200000,
+      "auditState": "known",
+      "existingValue": 204800,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://huggingface.co/MiniMaxAI/MiniMax-M2.7",
+        "https://platform.minimax.io/docs/api-reference/text-openai-api"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 200000,
+        "quote": "\"context_length\":200000",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 79,
+      "channel": "tokendance",
+      "id": "minimax-m2.5",
+      "field": "totalContextTokens",
+      "auditValue": 200000,
+      "auditState": "known",
+      "existingValue": 204800,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://huggingface.co/MiniMaxAI/MiniMax-M2.5",
+        "https://platform.minimax.io/docs/api-reference/text-openai-api"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 200000,
+        "quote": "\"context_length\":200000",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 80,
+      "channel": "tokendance",
+      "id": "longcat-2.0",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 262144,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://huggingface.co/meituan-longcat/LongCat-2.0",
+        "https://huggingface.co/meituan-longcat/LongCat-2.0/blob/main/config.json"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 1000000,
+        "quote": "\"context_length\":1000000",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 81,
+      "channel": "tokendance",
+      "id": "mimo-v2.5",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://mimo.mi.com/models/en-US/mimo-v2.5"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 1048576,
+        "quote": "\"context_length\":1048576",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 82,
+      "channel": "tokendance",
+      "id": "mimo-v2.5-pro",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://mimo.mi.com/models/en-US/mimo-v2.5-pro"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": 1048576,
+        "quote": "\"context_length\":1048576",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 83,
+      "channel": "tokenhub",
+      "id": "deepseek/deepseek-v4-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text",
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text"
+      ],
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"
+      ],
+      "decision": "fallback",
+      "evidence": null,
+      "reason": "原厂页面不能证明第三方渠道的图像输入；撤回跨渠道继承，回退既有值/未知。 已知模态取并集；图研必需的图像输入独立保留。"
+    },
+    {
+      "number": 84,
+      "channel": "antling",
+      "id": "Ling-3.0-flash-VL",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL",
+        "https://developer.ant-ling.com/zh-CN/docs/models/ling/#ling-30-flash-vl"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": "256K",
+        "quote": "上下文窗口 256K Token",
+        "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "section": "Ling-3.0-flash-VL"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    },
+    {
+      "number": 85,
+      "channel": "antling",
+      "id": "Ling-3.0-flash",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "https://huggingface.co/inclusionAI/Ling-3.0-flash",
+        "https://developer.ant-ling.com/zh-CN/docs/models/ling/#ling-30-flash"
+      ],
+      "decision": "verified",
+      "evidence": {
+        "value": "256K",
+        "quote": "原生 256K 上下文窗口，最高可扩展至 1M",
+        "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "section": "Ling-3.0-flash"
+      },
+      "reason": "采用该渠道官方原文；单位标签保持原样。"
+    }
+  ],
+  "additionalEvidence": [
+    {
+      "channel": "fireworks",
+      "id": "accounts/fireworks/models/kimi-k3p1-pro",
+      "field": "totalContextTokens",
+      "value": "1040k",
+      "sourceUrl": "https://fireworks.ai/models/fireworks/kimi-k3p1-pro",
+      "quote": "Context Length 1040k tokens"
+    },
+    {
+      "channel": "stepfun",
+      "id": "step-5-preview",
+      "field": "maxOutputTokens",
+      "value": "64k",
+      "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/step-5-preview",
+      "quote": "最大输出 64k tokens"
+    },
+    {
+      "channel": "tokendance",
+      "id": "step-5-preview",
+      "field": "maxOutputTokens",
+      "value": "64k",
+      "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/step-5-preview",
+      "quote": "最大输出 64k tokens"
+    },
+    {
+      "channel": "longcat",
+      "id": "LongCat-2.5",
+      "field": "totalContextTokens",
+      "value": 1048576,
+      "sourceUrl": "https://longcat.chat/platform/docs/api/model-params",
+      "quote": "Context length 1,048,576 (1M)"
+    },
+    {
+      "channel": "bailian",
+      "id": "glm-5.2-fast-preview",
+      "field": "maxOutputTokens",
+      "value": "131K",
+      "quote": "最大输出 131K",
+      "sourceUrl": "https://www.qianwenai.com/models/glm-5.2-fast-preview"
+    },
+    {
+      "channel": "bailian",
+      "id": "kimi-k3",
+      "field": "maxOutputTokens",
+      "value": 1048576,
+      "quote": "最大输出长度 1048576",
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3"
+    },
+    {
+      "channel": "bailian",
+      "id": "kimi/kimi-k3",
+      "field": "maxOutputTokens",
+      "value": null,
+      "quote": null,
+      "sourceUrl": null
+    },
+    {
+      "channel": "bailian",
+      "id": "xiaomi/mimo-v2.5-pro",
+      "field": "totalContextTokens",
+      "value": "1M",
+      "quote": "上下文窗口：1M",
+      "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model"
+    },
+    {
+      "channel": "tokenhub",
+      "id": "mimo-v2.5-pro",
+      "field": "totalContextTokens",
+      "value": "1M",
+      "quote": "上下文窗口：1M",
+      "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model"
+    },
+    {
+      "channel": "xiaomi",
+      "id": "mimo-v2.5",
+      "field": "totalContextTokens",
+      "value": "1M",
+      "quote": "上下文窗口：1M",
+      "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model"
+    },
+    {
+      "channel": "xiaomi",
+      "id": "mimo-v2.5-pro",
+      "field": "totalContextTokens",
+      "value": "1M",
+      "quote": "上下文窗口：1M",
+      "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model"
+    }
+  ],
+  "integerReview": [
+    {
+      "key": "bailian/MiniMax-M2.5",
+      "field": "totalContextTokens",
+      "value": 204800,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-m2-5",
+      "integerEvidence": "上下文长度 204800",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/MiniMax-M2.5",
+      "field": "maxOutputTokens",
+      "value": 32768,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-m2-5",
+      "integerEvidence": "最大输出长度 32768",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M2.5",
+      "field": "totalContextTokens",
+      "value": 204800,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-m2-5",
+      "integerEvidence": "上下文长度 204800",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M2.5",
+      "field": "maxOutputTokens",
+      "value": 32768,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-m2-5",
+      "integerEvidence": "最大输出长度 32768",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M2.7",
+      "field": "totalContextTokens",
+      "value": 204800,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-m2-7",
+      "integerEvidence": "上下文长度 204800",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M2.7",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-m2-7",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/ZHIPU/GLM-5.1",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/ZHIPU/GLM-5.2",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/ZHIPU/GLM-5.3",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-3",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/glm-5.1",
+      "field": "totalContextTokens",
+      "value": 202745,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+      "integerEvidence": "上下文长度 202745",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/glm-5.1",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/glm-5.2",
+      "field": "totalContextTokens",
+      "value": 1048576,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+      "integerEvidence": "上下文长度 1048576",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/glm-5.2",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/glm-5.2-fast-preview",
+      "field": "maxOutputTokens",
+      "value": "131K",
+      "sourceUrl": "https://www.qianwenai.com/models/glm-5.2-fast-preview",
+      "integerEvidence": "最大输出 131K",
+      "decision": "official-label"
+    },
+    {
+      "key": "bailian/kimi-k2.5",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-5",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/kimi-k2.5",
+      "field": "maxOutputTokens",
+      "value": 16384,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-5",
+      "integerEvidence": "最大输出长度 16384",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/kimi-k2.6",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/kimi-k2.6",
+      "field": "maxOutputTokens",
+      "value": 16384,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+      "integerEvidence": "最大输出长度 16384",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/kimi-k2.7-code",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/kimi-k2.7-code",
+      "field": "maxOutputTokens",
+      "value": 16384,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+      "integerEvidence": "最大输出长度 16384",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/kimi-k3",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+      "integerEvidence": "100 万 token 上下文窗口",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/kimi-k3",
+      "field": "maxOutputTokens",
+      "value": 1048576,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+      "integerEvidence": "最大输出长度 1048576",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/kimi/kimi-k2.6",
+      "field": "maxOutputTokens",
+      "value": 16384,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+      "integerEvidence": "最大输出长度 16384",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/kimi/kimi-k2.7-code",
+      "field": "maxOutputTokens",
+      "value": 16384,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+      "integerEvidence": "最大输出长度 16384",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/kimi/kimi-k2.7-code-highspeed",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code-highspeed",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/kimi/kimi-k2.7-code-highspeed",
+      "field": "maxOutputTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code-highspeed",
+      "integerEvidence": "最大输出长度 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/kimi/kimi-k3",
+      "field": "maxOutputTokens",
+      "value": null,
+      "sourceUrl": null,
+      "integerEvidence": null,
+      "decision": "fallback-no-exact-alias-evidence"
+    },
+    {
+      "key": "bailian/qwen-flash",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-flash",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-flash",
+      "field": "maxOutputTokens",
+      "value": 32768,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-flash",
+      "integerEvidence": "最大输出长度 32768",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-flash-2025-07-28",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-flash",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-flash-2025-07-28",
+      "field": "maxOutputTokens",
+      "value": 32768,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-flash",
+      "integerEvidence": "最大输出长度 32768",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-long",
+      "field": "totalContextTokens",
+      "value": 10000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-long",
+      "integerEvidence": "上下文长度 10000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-long",
+      "field": "maxOutputTokens",
+      "value": 8192,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-long",
+      "integerEvidence": "最大输出长度 8192",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-max",
+      "field": "maxOutputTokens",
+      "value": 8192,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-max",
+      "integerEvidence": "最大输出长度 8192",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-plus",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-plus",
+      "field": "maxOutputTokens",
+      "value": 32768,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "integerEvidence": "最大输出长度 32768",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-plus-2025-01-25",
+      "field": "totalContextTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "integerEvidence": "上下文长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-plus-2025-01-25",
+      "field": "maxOutputTokens",
+      "value": 8192,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "integerEvidence": "最大输出长度 8192",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-plus-2025-04-28",
+      "field": "totalContextTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "integerEvidence": "上下文长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-plus-2025-04-28",
+      "field": "maxOutputTokens",
+      "value": 16384,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "integerEvidence": "最大输出长度 16384",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-plus-2025-07-14",
+      "field": "totalContextTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "integerEvidence": "上下文长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-plus-2025-07-14",
+      "field": "maxOutputTokens",
+      "value": 16384,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "integerEvidence": "最大输出长度 16384",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-plus-2025-12-01",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-plus-2025-12-01",
+      "field": "maxOutputTokens",
+      "value": 32768,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "integerEvidence": "最大输出长度 32768",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-plus-latest",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen-plus-latest",
+      "field": "maxOutputTokens",
+      "value": 32768,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "integerEvidence": "最大输出长度 32768",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3-coder-flash",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-coder-flash",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3-coder-flash",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-coder-flash",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3-coder-flash-2025-07-28",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-coder-flash",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3-coder-flash-2025-07-28",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-coder-flash",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-122b-a10b",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-122b-a10b",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-122b-a10b",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-122b-a10b",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-27b",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-27b",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-27b",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-27b",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-35b-a3b",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-35b-a3b",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-flash",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-flash",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-flash",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-flash",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-flash-2026-02-23",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-flash",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-flash-2026-02-23",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-flash",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-omni-flash",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-omni-flash",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-omni-flash-2026-03-15",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-omni-flash-2026-03-15",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-omni-plus",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-omni-plus",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-omni-plus-2026-03-15",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-omni-plus-2026-03-15",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-plus",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-plus",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-plus-2026-02-15",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-plus-2026-02-15",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-plus-2026-04-20",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.5-plus-2026-04-20",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.6-flash",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-6-flash",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.6-flash",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-6-flash",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.6-flash-2026-04-16",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-6-flash",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.6-flash-2026-04-16",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-6-flash",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.6-plus",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.6-plus",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.6-plus-2026-04-02",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.6-plus-2026-04-02",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-flash",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-flash",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-flash",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-flash",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-flash-2026-07-15",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-flash",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-flash-2026-07-15",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-flash",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-max",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-max",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-max-2026-05-17",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-max-2026-05-17",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-max-2026-05-20",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-max-2026-05-20",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-max-2026-06-08",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-max-2026-06-08",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-max-preview",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-max-preview",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-plus",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-plus",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-plus-2026-05-26",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.7-plus-2026-05-26",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.8-2.4t-a95b",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.8-2.4t-a95b",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.8-27b",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.8-27b",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.8-flash",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-flash",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.8-flash",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-flash",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.8-max",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.8-max",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.8-max-0902",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/qwen3.8-max-0902",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "bailian/xiaomi/mimo-v2.5-pro",
+      "field": "totalContextTokens",
+      "value": "1M",
+      "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+      "integerEvidence": "上下文窗口：1M",
+      "decision": "official-label",
+      "aliasSourceUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate"
+    },
+    {
+      "key": "openai/chat-latest",
+      "field": "totalContextTokens",
+      "value": 400000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/chat-latest.md",
+      "integerEvidence": "400,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/chat-latest",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/chat-latest.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-3.5-turbo",
+      "field": "totalContextTokens",
+      "value": 16385,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo.md",
+      "integerEvidence": "16,385 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-3.5-turbo",
+      "field": "maxOutputTokens",
+      "value": 4096,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo.md",
+      "integerEvidence": "4,096 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4",
+      "field": "totalContextTokens",
+      "value": 8192,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4.md",
+      "integerEvidence": "8,192 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4",
+      "field": "maxOutputTokens",
+      "value": 8192,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4.md",
+      "integerEvidence": "8,192 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4-turbo",
+      "field": "totalContextTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4-turbo.md",
+      "integerEvidence": "128,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4-turbo",
+      "field": "maxOutputTokens",
+      "value": 4096,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4-turbo.md",
+      "integerEvidence": "4,096 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4.1",
+      "field": "totalContextTokens",
+      "value": 1047576,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4.1.md",
+      "integerEvidence": "1,047,576 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4.1",
+      "field": "maxOutputTokens",
+      "value": 32768,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4.1.md",
+      "integerEvidence": "32,768 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4.1-mini",
+      "field": "totalContextTokens",
+      "value": 1047576,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4.1-mini.md",
+      "integerEvidence": "1,047,576 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4.1-mini",
+      "field": "maxOutputTokens",
+      "value": 32768,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4.1-mini.md",
+      "integerEvidence": "32,768 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4.1-nano",
+      "field": "totalContextTokens",
+      "value": 1047576,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4.1-nano.md",
+      "integerEvidence": "1,047,576 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4.1-nano",
+      "field": "maxOutputTokens",
+      "value": 32768,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4.1-nano.md",
+      "integerEvidence": "32,768 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4o",
+      "field": "totalContextTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4o.md",
+      "integerEvidence": "128,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4o",
+      "field": "maxOutputTokens",
+      "value": 16384,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4o.md",
+      "integerEvidence": "16,384 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4o-mini",
+      "field": "totalContextTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4o-mini.md",
+      "integerEvidence": "128,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-4o-mini",
+      "field": "maxOutputTokens",
+      "value": 16384,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-4o-mini.md",
+      "integerEvidence": "16,384 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5",
+      "field": "totalContextTokens",
+      "value": 400000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.md",
+      "integerEvidence": "400,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5-mini",
+      "field": "totalContextTokens",
+      "value": 400000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5-mini.md",
+      "integerEvidence": "400,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5-mini",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5-mini.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5-nano",
+      "field": "totalContextTokens",
+      "value": 400000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5-nano.md",
+      "integerEvidence": "400,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5-nano",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5-nano.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5-pro",
+      "field": "totalContextTokens",
+      "value": 400000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5-pro.md",
+      "integerEvidence": "400,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5-pro",
+      "field": "maxOutputTokens",
+      "value": 272000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5-pro.md",
+      "integerEvidence": "272,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.1",
+      "field": "totalContextTokens",
+      "value": 400000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.1.md",
+      "integerEvidence": "400,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.1",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.1.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.2",
+      "field": "totalContextTokens",
+      "value": 400000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.2.md",
+      "integerEvidence": "400,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.2",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.2.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.2-pro",
+      "field": "totalContextTokens",
+      "value": 400000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.2-pro.md",
+      "integerEvidence": "400,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.2-pro",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.2-pro.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.3-codex",
+      "field": "totalContextTokens",
+      "value": 400000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.3-codex.md",
+      "integerEvidence": "400,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.3-codex",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.3-codex.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.4",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.4.md",
+      "integerEvidence": "1,050,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.4",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.4.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.4-mini",
+      "field": "totalContextTokens",
+      "value": 400000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-mini.md",
+      "integerEvidence": "400,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.4-mini",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-mini.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.4-nano",
+      "field": "totalContextTokens",
+      "value": 400000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-nano.md",
+      "integerEvidence": "400,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.4-nano",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-nano.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.4-pro",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-pro.md",
+      "integerEvidence": "1,050,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.4-pro",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.4-pro.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.5",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.5.md",
+      "integerEvidence": "1,050,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.5",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.5.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.5-pro",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.5-pro.md",
+      "integerEvidence": "1,050,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.5-pro",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.5-pro.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.6-luna",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-luna.md",
+      "integerEvidence": "1,050,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.6-luna",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-luna.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.6-sol",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-sol.md",
+      "integerEvidence": "1,050,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.6-sol",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-sol.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.6-terra",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-terra.md",
+      "integerEvidence": "1,050,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-5.6-terra",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-5.6-terra.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-6-astra",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-6-astra.md",
+      "integerEvidence": "1,050,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-6-astra",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-6-astra.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-6-luna",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-6-luna.md",
+      "integerEvidence": "1,050,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-6-luna",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-6-luna.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-6-sol",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-6-sol.md",
+      "integerEvidence": "1,050,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/gpt-6-sol",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-6-sol.md",
+      "integerEvidence": "128,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/o1",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/o1.md",
+      "integerEvidence": "200,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/o1",
+      "field": "maxOutputTokens",
+      "value": 100000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/o1.md",
+      "integerEvidence": "100,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/o1-pro",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/o1-pro.md",
+      "integerEvidence": "200,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/o1-pro",
+      "field": "maxOutputTokens",
+      "value": 100000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/o1-pro.md",
+      "integerEvidence": "100,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/o3",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/o3.md",
+      "integerEvidence": "200,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/o3",
+      "field": "maxOutputTokens",
+      "value": 100000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/o3.md",
+      "integerEvidence": "100,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/o3-mini",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/o3-mini.md",
+      "integerEvidence": "200,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/o3-mini",
+      "field": "maxOutputTokens",
+      "value": 100000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/o3-mini.md",
+      "integerEvidence": "100,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/o3-pro",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/o3-pro.md",
+      "integerEvidence": "200,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/o3-pro",
+      "field": "maxOutputTokens",
+      "value": 100000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/o3-pro.md",
+      "integerEvidence": "100,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/o4-mini",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/o4-mini.md",
+      "integerEvidence": "200,000 context window",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openai/o4-mini",
+      "field": "maxOutputTokens",
+      "value": 100000,
+      "sourceUrl": "https://developers.openai.com/api/docs/models/o4-mini.md",
+      "integerEvidence": "100,000 max output tokens",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openrouter/anthropic/claude-opus-5.5",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://openrouter.ai/api/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openrouter/anthropic/claude-opus-5.5",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://openrouter.ai/api/v1/models",
+      "integerEvidence": "JSON integer: 128000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openrouter/openai/gpt-6-luna",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://openrouter.ai/api/v1/models",
+      "integerEvidence": "JSON integer: 1050000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openrouter/openai/gpt-6-luna",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://openrouter.ai/api/v1/models",
+      "integerEvidence": "JSON integer: 128000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openrouter/openai/gpt-6-luna-pro",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://openrouter.ai/api/v1/models",
+      "integerEvidence": "JSON integer: 1050000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openrouter/openai/gpt-6-luna-pro",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://openrouter.ai/api/v1/models",
+      "integerEvidence": "JSON integer: 128000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openrouter/openai/gpt-6-sol",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://openrouter.ai/api/v1/models",
+      "integerEvidence": "JSON integer: 1050000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openrouter/openai/gpt-6-sol",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://openrouter.ai/api/v1/models",
+      "integerEvidence": "JSON integer: 128000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openrouter/openai/gpt-6-sol-pro",
+      "field": "totalContextTokens",
+      "value": 1050000,
+      "sourceUrl": "https://openrouter.ai/api/v1/models",
+      "integerEvidence": "JSON integer: 1050000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "openrouter/openai/gpt-6-sol-pro",
+      "field": "maxOutputTokens",
+      "value": 128000,
+      "sourceUrl": "https://openrouter.ai/api/v1/models",
+      "integerEvidence": "JSON integer: 128000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "qianfan/qwen3.5-122b-a10b",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-122b-a10b",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "qianfan/qwen3.5-122b-a10b",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-122b-a10b",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "qianfan/qwen3.5-27b",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-27b",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "qianfan/qwen3.5-27b",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-27b",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "qianfan/qwen3.5-35b-a3b",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "qianfan/qwen3.5-35b-a3b",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-122B-A10B",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-122b-a10b",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-122B-A10B",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-122b-a10b",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-27B",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-27b",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-27B",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-27b",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-35B-A3B",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b",
+      "integerEvidence": "上下文长度 262144",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-35B-A3B",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.8-27B",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "stepfun/step-5-preview",
+      "field": "maxOutputTokens",
+      "value": "64k",
+      "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/step-5-preview",
+      "integerEvidence": "最大输出 64k tokens",
+      "decision": "official-label"
+    },
+    {
+      "key": "together/Qwen/Qwen3.6-Plus",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "together/Qwen/Qwen3.6-Plus",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "together/Qwen/Qwen3.7-Max",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "together/Qwen/Qwen3.7-Max",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "together/Qwen/Qwen3.7-Plus",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "together/Qwen/Qwen3.7-Plus",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "together/Qwen/Qwen3.8-2.4T-A95B",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "together/Qwen/Qwen3.8-Flash",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-flash",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "together/Qwen/Qwen3.8-Flash",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-flash",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "tokendance/deepseek-v4-flash-0731",
+      "field": "totalContextTokens",
+      "value": 1048576,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1048576",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/deepseek-v4-pro",
+      "field": "totalContextTokens",
+      "value": 1048576,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1048576",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/deepseek-v4-pro-0813",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/deepseek-v4.1-flash",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/dots-3-note-preview",
+      "field": "totalContextTokens",
+      "value": 512000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 512000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/glm-4.5-air",
+      "field": "totalContextTokens",
+      "value": 128000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 128000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/glm-4.6v",
+      "field": "totalContextTokens",
+      "value": 128000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 128000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/glm-4.7",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 200000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/glm-5",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 200000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/glm-5.1",
+      "field": "totalContextTokens",
+      "value": 202752,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 202752",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/glm-5.2",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/glm-5.3",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/glm-5.3-flash",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/glm-5.3-flashx",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/glm-5v-turbo",
+      "field": "totalContextTokens",
+      "value": 202752,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 202752",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/glm-ocr",
+      "field": "totalContextTokens",
+      "value": 128000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 128000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/hy3",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/hy3-preview",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/hy4-preview",
+      "field": "totalContextTokens",
+      "value": 1024000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1024000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/kimi-k2.5",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/kimi-k2.6",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/kimi-k2.7-code",
+      "field": "totalContextTokens",
+      "value": 262144,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 262144",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/kimi-k3",
+      "field": "totalContextTokens",
+      "value": 1048576,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1048576",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/ling-3.0-flash",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/longcat-2.0",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/mimo-v2.5",
+      "field": "totalContextTokens",
+      "value": 1048576,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1048576",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/mimo-v2.5-pro",
+      "field": "totalContextTokens",
+      "value": 1048576,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1048576",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/mimo-v2.5-tts",
+      "field": "totalContextTokens",
+      "value": 8000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 8000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/mimo-v2.5-tts-voiceclone",
+      "field": "totalContextTokens",
+      "value": 8000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 8000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/mimo-v2.5-tts-voicedesign",
+      "field": "totalContextTokens",
+      "value": 8000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 8000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/minimax-m2.5",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 200000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/minimax-m2.7",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 200000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/minimax-m3",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/qwen-text-embedding-v4",
+      "field": "totalContextTokens",
+      "value": 8000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 8000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/qwen3-vl-plus",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/qwen3.5-35b-a3b",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/qwen3.5-35b-a3b",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "tokendance/qwen3.5-flash",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/qwen3.5-flash",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-flash",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "tokendance/qwen3.5-plus",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/qwen3.5-plus",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "tokendance/qwen3.6-plus",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/qwen3.6-plus",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "tokendance/qwen3.7-max",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/qwen3.7-max",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "tokendance/qwen3.7-plus",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/qwen3.7-plus",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "tokendance/qwen3.7-text-embedding",
+      "field": "totalContextTokens",
+      "value": 128000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 128000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/qwen3.8-flash",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/qwen3.8-flash",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-flash",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "tokendance/qwen3.8-max",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/qwen3.8-max",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "tokendance/qwen3.8-max-0902",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/qwen3.8-max-0902",
+      "field": "maxOutputTokens",
+      "value": 131072,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "integerEvidence": "最大输出长度 131072",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "tokendance/seed-2.0-code",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/seed-2.0-lite",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/seed-2.0-mini",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/seed-2.0-pro",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/seed-2.1-pro",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/seed-2.1-turbo",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/seed-evolving",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/spark-x2.5-1.7b",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/spark-x2.5-4b",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/step-3.5-flash",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/step-3.7-flash",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 256000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/step-5-preview",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 1000000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/step-5-preview",
+      "field": "maxOutputTokens",
+      "value": "64k",
+      "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/step-5-preview",
+      "integerEvidence": "最大输出 64k tokens",
+      "decision": "official-label"
+    },
+    {
+      "key": "tokendance/unifuncs-s3",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 200000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/unifuncs-s3-pro",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 200000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/unifuncs-u3",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 200000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokendance/unifuncs-u3-pro",
+      "field": "totalContextTokens",
+      "value": 200000,
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "integerEvidence": "JSON integer: 200000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "tokenhub/mimo-v2.5-pro",
+      "field": "totalContextTokens",
+      "value": "1M",
+      "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+      "integerEvidence": "上下文窗口：1M",
+      "decision": "official-label",
+      "aliasSourceUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate"
+    },
+    {
+      "key": "tokenhub/qwen3.5-flash",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-flash",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "tokenhub/qwen3.5-flash",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-flash",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "tokenhub/qwen3.5-plus",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "integerEvidence": "上下文长度 1000000",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "tokenhub/qwen3.5-plus",
+      "field": "maxOutputTokens",
+      "value": 65536,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "integerEvidence": "最大输出长度 65536",
+      "decision": "vendor-integer-reference"
+    },
+    {
+      "key": "xai/grok-4.20-0309-non-reasoning",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://docs.x.ai/developers/models/grok-4.20-0309-non-reasoning",
+      "integerEvidence": "Context window 1,000,000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "xai/grok-4.20-0309-reasoning",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://docs.x.ai/developers/models/grok-4.20-0309-reasoning",
+      "integerEvidence": "Context window 1,000,000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "xai/grok-4.20-multi-agent-0309",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309",
+      "integerEvidence": "Context window 1,000,000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "xai/grok-4.3",
+      "field": "totalContextTokens",
+      "value": 1000000,
+      "sourceUrl": "https://docs.x.ai/developers/models/grok-4.3",
+      "integerEvidence": "Context window 1,000,000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "xai/grok-4.5",
+      "field": "totalContextTokens",
+      "value": 500000,
+      "sourceUrl": "https://docs.x.ai/developers/models/grok-4.5",
+      "integerEvidence": "Context window 500,000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "xai/grok-4.6",
+      "field": "totalContextTokens",
+      "value": 500000,
+      "sourceUrl": "https://docs.x.ai/developers/models/grok-4.6",
+      "integerEvidence": "Context window 500,000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "xai/grok-4.7",
+      "field": "totalContextTokens",
+      "value": 500000,
+      "sourceUrl": "https://docs.x.ai/developers/models/grok-4.7",
+      "integerEvidence": "Context window 500,000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "xai/grok-build-0.1",
+      "field": "totalContextTokens",
+      "value": 256000,
+      "sourceUrl": "https://docs.x.ai/developers/models/grok-build-0.1",
+      "integerEvidence": "Context window 256,000",
+      "decision": "integer-as-published"
+    },
+    {
+      "key": "xiaomi/mimo-v2.5",
+      "field": "totalContextTokens",
+      "value": "1M",
+      "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+      "integerEvidence": "上下文窗口：1M",
+      "decision": "official-label",
+      "aliasSourceUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate"
+    },
+    {
+      "key": "xiaomi/mimo-v2.5-pro",
+      "field": "totalContextTokens",
+      "value": "1M",
+      "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+      "integerEvidence": "上下文窗口：1M",
+      "decision": "official-label",
+      "aliasSourceUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate"
+    }
+  ],
+  "integerReviewConvention": "Every positive integer field in the input was checked for a published integer or an explicit K/M label. Prefer a published integer when a source gives both forms; preserve label case/precision otherwise. Explicitly unverified aliases fall back to existing catalog facts or unknown. Vendor references retain vendor provenance; they do not establish channel capabilities."
+}
