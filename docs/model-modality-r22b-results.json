@@ -65,7 +65,7 @@
       "evidenceSha256": "6c5a74ba9c3d346e6f55ac510d512341b0466ad594ff0de793894f8af46340ec",
       "source": {
         "url": "https://api-docs.deepseek.com/news/news260821/",
-        "label": "原厂规格 · DeepSeek · News260821"
+        "label": "原厂规格 · DeepSeek · 更新日志 2026-08-21"
       }
     },
     {
@@ -131,7 +131,7 @@
       "evidenceSha256": "6c5a74ba9c3d346e6f55ac510d512341b0466ad594ff0de793894f8af46340ec",
       "source": {
         "url": "https://api-docs.deepseek.com/news/news250325",
-        "label": "原厂规格 · V3-0324 Release | DeepSeek API Docs"
+        "label": "原厂规格 · DeepSeek · V3-0324 Release"
       }
     },
     {
@@ -670,7 +670,7 @@
       "evidenceSha256": "6e48aa1d0185949f4bff763f64c61daf84db4df45801703ee4a07f0bd792af09",
       "source": {
         "url": "https://tokendance.space/models/ling-3.0-flash",
-        "label": "官方文档 · TokenDance · Ling-3.0-flash"
+        "label": "官方文档 · TokenDance · Ling 3.0 Flash"
       }
     },
     {

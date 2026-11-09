@@ -395,7 +395,7 @@ export const STATIC_MODEL_REGISTRY: Record<string, any> = catalog.registry
 `
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/static-model-catalog.ts'), miniCatalog)
 for (const [name, source] of [['static-model-catalog', miniCatalog], ['unpack-model-catalog', fs.readFileSync(path.join(root, 'apps/miniprogram/miniprogram/utils/unpack-model-catalog.ts'), 'utf8')]]) {
-  write(path.join(root, `apps/miniprogram/miniprogram/utils/${name}.js`), ts.transpileModule(source, {compilerOptions:{target:ts.ScriptTarget.ES2019,module:ts.ModuleKind.CommonJS,alwaysStrict:true}}).outputText)
+  write(path.join(root, `apps/miniprogram/miniprogram/utils/${name}.js`), name === 'unpack-model-catalog' ? transformSync(ts.transpileModule(source, {compilerOptions:{target:ts.ScriptTarget.ES2019,module:ts.ModuleKind.CommonJS,alwaysStrict:true}}).outputText, { minifyWhitespace:true,minifySyntax:true,minifyIdentifiers:true,format:'cjs',charset:'utf8',target:'es2019' }).code : ts.transpileModule(source, {compilerOptions:{target:ts.ScriptTarget.ES2019,module:ts.ModuleKind.CommonJS,alwaysStrict:true}}).outputText)
 }
 // Preflight generated sources AND their compiled JS before replacing Mini files.
 // Keep the original budget; an oversized projection never reaches the worktree.

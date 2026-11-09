@@ -164,7 +164,7 @@ test('R22B DeepSeek V3-0324 restores the vendor release page without inheriting 
     for (const compactSources of [false, true]) {
       const view = render(React.createElement(ModelSpecifications, { provider: channel, model, compactSources }))
       assert.equal(view.getByRole('link').getAttribute('href'), channelUrl)
-      assert.equal(view.getByRole('link').textContent, '原厂规格 · V3-0324 Release | DeepSeek API Docs')
+      assert.equal(view.getByRole('link').textContent, '原厂规格 · DeepSeek · V3-0324 Release')
       view.unmount()
     }
   }

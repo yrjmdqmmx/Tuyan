@@ -1120,3 +1120,61 @@ All final runs pass. [Machine-readable commands, exits, log hashes and initial/f
 | Mini bytes / user limit | **1,569,424 / 1,572,864**; 3,440 remaining |
 
 This is **1,761 suite tests plus two invariant tests**, with zero final failures or skips in those runs. The four execution locks remain equal to main; the founder decision Markdown/JSON are byte-identical to the starting checkout. The 11 maintenance checks are sync-model-catalog, generate-model-audit, report-model-modality-r21, report-model-modality-phase2, sync-card-display, report-model-modality-r22b, report-changed-tests, freeze-execution-capability, check-docker-bundles, freeze-audit-sources and report-source-titles-r23. The Docker check only simulates COPY layouts and runs local esbuild; no Docker process or image build was performed.
+
+## R24 Phase I2
+
+Starting HEAD: `cd72eace3d35088a7509d9bf55bc444a50c00396` on `codex/model-modality-audit`. Items 1, 3b, 3c and 4 are display-only changes. The 15-model image-input decision, qwen3.5-plus 65,536, every picker name and execution fields remain unchanged. No Git write commands, network requests, secrets, inference/paid requests, deployment, Docker/image builds or other-worktree changes were used.
+
+### Item 1 — identifiable source links
+
+Web evidence and lifecycle dialog anchors reuse the model-card footer's `var(--accent, #267f68)` and the same 13px Lucide `ExternalLink` component. Underlines, hover, keyboard focus and wrapping remain visible for long labels. The new DOM/CSS test opens all 1,064 evidence dialogs plus seven lifecycle dialogs, checks the class/icon hooks, and compares computed colour with the footer (jsdom retains the identical `var()` expression where custom properties are unresolved).
+
+Mini source buttons in the model-picker dialog retain the existing green `model-copy` class and add a small `复制链接` hint with wrapping. The native copy confirmation uses that same existing green for its action. Tests check the WXML/WXSS hooks, invoke every copy confirmation and confirm each clipboard URL. Native WeChat rendering has not been visually verified; Mini deployment remains paused.
+
+### Items 3b / 3c — corrected titles and independent strict scan
+
+Every source row now has `role · site · page`. Captured titles lose site suffixes; opaque Qianfan IDs use a readable model-list fallback; DeepSeek news IDs become dated update-log titles unless a captured release name exists. Picker labels remain untouched. All ordered URLs and roles are checked against a frozen starting-HEAD fixture, and label deduplication remains enforced.
+
+| Surface | Cards/dialogs | Source rows | Changed titles | Strict title findings before → after |
+| --- | ---: | ---: | ---: | ---: |
+| Web cards/evidence dialogs | 1,064 | 2,494 | 365 | 523 → 0 |
+| Mini cards/copy dialogs | 1,064 | 1,103 | 239 | 341 → 0 |
+| Web lifecycle dialogs | 7 | 7 | 0 | 0 → 0 |
+
+The strict rule rejects missing role/site/page segments, opaque letter/digit IDs, captured site suffixes, news/anchor fragments, lowercase and kebab/snake slugs, raw hostnames/API paths, leftover separators, repeated page brands, and damaged dotted versions. Brand/version tokens, parameter tokens, genuine model/date hyphens and documented API abbreviations such as `Txt2img` are distinguished from random IDs. Negative tests exercise each defect class. The old R23 scan accepted raw captured titles and explicitly exempted opaque IDs/curated slugs; its earlier “0 bad titles” claim was wrong and is withdrawn in the linked R23 report.
+
+The full **604 source-title changes**, exact rule, per-rule counts and complete dialog/tooltip changes are in [R24 Markdown](model-card-source-titles-r24.md) and [R24 JSON](model-card-source-titles-r24.json). The baseline gzip has SHA-256 `40cd35c47a9f8d8c30423b8620c969471c44667a927f807fa72b1625c915d721`, pinned by a test. Both the report and actual client-dialog tests cover all 1,064 cards per client.
+
+### Item 4 — consistent public copy
+
+Unknown modalities keep their available field attribution instead of following it with 暂无官方资料; absent attribution still shows 暂无官方资料. Modality states and evidence values are unchanged. Conflict copy is now `渠道资料与此前记录不一致，已保留确认过的模态；未确认的项显示为未知。` The explicit-exclusion variant says `渠道资料与此前记录不一致，以渠道明确说明的模态范围为准。` Identical dialog lines are emitted once, and dated catalog attribution replaces its undated duplicate.
+
+Web findings: source/no-source contradictions **728 → 0**, internal wording **102 → 0**, duplicate lines **1,028 → 0**. Mini findings remain **0 → 0** for each category. Checks inspect actual rendered details, all modality tooltips, every compiled Mini icon/copy dialog and notice copy; they distinguish separate input/output fields.
+
+### Mini budget, review ledger and screenshot recipe
+
+Mini source is **1,563,042 / 1,572,864 bytes**, leaving **9,822 bytes**; runtime source is **1,137,435 bytes**. This saves **6,382 bytes** against I1. Captured-title trimming and existing esbuild compaction of generated catalog decoding/presentation helpers preserve readable TS, exports and data. The build compiles into a temporary directory, compacts before checking the complete source size, and writes shrinking outputs first. The display generator also preflights all Mini writes. Both the original budget test and the stricter **1,569,427-byte** historical assertion remain unchanged.
+
+The changed-test ledger records the two vendor-tooltip expectations, the source-only R23 normalization rule, two DeepSeek release-title literals, the staged build command, and all **84 changed literals out of 297** in the R9 fixture. R9 still compares to fixed literal objects. No self-derived assertions were introduced. The regenerated R22B report changes only three source labels.
+
+`.audit-input/r24/shots-m4.mjs` and its manifest were prepared and syntax/identity checked **without execution**. They specify four shots at widths **1280/390**: `desktop|mobile-51-source-dialog-qwen3.6-plus-m4.png` and `desktop|mobile-52-source-dialog-qianfan-deepseek-v3.2-think-m4.png`. The Qianfan card previously showed `Klqx7b1i5`. Both channel/developer selectors use `^Label(\s*\d+)?$`, and the open-dialog recipe checks link icons and source visibility. Browser/native visual acceptance remains an operator task.
+
+Final validation commands, exit codes, timestamps and log paths are recorded in [R24 I2 validation](model-modality-r24-i2-validation.json).
+
+### Final I2 validation
+
+| Check | Result |
+| --- | --- |
+| Web full suite, `NODE_OPTIONS=--no-experimental-webstorage` | **1,487/1,487** |
+| Mini full suite | **175/175** |
+| `node --test scripts/*.test.mjs` | **64/64**, including the staged-build oversize refusal test |
+| `node --test packages/api/src/*.test.js` | **33/33** |
+| Targeted Core / Gateway suites | **7/7**, **5/5**, including all four execution locks |
+| Offline invariants (names, 15-model decision, source coverage, archive, prior recipe) | **6/6** |
+| Web / Mini / Core builds | **3/3** |
+| Workspace check scripts | **6/6** |
+| Explicit Core `npx tsc --noEmit` | **0 errors** |
+| Maintenance `--check` commands | **12/12**, the 11 I1 commands plus `report-source-titles-r24` |
+| Changed-test ledger | **0 flagged**, current content hashes and frozen inventory pass |
+
+Total: **1,777 tests**, zero failures/skips. The staged-build regression injects oversized compiler output only into a temporary directory, verifies the exact **1,572,875-byte** rejection message, and proves that the original source file remains byte-identical with no new source files. The actual Mini package stays at **1,563,042 bytes**. All three builds were completed before final acceptance suites. The final working HEAD remains `cd72eace3d35088a7509d9bf55bc444a50c00396`; no commit, checkout, reset, staging or push was performed.

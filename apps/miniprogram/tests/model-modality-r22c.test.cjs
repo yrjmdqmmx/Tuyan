@@ -15,7 +15,7 @@ test('R22C Mini presentation distinguishes supported, channel exclusion, vendor 
  assert.match(icons[0].tooltip,/渠道资料.*2026-11-09/)
  const vendor=modalityIconStates('文本',{...fact,provenance:'vendor'})
  assert.equal(vendor[1].accessibleLabel,'图像：不支持');assert.equal(vendor[1].state,'unsupported')
- assert.equal(vendor[2].tooltip,'暂无官方资料');assert.deepEqual(fact,before)
+ assert.equal(vendor[2].tooltip,'原厂资料 · Example · Spec（2026-11-09）');assert.deepEqual(fact,before)
 })
 test('R22C compiled Mini Qwen and historical cards use the same accessible labels and captured quote as Web',()=>{
  for(const model of STATIC_MODEL_REGISTRY.tokendance.models){

@@ -8,7 +8,7 @@ const {unpackModelCatalog}=createRequire(import.meta.url)('../apps/miniprogram/m
 test('R22B source identity removes tracking, fragments and trailing slashes without merging meaningful queries',()=>{
  assert.deepEqual(uniqueSources(['https://example.com/m/','https://example.com/m#i','https://example.com/m?utm_source=docs','https://example.com/m?model=a']),['https://example.com/m/','https://example.com/m?model=a'])
  assert.equal(sourceIdentity('https://example.com/m?b=2&a=1'),sourceIdentity('https://example.com/m?a=1&b=2'))
- assert.equal(sourceTitle('https://api-docs.deepseek.com/news/news250325/'),'V3-0324 Release | DeepSeek API Docs')
+ assert.equal(sourceTitle('https://api-docs.deepseek.com/news/news250325/'),'DeepSeek · V3-0324 Release')
 })
 test('R22B compact delta tags roundtrip literal prefixes and independently owned nested records',()=>{
  const value=Array.from({length:40},(_,i)=>({names:['^literal','~literal','^'],values:[1,2,3,4,5,6,7,8,i]}))

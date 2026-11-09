@@ -54,7 +54,7 @@ test('R22C vendor exclusions retain 不支持; vendor silence stays unknown and 
   const inputs = within(screen.getByRole('group', {name:'输入模态'}))
   assert.equal(inputs.getByRole('img', {name:'图像：不支持'}).dataset.state, 'unsupported')
   assert.match(inputs.getByRole('img', {name:'文本：支持'}).title, /^原厂资料.*2026-11-09/)
-  assert.equal(inputs.getByRole('img', {name:'视频：未知'}).title, '暂无官方资料')
+  assert.equal(inputs.getByRole('img', {name:'视频：未知'}).title, '原厂资料 · Example · Spec（2026-11-09）')
   for (const [key, row] of Object.entries(phase2.tables)) {
     cleanup()
     render(React.createElement(ModelSpecifications, {provider:'bailian',model:{id:key.slice(key.indexOf('/') + 1)}}))

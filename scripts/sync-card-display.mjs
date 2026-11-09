@@ -9,21 +9,33 @@ import { transformSync } from 'esbuild'
 import { STATIC_MODEL_REGISTRY } from '../apps/web/src/lib/staticModelCatalog.js'
 const root = fileURLToPath(new URL('../', import.meta.url)), check = process.argv.includes('--check')
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))
+const miniWrites = new Map()
 const write = (file, value) => {
-  const target = path.join(root, file)
+  const outputArg = process.argv.indexOf('--mini-output')
+  const target = outputArg >= 0 && file.startsWith('apps/miniprogram/miniprogram/') ? path.join(process.argv[outputArg + 1], file.slice('apps/miniprogram/miniprogram/'.length)) : path.join(root, file)
   if (check) assert.equal(fs.readFileSync(target, 'utf8'), value, 'Card display drift: ' + file)
+  else if (outputArg < 0 && file.startsWith('apps/miniprogram/miniprogram/')) miniWrites.set(target, value)
   else { fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, value) }
+}
+function flushMini() {
+  if (!miniWrites.size) return
+  const files = dir => fs.readdirSync(dir, {withFileTypes:true}).flatMap(e => e.isDirectory() ? files(path.join(dir,e.name)) : [path.join(dir,e.name)])
+  const size = file => fs.existsSync(file) ? fs.statSync(file).size : 0
+  const all = new Set([...files(path.join(root,'apps/miniprogram/miniprogram')), ...miniWrites.keys()])
+  const bytes = [...all].reduce((n,file) => n + (miniWrites.has(file) ? Buffer.byteLength(miniWrites.get(file)) : size(file)), 0)
+  if (bytes > 1572864) throw Error(`Mini source projection ${bytes} exceeds 1572864 bytes; no Mini output written`)
+  for (const [file,value] of [...miniWrites].sort(([a,x],[b,y]) => (Buffer.byteLength(x)-size(a))-(Buffer.byteLength(y)-size(b)))) fs.writeFileSync(file,value)
 }
 // Compact the picker and its audit helper's generated JS; retain readable TS and names.
 // The Mini build runs this after tsc so both size ceilings remain meaningful.
 const ts = createRequire(new URL('../apps/miniprogram/package.json', import.meta.url))('typescript')
 const picker = 'apps/miniprogram/miniprogram/components/model-picker/model-picker'
 const options = ts.convertCompilerOptionsFromJson(read('apps/miniprogram/tsconfig.json').compilerOptions, root).options
-for (const target of [picker, 'apps/miniprogram/miniprogram/utils/model-audit']) {
+for (const target of [picker, 'apps/miniprogram/miniprogram/utils/model-audit', 'apps/miniprogram/miniprogram/utils/unpack-model-catalog', 'apps/miniprogram/miniprogram/utils/model-presentation']) {
   const compiled = ts.transpileModule(fs.readFileSync(path.join(root, target + '.ts'), 'utf8'), { compilerOptions: options }).outputText
   write(target + '.js', transformSync(compiled, { minifyWhitespace: true, minifySyntax: true, minifyIdentifiers: true, ...(target === picker ? {} : { format: 'cjs' }), charset: 'utf8', target: 'es2019' }).code)
 }
-if (process.argv.includes('--mini-picker')) process.exit(0)
+if (process.argv.includes('--mini-picker')) { flushMini(); process.exit(0) }
 for (const [name, source] of Object.entries({
   'reviewed-models': 'apps/web/src/data/model-card-specifications.json',
   'specific-pages': 'config/channel-audit/specific-model-page-overrides.json',
@@ -81,6 +93,7 @@ function collectUrls(value) {
 }
 for (const value of [STATIC_MODEL_REGISTRY, read('config/model-audit.generated.json'), read('packages/api/src/card-data/reviewed-models.json'), read('packages/api/src/card-data/specific-pages.json'), historical]) collectUrls(value)
 for (const url of Object.keys(sourceTitles)) if (!referenced.has(url)) delete sourceTitles[url]
+for (const url of Object.keys(sourceTitles)) sourceTitles[url] = sourceTitles[url].split(/ - | \| | – |·(?=百度|阿里|DeepSeek)/)[0].trim()
 write('packages/api/src/card-data/source-titles.json', JSON.stringify(sourceTitles) + '\n')
 // Package-local names keep Core independent of the Web catalog. Mini reuses its
 // existing catalog instead of shipping a second copy of these identities.
@@ -114,4 +127,5 @@ const exports = [...combined.matchAll(/export (?:function|const) (\w+)/g)].map(m
 const commonjs = combined.replace(/export /g, '') + '\nmodule.exports = {' + exports.join(',') + '};\n'
 write('apps/miniprogram/miniprogram/utils/card-presentation.js', '// Generated\n' + transformSync(commonjs, { minify: true, charset: 'utf8', format: 'cjs', target: 'es2019' }).code)
 write('apps/miniprogram/miniprogram/utils/card-presentation.d.ts', 'export function displayModalities(values: string[]): string[]\nexport function displayModalityText(value: string): string\nexport function historicalChannelIds(pages: Record<string, {verified: boolean}>): Set<string>\nexport function sourceTitle(value: string, model?: {id?: string; label?: string; displayName?: string}): string\nexport function titleSourceRows<T extends {url: string; label: string}>(rows: T[], model?: {id?: string; label?: string; displayName?: string}): T[]\nexport interface ModalityIcon { id: string; label: string; state: string; detail: string; accessibleLabel: string; tooltip: string }\nexport function modalityIconStates(value: string, fact?: object, provider?: string, modelId?: string): ModalityIcon[]\n'.replace(/[ \t]*([:;,{}<>?])[ \t]*/g, '$1').replace(/\b(values|value|model|rows|fact|provider|modelId)(?=[?:])/g, name => ({values:'v',value:'v',model:'m',rows:'r',fact:'f',provider:'p',modelId:'i'})[name]))
+flushMini()
 console.log(`Shared card display data: ${check ? 'no drift' : 'generated'}; ${capture.pages.filter(row => row.verified).length}/74 verified TokenDance pages`)

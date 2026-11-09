@@ -76,6 +76,14 @@ function modelSubject(value, keys, name) {
   }
   return readableSubject(value)
 }
+function pageSubject(value) {
+  let title = value.split(/ - | \| | – |·(?=百度|阿里|DeepSeek)/)[0].trim()
+  if (/^[a-z]|_|-[a-z]{2}/.test(title)) title = readableSubject(title)
+  title = title.replace(/ · (.*)/, (_, rest) => '（' + rest.replaceAll(' · ', '，') + '）').replace(/\brecraftv(\d+)/gi, 'Recraft V$1')
+  // Site prefixes are separate from model names. Remove repetitions within a page.
+  title = title.replace(/\b([A-Z][a-z]+)(.*?) By \1\b/i, '$1$2')
+  return title
+}
 export function sourceTitle(value, model = {}) {
   const parts = value.replace(/^https?:\/\//, '').split(/[?#]/)[0].replace(/\/+$/, '').split('/')
   const host = parts.shift(), path = decodeURIComponent(parts.join('/')).replace(/\.(html|md)$/, '')
@@ -95,14 +103,16 @@ export function sourceTitle(value, model = {}) {
   const name = /[a-z]\d+-\d+(?![a-z\d])/i.test(rawName) && /\d\.\d/.test(knownName) ? knownName : rawName
   const keys = [model.id, name].filter(Boolean).map(compactSubject)
   const own = name && keys.some(key => compactSubject(slugs.join('/')).endsWith(key) && (key.length > 3 || compactSubject(subject) === key))
-  if (own) return site + ' · ' + name + (api ? ' API 文档' : '')
+  if (own) return site + ' · ' + pageSubject(name) + (api ? ' API 文档' : '')
   const stored = storedTitles[value.split(/[?#]/)[0].replace(/\/+$/, '')]
-  if (stored) return stored
+  if (stored) return site + ' · ' + pageSubject(stored)
   const general = {models:'模型列表',model:'模型说明','model-list':'模型列表','models-overview':'模型概览','model-overview':'模型概览','models_overview':'模型概览','model-pricing':'模型定价',pricing:'价格与规格','newly-released-models':'模型更新','model-depreciation':'模型下线公告',deprecations:'模型下线公告',deprecation:'模型下线公告',deprecate:'模型下线公告','api-reference':'API 文档','api-docs':'API 文档',docs:'文档首页',documentation:'文档首页',welcome:'文档首页',overview:'概览','stable-diffusion-35':'Stable Diffusion 3.5'}
-  let title = general[subject] || modelSubject(subject, keys, name) || '文档首页'
+  const news = /^news(\d{2})(\d{2})(\d{2})$/i.exec(subject)
+  const opaque = /^(?=[a-z0-9]*\d)(?=[a-z0-9]*[a-z])[a-z0-9]{8,}$/i.test(subject) && !modelSubjects.has(compactSubject(subject))
+  let title = news ? `更新日志 20${news[1]}-${news[2]}-${news[3]}` : general[subject] || (opaque ? site === '百度千帆' ? '模型列表' : name || '模型说明' : modelSubject(subject, keys, name)) || '文档首页'
   if (api) title = modelSubject(slugs.slice(slugs.indexOf('models') + 2).join(' '), keys, name) + ' API 文档'
   if (/^\d+$/.test(title)) title = '文档 ' + title
-  return site + ' · ' + title
+  return site + ' · ' + pageSubject(title)
 }
 // Distinct human descriptions replace the old host/path collision suffix.
 export function titleSourceRows(rows, model = {}) {

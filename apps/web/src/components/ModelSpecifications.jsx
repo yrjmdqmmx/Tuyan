@@ -38,9 +38,9 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
     .filter(([, scope]) => scope).map(([label, scope]) => `${t(label)}：${t(scope === '原厂' ? '源自原厂' : ['图研既有核实', '图研输入要求'].includes(scope) ? scope : '渠道公布')}`)
   const catalogDates = Object.entries(data.fields).filter(([, fact]) => fact.provenance === 'catalog' && fact.verifiedAt)
     .map(([field, fact]) => `${t({inputModalities:'输入',outputModalities:'输出',totalContextTokens:'上下文窗口',maxOutputTokens:'最大输出'}[field])}：${t('图研既有核实')} ${fact.verifiedAt}`)
-  const details = [data.checkedAt && `${t('核实日期')} ${data.checkedAt}`, ...provenance, ...catalogDates, ...modalityDetails,
+  const details = [...new Set([data.checkedAt && `${t('核实日期')} ${data.checkedAt}`, ...provenance, ...catalogDates, ...modalityDetails,
     data.contextExact && `${t('上下文窗口')}：${data.contextExact}`, data.maxOutputExact && `${t('最大输出')}：${data.maxOutputExact}`,
-    (data.unverified || model.catalogReview?.status === 'pending') && t('未核实'), model.catalogReview?.reason, model.savedChoice?.disabledReason, modelLifecycleMessage(provider, data.lifecycle), data.note].filter(Boolean).join('\n')
+    (data.unverified || model.catalogReview?.status === 'pending') && t('未核实'), model.catalogReview?.reason, model.savedChoice?.disabledReason, modelLifecycleMessage(provider, data.lifecycle), data.note].filter(Boolean).flatMap(value => value.split('\n')).filter(line => !catalogDates.some(dated => dated.startsWith(line + ' '))))].join('\n')
   const modalityButton = (states, direction) => <button type="button" className="model-modality-trigger" aria-label={`${t(direction)} · ${t('官方文档规格')}；${states.map(item => item.accessibleLabel.split(/(：| · )/).map(part => t(part)).join('')).join('；')}`} onClick={event => { event.stopPropagation(); setShowSources(true) }}><ModalityIcons states={states} direction={direction} /></button>
   const url = data.sources[0]
   const sources = <div className={`model-spec-sources${compactSources ? ' is-compact' : ''}`} aria-label={t('官方文档')}>
@@ -60,7 +60,7 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
     {footerActions ? <div className="model-spec-footer">{sources}{footerActions}</div> : sources}
     {showSources && <WorkspaceDialog className="model-evidence-dialog" title={t('官方文档规格')} onClose={() => setShowSources(false)}>
       <p className="tw-preserve-text">{details}</p>
-      {sourceRows.map(source => <p key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}</a></p>)}
+      {sourceRows.map(source => <p key={source.url}><a className="model-evidence-source" href={source.url} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} aria-hidden="true" /><span>{source.label}</span></a></p>)}
     </WorkspaceDialog>}
   </div>
 }
@@ -73,6 +73,6 @@ export function ModelLifecycleBadge({ lifecycle, provider }) {
     <span className="tw-catalog-tags"><span className="is-unavailable" role="button" tabIndex={0} title={message} aria-label={`将下线：${message}`} onClick={() => setOpen(true)} onKeyDown={event => {
       if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setOpen(true) }
     }}>将下线</span></span>
-    {open && <div onClick={event => event.stopPropagation()}><WorkspaceDialog className="model-evidence-dialog" title="下线公告" onClose={() => setOpen(false)}><p>{message}</p><a href={lifecycle.sourceUrl} target="_blank" rel="noopener noreferrer">下线公告 · {sourceTitle(lifecycle.sourceUrl)}</a></WorkspaceDialog></div>}
+    {open && <div onClick={event => event.stopPropagation()}><WorkspaceDialog className="model-evidence-dialog" title="下线公告" onClose={() => setOpen(false)}><p>{message}</p><a className="model-evidence-source" href={lifecycle.sourceUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} aria-hidden="true" /><span>下线公告 · {sourceTitle(lifecycle.sourceUrl)}</span></a></WorkspaceDialog></div>}
   </>
 }

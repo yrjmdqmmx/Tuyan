@@ -31,10 +31,11 @@ export function modalityIconStates(value, fact, provider, modelId, missingIds = 
     const quote = group && group[2].find(([, ids]) => ids.split('|').includes(subject))?.[0]
     const date = fact?.verifiedAt
     const source = { channel: '渠道资料', vendor: '原厂资料', catalog: '图研既有核实', product: '图研输入要求' }[fact?.provenance]
+    const attribution = source ? `${source}${fact.sourceUrl ? ` · ${sourceTitle(fact.sourceUrl)}` : ''}${date ? `（${date}）` : ''}` : '暂无官方资料'
     const tooltip = ['unknown', 'unlisted'].includes(item.state)
-      ? (channel || provider === 'tokendance' || fact?.modalityMasks?.includes(item.id) ? `${provider === 'tokendance' && missingIds.has(modelId) ? '渠道页无此型号' : '渠道未标注此模态'}${date ? `（核实日期 ${date}）` : ''}` : '暂无官方资料')
+      ? (channel || provider === 'tokendance' || fact?.modalityMasks?.includes(item.id) ? `${provider === 'tokendance' && missingIds.has(modelId) ? '渠道页无此型号' : '渠道未标注此模态'}${date ? `（核实日期 ${date}）` : ''}` : attribution)
       : quote ? `渠道标注：${quote}（${date}）`
-        : source ? `${source}${fact.sourceUrl ? ` · ${sourceTitle(fact.sourceUrl)}` : ''}${date ? `（${date}）` : ''}` : '暂无官方资料'
+        : attribution
     return { ...item, accessibleLabel: `${item.label}：${wording}${item.detail && item.detail !== item.label ? ` · ${item.detail}` : ''}`, tooltip }
   })
 }

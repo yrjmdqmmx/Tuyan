@@ -52,8 +52,8 @@
     {
       "file": "apps/web/tests/model-audit-r13.test.mjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "647e01173eff514b01f8f6fb926200f32d4576ceec42fbb4583afa61551fd2eb",
-      "diffSha256": "60d3ce9aac39448ae1af221757737df10926439b3e3c4c37820d8d806b7dd702"
+      "contentSha256": "fc04f191a516e8843cfab9744d03938a41ae90c76298e8c37697fd2f1851a369",
+      "diffSha256": "d2f442d9f1ee83b2ab0a411a919fe1c1fb423987f5b3c2c88c74198485e8003e"
     },
     {
       "file": "apps/web/tests/model-audit-r4.test.mjs",
@@ -144,8 +144,8 @@
     {
       "file": "apps/miniprogram/package.json",
       "comparisonBase": "8c456709",
-      "contentSha256": "912336050548d1438ed16a20ba1a781133b556ab8e242b3035325e8ac4a79e9e",
-      "diffSha256": "c37ccec825bb7936638254720c92cf0f0545d496bac548ab07c7ffa86b79d906"
+      "contentSha256": "de31b355c3d5d63a8f2b327f8bffdfb27f47b3e5c15fa0d48cc343a2a77c03d5",
+      "diffSha256": "76a5418e12f3d77841c3cee2c287f0450a01cf40f862a2276a1a6c4a0d2d847d"
     },
     {
       "file": "config/model-audit.generated.json",
@@ -188,8 +188,8 @@
     {
       "file": "apps/miniprogram/tests/model-modality-r22c.test.cjs",
       "comparisonBase": "1dcd8b13",
-      "contentSha256": "0bda6c1f02ff31e6eeb4c3991d723f67df4c30009bea2cbc94da2b521037759e",
-      "diffSha256": "7551a3e8ca16e245cf4efbe5492cda9637d1109f51d216f4137a5c4686b17d82"
+      "contentSha256": "6718932cc83eaf109dd29df36ce86b20ad4e9c43b859a0d61674bcdee25005af",
+      "diffSha256": "49e8dcfb1e671fedf9cd9496ff58c0b1d012c4f0cc3ab55b51b51ea1938dc3b7"
     },
     {
       "file": "apps/web/tests/model-card-source-titles-r23.test.mjs",
@@ -206,8 +206,8 @@
     {
       "file": "test-support/source-titles-r23.mjs",
       "comparisonBase": "fd29cf36",
-      "contentSha256": "3149cf63c1ce7a18f771dd1c8b37a1c1df479b53369524c4f9b8145b46f508b6",
-      "diffSha256": "f01620e36b2251c000db8a7f4ded6c2e5447ff20659caf23afd43296438816dd"
+      "contentSha256": "a854d7d1231d2c1ee4ba45eedb5f6872b3f0b190f865b9d8c8240f529b1e3244",
+      "diffSha256": "e53745efdfbe87fece1416b2337ce12a329991fd5cd0bdf3f802f696cd7d81b7"
     },
     {
       "file": "apps/auth-gateway/tests/model-modality-r21.test.js",
@@ -232,6 +232,24 @@
       "comparisonBase": "4e18513c",
       "contentSha256": "e99e79ccf99a2eae557a618618d3cbaa2510bb3c5f129c4d8819d368705611f7",
       "diffSha256": "315490b7d483c53af682ac93d63d0463200abe2c3770effb544ad5c6fdf926b0"
+    },
+    {
+      "file": "apps/web/tests/model-modality-r22c.test.mjs",
+      "comparisonBase": "cd72eace",
+      "contentSha256": "a2d50f4d11d652a1a23151355a3b8e4feae3b53bfa42a788c2cd461b9cdced97",
+      "diffSha256": "cff03f4ea9de5123a48c2e23e3172f5ae3e512401d8d1b79ed26dbe92ac6857d"
+    },
+    {
+      "file": "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
+      "comparisonBase": "cd72eace",
+      "contentSha256": "ff0bc9e280e06360554a5e636aa8dae154769909037bb4f717ba366aefbd5626",
+      "diffSha256": "f86f07ce175813ffc9823c4ace791e2d7eaf4ab2c46d780c7b3473db28b7b584"
+    },
+    {
+      "file": "scripts/card-presentation-r22b.test.mjs",
+      "comparisonBase": "cd72eace",
+      "contentSha256": "e306c2c2d65e70264bc2be9cad79a256524447680ea46b91af4e55c7d4000b55",
+      "diffSha256": "4f61b9bf496d5d992121786b9e78569b886f34f3c39671b3fe1d512b540f6dab"
     }
   ]
 }

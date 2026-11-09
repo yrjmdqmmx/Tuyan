@@ -62,6 +62,7 @@ for (const [url, model, expected] of f3TitleExamples) assert.equal(sourceTitle(u
 const cell = value => String(value).replaceAll('|','&#124;').replaceAll('\n','<br>')
 const report = [
   '# R23 Phase F / F3 — source title scan','',
+  '**R24 correction:** the earlier zero-bad-titles claim was incorrect. This older heuristic exempted opaque identifiers and curated slugs, and accepted captured titles with site suffixes. The stricter rule, starting-HEAD findings and complete Phase I2 changes are in [R24 source-title review](model-card-source-titles-r24.md) and its JSON. This report remains the cumulative comparison to pre-F, not the current acceptance scan.','',
   'Baseline: `1dcd8b13` (pre-F), frozen in `test-support/fixtures/source-titles-1dcd8b13.json.gz`. The fixture contains every Web/Mini card name, URL and label; tests require all 1,064 identities, names and ordered URL lists per client to remain identical. No network or Git writes.','',
   '| Client | Cards | Source rows | Changed titles | Changed cards | Unresolved heuristic findings |','| --- | ---: | ---: | ---: | ---: | ---: |',
   ...Object.entries(counts).map(([client,c])=>`| ${client} | ${c.cards} | ${c.sourceRows} | ${c.changedTitles} | ${c.changedCards} | ${c.suspiciousTitles} |`),'',

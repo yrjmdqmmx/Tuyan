@@ -2,10 +2,10 @@
   "base": "8c456709",
   "counts": {
     "files": 23,
-    "assertionAndFixtureInputChanges": 138,
+    "assertionAndFixtureInputChanges": 140,
     "consumedJsonFixtures": 2,
-    "semanticFixtureChanges": 616,
-    "justified": 753,
+    "semanticFixtureChanges": 617,
+    "justified": 756,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -22,7 +22,8 @@
     "R23 Phase F retains all execution, picker-name, source URL/order/role, layout, value and modality-state assertions. Source-label expectations now include the unchanged curated card name or a readable page subject with numeric separators. The exact historical TokenDance hint changes to 渠道页无此型号. Branch-added Mini R22B/R22C expectations are reviewed against 1dcd8b13; existing follow-up bases remain intact. New client scans cover all 1064 cards, all Web evidence/notice dialogs and all Mini copy callbacks; both source byte ceilings are unchanged. Saved-ID/full-model equality is preserved in production code, without weakening that test.",
     "R23 Phase F3 adds catalog-backed dotted-version controls to both existing client scan tests and reviews the independent shared heuristic against fd29cf36. All pre-existing client assertions remain. Genuine known model hyphens are valid, and parameter tokens such as 31B are no longer mistaken for split versions. Known dotted corrections may differ from a slug-like picker label only in source titles. Both byte ceilings and all 1064 identity/name/URL assertions remain unchanged. Additional F3 cases retain complete BFL brackets and dotted FLUX.1.1 spelling, ignore escaped Markdown candidates on general pages, and keep short IDs from relabeling another model family.",
     "R23 Phase H2 corrects two stale branch-added Core/Gateway channel-only expectations. Their files are byte-identical at fd29cf36 and operator HEAD c75aa00f, so the existing follow-up baseline applies. Expected appended URLs are derived from vendor-provenance fields (the fields labelled 源自原厂), with canonical deduplication, channel-first order, independent portal/OpenAPI/JSON rejection and 原厂规格 labels. Explicit deepseek-v4.1-flash and qwen3.6-plus cases tie the appended URL to maxOutputTokens. No product code, execution expectation or historical fallback changes; two follow-up entries are recorded separately from the main-existing counts.",
-    "R24 Phase I1 replaces the R9/R10 self-derived title expectations with fixed literals (297 URL/label objects and the exact Kimi K3 title). The Core source filter gains a string type predicate after accurate .d.mts declarations expose nullable URLs; it changes no expected value. The Mini historical byte ceiling remains unchanged."
+    "R24 Phase I1 replaces the R9/R10 self-derived title expectations with fixed literals (297 URL/label objects and the exact Kimi K3 title). The Core source filter gains a string type predicate after accurate .d.mts declarations expose nullable URLs; it changes no expected value. The Mini historical byte ceiling remains unchanged.",
+    "R24 Phase I2 preserves all source URLs/order/roles and all picker/execution locks. Only source-title spelling and field-source attribution change. The strict scan replaces opaque-ID and picker-slug exemptions; Web and Mini dialog scans include duplicate lines, internal terms and source/no-source contradictions. Staged Mini compilation prevents temporary budget overruns; both old size guards stay unchanged."
   ],
   "files": [
     {
@@ -1041,7 +1042,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r13.test.mjs",
-      "diffSha256": "60d3ce9aac39448ae1af221757737df10926439b3e3c4c37820d8d806b7dd702",
+      "diffSha256": "d2f442d9f1ee83b2ab0a411a919fe1c1fb423987f5b3c2c88c74198485e8003e",
       "changes": [
         {
           "line": 40,
@@ -1321,6 +1322,19 @@
             "docs/model-modality-r22b-results.json",
             "scripts/lib/pack-model-catalog.mjs",
             "scripts/card-presentation-r22b.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 167,
+          "old": "原厂规格 · V3-0324 Release | DeepSeek API Docs",
+          "new": "原厂规格 · DeepSeek · V3-0324 Release",
+          "reason": "Remove the captured site suffix and add the curated site segment. Raw captured title, source URL and modality independence assertions remain unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "packages/api/src/card-data/source-titles.json"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -1869,6 +1883,19 @@
             "apps/web/tests/model-card-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 93,
+          "old": "297 fixed R9 literal source rows from I1",
+          "new": "297 fixed literal rows; 84 source titles corrected for I2",
+          "reason": "Retain independent literal URL/title assertions; title-only corrections strip source slugs and preserve format qualifiers. Every changed literal is listed in the follow-up fixture review.",
+          "evidence": [
+            "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
+            "docs/model-card-source-titles-r24.md"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -2364,7 +2391,7 @@
   "fixtures": [
     {
       "file": "apps/miniprogram/package.json",
-      "diffSha256": "c37ccec825bb7936638254720c92cf0f0545d496bac548ab07c7ffa86b79d906",
+      "diffSha256": "76a5418e12f3d77841c3cee2c287f0450a01cf40f862a2276a1a6c4a0d2d847d",
       "changes": [
         {
           "phase": "R22 Phase C",
@@ -2378,7 +2405,24 @@
             "apps/miniprogram/tests/package-budget.test.cjs",
             "apps/miniprogram/tests/model-audit-r15.test.cjs"
           ],
-          "verdict": "JUSTIFIED"
+          "verdict": "JUSTIFIED",
+          "supersededBy": "R24 Phase I2 staged build"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 9,
+          "old": "tsc && node ../../scripts/sync-card-display.mjs --mini-picker",
+          "new": "node build.mjs",
+          "reason": "Compile to a temporary directory and compact before measuring the full source package, then copy shrinking files first. Avoid transient oversize tsc output; existing source and stricter historical byte assertions remain unchanged. Use the existing esbuild compaction for generated catalog decoding/presentation helpers; readable TS and all exports remain.",
+          "evidence": [
+            "apps/miniprogram/build.mjs",
+            "scripts/sync-card-display.mjs",
+            "scripts/sync-model-catalog.mjs",
+            "apps/miniprogram/tests/package-budget.test.cjs"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/scripts/build"
         }
       ]
     },
@@ -18641,7 +18685,7 @@
     {
       "file": "apps/miniprogram/tests/model-modality-r22c.test.cjs",
       "comparisonBase": "1dcd8b13",
-      "diffSha256": "7551a3e8ca16e245cf4efbe5492cda9637d1109f51d216f4137a5c4686b17d82",
+      "diffSha256": "49e8dcfb1e671fedf9cd9496ff58c0b1d012c4f0cc3ab55b51b51ea1938dc3b7",
       "changes": [
         {
           "line": 25,
@@ -18656,6 +18700,19 @@
             "packages/api/src/card-presentation.mjs",
             "apps/web/tests/model-card-source-titles-r23.test.mjs",
             "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 18,
+          "old": "Vendor unknown tooltip equals 暂无官方资料",
+          "new": "Vendor unknown tooltip equals 原厂资料 · Example · Spec（2026-11-09）",
+          "reason": "Same source attribution correction in the compiled Mini helper; state and input-fact immutability assertions remain intact.",
+          "evidence": [
+            "packages/api/src/modality-presentation.mjs",
+            "apps/miniprogram/tests/model-card-i2-r24.test.cjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -18702,7 +18759,7 @@
     {
       "file": "test-support/source-titles-r23.mjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "f01620e36b2251c000db8a7f4ded6c2e5447ff20659caf23afd43296438816dd",
+      "diffSha256": "e53745efdfbe87fece1416b2337ce12a329991fd5cd0bdf3f802f696cd7d81b7",
       "changes": [
         {
           "line": 14,
@@ -18713,6 +18770,19 @@
           "evidence": [
             "docs/model-card-source-titles-r23.md#r23-f3-corrections",
             "packages/api/src/card-presentation.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 26,
+          "old": "Reject any punctuation/case difference from a compact-equivalent picker name",
+          "new": "Accept readable source-only capitalization/spacing while rejecting leftover slugs; picker names remain locked",
+          "reason": "R24 fixes source slugs without changing picker spelling. The new independent strict scanner adds required role/site/page, opaque IDs, suffixes, fragments, hostnames, duplicate brands and lowercase/kebab/snake rejection. Existing lost-dot and genuine-hyphen controls remain.",
+          "evidence": [
+            "test-support/source-titles-r24.mjs",
+            "docs/model-card-source-titles-r24.md"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -18830,6 +18900,1144 @@
           "verdict": "JUSTIFIED"
         }
       ]
+    },
+    {
+      "file": "apps/web/tests/model-modality-r22c.test.mjs",
+      "comparisonBase": "cd72eace",
+      "changes": [
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 57,
+          "old": "Vendor unknown video tooltip equals 暂无官方资料",
+          "new": "Vendor unknown video tooltip equals 原厂资料 · Example · Spec（2026-11-09）",
+          "reason": "An existing field source remains visible even when that modality is unknown. The unknown state and explicit exclusions remain asserted. No source facts or modality values change.",
+          "evidence": [
+            "packages/api/src/modality-presentation.mjs",
+            "apps/web/tests/model-card-i2-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "cff03f4ea9de5123a48c2e23e3172f5ae3e512401d8d1b79ed26dbe92ac6857d"
+    },
+    {
+      "file": "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
+      "comparisonBase": "cd72eace",
+      "changes": [
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "xai/grok-4.20-0309-non-reasoning: 官方文档 · xAI · Grok-4.20-0309-non-reasoning",
+          "new": "xai/grok-4.20-0309-non-reasoning: 官方文档 · xAI · Grok 4.20-0309 Non Reasoning",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "xai/grok-4.20-0309-reasoning: 官方文档 · xAI · Grok-4.20-0309-reasoning",
+          "new": "xai/grok-4.20-0309-reasoning: 官方文档 · xAI · Grok 4.20-0309 Reasoning",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "xai/grok-4.20-multi-agent-0309: 官方文档 · xAI · Grok 4.20 Multi-agent 0309",
+          "new": "xai/grok-4.20-multi-agent-0309: 官方文档 · xAI · Grok 4.20 Multi Agent 0309",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "xai/grok-build-0.1: 官方文档 · xAI · Grok-build-0.1",
+          "new": "xai/grok-build-0.1: 官方文档 · xAI · Grok Build 0.1",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/glm-5.2-fast-preview: 官方文档 · 千问 · GLM-5.2-fast-preview",
+          "new": "bailian/glm-5.2-fast-preview: 官方文档 · 千问 · GLM 5.2 Fast Preview",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/kimi-k2.7-code: 官方文档 · 百炼 · Kimi-k2.7-code",
+          "new": "bailian/kimi-k2.7-code: 官方文档 · 百炼 · Kimi K2.7 Code",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/qwen3.7-max: 官方文档 · 百炼 · Qwen3.7-max",
+          "new": "bailian/qwen3.7-max: 官方文档 · 百炼 · Qwen3.7 Max",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/qwen3.6-plus: 官方文档 · 百炼 · Qwen3.6-plus",
+          "new": "bailian/qwen3.6-plus: 官方文档 · 百炼 · Qwen3.6 Plus",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/qwen3.5-omni-flash: 官方文档 · 百炼 · Qwen3.5-omni-flash",
+          "new": "bailian/qwen3.5-omni-flash: 官方文档 · 百炼 · Qwen3.5 Omni Flash",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/wan2.6-image: 官方文档 · 百炼 · wan2.6-image",
+          "new": "bailian/wan2.6-image: 官方文档 · 百炼 · Wan2.6 Image",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/wan2.6-t2i: 官方文档 · 百炼 · wan2.6-t2i",
+          "new": "bailian/wan2.6-t2i: 官方文档 · 百炼 · Wan2.6 T2i",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/wan2.2-t2i-flash: 官方文档 · 百炼 · wan2.2-t2i-flash",
+          "new": "bailian/wan2.2-t2i-flash: 官方文档 · 百炼 · Wan2.2 T2i Flash",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/wan2.2-t2i-plus: 官方文档 · 百炼 · wan2.2-t2i-plus",
+          "new": "bailian/wan2.2-t2i-plus: 官方文档 · 百炼 · Wan2.2 T2i Plus",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/unisound/unisound-u2: 官方文档 · 百炼 · unisound-u2 By Unisound",
+          "new": "bailian/unisound/unisound-u2: 官方文档 · 百炼 · Unisound U2",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/wanx-v1: 官方文档 · 百炼 · wanx-v1",
+          "new": "bailian/wanx-v1: 官方文档 · 百炼 · Wanx V1",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/wanx2.0-t2i-turbo: 官方文档 · 百炼 · wanx2.0-t2i-turbo",
+          "new": "bailian/wanx2.0-t2i-turbo: 官方文档 · 百炼 · Wanx2.0 T2i Turbo",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/wanx2.1-t2i-plus: 官方文档 · 百炼 · wanx2.1-t2i-plus",
+          "new": "bailian/wanx2.1-t2i-plus: 官方文档 · 百炼 · Wanx2.1 T2i Plus",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "bailian/wanx2.1-t2i-turbo: 官方文档 · 百炼 · wanx2.1-t2i-turbo",
+          "new": "bailian/wanx2.1-t2i-turbo: 官方文档 · 百炼 · Wanx2.1 T2i Turbo",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-image-2.5-flare: 官方文档 · OpenAI · GPT Image 2.5 Flare · 2026-09-08（Markdown）",
+          "new": "openai/gpt-image-2.5-flare: 官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-image-2.5-sunburst: 官方文档 · OpenAI · GPT Image 2.5 Sunburst · 2026-09-08（Markdown）",
+          "new": "openai/gpt-image-2.5-sunburst: 官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5.5: 官方文档 · OpenAI · GPT-5.5 · 2026-04-23（Markdown）",
+          "new": "openai/gpt-5.5: 官方文档 · OpenAI · GPT-5.5（2026-04-23）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5.5-pro: 官方文档 · OpenAI · GPT-5.5 Pro · 2026-04-23（Markdown）",
+          "new": "openai/gpt-5.5-pro: 官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5.4: 官方文档 · OpenAI · GPT-5.4 · 2026-03-05（Markdown）",
+          "new": "openai/gpt-5.4: 官方文档 · OpenAI · GPT-5.4（2026-03-05）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5.4-mini: 官方文档 · OpenAI · GPT-5.4 Mini · 2026-03-17（Markdown）",
+          "new": "openai/gpt-5.4-mini: 官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5.4-nano: 官方文档 · OpenAI · GPT-5.4 Nano · 2026-03-17（Markdown）",
+          "new": "openai/gpt-5.4-nano: 官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5.4-pro: 官方文档 · OpenAI · GPT-5.4 Pro · 2026-03-05（Markdown）",
+          "new": "openai/gpt-5.4-pro: 官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5.3-codex: 官方文档 · OpenAI · GPT-5.3-codex（Markdown）",
+          "new": "openai/gpt-5.3-codex: 官方文档 · OpenAI · GPT 5.3 Codex（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5.2: 官方文档 · OpenAI · GPT-5.2 · 2025-12-11（Markdown）",
+          "new": "openai/gpt-5.2: 官方文档 · OpenAI · GPT-5.2（2025-12-11）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5.2-pro: 官方文档 · OpenAI · GPT-5.2-pro · 2025-12-11（Markdown）",
+          "new": "openai/gpt-5.2-pro: 官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5.1: 官方文档 · OpenAI · GPT-5.1 · 2025-11-13（Markdown）",
+          "new": "openai/gpt-5.1: 官方文档 · OpenAI · GPT-5.1（2025-11-13）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5: 官方文档 · OpenAI · GPT-5 · 2025-08-07（Markdown）",
+          "new": "openai/gpt-5: 官方文档 · OpenAI · GPT-5（2025-08-07）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5-mini: 官方文档 · OpenAI · GPT-5-mini · 2025-08-07（Markdown）",
+          "new": "openai/gpt-5-mini: 官方文档 · OpenAI · GPT 5 Mini（2025-08-07）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5-nano: 官方文档 · OpenAI · GPT-5-nano · 2025-08-07（Markdown）",
+          "new": "openai/gpt-5-nano: 官方文档 · OpenAI · GPT 5 Nano（2025-08-07）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-5-pro: 官方文档 · OpenAI · GPT-5-pro · 2025-10-06（Markdown）",
+          "new": "openai/gpt-5-pro: 官方文档 · OpenAI · GPT 5 Pro（2025-10-06）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-4.1: 官方文档 · OpenAI · GPT-4.1 · 2025-04-14（Markdown）",
+          "new": "openai/gpt-4.1: 官方文档 · OpenAI · GPT-4.1（2025-04-14）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-4.1-mini: 官方文档 · OpenAI · GPT-4.1 Mini · 2025-04-14（Markdown）",
+          "new": "openai/gpt-4.1-mini: 官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-4.1-nano: 官方文档 · OpenAI · GPT-4.1-nano · 2025-04-14（Markdown）",
+          "new": "openai/gpt-4.1-nano: 官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-4o: 官方文档 · OpenAI · GPT-4o · 2024-08-06（Markdown）",
+          "new": "openai/gpt-4o: 官方文档 · OpenAI · GPT-4o（2024-08-06）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-4o-mini: 官方文档 · OpenAI · GPT-4o-mini · 2024-07-18（Markdown）",
+          "new": "openai/gpt-4o-mini: 官方文档 · OpenAI · GPT 4o Mini（2024-07-18）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-4-turbo: 官方文档 · OpenAI · GPT-4-turbo · 2024-04-09（Markdown）",
+          "new": "openai/gpt-4-turbo: 官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-4: 官方文档 · OpenAI · GPT-4 · 0613（Markdown）",
+          "new": "openai/gpt-4: 官方文档 · OpenAI · GPT-4（0613）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-image-2: 官方文档 · OpenAI · GPT Image 2 · 2026-04-21（Markdown）",
+          "new": "openai/gpt-image-2: 官方文档 · OpenAI · GPT Image 2（2026-04-21）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-image-1.5: 官方文档 · OpenAI · GPT-image-1.5 · 2025-12-16（Markdown）",
+          "new": "openai/gpt-image-1.5: 官方文档 · OpenAI · GPT Image 1.5（2025-12-16）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/chat-latest: 官方文档 · OpenAI · chat-latest（Markdown）",
+          "new": "openai/chat-latest: 官方文档 · OpenAI · Chat Latest（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/chatgpt-image-latest: 官方文档 · OpenAI · chatgpt-image-latest（Markdown）",
+          "new": "openai/chatgpt-image-latest: 官方文档 · OpenAI · ChatGPT Image Latest（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/gpt-3.5-turbo: 官方文档 · OpenAI · GPT-3.5-turbo · 0125（Markdown）",
+          "new": "openai/gpt-3.5-turbo: 官方文档 · OpenAI · GPT 3.5 Turbo（0125）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/o1: 官方文档 · OpenAI · o1 · 2024-12-17（Markdown）",
+          "new": "openai/o1: 官方文档 · OpenAI · O1（2024-12-17）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/o1-pro: 官方文档 · OpenAI · o1-pro · 2025-03-19（Markdown）",
+          "new": "openai/o1-pro: 官方文档 · OpenAI · O1 Pro（2025-03-19）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/o3: 官方文档 · OpenAI · o3 · 2025-04-16（Markdown）",
+          "new": "openai/o3: 官方文档 · OpenAI · O3（2025-04-16）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/o3-mini: 官方文档 · OpenAI · o3-mini · 2025-01-31（Markdown）",
+          "new": "openai/o3-mini: 官方文档 · OpenAI · O3 Mini（2025-01-31）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/o3-pro: 官方文档 · OpenAI · o3-pro · 2025-06-10（Markdown）",
+          "new": "openai/o3-pro: 官方文档 · OpenAI · O3 Pro（2025-06-10）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "openai/o4-mini: 官方文档 · OpenAI · o4-mini · 2025-04-16（Markdown）",
+          "new": "openai/o4-mini: 官方文档 · OpenAI · O4 Mini（2025-04-16）（Markdown）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4: 官方文档 · Fireworks · Step 3.7 Flash · NVFP4（文档）",
+          "new": "fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4: 官方文档 · Fireworks · Step 3.7 Flash（NVFP4）（文档）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/alibaba/qwen-image-3/text-to-image: 官方文档 · fal · Qwen-image-3",
+          "new": "fal/alibaba/qwen-image-3/text-to-image: 官方文档 · fal · Qwen Image 3",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/bytedance/seedream/v5/pro/text-to-image: 官方文档 · fal · Seedream · v5 · pro API 文档",
+          "new": "fal/bytedance/seedream/v5/pro/text-to-image: 官方文档 · fal · Seedream（v5，pro） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image: 官方文档 · fal · Seedream · v4.5 API 文档",
+          "new": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image: 官方文档 · fal · Seedream（v4.5） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/bytedance/seedream/v4/text-to-image: 官方文档 · fal · Seedream · v4 API 文档",
+          "new": "fal/fal-ai/bytedance/seedream/v4/text-to-image: 官方文档 · fal · Seedream（v4） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/fast-sdxl: 官方文档 · fal · fast-sdxl API 文档",
+          "new": "fal/fal-ai/fast-sdxl: 官方文档 · fal · Fast SDXL API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/flux-2-flex: 官方文档 · fal · FLUX-2-flex API 文档",
+          "new": "fal/fal-ai/flux-2-flex: 官方文档 · fal · FLUX 2 Flex API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/flux-2-pro: 官方文档 · fal · FLUX-2-pro API 文档",
+          "new": "fal/fal-ai/flux-2-pro: 官方文档 · fal · FLUX 2 Pro API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/flux-2/flash: 官方文档 · fal · FLUX-2 · flash API 文档",
+          "new": "fal/fal-ai/flux-2/flash: 官方文档 · fal · FLUX-2（flash） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/flux-2/klein/9b: 官方文档 · fal · FLUX-2 · klein · 9b API 文档",
+          "new": "fal/fal-ai/flux-2/klein/9b: 官方文档 · fal · FLUX-2（klein，9b） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/flux-2/turbo: 官方文档 · fal · FLUX-2 · turbo API 文档",
+          "new": "fal/fal-ai/flux-2/turbo: 官方文档 · fal · FLUX-2（turbo） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/flux-kontext-lora: 官方文档 · fal · FLUX-kontext-lora API 文档",
+          "new": "fal/fal-ai/flux-kontext-lora: 官方文档 · fal · FLUX Kontext LoRA API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/flux-pro/kontext: 官方文档 · fal · FLUX-pro · kontext",
+          "new": "fal/fal-ai/flux-pro/kontext: 官方文档 · fal · FLUX Pro（Kontext）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/flux-pro/v1.1: 官方文档 · fal · FLUX-pro · v1.1",
+          "new": "fal/fal-ai/flux-pro/v1.1: 官方文档 · fal · FLUX Pro（V1.1）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/flux-pro/v1.1-ultra: 官方文档 · fal · FLUX-pro · v1.1-ultra",
+          "new": "fal/fal-ai/flux-pro/v1.1-ultra: 官方文档 · fal · FLUX Pro（V1.1 Ultra）",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/flux-1/schnell: 官方文档 · fal · FLUX-1 · schnell API 文档",
+          "new": "fal/fal-ai/flux-1/schnell: 官方文档 · fal · FLUX-1（schnell） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/flux-lora: 官方文档 · fal · FLUX-lora API 文档",
+          "new": "fal/fal-ai/flux-lora: 官方文档 · fal · FLUX LoRA API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/flux/dev: 官方文档 · fal · FLUX · dev API 文档",
+          "new": "fal/fal-ai/flux/dev: 官方文档 · fal · FLUX（dev） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/flux/schnell: 官方文档 · fal · FLUX · schnell API 文档",
+          "new": "fal/fal-ai/flux/schnell: 官方文档 · fal · FLUX（schnell） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/qwen-image: 官方文档 · fal · Qwen-image API 文档",
+          "new": "fal/fal-ai/qwen-image: 官方文档 · fal · Qwen Image API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/openai/gpt-image-2: 官方文档 · fal · GPT-image-2",
+          "new": "fal/openai/gpt-image-2: 官方文档 · fal · GPT Image 2",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/gpt-image-1.5: 官方文档 · fal · GPT-image-1.5 API 文档",
+          "new": "fal/fal-ai/gpt-image-1.5: 官方文档 · fal · GPT Image 1.5 API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/xai/grok-imagine-image/v2.0/text-to-image: 官方文档 · fal · Grok-imagine-image · v2.0 API 文档",
+          "new": "fal/xai/grok-imagine-image/v2.0/text-to-image: 官方文档 · fal · Grok Imagine Image（V2.0） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/xai/grok-imagine-image: 官方文档 · fal · Grok-imagine-image API 文档",
+          "new": "fal/xai/grok-imagine-image: 官方文档 · fal · Grok Imagine Image API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/xai/grok-imagine-image/quality/text-to-image: 官方文档 · fal · Grok-imagine-image · quality API 文档",
+          "new": "fal/xai/grok-imagine-image/quality/text-to-image: 官方文档 · fal · Grok Imagine Image（Quality） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/bria/fibo-edit-1.5/edit: 官方文档 · fal · fibo-edit-1.5 · edit API 文档",
+          "new": "fal/bria/fibo-edit-1.5/edit: 官方文档 · fal · Fibo Edit 1.5（Edit） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/bria/fibo-gen-1.5/text-to-image: 官方文档 · fal · fibo-gen-1.5 API 文档",
+          "new": "fal/bria/fibo-gen-1.5/text-to-image: 官方文档 · fal · Fibo Gen 1.5 API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/krea-2/turbo: 官方文档 · fal · krea-2 · turbo API 文档",
+          "new": "fal/fal-ai/krea-2/turbo: 官方文档 · fal · Krea 2（Turbo） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/fal-ai/z-image/turbo: 官方文档 · fal · z-image · turbo API 文档",
+          "new": "fal/fal-ai/z-image/turbo: 官方文档 · fal · Z Image（Turbo） API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "fal/meta/muse-image/text-to-image: 官方文档 · fal · muse-image API 文档",
+          "new": "fal/meta/muse-image/text-to-image: 官方文档 · fal · Muse Image API 文档",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "replicate/prunaai/flux-kontext-fast: 官方文档 · Replicate · FLUX-kontext-fast",
+          "new": "replicate/prunaai/flux-kontext-fast: 官方文档 · Replicate · FLUX Kontext Fast",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I2",
+          "comparisonBase": "cd72eace",
+          "line": 1,
+          "old": "tokendance/ling-3.0-flash: 官方文档 · TokenDance · Ling-3.0-flash",
+          "new": "tokendance/ling-3.0-flash: 官方文档 · TokenDance · Ling 3.0 Flash",
+          "reason": "Fixed literal source-title spelling follows the strict R24 format; URL and identity are unchanged. The test continues comparing against frozen literals, not a live helper.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "f86f07ce175813ffc9823c4ace791e2d7eaf4ab2c46d780c7b3473db28b7b584"
+    },
+    {
+      "file": "scripts/card-presentation-r22b.test.mjs",
+      "comparisonBase": "cd72eace",
+      "changes": [
+        {
+          "phase": "R24 Phase I2",
+          "line": 11,
+          "old": "V3-0324 Release | DeepSeek API Docs",
+          "new": "DeepSeek · V3-0324 Release",
+          "reason": "The captured title remains unchanged in evidence; the source title adds the curated site and strips the site suffix. Identity and deduplication assertions remain.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md",
+            "packages/api/src/card-presentation.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "4f61b9bf496d5d992121786b9e78569b886f34f3c39671b3fe1d512b540f6dab"
     }
   ]
 }
