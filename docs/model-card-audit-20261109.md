@@ -224,3 +224,16 @@ Omni 当前在库型号的既有审核明确不支持 thinking 开关，不能�
 其他回归：Web 模型/目录/思考测试 **180/180**；小程序 **127/127** 及 build 通过；Core `check` 通过。根目录 `node --test scripts/*.test.mjs tests/*.test.mjs` 为 head **56 通过 / 3 失败**，同环境只读 main 为 **49 / 3**，失败名相同：旧审计行 siliconflow/ERNIE、760 历史数量快照、DeepSeek-V4.1-Flash 版本元数据；数量快照实际值 head 761 / main 822，均属原有快照过时，非声称错误值完全相同。目录、参考上传两项 `--check`，以及 thinking 同步和审计生成器 `--check` 均通过。
 
 小程序 build 后源码 **1,571,089**、runtime **1,148,153**、媒体 **189,978 bytes**；源码距未提高的 **1,572,864** 上限仍余 **1,775 bytes**。本轮没有 Git 写命令、网络提供商请求、付费调用或生产发布，既有未提交修改保留。
+
+## 沙箱外全量测试（main c7b6a2fc vs head ccb972e2，同一台机器）
+
+| 套件 | main 通过/失败/跳过 | head 通过/失败/跳过 | 新增失败 |
+| --- | --- | --- | --- |
+| Web | 1312 / 12 / 0 | 1334 / 12 / 0 | 0（12 项同名，均在 main 复现） |
+| paperbanana-api (Core) | 1580 / 13 / 1 | 1586 / 13 / 1 | 0（13 项同名，均在 main 复现，含已到期 xAI WebP 样例） |
+| auth-gateway | 272 / 0 / 1 | 277 / 0 / 1 | 0 |
+| 小程序 | 121 / 0 / 0 | 127 / 0 / 0 | 0 |
+| scripts/*.test.mjs | 20 / 0 / 0 | 27 / 0 / 0 | 0 |
+| tests/*.test.mjs（根目录） | 29 / 3 / 0 | 29 / 3 / 0 | 0（与 PR #247 记录的 29/3 一致） |
+
+Web / 小程序构建、Core `tsc --noEmit`、`sync-model-catalog --check`、`sync-reference-upload --check` 均通过。小程序源码包 main 1,570,043 → head 1,571,089 bytes（上限 1,572,864 未改，余 1,775）。CI 中 account-lifecycle.mjs:146 依赖 Mongo 副本集，本机未运行，按 PR #247 记为 main 已知失败。
