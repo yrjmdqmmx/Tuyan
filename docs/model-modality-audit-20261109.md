@@ -1056,3 +1056,19 @@ Validation results are recorded in [the F3 validation JSON](model-modality-r23f3
 | Git whitespace/error check | Pass |
 
 The initial full suites passed before final manual review found BFL bracket-prefix artifacts. Those were fixed and covered, then both builds and every requested suite/check were rerun on the final implementation. Earlier targeted failures for the unknown `v2.6` suffix and the older Mini byte ceiling were resolved in code/generated compaction; no existing expectation or limit was loosened.
+
+
+## R23 Phase H (verification)
+
+Verified `7cb520a9` on `codex/model-modality-audit` against main `8c456709` and pre-fix `42ee9ffd`. **Items 1–7 PASS.** The [verification report](model-modality-r23-verification.md) and [JSON](model-modality-r23-verification.json) contain exact test files/names, command excerpts, complete distinct title pairs and API URL visibility counts.
+
+- Vendor evidence: all 1,064 cards per client; 65 cards / 166 vendor-attributed fields; zero missing vendor URLs or duplicate URLs/labels. Web added 16 vendor-link rows across 14 cards; Mini added 39 across 37. Verified TokenDance pages remain first. Mini retains its source copy-dialog interaction.
+- Registry and hashes: Mini required-provider rejection block is byte-identical to main; all five missing-channel cases reject even with an explanation. The historical partial-catalog relaxation and its user-visible effect are documented. Ledger checks pass with core.abbrev 7 and 12, including Git subprocesses.
+- Titles: 2,494 Web rows, seven lifecycle dialogs and 1,103 Mini copy dialogs have zero findings; all 1,064 names per client match main; exactly seven historical TokenDance IDs show 渠道页无此型号. The compact title inventory has 1,047 distinct before/after pairs against 42ee9ffd.
+- API links: 408 distinct candidates in raw card evidence and sources; all 254 machine URLs hidden, zero visible machine links. All 154 human candidates remain visible on at least one client, including 96 distinct /api/ path pages.
+- Fixture: 578,207 bytes; original JSON absent; gzip mtime 0 and deterministic recompression; main regeneration and all four execution locks pass. Git blob sizes are 13,538,408 before versus 578,207 now, a 12,960,201-byte reduction. Historical Git objects are not removed.
+- Item 7: all 15 image-input decision rows match recomputed main and HEAD, including supported → unknown image input and retained direct-edit capability. No fetch or founder decision.
+- Validation: Web 1,483/1,483; Mini 172/172; scripts 58/58; API 33/33; targeted Core 4/4 and Gateway 2/2; six audit-only assertions, for 1,758 passes with zero failures/skips within those suites. Web, Mini and Core builds and all 11 maintenance checks pass. Mini source 1,569,424 / 1,572,864 bytes (3,440 remaining); runtime 1,144,004, media 189,978.
+- Screenshots: `.audit-input/r23/shots-m3.mjs` plus its manifest plan 30 images (1280/390), covering qwen3.6-plus and 14 other cards across eight channels. Exact local fixture server commands are included. Syntax and all selected cards pass offline verification. The script was **not run**, and no screenshot is claimed.
+
+No verification-proven product defect required a fix. Existing tests and the changed-test ledger remain unchanged; new audit-only assertions verify historical comparisons and screenshot selection. Core/Gateway full suites are explicitly skipped for the operator because they need localhost. Browser/native WeChat validation remains outstanding, and Mini deployment stays paused. No Git write commands, network, secrets, paid calls, deployments, image builds or other-worktree changes. `sync-agent-knowledge` and `sync-workflow` remain untouched.
