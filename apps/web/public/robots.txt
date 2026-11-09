@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+Disallow: /api/
+Disallow: /paperbanana-api
+Disallow: /health
+Disallow: /ready
+Disallow: /account/
+Disallow: /leaderboard/admin/
+Disallow: /*?*admin
+Disallow: /*?*auth=sign-in
+Disallow: /*?*tokendance_wallet
+Disallow: /*?*view=account
+Disallow: /*?*view=records
+Disallow: /*?*view=models
+Disallow: /*?*view=ecosystem
+Disallow: /*?*view=feedback
+Disallow: /*?*view=generate
+Disallow: /*?*view=refine
+
+Sitemap: https://tuyansci.cn/sitemap.xml
