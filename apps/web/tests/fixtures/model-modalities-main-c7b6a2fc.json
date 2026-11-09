@@ -1,0 +1,3047 @@
+{
+  "commit": "c7b6a2fc",
+  "modalities": {
+    "deepseek/deepseek-flash": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "deepseek/deepseek-v4-flash-vision-exp": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "deepseek/deepseek-v4-pro": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "deepseek/deepseek-v4-flash": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "kimi/kimi-k3": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "kimi/kimi-k2.7-code": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "kimi/kimi-k2.7-code-highspeed": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "kimi/kimi-k2.6": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "kimi/kimi-k3.1-pro": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "kimi/kimi-k3.1-pro-highspeed": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-5.3": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-5.3-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-5.3-flashx": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-5.2": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-4.7-flashx": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-4.6v-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-4.6v-flashx": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-4.5-airx": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-4.5-flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-4.1v-thinking-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-4.1v-thinking-flashx": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-4-flash-250414": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-4-flashx-250414": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-4-long": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "zhipu/glm-4v-flash": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "siliconflow/XingChenAGI/Xing4.0-29B": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "siliconflow/tencent/Hy4-preview": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "siliconflow/Qwen/Qwen3.5-35B-A3B": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "siliconflow/Pro/Qwen/Qwen2.5-7B-Instruct": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "siliconflow/Qwen/Qwen2.5-72B-Instruct-128K": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "siliconflow/Qwen/Qwen2.5-7B-Instruct": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "siliconflow/deepseek-ai/DeepSeek-V4.1-Flash": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "siliconflow/zai-org/GLM-5.3-Flash": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "siliconflow/THUDM/GLM-4-32B-0414": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "siliconflow/THUDM/GLM-4-9B-0414": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "siliconflow/THUDM/GLM-Z1-9B-0414": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "siliconflow/tencent/Hunyuan-A13B-Instruct": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "anthropic/claude-haiku-5-5": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "anthropic/claude-sonnet-5-5": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "anthropic/claude-opus-5-5": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "anthropic/claude-fable-5-1": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "recraft/recraftv4_1_flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "xai/grok-4.20-multi-agent": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "xai/grok-4.20-multi-agent-0309": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "xai/grok-imagine-image-quality": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "gemini/gemini-4-argon": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video",
+        "document"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "gemini/gemini-nano-banana-2.1": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "gemini/gemini-3.8-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "gemini/gemini-3.7-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "gemini/gemini-3.6-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "gemini/gemini-3.5-flash-lite": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "gemini/gemini-3.1-flash-lite-image": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "gemini/gemini-3.1-flash-image": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "gemini/gemini-3-pro-image": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "gemini/gemini-3.5-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "gemini/gemini-3.1-flash-lite": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "gemini/gemini-3.1-pro-preview": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "gemini/gemini-3-flash-preview": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "gemini/gemini-2.5-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "gemini/gemini-2.5-flash-image": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "gemini/gemini-2.5-flash-lite": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "gemini/gemini-2.5-pro": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.8-max-0902": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.8-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/ZHIPU/GLM-5.3-FlashX": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/deepseek-v4.1-flash-1017": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.8-max": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.7-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.7-flash-2026-07-15": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/deepseek-v4-flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/deepseek-v4-pro": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/glm-5.2-fast-preview": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/kimi/kimi-k2.7-code-highspeed": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-image-2.1-pro": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "bailian/qwen-image-2.1-turbo": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "bailian/qwen3.7-max": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.7-max-2026-05-17": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.7-max-2026-05-20": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.7-max-2026-06-08": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.7-max-preview": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.7-plus": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.6-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.6-flash-2026-04-16": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.6-max-preview": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.6-plus": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.6-plus-2026-04-02": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.5-35b-a3b": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.5-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.5-flash-2026-02-23": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.5-plus": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.5-plus-2026-02-15": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.5-plus-2026-04-20": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3-235b-a22b-instruct-2507": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/MiniMax/MiniMax-M3.1-Flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/deepseek-v3.2-exp": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/kimi-k2-thinking": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-flash-2025-07-28": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-long": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-max": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-plus": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-plus-2025-01-25": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-plus-2025-04-28": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-plus-2025-07-14": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-plus-2025-12-01": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-plus-latest": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3-coder-flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3-coder-flash-2025-07-28": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3-omni-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text",
+        "audio"
+      ]
+    },
+    "bailian/qwen3-omni-flash-2025-09-15": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text",
+        "audio"
+      ]
+    },
+    "bailian/qwen3-omni-flash-2025-12-01": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text",
+        "audio"
+      ]
+    },
+    "bailian/unisound/unisound-u2": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/xiaomi/mimo-v2.6-pro-ultraspeed": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "openai/gpt-6.1-sol": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "openai/gpt-5.2-pro": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "openai/gpt-5-pro": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "openai/gpt-5-pro-2025-10-06": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "openai/gpt-4-1106-preview": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/deepseek-v4-1-flash-261017": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/deepseek-v4-1-flash-economy-261017": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-2-1-pro-260628": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-2-1-pro-260915": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-2-1-turbo-260628": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-2-0-code-preview-260215": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-2-0-lite-260215": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-2-0-lite-260428": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-2-0-mini-260215": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-2-0-mini-260428": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-2-0-pro-260215": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-1-8-251228": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-1-6-250615": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-1-6-251015": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-1-6-flash-250615": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-1-6-flash-250828": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-1-6-vision-250815": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-1-5-lite-32k-250115": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-1-5-pro-32k-250115": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-1-5-vision-pro-32k-250115": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seedream-5-0-260128": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "ark/doubao-seedream-5-0-flash-260915": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "ark/doubao-seedream-5-0-pro-260628": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "ark/kimi-k3-1-pro-261024": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-code-preview-251028": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "ark/doubao-seed-evolving": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bfl/flux-3-image": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "bfl/flux-3-image-klein": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "ideogram/ideogram-4-5": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "minimax/MiniMax-M2.7-highspeed": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "minimax/MiniMax-M2.5-highspeed": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "minimax/MiniMax-M2.1-highspeed": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "minimax/MiniMax-M3.1-Flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "mistral/mistral-large-4": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "mistral/zai-glm-5-3-flash": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "mistral/codestral-2508": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "mistral/codestral-latest": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "together/ByteDance/Seedream-5.0-lite": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "together/Qwen/Qwen3.8-Flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "together/Qwen/Qwen3.7-Max": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "together/Qwen/Qwen3.6-Plus": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "together/deepseek-ai/DeepSeek-V4.1-Flash-1017": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "together/google/gemini-3-pro-image": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "together/MiniMaxAI/MiniMax-M3.1-Flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "together/Prism-ML/Ternary-Bonsai-27B": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "together/google/flash-image-2.5": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "together/google/flash-image-3.1": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "together/google/flash-image-3.1-lite": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "together/meta-llama/Llama-3.3-70B-Instruct-Turbo": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "together/meta-models/Muse-Spark-Open-816B-A42B": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "together/nvidia/NVIDIA-Nemotron-3.5-Super-VL": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "together/reflection/Beam-1.0-501B-A23B": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "fireworks/accounts/fireworks/models/deepseek-v4-flash-vision-exp": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "fireworks/accounts/fireworks/models/deepseek-v4p1-flash-1017": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "fireworks/accounts/fireworks/models/minimax-m3p1-flash": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "fireworks/accounts/fireworks/models/muse-spark-open": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "fal/bytedance/seedream/v5/flash/text-to-image": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "fal/blackforestlabs/flux-3/klein/base/text-to-image": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "fal/blackforestlabs/flux-3/klein/text-to-image": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "fal/blackforestlabs/flux-3/text-to-image": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "fal/fal-ai/nano-banana-2": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "fal/google/nano-banana-2-lite": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "fal/fal-ai/nano-banana-pro": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "fal/fal-ai/nano-banana": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "fal/google/nano-banana-2.1": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "fal/ideogram/v4.5": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "fal/krea/v3/text-to-image": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "replicate/google/gemini-3.5-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "replicate/deepseek-ai/deepseek-v3.1": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "replicate/alibaba/wan-3": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "video"
+      ]
+    },
+    "replicate/anthropic/claude-opus-5.5": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "replicate/google/gemini-3-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "replicate/google/gemini-2.5-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "replicate/google/nano-banana-2": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "replicate/google/nano-banana-2-lite": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "replicate/google/nano-banana-pro": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "replicate/google/nano-banana": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "replicate/google/nano-banana-2.1": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "replicate/moonshotai/kimi-k2-thinking": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "replicate/black-forest-labs/flux-3-image": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "replicate/qwen/qwen3-235b-a22b-instruct-2507": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "replicate/qwen/qwen3-7-plus": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "replicate/ideogram-ai/ideogram-4-5": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "replicate/ideogram-ai/ideogram-4-5-precise-edit": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "tokendance/deepseek-v4.1-flash-1017": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/deepseek-v4-flash-vision-exp": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/deepseek-v4-flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/deepseek-v4-pro": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/glm-5.3-flashx": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/hy4-preview": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/kimi-k3": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/kimi-k2.7-code": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/kimi-k2.6": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/kimi-k2.5": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/qwen3.8-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/qwen3.8-max": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/qwen3.8-max-0902": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/qwen3.7-max": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/qwen3.7-plus": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/qwen3.6-max-preview": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/qwen3.6-plus": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/qwen3.5-35b-a3b": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/qwen3.5-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/qwen3.5-plus": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/seed-2.1-pro": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/seed-2.1-turbo": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/seed-2.0-lite": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/seed-2.0-mini": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/seed-2.0-pro": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/seedream-5.0-lite": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "tokendance/seedream-5.0-pro": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "tokendance/cogevol-base": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/cogevol-interactive-0828": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/cogevol-slide-0828": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/dots-3-note-preview": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/kimi-k3.1-pro": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/ling-3.1-flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/mimo-v2.6-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/mimo-v2.6-pro": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/mimo-v2.6-ultraspeed": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/minimax-m3.1-flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/qwen3-vl-plus": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/seed-evolving": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/spark-x2.5-1.7b": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/spark-x2.5-4b": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/unifuncs-s3": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/unifuncs-s3-pro": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/unifuncs-u3": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokendance/unifuncs-u3-pro": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "runware/bfl:flux@3-image-klein": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "runware/bfl:flux@3-image-klein-base": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "runware/alibaba:qwen-image@2.1-turbo": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "runware/google:nano-banana@2.1": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "runware/bfl:flux@3-image": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "runware/ideogram:4.5@0": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "runware/ideogram:4.5@precise-edit": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "runware/bytedance:seedream@5.0-flash": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "runware/recraft:v4.1@flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "runware/alibaba:qwen-image@2.1-pro": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "runware/bytedance:seedream@5.0-pro": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "runware/google:nano-banana@2-lite": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "runware/minimax:m2.7@highspeed": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "runware/google:4@3": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "runware/bytedance:seedream@5.0-lite": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "runware/google:gemini@3.1-pro": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "runware/google:gemini@3-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "runware/google:4@2": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "runware/google:4@1": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text",
+        "image"
+      ]
+    },
+    "runware/runware:150@2": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "runware/runware:152@1": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "runware/runware:152@2": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/deepseek-v4.1-flash": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/deepseek-v4.1-flash-1017": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/deepseek/deepseek-v4-flash-vision-exp": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/deepseek-v4-flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/deepseek-v4-pro": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/glm-5.3-flashx": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/hy4-preview": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/kimi-k2.7-code-highspeed": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/step-5-preview": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/hunyuan-t1-vision-20250916": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/hy-vision-2.0-instruct": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/kimi-k2.8-preview": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/kimi-k3.1-pro": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/kimi-k3.1-pro-highspeed": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/mimo-v2.6-flash": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/mimo-v2.6-pro": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/minimax-m3.1-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "tokenhub/seedream-image-v5.0-lite": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "tokenhub/seedream-image-v5.0-pro": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "tokenhub/youtu-vita": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "xiaomi/mimo-v2.6-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "xiaomi/mimo-v2.6-pro": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "xiaomi/mimo-v2.6-pro-ultraspeed": {
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "sensenova/deepseek-v4-flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "sensenova/deepseek-v4-pro": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "sensenova/deepseek-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "sensenova/sensenova-6.8-flash-lite": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "stepfun/step-1o-turbo-vision": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/deepseek-v4.1-flash-1017": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/deepseek-v4-flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/deepseek-v4-pro": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/qwen3.5-35b-a3b": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/deepseek-ocr": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/ernie-4.5-turbo-128k": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/ernie-4.5-turbo-20260402": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/ernie-4.5-turbo-32k": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/ernie-4.5-turbo-vl": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/ernie-4.5-turbo-vl-32k": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/ernie-5.0": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/ernie-5.0-thinking-exp": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/ernie-5.0-thinking-latest": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/ernie-5.1": {
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/internvl3-38b": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "qianfan/qianfan-ocr": {
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "iflytek/spark-x2.5": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "iflytek/spark-x2.5-1.7b": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "iflytek/spark-x2.5-4b": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "iflytek/spark-x2.6": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "iflytek/spark-x2.6-4b": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "iflytek/xqwen14bchat": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "iflytek/xspark13b6k": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "iflytek/xsparkprox": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "iflytek/xsparkx2": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "iflytek/xsparkx2flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "longcat/LongCat-2.5-Preview": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "novita/ming-image-0.1-design": {
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    }
+  }
+}

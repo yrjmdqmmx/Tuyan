@@ -1,3 +1,4 @@
+import { assertCatalogDelta, assertSurvivingDefaults } from './helpers/catalog-retirements.js'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -16,10 +17,10 @@ const added=[
 ] as const
 
 test('weekly additions preserve all prior defaults, remain unverified and keep unadapted discoveries closed',()=>{
- assert.equal(STATIC_MODEL_REGISTRY_VERSION,'2026-10-31.v42')
- assert.equal(Object.values(catalog).reduce((n:number,p:any)=>n+p.models.length,0),1125)
+ assert.equal(STATIC_MODEL_REGISTRY_VERSION,'2026-11-09.v43')
+ assertCatalogDelta()
  const defaults=JSON.parse(fs.readFileSync(new URL('./fixtures/catalog-20261016/baseline-defaults.json',import.meta.url),'utf8'))
- for(const [provider,expected]of Object.entries(defaults))assert.deepEqual(catalog[provider].defaults,expected)
+ for(const [provider,expected]of Object.entries(defaults))assertSurvivingDefaults(provider,expected)
  for(const [provider,id,,vision]of added){const m=catalog[provider].models.find((m:any)=>m.id===id);assert.ok(m.selectable);assert.equal(m.verified,false);assert.equal(m.verificationState,'catalog');assert.deepEqual(m.roles,vision?['main','vision']:['main'])}
  for(const [provider,id,,vision]of added)for(const role of vision?['main','vision']:['main']){const profile=thinkingProfile(provider,id,role as 'main'|'vision','openai-chat-completions');assert.equal(profile?.status,'unconfirmed');assert.deepEqual(profile?.controls,[])}
  for(const id of ['qwen-image-2.1-pro','qwen-image-2.1-turbo','seedream-5.0-flash'])assert.equal(catalog.tokendance.models.some((m:any)=>m.id===id),false)

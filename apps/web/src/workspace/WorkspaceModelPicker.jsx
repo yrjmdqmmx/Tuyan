@@ -1,4 +1,6 @@
+import { removedModel } from '../lib/modelAudit.js';
 import { useMemo } from 'react';
+import ModelReplacement from './ModelReplacement.jsx';
 import ModelPicker from '../components/ModelPicker.jsx';
 import { ROLE_NAMES, modelOption, selectedModelReference, libraryModelMissingFromCatalog } from './workspaceModels.js';
 
@@ -27,8 +29,9 @@ export default function WorkspaceModelPicker({ models, role, path, editing, curr
           reference: selectedModelReference(option),
           // Keep the saved reference available to the trigger, while omitting
           // models absent from the channel's current catalogue from choices.
-          hidden: !option.model || libraryModelMissingFromCatalog(entry, models.library, models.registry),
-          description: multipleConnections ? `${option.connection.label} · ${option.connectionId.slice(0, 8)}` : '',
+          hidden: Boolean(removedModel(provider, entry.modelId)) || !option.model || libraryModelMissingFromCatalog(entry, models.library, models.registry),
+          description: multipleConnections ? `${option.connection.label} · ${option.connectionId}` : '',
+          connectionLabel: option.connection.label,
           disabledReason: option.reason || (models.registryStatus !== 'ready' ? '正在等待可用模型目录，已有配置保留。' : ''),
         },
       });
@@ -36,9 +39,11 @@ export default function WorkspaceModelPicker({ models, role, path, editing, curr
     return { providers };
   }, [models.library, models.registry, models.registryStatus, models.summary?.tokenDance, role, path, editing, current?.libraryModelId]);
 
-  const selectedProvider = models.library.connections.find(c => c.id === models.library.models.find(m => m.id === current?.libraryModelId)?.connectionId)?.provider;
+  const currentEntry = models.library.models.find(m => m.id === current?.libraryModelId) || (current?.connectionId && models.library.connections.some(c => c.id === current.connectionId) ? { id: current.libraryModelId, connectionId: current.connectionId, modelId: current.modelId } : null);
+  const selectedProvider = models.library.connections.find(c => c.id === currentEntry?.connectionId)?.provider;
   return <ModelPicker label={ROLE_NAMES[role]} role={role} registry={registry}
     route={current ? { accessProvider: selectedProvider, ...current } : { accessProvider: '', modelId: '' }} outputFormat={path} operation={editing ? 'editing' : 'generation'}
+    removedAction={current && <ModelReplacement provider={selectedProvider || current.accessProvider} modelId={current.modelId} models={models} entry={currentEntry} role={role} path={path} editing={editing} onReplace={onChange}/>}
     savedSelection={{ id: current?.libraryModelId, onChange }}
     visionMode={role === 'vision' ? (current ? 'assist' : 'none') : undefined}
     onVisionModeChange={role === 'vision' ? mode => { if (mode === 'none') onChange(null); } : undefined}

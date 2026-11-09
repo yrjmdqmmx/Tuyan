@@ -1,3 +1,4 @@
+import { assertRemoved } from './helpers/catalog-retirements.js'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import sharp from 'sharp'
@@ -106,13 +107,22 @@ test('refining an owned historical image freezes its orientation-corrected pixel
   } finally {await f.close()}
 })
 
-for (const [provider,model,scenario,resumable] of [['runware','alibaba:qwen-image-edit@2511','lost-submit',true],['tokenhub','hy-image-v3','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','download',true],['tokenhub','hy-image-v3','download',true],['sensenova','sensenova-u1.5-lite','lost-submit',false],['sensenova','sensenova-u1.5-lite','download',true],['qianfan','qwen-image-edit','lost-submit',false],['qianfan','qwen-image-edit','download',true],['stepfun','step-2x-large','lost-submit',false],['stepfun','step-2x-large','download',true]] as const) test(`${provider} ${scenario}: recovery never repeats billed submission`,async(t)=>{
-  // Exercise the historical adapter before its 2026-10-10 retirement. Lifecycle
-  // rejection is tested independently; recovery behavior must not depend on today.
-  if(provider==='stepfun')t.mock.timers.enable({apis:['Date'],now:new Date('2026-10-09T08:00:00Z')})
+for (const [provider,model,scenario,resumable] of [['runware','alibaba:qwen-image-edit@2511','lost-submit',true],['tokenhub','hy-image-v3','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','download',true],['tokenhub','hy-image-v3','download',true],['sensenova','sensenova-u1.5-lite','lost-submit',false],['sensenova','sensenova-u1.5-lite','download',true],['qianfan','qwen-image-edit','lost-submit',false],['qianfan','qwen-image-edit','download',true],['sensenova','sensenova-u1.5-fast','lost-submit',false],['sensenova','sensenova-u1.5-fast','download',true]] as const) test(`${provider}${model==='sensenova-u1.5-fast'?'/'+model:''} ${scenario}: recovery never repeats billed submission`,async()=>{
+  // SenseNova Fast uses the same callOfficialImageChannel synchronous checkpoint,
+  // download and billing path as the physically removed Step 2x fixture.
   const f=await createRefineRuntime({tokenDance:true})
   try {
-    const source=await upload(f,['sensenova','qianfan','stepfun'].includes(provider)?await sharp({create:{width:1024,height:1024,channels:3,background:'#b1c5ae'}}).png().toBuffer():f.image);f.setChannelFailure(scenario)
+    const source=await upload(f,['sensenova','qianfan'].includes(provider)?await sharp({create:{width:1024,height:1024,channels:3,background:'#b1c5ae'}}).png().toBuffer():f.image)
+    if(model==='sensenova-u1.5-fast') {
+      assertRemoved('stepfun','step-2x-large')
+      const rejected=await f.post(request('stepfun','step-2x-large',source.objectKey))
+      assert.equal(rejected.data.code,400)
+      assert.equal(rejected.data.businessCode,'MODEL_UNAVAILABLE')
+      assert.equal(f.providerCalls.length,0)
+      assert.equal(f.tokenDanceCalls.length,0)
+      assert.equal(await f.db.collection('paperbanana_provider_executions').countDocuments({}),0)
+    }
+    f.setChannelFailure(scenario)
     const submitted=await f.post(request(provider,model,source.objectKey));assert.equal(submitted.data.code,0,JSON.stringify(submitted));await f.legacy.drainJobAdmission()
     const failed=(await f.post({action:'getJob',jobId:submitted.data.jobId})).data.job
     assert.equal(failed.status,'failed',JSON.stringify(failed));assert.equal(failed.recovery.canResume,resumable,JSON.stringify(failed));assert.equal(failed.recovery.channel,provider)

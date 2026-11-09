@@ -6,6 +6,7 @@ exports.modelAvailabilityPresentation = modelAvailabilityPresentation;
 exports.partitionRegistryModels = partitionRegistryModels;
 exports.groupRegistryModels = groupRegistryModels;
 exports.findRegistryModel = findRegistryModel;
+const model_audit_1 = require("./model-audit");
 const model_presentation_1 = require("./model-presentation");
 exports.MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat', 'antling', 'novita', 'tokendance'];
 function normalizeModelRegistry(input) {
@@ -44,7 +45,7 @@ function normalizeProvider(providerId, input) {
     const modelsSource = Array.isArray(source.models) ? source.models : [];
     if (!modelsSource.length)
         throw new Error(`${providerId} 模型目录为空。`);
-    const models = (0, model_presentation_1.sortModelsNewestFirst)(modelsSource.map((model) => (0, model_presentation_1.presentRegistryModel)(providerId, normalizeModel(model))));
+    const models = (0, model_presentation_1.sortModelsNewestFirst)(modelsSource.map((model) => (0, model_audit_1.withModelAudit)(providerId, (0, model_presentation_1.presentRegistryModel)(providerId, normalizeModel(model)))));
     const uniqueIds = new Set(models.map((model) => model.id));
     if (uniqueIds.size !== models.length)
         throw new Error(`${providerId} 模型目录包含重复 ID。`);
@@ -57,6 +58,8 @@ function normalizeProvider(providerId, input) {
     for (const role of ['main', 'image', 'vision']) {
         // A channel may offer a role without preselecting a model for that role.
         if (!defaults[role])
+            continue;
+        if ((0, model_audit_1.removedModel)(providerId, defaults[role]))
             continue;
         const entry = models.find((model) => model.id === defaults[role]);
         const catalogQuarantined = (entry === null || entry === void 0 ? void 0 : entry.selectable) === false && Boolean(entry.disabledReason);
@@ -81,6 +84,7 @@ function normalizeModel(input) {
     const roleReasonsSource = asRecord(source.roleReasons);
     return {
         id,
+        catalogPresence: source.catalogPresence,
         version: (0, model_presentation_1.normalizeModelVersion)(source.version),
         apiIdentifier: stringValue(source.apiIdentifier),
         label: stringValue(source.label) || id,
@@ -145,7 +149,9 @@ function modelAvailabilityPresentation(model) {
 function partitionRegistryModels(models, options) {
     const query = stringValue(options.query).toLocaleLowerCase('zh-CN');
     const annotated = models
-        .filter((model) => model.selectable !== false && !(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`)))
+        .filter(model => !(0, model_audit_1.removedModel)(model.auditChannel || '', model.id))
+        // Core retains audited absence on failure; only unverified cards stay grey.
+        .filter((model) => { var _a, _b; return ((_a = model.catalogPresence) === null || _a === void 0 ? void 0 : _a.status) !== 'absent' && (model.selectable !== false || ((_b = model.catalogPresence) === null || _b === void 0 ? void 0 : _b.status) === 'unverified') && !(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`)); })
         .filter((model) => model.roles.includes(options.role) || Boolean(model.roleReasons[options.role]))
         .filter((model) => !options.recommendedOnly || (model.recommended && model.lifecycle === 'stable'))
         .filter((model) => !query || modelSearchValues(model).some((value) => value.toLocaleLowerCase('zh-CN').includes(query)))

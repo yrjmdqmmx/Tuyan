@@ -9,8 +9,8 @@ import {STATIC_MODEL_REGISTRY as catalog,EXTENDED_MODEL_CHANNELS} from '../../we
 const antIds=['Ling-3.0-flash-VL','Ling-3.0-flash','Ling-3.0-tiny','Ling-2.6-1T','Ling-2.6-flash','Ring-2.6-1T']
 const input=(model:string,images:any[]=[])=>({provider:(model.startsWith('LongCat')?'longcat':'antling') as 'longcat'|'antling',model,apiKey:'fixture-key',system:'Keep labels',user:'Explain the figure',images})
 test('v3.8.1 exact identities, admitted roles, history, defaults and evidence boundary',()=>{
- assert.deepEqual(catalog.antling.models.map((m:any)=>m.id).sort(),[...antIds].sort())
- assert.deepEqual(catalog.longcat.models.map((m:any)=>m.id).sort(),['LongCat-2.0','LongCat-2.5-Preview'])
+ assert.deepEqual(catalog.antling.models.map((m:any)=>m.id).sort(),[...antIds,'Ling-3.1-flash','Ling-3.2-flash'].sort())
+ assert.deepEqual(catalog.longcat.models.map((m:any)=>m.id).sort(),['LongCat-2.0','LongCat-2.5','LongCat-2.5-Preview'])
  assert.equal(EXTENDED_MODEL_CHANNELS.longcat.defaults.main,'LongCat-2.0')
  assert.equal(EXTENDED_MODEL_CHANNELS.longcat.defaults.vision,'LongCat-2.5-Preview')
  for(const provider of ['antling','longcat']) for(const m of catalog[provider].models){

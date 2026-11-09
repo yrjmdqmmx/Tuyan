@@ -1,0 +1,524 @@
+{
+  "checkedAt": "2026-11-09T10:28:01.453Z",
+  "method": "Chrome headless render; specific = page shows \"· <id>\" and not \"Model not found\"; control zzz-not-a-model-123 shows Model not found",
+  "rows": [
+    {
+      "modelId": "cogevol-base",
+      "url": "https://tokendance.space/models/cogevol-base",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "CogEvol: CogEvol Base"
+    },
+    {
+      "modelId": "cogevol-interactive-0828",
+      "url": "https://tokendance.space/models/cogevol-interactive-0828",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "CogEvol: CogEvol Interactive 0828"
+    },
+    {
+      "modelId": "cogevol-slide-0828",
+      "url": "https://tokendance.space/models/cogevol-slide-0828",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "CogEvol: CogEvol Slide 0828"
+    },
+    {
+      "modelId": "deepseek-chat-v3-0324",
+      "url": "https://tokendance.space/models/deepseek-chat-v3-0324",
+      "status": 200,
+      "rendersModel": false,
+      "heading": null
+    },
+    {
+      "modelId": "deepseek-v3.2",
+      "url": "https://tokendance.space/models/deepseek-v3.2",
+      "status": 200,
+      "rendersModel": false,
+      "heading": null
+    },
+    {
+      "modelId": "deepseek-v4-flash",
+      "url": "https://tokendance.space/models/deepseek-v4-flash",
+      "status": 200,
+      "rendersModel": false,
+      "heading": null
+    },
+    {
+      "modelId": "deepseek-v4-flash-0731",
+      "url": "https://tokendance.space/models/deepseek-v4-flash-0731",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "DeepSeek: DeepSeek V4 Flash 0731"
+    },
+    {
+      "modelId": "deepseek-v4-flash-vision-exp",
+      "url": "https://tokendance.space/models/deepseek-v4-flash-vision-exp",
+      "status": 200,
+      "rendersModel": false,
+      "heading": null
+    },
+    {
+      "modelId": "deepseek-v4-pro",
+      "url": "https://tokendance.space/models/deepseek-v4-pro",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "DeepSeek: DeepSeek V4 Pro Preview"
+    },
+    {
+      "modelId": "deepseek-v4-pro-0813",
+      "url": "https://tokendance.space/models/deepseek-v4-pro-0813",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "DeepSeek: DeepSeek V4 Pro 0813"
+    },
+    {
+      "modelId": "deepseek-v4.1-flash",
+      "url": "https://tokendance.space/models/deepseek-v4.1-flash",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "DeepSeek: DeepSeek V4.1 Flash"
+    },
+    {
+      "modelId": "deepseek-v4.1-flash-1017",
+      "url": "https://tokendance.space/models/deepseek-v4.1-flash-1017",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "DeepSeek: DeepSeek V4.1 Flash 1017"
+    },
+    {
+      "modelId": "dots-3-note-preview",
+      "url": "https://tokendance.space/models/dots-3-note-preview",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Dots Studio: Dots3-Note Preview（Free）"
+    },
+    {
+      "modelId": "glm-4.5-air",
+      "url": "https://tokendance.space/models/glm-4.5-air",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Z.ai: GLM 4.5 Air"
+    },
+    {
+      "modelId": "glm-4.6v",
+      "url": "https://tokendance.space/models/glm-4.6v",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Z.ai: GLM 4.6V"
+    },
+    {
+      "modelId": "glm-4.7",
+      "url": "https://tokendance.space/models/glm-4.7",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Z.ai: GLM 4.7"
+    },
+    {
+      "modelId": "glm-5",
+      "url": "https://tokendance.space/models/glm-5",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Z.ai: GLM 5"
+    },
+    {
+      "modelId": "glm-5.1",
+      "url": "https://tokendance.space/models/glm-5.1",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Z.ai: GLM 5.1"
+    },
+    {
+      "modelId": "glm-5.2",
+      "url": "https://tokendance.space/models/glm-5.2",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Z.ai: GLM 5.2"
+    },
+    {
+      "modelId": "glm-5.3",
+      "url": "https://tokendance.space/models/glm-5.3",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Z.ai: GLM 5.3"
+    },
+    {
+      "modelId": "glm-5.3-flash",
+      "url": "https://tokendance.space/models/glm-5.3-flash",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Z.ai: GLM 5.3 Flash"
+    },
+    {
+      "modelId": "glm-5.3-flashx",
+      "url": "https://tokendance.space/models/glm-5.3-flashx",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "GLM: GLM 5.3 FlashX"
+    },
+    {
+      "modelId": "glm-5v-turbo",
+      "url": "https://tokendance.space/models/glm-5v-turbo",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Z.ai: GLM 5V Turbo"
+    },
+    {
+      "modelId": "hy3",
+      "url": "https://tokendance.space/models/hy3",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Tencent: Hy3"
+    },
+    {
+      "modelId": "hy3-preview",
+      "url": "https://tokendance.space/models/hy3-preview",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Tencent: Hy3 preview"
+    },
+    {
+      "modelId": "hy4-preview",
+      "url": "https://tokendance.space/models/hy4-preview",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Tencent: Hy4 preview"
+    },
+    {
+      "modelId": "kimi-k2.5",
+      "url": "https://tokendance.space/models/kimi-k2.5",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "MoonshotAI: Kimi K2.5"
+    },
+    {
+      "modelId": "kimi-k2.6",
+      "url": "https://tokendance.space/models/kimi-k2.6",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "MoonshotAI: Kimi K2.6"
+    },
+    {
+      "modelId": "kimi-k2.7-code",
+      "url": "https://tokendance.space/models/kimi-k2.7-code",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "MoonshotAI: Kimi K2.7 Code"
+    },
+    {
+      "modelId": "kimi-k3",
+      "url": "https://tokendance.space/models/kimi-k3",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "MoonshotAI: Kimi K3"
+    },
+    {
+      "modelId": "kimi-k3.1-pro",
+      "url": "https://tokendance.space/models/kimi-k3.1-pro",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "MoonshotAI: Kimi K3.1 Pro"
+    },
+    {
+      "modelId": "ling-3.0-flash",
+      "url": "https://tokendance.space/models/ling-3.0-flash",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Ling: Ling 3.0 Flash"
+    },
+    {
+      "modelId": "ling-3.1-flash",
+      "url": "https://tokendance.space/models/ling-3.1-flash",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Ling: Ling 3.1 Flash"
+    },
+    {
+      "modelId": "longcat-2.0",
+      "url": "https://tokendance.space/models/longcat-2.0",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Meituan: LongCat-2.0"
+    },
+    {
+      "modelId": "mimo-v2.5",
+      "url": "https://tokendance.space/models/mimo-v2.5",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Xiaomi: MiMo-V2.5"
+    },
+    {
+      "modelId": "mimo-v2.5-pro",
+      "url": "https://tokendance.space/models/mimo-v2.5-pro",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Xiaomi: MiMo-V2.5-Pro"
+    },
+    {
+      "modelId": "mimo-v2.6-flash",
+      "url": "https://tokendance.space/models/mimo-v2.6-flash",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Xiaomi: MiMo-V2.6-Flash"
+    },
+    {
+      "modelId": "mimo-v2.6-pro",
+      "url": "https://tokendance.space/models/mimo-v2.6-pro",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Xiaomi: MiMo-V2.6-Pro"
+    },
+    {
+      "modelId": "mimo-v2.6-ultraspeed",
+      "url": "https://tokendance.space/models/mimo-v2.6-ultraspeed",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Xiaomi: MiMo-V2.6-Pro-UltraSpeed"
+    },
+    {
+      "modelId": "minimax-m2.5",
+      "url": "https://tokendance.space/models/minimax-m2.5",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "MiniMax: MiniMax M2.5"
+    },
+    {
+      "modelId": "minimax-m2.7",
+      "url": "https://tokendance.space/models/minimax-m2.7",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "MiniMax: MiniMax M2.7"
+    },
+    {
+      "modelId": "minimax-m3",
+      "url": "https://tokendance.space/models/minimax-m3",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "MiniMax: MiniMax M3"
+    },
+    {
+      "modelId": "minimax-m3.1-flash",
+      "url": "https://tokendance.space/models/minimax-m3.1-flash",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "MiniMax: MiniMax M3.1 Flash"
+    },
+    {
+      "modelId": "qwen3-30b-a3b-instruct-2507",
+      "url": "https://tokendance.space/models/qwen3-30b-a3b-instruct-2507",
+      "status": 200,
+      "rendersModel": false,
+      "heading": null
+    },
+    {
+      "modelId": "qwen3-max",
+      "url": "https://tokendance.space/models/qwen3-max",
+      "status": 200,
+      "rendersModel": false,
+      "heading": null
+    },
+    {
+      "modelId": "qwen3-vl-plus",
+      "url": "https://tokendance.space/models/qwen3-vl-plus",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Qwen: Qwen3 VL Plus"
+    },
+    {
+      "modelId": "qwen3.5-35b-a3b",
+      "url": "https://tokendance.space/models/qwen3.5-35b-a3b",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Qwen: Qwen3.5-35B-A3B"
+    },
+    {
+      "modelId": "qwen3.5-flash",
+      "url": "https://tokendance.space/models/qwen3.5-flash",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Qwen: Qwen3.5 Flash"
+    },
+    {
+      "modelId": "qwen3.5-plus",
+      "url": "https://tokendance.space/models/qwen3.5-plus",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Qwen: Qwen3.5 Plus"
+    },
+    {
+      "modelId": "qwen3.6-max-preview",
+      "url": "https://tokendance.space/models/qwen3.6-max-preview",
+      "status": 200,
+      "rendersModel": false,
+      "heading": null
+    },
+    {
+      "modelId": "qwen3.6-plus",
+      "url": "https://tokendance.space/models/qwen3.6-plus",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Qwen: Qwen3.6 Plus"
+    },
+    {
+      "modelId": "qwen3.7-max",
+      "url": "https://tokendance.space/models/qwen3.7-max",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Qwen: Qwen3.7 Max"
+    },
+    {
+      "modelId": "qwen3.7-plus",
+      "url": "https://tokendance.space/models/qwen3.7-plus",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Qwen: Qwen3.7 Plus"
+    },
+    {
+      "modelId": "qwen3.8-flash",
+      "url": "https://tokendance.space/models/qwen3.8-flash",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Qwen: Qwen3.8 Flash"
+    },
+    {
+      "modelId": "qwen3.8-max",
+      "url": "https://tokendance.space/models/qwen3.8-max",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Qwen: Qwen3.8 Max"
+    },
+    {
+      "modelId": "qwen3.8-max-0902",
+      "url": "https://tokendance.space/models/qwen3.8-max-0902",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Qwen: Qwen3.8-Max-0902"
+    },
+    {
+      "modelId": "seed-2.0-code",
+      "url": "https://tokendance.space/models/seed-2.0-code",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "ByteDance Seed: Seed-2.0-Code"
+    },
+    {
+      "modelId": "seed-2.0-lite",
+      "url": "https://tokendance.space/models/seed-2.0-lite",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "ByteDance Seed: Seed-2.0-Lite"
+    },
+    {
+      "modelId": "seed-2.0-mini",
+      "url": "https://tokendance.space/models/seed-2.0-mini",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "ByteDance Seed: Seed-2.0-Mini"
+    },
+    {
+      "modelId": "seed-2.0-pro",
+      "url": "https://tokendance.space/models/seed-2.0-pro",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "ByteDance Seed: Seed-2.0-Pro"
+    },
+    {
+      "modelId": "seed-2.1-pro",
+      "url": "https://tokendance.space/models/seed-2.1-pro",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "ByteDance Seed: Seed-2.1-Pro"
+    },
+    {
+      "modelId": "seed-2.1-turbo",
+      "url": "https://tokendance.space/models/seed-2.1-turbo",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "ByteDance Seed: Seed-2.1-Turbo"
+    },
+    {
+      "modelId": "seed-evolving",
+      "url": "https://tokendance.space/models/seed-evolving",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "ByteDance Seed: Seed-Evolving"
+    },
+    {
+      "modelId": "seedream-5.0-lite",
+      "url": "https://tokendance.space/models/seedream-5.0-lite",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "ByteDance Seed: Seedream 5.0 lite"
+    },
+    {
+      "modelId": "seedream-5.0-pro",
+      "url": "https://tokendance.space/models/seedream-5.0-pro",
+      "status": 200,
+      "rendersModel": true,
+      "heading": null
+    },
+    {
+      "modelId": "spark-x2.5-1.7b",
+      "url": "https://tokendance.space/models/spark-x2.5-1.7b",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Xunfei: Spark-X2.5-1.7B"
+    },
+    {
+      "modelId": "spark-x2.5-4b",
+      "url": "https://tokendance.space/models/spark-x2.5-4b",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "Xunfei: Spark-X2.5-4B"
+    },
+    {
+      "modelId": "step-3.5-flash",
+      "url": "https://tokendance.space/models/step-3.5-flash",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "StepFun: Step 3.5 Flash"
+    },
+    {
+      "modelId": "step-3.7-flash",
+      "url": "https://tokendance.space/models/step-3.7-flash",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "StepFun: Step 3.7 Flash"
+    },
+    {
+      "modelId": "step-5-preview",
+      "url": "https://tokendance.space/models/step-5-preview",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "StepFun: Step 5 Preview"
+    },
+    {
+      "modelId": "unifuncs-s3",
+      "url": "https://tokendance.space/models/unifuncs-s3",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "UniFuncs: Deep Search S3"
+    },
+    {
+      "modelId": "unifuncs-s3-pro",
+      "url": "https://tokendance.space/models/unifuncs-s3-pro",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "UniFuncs: Deep Search S3 Pro"
+    },
+    {
+      "modelId": "unifuncs-u3",
+      "url": "https://tokendance.space/models/unifuncs-u3",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "UniFuncs: Deep Research U3"
+    },
+    {
+      "modelId": "unifuncs-u3-pro",
+      "url": "https://tokendance.space/models/unifuncs-u3-pro",
+      "status": 200,
+      "rendersModel": true,
+      "heading": "UniFuncs: Deep Research U3 Pro"
+    }
+  ]
+}

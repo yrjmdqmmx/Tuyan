@@ -6,6 +6,7 @@ import { createRequire } from 'node:module'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { STATIC_MODEL_REGISTRY, STATIC_MODEL_REGISTRY_VERSION } from '../apps/web/src/lib/staticModelCatalog.js'
+import { miniModelCatalog } from '../scripts/lib/mini-model-catalog.mjs'
 import { PROVIDERS } from '../apps/web/src/constants.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -36,7 +37,11 @@ function assertOfficialEvidence(provider, model) {
 test('backend and both bundled catalogs are generated from the same reviewed source without drift', () => {
   assert.equal(STATIC_MODEL_REGISTRY_VERSION, current.version)
   assert.equal(mini.STATIC_MODEL_REGISTRY_VERSION, current.version)
-  assert.deepEqual(mini.STATIC_MODEL_REGISTRY, STATIC_MODEL_REGISTRY)
+  assert.deepEqual(mini.STATIC_MODEL_REGISTRY, miniModelCatalog({registry:STATIC_MODEL_REGISTRY}).registry)
+  for (const [provider, registry] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of registry.models) {
+    const projected = mini.STATIC_MODEL_REGISTRY[provider].models.find(m=>m.id===model.id)
+    for (const field of ['id','roles','selectable','disabledReason','availabilityNotes','regions','protocol']) assert.deepEqual(projected[field],model[field],`${provider}/${model.id}/${field}`)
+  }
   assert.match(execFileSync(process.execPath, ['scripts/sync-model-catalog.mjs', '--check'], { cwd: root, encoding: 'utf8' }), /no drift/)
   for (const [provider, registry] of Object.entries(STATIC_MODEL_REGISTRY)) {
     for (const role of ['main', 'image', 'vision']) {

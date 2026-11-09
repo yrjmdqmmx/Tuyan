@@ -1,0 +1,1 @@
+<template name="model-unavailable"><text><text class="model-name-nowrap">{{removed.displayName}}</text>：原型号已不可用，请重新选择。<text wx:if="{{removed.replacementApiId}}">推荐：<text class="model-name-nowrap">{{removed.replacementDisplayName}}</text></text></text></template>

@@ -1,0 +1,110 @@
+{
+  "antling/Ling-3.1-flash": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://developer.ant-ling.com/zh-CN/docs/api-reference/",
+    "checkedAt": "2026-11-09",
+    "textEndpoint": "https://api.ant-ling.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "request": {
+      "stream": false
+    },
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "Ling-3.1-flash"
+        }
+      }
+    },
+    "generateInputPolicy": false
+  },
+  "antling/Ling-3.2-flash": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://developer.ant-ling.com/zh-CN/docs/api-reference/",
+    "checkedAt": "2026-11-09",
+    "textEndpoint": "https://api.ant-ling.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "request": {
+      "stream": false
+    },
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "Ling-3.2-flash"
+        }
+      }
+    },
+    "generateInputPolicy": false
+  },
+  "tokenhub/hy4": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132252",
+    "checkedAt": "2026-11-09",
+    "textEndpoint": "https://tokenhub.tencentmaas.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "request": {
+      "stream": false
+    },
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "hy4"
+        }
+      }
+    },
+    "generateInputPolicy": false
+  },
+  "longcat/LongCat-2.5": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://longcat.chat/platform/docs/change-log",
+    "checkedAt": "2026-11-09",
+    "textEndpoint": "https://api.longcat.chat/openai/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "request": {
+      "stream": false
+    },
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "LongCat-2.5"
+        }
+      }
+    },
+    "generateInputPolicy": false
+  }
+}

@@ -255,7 +255,13 @@ export function createApp({
       && tokensMatch(adminTransport, config.adminTransportToken),
     )
     const usesCustom = action === 'universalApiCheck' || (body.mainRoute as any)?.accessProvider === 'custom' || Object.entries((body.modelRoutes || {}) as any).some(([role, route]: [string, any]) => (role !== 'vision' || body.visionMode !== 'none') && route?.accessProvider === 'custom')
-    if (usesCustom && (action==='universalApiCheck' || !requiresCustomCredential || await requiresCustomCredential(body))) {
+    let needsCustom = false
+    try { needsCustom = usesCustom && (action === 'universalApiCheck' || !requiresCustomCredential || await requiresCustomCredential(body)) }
+    catch (error: any) {
+      if (error?.businessCode === 'MODEL_UNAVAILABLE') return response.status(400).json({ code: 400, error: error.message, businessCode: error.businessCode, replacement: error.replacement, requestState: 'not_sent' })
+      throw error
+    }
+    if (needsCustom) {
       const userId = safeLegacyHeader(request.get('x-paperbanana-auth-user-id'), 200) || ''
       if (!userId) return response.status(401).json({code: 401, error: '通用 API 接入需要先登录。'})
       body.userId = userId
@@ -285,6 +291,7 @@ export function createApp({
           if (action === 'optimizeInputs') body.apiKey = credential.key
         }
       } catch (error: any) {
+        if (error?.businessCode === 'MODEL_UNAVAILABLE') return response.status(400).json({ code: 400, error: error.message, businessCode: error.businessCode, replacement: error.replacement, requestState: 'not_sent' })
         const status = ['TokenDanceError','UniversalApiError'].includes(error?.name) ? error.status || 400 : 503
         return response.status(status).json({ code: status, error: ['TokenDanceError','UniversalApiError'].includes(error?.name) ? error.message : '渠道连接或任务恢复服务暂不可用。', recoveryAction: error?.recoveryAction, retryAfterSeconds: error?.retryAfterSeconds || 0, uncertain: Boolean(error?.uncertain) })
       }

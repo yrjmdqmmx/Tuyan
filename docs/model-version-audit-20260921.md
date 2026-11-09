@@ -2,15 +2,15 @@
 
 本次在目录 v20 的基础上修正展示与版本证据，v21 没有新增、删除或替换调用 ID。760 个静态条目（其中 6 个已停用身份保留）全部逐 ID 建立记录；另记录 415 个 OpenRouter 同步候选目录身份，实际可选项仍由能力、协议、生命周期过滤。Batch 专用 ID 不计入同步候选。历史任务、默认配置、能力与调用协议未迁移。
 
-展示名称校准 95 项，见 [展示名称变更表](model-version-label-changes.csv)；API ID 更名 0 项。
+展示名称校准 87 项，见 [展示名称变更表](model-version-label-changes.csv)；API ID 更名 0 项。
 
-完整对照表：[全部 1175 行](model-version-mapping.csv)；[待确认 938 行](model-version-unconfirmed.csv)；[机器可读证据与来源哈希](../config/model-version-audit.json)。表中同时列出保存的配置 ID 和实际 API model ID / 端点 / version 参数，避免把展示名称当作调用 ID。
+完整对照表：[全部 1111 行](model-version-mapping.csv)；[待确认 889 行](model-version-unconfirmed.csv)；[机器可读证据与来源哈希](../config/model-version-audit.json)。表中同时列出保存的配置 ID 和实际 API model ID / 端点 / version 参数，避免把展示名称当作调用 ID。
 
-核对结果分为固定版本 126 行、滚动别名 139 行、固定性或版本待确认 910 行。滚动别名中 28 行尚无已确认的当前目标。固定性未知不等于型号不存在，也不等于停用；15 行仍有精确 ID 或历史版本证据缺口，详见独立 CSV。尝试读取 400 个官方 URL，其中 16 个返回 404；应用外壳、404、目录缺失均不作为下架依据。
+核对结果分为固定版本 111 行、滚动别名 139 行、固定性或版本待确认 861 行。滚动别名中 28 行尚无已确认的当前目标。固定性未知不等于型号不存在，也不等于停用；15 行仍有精确 ID 或历史版本证据缺口，详见独立 CSV。尝试读取 400 个官方 URL，其中 16 个返回 404；应用外壳、404、目录缺失均不作为下架依据。
 
 | 渠道 | 展示名称 | API model ID | 性质 | 已核对版本 | 依据 |
 |---|---|---|---|---|---|
-| 阿里云百炼 | DeepSeek-V4-Pro（具体版本待确认） | `deepseek-v4-pro` | 固定性 / 对应版本待确认 | deepseek-v4-pro | [官方来源](https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin) |
+| 阿里云百炼 | DeepSeek-V4-Pro | `deepseek-v4-pro` | 固定性 / 对应版本待确认 | deepseek-v4-pro | [官方来源](https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin) |
 | 阿里云百炼 | DeepSeek-V4-Pro-0813 | `deepseek-v4-pro-0813` | 固定版本 | deepseek-v4-pro-0813 | [官方来源](https://help.aliyun.com/zh/model-studio/deepseek-v4-pro) |
 | 深度求索 | DeepSeek-V4.1-Flash | `deepseek-flash` | 滚动别名 | DeepSeek-V4.1-Flash | [官方来源](https://api-docs.deepseek.com/quick_start/pricing) |
 | 深度求索 | DeepSeek-V4-Pro-0813 | `deepseek-v4-pro` | 滚动别名 | DeepSeek-V4-Pro-0813 | [官方来源](https://api-docs.deepseek.com/quick_start/pricing) |

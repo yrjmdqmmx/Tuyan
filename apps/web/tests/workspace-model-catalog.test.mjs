@@ -74,7 +74,7 @@ test('reviewed catalog restores Together, hides fal from current choices and pre
  assert.equal(screen.getByRole('button',{name:/添加 DeepSeek-V4-Pro-0813/}).disabled,false);
  assert.equal(screen.queryByRole('note'),null);
  fireEvent.click(within(screen.getByRole('complementary',{name:'模型渠道筛选'})).getByRole('button',{name:/Novita/}));
- assert.match(screen.getByRole('note').getAttribute('aria-label'),/已确认专用文生图 JSON 协议.*待确认仅限通用目录/);
+ assert.match(screen.getByRole('link').getAttribute('aria-label'),/已确认专用文生图 JSON 协议.*待确认仅限通用目录/);
  assert.equal(writes,0);assert.deepEqual(saved,before);
 });
 
@@ -145,16 +145,18 @@ test('retired cards disappear while future retirement, adapter gaps and transien
  assert.deepEqual(r,before,'display filtering never deletes historical model IDs');
 });
 
-test('cards show three specifications immediately without a disclosure and keep every official source accessible',()=>{
- const sources=['https://example.com/model','https://example.com/limits','https://example.com/api'];
+test('cards show four specifications immediately and expose all human sources while retaining API evidence in the model',()=>{
+ const sources=['https://example.com/model','https://example.com/limits','https://example.com/api','https://example.com/api/v1/models','https://example.com/model/schema.json'];
  const r={providers:{openai:{models:[{id:'direct-card',label:'Direct card',roles:['main'],specifications:{version:1,officialInputModalities:['text','image'],officialOutputModalities:['text'],contextWindowTokens:1000000,sourceUrls:sources}}]}}};
  const {container}=render(React.createElement(WorkspaceModelCatalog,{...props,models:{...props.models,registry:r}}));
  const card=screen.getByRole('article');
  assert.equal(card.querySelector('details,summary'),null);
  assert.equal(screen.queryByText('规格与来源'),null);
- assert.deepEqual([...card.querySelectorAll('dt')].map(node=>node.textContent),['输入','输出','上下文窗口']);
- assert.ok(within(card).getByText('1M tokens'));
- assert.deepEqual(within(card).getAllByRole('link').map(link=>link.href),sources);
+ assert.deepEqual([...card.querySelectorAll('dt')].map(node=>node.textContent),['输入','输出','上下文窗口','最大输出']);
+ assert.ok(within(card).getAllByText('未知')[0]);
+ assert.deepEqual(within(card).getAllByRole('link').map(link=>link.href),sources.slice(0,1));
+ for(const source of sources) assert.equal(within(card).getByRole('link').title.includes(source),sources.slice(0,3).includes(source));
+ assert.deepEqual(r.providers.openai.models[0].specifications.sourceUrls,sources);
  assert.ok(container.querySelector('.tw-catalog-card-actions > button'));
 });
 
@@ -240,7 +242,7 @@ test('unreviewed tools and unsupported modality discoveries never inflate cards 
   {id:'fetch',roles:[],catalogDiscovered:true},
   {id:'embedding',roles:['embedding']},
   {id:'audio',roles:['audio']},
-  {id:'absent',roles:['image'],selectable:false,disabledReason:'当前渠道的完整公开目录已不再提供此精确型号，已暂停选择与调用；原配置保留，请选择其他型号。'},
+  {id:'absent',roles:['image'],catalogPresence:{status:'absent'},selectable:false,disabledReason:'当前渠道的完整公开目录已不再提供此精确型号，已暂停选择与调用；原配置保留，请选择其他型号。'},
  ]}}};
  assert.deepEqual(catalogRows(r).map(row=>row.model.id),['image']);
  assert.equal(r.providers.fal.models.length,5);
@@ -255,7 +257,7 @@ test('my model cards preserve connection identity, specifications and exact-entr
  const view=render(React.createElement(WorkspaceModelCatalog,{...props,mode:'library',models:{...props.models,library:savedLibrary,save:async value=>{saved=value;return true;}}}));
  assert.equal(screen.getAllByRole('article').length,2);
  for(const card of screen.getAllByRole('article')){
-  assert.deepEqual([...card.querySelectorAll('dt')].map(node=>node.textContent),['输入','输出','上下文窗口']);
+  assert.deepEqual([...card.querySelectorAll('dt')].map(node=>node.textContent),['输入','输出','上下文窗口','最大输出']);
   assert.equal(card.querySelector('details,summary'),null);
  }
  fireEvent.click(screen.getByRole('button',{name:'停用 Shared model · Gateway'}));
@@ -268,7 +270,7 @@ test('my model cards preserve connection identity, specifications and exact-entr
  assert.equal(saved.models[0].disabled,true);
  changeControl(screen.getByLabelText('搜索已添加模型'),{target:{value:'Backup'}});
  assert.equal(screen.getAllByRole('article').length,1);
- assert.match(screen.getByRole('article').textContent,/Backup/);
+ assert.match(within(screen.getByRole('article')).getByRole('button').getAttribute('aria-label'),/Backup/);
  assert.equal(screen.queryByRole('button',{name:/全部渠道|全部厂商/}),null);
 });
 
@@ -289,7 +291,7 @@ test('pending evidence is visible without reopening expired models or rewriting 
  const saved={connections:[{id:'old',provider:'together'}],models:[{id:'kept',connectionId:'old',modelId:'removed'}]};const before=structuredClone(saved);let writes=0;
  assert.deepEqual(catalogRows(source).map(row=>row.model.id),['conflict']);
  render(React.createElement(WorkspaceModelCatalog,{models:{...props.models,registry:source,library:saved,save:async()=>{writes++;return true;}}}));
- assert.match(screen.getByRole('note').getAttribute('aria-label'),/待确认.*官方目录与到期记录冲突/);
+ assert.match(screen.getByRole('link').getAttribute('aria-label'),/未核实[\s\S]*官方目录与到期记录冲突/);
  assert.equal(screen.getByRole('button',{name:'添加 Conflict model · Together AI'}).disabled,true);
  assert.equal(writes,0);assert.deepEqual(saved,before);
 });
