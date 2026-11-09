@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { removedModel, auditedModelLifecycle, withModelAudit } from '../lib/modelAudit.js';
 import { modelUnavailableForSelection } from '../lib/modelRegistry.js';
 import { modelOption } from './workspaceModels.js';
+import { modelDisplayName } from '../lib/modelUnavailablePresentation.js';
 import WorkspaceDialog from './WorkspaceDialog.jsx';
 import { useAppLocale } from '../components/BenchmarkLocale.jsx';
 
@@ -33,9 +34,9 @@ export default function ModelReplacement({ provider, modelId, models, entry, onR
     setConfirming(false);
   }
   return <>
-    <button className="tw-text-button" disabled={!models.ready || models.busy || models.registryStatus !== 'ready'} onClick={() => { setConfirming(true); setError(''); }}>{removed ? t('改选') : `${t('切换到')} ${replacement.id}`}</button>
+    <button className="tw-secondary" disabled={!models.ready || models.busy || models.registryStatus !== 'ready'} onClick={() => { setConfirming(true); setError(''); }}>{removed ? t('改选') : `${t('切换到')} ${modelDisplayName(provider, replacement.id, models.registry)}`}</button>
     {confirming && <WorkspaceDialog title={t('确认切换模型')} onClose={() => setConfirming(false)}>
-      <p>{modelId} → {replacement.id}</p>
+      <p title={`${modelId} → ${replacement.id}`}>{modelDisplayName(provider, modelId, models.registry)} → {modelDisplayName(provider, replacement.id, models.registry)}</p>
       <p>{t('使用同一渠道连接。原型号保留原状态，替代型号加入我的模型；其他已保存预设和历史任务保持原型号。')}{onReplace ? t('当前预设的此角色会切换为替代型号。') : ''}</p>
       <p>{t('替代型号的能力和账户可用性可能不同，请核对后确认。')}</p>
       {error && <p role="alert">{error}</p>}

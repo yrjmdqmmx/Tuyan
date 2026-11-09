@@ -159,8 +159,8 @@ test('modality icons distinguish known, missing and conditional published capabi
   assert.equal(states.find(x=>x.id==='file').detail,'文件（PDF）')
   assert.equal(modalityIconStates('文本')[1].state,'unlisted')
   const {container}=render(React.createElement(ModelSpecifications,{provider:'custom',model:{id:'unknown'}}))
-  assert.equal(container.querySelectorAll('.is-unknown').length,0)
-  assert.equal(screen.getAllByText('模态未知').length,2)
+  assert.equal(container.querySelectorAll('.is-unknown').length,8)
+  assert.equal(screen.getAllByRole('img', {name:/：未知$/}).length,8)
   assert.doesNotMatch(container.textContent,/（原厂）|（渠道）/)
 })
 
@@ -207,7 +207,7 @@ test('verified catalog limits retain exact integers; similar names do not supply
     const before=structuredClone(model), data=modelCardSpecifications('custom',model)
     assert.equal(data.context,`${formatContextLimit(max)} tokens`);assert.equal(data.maxOutput,`${formatContextLimit(max)} tokens`);assert.equal(data.fields.totalContextTokens.value,max);assert.equal(data.fields.maxOutputTokens.value,max);assert.equal(data.contextScope,'图研既有核实');assert.deepEqual(model,before)
   }
-  for(const [id,expected] of [['xqwen14bchat','≈ 131K（需 YaRN） tokens'],['THUDM/GLM-4-9B-0414','128K（需 YaRN；原生 32K） tokens'],['xsparkx2','192k tokens']]) assert.equal(modelCardSpecifications('custom',{id}).context,expected)
+  for(const [id,expected] of [['xqwen14bchat','≈ 131K tokens（需 YaRN）'],['THUDM/GLM-4-9B-0414','128K tokens（需 YaRN；原生 32K）'],['xsparkx2','192k tokens']]) assert.equal(modelCardSpecifications('custom',{id}).context,expected)
   assert.equal(modelCardSpecifications('custom',{id:'unlisted-similar-GLM-4'}).context,'未知')
 })
 

@@ -46,8 +46,8 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
       }
       return intern(facts, [value, fact.state, fact.provenance, fact.sourceUrl ? fact.sourceUrl === sourceUrl ? -1 : intern(sources, fact.sourceUrl) : null, ...(prior !== undefined ? [prior] : [])])
     }), sourceUrl ? intern(sources, sourceUrl) : null]
-    const note = [data.details[key]?.note, existing.totalContextTokens?.suffix].filter(Boolean).join('；')
-    if (note) details[key] = { note }
+    const note = data.details[key]?.note, suffix = merged.totalContextTokens?.suffix
+    if (note || suffix) details[key] = { ...(note ? { note } : {}), ...(suffix ? { suffix } : {}) }
   }
   // Reuse the static catalog's exact identities instead of shipping each ID twice.
   const keys = Object.entries(providers).flatMap(([channel, provider]) => provider.models.map(model => channel + '/' + model.id))

@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Search, Plus, Check, ChevronDown, ArrowRight } from 'lucide-react';
 import { ModelBrandLogo } from '../components/ModelBrandLogo.jsx';
 import { modelCardName } from '../lib/modelCardSpecifications.js';
+import { unavailableModelHint } from '../lib/modelUnavailablePresentation.js';
+import ModelReplacement from './ModelReplacement.jsx';
 import { ModelSpecifications, ModelLifecycleBadge } from '../components/ModelSpecifications.jsx';
 import { MODEL_CHANNEL_LABELS, modelDeveloper, modelDeveloperAliases, orderModelChannels } from '../lib/modelPresentation.js';
 import { modelUnavailableForSelection, modelMissingFromCatalog, modelRetiredFromCatalog } from '../lib/modelRegistry.js';
@@ -82,11 +84,7 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
   const activeDeveloper = developers.find(item => item.id === developer) || developers[0];
   const developerId = activeDeveloper?.id || '';
   const removedHints = removedRows.filter(row => row.provider === providerId && (!developerId || modelDeveloper(row.provider, row.model).id === developerId)).map(row => {
-    const candidates = registry?.providers?.[row.provider]?.models || [];
-    const replacement = candidates.find(m => m.id === row.notice.replacementApiId);
-    const name = replacement && modelCardName(row.provider, replacement);
-    const shortName = name && name.length <= 40 && !name.includes('/') && candidates.filter(m => modelCardName(row.provider, m) === name).length === 1;
-    return { id: row.entry.id, text: `${channelName(row.provider, registry)} 的 ${row.model.id} 已不可用${row.notice.replacementApiId ? `，可改选 ${shortName ? name : row.notice.replacementApiId}` : '，请重新选择'}` };
+    return { ...row, id: row.entry.id, text: unavailableModelHint(row.provider, row.model.id, registry) };
   });
   useEffect(() => {
     if (!saved) { setProvider(providerId); setDeveloper(developerId); }
@@ -127,15 +125,15 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
       </div>
       <div className="tw-catalog-caption"><span>{providerId ? channelName(providerId, registry) : '模型目录'}{activeDeveloper && ` / ${activeDeveloper.label}`} <strong>{rows.length}</strong> 个型号</span>{saved ? <button className="tw-text-button" onClick={onBrowse}><Plus size={14}/>从目录添加</button> : <span>同一模型在不同渠道分别列出</span>}</div>
       <div className="tw-catalog-scroll" ref={scrollRef} tabIndex={0} aria-label={saved ? '已添加模型卡片' : '模型目录卡片'}>
-      {removedHints.length === 1 && <p className="tw-info" role="status">{removedHints[0].text}</p>}
-      {removedHints.length > 1 && <details className="tw-info" key={`${providerId}:${developerId}`}><summary>{removedHints.length} 个已保存型号已不可用</summary>{removedHints.map(hint => <p key={hint.id}>{hint.text}</p>)}</details>}
+      {removedHints.length === 1 && <div className="tw-info" role="status"><span>{removedHints[0].text}</span><ModelReplacement provider={removedHints[0].provider} modelId={removedHints[0].model.id} entry={removedHints[0].entry} models={models}/></div>}
+      {removedHints.length > 1 && <details className="tw-info" key={`${providerId}:${developerId}`}><summary>{removedHints.length} 个已保存型号已不可用</summary>{removedHints.map(hint => <div key={hint.id} title={`${hint.connection.label} · ${hint.model.id}`}><p>{hint.text}</p><ModelReplacement provider={hint.provider} modelId={hint.model.id} entry={hint.entry} models={models}/></div>)}</details>}
       <div className="tw-catalog-grid">
         {rows.slice(0, limit).map(({ provider: id, model, entry, connection: savedConnection }) => {
           const added = library.models.filter(m => m.modelId === model.id && library.connections.some(c => c.id === m.connectionId && c.provider === id)).length;
           const unavailable = modelUnavailableForSelection(model);
           const developer = modelDeveloper(id, model);
           return <article className="tw-catalog-card" key={entry?.id || `${id}:${model.id}`}>
-            <div className="tw-catalog-card-head"><span className="tw-catalog-logo"><ModelBrandLogo brand={developer.id}/></span><div><div className="tw-catalog-title"><h3 title={model.label || model.id}>{model.label || model.id}</h3><ModelLifecycleBadge lifecycle={model.auditLifecycle}/></div><p title={`${developer.label || model.vendor || channelName(id, registry)} / ${channelName(id, registry)}`}>{developer.label || model.vendor || channelName(id, registry)}<span> / </span>{channelName(id, registry)}{savedConnection ? ` · ${savedConnection.label} · ${savedConnection.id}` : ''}</p></div></div>
+            <div className="tw-catalog-card-head"><span className="tw-catalog-logo"><ModelBrandLogo brand={developer.id}/></span><div><div className="tw-catalog-title"><h3 title={modelCardName(id, model)}>{modelCardName(id, model)}</h3><ModelLifecycleBadge provider={id} lifecycle={model.auditLifecycle}/></div><p title={`${developer.label || model.vendor || channelName(id, registry)} / ${channelName(id, registry)}${savedConnection ? ` · ${savedConnection.label} · ${savedConnection.id}` : ''}`}>{developer.label || model.vendor || channelName(id, registry)}<span> / </span>{channelName(id, registry)}{savedConnection ? ` · ${savedConnection.label}` : ''}</p></div></div>
             <div className="tw-catalog-card-meta">
               <code title={model.id}>{model.id}</code>
               <div className="tw-catalog-tags">{(model.roles || []).filter(r => ROLE_NAMES[r]).map(r => <span key={r}>{ROLE_NAMES[r]}</span>)}{!model.roles?.length && <span>角色待确认</span>}</div>
@@ -148,7 +146,7 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
           </article>;
         })}
       </div>
-      {!rows.length && <div className="tw-catalog-empty"><Search size={25}/><h3>{saved && !allRows.length ? '还没有添加模型' : registry ? '没有匹配的模型' : registryStatus==='loading' ? '正在准备模型目录' : '暂时无法读取模型目录'}</h3><p>{saved && !allRows.length ? '从模型目录添加后，可在这里查看规格、筛选和管理。' : registry ? '试试精确型号，或调整渠道、厂商与角色。' : registryStatus==='loading' ? '读取完成后将显示当前服务的模型列表。' : '可点击刷新目录重试，已有连接与模型仍保留。'}</p>{registry && <button onClick={() => { setRole(''); setQuery(''); setLimit(PAGE_SIZE); }}>清除筛选</button>}</div>}
+      {!rows.length && !removedHints.length && <div className="tw-catalog-empty"><Search size={25}/><h3>{saved && !allRows.length ? '还没有添加模型' : registry ? '没有匹配的模型' : registryStatus==='loading' ? '正在准备模型目录' : '暂时无法读取模型目录'}</h3><p>{saved && !allRows.length ? '从模型目录添加后，可在这里查看规格、筛选和管理。' : registry ? '试试精确型号，或调整渠道、厂商与角色。' : registryStatus==='loading' ? '读取完成后将显示当前服务的模型列表。' : '可点击刷新目录重试，已有连接与模型仍保留。'}</p>{registry && <button onClick={() => { setRole(''); setQuery(''); setLimit(PAGE_SIZE); }}>清除筛选</button>}</div>}
       {rows.length > limit && <button className="tw-catalog-more" onClick={() => setLimit(limit + PAGE_SIZE)}>继续显示 {Math.min(PAGE_SIZE, rows.length - limit)} 个型号 <ChevronDown size={15}/></button>}
       </div>
     </div>

@@ -58,7 +58,7 @@ test('role and directory changes reset stale browse state; incompatible saved ro
 test('removed saved IDs show empty-slot hints without cards or automatic selection writes',()=>{
  for(const route of [{accessProvider:'xiaomi',modelId:'mimo-v2.5'},{accessProvider:'fireworks',modelId:'accounts/fireworks/models/glm-5p2'}]) {
   const {instance:p,events}=picker('main',route);
-  assert.match(p.data.removedHint,/原型号 .* 已不可用，可改选/);
+  assert.match(p.data.removedHint,/原型号已不可用，请重新选择。推荐：/);
   assert.ok(p.data.savedReplacement);assert.equal(p.data.savedLifecycle,'');
   assert.equal(p.properties.selectedModel,route.modelId);assert.equal(events.length,0);
   assert.equal(p.compatibleModels(route.accessProvider).some(model=>model.id===route.modelId),false);

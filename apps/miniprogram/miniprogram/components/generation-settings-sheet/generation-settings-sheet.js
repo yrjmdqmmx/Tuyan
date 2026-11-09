@@ -277,7 +277,7 @@ Component({
             const selectable = () => { var _a, _b; return id && (0, model_registry_1.partitionRegistryModels)(((_b = (_a = this.getRegistry()) === null || _a === void 0 ? void 0 : _a.providers[route.accessProvider]) === null || _b === void 0 ? void 0 : _b.models) || [], { role, outputFormat: draft.outputFormat }).compatible.some(m => m.id === id); };
             if (!selectable())
                 return;
-            wx.showModal({ title: '确认切换模型', content: `${route.modelId} → ${id}。只修改当前角色。`, success: result => {
+            wx.showModal({ title: '确认切换模型', content: `${(0, model_audit_1.modelDisplayName)(route.accessProvider, route.modelId)} → ${(0, model_audit_1.modelDisplayName)(route.accessProvider, id)}。只修改当前角色。`, success: result => {
                     if (result.confirm && this.data.draft === draft && draft.modelRoutes[role] === route && selectable()) {
                         draft.modelRoutes[role] = { accessProvider: route.accessProvider, modelId: id };
                         this.setData({ draft });

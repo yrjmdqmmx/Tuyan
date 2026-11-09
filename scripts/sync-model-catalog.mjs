@@ -34,8 +34,17 @@ write(path.join(root, 'packages/api/src/model-audit-data.ts'), '// Generated fro
 const modelAuditSource = fs.readFileSync(path.join(root, 'packages/api/src/model-audit.ts'), 'utf8').replace(/^import .* from .*\n/gm, '')
 lines.push(modelAuditData, modelAuditSource)
 write(path.join(root, 'apps/auth-gateway/src/model-audit.js'), '// Generated from packages/api/src/model-audit.ts and config/model-audit.generated.json\n' + modelAuditData.replace(': any', '') + ts.transpileModule(modelAuditSource, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
-const miniAuditSource = modelAuditSource.replace(/export function assertAuditedModelAvailable[\s\S]*?(?=export function withModelAudit)/, '').replace(/export function assertModelLibraryAdditions[\s\S]*$/, '')
-write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-audit.ts'), '// Generated card helpers from packages/api/src/model-audit.ts\nconst MODEL_AUDIT_DATA = require(\'./model-audit-data.js\')\n' + miniAuditSource.trimEnd() + '\n')
+const miniAuditSource = modelAuditSource
+  .replace('；可改选 ${replacement}', '；可改选 ${modelDisplayName(channel, replacement)}')
+  .replace('`原型号 ${id} 已不可用${removed.replacementApiId ? `，可改选 ${removed.replacementApiId}` : \'，请重新选择\'}`', '`原型号已不可用，请重新选择${removed.replacementApiId ? `。推荐：${modelDisplayName(channel, removed.replacementApiId)}` : \'\'}`')
+  .replace('  unknownModalities?: string[]', '  suffix?: string\n  unknownModalities?: string[]')
+  .replace('  if (details?.unknownInputModalities)', '  result.totalContextTokens.suffix = details?.suffix\n  if (details?.unknownInputModalities)')
+  .replace(/export function assertAuditedModelAvailable[\s\S]*?(?=export function withModelAudit)/, '').replace(/export function assertModelLibraryAdditions[\s\S]*$/, '')
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-audit.ts'), '// Generated card helpers from packages/api/src/model-audit.ts\nconst MODEL_AUDIT_DATA = require(\'./model-audit-data.js\')\n' + miniAuditSource.trimEnd() + `
+export function modelDisplayName(channel: string, id: string): string {
+  return require('./static-model-catalog.js').STATIC_MODEL_REGISTRY[channel]?.models.find((m: {id: string}) => m.id === id)?.label || id
+}
+`)
 const presentation = JSON.parse(fs.readFileSync(path.join(root, 'config/model-presentation.json'), 'utf8'))
 const presentationData = `export const MODEL_PRESENTATION: {
   channels: Record<string, string>;

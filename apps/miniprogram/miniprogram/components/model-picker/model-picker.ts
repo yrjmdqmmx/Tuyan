@@ -1,5 +1,5 @@
-import { removedModel, removedModelHint, auditedModelSpecs, auditedModelLifecycle, AuditFact } from '../../utils/model-audit'
-import { formatContextLimit, MODEL_CHANNEL_LABELS, modelDeveloper, orderModelChannels, modelVersionLabel, modelVersionDetail, modelLifecycleLabel } from '../../utils/model-presentation'
+import { removedModelHint, modelDisplayName, removedModel, auditedModelSpecs, auditedModelLifecycle, AuditFact } from '../../utils/model-audit'
+import { formatContextLimit, MODEL_CHANNEL_LABELS, modelDeveloper, orderModelChannels, modelVersionLabel, modelVersionDetail } from '../../utils/model-presentation'
 import { getModelRegistryState } from '../../utils/model-registry-store'
 import { registryForRegions } from '../../utils/provider-regions'
 import { MODEL_PROVIDER_IDS, groupRegistryModels, partitionRegistryModels, type ModelProviderId, type ModelRegistry, type ModelRole, type RegistryModel } from '../../utils/model-registry'
@@ -9,7 +9,7 @@ const MODEL_PAGE_SIZE = 30
 
 interface ProviderCard { id: ModelProviderId; label: string; kindText: string; count: number }
 interface VendorCard { vendor: string; count: number }
-interface ModelCard extends Pick<RegistryModel, 'id' | 'label' | 'recommended' | 'requiresEntitlement' | 'availabilityNotes'> { vendorLabel: string; channelLabel: string; specRows: {label:string;value:string;origin:string;unknown:boolean;unknownText:string}[]; specSources:string[]; verifiedAt:string; auditMessage:string; scheduled:boolean; lifecycleText: string; verificationText: string; serviceTier: string; capabilityText: string; releaseText: string; versionLabel: string; versionText: string; apiIdentifier: string; selected: boolean }
+interface ModelCard extends Pick<RegistryModel, 'id' | 'label' | 'availabilityNotes'> { vendorLabel: string; channelLabel: string; specRows: {label:string;value:string;origin:string;unknown:boolean;unknownText:string}[]; specSources:{url:string;label:string}[]; auditMessage:string; scheduled:boolean; capabilityText: string; versionLabel:string; versionText:string; apiIdentifier:string; selected: boolean }
 
 Component({
   options: { styleIsolation: 'apply-shared' },
@@ -31,6 +31,8 @@ Component({
     savedLifecycle: '',
     removedHint: '',
     savedReplacement: '',
+    replacementLabel: '',
+    expandedModel: '',
     step: 'providers' as 'providers' | 'vendors' | 'models',
     roleLabel: '主模型',
     providerCards: [] as ProviderCard[],
@@ -41,12 +43,10 @@ Component({
     activeProviderLabel: '',
     activeVendor: '',
     activeModelLabel: '',
-    activeProviderIsAggregator: false,
     query: '',
     catalogMode: 'all' as 'recommended' | 'all',
     visibleLimit: MODEL_PAGE_SIZE,
     hasMore: false,
-    expandedModel: '',
   },
   methods: {
     noop() {},
@@ -72,7 +72,7 @@ Component({
       const lifecycle = auditedModelLifecycle(String(this.properties.selectedProvider), String(this.properties.selectedModel))
       const removed = removedModel(String(this.properties.selectedProvider), String(this.properties.selectedModel))
       const replacement = this.compatibleModels(String(this.properties.selectedProvider)).find(model => model.id === (removed?.replacementApiId || lifecycle?.replacement))
-      this.setData({removedHint: removedModelHint(String(this.properties.selectedProvider), String(this.properties.selectedModel)), savedLifecycle: lifecycle?.message || '', savedReplacement: replacement?.id || ''})
+      this.setData({removedHint: removedModelHint(String(this.properties.selectedProvider), String(this.properties.selectedModel)), savedLifecycle: lifecycle?.message || '', savedReplacement: replacement?.id || '', replacementLabel: replacement?.label || ''})
       const selectedProvider = String(this.properties.selectedProvider || '') as ModelProviderId
       const activeProvider = providerCards.some(item => item.id === selectedProvider) ? selectedProvider : ''
       const vendorCards = activeProvider ? this.vendorsFor(activeProvider) : []
@@ -81,8 +81,8 @@ Component({
       this.setData({
         step: 'providers', roleLabel: roleLabel(normalizeRole(this.properties.role)), providerCards, vendorCards,
         activeProvider, activeProviderLabel: activeProvider ? PROVIDER_LABELS[activeProvider] : '', activeVendor,
-        activeModelLabel: selected?.label || '', activeProviderIsAggregator: registry?.providers[activeProvider as ModelProviderId]?.accessKind === 'aggregator',
-        query: '', catalogMode: 'all', visibleLimit: MODEL_PAGE_SIZE, compatibleCount: 0, visibleCompatibleModels: [], hasMore: false, expandedModel: '',
+        activeModelLabel: selected?.label || '',
+        query: '', expandedModel: '', catalogMode: 'all', visibleLimit: MODEL_PAGE_SIZE, compatibleCount: 0, visibleCompatibleModels: [], hasMore: false,
       })
     },
     selectProvider(event: WechatMiniprogram.TouchEvent) {
@@ -93,9 +93,8 @@ Component({
       const activeVendor = providerId === this.data.activeProvider && vendorCards.some(item => item.vendor === this.data.activeVendor) ? this.data.activeVendor : ''
       this.setData({
         activeProvider: providerId, activeProviderLabel: PROVIDER_LABELS[providerId] || providerId,
-        activeProviderIsAggregator: this.getRegistry()?.providers[providerId]?.accessKind === 'aggregator',
         activeVendor, activeModelLabel: this.selectedModelLabel(providerId, activeVendor), vendorCards,
-        step: 'vendors', query: '', catalogMode: 'all', visibleLimit: MODEL_PAGE_SIZE, expandedModel: '',
+        step: 'vendors', query: '', expandedModel: '', catalogMode: 'all', visibleLimit: MODEL_PAGE_SIZE,
         compatibleCount: 0, visibleCompatibleModels: [], hasMore: false,
       })
     },
@@ -152,11 +151,11 @@ Component({
     confirmReplacement() {
       const replacement = this.data.savedReplacement
       if (!replacement || !this.compatibleModels(String(this.properties.selectedProvider)).some(model => model.id === replacement)) return
-      wx.showModal({title:'确认切换模型',content:`${this.properties.selectedModel} → ${replacement}。只修改当前选择，其他预设与历史记录保持不变。`,success: result => {
+      wx.showModal({title:'确认切换模型',content:`${modelDisplayName(String(this.properties.selectedProvider), String(this.properties.selectedModel))} → ${modelDisplayName(String(this.properties.selectedProvider), replacement)}。只修改当前选择，其他预设与历史记录保持不变。`,success: result => {
         if (result.confirm && this.compatibleModels(String(this.properties.selectedProvider)).some(model => model.id === replacement)) this.triggerEvent('select', {provider:this.properties.selectedProvider,modelId:replacement})
       }})
     },
-    copySource(event: WechatMiniprogram.TouchEvent) { wx.showModal({title:'官方文档',content:[event.currentTarget.dataset.notice,event.currentTarget.dataset.url].filter(Boolean).join('\n'),confirmText:'复制链接',success: result => {if (result.confirm) wx.setClipboardData({data:String(event.currentTarget.dataset.url || '')})}}) },
+    copySource(event: WechatMiniprogram.TouchEvent) { wx.showModal({title:'官方文档',content:[event.currentTarget.dataset.notice,event.currentTarget.dataset.source].filter(Boolean).join('\n'),confirmText:'复制链接',success: result => {if (result.confirm) wx.setClipboardData({data:String(event.currentTarget.dataset.url || '')})}}) },
     copyId(event: WechatMiniprogram.TouchEvent) { wx.setClipboardData({ data: String(event.currentTarget.dataset.model || '') }) },
     toggleDetails(event: WechatMiniprogram.TouchEvent) { const id = String(event.currentTarget.dataset.model || ''); this.setData({ expandedModel: this.data.expandedModel === id ? '' : id }) },
     close() { this.triggerEvent('close') },
@@ -168,22 +167,19 @@ function roleLabel(role: ModelRole): string { return role === 'image' ? '图像�
 function presentModel(model: RegistryModel, selectedProvider: unknown, selectedModel: unknown, providerId: ModelProviderId): ModelCard {
   const audit = auditedModelSpecs(providerId, model.id), lifecycle = auditedModelLifecycle(providerId, model.id)
   const names: Record<string,string> = {text:'文本',image:'图像',audio:'音频',video:'视频',file:'文件',document:'文件'}
-  const display = (fact: AuditFact) => fact.state === 'known' ? Array.isArray(fact.value) ? fact.value.map(x => names[x]).join('、') : `${typeof fact.value === 'string' ? fact.value : formatContextLimit(Number(fact.value))} tokens` : fact.state === 'unsupported' ? '不支持' : fact.state === 'not-applicable' ? '不适用' : '未知'
+  const display = (fact: AuditFact) => fact.state === 'known' ? Array.isArray(fact.value) ? fact.value.map(x => names[x]).join('、') : `${typeof fact.value === 'string' ? fact.value : formatContextLimit(Number(fact.value))} tokens${fact.suffix || ''}` : fact.state === 'unsupported' ? '不支持' : fact.state === 'not-applicable' ? '不适用' : '未知'
   const origin = (fact: AuditFact) => fact.provenance === 'catalog' ? '图研既有核实' : fact.provenance === 'product' ? '图研输入要求' : ''
   const image = model.roles.includes('image') && !(audit.fields.outputModalities.value as string[] || []).includes('text') && !['totalContextTokens','maxOutputTokens'].some(k => audit.fields[k].state === 'known')
   return {
     scheduled: lifecycle?.state === 'scheduled',
     vendorLabel:modelDeveloper(providerId, model).label,channelLabel:PROVIDER_LABELS[providerId],
-    specRows: [['inputModalities','输入'],['outputModalities','输出'],['totalContextTokens','上下文窗口'],['maxOutputTokens','最大输出']].map(([key,label]) => ({label,value:image && key.endsWith('Tokens') && audit.fields[key].state === 'unknown' ? '不适用' : key.endsWith('Modalities') && audit.fields[key].state === 'unknown' ? '模态未知' : display(audit.fields[key]),origin:origin(audit.fields[key]),unknown:audit.fields[key].state==='unknown',unknownText:(key.endsWith('Modalities') && audit.fields[key].state === 'known' && Array.isArray(audit.fields[key].value) ? ['text','image','audio','video'].filter(x => !(audit.fields[key].value as string[]).includes(x)) : []).map(x => names[x] + '?').join('、')})),
-    specSources: [...new Set([lifecycle?.sourceUrl,...Object.values(audit.fields).map(f => f.sourceUrl),audit.sourceUrl].filter((url):url is string => Boolean(url)))],
-    verifiedAt:audit.verifiedAt || '', auditMessage:[lifecycle?.message, audit.note, ...Object.entries(audit.fields).filter(([,f]) => origin(f)).map(([key,f]) => `${({inputModalities:'输入',outputModalities:'输出',totalContextTokens:'上下文窗口',maxOutputTokens:'最大输出'} as Record<string,string>)[key]}：${origin(f)}`), ...[['totalContextTokens','上下文窗口'],['maxOutputTokens','最大输出']].map(([key,label]) => audit.fields[key].state === 'known' ? `${label}：${audit.fields[key].value} tokens` : '')].filter(Boolean).join('\n'),
-    id: model.id, label: model.label, recommended: model.recommended, requiresEntitlement: model.requiresEntitlement,
+    specRows: [['inputModalities','输入'],['outputModalities','输出'],['totalContextTokens','上下文窗口'],['maxOutputTokens','最大输出']].map(([key,label]) => ({label,value:image && key.endsWith('Tokens') && audit.fields[key].state === 'unknown' ? '不适用' : key.endsWith('Modalities') && audit.fields[key].state === 'unknown' ? '模态未知' : display(audit.fields[key]),origin:origin(audit.fields[key]),unknown:audit.fields[key].state==='unknown',unknownText:(key.endsWith('Modalities') && audit.fields[key].state === 'known' && Array.isArray(audit.fields[key].value) ? ['text','image','audio','video'].filter(x => !(audit.fields[key].value as string[]).includes(x)) : []).map(x => names[x]).join('、')})),
+    specSources: [...new Set([lifecycle?.sourceUrl,...Object.values(audit.fields).map(f => f.sourceUrl),audit.sourceUrl].filter((url):url is string => Boolean(url)))].map(url => ({url,label:`${url === lifecycle?.sourceUrl ? '下线公告' : '官方文档'} · ${url.split('/')[2]}`})),
+    auditMessage:[lifecycle?.message, audit.note, ...Object.entries(audit.fields).filter(([,f]) => origin(f)).map(([key,f]) => `${({inputModalities:'输入',outputModalities:'输出',totalContextTokens:'上下文窗口',maxOutputTokens:'最大输出'} as Record<string,string>)[key]}：${origin(f)}`), ...[['totalContextTokens','上下文窗口'],['maxOutputTokens','最大输出']].map(([key,label]) => audit.fields[key].state === 'known' ? `${label}：${audit.fields[key].value} tokens` : '')].filter(Boolean).join('\n'),
+    id: model.id, label: model.label,
     availabilityNotes: [model.availabilityNotes, model.capabilities?.requiresSourceImage ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),
-    serviceTier: model.serviceTier || '', versionLabel: modelVersionLabel(model), versionText: modelVersionDetail(model), apiIdentifier: model.apiIdentifier || model.id,
+    versionLabel:modelVersionLabel(model), versionText:modelVersionDetail(model), apiIdentifier:model.apiIdentifier || model.id,
     capabilityText: [model.roles.includes('main') ? '文本' : '', model.roles.includes('vision') ? '视觉理解' : '', model.roles.includes('image') && !model.capabilities?.requiresSourceImage ? '生图' : '', model.capabilities?.imageEditMode === 'direct-edit' ? '编辑' : ''].filter(Boolean).join(' · '),
-    releaseText: [model.releasedAt || (model.releaseOrder ? '按官方版本排序 · 日期待确认' : '发布日期待确认'), model.releaseKind === 'snapshot' ? '日期快照' : ''].filter(Boolean).join(' · '),
-    lifecycleText: modelLifecycleLabel(model.lifecycle),
-    verificationText: model.verificationState === 'inference-verified' ? '账号已验证' : model.verificationState === 'catalog' ? '官方目录' : model.verified ? '注册表验证' : '模型目录',
     selected: String(selectedProvider || '') === providerId && String(selectedModel || '') === model.id,
   }
 }

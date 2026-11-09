@@ -30,7 +30,8 @@ export default function WorkspaceModelPicker({ models, role, path, editing, curr
           // Keep the saved reference available to the trigger, while omitting
           // models absent from the channel's current catalogue from choices.
           hidden: Boolean(removedModel(provider, entry.modelId)) || !option.model || libraryModelMissingFromCatalog(entry, models.library, models.registry),
-          description: multipleConnections ? `${option.connection.label} · ${option.connectionId.slice(0, 8)}` : '',
+          description: multipleConnections ? `${option.connection.label} · ${option.connectionId}` : '',
+          connectionLabel: option.connection.label,
           disabledReason: option.reason || (models.registryStatus !== 'ready' ? '正在等待可用模型目录，已有配置保留。' : ''),
         },
       });

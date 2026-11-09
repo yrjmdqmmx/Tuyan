@@ -1,8 +1,8 @@
 <view wx:if="{{show}}" class="model-modal" catchtouchmove="noop">
   <view class="model-panel" catchtap="noop">
     <view class="model-head"><view class="model-head-copy"><view class="model-kicker">选择{{roleLabel}}</view><view class="model-note">仅显示当前角色可用模型</view></view><button class="model-close" bindtap="close">关闭</button></view>
-    <view wx:if="{{removedHint}}" class="model-note">{{removedHint}}<button wx:if="{{savedReplacement}}" class="model-copy" bindtap="confirmReplacement">改选</button></view>
-    <view wx:if="{{savedLifecycle}}" class="model-note">{{selectedModel}} · {{savedLifecycle}}<button wx:if="{{savedReplacement}}" bindtap="confirmReplacement">切换到 {{savedReplacement}}</button></view>
+    <view wx:if="{{removedHint}}" class="model-note">{{removedHint}}<button wx:if="{{savedReplacement}}" class="secondary-button" bindtap="confirmReplacement">改选</button></view>
+    <view wx:if="{{savedLifecycle}}" class="model-note">{{selectedModel}} · {{savedLifecycle}}<button wx:if="{{savedReplacement}}" bindtap="confirmReplacement">切换到 {{replacementLabel}}</button></view>
     <view class="model-steps">
       <button class="flow-step {{step === 'providers' ? 'active' : ''}}" bindtap="showProviders" aria-label="第1步 接入渠道{{step === 'providers' ? '，当前步骤' : ''}}">① 接入渠道</button><text class="flow-arrow">→</text>
       <button class="flow-step {{step === 'vendors' ? 'active' : ''}}" disabled="{{!activeProvider}}" bindtap="showVendors" aria-label="第2步 模型厂商{{step === 'vendors' ? '，当前步骤' : ''}}">② 模型厂商</button><text class="flow-arrow">→</text>
@@ -14,7 +14,7 @@
     <scroll-view wx:if="{{step === 'providers'}}" class="model-scroll" scroll-y enhanced show-scrollbar="{{false}}">
       <view class="provider-list">
         <button class="provider-card {{activeProvider === item.id ? 'current' : ''}}" wx:for="{{providerCards}}" wx:key="id" data-provider="{{item.id}}" bindtap="selectProvider"><view class="provider-copy"><view class="card-title">{{item.label}}</view><view class="card-note">{{item.kindText}}{{selectedProvider === item.id ? ' · 当前配置' : ''}}</view></view><view class="card-count">{{item.count}} 个可用 ›</view></button>
-        <view class="model-empty" wx:if="{{!providerCards.length}}">当前角色暂无可用渠道，请检查模型目录。</view>
+        <view class="model-empty" wx:if="{{!providerCards.length && !removedHint}}">当前角色暂无可用渠道，请检查模型目录。</view>
       </view>
     </scroll-view>
     <scroll-view wx:elif="{{step === 'vendors'}}" class="model-scroll" scroll-y enhanced show-scrollbar="{{false}}">
@@ -26,13 +26,13 @@
       <view class="model-list">
         <view class="model-count">{{compatibleCount}} 个匹配模型 · 点击名称选择</view>
         <view class="model-row {{item.selected ? 'selected' : ''}}" wx:for="{{visibleCompatibleModels}}" wx:key="id">
-          <view class="model-main" data-model="{{item.id}}" bindtap="choose"><view class="model-name">{{item.label}}<text wx:if="{{item.scheduled}}" class="status-badge" data-url="{{item.specSources[0]}}" data-notice="{{item.auditMessage}}" catchtap="copySource">将下线</text></view><view class="card-note">{{item.vendorLabel}} / {{item.channelLabel}}</view></view>
+          <view class="model-main" data-model="{{item.id}}" bindtap="choose"><view class="model-name">{{item.label}}<text wx:if="{{item.scheduled}}" class="status-badge" data-url="{{item.specSources[0].url}}" data-source="{{item.specSources[0].label}}" data-notice="{{item.auditMessage}}" catchtap="copySource">将下线</text></view><view class="card-note">{{item.vendorLabel}} / {{item.channelLabel}}</view></view>
           <view class="model-toolbar"><text class="model-id" user-select data-model="{{item.id}}" catchtap="copyId" aria-label="复制 ID">{{item.id}}</text><text class="card-note">{{item.capabilityText}}</text></view>
           <view class="model-details model-audit-specs"><view wx:for="{{item.specRows}}" wx:for-item="spec" wx:key="label"><text>{{spec.label}}</text><view><text class="{{spec.unknown ? 'card-note' : ''}}">{{spec.value}}</text><text wx:if="{{spec.unknownText}}" class="card-note"> · {{spec.unknownText}}</text></view></view></view>
-          <view class="model-toolbar"><button class="model-copy" wx:for="{{item.specSources}}" wx:for-item="url" wx:key="*this" data-url="{{url}}" data-notice="{{item.auditMessage}}" catchtap="copySource">官方文档</button><button class="model-copy" data-model="{{item.id}}" bindtap="choose">{{item.selected ? '✓ 已选' : '选择'}}</button></view>
+          <view class="model-toolbar"><button class="model-copy" wx:for="{{item.specSources}}" wx:for-item="source" wx:key="url" data-url="{{source.url}}" data-source="{{source.label}}" data-notice="{{item.auditMessage}}" catchtap="copySource">{{source.label}}</button><button class="model-copy" data-model="{{item.id}}" bindtap="choose">{{item.selected ? '✓ 已选' : '选择'}}</button></view>
         </view>
         <button class="model-more" wx:if="{{hasMore}}" bindtap="loadMore">显示更多模型</button>
-        <view class="model-empty" wx:if="{{!compatibleCount}}">没有匹配当前角色与输出格式的可用模型。</view>
+        <view class="model-empty" wx:if="{{!compatibleCount && !removedHint}}">没有匹配当前角色与输出格式的可用模型。</view>
       </view>
     </scroll-view>
   </view>

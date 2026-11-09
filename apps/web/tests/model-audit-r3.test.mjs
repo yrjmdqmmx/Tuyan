@@ -52,26 +52,26 @@ test('removed notices follow channel and vendor filters, including channels with
   const notice = container.querySelector('details.tw-info');
   assert.equal(notice.querySelector('summary').textContent, '2 个已保存型号已不可用');
   assert.equal(notice.hasAttribute('open'), false);
-  assert.match(notice.textContent, /小米 MiMo 的 mimo-v2.5 已不可用，可改选 MiMo-V2.6-Flash/);
+  assert.match(notice.textContent, /原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash/);
   assert.equal(notice.querySelectorAll('p').length, 2);
   assert.equal(container.querySelectorAll('article').length, 0);
   fireEvent.click(within(channels).getByRole('button', { name: /Fireworks/ }));
   const vendors = screen.getByRole('complementary', { name: '模型厂商筛选' });
   fireEvent.click(within(vendors).getByRole('button', { name: /智谱/ }));
   const hint = container.querySelector('.tw-catalog-scroll .tw-info');
-  assert.match(hint.textContent, /Fireworks.*glm-5p2 已不可用，可改选 GLM[- ]5.3/);
+  assert.match(hint.textContent, /原型号已不可用，请重新选择。推荐：GLM[- ]5.3/);
   assert.doesNotMatch(hint.textContent, /deepseek|accounts\/fireworks\/models\/glm-5p3/);
   fireEvent.click(within(channels).getByRole('button', { name: /阿里云百炼/ }));
   assert.equal(container.querySelector('.tw-catalog-scroll .tw-info'), null);
   assert.deepEqual(models.library, before);
 });
 
-test('ambiguous replacement display names fall back to the exact API ID', () => {
+test('replacement display names stay short even when labels are shared', () => {
   const models = makeModels([['fireworks','accounts/fireworks/models/glm-5p2']]);
   models.registry = structuredClone(models.registry);
   models.registry.providers.fireworks.models = [{id:'accounts/fireworks/models/glm-5p3',label:'Same'}, {id:'second',label:'Same'}];
   render(React.createElement(WorkspaceModelCatalog, { models, mode: 'library' }));
-  assert.match(screen.getByRole('status').textContent, /可改选 accounts\/fireworks\/models\/glm-5p3/);
+  assert.match(screen.getByRole('status').textContent, /推荐：Same/);
 });
 
 test('removed slot has one helper and placeholder; cancel is inert and confirmation changes only that role', async () => {
@@ -83,7 +83,7 @@ test('removed slot has one helper and placeholder; cancel is inert and confirmat
   const main = screen.getByRole('button', { name: '主模型' }).closest('.tw-role-card');
   assert.equal(within(main).getByRole('button', { name: '主模型' }).textContent, '请选择');
   assert.equal(within(main).getAllByRole('status').length, 1);
-  assert.equal(within(main).getByRole('status').firstChild.textContent, '原型号 mimo-v2.5 已不可用，可改选 mimo-v2.6-flash');
+  assert.equal(within(main).getByRole('status').firstChild.textContent, '原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
   assert.doesNotMatch(main.textContent, /所选模型当前不可用/);
   assert.equal(writes, 0); assert.equal(latest, undefined);
   fireEvent.click(within(main).getByRole('button', { name:'改选' }));
@@ -102,7 +102,7 @@ test('a replacement that cannot serve the slot does not offer an action, and no 
     const view = render(React.createElement(WorkspaceModelPicker, { models, role, path:'png', current:ref(models), onChange: () => assert.fail('No automatic change') }));
     assert.equal(screen.queryByRole('button', { name:'改选' }), null);
     assert.equal(screen.getAllByRole('status').length, 1);
-    if (provider === 'stepfun') assert.equal(screen.getByRole('status').textContent, '原型号 step-2x-large 已不可用，请重新选择');
+    if (provider === 'stepfun') assert.equal(screen.getByRole('status').textContent, '原型号已不可用，请重新选择');
     view.unmount();
   }
 });
@@ -121,7 +121,7 @@ test('production compact formatter is shared by both numeric rows and exact valu
 });
 
 test('scheduled badge is beside the title, preserves full IDs, and tap opens date and replacement', () => {
-  for (const [provider, id, date, replacement] of [['bailian','qwen3.5-plus-2026-04-20','2027-01-19','qwen3.8-flash'], ['antling','Ling-2.6-flash','2026-11-15 00:00 (UTC+8)','Ling-3.1-flash']]) {
+  for (const [provider, id, date, replacement] of [['bailian','qwen3.5-plus-2026-04-20','2027-01-19','Qwen3.8 Flash'], ['antling','Ling-2.6-flash','2026-11-15 00:00 (UTC+8)','Ling-3.1-flash']]) {
     const models = makeModels([[provider,id]]);
     const view = render(React.createElement(WorkspaceModelCatalog, { models, mode:'library' }));
     const badge = screen.getByRole('button', { name:/将下线：/ });

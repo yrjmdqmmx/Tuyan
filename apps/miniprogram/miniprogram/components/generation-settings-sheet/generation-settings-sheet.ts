@@ -1,4 +1,4 @@
-import { removedModel, removedModelHint } from '../../utils/model-audit'
+import { removedModelHint, modelDisplayName, removedModel } from '../../utils/model-audit'
 import { openTokenDance, hasTokenDanceConnection } from '../../utils/tokendance'
 import { MODEL_CHANNEL_LABELS, orderModelChannels } from '../../utils/model-presentation'
 import { getModelRegistryState } from '../../utils/model-registry-store'
@@ -255,7 +255,7 @@ Component({
       const id = removedModel(route.accessProvider, route.modelId)?.replacementApiId
       const selectable = () => id && partitionRegistryModels(this.getRegistry()?.providers[route.accessProvider as ModelProviderId]?.models || [], { role, outputFormat: draft.outputFormat }).compatible.some(m => m.id === id)
       if (!selectable()) return
-      wx.showModal({title:'确认切换模型',content:`${route.modelId} → ${id}。只修改当前角色。`,success: result => {
+      wx.showModal({title:'确认切换模型',content:`${modelDisplayName(route.accessProvider, route.modelId)} → ${modelDisplayName(route.accessProvider, id!)}。只修改当前角色。`,success: result => {
         if (result.confirm && this.data.draft === draft && draft.modelRoutes[role] === route && selectable()) {
           draft.modelRoutes[role] = {accessProvider:route.accessProvider, modelId:id!}
           this.setData({draft}); this.refreshPresentation()

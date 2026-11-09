@@ -4,7 +4,7 @@ const {removedModel,removedModelHint,auditedModelLifecycle,auditedModelSpecs,wit
 test('mini program shares exact channel lifecycle and independently sourced output limits',()=>{
   const old={id:'mimo-v2.5',selectable:true},before={...old};
   assert.equal(withModelAudit('xiaomi',old).selectable,false);
-  assert.match(removedModelHint('xiaomi',old.id),/原型号 mimo-v2.5 已不可用，可改选 mimo-v2.6-flash/);assert.deepEqual(old,before);
+  assert.match(removedModelHint('xiaomi',old.id),/原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash/);assert.deepEqual(old,before);
   assert.equal(auditedModelLifecycle('bailian','qwen3.5-plus',Date.parse('2027-01-18')).state,'scheduled');
   assert.equal(removedModel('bailian','qwen3.5-plus',Date.parse('2027-01-19')).replacementApiId,'qwen3.8-flash');
   const spec=auditedModelSpecs('tokendance','deepseek-v4-pro');
@@ -33,8 +33,8 @@ test('mini cards keep unlisted modalities neutral and preserve availability note
   Object.assign(picker.data,{activeProvider:'antling',activeVendor:modelDeveloper('antling',model).label});
   picker.refreshModelLists();
   const card=picker.data.visibleCompatibleModels.find(m=>m.id===model.id);
-  assert.equal(card.specRows[0].unknownText,'音频?');
-  assert.equal(card.specRows[1].unknownText,'图像?、音频?、视频?');
+  assert.equal(card.specRows[0].unknownText,'音频');
+  assert.equal(card.specRows[1].unknownText,'图像、音频、视频');
   assert.doesNotMatch(JSON.stringify(card.specRows),/不支持/);
   assert.ok(card.availabilityNotes.includes(model.availabilityNotes));
 });
@@ -68,7 +68,7 @@ test('mini removed picker offers explicit confirmation only for a compatible rep
   const p=f.instance;p.getRegistry=()=>({providers:STATIC_MODEL_REGISTRY});
   Object.assign(p.properties,{selectedProvider:'xiaomi',selectedModel:'mimo-v2.5',role:'main',outputFormat:'svg'});
   p.resetFlow();assert.equal(f.events.length,0);
-  assert.equal(p.data.removedHint,'原型号 mimo-v2.5 已不可用，可改选 mimo-v2.6-flash');
+  assert.equal(p.data.removedHint,'原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
   assert.equal(p.data.savedReplacement,'mimo-v2.6-flash');
   p.confirmReplacement();modal.success({confirm:false});assert.equal(f.events.length,0);
   p.confirmReplacement();modal.success({confirm:true});assert.equal(f.events[0].detail.modelId,'mimo-v2.6-flash');
@@ -87,7 +87,7 @@ test('mini removed role uses a placeholder and changes only that role after conf
   Object.assign(p.properties,{settings:initial,purpose:'create',executionRoles:[],apiKeys:{},manualReferenceIds:[]});
   p.resetDraft();const before=JSON.stringify(p.data.draft.modelRoutes);
   assert.equal(p.data.routeRows[0].modelLabel,'请选择');
-  assert.equal(p.data.routeRows[0].removedHint,'原型号 mimo-v2.5 已不可用，可改选 mimo-v2.6-flash');
+  assert.equal(p.data.routeRows[0].removedHint,'原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
   p.replaceRemoved({currentTarget:{dataset:{role:'main'}}});modal.success({confirm:false});assert.equal(JSON.stringify(p.data.draft.modelRoutes),before);
   p.replaceRemoved({currentTarget:{dataset:{role:'main'}}});
   getModelRegistryState().registry={providers:{xiaomi:{models:[]}}};modal.success({confirm:true});
@@ -97,4 +97,45 @@ test('mini removed role uses a placeholder and changes only that role after conf
   assert.equal(p.data.draft.modelRoutes.main.modelId,'mimo-v2.6-flash');
   assert.equal(p.data.draft.modelRoutes.vision.modelId,'mimo-v2.5');assert.equal(initial.modelRoutes.main.modelId,'mimo-v2.5');
   assert.equal(f.events.length,0);
+});
+
+test('R6B compiled picker keeps all nine token qualifiers after the unit and sources named by domain',()=>{
+  const {loadComponent}=require('./helpers/component.cjs');
+  const {STATIC_MODEL_REGISTRY}=require('../miniprogram/utils/static-model-catalog.js');
+  const {modelDeveloper}=require('../miniprogram/utils/model-presentation.js');
+  const counts={};
+  for(const [provider,channel] of Object.entries(STATIC_MODEL_REGISTRY)) for(const model of channel.models) {
+    const suffix=auditedModelSpecs(provider,model.id).fields.totalContextTokens.suffix;
+    if(!suffix) continue;
+    counts[provider]=(counts[provider]||0)+1;
+    const p=loadComponent('components/model-picker/model-picker.js').instance;
+    p.getRegistry=()=>({providers:STATIC_MODEL_REGISTRY});
+    Object.assign(p.properties,{role:model.roles[0],outputFormat:'svg'});
+    Object.assign(p.data,{activeProvider:provider,activeVendor:modelDeveloper(provider,model).label});p.refreshModelLists();
+    const card=p.data.visibleCompatibleModels.find(m=>m.id===model.id);
+    assert.ok(card,model.id);assert.match(card.specRows[2].value,/ tokens（[^）]+）$/);
+    for(const source of card.specSources) assert.equal(source.label,'官方文档 · '+new URL(source.url).hostname);
+    assert.doesNotMatch(card.specRows.map(r=>r.unknownText).join(''),/\?/);
+  }
+  assert.deepEqual(counts,{siliconflow:6,runware:2,iflytek:1});
+});
+
+test('R6B native replacement confirmation uses short labels and source modal uses domain with copy target preserved',()=>{
+  const {loadComponent}=require('./helpers/component.cjs');
+  const {STATIC_MODEL_REGISTRY}=require('../miniprogram/utils/static-model-catalog.js');
+  let modal,copy;
+  const p=loadComponent('components/model-picker/model-picker.js',{}, {wx:{showModal:options=>{modal=options;},setClipboardData:options=>{copy=options.data;}}}).instance;
+  p.getRegistry=()=>({providers:STATIC_MODEL_REGISTRY});
+  Object.assign(p.properties,{selectedProvider:'fireworks',selectedModel:'accounts/fireworks/models/glm-5p2',role:'main',outputFormat:'svg'});
+  p.resetFlow();assert.match(p.data.removedHint,/推荐：GLM 5.3$/);
+  p.confirmReplacement();assert.match(modal.content,/→ GLM 5.3/);assert.doesNotMatch(modal.content,/accounts\/fireworks\/models\/glm-5p3/);
+  const url='https://example.com/long/deprecation/path';
+  p.copySource({currentTarget:{dataset:{url,source:'下线公告 · example.com',notice:'将于明日下线'}}});
+  assert.match(modal.content,/下线公告 · example.com/);assert.doesNotMatch(modal.content,/https:\/\//);
+  modal.success({confirm:true});assert.equal(copy,url);
+  const fs=require('node:fs'),path=require('node:path');
+  const template=fs.readFileSync(path.join(__dirname,'../miniprogram/components/model-picker/model-picker.wxml'),'utf8');
+  assert.match(template,/class="secondary-button" bindtap="confirmReplacement">改选/);
+  assert.match(template,/!compatibleCount && !removedHint/);
+  assert.match(template,/!providerCards.length && !removedHint/);
 });

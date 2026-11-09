@@ -66,7 +66,7 @@ test('official labels render verbatim while published integers retain an exact a
     for (const [field, display] of [['totalContextTokens', 'context'], ['maxOutputTokens', 'maxOutput']]) {
       const fact = card.fields[field]
       if (fact.state === 'known' && typeof fact.value === 'string') {
-        assert.equal(card[display], `${fact.value}${fact.suffix || ''} tokens`, provider + '/' + model.id + '/' + field)
+        assert.equal(card[display], `${fact.value} tokens${fact.suffix || ''}`, provider + '/' + model.id + '/' + field)
         assert.doesNotMatch(card[display], /≈/)
       }
     }

@@ -33,7 +33,7 @@ test('retired saved selection remains on trigger but cannot be chosen for new ta
   assert.match(modelOption(entry,models.library,registry,'main','svg',false).reason,/原型号 .* 已不可用/);
   render(React.createElement(WorkspaceModelPicker,{models,role:'main',path:'svg',current:{libraryModelId:'old',modelId:entry.modelId,accessProvider:'xiaomi'},onChange:()=>assert.fail('No automatic switch')}));
   assert.equal(screen.getByRole('button',{name:'主模型'}).textContent,'请选择');
-  assert.match(screen.getByRole('status').textContent,/原型号 mimo-v2.5 已不可用，可改选 mimo-v2.6-flash/);
+  assert.match(screen.getByRole('status').textContent,/原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash/);
   fireEvent.click(screen.getByRole('button',{name:'主模型'}));
   assert.equal(screen.queryByRole('button',{name:/选择.*mimo-v2.5/}),null);
   assert.deepEqual(models.library,before);
@@ -46,7 +46,7 @@ test('replacement requires confirmation, retains original, and only switches the
   const view=render(React.createElement(ModelReplacement,{provider:'bailian',modelId:'qwen3.5-plus',models,entry:models.library.models[0],onReplace:value=>{selected=value;}}));
   fireEvent.click(screen.getByRole('button',{name:/切换到/}));assert.equal(writes,0);assert.deepEqual(models.library,before);
   fireEvent.click(screen.getByRole('button',{name:'取消'}));assert.equal(writes,0);assert.deepEqual(models.library,before);
-  fireEvent.click(screen.getByRole('button',{name:/切换到 qwen3.8-flash/}));
+  fireEvent.click(screen.getByRole('button',{name:/切换到 Qwen3.8 Flash/}));
   fireEvent.click(screen.getByRole('button',{name:'确认切换'}));
   await waitFor(()=>assert.equal(writes,1));
   assert.equal(saved.models.find(item=>item.id==='old').modelId,'qwen3.5-plus');
@@ -59,11 +59,11 @@ test('replacement requires confirmation, retains original, and only switches the
 test('saved presets still show lifecycle and replacement when their library binding is absent',t=>{
   t.mock.method(Date,'now',()=>Date.parse('2026-11-09'));
   const models=setup();models.library.models=[];
-  for(const [provider,modelId,label,replacement] of [['xiaomi','mimo-v2.5','原型号 mimo-v2.5 已不可用','mimo-v2.6-flash'],['bailian','qwen3.5-plus','将于2027-01-19下线','qwen3.8-flash']]){
+  for(const [provider,modelId,label,replacement] of [['xiaomi','mimo-v2.5','原型号已不可用，请重新选择','MiMo-V2.6-Flash'],['bailian','qwen3.5-plus','将于2027-01-19下线','qwen3.8-flash']]){
     const draft={mode:'simple',settings:{simple:{models:{main:{libraryModelId:'missing',accessProvider:provider,modelId}}}}},before=structuredClone(draft);
     const view=render(React.createElement(WorkspaceModelConfig,{models,draft,path:'svg',onChange:()=>assert.fail('No automatic preset rewrite')}));
     if(provider==='xiaomi') assert.ok(screen.getByText(text=>text.includes(label)&&text.includes(replacement)));
-    else assert.match(screen.getByText('将下线').title,/2027-01-19.*qwen3.8-flash/);
+    else assert.match(screen.getByText('将下线').title,/2027-01-19.*Qwen3.8 Flash/);
     assert.deepEqual(draft,before);view.unmount();
   }
 });
@@ -72,7 +72,7 @@ test('scheduled status stays selectable before deadline and flips without rewrit
   t.mock.method(Date,'now',()=>Date.parse('2027-01-18T23:59:59Z'));
   assert.equal(catalogRows(r).length,1);
   render(React.createElement(ModelSpecifications,{provider:'bailian',model}));
-  assert.match(screen.getByRole('link').title,/将于2027-01-19下线/);assert.match(screen.getByRole('link').title,/qwen3.8-flash/);
+  assert.match(screen.getByRole('link').title,/将于2027-01-19下线/);assert.match(screen.getByRole('link').title,/Qwen3.8 Flash/);
   Date.now.mock.mockImplementation(()=>Date.parse('2027-01-19'));
   assert.equal(catalogRows(r).length,0);assert.deepEqual(model,before);
 });
@@ -103,12 +103,13 @@ test('Ling evidence preserves partial uncertainty and compact sources expose pro
   const model=STATIC_MODEL_REGISTRY.antling.models.find(m=>m.id==='Ling-3.1-flash');
   const view=render(React.createElement(ModelSpecifications,{provider:'antling',model,compactSources:true}));
   assert.equal(view.container.querySelectorAll('dl > div').length,4);
-  assert.equal(view.container.querySelectorAll('.is-unknown sup').length,6);
+  assert.equal(view.container.querySelectorAll('.is-unknown').length,6);
+  assert.equal(view.container.querySelectorAll('.is-unknown sup').length,0);
   assert.equal(screen.queryByText('核实日期'),null);assert.equal(screen.queryByText('未核实'),null);
   assert.equal(screen.getAllByRole('link').length,1);assert.match(screen.getByRole('link').getAttribute('aria-label'),/2026-11-09/);
   view.unmount();
   render(React.createElement(ModelSpecifications,{provider:'custom',model:{id:'unknown'}}));
-  assert.equal(screen.getAllByText('模态未知').length,2);
+  assert.equal(screen.getAllByRole('img',{name:/：未知$/}).length,8);
 });
 test('removed models expose an explicit replacement action without changing the saved binding',()=>{
   const models=setup();

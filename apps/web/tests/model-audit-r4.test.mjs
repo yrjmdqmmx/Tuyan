@@ -40,7 +40,11 @@ test('same-channel saved cards show both connection label and connection ID',()=
   const {container}=render(React.createElement(WorkspaceModelCatalog,{models,mode:'library'}))
   const cards=[...container.querySelectorAll('.tw-catalog-card')]
   assert.equal(cards.length,2)
-  assert.match(cards[0].textContent,/团队连接 · first/);assert.match(cards[1].textContent,/团队连接 · second/)
+  for (const [i, id] of ['first', 'second'].entries()) {
+    const subtitle = cards[i].querySelector('.tw-catalog-card-head p');
+    assert.match(subtitle.textContent,/团队连接/); assert.ok(!subtitle.textContent.includes(id));
+    assert.ok(subtitle.title.includes(`团队连接 · ${id}`));
+  }
 })
 
 test('picker restores thinking status and the connection description on each saved choice',()=>{
@@ -50,7 +54,8 @@ test('picker restores thinking status and the connection description on each sav
   fireEvent.click(screen.getByRole('button',{name:'主模型'}))
   const dialog=screen.getByRole('dialog')
   assert.equal(dialog.querySelectorAll('.thinking-status[data-thinking-status="supported"]').length,2)
-  assert.deepEqual([...dialog.querySelectorAll('.model-option-note')].map(n=>n.textContent),['同名连接 · first','同名连接 · second'])
+  assert.deepEqual([...dialog.querySelectorAll('.model-option-note')].map(n=>n.textContent),['同名连接','同名连接'])
+  assert.deepEqual([...dialog.querySelectorAll('.model-option-note')].map(n=>n.title),['同名连接 · first','同名连接 · second'])
 })
 
 test('first sync and import save historical bindings; an explicit new removed binding is rejected locally',async()=>{

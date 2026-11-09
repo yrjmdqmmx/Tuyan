@@ -21,3 +21,5 @@
 .model-provider-rail .model-brand-caption strong { white-space: normal; overflow-wrap: anywhere; }
 .model-vendor-rail button > span { min-width: 0; overflow-wrap: anywhere; text-align: left; }
 @media (max-width: 480px) { .model-specs { font-size: 12px; } .model-specs > div { gap: 8px; } .model-specs dt { flex-wrap: wrap; gap: 3px; } .model-specs dt small { font-size: 9px; } }
+
+.tw-dialog.model-evidence-dialog { min-height:0; height:auto; }
