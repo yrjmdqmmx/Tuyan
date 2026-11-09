@@ -166,10 +166,10 @@ node scripts/count-model-catalog.mjs . --keys
 
 | 已知字段 | main | head | 差值 |
 | --- | --- | --- | --- |
-| inputModalities | 326 | 512 | 186 |
-| outputModalities | 327 | 496 | 169 |
-| totalContextTokens | 224 | 359 | 135 |
-| maxOutputTokens | 50 | 186 | 136 |
+| inputModalities | 746 | 791 | 45 |
+| outputModalities | 327 | 495 | 168 |
+| totalContextTokens | 224 | 350 | 126 |
+| maxOutputTokens | 74 | 209 | 135 |
 
 静态目录和可见卡片的四项总数均未下降。完整 mock registry 包括已删除历史型号，其减少另见下表逐项说明。静态净变化为删除 68、增加 7；目录净变化为移除 11 个原可见项、增加 7；可选集合增加的 7 项中 OpenAI 两个图像型号仍缺尺寸合同、保持不可选。已删除 ID 没有重新进入目录；将下线为 7；未核实为 667。既有模型库夹具 13 条原样保存，显示 10 张卡、3 条移除引用提示。生产 1408 不具备同一时点可重放快照，不作逐 ID 差额推断。
 
@@ -209,17 +209,17 @@ node scripts/count-model-catalog.mjs . --keys
 
 | mockRegistry 已知字段 | main | head | 差值 |
 | --- | --- | --- | --- |
-| inputModalities | 983 | 976 | -7 |
+| inputModalities | 1032 | 997 | -35 |
 | outputModalities | 968 | 967 | -1 |
 | totalContextTokens | 534 | 519 | -15 |
-| maxOutputTokens | 50 | 186 | 136 |
+| maxOutputTokens | 74 | 209 | 135 |
 
 | catalogVisible 已知字段 | main | head | 差值 |
 | --- | --- | --- | --- |
-| inputModalities | 834 | 847 | 13 |
+| inputModalities | 869 | 868 | -1 |
 | outputModalities | 819 | 838 | 19 |
 | totalContextTokens | 411 | 412 | 1 |
-| maxOutputTokens | 45 | 159 | 114 |
+| maxOutputTokens | 68 | 181 | 113 |
 
 完整 mock 的已知数量减少仅由明确删除的历史型号造成；每个失去的已知字段都在[逐项表](model-card-audit-20261109-field-losses.md)列出，存续型号没有规格回退。
 
@@ -349,3 +349,19 @@ Omni 当前在库型号的既有审核明确不支持 thinking 开关，不能�
 | tests/*.test.mjs（根目录） | 29 / 3 / 0 | 29 / 3 / 0 | 0（与 PR #247 记录的 29/3 一致） |
 
 Web / 小程序构建、Core `tsc --noEmit`、`sync-model-catalog --check`、`sync-reference-upload --check` 均通过。小程序源码包 main 1,570,043 → head 1,571,089 bytes（上限 1,572,864 未改，余 1,775）。CI 中 account-lifecycle.mjs:146 依赖 Mongo 副本集，本机未运行，按 PR #247 记为 main 已知失败。
+
+
+> 2026-11-09 R6 复算（2c6363b5，同一 count 脚本同时作用于 main c7b6a2fc 与 head）：上表三组已知字段已更新为 R6 规则（角色所需图像输入下限、官方 K/M 标签、图像卡 token 值）下的结果。main 侧数字随规则同步复算，因此与 R4 记录不同。mockRegistry 与 catalogVisible 的减少全部来自已删除型号（catalogVisible 删除 11、新增 7）；全目录测试确认存续型号没有低于 main 的已知模态。
+
+## R6 沙箱外全量测试（main c7b6a2fc vs head 2c6363b5，同一台机器）
+
+| 套件 | main 通过/失败/跳过 | head 通过/失败/跳过 | 新增失败 |
+| --- | --- | --- | --- |
+| Web | 1312 / 12 / 0 | 1345 / 12 / 0 | 0 |
+| paperbanana-api (Core) | 1580 / 13 / 1 | 1586 / 13 / 1 | 0 |
+| auth-gateway | 272 / 0 / 1 | 277 / 0 / 1 | 0 |
+| 小程序 | 121 / 0 / 0 | 130 / 0 / 0 | 0 |
+| scripts/*.test.mjs | 20 / 0 / 0 | 28 / 0 / 0 | 0 |
+| tests/*.test.mjs | 29 / 3 / 0 | 29 / 3 / 0 | 0 |
+
+失败名称集合与 main 完全一致。Web / 小程序构建、Core `tsc --noEmit` 通过。小程序源码包 main 1,570,043 → head 1,564,174 bytes（上限 1,572,864 未改）。
