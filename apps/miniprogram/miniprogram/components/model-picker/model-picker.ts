@@ -1,5 +1,5 @@
-import { removedModelHint, auditedModelSpecs, auditedModelLifecycle, AuditFact } from '../../utils/model-audit'
-import { MODEL_CHANNEL_LABELS, modelDeveloper, orderModelChannels, modelVersionLabel, modelVersionDetail, modelLifecycleLabel } from '../../utils/model-presentation'
+import { removedModel, removedModelHint, auditedModelSpecs, auditedModelLifecycle, AuditFact } from '../../utils/model-audit'
+import { formatContextLimit, MODEL_CHANNEL_LABELS, modelDeveloper, orderModelChannels, modelVersionLabel, modelVersionDetail, modelLifecycleLabel } from '../../utils/model-presentation'
 import { getModelRegistryState } from '../../utils/model-registry-store'
 import { registryForRegions } from '../../utils/provider-regions'
 import { MODEL_PROVIDER_IDS, groupRegistryModels, partitionRegistryModels, type ModelProviderId, type ModelRegistry, type ModelRole, type RegistryModel } from '../../utils/model-registry'
@@ -9,7 +9,7 @@ const MODEL_PAGE_SIZE = 30
 
 interface ProviderCard { id: ModelProviderId; label: string; kindText: string; count: number }
 interface VendorCard { vendor: string; count: number }
-interface ModelCard extends Pick<RegistryModel, 'id' | 'label' | 'recommended' | 'requiresEntitlement' | 'availabilityNotes'> { vendorLabel: string; channelLabel: string; specRows: {label:string;value:string;origin:string;unknown:boolean;unknownText:string}[]; specSources:string[]; verifiedAt:string; auditMessage:string; lifecycleText: string; verificationText: string; serviceTier: string; capabilityText: string; releaseText: string; versionLabel: string; versionText: string; apiIdentifier: string; selected: boolean }
+interface ModelCard extends Pick<RegistryModel, 'id' | 'label' | 'recommended' | 'requiresEntitlement' | 'availabilityNotes'> { vendorLabel: string; channelLabel: string; specRows: {label:string;value:string;origin:string;unknown:boolean;unknownText:string}[]; specSources:string[]; verifiedAt:string; auditMessage:string; scheduled:boolean; lifecycleText: string; verificationText: string; serviceTier: string; capabilityText: string; releaseText: string; versionLabel: string; versionText: string; apiIdentifier: string; selected: boolean }
 
 Component({
   options: { styleIsolation: 'apply-shared' },
@@ -70,8 +70,9 @@ Component({
         count: this.compatibleModels(id).length,
       })).filter(item => item.count > 0)
       const lifecycle = auditedModelLifecycle(String(this.properties.selectedProvider), String(this.properties.selectedModel))
-      const replacement = this.compatibleModels(String(this.properties.selectedProvider)).find(model => model.id === lifecycle?.replacement)
-      this.setData({removedHint: removedModelHint(String(this.properties.selectedProvider), String(this.properties.selectedModel)), savedLifecycle: lifecycle?.message || '', savedReplacement: lifecycle?.state === 'scheduled' ? replacement?.id || '' : ''})
+      const removed = removedModel(String(this.properties.selectedProvider), String(this.properties.selectedModel))
+      const replacement = this.compatibleModels(String(this.properties.selectedProvider)).find(model => model.id === (removed?.replacementApiId || lifecycle?.replacement))
+      this.setData({removedHint: removedModelHint(String(this.properties.selectedProvider), String(this.properties.selectedModel)), savedLifecycle: lifecycle?.message || '', savedReplacement: replacement?.id || ''})
       const selectedProvider = String(this.properties.selectedProvider || '') as ModelProviderId
       const activeProvider = providerCards.some(item => item.id === selectedProvider) ? selectedProvider : ''
       const vendorCards = activeProvider ? this.vendorsFor(activeProvider) : []
@@ -167,13 +168,14 @@ function roleLabel(role: ModelRole): string { return role === 'image' ? '图像�
 function presentModel(model: RegistryModel, selectedProvider: unknown, selectedModel: unknown, providerId: ModelProviderId): ModelCard {
   const audit = auditedModelSpecs(providerId, model.id), lifecycle = auditedModelLifecycle(providerId, model.id)
   const names: Record<string,string> = {text:'文本',image:'图像',audio:'音频',video:'视频',file:'文件',document:'文件'}
-  const display = (fact: AuditFact) => fact.state === 'known' ? Array.isArray(fact.value) ? fact.value.map(x => names[x]).join('、') : `${fact.value?.toLocaleString('en-US')} tokens` : fact.state === 'unsupported' ? '不支持' : fact.state === 'not-applicable' ? '不适用' : '未知'
+  const display = (fact: AuditFact) => fact.state === 'known' ? Array.isArray(fact.value) ? fact.value.map(x => names[x]).join('、') : `${formatContextLimit(Number(fact.value))} tokens` : fact.state === 'unsupported' ? '不支持' : fact.state === 'not-applicable' ? '不适用' : '未知'
   const image = model.roles.includes('image') || (Array.isArray(audit.fields.outputModalities.value) && audit.fields.outputModalities.value.some(x => x === 'image' || x === 'video'))
   return {
+    scheduled: lifecycle?.state === 'scheduled',
     vendorLabel:modelDeveloper(providerId, model).label,channelLabel:PROVIDER_LABELS[providerId],
     specRows: [['inputModalities','输入'],['outputModalities','输出'],['totalContextTokens','上下文窗口'],['maxOutputTokens','最大输出']].map(([key,label]) => ({label,value:image && key.endsWith('Tokens') ? '不适用' : key.endsWith('Modalities') && audit.fields[key].state === 'unknown' ? '模态未知' : display(audit.fields[key]),origin:'',unknown:audit.fields[key].state==='unknown',unknownText:(audit.fields[key].unknownModalities || []).map(x => names[x] + '?').join('、')})),
-    specSources: [...new Set([...Object.values(audit.fields).map(f => f.sourceUrl),audit.sourceUrl].filter((url):url is string => Boolean(url)))],
-    verifiedAt:'', auditMessage:lifecycle?.message || '',
+    specSources: [...new Set([lifecycle?.sourceUrl,...Object.values(audit.fields).map(f => f.sourceUrl),audit.sourceUrl].filter((url):url is string => Boolean(url)))],
+    verifiedAt:'', auditMessage:[lifecycle?.message, ...[['totalContextTokens','上下文窗口'],['maxOutputTokens','最大输出']].map(([key,label]) => !image && typeof audit.fields[key].value === 'number' ? `${label}：${audit.fields[key].value} tokens` : '')].filter(Boolean).join('\n'),
     id: model.id, label: model.label, recommended: model.recommended, requiresEntitlement: model.requiresEntitlement,
     availabilityNotes: [model.availabilityNotes, model.capabilities?.requiresSourceImage ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),
     serviceTier: model.serviceTier || '', versionLabel: modelVersionLabel(model), versionText: modelVersionDetail(model), apiIdentifier: model.apiIdentifier || model.id,

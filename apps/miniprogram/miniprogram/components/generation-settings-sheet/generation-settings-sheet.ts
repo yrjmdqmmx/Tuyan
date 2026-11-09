@@ -1,4 +1,4 @@
-import { removedModelHint } from '../../utils/model-audit'
+import { removedModel, removedModelHint } from '../../utils/model-audit'
 import { openTokenDance, hasTokenDanceConnection } from '../../utils/tokendance'
 import { MODEL_CHANNEL_LABELS, orderModelChannels } from '../../utils/model-presentation'
 import { getModelRegistryState } from '../../utils/model-registry-store'
@@ -7,7 +7,7 @@ import { buildAspectRatioOptions, buildResolutionOptions, normalizeSelectedAspec
 import { formatError, requestJson } from '../../utils/api'
 import { clearArkVerification, getArkVerification, setArkProbeResults } from '../../utils/ark-verification'
 import { MANUAL_REFERENCE_LIMIT, PROVIDERS } from '../../utils/constants'
-import { MODEL_PROVIDER_IDS, findRegistryModel, type ModelProviderId, type ModelRegistry, type ModelRole } from '../../utils/model-registry'
+import { MODEL_PROVIDER_IDS, partitionRegistryModels, findRegistryModel, type ModelProviderId, type ModelRegistry, type ModelRole } from '../../utils/model-registry'
 import { buildModelSubmission, requiredCreateRouteRoles, requiredRefineRouteRoles, arkProbesForRoles, missingArkVerifications, nextArkVerificationBatch, providerDefaultRoutes, uniqueProvidersForRoles, type ModelRoutes } from '../../utils/model-routing'
 import { toggleReferenceSelection } from '../../utils/reference-library'
 
@@ -168,10 +168,14 @@ Component({
       const routeRows = (this.properties.purpose === 'optimize' ? ['main'] as ModelRole[] : ['main', 'image', 'vision'] as ModelRole[]).map((role) => {
         const route = draft.modelRoutes[role]
         const model = findRegistryModel(registry, route.accessProvider, route.modelId)
+        const removedHint = removedModelHint(route.accessProvider, route.modelId)
+        const replacementId = removedModel(route.accessProvider, route.modelId)?.replacementApiId
+        const replacement = replacementId && partitionRegistryModels(registry.providers[route.accessProvider as ModelProviderId]?.models || [], {role, outputFormat:draft.outputFormat}).compatible.find(m => m.id === replacementId)
         return {
+          removedHint, replacement: replacement ? replacement.id : '',
           role, label: role === 'main' ? '主模型' : role === 'image' ? '图像生成模型' : '参考图识别模型',
           provider: route.accessProvider, providerLabel: PROVIDER_LABELS[route.accessProvider] || route.accessProvider,
-          modelId: route.modelId, modelLabel: removedModelHint(route.accessProvider, route.modelId) || model?.label || route.modelId,
+          modelId: route.modelId, modelLabel: removedHint ? '请选择' : model?.label || route.modelId || '请选择',
           required: executionRoles.includes(role),
           credentialAction: route.accessProvider === 'tokendance' ? (connected ? '管理授权' : '连接账户') : '配置 Key',
           credentialReady: route.accessProvider === 'tokendance' ? connected : Boolean(selectedKeys[route.accessProvider]?.trim()),
@@ -242,6 +246,21 @@ Component({
       if (!draft) return
       wx.hideKeyboard?.()
       this.setData({ autoFocusProvider: '', editingRole: role, showModelPicker: true, pickerProvider: draft.modelRoutes[role].accessProvider, pickerModel: draft.modelRoutes[role].modelId })
+    },
+    replaceRemoved(event: WechatMiniprogram.TouchEvent) {
+      const role = normalizeRole(event.currentTarget.dataset.role)
+      const draft = this.data.draft
+      if (!draft) return
+      const route = draft.modelRoutes[role]
+      const id = removedModel(route.accessProvider, route.modelId)?.replacementApiId
+      const selectable = () => id && partitionRegistryModels(this.getRegistry()?.providers[route.accessProvider as ModelProviderId]?.models || [], { role, outputFormat: draft.outputFormat }).compatible.some(m => m.id === id)
+      if (!selectable()) return
+      wx.showModal({title:'确认切换模型',content:`${route.modelId} → ${id}。只修改当前角色。`,success: result => {
+        if (result.confirm && this.data.draft === draft && draft.modelRoutes[role] === route && selectable()) {
+          draft.modelRoutes[role] = {accessProvider:route.accessProvider, modelId:id!}
+          this.setData({draft}); this.refreshPresentation()
+        }
+      }})
     },
     closeModelPicker() { this.setData({ showModelPicker: false }) },
     selectModel(event: WechatMiniprogram.CustomEvent<{ provider: string; modelId: string }>) {

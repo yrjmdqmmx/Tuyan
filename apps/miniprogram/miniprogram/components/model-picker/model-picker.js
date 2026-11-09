@@ -74,8 +74,9 @@ Component({
                 });
             }).filter(item => item.count > 0);
             const lifecycle = (0, model_audit_1.auditedModelLifecycle)(String(this.properties.selectedProvider), String(this.properties.selectedModel));
-            const replacement = this.compatibleModels(String(this.properties.selectedProvider)).find(model => model.id === (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.replacement));
-            this.setData({ removedHint: (0, model_audit_1.removedModelHint)(String(this.properties.selectedProvider), String(this.properties.selectedModel)), savedLifecycle: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.message) || '', savedReplacement: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.state) === 'scheduled' ? (replacement === null || replacement === void 0 ? void 0 : replacement.id) || '' : '' });
+            const removed = (0, model_audit_1.removedModel)(String(this.properties.selectedProvider), String(this.properties.selectedModel));
+            const replacement = this.compatibleModels(String(this.properties.selectedProvider)).find(model => model.id === ((removed === null || removed === void 0 ? void 0 : removed.replacementApiId) || (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.replacement)));
+            this.setData({ removedHint: (0, model_audit_1.removedModelHint)(String(this.properties.selectedProvider), String(this.properties.selectedModel)), savedLifecycle: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.message) || '', savedReplacement: (replacement === null || replacement === void 0 ? void 0 : replacement.id) || '' });
             const selectedProvider = String(this.properties.selectedProvider || '');
             const activeProvider = providerCards.some(item => item.id === selectedProvider) ? selectedProvider : '';
             const vendorCards = activeProvider ? this.vendorsFor(activeProvider) : [];
@@ -188,13 +189,14 @@ function presentModel(model, selectedProvider, selectedModel, providerId) {
     var _a, _b, _c;
     const audit = (0, model_audit_1.auditedModelSpecs)(providerId, model.id), lifecycle = (0, model_audit_1.auditedModelLifecycle)(providerId, model.id);
     const names = { text: '文本', image: '图像', audio: '音频', video: '视频', file: '文件', document: '文件' };
-    const display = (fact) => { var _a; return fact.state === 'known' ? Array.isArray(fact.value) ? fact.value.map(x => names[x]).join('、') : `${(_a = fact.value) === null || _a === void 0 ? void 0 : _a.toLocaleString('en-US')} tokens` : fact.state === 'unsupported' ? '不支持' : fact.state === 'not-applicable' ? '不适用' : '未知'; };
+    const display = (fact) => fact.state === 'known' ? Array.isArray(fact.value) ? fact.value.map(x => names[x]).join('、') : `${(0, model_presentation_1.formatContextLimit)(Number(fact.value))} tokens` : fact.state === 'unsupported' ? '不支持' : fact.state === 'not-applicable' ? '不适用' : '未知';
     const image = model.roles.includes('image') || (Array.isArray(audit.fields.outputModalities.value) && audit.fields.outputModalities.value.some(x => x === 'image' || x === 'video'));
     return {
+        scheduled: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.state) === 'scheduled',
         vendorLabel: (0, model_presentation_1.modelDeveloper)(providerId, model).label, channelLabel: PROVIDER_LABELS[providerId],
         specRows: [['inputModalities', '输入'], ['outputModalities', '输出'], ['totalContextTokens', '上下文窗口'], ['maxOutputTokens', '最大输出']].map(([key, label]) => ({ label, value: image && key.endsWith('Tokens') ? '不适用' : key.endsWith('Modalities') && audit.fields[key].state === 'unknown' ? '模态未知' : display(audit.fields[key]), origin: '', unknown: audit.fields[key].state === 'unknown', unknownText: (audit.fields[key].unknownModalities || []).map(x => names[x] + '?').join('、') })),
-        specSources: [...new Set([...Object.values(audit.fields).map(f => f.sourceUrl), audit.sourceUrl].filter((url) => Boolean(url)))],
-        verifiedAt: '', auditMessage: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.message) || '',
+        specSources: [...new Set([lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.sourceUrl, ...Object.values(audit.fields).map(f => f.sourceUrl), audit.sourceUrl].filter((url) => Boolean(url)))],
+        verifiedAt: '', auditMessage: [lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.message, ...[['totalContextTokens', '上下文窗口'], ['maxOutputTokens', '最大输出']].map(([key, label]) => !image && typeof audit.fields[key].value === 'number' ? `${label}：${audit.fields[key].value} tokens` : '')].filter(Boolean).join('\n'),
         id: model.id, label: model.label, recommended: model.recommended, requiresEntitlement: model.requiresEntitlement,
         availabilityNotes: [model.availabilityNotes, ((_a = model.capabilities) === null || _a === void 0 ? void 0 : _a.requiresSourceImage) ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),
         serviceTier: model.serviceTier || '', versionLabel: (0, model_presentation_1.modelVersionLabel)(model), versionText: (0, model_presentation_1.modelVersionDetail)(model), apiIdentifier: model.apiIdentifier || model.id,

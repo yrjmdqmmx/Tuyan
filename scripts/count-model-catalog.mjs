@@ -63,10 +63,9 @@ try {
   const deleted = JSON.parse(fs.readFileSync(path.join(scriptRoot,'config/removed-models.json'),'utf8'))
   const referenceAudit = JSON.parse(fs.readFileSync(path.join(scriptRoot,'config/model-audit.generated.json'),'utf8'))
   const added = referenceAudit.additions.map(m=>m.channel+'/'+m.id)
-  const library = {connections:[{id:'c1',provider:'xiaomi'},{id:'c2',provider:'fireworks'},{id:'c3',provider:'bailian'},{id:'c4',provider:'antling'},{id:'c5',provider:'openai'}],models:[
-    {id:'r1',connectionId:'c1',modelId:'mimo-v2.5'},{id:'r2',connectionId:'c2',modelId:'accounts/fireworks/models/glm-5p2'},
-    {id:'s',connectionId:'c3',modelId:'qwen3.5-plus'},{id:'l1',connectionId:'c4',modelId:'Ling-3.1-flash'},{id:'l2',connectionId:'c4',modelId:'Ling-3.2-flash'},
-    {id:'unknown',connectionId:'c5',modelId:'gpt-6.1-sol'},{id:'partial',connectionId:'c4',modelId:'Ling-3.0-tiny'}]}
+  const previewPairs = JSON.parse(fs.readFileSync(path.join(scriptRoot,'apps/web/tests/fixtures/model-card-preview.json'),'utf8'))
+  const library = {connections:[...new Set(previewPairs.map(([provider])=>provider))].map(provider=>({id:provider,provider})),
+    models:previewPairs.map(([connectionId,modelId],index)=>({id:'m'+index,connectionId,modelId}))}
   const stored = JSON.stringify(library), cards = ui.libraryRows(library,mock)
   if (JSON.stringify(library)!==stored) throw Error('UI changed the stored library')
   const scopes = {staticRegistry:staticRows.map(key),mockRegistry:mockRows.map(key),catalogVisible:visible.map(key),pickerSelectable:[...selectable]}

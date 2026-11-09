@@ -104,12 +104,16 @@
 .tw-catalog-logo { display:flex; align-items:center; justify-content:center; width:34px; height:34px; flex-shrink:0; border:1px solid #edf0e9; border-radius:9px; background:#fafbf8; }
 .tw-catalog-logo .model-brand-logo { width:22px; height:22px; object-fit:contain; }
 .tw-catalog-added { display:flex; align-items:center; gap:3px; white-space:nowrap; font-size:10px; color:#4e7864; }
-.tw-catalog-card-meta { display:flex; align-items:center; gap:8px; min-width:0; }
-.tw-catalog-card-meta > code { flex:1; min-width:0; margin:0; display:block; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; font-size:11px; color:#7e897d; overflow-wrap:anywhere; line-height:1.5; }
+.tw-catalog-title, .model-option-heading { display:flex; align-items:flex-start; gap:6px; min-width:0; }
+.tw-catalog-title h3, .model-option-heading > button { flex:1; min-width:0; }
+.tw-catalog-title > .tw-catalog-tags, .model-option-heading > .tw-catalog-tags { flex:none; }
+.tw-catalog-tags [role=button] { cursor:pointer; }
+.tw-catalog-card-meta { display:flex; flex-wrap:wrap; align-items:center; gap:8px; min-width:0; }
+.tw-catalog-card-meta > code { flex:1 0 auto; min-width:0; max-width:100%; margin:0; display:block; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; font-size:11px; color:#7e897d; overflow-wrap:anywhere; line-height:1.5; }
 .tw-catalog-tags { display:flex; flex:none; align-items:center; gap:5px; margin:0; min-width:0; overflow:hidden; }
 .tw-catalog-tags > span { border-radius:5px; padding:3px 6px; background:#f2f5ef; font-size:10px; color:#647360; line-height:1.4; }
 .tw-catalog-tags > .is-unavailable { color:#9a6642; background:#fbf4eb; }
-/* Single-line metadata and a shared source/action footer keep cards content-sized. */
+/* Compact metadata and a shared source/action footer keep cards content-sized. */
 .tw-catalog-card > .model-card-specifications { min-height:0; display:flex; flex-direction:column; gap:6px; border-top:1px solid #f0f2ec; padding-top:7px; }
 .tw-catalog-card .model-specs { border:0; padding:0; margin:0; gap:4px; font-size:12px; }
 .tw-catalog-card .model-specs > div { min-height:20px; grid-template-columns:auto minmax(0,1fr); gap:8px; }

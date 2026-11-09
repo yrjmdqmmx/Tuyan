@@ -1,3 +1,12 @@
+## 2026-11-09 · 模型卡第三轮：空默认、Ant Ling 下线与移除引用提示（本地 v43，未发布）
+
+- [x] Core / shared / 目录：版本化 `config/channel-audit/deprecations-addendum-20261109.json` 纳入普通同步；antling 的 Ling-2.6-1T / Ling-2.6-flash / Ring-2.6-1T 保留至 2026-11-15 00:00 (UTC+8)，精确替代 Ling-3.1-flash；scheduled 4 → 7，总目录 1064 不变。到期前/后边界沿用 MODEL_UNAVAILABLE / not_sent，无新 action、请求字段、价格或权限变更。四个更早退役 Ling 型号均不在目录。
+- [x] Gateway：三项到期前可加入，到期后禁止新增，既有绑定仍可原样往返；公共预览夹具扩至 12 条，三条旧身份不改存储。
+- [x] Web：StepFun 默认绘图保持空并显示“此连接暂无默认绘图模型”；移除槽为“请选择”+单句 helper +显式“改选”确认，仅改当前角色引用；我的模型按渠道/厂商显示具名提示，多项合为一个可展开通知。将下线徽标移至标题，API ID 保持完整内容与可换行布局。
+- [x] Web / 小程序：复用生产 `formatContextLimit` 十进制 K/M 格式和原有舍入标识，精确整数/完整 URL 保留在悬停或点击详情；小程序空槽和显式替换同步，源码 1,565,894 bytes，仍低于原 1.5 MiB。
+- [x] 验证 / 文档：同步及证据再生成通过；生成器/codec/Gateway 13/13；Core 204/205（1 个已记录到期基线失败）、check 通过；小程序 126/126、check/build 通过；Web 1329/1341（12 个已记录基线失败）、定向 32/32、build 通过。计数 1064 / 1061 / 919 / 878，scheduled 7。详见 [第三轮验收](docs/model-card-audit-20261109.md)、[计数 JSON](docs/model-card-audit-20261109-count-r3.json)、[截图夹具](docs/model-card-audit-20261109-preview.md)。
+- [ ] 外部实屏验收：沙箱 Chrome 退出 134，localhost listen EPERM；1280 / 390 实屏和微信原生包扫描仍待可用环境。小程序保持暂停；本轮没有 commit、push、merge、部署或真实/付费提供商请求。
+
 ## 2026-11-09 · 模型卡第二轮：物理删除旧型号、紧凑卡片与离线计数（本地 v43，未发布）
 
 本条覆盖下方第一轮的“隐藏退休型号 / 渠道不可用 / 自动替换入口”方案；PR #245 的 base 仍为 `codex/hangzhou-production`。
@@ -8,7 +17,7 @@
 - [x] 规格 / 生成器：Ling 五项严格采用 `config/channel-audit/model-audit-supplement-20261109.json` 的已知/未知模态和原生窗口，最大输出未知，不推断共享窗口；普通同步不依赖 `.audit-input/`。Fireworks 建议须同时满足通告、Serverless Supported、精确可选 ID。
 - [x] 小程序：同步删除和空槽行为，只打包显示必需审计字段及现有选择/执行约束；恢复 1.5 MiB 原预算，123/123 测试及类型/构建通过。仍暂停发布。
 - [x] 验证 / 文档：只读 `scripts/count-model-catalog.mjs` 在 head/base 都运行，静态 1125 → 1064，目录 923 → 919（57 项原已隐藏）；完整删除明细、每渠道计数、所有测试结果与精确本地夹具见 [第二轮验收](docs/model-card-audit-20261109.md) / [截图路径](docs/model-card-audit-20261109-preview.md)。Web 12 个基线失败、Core 1 个既有到期失败、Gateway 87 个沙箱监听失败明确保留；未进行真实或付费调用。
-- [ ] Owner 决策：原 StepFun 出厂绘图默认 `step-2x-large` 已删除，默认值留空，请指定替代或继续留空；Ant Ling 11 月 15 日未来下线的 3 个在库型号本轮只报告，待另行决策。
+- [x] Owner 决策（第三轮完成）：StepFun 绘图默认继续留空并显示角色 helper；Ant Ling 3 个在库型号纳入 2026-11-15 00:00 UTC+8 将下线规则，替代 Ling-3.1-flash，见顶部第三轮记录。
 - [ ] 外部验收：沙箱 `listen EPERM` / Chrome 退出 134，尚无桌面 1280 / 移动 390 实屏及微信原生包扫描。生产 1408 缺同一时点 registry 快照，不能逐 ID 分摊与本地 919 的 489 差额。本轮没有 commit、push、merge、部署。
 
 ## 2026-11-09 · 模型卡审计规格与生命周期（第一轮历史，已由上方第二轮覆盖）

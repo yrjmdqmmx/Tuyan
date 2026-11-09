@@ -44,7 +44,7 @@ test('retired text, image, vision and serverless requests fail before any transp
   const runtime:any=await createRefineRuntime({startServer:false});let calls=0
   try {
     runtime.legacy.configureRuntimeFetch(async()=>{ calls++;throw Error('Transport must not be reached') })
-    const expected=(code:string,replacement?:string)=>(e:any)=>e.businessCode===code&&e.requestState==='not_sent'&&(!replacement||e.replacement===replacement)&&/原型号已不可用，请重新选择/.test(e.message)
+    const expected=(code:string,replacement?:string)=>(e:any)=>e.businessCode===code&&e.requestState==='not_sent'&&(!replacement||e.replacement===replacement)&&/原型号 .* 已不可用/.test(e.message)
     await assert.rejects(runtime.legacy.callTextModel('xiaomi','mimo-v2.5','fixture','system','prompt'),expected('MODEL_UNAVAILABLE','mimo-v2.6-flash'))
     await assert.rejects(runtime.legacy.callImageModel('stepfun','step-image-edit-2','fixture','prompt','1:1'),expected('MODEL_UNAVAILABLE'))
     await assert.rejects(runtime.legacy.callVisionModel('xiaomi','mimo-v2.5-pro','fixture','prompt',[]),expected('MODEL_UNAVAILABLE','mimo-v2.6-pro'))
@@ -65,5 +65,26 @@ test('account catalog refresh cannot resurrect a removed Fireworks identity', as
     assert.ok(registry)
     assert.equal(registry.models.some((model:any)=>model.id==='accounts/fireworks/models/glm-5p2'),false)
     assert.equal(registry.models.some((model:any)=>model.id==='accounts/fireworks/models/glm-5p3'),true)
+  } finally { await runtime.close() }
+})
+
+test('all Ant Ling notices stop at UTC+8 midnight before transport and leave other channels unaffected', async t => {
+  const runtime:any = await createRefineRuntime({startServer:false}); let calls = 0
+  t.mock.method(Date, 'now', () => Date.parse('2026-11-14T15:59:59.999Z'))
+  try {
+    runtime.legacy.configureRuntimeFetch(async () => { calls++; throw Error('No transport after expiry') })
+    for (const id of ['Ling-2.6-1T','Ling-2.6-flash','Ring-2.6-1T']) {
+      const before = Date.parse('2026-11-14T15:59:59.999Z'), stop = before + 1
+      assert.equal(auditedModelLifecycle('antling',id,before)?.state,'scheduled')
+      assert.match(auditedModelLifecycle('antling',id,before)?.message || '',/2026-11-15 00:00 \(UTC\+8\)/)
+      assert.equal(removedModel('antling',id,before),null)
+      assert.doesNotThrow(() => assertAuditedModelAvailable('antling',id,before))
+      assert.equal(auditedModelLifecycle('antling',id,stop),null)
+      assert.equal(removedModel('antling',id,stop)?.replacementApiId,'Ling-3.1-flash')
+      assert.equal(removedModel('other',id,stop),null)
+      t.mock.method(Date, 'now', () => stop)
+      await assert.rejects(runtime.legacy.callTextModel('antling',id,'fixture','system','prompt'), (e:any) => e.businessCode === 'MODEL_UNAVAILABLE' && e.requestState === 'not_sent')
+    }
+    assert.equal(calls,0)
   } finally { await runtime.close() }
 })

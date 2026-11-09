@@ -1778,7 +1778,7 @@ function upsertAuditedModel(provider: Exclude<Provider, 'openrouter'>, entry: Mo
 }
 
 // BEGIN GENERATED AUDITED CATALOG
-import { MODEL_CHANNEL_LABELS, orderModelChannels, ModelVersion, normalizeModelVersion, modelVersionLabel, modelVersionDetail, openRouterModelVersion, modelLifecycleLabel, modelDeveloperName, modelDeveloperAliases, modelDeveloper, presentRegistryModel, validModelReleaseDate, sortModelsNewestFirst } from '../../../packages/types/src/model-presentation.js'
+import { MODEL_CHANNEL_LABELS, orderModelChannels, ModelVersion, normalizeModelVersion, modelVersionLabel, modelVersionDetail, openRouterModelVersion, modelLifecycleLabel, modelDeveloperName, modelDeveloperAliases, modelDeveloper, presentRegistryModel, validModelReleaseDate, sortModelsNewestFirst, formatContextLimit } from '../../../packages/types/src/model-presentation.js'
 export * from '../../../packages/types/src/model-presentation.js'
 import { MODEL_AUDIT_DATA } from '../../../packages/api/src/model-audit-data.js'
 export * from '../../../packages/api/src/model-audit-data.js'

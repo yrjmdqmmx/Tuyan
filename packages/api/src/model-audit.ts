@@ -20,7 +20,7 @@ export function auditedModelSpecs(channel: string, id: string) {
   return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: details?.sourceUrls || [], note: details?.note || '' }
 }
 
-// Message-only tombstones are never catalog entries or replacement actions.
+// Tombstones preserve exact identities for messages and explicit replacement choices, never catalog entries.
 export function removedModel(channel: string, id: string, now = Date.now()) {
   const key = channel + '/' + String(id).trim()
   const removed = MODEL_AUDIT_DATA.removed?.[key]
@@ -32,7 +32,7 @@ export function removedModel(channel: string, id: string, now = Date.now()) {
 
 export function removedModelHint(channel: string, id: string, now = Date.now()) {
   const removed = removedModel(channel, id, now)
-  return removed ? `原型号已不可用，请重新选择${removed.replacementApiId ? `，可改选 ${removed.replacementApiId}` : ''}` : ''
+  return removed ? `原型号 ${id} 已不可用${removed.replacementApiId ? `，可改选 ${removed.replacementApiId}` : '，请重新选择'}` : ''
 }
 
 // Date-only notices take effect at the start of the stated UTC calendar day.
@@ -43,7 +43,8 @@ export function auditedModelLifecycle(channel: string, id: string, now = Date.no
   const elapsed = now >= Date.parse(notice.stopDate)
   if (elapsed) return null
   const replacement = notice.replacement || null
-  return { ...notice, replacement, state: 'scheduled', label: '将下线', blocked: false, message: `将于${notice.stopDate.slice(0,10)}下线${replacement ? `；可改选 ${replacement}` : ''}` }
+  const stopLabel = notice.stopDate.includes('T') ? notice.stopDate.replace('T', ' ').replace(':00+08:00', ' (UTC+8)') : notice.stopDate
+  return { ...notice, replacement, state: 'scheduled', label: '将下线', blocked: false, message: `将于${stopLabel}下线${replacement ? `；可改选 ${replacement}` : ''}` }
 }
 
 export function assertAuditedModelAvailable(channel: string, id: string, now = Date.now()) {

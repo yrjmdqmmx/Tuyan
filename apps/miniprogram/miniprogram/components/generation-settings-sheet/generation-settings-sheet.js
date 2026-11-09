@@ -173,17 +173,21 @@ Component({
             const selectedKeys = (0, provider_regions_1.selectRegionApiKeys)(this.data.draftKeys, draft.providerRegions);
             const connected = (0, tokendance_1.hasTokenDanceConnection)();
             const routeRows = (this.properties.purpose === 'optimize' ? ['main'] : ['main', 'image', 'vision']).map((role) => {
-                var _a, _b;
+                var _a, _b, _c, _d;
                 const route = draft.modelRoutes[role];
                 const model = (0, model_registry_1.findRegistryModel)(registry, route.accessProvider, route.modelId);
+                const removedHint = (0, model_audit_1.removedModelHint)(route.accessProvider, route.modelId);
+                const replacementId = (_a = (0, model_audit_1.removedModel)(route.accessProvider, route.modelId)) === null || _a === void 0 ? void 0 : _a.replacementApiId;
+                const replacement = replacementId && (0, model_registry_1.partitionRegistryModels)(((_b = registry.providers[route.accessProvider]) === null || _b === void 0 ? void 0 : _b.models) || [], { role, outputFormat: draft.outputFormat }).compatible.find(m => m.id === replacementId);
                 return {
+                    removedHint, replacement: replacement ? replacement.id : '',
                     role, label: role === 'main' ? '主模型' : role === 'image' ? '图像生成模型' : '参考图识别模型',
                     provider: route.accessProvider, providerLabel: PROVIDER_LABELS[route.accessProvider] || route.accessProvider,
-                    modelId: route.modelId, modelLabel: (0, model_audit_1.removedModelHint)(route.accessProvider, route.modelId) || (model === null || model === void 0 ? void 0 : model.label) || route.modelId,
+                    modelId: route.modelId, modelLabel: removedHint ? '请选择' : (model === null || model === void 0 ? void 0 : model.label) || route.modelId || '请选择',
                     required: executionRoles.includes(role),
                     credentialAction: route.accessProvider === 'tokendance' ? (connected ? '管理授权' : '连接账户') : '配置 Key',
-                    credentialReady: route.accessProvider === 'tokendance' ? connected : Boolean((_a = selectedKeys[route.accessProvider]) === null || _a === void 0 ? void 0 : _a.trim()),
-                    credentialStatus: route.accessProvider === 'tokendance' ? (connected ? '已连接 · 使用观猹账户额度' : '未连接观猹账户') : (((_b = selectedKeys[route.accessProvider]) === null || _b === void 0 ? void 0 : _b.trim()) ? '已配置' : '缺少 API Key'),
+                    credentialReady: route.accessProvider === 'tokendance' ? connected : Boolean((_c = selectedKeys[route.accessProvider]) === null || _c === void 0 ? void 0 : _c.trim()),
+                    credentialStatus: route.accessProvider === 'tokendance' ? (connected ? '已连接 · 使用观猹账户额度' : '未连接观猹账户') : (((_d = selectedKeys[route.accessProvider]) === null || _d === void 0 ? void 0 : _d.trim()) ? '已配置' : '缺少 API Key'),
                 };
             });
             const providers = (0, model_routing_1.uniqueProvidersForRoles)(draft.modelRoutes, this.effectiveRoles());
@@ -261,6 +265,25 @@ Component({
                 return;
             (_a = wx.hideKeyboard) === null || _a === void 0 ? void 0 : _a.call(wx);
             this.setData({ autoFocusProvider: '', editingRole: role, showModelPicker: true, pickerProvider: draft.modelRoutes[role].accessProvider, pickerModel: draft.modelRoutes[role].modelId });
+        },
+        replaceRemoved(event) {
+            var _a;
+            const role = normalizeRole(event.currentTarget.dataset.role);
+            const draft = this.data.draft;
+            if (!draft)
+                return;
+            const route = draft.modelRoutes[role];
+            const id = (_a = (0, model_audit_1.removedModel)(route.accessProvider, route.modelId)) === null || _a === void 0 ? void 0 : _a.replacementApiId;
+            const selectable = () => { var _a, _b; return id && (0, model_registry_1.partitionRegistryModels)(((_b = (_a = this.getRegistry()) === null || _a === void 0 ? void 0 : _a.providers[route.accessProvider]) === null || _b === void 0 ? void 0 : _b.models) || [], { role, outputFormat: draft.outputFormat }).compatible.some(m => m.id === id); };
+            if (!selectable())
+                return;
+            wx.showModal({ title: '确认切换模型', content: `${route.modelId} → ${id}。只修改当前角色。`, success: result => {
+                    if (result.confirm && this.data.draft === draft && draft.modelRoutes[role] === route && selectable()) {
+                        draft.modelRoutes[role] = { accessProvider: route.accessProvider, modelId: id };
+                        this.setData({ draft });
+                        this.refreshPresentation();
+                    }
+                } });
         },
         closeModelPicker() { this.setData({ showModelPicker: false }); },
         selectModel(event) {

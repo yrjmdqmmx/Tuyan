@@ -1,6 +1,6 @@
-# 第二轮本地截图夹具（仅开发预览）
+# 第三轮本地截图夹具（仅开发预览）
 
-此片段只用于独立的本地预览 origin，不进入生产代码路径、不含密钥、不发送模型请求。模型库 7 条，其中 2 条已移除、5 张卡片；另有两份普通预设任务草稿。请使用无其他业务草稿的浏览器配置文件。不要点击生成或优化。
+此片段只用于独立的本地预览 origin，不进入生产代码路径、不含密钥、不发送模型请求。模型库 12 条，其中 3 条已移除、9 张卡片；另有两份普通预设任务草稿。请使用无其他业务草稿的浏览器配置文件。不要点击生成或优化。
 
 ## 启动
 
@@ -22,28 +22,21 @@ VITE_AUTH_BASE= VITE_AUTH_REQUIRED=false VITE_AUTH_ENABLED=false VITE_API_BASE=h
 
 ```js
 const { API_BASE_DEFAULT: base, AUTH_BASE_DEFAULT: authBase } = await import('/src/config.js');
-if (location.hostname !== '127.0.0.1' || base !== 'http://127.0.0.1:8791') throw Error('仅限 R2 本地预览');
-const pairs = [
-  ['xiaomi', 'mimo-v2.5'],
-  ['fireworks', 'accounts/fireworks/models/glm-5p2'],
-  ['bailian', 'qwen3.5-plus'],
-  ['antling', 'Ling-3.1-flash'],
-  ['antling', 'Ling-3.2-flash'],
-  ['openai', 'gpt-6.1-sol'],
-  ['antling', 'Ling-3.0-tiny'],
-];
+if (location.hostname !== '127.0.0.1' || base !== 'http://127.0.0.1:8791') throw Error('仅限 R3 本地预览');
+// Shared with the count script and Gateway round-trip test.
+const { default: pairs } = await import('/tests/fixtures/model-card-preview.json');
 const library = {
   revision: 0,
-  connections: [...new Set(pairs.map(([provider]) => provider))].map(provider => ({ id: provider, provider, label: `R2 ${provider}`, scope: 'browser', region: 'global', disabled: false })),
+  connections: [...new Set(pairs.map(([provider]) => provider))].map(provider => ({ id: provider, provider, label: `R3 ${provider}`, scope: 'browser', region: 'global', disabled: false })),
   models: pairs.map(([connectionId, modelId], i) => ({ id: `m${i}`, connectionId, modelId, disabled: false })),
 };
 localStorage.setItem(`tuyan.workspace-models.v1:${base}:guest`, JSON.stringify(library));
 const { newWorkspace, newTask } = await import('/src/workspace/workspaceState.js');
 const { createWorkspaceCache } = await import('/src/workspace/workspaceSync.js');
-const state = newWorkspace('audit-r2-removed');
-state.tasks.push(newTask('audit-r2-scheduled', 'svg'));
+const state = newWorkspace('audit-r3-removed');
+state.tasks.push(newTask('audit-r3-scheduled', 'svg'));
 state.tasks.forEach((task, i) => {
-  task.title = i ? 'R2：将下线确认' : 'R2：已移除的预设';
+  task.title = i ? 'R3：将下线确认' : 'R3：已移除的预设';
   task.automaticTitle = false; task.path = 'svg';
   const entry = library.models[i ? 2 : 0];
   const draft = task.branches.svg.draft;
@@ -58,17 +51,27 @@ sessionStorage.removeItem(`${key}:tab`);
 location.href = '/?view=models';
 ```
 
-## 截图路径
+## 截图路径（桌面 1280 / 移动 390）
 
-- 模型管理 → **我的模型**：顶部显示两条独立的空槽提示；小米提示 `mimo-v2.6-flash`，Fireworks 提示 `accounts/fireworks/models/glm-5p3`。没有这两个旧型号的卡片或切换按钮。该页计数 5；localStorage 内 `models.length` 仍是 7。
-- 我的模型 → 接入渠道 **阿里云百炼** → 厂商 **阿里巴巴** → `qwen3.5-plus`：角色行小徽标“将下线”；悬停底部“下线公告”查看日期、替代 API ID、核实日期及来源。卡片替代建议放在 tooltip，避免底部多按钮挤出卡片；触屏点击来源打开现有对话框。
-- 我的模型 → **蚂蚁百灵** / **蚂蚁集团**：搜索 `Ling-3.1-flash` 或 `Ling-3.2-flash`。3.1 输入只有文本已知，其余图标带灰问号；3.2 为文本/图像/视频已知，音频未知。`Ling-3.0-tiny` 展示上下文和最大输出“未知”。搜索仅作用于当前渠道和厂商。
-- 我的模型 → **OpenAI** / **OpenAI** → 搜索 `gpt-6.1-sol`：输入和输出各一条灰色“模态未知”，没有八个问号图标。
-- **模型目录**查看这些型号时先选对应渠道与厂商，再搜索同一精确 ID；旧型号在任何渠道的同名模型中可能仍存在，本轮删除按渠道精确匹配。
-- **已移除的预设字段**：打开 `http://127.0.0.1:5173/` → 侧栏“草稿” → **R2：已移除的预设** → 输入框工具栏 **模型配置**。普通预设下的“主模型”触发按钮显示“原型号已不可用，请重新选择，可改选 mimo-v2.6-flash”；点击可重新选择。打开、关闭、刷新都不改旧引用。不要点击“应用此连接的默认组合”，那是另一个显式修改操作。
-- **将下线确认弹框**：侧栏“草稿” → **R2：将下线确认** → **模型配置** → 主模型下面的 **切换到 qwen3.8-flash**。弹框含“取消”和“确认切换”，桌面右对齐，移动端底部弹层并排。取消不写数据；确认仅切换该草稿当前角色，并保留/停用旧模型库条目，其他草稿保持原样。无密钥仍可审阅此配置操作。
-- 桌面用 1280px 或更宽截图；移动端用 390px。移动侧栏若折叠，先打开左上角导航。
+先进入 `http://127.0.0.1:5173/?view=models` → **我的模型**。所有路径都只读本地夹具；本轮没有真实提供商调用。
+
+| 验收项 | UI 路径及预期 |
+| --- | --- |
+| 4 · 过滤隔离 | 我的模型 → 接入渠道 **阿里云百炼** → 厂商 **阿里巴巴**：两张 qwen 卡；顶部没有小米或 Fireworks 移除提示。 |
+| 4 · 合并通知 | 我的模型 → **小米 MiMo** → **小米**：只有一个“2 个已保存型号已不可用”通知；点击展开，分别列出 `mimo-v2.5` 与 `mimo-v2.5-pro`，带渠道名和 `MiMo-V2.6-Flash` / `MiMo-V2.6-Pro` 建议；无旧卡片。只有已移除型号的渠道仍可筛选，计数为 0。 |
+| 4 · 简短替代名 | 我的模型 → **Fireworks** → **智谱**：一条含 `accounts/fireworks/models/glm-5p2` 的提示，替代名为目录展示名 `GLM 5.3`，不显示冗长的替代 API ID。 |
+| 5 · 已移除角色槽 | 打开 `/` → 侧栏“草稿” → **R3：已移除的预设** → 工具栏 **模型配置**：主模型触发按钮为“请选择”；下方只有“原型号 mimo-v2.5 已不可用，可改选 mimo-v2.6-flash”，旁边“改选”。点击进入既有确认弹框；取消不写入，确认仅更新当前角色引用。打开、关闭和刷新不自动替换。 |
+| 6 · 完整 ID 与徽标 | 我的模型 → **阿里云百炼 / 阿里巴巴**：`qwen3.5-plus`、`qwen3.5-plus-2026-04-20` 的浅色“将下线”徽标紧邻标题，API ID 行不含此徽标。悬停徽标，或触屏点击，显示 `2027-01-19` 和 `qwen3.8-flash`。 |
+| 2 / 6 · Ling 下线卡 | 我的模型 → **蚂蚁百灵 / 蚂蚁集团**：`Ling-2.6-1T`、`Ling-2.6-flash`、`Ring-2.6-1T` 均保留卡片和选择能力；标题旁徽标显示 `2026-11-15 00:00 (UTC+8)`、替代 `Ling-3.1-flash`。 |
+| 3 · Ling 规格 | 同一渠道搜索 `Ling-3.1-flash` / `Ling-3.2-flash`：上下文 `≈ 1M tokens`，悬停值为 `1,048,576 tokens`。3.1 仅文本输入已知；3.2 文本/图像/视频已知，音频未知。`Ling-3.0-tiny` 的上下文和最大输出仍为“未知”。底部来源 tooltip 含完整 URL。 |
+| 3 · 262K / 最大输出 | **模型目录** → 蚂蚁百灵 → 搜索 `Ling-3.0-flash`：原生窗口 `≈ 262K tokens`、精确值 `262,144 tokens`；模型目录 → 观猹 TokenDance → `deepseek-v4-pro`（离线夹具目录为空时不可见，可在定向 DOM 用例查看）：最大输出 `≈ 393K tokens`、精确值 `393,216 tokens`。K/M 为生产十进制规则，不改为二进制 384K。 |
+| 将下线确认 | 草稿 → **R3：将下线确认** → 模型配置 → 主模型下方“切换到 qwen3.8-flash”：取消与确认按钮保留。 |
+| 1 · StepFun 空默认 | 模型管理 → 添加一个无需填写密钥的阶跃连接 → 返回普通预设配置 → 选择该连接 → “应用此连接的默认组合”：绘图槽显示“此连接暂无默认绘图模型”。此动作无需调用模型。 |
+
+**模型目录**也可按相同渠道/厂商/精确 ID 查看卡片。旧型号可能在其他渠道存在，删除和提示按渠道精确匹配。移动侧栏折叠时先打开左上角导航。
+
+四行规格和 API ID 的完整 DOM、标题徽标位置、触屏点击信息、无意外选择均有自动化回归；本沙箱 Chrome 启动退出 134、本地监听 EPERM，无法产出真实 1280/390 截图。请在可运行浏览器的本地终端按表截图，不能把 DOM/CSS 验证视为实屏验收。
 
 ## 恢复夹具
 
-重复上述图片页控制台片段即可恢复本地 7 条库记录及两份草稿。片段只改该预览 origin 的 guest 快照，不读取凭据，不登录账号，不接触线上数据。`scripts/count-model-catalog.mjs` 和 Gateway 往返测试使用相同的 7 个渠道/ID 对。
+重复图片页控制台片段，恢复 12 条库记录及两份草稿；计数为 9 张卡、3 条移除引用。片段只改该预览 origin 的 guest 快照，不读取凭据、不登录账号、不接触线上数据。`apps/web/tests/fixtures/model-card-preview.json` 是计数脚本、Gateway 往返测试和预览的同一份夹具。

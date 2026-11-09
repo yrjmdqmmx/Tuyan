@@ -79,7 +79,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const configRoot = new URL('../config/', import.meta.url)
   const supplement = JSON.parse(fs.readFileSync(new URL('channel-audit/model-audit-supplement-20261109.json', configRoot), 'utf8'))
   const removed = JSON.parse(fs.readFileSync(new URL('removed-models.json', configRoot), 'utf8'))
-  const data = supplementModelAudit(generateModelAudit({ pairs: read('configured-pair-comparison'), mappings: read('canonical-mappings'), canonical: read('canonical-models'), deprecations: read('deprecations'), claims: read('six-claims-recheck'), channels: read('channel-official-meta') }), supplement, removed)
+  const addendum = JSON.parse(fs.readFileSync(new URL('channel-audit/deprecations-addendum-20261109.json', configRoot), 'utf8'))
+  const data = supplementModelAudit(generateModelAudit({ pairs: read('configured-pair-comparison'), mappings: read('canonical-mappings'), canonical: read('canonical-models'), deprecations: read('deprecations'), claims: read('six-claims-recheck'), channels: read('channel-official-meta') }), supplement, removed, addendum)
   const output = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../config/model-audit.generated.json')
   const content = JSON.stringify(data, null, 0) + '\n'
   if (process.argv.includes('--check')) {

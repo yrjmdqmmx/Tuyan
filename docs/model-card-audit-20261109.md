@@ -1,4 +1,63 @@
-# 模型卡第二轮审计（2026-11-09，目录 v43）
+# 模型卡第三轮审计（2026-11-09，目录 v43）
+
+在 `codex/model-card-specs` / `abc09b00` 工作树继续 PR #245；本轮修改未 commit、push、merge 或部署。没有改价格、计费、许可、权限、服务器或密钥，没有真实/付费提供商调用。以下第三轮记录覆盖第二轮的待决项与旧交互说明；第二轮完整证据保留在后面。
+
+## 第三轮 1–6 验收
+
+1. **StepFun 空默认**：继续保持 `stepfun.defaults.image = ''`，本地 5 个阶跃型号均无 image 角色。`WorkspaceModelPanels.jsx` 根据已应用连接的默认值给空角色显示“此连接暂无默认绘图模型”（其他空角色同理）；显式应用和重新打开均有回归，不偷偷补选其他型号。依据为任务提供的 2026-11-09 官方模型列表摘录，未发起网络复核。
+2. **Ant Ling 三个未来下线项**：新增版本化源文件 [`config/channel-audit/deprecations-addendum-20261109.json`](../config/channel-audit/deprecations-addendum-20261109.json)，保留原 URL、记录时间、StepFun 决策和已退休名单。`supplementModelAudit` 由生成器与普通同步共同调用；不依赖 `.audit-input/`。`Ling-2.6-1T`、`Ling-2.6-flash`、`Ring-2.6-1T` 在 antling 保留，停用时间均为 **2026-11-15 00:00 (UTC+8)**，替代 `Ling-3.1-flash`。停用前一毫秒仍可选，等价 UTC **2026-11-14T16:00:00Z** 开始沿用不可用规则；Core 在传输前拒绝，Gateway 仍允许已有绑定原样往返，禁止新增。`Ling-1T`、`Ring-1T`、`Ling-2.5-1T`、`Ring-2.5-1T` 均不在静态目录，未修改。
+3. **生产数字格式**：从生产基线 `f3b8f91d:apps/web/src/lib/modelCardSpecifications.js` 原样恢复 **`formatContextLimit(value, approximate = false)`** 到 `packages/types/src/model-presentation.ts`，通过已有同步生成 Web / 小程序 helper。不是另一个保留三位小数的 `formatModelTokens`。上下文与最大输出使用同一函数：十进制 K/M，百万级保留最多一位小数、千级取整；原生产函数会为舍入值加 `≈`，因此 1,000,000 → `1M tokens`，1,048,576 → `≈ 1M tokens`，262,144 → `≈ 262K tokens`，384,000 → `384K tokens`，393,216 → `≈ 393K tokens`。没有把 393,216 偷换成二进制 384K。Web 数值 `title` 保留精确整数，来源 tooltip 保留完整 URL；小程序点击来源显示精确整数和 URL。输入、输出、上下文、最大输出仍仅四行。
+4. **我的模型提示**：`WorkspaceModelCatalog.jsx` 按当前渠道和厂商过滤已移除记录；只有旧记录的渠道/厂商仍保留筛选入口，不生成旧卡片。文案包含渠道 + 旧 API ID；替代名称用短且渠道内唯一的目录展示名（本目录为 `GLM 5.3`、`MiMo-V2.6-Flash`），不满足条件则回退精确 API ID。多条合并为一个原生 details / summary 通知，复用 `tw-info`。百炼无外来提示，小米两项合并，Fireworks 厂商切换隔离均有交互回归。
+5. **已移除角色槽**：`ModelPicker.jsx` / `WorkspaceModelPicker.jsx` 的粗体值为“请选择”，helper 只有“原型号 X 已不可用，可改选 Y”或“原型号 X 已不可用，请重新选择”；去掉此情形的重复不可用行。同渠道、当前角色/格式可选且连接存在时才显示“改选”，复用 `ModelReplacement.jsx` 的显式确认；取消、打开和刷新不写数据，确认仅改当前角色引用，原库项按既有流程保留并停用。小程序 settings sheet 与 picker 同样处理；确认前重新检查替代项，不把刷新当作替换操作。
+6. **下线徽标与 API ID**：目录、我的模型与选择器共用 `ModelLifecycleBadge`，徽标移到标题旁，复用 `is-unavailable` 的浅色警示色 `#9a6642 / #fbf4eb`。悬停显示日期/替代项，点击或键盘激活打开既有对话框；点击徽标与详情不会选择模型。API ID 与角色仍用原有 meta 区域，移除该行下线徽标；空间不足时角色允许换行，典型 ID 不再为徽标让位截断。`qwen3.5-plus-2026-04-20`、`Ling-2.6-flash` 完整 DOM 和位置已验证；1280 三列 / 390 单列 CSS 规则保留，真实像素验证仍受沙箱限制。
+
+## 第三轮验证结果
+
+| 检查 | 实际命令 / 结果 |
+| --- | --- |
+| 同步 | `node scripts/sync-model-catalog.mjs --check`：1064 static models；no drift |
+| 原始证据复现 | `node scripts/generate-model-audit.mjs .audit-input --check`：1106 evidence pairs、7 notices、7 additions；普通同步独立于此输入 |
+| 生成器 / codec / Gateway 审计 | `node --test scripts/generate-model-audit.test.mjs scripts/pack-model-catalog.test.mjs apps/auth-gateway/tests/model-audit.test.js`：**13/13**（5 + 4 + 4） |
+| Core 定向 | `pnpm --filter @paperbanana/paperbanana-api exec node --import tsx --test tests/core-composition.test.ts tests/model-audit.test.ts tests/model-registry-drift.test.ts`：**205 项，204 通过、1 个既有失败**；模型审计 5/5 |
+| Core 类型 | `pnpm --filter @paperbanana/paperbanana-api check`：通过 |
+| 小程序全套 | `pnpm --filter @paperbanana/miniprogram test`：**126/126**；`check` / `build` 均通过 |
+| 小程序原预算 | 全部源码 **1,565,894** bytes；运行源文件 **1,143,500**；媒体 **189,978**；1.5 MiB 限额 **1,572,864**，源码剩余 **6,970** bytes；未调高预算 |
+| Web 全套 | `pnpm --filter @paperbanana/web test`：**1341 项，1329 通过、12 个已记录基线失败** |
+| Web 受影响交互 | `model-audit-r3`、`model-picker-unavailable`、`provider-catalogs`：**32/32**（其中 R3 新增 8 项）；包括普通卡体仍能选择、徽标/详情不触发选择、过滤、空默认、取消与单槽替换 |
+| Web 构建 | `pnpm --filter @paperbanana/web build`：通过；保留既有大 chunk 提示 |
+| 预览夹具 | 实际执行预览文档 JS，mock localStorage + fake IndexedDB：12 库记录、2 草稿，`mimo-v2.5` / `qwen3.5-plus` 原引用保留 |
+| 计数 | `node scripts/count-model-catalog.mjs .`：成功；完整输出见 [第三轮计数 JSON](model-card-audit-20261109-count-r3.json) |
+
+Core 的 1 项失败仍是到期的 `grok-imagine-image-quality` 导致 xAI WebP 用例提前拒绝。Web 12 项仍集中于第二轮已基线复现的 `inactive-route-ui`、`professional-custom-v381`、`workflow-v400-ui`、`workspace-migration`；无本轮新增失败。未改这些基线失败用例或真实到期规则。
+
+计数摘要（asOf 固定为 2026-11-09；commit 字段是尚未提交修改所在 HEAD）：
+
+```json
+{
+  "staticRegistry": 1064,
+  "mockRegistry": 1061,
+  "catalogVisible": 919,
+  "pickerSelectable": 878,
+  "hiddenDeprecated": 70,
+  "channelUnavailable": 0,
+  "scheduled": 7,
+  "scheduledUiState": 7,
+  "unverified": 667,
+  "additions": 7,
+  "unselectableAdditions": 2,
+  "removedLookup": 68,
+  "removedStillInStatic": [],
+  "previewLibrary": { "storedBefore": 12, "storedAfter": 12, "cards": 9, "removedCardsOmitted": 3 }
+}
+```
+
+源配置只增加三个 notice；静态目录总数与各渠道数均保持第二轮结果，没有删除 Ling。`apps/web/tests/fixtures/model-card-preview.json` 为预览、计数脚本和 Gateway 往返测试的公共夹具；增加小米 pro、百炼长 ID 以及三个 Ant Ling 下线卡。截图路径、精确启动步骤与 fixture 脚本见 [第三轮预览](model-card-audit-20261109-preview.md)。
+
+**环境边界**：本轮再次启动本机 Chrome，退出码 134；本地 127.0.0.1:5173 监听返回 EPERM。已验证 DOM、交互和响应式 CSS，但没有真实桌面/移动截图，也没有微信原生包扫描。不得把这些限制记作通过；生产仍未发布。日志与本地验证脚本保留在忽略目录 `.audit-input/r3/work/`。
+
+---
+
+## 第二轮验收历史（以下行为与计数以当轮为准）
 
 工作树 `Tuyan-wt-model-cards`，分支 `codex/model-card-specs`，PR #245 基线仍为 `codex/hangzhou-production`（本地只读基线 `f3b8f91d`）。本轮覆盖第一轮的隐藏旧型号方案。未 commit、push、merge、部署，未更改价格、计费、权限、密钥或服务器，未执行真实/付费提供商请求。
 

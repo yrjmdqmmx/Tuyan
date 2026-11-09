@@ -25,7 +25,8 @@ const sizeRuntime = fs.readFileSync(path.join(root, 'packages/types/src/image-si
 const lines = [start, '// Source: config/model-catalog-updates.json; run node scripts/sync-model-catalog.mjs.']
 const modelAudit = supplementModelAudit(JSON.parse(fs.readFileSync(path.join(root, 'config/model-audit.generated.json'), 'utf8')),
   JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/model-audit-supplement-20261109.json'), 'utf8')),
-  JSON.parse(fs.readFileSync(path.join(root, 'config/removed-models.json'), 'utf8')))
+  JSON.parse(fs.readFileSync(path.join(root, 'config/removed-models.json'), 'utf8')),
+  JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/deprecations-addendum-20261109.json'), 'utf8')))
 write(path.join(root, 'config/model-audit.generated.json'), JSON.stringify(modelAudit) + '\n')
 const modelAuditData = 'export const MODEL_AUDIT_DATA: any = ' + JSON.stringify(modelAudit) + '\n'
 write(path.join(root, 'packages/api/src/model-audit-data.ts'), '// Generated from config/model-audit.generated.json\n' + modelAuditData)

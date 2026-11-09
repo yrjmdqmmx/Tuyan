@@ -22,7 +22,7 @@ function auditedModelSpecs(channel, id) {
         result.inputModalities.unknownModalities = details.unknownInputModalities;
     return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: (details === null || details === void 0 ? void 0 : details.sourceUrls) || [], note: (details === null || details === void 0 ? void 0 : details.note) || '' };
 }
-// Message-only tombstones are never catalog entries or replacement actions.
+// Tombstones preserve exact identities for messages and explicit replacement choices, never catalog entries.
 function removedModel(channel, id, now = Date.now()) {
     var _a;
     const key = channel + '/' + String(id).trim();
@@ -35,7 +35,7 @@ function removedModel(channel, id, now = Date.now()) {
 }
 function removedModelHint(channel, id, now = Date.now()) {
     const removed = removedModel(channel, id, now);
-    return removed ? `原型号已不可用，请重新选择${removed.replacementApiId ? `，可改选 ${removed.replacementApiId}` : ''}` : '';
+    return removed ? `原型号 ${id} 已不可用${removed.replacementApiId ? `，可改选 ${removed.replacementApiId}` : '，请重新选择'}` : '';
 }
 // Date-only notices take effect at the start of the stated UTC calendar day.
 // Serverless notices apply only to the Fireworks adapter used by this product.
@@ -47,7 +47,8 @@ function auditedModelLifecycle(channel, id, now = Date.now()) {
     if (elapsed)
         return null;
     const replacement = notice.replacement || null;
-    return { ...notice, replacement, state: 'scheduled', label: '将下线', blocked: false, message: `将于${notice.stopDate.slice(0, 10)}下线${replacement ? `；可改选 ${replacement}` : ''}` };
+    const stopLabel = notice.stopDate.includes('T') ? notice.stopDate.replace('T', ' ').replace(':00+08:00', ' (UTC+8)') : notice.stopDate;
+    return { ...notice, replacement, state: 'scheduled', label: '将下线', blocked: false, message: `将于${stopLabel}下线${replacement ? `；可改选 ${replacement}` : ''}` };
 }
 function assertAuditedModelAvailable(channel, id, now = Date.now()) {
     const removed = removedModel(channel, id, now);

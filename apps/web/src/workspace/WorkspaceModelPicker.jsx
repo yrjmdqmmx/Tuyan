@@ -1,5 +1,6 @@
 import { removedModel } from '../lib/modelAudit.js';
 import { useMemo } from 'react';
+import ModelReplacement from './ModelReplacement.jsx';
 import ModelPicker from '../components/ModelPicker.jsx';
 import { ROLE_NAMES, modelOption, selectedModelReference, libraryModelMissingFromCatalog } from './workspaceModels.js';
 
@@ -37,9 +38,11 @@ export default function WorkspaceModelPicker({ models, role, path, editing, curr
     return { providers };
   }, [models.library, models.registry, models.registryStatus, models.summary?.tokenDance, role, path, editing, current?.libraryModelId]);
 
-  const selectedProvider = models.library.connections.find(c => c.id === models.library.models.find(m => m.id === current?.libraryModelId)?.connectionId)?.provider;
+  const currentEntry = models.library.models.find(m => m.id === current?.libraryModelId) || (current?.connectionId && models.library.connections.some(c => c.id === current.connectionId) ? { id: current.libraryModelId, connectionId: current.connectionId, modelId: current.modelId } : null);
+  const selectedProvider = models.library.connections.find(c => c.id === currentEntry?.connectionId)?.provider;
   return <ModelPicker label={ROLE_NAMES[role]} role={role} registry={registry}
     route={current ? { accessProvider: selectedProvider, ...current } : { accessProvider: '', modelId: '' }} outputFormat={path} operation={editing ? 'editing' : 'generation'}
+    removedAction={current && <ModelReplacement provider={selectedProvider || current.accessProvider} modelId={current.modelId} models={models} entry={currentEntry} role={role} path={path} editing={editing} onReplace={onChange}/>}
     savedSelection={{ id: current?.libraryModelId, onChange }}
     visionMode={role === 'vision' ? (current ? 'assist' : 'none') : undefined}
     onVisionModeChange={role === 'vision' ? mode => { if (mode === 'none') onChange(null); } : undefined}

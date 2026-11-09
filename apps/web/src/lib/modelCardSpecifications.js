@@ -1,4 +1,5 @@
 import { auditedModelSpecs, auditedModelLifecycle } from './modelAudit.js'
+import { formatContextLimit } from './modelPresentation.js'
 import reviewedModels from '../data/model-card-specifications.json'
 
 const reviewedById = new Map()
@@ -35,7 +36,7 @@ export function modelCardSpecifications(provider, model) {
   const fields = audit.fields
   const labels = { unknown: '未知', unsupported: '不支持', 'not-applicable': '不适用' }
   const text = fact => fact.state === 'known'
-    ? Array.isArray(fact.value) ? formatModalities(fact.value) : `${fact.value.toLocaleString('en-US')} tokens`
+    ? Array.isArray(fact.value) ? formatModalities(fact.value) : `${formatContextLimit(fact.value)} tokens`
     : labels[fact.state]
   const image = model.roles?.includes('image') || fields.outputModalities.value?.some?.(x => x === 'image' || x === 'video')
   const scope = fact => fact.provenance === 'vendor' ? '原厂' : fact.provenance === 'channel' ? '渠道' : ''
@@ -46,6 +47,8 @@ export function modelCardSpecifications(provider, model) {
     inputFact: fields.inputModalities, outputFact: fields.outputModalities,
     inputScope: scope(fields.inputModalities), outputScope: scope(fields.outputModalities),
     contextScope: scope(fields.totalContextTokens), maxOutputScope: scope(fields.maxOutputTokens),
+    contextExact: !image && fields.totalContextTokens.state === 'known' ? `${fields.totalContextTokens.value.toLocaleString('en-US')} tokens` : '',
+    maxOutputExact: !image && fields.maxOutputTokens.state === 'known' ? `${fields.maxOutputTokens.value.toLocaleString('en-US')} tokens` : '',
     note: audit.note,
     vendorSources: Object.values(fields).filter(fact => fact.provenance === 'vendor').map(fact => fact.sourceUrl),
     sources: safeOfficialSources([auditedModelLifecycle(provider, model.id)?.sourceUrl, ...audit.sourceUrls,...Object.values(fields).map(fact => fact.sourceUrl), audit.sourceUrl,

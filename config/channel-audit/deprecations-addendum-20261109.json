@@ -1,0 +1,19 @@
+{
+  "recordedAt": "2026-11-09T13:30:00+08:00",
+  "note": "Addendum to verify-2026-11-09-r2; earlier snapshots are not modified.",
+  "scheduledDeprecations": [
+    {"channel": "antling", "apiModelId": "Ling-2.6-1T", "stopDate": "2026-11-15T00:00:00+08:00", "replacement": "Ling-3.1-flash", "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/", "scheduled": true, "inTuyanCatalog": true},
+    {"channel": "antling", "apiModelId": "Ling-2.6-flash", "stopDate": "2026-11-15T00:00:00+08:00", "replacement": "Ling-3.1-flash", "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/", "scheduled": true, "inTuyanCatalog": true},
+    {"channel": "antling", "apiModelId": "Ring-2.6-1T", "stopDate": "2026-11-15T00:00:00+08:00", "replacement": "Ling-3.1-flash", "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/", "scheduled": true, "inTuyanCatalog": true}
+  ],
+  "alreadyRetiredOnOfficialPage": [
+    {"channel": "antling", "apiModelId": "Ling-1T", "stopDate": "2026-06-15T00:00:00+08:00", "replacement": "Ling-3.1-flash"},
+    {"channel": "antling", "apiModelId": "Ring-1T", "stopDate": "2026-06-15T00:00:00+08:00", "replacement": "Ling-3.1-flash"},
+    {"channel": "antling", "apiModelId": "Ling-2.5-1T", "stopDate": "2026-09-30T00:00:00+08:00", "replacement": "Ling-3.1-flash"},
+    {"channel": "antling", "apiModelId": "Ring-2.5-1T", "stopDate": "2026-09-30T00:00:00+08:00", "replacement": "Ling-3.1-flash"}
+  ],
+  "stepfunImageDefault": {
+    "checkedUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+    "finding": "Official StepFun model list (2026-11-09) lists text/multimodal-understanding and audio models (step-5-preview, step-3.7-flash, step-3.5-flash, step-3.5-flash-2603, step-1o-turbo-vision, StepAudio/ASR/TTS) and no image-generation model; Tuyan's StepFun catalog has no image-role model after removing step-2x-large / step-image-edit-2. Decision: keep defaults.image empty."
+  }
+}

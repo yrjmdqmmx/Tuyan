@@ -1,0 +1,240 @@
+{
+  "root": "/Users/apple/agent-tools/tuyan-dev/Tuyan-wt-model-cards",
+  "commit": "abc09b00",
+  "asOf": "2026-11-09",
+  "counts": {
+    "staticRegistry": 1064,
+    "mockRegistry": 1061,
+    "catalogVisible": 919,
+    "pickerSelectable": 878
+  },
+  "perChannel": {
+    "anthropic": {
+      "static": 14,
+      "mock": 14,
+      "catalog": 14,
+      "picker": 14
+    },
+    "antling": {
+      "static": 8,
+      "mock": 8,
+      "catalog": 8,
+      "picker": 8
+    },
+    "ark": {
+      "static": 36,
+      "mock": 36,
+      "catalog": 22,
+      "picker": 22
+    },
+    "bailian": {
+      "static": 126,
+      "mock": 126,
+      "catalog": 119,
+      "picker": 117
+    },
+    "bfl": {
+      "static": 14,
+      "mock": 14,
+      "catalog": 14,
+      "picker": 14
+    },
+    "deepseek": {
+      "static": 4,
+      "mock": 4,
+      "catalog": 2,
+      "picker": 2
+    },
+    "fal": {
+      "static": 49,
+      "mock": 48,
+      "catalog": 48,
+      "picker": 44
+    },
+    "fireworks": {
+      "static": 20,
+      "mock": 20,
+      "catalog": 20,
+      "picker": 20
+    },
+    "gemini": {
+      "static": 17,
+      "mock": 17,
+      "catalog": 17,
+      "picker": 17
+    },
+    "ideogram": {
+      "static": 14,
+      "mock": 14,
+      "catalog": 14,
+      "picker": 13
+    },
+    "iflytek": {
+      "static": 34,
+      "mock": 34,
+      "catalog": 34,
+      "picker": 34
+    },
+    "kimi": {
+      "static": 6,
+      "mock": 6,
+      "catalog": 6,
+      "picker": 6
+    },
+    "longcat": {
+      "static": 3,
+      "mock": 3,
+      "catalog": 3,
+      "picker": 3
+    },
+    "minimax": {
+      "static": 11,
+      "mock": 11,
+      "catalog": 11,
+      "picker": 11
+    },
+    "mistral": {
+      "static": 18,
+      "mock": 18,
+      "catalog": 16,
+      "picker": 16
+    },
+    "novita": {
+      "static": 1,
+      "mock": 1,
+      "catalog": 1,
+      "picker": 1
+    },
+    "openai": {
+      "static": 71,
+      "mock": 71,
+      "catalog": 51,
+      "picker": 49
+    },
+    "qianfan": {
+      "static": 37,
+      "mock": 37,
+      "catalog": 30,
+      "picker": 29
+    },
+    "recraft": {
+      "static": 17,
+      "mock": 17,
+      "catalog": 17,
+      "picker": 17
+    },
+    "replicate": {
+      "static": 109,
+      "mock": 108,
+      "catalog": 108,
+      "picker": 99
+    },
+    "runware": {
+      "static": 148,
+      "mock": 148,
+      "catalog": 144,
+      "picker": 124
+    },
+    "sensenova": {
+      "static": 8,
+      "mock": 8,
+      "catalog": 8,
+      "picker": 8
+    },
+    "siliconflow": {
+      "static": 68,
+      "mock": 68,
+      "catalog": 63,
+      "picker": 61
+    },
+    "stability": {
+      "static": 6,
+      "mock": 5,
+      "catalog": 5,
+      "picker": 5
+    },
+    "stepfun": {
+      "static": 5,
+      "mock": 5,
+      "catalog": 5,
+      "picker": 5
+    },
+    "together": {
+      "static": 53,
+      "mock": 53,
+      "catalog": 52,
+      "picker": 52
+    },
+    "tokendance": {
+      "static": 74,
+      "mock": 74,
+      "catalog": 0,
+      "picker": 0
+    },
+    "tokenhub": {
+      "static": 50,
+      "mock": 50,
+      "catalog": 45,
+      "picker": 45
+    },
+    "xai": {
+      "static": 12,
+      "mock": 12,
+      "catalog": 11,
+      "picker": 11
+    },
+    "xiaomi": {
+      "static": 3,
+      "mock": 3,
+      "catalog": 3,
+      "picker": 3
+    },
+    "zhipu": {
+      "static": 28,
+      "mock": 28,
+      "catalog": 28,
+      "picker": 28
+    }
+  },
+  "hiddenDeprecated": 70,
+  "channelUnavailable": 0,
+  "scheduled": 7,
+  "scheduledUiState": 7,
+  "unverified": 667,
+  "additions": 7,
+  "unselectableAdditions": 2,
+  "removedStillInStatic": [],
+  "removedLookup": 68,
+  "previewLibrary": {
+    "storedBefore": 12,
+    "storedAfter": 12,
+    "cards": 9,
+    "removedCardsOmitted": 3
+  },
+  "mockedCatalogRequests": [
+    "https://tokendance.space/gateway/v1/models",
+    "https://openrouter.ai/api/v1/models",
+    "https://openrouter.ai/api/v1/images/models",
+    "https://api.fal.ai/v1/models?limit=10&expand=openapi-3.0",
+    "https://runware.ai/docs/models/index.json",
+    "https://api.novita.ai/v3/openai/models"
+  ],
+  "scopeDeltaBasis": {
+    "staticRegistry": {
+      "removedPresent": 0,
+      "addedPresent": 7
+    },
+    "mockRegistry": {
+      "removedPresent": 0,
+      "addedPresent": 7
+    },
+    "catalogVisible": {
+      "removedPresent": 0,
+      "addedPresent": 7
+    },
+    "pickerSelectable": {
+      "removedPresent": 0,
+      "addedPresent": 5
+    }
+  }
+}

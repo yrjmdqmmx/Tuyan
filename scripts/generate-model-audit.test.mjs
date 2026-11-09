@@ -38,14 +38,14 @@ test('null, unsupported and N/A stay distinct; invalid numbers and request defau
   assert.deepEqual(data.facts[data.rows['openai/gpt-image-2.6-flare'][2]].slice(0,2),[null,'not-applicable'])
   assert.deepEqual(generateModelAudit(input), data)
 })
-test('committed snapshot has only the seven permitted additions and four scheduled notices plus 68 message-only removals', () => {
+test('committed snapshot has only the seven permitted additions and seven scheduled notices plus 68 message-only removals', () => {
   const data = JSON.parse(fs.readFileSync(new URL('../config/model-audit.generated.json',import.meta.url),'utf8'))
   assert.equal(data.verifiedAt,'2026-11-09')
   assert.equal(data.additions.length,7)
-  assert.equal(Object.keys(data.notices).length,4)
+  assert.equal(Object.keys(data.notices).length,7)
   const counts = {retired:0,scheduled:0,unavailable:0}
   for (const notice of Object.values(data.notices)) counts[Date.parse(notice.stopDate)>Date.parse('2026-11-09')?'scheduled':notice.scope==='full'?'retired':'unavailable']++
-  assert.deepEqual(counts,{retired:0,scheduled:4,unavailable:0})
+  assert.deepEqual(counts,{retired:0,scheduled:7,unavailable:0})
   assert.equal(Object.keys(data.removed).length,68)
   for (const key of Object.keys(data.removed)) assert.equal(data.rows[key],undefined)
   assert.ok(!data.additions.some(row=>row.id==='glm-5.3-flashx-legal'))
@@ -81,4 +81,21 @@ test('Ling supplementary evidence is deterministic, exact and does not infer uns
     assert.ok(data.details['antling/'+id].sourceUrls.every(url=>url.startsWith('https://developer.ant-ling.com/')))
     assert.doesNotMatch(data.details['antling/'+id].note,/共享|shared/i)
   }
+})
+
+test('versioned Ant Ling deprecations regenerate deterministically without private audit input', async () => {
+  const { supplementModelAudit } = await import('./lib/model-audit-supplement.mjs')
+  const read = name => JSON.parse(fs.readFileSync(new URL('../config/' + name, import.meta.url), 'utf8'))
+  const data = read('model-audit.generated.json'), supplement = read('channel-audit/model-audit-supplement-20261109.json'), removed = read('removed-models.json'), addendum = read('channel-audit/deprecations-addendum-20261109.json')
+  const original = structuredClone(data)
+  for (const notice of addendum.scheduledDeprecations) delete original.notices[notice.channel + '/' + notice.apiModelId]
+  assert.deepEqual(supplementModelAudit(original, supplement, removed, addendum), data)
+  assert.deepEqual(supplementModelAudit(data, supplement, removed, addendum), data)
+  for (const notice of addendum.scheduledDeprecations) {
+    assert.equal(data.notices[notice.channel + '/' + notice.apiModelId].stopDate, '2026-11-15T00:00:00+08:00')
+    assert.equal(data.notices[notice.channel + '/' + notice.apiModelId].replacement, 'Ling-3.1-flash')
+    assert.equal(removed[notice.channel + '/' + notice.apiModelId], undefined)
+  }
+  const catalog = read('model-catalog-updates.json')
+  for (const old of addendum.alreadyRetiredOnOfficialPage) assert.equal(catalog.providers.antling.some(m => m.id === old.apiModelId), false)
 })

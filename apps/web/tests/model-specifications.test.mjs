@@ -71,12 +71,12 @@ test('official cards separate context and output with verification and source li
 test('exact dates preserve different Seed 2.1 Pro context windows',()=>{
   assert.equal(modelCardSpecifications('ark',{id:'doubao-seed-2-1-pro-260628'}).context,'未知')
   assert.equal(modelCardSpecifications('ark',{id:'doubao-seed-2-1-pro-260915'}).context,'未知')
-  assert.equal(modelCardSpecifications('tokendance',{id:'seed-2.1-pro'}).context,'256,000 tokens')
+  assert.equal(modelCardSpecifications('tokendance',{id:'seed-2.1-pro'}).context,'256K tokens')
 })
 
 test('missing native window can use this exact channel with distinct provenance',()=>{
   const data=modelCardSpecifications('tokendance',{id:'seed-2.1-pro',specifications:{version:1,contextWindowTokens:262144,sourceUrls:['https://tokendance.space/models/seed-2.1-pro']}})
-  assert.equal(data.inputScope,'');assert.equal(data.context,'256,000 tokens');assert.equal(data.contextScope,'渠道')
+  assert.equal(data.inputScope,'');assert.equal(data.context,'256K tokens');assert.equal(data.contextScope,'渠道')
   assert.ok(data.sources.includes('https://tokendance.space/gateway/v1/models'))
 })
 
@@ -105,14 +105,14 @@ test('official alias migration never changes the same ID at another provider',()
   const model={id:'deepseek-v4-flash-vision-exp',label:'DeepSeek V4 Flash Vision Exp'}
   assert.equal(modelCardName('deepseek',model),'DeepSeek V4.1 Flash 1017')
   assert.equal(modelCardName('tokendance',model),model.label)
-  assert.equal(modelCardSpecifications('deepseek',model).context,'1,000,000 tokens')
-  assert.equal(modelCardSpecifications('tokendance',model).context,'1,000,000 tokens')
+  assert.equal(modelCardSpecifications('deepseek',model).context,'1M tokens')
+  assert.equal(modelCardSpecifications('tokendance',model).context,'1M tokens')
   assert.equal(model.id,'deepseek-v4-flash-vision-exp')
 })
 
 test('service-specific quantization and Prime specs do not leak to unrelated providers',()=>{
   const model={id:'glm-5.2-fast-preview'}
-  assert.equal(modelCardSpecifications('bailian',model).context,'1,048,576 tokens')
+  assert.equal(modelCardSpecifications('bailian',model).context,'≈ 1M tokens')
   assert.equal(modelCardSpecifications('bailian',model).contextScope,'渠道')
   assert.equal(modelCardSpecifications('custom',model).context,'未知')
 })
@@ -223,7 +223,7 @@ test('verified alias display keeps the stored request identity',()=>{
 
 test('context and max output retain independent exact integers and per-value provenance',()=>{
   const data=modelCardSpecifications('tokendance',{id:'deepseek-v4-pro'})
-  assert.equal(data.context,'1,048,576 tokens');assert.equal(data.maxOutput,'393,216 tokens')
+  assert.equal(data.context,'≈ 1M tokens');assert.equal(data.maxOutput,'≈ 393K tokens')
   assert.equal(data.contextScope,'渠道');assert.equal(data.maxOutputScope,'原厂')
   const {container}=render(React.createElement(ModelSpecifications,{provider:'tokendance',model:{id:'deepseek-v4-pro'}}))
   assert.match(screen.getByRole('link').title,/源自原厂/);assert.match(screen.getByRole('link').title,/2026-11-09/)

@@ -1,4 +1,5 @@
 import test from 'node:test';
+import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
 function memoryDb() {
@@ -36,13 +37,24 @@ test('serverless removal is exact-channel scoped and scheduled models remain add
   assert.equal(row.models[0].modelId,'qwen3.5-plus');
 });
 
-test('the seven-entry preview library round-trips unchanged, including both removed IDs',async()=>{
+test('the twelve-entry preview library round-trips unchanged, including all three removed IDs',async()=>{
   const db=memoryDb(),store=createModelLibraryStore({db,secret:'isolated-fixture-only'});
   const channels=['xiaomi','fireworks','bailian','antling','openai'];
   const connections=channels.map(provider=>({id:provider,provider,label:provider,scope:'browser'}));
-  const pairs=[['xiaomi','mimo-v2.5'],['fireworks','accounts/fireworks/models/glm-5p2'],['bailian','qwen3.5-plus'],['antling','Ling-3.1-flash'],['antling','Ling-3.2-flash'],['openai','gpt-6.1-sol'],['antling','Ling-3.0-tiny']];
+  const pairs=JSON.parse(fs.readFileSync(new URL('../../web/tests/fixtures/model-card-preview.json',import.meta.url),'utf8'));
   await db.collection().insertOne({_id:createHash('sha256').update('owner').digest('hex'),revision:1,...cleanModelLibrary({connections,models:pairs.map(([connectionId,modelId],index)=>({id:'m'+index,connectionId,modelId}))})});
   const before=await store.get('owner'),after=await store.put('owner',before);
-  assert.equal(before.models.length,7);assert.equal(after.models.length,7);
+  assert.equal(before.models.length,12);assert.equal(after.models.length,12);
   assert.deepEqual(after.models,before.models);assert.deepEqual(after.connections,before.connections);
+});
+
+test('Ant Ling saved bindings round-trip after the exact deadline while new ones are rejected',async t=>{
+  t.mock.method(Date,'now',()=>Date.parse('2026-11-14T15:59:59.999Z'));
+  const store=createModelLibraryStore({db:memoryDb(),secret:'isolated-test-only'});
+  const input={revision:0,connections:[{id:'c',provider:'antling',scope:'browser',label:'Local'}],models:['Ling-2.6-1T','Ling-2.6-flash','Ring-2.6-1T'].map((modelId,i)=>({id:'m'+i,connectionId:'c',modelId}))};
+  const before=await store.put('owner',input);
+  Date.now.mock.mockImplementation(()=>Date.parse('2026-11-14T16:00:00Z'));
+  const retained=await store.put('owner',before);
+  assert.deepEqual(retained.models,before.models);
+  for(const model of before.models) await assert.rejects(store.put('owner',{...retained,models:[...retained.models,{...model,id:'new'}]}),e=>e.businessCode==='MODEL_UNAVAILABLE'&&e.replacement==='Ling-3.1-flash');
 });

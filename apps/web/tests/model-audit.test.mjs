@@ -30,9 +30,10 @@ test('all 61 retired and seven serverless identities are hidden from catalog, re
 });
 test('retired saved selection remains on trigger but cannot be chosen for new tasks or presets',()=>{
   const models=setup(),before=structuredClone(models.library),entry=models.library.models[0];
-  assert.match(modelOption(entry,models.library,registry,'main','svg',false).reason,/原型号已不可用，请重新选择/);
+  assert.match(modelOption(entry,models.library,registry,'main','svg',false).reason,/原型号 .* 已不可用/);
   render(React.createElement(WorkspaceModelPicker,{models,role:'main',path:'svg',current:{libraryModelId:'old',modelId:entry.modelId,accessProvider:'xiaomi'},onChange:()=>assert.fail('No automatic switch')}));
-  assert.match(screen.getByRole('button',{name:'主模型'}).textContent,/原型号已不可用，请重新选择，可改选 mimo-v2.6-flash/);
+  assert.equal(screen.getByRole('button',{name:'主模型'}).textContent,'请选择');
+  assert.match(screen.getByRole('status').textContent,/原型号 mimo-v2.5 已不可用，可改选 mimo-v2.6-flash/);
   fireEvent.click(screen.getByRole('button',{name:'主模型'}));
   assert.equal(screen.queryByRole('button',{name:/选择.*mimo-v2.5/}),null);
   assert.deepEqual(models.library,before);
@@ -55,7 +56,7 @@ test('replacement requires confirmation, retains original, and only switches the
 test('saved presets still show lifecycle and replacement when their library binding is absent',t=>{
   t.mock.method(Date,'now',()=>Date.parse('2026-11-09'));
   const models=setup();models.library.models=[];
-  for(const [provider,modelId,label,replacement] of [['xiaomi','mimo-v2.5','原型号已不可用，请重新选择','mimo-v2.6-flash'],['bailian','qwen3.5-plus','将于2027-01-19下线','qwen3.8-flash']]){
+  for(const [provider,modelId,label,replacement] of [['xiaomi','mimo-v2.5','原型号 mimo-v2.5 已不可用','mimo-v2.6-flash'],['bailian','qwen3.5-plus','将于2027-01-19下线','qwen3.8-flash']]){
     const draft={mode:'simple',settings:{simple:{models:{main:{libraryModelId:'missing',accessProvider:provider,modelId}}}}},before=structuredClone(draft);
     const view=render(React.createElement(WorkspaceModelConfig,{models,draft,path:'svg',onChange:()=>assert.fail('No automatic preset rewrite')}));
     if(provider==='xiaomi') assert.ok(screen.getByText(text=>text.includes(label)&&text.includes(replacement)));
@@ -105,10 +106,10 @@ test('Ling evidence preserves partial uncertainty and compact sources expose pro
   render(React.createElement(ModelSpecifications,{provider:'custom',model:{id:'unknown'}}));
   assert.equal(screen.getAllByText('模态未知').length,2);
 });
-test('removed models never offer the old replacement confirmation flow',()=>{
+test('removed models expose an explicit replacement action without changing the saved binding',()=>{
   const models=setup();
   render(React.createElement(ModelReplacement,{provider:'xiaomi',modelId:'mimo-v2.5',models,entry:models.library.models[0]}));
-  assert.equal(screen.queryByRole('button'),null);
+  assert.ok(screen.getByRole('button',{name:'改选'}));
 });
 
 test('all Fireworks replacement hints match selectable exact-channel IDs and removed StepFun default stays empty',()=>{

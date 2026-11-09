@@ -1,11 +1,17 @@
 // Offline, exact-pair evidence overrides. No name inference or provider requests.
-export function supplementModelAudit(snapshot, supplement, removed) {
+export function supplementModelAudit(snapshot, supplement, removed, addendum = { scheduledDeprecations: [] }) {
   const data = structuredClone(snapshot)
   const intern = (list, value) => {
     const index = list.findIndex(item => JSON.stringify(item) === JSON.stringify(value))
     return index < 0 ? list.push(value) - 1 : index
   }
   for (const key of Object.keys(removed)) { delete data.rows[key]; delete data.notices[key] }
+  for (const notice of addendum.scheduledDeprecations) {
+    const key = notice.channel + '/' + notice.apiModelId
+    const url = new URL(notice.sourceUrl)
+    if (!data.rows[key] || removed[key] || !Number.isFinite(Date.parse(notice.stopDate)) || url.protocol !== 'https:' || url.username || url.password) throw new Error(`Invalid scheduled notice: ${key}`)
+    data.notices[key] = { stopDate: notice.stopDate, scope: 'full', replacement: notice.replacement, sourceUrl: notice.sourceUrl }
+  }
   data.details = {}
   for (const [key, model] of Object.entries(supplement.models)) {
     data.rows[key] = [...data.fields.map(field => intern(data.facts, [model[field], model[field] === null ? 'unknown' : 'known', 'channel', intern(data.sources, model.fieldSources[field])])), 0, intern(data.sources, model.sourceUrls[0])]

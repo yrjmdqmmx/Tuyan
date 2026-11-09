@@ -48,8 +48,8 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
     <dl className="model-specs" aria-label={t('官方文档规格')}>
       <div><dt><ArrowDownToLine size={14} aria-hidden="true" />{t('输入')}</dt><dd><ModalityIcons value={data.input} fact={data.inputFact} direction="输入模态" /></dd></div>
       <div><dt><ArrowUpFromLine size={14} aria-hidden="true" />{t('输出')}</dt><dd><ModalityIcons value={data.output} fact={data.outputFact} direction="输出模态" /></dd></div>
-      <div><dt><ScanText size={14} aria-hidden="true" />{t('上下文窗口')}</dt><dd className={data.context === '未知' ? 'model-spec-unknown' : undefined}>{t(data.context)}</dd></div>
-      <div><dt><ScanText size={14} aria-hidden="true" />{t('最大输出')}</dt><dd className={data.maxOutput === '未知' ? 'model-spec-unknown' : undefined}>{t(data.maxOutput)}</dd></div>
+      <div><dt><ScanText size={14} aria-hidden="true" />{t('上下文窗口')}</dt><dd title={data.contextExact || undefined} className={data.context === '未知' ? 'model-spec-unknown' : undefined}>{t(data.context)}</dd></div>
+      <div><dt><ScanText size={14} aria-hidden="true" />{t('最大输出')}</dt><dd title={data.maxOutputExact || undefined} className={data.maxOutput === '未知' ? 'model-spec-unknown' : undefined}>{t(data.maxOutput)}</dd></div>
     </dl>
     {footerActions ? <div className="model-spec-footer">{sources}{footerActions}</div> : sources}
     {showSources && <WorkspaceDialog title={t('官方文档规格')} onClose={() => setShowSources(false)}>
@@ -57,4 +57,15 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
       {data.sources.map(source => <p key={source}><a href={source} target="_blank" rel="noopener noreferrer">{t(sourceName(source))} · {new URL(source).hostname}</a></p>)}
     </WorkspaceDialog>}
   </div>
+}
+
+export function ModelLifecycleBadge({ lifecycle }) {
+  const [open, setOpen] = useState(false)
+  if (lifecycle?.state !== 'scheduled') return null
+  return <>
+    <span className="tw-catalog-tags"><span className="is-unavailable" role="button" tabIndex={0} title={lifecycle.message} aria-label={`将下线：${lifecycle.message}`} onClick={() => setOpen(true)} onKeyDown={event => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setOpen(true) }
+    }}>将下线</span></span>
+    {open && <div onClick={event => event.stopPropagation()}><WorkspaceDialog title="下线公告" onClose={() => setOpen(false)}><p>{lifecycle.message}</p><a href={lifecycle.sourceUrl} target="_blank" rel="noopener noreferrer">{lifecycle.sourceUrl}</a></WorkspaceDialog></div>}
+  </>
 }
