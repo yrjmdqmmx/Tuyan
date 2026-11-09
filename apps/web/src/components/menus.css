@@ -1,0 +1,53 @@
+/* One menu surface and one focus edge, independent of page/theme CSS. */
+@layer control-menus {
+  :root { --menu-line:#dce3dc; --menu-ink:#40564a; --menu-active:#edf2ec; --menu-shadow:0 5px 16px #23392e12; }
+  .ui-select {
+    position:relative !important; display:inline-flex !important; align-items:center !important;
+    justify-content:flex-start !important; text-align:left !important; box-sizing:border-box;
+    padding-inline-end:32px !important; background-image:none !important;
+    min-width:0; max-width:100%; cursor:pointer; font:inherit; font-weight:400;
+    border:1px solid var(--menu-line); border-radius:8px; padding:8px 12px; background:#fff; color:var(--menu-ink);
+  }
+  .ui-select-value { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ui-select > .ui-select-arrow { position:absolute !important; right:11px; flex:none; pointer-events:none; }
+  .ui-select:disabled { cursor:not-allowed; opacity:.55; }
+  .ui-select[aria-expanded="true"] { border-color:var(--control-focus,#82918b) !important; }
+  .ui-select-menu, :is(.tw-resource-popover,.tw-account-popover,.tw-task-menu-popover,.tw-channel-options) {
+    border:1px solid var(--menu-line) !important; border-radius:10px !important;
+    box-shadow:var(--menu-shadow) !important; background:#fff !important;
+    overscroll-behavior:contain;
+  }
+  .ui-select-menu, .tw-task-menu-popover {
+    position:fixed; z-index:10000; box-sizing:border-box; margin:0; padding:4px; inset:auto;
+    overflow:auto; overscroll-behavior:contain; color:var(--menu-ink);
+    font:13px/1.5 Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    text-align:left; max-width:calc(100vw - 16px);
+  }
+  .tw-task-menu-trigger { flex-shrink:0; padding:8px !important; border-radius:6px; }
+  .tw-task-menu-popover { min-width:144px; }
+  .tw-task-menu-popover > button { display:flex; align-items:center; gap:8px; width:100%; min-height:34px; border:0; background:transparent; color:inherit; padding:7px 9px; font:inherit; text-align:left; cursor:pointer; }
+  .tw-channel-options { margin:0; inset:auto; box-sizing:border-box; }
+  .ui-select-menu::backdrop, .tw-task-menu-popover::backdrop, .tw-channel-options::backdrop { background:transparent; }
+  .ui-menu-option {
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    min-height:34px; box-sizing:border-box; padding:7px 9px; border-radius:6px; cursor:pointer;
+  }
+  .ui-menu-option > span { overflow-wrap:anywhere; min-width:0; }
+  .ui-menu-option > svg { flex:none; }
+  .ui-menu-option[aria-selected="true"] { color:#31594a; }
+  .ui-menu-option.is-active { background:var(--menu-active); color:#31594a; }
+  .ui-menu-option[aria-disabled="true"] { color:#89928d; cursor:not-allowed; }
+  .ui-menu-group { padding:9px 9px 4px; color:#78847d; font-size:11px; }
+  :is(.tw-resource-popover,.tw-account-popover,.tw-task-menu-popover) :is(button,a[role="menuitem"]):hover {
+    background:var(--menu-active) !important;
+  }
+  :is(.tw-resource-popover,.tw-account-popover,.tw-task-menu-popover) :is(button,a[role="menuitem"]) {
+    border-radius:6px !important;
+  }
+  @media(max-width:767px) { .ui-menu-option { min-height:40px; } }
+  @media(forced-colors:active) {
+    .ui-select-menu { border-color:CanvasText !important; background:Canvas !important; color:CanvasText; }
+    .ui-menu-option.is-active { outline:1px solid Highlight; outline-offset:-1px; }
+    .ui-menu-option[aria-disabled="true"] { color:GrayText; }
+  }
+}

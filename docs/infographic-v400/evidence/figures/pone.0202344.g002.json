@@ -1,0 +1,51 @@
+{
+  "id": "pone.0202344.g002",
+  "paper": "pone.0202344",
+  "figure": {
+    "id": "pone.0202344.g002",
+    "label": "Fig 2",
+    "caption": "Example calibration curves for mortality at five years.\nCurves show calibration of (A) model 5 (poorly-calibrated) and (B) model 9 (well-calibrated) from Fig 1. Each semi-transparent dot represents a patient in a random sample of 2000 from the test set, the x-axis shows their risk of death at five years as predicted by the relevant model, and the y-axis shows whether each patient was in fact dead or alive at that time. The curves are smoothed calibration curves derived from these points, and the area between the calibration curve and the black line of perfect calibration is a in the calibration score, 1 − a.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0202344.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0202344.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Example calibration curves for mortality at five years.</title>\n<p>Curves show calibration of (A) model 5 (poorly-calibrated) and (B) model 9 (well-calibrated) from <xref ref-type=\"fig\" rid=\"pone.0202344.g001\">Fig 1</xref>. Each semi-transparent dot represents a patient in a random sample of 2000 from the test set, the <italic>x</italic>-axis shows their risk of death at five years as predicted by the relevant model, and the <italic>y</italic>-axis shows whether each patient was in fact dead or alive at that time. The curves are smoothed calibration curves derived from these points, and the area between the calibration curve and the black line of perfect calibration is <italic>a</italic> in the calibration score, 1 − <italic>a</italic>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0202344.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0202344.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0202344",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0202344",
+    "title": "Machine learning models in electronic health records can outperform conventional survival models for predicting patient mortality in coronary artery disease",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Andrew J. Steele",
+      "Spiros C. Denaxas",
+      "Anoop D. Shah",
+      "Harry Hemingway",
+      "Nicholas M. Luscombe"
+    ],
+    "year": "2018",
+    "license": "2018\nSteele et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0202344.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0202344.g002.png",
+      "bytes": 143733,
+      "sha256": "eb33795f7eb6037dd438e2cd674190cab77bcd5e7af8bbd3c89d42f42f886167"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0202344.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0202344.g002.tif",
+      "bytes": 204300,
+      "sha256": "6fae35c63f08e0ecdbe849bf485dae78ec9e12b0783e81d8b902f178e816f85f"
+    }
+  }
+}

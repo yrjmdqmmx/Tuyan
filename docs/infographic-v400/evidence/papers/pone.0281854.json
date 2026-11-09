@@ -1,0 +1,121 @@
+{
+  "doi": "10.1371/journal.pone.0281854",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0281854",
+  "title": "Passion fruit plants alter the soil microbial community with continuous cropping and improve plant disease resistance by recruiting beneficial microorganisms",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Ye Wang",
+    "Yao Teng",
+    "Jianli Zhang",
+    "Zixiong Zhang",
+    "Chen Wang",
+    "Xiukun Wu",
+    "Xiuqin Long"
+  ],
+  "year": "2023",
+  "license": "2023\nWang et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0281854.g001",
+      "label": "Fig 1",
+      "caption": "Annotation analysis of microbial composition in different soil and rhizosphere samples.\n(a, b, c) and (d, e, f) are the annotation analysis results of fungal and bacterial taxa respectively. (a, d) The number of ASVs in each sample that can be annotated to domains, phyla, classes, orders, families, genera and species. (b, e) The number of taxa contained in different samples at each classification level obtained from the flattened statistical data. (c, f) The abundance of the top 10 taxa at the phylum level. All data shown in the figure are averaged within the group.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Annotation analysis of microbial composition in different soil and rhizosphere samples.</title>\n<p>(a, b, c) and (d, e, f) are the annotation analysis results of fungal and bacterial taxa respectively. (a, d) The number of ASVs in each sample that can be annotated to domains, phyla, classes, orders, families, genera and species. (b, e) The number of taxa contained in different samples at each classification level obtained from the flattened statistical data. (c, f) The abundance of the top 10 taxa at the phylum level. All data shown in the figure are averaged within the group.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0281854.g002",
+      "label": "Fig 2",
+      "caption": "Circle packing of different soil and rhizosphere samples for fungi (a) and bacteria (b). The largest circle represents the phylum level, and the gradually shrinking circle represents class, order, family, and genus according to the gradient. The area of the fan in the circle represents the corresponding abundance and the top 20 genera have been identified with short lines.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title />\n<p>Circle packing of different soil and rhizosphere samples for fungi (a) and bacteria (b). The largest circle represents the phylum level, and the gradually shrinking circle represents class, order, family, and genus according to the gradient. The area of the fan in the circle represents the corresponding abundance and the top 20 genera have been identified with short lines.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0281854.g003",
+      "label": "Fig 3",
+      "caption": "Alpha diversity analysis for fungi (a) and bacteria (b) in different soil and rhizosphere samples. The significance is expressed by the p value according to the Kruskal-Wallis test.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title />\n<p>Alpha diversity analysis for fungi (a) and bacteria (b) in different soil and rhizosphere samples. The significance is expressed by the <italic>p</italic> value according to the Kruskal-Wallis test.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0281854.g004",
+      "label": "Fig 4",
+      "caption": "Venn diagram of unique and shared fungal (a) and bacterial (b) ASVs among different soil and rhizosphere samples. Each colour represents a group, and the numbers indicate the quantities of ASVs contained in the block.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title />\n<p>Venn diagram of unique and shared fungal (a) and bacterial (b) ASVs among different soil and rhizosphere samples. Each colour represents a group, and the numbers indicate the quantities of ASVs contained in the block.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0281854.g005",
+      "label": "Fig 5",
+      "caption": "PCoA of fungi (a) and bacteria (b). Using the normalized functional unit abundance table (abundance sum of 1 M per sample), the distance matrix was calculated and PCoA analysis was performed by R Script. The percentage in the brackets on the axis represents the proportion of the sample variation that can be explained.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title />\n<p>PCoA of fungi (a) and bacteria (b). Using the normalized functional unit abundance table (abundance sum of 1 M per sample), the distance matrix was calculated and PCoA analysis was performed by R Script. The percentage in the brackets on the axis represents the proportion of the sample variation that can be explained.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0281854.g006",
+      "label": "Fig 6",
+      "caption": "Hierarchical cluster analysis of fungi (a) and bacteria (b) in different soil and rhizosphere samples. The left diagram is a hierarchical clustering tree diagram according to the similarity between samples, and the right histogram is a stacked histogram of the top 10 genera. The phylogenetic trees were calculated using the neighbour-joining method.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title />\n<p>Hierarchical cluster analysis of fungi (a) and bacteria (b) in different soil and rhizosphere samples. The left diagram is a hierarchical clustering tree diagram according to the similarity between samples, and the right histogram is a stacked histogram of the top 10 genera. The phylogenetic trees were calculated using the neighbour-joining method.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0281854.g007",
+      "label": "Fig 7",
+      "caption": "Co-occurrence network among the first 100 genera of fungi (a) and bacteria (b). The correlation matrix is constructed using the SparCC algorithm, but ASVs with a total number of sequences less than 10 are filtered based on random matrix theory (RMT) before matrix construction, with thresholds of 0.33 (fungi) and 0.6 (bacteria) (Chi-Square, p≤0.05). The top 100 ASVs were extracted to construct a network by the induced_subgraph function of igraph R package. The deeper and thicker lines represent stronger correlations between genera.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title />\n<p>Co-occurrence network among the first 100 genera of fungi (a) and bacteria (b). The correlation matrix is constructed using the SparCC algorithm, but ASVs with a total number of sequences less than 10 are filtered based on random matrix theory (RMT) before matrix construction, with thresholds of 0.33 (fungi) and 0.6 (bacteria) (Chi-Square, <italic>p</italic>≤0.05). The top 100 ASVs were extracted to construct a network by the induced_subgraph function of igraph R package. The deeper and thicker lines represent stronger correlations between genera.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0281854.g008",
+      "label": "Fig 8",
+      "caption": "Contribution of fungal genera to different metabolic pathways.\nDifferent colours represent the contributions of different taxa to the glycolysis pathway (a), the glyoxylic acid pathway (b), the phosphopantothenic acid biosynthesis (c) and the non-oxidative pentose phosphate pathway (d) at the genus level (the first 20 genera).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Contribution of fungal genera to different metabolic pathways.</title>\n<p>Different colours represent the contributions of different taxa to the glycolysis pathway (a), the glyoxylic acid pathway (b), the phosphopantothenic acid biosynthesis (c) and the non-oxidative pentose phosphate pathway (d) at the genus level (the first 20 genera).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

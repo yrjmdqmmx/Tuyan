@@ -1,0 +1,50 @@
+{
+  "id": "pone.0327092.g004",
+  "paper": "pone.0327092",
+  "figure": {
+    "id": "pone.0327092.g004",
+    "label": "Fig 4",
+    "caption": "(a) Inter-individual distance (m) for groups (n = 10 per condition) of five carp (Cyprinus carpio) during experimental trials under ambient and masked conditions; and median inter-individual distance ± median absolute deviation over time during ambient control (AMB-C: solid line) and treatment (dash-dotted line) conditions.(b) ambient low SPL (‘AMB-LOW’); (c) ambient intermediate SPL (‘AMB-INT’); (d) ambient high SPL (‘AMB-HIGH’); (e) masking low SPL (‘MASK-LOW’); (f) masking intermediate SPL (‘MASK-INT’); and (g) masking high SPL (‘MASK-HIGH’). Notes: ‘SPL’ is Sound Pressure Level, while ‘MASK-C’ is the masking control. Raincloud plots show main summary statistics (i.e., boxplot with median, interquartile range, max/min), kernel density estimate (i.e., shaded grey area indicating probability density function of the variable), and raw data (i.e., points). As individual trials consist of repeated measures over time, for each condition in panel ‘a’, raw data points are shown per trial using the viridis colour scale. In panels ‘b’ to ‘g’, vertical green dashed lines (speaker with “waves”) indicate start of the tonal exposure period and vertical purple dashed lines (speaker with an X), the end.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0327092.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0327092.g004</object-id><label>Fig 4</label><caption><title>(a) Inter-individual distance (m) for groups (n = 10 per condition) of five carp (<italic>Cyprinus carpio</italic>) during experimental trials under ambient and masked conditions; and median inter-individual distance ± median absolute deviation over time during ambient control (AMB-C: solid line) and treatment (dash-dotted line) conditions.</title><p>(<italic>b</italic>) ambient low SPL (‘AMB-LOW’); (<italic>c</italic>) ambient intermediate SPL (‘AMB-INT’); (<italic>d</italic>) ambient high SPL (‘AMB-HIGH’); (<italic>e</italic>) masking low SPL (‘MASK-LOW’); (<italic>f</italic>) masking intermediate SPL (‘MASK-INT’); and (<italic>g</italic>) masking high SPL (‘MASK-HIGH’). Notes: ‘SPL’ is Sound Pressure Level, while ‘MASK-C’ is the masking control. Raincloud plots show main summary statistics (i.e., boxplot with median, interquartile range, max/min), kernel density estimate (i.e., shaded grey area indicating probability density function of the variable), and raw data (i.e., points). As individual trials consist of repeated measures over time, for each condition in panel ‘a’, raw data points are shown per trial using the viridis colour scale. In panels ‘b’ to ‘g’, vertical green dashed lines (speaker with “waves”) indicate start of the tonal exposure period and vertical purple dashed lines (speaker with an X), the end.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0327092.g004\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0327092.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0327092",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0327092",
+    "title": "Masking noise reduces the anti-predator-like response to an acoustic stimulus: Application of Signal Detection Theory to fish behaviour",
+    "journal": "PLOS One",
+    "authors": [
+      "Helen A. L. Currie",
+      "Paul R. White",
+      "Timothy G. Leighton",
+      "Paul S. Kemp"
+    ],
+    "year": "2025",
+    "license": "2025\nCurrie et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0327092.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0327092.g004.png",
+      "bytes": 2198286,
+      "sha256": "78efdd3b68ba14f84a5f62ca1153cea668bb02fecc8e79b4813b3ea18302424b"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0327092.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0327092.g004.tif",
+      "bytes": 2827204,
+      "sha256": "63290981e045881fb8aab03b3053f12412afb2e04d0aa2a8a7e66e6dbd45a5fe"
+    }
+  }
+}

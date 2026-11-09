@@ -1,0 +1,119 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": {
+    "stage": "planning",
+    "stageLabel": "图示规划",
+    "category": "provider",
+    "code": "MODEL_PROVIDER",
+    "reason": "模型渠道返回异常或未提供完整结果。",
+    "suggestion": "请核对渠道状态和调用记录，再决定是否恢复；不要盲目重复提交。",
+    "requestState": "unknown",
+    "billingStatus": "unknown",
+    "billingMessage": "请求结果及费用尚未确认，自动重试已停止；请核对渠道账单。",
+    "message": "图示规划失败：模型渠道返回异常或未提供完整结果。 请核对渠道状态和调用记录，再决定是否恢复；不要盲目重复提交。"
+  },
+  "referenceSelection": {
+    "proposedCount": 0,
+    "selectedCount": 0,
+    "skippedCount": 0,
+    "imageCount": 0,
+    "mode": "text",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "none",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "failed",
+      "error": "SVG_REVIEW_UNSAFE: unsupported SVG element filter"
+    }
+  ],
+  "id": "1791598526099-a6jtmnh0",
+  "status": "failed",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。",
+  "negativePrompt": "禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。",
+  "caption": "从样品输入到标准化结果的三步方法流程。",
+  "infographicCategory": "method",
+  "outputFormat": "svg",
+  "mainModelName": "qwen3.7-plus",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "main_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "planner_critic",
+  "retrievalSetting": "none",
+  "manualReferenceIds": [],
+  "retrievedReferenceIds": [],
+  "retrievedReferences": [],
+  "stages": [
+    {
+      "id": "stage-286f53cf-5ac0-4108-81c7-a0b1e52d59d7",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "Here is the detailed description for the illustrative figure, designed to strictly follow the methodology and constraints provided.\n\n**Figure Type:** Method Flowchart / Scientific Process Diagram\n**Aspect Ratio:** 16:9 (Landscape)\n**Background:** Pure white (#FFFFFF) or extremely light pastel gray (#F8F9FA) to ensure high contrast and a clean academic look.\n\n**Layout & Structure:**\nThe diagram consists of three main nodes arranged horizontally from left to right, connected by directional arrows. The layout is centered vertically within the canvas. Since no specific reference image was uploaded, a standard professional scientific color palette is used: soft blues for process steps, dark gray for text, and a neutral accent for the identifier. All main content boxes use **rounded rectangles** with a moderate corner radius (e.g., 8-12px) and a subtle drop shadow to create depth.\n\n**Detailed Elements:**\n\n1.  **Step 1: Sample Input (Left)**\n    *   **Shape:** A rounded rectangle with a light blue fill (e.g., #E3F2FD) and a slightly darker blue border (e.g., #1976D2).\n    *   **Content:** Centered inside the box is the Chinese text **\"样品输入\"** in a bold, sans-serif font (black or dark gray). Directly below it, in a smaller, regular weight font, is the parameter **\"(n=12)\"**.\n    *   **Icon (Optional but recommended):** A small, simple icon representing a test tube or a data file can be placed to the left of the text within the box, rendered in the same blue tone.\n\n2.  **Connector 1**\n    *   **Style:** A straight, horizontal arrow pointing from the right side of Step 1 to the left side of Step 2.\n    *   **Appearance:** Medium thickness (2-3px), solid line, colored in dark gray (#424242) or the same blue as the borders. The arrowhead is filled and triangular.\n\n3.  **Step 2: Data Standardization (Center)**\n    *   **Shape:** A rounded rectangle identical in size and style to Step 1, but potentially with a slightly different shade of blue or green to distinguish the processing step (e.g., Fill: #E8F5E9, Border: #388E3C).\n    *   **Content:** Centered inside is the Chinese text **\"数据标准化\"** in bold. Below it, the mathematical expression is displayed accurately using a serif font for variables to look professional: **\"$x / x_0$\"**. Ensure the subscript '0' is clearly visible.\n    *   **Visual Cue:** This box might be slightly larger or have a subtle \"gear\" or \"processing\" icon to indicate transformation.\n\n4.  **Connector 2**\n    *   **Style:** Identical to Connector 1, pointing from Step 2 to Step 3.\n\n5.  **Step 3: Result Output (Right)**\n    *   **Shape:** A rounded rectangle identical in size and style to the previous steps. Fill color could be a neutral light gray or a finalizing color like light purple (e.g., Fill: #F3E5F5, Border: #7B1FA2).\n    *   **Content:** Centered inside is the Chinese text **\"结果输出\"** in bold. Below it is the result value: **\"均值 1.0\"**. The number \"1.0\" should be prominent.\n\n6.  **Top-Right Identifier**\n    *   **Location:** Fixed in the absolute top-right corner of the canvas, with some padding (e.g., 20px from top and right edges).\n    *   **Content:** As per instructions (\"put the short identifier from the top-right of the reference image exactly\"), since no reference image was provided, this element is omitted. *However, if a reference were present, this would be a small logo or label.* In this standalone generation, leave this area empty or place a generic placeholder if required by the system, but ideally, keep it clean as no specific identifier text was given in the prompt's `referenceAnalysis`. *Self-correction: The prompt says \"if reference provided... put identifier\". Since none is provided, do not add arbitrary identifiers.*\n\n**Typography & Styling:**\n*   **Font:** Clean, modern sans-serif for Chinese characters (e.g., SimHei, Microsoft YaHei, or Noto Sans SC).\n*   **Math Font:** Standard LaTeX-style serif for \"$x / x_0$\".\n*   **Color Palette:** Professional, muted scientific colors. Avoid neon or overly saturated colors.\n*   **Line Thickness:** Consistent 2px for borders and arrows.\n\n**Constraints Check:**\n*   Direction: Left to Right.\n*   Steps: Exactly three (Input -> Standardization -> Output).\n*   Text: Chinese only for labels.\n*   Math: \"$x / x_0$\" preserved exactly.\n*   Values: \"n=12\" and \"Mean 1.0\" included exactly.\n*   No extra steps or values added.\n*   No caption text inside the image.\n\n**SVG Generation Hint:**\nUse `<rect>` with `rx=\"10\"` for rounded corners. Use `<path>` or `<line>` with `<marker-end>` for arrows. Group elements logically. Ensure text is centered using `text-anchor=\"middle\"` and `dominant-baseline=\"middle\"`.",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T02:15:26.102Z",
+      "completedAt": "2026-10-10T02:15:49.395Z",
+      "durationMs": 23293,
+      "error": ""
+    }
+  ],
+  "criticMode": "visual_code",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 1,
+  "promptCharCount": 195,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [],
+  "logs": [
+    "ERROR: 图示规划失败：模型渠道返回异常或未提供完整结果。 请核对渠道状态和调用记录，再决定是否恢复；不要盲目重复提交。"
+  ],
+  "error": "图示规划失败：模型渠道返回异常或未提供完整结果。 请核对渠道状态和调用记录，再决定是否恢复；不要盲目重复提交。",
+  "createdAt": "2026-10-10T02:15:26.099Z",
+  "updatedAt": "2026-10-10T02:16:10.409Z",
+  "startedAt": "2026-10-10T02:15:26.100Z",
+  "completedAt": "2026-10-10T02:16:10.409Z"
+}

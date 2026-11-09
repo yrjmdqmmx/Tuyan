@@ -1,0 +1,49 @@
+{
+  "id": "pcbi.1005857.g009",
+  "paper": "pcbi.1005857",
+  "figure": {
+    "id": "pcbi.1005857.g009",
+    "label": "Fig 9",
+    "caption": "Signaling motifs in the FcεRI library recovered from the compressed AR graph.\n(A) Positive feedback loops enhance binding of Src family kinases Lyn and Fyn (denoted SFK) to receptor and Pag1 scaffold as well as Syk auto-phosphorylation. (B) Pag1 phosphorylated by SFKs recruits Csk, which negatively regulates SFKs by phosphorylation. (C) A coherent feed-forward loop activates Plcg1 from phosphorylated Lat. (D) An incoherent feed-forward loop involving enzymes PI3K and Inpp5d (a.k.a. SHP2) regulates levels of phosphoinositide PIP3, which is phosphorylated at both 3’ and 5’ hydroxyl positions (denoted PI_3P and PI_5P respectively).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005857.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005857.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Signaling motifs in the FcεRI library recovered from the compressed AR graph.</title>\n<p>(A) Positive feedback loops enhance binding of Src family kinases Lyn and Fyn (denoted SFK) to receptor and Pag1 scaffold as well as Syk auto-phosphorylation. (B) Pag1 phosphorylated by SFKs recruits Csk, which negatively regulates SFKs by phosphorylation. (C) A coherent feed-forward loop activates Plcg1 from phosphorylated Lat. (D) An incoherent feed-forward loop involving enzymes PI3K and Inpp5d (a.k.a. SHP2) regulates levels of phosphoinositide PIP3, which is phosphorylated at both 3’ and 5’ hydroxyl positions (denoted PI_3P and PI_5P respectively).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005857.g009\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005857.g009",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1005857",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005857",
+    "title": "Automated visualization of rule-based models",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "John Arul Prakash Sekar",
+      "Jose-Juan Tapia",
+      "James R. Faeder"
+    ],
+    "year": "2017",
+    "license": "2017\nSekar et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1005857.g009",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1005857.g009.png",
+      "bytes": 278323,
+      "sha256": "c869a0fe7b9d7da05f684719787e6b1df7708a8285646bc82eb0d96efaf24681"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1005857.g009",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1005857.g009.tif",
+      "bytes": 422040,
+      "sha256": "757fe7315753bb0900d05b859cad624ff1c4889696e08e6920c1300966715c32"
+    }
+  }
+}

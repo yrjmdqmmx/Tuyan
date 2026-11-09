@@ -1,0 +1,49 @@
+{
+  "id": "pone.0250938.g006",
+  "paper": "pone.0250938",
+  "figure": {
+    "id": "pone.0250938.g006",
+    "label": "Fig 6",
+    "caption": "Parallel coordinate plot for centroids–Period_1.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0250938.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0250938.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Parallel coordinate plot for centroids–Period_1.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0250938.g006\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0250938.g006",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0250938",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0250938",
+    "title": "COVID-19 pandemic and stability of stock market—A sectoral approach",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Michał Buszko",
+      "Witold Orzeszko",
+      "Marcin Stawarz"
+    ],
+    "year": "2021",
+    "license": "2021\nBuszko et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0250938.g006",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0250938.g006.png",
+      "bytes": 176698,
+      "sha256": "7fbd7428e487584197de941a748ea2c863151df742f57b2cd8f35c6593d9e2f4"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0250938.g006",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0250938.g006.tif",
+      "bytes": 223628,
+      "sha256": "6573f3c84f15dcc9e567e04242bf41cf0fc87cd8168d3720b211c24ad6e68774"
+    }
+  }
+}

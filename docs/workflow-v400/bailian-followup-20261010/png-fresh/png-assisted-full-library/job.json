@@ -1,0 +1,142 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": {
+    "stage": "planning",
+    "stageLabel": "图示规划",
+    "category": "provider",
+    "code": "MODEL_PROVIDER",
+    "reason": "模型渠道返回异常或未提供完整结果。",
+    "suggestion": "请核对渠道状态和调用记录，再决定是否恢复；不要盲目重复提交。",
+    "requestState": "unknown",
+    "billingStatus": "unknown",
+    "billingMessage": "请求结果及费用尚未确认，自动重试已停止；请核对渠道账单。",
+    "message": "图示规划失败：模型渠道返回异常或未提供完整结果。 请核对渠道状态和调用记录，再决定是否恢复；不要盲目重复提交。"
+  },
+  "referenceSelection": {
+    "proposedCount": 1,
+    "selectedCount": 1,
+    "skippedCount": 0,
+    "imageCount": 1,
+    "mode": "images",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "assist",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "failed",
+      "error": "planningConstraint is not defined"
+    }
+  ],
+  "id": "1791601395397-ndbxjg3v",
+  "status": "failed",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "deepseek-v4-pro"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。",
+  "negativePrompt": "禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。",
+  "caption": "从样品输入到标准化结果的三步方法流程。",
+  "infographicCategory": "method",
+  "outputFormat": "png",
+  "mainModelName": "deepseek-v4-pro",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "vision_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "full",
+  "retrievalSetting": "manual",
+  "manualReferenceIds": [
+    "live-svg-reference"
+  ],
+  "retrievedReferenceIds": [
+    "live-svg-reference"
+  ],
+  "retrievedReferences": [
+    {
+      "id": "live-svg-reference",
+      "taskName": "diagram",
+      "title": "双节点方法图参考",
+      "summary": "观察该图的颜色、布局和右上角标识，作为版式参考。",
+      "titleZh": "",
+      "introZh": "",
+      "shortIntroZh": "",
+      "detailZh": "",
+      "visualCategory": "",
+      "researchDomain": "",
+      "keywords": [],
+      "corpusVersion": "zh-CN.v2",
+      "imageUrl": "http://127.0.0.1:50341/objects/library/reference.png",
+      "imageObjectKey": "library/reference.png",
+      "source": "paperbanana-bench"
+    }
+  ],
+  "stages": [
+    {
+      "id": "stage-ce84cdcb-1be5-4b8a-9818-0b0a7735d576",
+      "candidateId": 0,
+      "type": "reference_observation",
+      "title": "图库参考图观察",
+      "round": 0,
+      "text": "```json\n{\n  \"content\": \"图像展示了一个简单的水平流程图，包含两个圆角矩形框和一个连接箭头。左侧框为浅蓝色，右侧框为浅绿色。右上角有一个文本标识。\",\n  \"actual_text\": [\n    \"REF-73\",\n    \"样品输入\",\n    \"结果输出\"\n  ],\n  \"layout\": \"水平线性布局，从左至右排列。背景为纯白色。\",\n  \"connections\": \"一条黑色单向箭头从左侧‘样品输入’框指向右侧‘结果输出’框。\",\n  \"problems\": [\n    \"步骤缺失：用户要求绘制‘三步科学流程’，但图中仅有两个节点，缺少中间的‘数据标准化（x / x₀）’步骤。\",\n    \"标签内容不完整：左侧框仅显示‘样品输入’，缺少要求的参数‘（n=12）’；右侧框仅显示‘结果输出’，缺少要求的数值‘（均值 1.0）’。\",\n    \"数学表达式缺失：由于中间步骤完全缺失，导致核心公式‘x / x₀’未出现在图中。\"\n  ],\n  \"suggestions\": [\n    \"在左右两个框之间增加第三个圆角矩形框，填入文字‘数据标准化（x / x₀）’。\",\n    \"更新左侧框文字为‘样品输入（n=12）’。\",\n    \"更新右侧框文字为‘结果输出（均值 1.0）’。\",\n    \"调整箭头连接顺序，确保流向为：样品输入 → 数据标准化 → 结果输出。\",\n    \"保持现有的配色方案（蓝-绿）和圆角矩形样式，以及右上角的‘REF-73’标识位置不变。\"\n  ],\n  \"uncertainties\": \"无不确定项，所有缺失内容均已在用户提示中明确指定。\"\n}\n```",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T03:03:23.487Z",
+      "completedAt": "2026-10-10T03:03:23.487Z",
+      "durationMs": 0,
+      "error": ""
+    }
+  ],
+  "criticMode": "image",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 2,
+  "promptCharCount": 195,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [],
+  "logs": [
+    "2026-10-10T03:03:23.487Z 参考图选择：采用 1 张，排除重复 0 张、无法使用 0 张、超出预算 0 张；辅助视觉观察请求合计 1 张图片，上限 8 张。",
+    "ERROR: 图示规划失败：模型渠道返回异常或未提供完整结果。 请核对渠道状态和调用记录，再决定是否恢复；不要盲目重复提交。"
+  ],
+  "error": "图示规划失败：模型渠道返回异常或未提供完整结果。 请核对渠道状态和调用记录，再决定是否恢复；不要盲目重复提交。",
+  "createdAt": "2026-10-10T03:03:15.397Z",
+  "updatedAt": "2026-10-10T03:03:23.488Z",
+  "startedAt": "2026-10-10T03:03:15.398Z",
+  "completedAt": "2026-10-10T03:03:23.488Z"
+}

@@ -1,0 +1,146 @@
+{
+  "verifiedAt": "2026-10-10T03:24:53.485Z",
+  "scope": "Actual provider HTTP requests; local Core/Gateway/storage. Injected initial image is explicitly labeled, never counted as a real image call. No server-side internal model trace claim.",
+  "totals": {
+    "httpRequests": 38,
+    "textCalls": 34,
+    "imageCalls": 4,
+    "textPromptTokens": 85753,
+    "textCompletionTokens": 21017,
+    "textTotalTokens": 106770,
+    "generatedImages": 4
+  },
+  "results": [
+    {
+      "batch": "png-controlled-complete",
+      "scenario": "png-assisted-known-defect",
+      "status": "succeeded",
+      "review": "issues_found",
+      "realRequests": 4,
+      "checks": [
+        "delivered file SHA-256 matches review metadata",
+        "png v1 round 1: original/render/submitted bytes, complete code when SVG, report and decision correspond",
+        "image injected: full original method/caption/avoid/plan, 3028 characters"
+      ]
+    },
+    {
+      "batch": "png-controlled-final",
+      "scenario": "png-assisted-known-defect",
+      "status": "failed",
+      "realRequests": 3,
+      "checks": []
+    },
+    {
+      "batch": "png-controlled-revision",
+      "scenario": "png-assisted-known-defect",
+      "status": "succeeded",
+      "review": "review_failed",
+      "realRequests": 5,
+      "checks": [
+        "delivered file SHA-256 matches review metadata",
+        "png v1 round 1: original/render/submitted bytes, complete code when SVG, report and decision correspond",
+        "image injected: full original method/caption/avoid/plan, 4097 characters"
+      ]
+    },
+    {
+      "batch": "png-controlled-verified",
+      "scenario": "png-assisted-known-defect",
+      "status": "succeeded",
+      "review": "modified_unreviewed",
+      "realRequests": 6,
+      "checks": [
+        "delivered file SHA-256 matches review metadata",
+        "png v1 round 1: original/render/submitted bytes, complete code when SVG, report and decision correspond",
+        "png v2 round 2: original/render/submitted bytes, complete code when SVG, report and decision correspond",
+        "image injected: full original method/caption/avoid/plan, 3028 characters",
+        "image 3: full original method/caption/avoid/plan, 2157 characters",
+        "revision input: v1 declared display pixels match; transport bytes=66557a87d09580f1fb4d490d151aa0db010ef4e53d1fde3ac2e10bc666b7c1fa",
+        "image 6: full original method/caption/avoid/plan, 2184 characters",
+        "revision input: v2 declared display pixels match; transport bytes=754e8d02ed5c294a5b941a81e69bbfc82aa04f9d327160687aed071e9d033580"
+      ]
+    },
+    {
+      "batch": "png-fixed",
+      "scenario": "png-direct-full-library",
+      "status": "succeeded",
+      "review": "passed",
+      "realRequests": 4,
+      "checks": [
+        "delivered file SHA-256 matches review metadata",
+        "png v1 round 1: original/render/submitted bytes, complete code when SVG, report and decision correspond",
+        "image 3: full original method/caption/avoid/plan, 3358 characters"
+      ]
+    },
+    {
+      "batch": "png-fixed",
+      "scenario": "png-assisted-full-library",
+      "status": "succeeded",
+      "review": "passed",
+      "realRequests": 6,
+      "checks": [
+        "delivered file SHA-256 matches review metadata",
+        "png v1 round 1: original/render/submitted bytes, complete code when SVG, report and decision correspond",
+        "image 8: full original method/caption/avoid/plan, 3305 characters"
+      ]
+    },
+    {
+      "batch": "png-fresh",
+      "scenario": "png-direct-full-library",
+      "status": "failed",
+      "realRequests": 0,
+      "checks": []
+    },
+    {
+      "batch": "png-fresh",
+      "scenario": "png-assisted-full-library",
+      "status": "failed",
+      "realRequests": 1,
+      "checks": []
+    },
+    {
+      "batch": "png-retest",
+      "scenario": "png-direct-full-library",
+      "status": "failed",
+      "realRequests": 0,
+      "checks": []
+    },
+    {
+      "batch": "png-retest",
+      "scenario": "png-assisted-full-library",
+      "status": "failed",
+      "realRequests": 1,
+      "checks": []
+    },
+    {
+      "batch": "svg-fresh",
+      "scenario": "ordinary-direct",
+      "status": "succeeded",
+      "review": "passed",
+      "realRequests": 3,
+      "checks": [
+        "delivered file SHA-256 matches review metadata",
+        "svg v1 round 1: original/render/submitted bytes, complete code when SVG, report and decision correspond"
+      ]
+    },
+    {
+      "batch": "svg-fresh",
+      "scenario": "ordinary-assisted",
+      "status": "succeeded",
+      "review": "modified_unreviewed",
+      "realRequests": 5,
+      "checks": [
+        "delivered file SHA-256 matches review metadata",
+        "svg v1 round 1: original/render/submitted bytes, complete code when SVG, report and decision correspond"
+      ]
+    }
+  ],
+  "sourceHashes": {
+    "apps/paperbanana-api/runtime/handler.ts": "9698768a39e06ce0c2b87ef4dc21439eaf06a514ca44cf0a69108334db5b6de6",
+    "packages/api/src/png-workflow.ts": "7fe3fd60b004d1df737f285f8cce5d84b9518070aa85cd110bdc74d2dbc7f7af",
+    "packages/api/src/svg-workflow.ts": "e6945816c58cc8763b811954ef7ff6c136acb7c73ec4847236c1017c9d34bc60",
+    "packages/api/src/workflow-prompts.ts": "e72c7b59e0e77a3fca580cd68a89b50d52c2d0505af530c9d5b466b530581559",
+    "packages/api/src/execution-errors.ts": "0b77acafcaf8a24f5cb667215e9851b7a849840bd49d1de0752fad8cb2dc2117",
+    "packages/types/src/workflow.ts": "d9dd0defd1302688e366c932a0a7a57c33363b8a6af3564934af3ea6fb7fc4f1",
+    "apps/web/src/lib/workflowSettings.js": "6dd95dac7777dbbc76c81714fbad89ac838aca3a540d989bb3ce2cb5ba323b12"
+  }
+}

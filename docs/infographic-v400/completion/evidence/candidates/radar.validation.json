@@ -1,0 +1,68 @@
+{
+  "typeId": "radar",
+  "computations": {
+    "normalizedRadii": {
+      "A": [
+        0.6,
+        0.8,
+        0.3
+      ],
+      "B": [
+        0.8,
+        0.6,
+        0.5
+      ]
+    }
+  },
+  "checks": {
+    "A_radius_error": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "B_radius_error": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 6.0,
+      "expected": 6.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "label",
+      "group",
+      "value"
+    ],
+    "options": {
+      "axes": [
+        {
+          "id": "Speed",
+          "min": 0,
+          "max": 10,
+          "unit": "m/s"
+        },
+        {
+          "id": "Yield",
+          "min": 0,
+          "max": 100,
+          "unit": "%"
+        },
+        {
+          "id": "Cost",
+          "min": 0,
+          "max": 10,
+          "unit": "USD"
+        }
+      ],
+      "normalization": "axis_range"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

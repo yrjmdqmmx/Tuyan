@@ -1,0 +1,187 @@
+.tuyan-guide{
+  max-width:1140px;
+  margin:0 auto;
+  padding:28px 24px 72px;
+  color:#26362f;
+  line-height:1.8}
+.tuyan-guide-header{
+  padding:26px 0 36px;
+  border-bottom:1px solid #dae2dc}
+.tuyan-guide-eyebrow{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  letter-spacing:.05em;
+  color:#607066;
+  margin:0 0 15px}
+.tuyan-guide-header h2{
+  font-size:clamp(26px,4vw,40px);
+  line-height:1.3;
+  letter-spacing:-.025em;
+  margin:0 0 16px}
+.tuyan-guide-header>p:not(.tuyan-guide-eyebrow){
+  max-width:660px;
+  color:#657069}
+.tuyan-guide-header button{
+  display:inline-flex;
+  align-items:center;
+  gap:22px;
+  border:0;
+  border-radius:8px;
+  padding:10px 18px;
+  background:#365e48;
+  color:white;
+  font:inherit;
+  cursor:pointer;
+  margin-top:10px}
+.tuyan-guide-layout{
+  display:grid;
+  grid-template-columns:210px minmax(0,1fr);
+  gap:52px;
+  align-items:start;
+  margin-top:32px}
+.tuyan-guide-toc{
+  position:sticky;
+  top:24px;
+  display:grid;
+  gap:2px;
+  font-size:13px;
+  max-height:85dvh;
+  overflow:auto}
+.tuyan-guide-toc>strong{
+  font-size:12px;
+  color:#6d7b73;
+  padding:0 10px 10px}
+.tuyan-guide-toc a{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  padding:8px 10px;
+  border-radius:6px;
+  color:#4d5d53;
+  text-decoration:none;
+  line-height:1.55}
+.tuyan-guide-toc a span{
+  font-size:11px;
+  color:#89978d;
+  font-variant-numeric:tabular-nums}
+.tuyan-guide-toc a:hover,.tuyan-guide-toc a:focus-visible{
+  background:#eaf0eb;
+  color:#234c35}
+.tuyan-guide-content{
+  min-width:0;
+  font-size:14px}
+.tuyan-guide-content section{
+  scroll-margin-top:24px;
+  padding-bottom:30px;
+  margin-bottom:32px;
+  border-bottom:1px solid #e0e6e1}
+.tuyan-guide-content h3{
+  font-size:23px;
+  line-height:1.4;
+  margin:0 0 20px;
+  letter-spacing:-.02em}
+.tuyan-guide-content h4{
+  font-size:16px;
+  margin:25px 0 8px}
+.tuyan-guide-content p{
+  margin:13px 0}
+.tuyan-guide-content ol,.tuyan-guide-content ul{
+  padding-left:22px}
+.tuyan-guide-content li{
+  padding-left:4px;
+  margin:9px 0}
+.tuyan-guide-example,.tuyan-guide-callout{
+  padding:17px 20px;
+  border-left:3px solid #77957e;
+  background:#f0f5ef;
+  border-radius:0 8px 8px 0;
+  margin:20px 0;
+  font-size:13px}
+.tuyan-guide-example strong{
+  color:#375840}
+.tuyan-guide-example p{
+  margin:7px 0 0}
+.tuyan-guide-table{
+  overflow-x:auto;
+  margin:20px 0}
+.tuyan-guide-table table{
+  border-collapse:collapse;
+  width:100%;
+  text-align:left;
+  font-size:13px}
+.tuyan-guide-table th,.tuyan-guide-table td{
+  padding:12px 14px;
+  border-bottom:1px solid #dce3de;
+  vertical-align:top}
+.tuyan-guide-table thead th{
+  background:#f0f3ef;
+  color:#526255}
+.tuyan-guide-table tbody th{
+  width:105px;
+  min-width:90px}
+.tuyan-guide-sequence{
+  padding:14px 16px;
+  background:#f5f3ed;
+  border-radius:8px;
+  font-size:13px;
+  color:#63563c}
+.tuyan-guide-runtime{
+  display:grid;
+  grid-template-columns:85px minmax(0,1fr);
+  gap:6px 14px;
+  background:#f6f7f5;
+  padding:16px;
+  font-size:12px}
+.tuyan-guide-runtime div{
+  display:contents}
+.tuyan-guide-runtime dt{
+  color:#7a827c}
+.tuyan-guide-runtime dd{
+  margin:0;
+  overflow-wrap:anywhere}
+.tuyan-guide-contact{
+  padding:8px 0;
+  border:0;
+  background:none;
+  color:#375d43;
+  text-decoration:underline;
+  font:inherit;
+  cursor:pointer}
+.tuyan-guide a:focus-visible,.tuyan-guide button:focus-visible{
+  outline:2px solid #496e55;
+  outline-offset:3px}
+@media(max-width:760px){
+.tuyan-guide{
+  padding:12px 18px 40px}
+.tuyan-guide-header{
+  padding-top:18px}
+.tuyan-guide-layout{
+  grid-template-columns:minmax(0,1fr);
+  gap:28px;
+  margin-top:24px}
+.tuyan-guide-toc{
+  position:static;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  padding:12px;
+  background:#f5f7f3;
+  border-radius:10px;
+  max-height:none}
+.tuyan-guide-toc>strong{
+  grid-column:1/-1}
+.tuyan-guide-toc a{
+  font-size:12px;
+  padding:7px 5px;
+  gap:6px}
+.tuyan-guide-content h3{
+  font-size:21px}
+.tuyan-guide-content section{
+  scroll-margin-top:12px}
+.tuyan-guide-table th,.tuyan-guide-table td{
+  padding:10px 8px}
+.tuyan-guide-example,.tuyan-guide-callout{
+  padding:14px}
+.tuyan-guide-runtime{
+  grid-template-columns:65px minmax(0,1fr)}
+}

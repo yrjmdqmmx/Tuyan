@@ -1,6 +1,31 @@
 import { modelDeveloper, sortModelsNewestFirst } from './modelPresentation.js'
+// Missing catalogue entries are hidden in every selectable list, without
+// deleting saved identities or treating a failed catalogue load as removal.
+export function modelMissingFromCatalog(registry, provider, modelOrId) {
+  if (provider === 'custom') return false
+  const id = typeof modelOrId === 'string' ? modelOrId : modelOrId?.id
+  if (!id) return false
+  const channel = registry?.providers?.[provider]
+  const unavailable = Boolean(registry?.unavailableProviders?.[provider])
+  const model = typeof modelOrId === 'object' ? modelOrId : channel?.models?.find(entry => entry.id === id)
+  return Boolean(registry?.catalogHealth?.[provider]?.issues?.some(issue => issue.id === id && issue.reason === 'missing_live')
+    || model?.catalogPresence?.status === 'absent'
+    || model?.disabledReason?.startsWith('当前目录未列出该模型')
+    || model?.disabledReason?.startsWith('当前渠道的完整公开目录已不再提供此精确型号')
+    || (!unavailable && registry?.providers && !channel)
+    || (!unavailable && Array.isArray(channel?.models) && !channel.models.some(entry => entry.id === id)))
+}
+// Browsing hides confirmed retirements, not temporary failures or adapter gaps.
+// Historical identities remain in the registry and saved task configuration.
+export function modelRetiredFromCatalog(model, now = Date.now()) {
+  const cutoff = model?.expirationAt || (model?.expirationDate && !model.expirationDate.startsWith('2098') ? `${model.expirationDate}T00:00:00Z` : '');
+  const cutoffTime = Date.parse(cutoff);
+  if (Number.isFinite(cutoffTime)) return now >= cutoffTime;
+  return model?.selectable === false && Boolean(model.lifecycleSourceUrl)
+    && /已确认.*停用|官方已.*(?:停服|退役)|公告此型号.*停用|完整托管目录已不再提供/.test(model.disabledReason || '');
+}
 export function modelUnavailableForSelection(model) {
-  return model?.selectable === false || Boolean(model?.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`))
+  return model?.catalogPresence?.status === 'absent' || model?.selectable === false || Boolean(model?.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`))
 }
 export function mergeProviderRegistry(fallback, registry) {
   if (!registry?.defaults || !Array.isArray(registry.models)) return fallback
@@ -51,17 +76,17 @@ export function filterRegistryModels(models, { role, query = '', outputFormat = 
       || Number(left.selectable === false) - Number(right.selectable === false))
 }
 
-export function partitionRegistryModels(models, { role, query = '', outputFormat = '', recommendedOnly = false } = {}) {
+export function partitionRegistryModels(models, { role, query = '', outputFormat = '', operation = '', recommendedOnly = false } = {}) {
   const needle = query.trim().toLocaleLowerCase('zh-CN')
   const annotated = (models || [])
     .filter((model) => model?.roles?.includes(role)
+      || model?.catalogDiscovered === true
       || Boolean(model?.roleReasons?.[role])
       || (role === 'image' && model?.protocol === 'openrouter-images'))
-    .filter((model) => !modelUnavailableForSelection(model))
     .filter((model) => !recommendedOnly || (model.recommended === true && model.lifecycle === 'stable'))
     .filter((model) => !needle || registryModelSearchValues(model)
       .some((value) => value.toLocaleLowerCase('zh-CN').includes(needle)))
-    .map((model) => annotateModelForRole(model, { role, outputFormat }))
+    .map((model) => annotateModelForRole(model, { role, outputFormat, operation }))
 
   return {
     compatible: sortModelsNewestFirst(annotated.filter((model) => !model.selectionDisabled)),
@@ -92,17 +117,23 @@ function registryModelSearchValues(model) {
   ].map((value) => String(value || ''))
 }
 
-function annotateModelForRole(model, { role, outputFormat }) {
+function annotateModelForRole(model, { role, outputFormat, operation }) {
   const expired = Boolean(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`))
   const outputFormats = model.capabilities?.outputFormats || []
   const roleMismatch = !model.roles?.includes(role)
   const formatMismatch = role === 'image' && outputFormat && outputFormats.length && !outputFormats.includes(outputFormat)
+  const generationMismatch = role === 'image' && operation === 'generation'
+    && (model.capabilities?.requiresSourceImage === true || model.capabilities?.imageGeneration === false)
+  const editingMismatch = role === 'image' && operation === 'editing'
+    && Array.isArray(model.capabilities?.refineResolutions) && !model.capabilities.refineResolutions.length
   return {
     ...model,
-    selectionDisabled: expired || model.selectable === false || roleMismatch || Boolean(formatMismatch),
-    selectionDisabledReason: (expired ? `官方服务已于 ${model.expirationDate} 到期` : '') || model.disabledReason
+    selectionDisabled: expired || model.selectable === false || roleMismatch || Boolean(formatMismatch) || generationMismatch || editingMismatch,
+    selectionDisabledReason: (expired ? model.catalogReview?.status === 'pending' ? `待确认：${model.catalogReview.reason}` : `官方服务已于 ${model.expirationDate} 到期` : '') || model.disabledReason
       || (roleMismatch ? model.roleReasons?.[role] || `服务端未授权该模型用于${role === 'image' ? '图像生成' : '当前角色'}` : '')
-      || (formatMismatch ? `该模型不支持 ${outputFormat.toUpperCase()} 输出` : ''),
+      || (formatMismatch ? `该模型不支持 ${outputFormat.toUpperCase()} 输出` : '')
+      || (generationMismatch ? '该模型仅支持图像编辑' : '')
+      || (editingMismatch ? '该模型没有可用的精修输出参数' : ''),
   }
 }
 

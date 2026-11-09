@@ -1,0 +1,11 @@
+# Merge these ADDITIONS into BOTH installed gateway Compose definitions.
+# Preserve all existing networks, static addresses, volumes and env files.
+# A one-off docker network connect is not persistent across gateway releases.
+services:
+  auth-gateway:
+    networks:
+      ecosystem: {}
+networks:
+  ecosystem:
+    external: true
+    name: tuyan-ecosystem-private

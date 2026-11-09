@@ -1,3 +1,4 @@
+import {CURATED_REFERENCES} from '../../../packages/figure-taxonomy/src/library.js'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import sharp from 'sharp'
@@ -10,6 +11,7 @@ import { tokenDanceChatBody, tokenDanceFailure, tokenDanceInputError, tokenDance
 import { createProviderWorkflow } from '../src/provider-workflow.js'
 import { tokenDanceCipher } from '../src/tokendance-service.js'
 
+const licensedSelections=(count:number)=>({selections:CURATED_REFERENCES.slice(0,count).map((row,i)=>({id:row.id,relevance:.95-i/100,visualFit:true,contribution:`different licensed composition ${i}`}))})
 const selections = (count: number) => ({ selections: Array.from({ length: count }, (_, i) => ({ id: `ref-${i}`, relevance: 0.95 - i / 100, visualFit: true, contribution: `complementary layout ${i}` })) })
 const body = (model = 'qwen3.8-flash') => ({ action: 'createJob', provider: 'tokendance', modelRoutes: {
   main: { accessProvider: 'tokendance', modelId: model }, image: { accessProvider: 'tokendance', modelId: 'seedream-5.0-pro' },
@@ -29,9 +31,9 @@ async function seed(r: any, count: number) {
   return rows
 }
 
-test('production regression: 10 auto results fit Qwen 8 or another model 3, then reach generation', async () => {
-  for (const [model, limit, uploadedCount] of [['qwen3.8-flash', 8, 0], ['seed-evolving', 3, 0], ['qwen3.8-flash', 0, 2]] as const) {
-    const r = await createRefineRuntime({ tokenDance: true, retrievalResponse: selections(10) })
+test('production regression: 10 auto results fit the actual main or observer budget, then reach generation', async () => {
+  for (const [model, limit, uploadedCount, visionMode] of [['qwen3.8-flash', 8, 0, 'none'], ['seed-evolving', 3, 0, 'none'], ['seed-evolving', 8, 0, 'assist'], ['qwen3.8-flash', 0, 2, 'assist']] as const) {
+    const r = await createRefineRuntime({ tokenDance: true, retrievalResponse: licensedSelections(10) })
     try {
       await seed(r, 10)
       const auth = await r.post({ action: 'tokenDanceAuthorize' })
@@ -43,15 +45,20 @@ test('production regression: 10 auto results fit Qwen 8 or another model 3, then
         for (const upload of uploads) assert.equal((await fetch(upload.uploadUrl, { method: 'PUT', headers: { 'Content-Type': 'image/png' }, body: new Uint8Array(r.image) })).status, 200)
         assert.equal((await r.post({ action: 'finalizeReferenceUpload', uploads })).data.code, 0)
       }
-      const created = await r.post({ ...body(model), referenceImageMode: 'main_model', referenceImages: uploads }); assert.equal(created.data.code, 0, JSON.stringify(created))
+      const created = await r.post({ ...body(model), visionMode, referenceImageMode: 'main_model', referenceImages: uploads }); assert.equal(created.data.code, 0, JSON.stringify(created))
       await r.legacy.drainJobAdmission()
       const job = (await r.post({ action: 'getJob', jobId: created.data.jobId })).data.job
       assert.equal(job.status, 'succeeded', JSON.stringify(job))
       assert.equal(job.retrievedReferenceIds.length, limit)
       assert.equal(job.referenceSelection.imageCount, limit + uploadedCount)
       const chats = r.tokenDanceCalls.filter((c: any) => c.url.endsWith('/chat/completions')).map((c: any) => JSON.parse(c.options.body))
-      const planner = chats.find((c: any) => Array.isArray(c.messages[1].content))
-      assert.equal(planner.messages[1].content.filter((c: any) => c.type === 'image_url').length, limit + uploadedCount)
+      const reader = chats.find((c: any) => Array.isArray(c.messages[1].content))
+      assert.equal(reader.messages[1].content.filter((c: any) => c.type === 'image_url').length, limit + uploadedCount)
+      if (visionMode === 'assist') {
+        assert.match(reader.messages[0].content, /visual observer/)
+        const planner = chats.find((c: any) => /illustrative diagram|planning decisions/.test(c.messages[0].content) && !Array.isArray(c.messages[1].content))
+        assert.ok(planner, 'main receives the observation report as text')
+      }
       if (!uploadedCount) assert.match(chats[0].messages[0].content, /ZERO|NEVER a target/)
       else assert.equal(job.retrievalSetting, 'none', 'existing upload/retrieval UI exclusivity stays authoritative')
       assert.ok(r.tokenDanceCalls.some((c: any) => c.url.endsWith('/images/generations')))
@@ -62,7 +69,7 @@ test('production regression: 10 auto results fit Qwen 8 or another model 3, then
 
 test('no useful references or fewer references than budget never causes quota filling', async () => {
   for (const count of [0, 2]) {
-    const r = await createRefineRuntime({ tokenDance: true, retrievalResponse: selections(count) })
+    const r = await createRefineRuntime({ tokenDance: true, retrievalResponse: licensedSelections(count) })
     try {
       await seed(r, 10)
       const auth = await r.post({ action: 'tokenDanceAuthorize' }); await r.post({ action: 'tokenDanceExchange', state: auth.data.state, code: 'fixture' })
@@ -92,11 +99,10 @@ test('uploaded and retrieved images share the actual planner budget; corrupted, 
     r.objects.set(refs[1].imageObjectKey, r.objects.get(refs[0].imageObjectKey)!)
     r.objects.set(refs[2].imageObjectKey, { bytes: Buffer.from('invalid image'), mimeType: 'image/png' })
     const uploaded = [{ filename: 'upload.png', mimeType: 'image/png', url: `data:image/png;base64,${r.image.toString('base64')}`, size: r.image.length }]
-    const result = await r.legacy.preparePlanningReferences(body('seed-evolving'), refs, uploaded)
+    const result = await r.legacy.preparePlanningReferences({ ...body('seed-evolving'), visionMode: 'none' }, refs, uploaded)
     assert.equal(result.images.length, 2)
     assert.deepEqual(result.references.map((x: any) => x.id), ['ref-0', 'ref-3'])
-    const none = await r.legacy.preparePlanningReferences(body('seed-evolving'), refs, Array(3).fill(uploaded[0]))
-    assert.equal(none.references.length, 0)
+    await assert.rejects(r.legacy.preparePlanningReferences({ ...body('seed-evolving'), visionMode: 'none' }, refs, Array(3).fill(uploaded[0])),/未退回文字简介/)
     assert.throws(() => r.legacy.assertVisionInputBudget('tokendance', 'seed-evolving', Array(4).fill(uploaded[0])), /最多接收 3/)
     assert.throws(() => r.legacy.assertVisionInputBudget('tokendance', 'qwen3.8-flash', [{ url: 'https://fixture.invalid/x', size: 8000001 }]), /单图/)
     assert.throws(() => r.legacy.assertVisionInputBudget('tokendance', 'qwen3.8-flash', Array(4).fill({ url: 'https://fixture.invalid/x', size: 7000000 })), /合计/)
@@ -142,17 +148,18 @@ test('local validation keeps completed checkpoints, records no new request, and 
 })
 
 
-test('text-only planners consume metadata, and separate vision uploads do not reduce the planner image budget', async () => {
+test('text-only main cannot consume gallery metadata alone; basic and assist both read images', async () => {
   const r = await createRefineRuntime()
   try {
     const refs = await seed(r, 10)
-    const textBody = { ...body(), modelRoutes: { ...body().modelRoutes, main: { accessProvider: 'deepseek', modelId: 'deepseek-chat' } } }
-    const text = await r.legacy.preparePlanningReferences(textBody, refs, [])
-    assert.equal(text.images.length, 0); assert.equal(text.visual, false)
+    const textBody = { ...body(), visionMode: 'none', modelRoutes: { ...body().modelRoutes, main: { accessProvider: 'deepseek', modelId: 'deepseek-chat' } } }
+    await assert.rejects(r.legacy.preparePlanningReferences(textBody, refs, []),/需要实际读取图片/)
+    const assisted = await r.legacy.preparePlanningReferences({ ...textBody, visionMode: 'assist' }, refs, [])
+    assert.equal(assisted.images.length, 8); assert.equal(assisted.visual, true)
     const planner = await r.legacy.preparePlanningReferences({ ...body(), referenceImageModeUsed: 'vision_model', referenceImages: Array(8).fill({}) }, refs, [])
     assert.equal(planner.images.length, 8)
     const vanilla = await r.legacy.preparePlanningReferences({ ...body(), pipelineMode: 'vanilla' }, refs, [])
-    assert.equal(vanilla.images.length, 0)
+    assert.equal(vanilla.images.length, 8)
   } finally { await r.close() }
 })
 
@@ -194,6 +201,8 @@ test('historical 10-vs-8 task gets a read-only Chinese explanation without rewri
 
 test('upgrading request descriptors never silently replays a previously paid v1 checkpoint', async () => {
   const db = memoryDb(), cipher = tokenDanceCipher(randomBytes(32).toString('base64'))
+  let opens = 0
+  cipher.open = () => { opens++; assert.fail('old execution version must be rejected before decoding its old snapshot') }
   const service = { cipher, accepting: async () => {}, credential: async () => ({ key: 'fixture-key' }) }
   const workflow = createProviderWorkflow({ db: db as any, service: service as any })
   await db.collection('paperbanana_jobs').insertOne({ _id: 'old-execution', userId: 'owner', stages: [{ id: 'saved-stage' }] })
@@ -204,6 +213,7 @@ test('upgrading request descriptors never silently replays a previously paid v1 
   assert.equal(job.recovery.canResume, false); assert.match(job.recovery.message, /已保留成功步骤/)
   assert.equal(job.stages[0].id, 'saved-stage')
   assert.equal(db.collection('paperbanana_provider_steps').rows[0].state, 'complete')
+  assert.equal(opens, 0)
 })
 
 
@@ -249,18 +259,21 @@ test('reference selection, prepared bytes and completed planner survive balance 
   } finally { await r.close() }
 })
 
-test('initial rendering and enhancement success or fallback remain separate visible stages', async () => {
+test('plot rendering and optional enhancement success or fallback remain separate visible stages', async () => {
   for (const enhancementFails of [false, true]) {
+    const previousWorker = process.env.PLOT_WORKER_URL
+    process.env.PLOT_WORKER_URL = 'https://plot.fixture'
     const r = await createRefineRuntime()
     try {
-      let renders = 0
+      let renders = 0, workerRenders = 0
       r.legacy.configureRuntimeFetch(async (input: any) => {
         const url = String(input)
+        if (url === 'https://plot.fixture/render') { workerRenders++; return Response.json({ok:true,image_base64:r.output.toString('base64')}) }
         if (url.endsWith('/models')) return Response.json({ data: [] })
         if (url.endsWith('/responses') || url.endsWith('/chat/completions')) return Response.json({ output_text: 'A scientific workflow with clear labels and arrows.', choices: [{ message: { content: 'A scientific workflow with clear labels and arrows.' } }] })
         if (/\/images\/(generations|edits)$/.test(url)) {
           renders++
-          if (enhancementFails && renders === 2) return Response.json({ error: { message: 'enhancement rejected' } }, { status: 400 })
+          if (enhancementFails) return Response.json({ error: { message: 'enhancement rejected' } }, { status: 400 })
           return Response.json({ data: [{ b64_json: r.output.toString('base64') }] })
         }
         throw new Error('Unexpected fixture request')
@@ -268,19 +281,20 @@ test('initial rendering and enhancement success or fallback remain separate visi
       const created = await r.post({ action: 'createJob', provider: 'openai', apiKeys: { openai: 'fixture-key' },
         mainModelName: 'gpt-5.6-sol', imageModelName: 'gpt-image-2', referenceVisionModelName: 'gpt-5.6-sol',
         methodContent: 'A sufficiently detailed methodology for a scientific workflow diagram.', caption: 'Workflow.',
-        outputFormat: 'png', pipelineMode: 'planner_critic', retrievalSetting: 'none', maxCriticRounds: 0, numCandidates: 1, imageSize: '2K' })
+        taskName: 'plot', outputFormat: 'png', pipelineMode: 'planner_critic', retrievalSetting: 'none', maxCriticRounds: 0, numCandidates: 1, imageSize: '2K' })
       assert.equal(created.data.code, 0, JSON.stringify(created))
       await r.legacy.drainJobAdmission()
       const job = (await r.post({ action: 'getJob', jobId: created.data.jobId })).data.job
       assert.equal(job.status, 'succeeded', JSON.stringify(job))
-      assert.equal(renders, 2)
+      assert.equal(renders, 1)
+      assert.equal(workerRenders, 1)
       const stages = job.stages.filter((stage: any) => stage.type === 'render')
       assert.equal(stages.length, 2)
-      assert.equal(stages[0].title, '初次渲染')
+      assert.match(stages[0].title, /统计图|初次渲染/)
       assert.match(stages[1].title, enhancementFails ? /精修放大.*已回退/ : /精修放大（2K）/)
       assert.equal(Boolean(stages[1].error), enhancementFails)
       if (!enhancementFails) assert.ok(stages[1].image)
-    } finally { await r.close() }
+    } finally { await r.close(); if (previousWorker === undefined) delete process.env.PLOT_WORKER_URL; else process.env.PLOT_WORKER_URL = previousWorker }
   }
 })
 

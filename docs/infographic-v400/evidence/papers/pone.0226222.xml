@@ -1,0 +1,1469 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PONE-D-19-17422</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pone.0226222</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Plant science</subject><subj-group><subject>Plant anatomy</subject><subj-group><subject>Leaves</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Probability theory</subject><subj-group><subject>Probability distribution</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Evolutionary biology</subject><subj-group><subject>Evolutionary systematics</subject><subj-group><subject>Phylogenetics</subject><subj-group><subject>Phylogenetic analysis</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Taxonomy</subject><subj-group><subject>Evolutionary systematics</subject><subj-group><subject>Phylogenetics</subject><subj-group><subject>Phylogenetic analysis</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Data management</subject><subj-group><subject>Taxonomy</subject><subj-group><subject>Evolutionary systematics</subject><subj-group><subject>Phylogenetics</subject><subj-group><subject>Phylogenetic analysis</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Social sciences</subject><subj-group><subject>Sociology</subject><subj-group><subject>Communications</subject><subj-group><subject>Mass media</subject><subj-group><subject>Encyclopedias</subject><subj-group><subject>Online encyclopedias</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Applied mathematics</subject><subj-group><subject>Algorithms</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Simulation and modeling</subject><subj-group><subject>Algorithms</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Neural networks</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Neural networks</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Taxonomy</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Data management</subject><subj-group><subject>Taxonomy</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Organisms</subject><subj-group><subject>Eukaryota</subject><subj-group><subject>Animals</subject><subj-group><subject>Vertebrates</subject><subj-group><subject>Amniotes</subject><subj-group><subject>Mammals</subject><subj-group><subject>Dogs</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>A hierarchical loss and its problems when classifying non-hierarchically</article-title>
+<alt-title alt-title-type="running-head">A hierarchical loss and its problems when classifying non-hierarchically</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Wu</surname> <given-names>Cinna</given-names></name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Data curation</role>
+<role content-type="http://credit.casrai.org/">Formal analysis</role>
+<role content-type="http://credit.casrai.org/">Funding acquisition</role>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Project administration</role>
+<role content-type="http://credit.casrai.org/">Resources</role>
+<role content-type="http://credit.casrai.org/">Software</role>
+<role content-type="http://credit.casrai.org/">Supervision</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<role content-type="http://credit.casrai.org/">Visualization</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-6389-799X</contrib-id>
+<name name-style="western">
+<surname>Tygert</surname> <given-names>Mark</given-names></name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Data curation</role>
+<role content-type="http://credit.casrai.org/">Formal analysis</role>
+<role content-type="http://credit.casrai.org/">Funding acquisition</role>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Project administration</role>
+<role content-type="http://credit.casrai.org/">Resources</role>
+<role content-type="http://credit.casrai.org/">Software</role>
+<role content-type="http://credit.casrai.org/">Supervision</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<role content-type="http://credit.casrai.org/">Visualization</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>LeCun</surname> <given-names>Yann</given-names></name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Data curation</role>
+<role content-type="http://credit.casrai.org/">Formal analysis</role>
+<role content-type="http://credit.casrai.org/">Funding acquisition</role>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Project administration</role>
+<role content-type="http://credit.casrai.org/">Resources</role>
+<role content-type="http://credit.casrai.org/">Software</role>
+<role content-type="http://credit.casrai.org/">Supervision</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<role content-type="http://credit.casrai.org/">Visualization</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001">
+<label>1</label>
+<addr-line>Facebook, Menlo Park, CA, United States of America</addr-line>
+</aff>
+<aff id="aff002">
+<label>2</label>
+<addr-line>Facebook, New York, NY, United States of America</addr-line>
+</aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Schwenker</surname> <given-names>Friedhelm</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1">
+<addr-line>Ulm University, GERMANY</addr-line>
+</aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>Facebook employs all authors. The funder provided support in the form of salaries for authors CW, MT, YL, but did not have any additional role in the study design, data collection and analysis, decision to publish, or preparation of the manuscript. This does not alter the authors’ adherence to PLOS ONE policies on sharing data and materials.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">tygert@fb.com</email></corresp>
+</author-notes>
+<pub-date pub-type="collection">
+<year>2019</year>
+</pub-date>
+<pub-date pub-type="epub">
+<day>19</day>
+<month>12</month>
+<year>2019</year>
+</pub-date>
+<volume>14</volume>
+<issue>12</issue>
+<elocation-id>e0226222</elocation-id>
+<history>
+<date date-type="received">
+<day>22</day>
+<month>7</month>
+<year>2019</year>
+</date>
+<date date-type="accepted">
+<day>21</day>
+<month>11</month>
+<year>2019</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2019</copyright-year>
+<copyright-holder>Wu et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0226222"/>
+<abstract>
+<p>Failing to distinguish between a sheepdog and a skyscraper should be worse and penalized more than failing to distinguish between a sheepdog and a poodle; after all, sheepdogs and poodles are both breeds of dogs. However, existing metrics of failure (so-called “loss” or “win”) used in textual or visual classification/recognition via neural networks seldom leverage a-priori information, such as a sheepdog being more similar to a poodle than to a skyscraper. We define a metric that, inter alia, can penalize failure to distinguish between a sheepdog and a skyscraper more than failure to distinguish between a sheepdog and a poodle. Unlike previously employed possibilities, this metric is based on an ultrametric tree associated with any given tree organization into a semantically meaningful hierarchy of a classifier’s classes. An ultrametric tree is a tree with a so-called ultrametric distance metric such that all leaves are at the same distance from the root. Unfortunately, extensive numerical experiments indicate that the standard practice of training neural networks via stochastic gradient descent with random starting points often drives down the hierarchical loss nearly as much when minimizing the standard cross-entropy loss as when trying to minimize the hierarchical loss directly. Thus, this hierarchical loss is unreliable as an objective for plain, randomly started stochastic gradient descent to minimize; the main value of the hierarchical loss may be merely as a meaningful metric of success of a classifier.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100005801</institution-id>
+<institution>Facebook</institution>
+</institution-wrap>
+</funding-source>
+</award-group>
+<funding-statement>CW, MT, YL: Facebook Inc. <ext-link ext-link-type="uri" xlink:href="https://newsroom.fb.com/company-info" xlink:type="simple">https://newsroom.fb.com/company-info</ext-link> Facebook employs all authors. The funder provided support in the form of salaries for authors CW, MT, YL, but did not have any additional role in the study design, data collection and analysis, decision to publish, or preparation of the manuscript. The specific roles of these authors are articulated in the "author contributions" section.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="4"/>
+<table-count count="7"/>
+<page-count count="17"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>The data underlying the results presented in the study are third party and freely available from the following sources: Lewis DD, Yang Y, Rose TG, Li F. RCV1: a new benchmark collection for text categorization research. J Machine Learning Research. 2004;5:361-397. The data are downloadable at <ext-link ext-link-type="uri" xlink:href="http://jmlr.csail.mit.edu/papers/volume5/lewis04a" xlink:type="simple">http://jmlr.csail.mit.edu/papers/volume5/lewis04a</ext-link>. Zhang X, Zhao J, LeCun Y. Character-level convolutional networks for text classification. In: Advances in Neural Information Processing Systems. vol. 28. Neural Information Processing Systems Foundation; 2015. p. 1-9. The data are downloadable at <ext-link ext-link-type="uri" xlink:href="https://goo.gl/JyCnZq" xlink:type="simple">https://goo.gl/JyCnZq</ext-link>. Lehmann J, Isele R, Jakob M, Jentzsch A, Kontokostas D, Mendes PN, et al. DBpedia -- a large-scale, multilingual knowledge base extracted from Wikipedia. Semantic Web. 2015;6(2):167-195. The data are downloadable at <ext-link ext-link-type="uri" xlink:href="http://web.informatik.unimannheim.de/DBpediaAsTables/DBpedia-3.9/json/Fish.json.gz" xlink:type="simple">http://web.informatik.unimannheim.de/DBpediaAsTables/DBpedia-3.9/json/Fish.json.gz</ext-link>. Partalas I, Kosmopoulos A, Baskiotis N, Artieres T, Paliouras G, Gaussier E, et al. LSHTC: a benchmark for large-scale text classification. arXiv; 2015. 1503.08581. The data are downloadable at <ext-link ext-link-type="uri" xlink:href="http://lshtc.iit.demokritos.gr" xlink:type="simple">http://lshtc.iit.demokritos.gr</ext-link>. The authors did not have special access privileges.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Metrics for classifier accuracy used in the neural network methods of [<xref ref-type="bibr" rid="pone.0226222.ref001">1</xref>] seldom account for semantically meaningful organizations of the classes; these metrics neglect, for instance, that sheepdogs and poodles are dogs, that dogs and cats are mammals, that mammals, birds, reptiles, amphibians, and fish are vertebrates, and so on. Below, we define a metric—the amount of the “win” or “winnings” for a classification—that accounts for a given organization of the classes into a tree. During an optimization (also known as “training”), we want to maximize the win or, equivalently, minimize the “loss” (loss is the negative of the win). We contrast the hierarchical win to the existing universal standard, the cross-entropy loss discussed by [<xref ref-type="bibr" rid="pone.0226222.ref001">1</xref>] (and by many others). We caution that several of our experiments indicate that plain stochastic gradient descent optimization with random starting points can get stuck in local optima; even so, the hierarchical win can serve as a good metric of success or figure of merit for the accuracy of the classifier.</p>
+<p>The approach detailed below is a special case of the general methods of [<xref ref-type="bibr" rid="pone.0226222.ref002">2</xref>], [<xref ref-type="bibr" rid="pone.0226222.ref003">3</xref>], and their references. The particular special cases discussed by them and by [<xref ref-type="bibr" rid="pone.0226222.ref004">4</xref>–<xref ref-type="bibr" rid="pone.0226222.ref009">9</xref>] allocate different weights to different leaves, not leveraging “ultrametric trees” as in the present paper (an ultrametric tree is a tree with a so-called ultrametric distance metric such that all leaves are at the same distance from the root, as in the phylogenetics discussed, for example, by [<xref ref-type="bibr" rid="pone.0226222.ref010">10</xref>]). The distinguishing characteristic of the distance metric constructed below is that all leaves are at the same distance from the root, as in an ultrametric tree; this provides a definition and measure of successful classification that is different from other options.</p>
+<p>A related topic is hierarchical classification, as reviewed by [<xref ref-type="bibr" rid="pone.0226222.ref011">11</xref>] (with further use more recently by [<xref ref-type="bibr" rid="pone.0226222.ref012">12</xref>] and [<xref ref-type="bibr" rid="pone.0226222.ref013">13</xref>], for example); however, the present paper considers only classification into a given hierarchy’s finest-level classes. The design options for classification into only the finest-level classes are more circumscribed, yet such classification is easier to use, implement, and interface with existing codes. The existing standard cross-entropy is the chief alternative in the setting of the present paper (that is, for classification into only the finest-level classes). Cross-entropy loss is the negative of the logarithm of our hierarchical win when the hierarchy is “flat,” that is, when the hierarchy is the degenerate case in which all classes are leaves attached to the same root. Extensive experiments demonstrate the advantages of hierarchical loss in comparison to the conventional cross-entropy.</p>
+<p>Hierarchical classification, such as that reviewed by [<xref ref-type="bibr" rid="pone.0226222.ref011">11</xref>], is more sophisticated (and potentially more powerful) than what the present article considers. The present paper only changes the metric of success (and objective function), not altering the procedure for classification—hierarchical procedures for classification are often avoided due to complications of systems development and systems programming. We were tasked with changing the figure of merit for measuring success of a classifier without being allowed to pursue more ambitious, full-blown hierarchical processes for classification. The actual real-world motivation for the hierarchical loss of the present article was in recommending places to users, where (for example) sending users to a Vietnamese restaurant when they request a Thai restaurant should be penalized less than sending them to a park instead—different kinds of restaurants are more similar to each other than to a park.</p>
+<p>We warn that minimizing the hierarchical loss directly via the usual stochastic gradient descent with random starting points was often fruitless even in relatively simple numerical experiments reported below. The complexity of systems deployed in practice typically makes hierarchical procedures for optimization very hard to implement, yet altering only the objective of the optimization has frustratingly little effect on the hierarchical loss during several tests in Section <italic>Results and discussion</italic> below.</p>
+<p>The remainder of the present paper has the following structure: Section <italic>Methods</italic> constructs the hierarchical loss and win. Section <italic>Results and discussion</italic> illustrates and evaluates the hierarchical loss and win via several numerical experiments. Section <italic>Conclusion</italic> draws conclusions and proposes directions for future work.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Methods</title>
+<p>Concretely, suppose that we want to classify each input into one of many classes, and that these classes are the leaves in a tree which organizes them into a semantically meaningful hierarchy. Suppose further that a classifier maps an input to an output probability distribution over the leaves, hopefully concentrated on the leaf corresponding to the correct class for the input. We define the probability of any node in the tree to be the sum of the probabilities of all leaves falling under the node (the node represents an aggregated class consisting of all these leaves); a leaf falls under the node if the node is on the path from the root to the leaf. We then define the amount of the “win” or “winnings” to be the weighted sum (with weights as detailed shortly) of the probabilities of the nodes along the path from the root to the leaf corresponding to the correct class.</p>
+<p>To calculate the win, we sum across all nodes on the path from the root to the leaf corresponding to the correct class, including both the root and the leaf, weighting the probability at the first node (that is, at the root) by 1/2, weighting at the second node by 1/2<sup>2</sup>, weighting at the third node by 1/2<sup>3</sup>, weighting at the fourth node by 1/2<sup>4</sup>, and so on until the final leaf. We then add to this sum the probability at the final leaf, weighted with the same weight as in the sum, that is, we double-count the final leaf. We justify the double-counting shortly.</p>
+<p>To compute the probability of each node given the probability distribution over the leaves, we propagate the leaf probabilities through the tree as follows. We begin by storing a zero at each node in the tree. Then, for each leaf, we add the probability associated with the leaf to the value stored at each node on the path from the root to the leaf, including at the root and at the leaf. We save these accumulated values as the propagated probabilities (storing the value 1 at the root—the sum of all the probabilities is 1 of course).</p>
+<p>Thus, if the probability of the final leaf is 1, then the win is 1. The win can be as large as 1 (this happens when the classification is completely certain and correct) or as small as 1/2 (this happens when the classification is as wrong as possible). The win being 1 whenever the probability of the final leaf is 1—irrespective of which is the final leaf—means that the weights form an “ultrametric tree,” as in the phylogenetics discussed, for example, by [<xref ref-type="bibr" rid="pone.0226222.ref010">10</xref>]. This justifies double-counting the final leaf.</p>
+<p>Figs <xref ref-type="fig" rid="pone.0226222.g001">1</xref>–<xref ref-type="fig" rid="pone.0226222.g004">4</xref> illustrate the evaluation of the hierarchical win via examples. The following two subsections summarize in pseudocode the algorithms for propagating the probabilities and for calculating the win, respectively (the latter algorithm runs the former as its initial step).</p>
+<fig id="pone.0226222.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0226222.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>This is a hierarchy of types of fish (but not the whole hierarchy from Subsection <italic>DBpedia fish</italic> of Section <italic>Results and discussion</italic>).</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0226222.g001" xlink:type="simple"/>
+</fig>
+<fig id="pone.0226222.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0226222.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>This depicts the hierarchy of <xref ref-type="fig" rid="pone.0226222.g001">Fig 1</xref> when the correct target leaf is “acipenser (oxyrinchus)” but the leaf predicted with probability 1 (the “single best class” of Subsection <italic>Choosing a single best class</italic>) is “huso” (as indicated with a box around “huso”).</title>
+<p>In this case, the hierarchical win is 1/2 + 1/4 = 3/4, as “acipenseriformes” and “sturgeon” are the nodes on both the path from the root “acipenseriformes” to “acipenser (oxyrinchus)” and the path from the root “acipenseriformes” to “huso”.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0226222.g002" xlink:type="simple"/>
+</fig>
+<fig id="pone.0226222.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0226222.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>This depicts the hierarchy of <xref ref-type="fig" rid="pone.0226222.g001">Fig 1</xref> when the correct target leaf is “acipenser (oxyrinchus)” but the leaf predicted with probability 1 (the “single best class” of Subsection <italic>Choosing a single best class</italic>) is “acipenser (other)” (as indicated with a box around “acipenser (other)”).</title>
+<p>In this case, the hierarchical win is 1/2 + 1/4 + 1/8 = 7/8, as “acipenseriformes,” “sturgeon,” and “acipenser” are the nodes on both the path from the root “acipenseriformes” to “acipenser (oxyrinchus)” and the path from the root “acipenseriformes” to “acipenser (other)”.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0226222.g003" xlink:type="simple"/>
+</fig>
+<fig id="pone.0226222.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0226222.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>This depicts the hierarchy of <xref ref-type="fig" rid="pone.0226222.g001">Fig 1</xref> when the correct target leaf is “acipenser (oxyrinchus),” the same as the leaf predicted with probability 1 (the “single best class” of Subsection <italic>Choosing a single best class</italic>).</title>
+<p>In this case, the hierarchical win is 1/2 + 1/4 + 1/8 + 1/8 = 1 (as with all correct predictions); the final node is double-counted at 1/8 = 1/16 + 1/16.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0226222.g004" xlink:type="simple"/>
+</fig>
+<sec id="sec003">
+<title>An algorithm for propagating probabilities</title>
+<p specific-use="line"><bold>Input</bold>: a discrete probability distribution over the leaves of a tree</p>
+<p specific-use="line"><bold>Output</bold>: a scalar value (the total probability) at each node in the tree</p>
+<p specific-use="line"><bold>Procedure</bold>:</p>
+<p specific-use="line"><bold>Store</bold> the value 0 at each node in the tree.</p>
+<p specific-use="line"><bold>For</bold> each leaf,</p>
+<p specific-use="line"> <bold>for</bold> each node in the path from the root to the leaf (including both the root and the leaf),</p>
+<p specific-use="line">  <bold>add</bold> to the value stored at the node the probability of the leaf.</p>
+</sec>
+<sec id="sec004">
+<title>An algorithm for computing the “win” or “winnings”</title>
+<p specific-use="line"><bold>Input</bold>: two inputs, namely (1) a discrete probability distribution over the leaves of a tree, and (2) which leaf corresponds to a completely correct classification</p>
+<p specific-use="line"><bold>Output</bold>: a single scalar value (the “win” or “winnings”)</p>
+<p specific-use="line"><bold>Procedure</bold>:</p>
+<p specific-use="line"><bold>Run</bold> <italic>An algorithm for propagating probabilities</italic> to obtain a scalar value at each node in the tree.</p>
+<p specific-use="line"><bold>Store</bold> the value 0 in an accumulator.</p>
+<p specific-use="line"><bold>Define</bold> <italic>ℓ</italic> to be the number of nodes in the path from the root (node 1) to the leaf (node <italic>ℓ</italic>).</p>
+<p specific-use="line"><bold>For</bold> <italic>j</italic> = 1, 2, …, <italic>ℓ</italic>,</p>
+<p specific-use="line"> <bold>add</bold> to the accumulated value 2<sup>−<italic>j</italic></sup> times the value stored at the path’s <italic>j</italic>th node.</p>
+<p specific-use="line"><bold>Add</bold> to the accumulated value 2<sup>−<italic>ℓ</italic></sup> times the value stored at the path’s <italic>ℓ</italic>th node (the leaf).</p>
+<p specific-use="line"><bold>Return</bold> the final accumulated value.</p>
+</sec>
+<sec id="sec005">
+<title>Calculation of gradients</title>
+<p>To facilitate optimization via gradient-based methods, we now detail how to compute the gradient of the hierarchical win with respect to the input distribution: Relaxing the constraint that the distribution over the leaves be a probability distribution, that is, that the “probabilities” of the leaves be nonnegative and sum to 1, the algorithms specified in the preceding two subsections yield a value for the win as a function of any distribution over the leaves. Without the constraint that the distribution over the leaves be a probability distribution, the win is actually a linear function of the distribution, that is, the win is the dot product between the input distribution and another vector (where this other vector depends on which leaf corresponds to the correct classification); the gradient of the win with respect to the input is therefore just the vector in the dot product. An entry of this gradient vector, say the <italic>j</italic>th entry, is equal to the win for the distribution over the leaves that consists of all zeros except for one value of one on the <italic>j</italic>th leaf; this win is equal to the sum of the series 1/2+ 1/2<sup>2</sup> + 1/2<sup>3</sup> + 1/2<sup>4</sup> + …, truncated to the number of terms equal to the number of nodes for which the path from the root to the correct leaf and the path from the root to the <italic>j</italic>th leaf coincide (or not truncated at all if the <italic>j</italic>th leaf happens to be the same as the leaf for a correct classification).</p>
+</sec>
+<sec id="sec006">
+<title>Choosing a single best class</title>
+<p>If forced to choose a single class corresponding to a leaf of the given hierarchy (rather than classifying into a probability distribution over all leaves) for the final output of the classification, we first identify the node having greatest probability among all nodes (including leaves) at the coarsest level, then the node having greatest probability among all nodes (including leaves) falling under the first node selected, then the node having greatest probability among all nodes (including leaves) falling under the second node selected, and so on, until we select a leaf. The leaf we select corresponds to the class we choose. The following subsection summarizes in pseudocode this procedure for selecting a single best leaf.</p>
+</sec>
+<sec id="sec007">
+<title>An algorithm for choosing the single best leaf</title>
+<p specific-use="line"><bold>Input</bold>: a discrete probability distribution over the leaves of a tree</p>
+<p specific-use="line"><bold>Output</bold>: a single leaf of the tree</p>
+<p specific-use="line"><bold>Procedure</bold>:</p>
+<p specific-use="line"><bold>Run</bold> <italic>An algorithm for propagating probabilities</italic> to obtain a scalar value at each node in the tree.</p>
+<p specific-use="line"><bold>Move</bold> to the root.</p>
+<p specific-use="line"><bold>Repeating until</bold> at a leaf,</p>
+<p specific-use="line"> <bold>follow</bold> (to the next finer level) the branch containing the greatest among all scalar values stored at this next finer level in the current subtree.</p>
+<p specific-use="line"><bold>Return</bold> the final leaf.</p>
+</sec>
+<sec id="sec008">
+<title>Logarithms when using a softmax or independent samples</title>
+<p>In order to provide appropriately normalized results, the input to the hierarchical loss needs to be a (discrete) probability distribution, not just an arbitrary collection of numbers. A “softmax” provides a good, standard means of converting any collection of real numbers into a proper probability distribution. Recall that the softmax of a sequence <italic>x</italic><sub>1</sub>, <italic>x</italic><sub>2</sub>, …, <italic>x</italic><sub><italic>n</italic></sub> of <italic>n</italic> numbers is the normalized sequence exp(<italic>x</italic><sub>1</sub>)/<italic>Z</italic>, exp(<italic>x</italic><sub>2</sub>)/<italic>Z</italic>, …, exp(<italic>x</italic><sub><italic>n</italic></sub>)/<italic>Z</italic>, where <inline-formula id="pone.0226222.e001"><alternatives><graphic id="pone.0226222.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0226222.e001" xlink:type="simple"/><mml:math display="inline" id="M1"><mml:mrow><mml:mi>Z</mml:mi><mml:mo>=</mml:mo><mml:msubsup><mml:mo>∑</mml:mo><mml:mrow><mml:mi>k</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mi>n</mml:mi></mml:msubsup><mml:mtext>exp</mml:mtext><mml:mrow><mml:mo>(</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>k</mml:mi></mml:msub><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>. Notice that each of the normalized numbers lies between 0 and 1, and the sum of the numbers in the normalized sequence is 1—the normalized sequence is a proper probability distribution.</p>
+<p>When generating the probability distribution over the leaves via a softmax, we should optimize based on the logarithm of the “win” introduced in the subsections above rather than the “win” itself. In this case, omitting the contribution of the root to the objective value and its gradient makes the most sense, ensuring that a flat hierarchy (that is, a hierarchy which has only one level aside from the root’s) results in the same training as with the usual cross-entropy loss. Taking the logarithm also makes sense because the joint probability of stochastically independent samples is the product of the probabilities of the individual samples, making averaging across the different samples the logarithm of a function (the function could be the win) make more sense than averaging the function directly. That said, taking the logarithm emphasizes highly misclassified samples, which may not be desirable if misclassifying a few samples (while simultaneously reporting high confidence in their classification) should be acceptable.</p>
+<p>Indeed, if the logarithm of the win for even a single sample is infinite, then the average of the logarithm of the win is also infinite, irrespective of the values for other samples. Whether the hierarchy is full or flat, training on the logarithms of wins is very stringent, whereas the wins without the logarithms can be more meaningful as metrics of success or figures of merit. It can make good sense to train on the logarithm, which works really hard to accommodate and learn from the samples which are hardest to classify correctly, but to make the metric of success or figure of merit be robust against such uninteresting outliers. Thus, training with the logarithm of the win can make good sense, where the win—without the logarithm—is the metric of success or figure of merit for the testing or validation stage.</p>
+<p>With or without a logarithm, we henceforth omit the contribution of the root to the hierarchical wins and losses that we report, and we multiply by 2 the resulting win, so that its minimal and maximal possible values become 0 and 1 (with 0 corresponding to the most incorrect possible classification, and with 1 corresponding to the completely correct classification).</p>
+</sec>
+</sec>
+<sec id="sec009" sec-type="conclusions">
+<title>Results and discussion</title>
+<p>We illustrate the hierarchical loss and its performance using supervised learning for text classification with fastText of [<xref ref-type="bibr" rid="pone.0226222.ref014">14</xref>]. The tables report performance across several experiments, with the columns “training loss (rate, epochs)” listing the following three parameters for training: (1) the form of the loss function used during training (as explained shortly), (2) the initial learning rate which tapers linearly to 0 over the course of training, and (3) the total number of sweeps through the data performed during training (too many sweeps results in overfitting). The training loss “flat” refers to training using the existing standard cross-entropy loss (that is invariably the default in machine learning), which is the same as the negative of the natural logarithm of the hierarchical win when using a flat hierarchy in which all labelable classes are leaves attached to the root (as discussed in Subsection <italic>Logarithms when using a softmax or independent samples</italic> of Section <italic>Methods</italic>). The training loss “raw” refers to training using the hierarchical loss, using the full hierarchy. The training loss “log” refers to training using the negative of the natural logarithm of the hierarchical win, using the full hierarchy. The training loss “coarse” refers to training using the usual cross-entropy loss for classification into only the coarsest (aggregated) classes in the hierarchy (based on a suitably smaller softmax for input to the loss). The values reported in the tables for the learning rate and number of epochs yielded among the best results for the accuracies discussed in the following paragraphs, during a limited grid search around the reported values (if increasing the epochs beyond the reported value had little effect, then we report the smaller number of epochs); the appendix details the settings considered.</p>
+<p>The columns “one-hot win via hierarchy” display the average over all testing samples of the hierarchical win fed with the results of a one-hot encoding of the class chosen according to Subsection <italic>Choosing a single best class</italic> of Section <italic>Methods</italic>. (The one-hot encoding of a class is the vector whose entries are all zeros aside from a single entry of one in the position corresponding to the class.) The columns “softmax win via hierarchy” display the average over all testing samples of the hierarchical win fed with the results of a softmax from fastText of [<xref ref-type="bibr" rid="pone.0226222.ref014">14</xref>] (Subsection <italic>Logarithms when using a softmax or independent samples</italic> of Section <italic>Methods</italic> above reviews the definition of “softmax”). The columns “−log of win via hierarchy” display the average over all testing samples of the negative of the natural logarithm of the hierarchical win fed with the results of a softmax from fastText (Subsection <italic>Logarithms when using a softmax or independent samples</italic> of Section <italic>Methods</italic> above reviews the definition of “softmax”). The columns “cross-entropy” display the average over all testing samples of the usual cross-entropy loss, which is the same as the negative of the natural logarithm of the hierarchical win fed with the results of a softmax when using a “flat” hierarchy in which all labelable classes are leaves attached to the root (as discussed in Subsection <italic>Logarithms when using a softmax or independent samples</italic> of Section <italic>Methods</italic>). Please note that the hierarchy and form of the training loss may be different than the hierarchies and forms of the testing losses and wins; for example, using the “flat” training loss does not alter the full hierarchy used in the “−log of win via hierarchy.”</p>
+<p>The columns “coarsest accuracy” display the fraction of testing samples for which the coarsest classes containing the fine classes chosen during the classification are correct, when classifying each sample into exactly one class, as in Subsection <italic>Choosing a single best class</italic> of Section <italic>Methods</italic>. The columns “parents’ accuracy” display the fraction of testing samples for which the parents of the classes chosen during the classification are correct, when classifying each sample into exactly one class; the parents are the same as the coarsest classes in Tables <xref ref-type="table" rid="pone.0226222.t003">3</xref> and <xref ref-type="table" rid="pone.0226222.t004">4</xref>, as the experiments reported in Tables <xref ref-type="table" rid="pone.0226222.t003">3</xref> and <xref ref-type="table" rid="pone.0226222.t004">4</xref> pertain to hierarchies with only two levels (excluding the root). The columns “finest accuracy” display the fraction of testing samples classified correctly, when classifying each into exactly one finest-level class, again as in Subsection <italic>Choosing a single best class</italic> of Section <italic>Methods</italic>.</p>
+<p>The columns “aggregate precision,” “aggregate recall,” and “aggregate F1” refer to the hierarchical precision, hierarchical recall, and hierarchical F score detailed in the survey of [<xref ref-type="bibr" rid="pone.0226222.ref011">11</xref>]. The columns “aggregate precision” display the total number of nodes on the path from the root to the class chosen when classifying each sample into exactly one class, as in Subsection <italic>Choosing a single best class</italic> of Section <italic>Methods</italic>, that are also on the path from the root to the correct class, divided by the total number of nodes on the path from the root to the chosen class (aggregating both totals separately over all samples). The columns “aggregate recall” display the same total as for the aggregate precision, but divided by the total number of nodes on the path from the root to the correct class, rather than on the path from the root to the chosen class (while again aggregating both totals in the quotient separately over all samples). The columns “aggregate F1” display the harmonic mean of the aggregate precision and the aggregate recall. When counting these total numbers of nodes, we never count the root node, but always count any leaf node on the paths. Since the aggregation in the quotients defining these metrics happens separately for each numerator and denominator, these aggregate metrics are not mean values averaged over the samples, unlike all other quantities reported in the tables. As elaborated by [<xref ref-type="bibr" rid="pone.0226222.ref011">11</xref>], these aggregate metrics are common in the study of hierarchical classification (however, hierarchical classification is beyond the scope of the present paper, for the reasons outlined in Section <italic>Introduction</italic>; the present paper reports the aggregate metrics at the request of some readers, purely for reference and comparative purposes).</p>
+<p>The last lines of the tables remind the reader that the best classifier would have
+<list list-type="bullet">
+<list-item><p>higher one-hot win via hierarchy</p></list-item>
+<list-item><p>higher softmax win via hierarchy</p></list-item>
+<list-item><p>lower −log of win via hierarchy</p></list-item>
+<list-item><p>lower cross-entropy</p></list-item>
+<list-item><p>higher coarsest accuracy</p></list-item>
+<list-item><p>higher parents’ accuracy</p></list-item>
+<list-item><p>higher finest accuracy</p></list-item>
+<list-item><p>higher aggregate precision</p></list-item>
+<list-item><p>higher aggregate recall</p></list-item>
+<list-item><p>higher aggregate F1</p></list-item>
+</list></p>
+<p>We follow the recommendation from Subsection <italic>Logarithms when using a softmax or independent samples</italic> of Section <italic>Methods</italic> above, maximizing the hierarchical win (or its logarithm) calculated without any contribution from the root (excluding the root makes a small difference when taking the logarithm); please note the very last paragraph in the preceeding section—the hierarchical wins reported here omit the contribution from the root and rescale the result by a factor of 2.</p>
+<p>We hashed bigrams (pairs of words) into a million buckets and trained using stochastic gradient descent, setting the learning rate to start at the values indicated in the tables (these worked at least as well as other settings), then decaying linearly to 0 over the course of training, as done by [<xref ref-type="bibr" rid="pone.0226222.ref014">14</xref>]; the starting point for the stochastic gradient descent was random. The “learning rate” is also known as the “step size” or “step length” in the update for each iteration (step) of stochastic gradient descent.</p>
+<p>Our implementation couples the C++ software of [<xref ref-type="bibr" rid="pone.0226222.ref014">14</xref>] with a Python prototype. Industrial deployment requires acceleration of the Python prototype (rewriting in C++, for instance), but our tests are sufficient for estimating the ensuing gains in accuracy and illustrating the figure of merit, providing a proof of principle. In particular, our experiments indicate that the gains in accuracy due to training with the hierarchical loss are meager except in special circumstances detailed in the subsections below and summarized in the conclusion. Pending further development as suggested in the conclusion, the main present use for the hierarchical win should be as a metric of success or figure of merit—a good notion of “accuracy”—at least when training with plain stochastic gradient descent coupled to backpropagation.</p>
+<p>Several of our datasets consider the setting in which each class includes at most one training sample. Such a setting is a proxy for applications in “open-world classification,” “few-shot learning,” and “personalization,” which often involves limited or even (for many classes) no training data per individual class, though there may be many individuals. Access to a hierarchy of the classes enables meaningful classification even for classes not represented in the training data, as the hierarchy itself indicates that some classes are very much like others (some of which may appear in the training data). Applying a hierarchical loss is perhaps the simplest method for effective classification and quantification of accuracy when there is at most one training sample per class.</p>
+<p>When reading the following subsections, please recall that the standard cross-entropy loss is the same as the negative of the logarithm of the hierarchical win with a flat hierarchy.</p>
+<p>The following subsections detail our experiments and datasets; the subsequent section, Section <italic>Conclusion</italic>, elucidates the consequences of these experiments. For the experiments, we used the hierarchies that accompanied the datasets; all are available at the web links (URLs) given in the following subsections. Two datasets—those in Subsections <italic>Yahoo Answers</italic> and <italic>DBpedia</italic>—provided no hierarchy, so for these we constructed the hierarchies described below in Subsections <italic>Yahoo Answers</italic> and <italic>DBpedia</italic>. In all cases, the results display little dependence on the dimension of the space into which we embedded words and their bigrams (words are unigrams), in accordance with [<xref ref-type="bibr" rid="pone.0226222.ref014">14</xref>], provided only that the dimension is somewhat larger than the number of classes for targets in the classification.</p>
+<sec id="sec010">
+<title>RCV1-v2</title>
+<p><xref ref-type="table" rid="pone.0226222.t001">Table 1</xref> reports results on RCV1-v2 of [<xref ref-type="bibr" rid="pone.0226222.ref015">15</xref>], which is available for download at <ext-link ext-link-type="uri" xlink:href="http://jmlr.csail.mit.edu/papers/volume5/lewis04a" xlink:type="simple">http://jmlr.csail.mit.edu/papers/volume5/lewis04a</ext-link>. This dataset includes a hierarchy of 364 classes (semantically, these are classes of industries); each sample from the dataset comes associated with at least one of these 364 class labels, whether or not the class is an internal node of the tree or a leaf. Each sample from the dataset consists of filtered, tokenized text from Reuters news articles (“article” means the title and body text). As described by [<xref ref-type="bibr" rid="pone.0226222.ref015">15</xref>], labels associated with internal nodes in the original hierarchy may be viewed as leaves that fall under those internal nodes while not classifying into any of the lower-level nodes. In our hierarchy, we hence duplicate every internal node into an “other” class under that node, such that the “other” class is a leaf.</p>
+<table-wrap id="pone.0226222.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0226222.t001</object-id>
+<label>Table 1</label>
+<caption>
+<title>Results on RCV1-v2, tested on 5,000 samples.</title>
+</caption>
+<alternatives>
+<graphic id="pone.0226222.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0226222.t001" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">one-hot win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">softmax win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">−log of win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">cross<break/>entropy</td>
+</tr>
+<tr>
+<td align="left">flat (2, 4)</td>
+<td align="left">.85</td>
+<td align="left">.80</td>
+<td align="left">.52</td>
+<td align="left">.95</td>
+</tr>
+<tr>
+<td align="left">raw (12, 4)</td>
+<td align="left">.51</td>
+<td align="left">.50</td>
+<td align="left">4.2</td>
+<td align="left">∞</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">log (4, 4)</td>
+<td align="left" style="border-bottom:thick">.74</td>
+<td align="left" style="border-bottom:thick">.72</td>
+<td align="left" style="border-bottom:thick">.76</td>
+<td align="left" style="border-bottom:thick">4.4</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">lower</td>
+<td align="left" style="border-bottom:thick">lower</td>
+</tr>
+</tbody>
+</table>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">coarsest<break/>accuracy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">parents’<break/>accuracy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">finest<break/>accuracy</td>
+</tr>
+<tr>
+<td align="left">flat (2, 4)</td>
+<td align="left">.88</td>
+<td align="left">.82</td>
+<td align="left">.80</td>
+</tr>
+<tr>
+<td align="left">raw (12, 4)</td>
+<td align="left">.74</td>
+<td align="left">.26</td>
+<td align="left">.21</td>
+</tr>
+<tr>
+<td align="left">log (4, 4)</td>
+<td align="left">.87</td>
+<td align="left">.63</td>
+<td align="left">.53</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">coarse (.05, 100)</td>
+<td align="left" style="border-bottom:thick">.88</td>
+<td align="left" style="border-bottom:thick"/>
+<td align="left" style="border-bottom:thick"/>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+</tr>
+</tbody>
+</table>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>precision</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>recall</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>F1</td>
+</tr>
+<tr>
+<td align="left">flat (2, 4)</td>
+<td align="left">.84</td>
+<td align="left">.84</td>
+<td align="left">.84</td>
+</tr>
+<tr>
+<td align="left">raw (12, 4)</td>
+<td align="left">.38</td>
+<td align="left">.46</td>
+<td align="left">.42</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">log (4, 4)</td>
+<td align="left" style="border-bottom:thick">.67</td>
+<td align="left" style="border-bottom:thick">.70</td>
+<td align="left" style="border-bottom:thick">.69</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>We discard every sample from the dataset associated with more than one label, and swap the training and testing sets (since the original training set is small, whereas the original testing set is large). Furthermore, we randomly permute all samples in both the training and testing sets, and subsample to 5,000 samples for testing and 200,000 for training. In the hierarchy, there are 10 coarsest classes and 61 parents of the 254 leaves that were actually represented by any samples in the training and testing sets. The space into which we embedded the words and their pairs (bigrams) was 1,000-dimensional. For training the classifier into only the coarsest (aggregated) classes, we embedded the words and bigrams into a 20-dimensional space.</p>
+<p>For this dataset, optimizing based on the hierarchical loss (with or without a logarithm) yields worse accuracy according to all metrics considered compared to optimizing based on the standard cross-entropy loss.</p>
+</sec>
+<sec id="sec011">
+<title>Subsampled RCV1-v2</title>
+<p><xref ref-type="table" rid="pone.0226222.t002">Table 2</xref> reports results on the same dataset RCV1-v2 (which is available for download at <ext-link ext-link-type="uri" xlink:href="http://jmlr.csail.mit.edu/papers/volume5/lewis04a" xlink:type="simple">http://jmlr.csail.mit.edu/papers/volume5/lewis04a</ext-link>) of the preceeding subsection, but retaining only one training sample for each class label. The training set thus consists of 254 samples (many of the 364 possible class labels had no corresponding samples in the training set from the preceeding subsection). As in the preceding subsection, the hierarchy has 10 coarsest classes and 61 parents of the 254 leaves that were used in the training and testing sets. We again embedded the words and their bigrams into a 1,000-dimensional space, while for training the classifier into only the coarsest (aggregated) classes, we again used only 20 dimensions.</p>
+<table-wrap id="pone.0226222.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0226222.t002</object-id>
+<label>Table 2</label>
+<caption>
+<title>Results on RCV1-v2 with at most one training sample per class, tested on 5,000 samples.</title>
+</caption>
+<alternatives>
+<graphic id="pone.0226222.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0226222.t002" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">one-hot win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">softmax win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">−log of win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">cross<break/>entropy</td>
+</tr>
+<tr>
+<td align="left">flat (.04, 9)</td>
+<td align="left">.14</td>
+<td align="left">.07</td>
+<td align="left">2.8</td>
+<td align="left">5.5</td>
+</tr>
+<tr>
+<td align="left">raw (45, 500)</td>
+<td align="left">.16</td>
+<td align="left">.15</td>
+<td align="left">7.2</td>
+<td align="left">13</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">log (3, 40)</td>
+<td align="left" style="border-bottom:thick">.17</td>
+<td align="left" style="border-bottom:thick">.09</td>
+<td align="left" style="border-bottom:thick">2.7</td>
+<td align="left" style="border-bottom:thick">5.5</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">lower</td>
+<td align="left" style="border-bottom:thick">lower</td>
+</tr>
+</tbody>
+</table>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">coarsest<break/>accuracy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">parents’<break/>accuracy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">finest<break/>accuracy</td>
+</tr>
+<tr>
+<td align="left">flat (.04, 9)</td>
+<td align="left">.209</td>
+<td align="left">.086</td>
+<td align="left">.051</td>
+</tr>
+<tr>
+<td align="left">raw (45, 500)</td>
+<td align="left">.235</td>
+<td align="left">.095</td>
+<td align="left">.052</td>
+</tr>
+<tr>
+<td align="left">log (3, 40)</td>
+<td align="left">.258</td>
+<td align="left">.089</td>
+<td align="left">.064</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">coarse (4, 1000)</td>
+<td align="left" style="border-bottom:thick">.324</td>
+<td align="left" style="border-bottom:thick"/>
+<td align="left" style="border-bottom:thick"/>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+</tr>
+</tbody>
+</table>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>precision</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>recall</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>F1</td>
+</tr>
+<tr>
+<td align="left">flat (.04, 9)</td>
+<td align="left">.121</td>
+<td align="left">.118</td>
+<td align="left">.120</td>
+</tr>
+<tr>
+<td align="left">raw (45, 500)</td>
+<td align="left">.132</td>
+<td align="left">.148</td>
+<td align="left">.140</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">log (3, 40)</td>
+<td align="left" style="border-bottom:thick">.141</td>
+<td align="left" style="border-bottom:thick">.166</td>
+<td align="left" style="border-bottom:thick">.153</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>For this subsampled RCV1-v2, optimizing based on the negative of the natural logarithm of the hierarchical win yields better accuracy according to all metrics considered compared to optimizing based on the standard cross-entropy loss, except on the negative of the natural logarithm of the hierarchical win and the cross-entropy loss (for which the accuracies are similar).</p>
+</sec>
+<sec id="sec012">
+<title>Yahoo Answers</title>
+<p><xref ref-type="table" rid="pone.0226222.t003">Table 3</xref> reports results on the Yahoo Answers subset introduced by [<xref ref-type="bibr" rid="pone.0226222.ref016">16</xref>], which is available for download at <ext-link ext-link-type="uri" xlink:href="http://goo.gl/JyCnZq" xlink:type="simple">http://goo.gl/JyCnZq</ext-link>. This dataset includes 10 classes (semantically, these are classes of interest groups); each sample from the dataset comes associated with exactly one of these 10 class labels. Each sample from the dataset consists of normalized text from questions and answers given on a website devoted to Q&amp;A. The space into which we embedded the words and their bigrams was 20-dimensional, while for training the classifier into only the coarsest (aggregated) classes, we embedded the words and bigrams into a 10-dimensional space. For the nontrivial hierarchy, we grouped the 10 classes into 4 superclasses:
+<list list-type="order">
+<list-item><p><bold>Leisure</bold>: Entertainment and Music, Society and Culture, and Sports</p></list-item>
+<list-item><p><bold>Newsworthy</bold>: Business and Finance, and Politics and Government</p></list-item>
+<list-item><p><bold>Relations</bold>: Family and Relationships</p></list-item>
+<list-item><p><bold>Science and Technology</bold>: Computer and Internet, Education and Reference, Health, and Science and Mathematics</p></list-item>
+</list></p>
+<table-wrap id="pone.0226222.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0226222.t003</object-id>
+<label>Table 3</label>
+<caption>
+<title>Results on Yahoo Answers, tested on 60,000 samples.</title>
+</caption>
+<alternatives>
+<graphic id="pone.0226222.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0226222.t003" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">one-hot win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">softmax win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">−log of win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">cross<break/>entropy</td>
+</tr>
+<tr>
+<td align="left">flat (.1, 4)</td>
+<td align="left">.76</td>
+<td align="left">.67</td>
+<td align="left">.67</td>
+<td align="left">.91</td>
+</tr>
+<tr>
+<td align="left">raw (1, 4)</td>
+<td align="left">.65</td>
+<td align="left">.64</td>
+<td align="left">2.6</td>
+<td align="left">∞</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">log (.1, 4)</td>
+<td align="left" style="border-bottom:thick">.76</td>
+<td align="left" style="border-bottom:thick">.67</td>
+<td align="left" style="border-bottom:thick">.68</td>
+<td align="left" style="border-bottom:thick">1.0</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">lower</td>
+<td align="left" style="border-bottom:thick">lower</td>
+</tr>
+</tbody>
+</table>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">coarsest<break/>accuracy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">finest<break/>accuracy</td>
+</tr>
+<tr>
+<td align="left">flat (.1, 4)</td>
+<td align="left">.80</td>
+<td align="left">.72</td>
+</tr>
+<tr>
+<td align="left">raw (1, 4)</td>
+<td align="left">.79</td>
+<td align="left">.50</td>
+</tr>
+<tr>
+<td align="left">log (.1, 4)</td>
+<td align="left">.80</td>
+<td align="left">.71</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">coarse (.1, 4)</td>
+<td align="left" style="border-bottom:thick">.80</td>
+<td align="left" style="border-bottom:thick"/>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+</tr>
+</tbody>
+</table>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>precision</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>recall</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>F1</td>
+</tr>
+<tr>
+<td align="left">flat (.1, 4)</td>
+<td align="left">.76</td>
+<td align="left">.76</td>
+<td align="left">.76</td>
+</tr>
+<tr>
+<td align="left">raw (1, 4)</td>
+<td align="left">.64</td>
+<td align="left">.64</td>
+<td align="left">.64</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">log (.1, 4)</td>
+<td align="left" style="border-bottom:thick">.76</td>
+<td align="left" style="border-bottom:thick">.76</td>
+<td align="left" style="border-bottom:thick">.76</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>With only 10 classes and two levels for the classification hierarchy, <xref ref-type="table" rid="pone.0226222.t003">Table 3</xref> indicates that training with or without the hierarchical loss makes little difference.</p>
+</sec>
+<sec id="sec013">
+<title>DBpedia</title>
+<p><xref ref-type="table" rid="pone.0226222.t004">Table 4</xref> reports results on the DBpedia subset introduced by [<xref ref-type="bibr" rid="pone.0226222.ref016">16</xref>], which is available for download at <ext-link ext-link-type="uri" xlink:href="http://goo.gl/JyCnZq" xlink:type="simple">http://goo.gl/JyCnZq</ext-link>. This dataset includes 14 classes (semantically, these are categories from DBpedia); each sample from the dataset comes associated with exactly one of these 14 class labels. Each sample from the dataset consists of normalized text from DBpedia articles (“article” means the title and body text). We embedded the words and their bigrams into a 20-dimensional space, except when training a classifier into only the coarsest (aggregated) classes, in which case a space with only 10 dimensions was fine. For the nontrivial hierarchy, we grouped the 14 classes into 6 superclasses:
+<list list-type="order">
+<list-item><p><bold>Institution</bold>: Company and EducationalInstitution</p></list-item>
+<list-item><p><bold>Man-made</bold>: Building and MeansOfTransportation</p></list-item>
+<list-item><p><bold>Media</bold>: Album, Film, and WrittenWork</p></list-item>
+<list-item><p><bold>Organism</bold>: Animal and Plant</p></list-item>
+<list-item><p><bold>Person</bold>: Artist, Athlete, and OfficeHolder</p></list-item>
+<list-item><p><bold>Place</bold>: NaturalPlace and Village</p></list-item>
+</list></p>
+<table-wrap id="pone.0226222.t004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0226222.t004</object-id>
+<label>Table 4</label>
+<caption>
+<title>Results on DBpedia, tested on 70,000 samples.</title>
+</caption>
+<alternatives>
+<graphic id="pone.0226222.t004g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0226222.t004" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">one-hot win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">softmax win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">−log of win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">cross<break/>entropy</td>
+</tr>
+<tr>
+<td align="left">flat (.5, 4)</td>
+<td align="left">.989</td>
+<td align="left">.986</td>
+<td align="left">.034</td>
+<td align="left">.054</td>
+</tr>
+<tr>
+<td align="left">raw (1, 4)</td>
+<td align="left">.813</td>
+<td align="left">.811</td>
+<td align="left">.312</td>
+<td align="left">6.06</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">log (.5, 4)</td>
+<td align="left" style="border-bottom:thick">.988</td>
+<td align="left" style="border-bottom:thick">.985</td>
+<td align="left" style="border-bottom:thick">.036</td>
+<td align="left" style="border-bottom:thick">.063</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">lower</td>
+<td align="left" style="border-bottom:thick">lower</td>
+</tr>
+</tbody>
+</table>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">coarsest<break/>accuracy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">finest<break/>accuracy</td>
+</tr>
+<tr>
+<td align="left">flat (.5, 4)</td>
+<td align="left">.992</td>
+<td align="left">.986</td>
+</tr>
+<tr>
+<td align="left">raw (1, 4)</td>
+<td align="left">.989</td>
+<td align="left">.636</td>
+</tr>
+<tr>
+<td align="left">log (.5, 4)</td>
+<td align="left">.992</td>
+<td align="left">.985</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">coarse (.3, 4)</td>
+<td align="left" style="border-bottom:thick">.992</td>
+<td align="left" style="border-bottom:thick"/>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+</tr>
+</tbody>
+</table>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>precision</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>recall</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>F1</td>
+</tr>
+<tr>
+<td align="left">flat (.5, 4)</td>
+<td align="left">.989</td>
+<td align="left">.989</td>
+<td align="left">.989</td>
+</tr>
+<tr>
+<td align="left">raw (1, 4)</td>
+<td align="left">.813</td>
+<td align="left">.813</td>
+<td align="left">.813</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">log (.5, 4)</td>
+<td align="left" style="border-bottom:thick">.988</td>
+<td align="left" style="border-bottom:thick">.988</td>
+<td align="left" style="border-bottom:thick">.988</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>With merely 14 classes and two levels for the classification hierarchy, <xref ref-type="table" rid="pone.0226222.t004">Table 4</xref> shows that training with or without the hierarchical loss makes little difference.</p>
+</sec>
+<sec id="sec014">
+<title>DBpedia fish</title>
+<p><xref ref-type="table" rid="pone.0226222.t005">Table 5</xref> reports results on the subset corresponding to fish from the DBpedia of [<xref ref-type="bibr" rid="pone.0226222.ref017">17</xref>], which is available for download at <ext-link ext-link-type="uri" xlink:href="http://web.informatik.uni-mannheim.de/DBpediaAsTables/DBpedia-3.9/json/Fish.json.gz" xlink:type="simple">http://web.informatik.uni-mannheim.de/DBpediaAsTables/DBpedia-3.9/json/Fish.json.gz</ext-link>. This dataset includes 1,298 classes (semantically, these are taxonomic groups of fish, such as species containing sub-species, genera containing species, or families containing genera—DBpedia extends to different depths of taxonomic rank for different kinds of fish; our classes are the parents of the leaves in the DBpedia tree). Each sample from the dataset consists of normalized text from the lead section (the introduction) of the Wikipedia article on the associated type of fish, with all sub-species, species, genus, family, and order names removed from the associated Wikipedia article (DBpedia derives from Wikipedia, as discussed by [<xref ref-type="bibr" rid="pone.0226222.ref017">17</xref>]). For each of our finest-level classes, we chose uniformly at random one leaf in the DBpedia taxonomic tree of fish to be a sample in the training set, reserving the other leaves for the testing set (the testing set consists of a random selection of 6,000 of these leaves). In the hierarchy, there are 94 coarsest classes, 367 parents of the leaves in our tree, and 1,298 leaves in our tree. Optimizing the hierarchical win—without any logarithm—was wholly ineffective, always resulting in assigning the same finest-level class to all input samples (with the particular class assigned varying according to the extent of training and the random starting point). So taking the logarithm of the hierarchical win was absolutely necessary to train successfully. For training the classifier into only the coarsest (aggregated) classes, we embedded the Wikipedia articles’ words and bigrams into a 200-dimensional space rather than the larger 2,000-dimensional space used for classifying into all 1,298 classes.</p>
+<table-wrap id="pone.0226222.t005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0226222.t005</object-id>
+<label>Table 5</label>
+<caption>
+<title>Results on DBpedia fish, tested on 6,000 samples.</title>
+</caption>
+<alternatives>
+<graphic id="pone.0226222.t005g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0226222.t005" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">one-hot win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">softmax win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">−log of win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">cross<break/>entropy</td>
+</tr>
+<tr>
+<td align="left">flat (5, 25)</td>
+<td align="left">.27</td>
+<td align="left">.25</td>
+<td align="left">4.4</td>
+<td align="left">16</td>
+</tr>
+<tr>
+<td align="left">raw (200, 200)</td>
+<td align="left">.17</td>
+<td align="left">.17</td>
+<td align="left">6.5</td>
+<td align="left">∞</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">log (5, 50)</td>
+<td align="left" style="border-bottom:thick">.38</td>
+<td align="left" style="border-bottom:thick">.36</td>
+<td align="left" style="border-bottom:thick">3.5</td>
+<td align="left" style="border-bottom:thick">19</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">lower</td>
+<td align="left" style="border-bottom:thick">lower</td>
+</tr>
+</tbody>
+</table>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">coarsest<break/>accuracy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">parents’<break/>accuracy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">finest<break/>accuracy</td>
+</tr>
+<tr>
+<td align="left">flat (5, 25)</td>
+<td align="left">.38</td>
+<td align="left">.26</td>
+<td align="left">.065</td>
+</tr>
+<tr>
+<td align="left">raw (200, 200)</td>
+<td align="left">.31</td>
+<td align="left">.04</td>
+<td align="left">.001</td>
+</tr>
+<tr>
+<td align="left">log (5, 50)</td>
+<td align="left">.60</td>
+<td align="left">.22</td>
+<td align="left">.014</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">coarse (3, 70)</td>
+<td align="left" style="border-bottom:thick">.60</td>
+<td align="left" style="border-bottom:thick"/>
+<td align="left" style="border-bottom:thick"/>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+</tr>
+</tbody>
+</table>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>precision</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>recall</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>F1</td>
+</tr>
+<tr>
+<td align="left">flat (5, 25)</td>
+<td align="left">.24</td>
+<td align="left">.25</td>
+<td align="left">.24</td>
+</tr>
+<tr>
+<td align="left">raw (200, 200)</td>
+<td align="left">.12</td>
+<td align="left">.13</td>
+<td align="left">.12</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">log (5, 50)</td>
+<td align="left" style="border-bottom:thick">.30</td>
+<td align="left" style="border-bottom:thick">.33</td>
+<td align="left" style="border-bottom:thick">.31</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>Here, optimizing based on the negative of the logarithm of the hierarchical win yields much better coarsest accuracy and hierarchical wins than optimizing based on the standard cross-entropy loss, while optimizing based on the standard cross-entropy loss yields much better finest accuracy and cross-entropy. When optimizing based on the negative of the natural logarithm of the hierarchical win, the accuracy on the coarsest aggregates reaches that attained when optimizing the coarse classification directly.</p>
+</sec>
+<sec id="sec015">
+<title>LSHTC1</title>
+<p><xref ref-type="table" rid="pone.0226222.t006">Table 6</xref> reports results on a subset of the LSHTC1 dataset introduced by [<xref ref-type="bibr" rid="pone.0226222.ref018">18</xref>], which is available for download at <ext-link ext-link-type="uri" xlink:href="http://lshtc.iit.demokritos.gr" xlink:type="simple">http://lshtc.iit.demokritos.gr</ext-link> (specifically, “DMOZ large” for “LSHTC1”). The subset considered consists of the subtree for class 3261; this subtree includes 18 coarsest classes (though 3 of these have no corresponding samples in the testing or training sets) and 364 finest-level classes (with 288 of these having corresponding samples in the testing and training sets). We reserved one sample per finest-level class for training; all other samples were for testing, and we chose 2,000 of these uniformly at random to form the testing set. Each sample from the dataset consists of normalized, tokenized text in extracts from Wikipedia, the popular crowdsourced online encyclopedia. The hierarchy has 18 coarsest classes (with 15 actually represented in the training and testing sets), as well as 111 parents of the 288 leaves that were used in the training and testing sets. We embedded the words and their bigrams into a 1,000-dimensional space. For training the classifier into only the coarsest (aggregated) classes, we embedded the words and bigrams into a 20-dimensional space.</p>
+<table-wrap id="pone.0226222.t006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0226222.t006</object-id>
+<label>Table 6</label>
+<caption>
+<title>Results on a subset of LSHTC1, tested on 2,000 samples.</title>
+</caption>
+<alternatives>
+<graphic id="pone.0226222.t006g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0226222.t006" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">one-hot win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">softmax win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">−log of win<break/>via hierarchy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">cross<break/>entropy</td>
+</tr>
+<tr>
+<td align="left">flat (6, 1000)</td>
+<td align="left">.43</td>
+<td align="left">.36</td>
+<td align="left">1.6</td>
+<td align="left">5.0</td>
+</tr>
+<tr>
+<td align="left">raw (20000, 1000)</td>
+<td align="left">.23</td>
+<td align="left">.23</td>
+<td align="left">.35</td>
+<td align="left">∞</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">log (15, 15)</td>
+<td align="left" style="border-bottom:thick">.36</td>
+<td align="left" style="border-bottom:thick">.30</td>
+<td align="left" style="border-bottom:thick">1.7</td>
+<td align="left" style="border-bottom:thick">5.5</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">lower</td>
+<td align="left" style="border-bottom:thick">lower</td>
+</tr>
+</tbody>
+</table>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">coarsest<break/>accuracy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">parents’<break/>accuracy</td>
+<td align="left" style="border-bottom:thick;border-top:thick">finest<break/>accuracy</td>
+</tr>
+<tr>
+<td align="left">flat (6, 1000)</td>
+<td align="left">.61</td>
+<td align="left">.33</td>
+<td align="left">.23</td>
+</tr>
+<tr>
+<td align="left">raw (20000, 1000)</td>
+<td align="left">.46</td>
+<td align="left">.24</td>
+<td align="left">.01</td>
+</tr>
+<tr>
+<td align="left">log (15, 15)</td>
+<td align="left">.66</td>
+<td align="left">.12</td>
+<td align="left">.01</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">coarse (5, 10000)</td>
+<td align="left" style="border-bottom:thick">.69</td>
+<td align="left" style="border-bottom:thick"/>
+<td align="left" style="border-bottom:thick"/>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+</tr>
+</tbody>
+</table>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" style="border-bottom:thick;border-top:thick">training loss<break/>(rate, epochs)</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>precision</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>recall</td>
+<td align="left" style="border-bottom:thick;border-top:thick">aggregate<break/>F1</td>
+</tr>
+<tr>
+<td align="left">flat (6, 1000)</td>
+<td align="left">.38</td>
+<td align="left">.39</td>
+<td align="left">.38</td>
+</tr>
+<tr>
+<td align="left">raw (20000, 1000)</td>
+<td align="left">.23</td>
+<td align="left">.18</td>
+<td align="left">.20</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">log (15, 15)</td>
+<td align="left" style="border-bottom:thick">.26</td>
+<td align="left" style="border-bottom:thick">.29</td>
+<td align="left" style="border-bottom:thick">.28</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">the ideal</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+<td align="left" style="border-bottom:thick">higher</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>For this dataset, optimizing based on the hierarchical loss (with or without a logarithm) yields worse accuracy according to all metrics except the accuracy on the coarsest aggregates, compared to optimizing based on the standard cross-entropy loss. When optimizing based on the negative of the natural logarithm of the hierarchical win, the accuracy on the coarsest aggregates approaches its maximum attained when optimizing the coarse classification directly.</p>
+</sec>
+</sec>
+<sec id="sec016" sec-type="conclusions">
+<title>Conclusion</title>
+<p>In our experiments, optimizing the hierarchical loss (or, rather, the negative of the logarithm of the hierarchical win) using plain stochastic gradient descent with backpropagation could be helpful relative to optimizing the usual cross-entropy loss. The benefit arose mainly when there were at most a few training samples per class (of course, the training set can still be big, if there are many classes). This may help with “personalization,” which often involves limited data per individual class (even though there may be many, many individuals).</p>
+<p>The experiments reported in Section <italic>Results and discussion</italic> above may be summarized as follows: relative to training on the usual cross-entropy loss, training on the negative of the logarithm of the hierarchical win hurt in all respects in <xref ref-type="table" rid="pone.0226222.t001">Table 1</xref>, helped in all respects in <xref ref-type="table" rid="pone.0226222.t002">Table 2</xref>, improved coarse accuracy as much as optimizing directly for coarse classification in <xref ref-type="table" rid="pone.0226222.t005">Table 5</xref>, hurt in most respects in <xref ref-type="table" rid="pone.0226222.t006">Table 6</xref> while improving coarse accuracy nearly as much as optimizing directly for coarse classification, and made essentially no difference in Tables <xref ref-type="table" rid="pone.0226222.t003">3</xref> and <xref ref-type="table" rid="pone.0226222.t004">4</xref>. Thus, whether optimizing with a hierarchical loss makes sense depends on the dataset and associated hierarchy; developing precise criteria for when the optimization with the hierarchical loss helps might be interesting.</p>
+<p>Even so, optimizing hierarchical loss using plain stochastic gradient descent with backpropagation (as we did) is rather ineffective, at least relative to what might be possible. We trained using stochastic gradient descent with a random starting point, which may be prone to getting stuck in local optima. To some extent, hierarchical loss collapses the many classes in the hierarchy into a few aggregate superclasses, and the parameters being optimized within the aggregates should be tied closely together during the optimization—plain stochastic gradient descent is unlikely to discover the benefits of such tying, as plain stochastic gradient descent does not tie together these parameters in any way, optimizing all of them independently. Optimizing the hierarchical loss would presumably be more effective using a hierarchical process for the optimization. The hierarchical optimization could alter stochastic gradient descent explicitly into a hierarchical process, or could involve regularization terms penalizing variance in the parameters associated with the leaves in the same coarse aggregate. Unfortunately, either approach would complicate (perhaps prohibitively much) deployment to complex real-world systems. For the time being, hierarchical loss is most useful as a metric of success, gauging the performance of a fully trained classifier as a semantically meaningful figure of merit. While the performance of the hierarchical loss as an objective for optimization varies across datasets, the hierarchical loss provides a meaningful metric of success for classification on any dataset endowed with a hierarchy.</p>
+</sec>
+<sec id="sec017">
+<title>Appendix: Minutiae of tuning hyperparameters</title>
+<p><xref ref-type="table" rid="pone.0226222.t007">Table 7</xref> elaborates on the aforementioned limited grid search performed to ascertain reasonably optimal learning rates and numbers of epochs for training.</p>
+<table-wrap id="pone.0226222.t007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0226222.t007</object-id>
+<label>Table 7</label>
+<caption>
+<title>Hyperparameters for grid search.</title>
+</caption>
+<alternatives>
+<graphic id="pone.0226222.t007g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0226222.t007" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" style="border-bottom:thick;border-top:thick">dataset</th>
+<th align="left" style="border-bottom:thick;border-top:thick">loss</th>
+<th align="left" style="border-bottom:thick;border-top:thick">learning rates</th>
+<th align="left" style="border-bottom:thick;border-top:thick">epochs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">RCV1-v2</td>
+<td align="left">flat</td>
+<td align="left">1, 2, 4</td>
+<td align="left">3, 4, 5, 6</td>
+</tr>
+<tr>
+<td align="left">RCV1-v2</td>
+<td align="left">raw</td>
+<td align="left">10, 12, 16</td>
+<td align="left">3, 4, 5, 6</td>
+</tr>
+<tr>
+<td align="left">RCV1-v2</td>
+<td align="left">log</td>
+<td align="left">2, 4, 6</td>
+<td align="left">3, 4, 5, 6</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">RCV1-v2</td>
+<td align="left" style="border-bottom:thick">coarse</td>
+<td align="left" style="border-bottom:thick">.03, .05, .07</td>
+<td align="left" style="border-bottom:thick">50, 100, 200</td>
+</tr>
+<tr>
+<td align="left">Subsampled RCV1-v2</td>
+<td align="left">flat</td>
+<td align="left">.02, .03, .04, .05</td>
+<td align="left">8, 9, 10, 11</td>
+</tr>
+<tr>
+<td align="left">Subsampled RCV1-v2</td>
+<td align="left">raw</td>
+<td align="left">40, 45, 50</td>
+<td align="left">300, 500, 600</td>
+</tr>
+<tr>
+<td align="left">Subsampled RCV1-v2</td>
+<td align="left">log</td>
+<td align="left">1, 2, 3, 4</td>
+<td align="left">30, 40, 50</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">Subsampled RCV1-v2</td>
+<td align="left" style="border-bottom:thick">coarse</td>
+<td align="left" style="border-bottom:thick">2, 4, 8</td>
+<td align="left" style="border-bottom:thick">500, 1000, 2000</td>
+</tr>
+<tr>
+<td align="left">Yahoo Answers</td>
+<td align="left">flat</td>
+<td align="left">.05, .1, .2, .4</td>
+<td align="left">2, 4, 8, 16</td>
+</tr>
+<tr>
+<td align="left">Yahoo Answers</td>
+<td align="left">raw</td>
+<td align="left">.5, 1, 1.5</td>
+<td align="left">2, 4, 8, 16</td>
+</tr>
+<tr>
+<td align="left">Yahoo Answers</td>
+<td align="left">log</td>
+<td align="left">.05, .1, .2</td>
+<td align="left">2, 4, 8, 16</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">Yahoo Answers</td>
+<td align="left" style="border-bottom:thick">coarse</td>
+<td align="left" style="border-bottom:thick">.05, .1, .2</td>
+<td align="left" style="border-bottom:thick">2, 4, 8</td>
+</tr>
+<tr>
+<td align="left">DBpedia</td>
+<td align="left">flat</td>
+<td align="left">.125, .25, .5, 1, 2</td>
+<td align="left">2, 4, 8</td>
+</tr>
+<tr>
+<td align="left">DBpedia</td>
+<td align="left">raw</td>
+<td align="left">.5, 1, 2, 4</td>
+<td align="left">2, 4, 8</td>
+</tr>
+<tr>
+<td align="left">DBpedia</td>
+<td align="left">log</td>
+<td align="left">.125, .25, .5, 1, 2</td>
+<td align="left">2, 4, 8</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">DBpedia</td>
+<td align="left" style="border-bottom:thick">coarse</td>
+<td align="left" style="border-bottom:thick">.1, .2, .3, .4</td>
+<td align="left" style="border-bottom:thick">2, 4, 8</td>
+</tr>
+<tr>
+<td align="left">DBpedia fish</td>
+<td align="left">flat</td>
+<td align="left">3, 5, 10</td>
+<td align="left">20, 25, 30</td>
+</tr>
+<tr>
+<td align="left">DBpedia fish</td>
+<td align="left">raw</td>
+<td align="left">100, 200, 300</td>
+<td align="left">100, 200, 300</td>
+</tr>
+<tr>
+<td align="left">DBpedia fish</td>
+<td align="left">log</td>
+<td align="left">3, 5, 10</td>
+<td align="left">25, 50, 100</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">DBpedia fish</td>
+<td align="left" style="border-bottom:thick">coarse</td>
+<td align="left" style="border-bottom:thick">1, 2, 3, 4</td>
+<td align="left" style="border-bottom:thick">50, 60, 70, 80</td>
+</tr>
+<tr>
+<td align="left">LSHTC1</td>
+<td align="left">flat</td>
+<td align="left">2, 4, 6, 8</td>
+<td align="left">500, 1000, 2000</td>
+</tr>
+<tr>
+<td align="left">LSHTC1</td>
+<td align="left">raw</td>
+<td align="left">10000, 20000, 30000</td>
+<td align="left">500, 1000, 2000</td>
+</tr>
+<tr>
+<td align="left">LSHTC1</td>
+<td align="left">log</td>
+<td align="left">10, 15, 20</td>
+<td align="left">10, 15, 20</td>
+</tr>
+<tr>
+<td align="left" style="border-bottom:thick">LSHTC1</td>
+<td align="left" style="border-bottom:thick">coarse</td>
+<td align="left" style="border-bottom:thick">3, 5, 7</td>
+<td align="left" style="border-bottom:thick">5000, 10000, 20000</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+</sec>
+</body>
+<back>
+<ack>
+<p>We would like to thank Priya Goyal, Anitha Kannan, and Brian Karrer for their generous and plentiful help.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pone.0226222.ref001">
+<label>1</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>LeCun</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Bengio</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Hinton</surname> <given-names>G</given-names></name>. <article-title>Deep learning</article-title>. <source>Nature</source>. <year>2015</year>;<volume>521</volume>(<issue>7553</issue>):<fpage>436</fpage>–<lpage>444</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nature14539" xlink:type="simple">10.1038/nature14539</ext-link></comment> <object-id pub-id-type="pmid">26017442</object-id></mixed-citation>
+</ref>
+<ref id="pone.0226222.ref002">
+<label>2</label>
+<mixed-citation publication-type="other" xlink:type="simple">Cai L, Hofmann T. Hierarchical document categorization with support vector machines. In: Proc. 13th ACM Internat. Conf. Information and Knowledge Management. ACM; 2004. p. 78–87.</mixed-citation>
+</ref>
+<ref id="pone.0226222.ref003">
+<label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Kosmopoulos</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Partalas</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Gaussier</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Paliouras</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Androutsopoulos</surname> <given-names>I</given-names></name>. <article-title>Evaluation measures for hierarchical classification: a unified view and novel approaches</article-title>. <source>Data Mining and Knowledge Discovery</source>. <year>2015</year>;<volume>29</volume>(<issue>3</issue>):<fpage>820</fpage>–<lpage>865</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s10618-014-0382-x" xlink:type="simple">10.1007/s10618-014-0382-x</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0226222.ref004">
+<label>4</label>
+<mixed-citation publication-type="other" xlink:type="simple">Binder A, Kawanabe M, Brefeld U. Efficient classification of images with taxonomies. In: Proc. 9th Asian Conf. Computer Vision. vol. 5996 of Lecture Notes in Computer Science. Springer; 2009. p. 351–362.</mixed-citation>
+</ref>
+<ref id="pone.0226222.ref005">
+<label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Chang</surname> <given-names>JY</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>KM</given-names></name>. <article-title>Large margin learning of hierarchical semantic similarity for image classification</article-title>. <source>Computer Vision and Image Understanding</source>. <year>2015</year>;<volume>132</volume>:<fpage>3</fpage>–<lpage>11</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11263-014-0790-9" xlink:type="simple">10.1007/s11263-014-0790-9</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0226222.ref006">
+<label>6</label>
+<mixed-citation publication-type="other" xlink:type="simple">Costa EP, Lorena AC, Carvalho ACPLF, Freitas AA. A review of performance evaluation measures for hierarchical classifiers. In: Drummond C, Elazmeh W, Japkowicz N, Macskassy SA, editors. Evaluation Methods for Machine Learning II: Papers from the AAAI-2007 Workshop. AAAI Press; 2007. p. 182–196.</mixed-citation>
+</ref>
+<ref id="pone.0226222.ref007">
+<label>7</label>
+<mixed-citation publication-type="other" xlink:type="simple">Deng J, Berg AC, Li K, Li FF. What does classifying more than 10,000 image categories tell us? In: Proc. 11th European Conf. Computer Vision. vol. 5. Springer-Verlag; 2010. p. 71–84.</mixed-citation>
+</ref>
+<ref id="pone.0226222.ref008">
+<label>8</label>
+<mixed-citation publication-type="other" xlink:type="simple">Deng J, Berg AC, Li K, Li FF. Hierarchical semantic indexing for large scale image retrieval. In: Proc. IEEE Conf. Computer Vision and Pattern Recognition. IEEE; 2011. p. 785–792.</mixed-citation>
+</ref>
+<ref id="pone.0226222.ref009">
+<label>9</label>
+<mixed-citation publication-type="other" xlink:type="simple">Wang K, Zhou S, Liew SC. Building hierarchical classifiers using class proximity. In: Proc. 25th Internat. Conf. Very Large Data Bases. Morgan Kaufmann Publishers; 1999. p. 363–374.</mixed-citation>
+</ref>
+<ref id="pone.0226222.ref010">
+<label>10</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Reece</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Urry</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Cain</surname> <given-names>ML</given-names></name>, <name name-style="western"><surname>Wasserman</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Minorsky</surname> <given-names>PV</given-names></name>, <name name-style="western"><surname>Jackson</surname> <given-names>RB</given-names></name>. <source>Campbell Biology</source>. <edition>10th ed</edition>. <publisher-name>Pearson</publisher-name>; <year>2013</year>.</mixed-citation>
+</ref>
+<ref id="pone.0226222.ref011">
+<label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Silla</surname> <given-names>CN</given-names> <suffix>Jr</suffix></name>, <name name-style="western"><surname>Freitas</surname> <given-names>AA</given-names></name>. <article-title>A survey of hierarchical classification across different application domains</article-title>. <source>J. Data Mining Knowledge Discovery</source>. <year>2011</year>;<volume>22</volume>(<issue>1–2</issue>):<fpage>31</fpage>–<lpage>72</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s10618-010-0175-9" xlink:type="simple">10.1007/s10618-010-0175-9</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0226222.ref012">
+<label>12</label>
+<mixed-citation publication-type="other" xlink:type="simple">Kosmopoulos A, Paliouras G, Androutsopoulos I. Probabilistic cascading for large-scale hierarchical classification. arXiv; 2015. 1505.02251. Available from: <ext-link ext-link-type="uri" xlink:href="http://arxiv.org/abs/1505.02251" xlink:type="simple">http://arxiv.org/abs/1505.02251</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0226222.ref013">
+<label>13</label>
+<mixed-citation publication-type="other" xlink:type="simple">Redmon J, Farhadi A. YOLO9000: better, faster, stronger. In: IEEE Conf. Comput. Vision Pattern Recognition. IEEE; 2017. p. 1–9.</mixed-citation>
+</ref>
+<ref id="pone.0226222.ref014">
+<label>14</label>
+<mixed-citation publication-type="other" xlink:type="simple">Joulin A, Grave E, Bojanowski P, Mikolov T. Bag of tricks for efficient text classification. In: Proc. 15th Conf. European Chapter Assoc. Comput. Linguistics. ACL; 2017. p. 427–431.</mixed-citation>
+</ref>
+<ref id="pone.0226222.ref015">
+<label>15</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Lewis</surname> <given-names>DD</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Rose</surname> <given-names>TG</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>F</given-names></name>. <article-title>RCV1: a new benchmark collection for text categorization research</article-title>. <source>J. Machine Learning Research</source>. <year>2004</year>;<volume>5</volume>:<fpage>361</fpage>–<lpage>397</lpage>.</mixed-citation>
+</ref>
+<ref id="pone.0226222.ref016">
+<label>16</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Zhang</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Zhao</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>LeCun</surname> <given-names>Y</given-names></name>. <chapter-title>Character-level convolutional networks for text classification</chapter-title>. In: <source>Advances in Neural Information Processing Systems</source>. <volume>vol. 28</volume>. <publisher-name>Neural Information Processing Systems Foundation</publisher-name>; <year>2015</year>. p. <fpage>1</fpage>–<lpage>9</lpage>.</mixed-citation>
+</ref>
+<ref id="pone.0226222.ref017">
+<label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Lehmann</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Isele</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Jakob</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Jentzsch</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Kontokostas</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Mendes</surname> <given-names>PN</given-names></name>, <etal>et al</etal>. <article-title>DBpedia—a large-scale, multilingual knowledge base extracted from Wikipedia</article-title>. <source>Semantic Web</source>. <year>2015</year>;<volume>6</volume>(<issue>2</issue>):<fpage>167</fpage>–<lpage>195</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3233/SW-140134" xlink:type="simple">10.3233/SW-140134</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0226222.ref018">
+<label>18</label>
+<mixed-citation publication-type="other" xlink:type="simple">Partalas I, Kosmopoulos A, Baskiotis N, Artieres T, Paliouras G, Gaussier E, et al. LSHTC: a benchmark for large-scale text classification. arXiv; 2015. 1503.08581. Available from: <ext-link ext-link-type="uri" xlink:href="http://arxiv.org/abs/1503.08581" xlink:type="simple">http://arxiv.org/abs/1503.08581</ext-link>.</mixed-citation>
+</ref>
+</ref-list>
+</back>
+</article>

@@ -1,0 +1,11 @@
+✔ every selectable type uses format-driven roles without mandatory figureData (2.032042ms)
+MODEL_MATERIAL_EVIDENCE=/var/folders/j9/mr21v8tx3nqf_yd0sfxvvrk80000gn/T/tuyan-material-workflow-9YPWKQ
+✔ gateway/Core: formats x retrieval x uploads; data and mixed types; revised-version review (24677.277833ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 25156.209791

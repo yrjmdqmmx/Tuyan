@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="364.5pt" viewBox="0 0 648 364.5" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 364.5  L 648 364.5  L 648 0  L 0 0  z " style="fill: #ffffff" />
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 38.96024 322.867455  L 644.99976 322.867455  L 644.99976 3.00024  L 38.96024 3.00024  z " style="fill: #ffffff" />
+   </g>
+   <g id="patch_3">
+    <path d="M 66.507491 322.867455  L 223.920353 322.867455  L 223.920353 261.940367  L 66.507491 261.940367  z " clip-path="url(#p2d11fbcc3d)" style="fill: #487968" />
+   </g>
+   <g id="patch_4">
+    <path d="M 263.273569 261.940367  L 420.686431 261.940367  L 420.686431 109.622645  L 263.273569 109.622645  z " clip-path="url(#p2d11fbcc3d)" style="fill: #487968" />
+   </g>
+   <g id="patch_5">
+    <path d="M 460.039647 109.622645  L 617.452509 109.622645  L 617.452509 18.232012  L 460.039647 18.232012  z " clip-path="url(#p2d11fbcc3d)" style="fill: #487968" />
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m783222674b" d="M 0 0  L 0 3.5  " style="stroke: #000000; stroke-width: 0.8" />
+      </defs>
+      <g>
+       <use xlink:href="#m783222674b" x="145.213922" y="322.867455" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'" transform="translate(133.230491 355.104871) rotate(-30)">Alpha</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m783222674b" x="341.98" y="322.867455" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'" transform="translate(333.264454 351.709246) rotate(-30)">Beta</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m783222674b" x="538.746078" y="322.867455" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'" transform="translate(521.972437 361.013933) rotate(-30)">Gamma</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_4">
+      <defs>
+       <path id="mfd9ef9222c" d="M 0 0  L -3.5 0  " style="stroke: #000000; stroke-width: 0.8" />
+      </defs>
+      <g>
+       <use xlink:href="#mfd9ef9222c" x="38.96024" y="322.867455" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="31.96024" y="328.147455" transform="rotate(-0 31.96024 328.147455)">0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#mfd9ef9222c" x="38.96024" y="261.940367" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="31.96024" y="267.220367" transform="rotate(-0 31.96024 267.220367)">2</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#mfd9ef9222c" x="38.96024" y="201.013278" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="31.96024" y="206.293278" transform="rotate(-0 31.96024 206.293278)">4</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_7">
+      <g>
+       <use xlink:href="#mfd9ef9222c" x="38.96024" y="140.086189" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="31.96024" y="145.366189" transform="rotate(-0 31.96024 145.366189)">6</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#mfd9ef9222c" x="38.96024" y="79.159101" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="31.96024" y="84.439101" transform="rotate(-0 31.96024 84.439101)">8</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_9">
+      <g>
+       <use xlink:href="#mfd9ef9222c" x="38.96024" y="18.232012" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="31.96024" y="23.512012" transform="rotate(-0 31.96024 23.512012)">10</text>
+     </g>
+    </g>
+    <g id="text_10">
+     <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="13.20024" y="162.933848" transform="rotate(-90 13.20024 162.933848)">dimensionless</text>
+    </g>
+   </g>
+   <g id="line2d_10">
+    <path d="M 38.96024 322.867455  L 644.99976 322.867455  " clip-path="url(#p2d11fbcc3d)" style="fill: none; stroke: #adb3a9; stroke-width: 1.5; stroke-linecap: square" />
+   </g>
+   <g id="patch_6">
+    <path d="M 38.96024 322.867455  L 38.96024 3.00024  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square" />
+   </g>
+   <g id="patch_7">
+    <path d="M 38.96024 322.867455  L 644.99976 322.867455  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square" />
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p2d11fbcc3d">
+   <rect x="38.96024" y="3.00024" width="606.03952" height="319.867215" />
+  </clipPath>
+ </defs>
+</svg>

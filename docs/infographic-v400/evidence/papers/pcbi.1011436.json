@@ -1,0 +1,82 @@
+{
+  "doi": "10.1371/journal.pcbi.1011436",
+  "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011436",
+  "title": "Integrating a tailored recurrent neural network with Bayesian experimental design to optimize microbial community functions",
+  "journal": "PLOS Computational Biology",
+  "authors": [
+    "Jaron C. Thompson",
+    "Victor M. Zavala",
+    "Ophelia S. Venturelli"
+  ],
+  "year": "2023",
+  "license": "2023\nThompson et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pcbi.1011436.g001",
+      "label": "Fig 1",
+      "caption": "The Microbiome Recurrent Neural Network (MiRNN) learns system dynamics and proposes new designs.\n(Design) An experimental design space, denoted as Q, is a set of individual experimental conditions, q, where a particular condition could, for example, be a set of species in a community or the initial concentrations of resources. MiRNN predictions of outcomes for a set of experimental conditions, q, are evaluated by an acquisition function, f, which balances the expected information gain (EIG) of an experimental design and its expected profit to evaluate the optimality of experimental designs. (Test) The optimal experimental design, q*, defines a set of experimental conditions to be observed experimentally. Measurements of these conditions are collected in the test phase. (Learn) Data collected in the test phase, and all previously collected data, are used to fit an updated MiRNN model. Once fit to the newly acquired data, the updated MiRNN model can be used again in the design phase to complete the design, test, learn cycle.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pcbi.1011436.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>The Microbiome Recurrent Neural Network (MiRNN) learns system dynamics and proposes new designs.</title>\n<p>(<bold>Design</bold>) An experimental design space, denoted as <inline-formula id=\"pcbi.1011436.e003\"><alternatives><graphic id=\"pcbi.1011436.e003g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.e003\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M3\"><ns1:mi mathvariant=\"script\">Q</ns1:mi></ns1:math></alternatives></inline-formula>, is a set of individual experimental conditions, <bold>q</bold>, where a particular condition could, for example, be a set of species in a community or the initial concentrations of resources. MiRNN predictions of outcomes for a set of experimental conditions, <bold>q</bold>, are evaluated by an acquisition function, <italic>f</italic>, which balances the expected information gain (EIG) of an experimental design and its expected profit to evaluate the optimality of experimental designs. (<bold>Test</bold>) The optimal experimental design, <bold>q</bold>*, defines a set of experimental conditions to be observed experimentally. Measurements of these conditions are collected in the test phase. (<bold>Learn</bold>) Data collected in the test phase, and all previously collected data, are used to fit an updated MiRNN model. Once fit to the newly acquired data, the updated MiRNN model can be used again in the design phase to complete the design, test, learn cycle.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "id": "pcbi.1011436.e003g",
+        "mimetype": "image",
+        "position": "anchor",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.e003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1011436.g002",
+      "label": "Fig 2",
+      "caption": "The predictive capability of the MiRNN outperforms an unconstrained RNN model using simulated data over a range of sparsity levels.\n(a.) A comparison of the MiRNN architecture to a standard RNN, where the constraint highlighted in blue prevents the model from predicting the spontaneous emergence of a species. (b.) Schematic of simulated data generation, indicating that a ground truth computational bioreactor model is used to simulate species abundances over a time span of 130 hours, with measurements of species abundances taken at 26 hour intervals. (c.) Comparison of RNN (green) and MiRNN (orange) performance in species predictions according to the average Pearson correlation coefficient (R) over all species between predictions and measured values. The height of the bars and error bars correspond to the median and interquartile range in prediction performance after running 10-fold cross-validation over 5 trials, where samples were randomly shuffled in each trial. (d.) Same as in panel (c.), except that RMSE instead of Pearson correlation is shown.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011436.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>The predictive capability of the MiRNN outperforms an unconstrained RNN model using simulated data over a range of sparsity levels.</title>\n<p>(a.) A comparison of the MiRNN architecture to a standard RNN, where the constraint highlighted in blue prevents the model from predicting the spontaneous emergence of a species. (b.) Schematic of simulated data generation, indicating that a ground truth computational bioreactor model is used to simulate species abundances over a time span of 130 hours, with measurements of species abundances taken at 26 hour intervals. (c.) Comparison of RNN (green) and MiRNN (orange) performance in species predictions according to the average Pearson correlation coefficient (R) over all species between predictions and measured values. The height of the bars and error bars correspond to the median and interquartile range in prediction performance after running 10-fold cross-validation over 5 trials, where samples were randomly shuffled in each trial. (d.) Same as in panel (c.), except that RMSE instead of Pearson correlation is shown.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1011436.g003",
+      "label": "Fig 3",
+      "caption": "The predictive capability of the MiRNN outperforms an unconstrained RNN model using experimental data.\n(a.) Schematic of experiment in which 95 unique microbial consortia were selected from a set of 25 health-relevant human gut bacteria. After inoculation, species abundances and metabolite concentrations were measured at 16 hour intervals over a course of 48 hours. (b.) A comparison of the MiRNN architecture to a standard RNN, where the constraint highlighted in blue prevents the model from predicting the spontaneous emergence of a species. (c.) Comparison RNN and MiRNN performance in species predictions according to the Pearson correlation coefficient between predictions and measured values. The height of the bars and error bars correspond to the median and interquartile range in prediction performance after running 20-fold cross-validation over 10 trials, where samples were randomly shuffled in each trial. (d.) Same as in panel (c.), except that metabolite prediction performance is shown. (e.) Representative temporal changes in MiRNN predicted metabolite concentrations, where measured values are shown as dots, the mean predicted value is shown as a line, and the uncertainty region shows ± 1 standard deviation.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011436.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>The predictive capability of the MiRNN outperforms an unconstrained RNN model using experimental data.</title>\n<p>(a.) Schematic of experiment in which 95 unique microbial consortia were selected from a set of 25 health-relevant human gut bacteria. After inoculation, species abundances and metabolite concentrations were measured at 16 hour intervals over a course of 48 hours. (b.) A comparison of the MiRNN architecture to a standard RNN, where the constraint highlighted in blue prevents the model from predicting the spontaneous emergence of a species. (c.) Comparison RNN and MiRNN performance in species predictions according to the Pearson correlation coefficient between predictions and measured values. The height of the bars and error bars correspond to the median and interquartile range in prediction performance after running 20-fold cross-validation over 10 trials, where samples were randomly shuffled in each trial. (d.) Same as in panel (c.), except that metabolite prediction performance is shown. (e.) Representative temporal changes in MiRNN predicted metabolite concentrations, where measured values are shown as dots, the mean predicted value is shown as a line, and the uncertainty region shows ± 1 standard deviation.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1011436.g004",
+      "label": "Fig 4",
+      "caption": "Optimization of resources and feed rate to maximize product.\n(a.) A schematic of the fed-batch bioreactor to be optimized, where the rate of a feed stream and the presence of resources in the feed (depicted as yellow and pink shapes) can both be adjusted in order to maximize production. Species (green shapes) that produce a valuable metabolite (orange star) compete for resources with species that do not produce the metabolite. (b.) A diagram that shows the inputs to the MiRNN model including species abundances, metabolite concentration, resource concentrations, and feed rate at time point t − 1. The model predicts species abundances and metabolite concentration at the next time step, t. Predicted species abundances and metabolite concentration are used as inputs to predict the next time step. (c.) A comparison of prediction performance (Pearson correlation coefficient) of end-point metabolite concentration between the proposed experimental design strategy that combines exploration and exploitation (blue) to pure exploitation (green), pure exploration (orange), and random sampling (purple). Solid lines show the median of the best recorded production (y-axis) up to each DTL cycle (x-axis) and uncertainty regions show the interquartile range computed over 30 trials each with random initial experimental designs. (d.) A comparison of metabolite maximization (showing median and interquartile range over 30 trials) between proposed exploration and exploitation (blue) to pure exploitation (green), pure exploration (orange), and random sampling (purple).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011436.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Optimization of resources and feed rate to maximize product.</title>\n<p>(a.) A schematic of the fed-batch bioreactor to be optimized, where the rate of a feed stream and the presence of resources in the feed (depicted as yellow and pink shapes) can both be adjusted in order to maximize production. Species (green shapes) that produce a valuable metabolite (orange star) compete for resources with species that do not produce the metabolite. (b.) A diagram that shows the inputs to the MiRNN model including species abundances, metabolite concentration, resource concentrations, and feed rate at time point <italic>t</italic> − 1. The model predicts species abundances and metabolite concentration at the next time step, <italic>t</italic>. Predicted species abundances and metabolite concentration are used as inputs to predict the next time step. (c.) A comparison of prediction performance (Pearson correlation coefficient) of end-point metabolite concentration between the proposed experimental design strategy that combines exploration and exploitation (blue) to pure exploitation (green), pure exploration (orange), and random sampling (purple). Solid lines show the median of the best recorded production (y-axis) up to each DTL cycle (x-axis) and uncertainty regions show the interquartile range computed over 30 trials each with random initial experimental designs. (d.) A comparison of metabolite maximization (showing median and interquartile range over 30 trials) between proposed exploration and exploitation (blue) to pure exploitation (green), pure exploration (orange), and random sampling (purple).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1011436.g005",
+      "label": "Fig 5",
+      "caption": "Microbiome Recurrent Neural Network architecture.\nInputs to the RNN at time step t − 1 include the state of species abundances, metabolite concentrations, control inputs, and a latent vector that stores information from previous steps and whose dimension determines the flexibility of the model. The output from each MiRNN block is the predicted system state and the latent vector at the next time step, t. To avoid the physically unrealistic emergence of previously absent species, a constrained feed-forward neural network (FFNN) outputs zero valued species abundances if species abundances at the previous time step were zero.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011436.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Microbiome Recurrent Neural Network architecture.</title>\n<p>Inputs to the RNN at time step <italic>t</italic> − 1 include the state of species abundances, metabolite concentrations, control inputs, and a latent vector that stores information from previous steps and whose dimension determines the flexibility of the model. The output from each MiRNN block is the predicted system state and the latent vector at the next time step, <italic>t</italic>. To avoid the physically unrealistic emergence of previously absent species, a constrained feed-forward neural network (FFNN) outputs zero valued species abundances if species abundances at the previous time step were zero.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

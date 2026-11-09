@@ -1,0 +1,35 @@
+{
+  "figureTypeId": "point_map",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "label": "Site A",
+        "x": 110,
+        "y": 30
+      },
+      {
+        "label": "Site B",
+        "x": 116,
+        "y": 34
+      },
+      {
+        "label": "Site C",
+        "x": 113,
+        "y": 28
+      }
+    ],
+    "units": {
+      "x": "degree",
+      "y": "degree"
+    },
+    "options": {
+      "crs": "EPSG:4326",
+      "projection": "plate_carree"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

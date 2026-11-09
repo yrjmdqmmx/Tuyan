@@ -13,7 +13,7 @@ WORKDIR /app
 # only needed transiently for any source wheels, then removed to slim the image.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        libfreetype6 libpng16-16 \
+        libfreetype6 libpng16-16 fonts-noto-cjk \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .

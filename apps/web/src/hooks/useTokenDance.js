@@ -72,7 +72,9 @@ export function useTokenDance(apiBase, userId, ready) {
     const popup = window.open('about:blank', 'tuyan-tokendance', 'popup,width=680,height=760');
     await perform(async () => {
       try {
-        const flow = await request('tokenDanceAuthorize', { platform: 'web' });
+        const origin = window.location.origin;
+        const callbackOrigin = ['https://tuyansci.cn', 'https://www.paperbanana.asia', 'https://paperbanana.asia'].includes(origin) ? origin : undefined;
+        const flow = await request('tokenDanceAuthorize', { platform: 'web', ...(callbackOrigin ? { callbackOrigin } : {}) });
         if (popup) popup.location.replace(flow.authorizationUrl);
         else { setError('浏览器阻止了授权窗口，请允许弹窗后重试。'); await request('tokenDanceCancel', { state: flow.state }); }
       } catch (err) { popup?.close(); throw err; }

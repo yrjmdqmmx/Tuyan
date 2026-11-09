@@ -17,7 +17,7 @@ test('refine uses a file uploader or owned results instead of arbitrary URL inpu
 });
 
 test('refine submits the authoritative object key and displays server model capability', () => {
-  assert.match(app, /normalizeRefineSource\(url, image\)/u);
+  assert.match(app, /normalizeRefineSource\(url,\s*image\)/u);
   assert.match(app, /refineRequestSource/u);
   assert.match(refineSource, /sourceImageObjectKey/u);
   assert.match(source, /直接编辑/u);

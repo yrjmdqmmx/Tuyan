@@ -1,0 +1,15 @@
+{
+  "Version": "1",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["dysms:SendSms"],
+      "Resource": ["*"],
+      "Condition": {
+        "Bool": {
+          "acs:SecureTransport": ["true"]
+        }
+      }
+    }
+  ]
+}

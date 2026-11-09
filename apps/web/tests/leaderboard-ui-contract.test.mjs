@@ -7,10 +7,10 @@ import { SiteNavigation } from '../src/components/WorkbenchHeader.jsx'
 
 const readSource = (relativePath) => readFileSync(new URL(relativePath, import.meta.url), 'utf8')
 
-test('main routes leaderboard and canonicalizes legacy bench before render', () => {
+test('production main delegates every application path to the new workspace', () => {
   const source = readSource('../src/main.jsx')
-  assert.match(source, /canonicalizeLeaderboardLocation/u)
-  assert.match(source, /图研 Tuyan Benchmark · 科研图示生成与编辑模型基准评测/u)
+  assert.match(source, /<WorkspaceRoot \/>/u)
+  assert.doesNotMatch(source, /<LeaderboardRoot|<ChangelogRoot|<App[ \/>]/u)
   assert.doesNotMatch(source, /PaperBanana 模型横评/u)
 })
 

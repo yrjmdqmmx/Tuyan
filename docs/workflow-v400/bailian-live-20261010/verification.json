@@ -1,0 +1,81 @@
+{
+  "realRequests": 18,
+  "usage": {
+    "prompt_tokens": 35011,
+    "completion_tokens": 15251,
+    "total_tokens": 50262
+  },
+  "allHttpStatuses": "18/18 HTTP 200 (not a quality verdict)",
+  "checks": [
+    {
+      "scenario": "library-direct",
+      "deliveredVersion": 1,
+      "reviewedVersion": null,
+      "status": "not_requested",
+      "deliveredSvgHash": "513adb1d08bc5765159ccf11fd36fc68f881f6227b43dad2a2709cc707c6f3aa",
+      "hashesMatch": true
+    },
+    {
+      "scenario": "library-assisted",
+      "deliveredVersion": 1,
+      "reviewedVersion": null,
+      "status": "not_requested",
+      "deliveredSvgHash": "9dc3c4d26746c4c9ef4bc58953449e287e7b78ec442b29256e1adf78fdeb6258",
+      "hashesMatch": true
+    },
+    {
+      "scenario": "review-retest/ordinary-direct",
+      "deliveredVersion": 1,
+      "reviewedVersion": 1,
+      "status": "passed",
+      "deliveredSvgHash": "40e4f889e1732e4332a72176bd928958648a45251d2c5e3c030cb04699bb645c",
+      "hashesMatch": true
+    },
+    {
+      "scenario": "assistant-final/ordinary-assisted",
+      "deliveredVersion": 2,
+      "reviewedVersion": 1,
+      "status": "modified_unreviewed",
+      "deliveredSvgHash": "dfddf88bd3064085290d6583de8be6faf6bdb470e1a0b580b0935034281b4d55",
+      "hashesMatch": true
+    }
+  ],
+  "requestBindings": [
+    {
+      "scenario": "review-retest/ordinary-direct",
+      "fullCodeMatchesReviewedSvg": true,
+      "actualRequestImageMatchesSubmittedRaster": true,
+      "assistantMainReceivesReportWithoutImage": false
+    },
+    {
+      "scenario": "assistant-final/ordinary-assisted",
+      "fullCodeMatchesReviewedSvg": true,
+      "actualRequestImageMatchesSubmittedRaster": true,
+      "assistantMainReceivesReportWithoutImage": true
+    }
+  ],
+  "credentialScan": {
+    "filesChecked": 56,
+    "credentialMatches": 0
+  },
+  "regression": {
+    "core": {
+      "tests": 1180,
+      "passed": 1180,
+      "failed": 0
+    },
+    "typescript": "passed",
+    "coreBuild": "passed",
+    "realPaidRequests": 18
+  },
+  "sourceHashes": {
+    "apps/paperbanana-api/runtime/handler.ts": "f483305fb7d7fec4eae123aa8de2129c12bffe525530600d9fb5c1ac8a5258f2",
+    "packages/api/src/workflow-prompts.ts": "7d86dda2d6bc3ad2692e1c5913ffb174968ed77ee398e23760e38a72f4445513",
+    "packages/api/src/svg-workflow.ts": "e6945816c58cc8763b811954ef7ff6c136acb7c73ec4847236c1017c9d34bc60",
+    "packages/api/src/execution-errors.ts": "775f8b1edd3eb939b340f7eb6630c4d47b62773b0b2969ca7551c822f276217a"
+  },
+  "miniProgramSnapshot": {
+    "compared": 50,
+    "changed": 0
+  }
+}

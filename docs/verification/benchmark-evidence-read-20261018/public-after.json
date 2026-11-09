@@ -1,0 +1,38 @@
+[
+  {
+    "origin": "https://api.paperbanana.asia",
+    "path": "/ready",
+    "status": 200,
+    "code": 0,
+    "ready": true,
+    "evidence": null,
+    "ms": 2895
+  },
+  {
+    "origin": "https://api.paperbanana.asia",
+    "path": "/paperbanana-api",
+    "status": 200,
+    "code": 0,
+    "ready": null,
+    "evidence": 9,
+    "ms": 13714
+  },
+  {
+    "origin": "https://tuyansci.cn",
+    "path": "/ready",
+    "status": 200,
+    "code": 0,
+    "ready": true,
+    "evidence": null,
+    "ms": 2036
+  },
+  {
+    "origin": "https://tuyansci.cn",
+    "path": "/paperbanana-api",
+    "status": 200,
+    "code": 0,
+    "ready": null,
+    "evidence": 9,
+    "ms": 11660
+  }
+]

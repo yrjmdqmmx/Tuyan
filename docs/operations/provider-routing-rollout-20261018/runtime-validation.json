@@ -1,0 +1,8 @@
+{
+  "started_at": "2026-10-18T04:49:21.530518+00:00",
+  "finished_at": "2026-10-18T04:49:41.428317+00:00",
+  "code_sha": "5f15e5e0bb2e2c67f23ebe09000a9a7ec76e70ad",
+  "requests": 42,
+  "route_assertions_passed": true,
+  "inference_calls": 0
+}

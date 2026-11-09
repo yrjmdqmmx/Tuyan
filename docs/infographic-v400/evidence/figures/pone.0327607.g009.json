@@ -1,0 +1,51 @@
+{
+  "id": "pone.0327607.g009",
+  "paper": "pone.0327607",
+  "figure": {
+    "id": "pone.0327607.g009",
+    "label": "Fig 9",
+    "caption": "Comparative visualization of the 100 trajectories of the simulation model for a fixed and varying amount of mRNA per lipoplex particle.The colors indicate the number of lipoplexes that unpack their mRNA in the cell.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0327607.g009\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0327607.g009</object-id><label>Fig 9</label><caption><title>Comparative visualization of the 100 trajectories of the simulation model for a fixed and varying amount of mRNA per lipoplex particle.</title><p>The colors indicate the number of lipoplexes that unpack their mRNA in the cell.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0327607.g009\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0327607.g009",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0327607",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0327607",
+    "title": "SIMPROV: Provenance capturing for simulation studies",
+    "journal": "PLOS One",
+    "authors": [
+      "Andreas Ruscheinski",
+      "Anja Wolpers",
+      "Philipp Henning",
+      "Pia Wilsdorf",
+      "Adelinde M. Uhrmacher"
+    ],
+    "year": "2025",
+    "license": "2025\nRuscheinski et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0327607.g009",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0327607.g009.png",
+      "bytes": 850308,
+      "sha256": "16ba6daa67ed0a60e4ca6f8aa4a1d80b1cdb405afb744e78c35a6e8239b94098"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0327607.g009",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0327607.g009.tif",
+      "bytes": 3106714,
+      "sha256": "7a54ffcf03c9405041319a9ff0a78729a73f54f98a446de4803233010531b034"
+    }
+  }
+}

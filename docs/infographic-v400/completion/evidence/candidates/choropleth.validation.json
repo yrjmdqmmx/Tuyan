@@ -1,0 +1,137 @@
+{
+  "typeId": "choropleth",
+  "computations": {
+    "suppliedValues": {
+      "A": 12,
+      "B": 28
+    },
+    "polygonAreasSquareDegrees": {
+      "A": 4.0,
+      "B": 4.0,
+      "Missing": 2.0
+    },
+    "missingRegions": [
+      "Missing"
+    ],
+    "classBoundaries": [
+      0,
+      10,
+      20,
+      30
+    ]
+  },
+  "checks": {
+    "A_vertices": {
+      "actual": 5.0,
+      "expected": 5.0,
+      "absoluteError": 0.0
+    },
+    "B_vertices": {
+      "actual": 5.0,
+      "expected": 5.0,
+      "absoluteError": 0.0
+    },
+    "Missing_vertices": {
+      "actual": 5.0,
+      "expected": 5.0,
+      "absoluteError": 0.0
+    },
+    "region_count": {
+      "actual": 3.0,
+      "expected": 3.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "region",
+      "value"
+    ],
+    "options": {
+      "regions": [
+        {
+          "id": "A",
+          "polygon": [
+            [
+              0,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              0,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "B",
+          "polygon": [
+            [
+              2,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              2,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "Missing",
+          "polygon": [
+            [
+              0,
+              2
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ]
+          ]
+        }
+      ],
+      "crs": "EPSG:4326",
+      "projection": "plate_carree",
+      "valueSemantics": "Supplied rates per 1000; population denominator from source",
+      "boundarySource": "Synthetic rectangles, CC0 teaching fixture",
+      "boundaries": [
+        0,
+        10,
+        20,
+        30
+      ]
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

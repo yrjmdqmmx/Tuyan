@@ -1,0 +1,103 @@
+{
+  "typeId": "chord",
+  "computations": {
+    "incidentTotals": {
+      "A": 5,
+      "B": 3,
+      "C": 4
+    },
+    "edgeSpansRadians": [
+      [
+        0.0,
+        1.0271975511965976,
+        2.607993877991494,
+        3.635191429188092
+      ],
+      [
+        1.0271975511965976,
+        2.567993877991494,
+        4.1887902047863905,
+        5.729586531581287
+      ],
+      [
+        3.635191429188092,
+        4.1487902047863905,
+        5.729586531581287,
+        6.243185307179585
+      ]
+    ],
+    "radiansPerValue": 0.5135987755982988,
+    "undirectedTotal": 6.0
+  },
+  "checks": {
+    "edge_0_source_span": {
+      "actual": 1.0271975511965976,
+      "expected": 1.0271975511965976,
+      "absoluteError": 0.0
+    },
+    "edge_0_target_span": {
+      "actual": 1.0271975511965978,
+      "expected": 1.0271975511965976,
+      "absoluteError": 2.220446049250313e-16
+    },
+    "edge_1_source_span": {
+      "actual": 1.5407963267948965,
+      "expected": 1.5407963267948963,
+      "absoluteError": 2.220446049250313e-16
+    },
+    "edge_1_target_span": {
+      "actual": 1.5407963267948963,
+      "expected": 1.5407963267948963,
+      "absoluteError": 0.0
+    },
+    "edge_2_source_span": {
+      "actual": 0.5135987755982985,
+      "expected": 0.5135987755982988,
+      "absoluteError": 3.3306690738754696e-16
+    },
+    "edge_2_target_span": {
+      "actual": 0.5135987755982985,
+      "expected": 0.5135987755982988,
+      "absoluteError": 3.3306690738754696e-16
+    },
+    "A_incident_allocation": {
+      "actual": 5.0,
+      "expected": 5.0,
+      "absoluteError": 0.0
+    },
+    "B_incident_allocation": {
+      "actual": 3.0,
+      "expected": 3.0,
+      "absoluteError": 0.0
+    },
+    "C_incident_allocation": {
+      "actual": 4.0,
+      "expected": 4.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 3.0,
+      "expected": 3.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "source",
+      "target",
+      "value"
+    ],
+    "options": {
+      "nodes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "directed": false
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

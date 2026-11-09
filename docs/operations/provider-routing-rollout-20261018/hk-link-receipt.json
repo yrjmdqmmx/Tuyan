@@ -1,0 +1,18 @@
+{
+  "interfaces": {
+    "hk": [
+      "pbhz0",
+      "10.78.0.1",
+      "10.78.0.2"
+    ],
+    "hz": [
+      "pbhk0",
+      "10.78.0.2",
+      "10.78.0.1"
+    ]
+  },
+  "cloud_rule_id": "9104c00e797340e6bb4f7a4770c8d349",
+  "cloud_source": "116.62.146.226/32",
+  "cloud_udp_port": 51821,
+  "proxy_public_port_opened": false
+}

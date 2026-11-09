@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import React from 'react';
@@ -76,7 +77,7 @@ test('optional phone inputs retain edits when folded and become visible on valid
     const view=render(React.createElement(GenerationInputPanel,props));
     const details=document.querySelector('details');assert.equal(details.open,false);
     fireEvent.click(details.querySelector('summary'));
-    const extras=screen.getByRole('textbox',{name:'补充要求'});fireEvent.change(extras,{target:{value:'保留细节'}});
+    const extras=screen.getByRole('textbox',{name:'补充要求'});changeControl(extras,{target:{value:'保留细节'}});
     fireEvent.click(details.querySelector('summary'));assert.equal(details.open,false);
     view.rerender(React.createElement(GenerationInputPanel,{...props,supplementError:true}));
     assert.equal(details.open,true);assert.equal(screen.getByRole('textbox',{name:'补充要求'}),extras);assert.equal(extras.value,'保留细节');
@@ -91,7 +92,7 @@ test('mobile model disclosure keeps its contents mounted and desktop always expo
     assert.equal(details.open,false);
     fireEvent.click(document.querySelector('summary'));
     assert.equal(details.open,true);
-    fireEvent.change(input,{target:{value:'keep me'}});
+    changeControl(input,{target:{value:'keep me'}});
     fireEvent.click(document.querySelector('summary'));
     media.resize(false);
     assert.equal(details.open,true);

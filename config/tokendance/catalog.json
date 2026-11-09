@@ -1,8 +1,8 @@
 {
-  "version": "2026-09-21.1",
+  "version": "2026-10-26.2",
   "appUrl": "https://www.paperbanana.asia/",
   "apiSource": "https://tokendance.space/gateway/v1/models",
-  "reviewedAt": "2026-09-21",
+  "reviewedAt": "2026-10-26",
   "models": [
     {
       "id": "bocha-web-search",
@@ -58,7 +58,12 @@
       "vendorId": "deepseek",
       "lifecycle": "stable",
       "lifecycleSourceUrl": "https://tokendance.space/models/deepseek-chat-v3-0324",
-      "releaseKind": "snapshot"
+      "releaseKind": "snapshot",
+      "catalogPresence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
     },
     {
       "id": "deepseek-ocr-2",
@@ -85,7 +90,12 @@
       "reviewedAt": "2026-09-09",
       "verification": "catalog",
       "selectedProtocol": null,
-      "vendorId": "deepseek"
+      "vendorId": "deepseek",
+      "catalogPresence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
     },
     {
       "id": "deepseek-v3.2",
@@ -114,18 +124,22 @@
       "selectedProtocol": "openai:chat-completions",
       "vendorId": "deepseek",
       "lifecycle": "stable",
-      "lifecycleSourceUrl": "https://tokendance.space/models/deepseek-v3.2"
+      "lifecycleSourceUrl": "https://tokendance.space/models/deepseek-v3.2",
+      "catalogPresence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
     },
     {
       "id": "deepseek-v4-flash",
       "name": "DeepSeek: DeepSeek V4 Flash Preview",
       "created": 1777004987,
-      "description": "【指定服务商限时调用八折】DeepSeek-V4 拥有百万字超长上下文，在 Agent 能力、世界知识和推理性能上均实现国内与开源领域的领先。相比 DeepSeek-V4-Pro，DeepSeek-V4-Flash 在世界知识储备方面稍逊一筹，但展现出了接近的推理能力。而由于模型参数和激活更小，相较之下 V4-Flash 能够提供更加快捷、经济的 API 服务。  在 Agent 测评中，DeepSeek-V4-Flash 在简单任务上与 DeepSeek-V4-Pro 旗鼓相当，但在高难度任务上仍有差距。",
+      "description": "DeepSeek-V4 拥有百万字超长上下文，在 Agent 能力、世界知识和推理性能上均实现国内与开源领域的领先。相比 DeepSeek-V4-Pro，DeepSeek-V4-Flash 在世界知识储备方面稍逊一筹，但展现出了接近的推理能力。而由于模型参数和激活更小，相较之下 V4-Flash 能够提供更加快捷、经济的 API 服务。  在 Agent 测评中，DeepSeek-V4-Flash 在简单任务上与 DeepSeek-V4-Pro 旗鼓相当，但在高难度任务上仍有差距。",
       "context_length": 1048576,
       "supported_protocols": [
         "openai:chat-completions",
-        "anthropic:messages",
-        "openai:responses"
+        "anthropic:messages"
       ],
       "inputModalities": [
         "text"
@@ -155,8 +169,8 @@
       "context_length": 1048576,
       "supported_protocols": [
         "openai:chat-completions",
-        "openai:responses",
-        "anthropic:messages"
+        "anthropic:messages",
+        "openai:responses"
       ],
       "inputModalities": [
         "text"
@@ -210,7 +224,12 @@
       "selectedProtocol": "openai:chat-completions",
       "vendorId": "deepseek",
       "lifecycle": "preview",
-      "lifecycleSourceUrl": "https://tokendance.space/models/deepseek-v4-flash-vision-exp"
+      "lifecycleSourceUrl": "https://tokendance.space/models/deepseek-v4-flash-vision-exp",
+      "catalogPresence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
     },
     {
       "id": "deepseek-v4-pro",
@@ -220,8 +239,7 @@
       "context_length": 1048576,
       "supported_protocols": [
         "openai:chat-completions",
-        "anthropic:messages",
-        "openai:responses"
+        "anthropic:messages"
       ],
       "inputModalities": [
         "text"
@@ -245,7 +263,7 @@
     },
     {
       "id": "deepseek-v4-pro-0813",
-      "name": "DeepSeek：DeepSeek V4 Pro 0813",
+      "name": "DeepSeek: DeepSeek V4 Pro 0813",
       "created": 1786548679,
       "description": "DeepSeek  V4 Pro 0813 版本，极大增强了 Agent 能力。思考模式现支持 low / high / max 三档思考强度，用户在实际使用中可以根据任务复杂度灵活选择：简单任务使用 low，日常 Agent 任务使用 high，更复杂的任务场景使用 max。注：DeepSeek、阿里云端点价格采用峰谷定价，空闲时段价格为高峰时段价格的一半。其中 DeepSeek 端点高峰时段为北京时间周一至周五9:00 - 12:00、14:00 - 18:00（其余为空闲时段），阿里云端点高峰时段为北京时间每天 8:00-22:00（其余为空闲时段）",
       "context_length": 1000000,
@@ -279,12 +297,12 @@
       "id": "deepseek-v4.1-flash",
       "name": "DeepSeek: DeepSeek V4.1 Flash",
       "created": 1788858918,
-      "description": "【抢先体验】模型采用了新的模型结构，原生多模态支持、能力更强、速度更快",
+      "description": "【特别说明：该模型DeepSeek 端点已升级为 1017 版本，其余为原版模型】模型采用了新的模型结构，原生多模态支持、能力更强、速度更快。",
       "context_length": 1000000,
       "supported_protocols": [
+        "openai:responses",
         "openai:chat-completions",
-        "anthropic:messages",
-        "openai:responses"
+        "anthropic:messages"
       ],
       "inputModalities": [
         "text"
@@ -557,7 +575,7 @@
       "id": "glm-5.3-flash",
       "name": "Z.ai: GLM 5.3 Flash",
       "created": 1787755696,
-      "description": "【官方同价，限时五折至 2026 年 9 月 9 日 24:00】GLM-5.3-Flash 是 GLM-5 系列首个原生多模态模型，以极致低成本架构实现超越 GLM-5.2 的更强智能：",
+      "description": "GLM-5.3-Flash 是 GLM-5 系列首个原生多模态模型，以极致低成本架构实现超越 GLM-5.2 的更强智能：",
       "context_length": 1000000,
       "supported_protocols": [
         "openai:chat-completions",
@@ -1009,11 +1027,10 @@
       "id": "kimi-k3",
       "name": "MoonshotAI: Kimi K3",
       "created": 1784214333,
-      "description": "【指定服务商限时 8 折】Kimi K3 是 Kimi 迄今能力最强的模型，拥有 2.8 万亿参数。它基于 Kimi 混合线性注意力机制（Kimi Delta Attention）和注意力残差（Attention Residuals）技术构建，原生支持视觉理解，并拥有 100 万 token 上下文窗口，面向软件工程、知识工作和深度推理等前沿智能场景而设计。",
+      "description": "【指定服务商限时峰谷优惠至2026-09-30 23:59:59】Kimi K3 是 Kimi 迄今能力最强的模型，拥有 2.8 万亿参数。它基于 Kimi 混合线性注意力机制（Kimi Delta Attention）和注意力残差（Attention Residuals）技术构建，原生支持视觉理解，并拥有 100 万 token 上下文窗口，面向软件工程、知识工作和深度推理等前沿智能场景而设计。",
       "context_length": 1048576,
       "supported_protocols": [
-        "openai:chat-completions",
-        "openai:responses"
+        "openai:chat-completions"
       ],
       "inputModalities": [
         "text",
@@ -1046,7 +1063,8 @@
       "context_length": 0,
       "supported_protocols": [
         "kling:text2video",
-        "kling:image2video"
+        "kling:image2video",
+        "kling:motion-control"
       ],
       "inputModalities": [
         "text",
@@ -1119,7 +1137,7 @@
     },
     {
       "id": "ling-3.0-flash",
-      "name": "Ling: Ling-3.0-flash",
+      "name": "Ling: Ling 3.0 Flash",
       "created": 1784913086,
       "description": "Ling-3.0-flash 是 Ling 系列最新一代高性价比模型，总参数量 124B，激活参数量 5.1B，原生 256K 上下文窗口，最高可扩展至 1M。 与上一版本的 flash 模型相比，Ling-3.0-flash 在长程任务的稳定性显著增强，工具调用的精确度明显更高，对常见 Harness 环境的适配也有显著提升。在编程任务中，Ling-3.0-flash 对空间的理解能力有很大优化，能够完成物理场景网格和相对位置的构建。同时，得益于混合 Reasoning 模式，对不同难度的任务执行成功率均有提升。",
       "context_length": 256000,
@@ -1180,7 +1198,7 @@
       "id": "mimo-v2.5",
       "name": "Xiaomi: MiMo-V2.5",
       "created": 1777363331,
-      "description": "MiMo-V2.5 是小米自研的原生全模态大模型，在智能体场景下具备旗舰水准的综合能力，却只需约一半推理成本。相比 MiMo-V2-Omni，它在图像、视频等多模态理解任务上的感知能力全面提升。它提供最高 100 万上下文窗口，可在单次推理中容纳整份文档、超长对话与复杂任务上下文，非常适合集成进各类智能体框架，在同时追求强推理力、丰富感知和成本效率的场景中发挥作用。",
+      "description": "【官方即将退役此模型，将于 2026.10.14 18:00（UTC+8）自动转发至 V2.6 系列，最终于 2026.10.21 10:00（UTC+8）正式下线】MiMo-V2.5 是小米自研的原生全模态大模型，在智能体场景下具备旗舰水准的综合能力，却只需约一半推理成本。相比 MiMo-V2-Omni，它在图像、视频等多模态理解任务上的感知能力全面提升。它提供最高 100 万上下文窗口，可在单次推理中容纳整份文档、超长对话与复杂任务上下文，非常适合集成进各类智能体框架，在同时追求强推理力、丰富感知和成本效率的场景中发挥作用。",
       "context_length": 1048576,
       "supported_protocols": [
         "openai:chat-completions",
@@ -1202,20 +1220,22 @@
         "vision"
       ],
       "excludedReason": "",
-      "conflicts": [],
+      "conflicts": [
+        "TokenDance公告：2026-10-21 10:00北京时间停止服务，不重定向；保留历史选择，请手动迁移。"
+      ],
       "sourceUrl": "https://tokendance.space/models/mimo-v2.5",
       "reviewedAt": "2026-09-09",
       "verification": "catalog",
       "selectedProtocol": "openai:chat-completions",
       "vendorId": "xiaomi",
-      "lifecycle": "stable",
-      "lifecycleSourceUrl": "https://tokendance.space/models/mimo-v2.5"
+      "lifecycle": "legacy",
+      "lifecycleSourceUrl": "https://tokendance.space/docs/changelog.md"
     },
     {
       "id": "mimo-v2.5-pro",
       "name": "Xiaomi: MiMo-V2.5-Pro",
       "created": 1777363245,
-      "description": "MiMo-V2.5-Pro 是小米的旗舰大模型，在通用智能体能力、复杂软件工程以及长周期任务上表现强劲，在 ClawEval、GDPVal 和 SWE-bench Pro 等基准测试中名列前茅。它能够独立而自主地完成专业级任务，这类任务在人类专家手中往往需要耗费数天甚至数周，并且过程中可能涉及上千次工具调用。  它支持最高约 100 万上下文长度，非常适合嵌入各类智能体框架之中，作为大体量任务编排与执行的核心引擎来使用。",
+      "description": "【官方即将退役此模型，将于 2026.10.14 18:00（UTC+8）自动转发至 V2.6 系列，最终于 2026.10.21 10:00（UTC+8）正式下线】MiMo-V2.5-Pro 是小米的旗舰大模型，在通用智能体能力、复杂软件工程以及长周期任务上表现强劲，在 ClawEval、GDPVal 和 SWE-bench Pro 等基准测试中名列前茅。它能够独立而自主地完成专业级任务，这类任务在人类专家手中往往需要耗费数天甚至数周，并且过程中可能涉及上千次工具调用。  它支持最高约 100 万上下文长度，非常适合嵌入各类智能体框架之中，作为大体量任务编排与执行的核心引擎来使用。",
       "context_length": 1048576,
       "supported_protocols": [
         "openai:chat-completions",
@@ -1233,14 +1253,16 @@
         "optimize"
       ],
       "excludedReason": "",
-      "conflicts": [],
+      "conflicts": [
+        "TokenDance公告：2026-10-21 10:00北京时间停止服务，不重定向；保留历史选择，请手动迁移。"
+      ],
       "sourceUrl": "https://tokendance.space/models/mimo-v2.5-pro",
       "reviewedAt": "2026-09-09",
       "verification": "catalog",
       "selectedProtocol": "openai:chat-completions",
       "vendorId": "xiaomi",
-      "lifecycle": "stable",
-      "lifecycleSourceUrl": "https://tokendance.space/models/mimo-v2.5-pro"
+      "lifecycle": "legacy",
+      "lifecycleSourceUrl": "https://tokendance.space/docs/changelog.md"
     },
     {
       "id": "mimo-v2.5-tts",
@@ -1318,7 +1340,7 @@
       "id": "minimax-h3",
       "name": "MiniMax: MiniMax H3",
       "created": 1785469582,
-      "description": "【限时 5 折至 2026 年 8 月 15 日 23:59:59】通用全模态生成模型，支持对文本、图像、视频、声音组成的多模态上下文进行统一理解，能够输出具备原生双声道的音视频内容，最高可支持15秒2K分辨率",
+      "description": "通用全模态生成模型，支持对文本、图像、视频、声音组成的多模态上下文进行统一理解，能够输出具备原生双声道的音视频内容，最高可支持15秒2K分辨率",
       "context_length": 0,
       "supported_protocols": [
         "minimax:video_generation_v2"
@@ -1563,7 +1585,12 @@
       "vendorId": "alibaba",
       "lifecycle": "stable",
       "lifecycleSourceUrl": "https://tokendance.space/models/qwen3-30b-a3b-instruct-2507",
-      "releaseKind": "snapshot"
+      "releaseKind": "snapshot",
+      "catalogPresence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
     },
     {
       "id": "qwen3-max",
@@ -1593,7 +1620,12 @@
       "selectedProtocol": "openai:chat-completions",
       "vendorId": "alibaba",
       "lifecycle": "stable",
-      "lifecycleSourceUrl": "https://tokendance.space/models/qwen3-max"
+      "lifecycleSourceUrl": "https://tokendance.space/models/qwen3-max",
+      "catalogPresence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
     },
     {
       "id": "qwen3-vl-plus",
@@ -1751,7 +1783,12 @@
       "selectedProtocol": "openai:chat-completions",
       "vendorId": "alibaba",
       "lifecycle": "preview",
-      "lifecycleSourceUrl": "https://tokendance.space/models/qwen3.6-max-preview"
+      "lifecycleSourceUrl": "https://tokendance.space/models/qwen3.6-max-preview",
+      "catalogPresence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
     },
     {
       "id": "qwen3.6-plus",
@@ -2011,7 +2048,7 @@
       "id": "seed-2.0-lite",
       "name": "ByteDance Seed: Seed-2.0-Lite",
       "created": 1774952831,
-      "description": "面向高频企业场景兼顾性能与成本的均衡型模型，综合能力超越上一代Doubao-Seed-1.8。胜任非结构化信息处理、内容创作、搜索推荐、数据分析等生产型工作，支持长上下文、多源信息融合、多步指令执行与高保真结构化输出。在保障稳定效果的同时显著优化成本。",
+      "description": "面向高频企业场景兼顾性能与成本的均衡型模型，综合能力超越上一代Doubao-Seed-1.8。胜任非结构化信息处理、内容创作、搜索推荐、数据分析等生产型工作，支持长上下文、多源信息融合、多步指令执行与高保真结构化输出。在保障稳定效果的同时显著优化成本。目前实际响应模型为doubao-seed-2-1-lite-260915",
       "context_length": 256000,
       "supported_protocols": [
         "openai:chat-completions"
@@ -2111,7 +2148,8 @@
       "context_length": 256000,
       "supported_protocols": [
         "openai:chat-completions",
-        "openai:responses"
+        "openai:responses",
+        "anthropic:messages"
       ],
       "inputModalities": [
         "text",
@@ -2144,7 +2182,8 @@
       "context_length": 256000,
       "supported_protocols": [
         "openai:chat-completions",
-        "openai:responses"
+        "openai:responses",
+        "anthropic:messages"
       ],
       "inputModalities": [
         "text",
@@ -2174,7 +2213,7 @@
       "name": "ByteDance Seed: Seed-Evolving",
       "created": 1782179908,
       "description": "Doubao-Seed-Evolving 面向 Coding 与 Agent 场景，持续周级升级，以统一模型 ID 提供最新能力，助力复杂任务高效落地。当前版本与 ByteDance Seed: Seed-2.1-Pro 相同。",
-      "context_length": 256000,
+      "context_length": 1000000,
       "supported_protocols": [
         "openai:chat-completions"
       ],
@@ -2775,7 +2814,8 @@
       "context_length": 1000000,
       "supported_protocols": [
         "openai:chat-completions",
-        "anthropic:messages"
+        "anthropic:messages",
+        "openai:responses"
       ],
       "inputModalities": [
         "text",
@@ -2797,6 +2837,325 @@
       "selectedProtocol": "openai:chat-completions",
       "vendorId": "stepfun",
       "lifecycle": "preview"
+    },
+    {
+      "id": "ling-3.1-flash",
+      "name": "Ling: Ling 3.1 Flash",
+      "created": 1790783281,
+      "description": "【免费期至 2026 年 10 月 14 日 10 时】Ling-3.1-flash 拥有约 560B 总参数，每个 Token 激活约 25B 参数；模型上下文窗口上限为 1M，可容纳更长的文档、代码和任务历史。在研发过程中，我们围绕通用智能体、搜索、日常办公和软件研发等任务持续优化，并在医疗、金融和材料科学研究等场景持续提升模型能力。",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "顶层目录1000000与端点256000冲突；卡片采用渠道端点256000，最大输出和思考字段未知。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/ling-3.1-flash",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "ant",
+      "lifecycle": "unknown"
+    },
+    {
+      "id": "mimo-v2.6-pro",
+      "name": "Xiaomi: Mimo-V2.6-Pro",
+      "created": 1790041197,
+      "description": "小米最强大的旗舰推理模型，全模态、超高性能、万亿参数的旗舰推理模型，覆盖复杂项目、长程任务、高价值工作、网络安全与科研需求。",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "当前仅适配文本；渠道视觉请求限制、思考控制与最大输出待确认。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/mimo-v2.6-pro",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "xiaomi",
+      "lifecycle": "unknown"
+    },
+    {
+      "id": "mimo-v2.6-flash",
+      "name": "Xiaomi: Mimo-V2.6-Flash",
+      "created": 1790041620,
+      "description": "全模态、高智能、低成本的高效推理模型，面向专业办公中的高频调用与规模化任务的最佳均衡之选。",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "当前仅适配文本；渠道视觉请求限制、思考控制与最大输出待确认。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/mimo-v2.6-flash",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "xiaomi",
+      "lifecycle": "unknown"
+    },
+    {
+      "id": "mimo-v2.6-ultraspeed",
+      "name": "Xiaomi: MiMo-V2.6-Pro-UltraSpeed",
+      "created": 1790042702,
+      "description": "兼顾 V2.6-Pro 旗舰性能，提供最高 20 倍输出速度，服务强实时交互与对响应速度敏感的生产场景。",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "当前仅适配文本；渠道视觉请求限制、思考控制与最大输出待确认。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/mimo-v2.6-ultraspeed",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "xiaomi",
+      "lifecycle": "unknown"
+    },
+    {
+      "id": "cogevol-base",
+      "name": "CogEvol: CogEvol Base",
+      "created": 1788453964,
+      "description": "通用内容生成模型，适合复杂指令理解、内容创作、结构化生成和多步骤任务。",
+      "context_length": 65536,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "生成HTML/SVG/幻灯片代码属于文本输出，不代表原生图像输出。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/cogevol-base",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "cogevol",
+      "lifecycle": "unknown"
+    },
+    {
+      "id": "cogevol-interactive-0828",
+      "name": "CogEvol: CogEvol Interactive 0828",
+      "created": 1788454036,
+      "description": "面向交互式内容生成优化的专项模型，适合页面结构、组件内容和交互逻辑生成。",
+      "context_length": 32768,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "生成HTML/SVG/幻灯片代码属于文本输出，不代表原生图像输出。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/cogevol-interactive-0828",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "cogevol",
+      "lifecycle": "unknown"
+    },
+    {
+      "id": "cogevol-slide-0828",
+      "name": "CogEvol: CogEvol Slide 0828",
+      "created": 1788454001,
+      "description": "面向演示文稿生成优化的专项模型，适合大纲组织、页面内容规划和幻灯片结构生成。",
+      "context_length": 32768,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "生成HTML/SVG/幻灯片代码属于文本输出，不代表原生图像输出。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/cogevol-slide-0828",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "cogevol",
+      "lifecycle": "unknown"
+    },
+    {
+      "id": "deepseek-v4.1-flash-1017",
+      "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
+      "created": 1792226641,
+      "description": " DeepSeek-V4.1-Flash-1017 在提升性能的同时，还缩短了模型的任务运行时间与输出长度，让用户能够以更低成本、更快速度完成任务，在多个 Harness 下达到新的性能-费用帕累托最优。DeepSeek 官方特别针对 DeepSeek Harness、腾讯 CodeBuddy、WorkBuddy 等平台框架进行了优化。",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "公开目录已确认 Chat Completions；视觉专页字段未取得，暂不开放视觉角色。"
+      ],
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "reviewedAt": "2026-10-19",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "deepseek"
+    },
+    {
+      "id": "kimi-k3.1-pro",
+      "name": "MoonshotAI: Kimi K3.1 Pro",
+      "created": 1790697646,
+      "description": "Kimi K3.1 Pro 是全新 K3.1 系列的第一个模型，也是我们迄今能力最强的 3 万亿级参数模型，支持 100 万上下文。K3.1 Pro 在代码、3D 创作、金融研究和其他长程 Agent 能力上的提升尤为显著。",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "渠道公开目录未提供视觉契约；仅文本。"
+      ],
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "reviewedAt": "2026-10-26",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "moonshot"
+    },
+    {
+      "id": "minimax-m3.1-flash",
+      "name": "MiniMax: MiniMax M3.1 Flash",
+      "created": 1792409610,
+      "description": "原生多模态、1M 上下文的 Frontier Coding 模型",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "渠道公开目录未提供视觉契约；仅文本。"
+      ],
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "reviewedAt": "2026-10-26",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "minimax"
     }
-  ]
+  ],
+  "directoryCheckedAt": "2026-10-26"
 }

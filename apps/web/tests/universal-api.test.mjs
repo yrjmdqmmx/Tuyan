@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import {afterEach,test} from 'node:test'
 import React from 'react'
@@ -9,7 +10,7 @@ import {emptyUniversalDraft,saveUniversalDrafts,loadUniversalDrafts,universalDra
 import {STATIC_MODEL_REGISTRY} from '../src/lib/staticModelCatalog.js'
 const oldFetch=globalThis.fetch,oldStorage=globalThis.localStorage
 function drafts(){return Object.fromEntries(['main','vision','image'].map(role=>{const d=emptyUniversalDraft(role);d.declared=true;d.modelId='User/Exact-'+role;d.custom.baseUrl=`https://${role}.example.com/service/v1`;d.custom.catalogFormat='openai';d.custom.capabilities={text:role!=='image',vision:role!=='image',imageGeneration:role==='image',imageEditing:role==='image'};if(role==='image')d.custom.outputSizes=[{resolution:'1K',aspectRatio:'16:9',value:'1536x864'}];return[role,d]}))}
-function backend(){const requests=[];globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;requests.push(b);if(!b)return Response.json({code:0,runtime:'gateway'});if(b.action==='modelRegistry')return Response.json({code:0,routeContractVersion:1,universalApiContractVersion:1,providers:STATIC_MODEL_REGISTRY});if(b.action==='referenceLibrary')return Response.json({code:0,references:[]});if(b.action==='universalApiCheck')return Response.json({code:0,state:'catalog-partial',verified:false,inferenceVerified:false,fetchedAt:'2026-09-20T10:00:00Z',complete:true,truncated:false,models:[{id:b.selectedModelId}],warnings:[{row:1,code:'protocols_null'}],message:'已隔离 1 条异常，其余目录可见；未验证真实调用。'});if(b.action==='createJob')return Response.json({code:0,jobId:'custom-fixture',status:'queued'});if(b.action==='getJob')return Response.json({code:0,job:{id:'custom-fixture',status:'succeeded',resultImages:[],stages:[]}});throw Error('Unexpected mock action '+b.action)};return requests}
+function backend(){const requests=[];globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;requests.push(b);if(!b)return Response.json({code:0,runtime:'gateway'});if(b.action==='modelRegistry')return Response.json({code:0,routeContractVersion:1,figureTaxonomyVersion:'2026-10-10.v1',figureExecutionVersion:1,workflowContractVersion:2,materialWorkflowVersion:1,materialFileVersion:2,universalApiContractVersion:1,providers:STATIC_MODEL_REGISTRY});if(b.action==='referenceLibrary')return Response.json({code:0,references:[]});if(b.action==='universalApiCheck')return Response.json({code:0,state:'catalog-partial',verified:false,inferenceVerified:false,fetchedAt:'2026-09-20T10:00:00Z',complete:true,truncated:false,models:[{id:b.selectedModelId}],warnings:[{row:1,code:'protocols_null'}],message:'已隔离 1 条异常，其余目录可见；未验证真实调用。'});if(b.action==='createJob')return Response.json({code:0,jobId:'custom-fixture',status:'queued'});if(b.action==='getJob')return Response.json({code:0,job:{id:'custom-fixture',status:'succeeded',resultImages:[],stages:[]}});throw Error('Unexpected mock action '+b.action)};return requests}
 afterEach(()=>{cleanup();window.localStorage.clear();globalThis.fetch=oldFetch;globalThis.localStorage=oldStorage})
 test('metadata persistence excludes keys; changed endpoints reject old bindings; unknown models require declaration',()=>{
  const d=drafts(),key=bindUniversalKey(d.main,'fixture-only-key');saveUniversalDrafts({...d,main:{...d.main,apiKey:'must-not-save'}},window.localStorage)
@@ -26,15 +27,15 @@ test('metadata persistence excludes keys; changed endpoints reject old bindings;
 test('professional custom channel preserves preset choices and input while address change clears only its key',async()=>{
  globalThis.localStorage=window.localStorage;saveUniversalDrafts(drafts());const requests=backend(),user=userEvent.setup();render(React.createElement(App))
  await waitFor(()=>assert.ok(requests.some(x=>x?.action==='modelRegistry')))
- fireEvent.change(screen.getByLabelText(/论文方法内容/u),{target:{value:'保留这段论文方法，不因模型配置切换而丢失已有输入。'}})
+ changeControl(screen.getByLabelText(/论文方法内容/u),{target:{value:'保留这段论文方法，不因模型配置切换而丢失已有输入。'}})
  await user.click(screen.getByRole('button',{name:'打开完整设置'}));await user.click(screen.getByRole('button',{name:/普通模式/}));
  const before=screen.getByRole('region',{name:'当前生成设置'}).textContent
  await user.click(screen.getByRole('button',{name:/专业模式/}))
  await user.click(screen.getByRole('button',{name:'主模型',exact:true}))
  assert.equal(screen.getByLabelText('主模型 模型 ID').value,'User/Exact-main')
  assert.equal(screen.queryByText(/API 密钥不会发送到用户指定的第三方地址/),null)
- fireEvent.change(screen.getByLabelText('主模型 API Key'),{target:{value:'old-bound-key'}})
- fireEvent.change(screen.getByLabelText('主模型 Base URL'),{target:{value:'https://changed.example.com/v2'}})
+ changeControl(screen.getByLabelText('主模型 API Key'),{target:{value:'old-bound-key'}})
+ changeControl(screen.getByLabelText('主模型 Base URL'),{target:{value:'https://changed.example.com/v2'}})
  assert.equal(screen.getByLabelText('主模型 API Key').value,'');assert.equal(screen.getByLabelText('主模型 模型 ID').value,'User/Exact-main')
  await user.click(screen.getByRole('button',{name:'返回生成设置'}));await user.click(screen.getByRole('button',{name:/普通模式/}));await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
  assert.equal(screen.getByRole('region',{name:'当前生成设置'}).textContent,before)
@@ -42,18 +43,19 @@ test('professional custom channel preserves preset choices and input while addre
  assert.equal(requests.filter(x=>x?.action==='createJob').length,0)
 })
 test('custom submit preserves exact IDs and scoped readonly catalog check makes no inference claim',async()=>{
+ window.localStorage.setItem('tuyan.workflow-settings.v1',JSON.stringify({version:1,visionMode:'assist',numCandidates:1,maxCriticRounds:1}))
  globalThis.localStorage=window.localStorage;saveUniversalDrafts(drafts());const requests=backend(),user=userEvent.setup();render(React.createElement(App))
  await waitFor(()=>assert.ok(requests.some(x=>x?.action==='modelRegistry')))
  await user.click(screen.getByRole('button',{name:'打开完整设置'}))
  for(const [label,trigger] of [['主模型','主模型'],['视觉模型','视觉模型'],['图像模型','图像生成模型']]){
   await user.click(screen.getByRole('button',{name:trigger,exact:true}))
-  fireEvent.change(screen.getByLabelText(`${label} API Key`),{target:{value:`fixture-key-${['主模型','视觉模型','图像模型'].indexOf(label)}`}})
+  changeControl(screen.getByLabelText(`${label} API Key`),{target:{value:`fixture-key-${['主模型','视觉模型','图像模型'].indexOf(label)}`}})
   await user.click(screen.getByRole('button',{name:'返回生成设置'}))
  }
  await user.click(screen.getByRole('button',{name:'主模型',exact:true}))
  await user.click(screen.getAllByRole('button',{name:'获取模型'})[0]);await screen.findAllByText(/已隔离 1 条异常/)
  assert.equal(Object.keys(JSON.parse(requests.find(x=>x?.action==='universalApiCheck').apiKeys.custom)).length,1)
- fireEvent.change(screen.getByLabelText('主模型 API Key'),{target:{value:'new-account-key'}})
+ changeControl(screen.getByLabelText('主模型 API Key'),{target:{value:'new-account-key'}})
  assert.equal(screen.queryByText(/已隔离 1 条异常/),null)
  await user.click(screen.getByRole('button',{name:'返回生成设置'}));await user.click(screen.getByRole('button',{name:'关闭生成设置'}));await user.click(screen.getAllByRole('button',{name:'生成候选图'}).find(x=>x.type==='submit'))
  await waitFor(()=>assert.ok(requests.some(x=>x?.action==='createJob')))

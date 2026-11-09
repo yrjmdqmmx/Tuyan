@@ -1,0 +1,37 @@
+✔ uploaded refinement source serializes only its object key and marks finalize purpose explicitly (10.618ms)
+✔ createJobRequest sends retrieval and task fields to gateway (13.148125ms)
+✔ createJobRequest sends negative prompt through the gateway and rejects retired transports (16.090833ms)
+✔ optimizeInputsRequest sends only the selected main route and key without mutating the payload (27.027875ms)
+✔ optimizeInputsRequest rejects legacy backends (1.247083ms)
+✔ getJobRequest normalizes negative prompt to canonical snake case and a camel alias (16.658458ms)
+✔ getJobRequest normalizes PaperBanana parity fields (27.706333ms)
+✔ getJobRequest preserves Core routing metadata in camel and snake forms without deriving routes (4.583958ms)
+✔ getJobRequest treats a missing historical configuration mode as simple (2.529542ms)
+✔ refineImageRequest sends image edit payload to gateway (8.542ms)
+✔ job requests forward explicit multi-provider model routes unchanged with the main provider shadow (7.808125ms)
+✔ providerAccountCatalogRequest sends only explicit bounded Ark inference probes (5.298959ms)
+✔ providerAccountCatalogRequest rejects non-Ark and over-broad probes before transport (10.447625ms)
+✔ referenceLibraryRequest preserves English search copy and Chinese display copy (6.996584ms)
+✔ referenceLibraryRequest normalizes legacy reference-only responses with default pagination (10.798875ms)
+✔ referenceLibraryRequest defaults new callers to the cross-task bench scope (11.767959ms)
+✔ referenceLibraryRequest sends exact reference IDs and keeps the pagination envelope (4.162791ms)
+✔ referenceLibraryRequest rejects exact reference IDs combined with scope before transport (1.925042ms)
+✔ referenceLibraryRequest rejects exact reference IDs combined with legacy limit before transport (0.747417ms)
+✔ referenceLibraryRequest forwards AbortSignal without serializing it (9.825375ms)
+✔ reference upload lifecycle explicitly finalizes successful PUTs and aborts failed ones (4.6ms)
+✔ formatClientPlatform translates the complete canonical enum without guessing missing history (1.094959ms)
+✔ admin and user task normalization retain both platform aliases without backfilling history (13.736417ms)
+✔ unsupported transport fails before a network request (1.406833ms)
+✔ userJobsRequest trusts the freshly signed list response without N+1 detail requests (16.425083ms)
+✔ modelRegistryRequest reads the server-authoritative model roles and defaults (7.518042ms)
+✔ benchmark clients use only the public and admin action contracts (9.803083ms)
+✔ shared job payloads preserve 512 and native-size resolution values (10.945167ms)
+✔ model material generation and refined recovery preserve files and independent manual references (33.153291ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2206.46175

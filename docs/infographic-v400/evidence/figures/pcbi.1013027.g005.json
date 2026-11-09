@@ -1,0 +1,51 @@
+{
+  "id": "pcbi.1013027.g005",
+  "paper": "pcbi.1013027",
+  "figure": {
+    "id": "pcbi.1013027.g005",
+    "label": "Fig 5",
+    "caption": "Comparison of the performance of scSDNE with CellChat, CellPhoneDB, iTALK and scTenifoldXct on the scRNA-seq dataset of gastric cancer (from fibroblasts to macrophages).(A) Circos plot depicts the strength of intercellular communication from fibroblasts to other cell types in TME. (B) UpSetR plot illustrates the results from the five tools utilizing their respective LR database. The horizontal bar graph in the lower left corner represents the total number of L-R pairs detected by each method. The intercellular communication results obtained by the different methods are represented by multiple black dots and connecting lines, and the number of intersections displayed in the bar graph above. (C) UpSetR plot shows the results from the five tools using a common LRdb. (D) ROC curves plot depicts the performance of the five methods in assessing intercellular communication. (E) Overlap analysis of the LR database. (F) Comparison of literature support rates for scSDNE using different databases.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1013027.g005\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1013027.g005</object-id><label>Fig 5</label><caption><title>Comparison of the performance of scSDNE with CellChat, CellPhoneDB, iTALK and scTenifoldXct on the scRNA-seq dataset of gastric cancer (from fibroblasts to macrophages).</title><p><bold>(A)</bold> Circos plot depicts the strength of intercellular communication from fibroblasts to other cell types in TME. <bold>(B)</bold> UpSetR plot illustrates the results from the five tools utilizing their respective LR database. The horizontal bar graph in the lower left corner represents the total number of L-R pairs detected by each method. The intercellular communication results obtained by the different methods are represented by multiple black dots and connecting lines, and the number of intersections displayed in the bar graph above. <bold>(C)</bold> UpSetR plot shows the results from the five tools using a common LRdb. <bold>(D)</bold> ROC curves plot depicts the performance of the five methods in assessing intercellular communication. <bold>(E)</bold> Overlap analysis of the LR database. <bold>(F)</bold> Comparison of literature support rates for scSDNE using different databases.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1013027.g005\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1013027.g005",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1013027",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1013027",
+    "title": "scSDNE: A semi-supervised method for inferring cell-cell interactions based on graph embedding",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Chenchen Jia",
+      "Haiyun Wang",
+      "Jianping Zhao",
+      "Junfeng Xia",
+      "Chunhou Zheng"
+    ],
+    "year": "2025",
+    "license": "2025\nJia et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1013027.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1013027.g005.png",
+      "bytes": 2732224,
+      "sha256": "96a0dd6513976274086292aa50cfe6013b2b5311dc49787382d5a37b2df60d85"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1013027.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1013027.g005.tif",
+      "bytes": 3947384,
+      "sha256": "d88a7a8ce92bd26624cfd14f5f2d1cf29ba0742c81eda756b1ab44d7bdbcfe71"
+    }
+  }
+}

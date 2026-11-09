@@ -1,0 +1,23 @@
+{
+  "packages/figure-taxonomy/src/plot.js": "4841cef11f6cdc7d005046e4ab1a88dbe9bc30e991fd59037ada6c6c68a0f17a",
+  "packages/figure-taxonomy/src/catalog.js": "74c15251ed3d94bb8c029a6c0309825e9a18562c8828575ecfd85f3cdb93dda4",
+  "packages/figure-taxonomy/src/specialist-schemas.js": "5fc3437ce0a88e9cd4db8d6449eb783044082c0da0ef7fa7cf6b2babdad60747",
+  "packages/figure-taxonomy/src/specialist-renderers.js": "87a1199f06cad5d73a5d84328864c6d7dd6cdc30cb57658e06439361fef9242e",
+  "packages/figure-taxonomy/src/base-numeric-audit.js": "ec026d5d30d0142ab9ba06381056a44e076fb1eab5a2c376c68da343f38eb34c",
+  "apps/plot-worker/render_worker.py": "2e22546bd82b232c2dce4a1de8951fa4fa54612252736a49e6fd7ceaf9c19329",
+  "apps/plot-worker/app.py": "7e1aeb88107c107eac76d2ea5d5451c2138cabb24e80c7b495e432eae66aa6cf",
+  "apps/paperbanana-api/runtime/handler.ts": "9ae8520277ef93ba73027c898a1cf7a98f07c177ef911171bc27dde52713d2df",
+  "apps/paperbanana-api/src/figure-contract.ts": "e28001dffb1ee7fb6c242c15d72b7e33878898fd59d0222755b1cdb8a557ea2a",
+  "apps/paperbanana-api/src/figure-composition.ts": "219cef09297212768391ba6eaf1109fe2508d788406547bfcbaf9cb27bb0cd94",
+  "apps/paperbanana-api/src/programmatic-svg.ts": "f50aca0de4df388a3522bc0a035744b3fde14f756b8176b346cc2998223081c4",
+  "apps/paperbanana-api/assets/svg-review/programmatic-worker.cjs": "b4ccc3b9c0f60cd35a9737ab79657bedb3f18a380de8baf477a7c9ac262b35c2",
+  "packages/api/src/png-workflow.ts": "2528f4ba505501a506a73d67a8a1bd45125e23ac57db05aadccbe85f205e894a",
+  "packages/api/src/workflow.ts": "10b78b84948f01c86494f5315b7be8ce85f87961d2750632d393697549404d21",
+  "packages/types/src/workflow.ts": "c52578f3597c781bb8ec3124ab78691d7d484b0aa3b11d4e1e402e14982e1c96",
+  "apps/web/src/App.jsx": "e6940bac1dc5722e9ff6af1225f6ffc12a081b381546cc565dc277398b38dd4c",
+  "apps/web/src/components/FigureInputs.jsx": "be836839186713d3544322fd4d083e270b2aaea1419e662dac4ad857ba7bd5a9",
+  "apps/web/src/components/FigureTypePicker.jsx": "239be96598325b8e5dfcf48c6ed6608b5888793aa1491ca9e17d415cf35231d7",
+  "apps/web/src/components/JobStatus.jsx": "8f4713401d1158efc7c01cdd40e4f4e7a0a3684c8819088b4f56c17d743a4a49",
+  "apps/web/src/lib/figureInput.js": "3031551cd1c7a2ce7de0c5750bf855e3acf80bbfac13d01aa2456b1dc6970ab7",
+  "apps/web/src/lib/figureSettings.js": "a30a54f63a43d8220b6e5685bb9e7f8172b9e985e6a8586547e32c730f30cb43"
+}

@@ -1,0 +1,36 @@
+{
+  "figureTypeId": "qq",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "value": -1.2
+      },
+      {
+        "value": -0.4
+      },
+      {
+        "value": 0
+      },
+      {
+        "value": 0.7
+      },
+      {
+        "value": 1.4
+      }
+    ],
+    "units": {
+      "value": "dimensionless"
+    },
+    "options": {
+      "reference": "normal",
+      "mean": 0,
+      "sd": 1,
+      "plottingPosition": "hazen"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

@@ -1,0 +1,247 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": {
+    "stage": "rendering",
+    "stageLabel": "图像生成",
+    "category": "input",
+    "code": "MODEL_INPUT",
+    "reason": "完整生图方案超过当前万相型号的 5000 字符上限，已停止图像请求；未截断方案，请缩短要求或更换模型后重试。",
+    "suggestion": "请减少图片、裁剪过大的图片或缩短文字，也可更换支持该输入的模型。",
+    "requestState": "not_sent",
+    "billingStatus": "not_called",
+    "billingMessage": "失败步骤在模型请求发出前停止；该步骤未发起模型调用。此前费用请结合调用记录核对。",
+    "message": "图像生成失败：完整生图方案超过当前万相型号的 5000 字符上限，已停止图像请求；未截断方案，请缩短要求或更换模型后重试。 请减少图片、裁剪过大的图片或缩短文字，也可更换支持该输入的模型。"
+  },
+  "referenceSelection": {
+    "proposedCount": 1,
+    "selectedCount": 1,
+    "requestedTypeId": "workflow",
+    "exactCount": 0,
+    "compatibleCount": 0,
+    "matchStatus": "matched",
+    "skippedCount": 0,
+    "imageCount": 1,
+    "mode": "images",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "none",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "failed",
+      "error": "完整生图方案超过当前万相型号的 5000 字符上限，已停止图像请求；未截断方案，请缩短要求或更换模型后重试。"
+    }
+  ],
+  "id": "1791621520717-b7asiyqv",
+  "status": "failed",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "Synthetic teaching example, not a research result. Draw exactly Start → Receive sample → Quality check (diamond). Label yes branch → Normalize → Output → End. Label no branch → Reject sample → End. Use English text. Distinguish operations from decisions and start/end. No numeric or scientific claims. Reference image is for design structure only; do not transfer its paper data or conclusions.",
+  "negativePrompt": "No invented numbers, statistical significance, or scientific conclusions. Preserve all supplied labels and relations.",
+  "caption": "Explicit synthetic teaching example",
+  "infographicCategory": "流程图",
+  "figureTypeId": "workflow",
+  "figureSpecVersion": "2026-10-10.v1",
+  "figureInputValidation": {
+    "status": "content_review_required",
+    "checks": [
+      "核对：分支标注互斥或并发语义",
+      "核对：每条路径有去向",
+      "核对：回路有条件",
+      "逐项核对必要输入；记录证据缺口，不把模型的自信作为事实依据。"
+    ]
+  },
+  "outputFormat": "png",
+  "mainModelName": "qwen3.7-plus",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "main_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "planner_critic",
+  "retrievalSetting": "manual",
+  "manualReferenceIds": [
+    "journal_pbio.2003779.g001"
+  ],
+  "retrievedReferenceIds": [
+    "journal_pbio.2003779.g001"
+  ],
+  "retrievedReferences": [
+    {
+      "id": "journal_pbio.2003779.g001",
+      "source": "journal-curated",
+      "corpusVersion": "journal-2026-10-10.v2",
+      "figureTypeId": "workflow",
+      "panelTypes": [],
+      "title": "The Experimental Design Assistant",
+      "titleZh": "步骤编号与反馈连接结合，区分主要操作和辅助功能。",
+      "summary": "The Experimental Design Assistant (EDA) workflow.\nThe workflow is not fixed and different users might prefer to do some steps in a different order. A potential workflow using the different functionalities of the EDA is described as follows: (1) The user starts by drawing a diagram (with nodes and links) representing the experiment they are planning. Assistance is provided in the form of examples, templates, and video tutorials. (2) Information is added into the node properties, providing more details about the specific step of the process represented by each node. (3) The “Critique” functionality (see Table 2) enables the researcher to obtain feedback on the diagram and the design it represents. The feedback might prompt a change in their plans or the addition of missing information. This is an iterative process and the user might go through the first 3 steps a number of times. (4) Once feedback from the critique has been addressed and the user is satisfied with the final design, the analysis method suggested by the system can be reviewed (see Table 2). (5) Depending on how the data will be analysed, a suitable sample size can be calculated using one of the calculators provided within the system. (6) Once the number of animals needed per group is known, the EDA can generate the randomisation sequence. The spreadsheet detailing the group allocation for each animal can be sent directly to a third party nominated by the user, thus blinding the allocation. This enables the researcher to remain unaware of the group allocation until the data have been collected and analysed. (7) Diagrams can be safely shared with colleagues and collaborators at any stage of the process. (8) The user can export a PDF report, which contains key information about the internal validity of the experiment, a summary of the feedback from the system, and the EDA diagram itself. This report can be submitted as part of a grant application, as part of the ethical review process, or, later on, with a journal manuscript. Alternatively, the diagram data can be exported (as an.eda file) and saved locally or used to register the protocol before the experiment is conducted. (9) Once the planning is complete, the experiment is carried out. (10) The diagram can be updated after data collection to enable the user to keep an accurate record (e.g., to record the number of animals analysed if some failed to complete the experiment or if data are missing for other reasons).",
+      "originalCaption": "The Experimental Design Assistant (EDA) workflow.\nThe workflow is not fixed and different users might prefer to do some steps in a different order. A potential workflow using the different functionalities of the EDA is described as follows: (1) The user starts by drawing a diagram (with nodes and links) representing the experiment they are planning. Assistance is provided in the form of examples, templates, and video tutorials. (2) Information is added into the node properties, providing more details about the specific step of the process represented by each node. (3) The “Critique” functionality (see Table 2) enables the researcher to obtain feedback on the diagram and the design it represents. The feedback might prompt a change in their plans or the addition of missing information. This is an iterative process and the user might go through the first 3 steps a number of times. (4) Once feedback from the critique has been addressed and the user is satisfied with the final design, the analysis method suggested by the system can be reviewed (see Table 2). (5) Depending on how the data will be analysed, a suitable sample size can be calculated using one of the calculators provided within the system. (6) Once the number of animals needed per group is known, the EDA can generate the randomisation sequence. The spreadsheet detailing the group allocation for each animal can be sent directly to a third party nominated by the user, thus blinding the allocation. This enables the researcher to remain unaware of the group allocation until the data have been collected and analysed. (7) Diagrams can be safely shared with colleagues and collaborators at any stage of the process. (8) The user can export a PDF report, which contains key information about the internal validity of the experiment, a summary of the feedback from the system, and the EDA diagram itself. This report can be submitted as part of a grant application, as part of the ethical review process, or, later on, with a journal manuscript. Alternatively, the diagram data can be exported (as an.eda file) and saved locally or used to register the protocol before the experiment is conducted. (9) Once the planning is complete, the experiment is carried out. (10) The diagram can be updated after data collection to enable the user to keep an accurate record (e.g., to record the number of animals analysed if some failed to complete the experiment or if data are missing for other reasons).",
+      "shortIntroZh": "步骤编号与反馈连接结合，区分主要操作和辅助功能。",
+      "detailZh": "步骤编号与反馈连接结合，区分主要操作和辅助功能。 案例不是所有实验都必须遵守的唯一流程。",
+      "paper": {
+        "title": "The Experimental Design Assistant",
+        "authors": [
+          "Nathalie Percie du Sert",
+          "Ian Bamsey",
+          "Simon T. Bate",
+          "Manuel Berdoy",
+          "Robin A. Clark",
+          "Innes Cuthill",
+          "Derek Fry",
+          "Natasha A. Karp",
+          "Malcolm Macleod",
+          "Lawrence Moon",
+          "S. Clare Stanford",
+          "Brian Lings"
+        ],
+        "journal": "PLOS Biology",
+        "year": "2017",
+        "doi": "10.1371/journal.pbio.2003779",
+        "sourceUrl": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.2003779"
+      },
+      "figureNumber": "Fig 1",
+      "researchDomain": "实验设计",
+      "layout": "cycle",
+      "density": "medium",
+      "tags": [
+        "workflow",
+        "实验设计",
+        "cycle"
+      ],
+      "designLessons": [
+        "步骤编号与反馈连接结合，区分主要操作和辅助功能。"
+      ],
+      "doNotTransfer": [
+        "案例不是所有实验都必须遵守的唯一流程。",
+        "原论文的实体名称、样本、数值、显著性、模型性能与科学结论。"
+      ],
+      "imageUrl": "https://journals.plos.org/plosbiology/article/figure/image?size=large&id=10.1371/journal.pbio.2003779.g001",
+      "localPreviewUrl": "/reference-library/pbio.2003779.g001.png",
+      "assets": {
+        "large": {
+          "url": "https://journals.plos.org/plosbiology/article/figure/image?size=large&id=10.1371/journal.pbio.2003779.g001",
+          "path": "apps/paperbanana-api/assets/reference-library/pbio.2003779.g001.png",
+          "bytes": 138119,
+          "sha256": "345f95cc2ce8808451665017576dbb749079486e42d02a24349db767dd71a072"
+        },
+        "original": {
+          "url": "https://journals.plos.org/plosbiology/article/figure/image?size=original&id=10.1371/journal.pbio.2003779.g001",
+          "path": "apps/paperbanana-api/assets/reference-library/pbio.2003779.g001.tif",
+          "bytes": 248176,
+          "sha256": "d2a5b6dfa079e4db20b0c0827e02c065a24cab84be1466f786ca9fc3190e7c87"
+        }
+      },
+      "modifications": [],
+      "license": {
+        "id": "CC-BY-4.0",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "status": "verified",
+        "attributionRequired": true,
+        "verifiedAt": "2026-10-10",
+        "basis": "2017\ndu Sert et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+        "evidenceFile": "docs/infographic-v400/evidence/papers/pbio.2003779.xml",
+        "captionEvidence": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.2003779.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.2003779.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>The Experimental Design Assistant (EDA) workflow.</title>\n<p>The workflow is not fixed and different users might prefer to do some steps in a different order. A potential workflow using the different functionalities of the EDA is described as follows: (1) The user starts by drawing a diagram (with nodes and links) representing the experiment they are planning. Assistance is provided in the form of examples, templates, and video tutorials. (2) Information is added into the node properties, providing more details about the specific step of the process represented by each node. (3) The “Critique” functionality (see <xref ref-type=\"table\" rid=\"pbio.2003779.t002\">Table 2</xref>) enables the researcher to obtain feedback on the diagram and the design it represents. The feedback might prompt a change in their plans or the addition of missing information. This is an iterative process and the user might go through the first 3 steps a number of times. (4) Once feedback from the critique has been addressed and the user is satisfied with the final design, the analysis method suggested by the system can be reviewed (see <xref ref-type=\"table\" rid=\"pbio.2003779.t002\">Table 2</xref>). (5) Depending on how the data will be analysed, a suitable sample size can be calculated using one of the calculators provided within the system. (6) Once the number of animals needed per group is known, the EDA can generate the randomisation sequence. The spreadsheet detailing the group allocation for each animal can be sent directly to a third party nominated by the user, thus blinding the allocation. This enables the researcher to remain unaware of the group allocation until the data have been collected and analysed. (7) Diagrams can be safely shared with colleagues and collaborators at any stage of the process. (8) The user can export a PDF report, which contains key information about the internal validity of the experiment, a summary of the feedback from the system, and the EDA diagram itself. This report can be submitted as part of a grant application, as part of the ethical review process, or, later on, with a journal manuscript. Alternatively, the diagram data can be exported (as an.eda file) and saved locally or used to register the protocol before the experiment is conducted. (9) Once the planning is complete, the experiment is carried out. (10) The diagram can be updated after data collection to enable the user to keep an accurate record (e.g., to record the number of animals analysed if some failed to complete the experiment or if data are missing for other reasons).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.2003779.g001\" ns0:type=\"simple\" />\n</fig>\n",
+        "reviewEvidence": null,
+        "thirdPartyReview": "已检查出版方XML、全文素材声明、图注和图像；未发现该图另行限制或第三方署名例外。",
+        "permissions": {
+          "storage": true,
+          "display": true,
+          "modelInput": true,
+          "adaptation": true
+        },
+        "conditions": [
+          "保留论文、作者、图号、来源及许可链接（CC0为学术溯源要求，非额外许可义务）",
+          "如修改，明确说明修改并保留原图",
+          "不暗示原作者认可新作品",
+          "仅基于许可的复制与改编权判断模型输入；不额外授予训练、商标、隐私等权利"
+        ],
+        "attribution": "Nathalie Percie du Sert, Ian Bamsey, Simon T. Bate, Manuel Berdoy, Robin A. Clark, Innes Cuthill, Derek Fry, Natasha A. Karp, Malcolm Macleod, Lawrence Moon, S. Clare Stanford, Brian Lings. The Experimental Design Assistant. PLOS Biology (2017), Fig 1. 10.1371/journal.pbio.2003779. CC-BY-4.0."
+      },
+      "quality": {
+        "status": "reviewed",
+        "inspection": "publisher-caption-and-image",
+        "reason": "结构与科学编码可作为所标注类型的参考；局限写在 doNotTransfer 中。"
+      },
+      "attribution": "Nathalie Percie du Sert, Ian Bamsey, Simon T. Bate, Manuel Berdoy, Robin A. Clark, Innes Cuthill, Derek Fry, Natasha A. Karp, Malcolm Macleod, Lawrence Moon, S. Clare Stanford, Brian Lings. The Experimental Design Assistant. PLOS Biology (2017), Fig 1. 10.1371/journal.pbio.2003779. CC-BY-4.0.",
+      "taskName": "diagram",
+      "visualCategory": "workflow",
+      "visualCategoryLabel": "过程、时间与控制 / 流程图",
+      "keywords": [
+        "流程图",
+        "workflow",
+        "实验设计",
+        "cycle"
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "id": "stage-3f1cb513-2d96-46c2-8aa9-865a5c4ce7c5",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "Based on the methodology provided and the visual style of the reference image, here is the detailed description for the illustrative figure.\n\n**Figure Description:**\n\n**Layout & Composition:**\nA vertical, top-down flowchart centered on a pure white background. The layout consists of a single main column that splits into two parallel branches at the decision point, then converges visually towards the bottom termination points. The spacing between elements is uniform to ensure a clean, educational look.\n\n**Visual Style (derived from reference):**\n*   **Color Palette:** Use the specific teal/turquoise color from the reference image (approx. hex #1D8F85) for all primary shapes (Start, End, Process steps). Use a distinct \"alert\" color (e.g., muted orange or light red) for the \"Reject\" path to visually distinguish the negative outcome.\n*   **Typography:** Sans-serif font (e.g., Arial or Roboto), bold weight for node text, regular weight for branch labels. Text color is white inside colored nodes and dark grey/black for branch labels on the white background.\n*   **Connectors:** Thick, solid arrows (matching the teal color) with triangular heads indicating flow direction.\n\n**Element Breakdown (Top to Bottom):**\n\n1.  **Start Node:**\n    *   **Shape:** Pill-shaped (rounded rectangle).\n    *   **Color:** Teal fill, white text.\n    *   **Label:** \"Start\".\n    *   **Connection:** A downward arrow leads to the next step.\n\n2.  **Process Step 1:**\n    *   **Shape:** Rectangle with slightly rounded corners.\n    *   **Color:** Teal fill, white text.\n    *   **Label:** \"Receive sample\".\n    *   **Connection:** A downward arrow leads to the decision diamond.\n\n3.  **Decision Node:**\n    *   **Shape:** Diamond (rhombus).\n    *   **Color:** Teal fill, white text.\n    *   **Label:** \"Quality check\".\n    *   **Connections:** Two arrows emerge from this node:\n        *   **Left/Down Path (Yes):** An arrow exiting the bottom vertex, labeled **\"Yes\"** in dark text next to the line.\n        *   **Right Path (No):** An arrow exiting the right vertex, labeled **\"No\"** in dark text next to the line.\n\n4.  **\"Yes\" Branch (Main Flow):**\n    *   **Process Step 2:** Located directly below the diamond.\n        *   **Shape:** Rectangle with rounded corners.\n        *   **Color:** Teal fill, white text.\n        *   **Label:** \"Normalize\".\n        *   **Connection:** Downward arrow.\n    *   **Process Step 3:** Located below \"Normalize\".\n        *   **Shape:** Rectangle with rounded corners.\n        *   **Color:** Teal fill, white text.\n        *   **Label:** \"Output\".\n        *   **Connection:** Downward arrow leading to the \"End\" node.\n\n5.  **\"No\" Branch (Exception Flow):**\n    *   **Process Step 4:** Located to the right of the \"Normalize/Output\" stack, aligned horizontally with the \"Quality check\" or slightly below it.\n        *   **Shape:** Rectangle with rounded corners.\n        *   **Color:** Muted Orange/Red fill (to distinguish from the success path), white text.\n        *   **Label:** \"Reject sample\".\n        *   **Connection:** An arrow leads downwards/rightwards to its own \"End\" node.\n\n6.  **End Nodes:**\n    *   **End Node 1 (Success):** Located at the very bottom, aligned with the \"Start\" node.\n        *   **Shape:** Pill-shaped (rounded rectangle).\n        *   **Color:** Teal fill, white text.\n        *   **Label:** \"End\".\n    *   **End Node 2 (Rejection):** Located below the \"Reject sample\" box.\n        *   **Shape:** Pill-shaped (rounded rectangle).\n        *   **Color:** Muted Orange/Red fill, white text.\n        *   **Label:** \"End\".\n\n**Summary of Flow:**\nStart $\\rightarrow$ Receive sample $\\rightarrow$ Quality check $\\rightarrow$ (Yes) $\\rightarrow$ Normalize $\\rightarrow$ Output $\\rightarrow$ End.\nQuality check $\\rightarrow$ (No) $\\rightarrow$ Reject sample $\\rightarrow$ End.",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T08:38:40.732Z",
+      "completedAt": "2026-10-10T08:39:00.548Z",
+      "durationMs": 19816,
+      "error": ""
+    }
+  ],
+  "criticMode": "image",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 1,
+  "promptCharCount": 546,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [],
+  "logs": [
+    "2026-10-10T08:38:40.732Z 参考图选择：采用 1 张，排除重复 0 张、无法使用 0 张、超出预算 0 张；主模型规划请求合计 1 张图片，上限 8 张。",
+    "ERROR: 图像生成失败：完整生图方案超过当前万相型号的 5000 字符上限，已停止图像请求；未截断方案，请缩短要求或更换模型后重试。 请减少图片、裁剪过大的图片或缩短文字，也可更换支持该输入的模型。"
+  ],
+  "error": "图像生成失败：完整生图方案超过当前万相型号的 5000 字符上限，已停止图像请求；未截断方案，请缩短要求或更换模型后重试。 请减少图片、裁剪过大的图片或缩短文字，也可更换支持该输入的模型。",
+  "createdAt": "2026-10-10T08:38:40.717Z",
+  "updatedAt": "2026-10-10T08:39:00.549Z",
+  "startedAt": "2026-10-10T08:38:40.718Z",
+  "completedAt": "2026-10-10T08:39:00.549Z"
+}

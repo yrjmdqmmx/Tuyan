@@ -1,0 +1,53 @@
+{
+  "id": "pone.0254358.g002",
+  "paper": "pone.0254358",
+  "figure": {
+    "id": "pone.0254358.g002",
+    "label": "Fig 2",
+    "caption": "Example partial tree from the DT model showing the causal patterns for medication errors.\nIn this tree, if the decision is false (i.e., not a voided order), take the right branch; similarly, if the decision is true (i.e., voided order), take the left branch. Red and green boxes highlight the positive rates of greater than and less than 5% respectively. Note that this is a small portion of the total tree.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0254358.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0254358.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Example partial tree from the DT model showing the causal patterns for medication errors.</title>\n<p>In this tree, if the decision is false (i.e., not a voided order), take the right branch; similarly, if the decision is true (i.e., voided order), take the left branch. Red and green boxes highlight the positive rates of greater than and less than 5% respectively. Note that this is a small portion of the total tree.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0254358.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0254358.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0254358",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0254358",
+    "title": "Predicting self-intercepted medication ordering errors using machine learning",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Christopher Ryan King",
+      "Joanna Abraham",
+      "Bradley A. Fritz",
+      "Zhicheng Cui",
+      "William Galanter",
+      "Yixin Chen",
+      "Thomas Kannampallil"
+    ],
+    "year": "2021",
+    "license": "2021\nKing et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0254358.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0254358.g002.png",
+      "bytes": 908132,
+      "sha256": "6a1d4d8dccbddd4366e45c528e640cca72f4014702ffae187a91c3e912134ed3"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0254358.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0254358.g002.tif",
+      "bytes": 1083944,
+      "sha256": "1ba12fd7e4e938986a6d17e64afea9567148b5bea1f29d4e86d15e9101b85a4f"
+    }
+  }
+}

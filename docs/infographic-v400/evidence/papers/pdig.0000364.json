@@ -1,0 +1,85 @@
+{
+  "doi": "10.1371/journal.pdig.0000364",
+  "sourceUrl": "https://journals.plos.org/digitalhealth/article?id=10.1371/journal.pdig.0000364",
+  "title": "Assessing generalizability of an AI-based visual test for cervical cancer screening",
+  "journal": "PLOS Digital Health",
+  "authors": [
+    "Syed Rakin Ahmed",
+    "Didem Egemen",
+    "Brian Befano",
+    "Ana Cecilia Rodriguez",
+    "Jose Jeronimo",
+    "Kanan Desai",
+    "Carolina Teran",
+    "Karla Alfaro",
+    "Joel Fokom-Domgue",
+    "Kittipat Charoenkwan",
+    "Chemtai Mungo",
+    "Rebecca Luckett",
+    "Rakiya Saidu",
+    "Taina Raiol",
+    "Ana Ribeiro",
+    "Julia C. Gage",
+    "Silvia de Sanjose",
+    "Jayashree Kalpathy-Cramer",
+    "Mark Schiffman"
+  ],
+  "year": "2024",
+  "license": "This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pdig.0000364.g001",
+      "label": "Fig 1",
+      "caption": "Uniform manifold approximation and projections (UMAP) highlighting the relative distributions of the datasets, devices and geographies investigated in this work.\nEach subplot highlights a different representation of the UMAP, where the color coding (highlighted in the corresponding legend at the top of each subplot) is at the (a) dataset-level, (b) device-level and (c) geography-level. The datasets and devices occupy distinct clusters in (a) and (b), while the geographies are all clustered together within the same device in (c). The x- and y-axes are in arbitrary units, representing the two UMAP components on which the higher dimensional data was projected.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pdig.0000364.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pdig.0000364.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Uniform manifold approximation and projections (UMAP) highlighting the relative distributions of the datasets, devices and geographies investigated in this work.</title>\n<p>Each subplot highlights a different representation of the UMAP, where the color coding (highlighted in the corresponding legend at the top of each subplot) is at the (a) dataset-level, (b) device-level and (c) geography-level. The datasets and devices occupy distinct clusters in (a) and (b), while the geographies are all clustered together within the same device in (c). The x- and y-axes are in arbitrary units, representing the two UMAP components on which the higher dimensional data was projected.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pdig.0000364.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pdig.0000364.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pdig.0000364.g002",
+      "label": "Fig 2",
+      "caption": "(a) Bounding boxes generated from running the cervix detector, highlighted in white, around 50 randomly selected images from the external (“EXT”) dataset. The cervix detector utilized a YOLOv5 architecture trained on the “SEED” dataset images. (b) Bound and cropped images of the cervix which are passed onto the diagnostic classifier (AVE).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pdig.0000364.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pdig.0000364.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title />\n<p>(a) Bounding boxes generated from running the cervix detector, highlighted in white, around 50 randomly selected images from the external (“EXT”) dataset. The cervix detector utilized a YOLOv5 architecture trained on the “SEED” dataset images. (b) Bound and cropped images of the cervix which are passed onto the diagnostic classifier (AVE).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pdig.0000364.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pdig.0000364.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pdig.0000364.g003",
+      "label": "Fig 3",
+      "caption": "Results from the first set of the generalizability analyses, highlighting that device level heterogeneity impacts our model performance greater than geography level heterogeneity.\nThe classification performance and repeatability plots depicted here include (a) receiver operating characteristics (ROC) curves; (b) confusion matrices; and (c) Bland-Altman plots, for models that were (i) trained on “SEED” and tested on a held-aside set from “SEED”; (ii) trained on “SEED” and tested on “EXT”; and (iii) trained on a dataset comprising of “SEED” + all images from “EXT” except Bolivia and tested on Bolivia images from “EXT”. “Gray Zone” = “Indeterminate”.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pdig.0000364.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pdig.0000364.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Results from the first set of the generalizability analyses, highlighting that device level heterogeneity impacts our model performance greater than geography level heterogeneity.</title>\n<p>The classification performance and repeatability plots depicted here include (a) receiver operating characteristics (ROC) curves; (b) confusion matrices; and (c) Bland-Altman plots, for models that were (i) trained on “SEED” and tested on a held-aside set from “SEED”; (ii) trained on “SEED” and tested on “EXT”; and (iii) trained on a dataset comprising of “SEED” + all images from “EXT” except Bolivia and tested on Bolivia images from “EXT”. “Gray Zone” = “Indeterminate”.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pdig.0000364.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pdig.0000364.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pdig.0000364.g004",
+      "label": "Fig 4",
+      "caption": "Results from the second set of generalizability analysis, highlighting that retraining can improve performance on a new device previously not present in the “SEED”.\n(a) Model level comparison across models representing incremental additions of “EXT” (J8) images at the woman level to the training set of “SEED” images, with the “EXT” images added in (i) a 1n normal (N): 1n indeterminate (I): 1n precancer+ (P) ratio; and (ii) a 2n N: 2n I: 1n P ratio of ground truth classes at the woman level, where n = # of precancer+ women added (y-axes) (b) Plots of area under receiver operating characteristics curve (AUC) vs. # women added to the training set per ground truth class, in the same ratios as in (a). For example, in (ii), the x-axis represents the # precancer+ (P) women added (n) in the ratio 2n N: 2n I: 1n P to the training set. The top row plots the Normal (class 0) vs. Rest AUC, while the bottom row plots the Precancer+ (class 2) vs. rest AUC, respectively, on the y-axis. In panel (a) “normal” = green, “indeterminate” / “gray zone” = gray and “precancer+” = red.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pdig.0000364.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pdig.0000364.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Results from the second set of generalizability analysis, highlighting that retraining can improve performance on a new device previously not present in the “SEED”.</title>\n<p>(a) Model level comparison across models representing incremental additions of “EXT” (J8) images at the woman level to the training set of “SEED” images, with the “EXT” images added in (i) a 1n normal (N): 1n indeterminate (I): 1n precancer+ (P) ratio; and (ii) a 2n N: 2n I: 1n P ratio of ground truth classes at the woman level, where n = # of precancer+ women added (y-axes) (b) Plots of area under receiver operating characteristics curve (AUC) vs. # women added to the training set per ground truth class, in the same ratios as in (a). For example, in (ii), the x-axis represents the # precancer+ (P) women added (n) in the ratio 2n N: 2n I: 1n P to the training set. The top row plots the Normal (class 0) vs. Rest AUC, while the bottom row plots the Precancer+ (class 2) vs. rest AUC, respectively, on the y-axis. In panel (a) “normal” = green, “indeterminate” / “gray zone” = gray and “precancer+” = red.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pdig.0000364.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pdig.0000364.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

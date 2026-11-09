@@ -1,0 +1,49 @@
+{
+  "id": "pone.0243139.g007",
+  "paper": "pone.0243139",
+  "figure": {
+    "id": "pone.0243139.g007",
+    "label": "Fig 7",
+    "caption": "Simulation engine sequence diagram.\nA sequence diagram outlining the software communication protocols.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0243139.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0243139.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Simulation engine sequence diagram.</title>\n<p>A sequence diagram outlining the software communication protocols.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0243139.g007\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0243139.g007",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0243139",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0243139",
+    "title": "Development platform for artificial pancreas algorithms",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Mohamed Raef Smaoui",
+      "Remi Rabasa-Lhoret",
+      "Ahmad Haidar"
+    ],
+    "year": "2020",
+    "license": "2020\nSmaoui et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0243139.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0243139.g007.png",
+      "bytes": 624672,
+      "sha256": "b67d865468b4a4f3239bd8404fd9b0892c4965a217d3639089ac0563e0c02389"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0243139.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0243139.g007.tif",
+      "bytes": 1108100,
+      "sha256": "828555c07a707b36e4e810991722543e95c0e2dbea77ee7075065b851fbb6794"
+    }
+  }
+}

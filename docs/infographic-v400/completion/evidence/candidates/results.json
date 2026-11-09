@@ -1,0 +1,260 @@
+{
+  "python": "/Users/a1-6/.cache/tuyan-figure-qa-20261010/bin/python",
+  "total": 23,
+  "passed": 23,
+  "results": [
+    {
+      "typeId": "network",
+      "passed": true,
+      "elapsedMs": 300,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "network.png",
+      "svg": "network.svg",
+      "validation": "network.validation.json"
+    },
+    {
+      "typeId": "euler",
+      "passed": true,
+      "elapsedMs": 239,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "euler.png",
+      "svg": "euler.svg",
+      "validation": "euler.validation.json"
+    },
+    {
+      "typeId": "sankey",
+      "passed": true,
+      "elapsedMs": 304,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "sankey.png",
+      "svg": "sankey.svg",
+      "validation": "sankey.validation.json"
+    },
+    {
+      "typeId": "chord",
+      "passed": true,
+      "elapsedMs": 278,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "chord.png",
+      "svg": "chord.svg",
+      "validation": "chord.validation.json"
+    },
+    {
+      "typeId": "radar",
+      "passed": true,
+      "elapsedMs": 280,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "radar.png",
+      "svg": "radar.svg",
+      "validation": "radar.validation.json"
+    },
+    {
+      "typeId": "qq",
+      "passed": true,
+      "elapsedMs": 277,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "qq.png",
+      "svg": "qq.svg",
+      "validation": "qq.validation.json"
+    },
+    {
+      "typeId": "streamgraph",
+      "passed": true,
+      "elapsedMs": 264,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "streamgraph.png",
+      "svg": "streamgraph.svg",
+      "validation": "streamgraph.validation.json"
+    },
+    {
+      "typeId": "cumulative_incidence",
+      "passed": true,
+      "elapsedMs": 276,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "cumulative_incidence.png",
+      "svg": "cumulative_incidence.svg",
+      "validation": "cumulative_incidence.validation.json"
+    },
+    {
+      "typeId": "matrix_link_overlay",
+      "passed": true,
+      "elapsedMs": 284,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "matrix_link_overlay.png",
+      "svg": "matrix_link_overlay.svg",
+      "validation": "matrix_link_overlay.validation.json"
+    },
+    {
+      "typeId": "parallel_coordinates",
+      "passed": true,
+      "elapsedMs": 260,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "parallel_coordinates.png",
+      "svg": "parallel_coordinates.svg",
+      "validation": "parallel_coordinates.validation.json"
+    },
+    {
+      "typeId": "treemap",
+      "passed": true,
+      "elapsedMs": 250,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "treemap.png",
+      "svg": "treemap.svg",
+      "validation": "treemap.validation.json"
+    },
+    {
+      "typeId": "circle_packing",
+      "passed": true,
+      "elapsedMs": 256,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "circle_packing.png",
+      "svg": "circle_packing.svg",
+      "validation": "circle_packing.validation.json"
+    },
+    {
+      "typeId": "alluvial",
+      "passed": true,
+      "elapsedMs": 247,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "alluvial.png",
+      "svg": "alluvial.svg",
+      "validation": "alluvial.validation.json"
+    },
+    {
+      "typeId": "point_map",
+      "passed": true,
+      "elapsedMs": 283,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "point_map.png",
+      "svg": "point_map.svg",
+      "validation": "point_map.validation.json"
+    },
+    {
+      "typeId": "choropleth",
+      "passed": true,
+      "elapsedMs": 298,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "choropleth.png",
+      "svg": "choropleth.svg",
+      "validation": "choropleth.validation.json"
+    },
+    {
+      "typeId": "enrichment",
+      "passed": true,
+      "elapsedMs": 282,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "enrichment.png",
+      "svg": "enrichment.svg",
+      "validation": "enrichment.validation.json"
+    },
+    {
+      "typeId": "gene_track",
+      "passed": true,
+      "elapsedMs": 255,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "gene_track.png",
+      "svg": "gene_track.svg",
+      "validation": "gene_track.validation.json"
+    },
+    {
+      "typeId": "protein_domain",
+      "passed": true,
+      "elapsedMs": 263,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "protein_domain.png",
+      "svg": "protein_domain.svg",
+      "validation": "protein_domain.validation.json"
+    },
+    {
+      "typeId": "motif_logo",
+      "passed": true,
+      "elapsedMs": 272,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "motif_logo.png",
+      "svg": "motif_logo.svg",
+      "validation": "motif_logo.validation.json"
+    },
+    {
+      "typeId": "genome_circos",
+      "passed": true,
+      "elapsedMs": 270,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "genome_circos.png",
+      "svg": "genome_circos.svg",
+      "validation": "genome_circos.validation.json"
+    },
+    {
+      "typeId": "synteny",
+      "passed": true,
+      "elapsedMs": 252,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "synteny.png",
+      "svg": "synteny.svg",
+      "validation": "synteny.validation.json"
+    },
+    {
+      "typeId": "phylogenetic",
+      "passed": true,
+      "elapsedMs": 253,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "phylogenetic.png",
+      "svg": "phylogenetic.svg",
+      "validation": "phylogenetic.validation.json"
+    },
+    {
+      "typeId": "dendrogram",
+      "passed": true,
+      "elapsedMs": 264,
+      "exitCode": 0,
+      "error": null,
+      "stderr": "",
+      "png": "dendrogram.png",
+      "svg": "dendrogram.svg",
+      "validation": "dendrogram.validation.json"
+    }
+  ]
+}

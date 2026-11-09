@@ -1,0 +1,67 @@
+{
+  "figureTypeId": "area",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic QA fixture only; no research claims.",
+    "rows": [
+      {
+        "x": 1,
+        "y": 2,
+        "size": 2
+      },
+      {
+        "x": 2,
+        "y": 5,
+        "size": 4
+      },
+      {
+        "x": 3,
+        "y": 3,
+        "size": 3
+      }
+    ],
+    "units": {
+      "value": "dimensionless",
+      "x": "dimensionless",
+      "y": "dimensionless",
+      "size": "dimensionless",
+      "low": "dimensionless",
+      "high": "dimensionless",
+      "start": "dimensionless",
+      "end": "dimensionless",
+      "effect": "dimensionless",
+      "p": "dimensionless",
+      "mean": "dimensionless",
+      "fpr": "dimensionless",
+      "tpr": "dimensionless",
+      "recall": "dimensionless",
+      "precision": "dimensionless",
+      "predicted": "dimensionless",
+      "observed": "dimensionless",
+      "count": "dimensionless",
+      "a": "dimensionless",
+      "b": "dimensionless",
+      "se": "dimensionless",
+      "u": "dimensionless",
+      "v": "dimensionless",
+      "time": "dimensionless",
+      "event": "dimensionless"
+    },
+    "options": {
+      "bandwidth": 0.5,
+      "bins": 5,
+      "nullValue": 0,
+      "initialValue": 0,
+      "levels": [
+        0.5,
+        1,
+        1.5
+      ]
+    }
+  },
+  "figureAnalysis": {
+    "method": "pca",
+    "description": "Synthetic precomputed QA values; not a statistical analysis of research data.",
+    "pKind": "p"
+  }
+}

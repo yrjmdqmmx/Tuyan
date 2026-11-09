@@ -1,0 +1,77 @@
+[
+  {
+    "channel": "百炼",
+    "items": "deepseek-v4.1-flash-1017；MiniMax/MiniMax-M3.1-Flash；xiaomi/mimo-v2.6-pro-ultraspeed",
+    "reason": "2026-10-26 v38已完成三个型号的WorkspaceId路由、文字/图片、主/视觉角色和MiniMax五档思考适配及离线验证。待确认精确未公开限制、DeepSeek1017/MiMo可调思考合同、账户权限、海外网络和真实调用；音视频/工具不在现有图片工作流范围，生产未发布。",
+    "source": "https://help.aliyun.com/zh/model-studio/deepseek-api",
+    "previousReason": "需WorkspaceId、区域路由及相应鉴权上下文；当前硬编码DashScope端点不覆盖。",
+    "status": "text-image-adapter-local-verified",
+    "followupReport": "docs/model-catalog/2026-10-26-bailian-multimodal.md"
+  },
+  {
+    "channel": "Kimi原厂",
+    "items": "kimi-k3.1-pro / highspeed 的视觉",
+    "reason": "当前通用图片路径可透传公网URL；原厂新指南要求base64/ms://，本轮只开放文本。",
+    "source": "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart"
+  },
+  {
+    "channel": "Replicate",
+    "items": "anthropic/claude-opus-5.5 的视觉",
+    "reason": "单图image字段及默认0.5MP缩放，不能套用现有images数组与保留原图假设。",
+    "source": "https://replicate.com/anthropic/claude-opus-5.5/api/schema"
+  },
+  {
+    "channel": "Novita",
+    "items": "4个新增LLM，详见 evidence.json",
+    "reason": "当前Novita仅Ming图片适配；需Chat请求/响应、预算与任务恢复合同。",
+    "source": "https://api.novita.ai/v3/openai/models"
+  },
+  {
+    "channel": "TokenDance",
+    "items": "deepseek-fetch / deepseek-search；既有Qwen2.1/Seedream Flash待办",
+    "reason": "工具端点非通用Chat；图片协议仍需逐型号合同。缺席的两个旧ID保留历史，由实时目录拒绝执行。",
+    "source": "https://tokendance.space/gateway/v1/models"
+  },
+  {
+    "channel": "Anthropic",
+    "items": "2026-10-21 API版本 / Google Cloud managed",
+    "reason": "破坏性参数变化及Google IAM/计费渠道；本轮不升级请求头/SDK。",
+    "source": "https://platform.claude.com/docs/en/api/migration-2026-10-21"
+  },
+  {
+    "channel": "Together",
+    "items": "US/Canada geo-specific routes",
+    "reason": "需地区选择、账户权限与25%价格差异，当前标准路由保持。",
+    "source": "https://docs.together.ai/docs/serverless/models"
+  },
+  {
+    "channel": "Fireworks",
+    "items": "beam-1p0-501b-a23b / step-5-preview-fp8 / muse-spark-open-nvfp4",
+    "reason": "明确Serverless Not Supported，需专用部署端点；维持不可选。",
+    "source": "https://fireworks.ai/models/fireworks/beam-1p0-501b-a23b"
+  },
+  {
+    "channel": "fal / BFL",
+    "items": "Krea ultra / Flux3 match_input与自定义尺寸",
+    "reason": "ultra固定2K且忽略尺寸/negative_prompt；Flux3参考图面积约束需控件/请求专项验证。",
+    "source": "https://fal.ai/models/krea/v3/edit/api"
+  },
+  {
+    "channel": "SenseNova / Ideogram / Recraft",
+    "items": "新Key目录 / Ideogram v2 / Styles",
+    "reason": "延续上轮新鉴权、新协议、style_id参数待办；不能凭目录存在改成可用。",
+    "source": "https://developer.ideogram.ai/v2/api-reference/images/precise-edit/ideogram-4-5"
+  },
+  {
+    "channel": "TokenHub",
+    "items": "seedream-image-v5.0-flash、Kling图像等未登记精确ID",
+    "reason": "需要渠道型号的图片尺寸/源图限制/任务协议证据，不能从类似模型克隆支持。",
+    "source": "https://cloud.tencent.com/document/product/1823/130051"
+  },
+  {
+    "channel": "Zhipu / Runware / fal / Replicate",
+    "items": "法律专用、语音、视频、头像等发现",
+    "reason": "超出当前科研图示目录的已适配角色；不新增供应商或执行协议。",
+    "source": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+  }
+]

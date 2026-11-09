@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "pixels": [
+    4096,
+    2304
+  ],
+  "labels": [
+    "实验组",
+    "对照组",
+    "质量（毫克）"
+  ],
+  "data": [
+    2,
+    7
+  ],
+  "source": "synthetic QA only",
+  "worker": "actual child process"
+}

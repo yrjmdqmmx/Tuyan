@@ -1,0 +1,77 @@
+{
+  "typeId": "phylogenetic",
+  "computations": {
+    "nodePositions": {
+      "A": [
+        0.5,
+        0
+      ],
+      "B": [
+        0.6000000000000001,
+        1
+      ],
+      "Internal": [
+        0.2,
+        0.5
+      ],
+      "C": [
+        0.5,
+        2
+      ],
+      "Root": [
+        0,
+        1.25
+      ]
+    },
+    "tipOrder": [
+      "A",
+      "B",
+      "C"
+    ],
+    "root": "Root",
+    "branchLengthSource": "supplied"
+  },
+  "checks": {
+    "A_branch_length": {
+      "actual": 0.3,
+      "expected": 0.3,
+      "absoluteError": 0.0
+    },
+    "B_branch_length": {
+      "actual": 0.4000000000000001,
+      "expected": 0.4,
+      "absoluteError": 5.551115123125783e-17
+    },
+    "Internal_branch_length": {
+      "actual": 0.2,
+      "expected": 0.2,
+      "absoluteError": 0.0
+    },
+    "C_branch_length": {
+      "actual": 0.5,
+      "expected": 0.5,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 4.0,
+      "expected": 4.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "source",
+      "target",
+      "length"
+    ],
+    "options": {
+      "root": "Root",
+      "rooting": "Supplied synthetic root",
+      "branchLengthUnit": "substitutions/site"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

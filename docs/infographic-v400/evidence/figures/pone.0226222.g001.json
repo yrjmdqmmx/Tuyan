@@ -1,0 +1,49 @@
+{
+  "id": "pone.0226222.g001",
+  "paper": "pone.0226222",
+  "figure": {
+    "id": "pone.0226222.g001",
+    "label": "Fig 1",
+    "caption": "This is a hierarchy of types of fish (but not the whole hierarchy from Subsection DBpedia fish of Section Results and discussion).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0226222.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0226222.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>This is a hierarchy of types of fish (but not the whole hierarchy from Subsection <italic>DBpedia fish</italic> of Section <italic>Results and discussion</italic>).</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0226222.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0226222.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0226222",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0226222",
+    "title": "A hierarchical loss and its problems when classifying non-hierarchically",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Cinna Wu",
+      "Mark Tygert",
+      "Yann LeCun"
+    ],
+    "year": "2019",
+    "license": "2019\nWu et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0226222.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0226222.g001.png",
+      "bytes": 195720,
+      "sha256": "2efe18c3ade33297ea4be26abea0d5dff162c1b390402cee88fe45d32e0ed56c"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0226222.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0226222.g001.tif",
+      "bytes": 271820,
+      "sha256": "00cdbd634161df81bb86b03532bc9142a577bbb5edba9097d6f84ce0ba20175c"
+    }
+  }
+}

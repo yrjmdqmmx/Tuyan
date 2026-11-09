@@ -1,13 +1,14 @@
 export const REFERENCE_PAGE_SIZE = 12
 export const REFERENCE_SELECTION_LIMIT = 10
 
-export function buildReferencePageRequest({ page = 1, query = '', visualCategory = '', researchDomain = '' } = {}) {
+export function buildReferencePageRequest({ page = 1, query = '', visualCategory = '', figureGroup = '', researchDomain = '' } = {}) {
   return {
     scope: 'bench',
     page: Math.max(1, Number(page) || 1),
     pageSize: REFERENCE_PAGE_SIZE,
     query: String(query || '').trim(),
     visualCategory: String(visualCategory || ''),
+    ...(figureGroup ? {figureGroup:String(figureGroup)} : {}),
     researchDomain: String(researchDomain || ''),
   }
 }

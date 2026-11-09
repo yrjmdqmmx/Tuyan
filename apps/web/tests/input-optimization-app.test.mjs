@@ -1,5 +1,7 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
-import { afterEach, test } from 'node:test'
+import { afterEach, beforeEach, test } from 'node:test'
+import { IDBFactory } from 'fake-indexeddb'
 import React from 'react'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -11,6 +13,7 @@ const capableRegistry = {
   routeContractVersion: 1,
   inputOptimizationContractVersion: 1,
   supportsModelRoutes: true,
+  figureTaxonomyVersion:'2026-10-10.v1',figureExecutionVersion:1,workflowContractVersion:2,materialWorkflowVersion:1,materialFileVersion:2,
   providers: {
     bailian: {
       accessKind: 'aggregator',
@@ -19,7 +22,7 @@ const capableRegistry = {
       defaults: { main: 'main', image: 'image', vision: 'vision' },
       models: [
         { id: 'main', label: '主模型', vendor: 'Qwen', roles: ['main'], selectable: true, lifecycle: 'stable', capabilities: {} },
-        { id: 'vision', label: '识图模型', vendor: 'Qwen', roles: ['vision'], selectable: true, lifecycle: 'stable', capabilities: {} },
+        { id: 'vision', label: '识图模型', vendor: 'Qwen', roles: ['vision'], selectable: true, lifecycle: 'stable', capabilities: {referenceImages: true} },
         { id: 'image', label: '图像模型', vendor: 'Wan', roles: ['image'], selectable: true, lifecycle: 'stable', inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K'], refineResolutions: ['2K'], aspectRatios: ['16:9'], refineAspectRatios: ['16:9'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
@@ -29,12 +32,14 @@ const capableRegistry = {
       accountCatalogRequired: false,
       defaults: { main: 'openai-main', image: 'openai-image', vision: 'openai-main' },
       models: [
-        { id: 'openai-main', label: 'OpenAI Main', vendor: 'OpenAI', roles: ['main', 'vision'], selectable: true, lifecycle: 'stable', capabilities: {} },
+        { id: 'openai-main', label: 'OpenAI Main', vendor: 'OpenAI', roles: ['main', 'vision'], selectable: true, lifecycle: 'stable', capabilities: {referenceImages: true} },
         { id: 'openai-image', label: 'OpenAI Image', vendor: 'OpenAI', roles: ['image'], selectable: true, lifecycle: 'stable', capabilities: { outputFormats: ['png'], resolutions: ['1K'], refineResolutions: ['2K'], imageEditMode: 'direct-edit' } },
       ],
     },
   },
 }
+
+beforeEach(()=>{window.localStorage.clear();globalThis.indexedDB=new IDBFactory()})
 
 let restoreFetch
 
@@ -52,7 +57,7 @@ test('refinement optimization previews, cancels, adopts and restores only the ed
   const input = await screen.findByLabelText('精修指令')
   const original = '放大标签，保留文字、配色和布局。'
   assert.equal(screen.getByRole('button', { name: '优化输入：精修指令' }).disabled, true)
-  fireEvent.change(input, { target: { value: original } })
+  changeControl(input, { target: { value: original } })
   async function optimize() {
     await user.click(screen.getByRole('button', { name: '优化输入：精修指令' }))
     return screen.findByRole('dialog', { name: '优化精修指令' })
@@ -136,7 +141,7 @@ async function configureAdvancedVanillaOpenAiMain(user) {
   await user.click(screen.getByRole('button', { name: '主模型' }))
   await user.click(screen.getByRole('button', { name: 'OpenAI' }))
   await user.click(screen.getByRole('button', { name: /OpenAI Main/u }))
-  await user.selectOptions(screen.getByLabelText('生成流程'), 'vanilla')
+  await user.click(screen.getByRole('radio', {name: /快速生成/}))
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
 }
 
@@ -182,9 +187,9 @@ test('blank requirements disable each entry with an accessible reason while an e
   const method = screen.getByLabelText(/论文方法内容/u)
   const caption = screen.getByLabelText(/目标图注/u)
   const negative = screen.getByLabelText(/负向提示词（可选）/u)
-  fireEvent.change(method, { target: { value: '   ' } })
-  fireEvent.change(caption, { target: { value: '\n' } })
-  fireEvent.change(negative, { target: { value: '' } })
+  changeControl(method, { target: { value: '   ' } })
+  changeControl(caption, { target: { value: '\n' } })
+  changeControl(negative, { target: { value: '' } })
 
   for (const name of ['优化输入：方法栏', '优化输入：图注栏', '优化输入：负向提示栏']) {
     const button = screen.getByRole('button', { name })
@@ -196,7 +201,7 @@ test('blank requirements disable each entry with an accessible reason while an e
     assert.equal(reason?.classList.contains('sr-only'), false)
   }
 
-  fireEvent.change(method, { target: { value: '可作为上下文的方法内容' } })
+  changeControl(method, { target: { value: '可作为上下文的方法内容' } })
   assert.equal(screen.getByRole('button', { name: '优化输入：方法栏' }).disabled, false)
   assert.equal(screen.getByRole('button', { name: '优化输入：图注栏' }).disabled, true)
   assert.equal(screen.getByRole('button', { name: '优化输入：负向提示栏' }).disabled, false)
@@ -227,7 +232,7 @@ test('invalid main route and missing main key open settings at the right focus t
   assert.match(screen.getByRole('alert').textContent, /密钥/u)
 })
 
-test('advanced vanilla optimization reveals and focuses its otherwise unreachable main-provider key without sending a request', async () => {
+test('advanced vanilla optimization focuses its required main-provider key without sending a request', async () => {
   const { requests, user } = await renderReady()
   await configureAdvancedVanillaOpenAiMain(user)
 
@@ -242,7 +247,7 @@ test('advanced vanilla optimization reveals and focuses its otherwise unreachabl
   assert.ok(screen.getByLabelText('阿里云百炼 接入密钥'), 'generation image key remains available')
 })
 
-test('closing settings clears the temporary optimization credential provider', async () => {
+test('closing settings retains the main credential needed by basic planning', async () => {
   const { user } = await renderReady()
   await configureAdvancedVanillaOpenAiMain(user)
   fireEvent.click(screen.getByRole('button', { name: '优化输入：方法栏' }))
@@ -250,11 +255,11 @@ test('closing settings clears the temporary optimization credential provider', a
 
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
-  assert.equal(screen.queryByLabelText('OpenAI 接入密钥'), null)
+  assert.equal(screen.getByLabelText('OpenAI 接入密钥').value, 'configured-openai-key')
   assert.ok(screen.getByLabelText('阿里云百炼 接入密钥'))
 })
 
-test('temporary optimization credentials never expand vanilla generation key scope', async () => {
+test('basic generation scopes credentials to required main and image roles', async () => {
   const { requests, user } = await renderReady()
   await configureAdvancedVanillaOpenAiMain(user)
   fireEvent.click(screen.getByRole('button', { name: '优化输入：方法栏' }))
@@ -266,7 +271,7 @@ test('temporary optimization credentials never expand vanilla generation key sco
   await user.click(submit)
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
   const create = requests.find((request) => request.body?.action === 'createJob').body
-  assert.deepEqual(create.apiKeys, { bailian: 'bailian-image-key' })
+  assert.deepEqual(create.apiKeys, {openai: 'openai-optimization-key', bailian: 'bailian-image-key' })
   assert.equal(create.modelRoutes.main.accessProvider, 'openai')
 })
 
@@ -288,9 +293,9 @@ test('a valid click sends only the three-input snapshot, selected main route, an
   const method = screen.getByLabelText(/论文方法内容/u)
   const caption = screen.getByLabelText(/目标图注/u)
   const negative = screen.getByLabelText(/负向提示词（可选）/u)
-  fireEvent.change(method, { target: { value: '本轮方法原文' } })
-  fireEvent.change(caption, { target: { value: '本轮图注原文' } })
-  fireEvent.change(negative, { target: { value: '本轮负向原文' } })
+  changeControl(method, { target: { value: '本轮方法原文' } })
+  changeControl(caption, { target: { value: '本轮图注原文' } })
+  changeControl(negative, { target: { value: '本轮负向原文' } })
   await enterMainKey(user)
   await user.click(screen.getByRole('button', { name: '优化输入：图注栏' }))
   await waitFor(() => assert.equal(optimizationRequests(requests).length, 1))
@@ -385,7 +390,7 @@ test('each target supports one-step restore and manual edits or applying a templ
 
   for (const [label, controlLabel, target] of targets) {
     const input = screen.getByLabelText(new RegExp(label, 'u'))
-    if (target === 'negativePrompt' && !input.value) fireEvent.change(input, { target: { value: '原始负向内容' } })
+    if (target === 'negativePrompt' && !input.value) changeControl(input, { target: { value: '原始负向内容' } })
     const original = input.value
     await user.click(screen.getByRole('button', { name: `优化输入：${controlLabel}` }))
     const dialog = await screen.findByRole('dialog', { name: new RegExp(`优化${label}`, 'u') })
@@ -402,7 +407,7 @@ test('each target supports one-step restore and manual edits or applying a templ
   let dialog = await screen.findByRole('dialog', { name: /优化目标图注/u })
   await expectCandidate(dialog, '优化后的caption')
   await user.click(within(dialog).getByRole('button', { name: '采用优化稿' }))
-  fireEvent.change(screen.getByLabelText(/目标图注/u), { target: { value: '用户手工改写' } })
+  changeControl(screen.getByLabelText(/目标图注/u), { target: { value: '用户手工改写' } })
   assert.equal(screen.queryByRole('button', { name: '恢复图注栏优化前内容' }), null)
 
   await user.click(screen.getByRole('button', { name: '优化输入：方法栏' }))

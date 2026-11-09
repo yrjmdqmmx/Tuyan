@@ -1,0 +1,239 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": null,
+  "referenceSelection": {
+    "proposedCount": 0,
+    "selectedCount": 0,
+    "skippedCount": 0,
+    "imageCount": 0,
+    "mode": "text",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "none",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "succeeded",
+      "review": {
+        "limit": 1,
+        "roundsUsed": 1,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "40e4f889e1732e4332a72176bd928958648a45251d2c5e3c030cb04699bb645c",
+            "pngHash": "4086ffb532ca22fe01249a52ac5fb0ecf3706b53582a3d9030966575788e5142",
+            "status": "passed",
+            "submittedImageHash": "5bc35b98311c0a3e905d4734b4ecf8529a8cff41c468b74f403080e1c7654c4e",
+            "assessment": "{\"version\":1,\"svgHash\":\"40e4f889e1732e4332a72176bd928958648a45251d2c5e3c030cb04699bb645c\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 1,
+        "deliveredSvgHash": "40e4f889e1732e4332a72176bd928958648a45251d2c5e3c030cb04699bb645c",
+        "reviewedVersion": 1,
+        "reviewedSvgHash": "40e4f889e1732e4332a72176bd928958648a45251d2c5e3c030cb04699bb645c",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      }
+    }
+  ],
+  "id": "1791598780148-9sqgoued",
+  "status": "succeeded",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。",
+  "negativePrompt": "禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。",
+  "caption": "从样品输入到标准化结果的三步方法流程。",
+  "infographicCategory": "method",
+  "outputFormat": "svg",
+  "mainModelName": "qwen3.7-plus",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "main_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "planner_critic",
+  "retrievalSetting": "none",
+  "manualReferenceIds": [],
+  "retrievedReferenceIds": [],
+  "retrievedReferences": [],
+  "stages": [
+    {
+      "id": "stage-478c383c-ffa9-4939-bcae-4e61b39f6666",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "Here is the detailed description for the illustrative figure, designed to strictly follow the methodology constraints and visual intent.\n\n**Figure Description:**\n\n**1. General Layout & Style:**\n*   **Type:** Horizontal Process Flowchart (Methodology Diagram).\n*   **Aspect Ratio:** 16:9 landscape.\n*   **Background:** Pure white (`#FFFFFF`) or extremely light pastel gray (`#F8F9FA`) to ensure high contrast and a clean scientific aesthetic. No grid lines or background textures.\n*   **Style:** Minimalist, flat vector graphics. Use rounded rectangles for process nodes to convey a modern, soft scientific look.\n*   **Color Palette:** Since no specific reference image was provided, use a professional, neutral scientific palette:\n    *   Primary Node Fill: Soft Blue (`#E3F2FD`) with a slightly darker Blue border (`#1976D2`).\n    *   Arrow/Connector Color: Dark Gray (`#424242`) or Black (`#000000`).\n    *   Text Color: Dark Gray/Black (`#212121`) for maximum readability.\n*   **Typography:** Use `Noto Sans CJK SC` for Chinese characters and `Noto Sans Math` for mathematical expressions. Font weight: Regular. Ensure mathematical symbols like subscripts are rendered correctly.\n\n**2. Core Elements (Left-to-Right Flow):**\n\nThe diagram consists of exactly three main nodes connected by two directional arrows, arranged horizontally from left to right.\n\n*   **Node 1: Sample Input (Left)**\n    *   **Shape:** Rounded rectangle with moderate corner radius.\n    *   **Position:** Left third of the canvas, vertically centered.\n    *   **Content:**\n        *   Main Label: \"样品输入\" (Sample Input).\n        *   Sub-label/Annotation: \"(n=12)\" placed directly below or slightly smaller next to the main label, indicating the sample size.\n    *   **Visual Detail:** The text should be centered within the box.\n\n*   **Connector 1:**\n    *   **Shape:** A straight, horizontal arrow pointing from the right side of Node 1 to the left side of Node 2.\n    *   **Style:** Solid line, medium thickness (e.g., 2px), with a standard triangular arrowhead.\n    *   **Direction:** Strictly Left → Right.\n\n*   **Node 2: Data Standardization (Center)**\n    *   **Shape:** Rounded rectangle, identical in size and style to Node 1.\n    *   **Position:** Center of the canvas, vertically aligned with Node 1 and 3.\n    *   **Content:**\n        *   Main Label: \"数据标准化\" (Data Standardization).\n        *   Mathematical Expression: \"$x / x_0$\" (or visually rendered as $\\frac{x}{x_0}$ if space permits, but inline $x / x_0$ is safer for strict SVG rendering without complex layout engines). Ensure the subscript '0' is clearly visible.\n    *   **Visual Detail:** The math expression should be distinct, possibly using a monospaced font or italicized serif for variables if consistent with the style guide, but standard sans-serif is preferred for consistency with the rest of the diagram unless specified otherwise. Given the constraint \"Noto Sans Math\", standard upright or italic sans-serif math glyphs are appropriate.\n\n*   **Connector 2:**\n    *   **Shape:** A straight, horizontal arrow pointing from the right side of Node 2 to the left side of Node 3.\n    *   **Style:** Identical to Connector 1.\n    *   **Direction:** Strictly Left → Right.\n\n*   **Node 3: Result Output (Right)**\n    *   **Shape:** Rounded rectangle, identical in size and style to Nodes 1 and 2.\n    *   **Position:** Right third of the canvas, vertically aligned.\n    *   **Content:**\n        *   Main Label: \"结果输出\" (Result Output).\n        *   Sub-label/Annotation: \"(均值 1.0)\" (Mean 1.0).\n    *   **Visual Detail:** Text centered.\n\n**3. Additional Constraints & Details:**\n\n*   **Top-Right Identifier:**\n    *   Place a small, short identifier mark in the absolute top-right corner of the canvas.\n    *   Since no reference image was uploaded to copy from, this element is omitted or represented by a placeholder generic badge if required by the system template, but per the prompt \"If reference image... put the short identifier... originally\", and since there is *no* reference image, this specific instruction is nullified. However, to be safe against strict parsing, if a \"short identifier\" is mandatory in the output format regardless of reference, use a simple small square or circle with no text, or leave blank if not applicable. *Correction based on prompt logic:* The prompt says \"If provide reference...\". Since none is provided, do not add arbitrary identifiers. Leave the top-right corner clean unless a specific logo was implied (which it isn't).\n*   **No Extra Elements:** Do not add any other steps, decision diamonds, feedback loops, or numerical values not explicitly listed (e.g., do not add standard deviation, p-values, etc.).\n*   **No Caption in Image:** Do not write \"Figure 1: ...\" or the caption text inside the image area.\n*   **Alignment:** All three boxes should be perfectly aligned along their horizontal midlines. The spacing between Node 1->2 and Node 2->3 should be equal.\n\n**4. SVG Rendering Specifics:**\n*   Use `<rect>` with `rx` and `ry` attributes for rounded corners.\n*   Use `<path>` or `<line>` with `<marker-end>` for arrows.\n*   Use `<text>` elements with `dominant-baseline=\"middle\"` and `text-anchor=\"middle\"` for centering labels within boxes.\n*   Ensure all text is selectable and not rasterized.\n*   Colors must be hex codes.\n*   No shadows, gradients, or filters.\n\n**Summary of Visual Flow:**\n[样品输入 (n=12)]  --->  [数据标准化 (x / x₀)]  --->  [结果输出 (均值 1.0)]",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T02:19:40.150Z",
+      "completedAt": "2026-10-10T02:20:04.779Z",
+      "durationMs": 24629,
+      "error": ""
+    },
+    {
+      "id": "stage-a7b37d7c-5568-46a4-a7d4-ed7e7c5a7c76",
+      "candidateId": 0,
+      "type": "svg_source",
+      "title": "SVG v1 文件",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"40e4f889e1732e4332a72176bd928958648a45251d2c5e3c030cb04699bb645c\",\"pngHash\":\"4086ffb532ca22fe01249a52ac5fb0ecf3706b53582a3d9030966575788e5142\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Noto Sans CJK SC\",\"Noto Sans\",\"sans-serif\",\"Noto Sans Math\"]},\"codeIssues\":[\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598780148-9sqgoued/candidate-0-svg-v1.svg",
+        "url": "http://127.0.0.1:62564/objects/1791598780148-9sqgoued/candidate-0-svg-v1.svg",
+        "mimeType": "image/svg+xml",
+        "objectKey": "1791598780148-9sqgoued/candidate-0-svg-v1.svg"
+      },
+      "startedAt": "2026-10-10T02:20:21.383Z",
+      "completedAt": "2026-10-10T02:20:21.383Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-6b62e4b9-472c-46c2-adac-e3baffe9c6a8",
+      "candidateId": 0,
+      "type": "render",
+      "title": "SVG v1 实际渲染",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"40e4f889e1732e4332a72176bd928958648a45251d2c5e3c030cb04699bb645c\",\"pngHash\":\"4086ffb532ca22fe01249a52ac5fb0ecf3706b53582a3d9030966575788e5142\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Noto Sans CJK SC\",\"Noto Sans\",\"sans-serif\",\"Noto Sans Math\"]},\"codeIssues\":[\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598780148-9sqgoued/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:62564/objects/1791598780148-9sqgoued/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791598780148-9sqgoued/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T02:20:21.383Z",
+      "completedAt": "2026-10-10T02:20:21.383Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-720cdde6-a95c-44f4-9af3-0cbfe388df9c",
+      "candidateId": 0,
+      "type": "critic",
+      "title": "SVG v1 画面与代码评审（第1轮）",
+      "round": 1,
+      "text": "{\"version\":1,\"svgHash\":\"40e4f889e1732e4332a72176bd928958648a45251d2c5e3c030cb04699bb645c\",\"pngHash\":\"4086ffb532ca22fe01249a52ac5fb0ecf3706b53582a3d9030966575788e5142\",\"submittedImageHash\":\"5bc35b98311c0a3e905d4734b4ecf8529a8cff41c468b74f403080e1c7654c4e\",\"round\":1,\"previousAssessment\":\"\",\"referenceAnalysis\":\"\",\"retrievalContext\":\"\",\"decision\":{\"version\":1,\"svgHash\":\"40e4f889e1732e4332a72176bd928958648a45251d2c5e3c030cb04699bb645c\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598780148-9sqgoued/candidate-0-svg-v1-review-1.png",
+        "url": "http://127.0.0.1:62564/objects/1791598780148-9sqgoued/candidate-0-svg-v1-review-1.png",
+        "mimeType": "image/png",
+        "objectKey": "1791598780148-9sqgoued/candidate-0-svg-v1-review-1.png"
+      },
+      "startedAt": "2026-10-10T02:20:24.468Z",
+      "completedAt": "2026-10-10T02:20:24.468Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-83ae7def-7a11-4dfd-8a96-a11052f950f4",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "SVG v1 交付状态",
+      "round": 0,
+      "text": "主模型已检查当前交付 SVG 的实际画面和完整代码。",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598780148-9sqgoued/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:62564/objects/1791598780148-9sqgoued/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791598780148-9sqgoued/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T02:20:24.468Z",
+      "completedAt": "2026-10-10T02:20:24.468Z",
+      "durationMs": 0,
+      "error": ""
+    }
+  ],
+  "criticMode": "visual_code",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 1,
+  "promptCharCount": 195,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [
+    {
+      "candidateId": 0,
+      "filename": "1791598780148-9sqgoued/candidate-0.svg",
+      "objectKey": "1791598780148-9sqgoued/candidate-0.svg",
+      "url": "http://127.0.0.1:62564/objects/1791598780148-9sqgoued/candidate-0.svg",
+      "storage": "bucket",
+      "mimeType": "image/svg+xml",
+      "description": "Here is the detailed description for the illustrative figure, designed to strictly follow the methodology constraints and visual intent.\n\n**Figure Description:**\n\n**1. General Layout & Style:**\n*   **Type:** Horizontal Process Flowchart (Methodology Diagram).\n*   **Aspect Ratio:** 16:9 landscape.\n*   **Background:** Pure white (`#FFFFFF`) or extremely light pastel gray (`#F8F9FA`) to ensure high contrast and a clean scientific aesthetic. No grid lines or background textures.\n*   **Style:** Minimalist, flat vector graphics. Use rounded rectangles for process nodes to convey a modern, soft scientific look.\n*   **Color Palette:** Since no specific reference image was provided, use a professional, neutral scientific palette:\n    *   Primary Node Fill: Soft Blue (`#E3F2FD`) with a slightly darker Blue border (`#1976D2`).\n    *   Arrow/Connector Color: Dark Gray (`#424242`) or Black (`#000000`).\n    *   Text Color: Dark Gray/Black (`#212121`) for maximum readability.\n*   **Typography:** Use `Noto Sans CJK SC` for Chinese characters and `Noto Sans Math` for mathematical expressions. Font weight: Regular. Ensure mathematical symbols like subscripts are rendered correctly.\n\n**2. Core Elements (Left-to-Right Flow):**\n\nThe diagram consists of exactly three main nodes connected by two directional arrows, arranged horizontally from left to right.\n\n*   **Node 1: Sample Input (Left)**\n    *   **Shape:** Rounded rectangle with moderate corner radius.\n    *   **Position:** Left third of the canvas, vertically centered.\n    *   **Content:**\n        *   Main Label: \"样品输入\" (Sample Input).\n        *   Sub-label/Annotation: \"(n=12)\" placed directly below or slightly smaller next to the main label, indicating the sample size.\n    *   **Visual Detail:** The text should be centered within the box.\n\n*   **Connector 1:**\n    *   **Shape:** A straight, horizontal arrow pointing from the right side of Node 1 to the left side of Node 2.\n    *   **Style:** Solid line, medium thickness (e.g., 2px), with a standard triangular arrowhead.\n    *   **Direction:** Strictly Left → Right.\n\n*   **Node 2: Data Standardization (Center)**\n    *   **Shape:** Rounded rectangle, identical in size and style to Node 1.\n    *   **Position:** Center of the canvas, vertically aligned with Node 1 and 3.\n    *   **Content:**\n        *   Main Label: \"数据标准化\" (Data Standardization).\n        *   Mathematical Expression: \"$x / x_0$\" (or visually rendered as $\\frac{x}{x_0}$ if space permits, but inline $x / x_0$ is safer for strict SVG rendering without complex layout engines). Ensure the subscript '0' is clearly visible.\n    *   **Visual Detail:** The math expression should be distinct, possibly using a monospaced font or italicized serif for variables if consistent with the style guide, but standard sans-serif is preferred for consistency with the rest of the diagram unless specified otherwise. Given the constraint \"Noto Sans Math\", standard upright or italic sans-serif math glyphs are appropriate.\n\n*   **Connector 2:**\n    *   **Shape:** A straight, horizontal arrow pointing from the right side of Node 2 to the left side of Node 3.\n    *   **Style:** Identical to Connector 1.\n    *   **Direction:** Strictly Left → Right.\n\n*   **Node 3: Result Output (Right)**\n    *   **Shape:** Rounded rectangle, identical in size and style to Nodes 1 and 2.\n    *   **Position:** Right third of the canvas, vertically aligned.\n    *   **Content:**\n        *   Main Label: \"结果输出\" (Result Output).\n        *   Sub-label/Annotation: \"(均值 1.0)\" (Mean 1.0).\n    *   **Visual Detail:** Text centered.\n\n**3. Additional Constraints & Details:**\n\n*   **Top-Right Identifier:**\n    *   Place a small, short identifier mark in the absolute top-right corner of the canvas.\n    *   Since no reference image was uploaded to copy from, this element is omitted or represented by a placeholder generic badge if required by the system template, but per the prompt \"If reference image... put the short identifier... originally\", and since there is *no* reference image, this specific instruction is nullified. However, to be safe against strict parsing, if a \"short identifier\" is mandatory in the output format regardless of reference, use a simple small square or circle with no text, or leave blank if not applicable. *Correction based on prompt logic:* The prompt says \"If provide reference...\". Since none is provided, do not add arbitrary identifiers. Leave the top-right corner clean unless a specific logo was implied (which it isn't).\n*   **No Extra Elements:** Do not add any other steps, decision diamonds, feedback loops, or numerical values not explicitly listed (e.g., do not add standard deviation, p-values, etc.).\n*   **No Caption in Image:** Do not write \"Figure 1: ...\" or the caption text inside the image area.\n*   **Alignment:** All three boxes should be perfectly aligned along their horizontal midlines. The spacing between Node 1->2 and Node 2->3 should be equal.\n\n**4. SVG Rendering Specifics:**\n*   Use `<rect>` with `rx` and `ry` attributes for rounded corners.\n*   Use `<path>` or `<line>` with `<marker-end>` for arrows.\n*   Use `<text>` elements with `dominant-baseline=\"middle\"` and `text-anchor=\"middle\"` for centering labels within boxes.\n*   Ensure all text is selectable and not rasterized.\n*   Colors must be hex codes.\n*   No shadows, gradients, or filters.\n\n**Summary of Visual Flow:**\n[样品输入 (n=12)]  --->  [数据标准化 (x / x₀)]  --->  [结果输出 (均值 1.0)]",
+      "review": {
+        "limit": 1,
+        "roundsUsed": 1,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "40e4f889e1732e4332a72176bd928958648a45251d2c5e3c030cb04699bb645c",
+            "pngHash": "4086ffb532ca22fe01249a52ac5fb0ecf3706b53582a3d9030966575788e5142",
+            "status": "passed",
+            "submittedImageHash": "5bc35b98311c0a3e905d4734b4ecf8529a8cff41c468b74f403080e1c7654c4e",
+            "assessment": "{\"version\":1,\"svgHash\":\"40e4f889e1732e4332a72176bd928958648a45251d2c5e3c030cb04699bb645c\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 1,
+        "deliveredSvgHash": "40e4f889e1732e4332a72176bd928958648a45251d2c5e3c030cb04699bb645c",
+        "reviewedVersion": 1,
+        "reviewedSvgHash": "40e4f889e1732e4332a72176bd928958648a45251d2c5e3c030cb04699bb645c",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      }
+    }
+  ],
+  "logs": [],
+  "error": "",
+  "createdAt": "2026-10-10T02:19:40.148Z",
+  "updatedAt": "2026-10-10T02:20:24.468Z",
+  "startedAt": "2026-10-10T02:19:40.148Z",
+  "completedAt": "2026-10-10T02:20:24.468Z"
+}

@@ -1,0 +1,52 @@
+{
+  "id": "pone.0272825.g004",
+  "paper": "pone.0272825",
+  "figure": {
+    "id": "pone.0272825.g004",
+    "label": "Fig 4",
+    "caption": "SHAP waterfall plots for individual predictions.\nWaterfall visualization of SHAP values related to factuals F1 (left panel) and F2 (right panel). Red bar: positive contribution; blue bar: negative contribution. E[f(X)]: baseline expected output; f(X): output predicted by the model. Features are ordered by importance.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0272825.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0272825.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>SHAP waterfall plots for individual predictions.</title>\n<p>Waterfall visualization of SHAP values related to factuals F1 (left panel) and F2 (right panel). Red bar: positive contribution; blue bar: negative contribution. <italic>E</italic>[<italic>f</italic>(<italic>X</italic>)]: baseline expected output; <italic>f</italic>(<italic>X</italic>): output predicted by the model. Features are ordered by importance.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0272825.g004\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0272825.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0272825",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0272825",
+    "title": "A novel method to derive personalized minimum viable recommendations for type 2 diabetes prevention based on counterfactual explanations",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Marta Lenatti",
+      "Alberto Carlevaro",
+      "Aziz Guergachi",
+      "Karim Keshavjee",
+      "Maurizio Mongelli",
+      "Alessia Paglialonga"
+    ],
+    "year": "2022",
+    "license": "2022\nLenatti et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0272825.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0272825.g004.png",
+      "bytes": 296822,
+      "sha256": "e7470214b0b939eeae57ed4310d77f7c456a7e25b4cf03637bfa812f57b1c085"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0272825.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0272825.g004.tif",
+      "bytes": 358152,
+      "sha256": "b4a66c6feb073502942af2d7e2ec75c1e3cdeee48f00e8276c7f85d124ea2dfe"
+    }
+  }
+}

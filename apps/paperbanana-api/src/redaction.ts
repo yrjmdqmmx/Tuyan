@@ -5,6 +5,10 @@ const sensitiveKeys = new Set([
   'admintoken',
   'apikey',
   'apikeys',
+  'catalogcredentials',
+  'accesskeyid',
+  'secretaccesskey',
+  'sessiontoken',
   'body',
   'requestbody',
 ])

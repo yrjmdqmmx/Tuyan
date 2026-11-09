@@ -17,12 +17,18 @@ const root = new URL('../../../', import.meta.url)
 const read = (path: string) => JSON.parse(fs.readFileSync(new URL(path, root), 'utf8'))
 const audits = Object.fromEntries(providers.map(provider => [provider, read(`config/channel-audit/v24/${provider}.json`)])) as Record<Provider, any>
 const integrations = Object.fromEntries(providers.map(provider => [provider, read(`config/channel-audit/v24/${provider}-integration.json`)])) as Record<Provider, any>
+// Preserve the dated v24 baseline; later independently sourced additions extend
+// the exact-set oracle without rewriting historical audit dates or exclusions.
+for (const provider of providers) for (const manifest of [audits[provider], integrations[provider]]) {
+  manifest.models = [...manifest.models, ...(manifest.incrementalReviews || []).flatMap((review:any) => review.models)]
+}
 const config = read('config/model-catalog-updates.json')
 const presentation = read('config/model-presentation.json')
 const auditTime = Date.parse('2026-09-22T12:00:00+08:00')
 const image = { url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB' }
 const roleSet = (roles: string[]) => [...new Set(roles.map(role => role.startsWith('image-') ? 'image' : role))].sort()
-const isV24 = (row: any) => row.id !== 'LongCat-2.5-Preview' // v3.8.1 has an independent exact-set oracle.
+const laterIndependentlyAudited = new Set(['LongCat-2.5-Preview', 'deepseek-v4.1-flash-1017', 'spark-x2.6', 'spark-x2.6-4b']) // v3.8.1, catalog-20261019 and catalog-20261026 have independent identity and wire oracles.
+const isV24 = (row: any) => !laterIndependentlyAudited.has(row.id)
 const ids = (rows: any[]) => rows.filter(isV24).map(row => row.id).sort()
 const notSent = (error: any) => error.localInputFailure === true && error.requestState === 'not_sent'
 const textInput = (provider: Provider, model: any, withImage = model.roles.includes('vision')): NewTextInput => ({ provider, model: model.id, apiKey: 'fixture-only-secret', system: '保留科研事实', user: '说明节点之间的关系', images: withImage ? [image] : [] })
@@ -36,7 +42,7 @@ for (const provider of providers) {
     assert.equal(new Set(selected.map(row => row.id)).size, selected.length, 'duplicate integration ID')
     assert.deepEqual(ids(web), ids(selected), 'Web must contain every selected ID and no additional IDs')
     assert.deepEqual(ids(config.providers[provider]), ids(selected), 'shared catalog must equal the integration list')
-    const contractIds = Object.keys(AUDITED_CHANNEL_CONTRACTS).filter(key => key.startsWith(provider + '/') && key !== 'longcat/LongCat-2.5-Preview').map(key => key.slice(provider.length + 1)).sort()
+    const contractIds = Object.keys(AUDITED_CHANNEL_CONTRACTS).filter(key => key.startsWith(provider + '/') && !laterIndependentlyAudited.has(key.slice(provider.length + 1))).map(key => key.slice(provider.length + 1)).sort()
     assert.deepEqual(contractIds, ids(selected), 'no omitted or extra executable contracts')
     for (const row of selected) {
       const source = audit.models.find((model: any) => model.id === row.id)

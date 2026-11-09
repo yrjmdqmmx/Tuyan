@@ -1,0 +1,177 @@
+{
+  "date": "2026-10-10",
+  "provider": "Bailian",
+  "model": "qwen3.7-plus",
+  "calls": 53,
+  "imageModelCalls": 0,
+  "usage": {
+    "prompt_tokens": 604239,
+    "completion_tokens": 56032,
+    "total_tokens": 660271
+  },
+  "billingReconciled": false,
+  "rounds": [
+    {
+      "round": "round-1",
+      "requests": 10,
+      "usage": {
+        "prompt_tokens": 98644,
+        "completion_tokens": 10879,
+        "total_tokens": 109523
+      },
+      "results": [
+        {
+          "scenario": "state-diagram-svg",
+          "status": "succeeded",
+          "review": "issues_found"
+        },
+        {
+          "scenario": "mixed-workflow-bar-svg",
+          "status": "succeeded",
+          "review": "issues_found"
+        }
+      ]
+    },
+    {
+      "round": "round-2",
+      "requests": 8,
+      "usage": {
+        "prompt_tokens": 82582,
+        "completion_tokens": 5933,
+        "total_tokens": 88515
+      },
+      "results": [
+        {
+          "scenario": "state-diagram-svg",
+          "status": "failed",
+          "review": null
+        },
+        {
+          "scenario": "mixed-workflow-bar-svg",
+          "status": "succeeded",
+          "review": "review_failed"
+        }
+      ]
+    },
+    {
+      "round": "round-3",
+      "requests": 5,
+      "usage": {
+        "prompt_tokens": 30728,
+        "completion_tokens": 4177,
+        "total_tokens": 34905
+      },
+      "results": [
+        {
+          "scenario": "state-diagram-svg",
+          "status": "succeeded",
+          "review": "review_failed"
+        },
+        {
+          "scenario": "mixed-workflow-bar-svg",
+          "status": "failed",
+          "review": null
+        }
+      ]
+    },
+    {
+      "round": "round-4",
+      "requests": 7,
+      "usage": {
+        "prompt_tokens": 48090,
+        "completion_tokens": 6883,
+        "total_tokens": 54973
+      },
+      "results": [
+        {
+          "scenario": "state-diagram-svg",
+          "status": "succeeded",
+          "review": "review_failed"
+        },
+        {
+          "scenario": "mixed-workflow-bar-svg",
+          "status": "failed",
+          "review": null
+        }
+      ]
+    },
+    {
+      "round": "round-5",
+      "requests": 10,
+      "usage": {
+        "prompt_tokens": 132798,
+        "completion_tokens": 8471,
+        "total_tokens": 141269
+      },
+      "results": [
+        {
+          "scenario": "state-diagram-svg",
+          "status": "failed",
+          "review": null
+        },
+        {
+          "scenario": "mixed-workflow-bar-svg",
+          "status": "succeeded",
+          "review": "issues_found"
+        }
+      ]
+    },
+    {
+      "round": "round-6",
+      "requests": 11,
+      "usage": {
+        "prompt_tokens": 155808,
+        "completion_tokens": 14165,
+        "total_tokens": 169973
+      },
+      "results": [
+        {
+          "scenario": "state-diagram-svg",
+          "status": "succeeded",
+          "review": "passed"
+        },
+        {
+          "scenario": "mixed-workflow-bar-svg",
+          "status": "succeeded",
+          "review": "passed"
+        }
+      ],
+      "independentFinalReviews": [
+        {
+          "scenario": "state-diagram-svg",
+          "status": "passed",
+          "usage": {
+            "completion_tokens": 2598,
+            "completion_tokens_details": {
+              "text_tokens": 2598
+            },
+            "prompt_tokens": 14195,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "image_tokens": 578,
+              "text_tokens": 13617
+            },
+            "total_tokens": 16793
+          }
+        },
+        {
+          "scenario": "mixed-workflow-bar-svg",
+          "status": "passed",
+          "usage": {
+            "completion_tokens": 2926,
+            "completion_tokens_details": {
+              "text_tokens": 2926
+            },
+            "prompt_tokens": 41394,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "image_tokens": 578,
+              "text_tokens": 40816
+            },
+            "total_tokens": 44320
+          }
+        }
+      ]
+    }
+  ]
+}

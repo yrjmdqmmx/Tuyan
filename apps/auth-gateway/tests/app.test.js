@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { request as httpRequest } from 'node:http';
+import { gunzipSync } from 'node:zlib';
 import test from 'node:test';
 
 import { createAccountDeletionService, createDeletionStore } from '../src/account-deletion.js';
@@ -12,6 +13,7 @@ import { createGuestToken, readGuestIdentity } from '../src/guest-identity.js';
 function config(overrides = {}) {
   return {
     production: true,
+    requireLogin: false, // Explicit legacy compatibility fixture; production defaults to required.
     frontendOrigins: ['https://paperbanana.asia'],
     trustProxy: 1,
     adminToken: 'internal-admin-token',
@@ -359,6 +361,62 @@ test('modelRegistry is a public read-only backend action', async () => {
   });
 });
 
+test('large public registries negotiate gzip and preserve every catalog field on the wire', async () => {
+  const data = { code: 0, registryVersion: 'fixture', providers: { example: {
+    defaults: { main: 'model-0' },
+    models: Array.from({ length: 3500 }, (_, i) => ({
+      id: `model-${i}`, roles: ['main', 'vision'], selectable: i !== 3,
+      capabilities: { referenceImages: true }, disabledReason: i === 3 ? 'unavailable' : '',
+      specifications: { notes: ['offline catalog regression fixture '.repeat(45)] },
+    })),
+  } } };
+  const backend = fakeBackend(async () => ({ status: 200, data }));
+  await withApp({ backend }, async ({ baseUrl }) => {
+    async function raw(headers) {
+      return new Promise((resolve, reject) => {
+        const request = httpRequest(`${baseUrl}/paperbanana-api`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', ...headers },
+        }, response => {
+          const chunks = [];
+          response.on('data', chunk => chunks.push(chunk));
+          response.on('end', () => resolve({ status: response.statusCode, headers: response.headers, body: Buffer.concat(chunks) }));
+          response.on('error', reject);
+        });
+        request.on('error', reject);
+        request.end(JSON.stringify({ action: 'modelRegistry' }));
+      });
+    }
+    const compressed = await raw({ 'Accept-Encoding': 'br, gzip', Origin: 'https://paperbanana.asia' });
+    assert.equal(compressed.status, 200);
+    assert.equal(compressed.headers['content-encoding'], 'gzip');
+    assert.match(compressed.headers.vary, /Origin/);
+    assert.match(compressed.headers.vary, /Accept-Encoding/);
+    assert.equal(compressed.headers['cache-control'], 'no-store');
+    const decoded = gunzipSync(compressed.body);
+    assert.deepEqual(JSON.parse(decoded.toString()), data);
+    assert.ok(compressed.body.length < decoded.length / 10);
+    for (const headers of [{}, { 'Accept-Encoding': 'gzip;q=0, identity' }]) {
+      const plain = await raw(headers);
+      assert.equal(plain.headers['content-encoding'], undefined);
+      assert.deepEqual(JSON.parse(plain.body.toString()), data);
+    }
+  });
+});
+
+test('registry errors and other public responses are not compressed by the registry path', async () => {
+  const errorData = { code: 503, error: 'unavailable '.repeat(200) };
+  const backend = fakeBackend(async body => body.action === 'modelRegistry'
+    ? { status: 503, data: errorData } : { status: 200, data: { code: 0, text: 'other '.repeat(1000) } });
+  await withApp({ backend }, async ({ baseUrl }) => {
+    const error = await post(baseUrl, { action: 'modelRegistry' }, { 'Accept-Encoding': 'gzip' });
+    assert.equal(error.status, 503);
+    assert.equal(error.headers.get('content-encoding'), null);
+    assert.deepEqual(await error.json(), errorData);
+    const other = await post(baseUrl, { action: 'modelCapability' }, { 'Accept-Encoding': 'gzip' });
+    assert.equal(other.headers.get('content-encoding'), null);
+  });
+});
+
 test('benchmark public actions are anonymous read-only backend actions', async () => {
   const backend = fakeBackend(async (body) => ({ status: 200, data: { code: 0, action: body.action } }));
   await withApp({ backend }, async ({ baseUrl }) => {
@@ -368,6 +426,9 @@ test('benchmark public actions are anonymous read-only backend actions', async (
       assert.deepEqual(await response.json(), { code: 0, action });
     }
     assert.equal(backend.calls.length, 4);
+    assert.deepEqual(backend.calls.map(call => call.options), [
+      undefined, { timeoutMs: 60_000 }, undefined, { timeoutMs: 60_000 },
+    ]);
   });
 });
 
@@ -755,7 +816,8 @@ test('health is cached liveness, ready probes dependencies, and public routes ex
     assert.deepEqual(await health.json(), {
       code: 0,
       ok: true,
-      runtime: 'gateway',
+      runtime: 'gateway', workspaceExecutionContractVersion:1,
+      executionMode: 'production', executionEnabled: false, inputOptimizationMaterialsVersion: 1, imageLibraryEnabled: false, loginRequired: false,
       auth: 'better-auth',
       authReady: true,
       backend: { mode: 'node', ok: true, checkedAt: 'cached-backend' },
@@ -1066,13 +1128,22 @@ test('a durable deletion blocks new work even before Core first accepts the clea
 test('maintenance blocks Watcha mutations and OAuth callback while allowing status and email sign-in', async () => {
   const auth = fakeAuth();
   await withApp({ auth, isMaintenance: () => true }, async ({ baseUrl }) => {
-    for (const path of ['watcha/start', 'watcha/email-code', 'watcha/complete', 'watcha/link', 'watcha/unlink', 'watcha/delete-confirmation', 'watcha/mini-start', 'watcha/mini-exchange', 'watcha/mini-cancel']) {
+    for (const path of ['google/start', 'google/complete', 'google/cancel', 'github/start', 'github/complete', 'github/cancel', 'wechat/start', 'wechat/complete', 'wechat/cancel', 'watcha/start', 'watcha/email-code', 'watcha/complete', 'watcha/link', 'watcha/unlink', 'watcha/delete-confirmation', 'watcha/mini-start', 'watcha/mini-exchange', 'watcha/mini-cancel']) {
       const response = await fetch(`${baseUrl}/api/auth/${path}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' });
       assert.equal(response.status, 503, path);
     }
+    assert.equal((await fetch(`${baseUrl}/api/auth/oauth2/callback/wechat?state=fixture`)).status, 503);
+    assert.equal((await fetch(`${baseUrl}/api/auth/wechat/launch?ticket=fixture`)).status, 503);
+    assert.equal((await fetch(`${baseUrl}/api/auth/github/launch?ticket=fixture`)).status, 503);
+    assert.equal((await fetch(`${baseUrl}/api/auth/google/launch?ticket=fixture`)).status, 503);
+    assert.equal((await fetch(`${baseUrl}/api/auth/oauth2/callback/github?state=fixture`)).status, 503);
+    assert.equal((await fetch(`${baseUrl}/api/auth/oauth2/callback/google?state=fixture`)).status, 503);
     assert.equal((await fetch(`${baseUrl}/api/auth/oauth2/callback/watcha?state=fixture`)).status, 503);
     assert.equal((await fetch(`${baseUrl}/api/auth/watcha/mini-launch?state=fixture`)).status, 503);
     assert.equal(auth.webRequests.length, 0);
+    assert.equal((await fetch(`${baseUrl}/api/auth/wechat/status`)).status, 200);
+    assert.equal((await fetch(`${baseUrl}/api/auth/github/status`)).status, 200);
+    assert.equal((await fetch(`${baseUrl}/api/auth/google/status`)).status, 200);
     assert.equal((await fetch(`${baseUrl}/api/auth/watcha/status`)).status, 200);
     assert.equal((await fetch(`${baseUrl}/api/auth/sign-in/email`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })).status, 200);
   });
@@ -1093,5 +1164,53 @@ test('account deletion confirmation replaces only password reauthentication and 
     assert.equal((await remove('owner@example.com', 'wrong')).status, 401);
     assert.equal((await remove('owner@example.com', 'fixture-proof')).status, 200);
     assert.equal(confirmations, 2);
+  });
+});
+
+test('metadata catalog forwards only the selected channel key and explicit directory credentials', async () => {
+ await withApp({},async({baseUrl,backend})=>{
+  const response=await post(baseUrl,{action:'providerAccountCatalog',mode:'catalog',provider:'openai',apiKeys:{openai:'selected',ark:'unrelated'},catalogCredentials:{secretAccessKey:'unrelated-admin'},continuation:{page:2},accessToken:'discard'})
+  assert.equal(response.status,200);const body=backend.calls[0].body
+  assert.deepEqual(body.apiKeys,{openai:'selected'});assert.equal(body.catalogCredentials,undefined);assert.equal(body.accessToken,undefined);assert.deepEqual(body.continuation,{page:2});assert.match(body.userId,/^guest:/)
+  await post(baseUrl,{action:'providerAccountCatalog',mode:'catalog',provider:'ark',apiKeys:{ark:'inference'},catalogCredentials:{accessKeyId:'AK',secretAccessKey:'SK',sessionToken:'STS',unrelated:'discard'}})
+  assert.deepEqual(backend.calls[1].body.catalogCredentials,{accessKeyId:'AK',secretAccessKey:'SK',sessionToken:'STS'})
+  await post(baseUrl,{action:'providerAccountCatalog',mode:'catalog',provider:'sensenova',apiKeys:{sensenova:'current-key',openai:'unrelated'},catalogCredentials:{token:'old-jwt'}})
+  assert.deepEqual(backend.calls[2].body.apiKeys,{sensenova:'current-key'});assert.equal(backend.calls[2].body.catalogCredentials,undefined)
+ })
+})
+
+
+test('production workspace execution is advertised only with all durable stores mounted', async () => {
+  for (const enabled of [true, false]) {
+    const auth = fakeAuth({ workspaceStore: {}, modelLibraryStore: {}, ...(enabled ? { workspaceExecutionStore: {} } : {}) });
+    await withApp({ auth }, async ({ baseUrl }) => {
+      const health = await (await fetch(`${baseUrl}/paperbanana-api`)).json();
+      assert.equal(health.executionMode, 'production');
+      assert.equal(health.executionEnabled, enabled);
+      assert.equal(health.inputOptimizationMaterialsVersion, 1);
+      assert.equal(health.simulation, undefined);
+    });
+  }
+});
+
+
+test('production requires login before any task, upload, export or paid helper can be dispatched', async () => {
+  const backend = fakeBackend();
+  await withApp({ backend, appConfig: productionConfig() }, async ({baseUrl}) => {
+    const actions = ['createJob','refineImage','getJob','optimizeInputs','providerAccountCatalog','universalApiCheck','prepareReferenceUpload','finalizeReferenceUpload','abortReferenceUpload','prepareMaterialUpload','finalizeMaterialUpload','getMaterial','listMaterialFiles','readMaterial','deleteMaterial','journalFigureExport','submitFeedback','tokenDanceResume','providerResume'];
+    for (const action of actions) {
+      const response = await post(baseUrl,{action,userId:'forged-user',userEmail:'forged@example.test',provider:'openai',apiKeys:{openai:'fixture-only'},workspaceExecution:{taskId:'task',runId:'run'}});
+      assert.equal(response.status,401,action);
+      assert.equal(response.headers.get('set-cookie'),null,action);
+    }
+    assert.equal(backend.calls.length,0);
+    assert.equal((await post(baseUrl,{action:'health'})).status,200);
+    assert.equal((await post(baseUrl,{action:'modelRegistry'})).status,200);
+    const authenticated = await post(baseUrl,{action:'createJob',userId:'forged-user',provider:'openai'},{'x-test-session':'actual-user|real@example.test'});
+    assert.equal(authenticated.status,200);
+    assert.equal(backend.calls.at(-1).body.userId,'actual-user');
+    assert.equal(backend.calls.at(-1).options.authUserId,'actual-user');
+    const expired = await post(baseUrl,{action:'createJob'},{cookie:'__Host-paperbanana_guest=old-cookie; better-auth.session_token=expired'});
+    assert.equal(expired.status,401);
   });
 });

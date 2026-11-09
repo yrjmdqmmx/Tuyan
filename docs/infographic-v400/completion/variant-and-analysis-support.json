@@ -1,0 +1,1724 @@
+{
+  "variants": [
+    {
+      "typeId": "method_framework",
+      "typeLabel": "方法框架图",
+      "id": "method_framework.v1",
+      "label": "训练与推理双路径",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "experimental_design",
+      "typeLabel": "实验设计图",
+      "id": "experimental_design.v1",
+      "label": "交叉设计",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "experimental_design",
+      "typeLabel": "实验设计图",
+      "id": "experimental_design.v2",
+      "label": "因子设计",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "experimental_design",
+      "typeLabel": "实验设计图",
+      "id": "experimental_design.v3",
+      "label": "重复测量设计",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "apparatus",
+      "typeLabel": "实验装置图",
+      "id": "apparatus.v1",
+      "label": "剖面",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "apparatus",
+      "typeLabel": "实验装置图",
+      "id": "apparatus.v2",
+      "label": "爆炸视图",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "mechanism",
+      "typeLabel": "机制示意图",
+      "id": "mechanism.v1",
+      "label": "反馈机制",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "mechanism",
+      "typeLabel": "机制示意图",
+      "id": "mechanism.v2",
+      "label": "多尺度机制",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "anatomical",
+      "typeLabel": "解剖定位示意图",
+      "id": "anatomical.v1",
+      "label": "切面定位",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "anatomical",
+      "typeLabel": "解剖定位示意图",
+      "id": "anatomical.v2",
+      "label": "局部放大",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "chemical_reaction",
+      "typeLabel": "化学反应式图",
+      "id": "chemical_reaction.v1",
+      "label": "多步合成",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "chemical_reaction",
+      "typeLabel": "化学反应式图",
+      "id": "chemical_reaction.v2",
+      "label": "催化循环",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "energy_diagram",
+      "typeLabel": "能量剖面图",
+      "id": "energy_diagram.v1",
+      "label": "多路径势垒",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "sbgn_pd",
+      "typeLabel": "生化过程描述图",
+      "id": "sbgn_pd.v1",
+      "label": "区室化过程",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "sbgn_af",
+      "typeLabel": "生物活动流图",
+      "id": "sbgn_af.v1",
+      "label": "逻辑调控",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "sbgn_er",
+      "typeLabel": "生物实体关系图",
+      "id": "sbgn_er.v1",
+      "label": "状态关系",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "workflow",
+      "typeLabel": "流程图",
+      "id": "workflow.v1",
+      "label": "并行流程",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "workflow",
+      "typeLabel": "流程图",
+      "id": "workflow.v2",
+      "label": "循环流程",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "swimlane",
+      "typeLabel": "泳道流程图",
+      "id": "swimlane.v1",
+      "label": "跨组织流程",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "decision_tree",
+      "typeLabel": "决策树图",
+      "id": "decision_tree.v1",
+      "label": "规则树",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "decision_tree",
+      "typeLabel": "决策树图",
+      "id": "decision_tree.v2",
+      "label": "已训练模型树",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "state_transition",
+      "typeLabel": "状态转移图",
+      "id": "state_transition.v1",
+      "label": "有限状态机",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "state_transition",
+      "typeLabel": "状态转移图",
+      "id": "state_transition.v2",
+      "label": "马尔可夫链",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "sequence_diagram",
+      "typeLabel": "时序交互图",
+      "id": "sequence_diagram.v1",
+      "label": "异步消息",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "sequence_diagram",
+      "typeLabel": "时序交互图",
+      "id": "sequence_diagram.v2",
+      "label": "条件交互",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "dataflow",
+      "typeLabel": "数据流图",
+      "id": "dataflow.v1",
+      "label": "分层数据流",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "timeline",
+      "typeLabel": "时间线",
+      "id": "timeline.v1",
+      "label": "区间事件",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "timeline",
+      "typeLabel": "时间线",
+      "id": "timeline.v2",
+      "label": "多轨时间线",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "gantt",
+      "typeLabel": "甘特图",
+      "id": "gantt.v1",
+      "label": "依赖进度",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "gantt",
+      "typeLabel": "甘特图",
+      "id": "gantt.v2",
+      "label": "资源泳道",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "roadmap",
+      "typeLabel": "研究路线图",
+      "id": "roadmap.v1",
+      "label": "技术成熟度路线",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "system_architecture",
+      "typeLabel": "系统架构图",
+      "id": "system_architecture.v1",
+      "label": "部署视图",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "system_architecture",
+      "typeLabel": "系统架构图",
+      "id": "system_architecture.v2",
+      "label": "逻辑视图",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "neural_architecture",
+      "typeLabel": "神经网络架构图",
+      "id": "neural_architecture.v1",
+      "label": "编码器解码器",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "neural_architecture",
+      "typeLabel": "神经网络架构图",
+      "id": "neural_architecture.v2",
+      "label": "多分支结构",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "entity_relationship",
+      "typeLabel": "数据库实体关系图",
+      "id": "entity_relationship.v1",
+      "label": "概念数据模型",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "entity_relationship",
+      "typeLabel": "数据库实体关系图",
+      "id": "entity_relationship.v2",
+      "label": "逻辑数据模型",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "circuit",
+      "typeLabel": "电路原理图",
+      "id": "circuit.v1",
+      "label": "模拟电路",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "circuit",
+      "typeLabel": "电路原理图",
+      "id": "circuit.v2",
+      "label": "数字逻辑",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "concept_map",
+      "typeLabel": "概念关系图",
+      "id": "concept_map.v1",
+      "label": "交叉链接",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "hierarchy",
+      "typeLabel": "层级树图",
+      "id": "hierarchy.v1",
+      "label": "组织层级",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "hierarchy",
+      "typeLabel": "层级树图",
+      "id": "hierarchy.v2",
+      "label": "分类目录",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "network",
+      "typeLabel": "节点连接网络图",
+      "id": "network.v1",
+      "label": "二部网络",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "network",
+      "typeLabel": "节点连接网络图",
+      "id": "network.v2",
+      "label": "加权网络",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "adjacency_matrix",
+      "typeLabel": "邻接矩阵图",
+      "id": "adjacency_matrix.v1",
+      "label": "二值邻接",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "adjacency_matrix",
+      "typeLabel": "邻接矩阵图",
+      "id": "adjacency_matrix.v2",
+      "label": "加权邻接",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "venn",
+      "typeLabel": "韦恩集合图",
+      "id": "venn.v1",
+      "label": "二集合韦恩图",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "euler",
+      "typeLabel": "欧拉集合图",
+      "id": "euler.v1",
+      "label": "面积比例欧拉",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "upset",
+      "typeLabel": "UpSet 交集图",
+      "id": "upset.v1",
+      "label": "互斥交集",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "upset",
+      "typeLabel": "UpSet 交集图",
+      "id": "upset.v2",
+      "label": "包含式交集",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "sankey",
+      "typeLabel": "桑基流量图",
+      "id": "sankey.v1",
+      "label": "多阶段流量",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "chord",
+      "typeLabel": "弦图",
+      "id": "chord.v1",
+      "label": "有向弦图",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "causal_dag",
+      "typeLabel": "因果有向无环图",
+      "id": "causal_dag.v1",
+      "label": "潜变量DAG",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "bar",
+      "typeLabel": "柱形图",
+      "id": "bar.v1",
+      "label": "分组",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "bar",
+      "typeLabel": "柱形图",
+      "id": "bar.v2",
+      "label": "堆叠",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "bar",
+      "typeLabel": "柱形图",
+      "id": "bar.v3",
+      "label": "百分比堆叠",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "bar",
+      "typeLabel": "柱形图",
+      "id": "bar.v4",
+      "label": "误差区间",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "dotplot",
+      "typeLabel": "类别点图",
+      "id": "dotplot.v1",
+      "label": "分组点图",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "dotplot",
+      "typeLabel": "类别点图",
+      "id": "dotplot.v2",
+      "label": "区间点图",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "stripplot",
+      "typeLabel": "原始观测点图",
+      "id": "stripplot.v1",
+      "label": "蜂群排列",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "stripplot",
+      "typeLabel": "原始观测点图",
+      "id": "stripplot.v2",
+      "label": "随机抖动",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "lollipop",
+      "typeLabel": "棒棒糖图",
+      "id": "lollipop.v1",
+      "label": "分组棒棒糖",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "dumbbell",
+      "typeLabel": "哑铃图",
+      "id": "dumbbell.v1",
+      "label": "前后对照",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "forest",
+      "typeLabel": "森林图",
+      "id": "forest.v1",
+      "label": "荟萃森林图",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "waterfall",
+      "typeLabel": "瀑布增量图",
+      "id": "waterfall.v1",
+      "label": "收支桥接",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "radar",
+      "typeLabel": "雷达图",
+      "id": "radar.v1",
+      "label": "多对象雷达",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "histogram",
+      "typeLabel": "直方图",
+      "id": "histogram.v1",
+      "label": "等宽分箱",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "histogram",
+      "typeLabel": "直方图",
+      "id": "histogram.v2",
+      "label": "不等宽密度",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "density",
+      "typeLabel": "核密度图",
+      "id": "density.v1",
+      "label": "多组密度",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "boxplot",
+      "typeLabel": "箱线图",
+      "id": "boxplot.v1",
+      "label": "分组箱线",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "boxplot",
+      "typeLabel": "箱线图",
+      "id": "boxplot.v2",
+      "label": "缺口箱线",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "violin",
+      "typeLabel": "小提琴图",
+      "id": "violin.v1",
+      "label": "分裂小提琴",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "raincloud",
+      "typeLabel": "云雨图",
+      "id": "raincloud.v1",
+      "label": "配对云雨",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "ridgeline",
+      "typeLabel": "山脊密度图",
+      "id": "ridgeline.v1",
+      "label": "时间组山脊",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "ecdf",
+      "typeLabel": "经验累积分布图",
+      "id": "ecdf.v1",
+      "label": "加权ECDF",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "qq",
+      "typeLabel": "分位数比较图",
+      "id": "qq.v1",
+      "label": "正态QQ",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "qq",
+      "typeLabel": "分位数比较图",
+      "id": "qq.v2",
+      "label": "两样本QQ",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "line",
+      "typeLabel": "折线图",
+      "id": "line.v1",
+      "label": "多序列",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "line",
+      "typeLabel": "折线图",
+      "id": "line.v2",
+      "label": "误差带",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "line",
+      "typeLabel": "折线图",
+      "id": "line.v3",
+      "label": "阶梯线",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "area",
+      "typeLabel": "面积趋势图",
+      "id": "area.v1",
+      "label": "堆叠面积",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "area",
+      "typeLabel": "面积趋势图",
+      "id": "area.v2",
+      "label": "百分比面积",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "streamgraph",
+      "typeLabel": "流图",
+      "id": "streamgraph.v1",
+      "label": "中心基线流图",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "kaplan_meier",
+      "typeLabel": "生存曲线",
+      "id": "kaplan_meier.v1",
+      "label": "分组生存曲线",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "cumulative_incidence",
+      "typeLabel": "累计发生率曲线",
+      "id": "cumulative_incidence.v1",
+      "label": "多原因累计发生率",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "scatter",
+      "typeLabel": "散点图",
+      "id": "scatter.v1",
+      "label": "分组散点",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "scatter",
+      "typeLabel": "散点图",
+      "id": "scatter.v2",
+      "label": "回归叠加",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "scatter",
+      "typeLabel": "散点图",
+      "id": "scatter.v3",
+      "label": "误差棒",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "bubble",
+      "typeLabel": "气泡散点图",
+      "id": "bubble.v1",
+      "label": "分组气泡",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "heatmap",
+      "typeLabel": "数值热图",
+      "id": "heatmap.v1",
+      "label": "聚类热图",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "heatmap",
+      "typeLabel": "数值热图",
+      "id": "heatmap.v2",
+      "label": "环形热图",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "bubble_matrix",
+      "typeLabel": "气泡矩阵",
+      "id": "bubble_matrix.v1",
+      "label": "双变量矩阵",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "binary_matrix",
+      "typeLabel": "二值存在矩阵",
+      "id": "binary_matrix.v1",
+      "label": "圆点图元",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "binary_matrix",
+      "typeLabel": "二值存在矩阵",
+      "id": "binary_matrix.v2",
+      "label": "方格图元",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "correlation_matrix",
+      "typeLabel": "相关矩阵图",
+      "id": "correlation_matrix.v1",
+      "label": "组内相关",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "correlation_matrix",
+      "typeLabel": "相关矩阵图",
+      "id": "correlation_matrix.v2",
+      "label": "组间相关",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "matrix_link_overlay",
+      "typeLabel": "关联矩阵与网络叠合图",
+      "id": "matrix_link_overlay.v1",
+      "label": "关联矩阵叠合网络",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "parallel_coordinates",
+      "typeLabel": "平行坐标图",
+      "id": "parallel_coordinates.v1",
+      "label": "标准化平行坐标",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "ordination",
+      "typeLabel": "排序投影图",
+      "id": "ordination.v1",
+      "label": "双标图",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "ordination",
+      "typeLabel": "排序投影图",
+      "id": "ordination.v2",
+      "label": "样本投影",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "pie",
+      "typeLabel": "饼图",
+      "id": "pie.v1",
+      "label": "环形",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "treemap",
+      "typeLabel": "矩形树图",
+      "id": "treemap.v1",
+      "label": "嵌套矩形",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "circle_packing",
+      "typeLabel": "圆堆积层级图",
+      "id": "circle_packing.v1",
+      "label": "嵌套圆",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "rose",
+      "typeLabel": "极坐标面积图",
+      "id": "rose.v1",
+      "label": "方向频率玫瑰",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "alluvial",
+      "typeLabel": "冲积流转图",
+      "id": "alluvial.v1",
+      "label": "队列流转",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "geological_section",
+      "typeLabel": "地质剖面图",
+      "id": "geological_section.v1",
+      "label": "构造剖面",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "geological_section",
+      "typeLabel": "地质剖面图",
+      "id": "geological_section.v2",
+      "label": "地层对比剖面",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "point_map",
+      "typeLabel": "地理点位图",
+      "id": "point_map.v1",
+      "label": "比例符号地图",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "choropleth",
+      "typeLabel": "分区设色地图",
+      "id": "choropleth.v1",
+      "label": "分位数分级",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "contour",
+      "typeLabel": "等值线图",
+      "id": "contour.v1",
+      "label": "填色等值面",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "vector_field",
+      "typeLabel": "矢量场图",
+      "id": "vector_field.v1",
+      "label": "流线",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "vector_field",
+      "typeLabel": "矢量场图",
+      "id": "vector_field.v2",
+      "label": "箭矢",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "volcano",
+      "typeLabel": "火山图",
+      "id": "volcano.v1",
+      "label": "调整P值火山",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "ma_plot",
+      "typeLabel": "MA 图",
+      "id": "ma_plot.v1",
+      "label": "RNA表达MA",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "enrichment",
+      "typeLabel": "富集结果图",
+      "id": "enrichment.v1",
+      "label": "气泡",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "enrichment",
+      "typeLabel": "富集结果图",
+      "id": "enrichment.v2",
+      "label": "条形",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "enrichment",
+      "typeLabel": "富集结果图",
+      "id": "enrichment.v3",
+      "label": "圈形",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "gene_track",
+      "typeLabel": "基因坐标轨道图",
+      "id": "gene_track.v1",
+      "label": "基因簇",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "gene_track",
+      "typeLabel": "基因坐标轨道图",
+      "id": "gene_track.v2",
+      "label": "外显子内含子",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "protein_domain",
+      "typeLabel": "蛋白结构域图",
+      "id": "protein_domain.v1",
+      "label": "基序位置轨道",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "motif_logo",
+      "typeLabel": "序列标识图",
+      "id": "motif_logo.v1",
+      "label": "概率标识",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "motif_logo",
+      "typeLabel": "序列标识图",
+      "id": "motif_logo.v2",
+      "label": "信息量标识",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "genome_circos",
+      "typeLabel": "基因组环形轨道图",
+      "id": "genome_circos.v1",
+      "label": "多组学环轨",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "synteny",
+      "typeLabel": "基因组共线性图",
+      "id": "synteny.v1",
+      "label": "微共线性",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "synteny",
+      "typeLabel": "基因组共线性图",
+      "id": "synteny.v2",
+      "label": "全基因组共线性",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "phylogenetic",
+      "typeLabel": "系统发育树图",
+      "id": "phylogenetic.v1",
+      "label": "有根树",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "phylogenetic",
+      "typeLabel": "系统发育树图",
+      "id": "phylogenetic.v2",
+      "label": "无根树",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "phylogenetic",
+      "typeLabel": "系统发育树图",
+      "id": "phylogenetic.v3",
+      "label": "性状注释",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "dendrogram",
+      "typeLabel": "层次聚类树状图",
+      "id": "dendrogram.v1",
+      "label": "热图附属聚类树",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "roc",
+      "typeLabel": "ROC 曲线",
+      "id": "roc.v1",
+      "label": "多模型ROC",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "pr_curve",
+      "typeLabel": "精确率召回率曲线",
+      "id": "pr_curve.v1",
+      "label": "多模型PR",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "confusion_matrix",
+      "typeLabel": "混淆矩阵",
+      "id": "confusion_matrix.v1",
+      "label": "行归一化",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "confusion_matrix",
+      "typeLabel": "混淆矩阵",
+      "id": "confusion_matrix.v2",
+      "label": "原始计数",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "calibration",
+      "typeLabel": "校准曲线",
+      "id": "calibration.v1",
+      "label": "分位数分箱",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "bland_altman",
+      "typeLabel": "Bland–Altman 一致性图",
+      "id": "bland_altman.v1",
+      "label": "比例差值",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "funnel_meta",
+      "typeLabel": "荟萃漏斗图",
+      "id": "funnel_meta.v1",
+      "label": "等高显著性漏斗",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "comparison",
+      "typeLabel": "并列比较示意图",
+      "id": "comparison.v1",
+      "label": "前后对照",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "comparison",
+      "typeLabel": "并列比较示意图",
+      "id": "comparison.v2",
+      "label": "方法对照",
+      "support": {
+        "specification": "defined",
+        "execution": "prompt_contract_only",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "multipanel",
+      "typeLabel": "多面板组合图",
+      "id": "multipanel.v1",
+      "label": "示意加数据",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "multipanel",
+      "typeLabel": "多面板组合图",
+      "id": "multipanel.v2",
+      "label": "跨尺度组合",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "small_multiples",
+      "typeLabel": "分面小多图",
+      "id": "small_multiples.v1",
+      "label": "固定尺度分面",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    },
+    {
+      "typeId": "small_multiples",
+      "typeLabel": "分面小多图",
+      "id": "small_multiples.v2",
+      "label": "独立尺度分面",
+      "support": {
+        "specification": "defined",
+        "execution": "unavailable",
+        "validation": "not_independently_verified"
+      }
+    }
+  ],
+  "analysisMethods": [
+    {
+      "id": "mantel",
+      "label": "Mantel 距离矩阵检验",
+      "typeId": "matrix_link_overlay",
+      "required": [
+        "对齐样本的距离矩阵",
+        "距离度量",
+        "置换策略、次数、系数与P值来源"
+      ],
+      "checks": [
+        "连线统计量不同于相关格",
+        "不能把空间或组内依赖忽略为独立样本"
+      ],
+      "support": {
+        "input": "user_precomputed_results",
+        "computation": "not_implemented",
+        "validation": "input_contract_and_render_only"
+      }
+    },
+    {
+      "id": "pca",
+      "label": "PCA 主成分分析",
+      "typeId": "ordination",
+      "required": [
+        "变量矩阵或已计算得分",
+        "中心化/标准化",
+        "载荷和解释方差来源"
+      ],
+      "checks": [
+        "解释率在0..1且总和不超过1",
+        "欧氏方差语义，不用距离矩阵冒充原始变量"
+      ],
+      "support": {
+        "input": "user_precomputed_results",
+        "computation": "not_implemented",
+        "validation": "input_contract_and_render_only"
+      }
+    },
+    {
+      "id": "pcoa",
+      "label": "PCoA 主坐标分析",
+      "typeId": "ordination",
+      "required": [
+        "距离矩阵或坐标",
+        "距离度量",
+        "负特征值处理",
+        "解释率来源"
+      ],
+      "checks": [
+        "坐标对应所选距离",
+        "解释率不能套用PCA结果"
+      ],
+      "support": {
+        "input": "user_precomputed_results",
+        "computation": "not_implemented",
+        "validation": "input_contract_and_render_only"
+      }
+    },
+    {
+      "id": "nmds",
+      "label": "NMDS 非度量多维尺度",
+      "typeId": "ordination",
+      "required": [
+        "距离矩阵或坐标",
+        "距离度量",
+        "维数/随机种子",
+        "stress"
+      ],
+      "checks": [
+        "报告stress，不显示虚构解释率",
+        "轴方向没有原变量含义"
+      ],
+      "support": {
+        "input": "user_precomputed_results",
+        "computation": "not_implemented",
+        "validation": "input_contract_and_render_only"
+      }
+    },
+    {
+      "id": "cca",
+      "label": "CCA 典范对应分析",
+      "typeId": "ordination",
+      "required": [
+        "群落矩阵",
+        "环境变量矩阵或完整分析结果",
+        "约束变量",
+        "尺度类型"
+      ],
+      "checks": [
+        "不能与典型相关分析混用缩写",
+        "样本/物种/环境箭头采用正确缩放"
+      ],
+      "support": {
+        "input": "user_precomputed_results",
+        "computation": "not_implemented",
+        "validation": "input_contract_and_render_only"
+      }
+    },
+    {
+      "id": "rda",
+      "label": "RDA 冗余分析",
+      "typeId": "ordination",
+      "required": [
+        "响应矩阵",
+        "解释矩阵或完整分析结果",
+        "预处理",
+        "约束方差来源"
+      ],
+      "checks": [
+        "约束轴与未约束轴分开",
+        "载荷箭头不凭模型想象"
+      ],
+      "support": {
+        "input": "user_precomputed_results",
+        "computation": "not_implemented",
+        "validation": "input_contract_and_render_only"
+      }
+    },
+    {
+      "id": "umap",
+      "label": "UMAP 嵌入",
+      "typeId": "ordination",
+      "required": [
+        "已计算坐标",
+        "邻居数/min_dist",
+        "距离度量/随机种子"
+      ],
+      "checks": [
+        "簇间距离和大小不直接解释为真实相似度或丰度",
+        "不标解释方差"
+      ],
+      "support": {
+        "input": "user_precomputed_results",
+        "computation": "not_implemented",
+        "validation": "input_contract_and_render_only"
+      }
+    },
+    {
+      "id": "tsne",
+      "label": "t-SNE 嵌入",
+      "typeId": "ordination",
+      "required": [
+        "已计算坐标",
+        "perplexity",
+        "距离度量/随机种子"
+      ],
+      "checks": [
+        "全局距离不当原空间距离",
+        "不标解释方差"
+      ],
+      "support": {
+        "input": "user_precomputed_results",
+        "computation": "not_implemented",
+        "validation": "input_contract_and_render_only"
+      }
+    }
+  ]
+}

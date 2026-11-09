@@ -1,0 +1,1711 @@
+{
+  "tokenhub/deepseek-v4.1-flash-1017": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "productImageCap": 3,
+    "source": "https://cloud.tencent.com/document/product/1823/130079",
+    "checkedAt": "2026-10-26",
+    "textEndpoint": "https://tokenhub.tencentmaas.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "request": {
+      "max_tokens": 8192
+    },
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-v4.1-flash-1017"
+        }
+      }
+    }
+  },
+  "tokenhub/kimi-k3.1-pro": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "productImageCap": 3,
+    "source": "https://cloud.tencent.com/document/product/1823/132232",
+    "checkedAt": "2026-10-26",
+    "textEndpoint": "https://tokenhub.tencentmaas.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "request": {
+      "max_completion_tokens": 16384,
+      "reasoning_effort": "low"
+    },
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "kimi-k3.1-pro"
+        }
+      }
+    },
+    "requireDataUrl": true
+  },
+  "tokenhub/kimi-k3.1-pro-highspeed": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "productImageCap": 3,
+    "source": "https://cloud.tencent.com/document/product/1823/132232",
+    "checkedAt": "2026-10-26",
+    "textEndpoint": "https://tokenhub.tencentmaas.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "request": {
+      "max_completion_tokens": 16384,
+      "reasoning_effort": "low"
+    },
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "kimi-k3.1-pro-highspeed"
+        }
+      }
+    },
+    "requireDataUrl": true
+  },
+  "tokenhub/minimax-m3.1-flash": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "productImageCap": 3,
+    "source": "https://cloud.tencent.com/document/product/1823/132246",
+    "checkedAt": "2026-10-26",
+    "textEndpoint": "https://tokenhub.tencentmaas.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "request": {
+      "max_tokens": 16384,
+      "reasoning_split": true
+    },
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "minimax-m3.1-flash"
+        }
+      }
+    }
+  },
+  "iflytek/spark-x2.6": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html",
+    "checkedAt": "2026-10-26",
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "request": {
+      "max_completion_tokens": 2048
+    },
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "spark-x2.6"
+        }
+      }
+    },
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 0.9,
+      "output": 3.6,
+      "cacheInput": 0.08,
+      "listInput": 1.5,
+      "listOutput": 6,
+      "discount": 0.6,
+      "publicPriceFields": {
+        "cacheTokensOrigPrice": 0.14,
+        "cacheTokensPrice": 0.08,
+        "cacheTokensUnit": "元/百万tokens",
+        "discount": 0.6,
+        "inTokensOrigPrice": 1.5,
+        "inTokensPrice": 0.9,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 0.9,
+        "noCacheTokensUnit": "",
+        "outTokensOrigPrice": 6,
+        "outTokensPrice": 3.6,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billingVerified": false,
+      "billedAmount": null,
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-10-26",
+      "note": "核查日公开参考价；促销期限和账户权益未验证，0 元不代表永久免费。"
+    }
+  },
+  "iflytek/spark-x2.6-4b": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html",
+    "checkedAt": "2026-10-26",
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "request": {
+      "max_completion_tokens": 2048
+    },
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "spark-x2.6-4b"
+        }
+      }
+    },
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 0,
+      "output": 0,
+      "cacheInput": 0,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "cacheTokensPrice": 0,
+        "cacheTokensUnit": "元/百万tokens",
+        "inTokensPrice": 0,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 0,
+        "noCacheTokensUnit": "",
+        "outTokensPrice": 0,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billingVerified": false,
+      "billedAmount": null,
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-10-26",
+      "note": "核查日公开参考价；促销期限和账户权益未验证，0 元不代表永久免费。"
+    }
+  },
+  "iflytek/spark-x2.5": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 0.96,
+      "output": 3.6,
+      "cacheInput": 0.14,
+      "listInput": 3.2,
+      "listOutput": 12,
+      "discount": 0.3,
+      "publicPriceFields": {
+        "cacheTokensOrigPrice": 0.48,
+        "cacheTokensPrice": 0.14,
+        "cacheTokensUnit": "元/百万tokens",
+        "discount": 0.3,
+        "inTokensOrigPrice": 3.2,
+        "inTokensPrice": 0.96,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 0.96,
+        "noCacheTokensUnit": "",
+        "outTokensOrigPrice": 12,
+        "outTokensPrice": 3.6,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billingVerified": false,
+      "billedAmount": null,
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-10-26",
+      "note": "核查日公开参考价；促销期限和账户权益未验证，0 元不代表永久免费。"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "spark-x2.5"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopdeepseekv4flash0731": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 3,
+      "output": 9,
+      "cacheInput": 0.1,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "cacheTokensOrigPrice": 0.1,
+        "cacheTokensPrice": 0.1,
+        "cacheTokensUnit": "元/百万tokens",
+        "inTokensPrice": 3,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 3,
+        "noCacheTokensUnit": "",
+        "outTokensPrice": 9,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billingVerified": false,
+      "billedAmount": null,
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-10-26",
+      "note": "核查日公开参考价；促销期限和账户权益未验证，0 元不代表永久免费。"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopdeepseekv4flash0731"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "runware/bria:20@1": {
+    "source": "https://runware.ai/docs/models/bria-fibo-2-0",
+    "schemaSource": "https://runware.ai/docs/models/bria-fibo-2-0/schema.json",
+    "schemaSha256": "a11ed7dd1e62027239c418e84871d51a92d89f86de5da4ca00a68a793a9b63c4",
+    "taskType": "imageInference",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "const": "bria:20@1"
+        },
+        "inputs": {
+          "type": "object",
+          "properties": {
+            "image": {
+              "type": "string",
+              "anyOf": [
+                {
+                  "format": "uuid"
+                },
+                {
+                  "format": "uri"
+                },
+                {
+                  "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                },
+                {
+                  "pattern": "^[a-zA-Z0-9+/=]+$"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "positivePrompt": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 3000
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "seed": {
+          "maximum": 2147483647,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "providerSettings": {
+          "type": "object",
+          "properties": {
+            "bria": {
+              "type": "object",
+              "properties": {
+                "ipSignal": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "taskType": {
+          "type": "string",
+          "const": "imageInference"
+        },
+        "taskUUID": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "webhookURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "includeCost": {
+          "type": "boolean"
+        },
+        "routing": {
+          "type": "object",
+          "properties": {
+            "preferences": {
+              "type": "object",
+              "properties": {
+                "quality": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "speed": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "cost": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxPrice": {
+              "type": "number",
+              "minimum": 0
+            },
+            "requirements": {
+              "type": "string",
+              "maxLength": 3000
+            }
+          },
+          "additionalProperties": false
+        },
+        "numberResults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "uploadEndpoint": {
+          "type": "string",
+          "format": "uri"
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 60
+        },
+        "outputType": {
+          "type": "string",
+          "enum": [
+            "URL",
+            "base64Data",
+            "dataURI"
+          ]
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": [
+            "JPG",
+            "PNG",
+            "WEBP"
+          ]
+        },
+        "outputQuality": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 99
+        },
+        "deliveryMethod": {
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "sync"
+            },
+            {
+              "const": "async"
+            }
+          ]
+        },
+        "safety": {
+          "type": "object",
+          "properties": {
+            "checkContent": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "advancedFeatures": {
+          "type": "object",
+          "properties": {
+            "watermark": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 32
+                },
+                "image": {
+                  "type": "string",
+                  "anyOf": [
+                    {
+                      "format": "uuid"
+                    },
+                    {
+                      "format": "uri"
+                    },
+                    {
+                      "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                    },
+                    {
+                      "pattern": "^[a-zA-Z0-9+/=]+$"
+                    }
+                  ]
+                },
+                "displayPosition": {
+                  "type": "string",
+                  "enum": [
+                    "top-left",
+                    "top-center",
+                    "top-right",
+                    "center-left",
+                    "center-center",
+                    "center-right",
+                    "bottom-left",
+                    "bottom-center",
+                    "bottom-right",
+                    "tiled"
+                  ]
+                },
+                "opacity": {
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0.1,
+                  "maximum": 1
+                },
+                "fontColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                },
+                "bgColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "text"
+                  ]
+                },
+                {
+                  "required": [
+                    "image"
+                  ]
+                }
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "positivePrompt",
+        "width",
+        "height",
+        "taskType",
+        "taskUUID",
+        "model"
+      ],
+      "allOf": [
+        {
+          "dependentRequired": {
+            "width": [
+              "height"
+            ],
+            "height": [
+              "width"
+            ]
+          }
+        },
+        {
+          "if": {
+            "anyOf": [
+              {
+                "required": [
+                  "width"
+                ]
+              },
+              {
+                "required": [
+                  "height"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "width": {
+                    "const": 1024
+                  },
+                  "height": {
+                    "const": 1024
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 832
+                  },
+                  "height": {
+                    "const": 1248
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1248
+                  },
+                  "height": {
+                    "const": 832
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 864
+                  },
+                  "height": {
+                    "const": 1152
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1152
+                  },
+                  "height": {
+                    "const": 864
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 896
+                  },
+                  "height": {
+                    "const": 1120
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1120
+                  },
+                  "height": {
+                    "const": 896
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 792
+                  },
+                  "height": {
+                    "const": 1408
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1408
+                  },
+                  "height": {
+                    "const": 792
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 800
+                  },
+                  "height": {
+                    "const": 1280
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1280
+                  },
+                  "height": {
+                    "const": 800
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 720
+                  },
+                  "height": {
+                    "const": 1440
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1440
+                  },
+                  "height": {
+                    "const": 720
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 672
+                  },
+                  "height": {
+                    "const": 1568
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1568
+                  },
+                  "height": {
+                    "const": 672
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 592
+                  },
+                  "height": {
+                    "const": 1776
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1776
+                  },
+                  "height": {
+                    "const": 592
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 512
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 512
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 464
+                  },
+                  "height": {
+                    "const": 2320
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2320
+                  },
+                  "height": {
+                    "const": 464
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1536
+                  },
+                  "height": {
+                    "const": 2304
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2304
+                  },
+                  "height": {
+                    "const": 1536
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1536
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 1536
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1536
+                  },
+                  "height": {
+                    "const": 1920
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1920
+                  },
+                  "height": {
+                    "const": 1536
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1152
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 1152
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "price": {
+      "source": "https://runware.ai/docs/models/bria-fibo-2-0/schema.json",
+      "checkedAt": "2026-10-26",
+      "currency": "USD",
+      "amount": 0.04,
+      "unit": "image",
+      "billingVerified": false,
+      "status": "public-reference-not-bill"
+    },
+    "sourceField": "image",
+    "maskField": null,
+    "maxImages": 1,
+    "minImages": 1,
+    "maskRequired": false,
+    "generation": true,
+    "editing": true,
+    "roles": [
+      "image"
+    ],
+    "checkedAt": "2026-10-26"
+  },
+  "runware/bria:21@1": {
+    "source": "https://runware.ai/docs/models/bria-fibo-2-0-edit",
+    "schemaSource": "https://runware.ai/docs/models/bria-fibo-2-0-edit/schema.json",
+    "schemaSha256": "4e536f96699a591fe99e0f8cc65d83a36cf0255977e4cc22fe146864bebad776",
+    "taskType": "imageInference",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "const": "bria:21@1"
+        },
+        "inputs": {
+          "type": "object",
+          "properties": {
+            "image": {
+              "type": "string",
+              "anyOf": [
+                {
+                  "format": "uuid"
+                },
+                {
+                  "format": "uri"
+                },
+                {
+                  "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                },
+                {
+                  "pattern": "^[a-zA-Z0-9+/=]+$"
+                }
+              ]
+            },
+            "referenceImages": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "anyOf": [
+                  {
+                    "format": "uuid"
+                  },
+                  {
+                    "format": "uri"
+                  },
+                  {
+                    "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                  },
+                  {
+                    "pattern": "^[a-zA-Z0-9+/=]+$"
+                  }
+                ]
+              },
+              "maxItems": 4
+            },
+            "mask": {
+              "type": "string",
+              "anyOf": [
+                {
+                  "format": "uuid"
+                },
+                {
+                  "format": "uri"
+                },
+                {
+                  "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                },
+                {
+                  "pattern": "^[a-zA-Z0-9+/=]+$"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "positivePrompt": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 3000
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "seed": {
+          "maximum": 2147483647,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "providerSettings": {
+          "type": "object",
+          "properties": {
+            "bria": {
+              "type": "object",
+              "properties": {
+                "ipSignal": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "taskType": {
+          "type": "string",
+          "const": "imageInference"
+        },
+        "taskUUID": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "webhookURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "includeCost": {
+          "type": "boolean"
+        },
+        "routing": {
+          "type": "object",
+          "properties": {
+            "preferences": {
+              "type": "object",
+              "properties": {
+                "quality": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "speed": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "cost": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxPrice": {
+              "type": "number",
+              "minimum": 0
+            },
+            "requirements": {
+              "type": "string",
+              "maxLength": 3000
+            }
+          },
+          "additionalProperties": false
+        },
+        "numberResults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "uploadEndpoint": {
+          "type": "string",
+          "format": "uri"
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 60
+        },
+        "outputType": {
+          "type": "string",
+          "enum": [
+            "URL",
+            "base64Data",
+            "dataURI"
+          ]
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": [
+            "JPG",
+            "PNG",
+            "WEBP"
+          ]
+        },
+        "outputQuality": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 99
+        },
+        "deliveryMethod": {
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "sync"
+            },
+            {
+              "const": "async"
+            }
+          ]
+        },
+        "safety": {
+          "type": "object",
+          "properties": {
+            "checkContent": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "advancedFeatures": {
+          "type": "object",
+          "properties": {
+            "watermark": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 32
+                },
+                "image": {
+                  "type": "string",
+                  "anyOf": [
+                    {
+                      "format": "uuid"
+                    },
+                    {
+                      "format": "uri"
+                    },
+                    {
+                      "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                    },
+                    {
+                      "pattern": "^[a-zA-Z0-9+/=]+$"
+                    }
+                  ]
+                },
+                "displayPosition": {
+                  "type": "string",
+                  "enum": [
+                    "top-left",
+                    "top-center",
+                    "top-right",
+                    "center-left",
+                    "center-center",
+                    "center-right",
+                    "bottom-left",
+                    "bottom-center",
+                    "bottom-right",
+                    "tiled"
+                  ]
+                },
+                "opacity": {
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0.1,
+                  "maximum": 1
+                },
+                "fontColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                },
+                "bgColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "text"
+                  ]
+                },
+                {
+                  "required": [
+                    "image"
+                  ]
+                }
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "inputs",
+        "positivePrompt",
+        "taskType",
+        "taskUUID",
+        "model"
+      ],
+      "allOf": [
+        {
+          "dependentRequired": {
+            "width": [
+              "height"
+            ],
+            "height": [
+              "width"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "inputs": {
+                "properties": {
+                  "referenceImages": {
+                    "minItems": 2
+                  }
+                },
+                "required": [
+                  "referenceImages"
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          },
+          "then": {
+            "not": {
+              "properties": {
+                "inputs": {
+                  "required": [
+                    "mask"
+                  ]
+                }
+              },
+              "required": [
+                "inputs"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "inputs": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "image"
+                    ]
+                  },
+                  {
+                    "properties": {
+                      "referenceImages": {
+                        "maxItems": 1
+                      }
+                    },
+                    "required": [
+                      "referenceImages"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "width"
+                  ]
+                },
+                {
+                  "required": [
+                    "height"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "anyOf": [
+              {
+                "required": [
+                  "width"
+                ]
+              },
+              {
+                "required": [
+                  "height"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "width": {
+                    "const": 1024
+                  },
+                  "height": {
+                    "const": 1024
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 832
+                  },
+                  "height": {
+                    "const": 1248
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1248
+                  },
+                  "height": {
+                    "const": 832
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 864
+                  },
+                  "height": {
+                    "const": 1152
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1152
+                  },
+                  "height": {
+                    "const": 864
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 896
+                  },
+                  "height": {
+                    "const": 1120
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1120
+                  },
+                  "height": {
+                    "const": 896
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 792
+                  },
+                  "height": {
+                    "const": 1408
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1408
+                  },
+                  "height": {
+                    "const": 792
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 800
+                  },
+                  "height": {
+                    "const": 1280
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1280
+                  },
+                  "height": {
+                    "const": 800
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 720
+                  },
+                  "height": {
+                    "const": 1440
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1440
+                  },
+                  "height": {
+                    "const": 720
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 672
+                  },
+                  "height": {
+                    "const": 1568
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1568
+                  },
+                  "height": {
+                    "const": 672
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 592
+                  },
+                  "height": {
+                    "const": 1776
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1776
+                  },
+                  "height": {
+                    "const": 592
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 512
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 512
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 464
+                  },
+                  "height": {
+                    "const": 2320
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2320
+                  },
+                  "height": {
+                    "const": 464
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "oneOf": [
+            {
+              "properties": {
+                "inputs": {
+                  "required": [
+                    "image"
+                  ]
+                }
+              },
+              "required": [
+                "inputs"
+              ]
+            },
+            {
+              "properties": {
+                "inputs": {
+                  "required": [
+                    "referenceImages"
+                  ]
+                }
+              },
+              "required": [
+                "inputs"
+              ]
+            }
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "price": {
+      "source": "https://runware.ai/docs/models/bria-fibo-2-0-edit/schema.json",
+      "checkedAt": "2026-10-26",
+      "currency": "USD",
+      "amount": 0.04,
+      "unit": "image",
+      "billingVerified": false,
+      "status": "public-reference-not-bill"
+    },
+    "sourceField": "image",
+    "maskField": "mask",
+    "maxImages": 1,
+    "minImages": 1,
+    "maskRequired": false,
+    "generation": false,
+    "editing": true,
+    "roles": [
+      "image"
+    ],
+    "checkedAt": "2026-10-26"
+  },
+  "replicate/anthropic/claude-opus-5.5": {
+    "provider": "replicate",
+    "model": "anthropic/claude-opus-5.5",
+    "roles": [
+      "main"
+    ],
+    "source": "https://replicate.com/anthropic/claude-opus-5.5/api/schema",
+    "checkedAt": "2026-10-26",
+    "maxImages": 0,
+    "productImageCap": 0,
+    "version": "2b34585f42fc1b504790158f605972051c387bfd2e8abd863f314fff6d010b48",
+    "taskType": "text-prediction",
+    "textProtocol": "replicate-predictions",
+    "schema": {
+      "type": "object",
+      "title": "Input",
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "image": {
+          "type": "string",
+          "title": "Image",
+          "format": "uri",
+          "x-order": 1,
+          "nullable": true,
+          "description": "Optional input image. Images are priced as (width px * height px)/750 input tokens"
+        },
+        "effort": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "type": "string",
+          "title": "effort",
+          "description": "How much thinking Claude does before responding. Opus 5.5 always uses adaptive thinking; higher effort improves quality on hard coding and agentic tasks, but is slower and uses more output tokens. 'low' is the fastest and cheapest.",
+          "default": "low",
+          "x-order": 4
+        },
+        "prompt": {
+          "type": "string",
+          "title": "Prompt",
+          "x-order": 0,
+          "description": "Input prompt"
+        },
+        "max_tokens": {
+          "type": "integer",
+          "title": "Max Tokens",
+          "default": 8192,
+          "maximum": 128000,
+          "minimum": 1024,
+          "x-order": 3,
+          "description": "Maximum number of output tokens, including thinking tokens. Opus 5.5 always thinks before responding, so leave headroom at higher effort levels (Anthropic recommends starting at 64000 for 'xhigh' and 'max')."
+        },
+        "system_prompt": {
+          "type": "string",
+          "title": "System Prompt",
+          "default": "",
+          "x-order": 2,
+          "description": "System prompt"
+        },
+        "max_image_resolution": {
+          "type": "number",
+          "title": "Max Image Resolution",
+          "default": 0.5,
+          "maximum": 2,
+          "minimum": 0.001,
+          "x-order": 5,
+          "description": "Maximum image resolution in megapixels. Scales down image before sending it to Claude, to save time and money."
+        }
+      },
+      "additionalProperties": false
+    },
+    "realInference": false
+  }
+}

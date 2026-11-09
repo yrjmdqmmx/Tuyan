@@ -1,0 +1,50 @@
+{
+  "id": "ppat.1010510.g004",
+  "paper": "ppat.1010510",
+  "figure": {
+    "id": "ppat.1010510.g004",
+    "label": "Fig 4",
+    "caption": "ChIP-seq analysis of AP2-Z.\n(A) Integrative Genomics Viewer images from ChIP-seq experiment 1 and 2 of AP2-Z in a part of chromosome 6. Histograms show sequence coverage of ChIP data at each base. (B) Venn diagram of number of peaks identified in ChIP-seq experiment 1 and 2. (C) Classification of peak locations. Light green and gray bars around the pie chart indicate the intergenic region and gene body region, respectively. (D) Ratio of peaks located on the gene body and intergenic region for ChIP-seq of AP2-G, AP2-FG, AP2-Z, and AP2-O. (E) Sequence logo constructed from TGAAC motifs in the peak regions (top) and predicted binding motif of AP2-Z (bottom). Sequence logos are depicted using WebLogo 3 (http://weblogo.threeplusone.com/create.cgi). (F) Histogram showing the distance between the peak summit and the nearest (T/C)(A/C)TG(A/T)AC(A/G) motif for each ChIP peak.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1010510.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.ppat.1010510.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>ChIP-seq analysis of AP2-Z.</title>\n<p>(A) Integrative Genomics Viewer images from ChIP-seq experiment 1 and 2 of AP2-Z in a part of chromosome 6. Histograms show sequence coverage of ChIP data at each base. (B) Venn diagram of number of peaks identified in ChIP-seq experiment 1 and 2. (C) Classification of peak locations. Light green and gray bars around the pie chart indicate the intergenic region and gene body region, respectively. (D) Ratio of peaks located on the gene body and intergenic region for ChIP-seq of AP2-G, AP2-FG, AP2-Z, and AP2-O. (E) Sequence logo constructed from TGAAC motifs in the peak regions (top) and predicted binding motif of AP2-Z (bottom). Sequence logos are depicted using WebLogo 3 (<ext-link ext-link-type=\"uri\" ns0:href=\"http://weblogo.threeplusone.com/create.cgi\" ns0:type=\"simple\">http://weblogo.threeplusone.com/create.cgi</ext-link>). (F) Histogram showing the distance between the peak summit and the nearest (T/C)(A/C)TG(A/T)AC(A/G) motif for each ChIP peak.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1010510.g004\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1010510.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.ppat.1010510",
+    "sourceUrl": "https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1010510",
+    "title": "Identification of a novel AP2 transcription factor in zygotes with an essential role in Plasmodium ookinete development",
+    "journal": "PLOS Pathogens",
+    "authors": [
+      "Tsubasa Nishi",
+      "Izumi Kaneko",
+      "Shiroh Iwanaga",
+      "Masao Yuda"
+    ],
+    "year": "2022",
+    "license": "2022\nNishi et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plospathogens/article/figure/image?size=large&id=10.1371/journal.ppat.1010510.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/ppat.1010510.g004.png",
+      "bytes": 232090,
+      "sha256": "2a40bab1174b86120a1bbac96386ea4196e91996cf00c40b218a3f648a03c873"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plospathogens/article/figure/image?size=original&id=10.1371/journal.ppat.1010510.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/ppat.1010510.g004.tif",
+      "bytes": 375776,
+      "sha256": "564e45a636322766a38c5dcdd934f7541b22f61dfd4b3dfccc7ca6b1e2bf161f"
+    }
+  }
+}

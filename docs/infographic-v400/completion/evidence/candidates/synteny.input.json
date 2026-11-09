@@ -1,0 +1,51 @@
+{
+  "figureTypeId": "synteny",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "source": "Genome A",
+        "start": 100,
+        "end": 350,
+        "target": "Genome B",
+        "targetStart": 200,
+        "targetEnd": 450,
+        "strand": "+"
+      },
+      {
+        "source": "Genome A",
+        "start": 600,
+        "end": 800,
+        "target": "Genome B",
+        "targetStart": 650,
+        "targetEnd": 900,
+        "strand": "-"
+      }
+    ],
+    "units": {
+      "start": "bp",
+      "end": "bp",
+      "targetStart": "bp",
+      "targetEnd": "bp"
+    },
+    "options": {
+      "sequences": [
+        {
+          "id": "Genome A",
+          "length": 1000
+        },
+        {
+          "id": "Genome B",
+          "length": 1100
+        }
+      ],
+      "assembly": "Synthetic paired assemblies",
+      "coordinateSystem": "zero_based_half_open",
+      "alignmentMethod": "Synthetic explicit correspondence; no alignment inferred"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

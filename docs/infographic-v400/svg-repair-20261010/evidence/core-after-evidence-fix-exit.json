@@ -1,0 +1,6 @@
+{
+  "tests": 1228,
+  "passed": 1228,
+  "exitCode": 0,
+  "scope": "Full Core with final renderer and evidence-storage code; before output-example clarification only. Subsequent prompt-only change receives final focused tests."
+}

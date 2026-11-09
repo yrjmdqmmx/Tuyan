@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="648pt" height="364.5pt" viewBox="0 0 648 364.5" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 364.5  L 648 364.5  L 648 0  L 0 0  z " style="fill: #ffffff" />
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 279.18756 264.70489  C 301.054852 264.70489 322.029461 256.016922 337.491972 240.554412  C 352.954482 225.091901 361.64245 204.117292 361.64245 182.25  C 361.64245 160.382708 352.954482 139.408099 337.491972 123.945588  C 322.029461 108.483078 301.054852 99.79511 279.18756 99.79511  C 257.320268 99.79511 236.345659 108.483078 220.883148 123.945588  C 205.420638 139.408099 196.73267 160.382708 196.73267 182.25  C 196.73267 204.117292 205.420638 225.091901 220.883148 240.554412  C 236.345659 256.016922 257.320268 264.70489 279.18756 264.70489  z " clip-path="url(#p11aacf11b1)" style="fill: #487968; opacity: 0.25" />
+   </g>
+   <g id="patch_3">
+    <path d="M 368.81244 264.70489  C 390.679732 264.70489 411.654341 256.016922 427.116852 240.554412  C 442.579362 225.091901 451.26733 204.117292 451.26733 182.25  C 451.26733 160.382708 442.579362 139.408099 427.116852 123.945588  C 411.654341 108.483078 390.679732 99.79511 368.81244 99.79511  C 346.945148 99.79511 325.970539 108.483078 310.508028 123.945588  C 295.045518 139.408099 286.35755 160.382708 286.35755 182.25  C 286.35755 204.117292 295.045518 225.091901 310.508028 240.554412  C 325.970539 256.016922 346.945148 264.70489 368.81244 264.70489  z " clip-path="url(#p11aacf11b1)" style="fill: #c58b53; opacity: 0.25" />
+   </g>
+   <g id="text_1">
+    <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="279.18756" y="81.870134" transform="rotate(-0 279.18756 81.870134)">A</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="368.81244" y="81.870134" transform="rotate(-0 368.81244 81.870134)">B</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="239.752613" y="182.25" transform="rotate(-0 239.752613 182.25)">1</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="324" y="182.25" transform="rotate(-0 324 182.25)">2</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="408.247387" y="182.25" transform="rotate(-0 408.247387 182.25)">1</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="315.037512" y="325.649808" transform="rotate(-0 315.037512 325.649808)">Areas are schematic; labels show exact counts</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p11aacf11b1">
+   <rect x="135.787752" y="3.00024" width="376.424496" height="358.49952" />
+  </clipPath>
+ </defs>
+</svg>

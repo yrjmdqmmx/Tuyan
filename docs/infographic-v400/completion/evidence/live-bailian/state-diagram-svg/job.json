@@ -1,0 +1,414 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": null,
+  "referenceSelection": {
+    "proposedCount": 1,
+    "selectedCount": 1,
+    "requestedTypeId": "state_transition",
+    "exactCount": 0,
+    "compatibleCount": 0,
+    "matchStatus": "matched",
+    "skippedCount": 0,
+    "imageCount": 1,
+    "mode": "images",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "none",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "succeeded",
+      "review": {
+        "limit": 1,
+        "roundsUsed": 1,
+        "mode": "visual_code",
+        "status": "modified_unreviewed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "98cd4ab8f5e93f597206107caac1e2629086d571b6357092d9aa39a544131f33",
+            "pngHash": "72f103a4548fc44e26c40c3d4fae853857e56eaea5938dc7eba96c1dcba383bc",
+            "status": "issues_found",
+            "submittedImageHash": "20d84289b6eedfe6f807fba0888239ff97d30930d773d241faf432b64371f7d8",
+            "assessment": "{\"version\":1,\"svgHash\":\"98cd4ab8f5e93f597206107caac1e2629086d571b6357092d9aa39a544131f33\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Incorrect arrow endpoint for 'finish' transition\",\"location\":\"Path d=\\\"M 1150 300 ... 350 600\\\"\",\"evidence\":\"The path terminates at y=600, which is the top edge of the 'Completed' node (y=600 to y=700). The arrowhead marker renders centered on this coordinate, causing the tip to sit on the border rather than pointing into the node body.\",\"suggestion\":\"Adjust the path end point to y=610 or y=620 to ensure the arrowhead clearly enters the 'Completed' state box.\"},{\"issue\":\"Incorrect arrow endpoint for 'cancel' transition\",\"location\":\"Path d=\\\"M 1050 650 ... 350 650\\\"\",\"evidence\":\"The path terminates at x=350, which is the left edge of the 'Completed' node. Similar to the 'finish' arrow, the arrowhead sits on the boundary line.\",\"suggestion\":\"Adjust the path end point to x=340 to ensure the arrowhead points into the 'Completed' state box from the left.\"},{\"issue\":\"Suboptimal routing for 'resume' transition\",\"location\":\"Line x1=\\\"1100\\\" y1=\\\"600\\\" ... x2=\\\"1100\\\" y2=\\\"310\\\"\",\"evidence\":\"The 'resume' arrow originates from the top-left corner of 'Paused' (x=1050+50) and travels vertically up the inside of the right column. This creates visual clutter with the 'pause' arrow and makes the diagram look like a ladder rather than a state machine loop.\",\"suggestion\":\"Route 'resume' as an external curve on the right side (e.g., starting from x=1250, curving out to x=1300, and entering 'Running' from the right) to separate it visually from 'pause'.\"}]},\"code\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Arrowhead geometry alignment\",\"location\":\"<marker id='arrowhead' ... refX='9'>\",\"evidence\":\"With refX=9 and a polygon width of 10, the arrow tip is positioned 1px inside the target coordinate. Combined with paths ending exactly on node boundaries (e.g., y=600, x=350), the visible tip overlaps the stroke of the target node.\",\"suggestion\":\"Either increase refX to 10 to place the tip exactly on the target, or adjust path endpoints to penetrate the node boundary by ~5-10px as suggested in visual findings.\"},{\"issue\":\"Font family fallback\",\"location\":\"font-family attributes\",\"evidence\":\"Local code issues note that 'Arial' is not bundled. While 'Noto Sans' is listed first, explicit reliance on system fonts can cause rendering variance.\",\"suggestion\":\"Remove 'Arial' from font-family strings to strictly enforce the bundled 'Noto Sans'.\"}]},\"uncertainties\":[],\"revised_description\":\"Retain the diamond layout (Idle top-left, Running top-right, Paused bottom-right, Completed bottom-left). Fix connection fidelity: 1) Extend the 'finish' curved path to terminate at y=620 (inside Completed node). 2) Extend the 'cancel' curved path to terminate at x=340 (inside Completed node). 3) Reroute the 'resume' transition to exit the right side of 'Paused' (x=1250), curve outward to x=1300, and enter the right side of 'Running' (x=1250) to avoid overlapping the internal 'pause' line. 4) Update marker refX to 10 or ensure all paths penetrate target nodes by >5px. 5) Remove 'Arial' from font stacks.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "4a725ff383f7791963277396cece6d453c0e57858e0055e4492e2acdb1dfe177",
+        "reviewedVersion": 1,
+        "reviewedSvgHash": "98cd4ab8f5e93f597206107caac1e2629086d571b6357092d9aa39a544131f33",
+        "note": "已按本轮优化方案生成新版 SVG，尚未复审；未追加隐藏检查调用。"
+      }
+    }
+  ],
+  "id": "1791620878998-qn14va2v",
+  "status": "succeeded",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "Synthetic teaching example of an instrument state machine. States: Idle, Running, Paused, Completed. Initial dot enters Idle. Transitions: Idle→Running: start; Running→Paused: pause; Paused→Running: resume; Running→Completed: finish; Paused→Idle: cancel; Completed→Idle: reset. Each named state appears once. Arrows are labelled events, not process activities. Completed is not a terminal state because reset returns to Idle. English text. Reference is for structural design only.",
+  "negativePrompt": "No invented numbers, statistical significance, or scientific conclusions. Preserve all supplied labels and relations.",
+  "caption": "Explicit synthetic teaching example",
+  "infographicCategory": "状态转移图",
+  "figureTypeId": "state_transition",
+  "figureSpecVersion": "2026-10-10.v1",
+  "figureInputValidation": {
+    "status": "content_review_required",
+    "checks": [
+      "核对：节点是状态不是动作",
+      "核对：边标注事件",
+      "核对：自循环与不可达态显式检查",
+      "逐项核对必要输入；记录证据缺口，不把模型的自信作为事实依据。"
+    ]
+  },
+  "outputFormat": "svg",
+  "mainModelName": "qwen3.7-plus",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "main_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "planner_critic",
+  "retrievalSetting": "manual",
+  "manualReferenceIds": [
+    "journal_pcbi.1009702.g001"
+  ],
+  "retrievedReferenceIds": [
+    "journal_pcbi.1009702.g001"
+  ],
+  "retrievedReferences": [
+    {
+      "id": "journal_pcbi.1009702.g001",
+      "source": "journal-curated",
+      "corpusVersion": "journal-2026-10-10.v2",
+      "figureTypeId": "multipanel",
+      "panelTypes": [
+        {
+          "panel": "A",
+          "typeId": "network"
+        },
+        {
+          "panel": "B",
+          "typeId": "state_transition"
+        },
+        {
+          "panel": "C",
+          "typeId": "mechanism"
+        }
+      ],
+      "title": "Identification of periodic attractors in Boolean networks using a priori information",
+      "titleZh": "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。",
+      "summary": "Example of a BN.\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].",
+      "originalCaption": "Example of a BN.\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].",
+      "shortIntroZh": "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。",
+      "detailZh": "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。 A节点是变量，B节点是整组布尔状态，C含反应节点，不能互相混用。D是表格，不能为了填补覆盖而标成二值矩阵图。",
+      "paper": {
+        "title": "Identification of periodic attractors in Boolean networks using a priori information",
+        "authors": [
+          "Ulrike Münzner",
+          "Tomoya Mori",
+          "Marcus Krantz",
+          "Edda Klipp",
+          "Tatsuya Akutsu"
+        ],
+        "journal": "PLOS Computational Biology",
+        "year": "2022",
+        "doi": "10.1371/journal.pcbi.1009702",
+        "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009702"
+      },
+      "figureNumber": "Fig 1",
+      "researchDomain": "系统生物学与布尔网络",
+      "layout": "grid",
+      "density": "high",
+      "tags": [
+        "multipanel",
+        "系统生物学与布尔网络",
+        "grid"
+      ],
+      "designLessons": [
+        "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。"
+      ],
+      "doNotTransfer": [
+        "A节点是变量，B节点是整组布尔状态，C含反应节点，不能互相混用。D是表格，不能为了填补覆盖而标成二值矩阵图。",
+        "原论文的实体名称、样本、数值、显著性、模型性能与科学结论。"
+      ],
+      "imageUrl": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1009702.g001",
+      "localPreviewUrl": "/reference-library/pcbi.1009702.g001.png",
+      "assets": {
+        "large": {
+          "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1009702.g001",
+          "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009702.g001.png",
+          "bytes": 367246,
+          "sha256": "1626940dd34b4372305aa26c217199da6895a7252701f5aeb838a5b0707e0a63"
+        },
+        "original": {
+          "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1009702.g001",
+          "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009702.g001.tif",
+          "bytes": 432340,
+          "sha256": "f2680160c6cc4ed9419bf90d4edf5b09b7cf3bfcbcedaefbfa245ce28a0be1bc"
+        }
+      },
+      "modifications": [],
+      "license": {
+        "id": "CC-BY-4.0",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "status": "verified",
+        "attributionRequired": true,
+        "verifiedAt": "2026-10-10",
+        "basis": "2022\nMünzner et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+        "evidenceFile": "docs/infographic-v400/evidence/papers/pcbi.1009702.xml",
+        "captionEvidence": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009702.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009702.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Example of a BN.</title>\n<p>(A) Network structure <italic>G</italic>(<italic>V</italic>, <italic>E</italic>) for a BN consisting of <italic>n</italic> = 3 nodes <italic>x</italic><sub>1</sub>, <italic>x</italic><sub>2</sub>, and <italic>x</italic><sub>3</sub>. The Boolean functions are represented by the edges. (B) State transition diagram of all 2<sup>3</sup> = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component <italic>x</italic><sub>1</sub> are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) <italic>x</italic><sub>1</sub> undergoes phosphorylation by consuming its elemental state <italic>x</italic><sub>1</sub>-{0} to produce its modified state <italic>x</italic><sub>1</sub>-{P} by reaction <italic>r</italic><sub>1</sub> (phosphorylation). The modified <italic>x</italic><sub>1</sub>-{P} undergoes consumption thereby producing the neutral state <italic>x</italic><sub>1</sub>-{0} via reaction <italic>r</italic><sub>2</sub> (dephosphorylation) (details in [<xref ref-type=\"bibr\" rid=\"pcbi.1009702.ref029\">29</xref>]). (D) Relationship between initial states of both elemental states <italic>x</italic><sub>1</sub>-{0} and <italic>x</italic><sub>1</sub>-{P} of component <italic>x</italic><sub>1</sub> and the attractors. When at least either of the two elemental states <italic>x</italic><sub>1</sub>-{0} or <italic>x</italic><sub>1</sub>-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes <italic>r</italic><sub>1</sub> and <italic>r</italic><sub>2</sub> are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [<xref ref-type=\"bibr\" rid=\"pcbi.1009702.ref029\">29</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009702.g001\" ns0:type=\"simple\" />\n</fig>\n",
+        "reviewEvidence": null,
+        "thirdPartyReview": "已检查出版方XML、全文素材声明、图注和图像；未发现该图另行限制或第三方署名例外。",
+        "permissions": {
+          "storage": true,
+          "display": true,
+          "modelInput": true,
+          "adaptation": true
+        },
+        "conditions": [
+          "保留论文、作者、图号、来源及许可链接（CC0为学术溯源要求，非额外许可义务）",
+          "如修改，明确说明修改并保留原图",
+          "不暗示原作者认可新作品",
+          "仅基于许可的复制与改编权判断模型输入；不额外授予训练、商标、隐私等权利"
+        ],
+        "attribution": "Ulrike Münzner, Tomoya Mori, Marcus Krantz, Edda Klipp, Tatsuya Akutsu. Identification of periodic attractors in Boolean networks using a priori information. PLOS Computational Biology (2022), Fig 1. 10.1371/journal.pcbi.1009702. CC-BY-4.0."
+      },
+      "quality": {
+        "status": "reviewed",
+        "inspection": "publisher-caption-and-image",
+        "reason": "结构与科学编码可作为所标注类型的参考；局限写在 doNotTransfer 中。"
+      },
+      "attribution": "Ulrike Münzner, Tomoya Mori, Marcus Krantz, Edda Klipp, Tatsuya Akutsu. Identification of periodic attractors in Boolean networks using a priori information. PLOS Computational Biology (2022), Fig 1. 10.1371/journal.pcbi.1009702. CC-BY-4.0.",
+      "taskName": "diagram",
+      "visualCategory": "multipanel",
+      "visualCategoryLabel": "组合表达 / 多面板组合图",
+      "keywords": [
+        "多面板组合图",
+        "multipanel",
+        "系统生物学与布尔网络",
+        "grid"
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "id": "stage-3feff64a-e24b-478f-94b7-57ba37a8aa3b",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "Based on the methodology provided and the visual style of the reference image (specifically Panel B, which depicts a state transition diagram), here is the detailed description for the illustrative figure.\n\n**Figure Description:**\n\n**Overall Layout and Style:**\nThe figure is a schematic state transition diagram presented on a pure white background. The style is clean, high-contrast, and academic, utilizing black lines and text with white-filled nodes, consistent with the reference image's Panel B. The layout arranges four main state nodes in a loose diamond or quadrilateral formation to clearly display the cyclic and branching nature of the instrument's logic.\n\n**Nodes (States):**\nThere are four distinct state nodes, each represented as a rectangle with rounded corners (pill-shaped), filled with white and outlined with a solid black line (approx. 2pt thickness). Inside each node, the state name is centered in a bold, sans-serif font (e.g., Arial or Helvetica), sized for high readability.\n1.  **Idle:** Located at the top-left position. This is the primary hub of the diagram.\n2.  **Running:** Located at the top-right position, horizontally aligned with \"Idle\".\n3.  **Paused:** Located at the bottom-right position, directly below \"Running\".\n4.  **Completed:** Located at the bottom-left position, directly below \"Idle\" and to the left of \"Paused\".\n\n**Initial State Indicator:**\nA solid black circular dot (bullet point) is placed to the immediate left of the \"Idle\" node. A short, straight horizontal arrow connects this dot to the left edge of the \"Idle\" node, indicating it is the entry point of the system.\n\n**Transitions (Edges and Labels):**\nDirected connections between states are represented by solid black arrows with triangular heads. Each arrow is labeled with the specific event trigger in a smaller, regular-weight sans-serif font, placed near the midpoint of the arrow shaft.\n\n*   **Idle $\\rightarrow$ Running:** A straight horizontal arrow pointing right from \"Idle\" to \"Running\". Label: **start**.\n*   **Running $\\rightarrow$ Paused:** A straight vertical arrow pointing down from \"Running\" to \"Paused\". Label: **pause**.\n*   **Paused $\\rightarrow$ Running:** A straight vertical arrow pointing up from \"Paused\" to \"Running\" (parallel to the 'pause' arrow but slightly offset or curved to avoid overlap if necessary, though straight parallel lines are acceptable if spaced well). Label: **resume**.\n*   **Running $\\rightarrow$ Completed:** A long, curved arrow arching over the top or sweeping underneath from \"Running\" to \"Completed\". Alternatively, a diagonal arrow crossing the center. Given the layout, a curved arrow sweeping under \"Paused\" or over the top connecting \"Running\" to \"Completed\" is clearest. Let's specify a curved arrow sweeping underneath the diagram from \"Running\" to \"Completed\" to avoid crossing the vertical loop. Label: **finish**.\n*   **Paused $\\rightarrow$ Idle:** A long, curved arrow sweeping along the bottom or side from \"Paused\" back to \"Idle\". To distinguish from the \"finish\" arrow, this can sweep along the outer bottom edge. Label: **cancel**.\n*   **Completed $\\rightarrow$ Idle:** A straight vertical arrow pointing up from \"Completed\" to \"Idle\". Label: **reset**.\n\n**Visual Logic Check:**\n*   The diagram explicitly shows that \"Completed\" is not a terminal state because of the upward \"reset\" arrow returning to \"Idle\".\n*   All labels correspond strictly to the events provided (start, pause, resume, finish, cancel, reset).\n*   No process activities are listed on the arrows, only triggers.",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T08:27:59.310Z",
+      "completedAt": "2026-10-10T08:28:14.987Z",
+      "durationMs": 15677,
+      "error": ""
+    },
+    {
+      "id": "stage-90dd8ceb-6e69-458c-a9b7-0fd7b1b403b4",
+      "candidateId": 0,
+      "type": "svg_source",
+      "title": "SVG v1 文件",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"98cd4ab8f5e93f597206107caac1e2629086d571b6357092d9aa39a544131f33\",\"pngHash\":\"72f103a4548fc44e26c40c3d4fae853857e56eaea5938dc7eba96c1dcba383bc\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Noto Sans\",\"Arial\",\"sans-serif\"]},\"codeIssues\":[\"Font \\\"Arial\\\" is not bundled; this raster uses the bundled Noto fallback.\",\"Only regular Noto font faces are bundled; verify requested bold/italic styling in the raster.\",\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791620878998-qn14va2v/candidate-0-svg-v1.svg",
+        "url": "http://127.0.0.1:55235/objects/1791620878998-qn14va2v/candidate-0-svg-v1.svg",
+        "mimeType": "image/svg+xml",
+        "objectKey": "1791620878998-qn14va2v/candidate-0-svg-v1.svg"
+      },
+      "startedAt": "2026-10-10T08:28:42.755Z",
+      "completedAt": "2026-10-10T08:28:42.755Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-2df46625-f504-4648-becb-3cfd40f646d8",
+      "candidateId": 0,
+      "type": "render",
+      "title": "SVG v1 实际渲染",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"98cd4ab8f5e93f597206107caac1e2629086d571b6357092d9aa39a544131f33\",\"pngHash\":\"72f103a4548fc44e26c40c3d4fae853857e56eaea5938dc7eba96c1dcba383bc\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Noto Sans\",\"Arial\",\"sans-serif\"]},\"codeIssues\":[\"Font \\\"Arial\\\" is not bundled; this raster uses the bundled Noto fallback.\",\"Only regular Noto font faces are bundled; verify requested bold/italic styling in the raster.\",\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791620878998-qn14va2v/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:55235/objects/1791620878998-qn14va2v/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791620878998-qn14va2v/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T08:28:42.755Z",
+      "completedAt": "2026-10-10T08:28:42.755Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-28f77b0d-ca86-4061-b59f-a2d18016da9a",
+      "candidateId": 0,
+      "type": "critic",
+      "title": "SVG v1 画面与代码评审（第1轮）",
+      "round": 1,
+      "text": "{\"version\":1,\"svgHash\":\"98cd4ab8f5e93f597206107caac1e2629086d571b6357092d9aa39a544131f33\",\"pngHash\":\"72f103a4548fc44e26c40c3d4fae853857e56eaea5938dc7eba96c1dcba383bc\",\"submittedImageHash\":\"20d84289b6eedfe6f807fba0888239ff97d30930d773d241faf432b64371f7d8\",\"round\":1,\"previousAssessment\":\"\",\"referenceAnalysis\":\"\",\"retrievalContext\":\"Reference 1 (journal_pcbi.1009702.g001): Identification of periodic attractors in Boolean networks using a priori information\\nExample of a BN.\\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].\\n{\\\"figureTypeId\\\":\\\"multipanel\\\",\\\"panels\\\":[{\\\"panel\\\":\\\"A\\\",\\\"typeId\\\":\\\"network\\\"},{\\\"panel\\\":\\\"B\\\",\\\"typeId\\\":\\\"state_transition\\\"},{\\\"panel\\\":\\\"C\\\",\\\"typeId\\\":\\\"mechanism\\\"}],\\\"layout\\\":\\\"grid\\\",\\\"density\\\":\\\"high\\\",\\\"designLessons\\\":[\\\"同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。\\\"],\\\"doNotTransfer\\\":[\\\"A节点是变量，B节点是整组布尔状态，C含反应节点，不能互相混用。D是表格，不能为了填补覆盖而标成二值矩阵图。\\\",\\\"原论文的实体名称、样本、数值、显著性、模型性能与科学结论。\\\"],\\\"attribution\\\":\\\"Ulrike Münzner, Tomoya Mori, Marcus Krantz, Edda Klipp, Tatsuya Akutsu. Identification of periodic attractors in Boolean networks using a priori information. PLOS Computational Biology (2022), Fig 1. 10.1371/journal.pcbi.1009702. CC-BY-4.0.\\\",\\\"license\\\":\\\"CC-BY-4.0\\\"}\",\"decision\":{\"version\":1,\"svgHash\":\"98cd4ab8f5e93f597206107caac1e2629086d571b6357092d9aa39a544131f33\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Incorrect arrow endpoint for 'finish' transition\",\"location\":\"Path d=\\\"M 1150 300 ... 350 600\\\"\",\"evidence\":\"The path terminates at y=600, which is the top edge of the 'Completed' node (y=600 to y=700). The arrowhead marker renders centered on this coordinate, causing the tip to sit on the border rather than pointing into the node body.\",\"suggestion\":\"Adjust the path end point to y=610 or y=620 to ensure the arrowhead clearly enters the 'Completed' state box.\"},{\"issue\":\"Incorrect arrow endpoint for 'cancel' transition\",\"location\":\"Path d=\\\"M 1050 650 ... 350 650\\\"\",\"evidence\":\"The path terminates at x=350, which is the left edge of the 'Completed' node. Similar to the 'finish' arrow, the arrowhead sits on the boundary line.\",\"suggestion\":\"Adjust the path end point to x=340 to ensure the arrowhead points into the 'Completed' state box from the left.\"},{\"issue\":\"Suboptimal routing for 'resume' transition\",\"location\":\"Line x1=\\\"1100\\\" y1=\\\"600\\\" ... x2=\\\"1100\\\" y2=\\\"310\\\"\",\"evidence\":\"The 'resume' arrow originates from the top-left corner of 'Paused' (x=1050+50) and travels vertically up the inside of the right column. This creates visual clutter with the 'pause' arrow and makes the diagram look like a ladder rather than a state machine loop.\",\"suggestion\":\"Route 'resume' as an external curve on the right side (e.g., starting from x=1250, curving out to x=1300, and entering 'Running' from the right) to separate it visually from 'pause'.\"}]},\"code\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Arrowhead geometry alignment\",\"location\":\"<marker id='arrowhead' ... refX='9'>\",\"evidence\":\"With refX=9 and a polygon width of 10, the arrow tip is positioned 1px inside the target coordinate. Combined with paths ending exactly on node boundaries (e.g., y=600, x=350), the visible tip overlaps the stroke of the target node.\",\"suggestion\":\"Either increase refX to 10 to place the tip exactly on the target, or adjust path endpoints to penetrate the node boundary by ~5-10px as suggested in visual findings.\"},{\"issue\":\"Font family fallback\",\"location\":\"font-family attributes\",\"evidence\":\"Local code issues note that 'Arial' is not bundled. While 'Noto Sans' is listed first, explicit reliance on system fonts can cause rendering variance.\",\"suggestion\":\"Remove 'Arial' from font-family strings to strictly enforce the bundled 'Noto Sans'.\"}]},\"uncertainties\":[],\"revised_description\":\"Retain the diamond layout (Idle top-left, Running top-right, Paused bottom-right, Completed bottom-left). Fix connection fidelity: 1) Extend the 'finish' curved path to terminate at y=620 (inside Completed node). 2) Extend the 'cancel' curved path to terminate at x=340 (inside Completed node). 3) Reroute the 'resume' transition to exit the right side of 'Paused' (x=1250), curve outward to x=1300, and enter the right side of 'Running' (x=1250) to avoid overlapping the internal 'pause' line. 4) Update marker refX to 10 or ensure all paths penetrate target nodes by >5px. 5) Remove 'Arial' from font stacks.\"}}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791620878998-qn14va2v/candidate-0-svg-v1-review-1.png",
+        "url": "http://127.0.0.1:55235/objects/1791620878998-qn14va2v/candidate-0-svg-v1-review-1.png",
+        "mimeType": "image/png",
+        "objectKey": "1791620878998-qn14va2v/candidate-0-svg-v1-review-1.png"
+      },
+      "startedAt": "2026-10-10T08:29:00.976Z",
+      "completedAt": "2026-10-10T08:29:00.976Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-e5d9fa13-5c89-4842-9488-1b6407b69b48",
+      "candidateId": 0,
+      "type": "svg_source",
+      "title": "SVG v2 文件",
+      "round": 1,
+      "text": "{\"version\":2,\"svgHash\":\"4a725ff383f7791963277396cece6d453c0e57858e0055e4492e2acdb1dfe177\",\"pngHash\":\"8baa66c4e6f99086f17b189316a2ebf762dc360c33e2e15f0a931a3af4017a97\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Noto Sans\",\"sans-serif\"]},\"codeIssues\":[\"Only regular Noto font faces are bundled; verify requested bold/italic styling in the raster.\",\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791620878998-qn14va2v/candidate-0-svg-v2.svg",
+        "url": "http://127.0.0.1:55235/objects/1791620878998-qn14va2v/candidate-0-svg-v2.svg",
+        "mimeType": "image/svg+xml",
+        "objectKey": "1791620878998-qn14va2v/candidate-0-svg-v2.svg"
+      },
+      "startedAt": "2026-10-10T08:29:28.452Z",
+      "completedAt": "2026-10-10T08:29:28.452Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-112503f9-acc7-4459-96bc-6394b64fdfb1",
+      "candidateId": 0,
+      "type": "render",
+      "title": "SVG v2 实际渲染",
+      "round": 1,
+      "text": "{\"version\":2,\"svgHash\":\"4a725ff383f7791963277396cece6d453c0e57858e0055e4492e2acdb1dfe177\",\"pngHash\":\"8baa66c4e6f99086f17b189316a2ebf762dc360c33e2e15f0a931a3af4017a97\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Noto Sans\",\"sans-serif\"]},\"codeIssues\":[\"Only regular Noto font faces are bundled; verify requested bold/italic styling in the raster.\",\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791620878998-qn14va2v/candidate-0-svg-v2-render.png",
+        "url": "http://127.0.0.1:55235/objects/1791620878998-qn14va2v/candidate-0-svg-v2-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791620878998-qn14va2v/candidate-0-svg-v2-render.png"
+      },
+      "startedAt": "2026-10-10T08:29:28.452Z",
+      "completedAt": "2026-10-10T08:29:28.452Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-659b9ec9-e07c-432c-ae63-a16ddd4b6c75",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "SVG v2 交付状态",
+      "round": 0,
+      "text": "已按本轮优化方案生成新版 SVG，尚未复审；未追加隐藏检查调用。",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791620878998-qn14va2v/candidate-0-svg-v2-render.png",
+        "url": "http://127.0.0.1:55235/objects/1791620878998-qn14va2v/candidate-0-svg-v2-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791620878998-qn14va2v/candidate-0-svg-v2-render.png"
+      },
+      "startedAt": "2026-10-10T08:29:28.452Z",
+      "completedAt": "2026-10-10T08:29:28.452Z",
+      "durationMs": 0,
+      "error": ""
+    }
+  ],
+  "criticMode": "visual_code",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 1,
+  "promptCharCount": 632,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [
+    {
+      "candidateId": 0,
+      "filename": "1791620878998-qn14va2v/candidate-0.svg",
+      "objectKey": "1791620878998-qn14va2v/candidate-0.svg",
+      "url": "http://127.0.0.1:55235/objects/1791620878998-qn14va2v/candidate-0.svg",
+      "storage": "bucket",
+      "mimeType": "image/svg+xml",
+      "description": "Retain the diamond layout (Idle top-left, Running top-right, Paused bottom-right, Completed bottom-left). Fix connection fidelity: 1) Extend the 'finish' curved path to terminate at y=620 (inside Completed node). 2) Extend the 'cancel' curved path to terminate at x=340 (inside Completed node). 3) Reroute the 'resume' transition to exit the right side of 'Paused' (x=1250), curve outward to x=1300, and enter the right side of 'Running' (x=1250) to avoid overlapping the internal 'pause' line. 4) Update marker refX to 10 or ensure all paths penetrate target nodes by >5px. 5) Remove 'Arial' from font stacks.",
+      "review": {
+        "limit": 1,
+        "roundsUsed": 1,
+        "mode": "visual_code",
+        "status": "modified_unreviewed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "98cd4ab8f5e93f597206107caac1e2629086d571b6357092d9aa39a544131f33",
+            "pngHash": "72f103a4548fc44e26c40c3d4fae853857e56eaea5938dc7eba96c1dcba383bc",
+            "status": "issues_found",
+            "submittedImageHash": "20d84289b6eedfe6f807fba0888239ff97d30930d773d241faf432b64371f7d8",
+            "assessment": "{\"version\":1,\"svgHash\":\"98cd4ab8f5e93f597206107caac1e2629086d571b6357092d9aa39a544131f33\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Incorrect arrow endpoint for 'finish' transition\",\"location\":\"Path d=\\\"M 1150 300 ... 350 600\\\"\",\"evidence\":\"The path terminates at y=600, which is the top edge of the 'Completed' node (y=600 to y=700). The arrowhead marker renders centered on this coordinate, causing the tip to sit on the border rather than pointing into the node body.\",\"suggestion\":\"Adjust the path end point to y=610 or y=620 to ensure the arrowhead clearly enters the 'Completed' state box.\"},{\"issue\":\"Incorrect arrow endpoint for 'cancel' transition\",\"location\":\"Path d=\\\"M 1050 650 ... 350 650\\\"\",\"evidence\":\"The path terminates at x=350, which is the left edge of the 'Completed' node. Similar to the 'finish' arrow, the arrowhead sits on the boundary line.\",\"suggestion\":\"Adjust the path end point to x=340 to ensure the arrowhead points into the 'Completed' state box from the left.\"},{\"issue\":\"Suboptimal routing for 'resume' transition\",\"location\":\"Line x1=\\\"1100\\\" y1=\\\"600\\\" ... x2=\\\"1100\\\" y2=\\\"310\\\"\",\"evidence\":\"The 'resume' arrow originates from the top-left corner of 'Paused' (x=1050+50) and travels vertically up the inside of the right column. This creates visual clutter with the 'pause' arrow and makes the diagram look like a ladder rather than a state machine loop.\",\"suggestion\":\"Route 'resume' as an external curve on the right side (e.g., starting from x=1250, curving out to x=1300, and entering 'Running' from the right) to separate it visually from 'pause'.\"}]},\"code\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Arrowhead geometry alignment\",\"location\":\"<marker id='arrowhead' ... refX='9'>\",\"evidence\":\"With refX=9 and a polygon width of 10, the arrow tip is positioned 1px inside the target coordinate. Combined with paths ending exactly on node boundaries (e.g., y=600, x=350), the visible tip overlaps the stroke of the target node.\",\"suggestion\":\"Either increase refX to 10 to place the tip exactly on the target, or adjust path endpoints to penetrate the node boundary by ~5-10px as suggested in visual findings.\"},{\"issue\":\"Font family fallback\",\"location\":\"font-family attributes\",\"evidence\":\"Local code issues note that 'Arial' is not bundled. While 'Noto Sans' is listed first, explicit reliance on system fonts can cause rendering variance.\",\"suggestion\":\"Remove 'Arial' from font-family strings to strictly enforce the bundled 'Noto Sans'.\"}]},\"uncertainties\":[],\"revised_description\":\"Retain the diamond layout (Idle top-left, Running top-right, Paused bottom-right, Completed bottom-left). Fix connection fidelity: 1) Extend the 'finish' curved path to terminate at y=620 (inside Completed node). 2) Extend the 'cancel' curved path to terminate at x=340 (inside Completed node). 3) Reroute the 'resume' transition to exit the right side of 'Paused' (x=1250), curve outward to x=1300, and enter the right side of 'Running' (x=1250) to avoid overlapping the internal 'pause' line. 4) Update marker refX to 10 or ensure all paths penetrate target nodes by >5px. 5) Remove 'Arial' from font stacks.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "4a725ff383f7791963277396cece6d453c0e57858e0055e4492e2acdb1dfe177",
+        "reviewedVersion": 1,
+        "reviewedSvgHash": "98cd4ab8f5e93f597206107caac1e2629086d571b6357092d9aa39a544131f33",
+        "note": "已按本轮优化方案生成新版 SVG，尚未复审；未追加隐藏检查调用。"
+      }
+    }
+  ],
+  "logs": [
+    "2026-10-10T08:27:59.309Z 参考图选择：采用 1 张，排除重复 0 张、无法使用 0 张、超出预算 0 张；主模型规划请求合计 1 张图片，上限 8 张。"
+  ],
+  "error": "",
+  "createdAt": "2026-10-10T08:27:58.998Z",
+  "updatedAt": "2026-10-10T08:29:28.453Z",
+  "startedAt": "2026-10-10T08:27:58.999Z",
+  "completedAt": "2026-10-10T08:29:28.453Z"
+}

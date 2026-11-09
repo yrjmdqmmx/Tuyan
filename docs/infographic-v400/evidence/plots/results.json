@@ -1,0 +1,380 @@
+[
+  {
+    "typeId": "bar",
+    "passed": true,
+    "stderr": "",
+    "png": "bar.png"
+  },
+  {
+    "typeId": "dotplot",
+    "passed": true,
+    "stderr": "",
+    "png": "dotplot.png"
+  },
+  {
+    "typeId": "lollipop",
+    "passed": true,
+    "stderr": "",
+    "png": "lollipop.png"
+  },
+  {
+    "typeId": "dumbbell",
+    "passed": true,
+    "stderr": "",
+    "png": "dumbbell.png"
+  },
+  {
+    "typeId": "forest",
+    "passed": true,
+    "stderr": "",
+    "png": "forest.png"
+  },
+  {
+    "typeId": "waterfall",
+    "passed": true,
+    "stderr": "",
+    "png": "waterfall.png"
+  },
+  {
+    "typeId": "gantt",
+    "passed": true,
+    "stderr": "",
+    "png": "gantt.png"
+  },
+  {
+    "typeId": "histogram",
+    "passed": true,
+    "stderr": "",
+    "png": "histogram.png"
+  },
+  {
+    "typeId": "boxplot",
+    "passed": true,
+    "stderr": "",
+    "png": "boxplot.png"
+  },
+  {
+    "typeId": "violin",
+    "passed": true,
+    "stderr": "",
+    "png": "violin.png"
+  },
+  {
+    "typeId": "ecdf",
+    "passed": true,
+    "stderr": "",
+    "png": "ecdf.png"
+  },
+  {
+    "typeId": "line",
+    "passed": true,
+    "stderr": "",
+    "png": "line.png"
+  },
+  {
+    "typeId": "area",
+    "passed": true,
+    "stderr": "",
+    "png": "area.png"
+  },
+  {
+    "typeId": "scatter",
+    "passed": true,
+    "stderr": "",
+    "png": "scatter.png"
+  },
+  {
+    "typeId": "bubble",
+    "passed": true,
+    "stderr": "",
+    "png": "bubble.png"
+  },
+  {
+    "typeId": "heatmap",
+    "passed": true,
+    "stderr": "",
+    "png": "heatmap.png"
+  },
+  {
+    "typeId": "adjacency_matrix",
+    "passed": true,
+    "stderr": "",
+    "png": "adjacency_matrix.png"
+  },
+  {
+    "typeId": "bubble_matrix",
+    "passed": true,
+    "stderr": "",
+    "png": "bubble_matrix.png"
+  },
+  {
+    "typeId": "correlation_matrix",
+    "passed": true,
+    "stderr": "",
+    "png": "correlation_matrix.png"
+  },
+  {
+    "typeId": "pie",
+    "passed": true,
+    "stderr": "",
+    "png": "pie.png"
+  },
+  {
+    "typeId": "rose",
+    "passed": true,
+    "stderr": "",
+    "png": "rose.png"
+  },
+  {
+    "typeId": "volcano",
+    "passed": true,
+    "stderr": "",
+    "png": "volcano.png"
+  },
+  {
+    "typeId": "ma_plot",
+    "passed": true,
+    "stderr": "",
+    "png": "ma_plot.png"
+  },
+  {
+    "typeId": "roc",
+    "passed": true,
+    "stderr": "",
+    "png": "roc.png"
+  },
+  {
+    "typeId": "pr_curve",
+    "passed": true,
+    "stderr": "",
+    "png": "pr_curve.png"
+  },
+  {
+    "typeId": "confusion_matrix",
+    "passed": true,
+    "stderr": "",
+    "png": "confusion_matrix.png"
+  },
+  {
+    "typeId": "calibration",
+    "passed": true,
+    "stderr": "",
+    "png": "calibration.png"
+  },
+  {
+    "typeId": "bland_altman",
+    "passed": true,
+    "stderr": "",
+    "png": "bland_altman.png"
+  },
+  {
+    "typeId": "funnel_meta",
+    "passed": true,
+    "stderr": "",
+    "png": "funnel_meta.png"
+  },
+  {
+    "typeId": "ordination",
+    "passed": true,
+    "stderr": "",
+    "png": "ordination.png"
+  },
+  {
+    "typeId": "vector_field",
+    "passed": true,
+    "stderr": "",
+    "png": "vector_field.png"
+  },
+  {
+    "typeId": "contour",
+    "passed": true,
+    "stderr": "",
+    "png": "contour.png"
+  },
+  {
+    "typeId": "kaplan_meier",
+    "passed": true,
+    "stderr": "",
+    "png": "kaplan_meier.png"
+  },
+  {
+    "typeId": "venn",
+    "passed": true,
+    "stderr": "",
+    "png": "venn.png"
+  },
+  {
+    "typeId": "upset",
+    "passed": true,
+    "stderr": "",
+    "png": "upset.png"
+  },
+  {
+    "typeId": "density",
+    "passed": true,
+    "stderr": "",
+    "png": "density.png"
+  },
+  {
+    "typeId": "raincloud",
+    "passed": true,
+    "stderr": "<string>:75: MatplotlibDeprecationWarning: vert: bool was deprecated in Matplotlib 3.11 and will be removed in 3.13. Use orientation: {'vertical', 'horizontal'} instead.\n<string>:75: MatplotlibDeprecationWarning: vert: bool was deprecated in Matplotlib 3.11 and will be removed in 3.13. Use orientation: {'vertical', 'horizontal'} instead.\n",
+    "png": "raincloud.png"
+  },
+  {
+    "typeId": "ridgeline",
+    "passed": true,
+    "stderr": "",
+    "png": "ridgeline.png"
+  },
+  {
+    "typeId": "stripplot",
+    "passed": true,
+    "stderr": "",
+    "png": "stripplot.png"
+  },
+  {
+    "typeId": "binary_matrix",
+    "passed": true,
+    "stderr": "",
+    "png": "binary_matrix.png"
+  },
+  {
+    "typeId": "network",
+    "passed": true,
+    "stderr": "",
+    "png": "network.png"
+  },
+  {
+    "typeId": "euler",
+    "passed": true,
+    "stderr": "",
+    "png": "euler.png"
+  },
+  {
+    "typeId": "sankey",
+    "passed": true,
+    "stderr": "",
+    "png": "sankey.png"
+  },
+  {
+    "typeId": "chord",
+    "passed": true,
+    "stderr": "",
+    "png": "chord.png"
+  },
+  {
+    "typeId": "radar",
+    "passed": true,
+    "stderr": "",
+    "png": "radar.png"
+  },
+  {
+    "typeId": "qq",
+    "passed": true,
+    "stderr": "",
+    "png": "qq.png"
+  },
+  {
+    "typeId": "streamgraph",
+    "passed": true,
+    "stderr": "",
+    "png": "streamgraph.png"
+  },
+  {
+    "typeId": "cumulative_incidence",
+    "passed": true,
+    "stderr": "",
+    "png": "cumulative_incidence.png"
+  },
+  {
+    "typeId": "matrix_link_overlay",
+    "passed": true,
+    "stderr": "",
+    "png": "matrix_link_overlay.png"
+  },
+  {
+    "typeId": "parallel_coordinates",
+    "passed": true,
+    "stderr": "",
+    "png": "parallel_coordinates.png"
+  },
+  {
+    "typeId": "treemap",
+    "passed": true,
+    "stderr": "",
+    "png": "treemap.png"
+  },
+  {
+    "typeId": "circle_packing",
+    "passed": true,
+    "stderr": "",
+    "png": "circle_packing.png"
+  },
+  {
+    "typeId": "alluvial",
+    "passed": true,
+    "stderr": "",
+    "png": "alluvial.png"
+  },
+  {
+    "typeId": "point_map",
+    "passed": true,
+    "stderr": "",
+    "png": "point_map.png"
+  },
+  {
+    "typeId": "choropleth",
+    "passed": true,
+    "stderr": "",
+    "png": "choropleth.png"
+  },
+  {
+    "typeId": "enrichment",
+    "passed": true,
+    "stderr": "",
+    "png": "enrichment.png"
+  },
+  {
+    "typeId": "gene_track",
+    "passed": true,
+    "stderr": "",
+    "png": "gene_track.png"
+  },
+  {
+    "typeId": "protein_domain",
+    "passed": true,
+    "stderr": "",
+    "png": "protein_domain.png"
+  },
+  {
+    "typeId": "motif_logo",
+    "passed": true,
+    "stderr": "",
+    "png": "motif_logo.png"
+  },
+  {
+    "typeId": "genome_circos",
+    "passed": true,
+    "stderr": "",
+    "png": "genome_circos.png"
+  },
+  {
+    "typeId": "synteny",
+    "passed": true,
+    "stderr": "",
+    "png": "synteny.png"
+  },
+  {
+    "typeId": "phylogenetic",
+    "passed": true,
+    "stderr": "",
+    "png": "phylogenetic.png"
+  },
+  {
+    "typeId": "dendrogram",
+    "passed": true,
+    "stderr": "",
+    "png": "dendrogram.png"
+  }
+]

@@ -1,0 +1,93 @@
+{
+  "doi": "10.1371/journal.pntd.0013378",
+  "sourceUrl": "https://journals.plos.org/plosntds/article?id=10.1371/journal.pntd.0013378",
+  "title": "Noise and neglect: Social-media signals expose attention gaps for dengue, chikungunya, lymphatic filariasis and kala-azar in India’s vector-borne NTDs",
+  "journal": "PLOS Neglected Tropical Diseases",
+  "authors": [
+    "Ruchishree Konhar",
+    "James K. Lalsanga",
+    "Devendra Kumar Biswal"
+  ],
+  "year": "2026",
+  "license": "2026\nKonhar et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pntd.0013378.g001",
+      "label": "Fig 1",
+      "caption": "Comparative burden and digital attention of four NTDs in India.(A) Waffle plots compare each disease’s share of mean annual case burden with its share of online mentions (YouTube comments + Google News; 1 tile = 1%). The online-attention waffle excludes kala-azar (n = 5 total mentions) to preserve 1%-tile resolution (n = 325 mentions shown). (B) Log–log plot of burden (x) vs attention (y) across all four diseases; dashed line shows the fitted trend with 95% CI; Spearman’s ρ = 0.80 (P = 0.33). (C) India basemap with disease-level bubble markers representing total online mentions, where circle size and colour intensity scale with mention volume. Basemap source: Natural Earth, Admin 0 – Countries (1:10m; public domain); bubble locations fixed for comparability across figures; overlays by authors.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pntd.0013378.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pntd.0013378.g001</object-id><label>Fig 1</label><caption><title>Comparative burden and digital attention of four NTDs in India.</title><p><bold>(A)</bold> Waffle plots compare each disease’s share of mean annual case burden with its share of online mentions (YouTube comments + Google News; 1 tile = 1%). The online-attention waffle excludes kala-azar (n = 5 total mentions) to preserve 1%-tile resolution (n = 325 mentions shown). <bold>(B)</bold> Log–log plot of burden (x) vs attention (y) across all four diseases; dashed line shows the fitted trend with 95% CI; Spearman’s ρ = 0.80 (P = 0.33). <bold>(C)</bold> India basemap with disease-level bubble markers representing total online mentions, where circle size and colour intensity scale with mention volume. Basemap source: Natural Earth, Admin 0 – Countries (1:10m; public domain); bubble locations fixed for comparability across figures; overlays by authors.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pntd.0013378.g001\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pntd.0013378.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pntd.0013378.g002",
+      "label": "Fig 2",
+      "caption": "Platform-specific cross-flows of vector-borne NTD attention between Google News and YouTube (India, 2019–2023).(A) Sankey diagram linking keyword-matched items from Google News (n = 184) and YouTube (n = 141) to diseases (Table 4): dengue n = 173 (Google News 102; YouTube 71), chikungunya n = 46 (Google News 44; YouTube 2), and lymphatic filariasis n = 106 (Google News 38; YouTube 68). Kala-azar yielded minimal/near-absent items due to very low n = 5 and is omitted. (B) Chord diagram of the same platform–disease links; arc length indicates totals and ribbon width indicates item counts, showing dengue concentrated in Google News and filariasis concentrated in YouTube, with minimal chikungunya and no kala-azar.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pntd.0013378.g002\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pntd.0013378.g002</object-id><label>Fig 2</label><caption><title>Platform-specific cross-flows of vector-borne NTD attention between Google News and YouTube (India, 2019–2023).</title><p><bold>(A)</bold> Sankey diagram linking keyword-matched items from Google News (n = 184) and YouTube (n = 141) to diseases (<xref ref-type=\"table\" rid=\"pntd.0013378.t004\">Table 4</xref>): dengue n = 173 (Google News 102; YouTube 71), chikungunya n = 46 (Google News 44; YouTube 2), and lymphatic filariasis n = 106 (Google News 38; YouTube 68). Kala-azar yielded minimal/near-absent items due to very low n = 5 and is omitted. <bold>(B)</bold> Chord diagram of the same platform–disease links; arc length indicates totals and ribbon width indicates item counts, showing dengue concentrated in Google News and filariasis concentrated in YouTube, with minimal chikungunya and no kala-azar.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pntd.0013378.g002\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pntd.0013378.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pntd.0013378.g003",
+      "label": "Fig 3",
+      "caption": "Sentiment polarity distributions and temporal trends in NTD discourse.(A) Google News headline sentiment (n = 184): neutral 56%, negative 23%, positive 21%. (B) YouTube comment sentiment (n = 141): positive 45%, neutral 35%, negative 20%. (C) Monthly Google News sentiment time series (Jan 2019–Dec 2023), with notable positive and negative spikes annotated.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pntd.0013378.g003\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pntd.0013378.g003</object-id><label>Fig 3</label><caption><title>Sentiment polarity distributions and temporal trends in NTD discourse.</title><p><bold>(A)</bold> Google News headline sentiment (n = 184): neutral 56%, negative 23%, positive 21%. <bold>(B)</bold> YouTube comment sentiment (n = 141): positive 45%, neutral 35%, negative 20%. <bold>(C)</bold> Monthly Google News sentiment time series (Jan 2019–Dec 2023), with notable positive and negative spikes annotated.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pntd.0013378.g003\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pntd.0013378.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pntd.0013378.g004",
+      "label": "Fig 4",
+      "caption": "Mapping disease keywords to sentiment and topic-level sentiment profiles.(A) Sankey diagram linking disease-keyword mentions to sentiment classes; link colours encode sentiment (neutral = orange, positive = green, negative = pink/red), with width proportional to volume. (B) Heatmap of within-topic sentiment composition (%) for the subset of topics shown (Google News Topics 1–3; YouTube Topics 1–2) (e.g., Google News Topic 3 = 100% neutral; YouTube Topic 1 = 45% positive).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pntd.0013378.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pntd.0013378.g004</object-id><label>Fig 4</label><caption><title>Mapping disease keywords to sentiment and topic-level sentiment profiles.</title><p><bold>(A)</bold> Sankey diagram linking disease-keyword mentions to sentiment classes; link colours encode sentiment (neutral = orange, positive = green, negative = pink/red), with width proportional to volume. <bold>(B)</bold> Heatmap of within-topic sentiment composition (%) for the subset of topics shown (Google News Topics 1–3; YouTube Topics 1–2) (e.g., Google News Topic 3 = 100% neutral; YouTube Topic 1 = 45% positive).</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pntd.0013378.g004\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pntd.0013378.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pntd.0013378.g005",
+      "label": "Fig 5",
+      "caption": "Term-frequency and sentiment patterns in dengue and filariasis discourse.(A) Top 15 terms in Google News headlines/snippets, indicating dominant coverage of India and dengue/chikungunya. (B) Top 15 terms in YouTube comments, with prominent treatment- and filariasis-related vocabulary alongside dengue. (C) Butterfly plot of key-term sentiment in YouTube comments: positive-context frequencies (polarity > 0) to the right (green) and negative-context frequencies (polarity < 0) to the left (red). Stop words and non-informative fillers were removed before analysis.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pntd.0013378.g005\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pntd.0013378.g005</object-id><label>Fig 5</label><caption><title>Term-frequency and sentiment patterns in dengue and filariasis discourse.</title><p><bold>(A)</bold> Top 15 terms in Google News headlines/snippets, indicating dominant coverage of India and dengue/chikungunya. <bold>(B)</bold> Top 15 terms in YouTube comments, with prominent treatment- and filariasis-related vocabulary alongside dengue. <bold>(C)</bold> Butterfly plot of key-term sentiment in YouTube comments: positive-context frequencies (polarity &gt; 0) to the right (green) and negative-context frequencies (polarity &lt; 0) to the left (red). Stop words and non-informative fillers were removed before analysis.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pntd.0013378.g005\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pntd.0013378.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pntd.0013378.g006",
+      "label": "Fig 6",
+      "caption": "Network analysis of YouTube commenters and lexical co-occurrence in NTD discourse.(A) Bipartite network linking 30 randomly sampled YouTube users to disease keywords; edge thickness reflects how often a user mentions a disease. Links are densest for dengue, fewer for filariasis and chikungunya, and kala-azar is isolated in this sample. (B) 15 × 15 co-frequency matrix of common tokens in dengue-related comments, mixing function words (e.g., “the”, “of”, “to”, “in”, “and”) and topical terms (e.g., “dengue”); darker cells indicate more frequent co-mentions. Matrices are row-normalised for comparison.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pntd.0013378.g006\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pntd.0013378.g006</object-id><label>Fig 6</label><caption><title>Network analysis of YouTube commenters and lexical co-occurrence in NTD discourse.</title><p><bold>(A)</bold> Bipartite network linking 30 randomly sampled YouTube users to disease keywords; edge thickness reflects how often a user mentions a disease. Links are densest for dengue, fewer for filariasis and chikungunya, and kala-azar is isolated in this sample. <bold>(B)</bold> 15 × 15 co-frequency matrix of common tokens in dengue-related comments, mixing function words (e.g., “the”, “of”, “to”, “in”, “and”) and topical terms (e.g., “dengue”); darker cells indicate more frequent co-mentions. Matrices are row-normalised for comparison.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pntd.0013378.g006\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pntd.0013378.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

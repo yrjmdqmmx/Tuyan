@@ -1,0 +1,141 @@
+{
+  "doi": "10.1371/journal.pone.0243139",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0243139",
+  "title": "Development platform for artificial pancreas algorithms",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Mohamed Raef Smaoui",
+    "Remi Rabasa-Lhoret",
+    "Ahmad Haidar"
+  ],
+  "year": "2020",
+  "license": "2020\nSmaoui et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0243139.g001",
+      "label": "Fig 1",
+      "caption": "Development platform infrastructure.\nThe control algorithm, GUI, and system engine reside in a Client machine. The Client machine communicates with the glucoregulatory model computed concurrently across several Web Servers.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0243139.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0243139.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Development platform infrastructure.</title>\n<p>The control algorithm, GUI, and system engine reside in a Client machine. The Client machine communicates with the glucoregulatory model computed concurrently across several Web Servers.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0243139.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0243139.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0243139.g002",
+      "label": "Fig 2",
+      "caption": "Connecting a T1DM closed-loop algorithm written in python code to the development platform though the nexus communicator plugin.\nThe Python code implements an interface class to connect to the Platform. The plugin uses two methods to communicate insulin / glucagon dosages to the Platform and receives glucose responses and meal input. A user executes a python file that performs a system call to run the Nexus Communicator plugin. Nexus connects to the platform and controls the flow of data to instances of the python algorithm.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0243139.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0243139.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Connecting a T1DM closed-loop algorithm written in python code to the development platform though the nexus communicator plugin.</title>\n<p>The Python code implements an interface class to connect to the Platform. The plugin uses two methods to communicate insulin / glucagon dosages to the Platform and receives glucose responses and meal input. A user executes a python file that performs a system call to run the Nexus Communicator plugin. Nexus connects to the platform and controls the flow of data to instances of the python algorithm.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0243139.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0243139.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0243139.g003",
+      "label": "Fig 3",
+      "caption": "Client algorithm integration into the simulation environment.\nThe Client Machine contains an Application and Client Code components. The Nexus Communicator is a plugin that a user can install to their controller algorithm and provides a communication interface protocol with the simulation environment.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0243139.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0243139.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Client algorithm integration into the simulation environment.</title>\n<p>The Client Machine contains an Application and Client Code components. The Nexus Communicator is a plugin that a user can install to their controller algorithm and provides a communication interface protocol with the simulation environment.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0243139.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0243139.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0243139.g004",
+      "label": "Fig 4",
+      "caption": "Class diagram for algorithm interface implementation.\nController algorithms implementing two basic methods can be seamlessly invoked by the simulation environment through a TCP/IP connection.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0243139.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0243139.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Class diagram for algorithm interface implementation.</title>\n<p>Controller algorithms implementing two basic methods can be seamlessly invoked by the simulation environment through a TCP/IP connection.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0243139.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0243139.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0243139.g005",
+      "label": "Fig 5",
+      "caption": "Setting experiment protocol 1.\nThe second panel allows users to set the virtual clinical trial duration in days and hours, the start time of the trial, the variability in the starting glucose levels of the virtual subjects, the intended algorithm dosing time step.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0243139.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0243139.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Setting experiment protocol 1.</title>\n<p>The second panel allows users to set the virtual clinical trial duration in days and hours, the start time of the trial, the variability in the starting glucose levels of the virtual subjects, the intended algorithm dosing time step.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0243139.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0243139.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0243139.g006",
+      "label": "Fig 6",
+      "caption": "Setting experiment protocol 2.\nThe third panel allows users to set the breakfast, lunch, dinner and snack meals times and amounts during the virtual clinical trial. The protocol allows for variability in meal amounts and times from day to day and from patient to patient. Users can enable the option of Carbohydrate Counting Error to estimate a rough 0%-20% error in insulin meal bolus calculations.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0243139.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0243139.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Setting experiment protocol 2.</title>\n<p>The third panel allows users to set the breakfast, lunch, dinner and snack meals times and amounts during the virtual clinical trial. The protocol allows for variability in meal amounts and times from day to day and from patient to patient. Users can enable the option of Carbohydrate Counting Error to estimate a rough 0%-20% error in insulin meal bolus calculations.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0243139.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0243139.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0243139.g007",
+      "label": "Fig 7",
+      "caption": "Simulation engine sequence diagram.\nA sequence diagram outlining the software communication protocols.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0243139.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0243139.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Simulation engine sequence diagram.</title>\n<p>A sequence diagram outlining the software communication protocols.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0243139.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0243139.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0243139.g008",
+      "label": "Fig 8",
+      "caption": "Algorithm debugging mode.\nPause and Start buttons are presented in the top panel in green, open / closed Loop switch in yellow, and insulin bolus, meal CHO, and ICR buttons in red. The red line plot shows glucose readings solved by a patient model (ODE) while the blue line plots insulin values returned from a user’s algorithm.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0243139.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0243139.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Algorithm debugging mode.</title>\n<p>Pause and Start buttons are presented in the top panel in green, open / closed Loop switch in yellow, and insulin bolus, meal CHO, and ICR buttons in red. The red line plot shows glucose readings solved by a patient model (ODE) while the blue line plots insulin values returned from a user’s algorithm.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0243139.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0243139.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0243139.g009",
+      "label": "Fig 9",
+      "caption": "Algorithm performance report assessing the clinical outcomes of a 24-hour single-hormone treatment of a single-hormone treatment.\nResults include baseline characteristics of study participants, percentage time in target, glycemic variability, hypoglycemia and hyperglycemia analyses.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0243139.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0243139.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Algorithm performance report assessing the clinical outcomes of a 24-hour single-hormone treatment of a single-hormone treatment.</title>\n<p>Results include baseline characteristics of study participants, percentage time in target, glycemic variability, hypoglycemia and hyperglycemia analyses.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0243139.g009\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0243139.g009",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0243139.g010",
+      "label": "Fig 10",
+      "caption": "Computational burden of simulating a virtual clinical trial of 16 patients.\nA comparison between Core i3 and Core i7 processors running 16 virtual patient processes simultaneously using the Development Platform over the cloud (distributed) versus a complete local installation on a physical device (sequential).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0243139.g010\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0243139.g010</object-id>\n<label>Fig 10</label>\n<caption>\n<title>Computational burden of simulating a virtual clinical trial of 16 patients.</title>\n<p>A comparison between Core i3 and Core i7 processors running 16 virtual patient processes simultaneously using the Development Platform over the cloud (distributed) versus a complete local installation on a physical device (sequential).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0243139.g010\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0243139.g010",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

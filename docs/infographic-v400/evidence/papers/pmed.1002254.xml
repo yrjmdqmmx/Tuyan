@@ -1,0 +1,1457 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Med</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosmed</journal-id>
+<journal-title-group>
+<journal-title>PLOS Medicine</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1549-1277</issn>
+<issn pub-type="epub">1549-1676</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pmed.1002254</article-id>
+<article-id pub-id-type="publisher-id">PMEDICINE-D-16-03661</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Mental health and psychiatry</subject><subj-group><subject>Dementia</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Neurology</subject><subj-group><subject>Dementia</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Cognitive science</subject><subj-group><subject>Cognitive neuroscience</subject><subj-group><subject>Cognitive neurology</subject><subj-group><subject>Cognitive impairment</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Cognitive neuroscience</subject><subj-group><subject>Cognitive neurology</subject><subj-group><subject>Cognitive impairment</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Neurology</subject><subj-group><subject>Cognitive neurology</subject><subj-group><subject>Cognitive impairment</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Mental health and psychiatry</subject><subj-group><subject>Dementia</subject><subj-group><subject>Alzheimer disease</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Neurology</subject><subj-group><subject>Dementia</subject><subj-group><subject>Alzheimer disease</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Neurology</subject><subj-group><subject>Neurodegenerative diseases</subject><subj-group><subject>Alzheimer disease</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Cardiovascular anatomy</subject><subj-group><subject>Heart</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Cardiovascular anatomy</subject><subj-group><subject>Heart</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Cognitive science</subject><subj-group><subject>Cognition</subject><subj-group><subject>Memory</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Learning and memory</subject><subj-group><subject>Memory</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Mathematical and statistical techniques</subject><subj-group><subject>Statistical methods</subject><subj-group><subject>Meta-analysis</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Statistics (mathematics)</subject><subj-group><subject>Statistical methods</subject><subj-group><subject>Meta-analysis</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Neurology</subject><subj-group><subject>Cerebrovascular diseases</subject><subj-group><subject>Vascular dementia</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Mental health and psychiatry</subject><subj-group><subject>Dementia</subject><subj-group><subject>Vascular dementia</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Neurology</subject><subj-group><subject>Dementia</subject><subj-group><subject>Vascular dementia</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Research design</subject><subj-group><subject>Cohort studies</subject></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title><italic>APOE</italic>-related risk of mild cognitive impairment and dementia for prevention trials: An analysis of four cohorts</article-title>
+<alt-title alt-title-type="running-head"><italic>APOE</italic> and risk of mild cognitive impairment or dementia for prevention trials</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id contrib-id-type="orcid">http://orcid.org/0000-0001-6120-5147</contrib-id>
+<name name-style="western">
+<surname>Qian</surname>
+<given-names>Jing</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-2226-4050</contrib-id>
+<name name-style="western">
+<surname>Wolters</surname>
+<given-names>Frank J.</given-names>
+</name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id contrib-id-type="orcid">http://orcid.org/0000-0001-8551-7778</contrib-id>
+<name name-style="western">
+<surname>Beiser</surname>
+<given-names>Alexa</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0001-9312-4501</contrib-id>
+<name name-style="western">
+<surname>Haan</surname>
+<given-names>Mary</given-names>
+</name>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Ikram</surname>
+<given-names>M. Arfan</given-names>
+</name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Karlawish</surname>
+<given-names>Jason</given-names>
+</name>
+<xref ref-type="aff" rid="aff006"><sup>6</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Langbaum</surname>
+<given-names>Jessica B.</given-names>
+</name>
+<xref ref-type="aff" rid="aff007"><sup>7</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Neuhaus</surname>
+<given-names>John M.</given-names>
+</name>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Reiman</surname>
+<given-names>Eric M.</given-names>
+</name>
+<xref ref-type="aff" rid="aff007"><sup>7</sup></xref>
+<xref ref-type="aff" rid="aff008"><sup>8</sup></xref>
+<xref ref-type="aff" rid="aff009"><sup>9</sup></xref>
+<xref ref-type="aff" rid="aff010"><sup>10</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Roberts</surname>
+<given-names>J. Scott</given-names>
+</name>
+<xref ref-type="aff" rid="aff011"><sup>11</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Seshadri</surname>
+<given-names>Sudha</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Tariot</surname>
+<given-names>Pierre N.</given-names>
+</name>
+<xref ref-type="aff" rid="aff007"><sup>7</sup></xref>
+<xref ref-type="aff" rid="aff008"><sup>8</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id contrib-id-type="orcid">http://orcid.org/0000-0002-4734-2214</contrib-id>
+<name name-style="western">
+<surname>Woods</surname>
+<given-names>Beth McCarty</given-names>
+</name>
+<xref ref-type="aff" rid="aff006"><sup>6</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Betensky</surname>
+<given-names>Rebecca A.</given-names>
+</name>
+<xref ref-type="aff" rid="aff012"><sup>12</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0001-6107-7376</contrib-id>
+<name name-style="western">
+<surname>Blacker</surname>
+<given-names>Deborah</given-names>
+</name>
+<xref ref-type="aff" rid="aff013"><sup>13</sup></xref>
+<xref ref-type="aff" rid="aff014"><sup>14</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Department of Biostatistics and Epidemiology, University of Massachusetts Amherst, Amherst, Massachusetts, United States of America</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Department of Epidemiology, Erasmus Medical Center, Rotterdam, the Netherlands</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Department of Neurology, Boston University Medical School, Boston, Massachusetts, United States of America</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Department of Biostatistics, Boston University School of Public Health, Boston, Massachusetts, United States of America</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>Department of Epidemiology and Biostatistics, University of California, San Francisco, San Francisco, California, United States of America</addr-line></aff>
+<aff id="aff006"><label>6</label> <addr-line>Department of Medicine, University of Pennsylvania Medical School, Philadelphia, Pennsylvania, United States of America</addr-line></aff>
+<aff id="aff007"><label>7</label> <addr-line>Banner Alzheimer’s Institute, Phoenix, Arizona, United States of America</addr-line></aff>
+<aff id="aff008"><label>8</label> <addr-line>Department of Psychiatry, University of Arizona College of Medicine, Phoenix, Arizona, United States of America</addr-line></aff>
+<aff id="aff009"><label>9</label> <addr-line>Arizona State University–Banner Neurodegenerative Disease Research Center, Tempe, Arizona, United States of America</addr-line></aff>
+<aff id="aff010"><label>10</label> <addr-line>Neurogenomics Division, Translational Genomics Research Institute, Phoenix, Arizona, United States of America</addr-line></aff>
+<aff id="aff011"><label>11</label> <addr-line>Department of Health Behavior &amp; Health Education, University of Michigan School of Public Health, Ann Arbor, Michigan, United States of America</addr-line></aff>
+<aff id="aff012"><label>12</label> <addr-line>Department of Biostatistics, Harvard T.H. Chan School of Public Health, Boston, Massachusetts, United States of America</addr-line></aff>
+<aff id="aff013"><label>13</label> <addr-line>Department of Psychiatry, Massachusetts General Hospital/Harvard Medical School, Boston, Massachusetts, United States of America</addr-line></aff>
+<aff id="aff014"><label>14</label> <addr-line>Department of Epidemiology, Harvard T.H. Chan School of Public Health, Boston, Massachusetts, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Miller</surname>
+<given-names>Bruce L.</given-names>
+</name>
+<role>Academic Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University of California San Francisco Memory and Aging Center, UNITED STATES</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con">
+<p><list list-type="simple"> <list-item><p><bold>Conceptualization:</bold> DB RAB JQ JBL EMR PNT FJW JK JSR BMW.</p></list-item> <list-item><p><bold>Data curation:</bold> JMN AB FJW MH SS MAI.</p></list-item> <list-item><p><bold>Formal analysis:</bold> JQ FJW.</p></list-item> <list-item><p><bold>Funding acquisition:</bold> EMR PNT.</p></list-item> <list-item><p><bold>Methodology:</bold> DB RAB JQ FJW.</p></list-item> <list-item><p><bold>Project administration:</bold> DB JBL SS MH MAI JQ.</p></list-item> <list-item><p><bold>Resources:</bold> MAI SS MH.</p></list-item> <list-item><p><bold>Software:</bold> JQ FJW.</p></list-item> <list-item><p><bold>Supervision:</bold> DB RAB MAI.</p></list-item> <list-item><p><bold>Writing – original draft:</bold> JQ DB FJW.</p></list-item> <list-item><p><bold>Writing – review &amp; editing:</bold> JQ FJW DB RAB AB MH MAI JK JBL JMN EMR JSR SS PNT BMW.</p></list-item></list>
+</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">blacker@psych.mgh.harvard.edu</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>21</day>
+<month>3</month>
+<year>2017</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>3</month>
+<year>2017</year>
+</pub-date>
+<volume>14</volume>
+<issue>3</issue>
+<elocation-id>e1002254</elocation-id>
+<history>
+<date date-type="received">
+<day>13</day>
+<month>11</month>
+<year>2016</year>
+</date>
+<date date-type="accepted">
+<day>3</day>
+<month>2</month>
+<year>2017</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2017</copyright-year>
+<copyright-holder>Qian et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pmed.1002254"/>
+<abstract>
+<sec id="sec001">
+<title>Background</title>
+<p>With the onset of prevention trials for individuals at high risk for Alzheimer disease, there is increasing need for accurate risk prediction to inform study design and enrollment, but available risk estimates are limited. We developed risk estimates for the incidence of mild cognitive impairment (MCI) or dementia among cognitively unimpaired individuals by <italic>APOE</italic>-e4 dose for the genetic disclosure process of the Alzheimer’s Prevention Initiative Generation Study, a prevention trial in cognitively unimpaired <italic>APOE</italic>-e4/e4 homozygote individuals.</p>
+</sec>
+<sec id="sec002">
+<title>Methods and findings</title>
+<p>We included cognitively unimpaired individuals aged 60–75 y, consistent with Generation Study eligibility criteria, from the National Alzheimer’s Coordinating Center (NACC) (<italic>n</italic> = 5,073, 158 <italic>APOE-</italic>e4/e4), the Rotterdam Study (<italic>n</italic> = 6,399, 156 <italic>APOE-</italic>e4/e4), the Framingham Heart Study (<italic>n</italic> = 4,078, 67 <italic>APOE-</italic>e4/e4), and the Sacramento Area Latino Study on Aging (SALSA) (<italic>n</italic> = 1,294, 11 <italic>APOE-</italic>e4/e4). We computed stratified cumulative incidence curves by age (60–64, 65–69, 70–75 y) and <italic>APOE-</italic>e4 dose, adjusting for the competing risk of mortality, and determined risk of MCI and/or dementia by genotype and baseline age. We also used subdistribution hazard regression to model relative hazard based on age, <italic>APOE</italic> genotype, sex, education, family history of dementia, vascular risk, subjective memory concerns, and baseline cognitive performance. The four cohorts varied considerably in age, education, ethnicity/race, and <italic>APOE</italic>-e4 allele frequency. Overall, cumulative incidence was uniformly higher in NACC than in the population-based cohorts. Among <italic>APOE</italic>-e4/e4 individuals, 5-y cumulative incidence was as follows: in the 60–64-y age stratum, it ranged from 0% to 5.88% in the three population-based cohorts versus 23.06% in NACC; in the 65–69-y age stratum, from 9.42% to 10.39% versus 34.62%; and in the 70–75-y age stratum, from 18.64% to 33.33% versus 38.34%. Five-year incidence of dementia was negligible except for <italic>APOE</italic>-e4/e4 individuals and those over 70 y. Lifetime incidence (to age 80–85 y) of MCI or dementia for the <italic>APOE</italic>-e4/e4 individuals in the long-term Framingham and Rotterdam cohorts was 34.69%–38.45% at age 60–64 y, 30.76%–40.26% at 65–69 y, and 33.3%–35.17% at 70–75 y. Confidence limits for these estimates are often wide, particularly for <italic>APOE</italic>-e4/e4 individuals and for the dementia outcome at 5 y. In regression models, <italic>APOE-</italic>e4 dose and age both consistently increased risk, as did lower education, subjective memory concerns, poorer baseline cognitive performance, and family history of dementia. We discuss several limitations of the study, including the small numbers of <italic>APOE</italic>-e4/e4 individuals, missing data and differential dropout, limited ethnic and racial diversity, and differences in definitions of exposure and outcome variables.</p>
+</sec>
+<sec id="sec003">
+<title>Conclusions</title>
+<p>Estimates of the absolute risk of MCI or dementia, particularly over short time intervals, are sensitive to sampling and a variety of methodological factors. Nonetheless, such estimates were fairly consistent across the population-based cohorts, and lower than those from a convenience cohort and those estimated in prior studies—with implications for informed consent and design for clinical trials targeting high-risk individuals.</p>
+</sec>
+</abstract>
+<abstract abstract-type="toc">
+<p>In an analysis of four longitudinal cohort studies, Deborah Blacker and colleagues estimate the risk of mild cognitive impairment and dementia by APOE-status.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author summary</title>
+<sec id="sec004">
+<title>Why was this study done?</title>
+<list list-type="bullet">
+<list-item><p>Having one copy of the e4 variant of the <italic>APOE</italic> gene (<italic>APOE</italic>-e4) is associated with increased risk and earlier onset age of Alzheimer disease dementia, and the 1%–2% of the population who carry two copies of this variant (<italic>APOE</italic>-e4/e4) are at especially increased risk.</p></list-item>
+<list-item><p>For this reason, individuals with <italic>APOE</italic>-e4/e4 are being targeted for special prevention strategies.</p></list-item>
+<list-item><p>Accurate risk estimates allow potential participants in prevention trials to compare the risk of developing Alzheimer disease dementia to any risk associated with the preventive intervention itself.</p></list-item>
+<list-item><p>Such estimates also help those planning trials decide how many participants they need.</p></list-item>
+<list-item><p>The risk that an individual with <italic>APOE</italic>-e4/e4 will develop Alzheimer disease dementia has been reported to be as high as 50%–67%, but these estimates come from statistical modeling, not direct observation.</p></list-item>
+<list-item><p>Our study was designed to develop risk estimates for potential participants in the Generation Study, a prevention trial in individuals with <italic>APOE</italic>-e4/e4, as well as estimates for those with one or no copies of <italic>APOE</italic>-e4. The non-<italic>APOE</italic>-e4/e4 individuals are not eligible for the Generation Study, but participate in genetic counseling as part of the recruiting process, and might be eligible for future trials.</p></list-item>
+</list>
+</sec>
+<sec id="sec005">
+<title>What did the researchers do and find?</title>
+<list list-type="bullet">
+<list-item><p>We examined data from 16,844 individuals, 292 with <italic>APOE</italic>-e4/e4, from four different samples of cognitively normal older individuals aged 60–75 years (consistent with the eligibility criteria for the Generation Study). These individuals have been followed for an average of 4 to 18 years and assessed for the development of dementia or a less serious condition called mild cognitive impairment that sometimes leads to dementia.</p></list-item>
+<list-item><p>We divided each sample into six groups based on the number of copies of <italic>APOE</italic>-e4 (none, one, and two, i.e., <italic>APOE</italic>-e4/e4) and age (60–64, 65–69, and 70–75 years), and developed estimates of the risk of developing mild cognitive impairment or dementia in each group during the five years planned for the trial as well as “lifetime” risk through age 80–85 years.</p></list-item>
+<list-item><p>Five-year risk was highly variable across the four samples within each group; for <italic>APOE</italic>-e4/e4 individuals, it ranged from 0% to 23% in those entering the study at age 60–64 years, 9% to 35% in those entering at 65–69 years, and 19% to 38% in those entering at 70–75 years.</p></list-item>
+<list-item><p>Lifetime risk was more consistent across the two samples in which it could be estimated, and did not vary as much with age, ranging from 31% to 40% for those with <italic>APOE</italic>-e4/e4.</p></list-item>
+<list-item><p>We developed statistical models to understand the differences across the four samples. These analyses showed that, beyond age and <italic>APOE</italic>-e4, the following variables were associated with increased risk: less education, memory concerns or poorer cognitive screening test scores at the beginning of follow-up, and having a family history of dementia.</p></list-item>
+<list-item><p>Differences in these characteristics, differences in methods of recruiting and evaluating participants, and statistical fluctuation probably account for a large share of the variety in risk estimates across the samples.</p></list-item>
+</list>
+</sec>
+<sec id="sec006">
+<title>What do these findings mean?</title>
+<list list-type="bullet">
+<list-item><p>The risk of dementia in those with <italic>APOE</italic>-e4/e4 is somewhat lower than previously estimated.</p></list-item>
+<list-item><p>Short-term risk is more subject to variability due to details of how a particular study is conducted than longer-term risk.</p></list-item>
+<list-item><p>This information is valuable to those considering joining a prevention trial, as well as those designing such trials.</p></list-item>
+</list>
+</sec>
+</abstract>
+<funding-group>
+<funding-statement>Please see S1 Text for funding information. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="4"/>
+<table-count count="5"/>
+<page-count count="27"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>Please see <xref ref-type="supplementary-material" rid="pmed.1002254.s004">S2 Text</xref> for data availability.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec007" sec-type="intro">
+<title>Introduction</title>
+<p>At present, 48 million people worldwide have dementia, and this number is projected to increase to 131 million by 2050 [<xref ref-type="bibr" rid="pmed.1002254.ref001">1</xref>]. Consequently, prevention of Alzheimer disease, the most common cause of dementia, has become a major research focus, with several prevention trials now underway [<xref ref-type="bibr" rid="pmed.1002254.ref002">2</xref>–<xref ref-type="bibr" rid="pmed.1002254.ref007">7</xref>]. The feasibility of these trials will in part depend on the ability to recruit individuals at risk of developing disease during the trial period. One strategy to achieve this focuses on individuals at high genetic risk. The Alzheimer’s Prevention Initiative [<xref ref-type="bibr" rid="pmed.1002254.ref008">8</xref>] is embarking on two clinical trials targeting cognitively unimpaired individuals at highest genetic risk for Alzheimer disease, one trial in an extended early-onset Columbian kindred carrying a fully penetrant presenilin 1 mutation, and the Generation Study (NCT02565511), a trial in individuals aged 60–75 y who carry two copies of the Alzheimer disease risk allele <italic>apolipoprotein E</italic> epsilon 4 (<italic>APOE</italic>-e4). The Generation Study is a double-blind, randomized, placebo-controlled clinical trial of two different anti-amyloid agents in approximately 1,300 participants. Recruitment is through several sources, notably in the United States through the GeneMatch [<xref ref-type="bibr" rid="pmed.1002254.ref009">9</xref>] Alzheimer disease prevention registry (NCT02564692). High-volume recruitment efforts are required because the <italic>APOE</italic>-e4/e4 genotype occurs in approximately 1%–2% of the general population, so thousands of individuals must be screened to identify eligible participants. An assessment of absolute risk among trial-eligible individuals in a meaningful time frame is essential for the informed consent process in the trial, as well as trial design. However, although numerous studies [<xref ref-type="bibr" rid="pmed.1002254.ref010">10</xref>–<xref ref-type="bibr" rid="pmed.1002254.ref014">14</xref>] document that <italic>APOE</italic>-e4 increases the <italic>relative</italic> risk of Alzheimer disease (compared to no copies of <italic>APOE</italic>-e4, there is a 2- to 4-fold increase in risk for one copy of <italic>APOE</italic>-e4, and an 8-to 15-fold increase for two copies), its effect on <italic>absolute</italic> risk is less clear.</p>
+<p>When this study was begun, available estimates of absolute risk of dementia for <italic>APOE</italic>-e4 carriers were largely based on models developed from relative risks observed in one population and incidence data from another, often from case–control samples. The Risk Evaluation and Education for Alzheimer’s Disease (REVEAL) study [<xref ref-type="bibr" rid="pmed.1002254.ref015">15</xref>,<xref ref-type="bibr" rid="pmed.1002254.ref016">16</xref>] developed risk estimates [<xref ref-type="bibr" rid="pmed.1002254.ref017">17</xref>] based on observed absolute risks in first-degree relatives versus spouses in a family sample [<xref ref-type="bibr" rid="pmed.1002254.ref018">18</xref>], and then applied relative risks by sex, age, and genotype from a large meta-analysis [<xref ref-type="bibr" rid="pmed.1002254.ref014">14</xref>]. A more recent effort [<xref ref-type="bibr" rid="pmed.1002254.ref019">19</xref>], also reported on the 23andMe website [<xref ref-type="bibr" rid="pmed.1002254.ref020">20</xref>], applied relative risks from a recent European genome-wide association study (GWAS) sample [<xref ref-type="bibr" rid="pmed.1002254.ref021">21</xref>] to incidence estimates from the Rochester [<xref ref-type="bibr" rid="pmed.1002254.ref022">22</xref>] and Personnes Agées QUID (PAQUID) [<xref ref-type="bibr" rid="pmed.1002254.ref023">23</xref>] cohorts to compute lifetime risks by <italic>APOE</italic> genotype. Since that time, estimates from a single convenience cohort have been published, also with high incidence rates [<xref ref-type="bibr" rid="pmed.1002254.ref024">24</xref>].</p>
+<p>Because the available estimates of the <italic>APOE</italic>-associated incidence of mild cognitive impairment (MCI) or dementia are primarily based on models of disease onset rather than prospective observations, and because <italic>APOE</italic> also affects longevity and risk for diseases other than dementia, we developed new estimates in population-based cohorts to better inform both trial designers and potential participants. For potential Generation Study participants, the outreach and recruitment protocol for those who do not know their <italic>APOE</italic> genotype includes institutional review board (IRB)–approved processes for obtaining their genotype and inviting them to a trial site for an initial disclosure visit. To ensure an appropriate disclosure setting during trial enrollment, some prospective participants without the <italic>APOE</italic>-e4/e4 genotype are also invited for this initial genetic disclosure visit. Our aims were to use prospective data to determine 5-y and lifetime risk of MCI or dementia by age and <italic>APOE</italic>-e4 dose among those as similar as possible to eligible trial participants (age 60–75 y, normal cognition) and to identify sources of heterogeneity that may account for variation in risk across populations.</p>
+</sec>
+<sec id="sec008" sec-type="materials|methods">
+<title>Methods</title>
+<sec id="sec009">
+<title>Ethics statement</title>
+<p>The Rotterdam Study was approved by a medical ethics committee according to the Population Study Act Rotterdam Study, executed by the Ministry of Health, Welfare and Sport of the Netherlands; written informed consent was obtained from all participants. The Framingham Heart Study was reviewed by the IRB at Boston University Medical Center, and all participants gave written informed consent. The Sacramento Area Latino Study on Aging (SALSA) was reviewed by the IRBs at the University of Michigan and at the University of California at San Francisco and at Davis, and all participants gave written informed consent. Collection of data for the National Alzheimer’s Coordinating Center (NACC) Uniform Data Set cohort was reviewed by the appropriate local IRB at each participating Alzheimer’s Disease Center, and all participants gave written informed consent; research using the NACC database was approved by the University of Washington IRB. The IRBs at Partners HealthCare in Boston and the University of Massachusetts Amherst provided additional approvals for the secondary data analysis reported here. This study is reported as per STROBE reporting guidelines (<xref ref-type="supplementary-material" rid="pmed.1002254.s001">S1 Checklist</xref>).</p>
+</sec>
+<sec id="sec010">
+<title>Cohort selection</title>
+<p>We sought available data from longitudinal population-based cohorts based on the following attributes: recruitment and an initial cognitive evaluation at or before age 60 y (because the Generation Study is recruiting individuals aged 60–75 y, and we wanted our risk assessments to be maximally relevant to those entering the trial), ongoing surveillance for assessment of MCI and dementia, and available <italic>APOE</italic> genotypes. Many aging-focused cohorts (e.g., the Religious Orders Study [<xref ref-type="bibr" rid="pmed.1002254.ref025">25</xref>] and the Cache County Study [<xref ref-type="bibr" rid="pmed.1002254.ref026">26</xref>]) did not meet these criteria because of initial ascertainment at older ages. We also sought as broad ethnic representation as possible: we were able to include one Hispanic population with limited sample size, but no African-American cohort was available with the requisite data.</p>
+<p>Three population-based cohorts were analyzed: the Framingham Heart Study [<xref ref-type="bibr" rid="pmed.1002254.ref027">27</xref>], the Rotterdam Study [<xref ref-type="bibr" rid="pmed.1002254.ref028">28</xref>], and the SALSA Study [<xref ref-type="bibr" rid="pmed.1002254.ref029">29</xref>,<xref ref-type="bibr" rid="pmed.1002254.ref030">30</xref>]. For comparison, we also included the NACC Uniform Data Set longitudinal convenience cohort [<xref ref-type="bibr" rid="pmed.1002254.ref031">31</xref>] (from the multi-site Alzheimer’s Disease Center Program funded by the US National Institute on Aging) because we believed that NACC participants might resemble those volunteering for the Generation Study in terms of key demographic variables and level of research interest.</p>
+</sec>
+<sec id="sec011">
+<title>Sample selection for the present analyses</title>
+<p>Within each cohort, we selected participants with known <italic>APOE</italic> genotype who were cognitively unimpaired at the time of their first visit within the 60–75-y age window, and included all available subsequent visit information until diagnosis of MCI or dementia. For the two longer-term studies, the Framingham Heart Study and the Rotterdam Study, individuals could contribute to multiple age strata for the stratified analyses, but they were included only once in our regression analyses (see “Statistical analysis” below). <italic>APOE</italic> genotype was measured in 94.1% (Rotterdam Study), 68.5% (Framingham Heart Study), 76.1% (NACC), and 92.0% (SALSA) of otherwise eligible (i.e., cognitively normal in the age window of 60–75 y) cohort participants, and only these individuals were included in the current study. On average, individuals without <italic>APOE</italic> genotype available were slightly older, except in the Framingham Heart Study, where they were slightly younger; in all cases the mean difference between those with and without <italic>APOE</italic> available was less than 1 y. Those without <italic>APOE</italic> genotype were more likely to be female in the NACC and Rotterdam cohorts, and more likely to be male in the SALSA and Framingham cohorts, but these differences were also small—within 1%–2%, except for the Rotterdam cohort, where females were 66.1% of those without genotype and 54.8% of those with genotype.</p>
+</sec>
+<sec id="sec012">
+<title>Ascertainment and assessment methods for each cohort</title>
+<p>The original Framingham Heart Study cohort was recruited in 1948–1953 based on residence in Framingham, Massachusetts, for a longitudinal study of cardiovascular disease (mean age at enrollment 45 y). A cohort of offspring of the original participants and their spouses was established in 1971–1975 (mean age at enrollment 37 y). Details of study procedures have been published elsewhere [<xref ref-type="bibr" rid="pmed.1002254.ref027">27</xref>]. Cognitive status has been monitored in the original cohort since 1975, when a comprehensive neuropsychological battery was administered, followed by neurological assessment of participants with lower cognitive test scores [<xref ref-type="bibr" rid="pmed.1002254.ref032">32</xref>]. Since 1981, this cohort has been assessed at each examination with a Mini-Mental State Examination (MMSE), where participants were flagged for further cognitive screening if they scored below predefined cutoffs based on education and prior performance. The offspring cohort has undergone similar monitoring with serial MMSEs since 1991. Participants identified as having possible cognitive impairment based on these screening assessments (or in reports of cognitive concerns by the participant, family, treating physician, or Framingham ancillary study investigators, or through review of outside medical records) are invited to undergo additional annual neurological and neuropsychological examinations. A dementia review panel including a neurologist and a neuropsychologist reviews each case of possible cognitive decline and dementia and categorizes participants based on the best available information (from serial neurological and neuropsychological assessments, telephone interviews with caregivers, medical records, neuroimaging, and, when available, autopsy data) and assigns a diagnosis and onset date for dementia according to DSM-IV criteria and for MCI based on Petersen et al. [<xref ref-type="bibr" rid="pmed.1002254.ref033">33</xref>] criteria. Diagnoses made prior to 2001 have been re-reviewed to update diagnostic criteria. Participants who entered the sample for the present analyses at a visit prior to MMSE administration but who were cognitively unimpaired at subsequent study visits had this designation extended back to their earlier visits. For our regression analyses, these individuals were included with the baseline visit as the first visit with MMSE administration within our age window (60–75 y).</p>
+<p>For the Rotterdam Study, individuals over 55 y in 1990 residing in a specific district of the City of Rotterdam, the Netherlands, were invited to participate, with additional waves invited in 2000 (age &gt;55 y) and 2005 (age &gt;45 y). Details of study procedures have previously been published [<xref ref-type="bibr" rid="pmed.1002254.ref028">28</xref>]. In brief, all participants were interviewed at home and examined at the study center every 4 to 5 y. Participants were routinely screened for dementia at the initial visit and follow-up examinations using a three-step protocol. Screening was done using the MMSE and the Geriatric Mental Schedule (GMS) organic level [<xref ref-type="bibr" rid="pmed.1002254.ref002">2</xref>]. Those with MMSE &lt; 26 or GMS organic level &gt; 0 subsequently underwent an examination and informant interview using the Cambridge Examination for Mental Disorders of the Elderly (CAMDEX) [<xref ref-type="bibr" rid="pmed.1002254.ref034">34</xref>]. Additionally, the total cohort was continuously monitored for dementia through computerized linkage between the study database and digitized medical records. The current sample included all participants with MMSE &gt; 26 at the time of their first visit within the age window of interest (60–75 y). Formal assessment of MCI did not begin until 2005 in the Rotterdam Study. For the present analyses, we therefore developed a pragmatic diagnosis of MCI during follow-up, requiring a MMSE score &lt; 26 or a drop of at least three points from the baseline visit in the 60–75-y age window, plus answering yes to a question about memory concerns.</p>
+<p>For SALSA, participants over 60 y were sampled from six counties including census tracts with at least 5% Hispanic population in the Sacramento Valley of California in 1998–1999 and were followed approximately every 12–15 mo until 2008. Detailed methods are described elsewhere [<xref ref-type="bibr" rid="pmed.1002254.ref029">29</xref>,<xref ref-type="bibr" rid="pmed.1002254.ref035">35</xref>]. In brief, dementia assessment included screening with both the Modified Mini-Mental State Examination (3MS) [<xref ref-type="bibr" rid="pmed.1002254.ref036">36</xref>] and a word list learning task from a standard battery [<xref ref-type="bibr" rid="pmed.1002254.ref030">30</xref>]. Those scoring below the 20th percentile (using age-, education-, sex-, and language-adjusted norms) on either test (or for follow-up visits, dropping three points in word list learning) were further evaluated using the Informant Questionnaire on Cognitive Decline in the Elderly (IQCODE) [<xref ref-type="bibr" rid="pmed.1002254.ref037">37</xref>,<xref ref-type="bibr" rid="pmed.1002254.ref038">38</xref>] and, if this gave additional support for decline, were evaluated by a neurologist and categorized as cognitively unimpaired, memory-impaired (based on testing alone, without IQCODE corroboration), cognitively impaired not demented (CIND) [<xref ref-type="bibr" rid="pmed.1002254.ref039">39</xref>], or having dementia. Given the requirement for both a cognitive testing abnormality and confirmation from an informant, CIND was treated as equivalent to MCI [<xref ref-type="bibr" rid="pmed.1002254.ref035">35</xref>].</p>
+<p>Participants in the NACC cohort were volunteers ascertained from various sources at 34 Alzheimer’s Disease Centers in the United States. We used the March 2016 data freeze for the present analyses, so these data reflect study visits between September 2005 and March 2016. The participants were evaluated according to the Uniform Data Set protocol [<xref ref-type="bibr" rid="pmed.1002254.ref040">40</xref>], with each participant and a collateral informant interviewed by the study clinician to rate the Clinical Dementia Rating (CDR) [<xref ref-type="bibr" rid="pmed.1002254.ref041">41</xref>] and with the administration of a battery of neuropsychological tests [<xref ref-type="bibr" rid="pmed.1002254.ref042">42</xref>]. A diagnosis was made at each visit by the study clinician following standard criteria [<xref ref-type="bibr" rid="pmed.1002254.ref040">40</xref>], but there were no study-wide standardized cutoffs on the CDR, MMSE, or other neuropsychological tests. Follow-up visits were conducted approximately annually.</p>
+</sec>
+<sec id="sec013">
+<title>Definition of predictor variables</title>
+<p>Education was reported in years for the SALSA and NACC cohorts and in categories of less than high school, high school, some college, or college graduation for the Rotterdam and Framingham cohorts. Education data for the SALSA and NACC cohorts were translated into these categories as follows: &lt;12 y, less than high school; 12 y, high school; 13–15 y, some college; and ≥16 y, college graduation.</p>
+<p>To assess cognitive performance across cohorts, we used the cognitive screening test available for each site (MMSE for the Rotterdam Study, the Framingham Heart Study, and NACC, and 3MS for SALSA). To enable comparisons of relative performance within each cohort, we standardized based on the test score at the baseline visit (in the age 60–75-y age window) within each cohort, centering the raw scores around their sample mean and then dividing the centered scores by their standard deviation.</p>
+<p>Memory concerns at NACC were based on a global clinician-rated variable asking whether the participant believed that he or she had a problem with memory. Memory concerns in the Rotterdam Study were based on three questionnaire items asking (1) whether the participant was worried about his or her memory, (2) whether the participant ever lost track of what he or she was doing in the midst of an activity, and (3) whether the participant experienced word-finding difficulties. A positive answer to any of these questions qualified as memory concerns.</p>
+<p>Family history of dementia was defined as having at least one parent with dementia for the Rotterdam Study, and at least one first-degree relative with dementia for NACC.</p>
+<p>For all cohorts, vascular risk was defined as follows. We obtained the sum of major vascular risk factors measured in each cohort: coronary artery disease or angina or stroke, hypertension, high cholesterol, diabetes, atrial fibrillation, and current smoking. After reviewing the distribution of the count of these risk factors (range 0–6), we categorized the participants as high risk (3–6 risk factors), moderate risk (1–2 risk factors), and low risk (0 risk factors) to provide a reasonable distribution across the three levels. We considered using the Framingham Stroke Risk Profile [<xref ref-type="bibr" rid="pmed.1002254.ref043">43</xref>] or similar cardiovascular risk scores [<xref ref-type="bibr" rid="pmed.1002254.ref044">44</xref>,<xref ref-type="bibr" rid="pmed.1002254.ref045">45</xref>]. However, these were designed to predict risk within a specified time frame and thus had substantial age components, which complicated analyses in our regression models that already included age.</p>
+</sec>
+<sec id="sec014">
+<title>Statistical analysis</title>
+<p>We performed all analyses first for MCI or dementia (“MCI/dementia”), then for dementia alone. For the purposes of this trial, the MCI/dementia outcome was critically relevant, in that incident dementia was unlikely during the trial period, while there was tangible risk for MCI. Analyses for dementia only were performed as well because dementia is a more robust outcome than MCI.</p>
+<p>We estimated 5-y and “lifetime” (i.e., to age 80–85 y) cumulative incidence by <italic>APOE</italic>-e4 dose and 5-y baseline age stratum (age 60–64, 65–69, 70–75 y). We chose three age strata as a tradeoff between addressing the steeply changing risk with age and not overly subdividing the limited numbers of <italic>APOE</italic>-e4/e4 homozygote individuals, which left the number of <italic>APOE</italic>-e4/e4 individuals per age stratum too small for stable estimates in the SALSA cohort. These age strata were determined specifically as follows, based on the date of the baseline visit (within the 60–75-y age window): 60–64 y, 60 ≤ age &lt; 65; 65–69 y, 65 ≤ age &lt; 70; and 70–75, 70 ≤ age ≤ 75. We considered further stratification on sex, but the sample size did not support such stratification.</p>
+<p>For the stratified analyses of the two longer-term studies, the Framingham Heart Study and the Rotterdam Study, individuals could contribute to multiple baseline age strata; we used the first visit within each age window as the baseline in these analyses. Lifetime estimates were computed as 20-y cumulative incidence for the age 60–64-y stratum, as 15-y for the 65–69-y stratum, and as 10-y for the 70–75-y stratum; these estimates were computed only for the two longer-term cohorts to minimize extrapolation.</p>
+<p>Stratified cumulative incidence curves by age stratum and <italic>APOE</italic>-e4 dose were estimated, adjusting for loss to follow-up other than death and for the competing risk of mortality [<xref ref-type="bibr" rid="pmed.1002254.ref046">46</xref>]; loss to follow-up other than death is treated as censored. In the presence of competing risks, the naïve Kaplan–Meier estimator, which treats failure from competing causes as censored observations, overestimates the cumulative incidence of the event of interest [<xref ref-type="bibr" rid="pmed.1002254.ref047">47</xref>]. We used the “cmprsk” package in R software [<xref ref-type="bibr" rid="pmed.1002254.ref048">48</xref>] to estimate the cumulative incidence for each age stratum by <italic>APOE</italic>-e4 dose stratum. Following the suggestion of Lin [<xref ref-type="bibr" rid="pmed.1002254.ref049">49</xref>], we used the transformation log[−log(1 − <italic>x</italic>)] to construct the confidence interval for cumulative incidence. The transformation not only ensures that the boundaries of cumulative incidence are contained in [0,1], but also improves the coverage accuracy [<xref ref-type="bibr" rid="pmed.1002254.ref049">49</xref>].</p>
+<p>We used the same competing risks analytic framework to assess the effects of age and <italic>APOE</italic>-e4 dose plus additional covariates on the cumulative incidence of MCI/dementia and of dementia alone in order to inform personalized risk assessment and to understand differences across the cohorts. We used subdistribution hazard regression models [<xref ref-type="bibr" rid="pmed.1002254.ref050">50</xref>] because they directly link the regression coefficients with the cumulative incidence function (in contrast to cause-specific hazards regression [<xref ref-type="bibr" rid="pmed.1002254.ref051">51</xref>], where the direct link cannot be made [<xref ref-type="bibr" rid="pmed.1002254.ref052">52</xref>]; in preliminary analyses we also fit these models, and results were very similar). These analyses were also performed using the “cmprsk” package in R software [<xref ref-type="bibr" rid="pmed.1002254.ref048">48</xref>].</p>
+<p>For each cohort and for each outcome, we first fit univariable models for baseline age, sex, <italic>APOE</italic>-e4 dose, education, standardized cognitive screening test score, subjective memory concerns, family history of dementia, and vascular risk score. Then, we ran simple multivariable models for each outcome including only <italic>APOE</italic>-e4 dose and demographic factors (age, sex, and education). Last, we ran larger multivariable models also including standardized cognitive screening score plus subjective memory concerns and family history of dementia if available for the cohort. The vascular risk score was not included in the full model because findings were inconsistent and primarily null in the univariable models, whether we used our low/moderate/high vascular risk levels described above or the Framingham Stroke Risk Profile.</p>
+<p>Missing data on covariates was generally minimal, &lt;2% for all covariates in all cohorts except family history in the Rotterdam Study (11.5%), vascular risk in SALSA (8.9%), and education in the Framingham Heart Study (3.3%). As these figures were small, participants with missing data were simply omitted from regression analyses in which the relevant missing variable was included.</p>
+<p>For the Rotterdam Study, the exact date of dementia diagnosis was used if available; otherwise, the midpoint of the interval between visits was used as the onset time of MCI or dementia at a study visit (conducted at 4-y intervals) for both cumulative incidence estimates and subdistribution hazard regression. In addition, as a sensitivity analysis, we repeated our survival curves and regression models treating the onset of MCI or dementia as interval censored in addition to adjusting for competing risk, using the “MIICD” package in R software to estimate the cumulative incidence, and results were extremely similar except for somewhat larger confidence intervals.</p>
+<p>Unlike in the stratified analyses, in the regression analyses, each participant was used only once. Typically, the baseline visit for the regression analyses was the first visit within the eligible age window of 60–75 y. For the Framingham Heart Study, MMSE was not available at visits prior to 1981 (as described above). Thus, for the regression analyses, we reset the baseline visit as the first visit at which MMSE was available. This had the additional benefit of increasing the range of baseline ages within the cohort.</p>
+<p>Meta-analyses were conducted for the 5-y cumulative incidence estimates for all four cohorts and then for only the three population-based cohorts. Meta-analyses could not be conducted for the lifetime estimates because they were computed for only two cohorts. As there was considerable heterogeneity among the studies, a random-effects meta-analysis based on the DerSimonian–Laird method [<xref ref-type="bibr" rid="pmed.1002254.ref053">53</xref>] was used. This analysis was performed using the “metafor” package in R software.</p>
+<p>Because the primary goal was estimating cumulative incidence and understanding differences across cohorts and individuals rather than hypothesis testing, these analyses are reported with confidence intervals rather than statistical significance, and no adjustments are made for multiple comparisons.</p>
+<p>The study was planned in summer of 2014 and conducted through fall of 2016. The original analysis plan, developed in the initial months of the study, specified using multiple cohort studies, including NACC as well as three population-based cohorts; stratified analyses in the three age and <italic>APOE</italic>-e4 dose groups; and regression models including demographic factors, cardiovascular risk, and baseline cognitive performance or symptoms, with survival models accounting for competing risk of death. The idea was that the stratified curves would provide general estimates, and the regression models more individualized estimates (and in any event insight into anticipated differences across cohorts). As noted above, after initial exploration, we decided to use specifically subdistribution hazard regression rather than cause-specific hazard regression models because these offer greater interpretability in the context of risk prediction. In preparation for our first presentation of the findings to the Generation Study team in April 2015, we also decided to make a table of estimated 5-y cumulative incidence to allow easier comparison across the studies. After this initial meeting, we also added the lifetime risk estimate, which we thought would be informative for potential participants. We performed the initial regression models separately by cohort in order to get an idea of how best to present the data given somewhat different variables available in each cohort, and then settled on a final analysis plan in spring 2016 that included univariable and two nested models as consistent as possible across the four cohorts. The NACC dataset was acquired in summer 2014 (the June 2014 data freeze) and then updated in summer 2016 (the March 2016 data freeze). The SALSA dataset was acquired in fall 2014, and the Framingham Heart Study dataset in spring 2015. Rotterdam Study analyses were conducted by Rotterdam Study investigators (F. J. W. and M. A. I.) beginning in spring 2015, in close collaboration with the rest of the group and sharing R code used with the other cohorts to ensure consistency.</p>
+</sec>
+</sec>
+<sec id="sec015" sec-type="results">
+<title>Results</title>
+<sec id="sec016">
+<title>Composition of the cohorts</title>
+<p><xref ref-type="table" rid="pmed.1002254.t001">Table 1</xref> presents the composition of the four cohorts. The cohorts differed considerably in size and duration of follow-up, with SALSA much smaller than the other cohorts, and long-term follow-up available only in the Framingham Heart Study and Rotterdam Study. Other substantial differences were seen in educational attainment, with mean years ranging from less than 8 y in SALSA to nearly 16 y in NACC, and sex, with 33.6% men in NACC compared to 42%–45% in the three population-based cohorts. The four cohorts also differed markedly in <italic>APOE</italic>-e4 allele frequency, ranging from 7.5% in SALSA to 17.8% in NACC. NACC also had a 58.3% fraction with a family history of dementia, compared to 18.6% in the Rotterdam Study, the only other site that assessed it.</p>
+<table-wrap id="pmed.1002254.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pmed.1002254.t001</object-id>
+<label>Table 1</label> <caption><title>Demographic and clinical characteristics of participants in our samples from the National Alzheimer’s Coordinating Center, the Rotterdam Study, the Framingham Heart Study, and the Sacramento Area Latino Study on Aging.</title></caption>
+<alternatives>
+<graphic id="pmed.1002254.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pmed.1002254.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="2">Characteristic</th>
+<th align="left" colspan="4">Cohort</th>
+</tr>
+<tr>
+<th align="left">NACC (<italic>n</italic> = 5,073)</th>
+<th align="left">RS (<italic>n</italic> = 6,399)</th>
+<th align="left">FHS (<italic>n</italic> = 4,078)</th>
+<th align="left">SALSA (<italic>n</italic> = 1,294)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><bold>Remaining at 5 y of follow-up</bold></td>
+<td align="left">1,865 (36.7%)</td>
+<td align="left">5,592 (87.4%)</td>
+<td align="left">3,911 (95.9%)</td>
+<td align="left">976 (75.5%)</td>
+</tr>
+<tr>
+<td align="left"><bold>Length of follow-up (years)</bold></td>
+<td align="left">3.96 (2.97)</td>
+<td align="left">12.64 (6.14)</td>
+<td align="left">17.59 (9.09)</td>
+<td align="left">6.50 (2.52)</td>
+</tr>
+<tr>
+<td align="left"><bold>MCI or dementia cases</bold></td>
+<td align="left">602 (11.9%)</td>
+<td align="left">1,301 (20.3%)</td>
+<td align="left">826 (20.3%)</td>
+<td align="left">111 (8.6%)</td>
+</tr>
+<tr>
+<td align="left"><bold>Dementia cases</bold></td>
+<td align="left">55 (1.1%)</td>
+<td align="left">782 (12.2%)</td>
+<td align="left">658 (16.1%)</td>
+<td align="left">49 (3.8%)</td>
+</tr>
+<tr>
+<td align="left"><bold>Male sex</bold></td>
+<td align="left">1,707 (33.6%)</td>
+<td align="left">2,893 (45.2%)</td>
+<td align="left">1,762 (43.2%)</td>
+<td align="left">538 (41.6%)</td>
+</tr>
+<tr>
+<td align="left"><bold>Age (years) at baseline visit</bold></td>
+<td align="left">68.7 (4.30)</td>
+<td align="left">65.4 (4.18)<xref ref-type="table-fn" rid="t001fn002">*</xref></td>
+<td align="left">62.0 (1.71)<xref ref-type="table-fn" rid="t001fn002">*</xref></td>
+<td align="left">67.8 (4.42)</td>
+</tr>
+<tr>
+<td align="left"><bold>Education (years)</bold><xref ref-type="table-fn" rid="t001fn003"><sup>#</sup></xref></td>
+<td align="left">15.79 (2.99)</td>
+<td align="left">12.94 (N/A)</td>
+<td align="left">13.20 (N/A)</td>
+<td align="left">7.72 (5.42)</td>
+</tr>
+<tr>
+<td align="left"><bold>Education level</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Less than high school</td>
+<td align="left">140 (2.8%)</td>
+<td align="left">728 (11.4%)</td>
+<td align="left">622 (15.3%)</td>
+<td align="left">835 (64.5%)</td>
+</tr>
+<tr>
+<td align="left">High school</td>
+<td align="left">720 (14.2%)</td>
+<td align="left">2,773 (43.3%)</td>
+<td align="left">1,330 (32.6%)</td>
+<td align="left">201 (15.5%)</td>
+</tr>
+<tr>
+<td align="left">Some college</td>
+<td align="left">815 (16.1%)</td>
+<td align="left">1,965 (30.7%)</td>
+<td align="left">1,004 (24.6%)</td>
+<td align="left">126 (9.7%)</td>
+</tr>
+<tr>
+<td align="left">College graduation</td>
+<td align="left">3,379 (66.6%)</td>
+<td align="left">871 (13.6%)</td>
+<td align="left">994 (24.4%)</td>
+<td align="left">125 (9.7%)</td>
+</tr>
+<tr>
+<td align="left"><bold><italic>APOE</italic>-e4 allele frequency</bold></td>
+<td align="left">17.8%</td>
+<td align="left">15.0%</td>
+<td align="left">11.7%</td>
+<td align="left">7.5%</td>
+</tr>
+<tr>
+<td align="left"><bold>Genotype</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">e2/e2, e2/e3, e3/e3</td>
+<td align="left">3,431 (67.6%)</td>
+<td align="left">4,598 (71.9%)</td>
+<td align="left">3,166 (77.6%)</td>
+<td align="left">1,112 (85.9%)</td>
+</tr>
+<tr>
+<td align="left">e2/e4, e3/e4</td>
+<td align="left">1,484 (29.3%)</td>
+<td align="left">1,645 (25.7%)</td>
+<td align="left">845 (20.7%)</td>
+<td align="left">171 (13.2%)</td>
+</tr>
+<tr>
+<td align="left">e4/e4</td>
+<td align="left">158 (3.1%)</td>
+<td align="left">156 (2.4%)</td>
+<td align="left">67 (1.6%)</td>
+<td align="left">11 (0.9%)</td>
+</tr>
+<tr>
+<td align="left"><bold>Family history of dementia</bold></td>
+<td align="left">2,957 (58.3%)</td>
+<td align="left">1,191 (18.6%)</td>
+<td align="left">N/A<xref ref-type="table-fn" rid="t001fn004"><sup>†</sup></xref></td>
+<td align="left">N/A<xref ref-type="table-fn" rid="t001fn004"><sup>†</sup></xref></td>
+</tr>
+<tr>
+<td align="left"><bold>Cognitive screening test score (MMSE or 3MS)</bold><xref ref-type="table-fn" rid="t001fn005"><sup><bold>‡</bold></sup></xref></td>
+<td align="left">29.0 (1.3)</td>
+<td align="left">28.5 (1.0)</td>
+<td align="left">28.8 (1.4)</td>
+<td align="left">86.7 (11.2)</td>
+</tr>
+<tr>
+<td align="left"><bold>Subjective memory concerns</bold></td>
+<td align="left">1,262 (24.9%)</td>
+<td align="left">2,759 (43.1%)</td>
+<td align="left">N/A<xref ref-type="table-fn" rid="t001fn006"><sup>§</sup></xref></td>
+<td align="left">N/A<xref ref-type="table-fn" rid="t001fn006"><sup>§</sup></xref></td>
+</tr>
+<tr>
+<td align="left"><bold>Vascular risk score</bold><xref ref-type="table-fn" rid="t001fn007"><sup><bold>$</bold></sup></xref></td>
+<td align="left">1.32 (1.06)</td>
+<td align="left">1.82 (0.85)</td>
+<td align="left">1.38 (0.94)</td>
+<td align="left">2.13 (1.16)</td>
+</tr>
+<tr>
+<td align="left"><bold>Vascular risk level</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Low (0)</td>
+<td align="left">1,264 (24.9%)</td>
+<td align="left">263 (4.1%)</td>
+<td align="left">702 (17.2%)</td>
+<td align="left">70 (5.41%)</td>
+</tr>
+<tr>
+<td align="left">Moderate (1/2)</td>
+<td align="left">3,096 (61.0%)</td>
+<td align="left">4,916 (76.8%)</td>
+<td align="left">2,923 (71.7%)</td>
+<td align="left">737 (57.0%)</td>
+</tr>
+<tr>
+<td align="left">High (3/4/5/6)</td>
+<td align="left">713 (14.1%)</td>
+<td align="left">1,120 (19.1%)</td>
+<td align="left">453 (11.1%)</td>
+<td align="left">439 (33.9%)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p>Data are given as <italic>n</italic> (percent), mean (standard deviation), or percent.</p></fn>
+<fn id="t001fn002"><p>*For the Framingham Study and the Rotterdam Study, this refers to the age in years of the first study visit within the age 60–75-y window included in the present analyses. In the regression analyses, mean age in the Framingham Heart Study was 65.39 (standard deviation 3.87) because we used the first visit with available MMSE as the baseline (see text).</p></fn>
+<fn id="t001fn003"><p><sup>#</sup>In the Framingham Heart Study and the Rotterdam Study, the education variable was recorded as categories. To facilitate comparisons with other samples, the mean was estimated by considering less than high school as 10 y, high school as 12 y, some college as 14 y, and college graduate as 16 y. Education data for the NACC and SALSA cohorts were translated into the categories as follows: &lt;12 y, less than high school; 12 y, high school; 13–15 y, some college; and ≥16 y, college graduation.</p></fn>
+<fn id="t001fn004"><p><sup>†</sup>Family history of dementia was not available in the SALSA and Framingham Heart Study cohorts.</p></fn>
+<fn id="t001fn005"><p><sup>‡</sup>MMSE (range [0, 30], with typical dementia cutoff at ~24); for SALSA, the 3MS was used (range [0,100], with typical dementia cutoff at ~77).</p></fn>
+<fn id="t001fn006"><p><sup>§</sup>Subjective memory concerns was not available in the SALSA and Framingham cohorts.</p></fn>
+<fn id="t001fn007"><p><sup>$</sup>Vascular risk score was calculated based on a count of standard risk factors, see text for details.</p></fn>
+<fn id="t001fn008"><p>3MS, Modified Mini-Mental State Examination; FHS, Framingham Heart Study; MCI, mild cognitive impairment; MMSE, Mini-Mental State Examination; N/A, not available; NACC, National Alzheimer’s Coordinating Center; RS, Rotterdam Study; SALSA, Sacramento Area Latino Study on Aging.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec017">
+<title>Stratified cumulative incidence estimates</title>
+<p><xref ref-type="fig" rid="pmed.1002254.g001">Fig 1</xref> shows the cumulative incidence of MCI/dementia stratified by baseline age group and <italic>APOE</italic>-e4 dose; <xref ref-type="fig" rid="pmed.1002254.g002">Fig 2</xref> shows the corresponding curves for dementia alone. These figures show 8.5 y of follow-up for all four cohorts on the same scale, to facilitate comparison. Figs <xref ref-type="fig" rid="pmed.1002254.g003">3</xref> and <xref ref-type="fig" rid="pmed.1002254.g004">4</xref> show lifetime (to age 80–85 y) cumulative incidence curves for MCI/dementia and dementia alone for the two longer-term cohorts.</p>
+<fig id="pmed.1002254.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pmed.1002254.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Cumulative incidence curves, adjusting for competing risk of mortality, for mild cognitive impairment or dementia by baseline age and <italic>APOE</italic>-e4 dose.</title>
+<p>Note that the strata shown are not independent for the Rotterdam and Framingham cohorts (see text). MCI, mild cognitive impairment; NACC, National Alzheimer’s Coordinating Center; RS, Rotterdam Study; SALSA, Sacramento Area Latino Study on Aging.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pmed.1002254.g001" xlink:type="simple"/>
+</fig>
+<fig id="pmed.1002254.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pmed.1002254.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Cumulative incidence curves, adjusting for competing risk of mortality, for dementia by baseline age and <italic>APOE</italic>-e4 dose.</title>
+<p>Note that the strata shown are not independent for the Rotterdam and Framingham cohorts (see text). NACC, National Alzheimer’s Coordinating Center; RS, Rotterdam Study; SALSA, Sacramento Area Latino Study on Aging.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pmed.1002254.g002" xlink:type="simple"/>
+</fig>
+<fig id="pmed.1002254.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pmed.1002254.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Lifetime (to age 80–85 y) cumulative incidence curves, adjusting for competing risk of mortality, for mild cognitive impairment or dementia by baseline age and <italic>APOE</italic>-e4 dose.</title>
+<p>Note that the strata shown are not independent (see text). MCI, mild cognitive impairment.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pmed.1002254.g003" xlink:type="simple"/>
+</fig>
+<fig id="pmed.1002254.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pmed.1002254.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Lifetime (to age 80–85 y) cumulative incidence curves, adjusting for competing risk of mortality, for dementia by baseline age and <italic>APOE</italic>-e4 dose.</title>
+<p>Note that the strata shown are not independent (see text).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pmed.1002254.g004" xlink:type="simple"/>
+</fig>
+<p><xref ref-type="table" rid="pmed.1002254.t002">Table 2</xref> shows the 5-y cumulative incidence of MCI/dementia for all four cohorts, and <xref ref-type="table" rid="pmed.1002254.t003">Table 3</xref> the lifetime (to age 80–85 y) cumulative incidence across the two longer-term cohorts; Tables <xref ref-type="table" rid="pmed.1002254.t004">4</xref> and <xref ref-type="table" rid="pmed.1002254.t005">5</xref> show the corresponding data for dementia alone.</p>
+<table-wrap id="pmed.1002254.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pmed.1002254.t002</object-id>
+<label>Table 2</label> <caption><title>Five-year cumulative incidence of mild cognitive impairment/dementia by baseline age and <italic>APOE</italic>-e4 dose.</title></caption>
+<alternatives>
+<graphic id="pmed.1002254.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pmed.1002254.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="3">Age (years) and <italic>APOE</italic></th>
+<th align="left" colspan="8">Cohort</th>
+<th align="left" rowspan="3">Meta-analysis (RS, FHS, SALSA): 5-y cumulative incidence, percent (95% CI)</th>
+<th align="left" rowspan="3">Meta-analysis (four cohorts): 5-y cumulative incidence, percent (95% CI)</th>
+</tr>
+<tr>
+<th align="left" colspan="2">NACC</th>
+<th align="left" colspan="2">RS<xref ref-type="table-fn" rid="t002fn001">*</xref></th>
+<th align="left" colspan="2">FHS<xref ref-type="table-fn" rid="t002fn001">*</xref></th>
+<th align="left" colspan="2">SALSA</th>
+</tr>
+<tr>
+<th align="left"><italic>n</italic></th>
+<th align="left">5-y cumulative incidence, percent (95% CI)</th>
+<th align="left"><italic>n</italic></th>
+<th align="left">5-y cumulative incidence, percent (95% CI)</th>
+<th align="left"><italic>n</italic></th>
+<th align="left">5-y cumulative incidence, percent (95% CI)</th>
+<th align="left"><italic>n</italic></th>
+<th align="left">5-y cumulative incidence, percent (95% CI)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><bold>Age 60–64</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">0 e4</td>
+<td align="left">740</td>
+<td align="left">7.94 (5.65, 11.10)</td>
+<td align="left">2,625</td>
+<td align="left">4.08 (3.39, 4.91)</td>
+<td align="left">2,955</td>
+<td align="left">0.31 (0.16, 0.59)</td>
+<td align="left">352</td>
+<td align="left">2.29 (1.15, 4.53)</td>
+<td align="left">1.46 (0.31, 6.72)</td>
+<td align="left">2.29 (0.84, 6.21)</td>
+</tr>
+<tr>
+<td align="left">1 e4</td>
+<td align="left">322</td>
+<td align="left">12.38 (8.14, 18.61)</td>
+<td align="left">928</td>
+<td align="left">5.72 (4.40, 7.42)</td>
+<td align="left">795</td>
+<td align="left">1.28 (0.69, 2.37)</td>
+<td align="left">51</td>
+<td align="left">8.28 (3.15, 20.80)</td>
+<td align="left">3.86 (1.32, 11.03)</td>
+<td align="left">5.27 (2.24, 12.13)</td>
+</tr>
+<tr>
+<td align="left">2 e4</td>
+<td align="left">36</td>
+<td align="left">23.06 (9.94, 48.12)</td>
+<td align="left">102</td>
+<td align="left">5.88 (2.68, 12.67)</td>
+<td align="left">62</td>
+<td align="left">5.07 (1.65, 15.04)</td>
+<td align="left">3</td>
+<td align="left">0.00 (0.00, 0.00)</td>
+<td align="left">5.60 (2.94, 10.53)</td>
+<td align="left">9.10 (3.38, 23.23)</td>
+</tr>
+<tr>
+<td align="left"><bold>Age 65–69</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">0 e4</td>
+<td align="left">1,172</td>
+<td align="left">9.19 (7.28, 11.57)</td>
+<td align="left">2,492</td>
+<td align="left">5.38 (4.56, 6.34)</td>
+<td align="left">2,430</td>
+<td align="left">1.52 (1.10, 2.10)</td>
+<td align="left">377</td>
+<td align="left">5.97 (3.93, 9.03)</td>
+<td align="left">3.63 (1.34, 9.62)</td>
+<td align="left">4.60 (1.85, 11.21)</td>
+</tr>
+<tr>
+<td align="left">1 e4</td>
+<td align="left">585</td>
+<td align="left">14.40 (11.08, 18.61)</td>
+<td align="left">906</td>
+<td align="left">8.84 (7.16, 10.89)</td>
+<td align="left">646</td>
+<td align="left">3.02 (1.94, 4.70)</td>
+<td align="left">60</td>
+<td align="left">3.45 (0.86, 13.28)</td>
+<td align="left">4.84 (1.96, 11.67)</td>
+<td align="left">6.75 (3.47, 12.97)</td>
+</tr>
+<tr>
+<td align="left">2 e4</td>
+<td align="left">65</td>
+<td align="left">34.62 (20.15, 55.18)</td>
+<td align="left">77</td>
+<td align="left">10.39 (5.31, 19.79)</td>
+<td align="left">44</td>
+<td align="left">9.42 (3.60, 23.45)</td>
+<td align="left">5</td>
+<td align="left">20.00 (2.45, 86.54)</td>
+<td align="left">10.52 (6.19, 17.57)</td>
+<td align="left">16.36 (7.27, 34.51)</td>
+</tr>
+<tr>
+<td align="left"><bold>Age 70–75</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">0 e4</td>
+<td align="left">1,519</td>
+<td align="left">15.16 (13.03, 17.61)</td>
+<td align="left">2,212</td>
+<td align="left">8.42 (7.33, 9.65)</td>
+<td align="left">1,888</td>
+<td align="left">3.71 (2.93, 4.68)</td>
+<td align="left">383</td>
+<td align="left">5.88 (3.91, 8.80)</td>
+<td align="left">5.71 (3.19, 10.13)</td>
+<td align="left">7.37 (4.06, 13.19)</td>
+</tr>
+<tr>
+<td align="left">1 e4</td>
+<td align="left">577</td>
+<td align="left">23.56 (19.48, 28.34)</td>
+<td align="left">739</td>
+<td align="left">15.45 (13.03, 18.27)</td>
+<td align="left">464</td>
+<td align="left">7.71 (5.60, 10.59)</td>
+<td align="left">60</td>
+<td align="left">22.49 (13.63, 35.77)</td>
+<td align="left">13.66 (7.88, 23.11)</td>
+<td align="left">15.86 (10.02, 24.61)</td>
+</tr>
+<tr>
+<td align="left">2 e4</td>
+<td align="left">57</td>
+<td align="left">38.34 (25.09, 55.48)</td>
+<td align="left">59</td>
+<td align="left">18.64 (10.73, 31.28)</td>
+<td align="left">32</td>
+<td align="left">23.16 (11.61, 43.01)</td>
+<td align="left">3</td>
+<td align="left">33.33 (2.68, 99.76)</td>
+<td align="left">20.58 (13.51, 30.65)</td>
+<td align="left">26.70 (17.50, 39.45)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t002fn001"><p>*For the Framingham Heart Study and the Rotterdam Study, individuals could contribute to multiple baseline age strata. In the meta-analysis, cumulative incidence 0.00 (0.00, 0.00) was not used.</p></fn>
+<fn id="t002fn002"><p>FHS, Framingham Heart Study; NACC, National Alzheimer’s Coordinating Center; RS, Rotterdam Study; SALSA, Sacramento Area Latino Study on Aging.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<table-wrap id="pmed.1002254.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pmed.1002254.t003</object-id>
+<label>Table 3</label> <caption><title>Lifetime (to age 80–85 y) cumulative incidence of mild cognitive impairment/dementia by baseline age and <italic>APOE</italic>-e4 dose.</title></caption>
+<alternatives>
+<graphic id="pmed.1002254.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pmed.1002254.t003" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="3">Age (years) and APOE</th>
+<th align="left" colspan="4">Cohort</th>
+</tr>
+<tr>
+<th align="left" colspan="2">RS<xref ref-type="table-fn" rid="t003fn002">*</xref></th>
+<th align="left" colspan="2">FHS<xref ref-type="table-fn" rid="t003fn002">*</xref></th>
+</tr>
+<tr>
+<th align="left"><italic>n</italic></th>
+<th align="left">Lifetime cumulative incidence, percent (95% CI)</th>
+<th align="left"><italic>n</italic></th>
+<th align="left">Lifetime cumulative incidence, percent (95% CI)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><bold>Age 60–64</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">0 e4</td>
+<td align="left">2,625</td>
+<td align="left">14.05 (12.50, 15.78)</td>
+<td align="left">2,955</td>
+<td align="left">11.94 (10.56, 13.49)</td>
+</tr>
+<tr>
+<td align="left">1 e4</td>
+<td align="left">928</td>
+<td align="left">25.37 (21.96, 29.21)</td>
+<td align="left">795</td>
+<td align="left">22.07 (18.69, 25.94)</td>
+</tr>
+<tr>
+<td align="left">2 e4</td>
+<td align="left">102</td>
+<td align="left">37.47 (25.11, 53.34)</td>
+<td align="left">62</td>
+<td align="left">45.15 (31.32, 61.70)</td>
+</tr>
+<tr>
+<td align="left"><bold>Age 65–69</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">0 e4</td>
+<td align="left">2,492</td>
+<td align="left">14.23 (12.83, 15.76)</td>
+<td align="left">2,430</td>
+<td align="left">12.22 (10.80, 13.81)</td>
+</tr>
+<tr>
+<td align="left">1 e4</td>
+<td align="left">906</td>
+<td align="left">25.44 (22.50, 28.69)</td>
+<td align="left">646</td>
+<td align="left">23.33 (19.76, 27.44)</td>
+</tr>
+<tr>
+<td align="left">2 e4</td>
+<td align="left">77</td>
+<td align="left">38.09 (27.25, 51.46)</td>
+<td align="left">44</td>
+<td align="left">46.66 (31.56, 64.65)</td>
+</tr>
+<tr>
+<td align="left"><bold>Age 70–75</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">0 e4</td>
+<td align="left">2,212</td>
+<td align="left">15.57 (14.11, 17.16)</td>
+<td align="left">1,888</td>
+<td align="left">11.94 (10.43, 13.64)</td>
+</tr>
+<tr>
+<td align="left">1 e4</td>
+<td align="left">739</td>
+<td align="left">26.14 (23.10, 29.51)</td>
+<td align="left">464</td>
+<td align="left">21.35 (17.58, 25.80)</td>
+</tr>
+<tr>
+<td align="left">2 e4</td>
+<td align="left">59</td>
+<td align="left">38.02 (26.76, 52.04)</td>
+<td align="left">32</td>
+<td align="left">37.55 (22.42, 58.23)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t003fn001"><p>For age 60–64 y, lifetime cumulative incidence is estimated as 20-y cumulative incidence. For age 65–69 y, lifetime cumulative incidence is estimated as 15-y cumulative incidence. For age 70–75 y, lifetime cumulative incidence is estimated as 10-y cumulative incidence.</p></fn>
+<fn id="t003fn002"><p>*Individuals could contribute to multiple baseline age strata.</p></fn>
+<fn id="t003fn003"><p>FHS, Framingham Heart Study; RS, Rotterdam Study.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<table-wrap id="pmed.1002254.t004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pmed.1002254.t004</object-id>
+<label>Table 4</label> <caption><title>Five-year cumulative incidence of dementia by baseline age and <italic>APOE</italic>-e4 dose.</title></caption>
+<alternatives>
+<graphic id="pmed.1002254.t004g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pmed.1002254.t004" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="3">Age (years) and <italic>APOE</italic></th>
+<th align="left" colspan="8">Cohort</th>
+<th align="left" rowspan="3">Meta-analysis (RS, FHS, SALSA): 5-y cumulative incidence, percent (95% CI)</th>
+<th align="left" rowspan="3">Meta-analysis (four cohorts): 5-y cumulative incidence, percent (95% CI)</th>
+</tr>
+<tr>
+<th align="left" colspan="2">NACC</th>
+<th align="left" colspan="2">RS<xref ref-type="table-fn" rid="t004fn001">*</xref></th>
+<th align="left" colspan="2">FHS<xref ref-type="table-fn" rid="t004fn001">*</xref></th>
+<th align="left" colspan="2">SALSA</th>
+</tr>
+<tr>
+<th align="left"><italic>n</italic></th>
+<th align="left">5-y cumulative incidence, percent (95% CI)</th>
+<th align="left"><italic>n</italic></th>
+<th align="left">5-y cumulative incidence, percent (95% CI)</th>
+<th align="left"><italic>n</italic></th>
+<th align="left">5-y cumulative incidence, percent (95% CI)</th>
+<th align="left"><italic>n</italic></th>
+<th align="left">5-y cumulative incidence, percent (95% CI)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><bold>Age 60–64</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">0 e4</td>
+<td align="left">740</td>
+<td align="left">0.00 (0.00, 0.00)</td>
+<td align="left">2,625</td>
+<td align="left">0.15 (0.06, 0.41)</td>
+<td align="left">2,955</td>
+<td align="left">0.03 (0.00, 0.25)</td>
+<td align="left">352</td>
+<td align="left">0.57 (0.14, 2.26)</td>
+<td align="left">0.16 (0.04, 0.62)</td>
+<td align="left">0.16 (0.04, 0.62)</td>
+</tr>
+<tr>
+<td align="left">1 e4</td>
+<td align="left">322</td>
+<td align="left">0.54 (0.08, 3.79)</td>
+<td align="left">928</td>
+<td align="left">0.54 (0.22, 1.29)</td>
+<td align="left">795</td>
+<td align="left">0.00 (0.00,0.00)</td>
+<td align="left">51</td>
+<td align="left">1.96 (0.27, 13.36)</td>
+<td align="left">0.75 (0.25, 2.26)</td>
+<td align="left">0.65 (0.31, 1.36)</td>
+</tr>
+<tr>
+<td align="left">2 e4</td>
+<td align="left">36</td>
+<td align="left">0.00 (0.00, 0.00)</td>
+<td align="left">102</td>
+<td align="left">2.94 (0.95, 8.89)</td>
+<td align="left">62</td>
+<td align="left">0.00 (0.00,0.00)</td>
+<td align="left">3</td>
+<td align="left">0.00 (0.00, 0.00)</td>
+<td align="left">2.94 (0.95, 8.89)</td>
+<td align="left">2.94 (0.95, 8.89)</td>
+</tr>
+<tr>
+<td align="left"><bold>Age 65–69</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">0 e4</td>
+<td align="left">1,172</td>
+<td align="left">0.38 (0.12, 1.23)</td>
+<td align="left">2,492</td>
+<td align="left">0.52 (0.30, 0.90)</td>
+<td align="left">2,430</td>
+<td align="left">0.25 (0.11, 0.56)</td>
+<td align="left">377</td>
+<td align="left">0.90 (0.29, 2.79)</td>
+<td align="left">0.46 (0.25, 0.86)</td>
+<td align="left">0.45 (0.28, 0.72)</td>
+</tr>
+<tr>
+<td align="left">1 e4</td>
+<td align="left">585</td>
+<td align="left">0.95 (0.30, 2.97)</td>
+<td align="left">906</td>
+<td align="left">0.88 (0.44, 1.76)</td>
+<td align="left">646</td>
+<td align="left">0.63 (0.24, 1.68)</td>
+<td align="left">60</td>
+<td align="left">3.45 (0.86, 13.28)</td>
+<td align="left">1.07 (0.48, 2.38)</td>
+<td align="left">1.00 (0.56, 1.78)</td>
+</tr>
+<tr>
+<td align="left">2 e4</td>
+<td align="left">65</td>
+<td align="left">4.36 (1.09, 16.60)</td>
+<td align="left">77</td>
+<td align="left">5.19 (1.97, 13.33)</td>
+<td align="left">44</td>
+<td align="left">4.76 (1.19, 18.00)</td>
+<td align="left">5</td>
+<td align="left">0.00 (0.00, 0.00)</td>
+<td align="left">5.05 (2.28, 10.96)</td>
+<td align="left">4.87 (2.45, 9.56)</td>
+</tr>
+<tr>
+<td align="left"><bold>Age 70–75</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">0 e4</td>
+<td align="left">1,519</td>
+<td align="left">1.41 (0.81, 2.46)</td>
+<td align="left">2,212</td>
+<td align="left">1.45 (1.03, 2.04)</td>
+<td align="left">1,888</td>
+<td align="left">0.98 (0.62, 1.55)</td>
+<td align="left">383</td>
+<td align="left">2.60 (1.35, 4.95)</td>
+<td align="left">1.47 (0.93, 2.34)</td>
+<td align="left">1.44 (1.03, 2.02)</td>
+</tr>
+<tr>
+<td align="left">1 e4</td>
+<td align="left">577</td>
+<td align="left">3.02 (1.64, 5.55)</td>
+<td align="left">739</td>
+<td align="left">6.51 (4.94, 8.54)</td>
+<td align="left">464</td>
+<td align="left">3.09 (1.84, 5.17)</td>
+<td align="left">60</td>
+<td align="left">6.79 (2.58, 17.24)</td>
+<td align="left">5.06 (2.92, 8.69)</td>
+<td align="left">4.47 (2.75, 7.22)</td>
+</tr>
+<tr>
+<td align="left">2 e4</td>
+<td align="left">57</td>
+<td align="left">12.43 (5.25, 27.87)</td>
+<td align="left">59</td>
+<td align="left">11.86 (5.80, 23.43)</td>
+<td align="left">32</td>
+<td align="left">6.67 (1.67, 24.62)</td>
+<td align="left">3</td>
+<td align="left">0.00 (0.00, 0.00)</td>
+<td align="left">10.47 (5.55, 19.28)</td>
+<td align="left">11.12 (6.68, 18.20)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t004fn001"><p>*For the Framingham Heart Study and the Rotterdam Study, individuals could contribute to multiple baseline age strata. In meta-analysis, cumulative incidence 0.00 (0.00, 0.00) was not used.</p></fn>
+<fn id="t004fn002"><p>FHS, Framingham Heart Study; NACC, National Alzheimer’s Coordinating Center; RS, Rotterdam Study; SALSA, Sacramento Area Latino Study on Aging.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<table-wrap id="pmed.1002254.t005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pmed.1002254.t005</object-id>
+<label>Table 5</label> <caption><title>Lifetime (to age 80–85 y) cumulative incidence of dementia by baseline age and <italic>APOE</italic>-e4 dose.</title></caption>
+<alternatives>
+<graphic id="pmed.1002254.t005g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pmed.1002254.t005" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="3">Age (years) and APOE</th>
+<th align="left" colspan="4">Cohort</th>
+</tr>
+<tr>
+<th align="left" colspan="2">RS<xref ref-type="table-fn" rid="t005fn002">*</xref></th>
+<th align="left" colspan="2">FHS<xref ref-type="table-fn" rid="t005fn002">*</xref></th>
+</tr>
+<tr>
+<th align="left"><italic>n</italic></th>
+<th align="left">“Lifetime” cumulative incidence, percent (95% CI)</th>
+<th align="left"><italic>n</italic></th>
+<th align="left">“Lifetime” cumulative incidence, percent (95% CI)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><bold>Age 60–64</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">0 e4</td>
+<td align="left">2,625</td>
+<td align="left">6.83 (5.59, 8.33)</td>
+<td align="left">2,955</td>
+<td align="left">6.22 (5.23, 7.40)</td>
+</tr>
+<tr>
+<td align="left">1 e4</td>
+<td align="left">928</td>
+<td align="left">17.18 (14.06, 20.90)</td>
+<td align="left">795</td>
+<td align="left">15.93 (12.98, 19.47)</td>
+</tr>
+<tr>
+<td align="left">2 e4</td>
+<td align="left">102</td>
+<td align="left">34.69 (22.75, 50.49)</td>
+<td align="left">62</td>
+<td align="left">38.49 (25.50, 55.17)</td>
+</tr>
+<tr>
+<td align="left"><bold>Age 65–69</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">0 e4</td>
+<td align="left">2,492</td>
+<td align="left">5.26 (4.37, 6.34)</td>
+<td align="left">2,430</td>
+<td align="left">6.59 (5.53, 7.84)</td>
+</tr>
+<tr>
+<td align="left">1 e4</td>
+<td align="left">906</td>
+<td align="left">15.36 (12.93, 18.20)</td>
+<td align="left">646</td>
+<td align="left">16.22 (13.16, 19.92)</td>
+</tr>
+<tr>
+<td align="left">2 e4</td>
+<td align="left">77</td>
+<td align="left">30.76 (20.74, 44.09)</td>
+<td align="left">44</td>
+<td align="left">40.26 (25.75, 59.00)</td>
+</tr>
+<tr>
+<td align="left"><bold>Age 70–75</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">0 e4</td>
+<td align="left">2,212</td>
+<td align="left">5.76 (4.86, 6.83)</td>
+<td align="left">1,888</td>
+<td align="left">5.65 (4.61, 6.91)</td>
+</tr>
+<tr>
+<td align="left">1 e4</td>
+<td align="left">739</td>
+<td align="left">14.77 (12.38, 17.58)</td>
+<td align="left">464</td>
+<td align="left">13.94 (10.82, 17.86)</td>
+</tr>
+<tr>
+<td align="left">2 e4</td>
+<td align="left">59</td>
+<td align="left">33.30 (22.54, 47.37)</td>
+<td align="left">32</td>
+<td align="left">35.17 (20.32, 56.27)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t005fn001"><p>For age 60–64 y, lifetime cumulative incidence is estimated as 20-y cumulative incidence. For age 65–69 y, lifetime cumulative incidence is estimated as 15-y cumulative incidence. For age 70–75 y, lifetime cumulative incidence is estimated as 10-y cumulative incidence.</p></fn>
+<fn id="t005fn002"><p>*Individuals could contribute to multiple baseline age strata.</p></fn>
+<fn id="t005fn003"><p>FHS, Framingham Heart Study; RS, Rotterdam Study.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>Overall, within each cohort, risk of MCI/dementia increased with increasing age and <italic>APOE</italic>-e4 dose. However, absolute risks differed substantially across the cohorts, particularly between NACC and the population-based cohorts. Especially for the MCI/dementia outcome, the NACC cohort typically had higher risk for any genotype at any age. Differences among the population-based cohorts were smaller, particularly for longer-term follow-up and the dementia outcome.</p>
+<p>Five-year cumulative incidence of MCI/dementia was low in the youngest age stratum, particularly in the cohort studies, although somewhat higher for <italic>APOE</italic>-e4-positive individuals, especially homozygote individuals (23% in NACC and 5%–6% in Framingham and Rotterdam). Five-year incidence of MCI/dementia was higher in the highest age stratum, particularly among <italic>APOE</italic>-e4/e4 homozygote individuals (38% in NACC and 18%–23% in Framingham and Rotterdam). Five-year incidence of dementia alone was negligible at younger ages, even in <italic>APOE</italic>-e4/e4 homozygote individuals, but rose among older individuals, particularly among those with <italic>APOE</italic>-e4/e4 (12% in NACC and 7%–12% in Framingham and Rotterdam). The meta-analyses of the 5-y cumulative incidence estimates for the MCI/dementia outcome (<xref ref-type="table" rid="pmed.1002254.t002">Table 2</xref>) showed consistent increases in incidence by gene dose within age strata and by age stratum within gene dose, and were higher when the NACC estimates were included. These pooled estimates ranged from a low of 1.46% for individuals aged 60–64 y with no copies of <italic>APOE</italic>-e4 in just the population-based cohorts to a high of 26.70% for individuals aged 70–75 y with two copies of <italic>APOE</italic>-e4/e4 in all four cohorts.</p>
+<p>Estimated only for the Rotterdam Study and the Framingham Heart Study, lifetime incidence, whether for MCI/dementia or for dementia alone, was consistent in the two cohorts (it was also consistent across age strata, but it should be noted that the strata are not independent and that older age strata included individuals who survived and did not experience the outcome in earlier strata). Lifetime incidence rose consistently with <italic>APOE</italic>-e4 dose: for MCI/dementia (<xref ref-type="table" rid="pmed.1002254.t003">Table 3</xref>), it ranged from 11.94%–15.57% for those with no copies of <italic>APOE</italic>-e4 to 37.47%–46.66% for <italic>APOE</italic>-e4/e4 homozygote individuals; for dementia alone (<xref ref-type="table" rid="pmed.1002254.t005">Table 5</xref>), it ranged from 5.26%–6.83% for no copies to 30.76%–40.26 for homozygote individuals.</p>
+</sec>
+<sec id="sec018">
+<title>Subdistribution hazard regression analyses</title>
+<p>Results of the subdistribution hazard regression analysis are presented in <xref ref-type="supplementary-material" rid="pmed.1002254.s002">S1 Appendix</xref> Tables A and B (univariable analyses), <xref ref-type="supplementary-material" rid="pmed.1002254.s002">S1 Appendix</xref> Tables C and D (multivariable analyses modeling <italic>APOE</italic>-e4 dose and demographics), and <xref ref-type="supplementary-material" rid="pmed.1002254.s002">S1 Appendix</xref> Tables E and F (additionally including family history of dementia and cognitive variables). Overall, the regression results were fairly consistent across the four cohorts, even in the small SALSA cohort, and considerably more consistent than the cumulative incidence results.</p>
+<p>The univariable results (<xref ref-type="supplementary-material" rid="pmed.1002254.s002">S1 Appendix</xref> Table A for MCI/dementia and <xref ref-type="supplementary-material" rid="pmed.1002254.s002">S1 Appendix</xref> Table B for dementia) were fairly consistent across the two outcomes (although for some variables in some cohorts the hazard ratios [HRs] were somewhat higher for dementia alone), so we provide details in the text for the MCI/dementia outcome only. There was substantially higher risk of MCI/dementia with increasing age (HR 1.08–1.16 per year of age), increasing <italic>APOE</italic>-e4 dose (for one copy, HR 1.51–2.23; for two copies, HR 2.63–3.57), and lower education (HR 1.41–1.86 for less than high school compared to high school). Family history of dementia also had a nominally significant effect in both cohorts in which it was measured (HR 1.16–1.27). On the other hand, male sex, which was protective in the population-based cohorts (although only nominally significantly so in the Rotterdam cohort, HR 0.83–0.90), carried risk in NACC (HR 1.36). Subjective memory concerns carried risk in both cohorts that assessed them (HR 1.71–2.62). Higher standardized baseline cognitive screening test score (MMSE or 3MS) was consistently protective across all cohorts for both outcomes (HR 0.58–0.80 per standard deviation above the mean), except for the MCI/dementia outcome in the Rotterdam cohort. Vascular risk score had a variable and generally nonsignificant effect across all four cohorts.</p>
+<p>The simple multivariable models including <italic>APOE</italic> and demographic factors (<xref ref-type="supplementary-material" rid="pmed.1002254.s002">S1 Appendix</xref> Table C for MCI/dementia and <xref ref-type="supplementary-material" rid="pmed.1002254.s002">S1 Appendix</xref> Table D for dementia alone) did not appreciably change the results for age and <italic>APOE</italic>-e4 dose, although there was some attenuation of associations for sex and education. In the more complex model (<xref ref-type="supplementary-material" rid="pmed.1002254.s002">S1 Appendix</xref> Tables E and F), again the picture was similar, with attenuation for sex and education. It is noteworthy that standardized cognitive screening test score and subjective memory concerns (where available) generally showed substantial, nominally significant hazard ratios, even controlling for education, and that (where available) family history of dementia, even when controlling for <italic>APOE</italic>-e4 dose, also had an impact.</p>
+</sec>
+</sec>
+<sec id="sec019" sec-type="conclusions">
+<title>Discussion</title>
+<sec id="sec020">
+<title>Overall findings</title>
+<p>Of 16,844 participants included from all four cohorts, 392 (2.3%) had the <italic>APOE-</italic>e4/e4 genotype, highlighting its low prevalence. Nonetheless, the expected age- and <italic>APOE</italic>-e4-dose-related increases in cumulative incidence and relative hazard in the regression models are readily apparent, even to some extent in the very small SALSA cohort. However, the striking differences in estimated cumulative incidence, particularly for the MCI/dementia outcome, between the population-based cohort studies and the highly ascertained NACC cohort (see below) suggest that overall <italic>APOE</italic>-e4-associated incidence is somewhat lower than the modeled findings previously available in the literature. Comparing 5-y cumulative incidence from the meta-analyses of the three population-based cohorts to that from NACC, in the youngest age stratum, cumulative incidence ranged across the three <italic>APOE</italic>-e4 doses from 1.46% to 5.60% in the population-based cohorts versus 7.94% to 23.06% in NACC, and in the oldest age stratum from 5.71% to 20.58% in the population-based cohorts versus 15.16% to 38.34% in NACC. Similarly, viewing the cumulative incidence for <italic>APOE</italic>-e4/e4 genotype across the three age strata, cumulative incidence ranged from 5.60% to 20.58% in the three population-based cohorts versus from 23.06% to 38.34% in NACC. The NACC findings were largely similar to those of the prospective analyses of Bonham et al. [<xref ref-type="bibr" rid="pmed.1002254.ref024">24</xref>] in the same cohort, although Bonham et al. [<xref ref-type="bibr" rid="pmed.1002254.ref024">24</xref>] focused on the <italic>relative</italic> risk of <italic>APOE-</italic>e4 across different age ranges, used different age categories (unrelated to the Generation Study), and did not incorporate several important variables in the models (i.e., family history, subjective memory concerns, and baseline cognitive performance). Moreover, the authors did not perform their analyses in a competing risk framework, which is vital to avoid overestimation of cumulative incidences in aging populations [<xref ref-type="bibr" rid="pmed.1002254.ref054">54</xref>].</p>
+</sec>
+<sec id="sec021">
+<title>Differences in cumulative incidence estimates across the sites</title>
+<p>Variability related to ascertainment and assessment methods has been reported previously for MCI and dementia prevalence [<xref ref-type="bibr" rid="pmed.1002254.ref055">55</xref>,<xref ref-type="bibr" rid="pmed.1002254.ref056">56</xref>]. Such variability is not unique to MCI and dementia, but can occur in a variety of settings, and is a particular problem for common disorders like MCI in which a subtle gradation from the normal makes rates especially sensitive to thresholding (e.g., attention deficit hyperactivity disorder, major depression, osteoarthritis).</p>
+<p>Overall, as might be expected, absolute risk is more vulnerable to methodological differences than relative risk, especially over shorter time intervals and for the MCI/dementia outcome rather than the dementia alone outcome. This is underscored by the generally similar relative hazards across the regression analyses. These regression findings also contribute to an understanding of the variation across the cohorts.</p>
+<p>Among the three population-based cohort studies, there are known and unknown differences in race and ethnicity, education, and screening and assessment methods. Nonetheless, these three cohorts were generally similar—within expected sampling variation—in their estimates of cumulative incidence for most age and <italic>APOE</italic> strata. The difference between the population-based cohort studies and NACC, on the other hand, is striking. The NACC cohort is a volunteer cohort, and as such would not be expected to represent the general population (although it may be representative of potential trial participants, as discussed below). Individuals join this cohort for a variety of reasons, but concerns about family history and their own memory are likely to play a role. This probably contributes to the relatively high <italic>APOE</italic>-e4 allele frequency and reported family history of dementia in this cohort seen in <xref ref-type="table" rid="pmed.1002254.t001">Table 1</xref>, although some of the difference in family history likely represents measurement issues (see below). Since family history increases risk beyond the <italic>APOE</italic>-e4 effect in these and other data [<xref ref-type="bibr" rid="pmed.1002254.ref057">57</xref>,<xref ref-type="bibr" rid="pmed.1002254.ref058">58</xref>], the high frequency of positive family history likely contributed to some of the observed differences in incidence. Another potential source of difference is the very high level of educational attainment within the NACC cohort. While higher education is associated with lower risk of dementia overall, more educated individuals with memory concerns actually have higher risk of developing dementia than their counterparts with less education [<xref ref-type="bibr" rid="pmed.1002254.ref059">59</xref>], and this may be particularly true for the highly educated individuals who form a substantial fraction of the NACC cohort. Another issue is the high proportion of women in the NACC cohort; differences in the reasons that men and women volunteer for this cohort may underlie the increased risk of MCI and dementia for men observed in the regression analyses. Last, the NACC samples serve a variety of needs across the different Alzheimer’s Disease Centers in the United States; there is often substantial dropout and variable effort to retain participants, and decisions by participants and center staff are not likely to be random with respect to cognitive and other variables. While the population-based cohort studies also have some dropout, systematic ongoing efforts to retain participants and continuous surveillance even for those who do not attend study visits guarantee low attrition.</p>
+<p>Beyond these differences in ascertainment, demographics and other attributes, and follow-up, there are differences in assessment between NACC and the three population-based cohorts that should be noted. The population-based cohorts evaluate cognition with a screening procedure typically followed by more formal clinical evaluation of participants who screen positive. While direct clinical evaluation of all participants at each NACC site is a strength, there are procedural differences across sites, quality control is limited, and the reliability of NACC diagnosis is not well established. In addition, the high educational level of NACC participants is not well captured by available norms, and a subset of individuals may have declined substantially but nonetheless may be viewed as cognitively unimpaired. This is a particular concern because within any group of normal individuals, those who are already declining are more likely to continue to do so [<xref ref-type="bibr" rid="pmed.1002254.ref060">60</xref>–<xref ref-type="bibr" rid="pmed.1002254.ref062">62</xref>]. Thus, baseline cognitive symptoms and preexisting subthreshold decline, both likely to be more frequent in the highly educated NACC cohort, have a substantial impact on short-term onset of MCI and even dementia. This phenomenon may underlie the higher risk of cognitive decline noted earlier for more versus less educated individuals among those with subjective cognitive concerns [<xref ref-type="bibr" rid="pmed.1002254.ref059">59</xref>].</p>
+<p>Of course, it is likely that there is some insensitivity to MCI and even dementia in the population-based cohort studies as well as differential loss to follow-up, but on balance the volunteer nature of the NACC cohort, the limited quality control across the NACC sites, and the consistency of the population-based cohort findings tend to favor the lower cumulative incidence found in the population-based cohorts.</p>
+</sec>
+<sec id="sec022">
+<title>Comparison to modeled estimates from the literature</title>
+<p>One could argue that previously available modeled estimates for <italic>APOE</italic>-e4-associated absolute risk for dementia [<xref ref-type="bibr" rid="pmed.1002254.ref017">17</xref>,<xref ref-type="bibr" rid="pmed.1002254.ref019">19</xref>] are high (50%–67%), and thus favor the NACC estimates instead. Our estimates of lifetime risk for dementia for <italic>APOE</italic>-e4/e4 individuals from the Framingham Heart Study and the Rotterdam Study are in the 31%–40% range. While we did not estimate lifetime cumulative incidence for NACC given the short mean duration of follow-up, it would be expected to be considerably higher than the 5-y estimates—in the oldest <italic>APOE</italic>-e4/e4 homozygote individuals, 38.3% for MCI or dementia and 12.4% for dementia alone. However, there are some biases in the modeled estimates that overall are more likely to yield over- rather than underestimates of risk.</p>
+<p>For the Cupples et al. estimates used in the REVEAL study [<xref ref-type="bibr" rid="pmed.1002254.ref017">17</xref>], risk curves for incidence were derived from relatives and spouses in a family sample ascertained from a clinical population [<xref ref-type="bibr" rid="pmed.1002254.ref018">18</xref>]; these incidence rates could be expected to be higher than those in the general population. In addition, the relative risks by sex, age, and genotype were applied from a large meta-analysis done primarily in clinically ascertained, younger-onset families [<xref ref-type="bibr" rid="pmed.1002254.ref014">14</xref>], again yielding higher estimates [<xref ref-type="bibr" rid="pmed.1002254.ref014">14</xref>,<xref ref-type="bibr" rid="pmed.1002254.ref063">63</xref>]. In addition, the competing risk of death was not addressed in the cumulative incidence estimates, which also would tend to bias estimates upward. Moreover, the Cupples model does not account for the correlation among observations in the family sample used for incidence, which again might lead to bias [<xref ref-type="bibr" rid="pmed.1002254.ref064">64</xref>].</p>
+<p>For the Genin et al. estimates used by 23andMe [<xref ref-type="bibr" rid="pmed.1002254.ref019">19</xref>], relative risks from a European GWAS [<xref ref-type="bibr" rid="pmed.1002254.ref021">21</xref>] were applied to incidence estimates from the Rochester [<xref ref-type="bibr" rid="pmed.1002254.ref022">22</xref>] and PAQUID [<xref ref-type="bibr" rid="pmed.1002254.ref023">23</xref>] cohorts. The relative risk estimates come from cases and controls, with younger cases (with a greater <italic>APOE</italic>-e4 effect) overrepresented. In addition, these models assumed that the controls in GWAS samples were representative of the overall population. This likely does not hold with a very common disease like dementia (which occurs in over 10% of those over 65 y and 35% or more of those over 85 y [<xref ref-type="bibr" rid="pmed.1002254.ref001">1</xref>]) because at higher ages those without dementia are fundamentally a selected sample. This also would tend to bias the estimates upward.</p>
+</sec>
+<sec id="sec023">
+<title>Insights from the regression models</title>
+<p>Overall, the substantial effects of age and <italic>APOE</italic>-e4 dose were consistent across the univariable and basic and more complex multivariable models, persisting even when other demographic factors as well as cognitive variables and family history were taken into account. Education also exhibited a dose response, but behaved less consistently, as much illustrating as illuminating the profound differences in education across these four cohorts.</p>
+<p>The effect of sex is even less consistent, perhaps reflecting ascertainment and cultural differences across disparate cohorts; findings in the literature are also inconsistent [<xref ref-type="bibr" rid="pmed.1002254.ref023">23</xref>,<xref ref-type="bibr" rid="pmed.1002254.ref065">65</xref>,<xref ref-type="bibr" rid="pmed.1002254.ref066">66</xref>]. Some studies suggest also that <italic>APOE</italic>-e4 behaves differently by sex, with a greater effect in women [<xref ref-type="bibr" rid="pmed.1002254.ref067">67</xref>,<xref ref-type="bibr" rid="pmed.1002254.ref068">68</xref>]. If we had had sufficient sample size, we would also have stratified our risk estimates on sex or considered including an interaction term in our regression models. However, in the population-based cohorts for the MCI/dementia outcome, there was strong attenuation of the effect estimates of sex when adjusting for educational attainment, suggesting that lack of educational attainment in women of older birth cohorts may partly explain the difference. However, for dementia only in the same cohorts, a nominally statistically significant higher risk in women persisted even after adjustment for demographics and other risk indicators. Conversely, in NACC, there was a higher risk in men, which we believe is likely related to ascertainment differences by sex in this convenience sample, as noted above. Overall, potential sex differences deserve particular focus in future studies given the complex relationships among sex, education, vascular risk factors, birth cohort, longevity, and genetics.</p>
+<p>Also of potential relevance, both to potential participants wishing to understand their absolute risk and to investigators designing clinical trials, both cognitive performance and subjective memory concerns were associated with an increased hazard of MCI or dementia. All in all, these associations suggest that relatively simple individual characteristics might be used to further refine individual risk stratification beyond age and <italic>APOE</italic> genotype.</p>
+</sec>
+<sec id="sec024">
+<title>Implications for study design and genetic counseling</title>
+<p>For the purposes of the Generation Study and other prevention trials, absolute cumulative incidence, both during the 5-y duration of the trial and over the remaining lifetime, is critical, but the differences across these cohort studies make it difficult to offer precise estimates, even with meta-analyses. In an ideal world, estimates would be tailored to the population entering the trial or, better still, the specific individuals, and would take into account not only explicit inclusion criteria but also any other measureable or predictable characteristics that might predict willingness to volunteer. A review of the first registrants on the GeneMatch registry, which serves as the primary US recruiting site for the Generation Study <italic>APOE</italic>-e4/e4 trial, shows that registrants differ from the general population beyond the explicit entry criteria. The population of 13,704 registrants enrolled thus far is relatively young (mean age 62.7 y, standard deviation 5.2) and women are overrepresented (80%). Among the 4,978 registrants who were asked about race/ethnicity, 92% are white. The frequency of the <italic>APOE</italic>-e4/e4 genotype among registrants is higher than in the general population, at 4.47%, and the <italic>APOE</italic>-e4 allele frequency is 20.4%; among the 3,456 registrants asked about whether they had a family history of dementia or Alzheimer disease, 70.1% said yes. While education was not measured, the high percent of females and individuals with a significant family history (and the high <italic>APOE-</italic>e4 frequency) suggests a population that may be more like NACC. However, data on education, cognitive performance, and subjective memory concerns are not available. Moreover, over time, if there are broader recruiting efforts in order to reach the target sample size, volunteers could gradually become more reflective of the general population, and lower risks might be expected.</p>
+<p>In the genetic counseling setting, any risk information would need to give a broad range of estimates to reflect uncertainty within cohorts and variation across cohorts. Because risk for disease is ongoing, and the lifetime risks were more stable than the 5-y risks in our analyses, we thought the lifetime risks were more informative for genetic disclosure. However, such risks may be less salient to some of those considering enrollment in trials at younger ages. The Generation Study elected to disclose the following “lifetime” risks of MCI or dementia to its potential participants: 30%–55% for individuals with <italic>APOE</italic>-e4/e4; 20%–25% for individuals with <italic>APOE</italic>-e3/e4 and -e2/e4 (with a note that risk might be lower for those with <italic>APOE-</italic>e2/e4); and 10%–15% for individuals with <italic>APOE</italic>-e3/e3, -e3/e2, and -e2/e2 (with a note that risk might be lower for those with <italic>APOE</italic>-e2/e3 and -e2/e2). These values are consistent with our findings, but use round numbers for intelligibility, and broader ranges to reflect statistical and other sources of uncertainty. The regression models are insufficiently precise for “personalized medicine” incidence estimates based on sex, education, or other factors, but they do allow for qualitative adjustments to overall stratified risk estimates. Relative risks by <italic>APOE</italic> genotype or <italic>APOE</italic>-e4 dose have limited relevance in the setting of the prevention trial, but may provide context. If these are provided, risk should be compared to the general population (based on a weighted average across the three possible <italic>APOE</italic>-e4 doses rather than the typical “no <italic>APOE</italic>-e4” base category used in regression models), which would more fairly allow a participant to put his or her own risk in the context of friends and acquaintances of unknown genotype. On the basis of our regression findings (<xref ref-type="supplementary-material" rid="pmed.1002254.s002">S1 Appendix</xref> Table E), for <italic>APOE-</italic>e4/e4 homozygotes, the adjusted relative risk for MCI/dementia is 2.7 for NACC, 3.4 for the Framingham Heart Study, and 2.4 for the Rotterdam Study, so disclosing a relative risk of about 3-fold compared to the general population would make sense. Use of pictographs as a visual aid for risk communication could be useful, given their ability to visually represent both absolute and relative risk information simultaneously [<xref ref-type="bibr" rid="pmed.1002254.ref069">69</xref>]. In addition, there is a robust literature on genetic risk communication that can inform best practices in cases where <italic>APOE</italic> information is disclosed to asymptomatic individuals [<xref ref-type="bibr" rid="pmed.1002254.ref070">70</xref>].</p>
+</sec>
+<sec id="sec025">
+<title>Limitations</title>
+<p>One major limitation of this study is that <italic>APOE</italic>-e4/e4 samples are small despite the large size of the initial cohorts, particularly for SALSA. This limits the stability of stratified cumulative incidence estimates (only partially addressed by the meta-analyses) as well as regression coefficients for <italic>APOE</italic>-e4 dose. This issue is further complicated by missing data (likely not missing at random) and likely differential dropout. Second, while the four cohorts are heterogeneous in sex distribution and education, there is little ethnic and racial diversity, so the findings are less relevant to participants of non-European background. Third, variations in the definitions of the exposure and outcome variables may hamper comparisons among cohorts. As noted above, each cohort uses different criteria to define unimpaired at baseline, and to screen, assess, and diagnose new onset cases. Different psychometric tests are applied, and even the same test performs differently across different groups; education- and/or age-adjusted norms can compensate for this, but may introduce other problems in interpretation. Other variation may come from differences in definitions (e.g., family history is based on a single question about parents only in the Rotterdam Study versus a detailed set of questions about each parent and sibling in NACC) or in how information is acquired (being positive for memory concerns is based on a yes answer to any one of three questionnaire items in the Rotterdam Study versus an overall clinical impression about the participant’s attitude in NACC). Moreover, some variables, notably level of education, may be defined similarly but have different meanings within different cultural contexts. Nevertheless, as we have shown, relative risk estimates are consistent despite this variation. Fourth, regression models for MCI or dementia are limited because of confounding and omitted predictors, and are complicated by multicollinearity of exposure and outcome variables that represents confounding, effect modification, and true signal.</p>
+</sec>
+<sec id="sec026">
+<title>Conclusion</title>
+<p>Prospective cohort studies can be used to inform study design, power, and informed consent in clinical trials among cognitively unimpaired individuals. While trial designers and participants may be most interested in absolute risk over relatively short intervals, absolute risk is less robustly estimated than relative risk, and short-term risk less robustly estimated (and more sensitive to the definition and operationalization of cognitively unimpaired at baseline) than long-term risk. Estimation that serves informed consent and optimal trial design will require matching the cohort used to estimate risk as closely as possible to trial participants.</p>
+<p>Overall, the estimates for <italic>APOE</italic>-associated risk of MCI or dementia were lower in our study than previously reported, and there is reason to believe that the risk estimates obtained in the population-based cohorts more accurately reflect the general population than those obtained in NACC. However, these lower risks may less accurately match the likely trial population. In general, such estimates are also sensitive to variation in sampling, assessment, and modeling. Rigorous attention to sampling, assessment, and statistical methods is critical to developing the best possible answers for clinical trial design.</p>
+</sec>
+</sec>
+<sec id="sec027">
+<title>Supporting information</title>
+<supplementary-material id="pmed.1002254.s001" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pmed.1002254.s001" xlink:type="simple">
+<label>S1 Checklist</label>
+<caption>
+<title>STROBE statement checklist with paragraph numbers per section.</title>
+<p>(DOC)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pmed.1002254.s002" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pmed.1002254.s002" xlink:type="simple">
+<label>S1 Appendix</label>
+<caption>
+<title>Supplementary tables of results for subdistribution hazard regression analyses.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pmed.1002254.s003" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pmed.1002254.s003" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Funding information.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pmed.1002254.s004" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pmed.1002254.s004" xlink:type="simple">
+<label>S2 Text</label>
+<caption>
+<title>Data availability statement.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>The authors would like to thank the thousands of study participants and myriad research staff who have enabled the collection and sharing of these data.</p>
+</ack>
+<glossary>
+<title>Abbreviations</title>
+<def-list>
+<def-item><term>3MS</term>
+<def><p>Modified Mini-Mental State Examination</p></def>
+</def-item>
+<def-item><term>GWAS</term>
+<def><p>genome-wide association study</p></def>
+</def-item>
+<def-item><term>HR</term>
+<def><p>hazard ratio</p></def>
+</def-item>
+<def-item><term>IRB</term>
+<def><p>institutional review board</p></def>
+</def-item>
+<def-item><term>MCI</term>
+<def><p>mild cognitive impairment</p></def>
+</def-item>
+<def-item><term>MMSE</term>
+<def><p>Mini-Mental State Examination</p></def>
+</def-item>
+<def-item><term>NACC</term>
+<def><p>National Alzheimer’s Coordinating Center</p></def>
+</def-item>
+<def-item><term>PAQUID</term>
+<def><p>Personnes Agées QUID</p></def>
+</def-item>
+<def-item><term>REVEAL</term>
+<def><p>Risk Evaluation and Education for Alzheimer’s Disease</p></def>
+</def-item>
+<def-item><term>SALSA</term>
+<def><p>Sacramento Area Latino Study on Aging</p></def>
+</def-item>
+</def-list>
+</glossary>
+<ref-list>
+<title>References</title>
+<ref id="pmed.1002254.ref001"><label>1</label><mixed-citation publication-type="other" xlink:type="simple">Alzheimer’s Disease International. World alzheimer report 2016. London: Alzheimer’s Disease International; 2016 [cited 2016 October 26]. Available from: <ext-link ext-link-type="uri" xlink:href="http://www.alz.co.uk/research/WorldAlzheimerReport2016.pdf" xlink:type="simple">http://www.alz.co.uk/research/WorldAlzheimerReport2016.pdf</ext-link>.</mixed-citation></ref>
+<ref id="pmed.1002254.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>de Bruijn</surname> <given-names>RF</given-names></name>, <name name-style="western"><surname>Bos</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Portegies</surname> <given-names>ML</given-names></name>, <name name-style="western"><surname>Hofman</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Franco</surname> <given-names>OH</given-names></name>, <name name-style="western"><surname>Koudstaal</surname> <given-names>PJ</given-names></name>, <etal>et al</etal>. <article-title>The potential for prevention of dementia across two decades: the prospective, population-based Rotterdam Study</article-title>. <source>BMC Med</source>. <year>2015</year>;<volume>13</volume>:<fpage>132</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/s12916-015-0377-5" xlink:type="simple">10.1186/s12916-015-0377-5</ext-link></comment> <object-id pub-id-type="pmid">26195085</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hsu</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Marshall</surname> <given-names>GA</given-names></name>. <article-title>Primary and secondary prevention trials in Alzheimer disease: looking back, moving forward</article-title>. <source>Curr Alzheimer Res</source>. <year>2016</year> <month>Sep</month> <day>30</day>.</mixed-citation></ref>
+<ref id="pmed.1002254.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sperling</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Rentz</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Johnson</surname> <given-names>KA</given-names></name>, <name name-style="western"><surname>Karlawish</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Donohue</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Salmon</surname> <given-names>DP</given-names></name>, <etal>et al</etal>. <article-title>The A4 study: stopping AD before symptoms begin?</article-title> <source>Sci Transl Med</source>. <year>2014</year>;<volume>6</volume>(<issue>228</issue>):<fpage>228fs13</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/scitranslmed.3007941" xlink:type="simple">10.1126/scitranslmed.3007941</ext-link></comment> <object-id pub-id-type="pmid">24648338</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Martinez-Lapiscina</surname> <given-names>EH</given-names></name>, <name name-style="western"><surname>Clavero</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Toledo</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>San Julian</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Sanchez-Tainta</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Corella</surname> <given-names>D</given-names></name>, <etal>et al</etal>. <article-title>Virgin olive oil supplementation and long-term cognition: the PREDIMED-NAVARRA randomized, trial</article-title>. <source>J Nutr Health Aging</source>. <year>2013</year>;<volume>17</volume>(<issue>6</issue>):<fpage>544</fpage>–<lpage>52</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s12603-013-0027-6" xlink:type="simple">10.1007/s12603-013-0027-6</ext-link></comment> <object-id pub-id-type="pmid">23732551</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ngandu</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Lehtisalo</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Solomon</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Levalahti</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Ahtiluoto</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Antikainen</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>A 2 year multidomain intervention of diet, exercise, cognitive training, and vascular risk monitoring versus control to prevent cognitive decline in at-risk elderly people (FINGER): a randomised controlled trial</article-title>. <source>Lancet</source>. <year>2015</year>;<volume>385</volume>(<issue>9984</issue>):<fpage>2255</fpage>–<lpage>63</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0140-6736(15)60461-5" xlink:type="simple">10.1016/S0140-6736(15)60461-5</ext-link></comment> <object-id pub-id-type="pmid">25771249</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reiman</surname> <given-names>EM</given-names></name>, <name name-style="western"><surname>Langbaum</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Tariot</surname> <given-names>PN</given-names></name>, <name name-style="western"><surname>Lopera</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Bateman</surname> <given-names>RJ</given-names></name>, <name name-style="western"><surname>Morris</surname> <given-names>JC</given-names></name>, <etal>et al</etal>. <article-title>CAP—advancing the evaluation of preclinical Alzheimer disease treatments</article-title>. <source>Nat Rev Neurol</source>. <year>2016</year>;<volume>12</volume>(<issue>1</issue>):<fpage>56</fpage>–<lpage>61</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrneurol.2015.177" xlink:type="simple">10.1038/nrneurol.2015.177</ext-link></comment> <object-id pub-id-type="pmid">26416539</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reiman</surname> <given-names>EM</given-names></name>, <name name-style="western"><surname>Langbaum</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Tariot</surname> <given-names>PN</given-names></name>. <article-title>Alzheimer’s Prevention Initiative: a proposal to evaluate presymptomatic treatments as quickly as possible</article-title>. <source>Biomark Med</source>. <year>2010</year>;<volume>4</volume>(<issue>1</issue>):<fpage>3</fpage>–<lpage>14</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.2217/bmm.09.91" xlink:type="simple">10.2217/bmm.09.91</ext-link></comment> <object-id pub-id-type="pmid">20383319</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref009"><label>9</label><mixed-citation publication-type="book" xlink:type="simple"><collab>Alzheimer’s Prevention Registry</collab>. <source>GeneMatch: connecting Alzheimer’s prevention studies with eligible volunteers</source>. <publisher-loc>Phoenix</publisher-loc>: <publisher-name>Alzheimer’s Prevention Registry</publisher-name>; <year>2016</year> [cited 2016 November 10]. Available from: <ext-link ext-link-type="uri" xlink:href="https://www.endalznow.org/genematch" xlink:type="simple">https://www.endalznow.org/genematch</ext-link>.</mixed-citation></ref>
+<ref id="pmed.1002254.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Slooter</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Cruts</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Kalmijn</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Hofman</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Breteler</surname> <given-names>MM</given-names></name>, <name name-style="western"><surname>Van Broeckhoven</surname> <given-names>C</given-names></name>, <etal>et al</etal>. <article-title>Risk estimates of dementia by apolipoprotein E genotypes from a population-based incidence study: the Rotterdam Study</article-title>. <source>Arch Neurol</source>. <year>1998</year>;<volume>55</volume>(<issue>7</issue>):<fpage>964</fpage>–<lpage>8</lpage>. <object-id pub-id-type="pmid">9678314</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Qiu</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Kivipelto</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Aguero-Torres</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Winblad</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Fratiglioni</surname> <given-names>L</given-names></name>. <article-title>Risk and protective effects of the APOE gene towards Alzheimer’s disease in the Kungsholmen project: variation by age and sex</article-title>. <source>J Neurol Neurosurg Psychiatry</source>. <year>2004</year>;<volume>75</volume>(<issue>6</issue>):<fpage>828</fpage>–<lpage>33</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1136/jnnp.2003.021493" xlink:type="simple">10.1136/jnnp.2003.021493</ext-link></comment> <object-id pub-id-type="pmid">15145993</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Goldman</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Hahn</surname> <given-names>SE</given-names></name>, <name name-style="western"><surname>Catania</surname> <given-names>JW</given-names></name>, <name name-style="western"><surname>LaRusse-Eckert</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Butson</surname> <given-names>MB</given-names></name>, <name name-style="western"><surname>Rumbaugh</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>Genetic counseling and testing for Alzheimer disease: joint practice guidelines of the American College of Medical Genetics and the National Society of Genetic Counselors</article-title>. <source>Genet Med</source>. <year>2011</year>;<volume>13</volume>(<issue>6</issue>):<fpage>597</fpage>–<lpage>605</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1097/GIM.0b013e31821d69b8" xlink:type="simple">10.1097/GIM.0b013e31821d69b8</ext-link></comment> <object-id pub-id-type="pmid">21577118</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yu</surname> <given-names>JT</given-names></name>, <name name-style="western"><surname>Tan</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Hardy</surname> <given-names>J</given-names></name>. <article-title>Apolipoprotein E in Alzheimer’s disease: an update</article-title>. <source>Annu Rev Neurosci</source>. <year>2014</year>;<volume>37</volume>:<fpage>79</fpage>–<lpage>100</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1146/annurev-neuro-071013-014300" xlink:type="simple">10.1146/annurev-neuro-071013-014300</ext-link></comment> <object-id pub-id-type="pmid">24821312</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Farrer</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Cupples</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Haines</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Hyman</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Kukull</surname> <given-names>WA</given-names></name>, <name name-style="western"><surname>Mayeux</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>Effects of age, sex, and ethnicity on the association between apolipoprotein E genotype and Alzheimer disease. A meta-analysis. APOE and Alzheimer Disease Meta Analysis Consortium</article-title>. <source>JAMA</source>. <year>1997</year>;<volume>278</volume>(<issue>16</issue>):<fpage>1349</fpage>–<lpage>56</lpage>. <object-id pub-id-type="pmid">9343467</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Roberts</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Cupples</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Relkin</surname> <given-names>NR</given-names></name>, <name name-style="western"><surname>Whitehouse</surname> <given-names>PJ</given-names></name>, <name name-style="western"><surname>Green</surname> <given-names>RC</given-names></name>. <article-title>Genetic risk assessment for adult children of people with Alzheimer’s disease: the Risk Evaluation and Education for Alzheimer’s Disease (REVEAL) study</article-title>. <source>J Geriatr Psychiatry Neurol</source>. <year>2005</year>;<volume>18</volume>(<issue>4</issue>):<fpage>250</fpage>–<lpage>5</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1177/0891988705281883" xlink:type="simple">10.1177/0891988705281883</ext-link></comment> <object-id pub-id-type="pmid">16306249</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Roberts</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Christensen</surname> <given-names>KD</given-names></name>, <name name-style="western"><surname>Green</surname> <given-names>RC</given-names></name>. <article-title>Using Alzheimer’s disease as a model for genetic risk disclosure: implications for personal genomics</article-title>. <source>Clin Genet</source>. <year>2011</year>;<volume>80</volume>(<issue>5</issue>):<fpage>407</fpage>–<lpage>14</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1111/j.1399-0004.2011.01739.x" xlink:type="simple">10.1111/j.1399-0004.2011.01739.x</ext-link></comment> <object-id pub-id-type="pmid">21696382</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cupples</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Farrer</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Sadovnick</surname> <given-names>AD</given-names></name>, <name name-style="western"><surname>Relkin</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Whitehouse</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Green</surname> <given-names>RC</given-names></name>. <article-title>Estimating risk curves for first-degree relatives of patients with Alzheimer’s disease: the REVEAL study</article-title>. <source>Genet Med</source>. <year>2004</year>;<volume>6</volume>(<issue>4</issue>):<fpage>192</fpage>–<lpage>6</lpage>. <object-id pub-id-type="pmid">15266206</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lautenschlager</surname> <given-names>NT</given-names></name>, <name name-style="western"><surname>Cupples</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Rao</surname> <given-names>VS</given-names></name>, <name name-style="western"><surname>Auerbach</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Becker</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Burke</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>Risk of dementia among relatives of Alzheimer’s disease patients in the MIRAGE study: what is in store for the oldest old?</article-title> <source>Neurology</source>. <year>1996</year>;<volume>46</volume>(<issue>3</issue>):<fpage>641</fpage>–<lpage>50</lpage>. <object-id pub-id-type="pmid">8618660</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Genin</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Hannequin</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Wallon</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Sleegers</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Hiltunen</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Combarros</surname> <given-names>O</given-names></name>, <etal>et al</etal>. <article-title>APOE and Alzheimer disease: a major gene with semi-dominant inheritance</article-title>. <source>Mol Psychiatry</source>. <year>2011</year>;<volume>16</volume>(<issue>9</issue>):<fpage>903</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/mp.2011.52" xlink:type="simple">10.1038/mp.2011.52</ext-link></comment> <object-id pub-id-type="pmid">21556001</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref020"><label>20</label><mixed-citation publication-type="other" xlink:type="simple">23andMe. Alzheimer’s disease (APOE variants): established research report on 2 reported markers. Mountain View (California): 23andMe; 2016 [cited 2016 November 10]. Available from: <ext-link ext-link-type="uri" xlink:href="https://www.23andme.com/en-ca/health/i_alzheimers/techreport/" xlink:type="simple">https://www.23andme.com/en-ca/health/i_alzheimers/techreport/</ext-link>.</mixed-citation></ref>
+<ref id="pmed.1002254.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lambert</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Heath</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Even</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Campion</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Sleegers</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Hiltunen</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>Genome-wide association study identifies variants at CLU and CR1 associated with Alzheimer’s disease</article-title>. <source>Nat Genet</source>. <year>2009</year>;<volume>41</volume>(<issue>10</issue>):<fpage>1094</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/ng.439" xlink:type="simple">10.1038/ng.439</ext-link></comment> <object-id pub-id-type="pmid">19734903</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rocca</surname> <given-names>WA</given-names></name>, <name name-style="western"><surname>Cha</surname> <given-names>RH</given-names></name>, <name name-style="western"><surname>Waring</surname> <given-names>SC</given-names></name>, <name name-style="western"><surname>Kokmen</surname> <given-names>E</given-names></name>. <article-title>Incidence of dementia and Alzheimer’s disease: a reanalysis of data from Rochester, Minnesota, 1975–1984</article-title>. <source>Am J Epidemiol</source>. <year>1998</year>;<volume>148</volume>(<issue>1</issue>):<fpage>51</fpage>–<lpage>62</lpage>. <object-id pub-id-type="pmid">9663404</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Letenneur</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Gilleron</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Commenges</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Helmer</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Orgogozo</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Dartigues</surname> <given-names>JF</given-names></name>. <article-title>Are sex and educational level independent predictors of dementia and Alzheimer’s disease? Incidence data from the PAQUID project</article-title>. <source>J Neurol Neurosurg Psychiatry</source>. <year>1999</year>;<volume>66</volume>(<issue>2</issue>):<fpage>177</fpage>–<lpage>83</lpage>. <object-id pub-id-type="pmid">10071096</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bonham</surname> <given-names>LW</given-names></name>, <name name-style="western"><surname>Geier</surname> <given-names>EG</given-names></name>, <name name-style="western"><surname>Fan</surname> <given-names>CC</given-names></name>, <name name-style="western"><surname>Leong</surname> <given-names>JK</given-names></name>, <name name-style="western"><surname>Besser</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Kukull</surname> <given-names>WA</given-names></name>, <etal>et al</etal>. <article-title>Age-dependent effects of APOE epsilon4 in preclinical Alzheimer’s disease</article-title>. <source>Ann Clin Transl Neurol</source>. <year>2016</year>;<volume>3</volume>(<issue>9</issue>):<fpage>668</fpage>–<lpage>77</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/acn3.333" xlink:type="simple">10.1002/acn3.333</ext-link></comment> <object-id pub-id-type="pmid">27648456</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bennett</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Schneider</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Arvanitakis</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>RS</given-names></name>. <article-title>Overview and findings from the Religious Orders Study</article-title>. <source>Curr Alzheimer Res</source>. <year>2012</year>;<volume>9</volume>(<issue>6</issue>):<fpage>628</fpage>–<lpage>45</lpage>. <object-id pub-id-type="pmid">22471860</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Miech</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Breitner</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Zandi</surname> <given-names>PP</given-names></name>, <name name-style="western"><surname>Khachaturian</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Anthony</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Mayer</surname> <given-names>L</given-names></name>. <article-title>Incidence of AD may decline in the early 90s for men, later for women: the Cache County study</article-title>. <source>Neurology</source>. <year>2002</year>;<volume>58</volume>(<issue>2</issue>):<fpage>209</fpage>–<lpage>18</lpage>. <object-id pub-id-type="pmid">11805246</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bachman</surname> <given-names>DL</given-names></name>, <name name-style="western"><surname>Wolf</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Linn</surname> <given-names>RT</given-names></name>, <name name-style="western"><surname>Knoefel</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Cobb</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Belanger</surname> <given-names>AJ</given-names></name>, <etal>et al</etal>. <article-title>Incidence of dementia and probable Alzheimer’s disease in a general population: the Framingham Study</article-title>. <source>Neurology</source>. <year>1993</year>;<volume>43</volume>(<issue>3</issue> Pt 1):<fpage>515</fpage>–<lpage>9</lpage>.</mixed-citation></ref>
+<ref id="pmed.1002254.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hofman</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Brusselle</surname> <given-names>GG</given-names></name>, <name name-style="western"><surname>Darwish Murad</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>van Duijn</surname> <given-names>CM</given-names></name>, <name name-style="western"><surname>Franco</surname> <given-names>OH</given-names></name>, <name name-style="western"><surname>Goedegebure</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>The Rotterdam Study: 2016 objectives and design update</article-title>. <source>Eur J Epidemiol</source>. <year>2015</year>;<volume>30</volume>(<issue>8</issue>):<fpage>661</fpage>–<lpage>708</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s10654-015-0082-x" xlink:type="simple">10.1007/s10654-015-0082-x</ext-link></comment> <object-id pub-id-type="pmid">26386597</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wu</surname> <given-names>CC</given-names></name>, <name name-style="western"><surname>Mungas</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Petkov</surname> <given-names>CI</given-names></name>, <name name-style="western"><surname>Eberling</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Zrelak</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Buonocore</surname> <given-names>MH</given-names></name>, <etal>et al</etal>. <article-title>Brain structure and cognition in a community sample of elderly Latinos</article-title>. <source>Neurology</source>. <year>2002</year>;<volume>59</volume>(<issue>3</issue>):<fpage>383</fpage>–<lpage>91</lpage>. <object-id pub-id-type="pmid">12177372</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mungas</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Reed</surname> <given-names>BR</given-names></name>, <name name-style="western"><surname>Crane</surname> <given-names>PK</given-names></name>, <name name-style="western"><surname>Haan</surname> <given-names>MN</given-names></name>, <name name-style="western"><surname>Gonzalez</surname> <given-names>H</given-names></name>. <article-title>Spanish and English Neuropsychological Assessment Scales (SENAS): further development and psychometric characteristics</article-title>. <source>Psychol Assess</source>. <year>2004</year>;<volume>16</volume>(<issue>4</issue>):<fpage>347</fpage>–<lpage>59</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1037/1040-3590.16.4.347" xlink:type="simple">10.1037/1040-3590.16.4.347</ext-link></comment> <object-id pub-id-type="pmid">15584794</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Beekly</surname> <given-names>DL</given-names></name>, <name name-style="western"><surname>Ramos</surname> <given-names>EM</given-names></name>, <name name-style="western"><surname>van Belle</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Deitrich</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Clark</surname> <given-names>AD</given-names></name>, <name name-style="western"><surname>Jacka</surname> <given-names>ME</given-names></name>, <etal>et al</etal>. <article-title>The National Alzheimer’s Coordinating Center (NACC) database: an Alzheimer disease database</article-title>. <source>Alzheimer Dis Assoc Disord</source>. <year>2004</year>;<volume>18</volume>(<issue>4</issue>):<fpage>270</fpage>–<lpage>7</lpage>. <object-id pub-id-type="pmid">15592144</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Farmer</surname> <given-names>ME</given-names></name>, <name name-style="western"><surname>White</surname> <given-names>LR</given-names></name>, <name name-style="western"><surname>Abbott</surname> <given-names>RD</given-names></name>, <name name-style="western"><surname>Kittner</surname> <given-names>SJ</given-names></name>, <name name-style="western"><surname>Kaplan</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Wolz</surname> <given-names>MM</given-names></name>, <etal>et al</etal>. <article-title>Blood pressure and cognitive performance. The Framingham Study</article-title>. <source>Am J Epidemiol</source>. <year>1987</year>;<volume>126</volume>(<issue>6</issue>):<fpage>1103</fpage>–<lpage>14</lpage>. <object-id pub-id-type="pmid">3687920</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Petersen</surname> <given-names>RC</given-names></name>, <name name-style="western"><surname>Smith</surname> <given-names>GE</given-names></name>, <name name-style="western"><surname>Waring</surname> <given-names>SC</given-names></name>, <name name-style="western"><surname>Ivnik</surname> <given-names>RJ</given-names></name>, <name name-style="western"><surname>Tangalos</surname> <given-names>EG</given-names></name>, <name name-style="western"><surname>Kokmen</surname> <given-names>E</given-names></name>. <article-title>Mild cognitive impairment: clinical characterization and outcome</article-title>. <source>Arch Neurol</source>. <year>1999</year>;<volume>56</volume>(<issue>3</issue>):<fpage>303</fpage>–<lpage>8</lpage>. <object-id pub-id-type="pmid">10190820</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Roth</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Tym</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Mountjoy</surname> <given-names>CQ</given-names></name>, <name name-style="western"><surname>Huppert</surname> <given-names>FA</given-names></name>, <name name-style="western"><surname>Hendrie</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Verma</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>CAMDEX. A standardised instrument for the diagnosis of mental disorder in the elderly with special reference to the early detection of dementia</article-title>. <source>Br J Psychiatry</source>. <year>1986</year>;<volume>149</volume>:<fpage>698</fpage>–<lpage>709</lpage>. <object-id pub-id-type="pmid">3790869</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Haan</surname> <given-names>MN</given-names></name>, <name name-style="western"><surname>Mungas</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Gonzalez</surname> <given-names>HM</given-names></name>, <name name-style="western"><surname>Ortiz</surname> <given-names>TA</given-names></name>, <name name-style="western"><surname>Acharya</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Jagust</surname> <given-names>WJ</given-names></name>. <article-title>Prevalence of dementia in older latinos: the influence of type 2 diabetes mellitus, stroke and genetic factors</article-title>. <source>J Am Geriatr Soc</source>. <year>2003</year>;<volume>51</volume>(<issue>2</issue>):<fpage>169</fpage>–<lpage>77</lpage>. <object-id pub-id-type="pmid">12558712</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Teng</surname> <given-names>EL</given-names></name>, <name name-style="western"><surname>Chui</surname> <given-names>HC</given-names></name>. <article-title>The Modified Mini-Mental State (3MS) examination</article-title>. <source>J Clin Psychiatry</source>. <year>1987</year>;<volume>48</volume>(<issue>8</issue>):<fpage>314</fpage>–<lpage>8</lpage>. <object-id pub-id-type="pmid">3611032</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jorm</surname> <given-names>AF</given-names></name>, <name name-style="western"><surname>Jacomb</surname> <given-names>PA</given-names></name>. <article-title>The Informant Questionnaire on Cognitive Decline in the Elderly (IQCODE): socio-demographic correlates, reliability, validity and some norms</article-title>. <source>Psychol Med</source>. <year>1989</year>;<volume>19</volume>(<issue>4</issue>):<fpage>1015</fpage>–<lpage>22</lpage>. <object-id pub-id-type="pmid">2594878</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jorm</surname> <given-names>AF</given-names></name>. <article-title>The Informant Questionnaire on Cognitive Decline in the Elderly (IQCODE): a review</article-title>. <source>Int Psychogeriatr</source>. <year>2004</year>;<volume>16</volume>(<issue>3</issue>):<fpage>275</fpage>–<lpage>93</lpage>. <object-id pub-id-type="pmid">15559753</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ebly</surname> <given-names>EM</given-names></name>, <name name-style="western"><surname>Hogan</surname> <given-names>DB</given-names></name>, <name name-style="western"><surname>Parhad</surname> <given-names>IM</given-names></name>. <article-title>Cognitive impairment in the nondemented elderly. Results from the Canadian Study of Health and Aging</article-title>. <source>Arch Neurol</source>. <year>1995</year>;<volume>52</volume>(<issue>6</issue>):<fpage>612</fpage>–<lpage>9</lpage>. <object-id pub-id-type="pmid">7763211</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Morris</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Weintraub</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Chui</surname> <given-names>HC</given-names></name>, <name name-style="western"><surname>Cummings</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Decarli</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Ferris</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>The Uniform Data Set (UDS): clinical and cognitive variables and descriptive data from Alzheimer Disease Centers</article-title>. <source>Alzheimer Dis Assoc Disord</source>. <year>2006</year>;<volume>20</volume>(<issue>4</issue>):<fpage>210</fpage>–<lpage>6</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1097/01.wad.0000213865.09806.92" xlink:type="simple">10.1097/01.wad.0000213865.09806.92</ext-link></comment> <object-id pub-id-type="pmid">17132964</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hughes</surname> <given-names>CP</given-names></name>, <name name-style="western"><surname>Berg</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Danziger</surname> <given-names>WL</given-names></name>, <name name-style="western"><surname>Coben</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Martin</surname> <given-names>RL</given-names></name>. <article-title>A new clinical scale for the staging of dementia</article-title>. <source>Br J Psychiatry</source>. <year>1982</year>;<volume>140</volume>:<fpage>566</fpage>–<lpage>72</lpage>. <object-id pub-id-type="pmid">7104545</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Weintraub</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Salmon</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Mercaldo</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Ferris</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Graff-Radford</surname> <given-names>NR</given-names></name>, <name name-style="western"><surname>Chui</surname> <given-names>H</given-names></name>, <etal>et al</etal>. <article-title>The Alzheimer’s Disease Centers’ Uniform Data Set (UDS): the neuropsychologic test battery</article-title>. <source>Alzheimer Dis Assoc Disord</source>. <year>2009</year>;<volume>23</volume>(<issue>2</issue>):<fpage>91</fpage>–<lpage>101</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1097/WAD.0b013e318191c7dd" xlink:type="simple">10.1097/WAD.0b013e318191c7dd</ext-link></comment> <object-id pub-id-type="pmid">19474567</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>D’Agostino</surname> <given-names>RB</given-names></name>, <name name-style="western"><surname>Wolf</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Belanger</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Kannel</surname> <given-names>WB</given-names></name>. <article-title>Stroke risk profile: adjustment for antihypertensive medication. The Framingham Study</article-title>. <source>Stroke</source>. <year>1994</year>;<volume>25</volume>(<issue>1</issue>):<fpage>40</fpage>–<lpage>3</lpage>. <object-id pub-id-type="pmid">8266381</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Goff</surname> <given-names>DC</given-names> <suffix>Jr</suffix></name>, <name name-style="western"><surname>Lloyd-Jones</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Bennett</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Coady</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>D’Agostino</surname> <given-names>RB</given-names></name>, <name name-style="western"><surname>Gibbons</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>2013 ACC/AHA guideline on the assessment of cardiovascular risk: a report of the American College of Cardiology/American Heart Association Task Force on Practice Guidelines</article-title>. <source>Circulation</source>. <year>2014</year>;<volume>129</volume>(<issue>25</issue> Suppl 2):<fpage>S49</fpage>–<lpage>73</lpage>.</mixed-citation></ref>
+<ref id="pmed.1002254.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thomsen</surname> <given-names>T</given-names></name>. <article-title>HeartScore: a new web-based approach to European cardiovascular disease risk management</article-title>. <source>Eur J Cardiovasc Prev Rehabil</source>. <year>2005</year>;<volume>12</volume>(<issue>5</issue>):<fpage>424</fpage>–<lpage>6</lpage>. <object-id pub-id-type="pmid">16210927</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gray</surname> <given-names>RJ</given-names></name>. <article-title>A class of K-sample tests for comparing the cumulative incidence of a competing risk</article-title>. <source>Ann Stat</source>. <year>1988</year>;<volume>16</volume>:<fpage>1141</fpage>–<lpage>54</lpage>.</mixed-citation></ref>
+<ref id="pmed.1002254.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Putter</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Fiocco</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Geskus</surname> <given-names>RB</given-names></name>. <article-title>Tutorial in biostatistics: competing risks and multi-state models</article-title>. <source>Stat Med</source>. <year>2007</year>;<volume>26</volume>(<issue>11</issue>):<fpage>2389</fpage>–<lpage>430</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/sim.2712" xlink:type="simple">10.1002/sim.2712</ext-link></comment> <object-id pub-id-type="pmid">17031868</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref048"><label>48</label><mixed-citation publication-type="book" xlink:type="simple"><collab>R Core Team</collab>. <source>R: a language and environment for statistical computing</source>. <publisher-loc>Vienna</publisher-loc>: <publisher-name>R Foundation for Statistical Computing</publisher-name>; <year>2015</year>.</mixed-citation></ref>
+<ref id="pmed.1002254.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lin</surname> <given-names>DY</given-names></name>. <article-title>Non-parametric inference for cumulative incidence functions in competing risks studies</article-title>. <source>Stat Med</source>. <year>1997</year>;<volume>16</volume>(<issue>8</issue>):<fpage>901</fpage>–<lpage>10</lpage>. <object-id pub-id-type="pmid">9160487</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fine</surname> <given-names>JP</given-names></name>, <name name-style="western"><surname>Gray</surname> <given-names>RJ</given-names></name>. <article-title>A proportional hazards model for the subdistribution of a competing risk</article-title>. <source>J Am Stat Soc</source>. <year>1999</year>;<volume>94</volume>:<fpage>496</fpage>–<lpage>509</lpage>.</mixed-citation></ref>
+<ref id="pmed.1002254.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Prentice</surname> <given-names>RL</given-names></name>, <name name-style="western"><surname>Kalbfleisch</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Peterson</surname> <given-names>AV</given-names> <suffix>Jr</suffix></name>, <name name-style="western"><surname>Flournoy</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Farewell</surname> <given-names>VT</given-names></name>, <name name-style="western"><surname>Breslow</surname> <given-names>NE</given-names></name>. <article-title>The analysis of failure times in the presence of competing risks</article-title>. <source>Biometrics</source>. <year>1978</year>;<volume>34</volume>(<issue>4</issue>):<fpage>541</fpage>–<lpage>54</lpage>. <object-id pub-id-type="pmid">373811</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref052"><label>52</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Haller</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Schmidt</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Ulm</surname> <given-names>K</given-names></name>. <article-title>Applying competing risks regression models: an overview</article-title>. <source>Lifetime Data Anal</source>. <year>2013</year>;<volume>19</volume>(<issue>1</issue>):<fpage>33</fpage>–<lpage>58</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s10985-012-9230-8" xlink:type="simple">10.1007/s10985-012-9230-8</ext-link></comment> <object-id pub-id-type="pmid">23010807</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>DerSimonian</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Laird</surname> <given-names>N</given-names></name>. <article-title>Meta-analysis in clinical trials</article-title>. <source>Control Clin Trials</source>. <year>1986</year>;<volume>7</volume>(<issue>3</issue>):<fpage>177</fpage>–<lpage>88</lpage>. <object-id pub-id-type="pmid">3802833</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref054"><label>54</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Andersen</surname> <given-names>PK</given-names></name>, <name name-style="western"><surname>Geskus</surname> <given-names>RB</given-names></name>, <name name-style="western"><surname>de Witte</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Putter</surname> <given-names>H</given-names></name>. <article-title>Competing risks in epidemiology: possibilities and pitfalls</article-title>. <source>Int J Epidemiol</source>. <year>2012</year>;<volume>41</volume>(<issue>3</issue>):<fpage>861</fpage>–<lpage>70</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/ije/dyr213" xlink:type="simple">10.1093/ije/dyr213</ext-link></comment> <object-id pub-id-type="pmid">22253319</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref055"><label>55</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Corrada</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Brookmeyer</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Kawas</surname> <given-names>C</given-names></name>. <article-title>Sources of variability in prevalence rates of Alzheimer’s disease</article-title>. <source>Int J Epidemiol</source>. <year>1995</year>;<volume>24</volume>(<issue>5</issue>):<fpage>1000</fpage>–<lpage>5</lpage>. <object-id pub-id-type="pmid">8557432</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kochan</surname> <given-names>NA</given-names></name>, <name name-style="western"><surname>Slavin</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Brodaty</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Crawford</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Trollor</surname> <given-names>JN</given-names></name>, <name name-style="western"><surname>Draper</surname> <given-names>B</given-names></name>, <etal>et al</etal>. <article-title>Effect of different impairment criteria on prevalence of “objective” mild cognitive impairment in a community sample</article-title>. <source>Am J Geriatr Psychiatry</source>. <year>2010</year>;<volume>18</volume>(<issue>8</issue>):<fpage>711</fpage>–<lpage>22</lpage>. <object-id pub-id-type="pmid">21491632</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref057"><label>57</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jarvik</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Larson</surname> <given-names>EB</given-names></name>, <name name-style="western"><surname>Goddard</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Schellenberg</surname> <given-names>GD</given-names></name>, <name name-style="western"><surname>Wijsman</surname> <given-names>EM</given-names></name>. <article-title>Influence of apolipoprotein E genotype on the transmission of Alzheimer disease in a community-based sample</article-title>. <source>Am J Hum Genet</source>. <year>1996</year>;<volume>58</volume>(<issue>1</issue>):<fpage>191</fpage>–<lpage>200</lpage>. <object-id pub-id-type="pmid">8554056</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref058"><label>58</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Huang</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Qiu</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>von Strauss</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Winblad</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Fratiglioni</surname> <given-names>L</given-names></name>. <article-title>APOE genotype, family history of dementia, and Alzheimer disease risk: a 6-year follow-up study</article-title>. <source>Arch Neurol</source>. <year>2004</year>;<volume>61</volume>(<issue>12</issue>):<fpage>1930</fpage>–<lpage>4</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1001/archneur.61.12.1930" xlink:type="simple">10.1001/archneur.61.12.1930</ext-link></comment> <object-id pub-id-type="pmid">15596614</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref059"><label>59</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>van Oijen</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>de Jong</surname> <given-names>FJ</given-names></name>, <name name-style="western"><surname>Hofman</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Koudstaal</surname> <given-names>PJ</given-names></name>, <name name-style="western"><surname>Breteler</surname> <given-names>MM</given-names></name>. <article-title>Subjective memory complaints, education, and risk of Alzheimer’s disease</article-title>. <source>Alzheimers Dement</source>. <year>2007</year>;<volume>3</volume>(<issue>2</issue>):<fpage>92</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jalz.2007.01.011" xlink:type="simple">10.1016/j.jalz.2007.01.011</ext-link></comment> <object-id pub-id-type="pmid">19595922</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref060"><label>60</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dickerson</surname> <given-names>BC</given-names></name>, <name name-style="western"><surname>Sperling</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Hyman</surname> <given-names>BT</given-names></name>, <name name-style="western"><surname>Albert</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Blacker</surname> <given-names>D</given-names></name>. <article-title>Clinical prediction of Alzheimer disease dementia across the spectrum of mild cognitive impairment</article-title>. <source>Arch Gen Psychiatry</source>. <year>2007</year>;<volume>64</volume>(<issue>12</issue>):<fpage>1443</fpage>–<lpage>50</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1001/archpsyc.64.12.1443" xlink:type="simple">10.1001/archpsyc.64.12.1443</ext-link></comment> <object-id pub-id-type="pmid">18056553</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref061"><label>61</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Blacker</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Muzikansky</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Martin</surname> <given-names>EC</given-names></name>, <name name-style="western"><surname>Tanzi</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>McArdle</surname> <given-names>JJ</given-names></name>, <etal>et al</etal>. <article-title>Neuropsychological measures in normal individuals that predict subsequent cognitive decline</article-title>. <source>Arch Neurol</source>. <year>2007</year>;<volume>64</volume>(<issue>6</issue>):<fpage>862</fpage>–<lpage>71</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1001/archneur.64.6.862" xlink:type="simple">10.1001/archneur.64.6.862</ext-link></comment> <object-id pub-id-type="pmid">17562935</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref062"><label>62</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Knopman</surname> <given-names>DS</given-names></name>, <name name-style="western"><surname>Beiser</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Machulda</surname> <given-names>MM</given-names></name>, <name name-style="western"><surname>Fields</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Roberts</surname> <given-names>RO</given-names></name>, <name name-style="western"><surname>Pankratz</surname> <given-names>VS</given-names></name>, <etal>et al</etal>. <article-title>Spectrum of cognition short of dementia: Framingham Heart Study and Mayo Clinic Study of Aging</article-title>. <source>Neurology</source>. <year>2015</year>;<volume>85</volume>(<issue>19</issue>):<fpage>1712</fpage>–<lpage>21</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1212/WNL.0000000000002100" xlink:type="simple">10.1212/WNL.0000000000002100</ext-link></comment> <object-id pub-id-type="pmid">26453643</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref063"><label>63</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Blacker</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Haines</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Rodes</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Terwedow</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Go</surname> <given-names>RC</given-names></name>, <name name-style="western"><surname>Harrell</surname> <given-names>LE</given-names></name>, <etal>et al</etal>. <article-title>ApoE-4 and age at onset of Alzheimer’s disease: the NIMH genetics initiative</article-title>. <source>Neurology</source>. <year>1997</year>;<volume>48</volume>(<issue>1</issue>):<fpage>139</fpage>–<lpage>47</lpage>. <object-id pub-id-type="pmid">9008509</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref064"><label>64</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Williams</surname> <given-names>RL</given-names></name>. <article-title>Product-limit survival functions with correlated survival times</article-title>. <source>Lifetime Data Anal</source>. <year>1995</year>;<volume>1</volume>(<issue>2</issue>):<fpage>171</fpage>–<lpage>86</lpage>. <object-id pub-id-type="pmid">9385099</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref065"><label>65</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Andersen</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Launer</surname> <given-names>LJ</given-names></name>, <name name-style="western"><surname>Dewey</surname> <given-names>ME</given-names></name>, <name name-style="western"><surname>Letenneur</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Ott</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Copeland</surname> <given-names>JR</given-names></name>, <etal>et al</etal>. <article-title>Gender differences in the incidence of AD and vascular dementia: the EURODEM Studies. EURODEM Incidence Research Group</article-title>. <source>Neurology</source>. <year>1999</year>;<volume>53</volume>(<issue>9</issue>):<fpage>1992</fpage>–<lpage>7</lpage>. <object-id pub-id-type="pmid">10599770</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref066"><label>66</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gao</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Hendrie</surname> <given-names>HC</given-names></name>, <name name-style="western"><surname>Hall</surname> <given-names>KS</given-names></name>, <name name-style="western"><surname>Hui</surname> <given-names>S</given-names></name>. <article-title>The relationships between age, sex, and the incidence of dementia and Alzheimer disease: a meta-analysis</article-title>. <source>Arch Gen Psychiatry</source>. <year>1998</year>;<volume>55</volume>(<issue>9</issue>):<fpage>809</fpage>–<lpage>15</lpage>. <object-id pub-id-type="pmid">9736007</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref067"><label>67</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mielke</surname> <given-names>MM</given-names></name>, <name name-style="western"><surname>Vemuri</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Rocca</surname> <given-names>WA</given-names></name>. <article-title>Clinical epidemiology of Alzheimer’s disease: assessing sex and gender differences</article-title>. <source>Clin Epidemiol</source>. <year>2014</year>;<volume>6</volume>:<fpage>37</fpage>–<lpage>48</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.2147/CLEP.S37929" xlink:type="simple">10.2147/CLEP.S37929</ext-link></comment> <object-id pub-id-type="pmid">24470773</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref068"><label>68</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Payami</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Zareparsi</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Montee</surname> <given-names>KR</given-names></name>, <name name-style="western"><surname>Sexton</surname> <given-names>GJ</given-names></name>, <name name-style="western"><surname>Kaye</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Bird</surname> <given-names>TD</given-names></name>, <etal>et al</etal>. <article-title>Gender difference in apolipoprotein E-associated risk for familial Alzheimer disease: a possible clue to the higher incidence of Alzheimer disease in women</article-title>. <source>Am J Hum Genet</source>. <year>1996</year>;<volume>58</volume>(<issue>4</issue>):<fpage>803</fpage>–<lpage>11</lpage>. <object-id pub-id-type="pmid">8644745</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref069"><label>69</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fagerlin</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Zikmund-Fisher</surname> <given-names>BJ</given-names></name>, <name name-style="western"><surname>Ubel</surname> <given-names>PA</given-names></name>. <article-title>Helping patients decide: ten steps to better risk communication</article-title>. <source>J Natl Cancer Inst</source>. <year>2011</year>;<volume>103</volume>(<issue>19</issue>):<fpage>1436</fpage>–<lpage>43</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/jnci/djr318" xlink:type="simple">10.1093/jnci/djr318</ext-link></comment> <object-id pub-id-type="pmid">21931068</object-id></mixed-citation></ref>
+<ref id="pmed.1002254.ref070"><label>70</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lautenbach</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Christensen</surname> <given-names>KD</given-names></name>, <name name-style="western"><surname>Sparks</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Green</surname> <given-names>RC</given-names></name>. <article-title>Communicating genetic risk information for common disorders in the era of genomic medicine</article-title>. <source>Annu Rev Genomics Hum Genet</source>. <year>2013</year>;<volume>14</volume>:<fpage>491</fpage>–<lpage>513</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1146/annurev-genom-092010-110722" xlink:type="simple">10.1146/annurev-genom-092010-110722</ext-link></comment> <object-id pub-id-type="pmid">24003856</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

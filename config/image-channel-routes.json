@@ -1154,22 +1154,6 @@
       }
     }
   },
-  "replicate/alibaba/wan-3": {
-    "generation": {
-      "endpoint": "alibaba/wan-3",
-      "promptField": "prompt",
-      "sizeMode": "ratio",
-      "sizeField": "aspect_ratio"
-    },
-    "editing": {
-      "endpoint": "alibaba/wan-3",
-      "promptField": "prompt",
-      "sizeMode": "ratio",
-      "sizeField": "aspect_ratio",
-      "sourceField": "image",
-      "sourceArray": false
-    }
-  },
   "replicate/black-forest-labs/flux-1.1-pro": {
     "generation": {
       "endpoint": "black-forest-labs/flux-1.1-pro",
@@ -4321,6 +4305,513 @@
       "endpoint": "/v1/wand/",
       "sizeMode": "none",
       "maxPromptLength": 600
+    }
+  },
+  "runware/alibaba:qwen-image@2.1-pro": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/bfl:flux@3-image": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/bytedance:seedream@5.0-flash": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/google:nano-banana@2.1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 45000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 45000
+    }
+  },
+  "runware/ideogram:4.5@precise-edit": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "none",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/ideogram:4.5@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/recraft:v4.1@flash": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "fal/google/nano-banana-2.1": {
+    "generation": {
+      "endpoint": "google/nano-banana-2.1",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      }
+    },
+    "editing": {
+      "endpoint": "google/nano-banana-2.1/edit",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      },
+      "sourceField": "image_urls",
+      "sourceArray": true
+    }
+  },
+  "bfl/flux-3-image": {
+    "generation": {
+      "endpoint": "/v1/flux-3-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "1.5K": "1.5k",
+        "2K": "2k",
+        "4K": "4k"
+      },
+      "constants": {
+        "grounding": false,
+        "version": "latest"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/flux-3-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "1.5K": "1.5k",
+        "2K": "2k",
+        "4K": "4k"
+      },
+      "constants": {
+        "grounding": false,
+        "version": "latest"
+      },
+      "sourceField": "images",
+      "sourceArray": true,
+      "sourceEncoding": "base64"
+    }
+  },
+  "ideogram/ideogram-4-5": {
+    "generation": {
+      "endpoint": "/v2/image/generate/ideogram-4-5",
+      "sizeMode": "string",
+      "sizeField": "size",
+      "requestEncoding": "json",
+      "maxPromptLength": 10000,
+      "constants": {
+        "num_images": 1,
+        "async": false
+      }
+    },
+    "editing": {
+      "endpoint": "/v2/image/precise-edit/ideogram-4-5",
+      "sizeMode": "none",
+      "sourceField": "image",
+      "maxPromptLength": 10000,
+      "maxSourceBytes": 25000000,
+      "constants": {
+        "num_images": 1,
+        "async": false
+      }
+    }
+  },
+  "replicate/google/nano-banana-2.1": {
+    "generation": {
+      "endpoint": "google/nano-banana-2.1",
+      "version": "38c8908f74a5dd52852ca32926b2d9fadf6be729f3b4336834a9b6f29b74bd83",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      },
+      "constants": {
+        "output_format": "png",
+        "google_search": false,
+        "image_search": false
+      }
+    },
+    "editing": {
+      "endpoint": "google/nano-banana-2.1",
+      "version": "38c8908f74a5dd52852ca32926b2d9fadf6be729f3b4336834a9b6f29b74bd83",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      },
+      "constants": {
+        "output_format": "png",
+        "google_search": false,
+        "image_search": false
+      },
+      "sourceField": "image_input",
+      "sourceArray": true
+    }
+  },
+  "replicate/black-forest-labs/flux-3-image": {
+    "generation": {
+      "endpoint": "black-forest-labs/flux-3-image",
+      "version": "b6b5b9417078a80ed3e6f1748ed6af3ca416b2425fa24debf164cad35dfb0f28",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "1.5K": "1.5k",
+        "2K": "2k",
+        "4K": "4k"
+      },
+      "constants": {
+        "output_format": "png",
+        "grounding": false
+      }
+    },
+    "editing": {
+      "endpoint": "black-forest-labs/flux-3-image",
+      "version": "b6b5b9417078a80ed3e6f1748ed6af3ca416b2425fa24debf164cad35dfb0f28",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "1.5K": "1.5k",
+        "2K": "2k",
+        "4K": "4k"
+      },
+      "constants": {
+        "output_format": "png",
+        "grounding": false
+      },
+      "sourceField": "images",
+      "sourceArray": true
+    }
+  },
+  "replicate/ideogram-ai/ideogram-4-5": {
+    "generation": {
+      "endpoint": "ideogram-ai/ideogram-4-5",
+      "version": "2a9e025d8b9b109791919fa179b5e693f594cabff01191daf6df38eb63e5959d",
+      "sizeMode": "string",
+      "sizeField": "size",
+      "constants": {
+        "num_images": 1
+      }
+    },
+    "editing": {
+      "endpoint": "ideogram-ai/ideogram-4-5",
+      "version": "2a9e025d8b9b109791919fa179b5e693f594cabff01191daf6df38eb63e5959d",
+      "sizeMode": "string",
+      "sizeField": "size",
+      "constants": {
+        "num_images": 1
+      },
+      "sourceField": "images",
+      "sourceArray": true
+    }
+  },
+  "replicate/ideogram-ai/ideogram-4-5-precise-edit": {
+    "editing": {
+      "endpoint": "ideogram-ai/ideogram-4-5-precise-edit",
+      "version": "59afac18e189c79312ce59c68aee67754c835f6a022ff360265fb9b4ae2d2021",
+      "sizeMode": "none",
+      "sourceField": "image",
+      "constants": {
+        "num_images": 1
+      }
+    }
+  },
+  "fal/blackforestlabs/flux-3/text-to-image": {
+    "generation": {
+      "endpoint": "blackforestlabs/flux-3/text-to-image",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "2K": "2k",
+        "4K": "4k"
+      },
+      "constants": {
+        "output_format": "png",
+        "enable_prompt_expansion": false,
+        "version": "latest"
+      }
+    },
+    "editing": {
+      "endpoint": "blackforestlabs/flux-3/edit-image",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "2K": "2k",
+        "4K": "4k"
+      },
+      "constants": {
+        "output_format": "png",
+        "enable_prompt_expansion": false,
+        "version": "latest"
+      },
+      "sourceField": "image_urls",
+      "sourceArray": true
+    }
+  },
+  "fal/ideogram/v4.5": {
+    "generation": {
+      "endpoint": "ideogram/v4.5",
+      "sizeMode": "object",
+      "sizeField": "image_size",
+      "maxPromptLength": 10000,
+      "constants": {
+        "num_images": 1
+      }
+    },
+    "editing": {
+      "endpoint": "ideogram/v4.5/edit",
+      "sizeMode": "none",
+      "sourceField": "image_url",
+      "maxPromptLength": 10000,
+      "constants": {
+        "num_images": 1,
+        "image_size": "auto",
+        "edit_precision": "regular"
+      }
+    }
+  },
+  "fal/bytedance/seedream/v5/flash/text-to-image": {
+    "generation": {
+      "endpoint": "bytedance/seedream/v5/flash/text-to-image",
+      "sizeMode": "object",
+      "sizeField": "image_size",
+      "constants": {
+        "num_images": 1,
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "bytedance/seedream/v5/flash/edit",
+      "sizeMode": "object",
+      "sizeField": "image_size",
+      "constants": {
+        "num_images": 1,
+        "output_format": "png"
+      },
+      "sourceField": "image_urls",
+      "sourceArray": true
+    }
+  },
+  "bfl/flux-3-image-klein": {
+    "generation": {
+      "endpoint": "/v1/flux-3-image-klein",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "1.5K": "1.5k",
+        "2K": "2k",
+        "4K": "4k"
+      },
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/flux-3-image-klein",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "1.5K": "1.5k",
+        "2K": "2k",
+        "4K": "4k"
+      },
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "images",
+      "sourceArray": true,
+      "sourceEncoding": "base64"
+    }
+  },
+  "runware/bfl:flux@3-image-klein": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/bfl:flux@3-image-klein-base": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/alibaba:qwen-image@2.1-turbo": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "fal/blackforestlabs/flux-3/klein/text-to-image": {
+    "generation": {
+      "endpoint": "blackforestlabs/flux-3/klein/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "sizeField": "image_size",
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "blackforestlabs/flux-3/klein/edit-image",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "sizeField": "image_size",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "image_urls",
+      "sourceArray": true
+    }
+  },
+  "fal/blackforestlabs/flux-3/klein/base/text-to-image": {
+    "generation": {
+      "endpoint": "blackforestlabs/flux-3/klein/base/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "sizeField": "image_size",
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "blackforestlabs/flux-3/klein/base/edit-image",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "sizeField": "image_size",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "image_urls",
+      "sourceArray": true
+    }
+  },
+  "fal/krea/v3/text-to-image": {
+    "generation": {
+      "endpoint": "krea/v3/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "sizeField": "image_size",
+      "constants": {
+        "output_format": "png",
+        "model": "berry",
+        "reasoning_level": "low"
+      },
+      "maxPromptLength": 5000
+    },
+    "editing": {
+      "endpoint": "krea/v3/edit",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "sizeField": "image_size",
+      "constants": {
+        "output_format": "png",
+        "model": "berry",
+        "reasoning_level": "low"
+      },
+      "sourceField": "image_urls",
+      "sourceArray": true,
+      "maxPromptLength": 5000
     }
   }
 }

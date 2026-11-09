@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333333"/>
+    </marker>
+  </defs>
+  
+  
+  <rect width="1600" height="900" fill="#FFFFFF"/>
+  
+  
+  <text x="1550" y="50" font-family="Arial, sans-serif" font-size="18" fill="#333333" text-anchor="end">REF-73</text>
+  
+  
+  
+  <rect x="150" y="350" width="300" height="200" rx="15" ry="15" fill="#E3F2FD" stroke="#1565C0" stroke-width="2"/>
+  
+  
+  <text x="300" y="430" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#000000" text-anchor="middle">样品输入</text>
+  
+  
+  <text x="300" y="480" font-family="Arial, sans-serif" font-size="24" fill="#000000" text-anchor="middle">n=12</text>
+  
+  
+  <line x1="450" y1="450" x2="550" y2="450" stroke="#333333" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  
+  
+  <rect x="550" y="350" width="300" height="200" rx="15" ry="15" fill="#F3E5F5" stroke="#7B1FA2" stroke-width="2"/>
+  
+  
+  <text x="700" y="430" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#000000" text-anchor="middle">数据标准化</text>
+  
+  
+  
+  <text x="700" y="480" font-family="'Times New Roman', serif" font-size="26" fill="#000000" text-anchor="middle">
+    <tspan>x</tspan><tspan dy="5" font-size="18">0</tspan><tspan dy="-5"> / x</tspan><tspan dy="5" font-size="18">0</tspan>
+  </text>
+  
+  <text x="700" y="480" font-family="'Times New Roman', serif" font-style="italic" font-size="28" fill="#000000" text-anchor="middle">
+    x / x<tspan baseline-shift="sub" font-size="18">0</tspan>
+  </text>
+
+  
+  <line x1="850" y1="450" x2="950" y2="450" stroke="#333333" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  
+  
+  <rect x="950" y="350" width="300" height="200" rx="15" ry="15" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+  
+  
+  <text x="1100" y="430" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#000000" text-anchor="middle">结果输出</text>
+  
+  
+  <text x="1100" y="480" font-family="Arial, sans-serif" font-size="24" fill="#000000" text-anchor="middle">均值 1.0</text>
+</svg>

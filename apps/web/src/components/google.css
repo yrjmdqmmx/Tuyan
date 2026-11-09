@@ -1,0 +1,10 @@
+/* The official G and Google Sans are bundled locally; no third-party font request. */
+@font-face { font-family:'Google Sans'; font-style:normal; font-weight:500; font-display:swap; src:url('/brand/google-sans-medium.ttf') format('truetype'); }
+.google-login-button { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; min-height:48px; padding:12px; border:1px solid #747775; border-radius:10px; background:#fff; color:#1f1f1f; font:500 14px/20px 'Google Sans',Arial,sans-serif; cursor:pointer; }
+.auth-panel .google-login-button.auth-provider-button { background:#fff; border-color:#747775; color:#1f1f1f; gap:10px; font:500 14px/20px 'Google Sans',Arial,sans-serif; }
+.google-login-button img { width:24px; height:24px; object-fit:contain; }
+.google-login-button:not(:disabled):hover { background:#f8fafd; }
+.google-login-button:disabled { opacity:.6; cursor:default; }
+.google-identity p { font-size:13px; line-height:1.5; }
+.google-registration { display:flex; flex-direction:column; gap:16px; }
+.google-registration p { margin:0; font-size:14px; line-height:1.6; color:#647168; }

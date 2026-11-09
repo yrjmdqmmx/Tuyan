@@ -1,0 +1,49 @@
+{
+  "id": "pone.0339350.g003",
+  "paper": "pone.0339350",
+  "figure": {
+    "id": "pone.0339350.g003",
+    "label": "Fig 3",
+    "caption": "Environmental drivers of SOC and its fractions.Note: The figure shows pairwise comparisons between microbial and soil property indicators, with color gradient indicating the Pearson correlation coefficient. SOC: soil organic carbon; RC: recalcitrant carbon; LC: labile carbon; TN: total nitrogen; Ammonium. N and Nitrate. N: mineral nitrogen; TP: total phosphorus; Clay represents the clay percentage; SM: soil moisture. Using Mantel tests, the correlations between SOC and its fractions (LC, RC) with each environmental factor were determined. The line color represents the significance level of Mantel’s P value, and the line width corresponds to the Mantel`s r value.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0339350.g003\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0339350.g003</object-id><label>Fig 3</label><caption><title>Environmental drivers of SOC and its fractions.</title><p>Note: The figure shows pairwise comparisons between microbial and soil property indicators, with color gradient indicating the Pearson correlation coefficient. SOC: soil organic carbon; RC: recalcitrant carbon; LC: labile carbon; TN: total nitrogen; Ammonium. N and Nitrate. N: mineral nitrogen; TP: total phosphorus; Clay represents the clay percentage; SM: soil moisture. Using Mantel tests, the correlations between SOC and its fractions (LC, RC) with each environmental factor were determined. The line color represents the significance level of Mantel’s P value, and the line width corresponds to the Mantel`s r value.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0339350.g003\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0339350.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0339350",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0339350",
+    "title": "Differences in soil carbon fractions and microbial communities and their underlying mechanisms between assisted natural regeneration and plantation forests in subtropical China",
+    "journal": "PLOS One",
+    "authors": [
+      "Zhiqiang Ding",
+      "Zhijie Yang",
+      "Yusheng Yang"
+    ],
+    "year": "2026",
+    "license": "2026\nDing et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0339350.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0339350.g003.png",
+      "bytes": 193625,
+      "sha256": "e7a54ae3621289302d221e095399bdf76064cd804a284c54839ae314da8e071f"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0339350.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0339350.g003.tif",
+      "bytes": 363404,
+      "sha256": "51adc2e75ea69abc9e045a5befb4faa180f8486948942ae8e680af0e9799a909"
+    }
+  }
+}

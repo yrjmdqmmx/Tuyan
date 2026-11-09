@@ -1,3 +1,4 @@
+import MenuSelect from './MenuSelect.jsx';
 import ModelRegistryNotice from './ModelRegistryNotice.jsx'
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import {useEffect, useRef, useState} from 'react'
@@ -22,10 +23,10 @@ function ConnectionOptions({draft, label, onChange}) {
     <summary>{t("认证与兼容选项")}</summary>
     <div className="universal-detail-body">
       {c.protocol==='dashscope-multimodal'&&<p className="universal-hint">{t("百炼新业务空间需填写对应地域的 Workspace 专属地址；默认值是旧版北京地址。")}</p>}
-      <label className="field"><span>{t("认证方式")}</span><select aria-label={t("{v0} 认证方式", {v0: label})} value={c.auth} onChange={e=>custom({auth:e.target.value})}><option value="bearer">Authorization: Bearer</option><option value="api-key">Azure api-key</option><option value="bearer-expiring">Bearer 临时令牌 / Bedrock API Key（填写到期时间）</option><option value="x-api-key">x-api-key</option><option value="x-goog-api-key">x-goog-api-key</option></select></label>
-      {['openai-chat','openai-images'].includes(c.protocol)&&<label className="field"><span>{t("调用兼容变体")}</span><select aria-label={t("{v0} 兼容变体", {v0: label})} value={c.compatibility} onChange={e=>custom({compatibility:e.target.value})}><option value="standard">{t("标准协议")}</option>{c.protocol==='openai-chat'?<option value="openrouter-image">{t("OpenRouter 图片输出扩展")}</option>:<option value="ark-images">{t("Ark JSON 图片输入")}</option>}</select></label>}
+      <label className="field"><span>{t("认证方式")}</span><MenuSelect aria-label={t("{v0} 认证方式", {v0: label})} value={c.auth} onChange={e=>custom({auth:e.target.value})}><option value="bearer">Authorization: Bearer</option><option value="api-key">Azure api-key</option><option value="bearer-expiring">Bearer 临时令牌 / Bedrock API Key（填写到期时间）</option><option value="x-api-key">x-api-key</option><option value="x-goog-api-key">x-goog-api-key</option></MenuSelect></label>
+      {['openai-chat','openai-images'].includes(c.protocol)&&<label className="field"><span>{t("调用兼容变体")}</span><MenuSelect aria-label={t("{v0} 兼容变体", {v0: label})} value={c.compatibility} onChange={e=>custom({compatibility:e.target.value})}><option value="standard">{t("标准协议")}</option>{c.protocol==='openai-chat'?<option value="openrouter-image">{t("OpenRouter 图片输出扩展")}</option>:<option value="ark-images">{t("Ark JSON 图片输入")}</option>}</MenuSelect></label>}
       {incompatibleVariant&&<div className="universal-status warning"><p>{t('已保留的兼容变体与当前协议不匹配，可切回原协议或明确改为标准模式。型号与能力草稿不会删除。')}</p><button type="button" className="universal-button" onClick={()=>custom({compatibility:'standard'})}>{t('改为标准兼容模式（保留能力草稿）')}</button></div>}
-      <label className="field"><span>{t("模型目录接口规则")}</span><select aria-label={t("{v0} 目录接口规则", {v0: label})} data-universal-field="catalog" value={c.catalogFormat||'auto'} onChange={e=>custom({catalogFormat:e.target.value})}>{catalogFormats.map(([id,title])=><option key={id} value={id}>{t(title)}</option>)}</select><small>{t("未知服务默认不探测接口。仅当服务文档明确兼容所选目录格式及 /models 路径时，才选择对应规则；否则手动填写 ID。")}</small></label>
+      <label className="field"><span>{t("模型目录接口规则")}</span><MenuSelect aria-label={t("{v0} 目录接口规则", {v0: label})} data-universal-field="catalog" value={c.catalogFormat||'auto'} onChange={e=>custom({catalogFormat:e.target.value})}>{catalogFormats.map(([id,title])=><option key={id} value={id}>{t(title)}</option>)}</MenuSelect><small>{t("未知服务默认不探测接口。仅当服务文档明确兼容所选目录格式及 /models 路径时，才选择对应规则；否则手动填写 ID。")}</small></label>
     </div>
   </details>
 }
@@ -97,13 +98,13 @@ export function UniversalRole({canCopyMain = true, canCopyKey = false, savedStat
     <legend>{t(label)}</legend>
     <div className="universal-role-heading"><p>{t(description)}</p></div>
     <UniversalConnections role={role} label={label} draft={draft} thinking={thinking} onImportThinking={onImportThinking} onChange={change}/>
-    <label className="field"><span>{t('连接模板')}</span><select aria-label={`${label} 连接模板`} value={template?.id||'custom'} onChange={e=>{const next=CONNECTION_TEMPLATES.find(x=>x.id===e.target.value);if(next){change(templatePatch(next,role));setConnectionOpen(next.id==='azure')}else{setConnectionOpen(true);change({ui:{baseUrlSource:'user',connectionMode:'custom'}})}}}>
+    <label className="field"><span>{t('连接模板')}</span><MenuSelect aria-label={`${label} 连接模板`} value={template?.id||'custom'} onChange={e=>{const next=CONNECTION_TEMPLATES.find(x=>x.id===e.target.value);if(next){change(templatePatch(next,role));setConnectionOpen(next.id==='azure')}else{setConnectionOpen(true);change({ui:{baseUrlSource:'user',connectionMode:'custom'}})}}}>
       {CONNECTION_TEMPLATES.filter(x=>(!x.roles||x.roles.includes(role))&&(role!=='image'||!['anthropic','openrouter'].includes(x.id))).map(x=><option key={x.id} value={x.id}>{t(x.label)}</option>)}<option value="custom">{t('完全自定义 / 兼容服务')}</option>
-    </select><small>{t('模板预填连接和已适配工具的推荐型号；能力仍由精确地址、协议与型号核对。切换只影响当前角色，绑定变化会清除其 Key。')}</small></label>
+    </MenuSelect><small>{t('模板预填连接和已适配工具的推荐型号；能力仍由精确地址、协议与型号核对。切换只影响当前角色，绑定变化会清除其 Key。')}</small></label>
     <details className="universal-details universal-connection" ref={connectionDetails} open={connectionOpen} onToggle={e=>setConnectionOpen(e.currentTarget.open)}>
       <summary>{t('连接详情')} · {UNIVERSAL_PROTOCOL_OPTIONS.find(x=>x[0]===c.protocol)?.[1]||c.protocol}<small>{c.baseUrl}</small></summary>
       <p className="universal-hint">{t(draft.ui?.baseUrlSource==='system'?'地址来源：系统预填，可展开修改。':'地址来源：你填写或恢复的配置；切换协议时保留。')}</p>
-      <label className="field"><span>{t('API 协议')}</span><select aria-label={`${label} API 协议`} value={c.protocol} onChange={e=>changeProtocol(e.target.value)}>{UNIVERSAL_PROTOCOL_OPTIONS.map(([id,name])=><option key={id} value={id} disabled={role==='image'?['anthropic-messages','bedrock-converse'].includes(id):['openai-images','bedrock-invoke'].includes(id)}>{name}</option>)}</select></label>
+      <label className="field"><span>{t('API 协议')}</span><MenuSelect aria-label={`${label} API 协议`} value={c.protocol} onChange={e=>changeProtocol(e.target.value)}>{UNIVERSAL_PROTOCOL_OPTIONS.map(([id,name])=><option key={id} value={id} disabled={role==='image'?['anthropic-messages','bedrock-converse'].includes(id):['openai-images','bedrock-invoke'].includes(id)}>{name}</option>)}</MenuSelect></label>
       <label className="field"><span>{t('Base URL（含版本，不含操作路径）')}</span><input data-universal-field="address" aria-label={`${label} Base URL`} value={c.baseUrl} onChange={e=>change({custom:{baseUrl:e.target.value}})} spellCheck={false}/><small>{t('仅公网 HTTPS 地址。不含 /chat/completions 等操作路径、查询参数或密钥；兼容服务按自身文档填写。')}</small></label>
       <ConnectionOptions draft={draft} label={label} onChange={change}/>
       <button type="button" className="universal-button" onClick={()=>change(restoreProtocolPatch(c.protocol))}>{t('恢复此协议官方连接参数')}</button><p className="universal-hint">{t('将替换地址、鉴权、目录规则与兼容变体；绑定变化会清除当前角色 Key，型号与能力草稿保留。')}</p>
@@ -145,7 +146,7 @@ export function UniversalRole({canCopyMain = true, canCopyKey = false, savedStat
     </dl>
     <button type="button" className="universal-button" disabled={Boolean(busy)||!contractSupported} onClick={()=>check('config')}>{busy==='config'?<Loader2 className="universal-spinner" size={16}/>:<ShieldCheck size={16}/>}{t("检查配置与地址")}</button>
     {role!=='main'&&canCopyMain&&<details className="universal-details"><summary>{t('从主模型复制连接')}</summary><p>{t('仅复制协议、地址、鉴权、目录规则和兼容变体。不复制型号、能力、限额或尺寸；绑定变化会清除目标角色原 Key。可单独选择是否复制当前页密钥。')}</p><div className="universal-recovery">{[false,true].map(includeKey=><button type="button" disabled={includeKey&&!canCopyKey} className="universal-button" key={String(includeKey)} onClick={()=>{onCopy(includeKey);setNotice(includeKey?'已复制连接及当前页密钥，未复制型号和能力；请重新核对目标角色。':'已复制连接；未复制密钥。绑定变化时目标角色原 Key 已清除，请检查后填写。')}}><Copy size={14}/>{t(includeKey?'复制连接与当前页密钥':'仅复制连接（不含密钥）')}</button>)}</div>{!canCopyKey&&<p className="universal-hint">{t('主模型尚未填写有效绑定的 Key，目前只能复制连接参数。')}</p>}</details>}
-    {savedStatus&&<section className="universal-save-state" aria-label={`${label} 保存状态`}><p role="status">{t(savedStatus)}</p><details className="universal-details"><summary>哪些设置会保存？</summary><p>角色连接、型号、能力与限额由「保存到此浏览器」保存；命名连接需在连接库内明确保存；思考偏好自动保存，结果显示在思考设置旁。Key 和验证状态始终不保存。</p></details></section>}
+    {savedStatus&&<section className="universal-save-state" aria-label={`${label} 保存状态`}><p role="status">{t(savedStatus)}</p><details className="universal-details"><summary>哪些设置会保存？</summary><p>角色连接、型号、能力与限额自动保存到此浏览器；命名连接需在连接库内明确保存；思考偏好自动保存，结果显示在思考设置旁。Key 和验证状态始终不保存。</p></details></section>}
     {visibleConfig&&<p className={`universal-status ${visibleConfig.error?'error':'success'}`} role={visibleConfig.error?'alert':'status'}>{visibleConfig.message}</p>}
   </fieldset>
 }

@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test, {afterEach} from 'node:test'
 import assert from 'node:assert/strict'
 import React from 'react'
@@ -67,7 +68,7 @@ test('older file reads cannot replace the latest import preview',async()=>{
  const d=draft();let resolveFirst,resolveSecond;const a=new Promise(r=>resolveFirst=r),b=new Promise(r=>resolveSecond=r)
  render(React.createElement(UniversalConnections,{role:'main',label:'主模型',draft:d,onChange:()=>assert.fail('preview must not apply')}))
  const input=screen.getByLabelText('主模型 导入文件')
- fireEvent.change(input,{target:{files:[{size:10,text:()=>a}]}});fireEvent.change(input,{target:{files:[{size:10,text:()=>b}]}})
+ changeControl(input,{target:{files:[{size:10,text:()=>a}]}});changeControl(input,{target:{files:[{size:10,text:()=>b}]}})
  const second=draft();second.modelId='latest-model';resolveSecond(exportUniversalConfiguration('main',second,[]))
  await waitFor(()=>assert.match(screen.getByLabelText('主模型 导入预览').textContent,/latest-model/))
  resolveFirst(exportUniversalConfiguration('main',d,[]));await new Promise(r=>setTimeout(r,0))

@@ -1,0 +1,70 @@
+{
+  "typeId": "matrix_link_overlay",
+  "computations": {
+    "matrix": [
+      [
+        1.0,
+        0.2,
+        0.4
+      ],
+      [
+        0.2,
+        1.0,
+        0.6000000000000001
+      ],
+      [
+        0.4,
+        0.6000000000000001,
+        1.0
+      ]
+    ],
+    "linkWidthPerAbsoluteValue": 8.88888888888889,
+    "suppliedLinks": [
+      {
+        "source": "A",
+        "target": "C",
+        "value": 0.45
+      }
+    ]
+  },
+  "checks": {
+    "link_0_width": {
+      "actual": 4.0,
+      "expected": 4.0,
+      "absoluteError": 0.0
+    },
+    "matrix_value_error": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 9.0,
+      "expected": 9.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "row",
+      "column",
+      "value"
+    ],
+    "options": {
+      "links": [
+        {
+          "source": "A",
+          "target": "C",
+          "value": 0.45
+        }
+      ],
+      "matrixStatistic": "Supplied Pearson correlation",
+      "linkStatistic": "Supplied association estimate; no test calculated",
+      "linkUnit": "dimensionless"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

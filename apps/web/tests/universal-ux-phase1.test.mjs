@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import {test,afterEach} from 'node:test'
 import React,{useState} from 'react'
@@ -50,27 +51,27 @@ test('explicit connection-only copy excludes key and all model declarations; key
 })
 test('typed address survives protocol change; clear-key reason and explicit reset are visible',async()=>{
  render(React.createElement(Harness));const u=userEvent.setup();await u.click(main().getByText(/^连接详情/))
- fireEvent.change(screen.getByLabelText('主模型 Base URL'),{target:{value:'https://custom.example.com/v1'}})
- fireEvent.change(screen.getByLabelText('主模型 API Key'),{target:{value:'fixture'}})
- fireEvent.change(screen.getByLabelText('主模型 API 协议'),{target:{value:'anthropic-messages'}})
+ changeControl(screen.getByLabelText('主模型 Base URL'),{target:{value:'https://custom.example.com/v1'}})
+ changeControl(screen.getByLabelText('主模型 API Key'),{target:{value:'fixture'}})
+ changeControl(screen.getByLabelText('主模型 API 协议'),{target:{value:'anthropic-messages'}})
  assert.equal(screen.getByLabelText('主模型 Base URL').value,'https://custom.example.com/v1');assert.equal(screen.getByLabelText('主模型 API Key').value,'');assert.match(main().getByText(/已清除当前角色的旧 Key/).textContent,/API 协议.*认证方式/)
  await u.click(main().getByRole('button',{name:'恢复此协议官方连接参数'}));assert.equal(screen.getByLabelText('主模型 Base URL').value,'https://api.anthropic.com/v1')
 })
 test('incompatible declarations survive protocol switches and have an explicit repair action',async()=>{
  const ds=blank();ds.main.custom.capabilities={text:true,vision:true,imageGeneration:true,imageEditing:true};ds.main.custom.protocol='gemini-generate-content';ds.main.custom.baseUrl='https://other.example.com/v1beta';ds.main.custom.auth='x-goog-api-key';ds.main.custom.outputSizes=[{resolution:'1K',aspectRatio:'1:1',value:'1K'}]
- render(React.createElement(Harness,{initial:ds}));const u=userEvent.setup();fireEvent.change(screen.getByLabelText('主模型 API 协议'),{target:{value:'anthropic-messages'}});await u.click(main().getByText('能力与限额',{exact:true}));assert.equal(main().getByLabelText('生成图片').checked,true);assert.ok(main().getByText(/当前协议无法使用/));await u.click(main().getByRole('button',{name:'取消以上不兼容能力'}));assert.equal(main().queryByLabelText('生成图片'),null);assert.equal(main().getByLabelText('接收图片并理解内容').checked,true)
+ render(React.createElement(Harness,{initial:ds}));const u=userEvent.setup();changeControl(screen.getByLabelText('主模型 API 协议'),{target:{value:'anthropic-messages'}});await u.click(main().getByText('能力与限额',{exact:true}));assert.equal(main().getByLabelText('生成图片').checked,true);assert.ok(main().getByText(/当前协议无法使用/));await u.click(main().getByRole('button',{name:'取消以上不兼容能力'}));assert.equal(main().queryByLabelText('生成图片'),null);assert.equal(main().getByLabelText('接收图片并理解内容').checked,true)
 })
 const errors=[['CATALOG_AUTH_FAILED','重新填写 Key'],['CATALOG_PERMISSION_DENIED','手动填写模型 ID'],['CATALOG_ENDPOINT_NOT_FOUND','修改接口地址'],['CATALOG_RATE_LIMITED','重试读取目录'],['CATALOG_TIMEOUT','修改接口地址'],['CATALOG_RESPONSE_INVALID','调整目录规则']]
 for(const [code,button] of errors)test(`catalog ${code} exposes recovery and preserves manual ID without inference`,async()=>{
  const calls=[];globalThis.fetch=async(url,init)=>{calls.push(JSON.parse(init.body));return Response.json({code:400,error:'safe fixture',catalogError:{code}})}
- render(React.createElement(Harness));const u=userEvent.setup();fireEvent.change(screen.getByLabelText('主模型 API Key'),{target:{value:'fixture'}});fireEvent.change(screen.getByLabelText('主模型 模型 ID'),{target:{value:'Manual/Keep'}});await u.click(main().getByRole('button',{name:'获取模型'}));await waitFor(()=>assert.ok(main().getByRole('alert')))
+ render(React.createElement(Harness));const u=userEvent.setup();changeControl(screen.getByLabelText('主模型 API Key'),{target:{value:'fixture'}});changeControl(screen.getByLabelText('主模型 模型 ID'),{target:{value:'Manual/Keep'}});await u.click(main().getByRole('button',{name:'获取模型'}));await waitFor(()=>assert.ok(main().getByRole('alert')))
  assert.ok(main().getByRole('button',{name:button,exact:true}));assert.equal(screen.getByLabelText('主模型 模型 ID').value,'Manual/Keep');assert.equal(calls.length,1);assert.equal(calls[0].check,'catalog')
  await u.click(main().getByRole('button',{name:'手动填写模型 ID',exact:true}));await waitFor(()=>assert.equal(document.activeElement?.getAttribute('aria-label'),'主模型 模型 ID'))
  assert.ok(main().getByText('未验证 · 本表单不执行模型调用'))
 })
 test('configuration structure, safe address, directory and inference remain separate; config check sends no key',async()=>{
  const calls=[];globalThis.fetch=async(url,init)=>{calls.push(JSON.parse(init.body));return Response.json({code:0,state:'configuration-valid',inferenceVerified:false})}
- render(React.createElement(Harness));const u=userEvent.setup();fireEvent.change(screen.getByLabelText('主模型 模型 ID'),{target:{value:'gpt-4.1'}});fireEvent.change(screen.getByLabelText('主模型 API Key'),{target:{value:'fixture-secret'}})
+ render(React.createElement(Harness));const u=userEvent.setup();changeControl(screen.getByLabelText('主模型 模型 ID'),{target:{value:'gpt-4.1'}});changeControl(screen.getByLabelText('主模型 API Key'),{target:{value:'fixture-secret'}})
  assert.ok(main().getByText('已填写 · 未验证 · 仅当前页有效'));await u.click(main().getByRole('button',{name:'检查配置与地址'}));await main().findByText('已通过安全检查');assert.ok(main().getByText('尚未获取模型'));assert.ok(main().getByText('未验证 · 本表单不执行模型调用'));assert.doesNotMatch(JSON.stringify(calls),/fixture-secret/)
 })
 test('audited size chips use exact mappings; custom hosts never receive same-named official choices',async()=>{

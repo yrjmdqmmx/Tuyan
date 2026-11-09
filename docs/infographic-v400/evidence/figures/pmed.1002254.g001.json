@@ -1,0 +1,61 @@
+{
+  "id": "pmed.1002254.g001",
+  "paper": "pmed.1002254",
+  "figure": {
+    "id": "pmed.1002254.g001",
+    "label": "Fig 1",
+    "caption": "Cumulative incidence curves, adjusting for competing risk of mortality, for mild cognitive impairment or dementia by baseline age and APOE-e4 dose.\nNote that the strata shown are not independent for the Rotterdam and Framingham cohorts (see text). MCI, mild cognitive impairment; NACC, National Alzheimer’s Coordinating Center; RS, Rotterdam Study; SALSA, Sacramento Area Latino Study on Aging.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pmed.1002254.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pmed.1002254.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Cumulative incidence curves, adjusting for competing risk of mortality, for mild cognitive impairment or dementia by baseline age and <italic>APOE</italic>-e4 dose.</title>\n<p>Note that the strata shown are not independent for the Rotterdam and Framingham cohorts (see text). MCI, mild cognitive impairment; NACC, National Alzheimer’s Coordinating Center; RS, Rotterdam Study; SALSA, Sacramento Area Latino Study on Aging.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pmed.1002254.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pmed.1002254.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pmed.1002254",
+    "sourceUrl": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1002254",
+    "title": "APOE-related risk of mild cognitive impairment and dementia for prevention trials: An analysis of four cohorts",
+    "journal": "PLOS Medicine",
+    "authors": [
+      "Jing Qian",
+      "Frank J. Wolters",
+      "Alexa Beiser",
+      "Mary Haan",
+      "M. Arfan Ikram",
+      "Jason Karlawish",
+      "Jessica B. Langbaum",
+      "John M. Neuhaus",
+      "Eric M. Reiman",
+      "J. Scott Roberts",
+      "Sudha Seshadri",
+      "Pierre N. Tariot",
+      "Beth McCarty Woods",
+      "Rebecca A. Betensky",
+      "Deborah Blacker"
+    ],
+    "year": "2017",
+    "license": "2017\nQian et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosmedicine/article/figure/image?size=large&id=10.1371/journal.pmed.1002254.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pmed.1002254.g001.png",
+      "bytes": 465159,
+      "sha256": "401e4462675020cf0638b55a7357da2ded858f238af3f0d873ab052f201d4f6b"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosmedicine/article/figure/image?size=original&id=10.1371/journal.pmed.1002254.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pmed.1002254.g001.tif",
+      "bytes": 915840,
+      "sha256": "113db9bcec1f89256cbb76be6256f7620c4d63c7b48c008551d20c6dafba95be"
+    }
+  }
+}

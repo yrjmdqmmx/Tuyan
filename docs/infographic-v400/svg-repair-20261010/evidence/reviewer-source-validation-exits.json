@@ -1,0 +1,25 @@
+{
+  "manifestSha256": "c8f7a745e88ee8c0989af9805b2eb37941e89e301cb580bed453443fd57b8e9f",
+  "reviewer-source-catalogue": {
+    "exit": 0,
+    "checks": 24
+  },
+  "reviewer-source-deep-duplicate": {
+    "exit": 0,
+    "checks": 3
+  },
+  "reviewer-source-resume": {
+    "exit": 0,
+    "newProviderTransports": 0
+  },
+  "reviewer-source-recraft-route": {
+    "exit": 0,
+    "registryModels": 17,
+    "nativeExemptions": 8
+  },
+  "reviewer-source-v2-runtime": {
+    "exit": 0,
+    "tests": 2
+  },
+  "paidCalls": 0
+}

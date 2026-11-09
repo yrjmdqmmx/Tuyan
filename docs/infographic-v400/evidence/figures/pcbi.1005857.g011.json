@@ -1,0 +1,49 @@
+{
+  "id": "pcbi.1005857.g011",
+  "paper": "pcbi.1005857",
+  "figure": {
+    "id": "pcbi.1005857.g011",
+    "label": "Fig 11",
+    "caption": "Other visualization approaches applied to the enzyme-substrate phosphorylation model of Fig 2.\n(A) The binding rule drawn using SBGN Process Description conventions, which require visual graph comparison. (B) Kappa story, showing the causal order of rules that produces sub_pp, which refers to doubly phosphorylated substrate. (C) Simmune Network Viewer diagram, which merges patterns across rules and hides certain causal dependencies (details in S4 Fig). Here, the Enz.Sub node merges all enzyme-substrate patterns shown in Fig 2. (D) SBGN Entity Relationship. (E) Molecular Interaction Map. Panels D-E require manual interpretation of the model, like the extended contact map. (F) rxncon regulatory graph visualization of the rxncon model format, which can only depict a limited subset of reaction rules (details in S5 Fig).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005857.g011\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005857.g011</object-id>\n<label>Fig 11</label>\n<caption>\n<title>Other visualization approaches applied to the enzyme-substrate phosphorylation model of <xref ref-type=\"fig\" rid=\"pcbi.1005857.g002\">Fig 2</xref>.</title>\n<p>(A) The binding rule drawn using SBGN Process Description conventions, which require visual graph comparison. (B) Kappa story, showing the causal order of rules that produces sub_pp, which refers to doubly phosphorylated substrate. (C) Simmune Network Viewer diagram, which merges patterns across rules and hides certain causal dependencies (details in <xref ref-type=\"supplementary-material\" rid=\"pcbi.1005857.s004\">S4 Fig</xref>). Here, the Enz.Sub node merges all enzyme-substrate patterns shown in <xref ref-type=\"fig\" rid=\"pcbi.1005857.g002\">Fig 2</xref>. (D) SBGN Entity Relationship. (E) Molecular Interaction Map. Panels D-E require manual interpretation of the model, like the extended contact map. (F) <italic>rxncon</italic> regulatory graph visualization of the <italic>rxncon</italic> model format, which can only depict a limited subset of reaction rules (details in <xref ref-type=\"supplementary-material\" rid=\"pcbi.1005857.s005\">S5 Fig</xref>).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005857.g011\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005857.g011",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1005857",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005857",
+    "title": "Automated visualization of rule-based models",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "John Arul Prakash Sekar",
+      "Jose-Juan Tapia",
+      "James R. Faeder"
+    ],
+    "year": "2017",
+    "license": "2017\nSekar et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1005857.g011",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1005857.g011.png",
+      "bytes": 380330,
+      "sha256": "8e886f3b20f7c0c7c3b931ba53e3ce7d03ec14ba3ea49db2c91e63f9cfba711c"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1005857.g011",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1005857.g011.tif",
+      "bytes": 488764,
+      "sha256": "f2b071a557b6bc4f73958290d5aebea176e25f83fc1f0066075ca20cc4fc6565"
+    }
+  }
+}

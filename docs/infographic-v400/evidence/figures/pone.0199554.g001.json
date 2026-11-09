@@ -1,0 +1,49 @@
+{
+  "id": "pone.0199554.g001",
+  "paper": "pone.0199554",
+  "figure": {
+    "id": "pone.0199554.g001",
+    "label": "Fig 1",
+    "caption": "Dumbbell plot.\nDumbbell plot visualizing the proportion of questionable research practices.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0199554.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0199554.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Dumbbell plot.</title>\n<p>Dumbbell plot visualizing the proportion of questionable research practices.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0199554.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0199554.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0199554",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0199554",
+    "title": "Self-reports from behind the scenes: Questionable research practices and rates of replication in ego depletion research",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Wanja Wolff",
+      "Lorena Baumann",
+      "Chris Englert"
+    ],
+    "year": "2018",
+    "license": "2018\nWolff et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0199554.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0199554.g001.png",
+      "bytes": 184721,
+      "sha256": "6320ac8e537f1354239a2b6c27e4ca90fa70adbb13665a3e07e8edfec7b081fb"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0199554.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0199554.g001.tif",
+      "bytes": 372156,
+      "sha256": "740b8190229350635a4122cf662785dffff787d601ffcec3dc8ac3a7155401f3"
+    }
+  }
+}

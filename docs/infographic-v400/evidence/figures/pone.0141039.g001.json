@@ -1,0 +1,60 @@
+{
+  "id": "pone.0141039.g001",
+  "paper": "pone.0141039",
+  "figure": {
+    "id": "pone.0141039.g001",
+    "label": "Fig 1",
+    "caption": "Overview of the coarsest levels of the CATAMI Classification Scheme for (a) physical and (b) biological annotations in imagery; (c) and (d) show details of the ‘bryozoa’ and the ‘echinoderms’ branches.\nThe biological classification at coarsest level is into phyla or broad groups, which are then divided using either taxonomy or morphology (as shown here), depending on what can be more consistently determined from imagery. The number of categories (C) and levels (L) defined under each branch are shown. The full classification scheme can be viewed at http://www.catami.org/classification [53].",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0141039.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0141039.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Overview of the coarsest levels of the CATAMI Classification Scheme for (a) physical and (b) biological annotations in imagery; (c) and (d) show details of the ‘bryozoa’ and the ‘echinoderms’ branches.</title>\n<p>The biological classification at coarsest level is into phyla or broad groups, which are then divided using either taxonomy or morphology (as shown here), depending on what can be more consistently determined from imagery. The number of categories (C) and levels (L) defined under each branch are shown. The full classification scheme can be viewed at <ext-link ext-link-type=\"uri\" ns0:href=\"http://www.catami.org/classification\" ns0:type=\"simple\">http://www.catami.org/classification</ext-link> [<xref rid=\"pone.0141039.ref053\" ref-type=\"bibr\">53</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pone.0141039.g001\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0141039.g001",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0141039",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0141039",
+    "title": "A Standardised Vocabulary for Identifying Benthic Biota and Substrata from Underwater Imagery: The CATAMI Classification Scheme",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Franziska Althaus",
+      "Nicole Hill",
+      "Renata Ferrari",
+      "Luke Edwards",
+      "Rachel Przeslawski",
+      "Christine H. L. Schönberg",
+      "Rick Stuart-Smith",
+      "Neville Barrett",
+      "Graham Edgar",
+      "Jamie Colquhoun",
+      "Maggie Tran",
+      "Alan Jordan",
+      "Tony Rees",
+      "Karen Gowlett-Holmes"
+    ],
+    "year": "2015",
+    "license": "2015\nAlthaus et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0141039.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0141039.g001.png",
+      "bytes": 568048,
+      "sha256": "20e7e8e01a0b4eaae73b1476159bc5658a264abecef96f96d14041f386adbde2"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0141039.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0141039.g001.tif",
+      "bytes": 913668,
+      "sha256": "a81c9bb699edab60eb36236f1d8c4c11b41aad02a636189efb7ae9c273d515ab"
+    }
+  }
+}

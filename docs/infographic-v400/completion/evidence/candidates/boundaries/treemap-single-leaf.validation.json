@@ -1,0 +1,53 @@
+{
+  "typeId": "treemap",
+  "computations": {
+    "geometry": {
+      "only": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "rootTotal": 4,
+    "leafTotal": 4,
+    "algorithm": "slice-and-dice"
+  },
+  "checks": {
+    "only_area_ratio": {
+      "actual": 1.0,
+      "expected": 1.0,
+      "absoluteError": 0.0
+    },
+    "leaf_area_sum": {
+      "actual": 1.0,
+      "expected": 1.0,
+      "absoluteError": 0.0
+    },
+    "leaf_total": {
+      "actual": 4.0,
+      "expected": 4.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 1.0,
+      "expected": 1.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "id",
+      "label",
+      "parent",
+      "value"
+    ],
+    "options": {
+      "valueSemantics": "subtree_total"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

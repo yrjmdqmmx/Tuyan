@@ -1,0 +1,9 @@
+{
+  "exitCode": 0,
+  "tests": 1243,
+  "passed": 1243,
+  "failed": 0,
+  "durationMs": 386845.393542,
+  "codeFreeze": "round-4/production-code-hashes.json",
+  "log": "core-tests-after-protocol-correction.log"
+}

@@ -1,0 +1,32 @@
+{
+  "completedAtUtc": "2026-10-26T07:55:33.434868+00:00",
+  "core": {
+    "passed": 62,
+    "failed": 0,
+    "completeMockPipelines": 6
+  },
+  "web": {
+    "targeted": 32,
+    "regression": 57,
+    "failed": 0
+  },
+  "gateway": {
+    "passed": 15,
+    "failed": 0
+  },
+  "coreTypecheck": "passed after local test type annotation correction",
+  "webBuild": "passed; existing large chunk warning",
+  "checks": [
+    "model-catalog --check --skip-miniprogram",
+    "thinking --check --skip-miniprogram",
+    "reference-upload --check --skip-miniprogram",
+    "model-version-report --check"
+  ],
+  "historicalIdsPreserved": 1125,
+  "defaultGroupsPreserved": 31,
+  "miniprogramFilesUnchanged": 224,
+  "externalInferenceCalls": 0,
+  "productionPublished": false,
+  "inheritedKnownFailure": "Prior Qianfan thinking-bailian-qianfan-57.test.ts assertion remains outside this targeted run; test unchanged",
+  "artifactDirectory": "/Users/a1-6/.codex/artifacts/tuyan-bailian-multimodal-20261026"
+}

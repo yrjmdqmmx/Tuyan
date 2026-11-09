@@ -1,0 +1,109 @@
+{
+  "doi": "10.1371/journal.pone.0178731",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0178731",
+  "title": "A conceptual framework for quality assessment and management of biodiversity data",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Allan Koch Veiga",
+    "Antonio Mauro Saraiva",
+    "Arthur David Chapman",
+    "Paul John Morris",
+    "Christian Gendreau",
+    "Dmitry Schigel",
+    "Tim James Robertson"
+  ],
+  "year": "2017",
+  "license": "2017\nVeiga et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0178731.g001",
+      "label": "Fig 1",
+      "caption": "The relationship between TDQM steps and the proposed conceptual framework.\nThe relationship between TDQM steps and the conceptual framework is given by the following related components: (1) Define—DQ profiling; (2) Measure—DQ status reporting; (3) Analyze—DQ assessment; and (4) Improve—DQ management.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0178731.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0178731.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>The relationship between TDQM steps and the proposed conceptual framework.</title>\n<p>The relationship between TDQM steps and the conceptual framework is given by the following related components: (1) Define—DQ profiling; (2) Measure—DQ status reporting; (3) Analyze—DQ assessment; and (4) Improve—DQ management.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0178731.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0178731.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0178731.g002",
+      "label": "Fig 2",
+      "caption": "Components to enable the DQ assessment and management in the context of biodiversity informatics.\nThree main components are necessary to enable DQ assessment and management: (1) DQ needs according to data users, (2) DQ solutions to meet the defined DQ needs and (3) DQ reports presenting the status of quality of data according to data users perspective.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0178731.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0178731.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Components to enable the DQ assessment and management in the context of biodiversity informatics.</title>\n<p>Three main components are necessary to enable DQ assessment and management: (1) DQ needs according to data users, (2) DQ solutions to meet the defined DQ needs and (3) DQ reports presenting the status of quality of data according to data users perspective.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0178731.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0178731.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0178731.g003",
+      "label": "Fig 3",
+      "caption": "The conceptual framework: Concepts and classes.\nDQ Needs concepts: Use Case, Information Element, DQ Dimension, DQ Criterion and DQ Enhancement. DQ Solutions concepts: Specification and Mechanism. DQ Report concepts: Data Source and Assertion.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0178731.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0178731.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>The conceptual framework: Concepts and classes.</title>\n<p>DQ Needs concepts: Use Case, Information Element, DQ Dimension, DQ Criterion and DQ Enhancement. DQ Solutions concepts: Specification and Mechanism. DQ Report concepts: Data Source and Assertion.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0178731.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0178731.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0178731.g004",
+      "label": "Fig 4",
+      "caption": "The steps to define a DQ profile.\nDQ profiling can be performed by the following steps: (1) Define the Context, (2) Define a set of Valuable IE, (3) Define a set of relevant DQ Dimensions as DQ Measurement Policy, (4) Define a set of relevant DQ Criteria as DQ Validation Policy and (5) Define a set of relevant DQ Enhancements as DQ Enhancement Policy.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0178731.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0178731.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>The steps to define a DQ profile.</title>\n<p>DQ profiling can be performed by the following steps: (1) Define the Context, (2) Define a set of Valuable IE, (3) Define a set of relevant DQ Dimensions as DQ Measurement Policy, (4) Define a set of relevant DQ Criteria as DQ Validation Policy and (5) Define a set of relevant DQ Enhancements as DQ Enhancement Policy.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0178731.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0178731.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0178731.g005",
+      "label": "Fig 5",
+      "caption": "The relation between DQ profile and DQ status.\nBased on a DQ profile we can report the DQ status of Data Resource in the context of a specific Use Case for each Valuable IE. For each DQ Dimension in the DQ Measurement Policy of the DQ profile, there is a DQ Measure in the DQ status report; for each DQ Criterion in the DQ Validation Policy of the DQ profile, there is a DQ Validation in the DQ status report; and for each DQ Enhancement of the DQ Enhancement Policy of the DQ profile, there is a DQ Amendment (when applicable).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0178731.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0178731.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>The relation between DQ profile and DQ status.</title>\n<p>Based on a DQ profile we can report the DQ status of Data Resource in the context of a specific Use Case for each Valuable IE. For each DQ Dimension in the DQ Measurement Policy of the DQ profile, there is a DQ Measure in the DQ status report; for each DQ Criterion in the DQ Validation Policy of the DQ profile, there is a DQ Validation in the DQ status report; and for each DQ Enhancement of the DQ Enhancement Policy of the DQ profile, there is a DQ Amendment (when applicable).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0178731.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0178731.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0178731.g006",
+      "label": "Fig 6",
+      "caption": "A Fitness for Use Backbone.\nBasic architecture for a computational platform based on the conceptual framework, composed of three main parts: (1) DQ Report (registering and retrieving DQ status assigned to Data Resources according to DQ profiles definitions), (2) DQ Solutions (registering and retrieving methods and tools for meeting DQ needs) and (3) DQ Needs (registering and retrieving entire DQ profiles or individual parts, such DQ Dimensions, DQ Criterion and DQ Enhancement).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0178731.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0178731.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>A Fitness for Use Backbone.</title>\n<p>Basic architecture for a computational platform based on the conceptual framework, composed of three main parts: (1) DQ Report (registering and retrieving DQ status assigned to Data Resources according to DQ profiles definitions), (2) DQ Solutions (registering and retrieving methods and tools for meeting DQ needs) and (3) DQ Needs (registering and retrieving entire DQ profiles or individual parts, such DQ Dimensions, DQ Criterion and DQ Enhancement).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0178731.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0178731.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0178731.g007",
+      "label": "Fig 7",
+      "caption": "Roadmap for implementing the conceptual framework.\nThe roadmap is organized into three levels: Usage (to bring the conceptual framework closer to the reality of different stakeholders, by presenting it with different abstractions depending the audience), Formalization (to continue the progress of this work, going deeper on the formalization and extending the current version of the conceptual framework) and System/Data Interoperability (to enable the interoperability of DQ related systems and data).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0178731.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0178731.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Roadmap for implementing the conceptual framework.</title>\n<p>The roadmap is organized into three levels: Usage (to bring the conceptual framework closer to the reality of different stakeholders, by presenting it with different abstractions depending the audience), Formalization (to continue the progress of this work, going deeper on the formalization and extending the current version of the conceptual framework) and System/Data Interoperability (to enable the interoperability of DQ related systems and data).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0178731.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0178731.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

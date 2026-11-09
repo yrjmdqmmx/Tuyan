@@ -1,0 +1,50 @@
+{
+  "id": "ppat.1010510.g006",
+  "paper": "ppat.1010510",
+  "figure": {
+    "id": "ppat.1010510.g006",
+    "label": "Fig 6",
+    "caption": "Differential expression analysis between gametocytes and zygotes at 6 hoc.\n(A) Volcano plot showing differential expression analysis between gametocytes and zygotes at 6 hoc. Red dot represents ap2-z and blue dots represent the target genes of AP2-Z. Green horizontal line indicates a p-value of 0.05 and a vertical line indicates a log_{2}(fold change) of 1. (B) Histogram of the number of AP2-Z targets against the log_{2}(fold change) value (bin = 0.5) in the differential expression analysis. Red vertical line indicates a log_{2}(fold change) of 0. (C) Eight-base motifs enriched in the upstream of zygote-upregulated genes. AP2-Z motifs are indicated in blue and AP2-O motifs are indicated in green. Motifs were ranked according to their p-values.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1010510.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.ppat.1010510.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Differential expression analysis between gametocytes and zygotes at 6 hoc.</title>\n<p>(A) Volcano plot showing differential expression analysis between gametocytes and zygotes at 6 hoc. Red dot represents <italic>ap2-z</italic> and blue dots represent the target genes of AP2-Z. Green horizontal line indicates a <italic>p</italic>-value of 0.05 and a vertical line indicates a log<sub>2</sub>(fold change) of 1. (B) Histogram of the number of AP2-Z targets against the log<sub>2</sub>(fold change) value (bin = 0.5) in the differential expression analysis. Red vertical line indicates a log<sub>2</sub>(fold change) of 0. (C) Eight-base motifs enriched in the upstream of zygote-upregulated genes. AP2-Z motifs are indicated in blue and AP2-O motifs are indicated in green. Motifs were ranked according to their <italic>p</italic>-values.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1010510.g006\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1010510.g006",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.ppat.1010510",
+    "sourceUrl": "https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1010510",
+    "title": "Identification of a novel AP2 transcription factor in zygotes with an essential role in Plasmodium ookinete development",
+    "journal": "PLOS Pathogens",
+    "authors": [
+      "Tsubasa Nishi",
+      "Izumi Kaneko",
+      "Shiroh Iwanaga",
+      "Masao Yuda"
+    ],
+    "year": "2022",
+    "license": "2022\nNishi et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plospathogens/article/figure/image?size=large&id=10.1371/journal.ppat.1010510.g006",
+      "path": "apps/paperbanana-api/assets/reference-library/ppat.1010510.g006.png",
+      "bytes": 152598,
+      "sha256": "dd220b8aa352c09d780f82a70f38f574187f6134b3f3c41248d2115cbd4e0008"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plospathogens/article/figure/image?size=original&id=10.1371/journal.ppat.1010510.g006",
+      "path": "apps/paperbanana-api/assets/reference-library/ppat.1010510.g006.tif",
+      "bytes": 222404,
+      "sha256": "6aa3a3640295a89d4ce99d61f185c7d0bfba95fd6a2578219b1e2f9cc98dde4a"
+    }
+  }
+}

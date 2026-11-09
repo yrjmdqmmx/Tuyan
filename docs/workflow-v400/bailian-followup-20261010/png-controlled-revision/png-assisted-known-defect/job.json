@@ -1,0 +1,326 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": null,
+  "referenceSelection": {
+    "proposedCount": 1,
+    "selectedCount": 1,
+    "skippedCount": 0,
+    "imageCount": 1,
+    "mode": "images",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "assist",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "succeeded",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 1,
+        "mode": "visual",
+        "status": "review_failed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "ee8ba7b4f40433e7ca74ed12fb7317ac2242d147212eefde99295c14d37a01f8",
+            "status": "issues_found",
+            "submittedImageHash": "d30596a3d9a510c726624d603f244843a6059ebdd5e69ba30101e9ba68dcc404",
+            "assessment": "{\"version\":1,\"pngHash\":\"ee8ba7b4f40433e7ca74ed12fb7317ac2242d147212eefde99295c14d37a01f8\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Incorrect numerical value in the result output label.\",\"location\":\"Rightmost node (Result Output), second line of text.\",\"evidence\":\"The rendered text shows '(均值 1.0)', but the original request and plan require '(均值 1.7)'.\",\"suggestion\":\"Change the text in the third node to '(均值 1.7)'.\"},{\"issue\":\"Font style mismatch for sub-text.\",\"location\":\"All three nodes, second line of text: '(n=12)', 'x / x₀', '(均值 1.0)'.\",\"evidence\":\"The sub-labels are currently rendered in a bold sans-serif font. The complete plan explicitly requested a Serif Italic font for these elements to differentiate them from the bold headers.\",\"suggestion\":\"Update the font of the second line in each box to a Serif Italic font (e.g., Times New Roman Italic).\"},{\"issue\":\"Color mismatch for the middle node.\",\"location\":\"The middle node labeled '数据标准化'.\",\"evidence\":\"The node uses a light beige fill color, which deviates from the complete plan's specification for a 'soft light purple fill (#E4DFEC)' with a 'matching solid border'.\",\"suggestion\":\"Change the fill and border color of the second node to the planned light purple (#E4DFEC).\"}]},\"uncertainties\":[],\"revised_description\":\"整体布局与背景：纯白色背景，严格从左到右线性水平流程，三个节点垂直居中排列。右上角放置标识符'REF-73'，深灰色(#4A4A4A)，10pt无衬线字体。\\n\\n流程节点（均为圆角矩形，圆角半径8px，大小一致，内部文字居中）：\\n1. 第一步：样品输入\\n   - 浅蓝色填充(#DBEEF4)，同色系实线边框。\\n   - 文本：第一行'样品输入'（无衬线粗体, #333333），第二行'(n=12)'（衬线斜体, #666666）。\\n2. 第二步：数据标准化\\n   - 浅紫色填充(#E4DFEC)，同色系实线边框。\\n   - 文本：第一行'数据标准化'（无衬线粗体, #333333），第二行'x / x₀'（衬线斜体, #666666）。\\n3. 第三步：结果输出\\n   - 浅绿色填充(#E2EFDA)，同色系实线边框。\\n   - 文本：第一行'结果输出'（无衬线粗体, #333333），第二行'(均值 1.7)'（衬线斜体, #666666）。\\n\\n连接箭头：从'样品输入'右侧中心水平指向'数据标准化'左侧中心，再从'数据标准化'右侧中心水平指向'结果输出'左侧中心。深灰色(#4A4A4A)实线，线宽1.5pt，带有简洁的开放式箭头。\"}",
+            "error": "万相参考图片不能包含透明通道；请使用不透明图片，未静默移除透明度。"
+          }
+        ],
+        "deliveredVersion": 1,
+        "deliveredPngHash": "ee8ba7b4f40433e7ca74ed12fb7317ac2242d147212eefde99295c14d37a01f8",
+        "reviewedVersion": 1,
+        "reviewedPngHash": "ee8ba7b4f40433e7ca74ed12fb7317ac2242d147212eefde99295c14d37a01f8",
+        "note": "PNG v1 之后的检查或重新生成未完成；保留最近成功版本，未追加评审。"
+      }
+    }
+  ],
+  "id": "1791601910477-bcbo5n4r",
+  "status": "succeeded",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "deepseek-v4-pro"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.7）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。",
+  "negativePrompt": "禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。",
+  "caption": "从样品输入到标准化结果的三步方法流程。",
+  "infographicCategory": "method",
+  "outputFormat": "png",
+  "mainModelName": "deepseek-v4-pro",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "vision_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "full",
+  "retrievalSetting": "manual",
+  "manualReferenceIds": [
+    "live-svg-reference"
+  ],
+  "retrievedReferenceIds": [
+    "live-svg-reference"
+  ],
+  "retrievedReferences": [
+    {
+      "id": "live-svg-reference",
+      "taskName": "diagram",
+      "title": "双节点方法图参考",
+      "summary": "观察该图的颜色、布局和右上角标识，作为版式参考。",
+      "titleZh": "",
+      "introZh": "",
+      "shortIntroZh": "",
+      "detailZh": "",
+      "visualCategory": "",
+      "researchDomain": "",
+      "keywords": [],
+      "corpusVersion": "zh-CN.v2",
+      "imageUrl": "http://127.0.0.1:53136/objects/library/reference.png",
+      "imageObjectKey": "library/reference.png",
+      "source": "paperbanana-bench"
+    }
+  ],
+  "stages": [
+    {
+      "id": "stage-32f9a6de-eaf9-4fc9-8c63-efc643f77555",
+      "candidateId": 0,
+      "type": "reference_observation",
+      "title": "图库参考图观察",
+      "round": 0,
+      "text": "```json\n{\n  \"content\": \"The image is a style reference diagram showing a two-node horizontal flow. It contains a light blue rounded rectangle on the left labeled '样品输入' and a light green rounded rectangle on the right labeled '结果输出'. A dark grey arrow connects them from left to right. In the top right corner, there is a text identifier 'REF-73'. The background is white.\",\n  \"layout\": \"Horizontal linear layout with two nodes centered vertically. The nodes are rounded rectangles of equal size. An arrow connects the right edge of the first node to the left edge of the second. A label is positioned in the absolute top-right corner.\",\n  \"actual_text\": [\n    \"REF-73\",\n    \"样品输入\",\n    \"结果输出\"\n  ],\n  \"connections\": [\n    \"Arrow from '样品输入' to '结果输出'\"\n  ],\n  \"problems\": [],\n  \"suggestions\": [\n    \"Borrow the light blue fill and border color for the first step (Sample Input).\",\n    \"Borrow the light green fill and border color for the third step (Result Output).\",\n    \"Use the same rounded rectangle shape and aspect ratio for all three boxes.\",\n    \"Replicate the arrow style (dark grey, straight line with open arrowhead) for the connections.\",\n    \"Place the identifier 'REF-73' in the top right corner exactly as shown.\",\n    \"Note: The reference has only 2 nodes; the target task requires 3 nodes. You will need to interpolate a middle node style (likely consistent with the others) or reuse one of the existing colors.\"\n  ],\n  \"uncertainties\": [\n    \"The reference image does not contain the middle step '数据标准化（x / x₀）', so its specific visual styling (color/border) is not defined by this reference.\",\n    \"The reference text content ('样品输入', '结果输出') matches the start and end of the target task, but the middle content is missing.\"\n  ]\n}\n```",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T03:11:58.897Z",
+      "completedAt": "2026-10-10T03:11:58.897Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-4ff35b70-82d6-442d-94a5-065eaa69dce6",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "基于提供的方法论、图注和参考图分析，最终的目标图详细描述如下：\n\n**整体布局与背景**\n*   **背景**：画面采用纯白色背景。\n*   **布局方向**：从左到右的线性水平流程。\n*   **标识符**：在画面的右上角，原样放置参考图中的版式标识符“REF-73”，字体为简洁的无衬线字体，深灰色，大小适中。\n\n**流程节点（从左到右）**\n三个步骤均使用与参考图相同风格的大圆角矩形框，垂直居中排列，大小一致，内部文字使用中文。\n1.  **第一步：样品输入**\n    *   **视觉样式**：采用参考图中左侧节点的浅蓝色填充和边框。\n    *   **文本内容**：框中包含两行。第一行为“样品输入”，第二行为括号内的“(n=12)”。文本居中，深灰色。\n2.  **第二步：数据标准化**\n    *   **视觉样式**：为保持视觉和谐，采用柔和的浅紫色或浅橙色填充和边框，以区别于首尾节点。样式仍为圆角矩形。\n    *   **文本内容**：框中包含两行。第一行为“数据标准化”，第二行为数学表达式“(x / x₀)”。文本居中，深灰色。\n3.  **第三步：结果输出**\n    *   **视觉样式**：采用参考图中右侧节点的浅绿色填充和边框。\n    *   **文本内容**：框中包含两行。第一行为“结果输出”，第二行为“(均值 1.7)”。文本居中，深灰色。\n\n**连接箭头**\n*   **指向**：一个箭头从“样品输入”框的右侧边缘中央发出，指向“数据标准化”框的左侧边缘中央；另一个箭头从“数据标准化”框的右侧边缘中央发出，指向“结果输出”框的左侧边缘中央。\n*   **样式**：完全复制参考图中的箭头样式。颜色为深灰色，线型为带有简洁开口箭头的实线。",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T03:11:58.899Z",
+      "completedAt": "2026-10-10T03:12:08.323Z",
+      "durationMs": 9424,
+      "error": ""
+    },
+    {
+      "id": "stage-4b61d35a-e324-4fd2-886b-b3192c5335e9",
+      "candidateId": 0,
+      "type": "stylist",
+      "title": "风格",
+      "round": 0,
+      "text": "**整体布局与背景**\n*   **背景**：纯白色背景，简洁、学术感强。\n*   **布局方向**：严格的从左到右线性水平流程，三个节点垂直居中排列。\n*   **标识符**：在画面的右上角，放置版式标识符“REF-73”，字体为简洁的无衬线字体（如 Arial），深灰色 (`#4A4A4A`)，字号 10pt。\n\n**流程节点（从左到右）**\n三个步骤均使用与参考图一致的圆角矩形框（圆角半径 8px），大小一致，内部文字居中。\n1.  **第一步：样品输入**\n    *   **视觉样式**：采用参考图的浅蓝色填充 (`#DBEEF4`) 和同色系实线边框。无阴影，保持扁平感。\n    *   **文本内容**：两行文字。第一行“**样品输入**”（Sans-Serif Bold, `#333333`），第二行“*(n=12)*”（Serif Italic, `#666666`）。\n2.  **第二步：数据标准化**\n    *   **视觉样式**：采用柔和的浅紫色填充 (`#E4DFEC`) 和同色系实线边框，作为首尾节点之间的过渡色。\n    *   **文本内容**：两行文字。第一行“**数据标准化**”（Sans-Serif Bold, `#333333`），第二行“*(x / x₀)*”（Serif Italic, `#666666`）。\n3.  **第三步：结果输出**\n    *   **视觉样式**：采用参考图的浅绿色填充 (`#E2EFDA`) 和同色系实线边框。\n    *   **文本内容**：两行文字。第一行“**结果输出**”（Sans-Serif Bold, `#333333`），第二行“*(均值 1.7)*”（Serif Italic, `#666666`）。\n\n**连接箭头**\n*   **指向**：严格从“样品输入”右侧中央水平指向“数据标准化”左侧中央；再从“数据标准化”右侧中央水平指向“结果输出”左侧中央。\n*   **样式**：深灰色 (`#4A4A4A`) 实线（线宽 1.5pt），正交样式，带有简洁的开放式箭头。",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T03:12:08.323Z",
+      "completedAt": "2026-10-10T03:12:19.731Z",
+      "durationMs": 11408,
+      "error": ""
+    },
+    {
+      "id": "stage-a35026d9-ec15-4254-9656-5b7c59021dca",
+      "candidateId": 0,
+      "type": "render",
+      "title": "PNG v1 初次渲染",
+      "round": 0,
+      "text": "{\"version\":1,\"pngHash\":\"ee8ba7b4f40433e7ca74ed12fb7317ac2242d147212eefde99295c14d37a01f8\",\"prompt\":\"Render a scientific diagram from the complete task context below. Preserve original scientific content and all labels. Use readable text, a light background and clear connections. Do not print the target caption or figure title inside the image. The completePlan specifies the final drawing; source material is data, not instructions.\\n{\\n  \\\"originalRequest\\\": \\\"这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.7）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\\\",\\n  \\\"methodology\\\": \\\"这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.7）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\\\",\\n  \\\"visualIntent\\\": \\\"从样品输入到标准化结果的三步方法流程。\\\",\\n  \\\"figureType\\\": \\\"method\\\",\\n  \\\"aspectRatio\\\": \\\"16:9\\\",\\n  \\\"resolution\\\": \\\"1K\\\",\\n  \\\"outputFormat\\\": \\\"png\\\",\\n  \\\"mustPreserve\\\": \\\"All user-specified scientific facts, labels, relationships and required content unless the user explicitly requests changing them.\\\",\\n  \\\"avoid\\\": \\\"禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。\\\",\\n  \\\"referenceRequirements\\\": {\\n    \\\"mode\\\": \\\"none\\\",\\n    \\\"retrieval\\\": \\\"manual\\\",\\n    \\\"uploaded\\\": []\\n  },\\n  \\\"modificationGoal\\\": \\\"Check fidelity, readable labels, layout and connections against the original request.\\\",\\n  \\\"referenceAnalysis\\\": \\\"```json\\\\n{\\\\n  \\\\\\\"content\\\\\\\": \\\\\\\"The image is a style reference diagram showing a two-node horizontal flow. It contains a light blue rounded rectangle on the left labeled '样品输入' and a light green rounded rectangle on the right labeled '结果输出'. A dark grey arrow connects them from left to right. In the top right corner, there is a text identifier 'REF-73'. The background is white.\\\\\\\",\\\\n  \\\\\\\"layout\\\\\\\": \\\\\\\"Horizontal linear layout with two nodes centered vertically. The nodes are rounded rectangles of equal size. An arrow connects the right edge of the first node to the left edge of the second. A label is positioned in the absolute top-right corner.\\\\\\\",\\\\n  \\\\\\\"actual_text\\\\\\\": [\\\\n    \\\\\\\"REF-73\\\\\\\",\\\\n    \\\\\\\"样品输入\\\\\\\",\\\\n    \\\\\\\"结果输出\\\\\\\"\\\\n  ],\\\\n  \\\\\\\"connections\\\\\\\": [\\\\n    \\\\\\\"Arrow from '样品输入' to '结果输出'\\\\\\\"\\\\n  ],\\\\n  \\\\\\\"problems\\\\\\\": [],\\\\n  \\\\\\\"suggestions\\\\\\\": [\\\\n    \\\\\\\"Borrow the light blue fill and border color for the first step (Sample Input).\\\\\\\",\\\\n    \\\\\\\"Borrow the light green fill and border color for the third step (Result Output).\\\\\\\",\\\\n    \\\\\\\"Use the same rounded rectangle shape and aspect ratio for all three boxes.\\\\\\\",\\\\n    \\\\\\\"Replicate the arrow style (dark grey, straight line with open arrowhead) for the connections.\\\\\\\",\\\\n    \\\\\\\"Place the identifier 'REF-73' in the top right corner exactly as shown.\\\\\\\",\\\\n    \\\\\\\"Note: The reference has only 2 nodes; the target task requires 3 nodes. You will need to interpolate a middle node style (likely consistent with the others) or reuse one of the existing colors.\\\\\\\"\\\\n  ],\\\\n  \\\\\\\"uncertainties\\\\\\\": [\\\\n    \\\\\\\"The reference image does not contain the middle step '数据标准化（x / x₀）', so its specific visual styling (color/border) is not defined by this reference.\\\\\\\",\\\\n    \\\\\\\"The reference text content ('样品输入', '结果输出') matches the start and end of the target task, but the middle content is missing.\\\\\\\"\\\\n  ]\\\\n}\\\\n```\\\",\\n  \\\"retrievalContext\\\": \\\"Reference 1 (live-svg-reference): 双节点方法图参考\\\\n观察该图的颜色、布局和右上角标识，作为版式参考。\\\"\\n}\\n\\ncompletePlan (full original text):\\n**整体布局与背景**\\n*   **背景**：纯白色背景，简洁、学术感强。\\n*   **布局方向**：严格的从左到右线性水平流程，三个节点垂直居中排列。\\n*   **标识符**：在画面的右上角，放置版式标识符“REF-73”，字体为简洁的无衬线字体（如 Arial），深灰色 (`#4A4A4A`)，字号 10pt。\\n\\n**流程节点（从左到右）**\\n三个步骤均使用与参考图一致的圆角矩形框（圆角半径 8px），大小一致，内部文字居中。\\n1.  **第一步：样品输入**\\n    *   **视觉样式**：采用参考图的浅蓝色填充 (`#DBEEF4`) 和同色系实线边框。无阴影，保持扁平感。\\n    *   **文本内容**：两行文字。第一行“**样品输入**”（Sans-Serif Bold, `#333333`），第二行“*(n=12)*”（Serif Italic, `#666666`）。\\n2.  **第二步：数据标准化**\\n    *   **视觉样式**：采用柔和的浅紫色填充 (`#E4DFEC`) 和同色系实线边框，作为首尾节点之间的过渡色。\\n    *   **文本内容**：两行文字。第一行“**数据标准化**”（Sans-Serif Bold, `#333333`），第二行“*(x / x₀)*”（Serif Italic, `#666666`）。\\n3.  **第三步：结果输出**\\n    *   **视觉样式**：采用参考图的浅绿色填充 (`#E2EFDA`) 和同色系实线边框。\\n    *   **文本内容**：两行文字。第一行“**结果输出**”（Sans-Serif Bold, `#333333`），第二行“*(均值 1.7)*”（Serif Italic, `#666666`）。\\n\\n**连接箭头**\\n*   **指向**：严格从“样品输入”右侧中央水平指向“数据标准化”左侧中央；再从“数据标准化”右侧中央水平指向“结果输出”左侧中央。\\n*   **样式**：深灰色 (`#4A4A4A`) 实线（线宽 1.5pt），正交样式，带有简洁的开放式箭头。\"}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791601910477-bcbo5n4r/candidate-0-png-v1.png",
+        "url": "http://127.0.0.1:53136/objects/1791601910477-bcbo5n4r/candidate-0-png-v1.png",
+        "mimeType": "image/png",
+        "objectKey": "1791601910477-bcbo5n4r/candidate-0-png-v1.png"
+      },
+      "startedAt": "2026-10-10T03:12:19.738Z",
+      "completedAt": "2026-10-10T03:12:19.738Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-d10acf16-57b8-480f-8431-5e84a4ba5232",
+      "candidateId": 0,
+      "type": "observation",
+      "title": "PNG v1 视觉观察（第1轮）",
+      "round": 1,
+      "text": "{\"referenceAnalysis\":\"```json\\n{\\n  \\\"content\\\": \\\"The image is a style reference diagram showing a two-node horizontal flow. It contains a light blue rounded rectangle on the left labeled '样品输入' and a light green rounded rectangle on the right labeled '结果输出'. A dark grey arrow connects them from left to right. In the top right corner, there is a text identifier 'REF-73'. The background is white.\\\",\\n  \\\"layout\\\": \\\"Horizontal linear layout with two nodes centered vertically. The nodes are rounded rectangles of equal size. An arrow connects the right edge of the first node to the left edge of the second. A label is positioned in the absolute top-right corner.\\\",\\n  \\\"actual_text\\\": [\\n    \\\"REF-73\\\",\\n    \\\"样品输入\\\",\\n    \\\"结果输出\\\"\\n  ],\\n  \\\"connections\\\": [\\n    \\\"Arrow from '样品输入' to '结果输出'\\\"\\n  ],\\n  \\\"problems\\\": [],\\n  \\\"suggestions\\\": [\\n    \\\"Borrow the light blue fill and border color for the first step (Sample Input).\\\",\\n    \\\"Borrow the light green fill and border color for the third step (Result Output).\\\",\\n    \\\"Use the same rounded rectangle shape and aspect ratio for all three boxes.\\\",\\n    \\\"Replicate the arrow style (dark grey, straight line with open arrowhead) for the connections.\\\",\\n    \\\"Place the identifier 'REF-73' in the top right corner exactly as shown.\\\",\\n    \\\"Note: The reference has only 2 nodes; the target task requires 3 nodes. You will need to interpolate a middle node style (likely consistent with the others) or reuse one of the existing colors.\\\"\\n  ],\\n  \\\"uncertainties\\\": [\\n    \\\"The reference image does not contain the middle step '数据标准化（x / x₀）', so its specific visual styling (color/border) is not defined by this reference.\\\",\\n    \\\"The reference text content ('样品输入', '结果输出') matches the start and end of the target task, but the middle content is missing.\\\"\\n  ]\\n}\\n```\",\"retrievalContext\":\"Reference 1 (live-svg-reference): 双节点方法图参考\\n观察该图的颜色、布局和右上角标识，作为版式参考。\",\"version\":1,\"pngHash\":\"ee8ba7b4f40433e7ca74ed12fb7317ac2242d147212eefde99295c14d37a01f8\",\"submittedImageHash\":\"d30596a3d9a510c726624d603f244843a6059ebdd5e69ba30101e9ba68dcc404\",\"round\":1,\"previousReview\":null,\"planningConstraint\":\"Image API limit: 5000 Unicode characters for the ENTIRE final request prompt. Write a compact, complete drawing plan in the user language, at most 1255 characters; preserve every required fact/label and relationship. Avoid repeating the original prose, metadata or long explanations. This applies to initial, styled and revised plans.\",\"observation\":{\"content\":\"A horizontal three-step scientific process flow diagram on a white background. From left to right: a light blue rounded rectangle labeled '样品输入 (n=12)', a light beige rounded rectangle labeled '数据标准化 x / x₀', and a light green rounded rectangle labeled '结果输出 (均值 1.0)'. Dark grey arrows connect the boxes sequentially. The identifier 'REF-73' appears in the top right corner.\",\"actual_text\":[\"REF-73\",\"样品输入\",\"(n=12)\",\"数据标准化\",\"x / x₀\",\"结果输出\",\"(均值 1.0)\"],\"layout\":\"Three equal-sized rounded rectangles arranged horizontally and centered vertically, connected by straight arrows pointing right. A text identifier is placed in the absolute top-right corner.\",\"connections\":[\"Arrow from '样品输入' box to '数据标准化' box\",\"Arrow from '数据标准化' box to '结果输出' box\"],\"problems\":[{\"issue\":\"Incorrect numerical value in output label\",\"location\":\"Rightmost node (Result Output)\",\"evidence\":\"The text reads '(均值 1.0)', but the requirement specifies '均值 1.7'.\",\"suggestion\":\"Change the text to '(均值 1.7)' to match the specific test case requirement.\"},{\"issue\":\"Font style mismatch for mathematical/parameter text\",\"location\":\"All three nodes, second line of text\",\"evidence\":\"The sub-labels '(n=12)', 'x / x₀', and '(均值 1.0)' are rendered in a bold sans-serif font. The plan requires Serif Italic for these elements to distinguish them from the main headers.\",\"suggestion\":\"Update the font of the second line in each box to Serif Italic (e.g., Times New Roman Italic) as per the styling plan.\"}],\"suggestions\":[\"Correct the output value from 1.0 to 1.7.\",\"Apply Serif Italic formatting to the sub-text (n=12, x/x₀, mean value) to differentiate it from the bold headers.\",\"Ensure the middle box color (currently beige) aligns with the planned 'soft light purple' if strict adherence to the color plan is desired, though the current beige is visually acceptable.\"],\"uncertainties\":[\"The reference image provided in the context only contained two nodes; the middle node's color (beige) was likely an interpolation by the generator rather than a direct copy from a reference.\"]}}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791601910477-bcbo5n4r/candidate-0-png-v1-review-1.png",
+        "url": "http://127.0.0.1:53136/objects/1791601910477-bcbo5n4r/candidate-0-png-v1-review-1.png",
+        "mimeType": "image/png",
+        "objectKey": "1791601910477-bcbo5n4r/candidate-0-png-v1-review-1.png"
+      },
+      "startedAt": "2026-10-10T03:12:31.707Z",
+      "completedAt": "2026-10-10T03:12:31.707Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-b3dc99e1-04c4-4e74-ab79-2739d41658d3",
+      "candidateId": 0,
+      "type": "critic",
+      "title": "PNG v1 主模型评审（第1轮）",
+      "round": 1,
+      "text": "{\"referenceAnalysis\":\"```json\\n{\\n  \\\"content\\\": \\\"The image is a style reference diagram showing a two-node horizontal flow. It contains a light blue rounded rectangle on the left labeled '样品输入' and a light green rounded rectangle on the right labeled '结果输出'. A dark grey arrow connects them from left to right. In the top right corner, there is a text identifier 'REF-73'. The background is white.\\\",\\n  \\\"layout\\\": \\\"Horizontal linear layout with two nodes centered vertically. The nodes are rounded rectangles of equal size. An arrow connects the right edge of the first node to the left edge of the second. A label is positioned in the absolute top-right corner.\\\",\\n  \\\"actual_text\\\": [\\n    \\\"REF-73\\\",\\n    \\\"样品输入\\\",\\n    \\\"结果输出\\\"\\n  ],\\n  \\\"connections\\\": [\\n    \\\"Arrow from '样品输入' to '结果输出'\\\"\\n  ],\\n  \\\"problems\\\": [],\\n  \\\"suggestions\\\": [\\n    \\\"Borrow the light blue fill and border color for the first step (Sample Input).\\\",\\n    \\\"Borrow the light green fill and border color for the third step (Result Output).\\\",\\n    \\\"Use the same rounded rectangle shape and aspect ratio for all three boxes.\\\",\\n    \\\"Replicate the arrow style (dark grey, straight line with open arrowhead) for the connections.\\\",\\n    \\\"Place the identifier 'REF-73' in the top right corner exactly as shown.\\\",\\n    \\\"Note: The reference has only 2 nodes; the target task requires 3 nodes. You will need to interpolate a middle node style (likely consistent with the others) or reuse one of the existing colors.\\\"\\n  ],\\n  \\\"uncertainties\\\": [\\n    \\\"The reference image does not contain the middle step '数据标准化（x / x₀）', so its specific visual styling (color/border) is not defined by this reference.\\\",\\n    \\\"The reference text content ('样品输入', '结果输出') matches the start and end of the target task, but the middle content is missing.\\\"\\n  ]\\n}\\n```\",\"retrievalContext\":\"Reference 1 (live-svg-reference): 双节点方法图参考\\n观察该图的颜色、布局和右上角标识，作为版式参考。\",\"version\":1,\"pngHash\":\"ee8ba7b4f40433e7ca74ed12fb7317ac2242d147212eefde99295c14d37a01f8\",\"submittedImageHash\":\"d30596a3d9a510c726624d603f244843a6059ebdd5e69ba30101e9ba68dcc404\",\"round\":1,\"previousReview\":null,\"planningConstraint\":\"Image API limit: 5000 Unicode characters for the ENTIRE final request prompt. Write a compact, complete drawing plan in the user language, at most 1255 characters; preserve every required fact/label and relationship. Avoid repeating the original prose, metadata or long explanations. This applies to initial, styled and revised plans.\",\"decision\":{\"version\":1,\"pngHash\":\"ee8ba7b4f40433e7ca74ed12fb7317ac2242d147212eefde99295c14d37a01f8\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Incorrect numerical value in the result output label.\",\"location\":\"Rightmost node (Result Output), second line of text.\",\"evidence\":\"The rendered text shows '(均值 1.0)', but the original request and plan require '(均值 1.7)'.\",\"suggestion\":\"Change the text in the third node to '(均值 1.7)'.\"},{\"issue\":\"Font style mismatch for sub-text.\",\"location\":\"All three nodes, second line of text: '(n=12)', 'x / x₀', '(均值 1.0)'.\",\"evidence\":\"The sub-labels are currently rendered in a bold sans-serif font. The complete plan explicitly requested a Serif Italic font for these elements to differentiate them from the bold headers.\",\"suggestion\":\"Update the font of the second line in each box to a Serif Italic font (e.g., Times New Roman Italic).\"},{\"issue\":\"Color mismatch for the middle node.\",\"location\":\"The middle node labeled '数据标准化'.\",\"evidence\":\"The node uses a light beige fill color, which deviates from the complete plan's specification for a 'soft light purple fill (#E4DFEC)' with a 'matching solid border'.\",\"suggestion\":\"Change the fill and border color of the second node to the planned light purple (#E4DFEC).\"}]},\"uncertainties\":[],\"revised_description\":\"整体布局与背景：纯白色背景，严格从左到右线性水平流程，三个节点垂直居中排列。右上角放置标识符'REF-73'，深灰色(#4A4A4A)，10pt无衬线字体。\\n\\n流程节点（均为圆角矩形，圆角半径8px，大小一致，内部文字居中）：\\n1. 第一步：样品输入\\n   - 浅蓝色填充(#DBEEF4)，同色系实线边框。\\n   - 文本：第一行'样品输入'（无衬线粗体, #333333），第二行'(n=12)'（衬线斜体, #666666）。\\n2. 第二步：数据标准化\\n   - 浅紫色填充(#E4DFEC)，同色系实线边框。\\n   - 文本：第一行'数据标准化'（无衬线粗体, #333333），第二行'x / x₀'（衬线斜体, #666666）。\\n3. 第三步：结果输出\\n   - 浅绿色填充(#E2EFDA)，同色系实线边框。\\n   - 文本：第一行'结果输出'（无衬线粗体, #333333），第二行'(均值 1.7)'（衬线斜体, #666666）。\\n\\n连接箭头：从'样品输入'右侧中心水平指向'数据标准化'左侧中心，再从'数据标准化'右侧中心水平指向'结果输出'左侧中心。深灰色(#4A4A4A)实线，线宽1.5pt，带有简洁的开放式箭头。\"}}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791601910477-bcbo5n4r/candidate-0-png-v1-review-1.png",
+        "url": "http://127.0.0.1:53136/objects/1791601910477-bcbo5n4r/candidate-0-png-v1-review-1.png",
+        "mimeType": "image/png",
+        "objectKey": "1791601910477-bcbo5n4r/candidate-0-png-v1-review-1.png"
+      },
+      "startedAt": "2026-10-10T03:12:44.756Z",
+      "completedAt": "2026-10-10T03:12:44.756Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-1b4e4a0c-efd2-48a3-ae81-f9070fa6f0e1",
+      "candidateId": 0,
+      "type": "reference",
+      "title": "重画方式（第1轮）",
+      "round": 1,
+      "text": "{\"note\":\"参考上一张图重新生成；上一张图不是必须保持不变的编辑底图。\",\"sourceVersion\":1,\"sourcePngHash\":\"ee8ba7b4f40433e7ca74ed12fb7317ac2242d147212eefde99295c14d37a01f8\"}",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T03:12:44.758Z",
+      "completedAt": "2026-10-10T03:12:44.758Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-2f084800-a145-4af7-b494-dd3e49a249fc",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "第1轮未完成",
+      "round": 1,
+      "text": "PNG v1 之后的检查或重新生成未完成；保留最近成功版本，未追加评审。",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791601910477-bcbo5n4r/candidate-0-png-v1.png",
+        "url": "http://127.0.0.1:53136/objects/1791601910477-bcbo5n4r/candidate-0-png-v1.png",
+        "mimeType": "image/png",
+        "objectKey": "1791601910477-bcbo5n4r/candidate-0-png-v1.png"
+      },
+      "startedAt": "2026-10-10T03:12:44.759Z",
+      "completedAt": "2026-10-10T03:12:44.759Z",
+      "durationMs": 0,
+      "error": "万相参考图片不能包含透明通道；请使用不透明图片，未静默移除透明度。"
+    },
+    {
+      "id": "stage-bd861a21-e798-442c-bfba-33bc76d8c0d4",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "PNG v1 交付状态",
+      "round": 0,
+      "text": "PNG v1 之后的检查或重新生成未完成；保留最近成功版本，未追加评审。",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791601910477-bcbo5n4r/candidate-0-png-v1.png",
+        "url": "http://127.0.0.1:53136/objects/1791601910477-bcbo5n4r/candidate-0-png-v1.png",
+        "mimeType": "image/png",
+        "objectKey": "1791601910477-bcbo5n4r/candidate-0-png-v1.png"
+      },
+      "startedAt": "2026-10-10T03:12:44.759Z",
+      "completedAt": "2026-10-10T03:12:44.759Z",
+      "durationMs": 0,
+      "error": ""
+    }
+  ],
+  "criticMode": "image",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 2,
+  "promptCharCount": 195,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [
+    {
+      "candidateId": 0,
+      "filename": "1791601910477-bcbo5n4r/candidate-0.png",
+      "objectKey": "1791601910477-bcbo5n4r/candidate-0.png",
+      "url": "http://127.0.0.1:53136/objects/1791601910477-bcbo5n4r/candidate-0.png",
+      "storage": "bucket",
+      "mimeType": "image/png",
+      "description": "**整体布局与背景**\n*   **背景**：纯白色背景，简洁、学术感强。\n*   **布局方向**：严格的从左到右线性水平流程，三个节点垂直居中排列。\n*   **标识符**：在画面的右上角，放置版式标识符“REF-73”，字体为简洁的无衬线字体（如 Arial），深灰色 (`#4A4A4A`)，字号 10pt。\n\n**流程节点（从左到右）**\n三个步骤均使用与参考图一致的圆角矩形框（圆角半径 8px），大小一致，内部文字居中。\n1.  **第一步：样品输入**\n    *   **视觉样式**：采用参考图的浅蓝色填充 (`#DBEEF4`) 和同色系实线边框。无阴影，保持扁平感。\n    *   **文本内容**：两行文字。第一行“**样品输入**”（Sans-Serif Bold, `#333333`），第二行“*(n=12)*”（Serif Italic, `#666666`）。\n2.  **第二步：数据标准化**\n    *   **视觉样式**：采用柔和的浅紫色填充 (`#E4DFEC`) 和同色系实线边框，作为首尾节点之间的过渡色。\n    *   **文本内容**：两行文字。第一行“**数据标准化**”（Sans-Serif Bold, `#333333`），第二行“*(x / x₀)*”（Serif Italic, `#666666`）。\n3.  **第三步：结果输出**\n    *   **视觉样式**：采用参考图的浅绿色填充 (`#E2EFDA`) 和同色系实线边框。\n    *   **文本内容**：两行文字。第一行“**结果输出**”（Sans-Serif Bold, `#333333`），第二行“*(均值 1.7)*”（Serif Italic, `#666666`）。\n\n**连接箭头**\n*   **指向**：严格从“样品输入”右侧中央水平指向“数据标准化”左侧中央；再从“数据标准化”右侧中央水平指向“结果输出”左侧中央。\n*   **样式**：深灰色 (`#4A4A4A`) 实线（线宽 1.5pt），正交样式，带有简洁的开放式箭头。",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 1,
+        "mode": "visual",
+        "status": "review_failed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "ee8ba7b4f40433e7ca74ed12fb7317ac2242d147212eefde99295c14d37a01f8",
+            "status": "issues_found",
+            "submittedImageHash": "d30596a3d9a510c726624d603f244843a6059ebdd5e69ba30101e9ba68dcc404",
+            "assessment": "{\"version\":1,\"pngHash\":\"ee8ba7b4f40433e7ca74ed12fb7317ac2242d147212eefde99295c14d37a01f8\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Incorrect numerical value in the result output label.\",\"location\":\"Rightmost node (Result Output), second line of text.\",\"evidence\":\"The rendered text shows '(均值 1.0)', but the original request and plan require '(均值 1.7)'.\",\"suggestion\":\"Change the text in the third node to '(均值 1.7)'.\"},{\"issue\":\"Font style mismatch for sub-text.\",\"location\":\"All three nodes, second line of text: '(n=12)', 'x / x₀', '(均值 1.0)'.\",\"evidence\":\"The sub-labels are currently rendered in a bold sans-serif font. The complete plan explicitly requested a Serif Italic font for these elements to differentiate them from the bold headers.\",\"suggestion\":\"Update the font of the second line in each box to a Serif Italic font (e.g., Times New Roman Italic).\"},{\"issue\":\"Color mismatch for the middle node.\",\"location\":\"The middle node labeled '数据标准化'.\",\"evidence\":\"The node uses a light beige fill color, which deviates from the complete plan's specification for a 'soft light purple fill (#E4DFEC)' with a 'matching solid border'.\",\"suggestion\":\"Change the fill and border color of the second node to the planned light purple (#E4DFEC).\"}]},\"uncertainties\":[],\"revised_description\":\"整体布局与背景：纯白色背景，严格从左到右线性水平流程，三个节点垂直居中排列。右上角放置标识符'REF-73'，深灰色(#4A4A4A)，10pt无衬线字体。\\n\\n流程节点（均为圆角矩形，圆角半径8px，大小一致，内部文字居中）：\\n1. 第一步：样品输入\\n   - 浅蓝色填充(#DBEEF4)，同色系实线边框。\\n   - 文本：第一行'样品输入'（无衬线粗体, #333333），第二行'(n=12)'（衬线斜体, #666666）。\\n2. 第二步：数据标准化\\n   - 浅紫色填充(#E4DFEC)，同色系实线边框。\\n   - 文本：第一行'数据标准化'（无衬线粗体, #333333），第二行'x / x₀'（衬线斜体, #666666）。\\n3. 第三步：结果输出\\n   - 浅绿色填充(#E2EFDA)，同色系实线边框。\\n   - 文本：第一行'结果输出'（无衬线粗体, #333333），第二行'(均值 1.7)'（衬线斜体, #666666）。\\n\\n连接箭头：从'样品输入'右侧中心水平指向'数据标准化'左侧中心，再从'数据标准化'右侧中心水平指向'结果输出'左侧中心。深灰色(#4A4A4A)实线，线宽1.5pt，带有简洁的开放式箭头。\"}",
+            "error": "万相参考图片不能包含透明通道；请使用不透明图片，未静默移除透明度。"
+          }
+        ],
+        "deliveredVersion": 1,
+        "deliveredPngHash": "ee8ba7b4f40433e7ca74ed12fb7317ac2242d147212eefde99295c14d37a01f8",
+        "reviewedVersion": 1,
+        "reviewedPngHash": "ee8ba7b4f40433e7ca74ed12fb7317ac2242d147212eefde99295c14d37a01f8",
+        "note": "PNG v1 之后的检查或重新生成未完成；保留最近成功版本，未追加评审。"
+      }
+    }
+  ],
+  "logs": [
+    "2026-10-10T03:11:58.898Z 参考图选择：采用 1 张，排除重复 0 张、无法使用 0 张、超出预算 0 张；辅助视觉观察请求合计 1 张图片，上限 8 张。",
+    "2026-10-10T03:12:44.758Z Candidate 1: 参考上一张图重新生成；上一张图不是必须保持不变的编辑底图。"
+  ],
+  "error": "",
+  "createdAt": "2026-10-10T03:11:50.477Z",
+  "updatedAt": "2026-10-10T03:12:44.759Z",
+  "startedAt": "2026-10-10T03:11:50.477Z",
+  "completedAt": "2026-10-10T03:12:44.759Z"
+}

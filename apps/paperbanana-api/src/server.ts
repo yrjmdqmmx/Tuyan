@@ -8,6 +8,7 @@ import http from 'node:http'
 import express, { type Express, type NextFunction, type Request, type Response } from 'express'
 
 import { redactLogValue } from './redaction.js'
+import { parseOpsQuery, OpsQueryError } from '../../../packages/api/src/ops-read-contract.mjs'
 
 export type CoreContext = {
   request: { method: string }
@@ -33,6 +34,7 @@ export type AppConfig = {
   adminToken?: string
   adminTransportToken?: string
   benchmarkDiscoveryToken?: string
+  operationsToken?: string
   serviceName: string
   version: string
 }
@@ -41,10 +43,13 @@ type AppDependencies = {
   tokenDance?: ReturnType<typeof createTokenDanceService>
   providerWorkflow?: ReturnType<typeof createProviderWorkflow>
   resumeTokenDanceJob?: (task: any) => Promise<any>
+  requiresCustomCredential?: (body: Record<string, any>) => Promise<boolean>
   requiresTokenDanceCredential?: (body: Record<string, any>) => Promise<boolean>
   handler: CoreHandler
   readinessProbe: ReadinessProbe
   healthSnapshot: () => Readiness
+  operationsSnapshot?: () => unknown | Promise<unknown>
+  operationsRead?: (kind: 'overview' | 'failures', input: unknown) => Promise<unknown>
   config: AppConfig
   logger: ServiceLogger
   adminOperations?: { handle(body: Record<string, unknown>, isAdmin: boolean): Promise<Record<string, unknown>> }
@@ -133,19 +138,23 @@ function handlerHeaders(request: Request): Request['headers'] {
   const headers: Request['headers'] = {}
   const clientIp = safeLegacyHeader(request.get('x-paperbanana-client-ip'), 128)
   const userAgent = safeLegacyHeader(request.get('user-agent'), 512)
+  const authUserId = safeLegacyHeader(request.get('x-paperbanana-auth-user-id'), 200)
   if (clientIp) headers['x-paperbanana-client-ip'] = clientIp
   if (userAgent) headers['user-agent'] = userAgent
+  // invokeLegacy validates the internal transport before exposing this assertion.
+  if (authUserId) headers['x-paperbanana-auth-user-id'] = authUserId
   return headers
 }
 
 export function createApp({
-  handler, readinessProbe, healthSnapshot, config, logger, benchmarkService, adminOperations,
-  prepareScientificV2RegistryAuthority, tokenDance, providerWorkflow, resumeTokenDanceJob, requiresTokenDanceCredential,
+  handler, readinessProbe, healthSnapshot, operationsSnapshot, operationsRead, config, logger, benchmarkService, adminOperations,
+  prepareScientificV2RegistryAuthority, tokenDance, providerWorkflow, resumeTokenDanceJob, requiresTokenDanceCredential, requiresCustomCredential,
 }: AppDependencies): Express {
   const app = express()
   app.disable('x-powered-by')
   const standardJsonParser = express.json({ limit: '1mb', strict: false })
   const scientificV2FreezeJsonParser = express.json({ limit: '8mb', strict: false })
+  const imageLibraryJsonParser = express.json({ limit: '14mb', strict: false })
   app.use((request, response, next) => {
     const declaredScientificOperation = request.get(scientificV2AdminOperationHeader)
     const protectedFreezeTransport = request.method === 'POST'
@@ -154,7 +163,10 @@ export function createApp({
       && Boolean(config.adminTransportToken)
       && tokensMatch(request.get('x-paperbanana-gateway-token') || '', config.gatewayToken)
       && tokensMatch(request.get('x-paperbanana-admin-transport-token') || '', config.adminTransportToken || '')
-    return (protectedFreezeTransport ? scientificV2FreezeJsonParser : standardJsonParser)(request, response, next)
+    const imageTransport = request.method === 'POST' && request.path === '/paperbanana-api'
+      && request.get('x-paperbanana-image-storage') === '1'
+      && tokensMatch(request.get('x-paperbanana-gateway-token') || '', config.gatewayToken)
+    return (imageTransport ? imageLibraryJsonParser : protectedFreezeTransport ? scientificV2FreezeJsonParser : standardJsonParser)(request, response, next)
   })
   app.use((request, response, next) => {
     applyCors(response)
@@ -194,6 +206,34 @@ export function createApp({
   app.get('/health', (_request, response) => sendHealth(response, healthSnapshot(), false))
   app.get('/ready', (_request, response) => readyResponse(response))
 
+  // Read-only credential, independent of Gateway/admin authority. Never forward
+  // this endpoint from public gateways; query and body tokens do not count.
+  app.get('/internal/operations', async (request, response) => {
+    response.set('Cache-Control', 'no-store')
+    response.removeHeader('Access-Control-Allow-Origin')
+    if (!operationsSnapshot || !config.operationsToken) return response.sendStatus(404)
+    if (!tokensMatch(request.get('x-paperbanana-operations-token') || '', config.operationsToken)) {
+      return response.status(401).json({ error: 'Unauthorized internal transport' })
+    }
+    try { return response.json(await operationsSnapshot()) }
+    catch { return response.status(503).json({ error: 'Operations snapshot unavailable' }) }
+  })
+
+  for (const kind of ['overview', 'failures'] as const) {
+    app.get(`/internal/operations/${kind}`, async (request, response) => {
+      response.set('Cache-Control', 'no-store')
+      for (const header of Object.keys(corsHeaders)) response.removeHeader(header)
+      if (!operationsRead || !config.operationsToken) return response.sendStatus(404)
+      if (request.get('origin') || !tokensMatch(request.get('x-paperbanana-operations-token') || '', config.operationsToken)) {
+        return response.status(401).json({ error: 'Unauthorized internal transport' })
+      }
+      try { return response.json(await operationsRead(kind, parseOpsQuery(kind, request.query))) }
+      catch (error) {
+        return response.status(error instanceof OpsQueryError ? 400 : 503).json({ error: error instanceof OpsQueryError ? error.message : 'Operations source unavailable' })
+      }
+    })
+  }
+
   async function invokeLegacy(request: Request, response: Response) {
     const token = request.get('x-paperbanana-gateway-token') || ''
     const gatewayTransport = tokensMatch(token, config.gatewayToken)
@@ -214,15 +254,15 @@ export function createApp({
       && adminTransport
       && tokensMatch(adminTransport, config.adminTransportToken),
     )
-    const usesCustom = action === 'universalApiCheck' || (body.mainRoute as any)?.accessProvider === 'custom' || Object.values((body.modelRoutes || {}) as any).some((route: any) => route?.accessProvider === 'custom')
-    if (usesCustom) {
+    const usesCustom = action === 'universalApiCheck' || (body.mainRoute as any)?.accessProvider === 'custom' || Object.entries((body.modelRoutes || {}) as any).some(([role, route]: [string, any]) => (role !== 'vision' || body.visionMode !== 'none') && route?.accessProvider === 'custom')
+    if (usesCustom && (action==='universalApiCheck' || !requiresCustomCredential || await requiresCustomCredential(body))) {
       const userId = safeLegacyHeader(request.get('x-paperbanana-auth-user-id'), 200) || ''
       if (!userId) return response.status(401).json({code: 401, error: '通用 API 接入需要先登录。'})
       body.userId = userId
       response.setHeader('Cache-Control', 'no-store')
     }
     const tokenDanceAction = action === 'providerResume' || (TOKENDANCE_ACTIONS as readonly string[]).includes(action) || action === 'adminTokenDancePricing'
-    const usesTokenDance = ['createJob', 'refineImage', 'optimizeInputs'].includes(action) && (body.provider === 'tokendance' || (body.mainRoute as any)?.accessProvider === 'tokendance' || Object.values((body.modelRoutes || {}) as any).some((route: any) => route?.accessProvider === 'tokendance'))
+    const usesTokenDance = ['createJob', 'refineImage', 'optimizeInputs'].includes(action) && (body.provider === 'tokendance' || (body.mainRoute as any)?.accessProvider === 'tokendance' || Object.entries((body.modelRoutes || {}) as any).some(([role, route]: [string, any]) => (role !== 'vision' || body.visionMode !== 'none') && route?.accessProvider === 'tokendance'))
     // Client-supplied TD keys and identities are never authoritative.
     if (body.apiKeys && typeof body.apiKeys === 'object') { body.apiKeys = { ...(body.apiKeys as object) }; delete (body.apiKeys as any).tokendance }
     if (usesTokenDance || tokenDanceAction) {
@@ -237,8 +277,8 @@ export function createApp({
           }
           return response.json(await tokenDance.handle(body, userId, isAdminTransport && Boolean(config.adminToken)))
         }
-        body.userId = userId
         if (!requiresTokenDanceCredential || await requiresTokenDanceCredential(body)) {
+          body.userId = userId
           if (!tokenDance) throw new TokenDanceError(503, '观猹 TokenDance 连接服务尚未配置。')
           const credential = await tokenDance.credential(userId)
           body.apiKeys = { ...(body.apiKeys as object || {}), tokendance: credential.key }

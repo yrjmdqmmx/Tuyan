@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="432pt" viewBox="0 0 648 432" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-10T16:09:03.314051</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 432 
+L 648 432 
+L 648 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 324 407.442559 
+C 371.641971 407.442559 417.339064 388.514204 451.027024 354.826243 
+C 484.714985 321.138282 503.64334 275.44119 503.64334 227.799219 
+C 503.64334 180.157248 484.714985 134.460155 451.027024 100.772195 
+C 417.339064 67.084234 371.641971 48.155878 324 48.155878 
+C 276.358029 48.155878 230.660936 67.084234 196.972976 100.772195 
+C 163.285015 134.460155 144.35666 180.157248 144.35666 227.799219 
+C 144.35666 275.44119 163.285015 321.138282 196.972976 354.826243 
+C 230.660936 388.514204 276.358029 407.442559 324 407.442559 
+z
+" clip-path="url(#p154dc6b10a)" style="fill: #487968; opacity: 0.65; stroke: #405648; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(306.134375 225.076875)">Only leaf</text>
+    <text style="font-size: 8px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(321.455 234.678438)">4</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="324" y="10.598677" transform="rotate(-0 324 10.598677)">Leaf area proportional to count; parent area includes empty space</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p154dc6b10a">
+   <rect x="122.799459" y="26.598677" width="402.401083" height="402.401083"/>
+  </clipPath>
+ </defs>
+</svg>

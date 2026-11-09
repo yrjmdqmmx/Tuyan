@@ -14,7 +14,7 @@ function DiffText({ segments, side }) {
 }
 
 export default function InputOptimizationDialog({
-  open,
+  open, backdropClassName,
   targetLabel,
   original,
   candidate,
@@ -31,6 +31,7 @@ export default function InputOptimizationDialog({
 
   return (
     <AccessibleDialog
+      backdropClassName={backdropClassName}
       open={open}
       onClose={onClose}
       labelledBy={titleId}

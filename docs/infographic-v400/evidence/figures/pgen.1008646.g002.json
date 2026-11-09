@@ -1,0 +1,62 @@
+{
+  "id": "pgen.1008646.g002",
+  "paper": "pgen.1008646",
+  "figure": {
+    "id": "pgen.1008646.g002",
+    "label": "Fig 2",
+    "caption": "Contigs in the Psojae2019.1 assembly demonstrating CENP-A enrichment based on ChIP-seq.\n(A) 10 contigs that harbor fully assembled CENP-A binding sites. (B) Five contigs that possess incompletely assembled CENP-A binding regions. All contigs are drawn to scale and the ruler indicates the length of the contigs. All CENP-A profiles shown were normalized to input DNA. mRNA profiles are shown as log-scales. Solid stars indicate the CENP-A enriched regions within contigs; hollow stars denote broken centromeres at the edge.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1008646.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pgen.1008646.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Contigs in the Psojae2019.1 assembly demonstrating CENP-A enrichment based on ChIP-seq.</title>\n<p>(A) 10 contigs that harbor fully assembled CENP-A binding sites. (B) Five contigs that possess incompletely assembled CENP-A binding regions. All contigs are drawn to scale and the ruler indicates the length of the contigs. All CENP-A profiles shown were normalized to input DNA. mRNA profiles are shown as log-scales. Solid stars indicate the CENP-A enriched regions within contigs; hollow stars denote broken centromeres at the edge.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1008646.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1008646.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pgen.1008646",
+    "sourceUrl": "https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008646",
+    "title": "Long transposon-rich centromeres in an oomycete reveal divergence of centromere features in Stramenopila-Alveolata-Rhizaria lineages",
+    "journal": "PLOS Genetics",
+    "authors": [
+      "Yufeng Fang",
+      "Marco A. Coelho",
+      "Haidong Shu",
+      "Klaas Schotanus",
+      "Bhagya C. Thimmappa",
+      "Vikas Yadav",
+      "Han Chen",
+      "Ewa P. Malc",
+      "Jeremy Wang",
+      "Piotr A. Mieczkowski",
+      "Brent Kronmiller",
+      "Brett M. Tyler",
+      "Kaustuv Sanyal",
+      "Suomeng Dong",
+      "Minou Nowrousian",
+      "Joseph Heitman"
+    ],
+    "year": "2020",
+    "license": "2020\nFang et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosgenetics/article/figure/image?size=large&id=10.1371/journal.pgen.1008646.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pgen.1008646.g002.png",
+      "bytes": 329901,
+      "sha256": "ee4d0a2f10ff7bf8bc768f8f9a5544c2cbecc2ffa800a6f43bcc13ddd10e780c"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosgenetics/article/figure/image?size=original&id=10.1371/journal.pgen.1008646.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pgen.1008646.g002.tif",
+      "bytes": 644716,
+      "sha256": "17c78ba0025214113c78d6eedf593e082a47a5104d7a486a12c644aa83496aed"
+    }
+  }
+}

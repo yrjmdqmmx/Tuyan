@@ -3,6 +3,7 @@ import { once } from 'node:events';
 import test from 'node:test';
 
 import { createApp } from '../src/app.js';
+import { sha256Canonical } from '@paperbanana/tuyan-knowledge';
 
 function fakeAuth() {
   const calls = [];
@@ -184,7 +185,7 @@ test('tool calls reject free text, extra fields, invalid versions, and invalid e
 test('resources list in stable order and dynamic workflow resources can be read', async () => {
   await withApp(async ({ baseUrl }) => {
     const listed = await resultOf(await mcp(baseUrl, 'resources/list'));
-    assert.deepEqual(listed.result.resources.map(({ uri }) => uri), [
+    assert.deepEqual(listed.result.resources.slice(0, 5).map(({ uri }) => uri), [
       'tuyan://manifest',
       'tuyan://schemas/figure-spec/v1',
       'tuyan://schemas/critique-record/v1',
@@ -214,6 +215,21 @@ test('MCP has an independent 64 KiB request ceiling', async () => {
       body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/list', params: {}, padding: 'x'.repeat(70 * 1024) }),
     });
     assert.equal(response.status, 413);
+  });
+});
+
+test('anonymous journal and taxonomy resources retain their wire hashes without business calls', async () => {
+  await withApp(async ({ baseUrl, auth, backend }) => {
+    const read = async uri => JSON.parse((await resultOf(await mcp(baseUrl, 'resources/read', { uri }))).result.contents[0].text);
+    const manifest = await read('tuyan://manifest');
+    const index = await read('tuyan://journals/index/v1');
+    assert.equal(sha256Canonical(index), manifest.resourceHashes['tuyan://journals/index/v1']);
+    const uri = index.versions.at(-1).uri;
+    const rules = await read(uri);
+    assert.equal(sha256Canonical(rules), manifest.resourceHashes[uri]);
+    assert.equal(rules.journals.length, index.journals.length);
+    assert.ok(rules.journals[0].rules[0].verifiedOn);
+    assert.deepEqual(auth.calls, []); assert.deepEqual(backend.calls, []);
   });
 });
 

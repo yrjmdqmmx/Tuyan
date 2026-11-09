@@ -1,0 +1,1698 @@
+{
+  "checkedAt": "2026-10-09",
+  "windowStart": "2026-09-27",
+  "baseline": "5e6989f59416e44d9f22fd26703d3830ed861ea7",
+  "providerInferenceCalls": 0,
+  "deployment": false,
+  "catalogDelta": {
+    "baselineCount": 1040,
+    "currentCount": 1056,
+    "allOldIdsRetained": true,
+    "allDefaultsUnchanged": true,
+    "added": [
+      {
+        "provider": "anthropic",
+        "id": "claude-haiku-5-5",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "anthropic-messages",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://platform.claude.com/docs/en/models/haiku-5-5/overview",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://platform.claude.com/docs/en/models/haiku-5-5/overview"
+          ],
+          "contextWindowTokens": 1000000,
+          "maxOutputTokens": 128000,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "原生 Messages 每次请求仍沿用图研 16,384 tokens 总输出额度；128K 为官方上限。",
+            "不发送非默认 temperature、top_p、top_k。",
+            "disabled 仅能搭配 low/medium/high；xhigh/max 需要 adaptive。"
+          ]
+        },
+        "requiresEntitlement": false
+      },
+      {
+        "provider": "anthropic",
+        "id": "claude-sonnet-5-5",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "anthropic-messages",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://platform.claude.com/docs/en/models/sonnet-5-5/overview"
+          ],
+          "contextWindowTokens": 1000000,
+          "maxOutputTokens": 128000,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "原生 Messages 每次请求仍沿用图研 16,384 tokens 总输出额度；128K 为官方上限。",
+            "不发送非默认 temperature、top_p、top_k。",
+            "between_tools 仅关闭前置思考，只能搭配 low/medium/high；不支持 disabled。"
+          ]
+        },
+        "requiresEntitlement": false
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv4_1_flash",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash"
+          ],
+          "officialInputModalities": [
+            "text"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "仅 1K 位图；官方格式 WebP/PNG，图研归一化 PNG。无 SVG 或风格接口。"
+          ]
+        },
+        "requiresEntitlement": false
+      },
+      {
+        "provider": "gemini",
+        "id": "gemini-nano-banana-2.1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "gemini-interactions",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+          ],
+          "maxInputTokens": 131072,
+          "maxOutputTokens": 32768,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text",
+            "image"
+          ],
+          "notes": [
+            "131,072 是最大输入，不是已确认的合计上下文。官方支持 PDF 文件输入；PDF 是格式，图研此图像接口未接入。",
+            "官方最多 14 张参考图；图研此接口保留 1 张原图。输出只取图片，不作为通用文本模型开放。"
+          ]
+        },
+        "requiresEntitlement": false
+      },
+      {
+        "provider": "openai",
+        "id": "gpt-6.1-sol",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-responses",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+          ],
+          "contextWindowTokens": 1050000,
+          "maxOutputTokens": 128000,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ]
+        },
+        "requiresEntitlement": false
+      },
+      {
+        "provider": "ark",
+        "id": "doubao-seedream-5-0-flash-260915",
+        "roles": [
+          "image"
+        ],
+        "protocol": "ark-images",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh"
+          ],
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "渠道最多 10 张参考图；图研沿用 1 张原图和单张 PNG，不将图层拆分或组图声明为已适配。"
+          ]
+        },
+        "requiresEntitlement": true,
+        "regions": [
+          "cn-beijing"
+        ]
+      },
+      {
+        "provider": "bfl",
+        "id": "flux-3-image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "lifecycle": "unknown",
+        "selectable": true,
+        "source": "https://api.bfl.ai/openapi.json",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://api.bfl.ai/openapi.json"
+          ],
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "原生 API 的 version 仅提供 latest；正式版/预览版状态与发布日期未单独确认。",
+            "官方最多10张参考图，图研保留单张原图编辑。仅开放 1K / 1.5K / 2K / 4K；768sq 不属于现有标准清晰度。",
+            "原生 grounding 默认启用外部搜索；图研此路由明确关闭，图片响应沿用现有格式检测和 PNG 归一化。未进行真实账户调用。"
+          ]
+        },
+        "requiresEntitlement": false
+      },
+      {
+        "provider": "mistral",
+        "id": "mistral-large-4",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "lifecycle": "preview",
+        "selectable": true,
+        "source": "https://docs.mistral.ai/models/mistral-large-4-0",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://docs.mistral.ai/models/mistral-large-4-0"
+          ],
+          "contextWindowTokens": 1000000,
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "官方模型卡以 1M 表述窗口；最大输出和可调思考未获本渠道明确资料。公开预览；开放权重仍标注 coming soon。",
+            "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。"
+          ],
+          "contextWindowApproximate": true
+        },
+        "requiresEntitlement": false
+      },
+      {
+        "provider": "fal",
+        "id": "google/nano-banana-2.1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://fal.ai/models/google/nano-banana-2.1/api",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://fal.ai/models/google/nano-banana-2.1/api",
+            "https://fal.ai/models/google/nano-banana-2.1/edit/api"
+          ],
+          "officialInputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "reasoning": "supported",
+          "notes": [
+            "fal schema uses resolution 1K / 2K / 4K, thinking_level minimal / medium / high (default medium).",
+            "图研保留单张原图编辑、单张 PNG 输出。可选 video_url、pdf_url、web search、system_prompt 尚未接入；PDF 是文件格式。渠道未提供独立 token 上限。"
+          ]
+        },
+        "requiresEntitlement": false
+      },
+      {
+        "provider": "runware",
+        "id": "google:nano-banana@2.1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://runware.ai/docs/models/google-nano-banana-2-1",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://runware.ai/docs/models/google-nano-banana-2-1"
+          ],
+          "officialInputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。"
+          ]
+        },
+        "requiresEntitlement": false,
+        "regions": [
+          "global-endpoint"
+        ]
+      },
+      {
+        "provider": "runware",
+        "id": "bfl:flux@3-image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://runware.ai/docs/models/bfl-flux-3-image",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://runware.ai/docs/models/bfl-flux-3-image"
+          ],
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。"
+          ]
+        },
+        "requiresEntitlement": false,
+        "regions": [
+          "global-endpoint"
+        ]
+      },
+      {
+        "provider": "runware",
+        "id": "ideogram:4.5@0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://runware.ai/docs/models/ideogram-4-5",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://runware.ai/docs/models/ideogram-4-5"
+          ],
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。",
+            "图研最多4图，生图/编辑仅开放共有合法尺寸；此常规接口未开放遮罩，请使用独立 Precise Edit 身份。"
+          ]
+        },
+        "requiresEntitlement": false,
+        "regions": [
+          "global-endpoint"
+        ]
+      },
+      {
+        "provider": "runware",
+        "id": "ideogram:4.5@precise-edit",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://runware.ai/docs/models/ideogram-4-5-precise-edit",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://runware.ai/docs/models/ideogram-4-5-precise-edit"
+          ],
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。",
+            "仅编辑：原图使用 seedImage，辅助图独立 referenceImages；保留原图尺寸，图研最多原图加3张辅助图。"
+          ]
+        },
+        "requiresEntitlement": false,
+        "regions": [
+          "global-endpoint"
+        ]
+      },
+      {
+        "provider": "runware",
+        "id": "bytedance:seedream@5.0-flash",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://runware.ai/docs/models/bytedance-seedream-5-0-flash"
+          ],
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。"
+          ]
+        },
+        "requiresEntitlement": false,
+        "regions": [
+          "global-endpoint"
+        ]
+      },
+      {
+        "provider": "runware",
+        "id": "recraft:v4.1@flash",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://runware.ai/docs/models/recraft-v4-1-flash",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://runware.ai/docs/models/recraft-v4-1-flash"
+          ],
+          "officialInputModalities": [
+            "text"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。"
+          ]
+        },
+        "requiresEntitlement": false,
+        "regions": [
+          "global-endpoint"
+        ]
+      },
+      {
+        "provider": "runware",
+        "id": "alibaba:qwen-image@2.1-pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "lifecycle": "stable",
+        "selectable": true,
+        "source": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro",
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro"
+          ],
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。"
+          ]
+        },
+        "requiresEntitlement": false,
+        "regions": [
+          "global-endpoint"
+        ]
+      }
+    ],
+    "lifecycleChanges": [
+      {
+        "provider": "deepseek",
+        "id": "deepseek-v4-flash-vision-exp",
+        "changes": {
+          "expirationDate": {
+            "before": "2026-09-10",
+            "after": null
+          }
+        }
+      },
+      {
+        "provider": "deepseek",
+        "id": "deepseek-v4-flash",
+        "changes": {
+          "expirationDate": {
+            "before": "2026-09-10",
+            "after": null
+          }
+        }
+      },
+      {
+        "provider": "anthropic",
+        "id": "claude-sonnet-4-5-20250929",
+        "changes": {
+          "lifecycle": {
+            "before": "stable",
+            "after": "legacy"
+          },
+          "expirationDate": {
+            "before": null,
+            "after": "2026-11-30"
+          },
+          "replacementModelId": {
+            "before": null,
+            "after": "claude-sonnet-5-5"
+          }
+        }
+      },
+      {
+        "provider": "gemini",
+        "id": "gemini-3.1-flash-image",
+        "changes": {
+          "lifecycle": {
+            "before": "stable",
+            "after": "legacy"
+          },
+          "replacementModelId": {
+            "before": null,
+            "after": "gemini-nano-banana-2.1"
+          }
+        }
+      },
+      {
+        "provider": "gemini",
+        "id": "gemini-2.5-flash-image",
+        "changes": {
+          "expirationDate": {
+            "before": "2026-10-02",
+            "after": "2027-03-15"
+          },
+          "replacementModelId": {
+            "before": "gemini-3.1-flash-image",
+            "after": "gemini-3.1-flash-lite-image"
+          }
+        }
+      },
+      {
+        "provider": "mistral",
+        "id": "zai-glm-5-3",
+        "changes": {
+          "lifecycle": {
+            "before": "preview",
+            "after": "stable"
+          }
+        }
+      },
+      {
+        "provider": "mistral",
+        "id": "zai-glm-5-2",
+        "changes": {
+          "lifecycle": {
+            "before": "preview",
+            "after": "legacy"
+          },
+          "expirationDate": {
+            "before": null,
+            "after": "2026-10-31"
+          },
+          "replacementModelId": {
+            "before": null,
+            "after": "zai-glm-5-3"
+          }
+        }
+      },
+      {
+        "provider": "mistral",
+        "id": "labs-leanstral-1-5",
+        "changes": {
+          "lifecycle": {
+            "before": "preview",
+            "after": "legacy"
+          },
+          "selectable": {
+            "before": true,
+            "after": false
+          },
+          "expirationDate": {
+            "before": null,
+            "after": "2026-09-30"
+          }
+        }
+      }
+    ]
+  },
+  "channels": [
+    {
+      "provider": "openai",
+      "status": "已更新",
+      "finding": "新增 GPT-6.1 Sol；原生 Pro 型号缺少可确认的原生 API 身份，不由 OpenRouter 名称反推。",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol.md"
+    },
+    {
+      "provider": "anthropic",
+      "status": "已更新",
+      "finding": "Sonnet 5.5、Haiku 5.5 原生 Messages；区别 between_tools 与 disabled 限制。旧 Sonnet 4.5 保留并标记待退役。",
+      "source": "https://platform.claude.com/docs/en/models/overview.md"
+    },
+    {
+      "provider": "gemini",
+      "status": "已更新",
+      "finding": "Nano Banana 2.1 原生 Interactions；校正 2.5 Flash Image 退役日期。视频/PDF、批量参考图不扩大为图研能力。",
+      "source": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+    },
+    {
+      "provider": "deepseek",
+      "status": "已核对",
+      "finding": "最新 deepseek-flash 已在基线；V4 Flash 老 ID 仍接受但由 V4.1 Flash 服务，保留保存的 ID。",
+      "source": "https://api-docs.deepseek.com/quick_start/pricing"
+    },
+    {
+      "provider": "kimi",
+      "status": "已核对",
+      "finding": "Kimi K3 / K2.7 Code 系列已在基线；补充窗口资料，未知最大输出不填。",
+      "source": "https://platform.kimi.com/docs/models"
+    },
+    {
+      "provider": "zhipu",
+      "status": "已核对",
+      "finding": "GLM-5.3 / Flash / FlashX 已在基线；补充标称 token 与模态信息，视频未接入。",
+      "source": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+    },
+    {
+      "provider": "siliconflow",
+      "status": "部分核对",
+      "finding": "公开网页仅展示分组/分页目录，本次页面未覆盖账号全部模型；不能保证隐藏或账户限定新增无遗漏。",
+      "source": "https://www.siliconflow.cn/models"
+    },
+    {
+      "provider": "bailian",
+      "status": "已核对公开更新",
+      "finding": "最新公布项已在基线或为范围外专项模型；10月10日下线批次已有基线定时门禁，本次核对公告页但不改默认。",
+      "source": "https://help.aliyun.com/zh/model-studio/newly-released-models"
+    },
+    {
+      "provider": "ark",
+      "status": "部分核对并新增",
+      "finding": "官方模型页为动态页面；已根据官方索引/API资料确认 Seedream 5.0 Flash 精确 ID，沿用明确声明兼容的图片协议；账号地域/开通仍未知，发布日期不借用 Runware。",
+      "source": "https://docs.volcengine.com/docs/82379/1159178?lang=zh"
+    },
+    {
+      "provider": "minimax",
+      "status": "已核对公开更新",
+      "finding": "MiniMax M3 已在基线；本窗口未发现可确认的新文本/图片 API 身份。H3 视频不纳入图研图像角色。",
+      "source": "https://platform.minimax.io/docs/release-notes/models"
+    },
+    {
+      "provider": "xiaomi",
+      "status": "部分核对",
+      "finding": "当前模型页为动态壳；退役公告可读，确认 MiMo-V2.5/Pro 10月21日北京时间10:00 下线，基线已包含此规则。",
+      "source": "https://mimo.mi.com/docs/en-US/updates/deprecate"
+    },
+    {
+      "provider": "sensenova",
+      "status": "待补充渠道证据",
+      "finding": "公开入口仅动态壳，无法确认窗口内新型号与完整接口限制；保留历史核查日期。",
+      "source": "https://platform.sensenova.cn/docs"
+    },
+    {
+      "provider": "stepfun",
+      "status": "部分核对",
+      "finding": "Step 5 Preview 已在基线；入口返回有限文字，未确认新增独立 API 身份。",
+      "source": "https://platform.stepfun.com/docs/zh/welcome"
+    },
+    {
+      "provider": "qianfan",
+      "status": "已核对公开目录",
+      "finding": "公开模型表 GLM-5.3/Flash、Kimi 等已有；账号部署、配额和区域未实测。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "provider": "iflytek",
+      "status": "已读取公开目录",
+      "finding": "公开 MaaS 模型列表可读；不把训练/应用模板条目推断为现有 chat API 端点，未确认需新增的通用主/视觉身份。",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "provider": "longcat",
+      "status": "已核对",
+      "finding": "视觉说明仍对应已在基线的图像理解型号；不因官方视频理解说明开启视频上传。",
+      "source": "https://longcat.ai/platform/docs/zh/image-video-understanding"
+    },
+    {
+      "provider": "antling",
+      "status": "候选待接入",
+      "finding": "Ling-3.1-flash 官方模型介绍已出现，服务窗口256K；API参考/effort页未列出可核对的新原生 ID 和精确字段，不由展示名推断。",
+      "source": "https://developer.ant-ling.com/en/docs/models/ling"
+    },
+    {
+      "provider": "recraft",
+      "status": "已更新",
+      "finding": "新增 recraftv4_1_flash，1K raster，PNG规范化；风格专用型号需要 style reference，当前工作流不供应。",
+      "source": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash"
+    },
+    {
+      "provider": "xai",
+      "status": "已核对",
+      "finding": "Grok Imagine Image Quality 11月2日退役后由2.0 low quality承接旧 ID，只提示渠道迁移，不静默替换保存值。",
+      "source": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2"
+    },
+    {
+      "provider": "bfl",
+      "status": "已更新",
+      "finding": "新增原生 flux-3-image；从 OpenAPI 核对 images/resolution/aspect_ratio/AsyncResponse，不沿用旧 output_format 参数。视频端点范围外。",
+      "source": "https://api.bfl.ai/openapi.json"
+    },
+    {
+      "provider": "stability",
+      "status": "待补充渠道证据",
+      "finding": "API 页面动态壳无可读型号参数，不能确认窗口内新增；沿用旧目录并保留旧核查日期。",
+      "source": "https://platform.stability.ai/docs/api-reference"
+    },
+    {
+      "provider": "ideogram",
+      "status": "候选待适配",
+      "finding": "4.5 原生采用 /v2/image/generate/ideogram-4-5 和 /v2/image/precise-edit/ideogram-4-5；旧 v1/multipart 适配不足。Runware 独立身份已完成。",
+      "source": "https://developer.ideogram.ai/ideogram-api/api-overview"
+    },
+    {
+      "provider": "mistral",
+      "status": "已更新",
+      "finding": "Large 4 Preview 新增；GLM-5.3转GA，GLM-5.2进入退役期，Leanstral1.5已退役。",
+      "source": "https://docs.mistral.ai/resources/changelogs"
+    },
+    {
+      "provider": "together",
+      "status": "部分核对/候选待确认",
+      "finding": "公开列表出现 black-forest-labs/FLUX-3，但本次没有确认该渠道完整请求/编辑限制，未借用 BFL/Runware 参数接入。",
+      "source": "https://docs.together.ai/docs/serverless/models"
+    },
+    {
+      "provider": "fireworks",
+      "status": "已核对公开目录",
+      "finding": "基线现有托管主/视觉型号仍在列表；账号专属部署名不推断为新公共 ID。",
+      "source": "https://docs.fireworks.ai/getting-started/models"
+    },
+    {
+      "provider": "fal",
+      "status": "已更新/部分候选未确认",
+      "finding": "新增 google/nano-banana-2.1（生图+独立 edit端点）；逐端点 OpenAPI。其他列表候选需逐端点契约，不能由目录展示名接入。",
+      "source": "https://fal.ai/nano-banana-2.1"
+    },
+    {
+      "provider": "replicate",
+      "status": "部分核对",
+      "finding": "公开图片集合包含已有主要系列，集合不是完整上线日志；社区模型/新版本需固定 inspected version，不声称全部社区条目核查完毕。",
+      "source": "https://replicate.com/collections/text-to-image"
+    },
+    {
+      "provider": "runware",
+      "status": "已更新",
+      "finding": "逐型号官方 JSON schema 补7个身份；含9月20日/23日漏收补录。视频、styles等需要当前工作流未提供的输入保持不接入。",
+      "source": "https://runware.ai/docs/models"
+    },
+    {
+      "provider": "novita",
+      "status": "已核对当前接口",
+      "finding": "Ming Image当前API已在基线；账号/地区网络策略仍独立，不因目录收录声称能连通。",
+      "source": "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img"
+    },
+    {
+      "provider": "tokenhub",
+      "status": "已核对公开目录",
+      "finding": "解压官方目录响应后核对，未发现本窗口需新增的明确身份；已过期 GLM 老型号维持拒绝请求的门禁。",
+      "source": "https://cloud.tencent.com/document/product/1823/132248"
+    },
+    {
+      "provider": "tokendance",
+      "status": "待登录态/可读证据",
+      "finding": "公开网页为动态壳；未使用登录态或钱包接口，不能确认账户目录上新，保留现有实时目录机制。",
+      "source": "https://tokendance.space/models"
+    },
+    {
+      "provider": "openrouter",
+      "status": "已读取实时双目录",
+      "finding": "免费公开 GET /models 和 /images/models；保留同步/Batch、文本/图像以及显式输出格式门禁。API实时数据与账号可用性分开。",
+      "source": "https://openrouter.ai/api/v1/models"
+    }
+  ],
+  "sources": [
+    {
+      "key": "fal-nano-schema",
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=google/nano-banana-2.1",
+      "sha256": "1c5ec483eb4aa2e6efbd59994755d1afaea973d23cda42c6269f43cd0772253b",
+      "checkedAt": "2026-10-09",
+      "http": 200
+    },
+    {
+      "key": "fal-nano-edit-schema",
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=google/nano-banana-2.1/edit",
+      "sha256": "05484a53bb030d157a1f2afd93122309b94d686760de0cdb76359562a9a1c462",
+      "checkedAt": "2026-10-09",
+      "http": 200
+    },
+    {
+      "key": "bailian-current",
+      "url": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+      "http": 200,
+      "bytes": 1159681,
+      "textChars": 144732,
+      "sha256": "cb1c43fcd8528fbd789e2f63d8240ca4e080e24fe7f2438d6cf12577d73b3a57",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "bailian-retire",
+      "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "http": 200,
+      "bytes": 56115,
+      "textChars": 2072,
+      "sha256": "760bacba33e4f3b849db726245439b3e1c5496a412c9a0a99790a5791eee77dd",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "ling-api",
+      "url": "https://developer.ant-ling.com/en/docs/api-reference/openai/",
+      "finalUrl": "https://developer.ant-ling.com/en/docs/api-reference/openai/",
+      "http": 200,
+      "bytes": 321877,
+      "textChars": 12336,
+      "sha256": "66bd8ba1dddc89bf637448cd294103a0361927378a1147c5e02242ca6a875f15",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "ling-effort",
+      "url": "https://developer.ant-ling.com/en/docs/tutorials/effort/",
+      "finalUrl": "https://developer.ant-ling.com/en/docs/tutorials/effort/",
+      "http": 200,
+      "bytes": 202772,
+      "textChars": 6774,
+      "sha256": "e1b28b04c99eed253493f81a467b4394417aac56b73be12b0b93da2cfb69e742",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "ling-model",
+      "url": "https://developer.ant-ling.com/en/docs/models/ling",
+      "finalUrl": "https://developer.ant-ling.com/en/docs/models/ling",
+      "http": 200,
+      "bytes": 185665,
+      "textChars": 17657,
+      "sha256": "877381739750fd33ed4114e658d41a3f3723eec4fa9542fff624ab6192497d5a",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "fal-new",
+      "url": "https://fal.ai/nano-banana-2.1",
+      "finalUrl": "https://fal.ai/nano-banana-2.1",
+      "http": 200,
+      "bytes": 451247,
+      "textChars": 15054,
+      "sha256": "8dcf8d7a58dbbe48d2396afc6d4fe24ef9f0aec4206e7c9832014e1b5309db65",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "together-flux3",
+      "url": "https://docs.together.ai/docs/images-overview",
+      "finalUrl": "https://docs.together.ai/docs/inference/images/overview",
+      "http": 200,
+      "bytes": 566173,
+      "textChars": 8168,
+      "sha256": "46848f6fb08e24a8b0dcdcee297e140818d331826c7a0f5dd65a404717bdd94b",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "xiaomi-current",
+      "url": "https://mimo.mi.com/docs/en-US/quick-start/model",
+      "finalUrl": "https://mimo.mi.com/docs/en-US/quick-start/model",
+      "http": 200,
+      "bytes": 13020,
+      "textChars": 22,
+      "sha256": "21df1586ae63d2dd6d5435eb29ef8c0a5ea6871f62b5f22b22aafb62de930a2c",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "xiaomi-retire",
+      "url": "https://mimo.mi.com/docs/en-US/updates/deprecate",
+      "finalUrl": "https://mimo.mi.com/docs/en-US/updates/deprecate",
+      "http": 200,
+      "bytes": 133891,
+      "textChars": 4201,
+      "sha256": "221cf3ff1d8d2ee567950730a94c42b4a796f868414b917bfa823bb2804e101d",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "recraft-flash",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash",
+      "finalUrl": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash",
+      "http": 200,
+      "bytes": 458690,
+      "textChars": 8570,
+      "sha256": "1d0e6b5507032851b6970bb6ee099ba9cbf50295c85c865aeaff886b97ea01dc",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "recraft-all",
+      "url": "https://www.recraft.ai/docs/api-reference/models",
+      "finalUrl": "https://www.recraft.ai/docs/api-reference/models/overview",
+      "http": 200,
+      "bytes": 278359,
+      "textChars": 4161,
+      "sha256": "a38802ea15947baac81a83296bdaee775a004775e6f84059c13c188163c6e207",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "mistral-large4",
+      "url": "https://docs.mistral.ai/models/mistral-large-4-0",
+      "finalUrl": "https://docs.mistral.ai/models/mistral-large-4-0",
+      "http": 200,
+      "bytes": 1235149,
+      "textChars": 1923,
+      "sha256": "e7d191113e0f8b732c18a088aab01788fbaec09fbcc8996facdb8c7a4823e585",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "claude-thinking",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/thinking.md",
+      "finalUrl": "https://platform.claude.com/docs/en/build-with-claude/thinking.md",
+      "http": 200,
+      "bytes": 82650,
+      "textChars": 82637,
+      "sha256": "607214f48d5e2a94dc37ed6603c301357cf6e63057e72136d83a057660f7eb8a",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "claude-deprecations",
+      "url": "https://platform.claude.com/docs/en/about-claude/model-deprecations.md",
+      "finalUrl": "https://platform.claude.com/docs/en/about-claude/model-deprecations.md",
+      "http": 200,
+      "bytes": 14232,
+      "textChars": 14232,
+      "sha256": "35dc7e935ec3e34cdf64ebc6ceb54171998cdb46907ec9a6d278b8761bb5fd65",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "gemini-deprecations",
+      "url": "https://ai.google.dev/gemini-api/docs/deprecations",
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/deprecations",
+      "http": 200,
+      "bytes": 119716,
+      "textChars": 16047,
+      "sha256": "21dcb5302b040e3526c11f7a264a53241d23c19fd257091ad51dec62eb6b4cd8",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "gemini-images",
+      "url": "https://ai.google.dev/gemini-api/docs/image-generation",
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/image-generation",
+      "http": 200,
+      "bytes": 1446643,
+      "textChars": 208173,
+      "sha256": "4bdb9e6968013317190ffef746cbb10f2d13cee9de67f3d9d72ee176cc200f42",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "ark-models",
+      "url": "https://docs.volcengine.com/docs/82379/1159178?lang=en",
+      "finalUrl": "https://docs.volcengine.com/docs/82379/1159178?lang=en",
+      "http": 200,
+      "bytes": 11914,
+      "textChars": 47,
+      "sha256": "f77071f286eca8ff8d98d32e2ca63443f2b05a71d75d77bf567ea8641f6c5820",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "ark-images",
+      "url": "https://docs.volcengine.com/docs/ark/image-generation-api?lang=en",
+      "finalUrl": "https://docs.volcengine.com/docs/ark/image-generation-api?lang=en",
+      "http": 200,
+      "bytes": 438569,
+      "textChars": 352,
+      "sha256": "0b6f4c8cbda1715b810c3fb99ea4ac5c3ffba1e17149d42ea5bf84d6073d29ef",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "ideogram-v2",
+      "url": "https://developer.ideogram.ai/ideogram-api/api-overview",
+      "finalUrl": "https://developer.ideogram.ai/ideogram-api/api-overview",
+      "http": 200,
+      "bytes": 193597,
+      "textChars": 8813,
+      "sha256": "df52cb1d11e7563263a5d3c4f4216e76f8bfce916d6d556917df6a2dafd2044e",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "bailian-news",
+      "url": "https://help.aliyun.com/zh/model-studio/model-updates",
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/model-updates",
+      "http": 200,
+      "bytes": 25231,
+      "textChars": 531,
+      "sha256": "6b646eab6d5f5ca806727a0875d0a0e16e912d68a62314c8e55dbb98e5deaf04",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "bailian-image",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-api",
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-api",
+      "http": 200,
+      "bytes": 237398,
+      "textChars": 40682,
+      "sha256": "af1e9e15a38fbf34120c3e2700cdf22ffb3b57168903bdcc1a5d6c19406bfbf6",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "rw-google-nano-banana-2-1",
+      "url": "https://runware.ai/docs/models/google-nano-banana-2-1",
+      "finalUrl": "https://runware.ai/docs/models/google-nano-banana-2-1",
+      "http": 200,
+      "bytes": 826043,
+      "textChars": 20394,
+      "sha256": "d1200a6bfcdc57035e4213d9c523e1e1b80bc7b31f9dfeda21b3c03199370e7d",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "rw-bfl-flux-3-image",
+      "url": "https://runware.ai/docs/models/bfl-flux-3-image",
+      "finalUrl": "https://runware.ai/docs/models/bfl-flux-3-image",
+      "http": 200,
+      "bytes": 823536,
+      "textChars": 20670,
+      "sha256": "ef41a957658f1eef1d33a2e6d3fb93e97c843a3501f38de465a38e288a4482e6",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "rw-ideogram-4-5",
+      "url": "https://runware.ai/docs/models/ideogram-4-5",
+      "finalUrl": "https://runware.ai/docs/models/ideogram-4-5",
+      "http": 200,
+      "bytes": 809347,
+      "textChars": 19204,
+      "sha256": "df8bf983d63be31655bc1eeea7d8d6c2a966f0c31a2b0aa18b797aa7e794bb11",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "rw-ideogram-4-5-precise-edit",
+      "url": "https://runware.ai/docs/models/ideogram-4-5-precise-edit",
+      "finalUrl": "https://runware.ai/docs/models/ideogram-4-5-precise-edit",
+      "http": 200,
+      "bytes": 801217,
+      "textChars": 17904,
+      "sha256": "5864cadd57ce28e5a80c1826589351300ba7b6de0ce07d6347acbe0a730b5d08",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "rw-bytedance-seedream-5-0-flash",
+      "url": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash",
+      "finalUrl": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash",
+      "http": 200,
+      "bytes": 811976,
+      "textChars": 19744,
+      "sha256": "1165af946acc77e5fc19763d48401a9082c3ba9596953382203ce4c6a6d73021",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "rw-recraft-v4-1-flash",
+      "url": "https://runware.ai/docs/models/recraft-v4-1-flash",
+      "finalUrl": "https://runware.ai/docs/models/recraft-v4-1-flash",
+      "http": 200,
+      "bytes": 798907,
+      "textChars": 17728,
+      "sha256": "318d2ab21b1c7d1c746902dcf63d2eacbcdde76c0b62229e71570bcd5562e890",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "rw-alibaba-qwen-image-2-1-pro",
+      "url": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro",
+      "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro",
+      "http": 200,
+      "bytes": 801429,
+      "textChars": 18276,
+      "sha256": "0ac056bb8e072d8ccc70da81f479e34bbfc55e7370c93c771a5a024e39b72489",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "rw-recraft-v4-styles",
+      "url": "https://runware.ai/docs/models/recraft-v4-styles",
+      "finalUrl": "https://runware.ai/docs/models/recraft-v4-styles",
+      "http": 200,
+      "bytes": 808136,
+      "textChars": 18900,
+      "sha256": "05c89f2d66728039ccbbef4d2a89d5932b3592f353d507d55bde6133c83bb3bb",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "deepseek",
+      "url": "https://api-docs.deepseek.com/quick_start/pricing",
+      "finalUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "http": 200,
+      "bytes": 23982,
+      "textChars": 2720,
+      "sha256": "210f102275ccf1a6542f08a3bc9e4b4c7c83278cb74b35217bffa112df6363b2",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "kimi",
+      "url": "https://platform.kimi.com/docs/models",
+      "finalUrl": "https://platform.kimi.com/docs/models",
+      "http": 200,
+      "bytes": 293462,
+      "textChars": 1943,
+      "sha256": "01d6265cde365bb82c635799df4928bb03c2e8a1fbae217ea51311f0d6785391",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "zhipu",
+      "url": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+      "finalUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+      "http": 200,
+      "bytes": 880721,
+      "textChars": 3364,
+      "sha256": "7541d0e2075713b6872fbab1daa98e2a35a59d0e1bf2e27cf4d55d4fd8474429",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "siliconflow",
+      "url": "https://www.siliconflow.cn/models",
+      "finalUrl": "https://www.siliconflow.cn/models",
+      "http": 200,
+      "bytes": 528062,
+      "textChars": 9346,
+      "sha256": "6c8dbfca71a8340dc7ecaf7e6b1f14fc78976b20dda21387d378e1fa112ccc26",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "recraft",
+      "url": "https://www.recraft.ai/docs/api-reference/appendix",
+      "finalUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+      "http": 200,
+      "bytes": 294295,
+      "textChars": 3722,
+      "sha256": "0e2bb9381e056aff862cd55d57f0aabbef7c8a042c78bc0a83b8fc2c21601414",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "bailian",
+      "url": "https://help.aliyun.com/zh/model-studio/new-features",
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/new-features",
+      "http": 200,
+      "bytes": 24899,
+      "textChars": 23948,
+      "sha256": "1bde2e66271c34c298920d8d197471fb6c72b29b18186df6443780dfef97c1c3",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "bailian-models",
+      "url": "https://help.aliyun.com/zh/model-studio/models",
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "http": 200,
+      "bytes": 97056,
+      "textChars": 2239,
+      "sha256": "b58813eecdbb922aaaba188fe4716c1ba619964924cc770060c9dd2da6f016c7",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "ark",
+      "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+      "finalUrl": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+      "http": 200,
+      "bytes": 11914,
+      "textChars": 47,
+      "sha256": "5dd0220ac5d5923fe5672e9cffc0f5dba3f0df425f694625881d2b1ec1f40708",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "bfl",
+      "url": "https://api.bfl.ai/openapi.json",
+      "finalUrl": "https://api.bfl.ai/openapi.json",
+      "http": 200,
+      "bytes": 83199,
+      "textChars": 83199,
+      "sha256": "bb2195631bf1851b1ede9d6becdd7dd12aa7ac9f5ea92a41a4bf3795747c5848",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "stability",
+      "url": "https://platform.stability.ai/docs/api-reference",
+      "finalUrl": "https://platform.stability.ai/docs/api-reference",
+      "http": 200,
+      "bytes": 1644,
+      "textChars": 39,
+      "sha256": "0b7e9033b9471a5c07d0a66db95e8d32eb7b2e2b992825b9e56e5dbc7d4302a2",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "ideogram",
+      "url": "https://developer.ideogram.ai/api-reference/generate-images/generate-v4",
+      "finalUrl": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4",
+      "http": 200,
+      "bytes": 356682,
+      "textChars": 5217,
+      "sha256": "3b68e7cea8c7a09986850b2b3aff307aa13e90c4ef1b23af26d29a0e78ef5efe",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "minimax",
+      "url": "https://platform.minimax.io/docs/release-notes/models",
+      "finalUrl": "https://platform.minimax.io/docs/release-notes/models",
+      "http": 200,
+      "bytes": 606757,
+      "textChars": 4759,
+      "sha256": "e07d9386c15f79a84fbd5e6f90f6a469a924366f50ec35f92b8f4a22213a0027",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "mistral",
+      "url": "https://docs.mistral.ai/resources/changelogs",
+      "finalUrl": "https://docs.mistral.ai/resources/changelogs",
+      "http": 200,
+      "bytes": 1515781,
+      "textChars": 14388,
+      "sha256": "925e77771360706b62beca72d85498c036be2648da66da1c8101440327a1a9c4",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "together",
+      "url": "https://docs.together.ai/docs/serverless/models",
+      "finalUrl": "https://docs.together.ai/docs/serverless/models",
+      "http": 200,
+      "bytes": 540898,
+      "textChars": 13096,
+      "sha256": "389baab51671a7467d0d4a80f695d47345d91dd4146056750ff43991815a36aa",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "fireworks",
+      "url": "https://docs.fireworks.ai/getting-started/models",
+      "finalUrl": "https://docs.fireworks.ai/getting-started/models",
+      "http": 200,
+      "bytes": 433576,
+      "textChars": 10937,
+      "sha256": "9da579bc12f85f28a615f09264711a563588191ff5432ac889e68ee03e114ec5",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "fal",
+      "url": "https://fal.ai/models",
+      "finalUrl": "https://fal.ai/explore",
+      "http": 200,
+      "bytes": 3644756,
+      "textChars": 52789,
+      "sha256": "34fb800d2e173490649e548ef31e592fad251100d1ceaa24909a7ffa6f3a5ec5",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "replicate",
+      "url": "https://replicate.com/collections/text-to-image",
+      "finalUrl": "https://replicate.com/collections/text-to-image",
+      "http": 200,
+      "bytes": 412330,
+      "textChars": 22777,
+      "sha256": "985f871b7be3735b4664d5282d6b6b55661b2fc31d52c2d8f559b6b363140907",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "tokendance",
+      "url": "https://tokendance.space/models",
+      "finalUrl": "https://tokendance.space/models",
+      "http": 200,
+      "bytes": 2122,
+      "textChars": 23,
+      "sha256": "d494054aa2eb1a25785199c1029ee1353625ddcfebb07e8b688bcb7806908bec",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "runware",
+      "url": "https://runware.ai/docs/models",
+      "finalUrl": "https://runware.ai/docs/models",
+      "http": 200,
+      "bytes": 801560,
+      "textChars": 17246,
+      "sha256": "a04957196c7784cada30d06fc390b9972e82663e6c90bf6e1e6d4d6223888012",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "tokenhub",
+      "url": "https://cloud.tencent.com/document/product/1823/132248",
+      "finalUrl": "https://cloud.tencent.com/document/product/1823/132248",
+      "http": 200,
+      "bytes": 178810,
+      "textChars": 141484,
+      "sha256": "7e59f4bec9957c431c28118775eacccf9acb9541efea89181c2e146b55b9480f",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "xiaomi",
+      "url": "https://mimo.mi.com/docs/en-US/quick-start/model",
+      "finalUrl": "https://mimo.mi.com/docs/en-US/quick-start/model",
+      "http": 200,
+      "bytes": 13020,
+      "textChars": 22,
+      "sha256": "21df1586ae63d2dd6d5435eb29ef8c0a5ea6871f62b5f22b22aafb62de930a2c",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "sensenova",
+      "url": "https://platform.sensenova.cn/docs",
+      "finalUrl": "https://platform.sensenova.cn/docs",
+      "http": 200,
+      "bytes": 15638,
+      "textChars": 25,
+      "sha256": "8f2ce2cc5fab5b5db5bb1dc8c576ad9f7509a706640168aee35cfe210e3587ec",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "stepfun",
+      "url": "https://platform.stepfun.com/docs/zh/welcome",
+      "finalUrl": "https://platform.stepfun.com/docs/zh/welcome",
+      "http": 200,
+      "bytes": 784716,
+      "textChars": 584,
+      "sha256": "475345dd237f33d669047a50edc3547d0812d56b2f3418808c99c9d241993fdd",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "qianfan",
+      "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "finalUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "http": 200,
+      "bytes": 374913,
+      "textChars": 20414,
+      "sha256": "ccf0629c75c6c537708570a3e5635be7434806c457fd6fddf61a2a09998d32e8",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "iflytek",
+      "url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "http": 200,
+      "bytes": 311272,
+      "textChars": 287893,
+      "sha256": "392528c77bfc997155f9f83c3cc507d55ae6da18b813e4aa8203b5ee0e081747",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "longcat",
+      "url": "https://longcat.ai/platform/docs/zh/image-video-understanding",
+      "finalUrl": "https://longcat.ai/platform/docs/zh/image-video-understanding",
+      "http": 200,
+      "bytes": 55083,
+      "textChars": 4614,
+      "sha256": "4ef1de85377925f6f89ea8dc517bd9550b7c8a14a47d7e20089788de1be4c9ba",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "antling",
+      "url": "https://developer.ant-ling.com/zh-CN/docs/getting-started/changelog/",
+      "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/getting-started/changelog/",
+      "http": 200,
+      "bytes": 118896,
+      "textChars": 1863,
+      "sha256": "fbec6beda6f6cefbe54778be565dd8bc96841bf321742c18796dea7b3559369f",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "novita",
+      "url": "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img",
+      "finalUrl": "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img",
+      "http": 200,
+      "bytes": 559901,
+      "textChars": 13512,
+      "sha256": "2af2b2ffc6983faf3dcce967c5645de85294a598adacc71fef4b193ff3aaf64c",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "openrouter",
+      "url": "https://openrouter.ai/api/v1/models",
+      "finalUrl": "https://openrouter.ai/api/v1/models",
+      "http": 200,
+      "bytes": 782080,
+      "textChars": 781920,
+      "sha256": "14fe2406fe34eb6c561cdb9f8bc0cdcefa559ced8d6ab13c8b6ba16d9ea42514",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "openrouter-images",
+      "url": "https://openrouter.ai/api/v1/images/models",
+      "finalUrl": "https://openrouter.ai/api/v1/images/models",
+      "http": 200,
+      "bytes": 46090,
+      "textChars": 46080,
+      "sha256": "3177d9254e39f4109b4b69379a6e81fd7f5f7c7ae0a4017c39a1836676621129",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "anthropic",
+      "url": "https://platform.claude.com/docs/en/models/overview.md",
+      "finalUrl": "https://platform.claude.com/docs/en/models/overview.md",
+      "http": 200,
+      "bytes": 19794,
+      "textChars": 19776,
+      "sha256": "a509d966cf13c2e11009bde35c1dd279c6694bc7b26a0f19ab9395c00b04f1fb",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "anthropic-sonnet",
+      "url": "https://platform.claude.com/docs/en/models/sonnet-5-5/overview.md",
+      "finalUrl": "https://platform.claude.com/docs/en/models/sonnet-5-5/overview.md",
+      "http": 200,
+      "bytes": 14550,
+      "textChars": 14533,
+      "sha256": "0b56aaa1006e642f6525508b7355f44e34991e4b2c2bdce52b5cebc8d03db5ef",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "anthropic-haiku",
+      "url": "https://platform.claude.com/docs/en/models/haiku-5-5/overview.md",
+      "finalUrl": "https://platform.claude.com/docs/en/models/haiku-5-5/overview.md",
+      "http": 200,
+      "bytes": 14417,
+      "textChars": 14400,
+      "sha256": "52f9faec8e72a0c5e360c065e525d32c6a4015f0c754e6533229a159f9d00a12",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "openai",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol.md",
+      "finalUrl": "https://developers.openai.com/api/docs/models/gpt-6.1-sol.md",
+      "http": 200,
+      "bytes": 4436,
+      "textChars": 4434,
+      "sha256": "acfe91d19882aaf7bb52877898684614035a947de02f2955c9de905a7efb1362",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "gemini",
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+      "http": 200,
+      "bytes": 108282,
+      "textChars": 6362,
+      "sha256": "499dd9a7d2c53d9b72d5583335cede12b7ceb2fbf91e669ac2ba98c7ef06e64c",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "xai",
+      "url": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2",
+      "finalUrl": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2",
+      "http": 200,
+      "bytes": 429581,
+      "textChars": 6639,
+      "sha256": "9d3ab4dbdaa215f5e3ac0a5fc5a3c75a75aaf1628995ef12ed6f42c22591d79b",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "schema-google-nano-banana-2-1",
+      "url": "https://runware.ai/docs/models/google-nano-banana-2-1/schema.json",
+      "finalUrl": "https://runware.ai/docs/models/google-nano-banana-2-1/schema.json",
+      "http": 200,
+      "bytes": 46971,
+      "textChars": 46945,
+      "sha256": "60c033c4e4d536c962961da801583f6f26f4c360b818276cdc8084bdc40c25a4",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "schema-bfl-flux-3-image",
+      "url": "https://runware.ai/docs/models/bfl-flux-3-image/schema.json",
+      "finalUrl": "https://runware.ai/docs/models/bfl-flux-3-image/schema.json",
+      "http": 200,
+      "bytes": 54653,
+      "textChars": 54626,
+      "sha256": "9c167ff79ba454d13cc00c11378ef716b1b9967d5439ad1de9a96d51c34cf41a",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "schema-ideogram-4-5",
+      "url": "https://runware.ai/docs/models/ideogram-4-5/schema.json",
+      "finalUrl": "https://runware.ai/docs/models/ideogram-4-5/schema.json",
+      "http": 200,
+      "bytes": 44676,
+      "textChars": 44655,
+      "sha256": "b01e6ae6e20d73834ca54170276a73a7d375890a8b725733a7d22d223a9dc414",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "schema-ideogram-4-5-precise-edit",
+      "url": "https://runware.ai/docs/models/ideogram-4-5-precise-edit/schema.json",
+      "finalUrl": "https://runware.ai/docs/models/ideogram-4-5-precise-edit/schema.json",
+      "http": 200,
+      "bytes": 29931,
+      "textChars": 29916,
+      "sha256": "8cab66f9fd6e9bca60a5e785df39316ed6f42d211f4c87d287b9e5ac36670edb",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "schema-bytedance-seedream-5-0-flash",
+      "url": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash/schema.json",
+      "finalUrl": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash/schema.json",
+      "http": 200,
+      "bytes": 39712,
+      "textChars": 39690,
+      "sha256": "a8739385150c79cb6b0dfe53fdf667b813d71fb4e159fb077ba55aa1b4695941",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "schema-recraft-v4-1-flash",
+      "url": "https://runware.ai/docs/models/recraft-v4-1-flash/schema.json",
+      "finalUrl": "https://runware.ai/docs/models/recraft-v4-1-flash/schema.json",
+      "http": 200,
+      "bytes": 31305,
+      "textChars": 31290,
+      "sha256": "f35b55780e33146a1bfd63910b04aa60230afe55d2b367cae7d23ec9421e68d1",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "schema-alibaba-qwen-image-2-1-pro",
+      "url": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro/schema.json",
+      "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro/schema.json",
+      "http": 200,
+      "bytes": 29964,
+      "textChars": 29941,
+      "sha256": "9b77a0ce4649a0fd74f49dcea205785303483586509a50a53ac53bc566529620",
+      "checkedAt": "2026-10-09"
+    }
+  ],
+  "dynamicCandidates": [
+    {
+      "id": "stepfun/step-5-preview",
+      "created": 1791462849,
+      "batchExcluded": false,
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "id": "anthropic/claude-haiku-5.5",
+      "created": 1791397883,
+      "batchExcluded": false,
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "id": "anthropic/claude-haiku-5.5:batch",
+      "created": 1791397883,
+      "batchExcluded": true,
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "id": "google/gemini-nano-banana-2.1",
+      "created": 1791300825,
+      "batchExcluded": false,
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "id": "mistralai/mistral-large-4-0",
+      "created": 1791294122,
+      "batchExcluded": false,
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "id": "inclusionai/ling-3.1-flash",
+      "created": 1790950024,
+      "batchExcluded": false,
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "id": "apodex/apodex-1.1-mini:free",
+      "created": 1790875335,
+      "batchExcluded": false,
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "id": "unbiased/pareto-26.10-preview",
+      "created": 1790863623,
+      "batchExcluded": false,
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "id": "openai/gpt-6.1-sol-pro",
+      "created": 1790702886,
+      "batchExcluded": false,
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "id": "openai/gpt-6.1-sol-pro:batch",
+      "created": 1790702886,
+      "batchExcluded": true,
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "id": "openai/gpt-6.1-sol",
+      "created": 1790702882,
+      "batchExcluded": false,
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "id": "openai/gpt-6.1-sol:batch",
+      "created": 1790702882,
+      "batchExcluded": true,
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "id": "anthropic/claude-sonnet-5.5",
+      "created": 1790618686,
+      "batchExcluded": false,
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "id": "anthropic/claude-sonnet-5.5:batch",
+      "created": 1790618686,
+      "batchExcluded": true,
+      "source": "https://openrouter.ai/api/v1/models"
+    }
+  ],
+  "validation": {
+    "webSuite": [
+      592,
+      592
+    ],
+    "coreInitialSuite": [
+      1092,
+      1094
+    ],
+    "coreAffectedRerun": [
+      8,
+      8
+    ],
+    "specificationsFinal": [
+      5,
+      5
+    ],
+    "miniSuite": [
+      121,
+      121
+    ],
+    "packing": [
+      3,
+      3
+    ],
+    "sourcePackageBytes": 1563045,
+    "paidCalls": 0,
+    "deployment": false,
+    "webAffectedFinal": [
+      12,
+      12
+    ],
+    "uiCases": 9,
+    "uiPageErrors": 0
+  }
+}

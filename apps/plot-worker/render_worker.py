@@ -364,7 +364,7 @@ def _sanitize_error(name: str, detail: str) -> str:
         return name
 
 
-def _child_render(code_text: str, result_q) -> None:
+def _child_render(code_text: str, result_q, vector_output: bool = False) -> None:
     """Runs in the CHILD process. Puts a dict on result_q and returns.
 
     Never raises out of the process: any failure is captured as an error
@@ -380,6 +380,16 @@ def _child_render(code_text: str, result_q) -> None:
 
         plt.close("all")
         plt.rcdefaults()
+        # The packaged Noto family keeps Chinese scientific labels readable.
+        from matplotlib import font_manager
+        from pathlib import Path
+        local_cjk = Path(__file__).resolve().parents[1] / "paperbanana-api/assets/svg-review/fonts/NotoSansCJKsc-Regular.otf"
+        if local_cjk.is_file():
+            font_manager.fontManager.addfont(str(local_cjk))
+        installed_families = {font.name for font in font_manager.fontManager.ttflist}
+        plt.rcParams["font.family"] = [family for family in ["Noto Sans CJK SC", "Noto Sans CJK JP", "DejaVu Sans"] if family in installed_families]
+        plt.rcParams["axes.unicode_minus"] = False
+
 
         code_clean = _extract_code(code_text)
 
@@ -402,17 +412,68 @@ def _child_render(code_text: str, result_q) -> None:
             return
 
         buf = io.BytesIO()
-        plt.savefig(buf, format="png", bbox_inches="tight", dpi=RENDER_DPI)
-        plt.close("all")
+        fig = plt.gcf()
+        # Typed plots export both formats from this exact scene. Freeze layout
+        # after Agg's measurement so a different backend cannot reflow labels.
+        if vector_output:
+            plt.rcParams["svg.fonttype"] = "none"
+            plt.rcParams["svg.hashsalt"] = "tuyan-typed-figure-v2"
+            # Colorbars otherwise auto-rasterize a dense QuadMesh in SVG.
+            for artist in fig.findobj():
+                if artist.get_rasterized():
+                    artist.set_rasterized(False)
+            fig.canvas.draw()
+            fig.set_layout_engine("none")
+        target = getattr(fig, "_tuyan_target_pixels", None)
+        if target is not None:
+            if type(target) is not int or target not in (1024, 1536, 2048, 3072, 4096):
+                raise ValueError("Unsupported Tuyan plot resolution")
+            dpi = target / max(fig.get_size_inches())
+            fig.savefig(buf, format="png", dpi=dpi)
+        else:
+            plt.savefig(buf, format="png", bbox_inches="tight", dpi=RENDER_DPI)
         buf.seek(0)
         b64 = base64.b64encode(buf.read()).decode("utf-8")
-        result_q.put({"ok": True, "image_base64": b64})
+        result = {"ok": True, "image_base64": b64}
+        if vector_output:
+            import json
+            import hashlib
+            import xml.etree.ElementTree as ET
+            svg_buf = io.BytesIO()
+            fig.savefig(svg_buf, format="svg", metadata={"Date": None})
+            svg_bytes = svg_buf.getvalue()
+            tree = ET.fromstring(svg_bytes)
+            # Strip Matplotlib's RDF metadata and DTD by reserializing the tree.
+            for child in list(tree):
+                if child.tag.split("}")[-1] == "metadata":
+                    tree.remove(child)
+            ET.register_namespace("", "http://www.w3.org/2000/svg")
+            ET.register_namespace("xlink", "http://www.w3.org/1999/xlink")
+            svg_bytes = ET.tostring(tree, encoding="utf-8")
+            if any(el.tag.split("}")[-1] in ("image", "foreignObject", "script") for el in tree.iter()):
+                raise ValueError("Typed SVG contains raster or active content; vector export refused")
+            if not any(el.tag.split("}")[-1] == "text" for el in tree.iter()):
+                raise ValueError("Typed SVG must contain editable text")
+            if len(svg_bytes) > FSIZE_LIMIT_BYTES:
+                raise ValueError("Typed SVG exceeds output size limit")
+            checks = getattr(fig, "_tuyan_validation", {})
+            # A numpy scalar is fine; nonfinite results and unserialisable objects
+            # are not silently converted into successful validation evidence.
+            checks = json.loads(json.dumps(checks, allow_nan=False, default=lambda value: value.tolist()))
+            result.update({"svg_base64": base64.b64encode(svg_bytes).decode("ascii"),
+                           "render_validation": {"vector": True, "editableText": True,
+                               "sameScene": True, "figureCount": len(plt.get_fignums()),
+                               "codeHash": hashlib.sha256(code_clean.encode()).hexdigest(),
+                               "pngHash": hashlib.sha256(buf.getvalue()).hexdigest(),
+                               "svgHash": hashlib.sha256(svg_bytes).hexdigest(), "numeric": checks}})
+        plt.close("all")
+        result_q.put(result)
     except BaseException as e:  # noqa: BLE001 — must never escape the child.
         # Single line, no full traceback; scrub host paths + secret-like blobs.
         result_q.put({"ok": False, "error": _sanitize_error(type(e).__name__, e)})
 
 
-def run_render(code_text: str, timeout_s: int = WALL_CLOCK_TIMEOUT_S) -> Dict[str, Any]:
+def run_render(code_text: str, timeout_s: int = WALL_CLOCK_TIMEOUT_S, vector_output: bool = False) -> Dict[str, Any]:
     """Render `code_text` in a hardened child process with a wall-clock kill.
 
     Returns {"ok": True, "image_base64": "..."} or
@@ -426,7 +487,7 @@ def run_render(code_text: str, timeout_s: int = WALL_CLOCK_TIMEOUT_S) -> Dict[st
     # already-open socket or DB handle from the parent.
     ctx = mp.get_context("spawn")
     result_q = ctx.Queue()
-    proc = ctx.Process(target=_child_render, args=(code_text, result_q), daemon=True)
+    proc = ctx.Process(target=_child_render, args=(code_text, result_q, vector_output), daemon=True)
 
     # BOUNDARY LAYER #1: hand the child a SECRET-FREE env. multiprocessing has
     # no per-Process env kwarg and 'spawn' snapshots os.environ at start() time,

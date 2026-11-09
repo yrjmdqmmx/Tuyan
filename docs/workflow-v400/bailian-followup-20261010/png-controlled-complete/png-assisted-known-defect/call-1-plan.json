@@ -1,0 +1,38 @@
+{
+  "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+  "number": 1,
+  "kind": "plan",
+  "model": "deepseek-v4-pro",
+  "request": {
+    "model": "deepseek-v4-pro",
+    "messages": [
+      {
+        "role": "system",
+        "content": "I am working on a task: given the 'Methodology' section of a paper, and the caption of the desired figure, automatically generate a corresponding illustrative diagram. I will input the text of the 'Methodology' section, the figure caption, and your output should be a detailed description of an illustrative figure that effectively represents the methods described in the text.\n\nTo help you understand the task better, and grasp the principles for generating such figures, I will also provide you with several examples. You should learn from these examples to provide your figure description.\n\n** IMPORTANT: **\nYour description should be as detailed as possible. Semantically, clearly describe each element and their connections. Formally, include various details such as background style (typically pure white or very light pastel), colors, line thickness, icon styles, etc. Remember: vague or unclear specifications will only make the generated figure worse, not better.\n\nIf reference image analysis is provided, use it as structure and style guidance without copying irrelevant content. Do not include the figure title or caption text inside the image."
+      },
+      {
+        "role": "user",
+        "content": "Methodology Section:\n这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.7）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。保留右上角标识REF-73，使用圆角框布局。\n\nFigure Caption:\n从样品输入到标准化结果的三步方法流程。\n\nDetailed description of the target figure:\n\nInfographic category: method — emphasize the conventions of this figure type.\n\n<avoidance_constraints>\n禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。\n</avoidance_constraints>\nComplete task context:\n{\n  \"originalRequest\": \"这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.7）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。保留右上角标识REF-73，使用圆角框布局。\",\n  \"methodology\": \"这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.7）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。保留右上角标识REF-73，使用圆角框布局。\",\n  \"visualIntent\": \"从样品输入到标准化结果的三步方法流程。\",\n  \"completePlan\": \"\",\n  \"figureType\": \"method\",\n  \"aspectRatio\": \"16:9\",\n  \"resolution\": \"1K\",\n  \"outputFormat\": \"png\",\n  \"mustPreserve\": \"All user-specified scientific facts, labels, relationships and required content unless the user explicitly requests changing them.\",\n  \"avoid\": \"禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。\",\n  \"referenceRequirements\": {\n    \"mode\": \"none\",\n    \"retrieval\": \"none\",\n    \"uploaded\": []\n  },\n  \"modificationGoal\": \"Check fidelity, readable labels, layout and connections against the original request.\",\n  \"referenceAnalysis\": \"\",\n  \"retrievalContext\": \"\",\n  \"planningMode\": \"full\",\n  \"planningConstraint\": \"Image API limit: 5000 Unicode characters for the ENTIRE final request prompt. Write a compact, complete drawing plan in the user language, at most 2400 characters; preserve every required fact/label and relationship. Avoid repeating the original prose, metadata or long explanations. This applies to initial, styled and revised plans.\"\n}"
+      }
+    ],
+    "stream": true,
+    "enable_thinking": false,
+    "max_tokens": 8192,
+    "stream_options": {
+      "include_usage": true
+    }
+  },
+  "originalParameters": {},
+  "httpStatus": 200,
+  "elapsedMs": 10669,
+  "requestId": "chatcmpl-7d6ec4c9-8176-9e2a-a4e6-4dfec43b1391",
+  "responseText": "**要求核对记录**\n- 三步：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.7）✅\n- 方向：左→右 ✅\n- 无额外步骤/数值 ✅\n- 中文文本，数学表达式原样保留 ✅\n- 右上角标识REF-73 ✅\n- 圆角框布局 ✅\n- 纯白背景，无图注/标题 ✅\n\n**Drawing Plan (1000 characters)**\n- Canvas: 16:9, 1K, pure white (#FFFFFF) background.\n- Top-right: small rounded rectangle badge, dark gray (#333333), white text \"REF-73\", font 14px bold sans-serif, 10px corner radius, 2px from edge.\n- Layout: three equal-spaced rounded rectangle nodes centered vertically. Node size: 180x80px, corner radius 16px. Fill: light blue (#D6EAF8), border: 2px solid (#2980B9).\n- Arrows: thick (#2980B9, 3px) solid right-pointing arrows between nodes, stroke-linecap round, arrowhead size 12px.\n- Node 1 (left, x=150): Text \"样品输入\" (bold 18px Chinese, #2C3E50) above split line; below line, \"n = 12\" (15px, #2C3E50), center-aligned.\n- Node 2 (center, x=500): \"数据标准化\" (bold 18px) top; equation \"x / x₀\" (italic 16px, #E74C3C for emphasis) bottom.\n- Node 3 (right, x=850): \"结果输出\" (bold 18px) top; \"均值 1.7\" (16px, #2C3E50) bottom.\n- No other labels, numbers, or annotations. No title/caption inside canvas. Clean minimal infographic.",
+  "usage": {
+    "prompt_tokens": 811,
+    "completion_tokens": 428,
+    "total_tokens": 1239,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  }
+}

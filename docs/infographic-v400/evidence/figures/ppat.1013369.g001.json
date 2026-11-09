@@ -1,0 +1,67 @@
+{
+  "id": "ppat.1013369.g001",
+  "paper": "ppat.1013369",
+  "figure": {
+    "id": "ppat.1013369.g001",
+    "label": "Fig 1",
+    "caption": "Alluvial diagram shows from left to right the HIV-1 A6 sequence distribution among people linked to care in Poland by country of origin, gender, and risk factor; PL – Poland/Polish; UA – Ukraine/Ukrainian; MSM – men who have sex with men; HET – heterosexual individuals; PWID – people who inject drugs.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1013369.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.ppat.1013369.g001</object-id><label>Fig 1</label><caption><title>Alluvial diagram shows from left to right the HIV-1 A6 sequence distribution among people linked to care in Poland by country of origin, gender, and risk factor; PL – Poland/Polish; UA – Ukraine/Ukrainian; MSM – men who have sex with men; HET – heterosexual individuals; PWID – people who inject drugs.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1013369.g001\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1013369.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.ppat.1013369",
+    "sourceUrl": "https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1013369",
+    "title": "Comparison of HIV-1 A6 dispersal dynamics in Poland before and after the war in Ukraine",
+    "journal": "PLOS Pathogens",
+    "authors": [
+      "Karol Serwin",
+      "Kaja Mielczak",
+      "Anna Urbańska",
+      "Bogusz Aksak-Wąs",
+      "Malwina Karasińska-Cieślak",
+      "Piotr Ząbek",
+      "Ewa Siwak",
+      "Iwona Cielniak",
+      "Elżbieta Jabłonowska",
+      "Paweł Jakubowski",
+      "Błażej Rozpłochowski",
+      "Aleksandra Szymczak",
+      "Bartosz Szetela",
+      "Anna Kalinowska-Nowak",
+      "Monika Bociąga-Jasik",
+      "Elżbieta Mularska",
+      "Adam Witor",
+      "Anita Olczak",
+      "Władysław Łojewski",
+      "Maria Hlebowicz",
+      "Miłosz Parczewski"
+    ],
+    "year": "2025",
+    "license": "2025\nSerwin et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plospathogens/article/figure/image?size=large&id=10.1371/journal.ppat.1013369.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/ppat.1013369.g001.png",
+      "bytes": 145363,
+      "sha256": "f18fd01671a193cbfde0a126842ada95813fc4b6bf10c51ce8492f902777219e"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plospathogens/article/figure/image?size=original&id=10.1371/journal.ppat.1013369.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/ppat.1013369.g001.tif",
+      "bytes": 175780,
+      "sha256": "940c8c98d97014f6ba79473577752258273d6148765a14b4c7df14523d0e0afc"
+    }
+  }
+}

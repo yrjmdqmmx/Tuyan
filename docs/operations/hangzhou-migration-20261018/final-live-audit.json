@@ -1,0 +1,175 @@
+{
+  "checked_at": "2026-10-18T03:19:12.032247+00:00",
+  "hangzhou": [
+    {
+      "Names": "paperbanana-hk-auth-gateway-1",
+      "Status": "Up 9 minutes (healthy)",
+      "Image": "433abb8c85b9"
+    },
+    {
+      "Names": "paperbanana-hk-paperbanana-api-1",
+      "Status": "Up 9 minutes (healthy)",
+      "Image": "tuyan-core-hangzhou:95589896186b"
+    },
+    {
+      "Names": "openacad-api-1",
+      "Status": "Up 11 minutes (healthy)",
+      "Image": "a270e2a3b16a"
+    },
+    {
+      "Names": "openacad-worker-two-1",
+      "Status": "Up 11 minutes (healthy)",
+      "Image": "a270e2a3b16a"
+    },
+    {
+      "Names": "openacad-worker-one-1",
+      "Status": "Up 11 minutes (healthy)",
+      "Image": "a270e2a3b16a"
+    },
+    {
+      "Names": "openacad-redis-1",
+      "Status": "Up 11 minutes (healthy)",
+      "Image": "02f2cc4882f8"
+    },
+    {
+      "Names": "tuyan-cn-gateway-auth-gateway-1",
+      "Status": "Up 11 minutes (healthy)",
+      "Image": "433abb8c85b9"
+    },
+    {
+      "Names": "paperbanana-hk-benchmark-worker-1",
+      "Status": "Up 11 minutes (healthy)",
+      "Image": "92761e403768"
+    },
+    {
+      "Names": "paperbanana-hk-mongodb-1",
+      "Status": "Up 11 minutes (healthy)",
+      "Image": "5dda65a823a0"
+    },
+    {
+      "Names": "paperbanana-hk-plot-worker-1",
+      "Status": "Up 16 minutes (healthy)",
+      "Image": "23894f4844c4"
+    }
+  ],
+  "hongkong": [
+    {
+      "Names": "paperbanana-hk-auth-gateway-1",
+      "Status": "Exited (0) 14 minutes ago",
+      "Image": "433abb8c85b9"
+    },
+    {
+      "Names": "tuyan-cn-gateway-auth-gateway-1",
+      "Status": "Exited (0) 14 minutes ago",
+      "Image": "433abb8c85b9"
+    },
+    {
+      "Names": "paperbanana-hk-benchmark-worker-1",
+      "Status": "Exited (0) 14 minutes ago",
+      "Image": "92761e403768"
+    },
+    {
+      "Names": "paperbanana-hk-paperbanana-api-1",
+      "Status": "Exited (0) 14 minutes ago",
+      "Image": "57786f42690a"
+    },
+    {
+      "Names": "task-hall-web-1",
+      "Status": "Up 9 days (healthy)",
+      "Image": "task-hall:20261008-attachments-v1"
+    },
+    {
+      "Names": "openacad-api-1",
+      "Status": "Exited (143) 14 minutes ago",
+      "Image": "openacad-worker:1.1.0-3d772df"
+    },
+    {
+      "Names": "openacad-worker-one-1",
+      "Status": "Exited (0) 14 minutes ago",
+      "Image": "openacad-worker:1.1.0-3d772df"
+    },
+    {
+      "Names": "openacad-worker-two-1",
+      "Status": "Exited (0) 14 minutes ago",
+      "Image": "openacad-worker:1.1.0-3d772df"
+    },
+    {
+      "Names": "openacad-redis-1",
+      "Status": "Exited (0) 14 minutes ago",
+      "Image": "redis:7.4.7-alpine"
+    },
+    {
+      "Names": "paperbanana-hk-mongo-init-1",
+      "Status": "Exited (0) 24 hours ago",
+      "Image": "mongo:8.0.16-noble"
+    },
+    {
+      "Names": "paperbanana-hk-plot-worker-1",
+      "Status": "Exited (143) 14 minutes ago",
+      "Image": "23894f4844c4"
+    },
+    {
+      "Names": "tensor-auto-web-1",
+      "Status": "Up 2 months (healthy)",
+      "Image": "ghcr.io/yrjmdqmmx/tensor-auto-web:0a7df7d361a18bd9759587e40010c5a5a745ee57"
+    },
+    {
+      "Names": "tensor-auto-api-1",
+      "Status": "Up 2 months (healthy)",
+      "Image": "ghcr.io/yrjmdqmmx/tensor-auto-api:0a7df7d361a18bd9759587e40010c5a5a745ee57"
+    },
+    {
+      "Names": "tensor-auto-harness-worker-1",
+      "Status": "Up 2 months (healthy)",
+      "Image": "ghcr.io/yrjmdqmmx/tensor-auto-harness:0a7df7d361a18bd9759587e40010c5a5a745ee57"
+    },
+    {
+      "Names": "tensor-auto-backup-1",
+      "Status": "Up 2 months",
+      "Image": "postgres:17.5-alpine"
+    },
+    {
+      "Names": "tensor-auto-postgres-1",
+      "Status": "Up 2 months (healthy)",
+      "Image": "postgres:17.5-alpine"
+    },
+    {
+      "Names": "paperbanana-hk-mongodb-1",
+      "Status": "Exited (0) 14 minutes ago",
+      "Image": "mongo:8.0.16-noble"
+    }
+  ],
+  "public_health": [
+    {
+      "url": "https://tuyansci.cn/ready",
+      "http_status": 200,
+      "seconds": 1.311515
+    },
+    {
+      "url": "https://api.paperbanana.asia/ready",
+      "http_status": 200,
+      "seconds": 1.732666
+    },
+    {
+      "url": "https://openacad.xyz/api/health",
+      "http_status": 200,
+      "seconds": 0.242116
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Deploy Hong Kong Production",
+      "state": "disabled_manually"
+    },
+    {
+      "name": "Deliver Singapore Provider Egress",
+      "state": "disabled_manually"
+    }
+  ],
+  "timers": [
+    "active",
+    "active",
+    "active",
+    "active"
+  ]
+}

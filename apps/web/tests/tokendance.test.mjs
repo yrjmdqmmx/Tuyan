@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict';
 import test, { afterEach } from 'node:test';
 import React from 'react';
@@ -43,9 +44,9 @@ test('wallet uses microyuan while payment submits integer yuan and rejects fract
   assert.equal(formatTokenDanceMoney(1_234_567), '1.234567');
   assert.ok(screen.getByText(/Key 额度需在观猹 TokenDance/));
   const input = screen.getByRole('spinbutton', { name: '观猹 TokenDance 充值金额' });
-  fireEvent.change(input, { target: { value: '1.5' } });
+  changeControl(input, { target: { value: '1.5' } });
   assert.equal(screen.getByRole('button', { name: '创建 ¥1.5 充值单' }).disabled, true);
-  fireEvent.change(input, { target: { value: '10' } });
+  changeControl(input, { target: { value: '10' } });
   fireEvent.click(screen.getByRole('button', { name: '创建 ¥10 充值单' }));
   assert.deepEqual(amounts, [10]);
 });
@@ -158,4 +159,27 @@ test('an unstarted interrupted task explains saved admission and resumes only on
   fireEvent.click(screen.getByRole('button', {name: '继续原任务'}));
   await waitFor(() => assert.deepEqual(resumed, ['queued-before-crash']));
   assert.deepEqual(requested, [{action: 'providerResume', body: {jobId: 'queued-before-crash'}}]);
+});
+
+
+test('web authorization sends its official origin while retaining the server fallback for local development', async () => {
+  const originalFetch = globalThis.fetch, originalOpen = window.open, originalWindow = globalThis.window;
+  try {
+    for (const origin of ['https://tuyansci.cn', 'https://www.paperbanana.asia', 'https://paperbanana.asia', 'http://localhost:5196']) {
+      let sent, redirected;
+      globalThis.window = new Proxy(originalWindow, { get(target, key) { if (key === 'location') return { origin }; const value = Reflect.get(target, key); return typeof value === 'function' ? value.bind(target) : value; } });
+      originalWindow.open = () => ({ location: { replace(value) { redirected = value; } }, close() {} });
+      globalThis.fetch = async (_url, init) => {
+        const body = JSON.parse(init.body);
+        if (body.action === 'tokenDanceAuthorize') { sent = body; return Response.json({ authorizationUrl: 'https://tokendance.space/auth?fixture=1' }); }
+        return Response.json({ connected: false, available: true });
+      };
+      const hook = renderHook(() => useTokenDance('https://gateway.example.test', 'fixture-owner', true));
+      await act(async () => { await hook.result.current.authorize(); });
+      assert.equal(sent.callbackOrigin, origin.startsWith('http:') ? undefined : origin);
+      assert.equal(sent.platform, 'web');
+      assert.equal(redirected, 'https://tokendance.space/auth?fixture=1');
+      hook.unmount();
+    }
+  } finally { globalThis.window = originalWindow; originalWindow.open = originalOpen; globalThis.fetch = originalFetch; }
 });

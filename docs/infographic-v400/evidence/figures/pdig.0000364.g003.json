@@ -1,0 +1,65 @@
+{
+  "id": "pdig.0000364.g003",
+  "paper": "pdig.0000364",
+  "figure": {
+    "id": "pdig.0000364.g003",
+    "label": "Fig 3",
+    "caption": "Results from the first set of the generalizability analyses, highlighting that device level heterogeneity impacts our model performance greater than geography level heterogeneity.\nThe classification performance and repeatability plots depicted here include (a) receiver operating characteristics (ROC) curves; (b) confusion matrices; and (c) Bland-Altman plots, for models that were (i) trained on “SEED” and tested on a held-aside set from “SEED”; (ii) trained on “SEED” and tested on “EXT”; and (iii) trained on a dataset comprising of “SEED” + all images from “EXT” except Bolivia and tested on Bolivia images from “EXT”. “Gray Zone” = “Indeterminate”.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pdig.0000364.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pdig.0000364.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Results from the first set of the generalizability analyses, highlighting that device level heterogeneity impacts our model performance greater than geography level heterogeneity.</title>\n<p>The classification performance and repeatability plots depicted here include (a) receiver operating characteristics (ROC) curves; (b) confusion matrices; and (c) Bland-Altman plots, for models that were (i) trained on “SEED” and tested on a held-aside set from “SEED”; (ii) trained on “SEED” and tested on “EXT”; and (iii) trained on a dataset comprising of “SEED” + all images from “EXT” except Bolivia and tested on Bolivia images from “EXT”. “Gray Zone” = “Indeterminate”.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pdig.0000364.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pdig.0000364.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pdig.0000364",
+    "sourceUrl": "https://journals.plos.org/digitalhealth/article?id=10.1371/journal.pdig.0000364",
+    "title": "Assessing generalizability of an AI-based visual test for cervical cancer screening",
+    "journal": "PLOS Digital Health",
+    "authors": [
+      "Syed Rakin Ahmed",
+      "Didem Egemen",
+      "Brian Befano",
+      "Ana Cecilia Rodriguez",
+      "Jose Jeronimo",
+      "Kanan Desai",
+      "Carolina Teran",
+      "Karla Alfaro",
+      "Joel Fokom-Domgue",
+      "Kittipat Charoenkwan",
+      "Chemtai Mungo",
+      "Rebecca Luckett",
+      "Rakiya Saidu",
+      "Taina Raiol",
+      "Ana Ribeiro",
+      "Julia C. Gage",
+      "Silvia de Sanjose",
+      "Jayashree Kalpathy-Cramer",
+      "Mark Schiffman"
+    ],
+    "year": "2024",
+    "license": "This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/digitalhealth/article/figure/image?size=large&id=10.1371/journal.pdig.0000364.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pdig.0000364.g003.png",
+      "bytes": 763664,
+      "sha256": "eda8cf6b425a72dbb33e9dd1e432a4d30bc6964f90881daf0183669713849673"
+    },
+    "original": {
+      "url": "https://journals.plos.org/digitalhealth/article/figure/image?size=original&id=10.1371/journal.pdig.0000364.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pdig.0000364.g003.tif",
+      "bytes": 988356,
+      "sha256": "f70a2dd7a4aace3225929b67d88fdfd5df242b992a0fe3ef090baef990d4dc4d"
+    }
+  }
+}

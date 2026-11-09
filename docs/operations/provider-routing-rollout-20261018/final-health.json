@@ -1,0 +1,146 @@
+{
+  "containers": [
+    {
+      "name": "paperbanana-hk-paperbanana-api-1",
+      "id": "2442ff06d97778b0972d4fc726a7b398c8e967d6dc9844869c1bec76fe2601f4",
+      "image": "sha256:75cbc12e7969af32be4cd8a6e38d0adf5425623b0c14db5ac118d7dfa0248dfb",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "tuyan-cn-gateway-auth-gateway-1",
+      "id": "b9b44b6f2c75e8f276e34a6f2058a87e90e756140828c24c721beca3ad95c3c8",
+      "image": "sha256:84bc9fd55434fa54c5f421e90232a7deab8266b62d2b40b7ce1267f80e5f8782",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "paperbanana-hk-auth-gateway-1",
+      "id": "06b881b454b9847589f935741088d7509104308e71a052395239b17c1e6273b6",
+      "image": "sha256:84bc9fd55434fa54c5f421e90232a7deab8266b62d2b40b7ce1267f80e5f8782",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "openacad-api-1",
+      "id": "c08573900692eff380b1bddb78ec2c7e7a22aabfe874bdc7c25c4aea24cd8c0c",
+      "image": "sha256:a270e2a3b16af6d08f79e9c493727074ef7f26d36bbd994697db1c535f1092ce",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "openacad-worker-two-1",
+      "id": "7dd934295755062f1db660516f1d242335ac5e73497eddde74daee5fa7419fa0",
+      "image": "sha256:a270e2a3b16af6d08f79e9c493727074ef7f26d36bbd994697db1c535f1092ce",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "openacad-worker-one-1",
+      "id": "f5bf9fcacaba84d42b2747f15f4a23011b6483610eae3a696e6af90b187f6aec",
+      "image": "sha256:a270e2a3b16af6d08f79e9c493727074ef7f26d36bbd994697db1c535f1092ce",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "openacad-redis-1",
+      "id": "97e6c3db2c1f1322a6d0109d965388f8b6d7a9630ee80d6f986577698b58e213",
+      "image": "sha256:02f2cc4882f8bf87c79a220ac958f58c700bdec0dfb9b9ea61b62fb0e8f1bfcf",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "paperbanana-hk-benchmark-worker-1",
+      "id": "5efda3a451cb704ef55511507345bc7f0f04add0c675efc5da33c348cded3c88",
+      "image": "sha256:92761e403768654480f2592c8de52c50d8440224d3b6a3f32dae25a482a8a1f7",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "paperbanana-hk-mongodb-1",
+      "id": "9c8c664f59b6ea8d765923cf2c870bffb93d942423b5430dfe7c53218269321c",
+      "image": "sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "paperbanana-hk-plot-worker-1",
+      "id": "c79b4350865ebb6c5d4af6aaa89186e5c3a640f5927b31b3916436f1850aa318",
+      "image": "sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    }
+  ],
+  "health_checks": [
+    {
+      "url": "https://tuyansci.cn/ready",
+      "status": "200",
+      "curl_exit": 0
+    },
+    {
+      "url": "https://api.paperbanana.asia/ready",
+      "status": "200",
+      "curl_exit": 0
+    },
+    {
+      "url": "https://openacad.xyz/api/health",
+      "status": "200",
+      "curl_exit": 0
+    }
+  ],
+  "maintenance": false,
+  "bundle_sha256": "7a80115dc2299e6d729d8131ff168434e99c36c0e5c2861def6e11b20e1720fe",
+  "other_nine_containers_unchanged": true,
+  "checked_at": "2026-10-18T04:50:58.392159+00:00",
+  "egress_services": {
+    "hk": {
+      "units": {
+        "wg-quick@pbhz0": {
+          "active": "active",
+          "enabled": "enabled"
+        },
+        "squid": {
+          "active": "active",
+          "enabled": "enabled"
+        }
+      },
+      "proxy_listeners": [
+        "LISTEN 0      256                      10.78.0.1:3128       0.0.0.0:*          "
+      ]
+    },
+    "hz": {
+      "units": {
+        "wg-quick@pbhk0": {
+          "active": "active",
+          "enabled": "enabled"
+        }
+      },
+      "proxy_listeners": []
+    },
+    "sg": {
+      "units": {
+        "wg-quick@pbsg0": {
+          "active": "active",
+          "enabled": "enabled"
+        },
+        "squid": {
+          "active": "active",
+          "enabled": "enabled"
+        }
+      },
+      "proxy_listeners": [
+        "LISTEN 0      256                      10.77.0.2:3128       0.0.0.0:*          "
+      ]
+    }
+  }
+}

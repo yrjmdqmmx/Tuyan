@@ -1,0 +1,38 @@
+{
+  "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+  "number": 4,
+  "kind": "plan",
+  "model": "deepseek-v4-pro",
+  "request": {
+    "model": "deepseek-v4-pro",
+    "messages": [
+      {
+        "role": "system",
+        "content": "I am working on a task: given the 'Methodology' section of a paper, and the caption of the desired figure, automatically generate a corresponding illustrative diagram. I will input the text of the 'Methodology' section, the figure caption, and your output should be a detailed description of an illustrative figure that effectively represents the methods described in the text.\n\nTo help you understand the task better, and grasp the principles for generating such figures, I will also provide you with several examples. You should learn from these examples to provide your figure description.\n\n** IMPORTANT: **\nYour description should be as detailed as possible. Semantically, clearly describe each element and their connections. Formally, include various details such as background style (typically pure white or very light pastel), colors, line thickness, icon styles, etc. Remember: vague or unclear specifications will only make the generated figure worse, not better.\n\nIf reference image analysis is provided, use it as structure and style guidance without copying irrelevant content. Do not include the figure title or caption text inside the image."
+      },
+      {
+        "role": "user",
+        "content": "Methodology Section:\n这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\n\nFigure Caption:\n从样品输入到标准化结果的三步方法流程。\n\nDetailed description of the target figure:\n\nInfographic category: method — emphasize the conventions of this figure type.\n\n<avoidance_constraints>\n禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。\n</avoidance_constraints>\nComplete task context:\n{\n  \"originalRequest\": \"这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\",\n  \"methodology\": \"这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\",\n  \"visualIntent\": \"从样品输入到标准化结果的三步方法流程。\",\n  \"completePlan\": \"\",\n  \"figureType\": \"method\",\n  \"aspectRatio\": \"16:9\",\n  \"resolution\": \"1K\",\n  \"outputFormat\": \"svg\",\n  \"svgRenderingConstraints\": \"The final SVG uses a strict static renderer: use flat vector geometry and ordinary arrows. Do not propose or emit shadows, filter/feDropShadow, mask, pattern, clipPath, group opacity, blending, embedded images, HTML or external assets, including unused definitions. These constraints override any incompatible styling in plans or references. Use Noto Sans CJK SC / Noto Sans / Noto Sans Math with regular weight and normal style; preserve the required labels and relationships.\",\n  \"mustPreserve\": \"All user-specified scientific facts, labels, relationships and required content unless the user explicitly requests changing them.\",\n  \"avoid\": \"禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。\",\n  \"referenceRequirements\": {\n    \"mode\": \"none\",\n    \"retrieval\": \"none\",\n    \"uploaded\": []\n  },\n  \"modificationGoal\": \"Check fidelity, readable labels, layout and connections against the original request.\",\n  \"referenceAnalysis\": \"\",\n  \"retrievalContext\": \"\",\n  \"planningMode\": \"planner_critic\"\n}"
+      }
+    ],
+    "stream": true,
+    "enable_thinking": false,
+    "max_tokens": 8192,
+    "stream_options": {
+      "include_usage": true
+    }
+  },
+  "originalParameters": {},
+  "httpStatus": 200,
+  "elapsedMs": 17093,
+  "requestId": "chatcmpl-2e074147-b568-92e1-b81d-e50449a832f2",
+  "responseText": "```svg\n<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1280 720\" font-family=\"'Noto Sans CJK SC', 'Noto Sans', 'Noto Sans Math', sans-serif\">\n  <!-- 纯白背景 -->\n  <rect width=\"1280\" height=\"720\" fill=\"#ffffff\"/>\n\n  <!-- 右上角短标识（按参考图样式保留） -->\n  <text x=\"1230\" y=\"40\" font-size=\"14\" fill=\"#999999\" text-anchor=\"end\" font-weight=\"normal\">标识</text>\n\n  <!-- ===== 三个步骤框 ===== -->\n  <!-- 配色：使用柔和的科技蓝/绿/青配色，圆角框布局 -->\n\n  <!-- 步骤1：样品输入（n=12） -->\n  <rect x=\"80\" y=\"260\" width=\"300\" height=\"120\" rx=\"16\" ry=\"16\" fill=\"#E8F4FD\" stroke=\"#4A90D9\" stroke-width=\"2.5\"/>\n  <text x=\"230\" y=\"310\" text-anchor=\"middle\" font-size=\"22\" fill=\"#2C5F8A\" font-weight=\"normal\">样品输入</text>\n  <text x=\"230\" y=\"345\" text-anchor=\"middle\" font-size=\"18\" fill=\"#4A90D9\">n = 12</text>\n\n  <!-- 箭头1 → -->\n  <line x1=\"380\" y1=\"320\" x2=\"460\" y2=\"320\" stroke=\"#555555\" stroke-width=\"2.5\" marker-end=\"url(#arrowhead)\"/>\n\n  <!-- 步骤2：数据标准化（x / x₀） -->\n  <rect x=\"480\" y=\"260\" width=\"320\" height=\"120\" rx=\"16\" ry=\"16\" fill=\"#E8F8E8\" stroke=\"#4CAF50\" stroke-width=\"2.5\"/>\n  <text x=\"640\" y=\"305\" text-anchor=\"middle\" font-size=\"22\" fill=\"#2E7D32\" font-weight=\"normal\">数据标准化</text>\n  <text x=\"640\" y=\"345\" font-size=\"20\" fill=\"#4CAF50\" text-anchor=\"middle\" font-family=\"'Noto Sans Math', 'Noto Sans CJK SC', 'Noto Sans', sans-serif\">x / x₀</text>\n\n  <!-- 箭头2 → -->\n  <line x1=\"800\" y1=\"320\" x2=\"880\" y2=\"320\" stroke=\"#555555\" stroke-width=\"2.5\" marker-end=\"url(#arrowhead)\"/>\n\n  <!-- 步骤3：结果输出（均值 1.0） -->\n  <rect x=\"900\" y=\"260\" width=\"300\" height=\"120\" rx=\"16\" ry=\"16\" fill=\"#FDE8E8\" stroke=\"#E57373\" stroke-width=\"2.5\"/>\n  <text x=\"1050\" y=\"305\" text-anchor=\"middle\" font-size=\"22\" fill=\"#C62828\" font-weight=\"normal\">结果输出</text>\n  <text x=\"1050\" y=\"345\" text-anchor=\"middle\" font-size=\"18\" fill=\"#E57373\">均值 = 1.0</text>\n\n  <!-- ===== 箭头标记定义 ===== -->\n  <defs>\n    <marker id=\"arrowhead\" markerWidth=\"10\" markerHeight=\"7\" refX=\"9\" refY=\"3.5\" orient=\"auto\" markerUnits=\"strokeWidth\">\n      <polygon points=\"0,0 10,3.5 0,7\" fill=\"#555555\"/>\n    </marker>\n  </defs>\n\n  <!-- ===== 顶部流程标签（小字辅助说明，不违反约束）===== -->\n  <text x=\"230\" y=\"240\" text-anchor=\"middle\" font-size=\"14\" fill=\"#999999\">步骤 1</text>\n  <text x=\"640\" y=\"240\" text-anchor=\"middle\" font-size=\"14\" fill=\"#999999\">步骤 2</text>\n  <text x=\"1050\" y=\"240\" text-anchor=\"middle\" font-size=\"14\" fill=\"#999999\">步骤 3</text>\n\n</svg>\n```",
+  "usage": {
+    "prompt_tokens": 889,
+    "completion_tokens": 936,
+    "total_tokens": 1825,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  }
+}

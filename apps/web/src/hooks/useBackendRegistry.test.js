@@ -71,7 +71,7 @@ test('a backend change clears authority immediately and ignores the old response
   assert.equal(result.current.registry.routeContractVersion, 1)
 })
 
-test('background refresh keeps a loaded catalog while pending, then removes authority on failure', async () => {
+test('background refresh failure preserves the displayed catalog but removes submission authority', async () => {
   const refresh = deferred()
   let calls = 0
   const opts = options({ refreshMs: 150, readRegistry: () => ++calls === 1 ? Promise.resolve(ready) : refresh.promise })
@@ -80,6 +80,66 @@ test('background refresh keeps a loaded catalog while pending, then removes auth
   await waitFor(() => assert.equal(calls, 2))
   assert.equal(result.current.registryStatus, 'ready')
   await act(async () => refresh.reject(Error('Network failed')))
-  assert.equal(result.current.registryStatus, 'error')
-  assert.equal(result.current.registry, null)
+  assert.equal(result.current.registryStatus, 'stale')
+  assert.deepEqual(result.current.registry, ready)
+})
+
+test('retry preserves stale models until fresh capability data replaces them', async () => {
+  const pending = deferred()
+  let calls = 0
+  const opts = options({ readRegistry: () => {
+    calls++
+    if (calls === 2) throw Error('Offline')
+    return calls === 3 ? pending.promise : Promise.resolve(ready)
+  } })
+  const { result } = renderHook(() => useBackendRegistry('https://a.example', opts))
+  await waitFor(() => assert.equal(result.current.registryStatus, 'ready'))
+  act(() => result.current.retry())
+  await waitFor(() => assert.equal(result.current.registryStatus, 'stale'))
+  act(() => result.current.retry())
+  assert.deepEqual(result.current.registry, ready)
+  assert.equal(result.current.registryStatus, 'stale')
+  await act(async () => pending.resolve({ ...ready, registryVersion: 'new' }))
+  assert.equal(result.current.registryStatus, 'ready')
+  assert.equal(result.current.registry.registryVersion, 'new')
+})
+
+test('timeouts abort the transport and unmount cancels an outstanding retry', async () => {
+  const signals = []
+  const opts = options({ timeoutMs: 40, readRegistry: (_base, _health, _provider, request) => {
+    signals.push(request?.signal)
+    return new Promise(() => {})
+  } })
+  const { result, unmount } = renderHook(() => useBackendRegistry('https://a.example', opts))
+  await waitFor(() => assert.equal(result.current.registryStatus, 'error'))
+  assert.equal(signals[0]?.aborted, true)
+  act(() => result.current.retry())
+  await waitFor(() => assert.equal(signals.length, 2))
+  unmount()
+  assert.equal(signals[1]?.aborted, true)
+})
+
+test('refresh scheduling waits for a slow request to settle instead of replacing it', async () => {
+  const pending = deferred()
+  let calls = 0
+  const opts = options({ refreshMs: 15, timeoutMs: 500, readRegistry: () => {
+    calls++
+    return pending.promise
+  } })
+  const { result } = renderHook(() => useBackendRegistry('https://a.example', opts))
+  await waitFor(() => assert.equal(calls, 1))
+  await act(async () => { await new Promise(resolve => setTimeout(resolve, 65)) })
+  assert.equal(calls, 1)
+  await act(async () => pending.resolve(ready))
+  assert.equal(result.current.registryStatus, 'ready')
+})
+
+test('a malformed refresh cannot erase a usable list or become ready', async () => {
+  let calls = 0
+  const opts = options({ readRegistry: async () => ++calls === 1 ? ready : { providers: { broken: {} } } })
+  const { result } = renderHook(() => useBackendRegistry('https://a.example', opts))
+  await waitFor(() => assert.equal(result.current.registryStatus, 'ready'))
+  act(() => result.current.retry())
+  await waitFor(() => assert.equal(result.current.registryStatus, 'stale'))
+  assert.deepEqual(result.current.registry, ready)
 })

@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="576" viewBox="0 0 1024 576"><title>Explicit synthetic teaching example</title><rect width="100%" height="100%" fill="white"/><g data-panel="A" data-figure-type="workflow"><text x="25.6" y="44.800000000000004" font-size="17.919999999999998" font-family="Noto Sans">A</text><svg id="panel0_scope" x="25.6" y="51.2" width="477.18399999999997" height="499.19999999999993" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet"><svg width="100%" height="100%" viewBox="0 0 1600 900" id="panel0_sourceRoot"><defs>
+    <marker id="panel0_arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#000000"></polygon>
+    </marker>
+  </defs><rect width="1600" height="900" fill="#FFFFFF"></rect><style>#panel0_scope .label-text{ font-family: 'Noto Sans', sans-serif; font-weight: bold; fill: #FFFFFF; text-anchor: middle; dominant-baseline: central; }#panel0_scope .branch-label{ font-family: 'Noto Sans', sans-serif; font-size: 18px; fill: #000000; text-anchor: middle; paint-order: stroke fill; stroke: #FFFFFF; stroke-width: 4px; }
+  </style><g transform="translate(800, 30)">
+    <path d="M -100,-30 L 100,-30 A 30,30 0 0 1 100,30 L -100,30 A 30,30 0 0 1 -100,-30 Z" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"></path>
+    <text x="0" y="0" class="label-text" font-size="24">Start</text>
+  </g><line x1="800" y1="60" x2="800" y2="120" stroke="#000000" stroke-width="2" marker-end="url(#panel0_arrowhead)"></line><g transform="translate(800, 180)">
+    <rect x="-150" y="-40" width="300" height="80" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"></rect>
+    <text x="0" y="0" class="label-text" font-size="24">Receive sample</text>
+  </g><line x1="800" y1="220" x2="800" y2="320" stroke="#000000" stroke-width="2" marker-end="url(#panel0_arrowhead)"></line><g transform="translate(800, 380)">
+    <polygon points="0,-60 120,0 0,60 -120,0" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"></polygon>
+    <text x="0" y="0" class="label-text" font-size="22">Quality check</text>
+  </g><line x1="800" y1="440" x2="800" y2="500" stroke="#000000" stroke-width="2" marker-end="url(#panel0_arrowhead)"></line><text x="815" y="475" class="branch-label">Yes</text><polyline points="920,380 1100,380 1100,500" fill="none" stroke="#000000" stroke-width="2" marker-end="url(#panel0_arrowhead)"></polyline><text x="1010" y="365" class="branch-label">No</text><g transform="translate(800, 560)">
+    <rect x="-150" y="-40" width="300" height="80" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"></rect>
+    <text x="0" y="0" class="label-text" font-size="24">Normalize</text>
+  </g><line x1="800" y1="600" x2="800" y2="660" stroke="#000000" stroke-width="2" marker-end="url(#panel0_arrowhead)"></line><g transform="translate(800, 720)">
+    <rect x="-150" y="-40" width="300" height="80" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"></rect>
+    <text x="0" y="0" class="label-text" font-size="24">Output</text>
+  </g><line x1="800" y1="760" x2="800" y2="800" stroke="#000000" stroke-width="2" marker-end="url(#panel0_arrowhead)"></line><g transform="translate(800, 830)">
+    <path d="M -100,-30 L 100,-30 A 30,30 0 0 1 100,30 L -100,30 A 30,30 0 0 1 -100,-30 Z" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"></path>
+    <text x="0" y="0" class="label-text" font-size="24">End</text>
+  </g><g transform="translate(1100, 560)">
+    <rect x="-150" y="-40" width="300" height="80" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"></rect>
+    <text x="0" y="0" class="label-text" font-size="24">Reject sample</text>
+  </g><line x1="1100" y1="600" x2="1100" y2="800" stroke="#000000" stroke-width="2" marker-end="url(#panel0_arrowhead)"></line><g transform="translate(1100, 830)">
+    <path d="M -100,-30 L 100,-30 A 30,30 0 0 1 100,30 L -100,30 A 30,30 0 0 1 -100,-30 Z" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"></path>
+    <text x="0" y="0" class="label-text" font-size="24">End</text>
+  </g></svg></svg></g><g data-panel="B" data-figure-type="bar"><text x="521.216" y="44.800000000000004" font-size="17.919999999999998" font-family="Noto Sans">B</text><svg id="panel1_scope" x="521.216" y="51.2" width="477.18399999999997" height="499.19999999999993" viewBox="0 0 648 364.5" preserveAspectRatio="xMidYMid meet"><svg version="1.1" width="100%" height="100%" viewBox="0 0 648 364.5" id="panel1_sourceRoot"><defs>
+  <style type="text/css">#panel1_scope *{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs><g id="panel1_figure_1">
+  <g id="panel1_patch_1">
+   <path d="M 0 364.5  L 648 364.5  L 648 0  L 0 0  z " style="fill: #ffffff"></path>
+  </g>
+  <g id="panel1_axes_1">
+   <g id="panel1_patch_2">
+    <path d="M 52.48024 326.49976  L 644.99976 326.49976  L 644.99976 3.00024  L 52.48024 3.00024  z " style="fill: #ffffff"></path>
+   </g>
+   <g id="panel1_patch_3">
+    <path d="M 52.48024 17.704764  L 278.201962 17.704764  L 278.201962 101.730613  L 52.48024 101.730613  z " clip-path="url(#panel1_p1fdd412e67)" style="fill: #487968"></path>
+   </g>
+   <g id="panel1_patch_4">
+    <path d="M 52.48024 122.737075  L 616.784545 122.737075  L 616.784545 206.762925  L 52.48024 206.762925  z " clip-path="url(#panel1_p1fdd412e67)" style="fill: #487968"></path>
+   </g>
+   <g id="panel1_patch_5">
+    <path d="M 52.48024 227.769387  L 391.062823 227.769387  L 391.062823 311.795236  L 52.48024 311.795236  z " clip-path="url(#panel1_p1fdd412e67)" style="fill: #487968"></path>
+   </g>
+   <g id="panel1_matplotlib.axis_1">
+    <g id="panel1_xtick_1">
+     <g id="panel1_line2d_1">
+      <defs>
+       <path id="panel1_m783222674b" d="M 0 0  L 0 3.5  " style="stroke: #000000; stroke-width: 0.8"></path>
+      </defs>
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="52.48024" y="326.49976" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_1">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="52.48024" y="344.05976" transform="rotate(-0 52.48024 344.05976)">0</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_2">
+     <g id="panel1_line2d_2">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="165.341101" y="326.49976" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_2">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="165.341101" y="344.05976" transform="rotate(-0 165.341101 344.05976)">1</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_3">
+     <g id="panel1_line2d_3">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="278.201962" y="326.49976" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_3">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="278.201962" y="344.05976" transform="rotate(-0 278.201962 344.05976)">2</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_4">
+     <g id="panel1_line2d_4">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="391.062823" y="326.49976" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_4">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="391.062823" y="344.05976" transform="rotate(-0 391.062823 344.05976)">3</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_5">
+     <g id="panel1_line2d_5">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="503.923684" y="326.49976" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_5">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="503.923684" y="344.05976" transform="rotate(-0 503.923684 344.05976)">4</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_6">
+     <g id="panel1_line2d_6">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="616.784545" y="326.49976" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_6">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="616.784545" y="344.05976" transform="rotate(-0 616.784545 344.05976)">5</text>
+     </g>
+    </g>
+    <g id="panel1_text_7">
+     <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="348.74" y="360.05976" transform="rotate(-0 348.74 360.05976)">dimensionless</text>
+    </g>
+   </g>
+   <g id="panel1_matplotlib.axis_2">
+    <g id="panel1_ytick_1">
+     <g id="panel1_line2d_7">
+      <defs>
+       <path id="panel1_mfd9ef9222c" d="M 0 0  L -3.5 0  " style="stroke: #000000; stroke-width: 0.8"></path>
+      </defs>
+      <g>
+       <use xlink:href="#panel1_mfd9ef9222c" x="52.48024" y="59.717688" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_8">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="45.48024" y="64.997688" transform="rotate(-0 45.48024 64.997688)">Alpha</text>
+     </g>
+    </g>
+    <g id="panel1_ytick_2">
+     <g id="panel1_line2d_8">
+      <g>
+       <use xlink:href="#panel1_mfd9ef9222c" x="52.48024" y="164.75" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_9">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="45.48024" y="170.03" transform="rotate(-0 45.48024 170.03)">Beta</text>
+     </g>
+    </g>
+    <g id="panel1_ytick_3">
+     <g id="panel1_line2d_9">
+      <g>
+       <use xlink:href="#panel1_mfd9ef9222c" x="52.48024" y="269.782312" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_10">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="45.48024" y="275.062312" transform="rotate(-0 45.48024 275.062312)">Gamma</text>
+     </g>
+    </g>
+   </g>
+   <g id="panel1_patch_6">
+    <path d="M 52.48024 326.49976  L 52.48024 3.00024  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path>
+   </g>
+   <g id="panel1_patch_7">
+    <path d="M 52.48024 326.49976  L 644.99976 326.49976  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path>
+   </g>
+  </g>
+ </g><defs>
+  <clipPath id="panel1_p1fdd412e67">
+   <rect x="52.48024" y="3.00024" width="592.51952" height="323.49952"></rect>
+  </clipPath>
+ </defs></svg></svg></g><style>text,tspan{font-family:Noto Sans !important;}</style></svg>

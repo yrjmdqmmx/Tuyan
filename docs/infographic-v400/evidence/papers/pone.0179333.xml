@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0179333</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-16-51201</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Chemical compounds</subject><subj-group><subject>Phenols</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Chemical compounds</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Ethers</subject><subj-group><subject>Epoxides</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Organic chemistry</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Ethers</subject><subj-group><subject>Epoxides</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Chemical compounds</subject><subj-group><subject>Acids</subject><subj-group><subject>Ketones</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Physical chemistry</subject><subj-group><subject>Reaction dynamics</subject><subj-group><subject>Transition state</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Toxicology</subject><subj-group><subject>Toxicity</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Pathology and laboratory medicine</subject><subj-group><subject>Toxicology</subject><subj-group><subject>Toxicity</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Chemical compounds</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Porphyrins</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Organic chemistry</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Porphyrins</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Oncology</subject><subj-group><subject>Cancer treatment</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Physics</subject><subj-group><subject>Nuclear physics</subject><subj-group><subject>Nucleons</subject><subj-group><subject>Protons</subject></subj-group></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Computational explanation for bioactivation mechanism of targeted anticancer agents mediated by cytochrome P450s: A case of Erlotinib</article-title>
+<alt-title alt-title-type="running-head">Bioactivation mechanism for targeted anticancer agents</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-4194-6690</contrib-id>
+<name name-style="western">
+<surname>Ai</surname>
+<given-names>Chun-Zhi</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Liu</surname>
+<given-names>Yong</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Li</surname>
+<given-names>Wei</given-names>
+</name>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Chen</surname>
+<given-names>De-Meng</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Zhu</surname>
+<given-names>Xin-Xing</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Yan</surname>
+<given-names>Ya-Wei</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Chen</surname>
+<given-names>Du-Chu</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Jiang</surname>
+<given-names>Yi-Zhou</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Institute for Advanced Study, Shenzhen University, Shenzhen, Guangdong, China</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Key Laboratory of Optoelectronic Devices and Systems of Ministry of Education and Guangdong Province, College of Optoelectronic Engineering, Shenzhen University, Shenzhen, Guangdong, China</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>School of Life Science and Medicine, Dalian University of Technology, Panjin, Liaoning, China</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>College of Medicine, Yangzhou University, Yangzhou, Jiangsu, China</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>School of Dentistry, University of California, Los Angeles, California, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Ahmad</surname>
+<given-names>Aamir</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University of South Alabama Mitchell Cancer Institute, UNITED STATES</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con">
+<p><list list-type="simple"><list-item>
+<p><bold>Conceptualization:</bold> C-ZA.</p></list-item> <list-item>
+<p><bold>Data curation:</bold> C-ZA.</p></list-item> <list-item>
+<p><bold>Formal analysis:</bold> C-ZA.</p></list-item> <list-item>
+<p><bold>Funding acquisition:</bold> C-ZA Y-ZJ.</p></list-item> <list-item>
+<p><bold>Investigation:</bold> C-ZA.</p></list-item> <list-item>
+<p><bold>Methodology:</bold> C-ZA.</p></list-item> <list-item>
+<p><bold>Resources:</bold> Y-ZJ.</p></list-item> <list-item>
+<p><bold>Validation:</bold> C-ZA YL.</p></list-item> <list-item>
+<p><bold>Writing – original draft:</bold> C-ZA YL WL D-MC Y-ZJ X-XZ Y-WY D-CC.</p></list-item> <list-item>
+<p><bold>Writing – review &amp; editing:</bold> C-ZA YL D-MC Y-ZJ.</p></list-item></list>
+</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">jiangyz@szu.edu.cn</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>19</day>
+<month>6</month>
+<year>2017</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2017</year>
+</pub-date>
+<volume>12</volume>
+<issue>6</issue>
+<elocation-id>e0179333</elocation-id>
+<history>
+<date date-type="received">
+<day>27</day>
+<month>12</month>
+<year>2016</year>
+</date>
+<date date-type="accepted">
+<day>26</day>
+<month>5</month>
+<year>2017</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2017</copyright-year>
+<copyright-holder>Ai et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0179333"/>
+<abstract>
+<p>EGFR inhibitors, even with therapeutics superiorities in anticancer, can cause idiosyncratic pulmonary and hepatic toxicities that are associated with the reactive electrophile bioactivated by Cytochrome P450s (P450s). Until now, neither has the electrophilic intermediate been caught experimentally, nor has the subtle mechanism been declared. Herein, the underlying mechanism of bioactivation mediated by P450s was explored by DFT calculations for a case of EGFR inhibitor, Erlotinib. Based on the calculation and analysis, we suggest that with other metabolites, reactive electrophiles of Erlotinib: epoxide and quinine-imine, can be generated by several steps along the oxidative reaction pathway. The generation of epoxide needs two steps: (1) the addition of Erlotinib to Compound I (Cpd I) and (2) the rearrangement of protons. Whereas, quinine-imine needs a further oxidation step (3) via which quinone is generated and ultimately turns into quinine-imine. Although both reactive electrophiles can be produced for either face-on or side-on pose of Erlotinib, the analysis of energy barriers indicates that the side-on path is preferred in solvent environment. In the rate-determining step, e.g. the addition of Erlotinib to the porphyrin, the reaction barrier for side-on conformation is decreased in aqueous and protein environment compared with gas phase, whereas, the barrier for face-on pose is increased in solvent environment. The simulated mechanism is in good agreement with the speculation in previous experiment. The understanding of the subtle mechanism of bioactivation of Erlotinib will provide theoretical support for toxicological mechanism of EGFR inhibitors.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution>National Nature Science Foundation of China</institution>
+</funding-source>
+<award-id>81173124</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-4194-6690</contrib-id>
+<name name-style="western">
+<surname>Ai</surname>
+<given-names>Chun-Zhi</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution>National Nature Science Foundation of China</institution>
+</funding-source>
+<award-id>81500354</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Jiang</surname>
+<given-names>Yi-Zhou</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award003">
+<funding-source>
+<institution>Shenzhen Science Foundation</institution>
+</funding-source>
+<award-id>JCYJ20160308104109234</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Jiang</surname>
+<given-names>Yi-Zhou</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>The work was funded by the National Nature Science Foundation of China (grant no.81173124 to C.-Z.A, <ext-link ext-link-type="uri" xlink:href="https://isisn.nsfc.gov.cn/egrantindex/funcindex/prjsearch-list&amp;81500354" xlink:type="simple">https://isisn.nsfc.gov.cn/egrantindex/funcindex/prjsearch-list&amp;81500354</ext-link> to Y.-Z.J, <ext-link ext-link-type="uri" xlink:href="https://isisn.nsfc.gov.cn/egrantindex/funcindex/prjsearch-list" xlink:type="simple">https://isisn.nsfc.gov.cn/egrantindex/funcindex/prjsearch-list</ext-link>) and Shenzhen Science Foundation (grant no. JCYJ20160308104109234 to YZ Jiang).</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="6"/>
+<table-count count="2"/>
+<page-count count="14"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information file.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Recently, the cancer therapy has shifted from the predominant use of cytotoxic agents and anti-hormonal approaches to molecularly targeted-based design of anticancer agents [<xref ref-type="bibr" rid="pone.0179333.ref001">1</xref>]. The inhibitors of epidermal growth factor receptor (EGFR) tyrosine kinase, have been approved for the treatment of non–small-cell lung cancer (NSCLC) and other solid tumours to inhibit proliferation of cancer cells [<xref ref-type="bibr" rid="pone.0179333.ref002">2</xref>, <xref ref-type="bibr" rid="pone.0179333.ref003">3</xref>].To date, 14 small molecule kinase inhibitors have been approved for targeted cancer therapy by the Food and Drug Administration. These target-therapy drugs have lower degrees of toxicity, more—selectivity and better tolerance than traditional cytotoxic therapies [<xref ref-type="bibr" rid="pone.0179333.ref004">4</xref>, <xref ref-type="bibr" rid="pone.0179333.ref005">5</xref>]. For example, Gefitinib, Erlotinib, and Lapatinib have been designed to target the ATP binding pocket of the kinase domain to treat EGFR/HER2-dependent tumours. Although having therapeutics superiorities, EGFR/HER2 inhibitors have been found of life threatening adverse effects in clinic treatment, such as drug-induced hepatitis [<xref ref-type="bibr" rid="pone.0179333.ref006">6</xref>, <xref ref-type="bibr" rid="pone.0179333.ref007">7</xref>], interstitial lung disease [<xref ref-type="bibr" rid="pone.0179333.ref008">8</xref>–<xref ref-type="bibr" rid="pone.0179333.ref010">10</xref>], and severe skin disorders [<xref ref-type="bibr" rid="pone.0179333.ref011">11</xref>]. The work of Li X, et al suggested that the reactive electrophile of the EGFR inhibitor bioactivated by Cytochrome P450 (P450) might have association with the generation of pulmonary and hepatic toxicities [<xref ref-type="bibr" rid="pone.0179333.ref012">12</xref>, <xref ref-type="bibr" rid="pone.0179333.ref013">13</xref>].</p>
+<p>P450- mediated metabolism is regarded as the most important detoxification pathway. It has become increasingly clear that some xenobiotics can be biotransformed into reactive intermediates and/or metabolites [<xref ref-type="bibr" rid="pone.0179333.ref014">14</xref>–<xref ref-type="bibr" rid="pone.0179333.ref016">16</xref>]. The biotransformation of electrophilic and/or free radical metabolites in bioactivation events is proposed to cause hepatotoxity or other toxicity by covalently binding with essential cellular macromolecules [<xref ref-type="bibr" rid="pone.0179333.ref017">17</xref>]. Experimentally, the fairly successful approach to examine bioactivation is the trapping electrophilic reactive intermediates <italic>in situ</italic>, that is, to identify the compound of interest with liver microsomes or recombinant human P450s in the presence of exogenously added nucleophiles such as N-acetylcysteine glutathione (GSH) and its derivatives [<xref ref-type="bibr" rid="pone.0179333.ref018">18</xref>, <xref ref-type="bibr" rid="pone.0179333.ref019">19</xref>].The examination of bioactivation potential of promising drug candidates using animal or human reagents may offer some value in toxicity predictions [<xref ref-type="bibr" rid="pone.0179333.ref017">17</xref>]. Generally, from the identification of GSH-conjugate, possible mechanism can be speculated to demonstrate the biotransformation of the reactive electrophilic intermediate. Until now, neither has electrophilic intermediate been caught with experimental techniques, nor has mechanism been proposed on the basis of elaborate theoretical calculation.</p>
+<p>As members of monooxygenase class, P450s accomplish the incorporation of an oxygen atom into organic substrate through the complicated catalytic cycle [<xref ref-type="bibr" rid="pone.0179333.ref020">20</xref>]. Series of electron transfer process are triggered after the substrate binds to the heme, leading to two reduction and two protonation steps as well as the formation of a high valent π-cation radical oxo-ferryl species named Compound I (Cpd I) [<xref ref-type="bibr" rid="pone.0179333.ref021">21</xref>–<xref ref-type="bibr" rid="pone.0179333.ref024">24</xref>]. As the active P450 species in the cycle, Cpd I is believed to be the ultimate oxidant that is responsible for the single most important reaction of oxygen incorporation, for example, C-H hydroxylation, C = C epoxidation and sulfoxidation. Cpd I is a tri-radicaloid species with three singly occupied molecular orbitals consisting of two π* anti-bonding Fe-O orbitals and a third that is a combination of a porphyrin π orbital with idealized symmetry and a p orbital on sulfur [<xref ref-type="bibr" rid="pone.0179333.ref025">25</xref>]. The mechanism of aliphatic and benzyl C-H hydroxylation, C = C epoxidation and sulfoxidation catalyzed by Cpd I has been investigated intensively with density functional theory (DFT). For the aromatic oxidation, experiments and theoretical calculations indicated that, different from hydrogen abstraction mechanism, it originates from an initial attack of Cpd I on the π system of the benzene that leads to the production of σ complexes. Proton shuttle mechanism will occurred in the subsequent formation of epoxidation and ketone [<xref ref-type="bibr" rid="pone.0179333.ref026">26</xref>]. In spites of the extensive theoretical investigation on the metabolic mechanism of some general types of oxidation reactions, to date, few investigations have been performed to explore the bioactivation mechanism of EGFR inhibitors.</p>
+<p>For one case of the targeted therapeutics, Erlotinib, a second line anti–NSCLC agent, has been found that bioactivation occurs when Erlotinib interacts with cytochrome P450s, and the reactive intermediate can covalently conjugate to the cystein group of the peptide-mimetic GSH [<xref ref-type="bibr" rid="pone.0179333.ref012">12</xref>], which is potentially associated with the pulmonary and hepatic toxicities. The P450 dependent Erlotinib-GSH adducts are proposed to be formed via reactive epoxide and electrophonic quinine-imine intermediates [<xref ref-type="bibr" rid="pone.0179333.ref012">12</xref>]. The reactive intermediate is too active to be caught by experiment approach, and it is of great significance to employ the theoretical method to mimic the bioactivation process catalyzed by P450s. In this context, we focused on the catalytic mechanism of Erlotinib mediated by oxo-ferryl species, Cpd I, ignoring the influence of amino acids. DFT computations were performed to simulate the catalytic process that ultimately produced the bioactive intermediates. The computational simulation of the subtle mechanism of bioactivation will shed light to the exploration of toxicology and provide a helpful tool to avoid -drug adverse effects.</p>
+</sec>
+<sec id="sec002">
+<title>Experimental</title>
+<p>A six-coordinate complex (Fe<sup>4+</sup>O<sup>2-</sup>(C<sub>20</sub>N<sub>4</sub>H<sub>12</sub>)<sup>-</sup>(SH)<sup>-</sup>) was modelled as a Cpd I of P450 and Erlotinib was used as substrate. The model of Cpd I has also been used by other researchers [<xref ref-type="bibr" rid="pone.0179333.ref026">26</xref>–<xref ref-type="bibr" rid="pone.0179333.ref029">29</xref>]. It has been reported that the current model can represent the real P450 enzymes quite well when comparing results between pure quantum mechanics and a combination of quantum and molecular mechanical (QM/MM) method that simulates reactions in the protein environment [<xref ref-type="bibr" rid="pone.0179333.ref030">30</xref>].</p>
+<p>All the quantum chemical calculations in terms of the special reaction mechanism—bioactivation mediated by P450s were performed with density functional theory (DFT) using Gaussian 09 program [<xref ref-type="bibr" rid="pone.0179333.ref031">31</xref>]. With the basis set LACVP for iron and 6-31G for the rest, the spin-unrestricted hybrid UB3LYP [<xref ref-type="bibr" rid="pone.0179333.ref032">32</xref>, <xref ref-type="bibr" rid="pone.0179333.ref033">33</xref>] was employed to optimize the transition states and the stable species (reactants, intermediates and products) without symmetry constraints. With the same method, a higher basis set LACV3P+*(Fe)/6-311+G** (rest) was used to perform the single-point energy calculations. These functions and basis sets have been tested and successfully applied in other researchers’ studies [<xref ref-type="bibr" rid="pone.0179333.ref034">34</xref>, <xref ref-type="bibr" rid="pone.0179333.ref035">35</xref>]. The analysis of vibration frequencies can denote the stable interspecies and the transition state, since the former possesses positive frequencies and the latter exhibits only one imaginary frequency.</p>
+<p>To further verify the transition state, the intrinsic reaction coordinate (IRC) was employed to gain the reaction pathway across the transition state that links the reactive and productive species. To assess the polarity effects on the process of reaction, enzymatic and nonenzymatic environments were mimicked using PCM model in nonpolar solvent (chlorobenzene, ε = 5.62) and polar solvent (aqueous, ε = 78.39), respectively.</p>
+<p>Considering that the P450 dependent Erlotinib-GSH adducts were appended upon m-ethyl aniline group of Erlotinib, the original conformations of Erlotinib were designed and optimized with the subgroup of m-Ethylaniline upon Cpd I.</p>
+</sec>
+<sec id="sec003" sec-type="results">
+<title>Results</title>
+<p>The bioactiviation mechanism of Erlotinib was proposed as <xref ref-type="fig" rid="pone.0179333.g001">Fig 1</xref>. We established two main models: Erlotinib situating its m-Ethylaniline group in face-on and side-on poses upon Cpd I, respectively. The two models were optimized and subsequently submitted to search the reaction pathways of bioactivation. The computation result suggested that both of the face-on and side-on conformations could follow the catalytic pathways to generate the reactive intermediates, e.g. the epoxide and quinone-imine. The attacking of the enzyme or GSH by the intermediate might cause the idiosyncratic toxicities.</p>
+<fig id="pone.0179333.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0179333.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>The proposed mechanism for the bioactivation of Erlotinib by P450s.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0179333.g001" xlink:type="simple"/>
+</fig>
+<sec id="sec004">
+<title>Addition of Erlotinib to Cpd I</title>
+<p>As shown in <xref ref-type="fig" rid="pone.0179333.g002">Fig 2</xref>, Erlotinib was found to situate itself upon Cpd I with face-on and side-on conformation. Based on the initial conformations, the investigation of the subsequent reaction pathways was performed with DFT calculations.</p>
+<fig id="pone.0179333.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0179333.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Geometries of the transition state and intermediate for the addition of Erlotinib to Cpd I.</title>
+<p><sub>S</sub> and <sub>F</sub> denote side-on and face-on poses, respectively.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0179333.g002" xlink:type="simple"/>
+</fig>
+<sec id="sec005">
+<title>Side on</title>
+<p>Starting from the initial poses, we optimized the side-on and face-on transition states, which led to the generation of adducts to Cpd I. The pathways along the two kinds of transition states were further verified by IRC method. In side-on path, Erlotinib was added to Cpd I with the para aromatic carbon of aniline group upstandingly towards the active iron-oxo species while with the quinazoline group parallel to the plane, as the geometry of transition state (<sub>S</sub>TS[1]) shown in <xref ref-type="fig" rid="pone.0179333.g002">Fig 2</xref>. All of geometries in the context can be referred to the Cartesian coordinates in <xref ref-type="supplementary-material" rid="pone.0179333.s001">S1 File</xref>. The reactive species Fe = O was appended to the carbon atom of aniline ring to form tetrahedral intermediate (sIM[1]). In this way the length of C…O in sIM[1] turned to be 1.465 Å from 1.953 Å in <sub>S</sub>TS[1], and the distance of Fe = O turned to 1.933 Å from 1.721 Å. It was a slightly endothermic path in gas phase that 16.1 kcal.mol<sup>-1</sup> energy was needed to overcome the saddle point and 15.4 kcal.mol<sup>-1</sup> was released in the formation of σ adduct (<sub>S</sub>IM[1]). Solvent medium was favourable to the addition process because the reaction became exothermic both in aqueous and protein environment, with the energy barrier lowered and release energy increased, as shown in <xref ref-type="table" rid="pone.0179333.t001">Table 1</xref>. When it turned to the path of quartet multiplicity, solvation medium shows pimping effect on the energy barrier. Whether in gas or solvation phase, the quartet TS lied a higher energy point than the doublet TS. Anyway, the whole path for quartet state is an exothermic process. The addition process is involved with electrons transferring, from the substrate to the singly occupied orbital of Cpd I, the pophyrin a<sub>2u</sub> and the π<sub>xz</sub> orbital. Analysis of the spin densities (ρ) and atomic charge densities (Q) reveals that the transition state of Erlotinib demonstrates a hybrid cationic and radical character. The Q of -0.44 and the ρ of -0.31 in <sub>S</sub>TS[1] suggest there is an excess of β spin density in Erlotinib during the process of electrons transferring to Cpd I, as shown in <xref ref-type="table" rid="pone.0179333.t002">Table 2</xref>. It can be explained as a hybrid anion and radical character that the π electron may first be excited to singly occupied π*orbital, which may be easy to accept the electron transfer from porphyrin a<sub>2u</sub> and the π<sub>xz</sub> orbital, subsequently, the electrons are transferred back to the porphyrin orbital of Cpd I.</p>
+<table-wrap id="pone.0179333.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0179333.t001</object-id>
+<label>Table 1</label> <caption><title>Reaction barriers in kcal.mol<sup>-1</sup> for different reaction section in the bioactivation process of Erlotinib catalyzed by Cpd I.</title> <p><sub>gas</sub>,<sub>aqu</sub> and <sub>pro</sub> represent the gas, aqueous and protein environment, respectively.</p></caption>
+<alternatives>
+<graphic id="pone.0179333.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0179333.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify">Reaction</th>
+<th align="left">ΔE <sub>gas</sub></th>
+<th align="left">ΔE <sub>aqu</sub></th>
+<th align="left">ΔE <sub>pro</sub></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="justify">addition</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="justify">Side on</td>
+<td align="char" char=".">-16.1</td>
+<td align="char" char=".">-13.8</td>
+<td align="char" char=".">-14.6</td>
+</tr>
+<tr>
+<td align="justify">Face on</td>
+<td align="char" char=".">-15.4</td>
+<td align="char" char=".">-17.7</td>
+<td align="char" char=".">-17.3</td>
+</tr>
+<tr>
+<td align="left" colspan="2">epoxidation</td>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="justify">Side on</td>
+<td align="char" char=".">-0.8</td>
+<td align="char" char=".">-7.6</td>
+<td align="char" char=".">-5.3</td>
+</tr>
+<tr>
+<td align="justify">Face on</td>
+<td align="char" char=".">-5.8</td>
+<td align="char" char=".">-12.8</td>
+<td align="char" char=".">-10.4</td>
+</tr>
+<tr>
+<td align="left" colspan="2">NIH-ketone</td>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="justify">Side on</td>
+<td align="char" char=".">-9.3</td>
+<td align="char" char=".">-12.4</td>
+<td align="char" char=".">-11.7</td>
+</tr>
+<tr>
+<td align="justify">Face on</td>
+<td align="char" char=".">-1.9</td>
+<td align="char" char=".">-3.8</td>
+<td align="char" char=".">-2.7</td>
+</tr>
+<tr>
+<td align="left" colspan="2">NIH-phenol</td>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="justify">Side on</td>
+<td align="char" char=".">2.4</td>
+<td align="char" char=".">1.1</td>
+<td align="char" char=".">1.4</td>
+</tr>
+<tr>
+<td align="justify">Face on</td>
+<td align="char" char=".">-19.0</td>
+<td align="char" char=".">-26.0</td>
+<td align="char" char=".">-23.5</td>
+</tr>
+<tr>
+<td align="left" colspan="3">Ketone from phenol</td>
+<td align="left"/>
+</tr>
+<tr>
+<td align="justify">--</td>
+<td align="char" char=".">-1.0</td>
+<td align="char" char=".">-0.4</td>
+<td align="char" char=".">0.0</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<table-wrap id="pone.0179333.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0179333.t002</object-id>
+<label>Table 2</label> <caption><title>The group spin density (ρ) and charge (Q) distributed on the Erlotinib moiety in the addition to Cpd I, where <sub>d</sub> and <sub>q</sub> represent the doublet and quartet state, respectively.</title></caption>
+<alternatives>
+<graphic id="pone.0179333.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0179333.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify"/>
+<th align="justify"><sub>S</sub>IM[1]</th>
+<th align="justify"><sub>S</sub>TS[1]</th>
+<th align="justify"><sub>S</sub>IM[2]</th>
+<th align="justify"><sub>F</sub>IM[1]</th>
+<th align="justify"><sub>F</sub>TS[1]</th>
+<th align="justify"><sub>F</sub>IM[2]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="justify">ρ<sub>d</sub></td>
+<td align="char" char=".">0.00</td>
+<td align="char" char=".">-0.31</td>
+<td align="char" char=".">0.07</td>
+<td align="char" char=".">0.00</td>
+<td align="char" char=".">-0.36</td>
+<td align="char" char=".">0.03</td>
+</tr>
+<tr>
+<td align="justify">Q<sub>d</sub></td>
+<td align="char" char=".">-0.03</td>
+<td align="char" char=".">-0.44</td>
+<td align="char" char=".">0.36</td>
+<td align="char" char=".">-0.03</td>
+<td align="char" char=".">-0.24</td>
+<td align="char" char=".">0.55</td>
+</tr>
+<tr>
+<td align="justify">ρ<sub>q</sub></td>
+<td align="char" char=".">0.00</td>
+<td align="char" char=".">0.51</td>
+<td align="char" char=".">0.87</td>
+<td align="char" char=".">0.00</td>
+<td align="char" char=".">0.53</td>
+<td align="char" char=".">0.90</td>
+</tr>
+<tr>
+<td align="justify">Q<sub>q</sub></td>
+<td align="char" char=".">-0.02</td>
+<td align="char" char=".">-0.14</td>
+<td align="char" char=".">0.42</td>
+<td align="char" char=".">-0.02</td>
+<td align="char" char=".">-0.23</td>
+<td align="char" char=".">0.55</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+</sec>
+<sec id="sec006">
+<title>Face on</title>
+<p>Alternatively for the face-on adduct, as indicated in <xref ref-type="fig" rid="pone.0179333.g002">Fig 2</xref>, the aniline group of Erlotinib parallelly added the para carbon to iron-oxo species, with the quinazoline substructure vertical to the edge of porphyrin plane. In <sub>F</sub>TS[1]. We found that the para carbon of aniline group was added to the Fe = O species in a distance of 1.865 Å and the bond of Fe = O was 1.734 Å, which led to the formation of tetrahedral intermediate (<sub>F</sub>IM[1]) with the C-O length of 1.425 Å and F = O length of 1.924 Å. Different from the side-on path, it was an exothermic path for the face-on addition that needed 15.4 kcal.mol<sup>-1</sup> to overcome the barrier and 17.5 kcal.mol<sup>-1</sup> was released subsequently. Also distinct from the side-on path, the addition of Cpd I in quartet spin state turned to be endothermic both in gas phase and solvent phases. The spin and charge densities demonstrated similar changes with those of the side-on one. Erlotinib exhibited negative values of ρ (-0.36) and Q (-0.24) in the transition state, while showed positive charge (0.55) in the upon Erlotinib in the tetrahedral intermediate and the spin density turned to be near zero (0.03), see <xref ref-type="table" rid="pone.0179333.t002">Table 2</xref>.</p>
+</sec>
+</sec>
+<sec id="sec007">
+<title>Rearrangement pathways to form epoxide and phenoxide</title>
+<p>The rearrangement of the tetrahedral adducts was further explored for the formation of the complex of porphyrin ring with Erlotinib epoxide, or phenol and ketone. Only the doublet pathway was considered in the rearrangement. Both the epoxidation and proton transferring processes for side-on and face-on adduct were simulated.</p>
+<p>The epoxidation is associated with the rearrangement of the appended O atom. For the instance of side-on adduct, as suggested in <xref ref-type="fig" rid="pone.0179333.g003">Fig 3</xref>, the rearrangement process went from the initial C-C-O angle of 104.8° in the adduct to 86.2° in the transition state (<sub>S</sub>TS[2]), and finally the Erlotinib epoxide (<sub>S</sub>IM[2]) was formed with the angle of 62.2°. Correspondingly, the distance of <sub>α</sub>C-O changed from 2.342 Å across 2.021 Å to 1.554 Å. In such a process, a very small energy of 0.8 kcal.mol<sup>-1</sup> was used for the arrangement of side-on hybrid cation like adduct to the epoxide and 8.6 kcal.mol<sup>-1</sup> was let off, which can be found in <xref ref-type="table" rid="pone.0179333.t001">Table 1</xref>. Distinguished from the addition process, the solvation increases the barrier of epoxidation. Barriers of 7.6 and 5.3 kcal.mol<sup>-1</sup> were computed for the water and protein environments, respectively, much higher than the gas phase. Whereas, the released energies were lowered, which drove the formation of epoxide become an endothermic process. The barrier of the epoxidation from face-on adduct was a bit higher than that from the side-on adduct, which took 5.7 kcal.mol<sup>-1</sup> in gas phase, while in aqueous and protein the hindrance was increased to 12.8 and 10.4 kcal.mol<sup>-1</sup> to form the epoxide.</p>
+<fig id="pone.0179333.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0179333.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Geometries of the transition state, intermediate and product for the rearrangement of Erlotinib-Cpd I adduct to produce epoxide, ketone and phenol.</title>
+<p><sub>S</sub> and <sub>F</sub> denote the side-on and face-on poses, respectively.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0179333.g003" xlink:type="simple"/>
+</fig>
+<p>The NIH rearrangement was further considered to visualize the process of migration of proton to the adjacent oxygen or carbon atom. When searching the NIH migrating pathway from the side-on adduct, the proton shuttle mechanism was observed that the ipso-hydrogen was migrated to one of the nitrogen of the porphyrin to form the N-protonated complex first and then transferred to form phenol and ketone, respectively. The energy was lowered significantly when the N-protonated complex (<sub>S</sub>IM[3]) was formed which released 29.3 kcal.mol<sup>-1</sup> in the ketone pathway and 36.6 kcal.mol<sup>-1</sup> (<sub>S</sub>IM[5]) in the phenol pathway, respectively. Starting from the N-protonated complex, the way to generate ketone product (<sub>S</sub>IM[4]) needed to overcome a barrier of 9.3 kcal.mol<sup>-1</sup> via <sub>S</sub>TS[3], whereas a barrierless way occurred to produce the metabolic product of phenol (<sub>S</sub>P[1]) via <sub>S</sub>TS[4]. In the aqueous and protein environment, the barrier turned higher to form the ketone which needed 12.4 and 11.7 kcal.mol<sup>-1</sup> correspondingly, whereas, the pathway to phenol was still barrierless both in aqueous and in protein environments, see <xref ref-type="table" rid="pone.0179333.t001">Table 1</xref> and <xref ref-type="fig" rid="pone.0179333.g004">Fig 4</xref>. The analysis of barrier energy suggests phenol is much easier to be produced than ketone.</p>
+<fig id="pone.0179333.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0179333.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Energy profile (in kcal.mol<sup>-1</sup>) of side-on path for Erlotinib bioactivation by the Cpd I model of CYP3A4 and 1A2 in the gas and solvent phases.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0179333.g004" xlink:type="simple"/>
+</fig>
+<p>We also considered the possibility to form phenoxide and ketone by rearranging the proton (NIH shift) for the face-on adduct. The transition state was obtained but the shuttle mechanism was not observed. Without the nitrogen in the pophyrin to accept the proton, the ipso-hydrogen migrated directly to the adjacent carbon or oxygen atom, referring the geometry of <sub>F</sub>TS[3] and <sub>F</sub>TS[4]. For the instance of NIH shift to phenoxide, initially, the angle of H-C-O in the face-on adduct was 94.0°, and in the transition state (<sub>F</sub>TS[4]) turned to be 62.6°, simultaneously, the distance of H-O was shortened from 2.010 Å to 1.409 Å. Finally, a phenol metabolic product of Erlotinib (<sub>F</sub>P[1]) was generated. Even without the aid of nitrogen in porphyrin, in gas phase only a very small energy of 1.9 kcal.mol<sup>-1</sup> was needed to overcome the barrier to form the ketone (<sub>F</sub>IM[3]) and subsequently 36.9 kcal.mol<sup>-1</sup> was released, whereas, the process of phenyl oxidation illustrated a higher barrier of 19.0 kcal.mol<sup>-1</sup> to form the transition state in gas phase and a 73.3 kcal.mol<sup>-1</sup>would be let off to form the phenol product, as shown in <xref ref-type="table" rid="pone.0179333.t001">Table 1</xref> and <xref ref-type="fig" rid="pone.0179333.g005">Fig 5</xref>. Similar to the epoxidation, the solvation made the barrier of NIH shift higher that took 3.8 and 2.7 kcal.mol<sup>-1</sup> for ketone way in aqueous and protein environments, respectively; and correspondingly 26.0 and 23.5 kcal.mol<sup>-1</sup> for phenol path. As far as the phenol way concerned, distinct from the barrierless shuttle path for the side-on adduct, it needed to overcome a much higher obstacle to reach the product. In addition, comparing with the epoxidation path and ketone path of the face-on itself, the hindrance was also higher, suggesting there was a small possibility for this path to occur. Although we considered the formation of ketone, it should be specified that ketone is not thought to be a reactive intermediate.</p>
+<fig id="pone.0179333.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0179333.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Energy profile (in kcal.mol<sup>-1</sup>) of face-on path for Erlotinib bioactivation by the Cpd I model of CYP3A4 and 1A2 in the gas and solvent phases.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0179333.g005" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec008">
+<title>Oxidation of phenoxide to form quinone</title>
+<p>Whether phenol metabolite of Erlotinib can be further oxidized to quinone was examined to check the route of transferring H atom from hydroxyl towards the active iron-oxo species. With the phenol metabolite adjacent to the porphyrin, we obtained the H-transferring transition state (<sub>H</sub>TS[1]) which resulted in the formation of quinone. In <sub>H</sub>TS[1], the phenyl ring exhibited a side-on conformation bevel to the porphyrin plane with the O-H bond lengthened to 1.183 Å and situated linearly to the = O with a distance of 1.233 Å, as suggested in <xref ref-type="fig" rid="pone.0179333.g006">Fig 6</xref>. In gas phase, this path was involved of a marginal hindrance of 1.0 kcal.mol<sup>-1</sup> and a release of 10.1 kcal.mol<sup>-1</sup> energies. The influence of solvation is small which makes the barrier even lower, as shown in <xref ref-type="table" rid="pone.0179333.t001">Table 1</xref>.The barrierless way of rearranging H atom to generate phenol metabolite made it of great possibility to form the quinone by a further step of oxidizing the metabolite phenol by the active iron-oxo species, ultimately the intermediate quinine-imine.</p>
+<fig id="pone.0179333.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0179333.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Geometries of the transition state and intermediate for the formation of Erlotinib quinone from phenol catalyzed by Cpd I model.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0179333.g006" xlink:type="simple"/>
+</fig>
+</sec>
+</sec>
+<sec id="sec009" sec-type="conclusions">
+<title>Discussion</title>
+<p>Tyrosine kinase inhibitors have emerged as target-based anticancer therapeutics in recent years for the lower toxicity than traditional cytotoxic therapies. Even with the therapeutic advantage, Erlotinib has been found to be associated with idiosyncratic toxicity like interstitial lung disease, liver injury, skin rash, and other life-threatening adverse effects. There has been evidence that the idiosyncratic toxicity may be attributed to the reactive intermediate metabolized by P450s [<xref ref-type="bibr" rid="pone.0179333.ref036">36</xref>] that covalently modifies cellular proteins. In terms of the bioactivation of Gefitinib, a 12-fold increase in GSH adduct formation was detected in human pulmonary microsomes from smokers over nonsmokers, in agreement with P450 1A1 being induced by cigarette smoke. And clinical reports noted an increase in adverse pulmonary events with patients who continued smoking [<xref ref-type="bibr" rid="pone.0179333.ref036">36</xref>]. Although clear mechanism of toxicity has not been established, Erlotinib, another EGFR inhibitor, has been proposed to be in association with the formation of reactive intermediates during the metabolism. However, until now the reactive intermediate has yet been observed in experiment except adducts of nucleophiles like GSH. In this context, a case of EGFR inhibitors, Erlotinib, has been chosen for the investigation of bioactivation mechanism catalyzed by P450s using theoretical method.</p>
+<p>The <italic>in vitro</italic> experiment suggests that the bioactivation of Erlotinib was mainly mediated by 3A4 and 1A2 [<xref ref-type="bibr" rid="pone.0179333.ref013">13</xref>]. Although the majority of P450 isoforms show different selectivity on substrate or inhibitor [<xref ref-type="bibr" rid="pone.0179333.ref037">37</xref>–<xref ref-type="bibr" rid="pone.0179333.ref039">39</xref>], 3A4 is well known for its broad substrate specificity. This can be attributed to its vast and flexible active pocket [<xref ref-type="bibr" rid="pone.0179333.ref029">29</xref>, <xref ref-type="bibr" rid="pone.0179333.ref040">40</xref>]. It provides the basis that we only considered the catalytic process mediated by Cpd I while ignored the influence of amino acids. The poses were in agreement with that of benzene in the mechanism of oxidation mediated by Cpd I, which was proposed by Shaik and Harvey groups, respectively [<xref ref-type="bibr" rid="pone.0179333.ref026">26</xref>, <xref ref-type="bibr" rid="pone.0179333.ref041">41</xref>]. That’s the reason we addressed the side on and face on as the initial conformations to search the following bioactivation pathway.</p>
+<p>And the catalytic process will control the intrinsic reactivity of the substrate with respect to the highly reactive oxygenating species, P450 Compound I (Cpd I) [<xref ref-type="bibr" rid="pone.0179333.ref042">42</xref>]. The electronic and geometric structures of Cpd I firstly came from theoretical calculations and lately were captured and characterized in experiment [<xref ref-type="bibr" rid="pone.0179333.ref024">24</xref>, <xref ref-type="bibr" rid="pone.0179333.ref025">25</xref>, <xref ref-type="bibr" rid="pone.0179333.ref042">42</xref>]. Therefore, the model of Cpd I has been used to simulate the mechanism of bioactivation. The catalytic reaction mainly occurred on m-Ethylaniline group for it was situated nearest upon the porphyrin plane. The mechanism of benzene hydroxylation catalyzed by P450s has been elucidated previously which is consisted of initial attack on the π system of the benzene to produce σ complexes and the subsequent rearrangement, through which benzene can be converted to phenol, benzene oxide and ketone [<xref ref-type="bibr" rid="pone.0179333.ref026">26</xref>]. Similarly, Erlotinib is also bioactivated into reactive intermediate of epoxide and ketone through the rearrangement of oxygen and proton upon the addition to Cpd I. Overall, the activation of π-attack is attributed to the rate-determining step. Comparing with the investigation of hydroxylation on benzene put forward by Bathelt et al [<xref ref-type="bibr" rid="pone.0179333.ref041">41</xref>], the face on pose of Erlotinib in doublet state needs a relatively lower energy (Erlotinib: 15.4 kcal.mol<sup>-1</sup>; Benzene: 17.9 kcal.mol<sup>-1</sup>) to form the transition state added to Cpd I, and a slightly higher energy (Erlotinib: 16.1 kcal.mol<sup>-1</sup>; Benzene: 15.6 kcal.mol<sup>-1</sup>) is needed for the side on conformation. Perhaps, this can be attributed to the π—π conjugate of Erlotinib which can lower the energy for the addition in face on style. And similar with benzene, the quartet TS lies a higher energy point than the doublet TS.</p>
+<p>Along the reaction path, the reactive electrophiles of Erlotinib can be produced: epoxide and quinine-imine. This is in agreement with the experimental proposition [<xref ref-type="bibr" rid="pone.0179333.ref012">12</xref>]. It has been shown that ERL-G5, e.g. the adduct of GSH to the terminal 3-ethynyl-4-hydroxy-phenyl ring of Erlotinib, was the predominant enzyme-catalyzed GSH adduct [<xref ref-type="bibr" rid="pone.0179333.ref036">36</xref>]. Adducts like ERL-G5 were proposed as the products of GSH adducted to the epoxide or quinine-imine. Either of the two initial adduct complex can go along the pathway to produce the intermediate of epoxide easily, especially for side-on adduct, a barrierless way. In terms of proton rearrangement, there is some difference. The side on can take the mechanism of shuttle bus. So it is very easy to form phenol via proton transfer, which can be further oxidized by Cpd I to generate the quinone intermediate (also barrierless). Additionally, phenol was also a known P450-mediated metabolite of Erlotinib [<xref ref-type="bibr" rid="pone.0179333.ref043">43</xref>]. Without the shuttle mechanism, the face on complex will prefer the way to produce the ketone through NIH shift. However, the ketone is not a reactive intermediate. The solvent environment can, in some sense, influence the pathway. In the aqueous or protein environment, the addition barrier for side on path will be lowered while that for the face on way will be increased, which may explain that the solvation increased the hindrance to generate the π-π stacking complex of Erlotinib and the porphyrin. So do the rearrangement for epoxidation and NIH transfer.</p>
+</sec>
+<sec id="sec010" sec-type="conclusions">
+<title>Conclusions</title>
+<p>In summary, computational methods have been employed to specify the catalytic mechanism of bioactivation for a case of EGFR inhibitor, Erlotinib. With the initial optimized conformations, DFT computation was employed to simulate the reaction pathway via which the active intermediate was produced with Cpd I model. The result suggests the bioactivation mainly generates the active intermediate of epoxide and quinine-imine. The epoxide can come through the side on and face on pathways via two steps—the addition of Erlotinib to Cpd I and the rearrangement. While for quinine-imine, it needs several steps by forming the metabolic product phenol first, then being further oxidized into quinone that will easily turn into quinine-imine. The analysis of energy barrier indicates that epoxide and quinine-imine would prefer the side-on path in protein environment. The fact that reactive electrophiles, e.g. epoxide and quinine-imine further covalently conjugate with the biomacromolecules, may act as a potential factor for the idiosyncratic toxicity. This work has illustrated the underline mechanism of bioactivation of EGFR inhibitors, and our data also provide theoretical support for the design of target-based anticancer agents with lower toxicities.</p>
+</sec>
+<sec id="sec011">
+<title>Supporting information</title>
+<supplementary-material id="pone.0179333.s001" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0179333.s001" xlink:type="simple">
+<label>S1 File</label>
+<caption>
+<title>Cartesian coordinates of the geometries discussed in the paper.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pone.0179333.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>de Bono</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Ashworth</surname> <given-names>A</given-names></name>. <article-title>Translating cancer research into targeted therapeutics</article-title>. <source>Nature</source>. <year>2010</year>;<volume>467</volume>(<issue>7315</issue>):<fpage>543</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nature09339" xlink:type="simple">10.1038/nature09339</ext-link></comment> WOS:000282273100029. <object-id pub-id-type="pmid">20882008</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bargmann</surname> <given-names>CI</given-names></name>, <name name-style="western"><surname>Hung</surname> <given-names>MC</given-names></name>, <name name-style="western"><surname>Weinberg</surname> <given-names>RA</given-names></name>. <article-title>THE NEU ONCOGENE ENCODES AN EPIDERMAL GROWTH-FACTOR RECEPTOR-RELATED PROTEIN</article-title>. <source>Nature</source>. <year>1986</year>;<volume>319</volume>(<issue>6050</issue>):<fpage>226</fpage>–<lpage>30</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/319226a0" xlink:type="simple">10.1038/319226a0</ext-link></comment> WOS:A1986AXU6400059. <object-id pub-id-type="pmid">3945311</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Paez</surname> <given-names>JG</given-names></name>, <name name-style="western"><surname>Janne</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Tracy</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Greulich</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Gabriel</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>EGFR mutations in lung cancer: Correlation with clinical response to gefitinib therapy</article-title>. <source>Science</source>. <year>2004</year>;<volume>304</volume>(<issue>5676</issue>):<fpage>1497</fpage>–<lpage>500</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/science.1099314" xlink:type="simple">10.1126/science.1099314</ext-link></comment> WOS:000221795800043. <object-id pub-id-type="pmid">15118125</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Krause</surname> <given-names>DS</given-names></name>, <name name-style="western"><surname>Van Etten</surname> <given-names>RA</given-names></name>. <article-title>Tyrosine kinases as targets for cancer therapy</article-title>. <source>New England Journal of Medicine</source>. <year>2005</year>;<volume>353</volume>(<issue>2</issue>):<fpage>172</fpage>–<lpage>87</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1056/NEJMra044389" xlink:type="simple">10.1056/NEJMra044389</ext-link></comment> WOS:000230438800009. <object-id pub-id-type="pmid">16014887</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Palazzo</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Iacovelli</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Cortesi</surname> <given-names>E</given-names></name>. <article-title>Past, Present and Future of Targeted Therapy in Solid Tumors</article-title>. <source>Current Cancer Drug Targets</source>. <year>2010</year>;<volume>10</volume>(<issue>5</issue>):<fpage>433</fpage>–<lpage>61</lpage>. WOS:000279871100002. <object-id pub-id-type="pmid">20384576</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pellegrinotti</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Fimognari</surname> <given-names>FL</given-names></name>, <name name-style="western"><surname>Franco</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Repetto</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Pastorelli</surname> <given-names>R</given-names></name>. <article-title>Erlotinib-Induced Hepatitis Complicated by Fatal Lactic Acidosis in an Elderly Man With Lung Cancer</article-title>. <source>Annals of Pharmacotherapy</source>. <year>2009</year>;<volume>43</volume>(<issue>3</issue>):<fpage>542</fpage>–<lpage>5</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1345/aph.1L468" xlink:type="simple">10.1345/aph.1L468</ext-link></comment> WOS:000264212700018. <object-id pub-id-type="pmid">19261961</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ramanarayanan</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Krishnan</surname> <given-names>GS</given-names></name>. <article-title>Review: hepatotoxicity and EGFR inhibition</article-title>. <source>Clinical advances in hematology &amp; oncology: H&amp;O</source>. <year>2008</year>;<volume>6</volume>(<issue>3</issue>):<fpage>200</fpage>–<lpage>1</lpage>. MEDLINE:18391919.</mixed-citation></ref>
+<ref id="pone.0179333.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lind</surname> <given-names>JSW</given-names></name>, <name name-style="western"><surname>Smit</surname> <given-names>EF</given-names></name>, <name name-style="western"><surname>Grunberg</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Senan</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Lagerwaard</surname> <given-names>FJ</given-names></name>. <article-title>Fatal interstitial lung disease after erlotinib for non-small cell lung cancer</article-title>. <source>Journal of Thoracic Oncology</source>. <year>2008</year>;<volume>3</volume>(<issue>9</issue>):<fpage>1050</fpage>–<lpage>3</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1097/JTO.0b013e318183a9f5" xlink:type="simple">10.1097/JTO.0b013e318183a9f5</ext-link></comment> WOS:000259164900018. <object-id pub-id-type="pmid">18758310</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Takano</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Ohe</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Kusumoto</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Tateishi</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Yamamoto</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Nokihara</surname> <given-names>H</given-names></name>, <etal>et al</etal>. <article-title>Risk factors for interstitial lung disease and predictive factors for tumor response in patients with advanced non-small cell lung cancer treated with gefitinib</article-title>. <source>Lung Cancer</source>. <year>2004</year>;<volume>45</volume>(<issue>1</issue>):<fpage>93</fpage>–<lpage>104</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.lungcan.2004.01.010" xlink:type="simple">10.1016/j.lungcan.2004.01.010</ext-link></comment> WOS:000222573100012. <object-id pub-id-type="pmid">15196739</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Inoue</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Saijo</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Maemondo</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Gomi</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Tokue</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Kimura</surname> <given-names>Y</given-names></name>, <etal>et al</etal>. <article-title>Severe acute interstitial pneumonia and gefitinib</article-title>. <source>Lancet</source>. <year>2003</year>;<volume>361</volume>(<issue>9352</issue>):<fpage>137</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S0140-6736(03)12190-3" xlink:type="simple">10.1016/S0140-6736(03)12190-3</ext-link></comment> WOS:000180428000014. <object-id pub-id-type="pmid">12531582</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ricciardi</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Tomao</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>de Marinis</surname> <given-names>F</given-names></name>. <article-title>Toxicity of Targeted Therapy in Non-Small-Cell Lung Cancer Management</article-title>. <source>Clinical lung cancer</source>. <year>2009</year>;<volume>10</volume>(<issue>1</issue>):<fpage>28</fpage>–<lpage>35</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3816/CLC.2009.n.004" xlink:type="simple">10.3816/CLC.2009.n.004</ext-link></comment> WOS:000263318800004. <object-id pub-id-type="pmid">19289369</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Kamenecka</surname> <given-names>TM</given-names></name>, <name name-style="western"><surname>Cameron</surname> <given-names>MD</given-names></name>. <article-title>Cytochrome P450-Mediated Bioactivation of the Epidermal Growth Factor Receptor Inhibitor Erlotinib to a Reactive Electrophile</article-title>. <source>Drug Metabolism and Disposition</source>. <year>2010</year>;<volume>38</volume>(<issue>7</issue>):<fpage>1238</fpage>–<lpage>45</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1124/dmd.109.030361" xlink:type="simple">10.1124/dmd.109.030361</ext-link></comment> WOS:000280382100028. <object-id pub-id-type="pmid">20382753</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Kamenecka</surname> <given-names>TM</given-names></name>, <name name-style="western"><surname>Cameron</surname> <given-names>MD</given-names></name>. <article-title>Bioactivation of the Epidermal Growth Factor Receptor Inhibitor Gefitinib: Implications for Pulmonary and Hepatic Toxicities</article-title>. <source>Chemical Research in Toxicology</source>. <year>2009</year>;<volume>22</volume>(<issue>10</issue>):<fpage>1736</fpage>–<lpage>42</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/tx900256y" xlink:type="simple">10.1021/tx900256y</ext-link></comment> WOS:000270810200011. <object-id pub-id-type="pmid">19803472</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Argikar</surname> <given-names>UA</given-names></name>, <name name-style="western"><surname>Mangold</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Harriman</surname> <given-names>SP</given-names></name>. <article-title>Strategies and Chemical Design Approaches to Reduce the Potential for Formation of Reactive Metabolic Species</article-title>. <source>Current Topics in Medicinal Chemistry</source>. <year>2011</year>;<volume>11</volume>(<issue>4</issue>):<fpage>419</fpage>–<lpage>49</lpage>. WOS:000287305600008. <object-id pub-id-type="pmid">21320068</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zuniga</surname> <given-names>FI</given-names></name>, <name name-style="western"><surname>Loi</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Ling</surname> <given-names>KHJ</given-names></name>, <name name-style="western"><surname>Tang-Liu</surname> <given-names>DDS</given-names></name>. <article-title>Idiosyncratic reactions and metabolism of sulfur-containing drugs</article-title>. <source>Expert Opinion on Drug Metabolism &amp; Toxicology</source>. <year>2012</year>;<volume>8</volume>(<issue>4</issue>):<fpage>467</fpage>–<lpage>85</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1517/17425255.2012.668528" xlink:type="simple">10.1517/17425255.2012.668528</ext-link></comment> WOS:000301836700007. <object-id pub-id-type="pmid">22394356</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Amacher</surname> <given-names>DE</given-names></name>. <article-title>The primary role of hepatic metabolism in idiosyncratic drug-induced liver injury</article-title>. <source>Expert Opinion on Drug Metabolism &amp; Toxicology</source>. <year>2012</year>;<volume>8</volume>(<issue>3</issue>):<fpage>335</fpage>–<lpage>47</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1517/17425255.2012.658041" xlink:type="simple">10.1517/17425255.2012.658041</ext-link></comment> WOS:000300450700004. <object-id pub-id-type="pmid">22288564</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kalgutkar</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Gardner</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Obach</surname> <given-names>RS</given-names></name>, <name name-style="western"><surname>Shaffer</surname> <given-names>CL</given-names></name>, <name name-style="western"><surname>Callegari</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Henne</surname> <given-names>KR</given-names></name>, <etal>et al</etal>. <article-title>A comprehensive listing of bioactivation pathways of organic functional groups</article-title>. <source>Current Drug Metabolism</source>. <year>2005</year>;<volume>6</volume>(<issue>3</issue>):<fpage>161</fpage>–<lpage>225</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2174/1389200054021799" xlink:type="simple">10.2174/1389200054021799</ext-link></comment> WOS:000229391200001. <object-id pub-id-type="pmid">15975040</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chen</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Doss</surname> <given-names>GA</given-names></name>, <name name-style="western"><surname>Tung</surname> <given-names>EC</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>WS</given-names></name>, <name name-style="western"><surname>Tang</surname> <given-names>YS</given-names></name>, <name name-style="western"><surname>Braun</surname> <given-names>MP</given-names></name>, <etal>et al</etal>. <article-title>Evidence for the bioactivation of zomepirac and tolmetin by an oxidative pathway: Identification of glutathione adducts in vitro in human liver microsomes and in vivo in rats</article-title>. <source>Drug Metabolism and Disposition</source>. <year>2006</year>;<volume>34</volume>(<issue>1</issue>):<fpage>145</fpage>–<lpage>51</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1124/dmd.105.004341" xlink:type="simple">10.1124/dmd.105.004341</ext-link></comment> WOS:000234104300020. <object-id pub-id-type="pmid">16251255</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Iverson</surname> <given-names>SL</given-names></name>, <name name-style="western"><surname>Shen</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Anlar</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Bolton</surname> <given-names>JL</given-names></name>. <article-title>Bioactivation of estrone and its catechol metabolites to quinoid-glutathione conjugates in rat liver microsomes</article-title>. <source>Chemical Research in Toxicology</source>. <year>1996</year>;<volume>9</volume>(<issue>2</issue>):<fpage>492</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/tx950178c" xlink:type="simple">10.1021/tx950178c</ext-link></comment> WOS:A1996TY39300020. <object-id pub-id-type="pmid">8839054</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guengerich</surname> <given-names>FP</given-names></name>. <article-title>Common and uncommon cytochrome P450 reactions related to metabolism and chemical toxicity</article-title>. <source>Chemical Research in Toxicology</source>. <year>2001</year>;<volume>14</volume>(<issue>6</issue>):<fpage>611</fpage>–<lpage>50</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/tx0002583" xlink:type="simple">10.1021/tx0002583</ext-link></comment> WOS:000169474500001. <object-id pub-id-type="pmid">11409933</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bell</surname> <given-names>SR</given-names></name>, <name name-style="western"><surname>Groves</surname> <given-names>JT</given-names></name>. <article-title>A Highly Reactive P450 Model Compound I</article-title>. <source>Journal of the American Chemical Society</source>. <year>2009</year>;<volume>131</volume>(<issue>28</issue>):<fpage>9640</fpage>–<lpage>1</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/ja903394s" xlink:type="simple">10.1021/ja903394s</ext-link></comment> WOS:000268399800020. <object-id pub-id-type="pmid">19552441</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Harris</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Loew</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Waskell</surname> <given-names>L</given-names></name>. <article-title>Calculation of the electronic structure and spectra of model cytochrome P450 compound I</article-title>. <source>Journal of Inorganic Biochemistry</source>. <year>2001</year>;<volume>83</volume>(<issue>4</issue>):<fpage>309</fpage>–<lpage>18</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s0162-0134(00)00177-x" xlink:type="simple">10.1016/s0162-0134(00)00177-x</ext-link></comment> WOS:000167802800011. <object-id pub-id-type="pmid">11293551</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Newcomb</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Chandrasena</surname> <given-names>REP</given-names></name>, <name name-style="western"><surname>Halgrimson</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Horner</surname> <given-names>JH</given-names></name>, <name name-style="western"><surname>Makris</surname> <given-names>TM</given-names></name>, <etal>et al</etal>. <article-title>Cytochrome P450 Compound I</article-title>. <source>Journal of the American Chemical Society</source>. <year>2006</year>;<volume>128</volume>(<issue>14</issue>):<fpage>4580</fpage>–<lpage>1</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/ja060048y" xlink:type="simple">10.1021/ja060048y</ext-link></comment> WOS:000236770300042. <object-id pub-id-type="pmid">16594688</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rittle</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Green</surname> <given-names>MT</given-names></name>. <article-title>Cytochrome P450 Compound I: Capture, Characterization, and C-H Bond Activation Kinetics</article-title>. <source>Science</source>. <year>2010</year>;<volume>330</volume>(<issue>6006</issue>):<fpage>933</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/science.1193478" xlink:type="simple">10.1126/science.1193478</ext-link></comment> WOS:000284118000033. <object-id pub-id-type="pmid">21071661</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lonsdale</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Olah</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Mulholland</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Harvey</surname> <given-names>JN</given-names></name>. <article-title>Does Compound I Vary Significantly between Isoforms of Cytochrome P450?</article-title> <source>Journal of the American Chemical Society</source>. <year>2011</year>;<volume>133</volume>(<issue>39</issue>):<fpage>15464</fpage>–<lpage>74</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/ja203157u" xlink:type="simple">10.1021/ja203157u</ext-link></comment> WOS:000295911500049. <object-id pub-id-type="pmid">21863858</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>de Visser</surname> <given-names>SP</given-names></name>, <name name-style="western"><surname>Shaik</surname> <given-names>S</given-names></name>. <article-title>A proton-shuttle mechanism mediated by the porphyrin in benzene hydroxylation by cytochrome P450 enzymes</article-title>. <source>Journal of the American Chemical Society</source>. <year>2003</year>;<volume>125</volume>(<issue>24</issue>):<fpage>7413</fpage>–<lpage>24</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/ja034142f" xlink:type="simple">10.1021/ja034142f</ext-link></comment> WOS:000183503500051. <object-id pub-id-type="pmid">12797816</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>de Visser</surname> <given-names>SP</given-names></name>, <name name-style="western"><surname>Kumar</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Cohen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Shacham</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Shaik</surname> <given-names>S</given-names></name>. <article-title>A predictive pattern of computed barriers for C-H hydroxylation by compound I of cytochrome P450</article-title>. <source>Journal of the American Chemical Society</source>. <year>2004</year>;<volume>126</volume>(<issue>27</issue>):<fpage>8362</fpage>–<lpage>3</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/ja048528h" xlink:type="simple">10.1021/ja048528h</ext-link></comment> WOS:000222612600006. <object-id pub-id-type="pmid">15237977</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kumar</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>de Visser</surname> <given-names>SP</given-names></name>, <name name-style="western"><surname>Shaik</surname> <given-names>S</given-names></name>. <article-title>Multistate reactivity in styrene epoxidation by compound I of cytochrome P450: Mechanisms of products and side products formation</article-title>. <source>Chemistry-a European Journal</source>. <year>2005</year>;<volume>11</volume>(<issue>9</issue>):<fpage>2825</fpage>–<lpage>35</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/chem.200401044" xlink:type="simple">10.1002/chem.200401044</ext-link></comment> WOS:000228757000020. <object-id pub-id-type="pmid">15744771</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cohen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Kozuch</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Hazan</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Shaik</surname> <given-names>S</given-names></name>. <article-title>Does substrate oxidation determine the regioselectivity of cyclohexene and propene oxidation by cytochrome P450?</article-title> <source>Journal of the American Chemical Society</source>. <year>2006</year>;<volume>128</volume>(<issue>34</issue>):<fpage>11028</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/ja063269c" xlink:type="simple">10.1021/ja063269c</ext-link></comment> WOS:000239932500023. <object-id pub-id-type="pmid">16925412</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schoneboom</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Reuter</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Thiel</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Cohen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Ogliaro</surname> <given-names>F</given-names></name>, <etal>et al</etal>. <article-title>The elusive oxidant species of cytochrome P450 enzymes: characterization by combined quantum mechanical/molecular mechanical (QM/MM) calculations</article-title>. <source>J Am Chem Soc</source>. <year>2002</year>;<volume>124</volume>(<issue>27</issue>):<fpage>8142</fpage>–<lpage>51</lpage>. Epub 2002/07/04. <object-id pub-id-type="pmid">12095360</object-id>.</mixed-citation></ref>
+<ref id="pone.0179333.ref031"><label>31</label><mixed-citation publication-type="other" xlink:type="simple">Frisch MJea. Gaussian. Wallingford CT, 2009. 2009.</mixed-citation></ref>
+<ref id="pone.0179333.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Becke</surname> <given-names>AD</given-names></name>. <article-title>DENSITY-FUNCTIONAL THERMOCHEMISTRY .3. THE ROLE OF EXACT EXCHANGE</article-title>. <source>Journal of Chemical Physics</source>. <year>1993</year>;<volume>98</volume>(<issue>7</issue>):<fpage>5648</fpage>–<lpage>52</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1063/1.464913" xlink:type="simple">10.1063/1.464913</ext-link></comment> WOS:A1993KV99700048.</mixed-citation></ref>
+<ref id="pone.0179333.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lee</surname> <given-names>CT</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>WT</given-names></name>, <name name-style="western"><surname>Parr</surname> <given-names>RG</given-names></name>. <article-title>DEVELOPMENT OF THE COLLE-SALVETTI CORRELATION-ENERGY FORMULA INTO A FUNCTIONAL OF THE ELECTRON-DENSITY</article-title>. <source>Physical Review B</source>. <year>1988</year>;<volume>37</volume>(<issue>2</issue>):<fpage>785</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1103/PhysRevB.37.785" xlink:type="simple">10.1103/PhysRevB.37.785</ext-link></comment> WOS:A1988L976200011.</mixed-citation></ref>
+<ref id="pone.0179333.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schyman</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Lai</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Shaik</surname> <given-names>S</given-names></name>. <article-title>The Directive of the Protein: How Does Cytochrome P450 Select the Mechanism of Dopamine Formation?</article-title> <source>Journal of the American Chemical Society</source>. <year>2011</year>;<volume>133</volume>(<issue>20</issue>):<fpage>7977</fpage>–<lpage>84</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/ja201665x" xlink:type="simple">10.1021/ja201665x</ext-link></comment> WOS:000291580400054. <object-id pub-id-type="pmid">21539368</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>HM</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>YH</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>CL</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Han</surname> <given-names>KL</given-names></name>. <article-title>Theoretical study of the mechanism of acetaldehyde hydroxylation by compound I of CYP2E1</article-title>. <source>Journal of Physical Chemistry B</source>. <year>2006</year>;<volume>110</volume>(<issue>12</issue>):<fpage>6154</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/jp060033m" xlink:type="simple">10.1021/jp060033m</ext-link></comment> WOS:000236407400046. <object-id pub-id-type="pmid">16553429</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>XH</given-names></name>, <name name-style="western"><surname>Kamenecka</surname> <given-names>TM</given-names></name>, <name name-style="western"><surname>Cameron</surname> <given-names>MD</given-names></name>. <article-title>Bioactivation of the Epidermal Growth Factor Receptor Inhibitor Gefitinib: Implications for Pulmonary and Hepatic Toxicities</article-title>. <source>Chemical Research in Toxicology</source>. <year>2009</year>;<volume>22</volume>(<issue>10</issue>):<fpage>1736</fpage>–<lpage>42</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/tx900256y" xlink:type="simple">10.1021/tx900256y</ext-link></comment> WOS:000270810200011. <object-id pub-id-type="pmid">19803472</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Dai</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Lewis</surname> <given-names>DFV</given-names></name>, <name name-style="western"><surname>Wei</surname> <given-names>DQ</given-names></name>. <article-title>Classification Models for Predicting Cytochrome P450 Enzyme-Substrate Selectivity</article-title>. <source>Mol Inform</source>. <year>2012</year>;<volume>31</volume>(<issue>1</issue>):<fpage>53</fpage>–<lpage>62</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/minf.201100052" xlink:type="simple">10.1002/minf.201100052</ext-link></comment> WOS:000299156000006. <object-id pub-id-type="pmid">27478177</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Olah</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Mulholland</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Harvey</surname> <given-names>JN</given-names></name>. <article-title>Understanding the determinants of selectivity in drug metabolism through modeling of dextromethorphan oxidation by cytochrome P450</article-title>. <source>P Natl Acad Sci USA</source>. <year>2011</year>;<volume>108</volume>(<issue>15</issue>):<fpage>6050</fpage>–<lpage>5</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1073/pnas.1010194108" xlink:type="simple">10.1073/pnas.1010194108</ext-link></comment> WOS:000289413600030. <object-id pub-id-type="pmid">21444768</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guengerich</surname> <given-names>FP</given-names></name>. <article-title>Catalytic Selectivity of Human Cytochrome-P450 Enzymes—Relevance to Drug-Metabolism and Toxicity</article-title>. <source>Toxicol Lett</source>. <year>1994</year>;<volume>70</volume>(<issue>2</issue>):<fpage>133</fpage>–<lpage>8</lpage>. WOS:A1994MV38800001. <object-id pub-id-type="pmid">8296317</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Williams</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Cosme</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Vinkovic</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Ward</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Angove</surname> <given-names>HC</given-names></name>, <name name-style="western"><surname>Day</surname> <given-names>PJ</given-names></name>, <etal>et al</etal>. <article-title>Crystal structures of human cytochrome P450 3A4 bound to metyrapone and progesterone</article-title>. <source>Science</source>. <year>2004</year>;<volume>305</volume>(<issue>5684</issue>):<fpage>683</fpage>–<lpage>6</lpage>. Epub 2004/07/17. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/science.1099736" xlink:type="simple">10.1126/science.1099736</ext-link></comment> <object-id pub-id-type="pmid">15256616</object-id>.</mixed-citation></ref>
+<ref id="pone.0179333.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bathelt</surname> <given-names>CM</given-names></name>, <name name-style="western"><surname>Ridder</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Mulholland</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Harvey</surname> <given-names>JN</given-names></name>. <article-title>Mechanism and structure-reactivity relationships for aromatic hydroxylation by cytochrome P450</article-title>. <source>Org Biomol Chem</source>. <year>2004</year>;<volume>2</volume>(<issue>20</issue>):<fpage>2998</fpage>–<lpage>3005</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1039/B410729B" xlink:type="simple">10.1039/B410729B</ext-link></comment> WOS:000224420700019. <object-id pub-id-type="pmid">15480465</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Su</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>XH</given-names></name>, <name name-style="western"><surname>Horner</surname> <given-names>JH</given-names></name>, <name name-style="western"><surname>Newcomb</surname> <given-names>M</given-names></name>. <article-title>Rate-Controlling Isomerizations in Fatty Acid Oxidations by a Cytochrome P450 Compound I</article-title>. <source>Chemistry-a European Journal</source>. <year>2012</year>;<volume>18</volume>(<issue>9</issue>):<fpage>2472</fpage>–<lpage>6</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/chem.201103170" xlink:type="simple">10.1002/chem.201103170</ext-link></comment> WOS:000300691000002. <object-id pub-id-type="pmid">22298496</object-id></mixed-citation></ref>
+<ref id="pone.0179333.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ling</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Johnson</surname> <given-names>KA</given-names></name>, <name name-style="western"><surname>Miao</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Rakhit</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Pantze</surname> <given-names>MP</given-names></name>, <name name-style="western"><surname>Hamilton</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>Metabolism and excretion of erlotinib, a small molecule inhibitor of epidermal growth factor receptor tyrosine kinase, in healthy male volunteers</article-title>. <source>Drug metabolism and disposition: the biological fate of chemicals</source>. <year>2006</year>;<volume>34</volume>(<issue>3</issue>):<fpage>420</fpage>–<lpage>6</lpage>. Epub 2005/12/31. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1124/dmd.105.007765" xlink:type="simple">10.1124/dmd.105.007765</ext-link></comment> <object-id pub-id-type="pmid">16381666</object-id>.</mixed-citation></ref>
+</ref-list>
+</back>
+</article>

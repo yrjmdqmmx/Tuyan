@@ -1,0 +1,72 @@
+{
+  "freezeManifest": "root-template-code-hashes.json",
+  "freezeSha256": "000903ba165f2dbaaee3ba3f2319bd9747975adf73e80668099d15a2effac679",
+  "frozenFiles": 30,
+  "handlerSha256": "b2b6cb28928fe09553fb235ef6ebad72c48c1b4fea487a5761666ea1cfc7f548",
+  "finalFocusedTests": {
+    "command": "node --import tsx --test tests/source-provenance.test.ts tests/diagram-topology.test.ts tests/diagram-topology-runtime.test.ts tests/protocol-correction.test.ts tests/svg-workflow.test.ts tests/reference-selection.test.ts tests/durable-admission.test.ts tests/tokendance.test.ts",
+    "log": "root-template-final-tests.log",
+    "tests": 109,
+    "passed": 109,
+    "failed": 0,
+    "exitCode": 0,
+    "durationMs": 113144.601375
+  },
+  "check": {
+    "command": "pnpm check",
+    "log": "root-template-check.log",
+    "exitCode": 0
+  },
+  "build": {
+    "command": "pnpm build",
+    "log": "root-template-build.log",
+    "exitCode": 0
+  },
+  "diffCheck": {
+    "command": "git diff --check",
+    "log": "root-template-diff-check.log",
+    "exitCode": 0
+  },
+  "intermediateFailure": {
+    "log": "root-template-initial-tests.log",
+    "passed": 6,
+    "tests": 7,
+    "exitCode": 1,
+    "reason": "New standalone numeric test inherited diagram taskName. Admission correctly rejected FIGURE_INPUT_INVALID; corrected fixture to plot, no production admission change."
+  },
+  "programFollowup": {
+    "log": "root-template-program-followup.log",
+    "passed": 1,
+    "tests": 1,
+    "exitCode": 0
+  },
+  "protectedFiles": {
+    "checked": 238,
+    "unchanged": 238,
+    "differences": []
+  },
+  "sourcePromptRevision": 1,
+  "paidCalls": 0,
+  "independentReview": {
+    "status": "passed",
+    "report": "task-1-structural-prompts-review.md",
+    "remainingBlockingFindings": 0,
+    "freezeMatched": 30,
+    "protectedMatched": 238,
+    "capturedRawAndTemplates": {
+      "passed": 7,
+      "tests": 7,
+      "exitCode": 0
+    },
+    "newRuntimeCases": {
+      "passed": 2,
+      "tests": 2,
+      "exitCode": 0
+    },
+    "actualDurableMigration": {
+      "exitCode": 0,
+      "missingPromptRevisionNewTransport": 0,
+      "oldV1DecryptCalls": 0
+    }
+  }
+}

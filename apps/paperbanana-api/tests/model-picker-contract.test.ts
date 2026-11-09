@@ -7,10 +7,10 @@ import { buildAspectRatioOptions, normalizeSelectedAspectRatio } from '../../../
 import { modelDeveloper, presentRegistryModel, sortModelsNewestFirst } from '../../../packages/types/src/model-presentation.js'
 
 const require = createRequire(import.meta.url)
-const mini = require('../../miniprogram/miniprogram/utils/aspect-ratios.js')
+// Mini Program generation and acceptance are deferred; exercise Web/Core contracts here.
 const web = require('../../web/src/lib/aspectRatios.js')
-const presentation = require('../../miniprogram/miniprogram/utils/model-presentation.js')
-const { STATIC_MODEL_REGISTRY: catalog } = require('../../miniprogram/miniprogram/utils/static-model-catalog.js')
+const presentation = require('../../web/src/lib/modelPresentation.js')
+const { STATIC_MODEL_REGISTRY: catalog } = require('../../web/src/lib/staticModelCatalog.js')
 const sizes = JSON.parse(fs.readFileSync(new URL('../../../config/image-size-contracts.json', import.meta.url), 'utf8'))
 
 test('every visible ratio has a legal request for its exact channel, operation and resolution', (context) => {
@@ -29,7 +29,6 @@ test('every visible ratio has a legal request for its exact channel, operation a
       for (const resolution of Object.keys(map)) {
         const input = { capabilities: model.capabilities, capabilityField, resolution } as const
         const options = buildAspectRatioOptions(input)
-        assert.deepEqual(options, mini.buildAspectRatioOptions(input))
         assert.deepEqual(options, web.buildAspectRatioOptions(input))
         assert.deepEqual(options.map(option => option.value), ['auto', ...map[resolution]], key)
         for (const option of options) {
@@ -84,9 +83,9 @@ test('known dates and version relations produce a stable newest-first order with
   assert.equal(sortModelsNewestFirst(conflict)[0].id, 'newer-date')
   assert.equal(sortModelsNewestFirst(sortModelsNewestFirst(models)).length, models.length)
   const glm = catalog.siliconflow.models.filter((model: any) => /GLM-5/.test(model.id))
-  assert.deepEqual(glm.map((model: any) => model.id), ['zai-org/GLM-5.3','zai-org/GLM-5.2','Pro/zai-org/GLM-5.1'])
-  assert.equal(catalog.anthropic.models[0].id, 'claude-opus-5-5')
-  assert.equal(catalog.gemini.models[0].id, 'gemini-3.8-flash')
+  assert.deepEqual(glm.map((model: any) => model.id), ['zai-org/GLM-5.3','zai-org/GLM-5.3-Flash','zai-org/GLM-5.2','Pro/zai-org/GLM-5.1'])
+  assert.equal(catalog.anthropic.models[0].id, 'claude-haiku-5-5')
+  assert.equal(catalog.gemini.models[0].id, 'gemini-4-argon')
 })
 
 test('all catalogs keep deterministic chronology after refresh, without changing routes or IDs', async () => {

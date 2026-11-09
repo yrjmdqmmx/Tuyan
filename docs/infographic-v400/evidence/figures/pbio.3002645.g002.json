@@ -1,0 +1,50 @@
+{
+  "id": "pbio.3002645.g002",
+  "paper": "pbio.3002645",
+  "figure": {
+    "id": "pbio.3002645.g002",
+    "label": "Fig 2",
+    "caption": "Responses to each phrase on the importance/significance dimension as kernel density distributions with the 25th, 50th (i.e., median), and 75th quantiles represented by black vertical lines and the 25th–75th quantile region (i.e., interquartile range) highlighted in blue. The data underlying this figure can be found in https://osf.io/mw2q4/files/osfstorage.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002645.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002645.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title />\n<p>Responses to each phrase on the importance/significance dimension as kernel density distributions with the 25th, 50th (i.e., median), and 75th quantiles represented by black vertical lines and the 25th–75th quantile region (i.e., interquartile range) highlighted in blue. The data underlying this figure can be found in <ext-link ext-link-type=\"uri\" ns0:href=\"https://osf.io/mw2q4/files/osfstorage\" ns0:type=\"simple\">https://osf.io/mw2q4/files/osfstorage</ext-link>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002645.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002645.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pbio.3002645",
+    "sourceUrl": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3002645",
+    "title": "An empirical appraisal of eLife’s assessment vocabulary",
+    "journal": "PLOS Biology",
+    "authors": [
+      "Tom E. Hardwicke",
+      "Sarah R. Schiavone",
+      "Beth Clarke",
+      "Simine Vazire"
+    ],
+    "year": "2024",
+    "license": "2024\nHardwicke et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosbiology/article/figure/image?size=large&id=10.1371/journal.pbio.3002645.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pbio.3002645.g002.png",
+      "bytes": 475178,
+      "sha256": "c083533a5b8653b80a29129803fcf2ed7a6434304fb71e4d1ada35156a7c0269"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosbiology/article/figure/image?size=original&id=10.1371/journal.pbio.3002645.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pbio.3002645.g002.tif",
+      "bytes": 549640,
+      "sha256": "5a1de2edb7e8eae365ae95b71366369d356557ed255227ac73f614f78b6add48"
+    }
+  }
+}

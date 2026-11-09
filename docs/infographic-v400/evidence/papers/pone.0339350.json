@@ -1,0 +1,69 @@
+{
+  "doi": "10.1371/journal.pone.0339350",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0339350",
+  "title": "Differences in soil carbon fractions and microbial communities and their underlying mechanisms between assisted natural regeneration and plantation forests in subtropical China",
+  "journal": "PLOS One",
+  "authors": [
+    "Zhiqiang Ding",
+    "Zhijie Yang",
+    "Yusheng Yang"
+  ],
+  "year": "2026",
+  "license": "2026\nDing et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0339350.g001",
+      "label": "Fig 1",
+      "caption": "Location of the study area and representative forest types.Note: (a) Geographical location of the study site in southeastern China (red dot), generated using QGIS v3.28 with base layers sourced from Natural Earth (https://www.naturalearthdata.com/), a public domain cartographic data source. (b) Topographic features and elevation gradient of the study region in Sanming City, Fujian Province, visualized using SRTM DEM data (NASA Shuttle Radar Topography Mission, https://earthexplorer.usgs.gov/) and administrative boundaries from GADM database (https://gadm.org/). (c) Representative photos of four forest management types. c1: natural SF dominated by Castanopsis carlesii; c2: ANR dominated by Castanopsis carlesii; c3: CCP; c4: CLP.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0339350.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0339350.g001</object-id><label>Fig 1</label><caption><title>Location of the study area and representative forest types.</title><p>Note: (a) Geographical location of the study site in southeastern China (red dot), generated using QGIS v3.28 with base layers sourced from Natural Earth (<ext-link ext-link-type=\"uri\" ns0:href=\"https://www.naturalearthdata.com/\" ns0:type=\"simple\">https://www.naturalearthdata.com/</ext-link>), a public domain cartographic data source. (b) Topographic features and elevation gradient of the study region in Sanming City, Fujian Province, visualized using SRTM DEM data (NASA Shuttle Radar Topography Mission, <ext-link ext-link-type=\"uri\" ns0:href=\"https://earthexplorer.usgs.gov/\" ns0:type=\"simple\">https://earthexplorer.usgs.gov/</ext-link>) and administrative boundaries from GADM database (<ext-link ext-link-type=\"uri\" ns0:href=\"https://gadm.org/\" ns0:type=\"simple\">https://gadm.org/</ext-link>). (c) Representative photos of four forest management types. c1: natural SF dominated by <italic>Castanopsis carlesii</italic>; c2: ANR dominated by <italic>Castanopsis carlesii</italic>; c3: <italic>CCP</italic>; c4: CLP.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0339350.g001\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0339350.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0339350.g002",
+      "label": "Fig 2",
+      "caption": "Effects of different management practices on soil organic carbon (SOC) and its fractions.Note: LC: labile carbon fractions; RC: recalcitrant carbon. SF: natural secondary forest; ANR: assisted natural regeneration forest of Castanopsis carlesii; CCP: Castanopsis carlesii plantation; CLP: Cunninghamia lanceolata plantation. Different lowercase letters indicate significant differences between different forest management practices (n = 3). The same below.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0339350.g002\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0339350.g002</object-id><label>Fig 2</label><caption><title>Effects of different management practices on soil organic carbon (SOC) and its fractions.</title><p>Note: LC: labile carbon fractions; RC: recalcitrant carbon. SF: natural secondary forest; ANR: assisted natural regeneration forest of <italic>Castanopsis carlesii</italic>; CCP: <italic>Castanopsis carlesii</italic> plantation; CLP: <italic>Cunninghamia lanceolata</italic> plantation. Different lowercase letters indicate significant differences between different forest management practices (n = 3). The same below.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0339350.g002\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0339350.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0339350.g003",
+      "label": "Fig 3",
+      "caption": "Environmental drivers of SOC and its fractions.Note: The figure shows pairwise comparisons between microbial and soil property indicators, with color gradient indicating the Pearson correlation coefficient. SOC: soil organic carbon; RC: recalcitrant carbon; LC: labile carbon; TN: total nitrogen; Ammonium. N and Nitrate. N: mineral nitrogen; TP: total phosphorus; Clay represents the clay percentage; SM: soil moisture. Using Mantel tests, the correlations between SOC and its fractions (LC, RC) with each environmental factor were determined. The line color represents the significance level of Mantel’s P value, and the line width corresponds to the Mantel`s r value.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0339350.g003\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0339350.g003</object-id><label>Fig 3</label><caption><title>Environmental drivers of SOC and its fractions.</title><p>Note: The figure shows pairwise comparisons between microbial and soil property indicators, with color gradient indicating the Pearson correlation coefficient. SOC: soil organic carbon; RC: recalcitrant carbon; LC: labile carbon; TN: total nitrogen; Ammonium. N and Nitrate. N: mineral nitrogen; TP: total phosphorus; Clay represents the clay percentage; SM: soil moisture. Using Mantel tests, the correlations between SOC and its fractions (LC, RC) with each environmental factor were determined. The line color represents the significance level of Mantel’s P value, and the line width corresponds to the Mantel`s r value.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0339350.g003\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0339350.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0339350.g004",
+      "label": "Fig 4",
+      "caption": "Scores and interrelationships of the best predictors for predicting SOC.Note: Black arrow shows positive influence, red arrow shows negative influence, the value on each arrow lines are the path coefficient. ^{*} presents significant at P < 0.05, ^{**} presents significant at P < 0.01, ^{***} presents significant at P < 0.001. SOC: soil organic carbon; RC: recalcitrant carbon; LC: labile carbon; GP: Gram-positive bacteria; C:N: carbon nitrogen ratio; LS: litter storage; FRB: fine root biomass.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0339350.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0339350.g004</object-id><label>Fig 4</label><caption><title>Scores and interrelationships of the best predictors for predicting SOC.</title><p>Note: Black arrow shows positive influence, red arrow shows negative influence, the value on each arrow lines are the path coefficient. <sup>*</sup> presents significant at <italic>P</italic> &lt; 0.05, <sup>**</sup> presents significant at <italic>P</italic> &lt; 0.01, <sup>***</sup> presents significant at <italic>P</italic> &lt; 0.001. SOC: soil organic carbon; RC: recalcitrant carbon; LC: labile carbon; GP: Gram-positive bacteria; C:N: carbon nitrogen ratio; LS: litter storage; FRB: fine root biomass.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0339350.g004\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0339350.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

@@ -261,7 +261,7 @@ export function BenchmarkCaseEvidencePage({ apiBase, backendMode, enabled, caseI
 
   const visible = useMemo(() => {
     const needle = deferredQuery.trim().toLocaleLowerCase('zh-CN')
-    return items.filter(item => matchesBenchmarkModel({ ...item.model, modelId: item.modelId }, needle))
+    return items.filter(item => matchesBenchmarkModel({ ...item.model, modelId: item.model?.modelId || item.modelId || item.canonicalModelId }, needle))
   }, [deferredQuery, items])
   const scientific = benchmarkCase?.id?.startsWith('scientific-')
   if (!enabled) return <EvidenceState>{t("排行榜尚未开放。")}</EvidenceState>
@@ -278,9 +278,10 @@ export function BenchmarkCaseEvidencePage({ apiBase, backendMode, enabled, caseI
       <div className="bench-search bench-case-search"><label htmlFor="bench-case-search">{t("搜索模型")}</label><span><Search size={15} /><input id="bench-case-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} /></span><small>{visible.length} {t("个已加载结果")}</small></div>
       <section className="bench-case-evidence-grid">
         {visible.map((item) => {
-          const name = item.model?.displayName || item.modelId
+          const modelId = item.model?.modelId || item.modelId || item.canonicalModelId
+          const name = item.model?.displayName || modelId
           return <article className="bench-case-evidence-item" key={item.sampleId || item.profileId}>
-            <header><a href={leaderboardDetailHref(`/leaderboard/models/${encodeURIComponent(item.profileId)}`)}><strong>{name}</strong><small>{item.modelId}</small><span className="bench-developer">{benchmarkDeveloperName({ ...item.model, modelId: item.modelId }, locale)}</span></a><span>{t("Overall #")}{item.model?.overallRank ?? '—'} · {scoreText(item.model?.overallScore)}{item.status === 'succeeded' && item.actualOutputPixels ? ` · ${item.actualOutputPixels.width} × ${item.actualOutputPixels.height} · ${scoreText(item.actualOutputPixels.megapixels)} MP` : ''}</span></header>
+            <header><a href={leaderboardDetailHref(`/leaderboard/models/${encodeURIComponent(item.profileId)}`)}><strong>{name}</strong><small>{modelId}</small><span className="bench-developer">{benchmarkDeveloperName({ ...item.model, modelId }, locale)}</span></a><span>{t("Overall #")}{item.model?.overallRank ?? '—'} · {scoreText(item.model?.overallScore)}{item.status === 'succeeded' && item.actualOutputPixels ? ` · ${item.actualOutputPixels.width} × ${item.actualOutputPixels.height} · ${scoreText(item.actualOutputPixels.megapixels)} MP` : ''}</span></header>
             <BenchmarkCaseCost cost={item.cost} />
             {scientific && item.status !== 'succeeded' ? <section className="bench-evidence-failure"><strong>{t(item.status)}</strong><code>{item.failureReason || t('未提供失败原因')}</code><p>{t("该固定题位按 0 分计入总体。")}</p></section> : scientific && benchmarkCase?.kind === 'edit' ? <div className="bench-edit-comparison"><figure><figcaption>{t("编辑前")}</figcaption><BenchmarkEvidenceImage variants={item.beforeVariants} alt={t("{v0} · {v1} · 编辑前", {v0: name, v1: t(benchmarkCase.title)})} /></figure><figure><figcaption>{t("编辑后")}</figcaption><BenchmarkEvidenceImage variants={item.variants} alt={t("{v0} · {v1} · 编辑后", {v0: name, v1: t(benchmarkCase.title)})} /></figure></div> : <BenchmarkEvidenceImage variants={item.variants} alt={`${name} · ${t(benchmarkCase?.title || caseId)}`} />}
             {item.status === 'succeeded' || !scientific ? <EvidenceScores scores={item.scores} axes={scientific ? SCIENTIFIC_LEADERBOARD_AXES.filter((axis) => benchmarkCase?.applicableAxes?.includes(axis.id)) : LEADERBOARD_AXES} /> : null}

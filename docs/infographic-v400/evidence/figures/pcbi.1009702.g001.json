@@ -1,0 +1,51 @@
+{
+  "id": "pcbi.1009702.g001",
+  "paper": "pcbi.1009702",
+  "figure": {
+    "id": "pcbi.1009702.g001",
+    "label": "Fig 1",
+    "caption": "Example of a BN.\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009702.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009702.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Example of a BN.</title>\n<p>(A) Network structure <italic>G</italic>(<italic>V</italic>, <italic>E</italic>) for a BN consisting of <italic>n</italic> = 3 nodes <italic>x</italic><sub>1</sub>, <italic>x</italic><sub>2</sub>, and <italic>x</italic><sub>3</sub>. The Boolean functions are represented by the edges. (B) State transition diagram of all 2<sup>3</sup> = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component <italic>x</italic><sub>1</sub> are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) <italic>x</italic><sub>1</sub> undergoes phosphorylation by consuming its elemental state <italic>x</italic><sub>1</sub>-{0} to produce its modified state <italic>x</italic><sub>1</sub>-{P} by reaction <italic>r</italic><sub>1</sub> (phosphorylation). The modified <italic>x</italic><sub>1</sub>-{P} undergoes consumption thereby producing the neutral state <italic>x</italic><sub>1</sub>-{0} via reaction <italic>r</italic><sub>2</sub> (dephosphorylation) (details in [<xref ref-type=\"bibr\" rid=\"pcbi.1009702.ref029\">29</xref>]). (D) Relationship between initial states of both elemental states <italic>x</italic><sub>1</sub>-{0} and <italic>x</italic><sub>1</sub>-{P} of component <italic>x</italic><sub>1</sub> and the attractors. When at least either of the two elemental states <italic>x</italic><sub>1</sub>-{0} or <italic>x</italic><sub>1</sub>-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes <italic>r</italic><sub>1</sub> and <italic>r</italic><sub>2</sub> are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [<xref ref-type=\"bibr\" rid=\"pcbi.1009702.ref029\">29</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009702.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1009702.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1009702",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009702",
+    "title": "Identification of periodic attractors in Boolean networks using a priori information",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Ulrike Münzner",
+      "Tomoya Mori",
+      "Marcus Krantz",
+      "Edda Klipp",
+      "Tatsuya Akutsu"
+    ],
+    "year": "2022",
+    "license": "2022\nMünzner et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1009702.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009702.g001.png",
+      "bytes": 367246,
+      "sha256": "1626940dd34b4372305aa26c217199da6895a7252701f5aeb838a5b0707e0a63"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1009702.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009702.g001.tif",
+      "bytes": 432340,
+      "sha256": "f2680160c6cc4ed9419bf90d4edf5b09b7cf3bfcbcedaefbfa245ce28a0be1bc"
+    }
+  }
+}

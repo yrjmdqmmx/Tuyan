@@ -1,0 +1,60 @@
+{
+  "id": "pgen.1011738.g010",
+  "paper": "pgen.1011738",
+  "figure": {
+    "id": "pgen.1011738.g010",
+    "label": "Fig 10",
+    "caption": "The proposed Telomerase RNA (TR) transposition, duplication, and divergence model to explain the evolutionary changes of eukaryote telomeres.Figure is based on our Mimulus results but we argue can be applied across the eukaryotic kingdom. Shown are the phylogenetic relationships among the three Mimulus sections (Diplacus, Erythranthe, and Simiolus) that were examined in this study. In the branch leading up to each Mimulus section the evolutionary events that shaped the TR gene in the common ancestor of the section are shown with colored bars. In each branch we also show the chromosomal position of the TR gene and the TR templating sequence that ultimately determines the telomere repeat. In the evolutionary model we assume the ancestral telomere sequence in Mimulus to be AAACCCT and the evolutionary changes observed within the telomere sequence across the Mimulus genus are highlighted in red. We hypothesize the ancestral TR gene was located at an unknown chromosomal position that transposed and inserted into a new chromosomal position during the evolutionary split of each Mimulus section. In the Diplacus section the ancestral TR transposed to chromosome 2 and there was no mutation in the TR templating sequence, hence all Diplacus section species have the ancestral telomere sequence. Within the Simiolus and Erythranthe section in addition to the section-specific TR transposition events, the TR templating sequence was mutated resulting in species in those sections to have a telomere sequence that is AAACCCG and AAACCG respectively. In the Erythranthe section (magnified below) there was TR gene duplication that occurred in the common ancestor of the Erythranthe and Monimanthe section, resulting in the TR1 and TR2 gene duplicates. We posit TR2 as the recently derived paralog and it originated from a transposition-mediated gene duplication process. The two TR paralogs encode different templating sequences and with M. lewisii utilizing both paralogs during telomere synthesis, this results in sequence heterogeneous telomeres consisting of both AAACCG and AAACCCG repeats. While the functional mechanism in M. lewisii that leads to evolutionary retention of the TR2 gene is unknown, we hypothesize it could be related to telomere length regulation (telomere length of M. lewisii is longer compared to M. cardinalis and M. verbenaceus). On the other hand, in M. parishii and M. verbenaceus the TR2 duplicate has pseudogenized, meanwhile in M. cardinalis it might be undergoing pseudogenization, hence in all three species the telomere consists predominantly of a single telomere repeat sequence AAACCG. * denote the chromosomal position of the TR based on M. lewsii genome coordinates.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1011738.g010\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pgen.1011738.g010</object-id><label>Fig 10</label><caption><title>The proposed Telomerase RNA (TR) transposition, duplication, and divergence model to explain the evolutionary changes of eukaryote telomeres.</title><p>Figure is based on our <italic>Mimulus</italic> results but we argue can be applied across the eukaryotic kingdom. Shown are the phylogenetic relationships among the three <italic>Mimulus</italic> sections (<italic>Diplacus</italic>, <italic>Erythranthe</italic>, and <italic>Simiolus</italic>) that were examined in this study. In the branch leading up to each <italic>Mimulus</italic> section the evolutionary events that shaped the TR gene in the common ancestor of the section are shown with colored bars. In each branch we also show the chromosomal position of the TR gene and the TR templating sequence that ultimately determines the telomere repeat. In the evolutionary model we assume the ancestral telomere sequence in <italic>Mimulus</italic> to be AAACCCT and the evolutionary changes observed within the telomere sequence across the <italic>Mimulus</italic> genus are highlighted in red. We hypothesize the ancestral TR gene was located at an unknown chromosomal position that transposed and inserted into a new chromosomal position during the evolutionary split of each <italic>Mimulus</italic> section. In the <italic>Diplacus</italic> section the ancestral TR transposed to chromosome 2 and there was no mutation in the TR templating sequence, hence all <italic>Diplacus</italic> section species have the ancestral telomere sequence. Within the <italic>Simiolus</italic> and <italic>Erythranthe</italic> section in addition to the section-specific TR transposition events, the TR templating sequence was mutated resulting in species in those sections to have a telomere sequence that is AAACCCG and AAACCG respectively. In the <italic>Erythranthe</italic> section (magnified below) there was TR gene duplication that occurred in the common ancestor of the <italic>Erythranthe</italic> and <italic>Monimanthe</italic> section, resulting in the TR1 and TR2 gene duplicates. We posit TR2 as the recently derived paralog and it originated from a transposition-mediated gene duplication process. The two TR paralogs encode different templating sequences and with <italic>M. lewisii</italic> utilizing both paralogs during telomere synthesis, this results in sequence heterogeneous telomeres consisting of both AAACCG and AAACCCG repeats. While the functional mechanism in <italic>M. lewisii</italic> that leads to evolutionary retention of the TR2 gene is unknown, we hypothesize it could be related to telomere length regulation (telomere length of <italic>M. lewisii</italic> is longer compared to <italic>M. cardinalis</italic> and <italic>M. verbenaceus</italic>). On the other hand, in <italic>M. parishii</italic> and <italic>M. verbenaceus</italic> the TR2 duplicate has pseudogenized, meanwhile in <italic>M. cardinalis</italic> it might be undergoing pseudogenization, hence in all three species the telomere consists predominantly of a single telomere repeat sequence AAACCG. * denote the chromosomal position of the TR based on <italic>M. lewsii</italic> genome coordinates.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1011738.g010\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1011738.g010",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pgen.1011738",
+    "sourceUrl": "https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1011738",
+    "title": "Monkeyflower (Mimulus) uncovers the evolutionary basis of the eukaryote telomere sequence variation",
+    "journal": "PLOS Genetics",
+    "authors": [
+      "Surbhi Kumawat",
+      "Askhan Shametov",
+      "Liia R. Valeeva",
+      "Yoonha Ju",
+      "Irene Martinez",
+      "Dhenugen Logeswaran",
+      "Hongfei Chen",
+      "Jenn M. Coughlan",
+      "Julian J.-L. Chen",
+      "Yao-Wu Yuan",
+      "James M. Sobel",
+      "Dal-Hoe Koo",
+      "Eugene V. Shakirov",
+      "Jae Young Choi"
+    ],
+    "year": "2025",
+    "license": "2025\nKumawat et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosgenetics/article/figure/image?size=large&id=10.1371/journal.pgen.1011738.g010",
+      "path": "apps/paperbanana-api/assets/reference-library/pgen.1011738.g010.png",
+      "bytes": 1132534,
+      "sha256": "7b79fcf0b879c7a7a9e684b949dc938809028d5e75f5406af62562c0d0295cdf"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosgenetics/article/figure/image?size=original&id=10.1371/journal.pgen.1011738.g010",
+      "path": "apps/paperbanana-api/assets/reference-library/pgen.1011738.g010.tif",
+      "bytes": 1187004,
+      "sha256": "6247b0fb885d1bb84a1bcd7c25ec79adc35cafe9010363cc808e5092a02ae90a"
+    }
+  }
+}

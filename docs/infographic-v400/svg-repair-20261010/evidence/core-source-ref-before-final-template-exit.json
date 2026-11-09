@@ -1,0 +1,8 @@
+{
+  "exitCode": 1,
+  "tests": 1254,
+  "passed": 1253,
+  "failed": 1,
+  "failure": "reference-selection: old paid v1 descriptor recovery must reject before credentials",
+  "durationMs": 365647.283334
+}

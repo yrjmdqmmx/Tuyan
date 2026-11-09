@@ -1,0 +1,46 @@
+{
+  "figureTypeId": "dendrogram",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "id": "A",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "id": "B",
+        "x": 1,
+        "y": 0
+      },
+      {
+        "id": "C",
+        "x": 5,
+        "y": 4
+      },
+      {
+        "id": "D",
+        "x": 6,
+        "y": 4
+      }
+    ],
+    "units": {
+      "x": "standardized score",
+      "y": "standardized score"
+    },
+    "options": {
+      "input": "observations",
+      "dimensions": [
+        "x",
+        "y"
+      ],
+      "method": "average",
+      "metric": "euclidean",
+      "preprocessing": "none"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

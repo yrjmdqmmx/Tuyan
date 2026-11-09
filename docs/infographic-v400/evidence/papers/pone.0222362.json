@@ -1,0 +1,95 @@
+{
+  "doi": "10.1371/journal.pone.0222362",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0222362",
+  "title": "Robust methods in Mendelian randomization via penalization of heterogeneous causal estimates",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Jessica M. B. Rees",
+    "Angela M. Wood",
+    "Frank Dudbridge",
+    "Stephen Burgess"
+  ],
+  "year": "2019",
+  "license": "2019\nRees et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0222362.g001",
+      "label": "Fig 1",
+      "caption": "Causal directed acyclic graph illustrating the instrumental variable assumptions for the instrumental variable G, exposure X, outcome Y, and the set of variables (U) that confound the association between X and Y.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0222362.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0222362.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Causal directed acyclic graph illustrating the instrumental variable assumptions for the instrumental variable <italic>G</italic>, exposure <italic>X</italic>, outcome <italic>Y</italic>, and the set of variables (<italic>U</italic>) that confound the association between <italic>X</italic> and <italic>Y</italic>.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0222362.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0222362.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0222362.g002",
+      "label": "Fig 2",
+      "caption": "Decomposition of the association between the genetic variant G_{j} and the outcome Y into the indirect effect via the risk factor X and direct (pleiotropic) effect α_{j}.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0222362.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0222362.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Decomposition of the association between the genetic variant <italic>G</italic><sub><italic>j</italic></sub> and the outcome <italic>Y</italic> into the indirect effect via the risk factor <italic>X</italic> and direct (pleiotropic) effect <italic>α</italic><sub><italic>j</italic></sub>.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0222362.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0222362.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0222362.g003",
+      "label": "Fig 3",
+      "caption": "Graph A) displays the estimated genetic associations and 95% confidence intervals with body mass index (BMI, standard deviation units) and with schizophrenia (log odds ratios) for 97 genetic variants. Graph B) displays the estimated genetic associations and 95% confidence intervals with low-density lipoprotein cholesterol (LDL-C, standard deviation units) and with Alzheimer’s disease (log odds ratios) for 75 genetic variants: the two outlying variants are labelled with their rsID codes.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0222362.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0222362.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title />\n<p>Graph A) displays the estimated genetic associations and 95% confidence intervals with body mass index (BMI, standard deviation units) and with schizophrenia (log odds ratios) for 97 genetic variants. Graph B) displays the estimated genetic associations and 95% confidence intervals with low-density lipoprotein cholesterol (LDL-C, standard deviation units) and with Alzheimer’s disease (log odds ratios) for 75 genetic variants: the two outlying variants are labelled with their rsID codes.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0222362.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0222362.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0222362.g004",
+      "label": "Fig 4",
+      "caption": "Log odds ratio and 95% confidence intervals for schizophrenia per 1 standard deviation increase in body mass index for different values of the tuning parameter (λ = 0.1, 0.2, …, 4.9, 5.0, 5.2, 5.4, …, 9.8, 10.0) included in the Lasso regression model.\nThe number of genetic variants included in the IVW models are also displayed. The dotted line at λ = 1.9 is the value of the tuning parameter chosen by the heterogeneity stopping rule. The dashed line at λ = 6.63 is the value chosen by cross-validation.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0222362.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0222362.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Log odds ratio and 95% confidence intervals for schizophrenia per 1 standard deviation increase in body mass index for different values of the tuning parameter (λ = 0.1, 0.2, …, 4.9, 5.0, 5.2, 5.4, …, 9.8, 10.0) included in the Lasso regression model.</title>\n<p>The number of genetic variants included in the IVW models are also displayed. The dotted line at λ = 1.9 is the value of the tuning parameter chosen by the heterogeneity stopping rule. The dashed line at λ = 6.63 is the value chosen by cross-validation.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0222362.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0222362.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0222362.g005",
+      "label": "Fig 5",
+      "caption": "Log odds ratio and 95% confidence intervals for Alzheimer’s per 1 standard deviation increase in low-density lipoprotein cholesterol for different values of the tuning parameter (λ = 0.1, 0.2, …, 4.9, 5.0, 5.2, 5.4, …, 9.8, 10.0) included in the Lasso regression model.\nThe number of genetic variants included in the IVW models are also displayed. The dotted line at λ = 3.4 is the value of the tuning parameter chosen by the heterogeneity stopping rule. The dashed line at λ = 4.00 is the value chosen by cross-validation.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0222362.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0222362.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Log odds ratio and 95% confidence intervals for Alzheimer’s per 1 standard deviation increase in low-density lipoprotein cholesterol for different values of the tuning parameter (λ = 0.1, 0.2, …, 4.9, 5.0, 5.2, 5.4, …, 9.8, 10.0) included in the Lasso regression model.</title>\n<p>The number of genetic variants included in the IVW models are also displayed. The dotted line at λ = 3.4 is the value of the tuning parameter chosen by the heterogeneity stopping rule. The dashed line at λ = 4.00 is the value chosen by cross-validation.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0222362.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0222362.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0222362.g006",
+      "label": "Fig 6",
+      "caption": "Causal directed acyclic graph used in the data generating model for the simulation study.\nU represents the set of variables that confound the association between the risk factor X and outcome Y. The genetic effect of G_{j} on X is βXj, the direct (pleiotropic) effect of G_{j} on Y is α_{j}, the effect of G_{j} on U is ϕ_{j}, and the causal effect of X on Y is θ.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pone.0222362.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0222362.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Causal directed acyclic graph used in the data generating model for the simulation study.</title>\n<p><italic>U</italic> represents the set of variables that confound the association between the risk factor <italic>X</italic> and outcome <italic>Y</italic>. The genetic effect of <italic>G</italic><sub><italic>j</italic></sub> on <italic>X</italic> is <inline-formula id=\"pone.0222362.e034\"><alternatives><graphic id=\"pone.0222362.e034g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0222362.e034\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M34\"><ns1:msub><ns1:mi>β</ns1:mi><ns1:msub><ns1:mi>X</ns1:mi><ns1:mi>j</ns1:mi></ns1:msub></ns1:msub></ns1:math></alternatives></inline-formula>, the direct (pleiotropic) effect of <italic>G</italic><sub><italic>j</italic></sub> on <italic>Y</italic> is <italic>α</italic><sub><italic>j</italic></sub>, the effect of <italic>G</italic><sub><italic>j</italic></sub> on <italic>U</italic> is <italic>ϕ</italic><sub><italic>j</italic></sub>, and the causal effect of <italic>X</italic> on <italic>Y</italic> is <italic>θ</italic>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0222362.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "id": "pone.0222362.e034g",
+        "mimetype": "image",
+        "position": "anchor",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0222362.e034",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

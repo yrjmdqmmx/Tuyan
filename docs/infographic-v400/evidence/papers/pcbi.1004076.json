@@ -1,0 +1,84 @@
+{
+  "doi": "10.1371/journal.pcbi.1004076",
+  "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004076",
+  "title": "Model-based Traction Force Microscopy Reveals Differential Tension in Cellular Actin Bundles",
+  "journal": "PLOS Computational Biology",
+  "authors": [
+    "Jérôme R. D. Soiné",
+    "Christoph A. Brand",
+    "Jonathan Stricker",
+    "Patrick W. Oakes",
+    "Margaret L. Gardel",
+    "Ulrich S. Schwarz"
+  ],
+  "year": "2015",
+  "license": "2015\nSoiné et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pcbi.1004076.g001",
+      "label": "Fig 1",
+      "caption": "Actin cytoskeleton and traction force microscopy.\n(A) Schematics of a cell cultured on a soft elastic substrate with embedded fluorescent marker beads. Three different kinds of stress fibers and the actin network result in forces being transmitted to the substrate through focal adhesions. (B) Experimental data for a representative U2OS-cell. Actin and paxillin images show stress fibers and focal adhesions, respectively. Displacement data is extracted form the movement of the marker beads. Scale bar 10 microns. (C) Reconstruction of the traction forces with regularized Fourier Transform Traction Cytometry depends on the choice of a regularization parameter. The standard choice based on a Bayesian estimate is marked by the red box.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1004076.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1004076.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Actin cytoskeleton and traction force microscopy.</title>\n<p>(A) Schematics of a cell cultured on a soft elastic substrate with embedded fluorescent marker beads. Three different kinds of stress fibers and the actin network result in forces being transmitted to the substrate through focal adhesions. (B) Experimental data for a representative U2OS-cell. Actin and paxillin images show stress fibers and focal adhesions, respectively. Displacement data is extracted form the movement of the marker beads. Scale bar 10 microns. (C) Reconstruction of the traction forces with regularized Fourier Transform Traction Cytometry depends on the choice of a regularization parameter. The standard choice based on a Bayesian estimate is marked by the red box.</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pcbi.1004076.g001\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1004076.g001",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1004076.g002",
+      "label": "Fig 2",
+      "caption": "Computational workflow of MBTFM.\n(A) Actin and paxillin images are segmented and converted into a whole cell model, with an individual tension value assigned to each stress fiber and one global tension value assigned to the actin networks of the cell. (B) Each set of model parameters leads to an error estimate which is then minimized to estimate the best fit to the experimentally measured displacement field. In contrast to standard traction force microscopy, no regularization scheme is required for MBTFM.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1004076.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1004076.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Computational workflow of MBTFM.</title>\n<p>(A) Actin and paxillin images are segmented and converted into a whole cell model, with an individual tension value assigned to each stress fiber and one global tension value assigned to the actin networks of the cell. (B) Each set of model parameters leads to an error estimate which is then minimized to estimate the best fit to the experimentally measured displacement field. In contrast to standard traction force microscopy, no regularization scheme is required for MBTFM.</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pcbi.1004076.g002\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1004076.g002",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1004076.g003",
+      "label": "Fig 3",
+      "caption": "Orientation analysis of focal adhesions, stress fibers, and local displacements for U2OS-cells.\n(A) Relative angular distribution of FAs and attached SFs (top, n = 1305). (B) Relative angular distribution of local displacements at anchoring points of SFs (middle, n = 1297). (C) Area distribution of mature FAs with (blue) and without attached SFs (green) (bottom,n = 3612). The distributions are based on a data set of 16 U2OS-cells on soft elastic substrates (Young's modulus E = 8.4kPa).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1004076.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1004076.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Orientation analysis of focal adhesions, stress fibers, and local displacements for U2OS-cells.</title>\n<p>(A) Relative angular distribution of FAs and attached SFs (top, n = 1305). (B) Relative angular distribution of local displacements at anchoring points of SFs (middle, n = 1297). (C) Area distribution of mature FAs with (blue) and without attached SFs (green) (bottom,n = 3612). The distributions are based on a data set of 16 U2OS-cells on soft elastic substrates (Young's modulus E = 8.4kPa).</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pcbi.1004076.g003\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1004076.g003",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1004076.g004",
+      "label": "Fig 4",
+      "caption": "Robustness of MBTFM and comparison with FTTC.\n(A) Realistic traction patterns are generated by calculating the direct problem for a known test tension distribution. Gaussian noise is added to the resulting displacement vectors. The noise level is defined with respect to the largest displacement in the whole field. With increasing noise level the L_{2} error estimate increases continuously as expected. (B) Total forces and network forces reconstructed with MBTFM are not affected by the noise level in the simulations, in marked contrast to standard reconstruction methods like FTTC. (C) The precision of tension predictions for individual stress fibers decreases for higher noise level (MRD: mean relative deviation). By evaluating experimental displacement data for noise in traction-free regions, we find a typical experimental noise level between 5–10%. In this region (gray), the MRD does not exceed 10%, which we thus identify with the accuracy of our tension reconstruction for stress fibers. (D) Direct comparison of the total force obtained with FTTC and MBTFM reveals a linear relationship (red). The slope of the linear fit line here depends on the regularization parameter alone. By fitting the regularization parameter to a one-to-one relationship (blue), FTTC can be calibrated based on the biophysical model input instead of traditional noise optimization (red). (E) Comparison of the standard TFM method FTTC and MBTFM. Based on the additional experimental data, the model can achieve a more detailed traction map. Further it allows us to directly map tensions in single stress fibers (black lines in inset) to experimental displacements.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1004076.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1004076.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Robustness of MBTFM and comparison with FTTC.</title>\n<p>(A) Realistic traction patterns are generated by calculating the direct problem for a known test tension distribution. Gaussian noise is added to the resulting displacement vectors. The noise level is defined with respect to the largest displacement in the whole field. With increasing noise level the L<sub>2</sub> error estimate increases continuously as expected. (B) Total forces and network forces reconstructed with MBTFM are not affected by the noise level in the simulations, in marked contrast to standard reconstruction methods like FTTC. (C) The precision of tension predictions for individual stress fibers decreases for higher noise level (MRD: mean relative deviation). By evaluating experimental displacement data for noise in traction-free regions, we find a typical experimental noise level between 5–10%. In this region (gray), the MRD does not exceed 10%, which we thus identify with the accuracy of our tension reconstruction for stress fibers. (D) Direct comparison of the total force obtained with FTTC and MBTFM reveals a linear relationship (red). The slope of the linear fit line here depends on the regularization parameter alone. By fitting the regularization parameter to a one-to-one relationship (blue), FTTC can be calibrated based on the biophysical model input instead of traditional noise optimization (red). (E) Comparison of the standard TFM method FTTC and MBTFM. Based on the additional experimental data, the model can achieve a more detailed traction map. Further it allows us to directly map tensions in single stress fibers (black lines in inset) to experimental displacements.</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pcbi.1004076.g004\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1004076.g004",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1004076.g005",
+      "label": "Fig 5",
+      "caption": "Statistical distribution of stress fiber tensions in U2OS-cells.\n(A) Histogram of single stress fiber tension values sorted by fiber types (16 U2OS-cells, N = 369 SFs). All three segmented types show a broad distribution due to biological variability, but VSFs are on average under the highest tension. (B) The statistical significance of the different distributions is verified by performing a consistency check in which the distributions are scrambled. We swap the distributions for the tensions of dorsal and ventral SFs (the tension distribution for transverse arcs is left unchanged) and then assign new tension values for a specific cell by drawing from these distributions. Because the new tension values are generated by random, none of them is as good as the optimal set (dashed line). However, repeated simulation with matching distributions (green) lead to significantly better error estimate values than using a swap of DSF and VSF distributions (blue).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1004076.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1004076.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Statistical distribution of stress fiber tensions in U2OS-cells.</title>\n<p>(A) Histogram of single stress fiber tension values sorted by fiber types (16 U2OS-cells, N = 369 SFs). All three segmented types show a broad distribution due to biological variability, but VSFs are on average under the highest tension. (B) The statistical significance of the different distributions is verified by performing a consistency check in which the distributions are scrambled. We swap the distributions for the tensions of dorsal and ventral SFs (the tension distribution for transverse arcs is left unchanged) and then assign new tension values for a specific cell by drawing from these distributions. Because the new tension values are generated by random, none of them is as good as the optimal set (dashed line). However, repeated simulation with matching distributions (green) lead to significantly better error estimate values than using a swap of DSF and VSF distributions (blue).</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pcbi.1004076.g005\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1004076.g005",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

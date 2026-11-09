@@ -13,7 +13,7 @@ const findings = [];
 function isExactKnownFixture(path, kind, value) {
   const file = relative(root, path);
   if ((file === 'README.md' || file === 'scripts/install-egress.sh' || file === 'tests/scan-egress-secrets.mjs') && kind === 'non-reserved public IPv4' &&
-      new Set(['1.1.1.1', '223.5.5.5']).has(value)) {
+      new Set(['1.1.1.1', '223.5.5.5', '223.6.6.6']).has(value)) {
     return true;
   }
   if ((file === 'tests/squid-policy-validator.mjs' || file === 'tests/scan-egress-secrets.mjs') && kind === 'non-reserved public IPv6' &&

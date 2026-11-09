@@ -1,0 +1,51 @@
+{
+  "id": "pcbi.1013027.g004",
+  "paper": "pcbi.1013027",
+  "figure": {
+    "id": "pcbi.1013027.g004",
+    "label": "Fig 4",
+    "caption": "A case study on the application of scSDNE in the human lymph node microenvironment.(A) Spatial plots show cell abundance (color intensity) for the specified cell types. (B) Dot plot shows the predicted interactions between the immune cell types. (C) The edge width represents the strength of intercellular communication between the cell types. (D) Circos plot. The arrow points from the ligands in the sending cells to the receptors in the receiving cells.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1013027.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1013027.g004</object-id><label>Fig 4</label><caption><title>A case study on the application of scSDNE in the human lymph node microenvironment.</title><p><bold>(A)</bold> Spatial plots show cell abundance (color intensity) for the specified cell types. <bold>(B)</bold> Dot plot shows the predicted interactions between the immune cell types. <bold>(C)</bold> The edge width represents the strength of intercellular communication between the cell types. <bold>(D)</bold> Circos plot. The arrow points from the ligands in the sending cells to the receptors in the receiving cells.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1013027.g004\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1013027.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1013027",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1013027",
+    "title": "scSDNE: A semi-supervised method for inferring cell-cell interactions based on graph embedding",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Chenchen Jia",
+      "Haiyun Wang",
+      "Jianping Zhao",
+      "Junfeng Xia",
+      "Chunhou Zheng"
+    ],
+    "year": "2025",
+    "license": "2025\nJia et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1013027.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1013027.g004.png",
+      "bytes": 4270804,
+      "sha256": "b5ad6d535cc56bd3b895ef0b6b98d3a24a33b79f4dd42c2920a23e9206c63717"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1013027.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1013027.g004.tif",
+      "bytes": 6485300,
+      "sha256": "e2cd489a81660d770a26662bb15b5940fd12917b4dbaf411210283507750dd40"
+    }
+  }
+}

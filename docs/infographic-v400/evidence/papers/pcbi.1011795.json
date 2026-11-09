@@ -1,0 +1,110 @@
+{
+  "doi": "10.1371/journal.pcbi.1011795",
+  "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011795",
+  "title": "Mutational signature dynamics indicate SARS-CoV-2’s evolutionary capacity is driven by host antiviral molecules",
+  "journal": "PLOS Computational Biology",
+  "authors": [
+    "Kieran D. Lamb",
+    "Martha M. Luka",
+    "Megan Saathoff",
+    "Richard J. Orton",
+    "My V. T. Phan",
+    "Matthew Cotten",
+    "Ke Yuan",
+    "David L. Robertson"
+  ],
+  "year": "2024",
+  "license": "2024\nLamb et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pcbi.1011795.g001",
+      "label": "Fig 1",
+      "caption": "Continent-level SARS-CoV-2 lineage dynamics and pandemic curves.\nLines show a 14-day rolling average of reported SARS-CoV-2 cases. Bars show the biweekly proportions of common lineages and are coloured by lineage. The white space shows the proportion of sequences from other (non-majority) lineages.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011795.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011795.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Continent-level SARS-CoV-2 lineage dynamics and pandemic curves.</title>\n<p>Lines show a 14-day rolling average of reported SARS-CoV-2 cases. Bars show the biweekly proportions of common lineages and are coloured by lineage. The white space shows the proportion of sequences from other (non-majority) lineages.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011795.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011795.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1011795.g002",
+      "label": "Fig 2",
+      "caption": "Association of SARS-CoV-2 infection rates and predictor variables globally.\nA. Pearson’s correlation matrix of infection rate and predictor variables. Positive correlations are denoted in orange and negative correlations in blue and colour intensity is directly proportional to coefficient value. B. Model fitting using multiple linear regression. Black solid lines show a 14-day rolling average of adjusted SARS-CoV-2 cases. Pink solid lines show fitted mean response values of infection rates with predictor values as input.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011795.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011795.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Association of SARS-CoV-2 infection rates and predictor variables globally.</title>\n<p><bold>A</bold>. Pearson’s correlation matrix of infection rate and predictor variables. Positive correlations are denoted in orange and negative correlations in blue and colour intensity is directly proportional to coefficient value. <bold>B</bold>. Model fitting using multiple linear regression. Black solid lines show a 14-day rolling average of adjusted SARS-CoV-2 cases. Pink solid lines show fitted mean response values of infection rates with predictor values as input.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011795.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011795.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1011795.g003",
+      "label": "Fig 3",
+      "caption": "Mutational signatures extracted from the SARS-CoV-2 genome sequences by non-negative matrix factorisation.\nSignatures are patterns of probabilities for each category of substitution in a three nucleotide context. Each bar represents a context and is coloured by the substitution category of the mutation that occurs there. Each signature may represent a distinct mutational process. Signature 1 is heavily biased towards cytosine to thymine (C→T) mutations, particularly in 3’ CpG contexts TCG, CCG and ACG. Signature 2 from SARS-CoV-2 is predominantly adenine to guanine (A→G), guanine to adenine (G→A) and thymine to cytosine mutations (T→C). Signature 3 is strongly guanine to thymine (G→T), a pattern that is thought to be caused by the action of guanine oxidation by reactive oxygen species. Signatures are shown normalised against the tri-nucleotide composition of the SARS-CoV-2 genome. Non-normalised forms in the context of the SARS-CoV-2 genome composition are shown in S5 Fig.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011795.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011795.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Mutational signatures extracted from the SARS-CoV-2 genome sequences by non-negative matrix factorisation.</title>\n<p>Signatures are patterns of probabilities for each category of substitution in a three nucleotide context. Each bar represents a context and is coloured by the substitution category of the mutation that occurs there. Each signature may represent a distinct mutational process. Signature 1 is heavily biased towards cytosine to thymine (C→T) mutations, particularly in 3’ CpG contexts TCG, CCG and ACG. Signature 2 from SARS-CoV-2 is predominantly adenine to guanine (A→G), guanine to adenine (G→A) and thymine to cytosine mutations (T→C). Signature 3 is strongly guanine to thymine (G→T), a pattern that is thought to be caused by the action of guanine oxidation by reactive oxygen species. Signatures are shown normalised against the tri-nucleotide composition of the SARS-CoV-2 genome. Non-normalised forms in the context of the SARS-CoV-2 genome composition are shown in <xref ref-type=\"supplementary-material\" rid=\"pcbi.1011795.s005\">S5 Fig</xref>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011795.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011795.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1011795.g004",
+      "label": "Fig 4",
+      "caption": "Signature exposure plots showing the activities of the extracted mutation signatures over the duration of the COVID-19 pandemic.\nA. Shows the percentage activity of the signatures during a given week of the pandemic, with each colour representing a different signature. B. Shows the signature activities as their absolute values at each epidemic week.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011795.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011795.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Signature exposure plots showing the activities of the extracted mutation signatures over the duration of the COVID-19 pandemic.</title>\n<p><bold>A</bold>. Shows the percentage activity of the signatures during a given week of the pandemic, with each colour representing a different signature. <bold>B</bold>. Shows the signature activities as their absolute values at each epidemic week.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011795.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011795.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1011795.g005",
+      "label": "Fig 5",
+      "caption": "A. Counts of unique SARS-CoV-2 mutations for each epidemic week, with colours representing which continent the mutations came from. B. Counts of unique mutations per week that are part of the mutational signature substitution-context features (i.e., no indel mutations included). Colours represent which lineage/group of lineages the mutations belong to. C. Ridgeline plot showing the exposure of mutational signatures in SARS-CoV-2 variant-defined subsets. Exposures are coloured by the signature they have been attributed to. D. Ridgeline plot showing the exposure of mutational signatures in SARS-CoV-2 continent-defined subsets.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011795.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011795.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title />\n<p><bold>A</bold>. Counts of unique SARS-CoV-2 mutations for each epidemic week, with colours representing which continent the mutations came from. <bold>B</bold>. Counts of unique mutations per week that are part of the mutational signature substitution-context features (i.e., no indel mutations included). Colours represent which lineage/group of lineages the mutations belong to. <bold>C</bold>. Ridgeline plot showing the exposure of mutational signatures in SARS-CoV-2 variant-defined subsets. Exposures are coloured by the signature they have been attributed to. <bold>D</bold>. Ridgeline plot showing the exposure of mutational signatures in SARS-CoV-2 continent-defined subsets.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011795.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011795.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1011795.g006",
+      "label": "Fig 6",
+      "caption": "A. Exposures for each of the SARS-CoV-2 mutational signatures for both synonymous and non-synonymous stratified datasets. Synonymous exposures are below 0 on the y-axis, while non-synonymous exposures are above 0. Each area represents signature exposures across epidemic weeks, with colours representing which signature the exposures are attributed to. B. Non-synonymous and synonymous mutations in the tree-based references of identified variants of concern. Signature 1 produces the majority of both synonymous and non-synonymous substitutions in all lineages. Signature 3 mutations are more often non-synonymous substitutions in the lineages of concern, with most lineages having few to no changes. Signature 2 non-synonymous mutations appear to have increased in the Omicron lineages (BA.1 and BA.2). C. Variant of concern associated non-synonymous mutations coloured by the mutational signature with the greatest likelihood of causing the change. D. Variant of concern synonymous mutations coloured by the putative mutational process that caused the change.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011795.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011795.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title />\n<p><bold>A</bold>. Exposures for each of the SARS-CoV-2 mutational signatures for both synonymous and non-synonymous stratified datasets. Synonymous exposures are below 0 on the y-axis, while non-synonymous exposures are above 0. Each area represents signature exposures across epidemic weeks, with colours representing which signature the exposures are attributed to. <bold>B</bold>. Non-synonymous and synonymous mutations in the tree-based references of identified variants of concern. Signature 1 produces the majority of both synonymous and non-synonymous substitutions in all lineages. Signature 3 mutations are more often non-synonymous substitutions in the lineages of concern, with most lineages having few to no changes. Signature 2 non-synonymous mutations appear to have increased in the Omicron lineages (BA.1 and BA.2). <bold>C</bold>. Variant of concern associated non-synonymous mutations coloured by the mutational signature with the greatest likelihood of causing the change. <bold>D</bold>. Variant of concern synonymous mutations coloured by the putative mutational process that caused the change.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011795.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011795.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1011795.g007",
+      "label": "Fig 7",
+      "caption": "A. Signature exposures per month from wastewater sequences show similar trends in mutational processes as the global data, although at a lower resolution and, interestingly, with a lower Signature 2 exposure. B. Substitutions in SARS-CoV-2 consensus sequences from infections of immunocompromised individuals contain mutation types corresponding with patterns observed in the distinct signatures. Of note, there are more synonymous mutations present in the chronic infection data than in the global sequences, although it is important to note the sample size for immunocompromised infections is low. C. Mutation counts in wastewater sequences for bi-yearly time periods. Highly mutated sequences cluster to the right especially during the 2021 July-December time period, as would be expected when Omicron was emerging.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011795.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011795.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title />\n<p><bold>A</bold>. Signature exposures per month from wastewater sequences show similar trends in mutational processes as the global data, although at a lower resolution and, interestingly, with a lower Signature 2 exposure. <bold>B</bold>. Substitutions in SARS-CoV-2 consensus sequences from infections of immunocompromised individuals contain mutation types corresponding with patterns observed in the distinct signatures. Of note, there are more synonymous mutations present in the chronic infection data than in the global sequences, although it is important to note the sample size for immunocompromised infections is low. <bold>C</bold>. Mutation counts in wastewater sequences for bi-yearly time periods. Highly mutated sequences cluster to the right especially during the 2021 July-December time period, as would be expected when Omicron was emerging.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011795.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011795.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

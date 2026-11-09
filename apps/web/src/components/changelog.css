@@ -36,6 +36,24 @@
 .changelog-kind-新增 { background: #e2ecee; color: #335c67; }
 .changelog-changes { display: grid; gap: 12px; list-style: disc; padding-left: 19px; margin: 0; }
 .changelog-changes li { font-size: 14px; color: var(--ink-soft); line-height: 1.9; }
+.changelog-topic-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 16px; margin-top: 24px; color: var(--muted); font-size: 12px; }
+.changelog-topic-toolbar > div { display: flex; flex-wrap: wrap; gap: 4px; }
+.changelog-topic-toolbar button { min-height: 44px; padding: 8px; border: 0; border-radius: 6px; background: transparent; color: var(--sage); font: inherit; cursor: pointer; }
+.changelog-topic-toolbar button:hover { background: var(--surface); }
+.changelog-topic-list { border-top: 1px solid var(--hairline); }
+.changelog-topic { border-bottom: 1px solid var(--hairline); }
+.changelog-topic > summary { display: flex; align-items: center; gap: 16px; padding: 18px 0; list-style: none; cursor: pointer; }
+.changelog-topic > summary::-webkit-details-marker { display: none; }
+.changelog-topic-heading { flex: 1; min-width: 0; }
+.changelog-topic-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font-size: 15px; line-height: 1.6; color: var(--ink); }
+.changelog-topic-title strong { font-weight: 650; }
+.changelog-topic-count { color: var(--muted); font-size: 11px; white-space: nowrap; }
+.changelog-topic-summary { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+.changelog-topic-chevron { flex: none; color: var(--muted); }
+.changelog-topic[open] > summary .changelog-topic-chevron { transform: rotate(180deg); }
+.changelog-topic > summary:hover .changelog-topic-title, .changelog-topic[open] .changelog-topic-title { color: var(--sage); }
+.changelog-topic-content { padding: 0 0 22px; }
+.changelog-topic-content .changelog-change-group:first-child h5 { margin-top: 0; }
 .changelog-sources { margin-top: 14px; color: var(--muted); font-size: 12px; }
 .changelog-sources summary { width: fit-content; padding: 8px 0; cursor: pointer; }
 .changelog-sources > div { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 4px; }

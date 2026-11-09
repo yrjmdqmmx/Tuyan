@@ -1,0 +1,51 @@
+{
+  "id": "pcbi.1013027.g003",
+  "paper": "pcbi.1013027",
+  "figure": {
+    "id": "pcbi.1013027.g003",
+    "label": "Fig 3",
+    "caption": "Comparison analysis of intercellular communication between HCC and tumor-adjacent tissues.(A) Overview of the cell clusters derived from scRNA-seq data of tumor-adjacent and HCC tissues (UMAP). (B) Heatmap illustrates intercellular communication from hepatocytes to other immune cell types (normalized score greater than 0. 5). (C) Dot plot shows the predicted interactions between hepatocyte and the specified immune cell types in both HCC and tumor-adjacent tissues. (D) Enrichment analysis of the KEGG pathways. (E) Comparison of the number of significant L-R pairs from hepatocytes to immune cell types. (F) Sankey plot represents intercellular communication from hepatocytes to Mono/Macro in HCC where the thickness of the connecting bands reflects the intensity of L-R interactions.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1013027.g003\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1013027.g003</object-id><label>Fig 3</label><caption><title>Comparison analysis of intercellular communication between HCC and tumor-adjacent tissues.</title><p><bold>(A)</bold> Overview of the cell clusters derived from scRNA-seq data of tumor-adjacent and HCC tissues (UMAP). <bold>(B)</bold> Heatmap illustrates intercellular communication from hepatocytes to other immune cell types (normalized score greater than 0. 5). <bold>(C)</bold> Dot plot shows the predicted interactions between hepatocyte and the specified immune cell types in both HCC and tumor-adjacent tissues. <bold>(D)</bold> Enrichment analysis of the KEGG pathways. <bold>(E)</bold> Comparison of the number of significant L-R pairs from hepatocytes to immune cell types. <bold>(F)</bold> Sankey plot represents intercellular communication from hepatocytes to Mono/Macro in HCC where the thickness of the connecting bands reflects the intensity of L-R interactions.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1013027.g003\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1013027.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1013027",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1013027",
+    "title": "scSDNE: A semi-supervised method for inferring cell-cell interactions based on graph embedding",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Chenchen Jia",
+      "Haiyun Wang",
+      "Jianping Zhao",
+      "Junfeng Xia",
+      "Chunhou Zheng"
+    ],
+    "year": "2025",
+    "license": "2025\nJia et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1013027.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1013027.g003.png",
+      "bytes": 4152185,
+      "sha256": "8cd904f7b71878db19244643a97668fe5f83da6b8310597e2db20ff49573f7b4"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1013027.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1013027.g003.tif",
+      "bytes": 6111200,
+      "sha256": "10aed881e45a56c4687b3080c8b1e9e2a0ea3ffa8dae6e63eed66897df220cb1"
+    }
+  }
+}

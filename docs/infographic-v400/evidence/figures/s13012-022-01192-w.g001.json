@@ -1,0 +1,50 @@
+{
+  "id": "s13012-022-01192-w.g001",
+  "paper": "s13012-022-01192-w",
+  "metadata": {
+    "doi": "10.1186/s13012-022-01192-w",
+    "sourceUrl": "https://link.springer.com/article/10.1186/s13012-022-01192-w",
+    "title": "Extending analytic methods for economic evaluation in implementation science",
+    "journal": "Implementation Science : IS",
+    "authors": [
+      "Meghan C O’Leary",
+      "Kristen Hassmiller Lich",
+      "Leah Frerichs",
+      "Jennifer Leeman",
+      "Daniel S Reuland",
+      "Stephanie B Wheeler"
+    ],
+    "year": "2022",
+    "license": "© The Author(s) 2022Open AccessThis article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/. The Creative Commons Public Domain Dedication waiver (http://creativecommons.org/publicdomain/zero/1.0/) applies to the data made available in this article, unless otherwise stated in a credit line to the data.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    ]
+  },
+  "figure": {
+    "id": "Fig1",
+    "label": "Fig. 1",
+    "caption": "a Use of swimlane diagrams to identify economic and fidelity measures for the SCORE intervention during the Preparation phase. This is a simplified version of a process flow diagram for patient navigation to follow-up colonoscopy provided as part of the SCORE intervention. Examples are provided of how specific process steps are used to develop cost and fidelity measures and appropriate tools for measuring these constructs. CHC community health center, FIT fecal immunochemical test, GI gastrointestinal, SCORE Scaling Colorectal Cancer Screening Through Outreach, Referral, and Engagement. b Use of swimlane diagrams to inform mixed methods approach to estimating costs of implementing the SCORE intervention. This is a simplified version of a process flow diagram for patient navigation to follow-up colonoscopy provided as part of the SCORE intervention. For individual steps involved in implementing the patient navigation intervention, examples are provided for how diverse types of methods can be used to collect and estimate the required resources to implement that step. CHC community health center, FIT fecal immunochemical test, GI gastrointestinal, SCORE Scaling Colorectal Cancer Screening Through Outreach, Referral, and Engagement. c Example integration and presentation of mixed methods results. This is an example using hypothetical data of how we might integrate the quantitative results of our analysis (in this case, the proportion of patients who received each process step) with qualitative data from implementation agents. The color-coding is used to identify process steps from the process flow diagram included in (a and b) with low (< 70% of patients), moderate (between 70 and 84% of patients), and high (85% of patients or higher) fidelity. This structure can also be used to integrate cost estimates per step with qualitative findings",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"Fig1\" position=\"float\"><label>Fig. 1</label><caption><p><bold>a</bold> Use of swimlane diagrams to identify economic and fidelity measures for the SCORE intervention during the Preparation phase. This is a simplified version of a process flow diagram for patient navigation to follow-up colonoscopy provided as part of the SCORE intervention. Examples are provided of how specific process steps are used to develop cost and fidelity measures and appropriate tools for measuring these constructs. <italic>CHC</italic> community health center, <italic>FIT</italic> fecal immunochemical test, <italic>GI</italic> gastrointestinal, <italic>SCORE</italic> Scaling Colorectal Cancer Screening Through Outreach, Referral, and Engagement. <bold>b</bold> Use of swimlane diagrams to inform mixed methods approach to estimating costs of implementing the SCORE intervention. This is a simplified version of a process flow diagram for patient navigation to follow-up colonoscopy provided as part of the SCORE intervention. For individual steps involved in implementing the patient navigation intervention, examples are provided for how diverse types of methods can be used to collect and estimate the required resources to implement that step. <italic>CHC</italic> community health center, <italic>FIT</italic> fecal immunochemical test, <italic>GI</italic> gastrointestinal, <italic>SCORE</italic> Scaling Colorectal Cancer Screening Through Outreach, Referral, and Engagement. <bold>c</bold> Example integration and presentation of mixed methods results. This is an example using hypothetical data of how we might integrate the quantitative results of our analysis (in this case, the proportion of patients who received each process step) with qualitative data from implementation agents. The color-coding is used to identify process steps from the process flow diagram included in (<bold>a</bold> and <bold>b</bold>) with low (&lt; 70% of patients), moderate (between 70 and 84% of patients), and high (85% of patients or higher) fidelity. This structure can also be used to integrate cost estimates per step with qualitative findings</p></caption><alternatives><graphic content-type=\"image\" id=\"MO1\" ns0:href=\"13012_2022_1192_Fig1_HTML.jpg\" /><graphic content-type=\"thumb\" ns0:href=\"13012_2022_1192_Fig1_HTML.gif\" /></alternatives></fig>",
+    "graphic": {
+      "content-type": "image",
+      "id": "MO1",
+      "{http://www.w3.org/1999/xlink}href": "13012_2022_1192_Fig1_HTML.jpg"
+    }
+  },
+  "assets": {
+    "large": {
+      "url": "https://media.springernature.com/full/springer-static/image/art%3A10.1186%2Fs13012-022-01192-w/MediaObjects/13012_2022_1192_Fig1_HTML.png",
+      "path": "apps/paperbanana-api/assets/reference-library/s13012-022-01192-w.g001.png",
+      "bytes": 923852,
+      "sha256": "f7e1a504b3e21990bfbcd331daec0acad836e9b5115ceb3844c1a2681d4a7571"
+    },
+    "original": {
+      "url": "https://media.springernature.com/full/springer-static/image/art%3A10.1186%2Fs13012-022-01192-w/MediaObjects/13012_2022_1192_Fig1_HTML.png",
+      "path": "apps/paperbanana-api/assets/reference-library/s13012-022-01192-w.g001.png",
+      "bytes": 923852,
+      "sha256": "f7e1a504b3e21990bfbcd331daec0acad836e9b5115ceb3844c1a2681d4a7571"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "scenario": "state-diagram-svg",
+    "originalInputHashMatches": true,
+    "unchangedExceptCredentialsAndRounds": true
+  },
+  {
+    "scenario": "mixed-workflow-bar-svg",
+    "originalInputHashMatches": true,
+    "unchangedExceptCredentialsAndRounds": true
+  }
+]

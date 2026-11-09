@@ -4,6 +4,7 @@ const FOCUSABLE_SELECTOR = [
   '[data-autofocus]',
   'button:not([disabled])',
   'a[href]',
+  'summary',
   'input:not([disabled])',
   'select:not([disabled])',
   'textarea:not([disabled])',
@@ -11,8 +12,27 @@ const FOCUSABLE_SELECTOR = [
 ].join(',');
 
 const dialogStack = [];
+let scrollLocks = 0, originalBodyOverflow;
 
-export default function AccessibleDialog({ open, onClose, labelledBy, describedBy, className = '', backdropClassName = '', children }) {
+// Shared by dialogs with different visual shells, including the legacy model picker.
+export function useDialogLayer(open) {
+  const entry = useRef(null);
+  useEffect(() => {
+    if (!open) return undefined;
+    const token = Symbol('dialog');
+    entry.current = token;
+    dialogStack.push(token);
+    return () => {
+      const index = dialogStack.indexOf(token);
+      if (index >= 0) dialogStack.splice(index, 1);
+      entry.current = null;
+    };
+  }, [open]);
+  return () => entry.current !== null && dialogStack.at(-1) === entry.current;
+}
+
+export default function AccessibleDialog({ open, onClose, labelledBy, describedBy, returnFocusRef, className = '', backdropClassName = '', children }) {
+  const isTopDialog = useDialogLayer(open);
   const panelRef = useRef(null);
   const previousFocusRef = useRef(null);
   const onCloseRef = useRef(onClose);
@@ -21,10 +41,10 @@ export default function AccessibleDialog({ open, onClose, labelledBy, describedB
   useEffect(() => {
     if (!open) return undefined;
 
-    const stackEntry = Symbol('dialog');
-    dialogStack.push(stackEntry);
-    previousFocusRef.current = document.activeElement;
-    const previousOverflow = document.body.style.overflow;
+    // Touch Safari may leave activeElement on body (or the textarea) rather
+    // than the tapped button. Callers can supply the actual opening control.
+    previousFocusRef.current = returnFocusRef?.current || document.activeElement;
+    if (scrollLocks++ === 0) originalBodyOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const focusFrame = window.requestAnimationFrame(() => {
       const preferred = panelRef.current?.querySelector('[data-autofocus]')
@@ -33,7 +53,7 @@ export default function AccessibleDialog({ open, onClose, labelledBy, describedB
     });
 
     const handleKeyDown = (event) => {
-      if (dialogStack.at(-1) !== stackEntry) return;
+      if (!isTopDialog()) return;
       if (event.key === 'Escape') {
         event.preventDefault();
         onCloseRef.current();
@@ -41,7 +61,7 @@ export default function AccessibleDialog({ open, onClose, labelledBy, describedB
       }
       if (event.key !== 'Tab') return;
       const focusable = [...(panelRef.current?.querySelectorAll(FOCUSABLE_SELECTOR) || [])]
-        .filter((element) => !element.hasAttribute('disabled') && element.getAttribute('aria-hidden') !== 'true');
+        .filter((element) => !element.hasAttribute('disabled') && element.getAttribute('aria-hidden') !== 'true' && !element.closest('[hidden],[inert]') && (!element.closest('details:not([open])') || element.tagName === 'SUMMARY'));
       if (!focusable.length) {
         event.preventDefault();
         panelRef.current?.focus();
@@ -62,10 +82,10 @@ export default function AccessibleDialog({ open, onClose, labelledBy, describedB
     return () => {
       window.cancelAnimationFrame(focusFrame);
       window.removeEventListener('keydown', handleKeyDown);
-      const stackIndex = dialogStack.indexOf(stackEntry);
-      if (stackIndex >= 0) dialogStack.splice(stackIndex, 1);
-      document.body.style.overflow = previousOverflow;
-      previousFocusRef.current?.focus?.({ preventScroll: true });
+      // Nested layers can unmount together (for example selecting a task from
+      // sidebar search). Restore the original style only after the final lock.
+      if (--scrollLocks === 0) document.body.style.overflow = originalBodyOverflow;
+      if (previousFocusRef.current?.isConnected) previousFocusRef.current?.focus?.({ preventScroll: true });
     };
   }, [open]);
 

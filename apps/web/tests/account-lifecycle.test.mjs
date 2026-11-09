@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import React from 'react'
@@ -30,8 +31,8 @@ test('202 acceptance clears the password but does not claim deletion or clear lo
   try {
     render(React.createElement(AccountSettingsDialog, { apiBase: '', email: 'fixture@example.test', onClose() {}, onDeleted() { deleted = true } }))
     await waitFor(() => assert.ok(screen.getByLabelText('当前登录密码')))
-    fireEvent.change(screen.getByLabelText('当前登录密码'), { target: { value: 'fixture-password' } })
-    fireEvent.change(screen.getByLabelText('输入“删除账号”确认'), { target: { value: '删除账号' } })
+    changeControl(screen.getByLabelText('当前登录密码'), { target: { value: 'fixture-password' } })
+    changeControl(screen.getByLabelText('输入“删除账号”确认'), { target: { value: '删除账号' } })
     await waitFor(() => assert.equal(screen.getByRole('button', { name: '永久删除账号' }).disabled, false))
     fireEvent.click(screen.getByRole('button', { name: '永久删除账号' }))
     await waitFor(() => assert.match(screen.getByRole('status').textContent, /申请已受理/))

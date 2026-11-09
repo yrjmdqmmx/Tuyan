@@ -1,0 +1,966 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0262403</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-21-18594</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Behavior</subject><subj-group><subject>Habits</subject><subj-group><subject>Smoking habits</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Social sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Behavior</subject><subj-group><subject>Habits</subject><subj-group><subject>Smoking habits</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Physiology</subject><subj-group><subject>Physiological parameters</subject><subj-group><subject>Body weight</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Cardiovascular diseases</subject><subj-group><subject>Coronary heart disease</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Cardiology</subject><subj-group><subject>Cardiovascular medicine</subject><subj-group><subject>Cardiovascular diseases</subject><subj-group><subject>Coronary heart disease</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Vascular medicine</subject><subj-group><subject>Coronary heart disease</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Cardiovascular diseases</subject><subj-group><subject>Cardiovascular disease risk</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Cardiology</subject><subj-group><subject>Cardiovascular medicine</subject><subj-group><subject>Cardiovascular diseases</subject><subj-group><subject>Cardiovascular disease risk</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Public and occupational health</subject><subj-group><subject>Physical activity</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Epidemiology</subject><subj-group><subject>Medical risk factors</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Vascular medicine</subject><subj-group><subject>Atherosclerosis</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Lipids</subject><subj-group><subject>Cholesterol</subject></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Does weight mediate the effect of smoking on coronary heart disease? Parametric mediational g-formula analysis</article-title>
+<alt-title alt-title-type="running-head">Mediation analysis of smoking-CHD relationship</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Mokhayeri</surname>
+<given-names>Yaser</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Nazemipour</surname>
+<given-names>Maryam</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/software/">Software</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0003-3343-2718</contrib-id>
+<name name-style="western">
+<surname>Mansournia</surname>
+<given-names>Mohammad Ali</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Naimi</surname>
+<given-names>Ashley I.</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/validation/">Validation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Kaufman</surname>
+<given-names>Jay S.</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Cardiovascular Research Center, Shahid Rahimi Hospital, Lorestan University of Medical Sciences, Khorramabad, Iran</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Osteoporosis Research Center, Endocrinology and Metabolism Clinical Sciences Institute, Tehran University of Medical Sciences, Tehran, Iran</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Department of Epidemiology and Biostatistics, School of Public Health, Tehran University of Medical Sciences, Tehran, Iran</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Department of Epidemiology, Emory University, Atlanta, GA, United States of America</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>Department of Epidemiology, Biostatistics and Occupational Health, Faculty of Medicine, McGill University, Montreal, Quebec, Canada</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Zhan</surname>
+<given-names>Y</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>German Centre for Neurodegenerative Diseases Site Munich: Deutsches Zentrum fur Neurodegenerative Erkrankungen Standort Munchen, GERMANY</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">mansournia_ma@yahoo.com</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>13</day>
+<month>1</month>
+<year>2022</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2022</year>
+</pub-date>
+<volume>17</volume>
+<issue>1</issue>
+<elocation-id>e0262403</elocation-id>
+<history>
+<date date-type="received">
+<day>5</day>
+<month>6</month>
+<year>2021</year>
+</date>
+<date date-type="accepted">
+<day>22</day>
+<month>12</month>
+<year>2021</year>
+</date>
+</history>
+<permissions>
+<license xlink:href="https://creativecommons.org/publicdomain/zero/1.0/" xlink:type="simple">
+<license-p>This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/publicdomain/zero/1.0/" xlink:type="simple">Creative Commons CC0</ext-link> public domain dedication.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0262403"/>
+<abstract>
+<sec id="sec001">
+<title>Background</title>
+<p>In settings in which there are time-varying confounders affected by previous exposure and a time-varying mediator, natural direct and indirect effects cannot generally be estimated unbiasedly. In the present study, we estimate interventional direct effect and interventional indirect effect of cigarette smoking as a time-varying exposure on coronary heart disease while considering body weight as a time-varying mediator.</p>
+</sec>
+<sec id="sec002">
+<title>Methods</title>
+<p>To address this problem, the parametric mediational g-formula was proposed to estimate interventional direct effect and interventional indirect effect. We used data from the Multi-Ethnic Study of Atherosclerosis to estimate effect of cigarette smoking on coronary heart disease, considering body weight as time-varying mediator.</p>
+</sec>
+<sec id="sec003">
+<title>Results</title>
+<p>Over a 11-years period, smoking 20 cigarettes per day compared to no smoking directly (not through weight) increased risk of coronary heart disease by an absolute difference of 1.91% (95% CI: 0.49%, 4.14%), and indirectly decreased coronary heart disease risk by -0.02% (95% CI: -0.05%, 0.04%) via change in weight. The total effect was estimated as an absolute 1.89% increase (95% CI: 0.49%, 4.13%).</p>
+</sec>
+<sec id="sec004">
+<title>Conclusion</title>
+<p>The overall absolute impact of smoking to incident coronary heart disease is modest, and we did not discern any important contribution to this effect relayed through changes to bodyweight. In fact, changes in weight because of smoking have no meaningful mediating effect on CHD risk.</p>
+</sec>
+</abstract>
+<funding-group>
+<funding-statement>The authors received no specific funding for this work.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="1"/>
+<table-count count="3"/>
+<page-count count="10"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>The data underlying this article were provided by the National Heart, Lung, and Blood Institute (NHLBI) by permission Research Materials Distribution Agreement (RMDA) V02 1d20120806. Data will be shared with permission of NHLBI (<ext-link ext-link-type="uri" xlink:href="https://biolincc.nhlbi.nih.gov/studies/mesa/" xlink:type="simple">https://biolincc.nhlbi.nih.gov/studies/mesa/</ext-link>). Please contact corresponding author or NHLBI for data access. Contact information: US Mail BioLINCC c/o Information Management Services, Inc. 3901 Calverton Blvd, Suite 200 Calverton MD 20705 Telephone 301-680-9770 - ask to speak with a BioLINCC representative Fax 301-680-8304 - please address fax communications to "BioLINCC" to ensure proper routing Email <email xlink:type="simple">biolincc@imsweb.com</email>.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec005" sec-type="intro">
+<title>Introduction</title>
+<p>Coronary heart disease (CHD), also known as coronary artery disease and ischemic heart disease, is the leading cause of death in the world [<xref ref-type="bibr" rid="pone.0262403.ref001">1</xref>]. Although, mean percentage change in number of Years of Life Lost (YLL) from 2007 to 2017 due to CHD has increased by 17.3%, mean percentage change in age-standardized YLL rate has decreased by -9.8% in the same period [<xref ref-type="bibr" rid="pone.0262403.ref002">2</xref>].</p>
+<p>Exposure to smoking between 1990 and 2015 declined worldwide by 25%; nevertheless, it still ranked among the leading five risk factors for attributable disability-adjusted life year (DALYs). In high-income countries such as the US, Canada, and the UK, smoking is considered the most important risk factor for attributable DALYs for both sexes [<xref ref-type="bibr" rid="pone.0262403.ref003">3</xref>].</p>
+<p>LDL cholesterol, HDL cholesterol, triglyceride, body mass index, glucose, and blood pressure may mediate the relationship between smoking and CHD [<xref ref-type="bibr" rid="pone.0262403.ref004">4</xref>]. In smokers compared to nonsmokers, body mass indices are lower [<xref ref-type="bibr" rid="pone.0262403.ref005">5</xref>–<xref ref-type="bibr" rid="pone.0262403.ref007">7</xref>]. Chen et al. (2019), reported that smoking cessation could reduce 10-year risk of CHD, however, gaining weight following smoking cessation could conceal to a small extent the beneficial effect of the quitting [<xref ref-type="bibr" rid="pone.0262403.ref008">8</xref>]. Tamura et al. (2010) concluded that in spite of gaining weight after smoking cessation, the total risk of CHD was decreased in men [<xref ref-type="bibr" rid="pone.0262403.ref009">9</xref>]. Luo et al. (2013) according to their study on women, indicated that the relationship between smoking cessation and incidence of CHD could be weakened by gaining weight [<xref ref-type="bibr" rid="pone.0262403.ref010">10</xref>]. None of these studies appropriately adjusted for time-varying confounders using cohort data with repeated exposure and mediators [<xref ref-type="bibr" rid="pone.0262403.ref011">11</xref>–<xref ref-type="bibr" rid="pone.0262403.ref013">13</xref>]. G-methods (generalized methods) as causal methods could appropriately adjust for time-varying confounders affected by the prior exposure [<xref ref-type="bibr" rid="pone.0262403.ref014">14</xref>–<xref ref-type="bibr" rid="pone.0262403.ref018">18</xref>]. In frameworks with longitudinal data, intermediate confounder could not be adjusted using standard analytic approaches [<xref ref-type="bibr" rid="pone.0262403.ref019">19</xref>]. The intermediate confounder, which is likely not rare in mediation analysis, is both a mediator-outcome confounder and a variable in the causal direct path [<xref ref-type="bibr" rid="pone.0262403.ref019">19</xref>]. Moreover, to identify natural direct effect (NDE) and natural indirect effect (NIE) four assumptions are needed namely 1- no unmeasured exposure-outcome confounder 2- no- unmeasured mediator-outcome confounder 3- no unmeasured exposure-mediator confounder, and 4- no mediator-outcome confounder affected by the prior exposure [<xref ref-type="bibr" rid="pone.0262403.ref020">20</xref>]. In the presence of intermediate confounder, the fourth assumption would be violated, consequently natural direct and indirect effect are not identified. Addressing partially this problem, VanderWeele and Tchetgen Tchetgen using the mediational g-formula sought to find a solution and proposed the pure interventional direct effect (IDE) also known as a random interventional analogue of the natural direct effect and total interventional indirect effect (IIE) [<xref ref-type="bibr" rid="pone.0262403.ref021">21</xref>]. As VanderWeels and Tchetgen Tcheten’s method was semiparametric, Lin et al developed a fully parametric mediational g-formula [<xref ref-type="bibr" rid="pone.0262403.ref022">22</xref>].</p>
+<p>In the present study, we estimate IDE and IIE of cigarette smoking—as a time-varying exposure—on CHD while considering weight as both a time-varying mediator of past cigarette smoking, and a time-varying confounder of future cigarette smoking, using the parametric mediational g-formula to control for time-varying confounding. We estimate the direct (not through weight) and indirect (through weight) effects in data obtained from the Multi-Ethnic Study of Atherosclerosis (MESA).</p>
+</sec>
+<sec id="sec006" sec-type="materials|methods">
+<title>Methods</title>
+<sec id="sec007">
+<title>Study population</title>
+<p>We used the Multi-Ethnic Study of Atherosclerosis (MESA) data, a community-based cohort of adults, started in 2000 on 6814 men and women aged 45 to 84 years. Some additional details of the study have been presented elsewhere [<xref ref-type="bibr" rid="pone.0262403.ref023">23</xref>].</p>
+<p>Five participants were excluded from our analysis because they already had prevalent CVD diagnoses at baseline. At the baseline, there were 6809 participants. It should be noted, since mGFORMULA SAS macro does not handle missing data, the final analysis limited to those participants without death or loss to follow up during the period of study (4433 participants). The participants were followed for more than eleven years and five visits. The first visit was scheduled for July 15, 2000 through July 14, 2002 (24 months); the second visit, scheduled for July 15, 2002 through January 14, 2004 (18 months); the third visit, scheduled for January 15, 2004 through July 14, 2005 (18 months); the fourth visit, scheduled for July 15, 2005 through July 14, 2007 (24 months); and the fifth visit, scheduled for April 1, 2010 through September 30, 2011 (18 months).</p>
+</sec>
+<sec id="sec008">
+<title>Exposure, mediator, outcome, and confounders</title>
+<p>Average number of cigarettes smoked per day—as the exposure—was self-reported. The data were obtained via questionnaire. Participants were asked if they smoked during last 30 days, those who replied affirmatively were asked for report the average number of cigarettes smoked per day. In this study, we aimed to estimate the causal effect of ‘had everyone been a smoker/smoked 20 cigarettes per day’ vs. ‘had everyone been a non-smoker/smoked 0 cigarettes per day’, over the course of follow-up, on incident CHD or death from CHD. We defined weight in kilogram (<italic>kg</italic>) as the mediator. Weight was assessed using a standard weighing scale to the nearest 0.5 <italic>kg</italic>. CHD events as the outcome included myocardial infarction, resuscitated cardiac arrest, definite angina, probable angina (if followed by revascularization), and CHD death. Questionnaires, interviews, and medical records were used to obtain the date of CHD to the nearest day. Time-varying covariates measured at all visits including intentional physical activity, total cholesterol, hypertension, hypertension medication, and current aspirin use entered in the models as potential confounders. Additionally, we also adjusted for baseline age, sex, race/ethnicity (White, Asian, Hispanic, and African-American), alcohol consumption (drinks per week), and diet score [<xref ref-type="bibr" rid="pone.0262403.ref024">24</xref>], baseline smoking (never, former, and current smoker), annual family income, education level. A standard and validated questionnaire was used to obtain data on recreational physical activity. Valid test kits were used to obtain data on total cholesterol. An appropriately sized cuff was used to obtain resting blood pressure from the right arm after five minutes in the seated position. Three readings were taken; the average of the second and third readings were used as the blood pressure levels in the study.</p>
+</sec>
+<sec id="sec009">
+<title>Statistical analysis</title>
+<p>If we describe <italic>mediation</italic> as a two-stage process: 1- <italic>M-stage</italic> which denotes the process that cause the mediator and 2- <italic>Y-stage</italic>, a process that cause the outcome; hence, four potential outcomes would be obtained. Y0M0 is the outcome that would be observed if an individual were unexposed and had a mediator if she/he would have if unexposed (Y0M0 = Y0). Y1M1 is the outcome that would be observed if an individual were exposed and had a mediator if she/he would have if exposed (Y1M1 = Y1). Y1M0 is the outcome that would be observed if an individual were exposed but had a mediator if she/he would have if unexposed. Y0M1 is the outcome that would be observed if an individual were unexposed but had a mediator if she/he would have if exposed. Using the parametric mediational g-formula, the <italic>M-stage</italic> is a random draw form the distribution of the mediator among those with exposure status <italic>A = a</italic>. Therefore, it would have fixed the mediator to the level that is randomly chosen from the distribution of the mediator among those with exposure status. Mediational g-formula is related to both Robins’ regular g-formula [<xref ref-type="bibr" rid="pone.0262403.ref012">12</xref>] and Pearl’s mediation formula [<xref ref-type="bibr" rid="pone.0262403.ref025">25</xref>]. In fact, in the absence of mediation it reduces to g-formula and in the absence of time-varying confounders reduces to mediation formula. In defining outcomes this way, we are able to quantify outcome risks under several different exposure and mediator scenarios such that IDE and IIE could be estimated. We estimated (<italic>ā</italic><sub>1</sub>, <italic>ā</italic><sub>2</sub>) for each (<italic>ā</italic><sub>1</sub>, <italic>ā</italic><sub>2</sub>) = (<italic>ā</italic>, <italic>ā</italic>), (<italic>ā</italic>, <italic>ā</italic><sup><italic>*</italic></sup><italic>)</italic>, <italic>(ā</italic><sup><italic>*</italic></sup>, <italic>ā)</italic>, <italic>(ā</italic><sup><italic>*</italic></sup>, <italic>ā</italic><sup><italic>*</italic></sup><italic>)</italic>. These measures indicate the simulated risk of CHD. This way, pure IDE, total IIE, and interventional analogue of total effect (ITE) can be defined as Eqs <xref ref-type="disp-formula" rid="pone.0262403.e001">1</xref>, <xref ref-type="disp-formula" rid="pone.0262403.e002">2</xref>, and <xref ref-type="disp-formula" rid="pone.0262403.e003">3</xref>, respectively.</p>
+<disp-formula id="pone.0262403.e001">
+<alternatives>
+<graphic id="pone.0262403.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0262403.e001" xlink:type="simple"/>
+<mml:math display="block" id="M1">
+<mml:mrow><mml:mi mathvariant="normal">IDE</mml:mi><mml:mo>=</mml:mo><mml:mo>[</mml:mo><mml:mrow><mml:mi>Q</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:mover accent="true"><mml:mi>a</mml:mi><mml:mo>¯</mml:mo></mml:mover><mml:mo>,</mml:mo><mml:mspace width="0.25em"/><mml:msup><mml:mover accent="true"><mml:mi>a</mml:mi><mml:mo>¯</mml:mo></mml:mover><mml:mo>*</mml:mo></mml:msup></mml:mrow><mml:mo>)</mml:mo><mml:mo>‐</mml:mo><mml:mi>Q</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:msup><mml:mover accent="true"><mml:mi>a</mml:mi><mml:mo>¯</mml:mo></mml:mover><mml:mo>*</mml:mo></mml:msup><mml:mo>,</mml:mo><mml:mspace width="0.25em"/><mml:msup><mml:mover accent="true"><mml:mi>a</mml:mi><mml:mo>¯</mml:mo></mml:mover><mml:mo>*</mml:mo></mml:msup></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>]</mml:mo><mml:mo>=</mml:mo><mml:mo stretchy="false">[</mml:mo><mml:mrow><mml:mi>P</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mn>1</mml:mn><mml:msub><mml:mi>M</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>‐</mml:mo><mml:mrow><mml:mi>P</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mn>0</mml:mn><mml:msub><mml:mi>M</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo stretchy="false">]</mml:mo></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(1)</label>
+</disp-formula>
+<disp-formula id="pone.0262403.e002">
+<alternatives>
+<graphic id="pone.0262403.e002g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0262403.e002" xlink:type="simple"/>
+<mml:math display="block" id="M2">
+<mml:mrow><mml:mi mathvariant="normal">I</mml:mi><mml:mi mathvariant="normal">I</mml:mi><mml:mi mathvariant="normal">E</mml:mi><mml:mo>=</mml:mo><mml:mo>[</mml:mo><mml:mrow><mml:mi>Q</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:mover accent="true"><mml:mi>a</mml:mi><mml:mo>¯</mml:mo></mml:mover><mml:mo>,</mml:mo><mml:mspace width="0.25em"/><mml:mover accent="true"><mml:mi>a</mml:mi><mml:mo>¯</mml:mo></mml:mover></mml:mrow><mml:mo>)</mml:mo><mml:mo>‐</mml:mo><mml:mi>Q</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:mover accent="true"><mml:mi>a</mml:mi><mml:mo>¯</mml:mo></mml:mover><mml:mo>,</mml:mo><mml:mspace width="0.25em"/><mml:msup><mml:mover accent="true"><mml:mi>a</mml:mi><mml:mo>¯</mml:mo></mml:mover><mml:mo>*</mml:mo></mml:msup></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>]</mml:mo><mml:mo>=</mml:mo><mml:mo>[</mml:mo><mml:mrow><mml:mrow><mml:mi>P</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mn>1</mml:mn><mml:msub><mml:mi>M</mml:mi><mml:mn>1</mml:mn></mml:msub></mml:mrow></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>‐</mml:mo><mml:mrow><mml:mi>P</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mn>1</mml:mn><mml:msub><mml:mi>M</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>]</mml:mo></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(2)</label>
+</disp-formula>
+<disp-formula id="pone.0262403.e003">
+<alternatives>
+<graphic id="pone.0262403.e003g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0262403.e003" xlink:type="simple"/>
+<mml:math display="block" id="M3">
+<mml:mrow><mml:mi mathvariant="normal">I</mml:mi><mml:mi mathvariant="normal">T</mml:mi><mml:mi mathvariant="normal">E</mml:mi><mml:mo>=</mml:mo><mml:mo>[</mml:mo><mml:mrow><mml:mi>Q</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:mover accent="true"><mml:mi>a</mml:mi><mml:mo>¯</mml:mo></mml:mover><mml:mo>,</mml:mo><mml:mspace width="0.25em"/><mml:mover accent="true"><mml:mi>a</mml:mi><mml:mo>¯</mml:mo></mml:mover></mml:mrow><mml:mo>)</mml:mo><mml:mo>‐</mml:mo><mml:mi>Q</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:msup><mml:mover accent="true"><mml:mi>a</mml:mi><mml:mo>¯</mml:mo></mml:mover><mml:mo>*</mml:mo></mml:msup><mml:mo>,</mml:mo><mml:mspace width="0.25em"/><mml:msup><mml:mover accent="true"><mml:mi>a</mml:mi><mml:mo>¯</mml:mo></mml:mover><mml:mo>*</mml:mo></mml:msup></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>]</mml:mo><mml:mo>=</mml:mo><mml:mo>[</mml:mo><mml:mrow><mml:mrow><mml:mi>P</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mn>1</mml:mn><mml:msub><mml:mi>M</mml:mi><mml:mn>1</mml:mn></mml:msub></mml:mrow></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>‐</mml:mo><mml:mrow><mml:mi>P</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mn>0</mml:mn><mml:msub><mml:mi>M</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>]</mml:mo></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(3)</label>
+</disp-formula>
+<p><xref ref-type="fig" rid="pone.0262403.g001">Fig 1</xref> is a causal directed acyclic graph [<xref ref-type="bibr" rid="pone.0262403.ref026">26</xref>–<xref ref-type="bibr" rid="pone.0262403.ref032">32</xref>] depicting the relationship between our time-varying exposure (cigarette smoking), time-varying mediator (weight), time-varying confounders, and CHD. <italic>V</italic> denotes baseline confounders (e.g. age); <italic>A</italic> represents the time-varying exposure (cigarette smoking); <italic>M</italic> denotes time-varying mediator (weight); <italic>L</italic> represents the time-varying confounders (e.g. physical activity) which are affected by the prior exposures; and <italic>Y</italic> corresponds to the binary outcome (CHD). Subscripts of 0 and 1 correspond to visits 0 and 1 of the study, respectively (to simplify the graph, just 2 visits were depicted).</p>
+<fig id="pone.0262403.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0262403.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Causal diagram depicting the effect of time-varying exposure (smoking) on the outcome (CHD) in the presence of time-varying mediator (weight).</title>
+<p>V, A, M, L, and Y stand for baseline confounders, time-varying exposure, time-varying mediator, time-varying confounders, and the outcome, respectively.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0262403.g001" xlink:type="simple"/>
+</fig>
+<p>We used Monte-Carlo estimation [<xref ref-type="bibr" rid="pone.0262403.ref033">33</xref>] to calculate the point estimates, and the nonparametric bootstrap with 500 resamples to obtain 95% confidence intervals. We used mGFORMULA SAS macro (<xref ref-type="supplementary-material" rid="pone.0262403.s001">S1 Appendix</xref>).</p>
+</sec>
+</sec>
+<sec id="sec010" sec-type="results">
+<title>Results</title>
+<p>After 51,487 person-years of follow-up (median duration of follow-up 8.45 and IQR of 1.01 years) 388 new CHD cases occurred. Of 6809 eligible participants 401 (5.9%) died from causes other than CHD. Moreover, 1987 (29%) of participants were lost to follow-up during the study. Final sample included in the analysis is 4433 participants. Baseline characteristic of the 6,809 eligible participants are illustrated in <xref ref-type="table" rid="pone.0262403.t001">Table 1</xref>. The smokers compared to quitters and nonsmokers were more likely to drink more alcohol, to have less intentional physical activity, to have less education levels, to have less family income, and to have less prevalence of hypertension and hypertension medication. The quitters compared to smokers and nonsmokers were likely to be men and to have more weight. Complete case analysis was performed, as the proportion of covariate missing data was low: For hypertension 2.2%, physical activity 1.5%, total cholesterol 3.1%, hypertension medication 3.2%, and current aspirin 1.6%.</p>
+<table-wrap id="pone.0262403.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0262403.t001</object-id>
+<label>Table 1</label> <caption><title>Baseline characteristics of eligible participants in the Multi-Ethnic Study of Atherosclerosis, United States, 2000–2011.</title></caption>
+<alternatives>
+<graphic id="pone.0262403.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0262403.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center">Characteristics</th>
+<th align="center">Smoker (n = 890)</th>
+<th align="center">Quitter (n = 2493)</th>
+<th align="center">Nonsmoker (n = 3426)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><bold>Age,</bold> y, mean (SD)</td>
+<td align="center">58.15 (9.15)</td>
+<td align="center">63.48 (9.83)</td>
+<td align="center">62.21 (10.52)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#D0CECE"><bold>Race/ethnicity,</bold> n (%)</td>
+<td align="center" style="background-color:#D0CECE"/>
+<td align="center" style="background-color:#D0CECE"/>
+<td align="center" style="background-color:#D0CECE"/>
+</tr>
+<tr>
+<td align="left" style="background-color:#D0CECE">    <bold>Caucasian</bold></td>
+<td align="center" style="background-color:#D0CECE">302 (33.93)</td>
+<td align="center" style="background-color:#D0CECE">1158 (46.45)</td>
+<td align="center" style="background-color:#D0CECE">1159 (33.83)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#D0CECE">    <bold>Asian</bold></td>
+<td align="center" style="background-color:#D0CECE">45 (5.06)</td>
+<td align="center" style="background-color:#D0CECE">153 (6.14)</td>
+<td align="center" style="background-color:#D0CECE">606 (17.69)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#D0CECE">    <bold>African-American</bold></td>
+<td align="center" style="background-color:#D0CECE">340 (38.20)</td>
+<td align="center" style="background-color:#D0CECE">697 (27.96)</td>
+<td align="center" style="background-color:#D0CECE">854 (24.93)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#D0CECE">    <bold>Hispanic</bold></td>
+<td align="center" style="background-color:#D0CECE">203 (22.81)</td>
+<td align="center" style="background-color:#D0CECE">485 (19.45)</td>
+<td align="center" style="background-color:#D0CECE">807 (23.56)</td>
+</tr>
+<tr>
+<td align="left"><bold>Male,</bold> n (%)</td>
+<td align="center">468 (52.58)</td>
+<td align="center">1440 (57.76)</td>
+<td align="center">1302 (38)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#D0CECE"><bold>Diet score,</bold> mean (SD)</td>
+<td align="center" style="background-color:#D0CECE">2.50 (5.10)</td>
+<td align="center" style="background-color:#D0CECE">4.64 (4.77)</td>
+<td align="center" style="background-color:#D0CECE">4.61 (4.55)</td>
+</tr>
+<tr>
+<td align="left"><bold>Alcohol consumption,</bold> drinks/week, mean (SD)</td>
+<td align="center">6.40 (11.32)</td>
+<td align="center">5.81 (9.82)</td>
+<td align="center">2.11 (5.81)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#D0CECE"><bold>Education,</bold> n (%)</td>
+<td align="center" style="background-color:#D0CECE"/>
+<td align="center" style="background-color:#D0CECE"/>
+<td align="center" style="background-color:#D0CECE"/>
+</tr>
+<tr>
+<td align="left" style="background-color:#D0CECE">    <bold>≤ high school</bold></td>
+<td align="center" style="background-color:#D0CECE">350 (39.46)</td>
+<td align="center" style="background-color:#D0CECE">797 (32.09)</td>
+<td align="center" style="background-color:#D0CECE">1314 (38.48)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#D0CECE">    <bold>college–associate degree</bold></td>
+<td align="center" style="background-color:#D0CECE">329 (37.09)</td>
+<td align="center" style="background-color:#D0CECE">761 (30.64)</td>
+<td align="center" style="background-color:#D0CECE">843 (24.69)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#D0CECE">    <bold>≥ bachelor degree</bold></td>
+<td align="center" style="background-color:#D0CECE">208 (23.45)</td>
+<td align="center" style="background-color:#D0CECE">926 (37.28)</td>
+<td align="center" style="background-color:#D0CECE">1258 (36.84)</td>
+</tr>
+<tr>
+<td align="left"><bold>Annual family income,</bold> n (%)</td>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">    <bold>&lt; $25000</bold></td>
+<td align="center">275 (32.51)</td>
+<td align="center">666 (27.91)</td>
+<td align="center">1115 (33.75)</td>
+</tr>
+<tr>
+<td align="left">    <bold>$25,000-$50,000</bold></td>
+<td align="center">277 (32.74)</td>
+<td align="center">677 (28.37)</td>
+<td align="center">938 (28.39)</td>
+</tr>
+<tr>
+<td align="left">    <bold>&gt; $50,000</bold></td>
+<td align="center">294 (34.75)</td>
+<td align="center">1043 (43.71)</td>
+<td align="center">1251 (37.86)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#D0CECE"><bold>Hypertension,</bold> n (%)</td>
+<td align="center" style="background-color:#D0CECE">333 (37.42)</td>
+<td align="center" style="background-color:#D0CECE">1178 (47.25)</td>
+<td align="center" style="background-color:#D0CECE">1545 (45.10)</td>
+</tr>
+<tr>
+<td align="left"><bold>Hypertension medication,</bold> n (%)</td>
+<td align="center">265 (29.78)</td>
+<td align="center">979 (39.27)</td>
+<td align="center">1291 (37.68)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#D0CECE"><bold>Current aspirin use,</bold> n (%)</td>
+<td align="center" style="background-color:#D0CECE">143 (16.07)</td>
+<td align="center" style="background-color:#D0CECE">601 (24.11)</td>
+<td align="center" style="background-color:#D0CECE">651 (19)</td>
+</tr>
+<tr>
+<td align="left"><bold>Total cholesterol,</bold> mmol/l, mean (SD)</td>
+<td align="center">4.98 (1.01)</td>
+<td align="center">4.98 (0.90)</td>
+<td align="center">5.06 (0.91)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#D0CECE"><bold>Intentional physical activity,</bold> min/week, mean (SD)</td>
+<td align="center" style="background-color:#D0CECE">351.93 (557.14)</td>
+<td align="center" style="background-color:#D0CECE">385.23 (547.45)</td>
+<td align="center" style="background-color:#D0CECE">354.64 (503.80)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF"><bold>Weight,</bold> kg, mean (SD)</td>
+<td align="center" style="background-color:#FFFFFF">79.58 (16.92)</td>
+<td align="center" style="background-color:#FFFFFF">81.81 (17.06)</td>
+<td align="center" style="background-color:#FFFFFF">75.99 (16.93)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p>SD: standard deviation.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>The results of the standard parametric g-formula in <xref ref-type="table" rid="pone.0262403.t002">Table 2</xref> shows that the estimated 11-year risk of CHD in ‘had everyone been a smoker/smoked 20 cigarettes per day’ vs. ‘had everyone been a non-smoker/smoked 0 cigarettes per day’ were 6.92% and 5%, respectively. Therefore, risk ratio was estimated as 1.38 (95% CI: 1.04, 1.86). The estimated risk difference using standard parametric g-formula was 1.92%, which is close to the estimated risk difference for CHD—1.89%—using parametric mediational g-formula (<xref ref-type="table" rid="pone.0262403.t003">Table 3</xref>).</p>
+<table-wrap id="pone.0262403.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0262403.t002</object-id>
+<label>Table 2</label> <caption><title>Total effect of smoking 20 cigarettes per day compared to no smoking on CHD, using parametric g-formula in the Multi-Ethnic Study of Atherosclerosis, United States, 2000–2011.</title></caption>
+<alternatives>
+<graphic id="pone.0262403.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0262403.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center">Intervention</th>
+<th align="center">11-year Risk, %</th>
+<th align="center">95% CI</th>
+<th align="center">Risk Difference, %</th>
+<th align="center">95% CI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center" style="background-color:#D0CECE"><bold>No intervention</bold></td>
+<td align="center" style="background-color:#D0CECE">5.94</td>
+<td align="center" style="background-color:#D0CECE">3.74, 9.46</td>
+<td align="center" style="background-color:#D0CECE">0.94</td>
+<td align="center" style="background-color:#D0CECE">0.03, 2.01</td>
+</tr>
+<tr>
+<td align="center"><bold>No smoking</bold></td>
+<td align="center">5.00</td>
+<td align="center">2.65, 8.60</td>
+<td align="center">Ref.</td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="center" style="background-color:#D0CECE"><bold>20 cigarettes per day</bold></td>
+<td align="center" style="background-color:#D0CECE">6.92</td>
+<td align="center" style="background-color:#D0CECE">4.00, 11.14</td>
+<td align="center" style="background-color:#D0CECE">1.92</td>
+<td align="center" style="background-color:#D0CECE">0.19, 4.61</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t002fn001"><p>CHD: coronary heart disease, CI: confidence interval.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<table-wrap id="pone.0262403.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0262403.t003</object-id>
+<label>Table 3</label> <caption><title>Mediation analysis for the effect of smoking 20 cigarettes per day compared to no smoking on CHD, mediated by weight in the Multi-Ethnic Study of Atherosclerosis, United States, 2000–2011.</title></caption>
+<alternatives>
+<graphic id="pone.0262403.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0262403.t003" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center"/>
+<th align="center">Risk Difference, %</th>
+<th align="center">95% CI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center" style="background-color:#D0CECE"><bold>Interventional total effect</bold></td>
+<td align="center" style="background-color:#D0CECE">1.89</td>
+<td align="center" style="background-color:#D0CECE">0.49, 4.13</td>
+</tr>
+<tr>
+<td align="center"><bold>Interventional direct effect</bold></td>
+<td align="center">1.91</td>
+<td align="center">0.49, 4.14</td>
+</tr>
+<tr>
+<td align="center" style="background-color:#D0CECE"><bold>Interventional indirect effect</bold></td>
+<td align="center" style="background-color:#D0CECE">-0.02</td>
+<td align="center" style="background-color:#D0CECE">-0.05, 0.04</td>
+</tr>
+<tr>
+<td align="center" style="background-color:#D0CECE"><bold>E</bold> (Y0M0)</td>
+<td align="center" style="background-color:#D0CECE">5.03</td>
+<td align="center" style="background-color:#D0CECE">2.90, 7.95</td>
+</tr>
+<tr>
+<td align="center" style="background-color:#D0CECE"><bold>E</bold> (Y1M0)</td>
+<td align="center" style="background-color:#D0CECE">6.94</td>
+<td align="center" style="background-color:#D0CECE">4.01, 10.3</td>
+</tr>
+<tr>
+<td align="center" style="background-color:#D0CECE"><bold>E</bold> (Y0M1)</td>
+<td align="center" style="background-color:#D0CECE">4.89</td>
+<td align="center" style="background-color:#D0CECE">2.90, 7.91</td>
+</tr>
+<tr>
+<td align="center" style="background-color:#D0CECE"><bold>E</bold> (Y1M1)</td>
+<td align="center" style="background-color:#D0CECE">6.98</td>
+<td align="center" style="background-color:#D0CECE">4.01, 10.05</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t003fn001"><p>CHD: coronary heart disease, CI: confidence interval.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>In <xref ref-type="table" rid="pone.0262403.t003">Table 3</xref>, using the estimates of the joint exposure and mediator interventions—simulated risks, we calculated interventional total effect, direct effect, and indirect effect (through weight) of smoking on CHD. Using parametric mediational g-formula we simulated CHD risks under no smoking with weight distributed as the weight under no smoking: <italic>P(Y0M0)</italic>; smoking 20 cigarettes per day with weight distributed as the weight under no smoking: <italic>P(Y1M0)</italic>; no smoking with weight distributed as the weight under smoking 20 cigarettes per day: <italic>P(Y0M1)</italic>; and smoking 20 cigarettes per day with weight distributed as the weight under smoking 20 cigarettes per day: <italic>P(Y1M1)</italic>. The results are presented on the risk difference scale. We estimated that smoking could directly (not through weight) increase CHD by 1.91% (95% CI: 0.49%, 4.14%), and decrease CHD as -0.02% (95% CI: -0.05%, 0.04%) via change in weight.</p>
+</sec>
+<sec id="sec011" sec-type="conclusions">
+<title>Discussion</title>
+<p>We found that smoking might have either a very small or no indirect effect on CHD through weight. Clair et al. (2013), testing the hypothesis that weight gain following smoking cessation does not attenuate the benefits of smoking cessation among adults with and without diabetes, indicated that weight gain after smoking cessation does not modify the association between smoking and risk of CVD events [<xref ref-type="bibr" rid="pone.0262403.ref034">34</xref>].</p>
+<p>Feodoroff et al. investigating the dose-dependent effect of smoking on CHD in type 1 diabetes, indicated that smoking one pack per day (20 cigarettes) compared with never smokers adjusted for age, sex, BMI, hypertension, duration of diabetes, and HbA<sub>1c</sub> could increase the risk of incidence of CHD (HR = 1.45, 95% CI: 1.15, 1.84) [<xref ref-type="bibr" rid="pone.0262403.ref035">35</xref>]. Doyle et al. concluded that risk ratio for smoking 15–35 cigarettes per day compared to non-smokers in men is 1.6 [<xref ref-type="bibr" rid="pone.0262403.ref036">36</xref>]. Woodward et al. reported that men who smoke ≥20 cigarette per day compared to non-smokers for CHD have a hazard ratio 1.93 (95% CI: 1.15, 3.24). This value for women estimated as 3.81 (95% CI: 2.00, 7.27) [<xref ref-type="bibr" rid="pone.0262403.ref037">37</xref>]. Mucha et al. conducted a meta-analysis study and indicated that a low-level use of smoking (≤20 cigarettes per day) results in a risk ratio as 1.70 (95% CI: 1.52, 1.90) and a high-level use (˃20 cigarettes per day) could cause a risk ratio of 2.09 (95% CI: 1.87, 2.34) [<xref ref-type="bibr" rid="pone.0262403.ref038">38</xref>]. Munafò et al. (2009), observed that at the baseline of a longitudinal study of men, never smokers and ex-smokers have a higher BMI (at average 1.6 kg/m2) compared to current smokers. The results were not changed after adjusting for age, socioeconomic position, alcohol, and calorie consumption. They also indicated an increase of 1.56 kg/m2 (95% CI: 1.29, 1.82) after smoking cessation adjusted for age, socioeconomic position, alcohol, and calorie consumption [<xref ref-type="bibr" rid="pone.0262403.ref005">5</xref>]. Sneve et al. using data of the Tromsø study resulted that current smokers in both genders compared to never- smokers have a lower BMI. They also reported that smoking cessation is related to an increase in weight [<xref ref-type="bibr" rid="pone.0262403.ref006">6</xref>].</p>
+<p>The validity of the results depends on assumptions of positivity and consistency. The positivity assumption implies that the strata created by all confounder and treatment levels (exposed and unexposed) must be observed. However, the parametric g formula is less prone to bias induced by positivity violations. Consistency implies that the outcome for every exposed or unexposed individual (observed outcome) is equal with the outcome if they had received exposure or remained unexposed (counterfactual outcome), respectively. We note that similarity between observed and estimated risk is a necessary but insufficient condition for the assumption of no misspecification. In our study, the simulated 11-year risk of CHD under no intervention was 5.94% and the observed risk was 6.91%. As a strength of our analysis, the parametric mediational g-formula [<xref ref-type="bibr" rid="pone.0262403.ref022">22</xref>] is a valid statistical strategy to estimate the direct and indirect effects of time-varying exposure on incidence of CHD with time-varying mediator (weight). Using this statistical method, we could appropriately adjust for a variety of time-varying confounders, which are affected by prior exposures. As VanderWeele and Tchetgen Tchetgen’s approach was semiparametric, we used a fully parametric mediational g-formula developed by Lin et al. (2017).</p>
+<p>Our study is subject to some limitations. First, the validity of the estimated effects relies on the assumption of no unmeasured confounding for the effects of exposure on outcome, exposure on mediator and mediator on outcome, no measurement error, and correct specification of the parametric models used in the analysis. However, there was measurement error in self-reported cigarette smoking due to recall and underreporting biases cigarette smoking [<xref ref-type="bibr" rid="pone.0262403.ref039">39</xref>]. Physical activity was not assessed in visit 4, so we carried forward the values at visit 3. Moreover, we have not included occupational physical activity in the model. The presence of measurement error in confounders like physical activity and alcohol consumption will lead to residual confounding [<xref ref-type="bibr" rid="pone.0262403.ref040">40</xref>]. Second, the parametric mediational g-formula could not be used for multiple mediators. In fact, using this approach, we can just estimate one single direct/indirect effect. Third, the parametric-formula is also subject to the g-null paradox—it could lead to rejecting the causal null, even when it is true [<xref ref-type="bibr" rid="pone.0262403.ref041">41</xref>]. However, it could not be a concern in our setting as the effect of cigarette smoking and weight on CHD has been shown previously. Fourth, missing data, (censoring and competing risk) may result in selection bias but there is no function in the macro of mediational g-formula for handling missing data yet.</p>
+<p>For future studies, Schomaker and Heumann (2018) regarding some estimators, which require bootstrapping to estimate confidence intervals, presented four methods to combine bootstrap estimation with multiple imputation. They indicated that the proportion of missingness and the number of multiple imputed data sets affect methods performance [<xref ref-type="bibr" rid="pone.0262403.ref042">42</xref>].</p>
+</sec>
+<sec id="sec012" sec-type="conclusions">
+<title>Conclusion</title>
+<p>The overall absolute impact of smoking to incident coronary heart disease is modest, and we did not discern any important contribution to this effect relayed through changes to bodyweight. In fact, changes in weight because of smoking have no meaningful mediating effect on CHD risk.</p>
+</sec>
+<sec id="sec013" sec-type="supplementary-material">
+<title>Supporting information</title>
+<supplementary-material id="pone.0262403.s001" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0262403.s001" xlink:type="simple">
+<label>S1 Appendix</label>
+<caption>
+<title/>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>This manuscript was prepared using MESA Research Materials obtained from the National Heart, Lung, and Blood Institute (NHLBI); Research Materials Distribution Agreement (RMDA) V02 1d20120806. We would like to extend our thanks to the staff and coordinators of BioLINCC.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pone.0262403.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Roth</surname> <given-names>GA</given-names></name>, <name name-style="western"><surname>Johnson</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Abajobir</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Abd-Allah</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Abera</surname> <given-names>SF</given-names></name>, <name name-style="western"><surname>Abyu</surname> <given-names>G</given-names></name>, <etal>et al</etal>. <article-title>Global, regional, and national burden of cardiovascular diseases for 10 causes, 1990 to 2015</article-title>. <source>Journal of the American College of Cardiology</source>. <year>2017</year>;<volume>70</volume>(<issue>1</issue>):<fpage>1</fpage>–<lpage>25</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.jacc.2017.04.052" xlink:type="simple">10.1016/j.jacc.2017.04.052</ext-link></comment> <object-id pub-id-type="pmid">28527533</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Roth</surname> <given-names>GA</given-names></name>, <name name-style="western"><surname>Abate</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Abate</surname> <given-names>KH</given-names></name>, <name name-style="western"><surname>Abay</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Abbafati</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Abbasi</surname> <given-names>N</given-names></name>, <etal>et al</etal>. <article-title>Global, regional, and national age-sex-specific mortality for 282 causes of death in 195 countries and territories, 1980–2017: a systematic analysis for the Global Burden of Disease Study 2017</article-title>. <source>The Lancet</source>. <year>2018</year>;<volume>392</volume>(<issue>10159</issue>):<fpage>1736</fpage>–<lpage>88</lpage>.</mixed-citation></ref>
+<ref id="pone.0262403.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Forouzanfar</surname> <given-names>MH</given-names></name>, <name name-style="western"><surname>Afshin</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Alexander</surname> <given-names>LT</given-names></name>, <name name-style="western"><surname>Anderson</surname> <given-names>HR</given-names></name>, <name name-style="western"><surname>Bhutta</surname> <given-names>ZA</given-names></name>, <name name-style="western"><surname>Biryukov</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>Global, regional, and national comparative risk assessment of 79 behavioural, environmental and occupational, and metabolic risks or clusters of risks, 1990–2015: a systematic analysis for the Global Burden of Disease Study 2015</article-title>. <source>The Lancet</source>. <year>2016</year>;<volume>388</volume>(<issue>10053</issue>):<fpage>1659</fpage>–<lpage>724</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S0140-6736%2816%2931679-8" xlink:type="simple">10.1016/S0140-6736(16)31679-8</ext-link></comment> <object-id pub-id-type="pmid">27733284</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Price</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Mowbray</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Rumley</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Lowe</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Fowkes</surname> <given-names>F</given-names></name>. <article-title>Relationship between smoking and cardiovascular risk factors in the development of peripheral arterial disease and coronary artery disease; Edinburgh Artery Study: Edinburgh Artery Study</article-title>. <source>European heart journal</source>. <year>1999</year>;<volume>20</volume>(<issue>5</issue>):<fpage>344</fpage>–<lpage>53</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1053/euhj.1998.1194" xlink:type="simple">10.1053/euhj.1998.1194</ext-link></comment> <object-id pub-id-type="pmid">10206381</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Munafò</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Tilling</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Ben-Shlomo</surname> <given-names>Y</given-names></name>. <article-title>Smoking status and body mass index: a longitudinal study.</article-title> <source>Nicotine &amp; Tobacco Research</source>. <year>2009</year>;<volume>11</volume>(<issue>6</issue>):<fpage>765</fpage>–<lpage>71</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/ntr/ntp062" xlink:type="simple">10.1093/ntr/ntp062</ext-link></comment> <object-id pub-id-type="pmid">19443785</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sneve</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Jorde</surname> <given-names>R</given-names></name>. <article-title>Cross-sectional study on the relationship between body mass index and smoking, and longitudinal changes in body mass index in relation to change in smoking status: the Tromsø Study.</article-title> <source>Scandinavian journal of public health</source>. <year>2008</year>;<volume>36</volume>(<issue>4</issue>):<fpage>397</fpage>–<lpage>407</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/1403494807088453" xlink:type="simple">10.1177/1403494807088453</ext-link></comment> <object-id pub-id-type="pmid">18539694</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Freathy</surname> <given-names>RM</given-names></name>, <name name-style="western"><surname>Kazeem</surname> <given-names>GR</given-names></name>, <name name-style="western"><surname>Morris</surname> <given-names>RW</given-names></name>, <name name-style="western"><surname>Johnson</surname> <given-names>PC</given-names></name>, <name name-style="western"><surname>Paternoster</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Ebrahim</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>Genetic variation at CHRNA5-CHRNA3-CHRNB4 interacts with smoking status to influence body mass index</article-title>. <source>International journal of epidemiology</source>. <year>2011</year>;<volume>40</volume>(<issue>6</issue>):<fpage>1617</fpage>–<lpage>28</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/ije/dyr077" xlink:type="simple">10.1093/ije/dyr077</ext-link></comment> <object-id pub-id-type="pmid">21593077</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Kawasaki</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Hu</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Kuwahara</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Yamamoto</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Uehara</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>Smoking cessation, weight gain, and the trajectory of estimated risk of coronary heart disease: 8-year follow-up from a prospective cohort study.</article-title> <source>Nicotine &amp; Tobacco Research</source>. <year>2019</year>.</mixed-citation></ref>
+<ref id="pone.0262403.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tamura</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Tanaka</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Okamura</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Kadowaki</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Yamato</surname> <given-names>H</given-names></name>, Tanaka, H, <etal>et al</etal>. <article-title>Changes in weight, cardiovascular risk factors and estimated risk of coronary heart disease following smoking cessation in Japanese male workers: HIPOP-OHP study</article-title>. <source>Journal of atherosclerosis and thrombosis</source>. <year>2010</year>:<fpage>1001150159</fpage>– <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.5551/jat.1800" xlink:type="simple">10.5551/jat.1800</ext-link></comment> <object-id pub-id-type="pmid">20081325</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Luo</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Rossouw</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Margolis</surname> <given-names>KL</given-names></name>. <article-title>Smoking cessation, weight change, and coronary heart disease among postmenopausal women with and without diabetes</article-title>. <source>Jama</source>. <year>2013</year>;<volume>310</volume>(<issue>1</issue>):<fpage>94</fpage>–<lpage>6</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1001/jama.2013.6871" xlink:type="simple">10.1001/jama.2013.6871</ext-link></comment> <object-id pub-id-type="pmid">23821094</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mansournia</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Altman</surname> <given-names>DG</given-names></name>. <article-title>Inverse probability weighting</article-title>. <source>Bmj</source>. <year>2016</year>;<volume>352</volume>:<fpage>i189</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1136/bmj.i189" xlink:type="simple">10.1136/bmj.i189</ext-link></comment> <object-id pub-id-type="pmid">26773001</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Robins</surname> <given-names>J.</given-names></name> <article-title>A new approach to causal inference in mortality studies with a sustained exposure period—application to control of the healthy worker survivor effect</article-title>. <source>Mathematical Modelling</source>. <year>1986</year>;<volume>7</volume>(<issue>9–12</issue>):<fpage>1393</fpage>–<lpage>512</lpage>.</mixed-citation></ref>
+<ref id="pone.0262403.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Robins</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Greenland</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Hu</surname> <given-names>F-C</given-names></name>. <article-title>Estimation of the causal effect of a time-varying exposure on the marginal mean of a repeated binary outcome</article-title>. <source>Journal of the American Statistical Association</source>. <year>1999</year>;<volume>94</volume>(<issue>447</issue>):<fpage>687</fpage>–<lpage>700</lpage>.</mixed-citation></ref>
+<ref id="pone.0262403.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mansournia</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Etminan</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Danaei</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Kaufman</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Collins</surname> <given-names>G</given-names></name>. <article-title>Handling time varying confounding in observational research</article-title>. <source>bmj</source>. <year>2017</year>;<volume>359</volume>:<fpage>j4587</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1136/bmj.j4587" xlink:type="simple">10.1136/bmj.j4587</ext-link></comment> <object-id pub-id-type="pmid">29038130</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mokhayeri</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Hashemi-Nazari</surname> <given-names>SS</given-names></name>, <name name-style="western"><surname>Khodakarim</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Safiri</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Mansournia</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Mansournia</surname> <given-names>MA</given-names></name>, <etal>et al</etal>. <article-title>Effects of Hypothetical Interventions on Ischemic Stroke Using Parametric G-Formula</article-title>. <source>Stroke</source>. <year>2019</year>;<volume>50</volume>(<issue>11</issue>):<fpage>3286</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1161/STROKEAHA.119.025749" xlink:type="simple">10.1161/STROKEAHA.119.025749</ext-link></comment> <object-id pub-id-type="pmid">31480969</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shakiba</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Mansournia</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Salari</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Soori</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Mansournia</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Kaufman</surname> <given-names>JS</given-names></name>. <article-title>Accounting for time-varying confounding in the relation between obesity and coronary heart disease: Analysis with G-estimation, the Atherosclerosis Risk in Communities (ARIC) study</article-title>. <source>American journal of epidemiology</source>. <year>2017</year>.</mixed-citation></ref>
+<ref id="pone.0262403.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Aryaie</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Sharifi</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Saber</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Nazemipour</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Mansournia</surname> <given-names>MA</given-names></name>. <article-title>Longitudinal Causal Effects of Normalized Protein Catabolic Rate on All-Cause Mortality in Patients with End-Stage Renal Disease: Adjusting for Time-varying Confounders Using G-estimation Method</article-title>. <source>Am J Epidemiol</source>. <year>2020</year>.</mixed-citation></ref>
+<ref id="pone.0262403.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Naimi</surname> <given-names>AI</given-names></name>, <name name-style="western"><surname>Cole</surname> <given-names>SR</given-names></name>, <name name-style="western"><surname>Kennedy</surname> <given-names>EH</given-names></name>. <article-title>An introduction to g methods</article-title>. <source>International journal of epidemiology</source>. <year>2017</year>;<volume>46</volume>(<issue>2</issue>):<fpage>756</fpage>–<lpage>62</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/ije/dyw323" xlink:type="simple">10.1093/ije/dyw323</ext-link></comment> <object-id pub-id-type="pmid">28039382</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vansteelandt</surname> <given-names>S.</given-names></name> <article-title>Estimating direct effects in cohort and case–control studies</article-title>. <source>Epidemiology</source>. <year>2009</year>:<fpage>851</fpage>–<lpage>60</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1097/EDE.0b013e3181b6f4c9" xlink:type="simple">10.1097/EDE.0b013e3181b6f4c9</ext-link></comment> <object-id pub-id-type="pmid">19806060</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chen</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Ilya</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Judea</surname> <given-names>P</given-names></name>, <article-title>editors. Identifiability of Path-Specific Effects</article-title>. <source>International Joint Conference on Artificial Intelligence</source>; <year>2005</year> <month>August</month> 2005; Edinburgh, Schotland.</mixed-citation></ref>
+<ref id="pone.0262403.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>VanderWeele</surname> <given-names>TJ</given-names></name>, <name name-style="western"><surname>Tchetgen Tchetgen</surname> <given-names>EJ</given-names></name>. <article-title>Mediation analysis with time varying exposures and mediators</article-title>. <source>Journal of the Royal Statistical Society: Series B (Statistical Methodology).</source> <year>2017</year>;<volume>79</volume>(<issue>3</issue>):<fpage>917</fpage>–<lpage>38</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/rssb.12194" xlink:type="simple">10.1111/rssb.12194</ext-link></comment> <object-id pub-id-type="pmid">28824285</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lin</surname> <given-names>S-H</given-names></name>, <name name-style="western"><surname>Young</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Logan</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Tchetgen</surname> <given-names>EJT</given-names></name>, <name name-style="western"><surname>VanderWeele</surname> <given-names>TJ</given-names></name>. <article-title>Parametric mediational g-formula approach to mediation analysis with time-varying exposures, mediators, and confounders</article-title>. <source>Epidemiology (Cambridge, Mass).</source> <year>2017</year>;<volume>28</volume>(<issue>2</issue>):<fpage>266</fpage>–<lpage>74</lpage>.</mixed-citation></ref>
+<ref id="pone.0262403.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bild</surname> <given-names>DE</given-names></name>, <name name-style="western"><surname>Bluemke</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Burke</surname> <given-names>GL</given-names></name>, <name name-style="western"><surname>Detrano</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Diez Roux</surname> <given-names>AV</given-names></name>, <name name-style="western"><surname>Folsom</surname> <given-names>AR</given-names></name>, <etal>et al</etal>. <article-title>Multi-ethnic study of atherosclerosis: objectives and design</article-title>. <source>American journal of epidemiology</source>. <year>2002</year>;<volume>156</volume>(<issue>9</issue>):<fpage>871</fpage>–<lpage>81</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/aje/kwf113" xlink:type="simple">10.1093/aje/kwf113</ext-link></comment> <object-id pub-id-type="pmid">12397006</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nettleton</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Schulze</surname> <given-names>MB</given-names></name>, <name name-style="western"><surname>Jiang</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Jenny</surname> <given-names>NS</given-names></name>, <name name-style="western"><surname>Burke</surname> <given-names>GL</given-names></name>, <name name-style="western"><surname>Jacobs</surname> <given-names>DR</given-names> <suffix>Jr</suffix></name>. <article-title>A priori–defined dietary patterns and markers of cardiovascular disease risk in the Multi-Ethnic Study of Atherosclerosis (MESA).</article-title> <source>The American journal of clinical nutrition</source>. <year>2008</year>;<volume>88</volume>(<issue>1</issue>):<fpage>185</fpage>–<lpage>94</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/ajcn/88.1.185" xlink:type="simple">10.1093/ajcn/88.1.185</ext-link></comment> <object-id pub-id-type="pmid">18614740</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pearl</surname> <given-names>J.</given-names></name> <article-title>The causal mediation formula—a guide to the assessment of pathways and mechanisms</article-title>. <source>Prevention science</source>. <year>2012</year>;<volume>13</volume>(<issue>4</issue>):<fpage>426</fpage>–<lpage>36</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11121-011-0270-1" xlink:type="simple">10.1007/s11121-011-0270-1</ext-link></comment> <object-id pub-id-type="pmid">22419385</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Etminan</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Collins</surname> <given-names>GS</given-names></name>, <name name-style="western"><surname>Mansournia</surname> <given-names>MA</given-names></name>. <article-title>Using causal diagrams to improve the design and interpretation of medical research.</article-title> <source>Chest</source>. <year>2020</year>;<volume>158</volume>(<issue>1</issue>):<fpage>S21</fpage>–<lpage>S8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.chest.2020.03.011" xlink:type="simple">10.1016/j.chest.2020.03.011</ext-link></comment> <object-id pub-id-type="pmid">32658648</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mansournia</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Higgins</surname> <given-names>JP</given-names></name>, <name name-style="western"><surname>Sterne</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Hernán</surname> <given-names>MA</given-names></name>. <article-title>Biases in randomized trials: a conversation between trialists and epidemiologists</article-title>. <source>Epidemiology (Cambridge, Mass).</source> <year>2017</year>;<volume>28</volume>(<issue>1</issue>):<fpage>54</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1097/EDE.0000000000000564" xlink:type="simple">10.1097/EDE.0000000000000564</ext-link></comment> <object-id pub-id-type="pmid">27748683</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mansournia</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Collins</surname> <given-names>GS</given-names></name>, <name name-style="western"><surname>Nielsen</surname> <given-names>RO</given-names></name>, <name name-style="western"><surname>Nazemipour</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Jewell</surname> <given-names>NP</given-names></name>, <name name-style="western"><surname>Altman</surname> <given-names>DG</given-names></name>, <etal>et al</etal>. <article-title>A CHecklist for statistical Assessment of Medical Papers (the CHAMP statement): explanation and elaboration</article-title>. <source>Br J Sports Med</source>. <year>2021</year>;<volume>55</volume>(<issue>18</issue>):<fpage>1009</fpage>–<lpage>17</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1136/bjsports-2020-103652" xlink:type="simple">10.1136/bjsports-2020-103652</ext-link></comment> <object-id pub-id-type="pmid">33514558</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Etminan</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Nazemipour</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Candidate</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Mansournia</surname> <given-names>MA</given-names></name>. <article-title>Potential Biases in Studies of Acid-Suppressing Drugs and COVID-19 Infection.</article-title> <source>Gastroenterology</source>. <year>2021</year>;<volume>160</volume>(<issue>5</issue>):<fpage>1443</fpage>–<lpage>6</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1053/j.gastro.2020.11.053" xlink:type="simple">10.1053/j.gastro.2020.11.053</ext-link></comment> <object-id pub-id-type="pmid">33340538</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Etminan</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Brophy</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Collins</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Nazemipour</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Mansournia</surname> <given-names>MA</given-names></name>. <article-title>To Adjust or Not to Adjust: The Role of Different Covariates in Cardiovascular Observational Studies</article-title>. <source>Am Heart J</source>. <year>2021</year>;<volume>237</volume>:<fpage>62</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ahj.2021.03.008" xlink:type="simple">10.1016/j.ahj.2021.03.008</ext-link></comment> <object-id pub-id-type="pmid">33722586</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mansournia</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Nazemipour</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Etminan</surname> <given-names>M</given-names></name>. <article-title>Causal diagrams for immortal time bias.</article-title> <source>Int J Epidemiol</source>. <year>2021</year>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/ije/dyab157" xlink:type="simple">10.1093/ije/dyab157</ext-link></comment> <object-id pub-id-type="pmid">34333642</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mansournia</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Hernán</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Greenland</surname> <given-names>S</given-names></name>. <article-title>Matched designs and causal diagrams</article-title>. <source>Int J Epidemiol</source>. <year>2013</year>;<volume>42</volume>(<issue>3</issue>):<fpage>860</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/ije/dyt083" xlink:type="simple">10.1093/ije/dyt083</ext-link></comment> <object-id pub-id-type="pmid">23918854</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Metropolis</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Ulam</surname> <given-names>S</given-names></name>. <article-title>The monte carlo method</article-title>. <source>Journal of the American statistical association</source>. <year>1949</year>;<volume>44</volume>(<issue>247</issue>):<fpage>335</fpage>–<lpage>41</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1080/01621459.1949.10483310" xlink:type="simple">10.1080/01621459.1949.10483310</ext-link></comment> <object-id pub-id-type="pmid">18139350</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Clair</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Rigotti</surname> <given-names>NA</given-names></name>, <name name-style="western"><surname>Porneala</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Fox</surname> <given-names>CS</given-names></name>, <name name-style="western"><surname>D’Agostino</surname> <given-names>RB</given-names></name>, <name name-style="western"><surname>Pencina</surname> <given-names>MJ</given-names></name>, <etal>et al</etal>. <article-title>Association of smoking cessation and weight change with cardiovascular disease among adults with and without diabetes</article-title>. <source>Jama</source>. <year>2013</year>;<volume>309</volume>(<issue>10</issue>):<fpage>1014</fpage>–<lpage>21</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1001/jama.2013.1644" xlink:type="simple">10.1001/jama.2013.1644</ext-link></comment> <object-id pub-id-type="pmid">23483176</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Feodoroff</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Harjutsalo</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Forsblom</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Groop</surname> <given-names>P-H</given-names></name>, <name name-style="western"><surname>Group</surname> <given-names>FS</given-names></name>. <article-title>Dose-dependent effect of smoking on risk of coronary heart disease, heart failure and stroke in individuals with type 1 diabetes</article-title>. <source>Diabetologia</source>. <year>2018</year>;<volume>61</volume>(<issue>12</issue>):<fpage>2580</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s00125-018-4725-9" xlink:type="simple">10.1007/s00125-018-4725-9</ext-link></comment> <object-id pub-id-type="pmid">30229273</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Doyle</surname> <given-names>JT</given-names></name>, <name name-style="western"><surname>Heslin</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Hilleboe</surname> <given-names>HE</given-names></name>, <name name-style="western"><surname>Formel</surname> <given-names>PF</given-names></name>. <article-title>Early diagnosis of ischemic heart disease</article-title>. <source>New England Journal of Medicine</source>. <year>1959</year>;<volume>261</volume>(<issue>22</issue>):<fpage>1096</fpage>–<lpage>101</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1056/NEJM195911262612202" xlink:type="simple">10.1056/NEJM195911262612202</ext-link></comment> <object-id pub-id-type="pmid">13817935</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Woodward</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Moohan</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Tunstall-Pedoe</surname> <given-names>H</given-names></name>. <article-title>Self-reported smoking, cigarette yields and inhalation biochemistry related to the incidence of coronary heart disease: results from the Scottish Heart Health Study</article-title>. <source>Journal of epidemiology and biostatistics</source>. <year>1999</year>;<volume>4</volume>(<issue>4</issue>):<fpage>285</fpage>–<lpage>95</lpage>. <object-id pub-id-type="pmid">10764242</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mucha</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Stephenson</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Morandi</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Dirani</surname> <given-names>R</given-names></name>. <article-title>Meta-analysis of disease risk associated with smoking, by gender and intensity of smoking</article-title>. <source>Gender medicine</source>. <year>2006</year>;<volume>3</volume>(<issue>4</issue>):<fpage>279</fpage>–<lpage>91</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s1550-8579%2806%2980216-0" xlink:type="simple">10.1016/s1550-8579(06)80216-0</ext-link></comment> <object-id pub-id-type="pmid">17582369</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Warner</surname> <given-names>KE</given-names></name>. <article-title>Possible increases in the underreporting of cigarette consumption</article-title>. <source>Journal of the American Statistical Association</source>. <year>1978</year>;<volume>73</volume>(<issue>362</issue>):<fpage>314</fpage>–<lpage>8</lpage>.</mixed-citation></ref>
+<ref id="pone.0262403.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mansournia</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Danaei</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Forouzanfar</surname> <given-names>MH</given-names></name>, <etal>et al</etal>. <article-title>Effect of physical activity on functional performance and knee pain in patients with osteoarthritis: analysis with marginal structural models.</article-title> <source>Epidemiology</source>. <year>2012</year>:<fpage>631</fpage>–<lpage>40</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1097/EDE.0b013e31824cc1c3" xlink:type="simple">10.1097/EDE.0b013e31824cc1c3</ext-link></comment> <object-id pub-id-type="pmid">22415107</object-id></mixed-citation></ref>
+<ref id="pone.0262403.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Robins</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Wasserman</surname> <given-names>L</given-names></name>, <article-title>editors. Estimation of effects of sequential treatments by reparameterizing directed acyclic graphs</article-title>. <source>Proceedings of the Thirteenth conference on Uncertainty in artificial intelligence</source>; <year>1997</year>: Morgan Kaufmann Publishers Inc.</mixed-citation></ref>
+<ref id="pone.0262403.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schomaker</surname> <given-names>M</given-names></name> and <name name-style="western"><surname>Heumann</surname> <given-names>C</given-names></name>. <article-title>Bootstrap inference when using multiple imputation</article-title>. <source>Statistics in Medicine</source>. <year>2018</year>;<volume>37</volume>(<issue>14</issue>):<fpage>2252</fpage>–<lpage>66</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/sim.7654" xlink:type="simple">10.1002/sim.7654</ext-link></comment> <object-id pub-id-type="pmid">29682776</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+<sub-article article-type="aggregated-review-documents" id="pone.0262403.r001" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0262403.r001</article-id>
+<title-group>
+<article-title>Decision Letter 0</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Zhan</surname>
+<given-names>Y</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2022</copyright-year>
+<copyright-holder>Y Zhan</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0262403" document-id-type="doi" document-type="article" id="rel-obj001" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>0</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">7 Jul 2021</named-content>
+</p>
+<p>PONE-D-21-18594</p>
+<p>Does Weight Mediate the Effect of Smoking on Coronary Heart Disease? Parametric Mediational G-Formula Analysis</p>
+<p>PLOS ONE</p>
+<p>Dear Dr. Mansournia,</p>
+<p>Thank you for submitting your manuscript to PLOS ONE. After careful consideration, we feel that it has merit but does not fully meet PLOS ONE’s publication criteria as it currently stands. Therefore, we invite you to submit a revised version of the manuscript that addresses the points raised during the review process.</p>
+<p>You are invited to further add the program codes in the supplementary files. Please also note that there might be attachments of the reviewers' comments.</p>
+<p>Please submit your revised manuscript by Aug 21 2021 11:59PM. If you will need more time than this to complete your revisions, please reply to this message or contact the journal office at <email xlink:type="simple">plosone@plos.org</email>. When you're ready to submit your revision, log on to <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pone/" xlink:type="simple">https://www.editorialmanager.com/pone/</ext-link> and select the 'Submissions Needing Revision' folder to locate your manuscript file.</p>
+<p>Please include the following items when submitting your revised manuscript:</p>
+<p><list list-type="bullet"><list-item><p>A rebuttal letter that responds to each point raised by the academic editor and reviewer(s). You should upload this letter as a separate file labeled 'Response to Reviewers'.</p></list-item><list-item><p>A marked-up copy of your manuscript that highlights changes made to the original version. You should upload this as a separate file labeled 'Revised Manuscript with Track Changes'.</p></list-item><list-item><p>An unmarked version of your revised paper without tracked changes. You should upload this as a separate file labeled 'Manuscript'.</p></list-item></list></p>
+<p>If you would like to make changes to your financial disclosure, please include your updated statement in your cover letter. Guidelines for resubmitting your figure files are available below the reviewer comments at the end of this letter.</p>
+<p><!-- <span style="color: rgb(51, 51, 51); font-family: sans-serif, Arial, Verdana, "Trebuchet MS"; font-size: 13px; background-color: rgb(255, 255, 255);"> -->If applicable, we recommend that you deposit your laboratory protocols in protocols.io to enhance the reproducibility of your results. Protocols.io assigns your protocol its own identifier (DOI) so that it can be cited independently in the future. For instructions see: <!-- </span> --><ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols" xlink:type="simple">http://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols</ext-link><!-- <span style="color: rgb(51, 51, 51); font-family: sans-serif, Arial, Verdana, "Trebuchet MS"; font-size: 13px; background-color: rgb(255, 255, 255);"> -->. Additionally, PLOS ONE offers an option for publishing peer-reviewed Lab Protocol articles, which describe protocols hosted on protocols.io. Read more information on sharing protocols at <!-- </span> --><ext-link ext-link-type="uri" xlink:href="https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols" xlink:type="simple">https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols</ext-link><!-- <span style="color: rgb(51, 51, 51); font-family: sans-serif, Arial, Verdana, "Trebuchet MS"; font-size: 13px; background-color: rgb(255, 255, 255);"> -->.<!-- </span> --></p>
+<p>We look forward to receiving your revised manuscript.</p>
+<p>Kind regards,</p>
+<p>Y Zhan</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Journal Requirements:</p>
+<p>When submitting your revision, we need you to address these additional requirements.</p>
+<p>1. Please ensure that your manuscript meets PLOS ONE's style requirements, including those for file naming. The PLOS ONE style templates can be found at</p>
+<p><underline><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf" xlink:type="simple">https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf</ext-link></underline> and</p>
+<p><ext-link ext-link-type="uri" xlink:href="about:blank" xlink:type="simple">https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf</ext-link></p>
+<p>2.  We note that you have indicated that data from this study are available upon request. PLOS only allows data to be available upon request if there are legal or ethical restrictions on sharing data publicly. For information on unacceptable data access restrictions, please see <ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosone/s/data-availability#loc-unacceptable-data-access-restrictions" xlink:type="simple">http://journals.plos.org/plosone/s/data-availability#loc-unacceptable-data-access-restrictions</ext-link>.</p>
+<p>In your revised cover letter, please address the following prompts:</p>
+<p>a) If there are ethical or legal restrictions on sharing a de-identified data set, please explain them in detail (e.g., data contain potentially identifying or sensitive patient information) and who has imposed them (e.g., an ethics committee). Please also provide contact information for a data access committee, ethics committee, or other institutional body to which data requests may be sent.</p>
+<p>b) If there are no restrictions, please upload the minimal anonymized data set necessary to replicate your study findings as either Supporting Information files or to a stable, public repository and provide us with the relevant URLs, DOIs, or accession numbers. Please see <ext-link ext-link-type="uri" xlink:href="http://www.bmj.com/content/340/bmj.c181.long" xlink:type="simple">http://www.bmj.com/content/340/bmj.c181.long</ext-link> for guidelines on how to de-identify and prepare clinical data for publication. For a list of acceptable repositories, please see <ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosone/s/data-availability#loc-recommended-repositories" xlink:type="simple">http://journals.plos.org/plosone/s/data-availability#loc-recommended-repositories</ext-link>.</p>
+<p>We will update your Data Availability statement on your behalf to reflect the information you provide.</p>
+<p>[Note: HTML markup is below. Please do not edit.]</p>
+<p>Reviewers' comments:</p>
+<p>Reviewer's Responses to Questions</p>
+<p><!-- <font color="black"> --><bold>Comments to the Author</bold></p>
+<p>1. Is the manuscript technically sound, and do the data support the conclusions?</p>
+<p>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions. Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes. The conclusions must be drawn appropriately based on the data presented. <!-- </font> --></p>
+<p>Reviewer #1: Partly</p>
+<p>Reviewer #2: Partly</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->2. Has the statistical analysis been performed appropriately and rigorously? <!-- </font> --></p>
+<p>Reviewer #1: No</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->3. Have the authors made all data underlying the findings in their manuscript fully available?</p>
+<p>The <ext-link ext-link-type="uri" xlink:href="http://www.plosone.org/static/policies.action#sharing" xlink:type="simple">PLOS Data policy</ext-link> requires authors to make all data underlying the findings described in their manuscript fully available without restriction, with rare exception (please refer to the Data Availability Statement in the manuscript PDF file). The data should be provided as part of the manuscript or its supporting information, or deposited to a public repository. For example, in addition to summary statistics, the data points behind means, medians and variance measures should be available. If there are restrictions on publicly sharing data—e.g. participant privacy or use of data from a third party—those must be specified.<!-- </font> --></p>
+<p>Reviewer #1: No</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->4. Is the manuscript presented in an intelligible fashion and written in standard English?</p>
+<p>PLOS ONE does not copyedit accepted manuscripts, so the language in submitted articles must be clear, correct, and unambiguous. Any typographical or grammatical errors should be corrected at revision, so please note any specific errors here.<!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->5. Review Comments to the Author</p>
+<p>Please use the space provided to explain your answers to the questions above. You may also include additional comments for the author, including concerns about dual publication, research ethics, or publication ethics. (Please upload your review as an attachment if it exceeds 20,000 characters)<!-- </font> --></p>
+<p>Reviewer #1: PONE-D-21-18594: statistical review</p>
+<p>SUMMARY. This paper describes a mediation analysis that evaluates whether weight mediates the effect of smoking on coronary heart disease. The core statistical analysis is based on a parametric mediational g-formula that has been recently proposed in the epidemiological literature. Results are in line with other studies that show factors that mediate smoking effects. The main problem with this paper is the presentation of the material, which is a bit too synthetic. Essentially, the authors simply state that they used a SAS macro and show the final results. It is therefore impossible to check whether the statistical methods are correct. Further, the results are not replicable. Technical soundness and replicability are two important requirements for publication in PLOSONE. I'd welcome a revision that adds details on the statistical part of the paper. See the list below for specific issues that should be addressed.</p>
+<p>MAJOR ISSUES</p>
+<p>1. Please clarify what parametric models have been fitted. Which covariates have been included? What was the structure of the random effects used to capture the longitudinal correlation of the data? Could the authors provide an evaluation of the goodness of fit of the model? Could the authors provide a traditional table with estimates and standard errors of the fitted parametric model?</p>
+<p>2. Point estimates are computed by "non parametric bootstrap". Shouldn't parametric mediation analysis rely on simulation from the fitted parametric model? Why do we need nonparametric bootstrap here? A nonparametric approach to bootstrap is not obvious under a longitudinal setting becase we need to account for longitudinal correlation. This is why parametric approaches are usually preferred. Please clarify. Furthermore, Monte Carlo outputs are not replicable by definition. The authors should provide data and code (including the chosen random seed) to allow for replicability.</p>
+<p>3. The authors say that "there is no function in the macro of mediational g-formula for handling missing data yet". Does it mean that only complete records have been used in the analysis? If it does, then this is a serious limitation that could invalidate the whole study. Please clarify.</p>
+<p>Reviewer #2: Summary of the manuscript</p>
+<p>Mokhayeri et al. aimed to explore what mediating effect changes in weight play in the effect of smoking on risk of coronary heart disease (CHD). As smoking status and weight are dynamic factors which can vary over time, they utilise the parametric mediational g-formula to unbiasedly account for exposure-caused mediator-outcome confounding in their analysis. Consistent with prior work they find smoking 20 cigarettes per day compared to none significantly increases the risk of CHD over time, though do not find strong evidence that changes in weight mediate these effects. Overall, this manuscript was a pleasure to read and reflects a well carried-out project with clear public health implications. It does however have a number of minor areas which could be improved prior to publication which would strengthen the manuscript. These mainly concern clarifying causal estimands of interest, methodological decisions and their rationale, providing a clearer explanation of how missing data was accounted for, and providing additional details in the results section.</p>
+<p>Areas of improvement</p>
+<p>Title and abstract:</p>
+<p>The title and abstract are clear and accurately summarise the findings of the paper. As minor areas of improvement, however:</p>
+<p>1. The final sentence of the abstract conclusion section may be better worded as 'changes in weight’ as a result of smoking do not appear to have an effect on CHD risk, instead of ‘losing weight’.</p>
+<p>2. Likewise, while the summary conclusions are sound, it may be more appropriate to simply say changes in weight have no meaningful mediating effect on CHD risk instead of indicating a slight beneficial effect may be possible, given the 95% confidence interval could equally reflect a slight detrimental effect of weight on CHD risk (95% CI: -0.05%, +0.04%).</p>
+<p>Introduction:</p>
+<p>Overall, the introduction section is very well-done, providing a clear background and rationale to the project as well as justifying the use of the mediational g-formula in answering the specific research question of interest.</p>
+<p>1. One recommended change however would be for authors to state which of the interventional direct and indirect effects estimated are pure and total (i.e. whether the additive interaction between exposure and mediator is incorporated into the ‘direct’ effect or the ‘indirect’ effect). While this can be worked out through the IDE and IIE formulas provided in pages 6 and 7, making each estimand clear could be helpful for readers given the slight difference in interpretation. For example, if the pure IIE was estimated (YA0M1 - YA0M0), this would reflect the effect of having weight similar to smokers (vs. non-smokers) on CHD risk in a population where everyone was a non-smoker. The total IIE on the other hand would reflect the effect of having weight similar to non-smokers (vs. smokers) in a population where everyone was a smoker, so they get towards different questions.</p>
+<p>Methods:</p>
+<p>While the methods section is well-done overall and provides ample information on the study design and setting including the time-periods of each visit, there are several areas where improvements could be made that in my view would strengthen the resulting paper.</p>
+<p>1. Authors need to provide a description of how missing data is addressed, given its particular importance to the mGFORMULA SAS macro. If understood correctly, a complete case analysis was performed using only those who did not experience a competing risk event (5.9% of the 6,809 eligible participants) or right-censoring due to loss to follow-up (29% of participants). Given the mGFORMULA SAS macro cannot accommodate competing risks or censoring and requires that all participants included have an equal number of follow-up visits/time-points, this should be stated explicitly as well as the size of the final sample actually included in the analysis.</p>
+<p>2. In the ‘Exposure, mediator, outcome, and confounders’ section of the methods, authors describe their comparison as a hypothetical intervention forcing all individuals to smoke 20 cigarettes per day compared to none and interpret it as such. As is discussed elsewhere in the literature though, such as by Schwartz, Gatto, and Campbell in the Annals of Epidemiology in 2016, this may not be the most appropriate interpretation of their comparison given the number of different ways this intervention could be enforced, each having a different relationship with future health and possibly violating Rubin’s Stable Unit Treatment Value assumption. Instead authors may wish to describe their comparison in terms of identifying the realised causal effect of smoking 20 cigarettes per day compared to none among participants in the sample who were exposed.</p>
+<p>3. In the ‘Exposure, mediator, outcome, and confounders’ section of the methods, authors indicate that alcohol consumption, diet, and family income are included as time-fixed covariates based on baseline values. Given each of these factors are likely dynamic in nature and treating them as fixed could result in misclassification bias or residual confounding, authors should justify treating these factors as time-fixed, such as due to only having information available at baseline. If authors have longitudinal data on these factors, they should explore treating them as time-varying in their analysis or, if not, consider reporting the extent to which these factors vary within individuals in their sample throughout follow-up.</p>
+<p>4. In the same section as above, authors indicate baseline smoking status was included as a time-fixed covariate. It would be helpful if it was made more explicit how this variable was accounted for. For example, if baseline smoking status was included as the average number of cigarettes smoked, it may not account for individuals being former smokers and the continuing CHD risk this would present. Likewise if it does not account for smoking history as of baseline, this would also fail to capture individuals who were former smokers still having a possibly greater risk of CHD than never-smokers. If possible, I would recommend authors include both current smoking status at baseline (as an average number of cigarettes smoked per day) as well as smoking history at baseline (as a categorical for current smoker, former smoker, never smoker) as time-fixed covariates.</p>
+<p>5. In the ‘Statistical analysis’ section of the methods, I would recommend a different wording when discussing potential outcomes and exposure and mediator status’, making it explicit that each potential outcome refers to exposure and mediator histories over the course of follow-up instead of at a single time-point, with these histories being some exposure-mediator combination of {0,0,0,0,0} and/or {1,1,1,1,1}.</p>
+<p>6. For the line ‘Mediational g-formula is both Robins’ regular g-formula and Pearl’s mediation formula’, I think it would be more appropriate to say the mediational g-formula is related to both Robin’s regular g-formula and Pearl’s mediation formula, only being equal under the conditions authors subsequently state.</p>
+<p>7. Possibly in the ‘Statistical analysis’ section, authors should provide additional detail on whether any interaction terms are included between covariates such as between the exposure and mediator, and whether any non-linear terms are considered in the model specification for continuous factors, such as quadratic, cubic, or spline terms. This could be helpful for readers, in that these decisions could influence how accurately the parametric model captures the true causal model.</p>
+<p>8. Authors should report any efforts made to address or explore possible biases. For example, authors could assess the validity of their parametric model specification through comparing the CHD risk simulated under the Natural Course (i.e. without intervention) to that actually observed in the sample. Likewise, authors could perform sensitivity analyses (though not required) excluding those who were former smokers so as to limit the likelihood of lagged effects of smoking before the intervention period. As a final suggestion, authors may wish to explore how their findings differ if analysed over a 9- or 13-year period to determine if their effect estimate is stable or affected by chance variation in year-to-year sample CHD incidence.</p>
+<p>9. Though it could be a local issue, the Figure 1 causal DAG appears to have a low-resolution, making it difficult to read. If this is the case, authors may wish to provide a higher quality image for better legibility.</p>
+<p>Results:</p>
+<p>Authors present the findings of their analysis well, though there are minor areas where improvements could be made.</p>
+<p>1. Related to point 1 in the ‘Methods’ improvements section, authors make clear that some individuals die from causes other than CHD or are lost to follow-up. Where possible, in the results section authors should report the final sample size included in the mediational g-formula analyses, as well as provide a brief summary of the characteristics of those not included in analyses to assess the likelihood of differential loss to follow-up by factors related to the outcome of interest.</p>
+<p>2. Related to point 1 in the ‘Methods’ improvement section as well, authors do not make clear how missing data is accounted for. This is needed, given Table 1 race, education, and annual family income strata sizes do not sum to each smoking status group sample size (e.g. annual family income among smokers sum to 846, but there are 890 smokers at baseline), suggesting there is some missing data. Where possible, information on missing data should be provided for each variable separated by smoking status, as well as a complete case sample size carried forward for use with the mediational g-formula. This is relevant to the positivity assumption, where a smaller sample size is more likely to result in random non-positivity.</p>
+<p>3. In summarising results of the standard parametric g-formula, authors describe the estimated 11-year risk of CHD in smokers and non-smokers. To reflect that the comparison is counterfactual, comparing outcomes had everyone been smokers or non-smokers, I would recommend they word this sentence differently as the estimated risk ‘had everyone been a smoker/smoked 20 cigarettes per day’ vs. ‘had everyone been a non-smoker/smoked 0 cigarettes per day’ for the 11-year follow-up.</p>
+<p>4. In Tables 1 or 2, it would be helpful if authors presented the observed 11-year risk of CHD (ideally overall and by smoking status), as well as that simulated in the standard or mediational g-formula under no intervention. This would be a helpful assumption check, given the 'No intervention' output presented by the g-formula represents the simulated CHD risk under the Natural course (i.e. without intervention). If the parametric modelling process accounts for the causal model well, this 'no intervention' risk should be similar to that actually observed in the sample. If it isn't, it may suggest more work is needed in refining the model specification, such as considering different covariates, interaction terms, or non-linear terms for continuous covariates.</p>
+<p>5. Either in Table 3 or separately, I would recommend authors present the simulated risk under each counterfactual exposure-mediator intervention. This would be helpful for readers, as it would allow multiplicative effects to be calculated such as E[YA1M1] / E[YA1M0] for the total IIE, as well as the interventional total direct effect and interventional pure indirect effect.</p>
+<p>Discussion:</p>
+<p>Overall, authors do an excellent job of summarising related research as well as noting strengths and limitations of their study. Some brief areas of possible improvements are listed below:</p>
+<p>1. While authors summarise findings of a number of related articles, I feel the findings of these studies could be more explicitly compared against their own findings, such as through simply restating the summary total, direct, and indirect effects of their own study before discussing total, direct, and weight-mediated effect estimates found in other studies.</p>
+<p>2. The discussion section could benefit from authors comparing effects of their analysis using the mediational g-formula to similar studies which did not utilise the mediational g-formula. For example, the 2013 JAMA study by Carole Clair et al. considers the mediating effect of weight in the relationship between smoking cessation and CVD among people with and without diabetes. This may be a more relevant comparison than the study by Nianogo and Arah where the outcome was type 2 diabetes mellitus and not directly related to CHD.</p>
+<p>3. On page 11, authors suggest the parametric mediational g-formula is the only known method that is valid for investigating causal effects in the presence of time-varying mediation. This may not necessarily be correct, and could be adapted. As they note, VanderWeele and Tchetgen Tchetgen’s semiparametric approach is also valid. Further, the authors may find the 2017 paper by Zheng and van der Laan in the Journal of Causal Inference relevant, where they discuss the conditional mediation formula and multiple estimators for mediation effects in the presence of time-varying mediation through applying TMLE, IPW, or a non-targeted substitution estimator.</p>
+<p>4. Authors currently split their discussion of positivity, consistency, and exchangeability/unmeasured confounding into two sections, separated by study strengths. The discussion may be better laid-out if kept together, relating each assumption to the evidence supporting it and detracting from it one at a time.</p>
+<p>5. While authors appropriately note the g-null paradox as a limitation of the g-formula, if there is space in the manuscript it may benefit from a slightly longer discussion, especially given the authors note it is unlikely to be a concern in their study due to prior work suggesting the sharp null doesn’t hold in this context.</p>
+<p>6. While authors do an excellent job reviewing study strengths and limitations, they may wish to review work published in Statistics in Medicine in 2018 by Schomaker and Heumann, where they discuss combining bootstrap inference with multiple imputation where the g-formula is used. While this would not account for competing risks and censoring, and is not being recommended as necessary in this review, missing data such as that mentioned in point 2 of the ‘results’ improvement section can be accounted for as a step prior to or alongside the mediational g-formula, either through storing each bootstrap effect estimate across multiply imputed datasets and using percentile-based confidence intervals, or through applying the mediational g-formula to multiply imputed datasets and pooling summary effect estimates through Rubin's rules. Each approach discussed is relatively straight-forward to implement in practice.</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->6. PLOS authors have the option to publish the peer review history of their article (<ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link>). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link>.<!-- </font> --></p>
+<p>Reviewer #1: No</p>
+<p>Reviewer #2: <bold>Yes: </bold>Kieran Blaikie</p>
+<p>[NOTE: If reviewer comments were submitted as an attachment file, they will be attached to this email and accessible via the submission site. Please log into your account, locate the manuscript record, and check for the action link "View Attachments". If this link does not appear, there are no attachment files.]</p>
+<p>While revising your submission, please upload your figure files to the Preflight Analysis and Conversion Engine (PACE) digital diagnostic tool, <ext-link ext-link-type="uri" xlink:href="https://pacev2.apexcovantage.com/" xlink:type="simple">https://pacev2.apexcovantage.com/</ext-link>. PACE helps ensure that figures meet PLOS requirements. To use PACE, you must first register as a user. Registration is free. Then, login and navigate to the UPLOAD tab, where you will find detailed instructions on how to use the tool. If you encounter any issues or have any questions when using PACE, please email PLOS at <email xlink:type="simple">figures@plos.org</email>. Please note that Supporting Information files do not need this step.</p>
+<supplementary-material id="pone.0262403.s002" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0262403.s002" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Mokhayeri et al PLoS One Review.pdf</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pone.0262403.r002">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0262403.r002</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 0</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pone.0262403" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj002" link-type="rebutted-decision-letter" object-id="10.1371/journal.pone.0262403.r001" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="author-response-date">11 Nov 2021</named-content>
+</p>
+<p>Reviewer 1</p>
+<p>SUMMARY. This paper describes a mediation analysis that evaluates whether weight mediates the effect of smoking on coronary heart disease. The core statistical analysis is based on a parametric mediational g-formula that has been recently proposed in the epidemiological literature. Results are in line with other studies that show factors that mediate smoking effects. The main problem with this paper is the presentation of the material, which is a bit too synthetic. Essentially, the authors simply state that they used a SAS macro and show the final results. It is therefore impossible to check whether the statistical methods are correct. Further, the results are not replicable. Technical soundness and replicability are two important requirements for publication in PLOSONE. I'd welcome a revision that adds details on the statistical part of the paper. See the list below for specific issues that should be addressed.</p>
+<p>MAJOR ISSUES</p>
+<p>1. Please clarify what parametric models have been fitted. Which covariates have been included? What was the structure of the random effects used to capture the longitudinal correlation of the data? Could the authors provide an evaluation of the goodness of fit of the model? Could the authors provide a traditional table with estimates and standard errors of the fitted parametric model?</p>
+<p>Our answer: Thank you. Considering our dichotomous outcome, the parametric model is based on a logistic regression and tries to estimate the standardized risk using the probability of confounders (both time-fixed and time-varying) and the conditional distribution of outcome (CHD) given the exposure (smoking) and set of confounders. Time-varying covariates measured at all visits including intentional physical activity, total cholesterol, hypertension, hypertension medication, and current aspirin use entered in the models as potential confounders. Additionally, we also adjusted for baseline age, sex, race/ethnicity (White, Asian, Hispanic, and African-American), alcohol consumption (drinks per week), and diet score. To assess the validity of the parametric model specification, we compared the CHD risk simulated under the Natural Course (without intervention) with the actually observed risk (added to the discussion). We reported CI using bootstrapping with 500 iterations. Regarding the structure of the random effects, there is no effect term in our model. The within subject-correlation has been taken into account using bootstrapping; and regarding the traditional table, in fact, the beta estimates of the outcome and covariate models and their standard errors are not our interest and so the software does not provide them.</p>
+<p>2. Point estimates are computed by "non parametric bootstrap". Shouldn't parametric mediation analysis rely on simulation from the fitted parametric model? Why do we need nonparametric bootstrap here? A nonparametric approach to bootstrap is not obvious under a longitudinal setting because we need to account for longitudinal correlation. This is why parametric approaches are usually preferred. Please clarify. Furthermore, Monte Carlo outputs are not replicable by definition. The authors should provide data and code (including the chosen random seed) to allow for replicability.</p>
+<p>Our answer: Indeed, we used the nonparametric bootstrap to obtain point estimates and confidence intervals for the effects of interest. Use of the nonparametric bootstrap is standard with the parametric g formula. In principle, the parametric bootstrap can also be used, but there is no requirement (i.e., one need not use parametric bootstrap with parametric g formula). The reason researchers employ the nonparametric bootstrap is that it is much simpler to implement, particularly in a setting of longitudinal data such as ours. Specifically, with a simple clustered resample, one can address the longitudinal correlations with the nonparametric bootstrap. Were we to rely on the parametric bootstrap, we would have to employ much more complex modeling strategies, which are not immediately compatible with the g formula.</p>
+<p>The code—SAS macro—was added as a supplementary file. </p>
+<p>3. The authors say that "there is no function in the macro of mediational g-formula for handling missing data yet". Does it mean that only complete records have been used in the analysis? If it does, then this is a serious limitation that could invalidate the whole study. Please clarify.</p>
+<p>Our answer: While parametric g-formula macro do consider censoring in the analysis, mgformula macro for parametric g-formula cannot handle censoring. Using mGORMULA we did a complete case analysis. We indicated this in the discussion. Final sample included in the analysis is 4433 (Censoring proportion: 34.9%).</p>
+<p>Lin et al. (Epidemiology, 2016; and Statistics in Medicine, 2017) limited their analyses on participants without death or loss to follow up during the period of study. </p>
+<p>Reviewer 2</p>
+<p>Mokhayeri et al. aimed to explore what mediating effect changes in weight play in the effect of smoking on risk of coronary heart disease (CHD). As smoking status and weight are dynamic factors which can vary over time, they utilise the parametric mediational g-formula to unbiasedly account for exposure-caused mediator-outcome confounding in their analysis. Consistent with prior work they find smoking 20 cigarettes per day compared to none significantly increases the risk of CHD over time, though do not find strong evidence that changes in weight mediate these effects. Overall, this manuscript was a pleasure to read and reflects a well carried-out project with clear public health implications. It does however have a number of minor areas which could be improved prior to publication which would strengthen the manuscript. These mainly concern clarifying causal estimands of interest, methodological decisions and their rationale, providing a clearer explanation of how missing data was accounted for, and providing additional details in the results section.</p>
+<p>Areas of improvement</p>
+<p>Title and abstract:</p>
+<p>The title and abstract are clear and accurately summarise the findings of the paper. As minor areas of improvement, however:</p>
+<p>1. The final sentence of the abstract conclusion section may be better worded as 'changes in weight’ as a result of smoking do not appear to have an effect on CHD risk, instead of ‘losing weight’.</p>
+<p>Our answer: Thank you. It was revised. We made the following change: In fact, changes in weight because of smoking have no meaningful mediating effect on CHD risk.</p>
+<p>2. Likewise, while the summary conclusions are sound, it may be more appropriate to simply say changes in weight have no meaningful mediating effect on CHD risk instead of indicating a slight beneficial effect may be possible, given the 95% confidence interval could equally reflect a slight detrimental effect of weight on CHD risk (95% CI: -0.05%, +0.04%).</p>
+<p>Our answer: Thank you. It was revised. We made the following change: In fact, changes in weight because of smoking have no meaningful mediating effect on CHD risk</p>
+<p>Introduction:</p>
+<p>Overall, the introduction section is very well-done, providing a clear background and rationale to the project as well as justifying the use of the mediational g-formula in answering the specific research question of interest.</p>
+<p>1. One recommended change however would be for authors to state which of the interventional direct and indirect effects estimated are pure and total (i.e. whether the additive interaction between exposure and mediator is incorporated into the ‘direct’ effect or the ‘indirect’ effect). While this can be worked out through the IDE and IIE formulas provided in pages 6 and 7, making each estimand clear could be helpful for readers given the slight difference in interpretation. For example, if the pure IIE was estimated (YA0M1 - YA0M0), this would reflect the effect of having weight similar to smokers (vs. non-smokers) on CHD risk in a population where everyone was a non-smoker. The total IIE on the other hand would reflect the effect of having weight similar to non-smokers (vs. smokers) in a population where everyone was a smoker, so they get towards different questions.</p>
+<p>Our answer: Thank you. Indeed, it is a valuable recommendation. It was revised in both introduction and method sections. Interventional direct effect (IDE) is pure effect, and interventional indirect effect (IIE) is total effect.</p>
+<p>Methods:</p>
+<p>While the methods section is well-done overall and provides ample information on the study design and setting including the time-periods of each visit, there are several areas where improvements could be made that in my view would strengthen the resulting paper.</p>
+<p>1. Authors need to provide a description of how missing data is addressed, given its particular importance to the mGFORMULA SAS macro. If understood correctly, a complete case analysis was performed using only those who did not experience a competing risk event (5.9% of the 6,809 eligible participants) or right-censoring due to loss to follow-up (29% of participants). Given the mGFORMULA SAS macro cannot accommodate competing risks or censoring and requires that all participants included have an equal number of follow-up visits/time-points, this should be stated explicitly as well as the size of the final sample actually included in the analysis.</p>
+<p>Our answer: Thank you. Yes, mGFORMULA cannot handle competing risk and censoring, and using mGFORMULA we did a complete case analysis. We indicated this in the discussion. Final sample included in the analysis is 4433 (Censoring proportion: 34.9%) and this was added to the results section. </p>
+<p>Lin et al. (Epidemiology, 2016; and Statistics in Medicine, 2017) limited their analyses on participants without death or loss to follow up during the period of study. </p>
+<p>2. In the ‘Exposure, mediator, outcome, and confounders’ section of the methods, authors describe their comparison as a hypothetical intervention forcing all individuals to smoke 20 cigarettes per day compared to none and interpret it as such. As is discussed elsewhere in the literature though, such as by Schwartz, Gatto, and Campbell in the Annals of Epidemiology in 2016, this may not be the most appropriate interpretation of their comparison given the number of different ways this intervention could be enforced, each having a different relationship with future health and possibly violating Rubin’s Stable Unit Treatment Value assumption. Instead, authors may wish to describe their comparison in terms of identifying the realised causal effect of smoking 20 cigarettes per day compared to none among participants in the sample who were exposed.</p>
+<p>Our answer: Thank you. It was revised and your suggestion was replaced in this section.</p>
+<p>3. In the ‘Exposure, mediator, outcome, and confounders’ section of the methods, authors indicate that alcohol consumption, diet, and family income are included as time-fixed covariates based on baseline values. Given each of these factors are likely dynamic in nature and treating them as fixed could result in misclassification bias or residual confounding, authors should justify treating these factors as time-fixed, such as due to only having information available at baseline. If authors have longitudinal data on these factors, they should explore treating them as time-varying in their analysis or, if not, consider reporting the extent to which these factors vary within individuals in their sample throughout follow-up.</p>
+<p>Our answer: Thank you. Information for diet and alcohol consumption (drinks per week) is available just at baseline. Regarding income, it was roughly stable over time so we include it as a time-fixed variable.</p>
+<p>4. In the same section as above, authors indicate baseline smoking status was included as a time-fixed covariate. It would be helpful if it was made more explicit how this variable was accounted for. For example, if baseline smoking status was included as the average number of cigarettes smoked, it may not account for individuals being former smokers and the continuing CHD risk this would present. Likewise if it does not account for smoking history as of baseline, this would also fail to capture individuals who were former smokers still having a possibly greater risk of CHD than never-smokers. If possible, I would recommend authors include both current smoking status at baseline (as an average number of cigarettes smoked per day) as well as smoking history at baseline (as a categorical for current smoker, former smoker, never smoker) as time-fixed covariates.</p>
+<p>Our answer: Thank you. We adjusted for smoking at baseline as a categorical variable (never, former, and current smoker). We made the following change: baseline smoking (never, former, and current smoker).</p>
+<p>5. In the ‘Statistical analysis’ section of the methods, I would recommend a different wording when discussing potential outcomes and exposure and mediator status’, making it explicit that each potential outcome refers to exposure and mediator histories over the course of follow-up instead of at a single time-point, with these histories being some exposure-mediator combination of {0,0,0,0,0} and/or {1,1,1,1,1}.</p>
+<p>Our answer: With all due respect, to the reviewer, we believe this definition is already simple and easy to understand, and we have made no further changes</p>
+<p>6. For the line ‘Mediational g-formula is both Robins’ regular g-formula and Pearl’s mediation formula’, I think it would be more appropriate to say the mediational g-formula is related to both Robin’s regular g-formula and Pearl’s mediation formula, only being equal under the conditions authors subsequently state.</p>
+<p>Our answer: Thank you. It was revised as suggested by the reviewer.</p>
+<p>7. Possibly in the ‘Statistical analysis’ section, authors should provide additional detail on whether any interaction terms are included between covariates such as between the exposure and mediator, and whether any non-linear terms are considered in the model specification for continuous factors, such as quadratic, cubic, or spline terms. This could be helpful for readers, in that these decisions could influence how accurately the parametric model captures the true causal model.</p>
+<p>Our answer: No interaction terms are included; however. Some non-linear terms are included. For cholesterol and weight, linear term was considered when used as dependent variables, and quadratic linear term when used as independent variables. For cigarette smoking and intentional physical activity logistic, then log-linear when used as dependent variable and quadratic linear term when used as independent variable. The code—SAS macro—was added as a supplementary file.</p>
+<p>8. Authors should report any efforts made to address or explore possible biases. For example, authors could assess the validity of their parametric model specification through comparing the CHD risk simulated under the Natural Course (i.e. without intervention) to that actually observed in the sample. Likewise, authors could perform sensitivity analyses (though not required) excluding those who were former smokers so as to limit the likelihood of lagged effects of smoking before the intervention period. As a final suggestion, authors may wish to explore how their findings differ if analysed over a 9- or 13-year period to determine if their effect estimate is stable or affected by chance variation in year-to-year sample CHD incidence.</p>
+<p>Our answer: Thank you for your suggestion. The natural course compared to the observed risk was added to the discussion. In our study, the simulated 11-year risk of CHD under no intervention was 5.94% and the observed risk was 6.91%. Regarding the analysis over 9- or 13-year period, it should be noted that the authors have no access to data of 13-year period. Moreover, in MESA, there is a gap of three years between visits of four and five. </p>
+<p>9. Though it could be a local issue, the Figure 1 causal DAG appears to have a low-resolution, making it difficult to read. If this is the case, authors may wish to provide a higher quality image for better legibility.</p>
+<p>Our answer. The figure was replaced with a high-resolution one. </p>
+<p>Results:</p>
+<p>Authors present the findings of their analysis well, though there are minor areas where improvements could be made.</p>
+<p>1. Related to point 1 in the ‘Methods’ improvements section, authors make clear that some individuals die from causes other than CHD or are lost to follow-up. Where possible, in the results section authors should report the final sample size included in the mediational g-formula analyses, as well as provide a brief summary of the characteristics of those not included in analyses to assess the likelihood of differential loss to follow-up by factors related to the outcome of interest.</p>
+<p>Our answer: final sample size was added. The authors assumed the missingness is completely at random (MCAR). </p>
+<p>2. Related to point 1 in the ‘Methods’ improvement section as well, authors do not make clear how missing data is accounted for. This is needed, given Table 1 race, education, and annual family income strata sizes do not sum to each smoking status group sample size (e.g. annual family income among smokers sum to 846, but there are 890 smokers at baseline), suggesting there is some missing data. Where possible, information on missing data should be provided for each variable separated by smoking status, as well as a complete case sample size carried forward for use with the mediational g-formula. This is relevant to the positivity assumption, where a smaller sample size is more likely to result in random non-positivity.</p>
+<p>Our answer: Complete case analysis was performed, as the proportion of covariate missing data was low. For hypertension 2.2%, physical activity 1.5%, total cholesterol 3.1%, hypertension medication 3.2%, and current aspirin 1.6%.This was added to the result section. </p>
+<p>3. In summarizing results of the standard parametric g-formula, authors describe the estimated 11-year risk of CHD in smokers and non-smokers. To reflect that the comparison is counterfactual, comparing outcomes had everyone been smokers or non-smokers, I would recommend they word this sentence differently as the estimated risk ‘had everyone been a smoker/smoked 20 cigarettes per day’ vs. ‘had everyone been a non-smoker/smoked 0 cigarettes per day’ for the 11-year follow-up.</p>
+<p>Our answer: Thank you. We revised the sentence according to the reviewer’s suggestion. </p>
+<p>4. In Tables 1 or 2, it would be helpful if authors presented the observed 11-year risk of CHD (ideally overall and by smoking status), as well as that simulated in the standard or mediational g-formula under no intervention. This would be a helpful assumption check, given the 'No intervention' output presented by the g-formula represents the simulated CHD risk under the Natural course (i.e. without intervention). If the parametric modelling process accounts for the causal model well, this 'no intervention' risk should be similar to that actually observed in the sample. If it is not, it may suggest more work is needed in refining the model specification, such as considering different covariates, interaction terms, or non-linear terms for continuous covariates.</p>
+<p>Our answer: Thank you. The natural course compared to the observed risk was added to the discussion. In our study, the simulated 11-year risk of CHD under no intervention was 5.94% and the observed risk was 6.91%.</p>
+<p>5. Either in Table 3 or separately, I would recommend authors present the simulated risk under each counterfactual exposure-mediator intervention. This would be helpful for readers, as it would allow multiplicative effects to be calculated such as E[YA1M1] / E[YA1M0] for the total IIE, as well as the interventional total direct effect and interventional pure indirect effect.</p>
+<p>Our answer: thank you for your suggestion. They were added to table 3. </p>
+<p>Discussion:</p>
+<p>Overall, authors do an excellent job of summarising related research as well as noting strengths and limitations of their study. Some brief areas of possible improvements are listed below:</p>
+<p>1. While authors summarise findings of a number of related articles, I feel the findings of these studies could be more explicitly compared against their own findings, such as through simply restating the summary total, direct, and indirect effects of their own study before discussing total, direct, and weight-mediated effect estimates found in other studies.</p>
+<p>Our answer. Thank you. Studies used different summary measures and different statistical models (adjusted for various covariates). However, their results indicated gaining weight after smoking cessation, and finally a potential small effect or no effect on CHD risk.</p>
+<p>2. The discussion section could benefit from authors comparing effects of their analysis using the mediational g-formula to similar studies which did not utilise the mediational g-formula. For example, the 2013 JAMA study by Carole Clair et al. considers the mediating effect of weight in the relationship between smoking cessation and CVD among people with and without diabetes. This may be a more relevant comparison than the study by Nianogo and Arah where the outcome was type 2 diabetes mellitus and not directly related to CHD.</p>
+<p>Our answer. The study of Nianogo and Arah was replaced with the results of 2013 JAMA study by Carole Clair et al. The list of references was revised as well. </p>
+<p>3. On page 11, authors suggest the parametric mediational g-formula is the only known method that is valid for investigating causal effects in the presence of time-varying mediation. This may not necessarily be correct, and could be adapted. As they note, VanderWeele and Tchetgen Tchetgen’s semiparametric approach is also valid. Further, the authors may find the 2017 paper by Zheng and van der Laan in the Journal of Causal Inference relevant, where they discuss the conditional mediation formula and multiple estimators for mediation effects in the presence of time-varying mediation through applying TMLE, IPW, or a non-targeted substitution estimator.</p>
+<p>Our answer. Thank you. The comment about the parametric g-formula being the only known method was omitted.</p>
+<p>4. Authors currently split their discussion of positivity, consistency, and exchangeability/unmeasured confounding into two sections, separated by study strengths. The discussion may be better laid-out if kept together, relating each assumption to the evidence supporting it and detracting from it one at a time.</p>
+<p>Our answer. We bring these two parts together (one paragraph).</p>
+<p>5. While authors appropriately note the g-null paradox as a limitation of the g-formula, if there is space in the manuscript it may benefit from a slightly longer discussion, especially given the authors note it is unlikely to be a concern in their study due to prior work suggesting the sharp null doesn’t hold in this context.</p>
+<p>Our answer. Thank you. It was added. We made the following changes: Third, the parametric-formula is also subject to the g-null paradox—it could lead to rejecting the causal null, even when it is true.</p>
+<p>6. While authors do an excellent job reviewing study strengths and limitations, they may wish to review work published in Statistics in Medicine in 2018 by Schomaker and Heumann, where they discuss combining bootstrap inference with multiple imputation where the g-formula is used. While this would not account for competing risks and censoring, and is not being recommended as necessary in this review, missing data such as that mentioned in point 2 of the ‘results’ improvement section can be accounted for as a step prior to or alongside the mediational g-formula, either through storing each bootstrap effect estimate across multiply imputed datasets and using percentile-based confidence intervals, or through applying the mediational g-formula to multiply imputed datasets and pooling summary effect estimates through Rubin's rules. Each approach discussed is relatively straight-forward to implement in practice.</p>
+<p>Our answer: Thank you. Your suggestion was added to the discussion. We made the following changes: For future studies, Schomaker and Heumann (2018) regarding some estimators, which require bootstrapping to estimate confidence intervals, presented four methods to combine bootstrap estimation with multiple imputation. They indicated that the proportion of messiness and the number of multiple imputed data sets affect methods performance</p>
+<supplementary-material id="pone.0262403.s003" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0262403.s003" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Response to Reviewers.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="aggregated-review-documents" id="pone.0262403.r003" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0262403.r003</article-id>
+<title-group>
+<article-title>Decision Letter 1</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Zhan</surname>
+<given-names>Y</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2022</copyright-year>
+<copyright-holder>Y Zhan</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0262403" document-id-type="doi" document-type="article" id="rel-obj003" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">23 Dec 2021</named-content>
+</p>
+<p>Does Weight Mediate the Effect of Smoking on Coronary Heart Disease? Parametric Mediational G-Formula Analysis</p>
+<p>PONE-D-21-18594R1</p>
+<p>Dear Dr. Mansournia,</p>
+<p>We’re pleased to inform you that your manuscript has been judged scientifically suitable for publication and will be formally accepted for publication once it meets all outstanding technical requirements.</p>
+<p>Within one week, you’ll receive an e-mail detailing the required amendments. When these have been addressed, you’ll receive a formal acceptance letter and your manuscript will be scheduled for publication.</p>
+<p>An invoice for payment will follow shortly after the formal acceptance. To ensure an efficient process, please log into Editorial Manager at <ext-link ext-link-type="uri" xlink:href="http://www.editorialmanager.com/pone/" xlink:type="simple">http://www.editorialmanager.com/pone/</ext-link>, click the 'Update My Information' link at the top of the page, and double check that your user information is up-to-date. If you have any billing related questions, please contact our Author Billing department directly at <email xlink:type="simple">authorbilling@plos.org</email>.</p>
+<p>If your institution or institutions have a press office, please notify them about your upcoming paper to help maximize its impact. If they’ll be preparing press materials, please inform our press team as soon as possible -- no later than 48 hours after receiving the formal acceptance. Your manuscript will remain under strict press embargo until 2 pm Eastern Time on the date of publication. For more information, please contact <email xlink:type="simple">onepress@plos.org</email>.</p>
+<p>Kind regards,</p>
+<p>Y Zhan</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Additional Editor Comments (optional):</p>
+<p>Reviewers' comments:</p>
+<p>Reviewer's Responses to Questions</p>
+<p><!-- <font color="black"> --><bold>Comments to the Author</bold></p>
+<p>1. If the authors have adequately addressed your comments raised in a previous round of review and you feel that this manuscript is now acceptable for publication, you may indicate that here to bypass the “Comments to the Author” section, enter your conflict of interest statement in the “Confidential to Editor” section, and submit your "Accept" recommendation.<!-- </font> --></p>
+<p>Reviewer #1: All comments have been addressed</p>
+<p>Reviewer #2: All comments have been addressed</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->2. Is the manuscript technically sound, and do the data support the conclusions?</p>
+<p>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions. Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes. The conclusions must be drawn appropriately based on the data presented. <!-- </font> --></p>
+<p>Reviewer #1: (No Response)</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->3. Has the statistical analysis been performed appropriately and rigorously? <!-- </font> --></p>
+<p>Reviewer #1: (No Response)</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->4. Have the authors made all data underlying the findings in their manuscript fully available?</p>
+<p>The <ext-link ext-link-type="uri" xlink:href="http://www.plosone.org/static/policies.action#sharing" xlink:type="simple">PLOS Data policy</ext-link> requires authors to make all data underlying the findings described in their manuscript fully available without restriction, with rare exception (please refer to the Data Availability Statement in the manuscript PDF file). The data should be provided as part of the manuscript or its supporting information, or deposited to a public repository. For example, in addition to summary statistics, the data points behind means, medians and variance measures should be available. If there are restrictions on publicly sharing data—e.g. participant privacy or use of data from a third party—those must be specified.<!-- </font> --></p>
+<p>Reviewer #1: (No Response)</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->5. Is the manuscript presented in an intelligible fashion and written in standard English?</p>
+<p>PLOS ONE does not copyedit accepted manuscripts, so the language in submitted articles must be clear, correct, and unambiguous. Any typographical or grammatical errors should be corrected at revision, so please note any specific errors here.<!-- </font> --></p>
+<p>Reviewer #1: (No Response)</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->6. Review Comments to the Author</p>
+<p>Please use the space provided to explain your answers to the questions above. You may also include additional comments for the author, including concerns about dual publication, research ethics, or publication ethics. (Please upload your review as an attachment if it exceeds 20,000 characters)<!-- </font> --></p>
+<p>Reviewer #1: (No Response)</p>
+<p>Reviewer #2: (No Response)</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->7. PLOS authors have the option to publish the peer review history of their article (<ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link>). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link>.<!-- </font> --></p>
+<p>Reviewer #1: No</p>
+<p>Reviewer #2: <bold>Yes: </bold>Kieran Blaikie</p>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pone.0262403.r004" specific-use="acceptance-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0262403.r004</article-id>
+<title-group>
+<article-title>Acceptance letter</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Zhan</surname>
+<given-names>Y</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2022</copyright-year>
+<copyright-holder>Y Zhan</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0262403" document-id-type="doi" document-type="article" id="rel-obj004" link-type="peer-reviewed-article"/>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">5 Jan 2022</named-content>
+</p>
+<p>PONE-D-21-18594R1 </p>
+<p>Does Weight Mediate the Effect of Smoking on Coronary Heart Disease? Parametric Mediational G-Formula Analysis </p>
+<p>Dear Dr. Mansournia:</p>
+<p>I'm pleased to inform you that your manuscript has been deemed suitable for publication in PLOS ONE. Congratulations! Your manuscript is now with our production department. </p>
+<p>If your institution or institutions have a press office, please let them know about your upcoming paper now to help maximize its impact. If they'll be preparing press materials, please inform our press team within the next 48 hours. Your manuscript will remain under strict press embargo until 2 pm Eastern Time on the date of publication. For more information please contact <email xlink:type="simple">onepress@plos.org</email>.</p>
+<p>If we can help with anything else, please email us at <email xlink:type="simple">plosone@plos.org</email>. </p>
+<p>Thank you for submitting your work to PLOS ONE and supporting open access. </p>
+<p>Kind regards, </p>
+<p>PLOS ONE Editorial Office Staff</p>
+<p>on behalf of</p>
+<p>Dr. Y Zhan  </p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+</body>
+</sub-article>
+</article>

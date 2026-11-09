@@ -1,0 +1,119 @@
+{
+  "doi": "10.1371/journal.pone.0306028",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0306028",
+  "title": "Probability density and information entropy of machine learning derived intracranial pressure predictions",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Anmar Abdul-Rahman",
+    "William Morgan",
+    "Aleksandar Vukmirovic",
+    "Dao-Yi Yu"
+  ],
+  "year": "2024",
+  "license": "2024\nAbdul-Rahman et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0306028.g001",
+      "label": "Fig 1",
+      "caption": "Data workflow schematic for probability density function analysis of Extreme Gradient Boost derived intracranial pressure predictions.\nTwo cautionary subset cases (8 and 9) were subsetted from seven hold-out test cases and demonstrated a wide and conflicting difference between measured and predicted intracranial pressure from the arterial and venous XGB models. All cases underwent data pre-processing, descriptive statistics, and hypothesis tests were computed from the retinal vascular pulse parameters. Intracranial pressure predictions were derived from the retinal arterial and venous parameters independently. Probability density functions were generated from intracranial pressure predictions from both XGB models, where the median was considered the most favorable compared to the mean and the mode. This was likely because the median represents the geometric mean of a log-normal distribution and is supported by findings from previous work [3]. Correlations were computed between the absolute difference between the median predicted and measured intracranial pressure (Diff_{ICPmd}) and imaging characteristics: (n = number of vascular data points analyzed, Bilateral = both eyes tested, nIOP_{i} = number of induced intraocular pressure levels applied during imaging) and distribution characteristics: (DI_{ICP} = definite integral ± 1cm water of the median, tsKS = two-sample Kolmogorov-Smirnov statistic, ADS = Anderson-Darling statistic, KS = Kolmogorov-Smirnov statistic), sEnt = Shannon entropy.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0306028.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0306028.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Data workflow schematic for probability density function analysis of Extreme Gradient Boost derived intracranial pressure predictions.</title>\n<p>Two cautionary subset cases (8 and 9) were subsetted from seven hold-out test cases and demonstrated a wide and conflicting difference between measured and predicted intracranial pressure from the arterial and venous XGB models. All cases underwent data pre-processing, descriptive statistics, and hypothesis tests were computed from the retinal vascular pulse parameters. Intracranial pressure predictions were derived from the retinal arterial and venous parameters independently. Probability density functions were generated from intracranial pressure predictions from both XGB models, where the median was considered the most favorable compared to the mean and the mode. This was likely because the median represents the geometric mean of a log-normal distribution and is supported by findings from previous work [<xref ref-type=\"bibr\" rid=\"pone.0306028.ref003\">3</xref>]. Correlations were computed between the absolute difference between the median predicted and measured intracranial pressure (Diff<sub>ICPmd</sub>) and imaging characteristics: (n = number of vascular data points analyzed, Bilateral = both eyes tested, nIOP<sub>i</sub> = number of induced intraocular pressure levels applied during imaging) and distribution characteristics: (DI<sub>ICP</sub> = definite integral ± 1cm water of the median, tsKS = two-sample Kolmogorov-Smirnov statistic, ADS = Anderson-Darling statistic, KS = Kolmogorov-Smirnov statistic), sEnt = Shannon entropy.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0306028.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0306028.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0306028.g002",
+      "label": "Fig 2",
+      "caption": "Violin plot.\nComparing the distribution of the harmonic regression wave amplitude in the hold-out and cautionary subsets.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0306028.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0306028.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Violin plot.</title>\n<p>Comparing the distribution of the harmonic regression wave amplitude in the hold-out and cautionary subsets.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0306028.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0306028.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0306028.g003",
+      "label": "Fig 3",
+      "caption": "Ridgeline plot for the probability density function of intracranial pressure predictions derived from the Extreme Gradient Boost algorithm of the arterial and venous pulsation data.\nIn contrast to the dominant right-skewed distribution in most cases, in cases 8 and 9, the distribution of the arterial predictions converges on a uniform distribution.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0306028.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0306028.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Ridgeline plot for the probability density function of intracranial pressure predictions derived from the Extreme Gradient Boost algorithm of the arterial and venous pulsation data.</title>\n<p>In contrast to the dominant right-skewed distribution in most cases, in cases 8 and 9, the distribution of the arterial predictions converges on a uniform distribution.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0306028.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0306028.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0306028.g004",
+      "label": "Fig 4",
+      "caption": "Overlapping ridgeline plots of intracranial pressure predictions derived from the Extreme Gradient Boost algorithm of the arterial and venous pulsation data.\nThe two-sample Kolmogorov-Smirnov statistic (tsKS) provides a quantitative comparison between two distributions across the whole range rather than just a point estimate. Within a single case, the closer the approximation of the distributions from the arterial and venous models, the lower the tsKS value. Case 4 demonstrates the lowest tsKS statistic (0.080897, p<0.003), and case 7 is the highest (0.48101).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0306028.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0306028.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Overlapping ridgeline plots of intracranial pressure predictions derived from the Extreme Gradient Boost algorithm of the arterial and venous pulsation data.</title>\n<p>The two-sample Kolmogorov-Smirnov statistic (tsKS) provides a quantitative comparison between two distributions across the whole range rather than just a point estimate. Within a single case, the closer the approximation of the distributions from the arterial and venous models, the lower the tsKS value. Case 4 demonstrates the lowest tsKS statistic (0.080897, p&lt;0.003), and case 7 is the highest (0.48101).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0306028.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0306028.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0306028.g005",
+      "label": "Fig 5",
+      "caption": "(A-D) A comparison of the empirical cumulative distribution function of intracranial pressure predictions derived from the Extreme Gradient Boost algorithm from four cases with contrasting two-sample Kolmogorov-Smirnov statistics from four cases. Two hold-out test cases demonstrating the lowest two-sample Kolmogorov-Smirnov statistic (tsKS). Cases 4 and 5 (A, B) demonstrate favorable concordance between venous and arterial derived predictions in contrast to the subset cases 8 and 9 (C, D), where the concordance is poor. The difference in separation of the ECDF between the two models can be observed in cases 8 and 9 (C, D). The tsKS statistic depends on a ratio parameter consisting of the product of the distribution data points divided by the sum [25]. Red = arterial model, Blue = venous model.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0306028.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0306028.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title />\n<p>(A-D) A comparison of the empirical cumulative distribution function of intracranial pressure predictions derived from the Extreme Gradient Boost algorithm from four cases with contrasting two-sample Kolmogorov-Smirnov statistics from four cases. Two hold-out test cases demonstrating the lowest two-sample Kolmogorov-Smirnov statistic (tsKS). Cases 4 and 5 (A, B) demonstrate favorable concordance between venous and arterial derived predictions in contrast to the subset cases 8 and 9 (C, D), where the concordance is poor. The difference in separation of the ECDF between the two models can be observed in cases 8 and 9 (C, D). The tsKS statistic depends on a ratio parameter consisting of the product of the distribution data points divided by the sum [<xref ref-type=\"bibr\" rid=\"pone.0306028.ref025\">25</xref>]. Red = arterial model, Blue = venous model.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0306028.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0306028.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0306028.g006",
+      "label": "Fig 6",
+      "caption": "Correlation matrix comparing distribution and imaging parameters from the hold-out and cautionary subsets.\nFeatures from the top row are of interest. There was a significant negative correlation of Diff_{ICPmd} with laterality (bilateral was numerically coded as 2 and unilateral was 1 for this analysis) of -0.59. There was a moderate to low correlation with parameters of the distribution of the XGB-derived prediction (ADS = Anderson-Darling statistic, KS = Kolmogorov-Smirnov statistic). However, the correlation with DI_{ICP} = the definite integral ±1cm water of the median was strongly negative (-0.52), indicating that the higher the weight of the area under the curve within these bounds, the more accurate was the agreement between predicted and measured intracranial pressure. Similarly, the correlation with tsKS = two sample Kolmogorov-Smirnov statistic (0.49) was significant, indicating that the higher the overlap between the vascular model distributions, the higher the agreement with measured intracranial pressure. Comparably, Shannon entropy (sEnt) showed a strong positive correlation (0.48) indicating convergence to a uniform distribution (increased randomness) with higher Diff_{ICPmd} values.nIOP_{i} = the levels of induced intraocular pressure applied during the imaging, n = total number of tested data points.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0306028.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0306028.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Correlation matrix comparing distribution and imaging parameters from the hold-out and cautionary subsets.</title>\n<p>Features from the top row are of interest. There was a significant negative correlation of Diff<sub>ICPmd</sub> with laterality (bilateral was numerically coded as 2 and unilateral was 1 for this analysis) of -0.59. There was a moderate to low correlation with parameters of the distribution of the XGB-derived prediction (ADS = Anderson-Darling statistic, KS = Kolmogorov-Smirnov statistic). However, the correlation with DI<sub>ICP</sub> = the definite integral ±1cm water of the median was strongly negative (-0.52), indicating that the higher the weight of the area under the curve within these bounds, the more accurate was the agreement between predicted and measured intracranial pressure. Similarly, the correlation with tsKS = two sample Kolmogorov-Smirnov statistic (0.49) was significant, indicating that the higher the overlap between the vascular model distributions, the higher the agreement with measured intracranial pressure. Comparably, Shannon entropy (sEnt) showed a strong positive correlation (0.48) indicating convergence to a uniform distribution (increased randomness) with higher Diff<sub>ICPmd</sub> values.nIOP<sub>i</sub> = the levels of induced intraocular pressure applied during the imaging, n = total number of tested data points.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0306028.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0306028.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0306028.g007",
+      "label": "Fig 7",
+      "caption": "Pearson correlation between the definite integral ±1cm around the median of the probability density distribution (DI_{ICP}) and the absolute difference between predicted and measured intracranial pressure (Diff_{ICPmd}) for the A) arterial and B) venous models. Only A) the arterial model (r ^ Pearson = -0.76, p = 0.02) achieved statistical significance, in contrast to B) the venous model (r ^ Pearson = -0.10, p = 0.799). This indicated that the arterial model was a more discriminatory indicator of agreement between measured and predicted intracranial pressure.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pone.0306028.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0306028.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title />\n<p>Pearson correlation between the definite integral ±1cm around the median of the probability density distribution (DI<sub>ICP</sub>) and the absolute difference between predicted and measured intracranial pressure (Diff<sub>ICPmd</sub>) for the A) arterial and B) venous models. Only A) the arterial model (<inline-formula id=\"pone.0306028.e004\"><alternatives><graphic id=\"pone.0306028.e004g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0306028.e004\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M4\"><ns1:mrow><ns1:msub><ns1:mover accent=\"true\"><ns1:mi>r</ns1:mi> <ns1:mo>^</ns1:mo></ns1:mover> <ns1:mrow><ns1:mtext>Pearson</ns1:mtext></ns1:mrow></ns1:msub></ns1:mrow></ns1:math></alternatives></inline-formula> = -0.76, p = 0.02) achieved statistical significance, in contrast to B) the venous model (<inline-formula id=\"pone.0306028.e005\"><alternatives><graphic id=\"pone.0306028.e005g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0306028.e005\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M5\"><ns1:mrow><ns1:msub><ns1:mover accent=\"true\"><ns1:mi>r</ns1:mi> <ns1:mo>^</ns1:mo></ns1:mover> <ns1:mrow><ns1:mtext>Pearson</ns1:mtext></ns1:mrow></ns1:msub></ns1:mrow></ns1:math></alternatives></inline-formula> = -0.10, p = 0.799). This indicated that the arterial model was a more discriminatory indicator of agreement between measured and predicted intracranial pressure.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0306028.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "id": "pone.0306028.e004g",
+        "mimetype": "image",
+        "position": "anchor",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0306028.e004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0306028.g008",
+      "label": "Fig 8",
+      "caption": "Distribution of intracranial pressure and the number of analyzed image data points from the Extreme Gradient Boost training data set.\nThere is a low contribution of data points to the model at intracranial pressure levels <17 and >43 cm water with two participants below (K, M) and above (C, F) these boundaries, respectively. ICP = intracranial pressure in cm water [3].",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0306028.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0306028.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Distribution of intracranial pressure and the number of analyzed image data points from the Extreme Gradient Boost training data set.</title>\n<p>There is a low contribution of data points to the model at intracranial pressure levels &lt;17 and &gt;43 cm water with two participants below (K, M) and above (C, F) these boundaries, respectively. ICP = intracranial pressure in cm water [<xref ref-type=\"bibr\" rid=\"pone.0306028.ref003\">3</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0306028.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0306028.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

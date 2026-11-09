@@ -1,0 +1,50 @@
+{"id": "pbio.1002128.g001", "bytes": 420643}
+{"failed": ["pbio.2003779", 1], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to journals.plos.org:443 \n"}
+{"id": "pbio.2003779.g002", "bytes": 767717}
+{"failed": ["pbio.1002128", 2], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to storage.googleapis.com:443 \n"}
+{"id": "pcbi.1009809.g003", "bytes": 650430}
+{"id": "pcbi.1009809.g004", "bytes": 1289977}
+{"id": "pcbi.1011436.g001", "bytes": 1454355}
+{"failed": ["pcbi.1009809", 2], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to journals.plos.org:443 \n"}
+{"id": "pcbi.1011436.g004", "bytes": 1595734}
+{"id": "pcbi.1011436.g003", "bytes": 1513364}
+{"failed": ["pcbi.1013027", 1], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to storage.googleapis.com:443 \n"}
+{"failed": ["pcbi.1011436", 5], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to storage.googleapis.com:443 \n"}
+{"id": "pcbi.1013027.g005", "bytes": 6679608}
+{"id": "pcbi.1005857.g002", "bytes": 1311532}
+{"id": "pcbi.1013027.g003", "bytes": 10263385}
+{"id": "pcbi.1013027.g004", "bytes": 10756104}
+{"id": "pcbi.1005857.g009", "bytes": 700363}
+{"id": "pcbi.1005857.g011", "bytes": 869094}
+{"id": "pcbi.1010086.g008", "bytes": 1583910}
+{"failed": ["pcbi.1010086", 7], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to journals.plos.org:443 \n"}
+{"failed": ["pone.0242453", 3], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to journals.plos.org:443 \n"}
+{"id": "pcbi.1010086.g010", "bytes": 973112}
+{"id": "pone.0242453.g005", "bytes": 266945}
+{"id": "pone.0242453.g007", "bytes": 1846179}
+{"id": "pone.0242453.g011", "bytes": 1657338}
+{"id": "pone.0242453.g015", "bytes": 980594}
+{"failed": ["pone.0242453", 14], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to storage.googleapis.com:443 \n"}
+{"failed": ["pone.0281854", 2], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to storage.googleapis.com:443 \n"}
+{"id": "pone.0281854.g003", "bytes": 3858958}
+{"failed": ["pone.0281854", 5], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to journals.plos.org:443 \n"}
+{"failed": ["pone.0281854", 7], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to journals.plos.org:443 \n"}
+{"failed": ["pone.0281854", 4], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to storage.googleapis.com:443 \n"}
+{"id": "pone.0281854.g006", "bytes": 2006389}
+{"failed": ["pone.0281854", 8], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to journals.plos.org:443 \n"}
+{"failed": ["pone.0327607", 1], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to storage.googleapis.com:443 \n"}
+{"id": "pone.0327607.g004", "bytes": 1038481}
+{"failed": ["pone.0327607", 9], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to journals.plos.org:443 \n"}
+{"failed": ["pcbi.1011461", 1], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to storage.googleapis.com:443 \n"}
+{"id": "pdig.0000364.g003", "bytes": 1752020}
+{"id": "pdig.0000364.g001", "bytes": 4539196}
+{"failed": ["pgen.1011738", 9], "reason": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to journals.plos.org:443 \n"}
+{"id": "pgen.1011738.g010", "bytes": 2319538}
+{"id": "pgen.1008646.g002", "bytes": 974617}
+{"id": "pgen.1008646.g003", "bytes": 8711099}
+{"id": "pgen.1008646.g006", "bytes": 6438394}
+{"id": "pone.0332415.g002", "bytes": 903801}
+{"id": "pone.0332415.g003", "bytes": 437322}
+{"id": "pcbi.1008009.g002", "bytes": 349339}
+{"id": "pcbi.1008009.g003", "bytes": 1902951}
+{"id": "pcbi.1008009.g004", "bytes": 9975008}

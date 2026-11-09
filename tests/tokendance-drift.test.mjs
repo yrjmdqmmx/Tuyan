@@ -147,6 +147,7 @@ test('CLI produces JSON, summary, warnings and nonzero failure codes with local 
   const temp = await fs.mkdtemp(path.join(os.tmpdir(), 'tokendance-drift-'))
   try {
     const catalog = JSON.parse(await fs.readFile(path.join(root, 'config/tokendance/catalog.json'), 'utf8'))
+    const reviewed = JSON.parse(await fs.readFile(path.join(root, 'config/tokendance/drift-review.json'), 'utf8'))
     const file = path.join(temp, 'catalog.json'), summary = path.join(temp, 'summary.md')
     const run = (...args) => spawnSync(process.execPath, ['scripts/check-tokendance-catalog.mjs', '--file', file, ...args], {
       cwd: root, encoding: 'utf8', env: { ...process.env, GITHUB_ACTIONS: 'true', GITHUB_STEP_SUMMARY: summary },
@@ -155,7 +156,7 @@ test('CLI produces JSON, summary, warnings and nonzero failure codes with local 
     const recovery = run()
     assert.equal(recovery.status, 0)
     assert.equal(JSON.parse(recovery.stdout).status, 'review')
-    assert.equal(JSON.parse(recovery.stdout).recoveredModels.length, 2)
+    assert.deepEqual(JSON.parse(recovery.stdout).recoveredModels.slice().sort(), reviewed.missingModels.map(row => row.id).sort())
     assert.match(recovery.stderr, /::warning::/)
     await fs.writeFile(file, JSON.stringify({ data: [...catalog.models, model('new-model')] }))
     let result = run()

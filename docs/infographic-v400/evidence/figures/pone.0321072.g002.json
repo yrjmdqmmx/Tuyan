@@ -1,0 +1,51 @@
+{
+  "id": "pone.0321072.g002",
+  "paper": "pone.0321072",
+  "figure": {
+    "id": "pone.0321072.g002",
+    "label": "Fig 2",
+    "caption": "Routine intensity risk factors by gender.The figure displays regression coefficients from (A) bivariate and (B) multivariate regression models, with the RTI z-score as the outcome variable for all 45-year-olds between 2003 and 2018, separately by gender. The 95% confidence intervals are indicated by the error bars. Detailed regression tables are provided in the Supplementary Material (S3 Table).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0321072.g002\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0321072.g002</object-id><label>Fig 2</label><caption><title>Routine intensity risk factors by gender.</title><p>The figure displays regression coefficients from (A) bivariate and (B) multivariate regression models, with the RTI z-score as the outcome variable for all 45-year-olds between 2003 and 2018, separately by gender. The 95% confidence intervals are indicated by the error bars. Detailed regression tables are provided in the Supplementary Material (<xref ref-type=\"supplementary-material\" rid=\"pone.0321072.s010\">S3 Table</xref>).</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0321072.g002\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0321072.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0321072",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0321072",
+    "title": "The distribution of technology induced job loss: Evidence from a population-wide study in Norway",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Bjørn-Atle Reme",
+      "Ole Røgeberg",
+      "Jonathan Wörn",
+      "Bernt Bratsberg",
+      "Vegard Fykse Skirbekk"
+    ],
+    "year": "2025",
+    "license": "2025\nReme et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0321072.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0321072.g002.png",
+      "bytes": 684569,
+      "sha256": "14b6398d16c3a78fb63dbdce93ddabcfe65a7cd33c08339d675e326072027485"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0321072.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0321072.g002.tif",
+      "bytes": 1196732,
+      "sha256": "e696cdc81d06b9c5fe6d9f7bd61edce25fc9c051aeda344fa1d1f3cab15f0f24"
+    }
+  }
+}

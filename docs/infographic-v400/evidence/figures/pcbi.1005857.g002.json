@@ -1,0 +1,49 @@
+{
+  "id": "pcbi.1005857.g002",
+  "paper": "pcbi.1005857",
+  "figure": {
+    "id": "pcbi.1005857.g002",
+    "label": "Fig 2",
+    "caption": "Visualizing rules of an enzyme-substrate system.\n(A) Structured molecule types Enz and Sub, their respective components (enclosed in ‘()’) and their available internal states (prefixed by ~), shown in BioNetGen syntax and graphic. (B) Reaction rules specifying the adding and removing of an enzyme-substrate bond (binding partners tagged by !1) and phosphorylation of components p1 and p2, shown in BioNetGen syntax. The reactants and products of a reaction rule are called patterns. (C) Conventional rule visualization by drawing reactant and product patterns separately. (D) Compact rule visualization displays operations (purple nodes) that transform the reactant patterns in each rule. On operation nodes, outward edges indicate that a new structure is produced (bond in R1, state pY in R2 and R3) and inward edges indicate that a structure is consumed (bond in _reverse_R1, state Y in R2 and R3). To see operation nodes with their labels, see S1 Fig.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005857.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005857.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Visualizing rules of an enzyme-substrate system.</title>\n<p>(A) Structured molecule types Enz and Sub, their respective components (enclosed in ‘()’) and their available internal states (prefixed by ~), shown in BioNetGen syntax and graphic. (B) Reaction rules specifying the adding and removing of an enzyme-substrate bond (binding partners tagged by !1) and phosphorylation of components <italic>p1</italic> and <italic>p2</italic>, shown in BioNetGen syntax. The reactants and products of a reaction rule are called patterns. (C) Conventional rule visualization by drawing reactant and product patterns separately. (D) Compact rule visualization displays operations (purple nodes) that transform the reactant patterns in each rule. On operation nodes, outward edges indicate that a new structure is produced (bond in R1, state <italic>pY</italic> in R2 and R3) and inward edges indicate that a structure is consumed (bond in _reverse_R1, state <italic>Y</italic> in R2 and R3). To see operation nodes with their labels, see <xref ref-type=\"supplementary-material\" rid=\"pcbi.1005857.s001\">S1 Fig</xref>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005857.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005857.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1005857",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005857",
+    "title": "Automated visualization of rule-based models",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "John Arul Prakash Sekar",
+      "Jose-Juan Tapia",
+      "James R. Faeder"
+    ],
+    "year": "2017",
+    "license": "2017\nSekar et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1005857.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1005857.g002.png",
+      "bytes": 585408,
+      "sha256": "e325c6d50ecede6f34559924de921084cfd815dcf47dc0a79e818302b0b7dde3"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1005857.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1005857.g002.tif",
+      "bytes": 726124,
+      "sha256": "5bfa8e73cd97c6ad2648acdb467294d36258df119a75ad3335b747706cd6cf5c"
+    }
+  }
+}

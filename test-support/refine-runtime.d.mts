@@ -16,6 +16,7 @@ export function createRefineRuntime(options?: { port?: number; providerDelay?: n
   legacy: {
     configureJobAdmission(config: {maxActive: number; maxPending: number; maxPerOwner: number; maxPerIp: number}): void;
     drainJobAdmission(): Promise<void>;
+    resolveRetrievedReferences(body:any,secrets:any): Promise<any[]>;
     preparePlanningReferences(body: any, proposed: any[], uploaded?: any[]): Promise<{references: any[]; images: any[]; visual: boolean; limit: number; omitted: {duplicate: number; unavailable: number; budget: number}}>;
     assertVisionInputBudget(provider: string, model: string, images: any[], custom?: import('../packages/api/src/universal-api.js').UniversalCustomConfig): void;
     configureUniversalRuntime(runtime: ReturnType<typeof import('../apps/paperbanana-api/src/universal-adapters.js').createUniversalRuntime>): void;

@@ -1,0 +1,277 @@
+ M SYNC.md
+ M apps/auth-gateway/Dockerfile
+ M apps/auth-gateway/src/app.js
+ M apps/auth-gateway/src/ownership.js
+ M apps/miniprogram/miniprogram/components/generation-settings-sheet/generation-settings-sheet.js
+ M apps/miniprogram/miniprogram/components/generation-settings-sheet/generation-settings-sheet.ts
+ M apps/miniprogram/miniprogram/components/generation-settings-sheet/generation-settings-sheet.wxml
+ M apps/miniprogram/miniprogram/components/generation-settings-sheet/generation-settings-sheet.wxss
+ M apps/miniprogram/miniprogram/components/model-picker/model-picker.js
+ M apps/miniprogram/miniprogram/components/model-picker/model-picker.ts
+ M apps/miniprogram/miniprogram/components/model-picker/model-picker.wxml
+ M apps/miniprogram/miniprogram/pages/guide/guide.js
+ M apps/miniprogram/miniprogram/pages/guide/guide.ts
+ M apps/miniprogram/miniprogram/pages/guide/guide.wxml
+ M apps/miniprogram/miniprogram/pages/index/index.js
+ M apps/miniprogram/miniprogram/pages/index/index.ts
+ M apps/miniprogram/miniprogram/pages/index/index.wxml
+ M apps/miniprogram/miniprogram/pages/job-detail/job-detail.wxml
+ M apps/miniprogram/miniprogram/pages/refine/refine.js
+ M apps/miniprogram/miniprogram/pages/refine/refine.ts
+ M apps/miniprogram/miniprogram/pages/refine/refine.wxml
+ M apps/miniprogram/miniprogram/utils/job-assets.js
+ M apps/miniprogram/miniprogram/utils/job-assets.ts
+ M apps/miniprogram/miniprogram/utils/jobs.js
+ M apps/miniprogram/miniprogram/utils/jobs.ts
+ M apps/miniprogram/miniprogram/utils/model-registry.js
+ M apps/miniprogram/miniprogram/utils/model-registry.ts
+ M apps/miniprogram/miniprogram/utils/model-routing.js
+ M apps/miniprogram/miniprogram/utils/model-routing.ts
+ M apps/miniprogram/miniprogram/utils/payload.js
+ M apps/miniprogram/miniprogram/utils/payload.ts
+ M apps/miniprogram/miniprogram/utils/reference-mode.js
+ M apps/miniprogram/miniprogram/utils/reference-mode.ts
+ M apps/miniprogram/miniprogram/utils/refine.js
+ M apps/miniprogram/miniprogram/utils/refine.ts
+ M apps/miniprogram/miniprogram/utils/ui-settings.js
+ M apps/miniprogram/miniprogram/utils/ui-settings.ts
+ M apps/miniprogram/tests/mobile-controls-20260914.test.cjs
+ M apps/miniprogram/tests/mobile-settings-state.test.cjs
+ M apps/miniprogram/tests/model-picker-three-level.test.cjs
+ M apps/miniprogram/tests/model-registry-view-boundary.test.cjs
+ M apps/miniprogram/tests/model-registry.test.cjs
+ M apps/miniprogram/tests/model-routing.test.cjs
+ M apps/miniprogram/tests/package-budget.test.cjs
+ M apps/miniprogram/tests/parity-regressions.test.cjs
+ M apps/miniprogram/tests/payload.test.cjs
+ M apps/miniprogram/tests/reference-mode.test.cjs
+ M apps/miniprogram/tests/refine.test.cjs
+ M apps/miniprogram/tests/tokendance.test.cjs
+ M apps/paperbanana-api/Dockerfile
+ M apps/paperbanana-api/package.json
+ M apps/paperbanana-api/runtime/handler.ts
+ M apps/paperbanana-api/src/core-entry.d.mts
+ M apps/paperbanana-api/src/main.ts
+ M apps/paperbanana-api/src/provider-workflow.ts
+ M apps/paperbanana-api/src/server.ts
+ M apps/paperbanana-api/tests/account-lifecycle.test.ts
+ M apps/paperbanana-api/tests/core-composition.test.ts
+ M apps/paperbanana-api/tests/frontier-refresh.test.ts
+ M apps/paperbanana-api/tests/full-channel-catalog.test.ts
+ M apps/paperbanana-api/tests/model-picker-contract.test.ts
+ M apps/paperbanana-api/tests/official-catalog-v24.test.ts
+ M apps/paperbanana-api/tests/reference-selection.test.ts
+ M apps/paperbanana-api/tests/reference-upload-policy.test.ts
+ M apps/paperbanana-api/tests/refine-controls.test.ts
+ M apps/paperbanana-api/tests/thinking-contracts.test.ts
+ M apps/paperbanana-api/tests/thinking-transport.test.ts
+ M apps/paperbanana-api/tests/tokendance.test.ts
+ M apps/paperbanana-api/tests/universal-workflow.test.ts
+ M apps/plot-worker/Dockerfile
+ M apps/plot-worker/app.py
+ M apps/plot-worker/render_worker.py
+ M apps/web/package.json
+ M apps/web/src/App.jsx
+ M apps/web/src/components/AccessibleDialog.jsx
+ M apps/web/src/components/FeaturedTemplateStudio.jsx
+ M apps/web/src/components/GenerationWorkspace.jsx
+ M apps/web/src/components/GuidePanel.jsx
+ M apps/web/src/components/ImagePreviewDialog.jsx
+ M apps/web/src/components/JobStatus.jsx
+ M apps/web/src/components/ModelPicker.jsx
+ M apps/web/src/components/ModelRoutingSettings.jsx
+ M apps/web/src/components/ReferenceLibraryPanel.jsx
+ M apps/web/src/components/RefinePanel.jsx
+ M apps/web/src/components/ResultFigure.jsx
+ M apps/web/src/components/ThinkingSettings.jsx
+ M apps/web/src/components/TokenDancePanel.jsx
+ M apps/web/src/components/UniversalApiSettings.jsx
+ M apps/web/src/hooks/useRefineUpload.js
+ M apps/web/src/i18n/workbench.en.json
+ M apps/web/src/lib/featuredTemplates.js
+ M apps/web/src/lib/featuredTemplates.test.js
+ M apps/web/src/lib/modelPresentation.js
+ M apps/web/src/lib/modelRouting.js
+ M apps/web/src/lib/modelRouting.test.js
+ M apps/web/src/lib/referenceGallery.js
+ M apps/web/src/lib/referenceUploadPolicy.js
+ M apps/web/src/lib/refineControls.js
+ M apps/web/src/lib/refineSource.js
+ M apps/web/src/lib/refineUpload.js
+ M apps/web/src/lib/runtimePolicy.js
+ M apps/web/src/lib/runtimePolicy.test.js
+ M apps/web/src/lib/staticModelCatalog.js
+ M apps/web/src/lib/thinking.js
+ M apps/web/src/lib/thinkingSettings.js
+ M apps/web/src/main.jsx
+ M apps/web/src/styles.css
+ M apps/web/tests/account-workspace.test.mjs
+ M apps/web/tests/brand-identity.test.mjs
+ M apps/web/tests/catalog-isolation.test.mjs
+ M apps/web/tests/featured-app-integration.test.mjs
+ M apps/web/tests/guide-refresh.test.mjs
+ M apps/web/tests/input-optimization-app.test.mjs
+ M apps/web/tests/model-registry-ui-contract.test.mjs
+ M apps/web/tests/multi-provider-app.test.mjs
+ M apps/web/tests/professional-custom-v381.test.mjs
+ M apps/web/tests/reference-gallery-contract.test.mjs
+ M apps/web/tests/refine-upload.test.mjs
+ M apps/web/tests/rendered-interactions.test.mjs
+ M apps/web/tests/thinking-settings.test.mjs
+ M apps/web/tests/universal-api.test.mjs
+ M config/channel-audit/official-refine-controls.json
+ M config/channel-audit/runware-contracts.json
+ M config/channel-audit/runware-directory.json
+ M config/channel-audit/runware-refine-controls.json
+ M config/channel-audit/v24/sensenova-integration.json
+ M config/channel-audit/v24/sensenova.json
+ M config/image-channel-routes.json
+ M config/image-size-contracts.json
+ M config/model-catalog-updates.json
+ M config/model-channel-schemas.json
+ M config/model-presentation.json
+ M config/model-version-audit.json
+ M config/thinking-audit/domestic.json
+ M config/thinking-audit/global.json
+ M config/tokendance/catalog.json
+ M deploy/hk-single-host/scripts/generate-runtime-secrets.sh
+ M docs/model-version-mapping.csv
+ M docs/model-version-unconfirmed.csv
+ M docs/reference-upload/model-matrix.json
+ M docs/thinking/2026-09-22/support.csv
+ M packages/api/src/audited-channel-contracts.ts
+ M packages/api/src/audited-channel-data.ts
+ M packages/api/src/audited-refine-data.ts
+ M packages/api/src/execution-errors.ts
+ M packages/api/src/image-channel-adapters.ts
+ M packages/api/src/image-channel-routes.ts
+ M packages/api/src/jobs.js
+ M packages/api/src/jobs.test.js
+ M packages/api/src/reference-selection.ts
+ M packages/api/src/reference-upload.ts
+ M packages/api/src/text-channel-adapters.ts
+ M packages/api/src/thinking-data.ts
+ M packages/api/src/thinking.ts
+ M packages/api/src/tokendance-models.ts
+ M packages/tuyan-knowledge/package.json
+ M packages/tuyan-knowledge/src/catalog.js
+ M packages/tuyan-knowledge/src/schemas.js
+ M packages/tuyan-knowledge/src/workflows.js
+ M packages/tuyan-knowledge/tests/knowledge.test.js
+ M packages/tuyan-knowledge/tests/schema-validation.test.js
+ M packages/types/src/index.ts
+ M packages/types/src/model-presentation-data.ts
+ M pnpm-lock.yaml
+ M scripts/pack-model-catalog.test.mjs
+ M scripts/sync-model-catalog.mjs
+ M scripts/sync-reference-upload.mjs
+ M test-support/refine-runtime.d.mts
+ M test-support/refine-runtime.mjs
+?? .playwright-cli/
+?? apps/miniprogram/miniprogram/utils/workflow-settings.js
+?? apps/miniprogram/miniprogram/utils/workflow-settings.ts
+?? apps/miniprogram/miniprogram/utils/workflow.js
+?? apps/miniprogram/miniprogram/utils/workflow.ts
+?? apps/miniprogram/tests/workflow-v400.test.cjs
+?? apps/paperbanana-api/assets/
+?? apps/paperbanana-api/src/diagram-topology.ts
+?? apps/paperbanana-api/src/figure-composition.ts
+?? apps/paperbanana-api/src/figure-contract.ts
+?? apps/paperbanana-api/src/material-agent.ts
+?? apps/paperbanana-api/src/material-files.ts
+?? apps/paperbanana-api/src/panel-layout.ts
+?? apps/paperbanana-api/src/programmatic-svg.ts
+?? apps/paperbanana-api/src/protocol-correction.ts
+?? apps/paperbanana-api/src/renderer-contract.ts
+?? apps/paperbanana-api/src/source-provenance.ts
+?? apps/paperbanana-api/src/svg-review.ts
+?? apps/paperbanana-api/tests/catalog-20261009.test.ts
+?? apps/paperbanana-api/tests/catalog-adaptation-20261009.test.ts
+?? apps/paperbanana-api/tests/catalog-followup-20261009.test.ts
+?? apps/paperbanana-api/tests/diagram-topology-runtime.test.ts
+?? apps/paperbanana-api/tests/diagram-topology.test.ts
+?? apps/paperbanana-api/tests/figure-completion-matrix.test.ts
+?? apps/paperbanana-api/tests/figure-composite-runtime.test.ts
+?? apps/paperbanana-api/tests/figure-composition.test.ts
+?? apps/paperbanana-api/tests/figure-data-matrix.test.ts
+?? apps/paperbanana-api/tests/figure-export-roundtrip.test.ts
+?? apps/paperbanana-api/tests/figure-manual-match.test.ts
+?? apps/paperbanana-api/tests/figure-taxonomy.test.ts
+?? apps/paperbanana-api/tests/helpers/
+?? apps/paperbanana-api/tests/material-agent.test.ts
+?? apps/paperbanana-api/tests/material-files.test.ts
+?? apps/paperbanana-api/tests/model-material-workflow.test.ts
+?? apps/paperbanana-api/tests/original-material-workflow.test.ts
+?? apps/paperbanana-api/tests/png-bailian.test.ts
+?? apps/paperbanana-api/tests/png-white-canvas.test.ts
+?? apps/paperbanana-api/tests/protocol-correction.test.ts
+?? apps/paperbanana-api/tests/replicate-followup-20261009.test.ts
+?? apps/paperbanana-api/tests/source-provenance.test.ts
+?? apps/paperbanana-api/tests/svg-review-renderer.test.ts
+?? apps/paperbanana-api/tests/svg-workflow.test.ts
+?? apps/paperbanana-api/tests/task-material-lifecycle.test.ts
+?? apps/paperbanana-api/tests/workflow-catalog-integration.test.ts
+?? apps/paperbanana-api/tests/workflow-uncertain-calls.test.ts
+?? apps/paperbanana-api/tests/workflow-v400.test.ts
+?? apps/web/public/figure-type-previews/
+?? apps/web/public/reference-library/
+?? apps/web/src/components/FigureInputs.jsx
+?? apps/web/src/components/FigurePreviewImage.jsx
+?? apps/web/src/components/FigureReferencePreferences.jsx
+?? apps/web/src/components/FigureTypePicker.jsx
+?? apps/web/src/components/MaterialUploadPanel.jsx
+?? apps/web/src/components/ModelSpecifications.css
+?? apps/web/src/components/ModelSpecifications.jsx
+?? apps/web/src/components/WorkflowOptions.jsx
+?? apps/web/src/components/figureTypePicker.css
+?? apps/web/src/components/generationSettingsDrawer.css
+?? apps/web/src/components/guidePanel.css
+?? apps/web/src/components/referenceTaxonomy.css
+?? apps/web/src/components/workflowOptions.css
+?? apps/web/src/data/figure-type-previews.js
+?? apps/web/src/hooks/useTaskMaterials.js
+?? apps/web/src/lib/browserMaterials.js
+?? apps/web/src/lib/figureInput.js
+?? apps/web/src/lib/figureSettings.js
+?? apps/web/src/lib/materials.js
+?? apps/web/src/lib/modelSpecifications.js
+?? apps/web/src/lib/workflow.js
+?? apps/web/src/lib/workflowSettings.js
+?? apps/web/src/lib/workflowSettings.test.js
+?? apps/web/tests/browser-materials.test.mjs
+?? apps/web/tests/figure-app-completion.test.mjs
+?? apps/web/tests/figure-input-completion.test.mjs
+?? apps/web/tests/figure-numeric-refine.test.mjs
+?? apps/web/tests/figure-previews.test.mjs
+?? apps/web/tests/figure-restore-privacy.test.mjs
+?? apps/web/tests/figure-taxonomy.test.mjs
+?? apps/web/tests/material-workflow-ui.test.mjs
+?? apps/web/tests/materials.test.mjs
+?? apps/web/tests/model-specifications.test.mjs
+?? apps/web/tests/workflow-v400-ui.test.mjs
+?? config/channel-audit/catalog-20261009-contracts.json
+?? config/channel-audit/catalog-20261009-evidence.json
+?? config/channel-audit/catalog-20261009-followup-evidence.json
+?? config/channel-audit/catalog-20261009-manufacturer-evidence.json
+?? config/model-specifications.json
+?? docs/infographic-v400/
+?? docs/material-reader-20261012/
+?? docs/model-catalog/
+?? docs/superpowers/plans/2026-10-09-svg-render-review.md
+?? docs/superpowers/plans/2026-10-09-v400-workflow.md
+?? docs/superpowers/plans/2026-10-10-svg-topology-repair.md
+?? docs/superpowers/specs/2026-10-12-original-material-reader.md
+?? docs/workflow-v400/
+?? output/
+?? packages/api/src/png-workflow.ts
+?? packages/api/src/reference-generation.ts
+?? packages/api/src/replicate-text-channel.ts
+?? packages/api/src/svg-workflow.ts
+?? packages/api/src/workflow-prompts.ts
+?? packages/api/src/workflow.ts
+?? packages/figure-taxonomy/
+?? packages/types/src/figure-taxonomy.ts
+?? packages/types/src/model-specifications.ts
+?? packages/types/src/workflow.ts
+?? scripts/figures/
+?? scripts/sync-workflow.mjs

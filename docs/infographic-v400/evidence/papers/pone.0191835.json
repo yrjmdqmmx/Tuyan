@@ -1,0 +1,80 @@
+{
+  "doi": "10.1371/journal.pone.0191835",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0191835",
+  "title": "Predicting the accumulation of storage compounds by Rhodococcus jostii RHA1 in the feast-famine growth cycles using genome-scale flux balance analysis",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Mohammad Tajparast",
+    "Dominic Frigon"
+  ],
+  "year": "2018",
+  "license": "2018\nTajparast, Frigon\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0191835.g001",
+      "label": "Fig 1",
+      "caption": "Dynamics in concentrations of metabolite pools for cultures of R. jostii RHA1 during 6-hour cycle of SBRs fed glucose (a) or acetate (b) once steady-state was achieved. SRT was 1 day. Except for DO which are representative profiles, the data points are average of triplicate or duplicate runs for glucose (a) or acetate (b), respectively. Error bars are standard errors. The COD background due to EDTA was measured to be 501.7±12.4 and 576.5±14.1 mg-COD/L for glucose (a) and acetate (b), respectively.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191835.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191835.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title />\n<p><bold>Dynamics in concentrations of metabolite pools for cultures of <italic>R</italic>. <italic>jostii</italic> RHA1 during 6-hour cycle of SBRs fed glucose (a) or acetate (b) once steady-state was achieved.</bold> SRT was 1 day. Except for DO which are representative profiles, the data points are average of triplicate or duplicate runs for glucose (a) or acetate (b), respectively. Error bars are standard errors. The COD background due to EDTA was measured to be 501.7±12.4 and 576.5±14.1 mg-COD/L for glucose (a) and acetate (b), respectively.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191835.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191835.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0191835.g002",
+      "label": "Fig 2",
+      "caption": "Contour plots of flux balance results obtained with the two sub-objective functions for weighted average maximum growth rates (isolines, units d-1) in function of pairs of glycogen and PHB storage fluxes at experimentally observed glucose—panels a and b: 14.2 g-COD/(g-COD-Biomass·d)—and acetate uptake rates -panels c and d: 4.9 g-COD/(g-COD-Biomass·d). TAG fluxes were adjusted to experimentally observed values—panels a and b: 1.1 g-COD/(g-COD-Biomass·d), and panels c and d: 0.3 g-COD/(g-COD-Biomass·d).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191835.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191835.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title />\n<p><bold>Contour plots of flux balance results obtained with the two sub-objective functions for weighted average maximum growth rates (isolines, units d-1) in function of pairs of glycogen and PHB storage fluxes at experimentally observed glucose—panels a and b: 14.2 g-COD/(g-COD-Biomass·d)—and acetate uptake rates -panels c and d: 4.9 g-COD/(g-COD-Biomass·d).</bold> TAG fluxes were adjusted to experimentally observed values—panels a and b: 1.1 g-COD/(g-COD-Biomass·d), and panels c and d: 0.3 g-COD/(g-COD-Biomass·d).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191835.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191835.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0191835.g003",
+      "label": "Fig 3",
+      "caption": "Fluxes of the central metabolic reactions of R. jostii RHA1 in the feast phase (left panel) or the famine for growth on glucose. Unlabelled glucose was added at the beginning of the feast phase, and ^{13}C-bicarbonate was added either at the beginning of the feast or the famine phase. Reported fluxes are the average of 100 solutions ± the corresponding standard deviations.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191835.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191835.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title />\n<p><bold>Fluxes of the central metabolic reactions of <italic>R</italic>. <italic>jostii</italic> RHA1 in the feast phase (left panel) or the famine for growth on glucose.</bold> Unlabelled glucose was added at the beginning of the feast phase, and <sup>13</sup>C-bicarbonate was added either at the beginning of the feast or the famine phase. Reported fluxes are the average of 100 solutions ± the corresponding standard deviations.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191835.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191835.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0191835.g004",
+      "label": "Fig 4",
+      "caption": "Fluxes of the central metabolic reactions of R. jostii RHA1 in the feast phase (left panel) or the famine for growth on acetate. Unlabelled acetate was added at the beginning of the feast phase, and ^{13}C-bicarbonate was added either at the beginning of the feast or the famine phase. Reported fluxes are the average of 100 solutions ± the corresponding standard deviations.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191835.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191835.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title />\n<p><bold>Fluxes of the central metabolic reactions of <italic>R</italic>. <italic>jostii</italic> RHA1 in the feast phase (left panel) or the famine for growth on acetate.</bold> Unlabelled acetate was added at the beginning of the feast phase, and <sup>13</sup>C-bicarbonate was added either at the beginning of the feast or the famine phase. Reported fluxes are the average of 100 solutions ± the corresponding standard deviations.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191835.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191835.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0191835.g005",
+      "label": "Fig 5",
+      "caption": "Correlation plots of the 19 central metabolism reactions of R. jostii RHA1 in the feast and famine phases estimated using ^{13}C-MFA on glucose (a) and acetate (b).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191835.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191835.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title />\n<p>Correlation plots of the 19 central metabolism reactions of <italic>R</italic>. <italic>jostii</italic> RHA1 in the feast and famine phases estimated using <sup>13</sup>C-MFA on glucose (a) and acetate (b).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191835.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191835.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

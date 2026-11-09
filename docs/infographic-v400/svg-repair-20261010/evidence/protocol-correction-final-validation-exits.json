@@ -1,0 +1,33 @@
+{
+  "focused": {
+    "passed": 61,
+    "failed": 0,
+    "exitCode": 0,
+    "durationMs": 75460.825042,
+    "log": "protocol-correction-final-tests.log",
+    "files": [
+      "tests/protocol-correction.test.ts",
+      "tests/diagram-topology.test.ts",
+      "tests/diagram-topology-runtime.test.ts",
+      "tests/svg-workflow.test.ts",
+      "tests/durable-admission.test.ts"
+    ]
+  },
+  "check": {
+    "exitCode": 0,
+    "log": "protocol-correction-final-check.log"
+  },
+  "build": {
+    "exitCode": 0,
+    "log": "protocol-correction-final-build.log"
+  },
+  "gitDiffCheck": {
+    "exitCode": 0
+  },
+  "protected": {
+    "checked": 237,
+    "unchanged": 237
+  },
+  "codeFreeze": "protocol-correction-code-hashes.json",
+  "paidCallsByThisAgent": 0
+}

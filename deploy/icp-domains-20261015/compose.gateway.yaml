@@ -1,0 +1,42 @@
+name: tuyan-cn-gateway
+services:
+  auth-gateway:
+    image: tuyan-cn-gateway:20261015-domain-entry
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    env_file: [/opt/paperbanana/secrets/gateway.env]
+    environment:
+      HOST: 0.0.0.0
+      PORT: "3005"
+      # Upstream rejects the new redirect URI; enable only after approval and verification.
+      WATCHA_OAUTH_ENABLED: "false"
+      AUTH_BASE_URL: https://tuyansci.cn
+      FRONTEND_ORIGINS: https://tuyansci.cn
+      AUTH_VERIFICATION_CALLBACK_URL: https://tuyansci.cn/account/email-verified.html
+      AUTH_PASSWORD_RESET_URL: https://tuyansci.cn/account/reset-password.html
+      COOKIE_DOMAIN: ""
+      COOKIE_SAME_SITE: lax
+      PAPERBANANA_API_URL: http://paperbanana-api:3000/paperbanana-api
+      PAPERBANANA_MAINTENANCE_FILE: /opt/paperbanana/control/maintenance
+    volumes: [/opt/paperbanana/control:/opt/paperbanana/control:ro]
+    tmpfs: ["/tmp:rw,noexec,nosuid,nodev,size=32m,uid=1000,gid=1000,mode=1777"]
+    networks: [backend, edge]
+    ports: [127.0.0.1:13006:3005]
+    restart: unless-stopped
+    cpus: 0.5
+    mem_limit: 512m
+    pids_limit: 128
+    logging:
+      driver: local
+      options: {max-size: 10m, max-file: "5"}
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:3005/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+networks:
+  backend: {external: true, name: paperbanana-hk_backend}
+  edge: {external: true, name: paperbanana-hk_edge}
