@@ -16,6 +16,7 @@ export function supplementModelAudit(snapshot, supplement, removed, addendum = {
     data.notices[key] = { stopDate: notice.stopDate, scope: 'full', replacement: notice.replacement, sourceUrl: notice.sourceUrl, displayName: notice.displayName, replacementDisplayName: notice.replacementDisplayName }
   }
   data.details = {}
+  data.sourceChecks = supplement.sourceChecks || {}
   for (const [key, model] of Object.entries(supplement.models)) {
     data.rows[key] = [...data.fields.map(field => intern(data.facts, [model[field], model[field] === null ? 'unknown' : 'known', 'channel', intern(data.sources, model.fieldSources[field])])), 0, intern(data.sources, model.sourceUrls[0])]
     data.details[key] = { unknownInputModalities: model.unknownInputModalities, sourceUrls: model.sourceUrls, note: model.note }
@@ -25,6 +26,15 @@ export function supplementModelAudit(snapshot, supplement, removed, addendum = {
       data.rows[key][data.fields.indexOf(field)] = intern(data.facts, [override[field], override[field] === null ? 'unknown' : 'known', 'channel', intern(data.sources, override.sourceUrl)])
       data.details[key] = { ...data.details[key], note: override.note, suppressFallback: [field] }
     }
+  }
+  for (const [key, links] of Object.entries(supplement.sourceLinks || {})) {
+    for (const link of links) {
+      const url = new URL(link.url)
+      if (!/^[a-z][a-z0-9-]*\/.+/.test(key) || !['channel', 'vendor'].includes(link.scope) || !link.kind
+        || !/^\d{4}-\d{2}-\d{2}$/.test(link.checkedAt) || url.protocol !== 'https:' || url.username || url.password)
+        throw new Error(`Invalid card source: ${key}`)
+    }
+    data.details[key] = { ...data.details[key], sourceLinks: links }
   }
   // Only reviewed, verbatim channel evidence can exclude individual modalities.
   for (const [key, exclusions] of Object.entries(supplement.modalityExclusions || {})) {

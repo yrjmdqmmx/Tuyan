@@ -6,9 +6,9 @@
   "totals": {
     "cards": 1061,
     "tableUnknown": 34,
-    "sourceDiff": 561,
+    "sourceDiff": 623,
     "modalityDiff": 614,
-    "eitherDiff": 623
+    "eitherDiff": 698
   },
   "counts": {
     "deepseek": {
@@ -21,9 +21,9 @@
     "kimi": {
       "cards": 6,
       "tableUnknown": 0,
-      "sourceDiff": 5,
+      "sourceDiff": 6,
       "modalityDiff": 5,
-      "eitherDiff": 5
+      "eitherDiff": 6
     },
     "zhipu": {
       "cards": 28,
@@ -70,9 +70,9 @@
     "bailian": {
       "cards": 126,
       "tableUnknown": 34,
-      "sourceDiff": 23,
+      "sourceDiff": 55,
       "modalityDiff": 26,
-      "eitherDiff": 27
+      "eitherDiff": 59
     },
     "openai": {
       "cards": 71,
@@ -91,7 +91,7 @@
     "bfl": {
       "cards": 14,
       "tableUnknown": 0,
-      "sourceDiff": 14,
+      "sourceDiff": 12,
       "modalityDiff": 14,
       "eitherDiff": 14
     },
@@ -140,30 +140,30 @@
     "fal": {
       "cards": 48,
       "tableUnknown": 0,
-      "sourceDiff": 7,
+      "sourceDiff": 43,
       "modalityDiff": 7,
-      "eitherDiff": 7
+      "eitherDiff": 43
     },
     "replicate": {
       "cards": 108,
       "tableUnknown": 0,
-      "sourceDiff": 99,
+      "sourceDiff": 103,
       "modalityDiff": 101,
-      "eitherDiff": 101
+      "eitherDiff": 103
     },
     "tokendance": {
       "cards": 74,
       "tableUnknown": 0,
-      "sourceDiff": 12,
+      "sourceDiff": 0,
       "modalityDiff": 39,
-      "eitherDiff": 40
+      "eitherDiff": 39
     },
     "runware": {
       "cards": 148,
       "tableUnknown": 0,
-      "sourceDiff": 146,
+      "sourceDiff": 145,
       "modalityDiff": 142,
-      "eitherDiff": 146
+      "eitherDiff": 147
     },
     "tokenhub": {
       "cards": 50,
@@ -175,9 +175,9 @@
     "xiaomi": {
       "cards": 3,
       "tableUnknown": 0,
-      "sourceDiff": 0,
+      "sourceDiff": 2,
       "modalityDiff": 0,
-      "eitherDiff": 0
+      "eitherDiff": 2
     },
     "sensenova": {
       "cards": 8,
@@ -189,9 +189,9 @@
     "stepfun": {
       "cards": 5,
       "tableUnknown": 0,
-      "sourceDiff": 0,
+      "sourceDiff": 3,
       "modalityDiff": 1,
-      "eitherDiff": 1
+      "eitherDiff": 3
     },
     "qianfan": {
       "cards": 37,
@@ -210,7 +210,7 @@
     "longcat": {
       "cards": 3,
       "tableUnknown": 0,
-      "sourceDiff": 1,
+      "sourceDiff": 0,
       "modalityDiff": 1,
       "eitherDiff": 1
     },
@@ -681,6 +681,11 @@
       "key": "kimi/kimi-k2.7-code",
       "sourceDiff": true,
       "modalityDiff": true
+    },
+    {
+      "key": "kimi/kimi-k2.7-code-highspeed",
+      "sourceDiff": true,
+      "modalityDiff": false
     },
     {
       "key": "kimi/kimi-k2.6",
@@ -1268,6 +1273,11 @@
       "modalityDiff": true
     },
     {
+      "key": "bailian/qwen3.8-max-0902",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
       "key": "bailian/ZHIPU/GLM-5.3-Flash",
       "sourceDiff": true,
       "modalityDiff": true
@@ -1291,6 +1301,16 @@
       "key": "bailian/vanchin/deepseek-v4-pro-0813",
       "sourceDiff": true,
       "modalityDiff": true
+    },
+    {
+      "key": "bailian/qwen-image-3.0",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen-image-3.0-pro",
+      "sourceDiff": true,
+      "modalityDiff": false
     },
     {
       "key": "bailian/deepseek-v4-flash-0731",
@@ -1343,6 +1363,41 @@
       "modalityDiff": true
     },
     {
+      "key": "bailian/qwen-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3.7-max",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3.7-max-2026-05-17",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3.7-max-2026-05-20",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3.7-max-preview",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3.7-plus",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3.7-plus-2026-05-26",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
       "key": "bailian/qwen3.6-27b",
       "sourceDiff": true,
       "modalityDiff": true
@@ -1353,9 +1408,59 @@
       "modalityDiff": true
     },
     {
+      "key": "bailian/qwen3.6-plus",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3.6-plus-2026-04-02",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
       "key": "bailian/qwen3.5-397b-a17b",
       "sourceDiff": false,
       "modalityDiff": true
+    },
+    {
+      "key": "bailian/qwen3.5-omni-flash",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3.5-omni-flash-2026-03-15",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3.5-omni-plus",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3.5-omni-plus-2026-03-15",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3-max",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3-max-2025-09-23",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3-max-2026-01-23",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3-max-preview",
+      "sourceDiff": true,
+      "modalityDiff": false
     },
     {
       "key": "bailian/stepfun/step-3.7-flash",
@@ -1368,6 +1473,11 @@
       "modalityDiff": true
     },
     {
+      "key": "bailian/vanchin/deepseek-v3.2-think",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
       "key": "bailian/vanchin/deepseek-v3.1-terminus",
       "sourceDiff": true,
       "modalityDiff": true
@@ -1378,14 +1488,69 @@
       "modalityDiff": true
     },
     {
+      "key": "bailian/wan2.7-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/wan2.7-image-pro",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/wan2.6-t2i",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/wan2.2-t2i-flash",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/wan2.2-t2i-plus",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
       "key": "bailian/MiniMax/MiniMax-M3.1-Flash",
       "sourceDiff": true,
       "modalityDiff": true
     },
     {
+      "key": "bailian/qwen-turbo",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/qwen3-coder-next",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
       "key": "bailian/vanchin/deepseek-r1",
       "sourceDiff": true,
       "modalityDiff": true
+    },
+    {
+      "key": "bailian/wanx-v1",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/wanx2.0-t2i-turbo",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/wanx2.1-t2i-plus",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "bailian/wanx2.1-t2i-turbo",
+      "sourceDiff": true,
+      "modalityDiff": false
     },
     {
       "key": "bailian/xiaomi/mimo-v2.5-pro",
@@ -1604,12 +1769,12 @@
     },
     {
       "key": "bfl/flux-3-image",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "bfl/flux-3-image-klein",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -1973,14 +2138,89 @@
       "modalityDiff": true
     },
     {
+      "key": "fal/alibaba/qwen-image-3/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
       "key": "fal/bytedance/seedream/v5/flash/text-to-image",
       "sourceDiff": true,
       "modalityDiff": true
     },
     {
+      "key": "fal/bytedance/seedream/v5/pro/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
       "key": "fal/fal-ai/bytedance/seedream/v5/lite/edit",
       "sourceDiff": true,
       "modalityDiff": true
+    },
+    {
+      "key": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/fast-sdxl",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/flux-2",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/flux-2-flex",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/flux-2-pro",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/flux-2/flash",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/flux-2/klein/9b",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/flux-2/turbo",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/flux-kontext-lora",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/flux-pro/kontext",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/flux-pro/v1.1",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/flux-pro/v1.1-ultra",
+      "sourceDiff": true,
+      "modalityDiff": false
     },
     {
       "key": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
@@ -1998,14 +2238,119 @@
       "modalityDiff": true
     },
     {
+      "key": "fal/fal-ai/flux-1/schnell",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/flux-lora",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/flux/dev",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/flux/schnell",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/ideogram/v3",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/qwen-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/recraft/v4/pro/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/recraft/v3/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/openai/gpt-image-2.5/flare/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/openai/gpt-image-2",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/gpt-image-1.5",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/xai/grok-imagine-image/v2.0/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/xai/grok-imagine-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/xai/grok-imagine-image/quality/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/bria/fibo-edit-1.5/edit",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/bria/fibo-gen-1.5/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/krea-2/turbo",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "fal/fal-ai/z-image/turbo",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
       "key": "fal/ideogram/v4.5",
       "sourceDiff": true,
       "modalityDiff": true
     },
     {
+      "key": "fal/krea/v2/large/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
       "key": "fal/krea/v3/text-to-image",
       "sourceDiff": true,
       "modalityDiff": true
+    },
+    {
+      "key": "fal/meta/muse-image/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": false
     },
     {
       "key": "replicate/google/gemini-3.5-flash",
@@ -2064,7 +2409,7 @@
     },
     {
       "key": "replicate/black-forest-labs/flux-kontext-pro",
-      "sourceDiff": false,
+      "sourceDiff": true,
       "modalityDiff": true
     },
     {
@@ -2409,13 +2754,18 @@
     },
     {
       "key": "replicate/lucataco/omnigen2",
-      "sourceDiff": false,
+      "sourceDiff": true,
       "modalityDiff": true
     },
     {
       "key": "replicate/lucataco/open-dalle-v1.1",
       "sourceDiff": true,
       "modalityDiff": true
+    },
+    {
+      "key": "replicate/lucataco/realistic-vision-v5.1",
+      "sourceDiff": true,
+      "modalityDiff": false
     },
     {
       "key": "replicate/lucataco/ssd-1b",
@@ -2436,6 +2786,11 @@
       "key": "replicate/minimax/image-01",
       "sourceDiff": true,
       "modalityDiff": true
+    },
+    {
+      "key": "replicate/nvidia/sana",
+      "sourceDiff": true,
+      "modalityDiff": false
     },
     {
       "key": "replicate/nvidia/sana-sprint-1.6b",
@@ -2519,7 +2874,7 @@
     },
     {
       "key": "tokendance/deepseek-v4.1-flash-1017",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -2533,13 +2888,8 @@
       "modalityDiff": true
     },
     {
-      "key": "tokendance/deepseek-v4-flash",
-      "sourceDiff": true,
-      "modalityDiff": false
-    },
-    {
       "key": "tokendance/deepseek-v3.2",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -2639,7 +2989,7 @@
     },
     {
       "key": "tokendance/qwen3-30b-a3b-instruct-2507",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -2654,22 +3004,22 @@
     },
     {
       "key": "tokendance/cogevol-base",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "tokendance/cogevol-interactive-0828",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "tokendance/cogevol-slide-0828",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "tokendance/kimi-k3.1-pro",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -2679,7 +3029,7 @@
     },
     {
       "key": "tokendance/ling-3.1-flash",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -2699,17 +3049,17 @@
     },
     {
       "key": "tokendance/mimo-v2.6-flash",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "tokendance/mimo-v2.6-pro",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "tokendance/minimax-m3.1-flash",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -3034,7 +3384,7 @@
     },
     {
       "key": "runware/google:gemini@3.1-pro",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -3139,7 +3489,7 @@
     },
     {
       "key": "runware/google:gemini@3-flash",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -3428,6 +3778,11 @@
       "modalityDiff": true
     },
     {
+      "key": "runware/runware:150@2",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
       "key": "runware/runware:152@1",
       "sourceDiff": true,
       "modalityDiff": true
@@ -3618,6 +3973,16 @@
       "modalityDiff": true
     },
     {
+      "key": "xiaomi/mimo-v2.6-flash",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "xiaomi/mimo-v2.6-pro",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
       "key": "sensenova/deepseek-v4-flash",
       "sourceDiff": true,
       "modalityDiff": false
@@ -3649,8 +4014,18 @@
     },
     {
       "key": "stepfun/step-3.7-flash",
-      "sourceDiff": false,
+      "sourceDiff": true,
       "modalityDiff": true
+    },
+    {
+      "key": "stepfun/step-3.5-flash",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "stepfun/step-3.5-flash-2603",
+      "sourceDiff": true,
+      "modalityDiff": false
     },
     {
       "key": "qianfan/deepseek-v4.1-flash",
@@ -3769,7 +4144,7 @@
     },
     {
       "key": "longcat/LongCat-2.0",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {

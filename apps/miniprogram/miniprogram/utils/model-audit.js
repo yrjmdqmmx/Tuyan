@@ -25,7 +25,7 @@ function auditedModelSpecs(channel, id) {
         result[field].unsupportedModalities = values;
     for (const field of (details === null || details === void 0 ? void 0 : details.suppressFallback) || [])
         result[field].suppressFallback = true;
-    return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: (details === null || details === void 0 ? void 0 : details.sourceUrls) || [], note: (details === null || details === void 0 ? void 0 : details.note) || '' };
+    return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: (details === null || details === void 0 ? void 0 : details.sourceUrls) || [], sourceLabel: (row === null || row === void 0 ? void 0 : row[6]) || '官方文档', note: (details === null || details === void 0 ? void 0 : details.note) || '' };
 }
 // Tombstones preserve exact identities for messages and explicit replacement choices, never catalog entries.
 function removedModel(channel, id, now = Date.now()) {

@@ -145,8 +145,8 @@ test('retired cards disappear while future retirement, adapter gaps and transien
  assert.deepEqual(r,before,'display filtering never deletes historical model IDs');
 });
 
-test('cards show four specifications immediately without a disclosure and keep every official source accessible',()=>{
- const sources=['https://example.com/model','https://example.com/limits','https://example.com/api'];
+test('cards show four specifications immediately and expose all human sources while retaining API evidence in the model',()=>{
+ const sources=['https://example.com/model','https://example.com/limits','https://example.com/api','https://example.com/api/v1/models','https://example.com/model/schema.json'];
  const r={providers:{openai:{models:[{id:'direct-card',label:'Direct card',roles:['main'],specifications:{version:1,officialInputModalities:['text','image'],officialOutputModalities:['text'],contextWindowTokens:1000000,sourceUrls:sources}}]}}};
  const {container}=render(React.createElement(WorkspaceModelCatalog,{...props,models:{...props.models,registry:r}}));
  const card=screen.getByRole('article');
@@ -155,7 +155,8 @@ test('cards show four specifications immediately without a disclosure and keep e
  assert.deepEqual([...card.querySelectorAll('dt')].map(node=>node.textContent),['输入','输出','上下文窗口','最大输出']);
  assert.ok(within(card).getAllByText('未知')[0]);
  assert.deepEqual(within(card).getAllByRole('link').map(link=>link.href),sources.slice(0,1));
- for(const source of sources) assert.ok(within(card).getByRole('link').title.includes(source));
+ for(const source of sources) assert.equal(within(card).getByRole('link').title.includes(source),sources.slice(0,3).includes(source));
+ assert.deepEqual(r.providers.openai.models[0].specifications.sourceUrls,sources);
  assert.ok(container.querySelector('.tw-catalog-card-actions > button'));
 });
 

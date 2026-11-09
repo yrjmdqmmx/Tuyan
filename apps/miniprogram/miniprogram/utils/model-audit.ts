@@ -25,7 +25,7 @@ export function auditedModelSpecs(channel: string, id: string) {
   if (details?.unknownInputModalities) result.inputModalities.unknownModalities = details.unknownInputModalities
   for (const [field, values] of Object.entries(details?.unsupportedModalities || {})) result[field].unsupportedModalities = values as string[]
   for (const field of details?.suppressFallback || []) result[field].suppressFallback = true
-  return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: details?.sourceUrls || [], note: details?.note || '' }
+  return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: details?.sourceUrls || [], sourceLabel: row?.[6] || '官方文档', note: details?.note || '' }
 }
 
 // Tombstones preserve exact identities for messages and explicit replacement choices, never catalog entries.

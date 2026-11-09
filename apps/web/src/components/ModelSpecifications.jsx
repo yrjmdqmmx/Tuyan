@@ -2,6 +2,7 @@ import { modelLifecycleMessage } from '../lib/modelUnavailablePresentation.js'
 import { useState } from 'react'
 import { ArrowDownToLine, ArrowUpFromLine, ScanText, TextCursorInput, ExternalLink, Type, Image, AudioLines, Video, FileText } from 'lucide-react'
 import { modelCardSpecifications } from '../lib/modelCardSpecifications'
+import { modelSourceName } from '../lib/modelCardSources.js'
 import { modalityIconStates } from '../lib/modelModalityIcons'
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import WorkspaceDialog from '../workspace/WorkspaceDialog.jsx'
@@ -28,8 +29,7 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
   const { t } = useAppLocale()
   const [showSources, setShowSources] = useState(false)
   const data = modelCardSpecifications(provider, model)
-  const sourceName = url => data.channelSources.includes(url) ? '官方文档' : url === data.lifecycle?.sourceUrl ? '下线公告'
-    : data.vendorSources.includes(url) ? '原厂规格' : '官方文档'
+  const sourceName = url => modelSourceName(data, url)
   const provenance = [['输入', data.inputScope], ['输出', data.outputScope], ['上下文窗口', data.contextScope], ['最大输出', data.maxOutputScope]]
     .filter(([, scope]) => scope).map(([label, scope]) => `${t(label)}：${t(scope === '原厂' ? '源自原厂' : ['图研既有核实', '图研输入要求'].includes(scope) ? scope : '渠道公布')}`)
   const catalogDates = Object.entries(data.fields).filter(([, fact]) => fact.provenance === 'catalog' && fact.verifiedAt)

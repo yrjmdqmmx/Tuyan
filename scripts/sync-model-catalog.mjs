@@ -37,6 +37,7 @@ write(path.join(root, 'apps/auth-gateway/src/model-audit.js'), '// Generated fro
 // All runtimes share the same display names and unavailable wording.
 const clientAuditSource = modelAuditSource
 const miniAuditSource = clientAuditSource
+  .replace('sourceLinks: details?.sourceLinks || []', "sourceLabel: row?.[6] || '官方文档'")
   .replace(/export function modelDisplayName[\s\S]*?(?=export function removedModelHint)/, `export function modelDisplayName(channel: string, id: string): string {
   return removedModel(channel, id)?.displayName
     || STATIC_MODEL_REGISTRY[channel]?.models.find((model: { id: string }) => model.id === id)?.label
@@ -337,6 +338,12 @@ const models = Object.entries(registry).flatMap(([channel, provider]) => provide
 data.rows = Object.fromEntries(models.map(([key, model], index) => {
   const row = data.rows[index]
   row.splice(4, 0, 0)
+  if (row[5] === -2) row[5] = data.sources.push('https://tokendance.space/models/' + model.id) - 1
+  if (row[5] <= -3) {
+    const [prefix, suffix, format] = data.sourceTemplates[-3 - row[5]]
+    row[5] = data.sources.push(prefix + (format ? model.id.replace(/[:@]/g, '-') : model.id) + suffix) - 1
+  }
+  if (row[6]) row[6] = row[6] === 1 ? '下线公告' : '原厂规格'
   for (let i = 0; i < 4; i++) {
     const fact = [...data.facts[row[i]]], field = data.fields[i]
     if (fact[3] === -1) fact[3] = row[5]

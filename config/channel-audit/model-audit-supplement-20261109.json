@@ -225,5 +225,742 @@
         "quote": "| 输入模态 | Text Image | 输出模态 | Text |"
       }
     }
+  },
+  "sourceLinks": {
+    "tokendance/deepseek-v4-pro": [
+      {
+        "url": "https://tokendance.space/models/deepseek-v4-pro",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/deepseek-v4.1-flash": [
+      {
+        "url": "https://tokendance.space/models/deepseek-v4.1-flash",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/dots-3-note-preview": [
+      {
+        "url": "https://tokendance.space/models/dots-3-note-preview",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/glm-5.3-flashx": [
+      {
+        "url": "https://tokendance.space/models/glm-5.3-flashx",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/hy4-preview": [
+      {
+        "url": "https://tokendance.space/models/hy4-preview",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/kimi-k2.5": [
+      {
+        "url": "https://tokendance.space/models/kimi-k2.5",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/kimi-k2.6": [
+      {
+        "url": "https://tokendance.space/models/kimi-k2.6",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/kimi-k2.7-code": [
+      {
+        "url": "https://tokendance.space/models/kimi-k2.7-code",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/kimi-k3": [
+      {
+        "url": "https://tokendance.space/models/kimi-k3",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/mimo-v2.5": [
+      {
+        "url": "https://tokendance.space/models/mimo-v2.5",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/mimo-v2.5-pro": [
+      {
+        "url": "https://tokendance.space/models/mimo-v2.5-pro",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/qwen3-vl-plus": [
+      {
+        "url": "https://tokendance.space/models/qwen3-vl-plus",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/qwen3.5-35b-a3b": [
+      {
+        "url": "https://tokendance.space/models/qwen3.5-35b-a3b",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/qwen3.5-flash": [
+      {
+        "url": "https://tokendance.space/models/qwen3.5-flash",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/qwen3.5-plus": [
+      {
+        "url": "https://tokendance.space/models/qwen3.5-plus",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/qwen3.6-plus": [
+      {
+        "url": "https://tokendance.space/models/qwen3.6-plus",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/qwen3.7-max": [
+      {
+        "url": "https://tokendance.space/models/qwen3.7-max",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/qwen3.7-plus": [
+      {
+        "url": "https://tokendance.space/models/qwen3.7-plus",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/qwen3.8-flash": [
+      {
+        "url": "https://tokendance.space/models/qwen3.8-flash",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/qwen3.8-max": [
+      {
+        "url": "https://tokendance.space/models/qwen3.8-max",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/qwen3.8-max-0902": [
+      {
+        "url": "https://tokendance.space/models/qwen3.8-max-0902",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/seed-2.0-lite": [
+      {
+        "url": "https://tokendance.space/models/seed-2.0-lite",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/seed-2.0-mini": [
+      {
+        "url": "https://tokendance.space/models/seed-2.0-mini",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/seed-2.0-pro": [
+      {
+        "url": "https://tokendance.space/models/seed-2.0-pro",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/seed-2.1-pro": [
+      {
+        "url": "https://tokendance.space/models/seed-2.1-pro",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/seed-2.1-turbo": [
+      {
+        "url": "https://tokendance.space/models/seed-2.1-turbo",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/seed-evolving": [
+      {
+        "url": "https://tokendance.space/models/seed-evolving",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/seedream-5.0-lite": [
+      {
+        "url": "https://tokendance.space/models/seedream-5.0-lite",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/seedream-5.0-pro": [
+      {
+        "url": "https://tokendance.space/models/seedream-5.0-pro",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/spark-x2.5-1.7b": [
+      {
+        "url": "https://tokendance.space/models/spark-x2.5-1.7b",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/spark-x2.5-4b": [
+      {
+        "url": "https://tokendance.space/models/spark-x2.5-4b",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/step-3.5-flash": [
+      {
+        "url": "https://tokendance.space/models/step-3.5-flash",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/step-3.7-flash": [
+      {
+        "url": "https://tokendance.space/models/step-3.7-flash",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/step-5-preview": [
+      {
+        "url": "https://tokendance.space/models/step-5-preview",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/unifuncs-s3": [
+      {
+        "url": "https://tokendance.space/models/unifuncs-s3",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/unifuncs-s3-pro": [
+      {
+        "url": "https://tokendance.space/models/unifuncs-s3-pro",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/unifuncs-u3": [
+      {
+        "url": "https://tokendance.space/models/unifuncs-u3",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/unifuncs-u3-pro": [
+      {
+        "url": "https://tokendance.space/models/unifuncs-u3-pro",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/deepseek-v4.1-flash-1017": [
+      {
+        "url": "https://tokendance.space/models/deepseek-v4.1-flash-1017",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/deepseek-v4-pro-0813": [
+      {
+        "url": "https://tokendance.space/models/deepseek-v4-pro-0813",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/deepseek-v4-flash-0731": [
+      {
+        "url": "https://tokendance.space/models/deepseek-v4-flash-0731",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/deepseek-chat-v3-0324": [
+      {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "scope": "vendor",
+        "kind": "vendor-doc",
+        "checkedAt": "2026-11-09",
+        "evidence": "R11 captured vendor source; TokenDance model page rejected by .audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/glm-5.3": [
+      {
+        "url": "https://tokendance.space/models/glm-5.3",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/glm-5.3-flash": [
+      {
+        "url": "https://tokendance.space/models/glm-5.3-flash",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/glm-5.2": [
+      {
+        "url": "https://tokendance.space/models/glm-5.2",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/glm-5.1": [
+      {
+        "url": "https://tokendance.space/models/glm-5.1",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/glm-5": [
+      {
+        "url": "https://tokendance.space/models/glm-5",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/glm-5v-turbo": [
+      {
+        "url": "https://tokendance.space/models/glm-5v-turbo",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/glm-4.7": [
+      {
+        "url": "https://tokendance.space/models/glm-4.7",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/glm-4.6v": [
+      {
+        "url": "https://tokendance.space/models/glm-4.6v",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/glm-4.5-air": [
+      {
+        "url": "https://tokendance.space/models/glm-4.5-air",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/hy3": [
+      {
+        "url": "https://tokendance.space/models/hy3",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/hy3-preview": [
+      {
+        "url": "https://tokendance.space/models/hy3-preview",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/minimax-m3": [
+      {
+        "url": "https://tokendance.space/models/minimax-m3",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/minimax-m2.7": [
+      {
+        "url": "https://tokendance.space/models/minimax-m2.7",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/minimax-m2.5": [
+      {
+        "url": "https://tokendance.space/models/minimax-m2.5",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/qwen3-max": [
+      {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "scope": "vendor",
+        "kind": "vendor-doc",
+        "checkedAt": "2026-11-09",
+        "evidence": "R11 captured vendor source; TokenDance model page rejected by .audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/seed-2.0-code": [
+      {
+        "url": "https://tokendance.space/models/seed-2.0-code",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/kimi-k3.1-pro": [
+      {
+        "url": "https://tokendance.space/models/kimi-k3.1-pro",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/ling-3.0-flash": [
+      {
+        "url": "https://tokendance.space/models/ling-3.0-flash",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/longcat-2.0": [
+      {
+        "url": "https://tokendance.space/models/longcat-2.0",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/minimax-m3.1-flash": [
+      {
+        "url": "https://tokendance.space/models/minimax-m3.1-flash",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "bfl/flux-3-image": [
+      {
+        "url": "https://docs.bfl.ml/api-reference/utility/generate-an-image-with-flux-3",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-10-16",
+        "evidence": "Existing exact-model source in R11 captured full Core registry; also used by static and Mini cards after API/JSON filtering"
+      }
+    ],
+    "bfl/flux-3-image-klein": [
+      {
+        "url": "https://docs.bfl.ml/api-reference/utility/generate-an-image-with-flux-3-klein",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-10-16",
+        "evidence": "Existing exact-model source in R11 captured full Core registry; also used by static and Mini cards after API/JSON filtering"
+      }
+    ],
+    "longcat/LongCat-2.0": [
+      {
+        "url": "https://huggingface.co/meituan-longcat/LongCat-2.0",
+        "scope": "vendor",
+        "kind": "vendor-doc",
+        "checkedAt": "2026-10-16",
+        "evidence": "Existing exact-model source in R11 captured full Core registry; also used by static and Mini cards after API/JSON filtering"
+      }
+    ],
+    "tokendance/cogevol-base": [
+      {
+        "url": "https://tokendance.space/models/cogevol-base",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/cogevol-interactive-0828": [
+      {
+        "url": "https://tokendance.space/models/cogevol-interactive-0828",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/cogevol-slide-0828": [
+      {
+        "url": "https://tokendance.space/models/cogevol-slide-0828",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/ling-3.1-flash": [
+      {
+        "url": "https://tokendance.space/models/ling-3.1-flash",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/mimo-v2.6-flash": [
+      {
+        "url": "https://tokendance.space/models/mimo-v2.6-flash",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/mimo-v2.6-pro": [
+      {
+        "url": "https://tokendance.space/models/mimo-v2.6-pro",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/mimo-v2.6-ultraspeed": [
+      {
+        "url": "https://tokendance.space/models/mimo-v2.6-ultraspeed",
+        "scope": "channel",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09",
+        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/deepseek-v3.2": [
+      {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V3.2",
+        "scope": "vendor",
+        "kind": "vendor-doc",
+        "checkedAt": "2026-11-09",
+        "evidence": "R11 captured vendor source; TokenDance model page rejected by .audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/deepseek-v4-flash": [
+      {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+        "scope": "vendor",
+        "kind": "vendor-doc",
+        "checkedAt": "2026-11-09",
+        "evidence": "R11 captured vendor source; TokenDance model page rejected by .audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/deepseek-v4-flash-vision-exp": [
+      {
+        "url": "https://api-docs.deepseek.com/news/news260821/",
+        "scope": "vendor",
+        "kind": "vendor-doc",
+        "checkedAt": "2026-11-09",
+        "evidence": "R11 captured vendor source; TokenDance model page rejected by .audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/qwen3-30b-a3b-instruct-2507": [
+      {
+        "url": "https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507",
+        "scope": "vendor",
+        "kind": "vendor-doc",
+        "checkedAt": "2026-11-09",
+        "evidence": "R11 captured vendor source; TokenDance model page rejected by .audit-input/r12/tokendance-all-rendered.json"
+      }
+    ],
+    "tokendance/qwen3.6-max-preview": [
+      {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-6-max",
+        "scope": "vendor",
+        "kind": "vendor-doc",
+        "checkedAt": "2026-11-09",
+        "evidence": "R11 captured vendor source; TokenDance model page rejected by .audit-input/r12/tokendance-all-rendered.json"
+      }
+    ]
+  },
+  "sourceChecks": {
+    "https://tokendance.space/gateway/v1/models": {
+      "contentType": "application/json",
+      "checkedAt": "2026-11-09",
+      "evidence": "R11 task/operator identification of JSON model-list endpoint"
+    },
+    "https://tokendance.space/models/deepseek-chat-v3-0324": {
+      "rendersModel": false,
+      "checkedAt": "2026-11-09",
+      "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+    },
+    "https://tokendance.space/models/deepseek-v3.2": {
+      "rendersModel": false,
+      "checkedAt": "2026-11-09",
+      "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+    },
+    "https://tokendance.space/models/deepseek-v4-flash": {
+      "rendersModel": false,
+      "checkedAt": "2026-11-09",
+      "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+    },
+    "https://tokendance.space/models/deepseek-v4-flash-vision-exp": {
+      "rendersModel": false,
+      "checkedAt": "2026-11-09",
+      "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+    },
+    "https://tokendance.space/models/qwen3-30b-a3b-instruct-2507": {
+      "rendersModel": false,
+      "checkedAt": "2026-11-09",
+      "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+    },
+    "https://tokendance.space/models/qwen3-max": {
+      "rendersModel": false,
+      "checkedAt": "2026-11-09",
+      "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+    },
+    "https://tokendance.space/models/qwen3.6-max-preview": {
+      "rendersModel": false,
+      "checkedAt": "2026-11-09",
+      "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+    }
   }
 }

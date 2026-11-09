@@ -7,6 +7,7 @@ import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
 import { modelCardSpecifications, modelCardName, safeOfficialSources } from '../src/lib/modelCardSpecifications.js'
 import { modelVersionDetail } from '../src/lib/modelPresentation.js'
 import { ModelSpecifications } from '../src/components/ModelSpecifications.jsx'
+import { isApiSource, modelSourceName } from '../src/lib/modelCardSources.js'
 import * as web from '../src/lib/modelAudit.js'
 import * as core from '../../../packages/api/src/model-audit.ts'
 import * as gateway from '../../auth-gateway/src/model-audit.js'
@@ -71,7 +72,7 @@ test('R9 Bailian Kimi K3 visible official link and title use the channel source 
   }
 })
 
-test('R9 channel evidence for displayed facts wins catalog-wide; absent evidence keeps a safe catalog fallback', () => {
+test('R9 channel evidence remains available; R12 permits only notices, human pages and specific-source promotion', () => {
   let cards = 0, channels = new Set()
   for (const [provider, channel] of Object.entries(STATIC_MODEL_REGISTRY)) for (const original of channel.models) {
     const model = { ...original, officialSourceUrl: 'https://catalog.example/generic' }
@@ -79,10 +80,15 @@ test('R9 channel evidence for displayed facts wins catalog-wide; absent evidence
     const sources = safeOfficialSources(Object.values(data.fields).filter(fact => fact.provenance === 'channel')
       .flatMap(fact => fact.sourceUrls || [fact.sourceUrl]))
     if (!sources.length) continue
-    assert.equal(data.sources[0], sources[0], provider + '/' + model.id)
+    // R12 supersedes the first-evidence rule, but retains every safe source.
+    for (const source of sources) assert.equal(data.sources.includes(source), !isApiSource(source, web.MODEL_AUDIT_DATA.sourceChecks))
+    const first = data.sources[0]
+    assert.ok(first && !isApiSource(first, web.MODEL_AUDIT_DATA.sourceChecks), provider + '/' + model.id)
+    assert.ok(data.channelSources.includes(first) || data.vendorSources.includes(first) || data.lifecycleSources.includes(first), provider + '/' + model.id)
     assert.ok(data.sources.includes(model.officialSourceUrl), 'secondary evidence is retained')
     const view = render(React.createElement(ModelSpecifications, { provider, model }))
-    assert.equal(screen.getByRole('link').getAttribute('href'), sources[0], provider + '/' + model.id)
+    assert.equal(screen.getByRole('link').getAttribute('href'), first, provider + '/' + model.id)
+    assert.equal(screen.getByRole('link').textContent, modelSourceName(data, first) + ' · ' + new URL(first).hostname)
     view.unmount(); cards++; channels.add(provider)
   }
   assert.ok(cards > 100); assert.ok(channels.size > 10)

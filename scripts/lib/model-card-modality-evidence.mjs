@@ -2,20 +2,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 const modalityFields = ['inputModalities', 'outputModalities']
-const hosts = {
-  anthropic: ['anthropic.com', 'claude.com'], antling: ['ant-ling.com'], ark: ['volcengine.com'],
-  bailian: ['aliyun.com', 'qianwenai.com'], bfl: ['bfl.ai'], deepseek: ['deepseek.com'], fal: ['fal.ai', 'fal.run'],
-  fireworks: ['fireworks.ai'], gemini: ['ai.google.dev', 'cloud.google.com'], ideogram: ['ideogram.ai'],
-  iflytek: ['xfyun.cn', 'xf-yun.com'], kimi: ['kimi.com', 'moonshot.cn', 'moonshot.ai'], longcat: ['longcat.chat'],
-  minimax: ['minimax.io', 'minimaxi.com'], mistral: ['mistral.ai'], novita: ['novita.ai'], openai: ['openai.com'],
-  openrouter: ['openrouter.ai'], qianfan: ['baidu.com'], recraft: ['recraft.ai'], replicate: ['replicate.com'],
-  runware: ['runware.ai'], sensenova: ['sensenova.cn', 'sensecore.cn'], siliconflow: ['siliconflow.cn', 'siliconflow.com'],
-  stability: ['stability.ai'], stepfun: ['stepfun.com'], together: ['together.ai', 'together.xyz'],
-  tokendance: ['tokendance.space'], tokenhub: ['cloud.tencent.com', 'tencentmaas.com'], xai: ['x.ai'], xiaomi: ['mimo.mi.com'], zhipu: ['bigmodel.cn', 'z.ai'],
-}
-export function channelOwns(channel, url) {
-  try { const host = new URL(url).hostname; return (hosts[channel] || []).some(domain => host === domain || host.endsWith('.' + domain)) } catch { return false }
-}
+import { channelOwns } from '../../apps/web/src/lib/modelCardSources.js'
+export { channelOwns }
 export function readModalityEvidence(root) {
   const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))
   const index = new Map(), references = new Map(), files = new Set(), ambiguousTables = []

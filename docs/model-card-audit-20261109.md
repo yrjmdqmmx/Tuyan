@@ -1,17 +1,576 @@
-# 模型卡审计验收 · 2026-11-09 R11
+# 模型卡审计验收 · 2026-11-09 R12D
 
+## R12D：最终链接 HTTP 检查（当前验收）
 
-## R11：链接证据、完整 Core 对象计数与模态待复核清单（当前验收）
+按 `.audit-input/r12/CODEX_TASK_R12D.md` 回填操作方的最终检查；本轮仅改文档、测试及证据夹具，卡片链接、事实、UI、运行时契约和小程序产物均未修改。未运行 Git 写命令，未提交、推送或部署，未发起网络检查或真实/付费模型请求。
+
+### 方法、时间与状态计数
+
+操作方在 Mac mini 沙箱外对每个不同的最终首链接执行 HTTP **GET**，使用浏览器 User-Agent、跟随重定向、**25 秒**超时。检查时间为 **2026-11-09 18:38 UTC+8**，原始 `checkedAt` 为 `2026-11-09T10:38:46.634Z`。原始结果来自 `.audit-input/r12/final-link-check.json`；七条原链接的 404 复核结果和保留决定来自操作方任务说明，未从最终 URL 的状态推断。
+
+范围沿用 R12 完整对象助手：完整 Core **1061** 卡加 **3** 个仅静态身份，共 **1064** 卡；与 R8/pre-R9 `785b99df` 相比，最终首链接变化 **397** 卡，包含 **374** 个不同 URL。每个 URL 的一次检查结果映射到对应卡片，不把重复 URL 算成重复网络检查。
+
+| 统计口径 | 总数 | 200 | 404 | 410 | 其他状态 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 不同最终 URL | 374 | 367 | 7 | 0 | 0 |
+| 卡片记录 | 397 | 390 | 7 | 0 | 0 |
+
+全部响应为 `text/html`，无 JSON content-type，无重定向错误记录。HTTP 200 仅表示本次可达性；不据此推断页面渲染出指定模型、模型能力或账户权益。
+
+可提交夹具：[r12-final-link-check-20261109.json](../apps/web/tests/fixtures/r12-final-link-check-20261109.json)，每行仅含 `channel`、`modelId`、`oldUrl`、`finalUrl`、`status`、`contentType`、`checkedAt`；七条例外另含 `originalStatus`。当前验收以该夹具和本节为准，R11 的 **46 条 ID-only** 检查已被完整对象检查替代；历史表和原始证据保留。[R12C 生成清单](model-card-audit-20261109-r12-links.md)仍作为链接变化及原因的历史清单，其中生成时的“待最终 HTTP 检查”说明也由本节补齐。
+
+### 7 个 404 例外与处理决定
+
+以下七张卡的最终 URL 和原 R8 URL 都返回 **404**。原链接均为 API/schema（Replicate `/api/schema`、Runware `/schema.json`），回退仍会 404，且违反不显示 API/JSON 链接的规则。因此按操作方决定**保留当前链接，不回退**；七项明确登记为 **PM / 下一 PR 待跟进**，不将例外认定为链接健康。测试中的显式名单逐项限定 channel/modelId，理由统一为 `original link also 404/API`；所有 404/410 必须命中名单且原链接状态为 404，禁止扩大或遗留例外。
+
+| channel | model id | new URL | status | old URL | old status |
+| --- | --- | --- | ---: | --- | ---: |
+| replicate | `google/imagen-3` | https://replicate.com/google/imagen-3 | 404 | https://replicate.com/google/imagen-3/api/schema | 404 |
+| replicate | `google/imagen-3-fast` | https://replicate.com/google/imagen-3-fast | 404 | https://replicate.com/google/imagen-3-fast/api/schema | 404 |
+| replicate | `google/imagen-4` | https://replicate.com/google/imagen-4 | 404 | https://replicate.com/google/imagen-4/api/schema | 404 |
+| replicate | `google/imagen-4-fast` | https://replicate.com/google/imagen-4-fast | 404 | https://replicate.com/google/imagen-4-fast/api/schema | 404 |
+| replicate | `google/imagen-4-ultra` | https://replicate.com/google/imagen-4-ultra | 404 | https://replicate.com/google/imagen-4-ultra/api/schema | 404 |
+| runware | `openai:1@1` | https://runware.ai/docs/models/openai-gpt-image-1 | 404 | https://runware.ai/docs/models/openai-gpt-image-1/schema.json | 404 |
+| runware | `xai:grok-imagine@image-quality` | https://runware.ai/docs/models/xai-grok-imagine-image-quality | 404 | https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json | 404 |
+
+### 全部 397 张卡的最终链接检查
+
+下表的 new URL 是当前完整对象卡片的首链接，old URL 是同对象在 R8 的首链接；状态和统一检查时间均来自上述最终检查夹具。
+
+| channel | model id | new URL | status | old URL |
+| --- | --- | --- | ---: | --- |
+| antling | `Ling-3.0-flash` | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 200 | https://developer.ant-ling.com/zh-CN/docs/models/ling/ |
+| antling | `Ling-3.0-flash-VL` | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 200 | https://developer.ant-ling.com/zh-CN/docs/models/ling/ |
+| antling | `Ling-3.0-tiny` | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 200 | https://developer.ant-ling.com/zh-CN/docs/models/ling/ |
+| antling | `Ling-3.1-flash` | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 200 | https://developer.ant-ling.com/zh-CN/docs/models/ling/ |
+| antling | `Ling-3.2-flash` | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 200 | https://developer.ant-ling.com/zh-CN/docs/models/ling/ |
+| bailian | `glm-5.1` | https://help.aliyun.com/zh/model-studio/glm-5-1 | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `glm-5.2` | https://help.aliyun.com/zh/model-studio/glm-5-2 | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `glm-5.2-fast-preview` | https://www.qianwenai.com/models/glm-5.2-fast-preview | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `kimi-k2.5` | https://help.aliyun.com/zh/model-studio/kimi-k2-5 | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `kimi-k2.6` | https://help.aliyun.com/zh/model-studio/kimi-k2-6 | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `kimi-k2.7-code` | https://help.aliyun.com/zh/model-studio/kimi-k2-7-code | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `kimi-k3` | https://help.aliyun.com/zh/model-studio/kimi-k3 | 200 | https://huggingface.co/moonshotai/Kimi-K3 |
+| bailian | `qwen-image` | https://help.aliyun.com/zh/model-studio/qwen-image-api | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen-image-3.0` | https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen-image-3.0-pro` | https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen-max` | https://help.aliyun.com/zh/model-studio/text-generation-model | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen-plus-2025-01-25` | https://help.aliyun.com/zh/model-studio/qwen-plus | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen-plus-2025-04-28` | https://help.aliyun.com/zh/model-studio/qwen-plus | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen-plus-2025-07-14` | https://help.aliyun.com/zh/model-studio/qwen-plus | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen-turbo` | https://www.aliyun.com/notice/118177 | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3-coder-next` | https://www.aliyun.com/notice/118345 | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3-max` | https://www.aliyun.com/notice/118344 | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3-max-2025-09-23` | https://www.aliyun.com/notice/118345 | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3-max-2026-01-23` | https://www.aliyun.com/notice/118345 | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3-max-preview` | https://www.aliyun.com/notice/118344 | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.5-omni-flash` | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.5-omni-flash-2026-03-15` | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.5-omni-plus` | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.5-omni-plus-2026-03-15` | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.6-plus` | https://help.aliyun.com/zh/model-studio/qwen3-6-plus | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.6-plus-2026-04-02` | https://help.aliyun.com/zh/model-studio/qwen3-6-plus | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.7-max` | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.7-max-2026-05-17` | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.7-max-2026-05-20` | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.7-max-preview` | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.7-plus` | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.7-plus-2026-05-26` | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.8-2.4t-a95b` | https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.8-27b` | https://help.aliyun.com/zh/model-studio/qwen3-8-27b | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `qwen3.8-max-0902` | https://help.aliyun.com/zh/model-studio/qwen3-8-max | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `vanchin/deepseek-v3.2-think` | https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `wan2.2-t2i-flash` | https://help.aliyun.com/zh/model-studio/wan2-2-t2i-flash | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `wan2.2-t2i-plus` | https://help.aliyun.com/zh/model-studio/wan2-2-t2i-plus | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `wan2.6-t2i` | https://help.aliyun.com/zh/model-studio/wan2-6-t2i | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `wan2.7-image` | https://help.aliyun.com/zh/model-studio/wan2-7-image | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `wan2.7-image-pro` | https://help.aliyun.com/zh/model-studio/wan2-7-image-pro | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `wanx-v1` | https://help.aliyun.com/zh/model-studio/wanx-v1 | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `wanx2.0-t2i-turbo` | https://help.aliyun.com/zh/model-studio/wanx2-0-t2i-turbo | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `wanx2.1-t2i-plus` | https://help.aliyun.com/zh/model-studio/wanx2-1-t2i-plus | 200 | https://help.aliyun.com/zh/model-studio/models |
+| bailian | `wanx2.1-t2i-turbo` | https://help.aliyun.com/zh/model-studio/wanx2-1-t2i-turbo | 200 | https://help.aliyun.com/zh/model-studio/models |
+| fal | `alibaba/qwen-image-3/text-to-image` | https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `bria/fibo-edit-1.5/edit` | https://fal.ai/models/bria/fibo-edit-1.5/edit/api | 200 | https://api.fal.ai/v1/models |
+| fal | `bria/fibo-gen-1.5/text-to-image` | https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `bytedance/seedream/v5/pro/text-to-image` | https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/bytedance/seedream/v4.5/text-to-image` | https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/bytedance/seedream/v4/text-to-image` | https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/fast-sdxl` | https://fal.ai/models/fal-ai/fast-sdxl/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux-1/schnell` | https://fal.ai/models/fal-ai/flux-1/schnell/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux-2` | https://fal.ai/models/fal-ai/flux-2/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux-2-flex` | https://fal.ai/models/fal-ai/flux-2-flex/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux-2-pro` | https://fal.ai/models/fal-ai/flux-2-pro/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux-2/flash` | https://fal.ai/models/fal-ai/flux-2/flash/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux-2/klein/9b` | https://fal.ai/models/fal-ai/flux-2/klein/9b/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux-2/turbo` | https://fal.ai/models/fal-ai/flux-2/turbo/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux-kontext-lora` | https://fal.ai/models/fal-ai/flux-kontext-lora/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux-lora` | https://fal.ai/models/fal-ai/flux-lora/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux-pro/kontext` | https://fal.ai/models/fal-ai/flux-pro/kontext/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux-pro/v1.1` | https://fal.ai/models/fal-ai/flux-pro/v1.1/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux-pro/v1.1-ultra` | https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux/dev` | https://fal.ai/models/fal-ai/flux/dev/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/flux/schnell` | https://fal.ai/models/fal-ai/flux/schnell/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/gpt-image-1.5` | https://fal.ai/models/fal-ai/gpt-image-1.5/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/ideogram/v3` | https://fal.ai/models/fal-ai/ideogram/v3/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/krea-2/turbo` | https://fal.ai/models/fal-ai/krea-2/turbo/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/qwen-image` | https://fal.ai/models/fal-ai/qwen-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/recraft/v3/text-to-image` | https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/recraft/v4/pro/text-to-image` | https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `fal-ai/z-image/turbo` | https://fal.ai/models/fal-ai/z-image/turbo/api | 200 | https://api.fal.ai/v1/models |
+| fal | `imagineart/imagineart-2.0-preview/text-to-image` | https://fal.ai/models/imagineart/imagineart-2.0-preview/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `krea/v2/large/text-to-image` | https://fal.ai/models/krea/v2/large/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `meta/muse-image/text-to-image` | https://fal.ai/models/meta/muse-image/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `openai/gpt-image-2` | https://fal.ai/models/openai/gpt-image-2/api | 200 | https://api.fal.ai/v1/models |
+| fal | `openai/gpt-image-2.5/flare/text-to-image` | https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `openai/gpt-image-2.5/sunburst/text-to-image` | https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `xai/grok-imagine-image` | https://fal.ai/models/xai/grok-imagine-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `xai/grok-imagine-image/quality/text-to-image` | https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| fal | `xai/grok-imagine-image/v2.0/text-to-image` | https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api | 200 | https://api.fal.ai/v1/models |
+| iflytek | `spark-x2.5` | https://www.xfyun.cn/doc/spark/HTTP调用文档.html | 200 | https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999 |
+| iflytek | `spark-x2.5-1.7b` | https://www.xfyun.cn/doc/spark/HTTP调用文档.html | 200 | https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999 |
+| iflytek | `spark-x2.5-4b` | https://www.xfyun.cn/doc/spark/HTTP调用文档.html | 200 | https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999 |
+| iflytek | `spark-x2.6` | https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html | 200 | https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999 |
+| iflytek | `spark-x2.6-4b` | https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html | 200 | https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999 |
+| iflytek | `xsparkx2` | https://www.xfyun.cn/doc/spark/HTTP调用文档.html | 200 | https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999 |
+| iflytek | `xsparkx2flash` | https://www.xfyun.cn/doc/spark/HTTP调用文档.html | 200 | https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999 |
+| kimi | `kimi-k2.7-code-highspeed` | https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart | 200 | https://www.kimi.com/code/docs/en/kimi-code/models |
+| kimi | `kimi-k3.1-pro` | https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart | 200 | https://platform.kimi.com/docs/models |
+| kimi | `kimi-k3.1-pro-highspeed` | https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart | 200 | https://platform.kimi.com/docs/models |
+| replicate | `adirik/realvisxl-v3.0-turbo` | https://replicate.com/adirik/realvisxl-v3.0-turbo | 200 | https://replicate.com/adirik/realvisxl-v3.0-turbo/api/schema |
+| replicate | `ai-forever/kandinsky-2` | https://replicate.com/ai-forever/kandinsky-2 | 200 | https://replicate.com/ai-forever/kandinsky-2/api/schema |
+| replicate | `ai-forever/kandinsky-2.2` | https://replicate.com/ai-forever/kandinsky-2.2 | 200 | https://replicate.com/ai-forever/kandinsky-2.2/api/schema |
+| replicate | `alibaba/qwen-image-3` | https://replicate.com/alibaba/qwen-image-3 | 200 | https://replicate.com/alibaba/qwen-image-3/api/schema |
+| replicate | `alibaba/qwen-image-3-pro` | https://replicate.com/alibaba/qwen-image-3-pro | 200 | https://replicate.com/alibaba/qwen-image-3-pro/api/schema |
+| replicate | `alibaba/wan-3` | https://replicate.com/alibaba/wan-3 | 200 | https://replicate.com/alibaba/wan-3/api/schema |
+| replicate | `anthropic/claude-opus-5.5` | https://replicate.com/anthropic/claude-opus-5.5 | 200 | https://replicate.com/anthropic/claude-opus-5.5/api/schema |
+| replicate | `black-forest-labs/flux-1.1-pro` | https://replicate.com/black-forest-labs/flux-1.1-pro | 200 | https://replicate.com/black-forest-labs/flux-1.1-pro/api/schema |
+| replicate | `black-forest-labs/flux-1.1-pro-ultra` | https://replicate.com/black-forest-labs/flux-1.1-pro-ultra | 200 | https://replicate.com/black-forest-labs/flux-1.1-pro-ultra/api/schema |
+| replicate | `black-forest-labs/flux-2-flex` | https://replicate.com/black-forest-labs/flux-2-flex | 200 | https://replicate.com/black-forest-labs/flux-2-flex/api/schema |
+| replicate | `black-forest-labs/flux-2-klein-4b` | https://replicate.com/black-forest-labs/flux-2-klein-4b | 200 | https://replicate.com/black-forest-labs/flux-2-klein-4b/api/schema |
+| replicate | `black-forest-labs/flux-2-max` | https://replicate.com/black-forest-labs/flux-2-max | 200 | https://replicate.com/black-forest-labs/flux-2-max/api/schema |
+| replicate | `black-forest-labs/flux-2-pro` | https://replicate.com/black-forest-labs/flux-2-pro | 200 | https://replicate.com/black-forest-labs/flux-2-pro/api/schema |
+| replicate | `black-forest-labs/flux-3-image` | https://replicate.com/black-forest-labs/flux-3-image | 200 | https://replicate.com/black-forest-labs/flux-3-image/api/schema |
+| replicate | `black-forest-labs/flux-dev` | https://replicate.com/black-forest-labs/flux-dev | 200 | https://replicate.com/black-forest-labs/flux-dev/api/schema |
+| replicate | `black-forest-labs/flux-dev-lora` | https://replicate.com/black-forest-labs/flux-dev-lora | 200 | https://replicate.com/black-forest-labs/flux-dev-lora/api/schema |
+| replicate | `black-forest-labs/flux-kontext-dev` | https://replicate.com/black-forest-labs/flux-kontext-dev | 200 | https://replicate.com/black-forest-labs/flux-kontext-dev/api/schema |
+| replicate | `black-forest-labs/flux-kontext-max` | https://replicate.com/black-forest-labs/flux-kontext-max | 200 | https://replicate.com/black-forest-labs/flux-kontext-max/api/schema |
+| replicate | `black-forest-labs/flux-kontext-pro` | https://replicate.com/black-forest-labs/flux-kontext-pro | 200 | https://replicate.com/collections/official |
+| replicate | `black-forest-labs/flux-pro` | https://replicate.com/black-forest-labs/flux-pro | 200 | https://replicate.com/black-forest-labs/flux-pro/api/schema |
+| replicate | `black-forest-labs/flux-schnell` | https://replicate.com/black-forest-labs/flux-schnell | 200 | https://replicate.com/black-forest-labs/flux-schnell/api/schema |
+| replicate | `bria/fibo` | https://replicate.com/bria/fibo | 200 | https://replicate.com/bria/fibo/api/schema |
+| replicate | `bria/fibo-edit` | https://replicate.com/bria/fibo-edit | 200 | https://replicate.com/bria/fibo-edit/api/schema |
+| replicate | `bria/image-3.2` | https://replicate.com/bria/image-3.2 | 200 | https://replicate.com/bria/image-3.2/api/schema |
+| replicate | `bytedance/bagel` | https://replicate.com/bytedance/bagel | 200 | https://replicate.com/bytedance/bagel/api/schema |
+| replicate | `bytedance/sdxl-lightning-4step` | https://replicate.com/bytedance/sdxl-lightning-4step | 200 | https://replicate.com/bytedance/sdxl-lightning-4step/api/schema |
+| replicate | `bytedance/seedream-3` | https://replicate.com/bytedance/seedream-3 | 200 | https://replicate.com/bytedance/seedream-3/api/schema |
+| replicate | `bytedance/seedream-4` | https://replicate.com/bytedance/seedream-4 | 200 | https://replicate.com/bytedance/seedream-4/api/schema |
+| replicate | `bytedance/seedream-4.5` | https://replicate.com/bytedance/seedream-4.5 | 200 | https://replicate.com/bytedance/seedream-4.5/api/schema |
+| replicate | `bytedance/seedream-5-lite` | https://replicate.com/bytedance/seedream-5-lite | 200 | https://replicate.com/bytedance/seedream-5-lite/api/schema |
+| replicate | `datacte/proteus-v0.2` | https://replicate.com/datacte/proteus-v0.2 | 200 | https://replicate.com/datacte/proteus-v0.2/api/schema |
+| replicate | `datacte/proteus-v0.3` | https://replicate.com/datacte/proteus-v0.3 | 200 | https://replicate.com/datacte/proteus-v0.3/api/schema |
+| replicate | `fofr/latent-consistency-model` | https://replicate.com/fofr/latent-consistency-model | 200 | https://replicate.com/fofr/latent-consistency-model/api/schema |
+| replicate | `fofr/sdxl-emoji` | https://replicate.com/fofr/sdxl-emoji | 200 | https://replicate.com/fofr/sdxl-emoji/api/schema |
+| replicate | `fofr/sticker-maker` | https://replicate.com/fofr/sticker-maker | 200 | https://replicate.com/fofr/sticker-maker/api/schema |
+| replicate | `google/gemini-3-flash` | https://replicate.com/google/gemini-3-flash | 200 | https://replicate.com/google/gemini-3-flash/api/schema |
+| replicate | `google/imagen-3` | https://replicate.com/google/imagen-3 | 404 | https://replicate.com/google/imagen-3/api/schema |
+| replicate | `google/imagen-3-fast` | https://replicate.com/google/imagen-3-fast | 404 | https://replicate.com/google/imagen-3-fast/api/schema |
+| replicate | `google/imagen-4` | https://replicate.com/google/imagen-4 | 404 | https://replicate.com/google/imagen-4/api/schema |
+| replicate | `google/imagen-4-fast` | https://replicate.com/google/imagen-4-fast | 404 | https://replicate.com/google/imagen-4-fast/api/schema |
+| replicate | `google/imagen-4-ultra` | https://replicate.com/google/imagen-4-ultra | 404 | https://replicate.com/google/imagen-4-ultra/api/schema |
+| replicate | `ideogram-ai/ideogram-4-5` | https://replicate.com/ideogram-ai/ideogram-4-5 | 200 | https://replicate.com/ideogram-ai/ideogram-4-5/api/schema |
+| replicate | `ideogram-ai/ideogram-4-5-precise-edit` | https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit | 200 | https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema |
+| replicate | `ideogram-ai/ideogram-v2` | https://replicate.com/ideogram-ai/ideogram-v2 | 200 | https://replicate.com/ideogram-ai/ideogram-v2/api/schema |
+| replicate | `ideogram-ai/ideogram-v2-turbo` | https://replicate.com/ideogram-ai/ideogram-v2-turbo | 200 | https://replicate.com/ideogram-ai/ideogram-v2-turbo/api/schema |
+| replicate | `ideogram-ai/ideogram-v2a` | https://replicate.com/ideogram-ai/ideogram-v2a | 200 | https://replicate.com/ideogram-ai/ideogram-v2a/api/schema |
+| replicate | `ideogram-ai/ideogram-v2a-turbo` | https://replicate.com/ideogram-ai/ideogram-v2a-turbo | 200 | https://replicate.com/ideogram-ai/ideogram-v2a-turbo/api/schema |
+| replicate | `ideogram-ai/ideogram-v3-balanced` | https://replicate.com/ideogram-ai/ideogram-v3-balanced | 200 | https://replicate.com/ideogram-ai/ideogram-v3-balanced/api/schema |
+| replicate | `ideogram-ai/ideogram-v3-quality` | https://replicate.com/ideogram-ai/ideogram-v3-quality | 200 | https://replicate.com/ideogram-ai/ideogram-v3-quality/api/schema |
+| replicate | `ideogram-ai/ideogram-v3-turbo` | https://replicate.com/ideogram-ai/ideogram-v3-turbo | 200 | https://replicate.com/ideogram-ai/ideogram-v3-turbo/api/schema |
+| replicate | `krea/krea-2-medium` | https://replicate.com/krea/krea-2-medium | 200 | https://replicate.com/krea/krea-2-medium/api/schema |
+| replicate | `leonardoai/lucid-origin` | https://replicate.com/leonardoai/lucid-origin | 200 | https://replicate.com/leonardoai/lucid-origin/api/schema |
+| replicate | `lucataco/dreamshaper-xl-turbo` | https://replicate.com/lucataco/dreamshaper-xl-turbo | 200 | https://replicate.com/lucataco/dreamshaper-xl-turbo/api/schema |
+| replicate | `lucataco/omnigen2` | https://replicate.com/lucataco/omnigen2 | 200 | https://replicate.com/collections/official |
+| replicate | `lucataco/open-dalle-v1.1` | https://replicate.com/lucataco/open-dalle-v1.1 | 200 | https://replicate.com/lucataco/open-dalle-v1.1/api/schema |
+| replicate | `lucataco/realistic-vision-v5.1` | https://replicate.com/lucataco/realistic-vision-v5.1 | 200 | https://replicate.com/collections/official |
+| replicate | `lucataco/ssd-1b` | https://replicate.com/lucataco/ssd-1b | 200 | https://replicate.com/lucataco/ssd-1b/api/schema |
+| replicate | `luma/photon` | https://replicate.com/luma/photon | 200 | https://replicate.com/luma/photon/api/schema |
+| replicate | `luma/photon-flash` | https://replicate.com/luma/photon-flash | 200 | https://replicate.com/luma/photon-flash/api/schema |
+| replicate | `minimax/image-01` | https://replicate.com/minimax/image-01 | 200 | https://replicate.com/minimax/image-01/api/schema |
+| replicate | `nvidia/sana` | https://replicate.com/nvidia/sana | 200 | https://replicate.com/collections/official |
+| replicate | `nvidia/sana-sprint-1.6b` | https://replicate.com/nvidia/sana-sprint-1.6b | 200 | https://replicate.com/nvidia/sana-sprint-1.6b/api/schema |
+| replicate | `playgroundai/playground-v2.5-1024px-aesthetic` | https://replicate.com/playgroundai/playground-v2.5-1024px-aesthetic | 200 | https://replicate.com/playgroundai/playground-v2.5-1024px-aesthetic/api/schema |
+| replicate | `prunaai/flux-fast` | https://replicate.com/prunaai/flux-fast | 200 | https://replicate.com/prunaai/flux-fast/api/schema |
+| replicate | `prunaai/flux-kontext-fast` | https://replicate.com/prunaai/flux-kontext-fast | 200 | https://replicate.com/prunaai/flux-kontext-fast/api/schema |
+| replicate | `prunaai/hidream-l1-dev` | https://replicate.com/prunaai/hidream-l1-dev | 200 | https://replicate.com/prunaai/hidream-l1-dev/api/schema |
+| replicate | `prunaai/hidream-l1-fast` | https://replicate.com/prunaai/hidream-l1-fast | 200 | https://replicate.com/prunaai/hidream-l1-fast/api/schema |
+| replicate | `prunaai/hidream-l1-full` | https://replicate.com/prunaai/hidream-l1-full | 200 | https://replicate.com/prunaai/hidream-l1-full/api/schema |
+| replicate | `prunaai/p-image` | https://replicate.com/prunaai/p-image | 200 | https://replicate.com/prunaai/p-image/api/schema |
+| replicate | `prunaai/p-image-edit` | https://replicate.com/prunaai/p-image-edit | 200 | https://replicate.com/prunaai/p-image-edit/api/schema |
+| replicate | `prunaai/p-image-ideogram` | https://replicate.com/prunaai/p-image-ideogram | 200 | https://replicate.com/prunaai/p-image-ideogram/api/schema |
+| replicate | `prunaai/p-image-lora` | https://replicate.com/prunaai/p-image-lora | 200 | https://replicate.com/prunaai/p-image-lora/api/schema |
+| replicate | `prunaai/sdxl-lightning` | https://replicate.com/prunaai/sdxl-lightning | 200 | https://replicate.com/prunaai/sdxl-lightning/api/schema |
+| replicate | `prunaai/wan-2.2-image` | https://replicate.com/prunaai/wan-2.2-image | 200 | https://replicate.com/prunaai/wan-2.2-image/api/schema |
+| replicate | `prunaai/z-image-turbo` | https://replicate.com/prunaai/z-image-turbo | 200 | https://replicate.com/prunaai/z-image-turbo/api/schema |
+| replicate | `qwen/qwen-image` | https://replicate.com/qwen/qwen-image | 200 | https://replicate.com/qwen/qwen-image/api/schema |
+| replicate | `qwen/qwen-image-edit` | https://replicate.com/qwen/qwen-image-edit | 200 | https://replicate.com/qwen/qwen-image-edit/api/schema |
+| replicate | `qwen/qwen-image-edit-plus` | https://replicate.com/qwen/qwen-image-edit-plus | 200 | https://replicate.com/qwen/qwen-image-edit-plus/api/schema |
+| replicate | `recraft-ai/recraft-v3` | https://replicate.com/recraft-ai/recraft-v3 | 200 | https://replicate.com/recraft-ai/recraft-v3/api/schema |
+| replicate | `recraft-ai/recraft-v4-pro` | https://replicate.com/recraft-ai/recraft-v4-pro | 200 | https://replicate.com/recraft-ai/recraft-v4-pro/api/schema |
+| replicate | `recraft-ai/recraft-v4.1` | https://replicate.com/recraft-ai/recraft-v4.1 | 200 | https://replicate.com/recraft-ai/recraft-v4.1/api/schema |
+| replicate | `sourceful/riverflow-2.0-pro` | https://replicate.com/sourceful/riverflow-2.0-pro | 200 | https://replicate.com/sourceful/riverflow-2.0-pro/api/schema |
+| replicate | `stability-ai/sdxl` | https://replicate.com/stability-ai/sdxl | 200 | https://replicate.com/stability-ai/sdxl/api/schema |
+| replicate | `stability-ai/stable-diffusion` | https://replicate.com/stability-ai/stable-diffusion | 200 | https://replicate.com/stability-ai/stable-diffusion/api/schema |
+| replicate | `stability-ai/stable-diffusion-3.5-large` | https://replicate.com/stability-ai/stable-diffusion-3.5-large | 200 | https://replicate.com/stability-ai/stable-diffusion-3.5-large/api/schema |
+| replicate | `stability-ai/stable-diffusion-3.5-large-turbo` | https://replicate.com/stability-ai/stable-diffusion-3.5-large-turbo | 200 | https://replicate.com/stability-ai/stable-diffusion-3.5-large-turbo/api/schema |
+| replicate | `stability-ai/stable-diffusion-3.5-medium` | https://replicate.com/stability-ai/stable-diffusion-3.5-medium | 200 | https://replicate.com/stability-ai/stable-diffusion-3.5-medium/api/schema |
+| replicate | `tencent/hunyuan-image-3` | https://replicate.com/tencent/hunyuan-image-3 | 200 | https://replicate.com/tencent/hunyuan-image-3/api/schema |
+| replicate | `tstramer/material-diffusion` | https://replicate.com/tstramer/material-diffusion | 200 | https://replicate.com/tstramer/material-diffusion/api/schema |
+| replicate | `wan-video/wan-2.7-image` | https://replicate.com/wan-video/wan-2.7-image | 200 | https://replicate.com/wan-video/wan-2.7-image/api/schema |
+| replicate | `wan-video/wan-2.7-image-pro` | https://replicate.com/wan-video/wan-2.7-image-pro | 200 | https://replicate.com/wan-video/wan-2.7-image-pro/api/schema |
+| replicate | `xai/grok-imagine-image` | https://replicate.com/xai/grok-imagine-image | 200 | https://replicate.com/xai/grok-imagine-image/api/schema |
+| replicate | `xai/grok-imagine-image-2` | https://replicate.com/xai/grok-imagine-image-2 | 200 | https://replicate.com/xai/grok-imagine-image-2/api/schema |
+| replicate | `zsxkib/step1x-edit` | https://replicate.com/zsxkib/step1x-edit | 200 | https://replicate.com/zsxkib/step1x-edit/api/schema |
+| runware | `alibaba:qwen-image-edit@2511` | https://runware.ai/docs/models/alibaba-qwen-image-edit-2511 | 200 | https://runware.ai/docs/models/alibaba-qwen-image-edit-2511/schema.json |
+| runware | `alibaba:qwen-image@2.0` | https://runware.ai/docs/models/alibaba-qwen-image-2-0 | 200 | https://runware.ai/docs/models/alibaba-qwen-image-2-0/schema.json |
+| runware | `alibaba:qwen-image@2.0-pro` | https://runware.ai/docs/models/alibaba-qwen-image-2-0-pro | 200 | https://runware.ai/docs/models/alibaba-qwen-image-2-0-pro/schema.json |
+| runware | `alibaba:qwen-image@2.1-pro` | https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro | 200 | https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro/schema.json |
+| runware | `alibaba:qwen-image@2.1-turbo` | https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo | 200 | https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo/schema.json |
+| runware | `alibaba:qwen-image@2512` | https://runware.ai/docs/models/alibaba-qwen-image-2512 | 200 | https://runware.ai/docs/models/alibaba-qwen-image-2512/schema.json |
+| runware | `alibaba:qwen-image@3.0` | https://runware.ai/docs/models/alibaba-qwen-image-3-0 | 200 | https://runware.ai/docs/models/alibaba-qwen-image-3-0/schema.json |
+| runware | `alibaba:qwen-image@3.0-pro` | https://runware.ai/docs/models/alibaba-qwen-image-3-0-pro | 200 | https://runware.ai/docs/models/alibaba-qwen-image-3-0-pro/schema.json |
+| runware | `alibaba:wan@2.6-image` | https://runware.ai/docs/models/alibaba-wan2-6-image | 200 | https://runware.ai/docs/models/alibaba-wan2-6-image/schema.json |
+| runware | `alibaba:wan@2.7-image` | https://runware.ai/docs/models/alibaba-wan2-7-image | 200 | https://runware.ai/docs/models/alibaba-wan2-7-image/schema.json |
+| runware | `alibaba:wan@2.7-image-pro` | https://runware.ai/docs/models/alibaba-wan2-7-image-pro | 200 | https://runware.ai/docs/models/alibaba-wan2-7-image-pro/schema.json |
+| runware | `anthropic:claude@fable-5` | https://runware.ai/docs/models/anthropic-claude-fable-5 | 200 | https://runware.ai/docs/models/anthropic-claude-fable-5/schema.json |
+| runware | `anthropic:claude@haiku-4.5` | https://runware.ai/docs/models/anthropic-claude-haiku-4-5 | 200 | https://runware.ai/docs/models/anthropic-claude-haiku-4-5/schema.json |
+| runware | `anthropic:claude@opus-4.7` | https://runware.ai/docs/models/anthropic-claude-opus-4-7 | 200 | https://runware.ai/docs/models/anthropic-claude-opus-4-7/schema.json |
+| runware | `anthropic:claude@opus-4.8` | https://runware.ai/docs/models/anthropic-claude-opus-4-8 | 200 | https://runware.ai/docs/models/anthropic-claude-opus-4-8/schema.json |
+| runware | `anthropic:claude@sonnet-4.6` | https://runware.ai/docs/models/anthropic-claude-sonnet-4-6 | 200 | https://runware.ai/docs/models/anthropic-claude-sonnet-4-6/schema.json |
+| runware | `baidu:ernie-image@0` | https://runware.ai/docs/models/baidu-ernie-image | 200 | https://runware.ai/docs/models/baidu-ernie-image/schema.json |
+| runware | `baidu:ernie-image@turbo` | https://runware.ai/docs/models/baidu-ernie-image-turbo | 200 | https://runware.ai/docs/models/baidu-ernie-image-turbo/schema.json |
+| runware | `bfl:1@2` | https://runware.ai/docs/models/bfl-flux-1-fill-pro | 200 | https://runware.ai/docs/models/bfl-flux-1-fill-pro/schema.json |
+| runware | `bfl:2@1` | https://runware.ai/docs/models/bfl-flux-1-1-pro | 200 | https://runware.ai/docs/models/bfl-flux-1-1-pro/schema.json |
+| runware | `bfl:2@2` | https://runware.ai/docs/models/bfl-flux-1-1-pro-ultra | 200 | https://runware.ai/docs/models/bfl-flux-1-1-pro-ultra/schema.json |
+| runware | `bfl:3@1` | https://runware.ai/docs/models/bfl-flux-1-kontext-pro | 200 | https://runware.ai/docs/models/bfl-flux-1-kontext-pro/schema.json |
+| runware | `bfl:4@1` | https://runware.ai/docs/models/bfl-flux-1-kontext-max | 200 | https://runware.ai/docs/models/bfl-flux-1-kontext-max/schema.json |
+| runware | `bfl:5@1` | https://runware.ai/docs/models/bfl-flux-2-pro | 200 | https://runware.ai/docs/models/bfl-flux-2-pro/schema.json |
+| runware | `bfl:6@1` | https://runware.ai/docs/models/bfl-flux-2-flex | 200 | https://runware.ai/docs/models/bfl-flux-2-flex/schema.json |
+| runware | `bfl:7@1` | https://runware.ai/docs/models/bfl-flux-2-max | 200 | https://runware.ai/docs/models/bfl-flux-2-max/schema.json |
+| runware | `bfl:flux@3-image` | https://runware.ai/docs/models/bfl-flux-3-image | 200 | https://runware.ai/docs/models/bfl-flux-3-image/schema.json |
+| runware | `bfl:flux@3-image-klein` | https://runware.ai/docs/models/bfl-flux-3-image-klein | 200 | https://runware.ai/docs/models/bfl-flux-3-image-klein/schema.json |
+| runware | `bfl:flux@3-image-klein-base` | https://runware.ai/docs/models/bfl-flux-3-image-klein-base | 200 | https://runware.ai/docs/models/bfl-flux-3-image-klein-base/schema.json |
+| runware | `bria:10@1` | https://runware.ai/docs/models/bria-3-2 | 200 | https://runware.ai/docs/models/bria-3-2/schema.json |
+| runware | `bria:11@1` | https://runware.ai/docs/models/bria-image-replace-background | 200 | https://runware.ai/docs/models/bria-image-replace-background/schema.json |
+| runware | `bria:20@1` | https://runware.ai/docs/models/bria-fibo-2-0 | 200 | https://runware.ai/docs/models/bria-fibo/schema.json |
+| runware | `bria:20@3` | https://runware.ai/docs/models/bria-fibo-lite | 200 | https://runware.ai/docs/models/bria-fibo-lite/schema.json |
+| runware | `bria:21@1` | https://runware.ai/docs/models/bria-fibo-2-0-edit | 200 | https://runware.ai/docs/models/bria-fibo-edit/schema.json |
+| runware | `bytedance:5@0` | https://runware.ai/docs/models/bytedance-seedream-4-0 | 200 | https://runware.ai/docs/models/bytedance-seedream-4-0/schema.json |
+| runware | `bytedance:seedream@4.5` | https://runware.ai/docs/models/bytedance-seedream-4-5 | 200 | https://runware.ai/docs/models/bytedance-seedream-4-5/schema.json |
+| runware | `bytedance:seedream@5.0-flash` | https://runware.ai/docs/models/bytedance-seedream-5-0-flash | 200 | https://runware.ai/docs/models/bytedance-seedream-5-0-flash/schema.json |
+| runware | `bytedance:seedream@5.0-lite` | https://runware.ai/docs/models/bytedance-seedream-5-0-lite | 200 | https://runware.ai/docs/models/bytedance-seedream-5-0-lite/schema.json |
+| runware | `bytedance:seedream@5.0-pro` | https://runware.ai/docs/models/bytedance-seedream-5-0-pro | 200 | https://runware.ai/docs/models/bytedance-seedream-5-0-pro/schema.json |
+| runware | `civitai:101055@128078` | https://runware.ai/docs/models/stabilityai-stable-diffusion-xl-v1-0-vae-fix | 200 | https://runware.ai/docs/models/stabilityai-stable-diffusion-xl-v1-0-vae-fix/schema.json |
+| runware | `google:4@2` | https://runware.ai/docs/models/google-nano-banana-pro | 200 | https://runware.ai/docs/models/google-nano-banana-pro/schema.json |
+| runware | `google:4@3` | https://runware.ai/docs/models/google-nano-banana-2 | 200 | https://runware.ai/docs/models/google-nano-banana-2/schema.json |
+| runware | `google:gemini@3-flash` | https://runware.ai/docs/models/google-gemini-3-flash | 200 | https://runware.ai/docs/models/google-gemini-3-flash/schema.json |
+| runware | `google:gemini@3.1-flash-lite` | https://runware.ai/docs/models/google-gemini-3-1-flash-lite | 200 | https://runware.ai/docs/models/google-gemini-3-1-flash-lite/schema.json |
+| runware | `google:gemini@3.1-pro` | https://runware.ai/docs/models/google-gemini-3-1-pro | 200 | https://runware.ai/docs/models/google-gemini-3-1-pro/schema.json |
+| runware | `google:gemini@3.5-flash` | https://runware.ai/docs/models/google-gemini-3-5-flash | 200 | https://runware.ai/docs/models/google-gemini-3-5-flash/schema.json |
+| runware | `google:gemma@4-31b` | https://runware.ai/docs/models/google-gemma-4-31b | 200 | https://runware.ai/docs/models/google-gemma-4-31b/schema.json |
+| runware | `google:nano-banana@2-lite` | https://runware.ai/docs/models/google-nano-banana-2-lite | 200 | https://runware.ai/docs/models/google-nano-banana-2-lite/schema.json |
+| runware | `google:nano-banana@2.1` | https://runware.ai/docs/models/google-nano-banana-2-1 | 200 | https://runware.ai/docs/models/google-nano-banana-2-1/schema.json |
+| runware | `ideogram:2@1` | https://runware.ai/docs/models/ideogram-2a | 200 | https://runware.ai/docs/models/ideogram-2a/schema.json |
+| runware | `ideogram:2@2` | https://runware.ai/docs/models/ideogram-2a-remix | 200 | https://runware.ai/docs/models/ideogram-2a-remix/schema.json |
+| runware | `ideogram:3@1` | https://runware.ai/docs/models/ideogram-2-0 | 200 | https://runware.ai/docs/models/ideogram-2-0/schema.json |
+| runware | `ideogram:3@2` | https://runware.ai/docs/models/ideogram-2-0-remix | 200 | https://runware.ai/docs/models/ideogram-2-0-remix/schema.json |
+| runware | `ideogram:4.5@0` | https://runware.ai/docs/models/ideogram-4-5 | 200 | https://runware.ai/docs/models/ideogram-4-5/schema.json |
+| runware | `ideogram:4.5@precise-edit` | https://runware.ai/docs/models/ideogram-4-5-precise-edit | 200 | https://runware.ai/docs/models/ideogram-4-5-precise-edit/schema.json |
+| runware | `ideogram:4@0` | https://runware.ai/docs/models/ideogram-4-0 | 200 | https://runware.ai/docs/models/ideogram-4-0/schema.json |
+| runware | `ideogram:4@1` | https://runware.ai/docs/models/ideogram-3-0 | 200 | https://runware.ai/docs/models/ideogram-3-0/schema.json |
+| runware | `ideogram:4@2` | https://runware.ai/docs/models/ideogram-3-0-remix | 200 | https://runware.ai/docs/models/ideogram-3-0-remix/schema.json |
+| runware | `ideogram:4@3` | https://runware.ai/docs/models/ideogram-3-0-edit | 200 | https://runware.ai/docs/models/ideogram-3-0-edit/schema.json |
+| runware | `ideogram:4@5` | https://runware.ai/docs/models/ideogram-3-0-replace-background | 200 | https://runware.ai/docs/models/ideogram-3-0-replace-background/schema.json |
+| runware | `ideogram:4@q` | https://runware.ai/docs/models/ideogram-4-0q | 200 | https://runware.ai/docs/models/ideogram-4-0q/schema.json |
+| runware | `ideogram:4@remix` | https://runware.ai/docs/models/ideogram-4-0-remix | 200 | https://runware.ai/docs/models/ideogram-4-0-remix/schema.json |
+| runware | `imagineart:1.5-pro@0` | https://runware.ai/docs/models/imagineart-1-5-pro | 200 | https://runware.ai/docs/models/imagineart-1-5-pro/schema.json |
+| runware | `imagineart:1@5` | https://runware.ai/docs/models/imagineart-1-5 | 200 | https://runware.ai/docs/models/imagineart-1-5/schema.json |
+| runware | `imagineart:2.0@0` | https://runware.ai/docs/models/imagineart-2-0 | 200 | https://runware.ai/docs/models/imagineart-2-0/schema.json |
+| runware | `klingai:kling-image@3` | https://runware.ai/docs/models/klingai-image-3-0 | 200 | https://runware.ai/docs/models/klingai-image-3-0/schema.json |
+| runware | `klingai:kling-image@o1` | https://runware.ai/docs/models/klingai-image-o1 | 200 | https://runware.ai/docs/models/klingai-image-o1/schema.json |
+| runware | `klingai:kling-image@o3` | https://runware.ai/docs/models/klingai-image-o3 | 200 | https://runware.ai/docs/models/klingai-image-o3/schema.json |
+| runware | `krea:krea@2-large` | https://runware.ai/docs/models/krea-2-large | 200 | https://runware.ai/docs/models/krea-2-large/schema.json |
+| runware | `krea:krea@2-medium` | https://runware.ai/docs/models/krea-2-medium | 200 | https://runware.ai/docs/models/krea-2-medium/schema.json |
+| runware | `krea:krea@2-medium-turbo` | https://runware.ai/docs/models/krea-2-medium-turbo | 200 | https://runware.ai/docs/models/krea-2-medium-turbo/schema.json |
+| runware | `krea:krea@2-raw` | https://runware.ai/docs/models/krea-2-raw | 200 | https://runware.ai/docs/models/krea-2-raw/schema.json |
+| runware | `krea:krea@2-turbo` | https://runware.ai/docs/models/krea-2-turbo | 200 | https://runware.ai/docs/models/krea-2-turbo/schema.json |
+| runware | `luma:uni@1` | https://runware.ai/docs/models/luma-uni-1 | 200 | https://runware.ai/docs/models/luma-uni-1/schema.json |
+| runware | `luma:uni@1-max` | https://runware.ai/docs/models/luma-uni-1-max | 200 | https://runware.ai/docs/models/luma-uni-1-max/schema.json |
+| runware | `meta:muse@image` | https://runware.ai/docs/models/meta-muse-image | 200 | https://runware.ai/docs/models/meta-muse-image/schema.json |
+| runware | `minimax:m2.7@0` | https://runware.ai/docs/models/minimax-m2-7 | 200 | https://runware.ai/docs/models/minimax-m2-7/schema.json |
+| runware | `minimax:m2.7@highspeed` | https://runware.ai/docs/models/minimax-m2-7-highspeed | 200 | https://runware.ai/docs/models/minimax-m2-7-highspeed/schema.json |
+| runware | `minimax:m3@0` | https://runware.ai/docs/models/minimax-m3 | 200 | https://runware.ai/docs/models/minimax-m3/schema.json |
+| runware | `openai:1@1` | https://runware.ai/docs/models/openai-gpt-image-1 | 404 | https://runware.ai/docs/models/openai-gpt-image-1/schema.json |
+| runware | `openai:1@2` | https://runware.ai/docs/models/openai-gpt-image-1-mini | 200 | https://runware.ai/docs/models/openai-gpt-image-1-mini/schema.json |
+| runware | `openai:4@1` | https://runware.ai/docs/models/openai-gpt-image-1-5 | 200 | https://runware.ai/docs/models/openai-gpt-image-1-5/schema.json |
+| runware | `openai:gpt-image@2` | https://runware.ai/docs/models/openai-gpt-image-2 | 200 | https://runware.ai/docs/models/openai-gpt-image-2/schema.json |
+| runware | `openai:gpt-image@2.5-flare` | https://runware.ai/docs/models/openai-gpt-image-2-5-flare | 200 | https://runware.ai/docs/models/openai-gpt-image-2-5-flare/schema.json |
+| runware | `openai:gpt-image@2.5-sunburst` | https://runware.ai/docs/models/openai-gpt-image-2-5-sunburst | 200 | https://runware.ai/docs/models/openai-gpt-image-2-5-sunburst/schema.json |
+| runware | `openai:gpt@5-mini` | https://runware.ai/docs/models/openai-gpt-5-mini | 200 | https://runware.ai/docs/models/openai-gpt-5-mini/schema.json |
+| runware | `openai:gpt@5-nano` | https://runware.ai/docs/models/openai-gpt-5-nano | 200 | https://runware.ai/docs/models/openai-gpt-5-nano/schema.json |
+| runware | `openai:gpt@5.4` | https://runware.ai/docs/models/openai-gpt-5-4 | 200 | https://runware.ai/docs/models/openai-gpt-5-4/schema.json |
+| runware | `openai:gpt@5.4-mini` | https://runware.ai/docs/models/openai-gpt-5-4-mini | 200 | https://runware.ai/docs/models/openai-gpt-5-4-mini/schema.json |
+| runware | `openai:gpt@5.4-nano` | https://runware.ai/docs/models/openai-gpt-5-4-nano | 200 | https://runware.ai/docs/models/openai-gpt-5-4-nano/schema.json |
+| runware | `openai:gpt@5.4-pro` | https://runware.ai/docs/models/openai-gpt-5-4-pro | 200 | https://runware.ai/docs/models/openai-gpt-5-4-pro/schema.json |
+| runware | `openai:gpt@5.5` | https://runware.ai/docs/models/openai-gpt-5-5 | 200 | https://runware.ai/docs/models/openai-gpt-5-5/schema.json |
+| runware | `prunaai:1@1` | https://runware.ai/docs/models/prunaai-p-image | 200 | https://runware.ai/docs/models/prunaai-p-image/schema.json |
+| runware | `prunaai:2@1` | https://runware.ai/docs/models/prunaai-p-image-edit | 200 | https://runware.ai/docs/models/prunaai-p-image-edit/schema.json |
+| runware | `prunaai:p-image@ideogram` | https://runware.ai/docs/models/prunaai-p-image-ideogram | 200 | https://runware.ai/docs/models/prunaai-p-image-ideogram/schema.json |
+| runware | `recraft:v4-pro@0` | https://runware.ai/docs/models/recraft-v4-pro | 200 | https://runware.ai/docs/models/recraft-v4-pro/schema.json |
+| runware | `recraft:v4.1-pro@0` | https://runware.ai/docs/models/recraft-v4-1-pro | 200 | https://runware.ai/docs/models/recraft-v4-1-pro/schema.json |
+| runware | `recraft:v4.1-utility-pro@0` | https://runware.ai/docs/models/recraft-v4-1-utility-pro | 200 | https://runware.ai/docs/models/recraft-v4-1-utility-pro/schema.json |
+| runware | `recraft:v4.1-utility@0` | https://runware.ai/docs/models/recraft-v4-1-utility | 200 | https://runware.ai/docs/models/recraft-v4-1-utility/schema.json |
+| runware | `recraft:v4.1@0` | https://runware.ai/docs/models/recraft-v4-1 | 200 | https://runware.ai/docs/models/recraft-v4-1/schema.json |
+| runware | `recraft:v4@0` | https://runware.ai/docs/models/recraft-v4 | 200 | https://runware.ai/docs/models/recraft-v4/schema.json |
+| runware | `rundiffusion:110@101` | https://runware.ai/docs/models/rundiffusion-juggernaut-lightning-flux | 200 | https://runware.ai/docs/models/rundiffusion-juggernaut-lightning-flux/schema.json |
+| runware | `rundiffusion:120@100` | https://runware.ai/docs/models/rundiffusion-juggernaut-base-flux | 200 | https://runware.ai/docs/models/rundiffusion-juggernaut-base-flux/schema.json |
+| runware | `rundiffusion:130@100` | https://runware.ai/docs/models/rundiffusion-juggernaut-pro-flux | 200 | https://runware.ai/docs/models/rundiffusion-juggernaut-pro-flux/schema.json |
+| runware | `rundiffusion:200@100` | https://runware.ai/docs/models/rundiffusion-juggernaut-z | 200 | https://runware.ai/docs/models/rundiffusion-juggernaut-z/schema.json |
+| runware | `rundiffusion:300@100` | https://runware.ai/docs/models/rundiffusion-juggernaut-z-fast | 200 | https://runware.ai/docs/models/rundiffusion-juggernaut-z-fast/schema.json |
+| runware | `runware:100@1` | https://runware.ai/docs/models/bfl-flux-1-schnell | 200 | https://runware.ai/docs/models/bfl-flux-1-schnell/schema.json |
+| runware | `runware:101@1` | https://runware.ai/docs/models/bfl-flux-1-dev | 200 | https://runware.ai/docs/models/bfl-flux-1-dev/schema.json |
+| runware | `runware:102@1` | https://runware.ai/docs/models/bfl-flux-1-fill-dev | 200 | https://runware.ai/docs/models/bfl-flux-1-fill-dev/schema.json |
+| runware | `runware:106@1` | https://runware.ai/docs/models/bfl-flux-1-kontext-dev | 200 | https://runware.ai/docs/models/bfl-flux-1-kontext-dev/schema.json |
+| runware | `runware:107@1` | https://runware.ai/docs/models/krea-flux-1-krea-dev | 200 | https://runware.ai/docs/models/krea-flux-1-krea-dev/schema.json |
+| runware | `runware:108@1` | https://runware.ai/docs/models/alibaba-qwen-image | 200 | https://runware.ai/docs/models/alibaba-qwen-image/schema.json |
+| runware | `runware:108@20` | https://runware.ai/docs/models/alibaba-qwen-image-edit | 200 | https://runware.ai/docs/models/alibaba-qwen-image-edit/schema.json |
+| runware | `runware:108@22` | https://runware.ai/docs/models/alibaba-qwen-image-edit-plus | 200 | https://runware.ai/docs/models/alibaba-qwen-image-edit-plus/schema.json |
+| runware | `runware:111@1` | https://runware.ai/docs/models/flux-1-dev-srpo | 200 | https://runware.ai/docs/models/flux-1-dev-srpo/schema.json |
+| runware | `runware:150@2` | https://runware.ai/docs/models/meta-llava-1-6-mistral-7b | 200 | https://runware.ai/docs/models/meta-llava-1-6-mistral-7b/schema.json |
+| runware | `runware:152@1` | https://runware.ai/docs/models/alibaba-qwen2-5-vl-3b-instruct | 200 | https://runware.ai/docs/models/alibaba-qwen2-5-vl-3b-instruct/schema.json |
+| runware | `runware:152@2` | https://runware.ai/docs/models/alibaba-qwen2-5-vl-7b-instruct | 200 | https://runware.ai/docs/models/alibaba-qwen2-5-vl-7b-instruct/schema.json |
+| runware | `runware:201@10` | https://runware.ai/docs/models/alibaba-wan2-5-preview-image | 200 | https://runware.ai/docs/models/alibaba-wan2-5-preview-image/schema.json |
+| runware | `runware:400@1` | https://runware.ai/docs/models/bfl-flux-2-dev | 200 | https://runware.ai/docs/models/bfl-flux-2-dev/schema.json |
+| runware | `runware:400@2` | https://runware.ai/docs/models/bfl-flux-2-klein-9b | 200 | https://runware.ai/docs/models/bfl-flux-2-klein-9b/schema.json |
+| runware | `runware:400@3` | https://runware.ai/docs/models/bfl-flux-2-klein-9b-base | 200 | https://runware.ai/docs/models/bfl-flux-2-klein-9b-base/schema.json |
+| runware | `runware:400@4` | https://runware.ai/docs/models/bfl-flux-2-klein-4b | 200 | https://runware.ai/docs/models/bfl-flux-2-klein-4b/schema.json |
+| runware | `runware:400@5` | https://runware.ai/docs/models/bfl-flux-2-klein-4b-base | 200 | https://runware.ai/docs/models/bfl-flux-2-klein-4b-base/schema.json |
+| runware | `runware:400@6` | https://runware.ai/docs/models/bfl-flux-2-klein-9b-kv | 200 | https://runware.ai/docs/models/bfl-flux-2-klein-9b-kv/schema.json |
+| runware | `runware:5@1` | https://runware.ai/docs/models/stabilityai-stable-diffusion-3 | 200 | https://runware.ai/docs/models/stabilityai-stable-diffusion-3/schema.json |
+| runware | `runware:97@1` | https://runware.ai/docs/models/hidream-i1-full | 200 | https://runware.ai/docs/models/hidream-i1-full/schema.json |
+| runware | `runware:97@2` | https://runware.ai/docs/models/hidream-i1-dev | 200 | https://runware.ai/docs/models/hidream-i1-dev/schema.json |
+| runware | `runware:97@3` | https://runware.ai/docs/models/hidream-i1-fast | 200 | https://runware.ai/docs/models/hidream-i1-fast/schema.json |
+| runware | `runware:kandinsky-5.0-image-lite@1` | https://runware.ai/docs/models/kandinsky-5-0-image-lite | 200 | https://runware.ai/docs/models/kandinsky-5-0-image-lite/schema.json |
+| runware | `runware:twinflow-z-image-turbo@0` | https://runware.ai/docs/models/twinflow-z-image-turbo | 200 | https://runware.ai/docs/models/twinflow-z-image-turbo/schema.json |
+| runware | `runware:z-image@0` | https://runware.ai/docs/models/alibaba-z-image | 200 | https://runware.ai/docs/models/alibaba-z-image/schema.json |
+| runware | `runware:z-image@turbo` | https://runware.ai/docs/models/alibaba-z-image-turbo | 200 | https://runware.ai/docs/models/alibaba-z-image-turbo/schema.json |
+| runware | `runway:4@1` | https://runware.ai/docs/models/runway-gen-4-image | 200 | https://runware.ai/docs/models/runway-gen-4-image/schema.json |
+| runware | `runway:4@2` | https://runware.ai/docs/models/runway-gen-4-image-turbo | 200 | https://runware.ai/docs/models/runway-gen-4-image-turbo/schema.json |
+| runware | `sourceful:riverflow-2.0@fast` | https://runware.ai/docs/models/sourceful-riverflow-2-0-fast | 200 | https://runware.ai/docs/models/sourceful-riverflow-2-0-fast/schema.json |
+| runware | `sourceful:riverflow-2.0@pro` | https://runware.ai/docs/models/sourceful-riverflow-2-0-pro | 200 | https://runware.ai/docs/models/sourceful-riverflow-2-0-pro/schema.json |
+| runware | `sourceful:riverflow-2.5@fast` | https://runware.ai/docs/models/sourceful-riverflow-2-5-fast | 200 | https://runware.ai/docs/models/sourceful-riverflow-2-5-fast/schema.json |
+| runware | `sourceful:riverflow-2.5@pro` | https://runware.ai/docs/models/sourceful-riverflow-2-5-pro | 200 | https://runware.ai/docs/models/sourceful-riverflow-2-5-pro/schema.json |
+| runware | `vidu:q1@image` | https://runware.ai/docs/models/vidu-q1-image | 200 | https://runware.ai/docs/models/vidu-q1-image/schema.json |
+| runware | `xai:grok-imagine@image` | https://runware.ai/docs/models/xai-grok-imagine-image | 200 | https://runware.ai/docs/models/xai-grok-imagine-image/schema.json |
+| runware | `xai:grok-imagine@image-2.0` | https://runware.ai/docs/models/xai-grok-imagine-image-2-0 | 200 | https://runware.ai/docs/models/xai-grok-imagine-image-2-0/schema.json |
+| runware | `xai:grok-imagine@image-quality` | https://runware.ai/docs/models/xai-grok-imagine-image-quality | 404 | https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json |
+| runware | `xai:grok@4.3` | https://runware.ai/docs/models/xai-grok-4-3 | 200 | https://runware.ai/docs/models/xai-grok-4-3/schema.json |
+| runware | `zai:glm@5.1` | https://runware.ai/docs/models/zai-glm-5-1 | 200 | https://runware.ai/docs/models/zai-glm-5-1/schema.json |
+| stability | `sd3.5-flash` | https://docs.stability.ai/api-reference/generate/stable-diffusion-35 | 200 | https://platform.stability.ai/docs/getting-started/models |
+| stepfun | `step-3.5-flash` | https://platform.stepfun.com/docs/zh/guides/models/step-3.5-flash | 200 | https://platform.stepfun.com/docs/zh/guides/models/list |
+| stepfun | `step-3.5-flash-2603` | https://platform.stepfun.com/docs/zh/guides/models/step-3.5-flash | 200 | https://platform.stepfun.com/docs/zh/guides/models/list |
+| stepfun | `step-3.7-flash` | https://platform.stepfun.com/docs/zh/guides/models/step-3.7-flash | 200 | https://platform.stepfun.com/docs/zh/guides/models/list |
+| stepfun | `step-5-preview` | https://platform.stepfun.com/docs/zh/guides/models/step-5-preview | 200 | https://platform.stepfun.com/docs/zh/guides/models/list |
+| tokendance | `deepseek-chat-v3-0324` | https://api-docs.deepseek.com/quick_start/pricing/ | 200 | https://tokendance.space/gateway/v1/models |
+| tokendance | `deepseek-v4-pro` | https://tokendance.space/models/deepseek-v4-pro | 200 | https://api-docs.deepseek.com/quick_start/pricing/ |
+| tokendance | `deepseek-v4-pro-0813` | https://tokendance.space/models/deepseek-v4-pro-0813 | 200 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 |
+| tokendance | `deepseek-v4.1-flash` | https://tokendance.space/models/deepseek-v4.1-flash | 200 | https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash |
+| tokendance | `deepseek-v4.1-flash-1017` | https://tokendance.space/models/deepseek-v4.1-flash-1017 | 200 | https://tokendance.space/gateway/v1/models |
+| tokendance | `dots-3-note-preview` | https://tokendance.space/models/dots-3-note-preview | 200 | https://github.com/studio-dots-ai/dots3-note-prev |
+| tokendance | `glm-4.5-air` | https://tokendance.space/models/glm-4.5-air | 200 | https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5 |
+| tokendance | `glm-4.6v` | https://tokendance.space/models/glm-4.6v | 200 | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.6v |
+| tokendance | `glm-4.7` | https://tokendance.space/models/glm-4.7 | 200 | https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7 |
+| tokendance | `glm-5` | https://tokendance.space/models/glm-5 | 200 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5 |
+| tokendance | `glm-5.1` | https://tokendance.space/models/glm-5.1 | 200 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1 |
+| tokendance | `glm-5.2` | https://tokendance.space/models/glm-5.2 | 200 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2 |
+| tokendance | `glm-5.3` | https://tokendance.space/models/glm-5.3 | 200 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3 |
+| tokendance | `glm-5.3-flash` | https://tokendance.space/models/glm-5.3-flash | 200 | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash |
+| tokendance | `glm-5.3-flashx` | https://tokendance.space/models/glm-5.3-flashx | 200 | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash |
+| tokendance | `glm-5v-turbo` | https://tokendance.space/models/glm-5v-turbo | 200 | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5v-turbo |
+| tokendance | `hy4-preview` | https://tokendance.space/models/hy4-preview | 200 | https://huggingface.co/tencent/Hy4-preview |
+| tokendance | `kimi-k2.5` | https://tokendance.space/models/kimi-k2.5 | 200 | https://huggingface.co/moonshotai/Kimi-K2.5 |
+| tokendance | `kimi-k2.6` | https://tokendance.space/models/kimi-k2.6 | 200 | https://huggingface.co/moonshotai/Kimi-K2.6 |
+| tokendance | `kimi-k2.7-code` | https://tokendance.space/models/kimi-k2.7-code | 200 | https://huggingface.co/moonshotai/Kimi-K2.7-Code |
+| tokendance | `kimi-k3` | https://tokendance.space/models/kimi-k3 | 200 | https://huggingface.co/moonshotai/Kimi-K3 |
+| tokendance | `kimi-k3.1-pro` | https://tokendance.space/models/kimi-k3.1-pro | 200 | https://tokendance.space/gateway/v1/models |
+| tokendance | `ling-3.0-flash` | https://tokendance.space/models/ling-3.0-flash | 200 | https://huggingface.co/inclusionAI/Ling-3.0-flash |
+| tokendance | `longcat-2.0` | https://tokendance.space/models/longcat-2.0 | 200 | https://huggingface.co/meituan-longcat/LongCat-2.0 |
+| tokendance | `mimo-v2.5` | https://tokendance.space/models/mimo-v2.5 | 200 | https://mimo.mi.com/docs/zh-CN/updates/deprecate |
+| tokendance | `mimo-v2.5-pro` | https://tokendance.space/models/mimo-v2.5-pro | 200 | https://mimo.mi.com/docs/zh-CN/updates/deprecate |
+| tokendance | `mimo-v2.6-flash` | https://tokendance.space/models/mimo-v2.6-flash | 200 | https://mimo.mi.com/models/en-US/mimo-v2.6-flash |
+| tokendance | `mimo-v2.6-pro` | https://tokendance.space/models/mimo-v2.6-pro | 200 | https://mimo.mi.com/models/en-US/mimo-v2.6-pro |
+| tokendance | `mimo-v2.6-ultraspeed` | https://tokendance.space/models/mimo-v2.6-ultraspeed | 200 | https://mimo.mi.com/models/zh-CN/mimo-v2.6-pro-ultraspeed |
+| tokendance | `minimax-m2.5` | https://tokendance.space/models/minimax-m2.5 | 200 | https://huggingface.co/MiniMaxAI/MiniMax-M2.5 |
+| tokendance | `minimax-m2.7` | https://tokendance.space/models/minimax-m2.7 | 200 | https://huggingface.co/MiniMaxAI/MiniMax-M2.7 |
+| tokendance | `minimax-m3` | https://tokendance.space/models/minimax-m3 | 200 | https://huggingface.co/MiniMaxAI/MiniMax-M3 |
+| tokendance | `minimax-m3.1-flash` | https://tokendance.space/models/minimax-m3.1-flash | 200 | https://tokendance.space/gateway/v1/models |
+| tokendance | `qwen3-max` | https://help.aliyun.com/zh/model-studio/models | 200 | https://tokendance.space/gateway/v1/models |
+| tokendance | `qwen3-vl-plus` | https://tokendance.space/models/qwen3-vl-plus | 200 | https://platform.qianwenai.com/docs/developer-guides/getting-started/vision-models |
+| tokendance | `qwen3.5-35b-a3b` | https://tokendance.space/models/qwen3.5-35b-a3b | 200 | https://help.aliyun.com/zh/model-studio/models |
+| tokendance | `qwen3.5-flash` | https://tokendance.space/models/qwen3.5-flash | 200 | https://help.aliyun.com/zh/model-studio/models |
+| tokendance | `qwen3.5-plus` | https://tokendance.space/models/qwen3.5-plus | 200 | https://help.aliyun.com/zh/model-studio/model-depreciation |
+| tokendance | `qwen3.6-plus` | https://tokendance.space/models/qwen3.6-plus | 200 | https://help.aliyun.com/zh/model-studio/models |
+| tokendance | `qwen3.7-max` | https://tokendance.space/models/qwen3.7-max | 200 | https://help.aliyun.com/zh/model-studio/models |
+| tokendance | `qwen3.7-plus` | https://tokendance.space/models/qwen3.7-plus | 200 | https://help.aliyun.com/zh/model-studio/models |
+| tokendance | `qwen3.8-flash` | https://tokendance.space/models/qwen3.8-flash | 200 | https://help.aliyun.com/zh/model-studio/vision-model |
+| tokendance | `qwen3.8-max` | https://tokendance.space/models/qwen3.8-max | 200 | https://help.aliyun.com/zh/model-studio/qwen3-8-max |
+| tokendance | `qwen3.8-max-0902` | https://tokendance.space/models/qwen3.8-max-0902 | 200 | https://help.aliyun.com/zh/model-studio/models |
+| tokendance | `seed-2.0-lite` | https://tokendance.space/models/seed-2.0-lite | 200 | https://www.volcengine.com/docs/82379/1330310 |
+| tokendance | `seed-2.0-mini` | https://tokendance.space/models/seed-2.0-mini | 200 | https://www.volcengine.com/docs/82379/1330310 |
+| tokendance | `seed-2.0-pro` | https://tokendance.space/models/seed-2.0-pro | 200 | https://www.volcengine.com/docs/82379/1330310 |
+| tokendance | `seed-2.1-turbo` | https://tokendance.space/models/seed-2.1-turbo | 200 | https://www.volcengine.com/docs/82379/1330310 |
+| tokendance | `seed-evolving` | https://tokendance.space/models/seed-evolving | 200 | https://www.volcengine.com/docs/82379/1330310 |
+| tokendance | `spark-x2.5-1.7b` | https://tokendance.space/models/spark-x2.5-1.7b | 200 | https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999 |
+| tokendance | `spark-x2.5-4b` | https://tokendance.space/models/spark-x2.5-4b | 200 | https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999 |
+| tokendance | `step-3.5-flash` | https://tokendance.space/models/step-3.5-flash | 200 | https://platform.stepfun.com/docs/zh/guides/models/list |
+| tokendance | `step-3.7-flash` | https://tokendance.space/models/step-3.7-flash | 200 | https://platform.stepfun.com/docs/zh/guides/models/list |
+| tokendance | `step-5-preview` | https://tokendance.space/models/step-5-preview | 200 | https://platform.stepfun.com/docs/zh/guides/models/list |
+| xiaomi | `mimo-v2.6-flash` | https://mimo.mi.com/models/en-US/mimo-v2.6-flash | 200 | https://mimo.mi.com/docs/zh-CN/quick-start/summary/model |
+| xiaomi | `mimo-v2.6-pro` | https://mimo.mi.com/models/en-US/mimo-v2.6-pro | 200 | https://mimo.mi.com/docs/zh-CN/quick-start/summary/model |
+
+### R12D 离线验证
+
+- Web 受影响测试 **112/112** 通过，失败/跳过均为 0；当前链接与普通/紧凑 DOM 从 R11 的 46 条历史样本扩展到全部 **397** 条，精确核对完整对象差异、时间、HTML content-type、7 个例外、状态统计和两张文档表。
+- scripts 全套 **35/35** 通过，失败/跳过均为 0；含 R10/R11 离线报告一致性及既有小程序包体预算验证。R12 清单 `--check` 通过，397 项链接和原因清单无漂移。
+- 开始/结束文件 SHA-256 对比确认：本轮仅修改主审计文档、`SYNC.md`、R11/R12 Web 测试及新增最终 HTTP 夹具，共 **5** 个文件；已有其他工作区改动保留，产品源码、共享事实、卡片链接、UI 和生成产物未改。
+
+复现命令（Web 命令在 `apps/web` 执行，其余在仓库根目录执行）：
+
+```sh
+node --import tsx --import ./tests/dom-setup.mjs --test tests/model-audit*.test.mjs tests/model-specifications.test.mjs tests/provider-catalogs.test.mjs tests/workspace-model-catalog.test.mjs
+node --test scripts/*.test.mjs
+node scripts/report-model-card-r12.mjs --check
+```
+
+## R12C：恢复模型专属链接与精确 API 识别（当前验收）
+
+按 `.audit-input/r12/CODEX_TASK_R12C.md` 完成。本轮保留已有工作区改动，只运行 Git 只读命令；基线 `../Tuyan-wt-baseline` 只读，无付费/真实推理、部署或依赖安装。下面 R12/R12B 的 467 项清单与宽泛 `/api/` 规则是历史记录，当前以本节和重新生成的 [最终链接清单](model-card-audit-20261109-r12-links.md) 为准。
+
+### 修复与证据
+
+- 精确识别 API/JSON：`api.` 主机的 models 列表、`/gateway/`、`/v\d+/models` 边界、`/api/v\d+/`、`.json` / `schema.json`、已记录 JSON content-type 及其重定向；不再把普通 `/api/` 文档路径当 API。
+- OpenAI **71** 卡与 Together **3** 卡恢复 R11 原模型文档，包括 `.md`，未臆造无后缀页面。Replicate 的 R12“94 API 项”实际是 **90** 个 schema 端点加 **4** 个被误判的 OpenAI 文档；90 个 schema 转同 owner/model 主页，4 个原厂文档保留，另有 4 个原 collection 首链接提升到已有同型号主页。
+- fal 的 R12“44 API 项”实际是 **37** 个 API 模型列表加 **7** 个人可读型号 `/api` 页；37 个列表替换为同型号页面，7 个原页面保留。Runware 的 **145** 个 schema 首链接继续使用已有捕获的人可读型号文档，不按未核实的 schema 路径构造新文档。
+- 不再把欢迎页、接口方法文档或 API reference 索引当作型号页。StepFun 保留模型总表，存在已捕获具体页的 4 卡优先具体页；硅基 `deepseek-ai/DeepSeek-V4.1-Flash` 恢复 models 页；Stability `sd3.5-flash` 使用已捕获的 Stable Diffusion 3.5 文档。百炼 **44** 项具体页提升保留，`qwen3.5-plus` 三卡仍在下线前后优先“下线公告”。
+- TokenDance 夹具完整替换为操作方 **74** 条 Chrome 记录（`2026-11-09T10:28:01.453Z`）：**67** 个成功页全部使用 `https://tokendance.space/models/<id>`；**7** 个失败页全部使用已有原厂文档。失败名单：`deepseek-chat-v3-0324`、`deepseek-v3.2`、`deepseek-v4-flash`、`deepseek-v4-flash-vision-exp`、`qwen3-30b-a3b-instruct-2507`、`qwen3-max`、`qwen3.6-max-preview`。状态 200 不被当作渲染出指定模型的证明；失败页不进入可见来源。
+- 完整 Core + 3 静态身份与纯静态目录分别 **1064** 卡对照 R11；无未解释的具体程度下降、无 API/JSON 可见首链接。仅 **9 个型号 / 18 条投影记录**允许 API/JSON → 通用文档：讯飞 7 个、TokenDance `deepseek-chat-v3-0324` / `qwen3-max`。每项旧/新 URL、理由和可用人可读来源列于 `apps/web/tests/fixtures/r12-specificity-exceptions.json`；测试验证旧链接必须为 API/JSON、无具体来源可选、且无多余例外。这里只表示捕获证据未含具体页，不声称全网不存在。
+
+### 最终变化：按渠道与原因
+
+使用完整 Core model 对象及 3 个静态独有对象，各侧读取自己的卡片代码/数据：相对 R8 `785b99df` 共 **397** 项，相对 R11 `6d88b28f` 共 **405** 项。交付 `.audit-input/r12/final-changed-links.json` 与仓库夹具逐字相同；每行保持 channel / modelId / oldUrl / finalUrl。分类交付 `.audit-input/r12/link-change-summary.json`；完整旧/新 URL 见 [R12C 链接清单](model-card-audit-20261109-r12-links.md)。
+
+| 渠道 | R8 → 最终变化原因 | 卡数 |
+| --- | --- | ---: |
+| antling | 保留 R9–R11 渠道来源优先 | 5 |
+| bailian | 保留 R9–R11 渠道来源优先 | 1 |
+| bailian | 渠道具体型号页优先于总表 | 44 |
+| fal | API/JSON 替换为同型号人可读页 | 37 |
+| iflytek | API/JSON 无具体人可读页，按夹具回退 | 7 |
+| kimi | 渠道具体型号页优先于总表 | 3 |
+| replicate | API/JSON 替换为同型号人可读页 | 90 |
+| replicate | 渠道具体型号页优先于总表 | 4 |
+| runware | API/JSON 替换为同型号人可读页 | 145 |
+| stability | 渠道具体型号页优先于总表 | 1 |
+| stepfun | 渠道具体型号页优先于总表 | 4 |
+| tokendance | API/JSON 无具体人可读页，按夹具回退 | 2 |
+| tokendance | Chrome 核实的渠道型号页 | 52 |
+| xiaomi | 渠道具体型号页优先于总表 | 2 |
+
+OpenAI、Together、硅基对应首链接恢复后与 R8 相同，因此不出现在上表。百炼 3 个下线公告、3 个恢复 R8 具体页也不计入 R8 变化；上表 45 = 44 个具体页提升 + 1 个已有渠道来源优先。TokenDance 的 54 = 52 个相对 R8 变化的已核实页 + 2 个原厂回退，并非仅核实 52 页。精确规则下完整目录 API/JSON 替换 **341** 项，另有 **5** 个仅静态投影身份；来源清单和报告均已按新规则重算。
+
+**R12D 已补齐最终 URL 的 HTTP 检查**，见[最终检查与完整 397 行表](#r12d最终链接-http-检查当前验收)。R11 的旧 46 项 200 与 TokenDance 渲染记录均未外推到其他 URL。
+
+### R11 复算、包体与验证
+
+- R11 计数、逐渠道统计、损失列表、misleading JSON/Markdown 均复算且与本轮开始时逐字一致。完整 Core main/head 1122/1061 卡，四项已知数（输入/输出/上下文/最大输出）仍为 **983/968/534/0 → 997/967/926/616**；未解释损失 **0**，模态待复核仍 **27 卡 / 30 项**。已捕获显示事实、来源事实数组、角色、生命周期、移除数据均未改。
+- R10 来源差异报告随链接重新生成：sourceDiff **623**、modalityDiff **614**、eitherDiff **698/1061**、同表未知 **34**；来源变化不会增加模态证据。
+- 小程序源码 **1,567,582 bytes**，比任务起点 **1,569,251** 减少 **1,669**；距未改动的 **1,572,864** 上限余 **5,282**。runtime **1,144,298**、媒体 **189,978**、`model-audit-data.js` **35,464 bytes**。生成前先计算预算，再用已解析的完整 URL 与现有模型 ID 做精确可逆模板压缩；没有推断链接。全 1064 卡对照 Web 的字段、限定词、备注、来源类别、标签和最终 URL，TokenDance 67/7 的展示同样通过。
+- Web 受影响测试 **163/163**，小程序全套 **140/140**，scripts **35/35**，Core 审计/HTTP **8/8**，Gateway 审计 **6/6**。旧 `/api` 误判断言改为明确保留人可读页，同时补充真正 `/api/v1/models` / JSON 的排除断言；未删除测试、跳过断言或放宽预算。
+- 审计、目录、参考上传、thinking 生成及 `--check`，R10/R12 报告 `--check`，R11 只读基线和 frozen-main 两种 `--check` 通过。Web build、小程序 build/check 通过；Web 只有既有大 chunk 提示。
+- 本轮验证流：完整/紧凑模型卡 → 首链接与来源弹层 → 对应型号页/原厂回退/下线公告；DOM 回归通过。Browser 插件不可用；`pnpm --dir apps/web exec playwright --version` 返回 `Command "playwright" not found`，本轮没有真实浏览器截图、导航或控制台验收。操作方提供的 Chrome 渲染证据与本地 DOM 验证分别记录。小程序原生扫描及暂停发布状态沿用。
+
+<a id="r12--r12b首链接规则与小程序包体当前验收"></a>
+
+## R12 / R12B：首链接规则与小程序包体（历史验收，R12C 已修正）
+
+保留已有 R12 修改，在本工作树完成；未运行 Git 写命令，未写入 `../Tuyan-wt-baseline`，无真实/付费模型调用或部署。四项显示事实、模态排除、角色、请求参数、权限及选择合同不变；389 项差异及百炼 20 卡仍未批量修正。逐项对比 R11 生成数据，facts / fields / rows / notices / removed 和已有详情完全相同；Web/API 保留完整来源证据。
+
+### 首链接与最终检查清单
+
+- 生命周期为 scheduled / retired 时，下线公告 URL 或 lifecycle / retirement-notice 标签优先，标签为“下线公告”。完整 R11 registry 的百炼 `qwen3.5-plus`、`qwen3.5-plus-2026-02-15`、`qwen3.5-plus-2026-04-20` 覆盖下线前后与普通/紧凑 DOM。
+- 可见来源过滤路径 `/v\d+/models`、`/gateway/`、独立 `/api/` 段、`.json` 后缀，以及检查记录为 JSON content-type 的 URL；重定向到上述路径也排除。`api-reference` 不属于独立 `api` 段。来源证据原文不删除。
+- 操作方 Chrome 渲染核实的 **38** 个 TokenDance 型号页通过 supplement / generator 登记为 channel model-page，`checkedAt=2026-11-09`；未硬编码在 UI。其余原 API 首链接回退到已有原厂文档。4 个已有 2026-10-09 规格证据的型号页保持原链接，不冒充本次 Chrome 核实，也不新增模板标记。
+- 已有渠道首链接为总表时优先该渠道具体型号页；百炼 `qwen3.8-max`、`qwen3.7-max-2026-06-08`、`qwen3.8-flash` 恢复 R8 的 qwen3-8-max / qwen3-7-max / vision-model 页面。其余原有链接次序保留，不把原厂页批量换成渠道总表。
+
+完整 Core 1061 卡 + 3 个仅静态身份，相对 R8/pre-R9 `785b99df` 共 **467** 张最终首链接变化。复现脚本为 `scripts/report-model-card-r12.mjs`，交付 `.audit-input/r12/final-changed-links.json`，每项仅含 channel / modelId / oldUrl / finalUrl；仓库离线夹具为 `apps/web/tests/fixtures/r12-final-changed-links.json`。R8、R11 和当前侧均使用自己的来源代码及数据、同一完整 model 对象；因此旧静态口径“46”不能直接当本轮分母。
+
+原首链接命中 API/JSON 的 **427** 卡：TokenDance 62、Runware 145、Replicate 94、OpenAI 71、fal 44、讯飞 7、Together 3、LongCat 1。包括 `maas.xfyun.cn/api/v1/...` 等既有原链接。完整逐卡旧/新 URL 见 [R12 链接列表](model-card-audit-20261109-r12-links.md) 与 `.audit-input/r12/api-source-replacements.json`；最终 Web 完整/静态目录和小程序静态目录均无可见 API/JSON 来源。另有 7 个仅静态对象命中的身份（BFL 2、LongCat 1、TokenDance 4），与上述 427 合计 434 个身份；逐项见同一链接列表的“静态卡片补充”和 `.audit-input/r12/static-api-source-replacements.json`。
+
+**本历史轮次的 HTTP 待办已由 R12D 最终检查替代。** 本轮未冒用 R11 的 46 项 200 结果；38 个 TokenDance 页的 Chrome 渲染证据按操作方提供的文件保留，不代替全部最终 URL 的 HTTP 复核。
+
+### R11 复算（无变化）
+
+读取原始完整 registry-main/head，main 代码只读导入；同时运行 frozen-main 离线重现。计数和逐渠道结果、损失表、misleading JSON/Markdown 与 R11 逐字一致，未解释损失仍为 0。四项依次为输入 / 输出 / 上下文 / 最大输出，“不适用”仍按非未知计入。
+
+| 口径 | 模型数 main → head | main 四项 | head 四项 |
+| --- | --- | --- | --- |
+| 完整 Core 对象 | 1122 → 1061 | 983 / 968 / 534 / 0 | 997 / 967 / 926 / 616 |
+| ID-only 对照 | 1122 → 1061 | 199 / 200 / 141 / 0 | 403 / 397 / 390 / 260 |
+
+R10 的来源差异审计随本轮链接规则重新生成：sourceDiff **460**、modalityDiff **614**、eitherDiff **661 / 1061**、同表格仍未知 **34**；这只是报告重算，模态数据未修改。下方 R11 的 561 / 614 / 623 是历史轮次结果。
+
+模态待复核仍 **27 卡 / 30 项**：fal 15（input/image 14、output/text 1），ideogram 1（input/image），qianfan 9（input/image 2、input/video 7），replicate 4（input/file、input/image、input/video、output/text 各 1），sensenova 1（input/video）。反向差异 0；无渠道模态证据 406 卡。完整清单和下方前 10 示例保持，未用本轮 HTML 链接新增或推断模态事实。
+
+### R12B 逐字段增长与压缩
+
+`model-audit-data.js`：R11 **36,275** → 停止时 **48,086** → 最终 **37,133 bytes**。增长定位如下，前三个数值列是解码后字段的 UTF-8 JSON bytes；packed 增量按表中字段顺序逐项替换并重跑原 codec，合计 **11,811 bytes**，避免把共享驻留字典误当独立可加字段。
+
+| 字段 | R11 原值 | R12 停止值 | 原始增量 | 顺序替换 packed 增量 | 最终原始字段 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| verifiedAt | 12 | 12 | +0 | +0 | 12 |
+| fields | 77 | 77 | +0 | +0 | 77 |
+| facts | 9,495 | 11,401 | +1,906 | +1,483 | 4,729 |
+| sources | 14,377 | 25,400 | +11,023 | +6,224 | 18,682 |
+| rows | 16,262 | 17,012 | +750 | +4,104 | 15,916 |
+| details | 1,066 | 1,066 | +0 | +0 | 1,066 |
+| notices | 1,774 | 1,774 | +0 | +0 | 1,774 |
+| removed | 5,988 | 5,988 | +0 | +0 | 5,988 |
+
+来源 URL 的增加及其导致的事实/行去重失效是增长原因，备注、限定词、下线与移除信息没有增加。现在只对 38 个已核实 ID 存模板标记，在运行时派生 `https://tokendance.space/models/` + id；标签存索引；小程序不发送未显示的逐字段证据 URL、sourceLinks 详情或核查说明。与卡片唯一显示来源相同的字段仍保留精确引用，其他逐字段 URL 留在 Web/API。保留所有实际展示的四项值、状态、来源类别、限定词、未知/不支持模态、备注、下线信息、显示标签和链接目标。
+
+源码 **1,569,251 bytes**（目标 ≤ **1,569,500**），runtime **1,145,967**，媒体 **189,978**；距原 **1,572,864** 上限 **3,613 bytes**。预算与预算测试未改。增长/压缩明细在 `.audit-input/r12/mini-payload-breakdown.json`。
+
+### 验证
+
+- Web 受影响模型/目录测试 **159/159**；小程序全套 **140/140**；scripts **35/35**。新增 38 页、百炼具体页、下线前后、API/JSON 一般规则、全目录过滤与最终清单精确匹配断言；小程序全 1064 卡的展示字段、备注、限定词、来源和标签与 Web 对照。
+- 旧 46 项 HTTP 证据断言完整保留，当前 DOM 以 R12 最终清单精确断言。旧“API 可见”断言依新需求改为不可见，并核对底层证据未变；小程序未显示字段 URL 的断言改为精确投影与全部可见来源相等。无跳过测试，无放宽预算。
+- 审计、目录、参考上传、thinking 生成及各自 `--check`，R10/R11/R12 报告检查均通过；Web build、小程序 build / check 通过。Web 仅既有大 chunk 提示。
+- 主报告与 SYNC 更新；最终 HTTP 状态待操作方回填，不属于本地已通过检查。小程序继续暂停发布。
+
+<a id="r11链接证据完整-core-对象计数与模态待复核清单当前验收"></a>
+
+## R11：链接证据、完整 Core 对象计数与模态待复核清单（历史检查，计数经 R12 复算）
 
 基线为 main `c7b6a2fc`，head 为 `1576ee00`。本轮只改审计脚本、测试、夹具与文档；4 个 DeepSeek-V4 显示名保留去括号状态，所有卡片事实与链接保持不变。未运行 Git 写命令，未写入 `../Tuyan-wt-baseline`，无真实/付费模型调用或部署。
 
-### 46 个 R9 首链接检查
+### 46 个 R9 首链接检查（ID-only 历史结果；已由 R12D 替代）
+
+**已由 R12D 替代：下面的 46 行是 ID-only 口径，仅保存 R11 当时的 HTTP 历史结果，不代表当前完整对象卡片首链接。R12D 已按完整 Core 对象及静态独有身份回填 397 行最终变化的 HTTP 证据（R12 历史值为 467），见[最终检查](#r12d最终链接-http-检查当前验收)。旧 200 未复制到新 URL。**
 
 采用操作方提供的 `.audit-input/r11/linkcheck-result.json`，不是本沙箱重发网络请求。方法：HTTP **GET**、浏览器 User-Agent、跟随重定向、**25 秒**超时，操作方 Mac mini 沙箱外执行；原始时间 `2026-11-09T09:45:47.209Z`，表格按分钟记为 **2026-11-09 17:45 UTC+8**。
 
-规则：**仅 404 / 410 回退**；403、超时及其他状态保留链接并标记。46 项新 URL 最终均 **200**，均无重定向，**0 项符合回退条件**。冻结精简结果在 `apps/web/tests/fixtures/r11-link-check-20261109.json`。离线测试精确核对 R9 的 46 个 channel/id、每行 status/checkedAt、完整 Core 对象的首来源及普通/紧凑 DOM 链接；全 registry / 静态目录均不得渲染记录为 404/410 的来源。
+历史规则：**仅 404 / 410 回退**；403、超时及其他状态保留链接并标记。当时 46 项新 URL 最终均 **200**，均无重定向，**0 项符合回退条件**。冻结精简结果在 `apps/web/tests/fixtures/r11-link-check-20261109.json`，现仅测试其与历史表的身份、URL、状态和时间相符。当前完整对象首来源及普通/紧凑 DOM 改由 R12D 的 397 条最终证据验证；R12D 的七条 404 按操作方“原链接也 404/API”决定显式保留，不再套用历史的无例外断言。
 
-**供 PM 复核：`https://tokendance.space/gateway/v1/models` 是返回 JSON 的 API 模型列表端点，不是文档页面。** 该事实已标记；此次保留原链接及展示。
+**供 PM 复核：`https://tokendance.space/gateway/v1/models` 是返回 JSON 的 API 模型列表端点，不是文档页面。** R11 当时保留原链接；R12 已按人可读来源规则移出所有可见来源，完整事实证据仍保留该 URL。
 
 | channel | model id | new URL | final status | checked | old URL |
 | --- | --- | --- | --- | --- | --- |
