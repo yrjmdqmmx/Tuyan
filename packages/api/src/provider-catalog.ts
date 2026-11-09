@@ -84,17 +84,23 @@ export function exactModelDetails(provider: string, id: string) {
   // No family-prefix matching or removal of snapshot/preview/pro suffixes.
   const base = detailModels[`${provider}/${id}`] || (id.startsWith('openai/') ? detailModels[id] : undefined)
   // Preserve the vendor/base archive; overlay only the exact channel identity.
-  return provider === 'tokendance' ? { ...base, specifications: channelModelSpecifications(provider, id, base?.specifications) } : base
+  const specifications = channelModelSpecifications(provider, id, base?.specifications)
+  return specifications.modalityFacts ? { ...base, specifications } : base
 }
 
 export function channelModelSpecifications(provider: string, id: string, specifications: any = {}) {
-  if (provider !== 'tokendance') return specifications
   const { fields } = auditedModelSpecs(provider, id)
-  return { ...specifications, version: 1,
-    officialInputModalities: fields.inputModalities.value ?? undefined,
-    officialOutputModalities: fields.outputModalities.value ?? undefined,
-    modalityFacts: { inputModalities: fields.inputModalities, outputModalities: fields.outputModalities },
+  const result = { ...specifications }, facts: Record<string, any> = {}
+  for (const [field, property] of [['inputModalities', 'officialInputModalities'], ['outputModalities', 'officialOutputModalities']]) {
+    const fact = fields[field]
+    // Partial silence is applied after the display layers are merged. It must
+    // not replace unrelated facts supplied by reviewed or manufacturer layers.
+    if (!fact.suppressFallback && !fact.unsupportedModalities) continue
+    const value = Array.isArray(fact.value) ? fact.value : null
+    facts[field] = { ...fact, value: value?.length ? value : null, state: value?.length ? 'known' : 'unknown' }
+    result[property] = value?.length ? value : undefined
   }
+  return Object.keys(facts).length ? { ...result, version: 1, modalityFacts: facts } : specifications
 }
 
 export function normalizeCatalogModel(provider: string, row: any, source: string) {

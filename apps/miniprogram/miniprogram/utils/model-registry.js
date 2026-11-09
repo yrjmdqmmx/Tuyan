@@ -19,7 +19,7 @@ function normalizeModelRegistry(input) {
         throw new Error('服务端模型路由契约不可用。');
     }
     const providerSource = asRecord(source.providers);
-    const missingProviders = ['gemini', 'openai', 'bailian', 'ark', 'openrouter'].filter((id) => !providerSource[id]);
+    const missingProviders = ['gemini', 'openai', 'bailian', 'ark', 'openrouter'].filter((id) => !providerSource[id] && !stringValue(asRecord(source.unavailableProviders)[id]));
     if (missingProviders.length)
         throw new Error('服务端模型目录必须包含五个 API 渠道。');
     const providers = {};
@@ -84,6 +84,7 @@ function normalizeModel(input) {
     const roleReasonsSource = asRecord(source.roleReasons);
     return {
         id,
+        cardSpecifications: source.cardSpecifications,
         catalogPresence: source.catalogPresence,
         version: (0, model_presentation_1.normalizeModelVersion)(source.version),
         apiIdentifier: stringValue(source.apiIdentifier),

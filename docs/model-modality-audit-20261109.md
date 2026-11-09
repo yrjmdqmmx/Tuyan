@@ -272,3 +272,196 @@ The general catalog counter, using the new gateway fixture, reports 1,064 static
 | `unifuncs-u3-pro` | inputModalities | text: supported, image: unknown, audio: unknown, video: unknown | text: supported, image: unsupported, audio: unsupported, video: unsupported | catalog · 2026-10-16 · https://tokendance.space/models/unifuncs-u3-pro → channel · 2026-11-09 · https://tokendance.space/models/unifuncs-u3-pro |
 | `unifuncs-u3-pro` | outputModalities | text: supported, image: unknown, audio: unknown, video: unknown | text: supported, image: unsupported, audio: unsupported, video: unsupported | catalog · 2026-10-16 · https://tokendance.space/models/unifuncs-u3-pro → channel · 2026-11-09 · https://tokendance.space/models/unifuncs-u3-pro |
 <!-- R21 TABLE END -->
+
+## Phase 2
+
+Completed in the same checkout from Phase 1 `d1fe6ff6`, in priority order **2, 1, 3, 4**. No Git writes, other-worktree writes, inference, paid calls, sign-in, credentials, deployment, or account-entitlement checks. Network access was limited to public unauthenticated **GET** requests for official HTML documentation/model pages, with the browser User-Agent recorded in the evidence config. All new captures below are dated **2026-11-09**; final status, redirect destination, timestamp, SHA-256 and exact excerpts are retained. A 200 HTML shell does not establish support or availability. A 404 does not establish delisting.
+
+Versioned evidence: [`model-modality-phase2-20261109.json`](../config/channel-audit/model-modality-phase2-20261109.json). The generator validates channel host, HTTPS, capture date/status/hash, nonempty exact excerpts, table identity/value agreement, and retained-model availability evidence. Positive-only schema evidence cannot establish an unsupported modality. Partial silence masks only the reviewed modality after the other display layers merge, preserving unrelated supported facts. Vendor/base records remain unchanged.
+
+Before values and the original 20-card membership are frozen in [`model-modality-phase2-before-20261109.json`](../config/channel-audit/model-modality-phase2-before-20261109.json). The current full Core recount and every resulting field are in [`model-modality-audit-20261109-phase2-results.json`](model-modality-audit-20261109-phase2-results.json), reproducible with `node scripts/report-model-modality-phase2.mjs --check`.
+
+| Item | Scope | Result |
+| --- | --- | --- |
+| 2: Bailian tables | Original 20 static cards; 34 complete Core cards, 22 channel URLs | All 34 / 68 input-output fields applied as channel facts. Four-icon states: 104 supported, 168 explicitly unsupported, 0 unknown. |
+| 1: Misleading modalities | 27 cards / 30 modality entries, 20 channel URLs | 2 supported, 28 unknown, 0 inferred unsupported. All 30 were previously shown as supported. |
+| 3: Dead channel links | 5 Replicate Imagen + 2 Runware identities | 7 retained, 7 availability unverified, 0 delisted, 0 newly verified exact channel pages. Existing verified vendor fallbacks retained. |
+| 4: Complete object resolution | 1,061 full Core models, plus 1,064 generated static cards | Full-vs-resolved ID first-link differences 0; modality differences 0; all fields with supplied registry 0; Core-to-Mini projection differences 0. |
+
+### Item 2 — Bailian explicit tables
+
+Each row was re-opened today. `20` marks the original static list; `full` marks the additional 14 identities found in the complete Core registry. States are ordered **text / image / audio / video**: **S = 支持**, **N = 不支持**, **U = 未知**. Before is the full Phase 1 card, not the historical ID-only rendering. Missing entries become N only because these are explicit structured 输入模态 / 输出模态 tables. Snapshot/alias identities are matched separately through exact ID excerpts in the versioned config; no family-prefix inference is used.
+
+| Bailian model ID | Scope | Input before → after | Output before → after | Exact table quote | Official source / HTTP / date |
+| --- | --- | --- | --- | --- | --- |
+| `deepseek-v4.1-flash` | 20 | S/S/U/U → S/S/N/N | S/U/U/U → S/N/N/N | 输入模态 Text、Image 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash) · 200 · 2026-11-09 |
+| `qwen3.8-27b` | 20 | S/S/U/S → S/S/N/S | S/U/U/U → S/N/N/N | 输入模态 Image Text Video 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen3-8-27b) · 200 · 2026-11-09 |
+| `qwen3.8-2.4t-a95b` | 20 | S/U/U/U → S/N/N/N | S/U/U/U → S/N/N/N | 输入模态 Text 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b) · 200 · 2026-11-09 |
+| `qwen-image-3.0` | full | S/S/U/U → S/S/N/N | U/S/U/U → N/S/N/N | 输入模态 Image Text 输出模态 Image | [channel page](https://help.aliyun.com/zh/model-studio/qwen-image-3-0) · 200 · 2026-11-09 |
+| `qwen-image-3.0-pro` | full | S/S/U/U → S/S/N/N | U/S/U/U → N/S/N/N | 输入模态 Image Text 输出模态 Image | [channel page](https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro) · 200 · 2026-11-09 |
+| `glm-5.2` | 20 | S/U/U/U → S/N/N/N | S/U/U/U → S/N/N/N | 输入模态 Text 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/glm-5-2) · 200 · 2026-11-09 |
+| `glm-5.1` | 20 | S/U/U/U → S/N/N/N | S/U/U/U → S/N/N/N | 输入模态 Text 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/glm-5-1) · 200 · 2026-11-09 |
+| `kimi-k2.7-code` | 20 | S/S/U/S → S/S/N/S | S/U/U/U → S/N/N/N | 输入模态 Text Image Video 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/kimi-k2-7-code) · 200 · 2026-11-09 |
+| `kimi-k2.6` | 20 | S/S/U/S → S/S/N/S | S/U/U/U → S/N/N/N | 输入模态 Image Text Video 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/kimi-k2-6) · 200 · 2026-11-09 |
+| `kimi-k2.5` | 20 | S/S/U/S → S/S/N/S | S/U/U/U → S/N/N/N | 输入模态 Text Image Video 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/kimi-k2-5) · 200 · 2026-11-09 |
+| `qwen-image-2.0-pro-2026-06-22` | full | S/S/U/U → S/S/N/N | U/S/U/U → N/S/N/N | 输入模态 Text Image 输出模态 Image | [channel page](https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro) · 200 · 2026-11-09 |
+| `qwen-image-2.0` | 20 | S/S/U/U → S/S/N/N | U/S/U/U → N/S/N/N | 输入模态 Text Image 输出模态 Image | [channel page](https://help.aliyun.com/zh/model-studio/qwen-image-2-0) · 200 · 2026-11-09 |
+| `qwen-image-2.0-2026-03-03` | full | S/S/U/U → S/S/N/N | U/S/U/U → N/S/N/N | 输入模态 Text Image 输出模态 Image | [channel page](https://help.aliyun.com/zh/model-studio/qwen-image-2-0) · 200 · 2026-11-09 |
+| `qwen-image-2.0-pro` | 20 | S/S/U/U → S/S/N/N | U/S/U/U → N/S/N/N | 输入模态 Text Image 输出模态 Image | [channel page](https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro) · 200 · 2026-11-09 |
+| `qwen-image-2.0-pro-2026-03-03` | full | S/S/U/U → S/S/N/N | U/S/U/U → N/S/N/N | 输入模态 Text Image 输出模态 Image | [channel page](https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro) · 200 · 2026-11-09 |
+| `qwen-image-2.0-pro-2026-04-22` | full | S/S/U/U → S/S/N/N | U/S/U/U → N/S/N/N | 输入模态 Image Text 输出模态 Image | [channel page](https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro) · 200 · 2026-11-09 |
+| `qwen3.7-max` | full | S/U/U/U → S/N/N/N | S/U/U/U → S/N/N/N | 输入模态 Text 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen3-7-max) · 200 · 2026-11-09 |
+| `qwen3.7-max-2026-05-17` | full | S/U/U/U → S/N/N/N | S/U/U/U → S/N/N/N | 输入模态 Text 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen3-7-max) · 200 · 2026-11-09 |
+| `qwen3.7-max-2026-05-20` | full | S/U/U/U → S/N/N/N | S/U/U/U → S/N/N/N | 输入模态 Text 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen3-7-max) · 200 · 2026-11-09 |
+| `qwen3.7-max-2026-06-08` | 20 | S/S/U/S → S/S/N/S | S/U/U/U → S/N/N/N | 输入模态 Image Text Video 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen3-7-max) · 200 · 2026-11-09 |
+| `qwen3.7-max-preview` | full | S/U/U/U → S/N/N/N | S/U/U/U → S/N/N/N | 输入模态 Text 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen3-7-max) · 200 · 2026-11-09 |
+| `qwen3.7-plus` | 20 | S/S/U/S → S/S/N/S | S/U/U/U → S/N/N/N | 输入模态 Image Text Video 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen3-7-plus) · 200 · 2026-11-09 |
+| `qwen3.7-plus-2026-05-26` | full | S/S/U/S → S/S/N/S | S/U/U/U → S/N/N/N | 输入模态 Image Text Video 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen3-7-plus) · 200 · 2026-11-09 |
+| `wan2.7-image` | full | S/S/U/U → S/S/N/N | U/S/U/U → N/S/N/N | 输入模态 Image Text 输出模态 Image | [channel page](https://help.aliyun.com/zh/model-studio/wan2-7-image) · 200 · 2026-11-09 |
+| `wan2.7-image-pro` | full | S/S/U/U → S/S/N/N | U/S/U/U → N/S/N/N | 输入模态 Image Text 输出模态 Image | [channel page](https://help.aliyun.com/zh/model-studio/wan2-7-image-pro) · 200 · 2026-11-09 |
+| `wan2.6-image` | 20 | S/S/U/U → S/S/N/N | S/S/U/U → S/S/N/N | 输入模态 Text Image 输出模态 Image Text | [channel page](https://help.aliyun.com/zh/model-studio/wan2-6-image) · 200 · 2026-11-09 |
+| `MiniMax/MiniMax-M3.1-Flash` | 20 | S/S/U/S → S/S/N/S | S/U/U/U → S/N/N/N | 输入模态 Image Text Video 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash) · 200 · 2026-11-09 |
+| `qwen-plus-2025-01-25` | 20 | S/U/U/U → S/N/N/N | S/U/U/U → S/N/N/N | 输入模态 Text 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen-plus) · 200 · 2026-11-09 |
+| `qwen-plus-2025-04-28` | 20 | S/U/U/U → S/N/N/N | S/U/U/U → S/N/N/N | 输入模态 Text 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen-plus) · 200 · 2026-11-09 |
+| `qwen-plus-2025-07-14` | 20 | S/U/U/U → S/N/N/N | S/U/U/U → S/N/N/N | 输入模态 Text 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen-plus) · 200 · 2026-11-09 |
+| `unisound/unisound-u2` | 20 | S/U/U/U → S/N/N/N | S/U/U/U → S/N/N/N | 输入模态 Text 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound) · 200 · 2026-11-09 |
+| `xiaomi/mimo-v2.6-pro-ultraspeed` | 20 | S/S/S/S → S/S/S/S | S/U/U/U → S/N/N/N | 输入模态 Text Image Video Audio 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed) · 200 · 2026-11-09 |
+| `qwen3.8-max` | 20 | S/S/U/S → S/S/N/S | S/U/U/U → S/N/N/N | 输入模态 Image Text Video 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen3-8-max) · 200 · 2026-11-09 |
+| `qwen3.8-max-0902` | full | S/S/U/S → S/S/N/S | S/U/U/U → S/N/N/N | 输入模态 Image Text Video 输出模态 Text | [channel page](https://help.aliyun.com/zh/model-studio/qwen3-8-max) · 200 · 2026-11-09 |
+
+### Item 1 — all 27 cards / 30 modality entries
+
+Quotes below establish only what they say. A prompt field does not rule out image input; an image-output schema does not rule out text output; a model-list identity or app-shell title supplies no modality claim. These silent cases are explicitly unknown, and product image-input requirements cannot re-add them. The two supported exceptions are fal Nano Banana’s explicit description output and Replicate Pruna’s explicit image input. Replicate schema pages contain the quoted embedded model JSON; no inference endpoint was called. Additional prompt quotes supporting retained text input are stored alongside the main excerpt.
+
+| Channel / exact model ID | Modality | Before → after | Exact quote | Official source / HTTP / date |
+| --- | --- | --- | --- | --- |
+| `fal/blackforestlabs/flux-3/klein/base/text-to-image` | input/image | 支持 → 未知 | Input# prompt string* required The prompt to generate an image from.  | [channel page](https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api) · 200 · 2026-11-09 |
+| `fal/blackforestlabs/flux-3/klein/text-to-image` | input/image | 支持 → 未知 | Input# prompt string* required The prompt to generate an image from.  | [channel page](https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api) · 200 · 2026-11-09 |
+| `fal/blackforestlabs/flux-3/text-to-image` | input/image | 支持 → 未知 | Input# prompt string* required The prompt to generate an image from. | [channel page](https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api) · 200 · 2026-11-09 |
+| `fal/bytedance/seedream/v5/flash/text-to-image` | input/image | 支持 → 未知 | Input# prompt string* required The text prompt used to generate the image. | [channel page](https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api) · 200 · 2026-11-09 |
+| `fal/bytedance/seedream/v5/pro/text-to-image` | input/image | 支持 → 未知 | Input# prompt string* required The text prompt used to generate the image. | [channel page](https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api) · 200 · 2026-11-09 |
+| `fal/fal-ai/bytedance/seedream/v4.5/text-to-image` | input/image | 支持 → 未知 | Input# prompt string* required The text prompt used to generate the image | [channel page](https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api) · 200 · 2026-11-09 |
+| `fal/fal-ai/bytedance/seedream/v4/text-to-image` | input/image | 支持 → 未知 | Input# prompt string* required The text prompt used to generate the image | [channel page](https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api) · 200 · 2026-11-09 |
+| `fal/fal-ai/flux-2-pro` | input/image | 支持 → 未知 | Input# prompt string* required The prompt to generate an image from. | [channel page](https://fal.ai/models/fal-ai/flux-2-pro/api) · 200 · 2026-11-09 |
+| `fal/google/nano-banana-2.1` | output/text | 支持 → 支持 | Output# images list<ImageFile>* required The generated images. description string* required The description of the generated images. | [channel page](https://fal.ai/models/google/nano-banana-2.1/api) · 200 · 2026-11-09 |
+| `fal/krea/v3/text-to-image` | input/image | 支持 → 未知 | Input# prompt string* required Description of the image to generate. | [channel page](https://fal.ai/models/krea/v3/text-to-image/api) · 200 · 2026-11-09 |
+| `fal/meta/muse-image/text-to-image` | input/image | 支持 → 未知 | Input# prompt string* required The text prompt used to generate or edit the image. | [channel page](https://fal.ai/models/meta/muse-image/text-to-image/api) · 200 · 2026-11-09 |
+| `fal/openai/gpt-image-2.5/flare/text-to-image` | input/image | 支持 → 未知 | Input# prompt string* required The prompt for image generation | [channel page](https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api) · 200 · 2026-11-09 |
+| `fal/openai/gpt-image-2.5/sunburst/text-to-image` | input/image | 支持 → 未知 | Input# prompt string* required The prompt for image generation | [channel page](https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api) · 200 · 2026-11-09 |
+| `fal/xai/grok-imagine-image` | input/image | 支持 → 未知 | Input# prompt string* required Text description of the desired image. | [channel page](https://fal.ai/models/xai/grok-imagine-image/api) · 200 · 2026-11-09 |
+| `fal/xai/grok-imagine-image/quality/text-to-image` | input/image | 支持 → 未知 | Input# prompt string* required Text description of the desired image. | [channel page](https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api) · 200 · 2026-11-09 |
+| `ideogram/ideogram-v4` | input/image | 支持 → 未知 | Generate images with Ideogram 4.0 from a natural-language or structured JSON prompt. | [channel page](https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4) · 200 · 2026-11-09 |
+| `qianfan/ernie-5.0-thinking-exp` | input/image | 支持 → 未知 | 模型列表 | [channel page](https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j) · 200 · 2026-11-09 |
+| `qianfan/glm-5.3-flash` | input/video | 支持 → 未知 | glm-5.3-flash | [channel page](https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j) · 200 · 2026-11-09 |
+| `qianfan/internvl3-38b` | input/video | 支持 → 未知 | internvl3-38b | [channel page](https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j) · 200 · 2026-11-09 |
+| `qianfan/kimi-k2.6` | input/image | 支持 → 未知 | kimi-k2.6 | [channel page](https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j) · 200 · 2026-11-09 |
+| `qianfan/kimi-k2.6` | input/video | 支持 → 未知 | kimi-k2.6 | [channel page](https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j) · 200 · 2026-11-09 |
+| `qianfan/qwen3.5-122b-a10b` | input/video | 支持 → 未知 | qwen3.5-122b-a10b | [channel page](https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j) · 200 · 2026-11-09 |
+| `qianfan/qwen3.5-27b` | input/video | 支持 → 未知 | qwen3.5-27b | [channel page](https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j) · 200 · 2026-11-09 |
+| `qianfan/qwen3.5-35b-a3b` | input/video | 支持 → 未知 | qwen3.5-35b-a3b | [channel page](https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j) · 200 · 2026-11-09 |
+| `qianfan/qwen3.5-397b-a17b` | input/video | 支持 → 未知 | qwen3.5-397b-a17b | [channel page](https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j) · 200 · 2026-11-09 |
+| `replicate/google/nano-banana-2.1` | input/file | 支持 → 未知 | Input images to transform or use as reference (supports up to 14 images) | [channel page](https://replicate.com/google/nano-banana-2.1/api/schema) · 200 · 2026-11-09 |
+| `replicate/google/nano-banana-2.1` | input/video | 支持 → 未知 | Input images to transform or use as reference (supports up to 14 images) | [channel page](https://replicate.com/google/nano-banana-2.1/api/schema) · 200 · 2026-11-09 |
+| `replicate/google/nano-banana-2.1` | output/text | 支持 → 未知 | Google's fast image generation and editing model, with sharp text rendering, multi-image editing, and up to 4K output. | [channel page](https://replicate.com/google/nano-banana-2.1/api/schema) · 200 · 2026-11-09 |
+| `replicate/prunaai/flux-kontext-fast` | input/image | 支持 → 支持 | Input image for image to image mode. The aspect ratio of your output will match this image | [channel page](https://replicate.com/prunaai/flux-kontext-fast/api/schema) · 200 · 2026-11-09 |
+| `sensenova/kimi-k3` | input/video | 支持 → 未知 | SenseNova · LLM API 服务平台 | [channel page](https://platform.sensenova.cn/docs) · 200 · 2026-11-09 |
+
+### Item 3 — all seven dead-link identities
+
+The exact channel pages below returned 404. Replicate’s public Google owner page and official collection returned 200 but did not verify these exact Imagen identities. Runware’s Grok image sibling returned 200 and says `Grok Imagine Imagexai:grok-imagine@image`; that AIR differs from `xai:grok-imagine@image-quality`. Neither directory silence nor a sibling model can verify availability. All alternative URL attempts, including redirect destinations and exact quotes, are retained in the config and result JSON.
+
+| Channel / exact model ID | Exact channel page / final status | Exact excerpt | Availability / action | Visible link retained |
+| --- | --- | --- | --- | --- |
+| `replicate/google/imagen-3` | [channel page](https://replicate.com/google/imagen-3) · 404 · 2026-11-09 | Page not found | unverified; keep model | [existing vendor fallback](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002) |
+| `replicate/google/imagen-3-fast` | [channel page](https://replicate.com/google/imagen-3-fast) · 404 · 2026-11-09 | Page not found | unverified; keep model | [existing vendor fallback](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001) |
+| `replicate/google/imagen-4` | [channel page](https://replicate.com/google/imagen-4) · 404 · 2026-11-09 | Page not found | unverified; keep model | [existing vendor fallback](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001) |
+| `replicate/google/imagen-4-fast` | [channel page](https://replicate.com/google/imagen-4-fast) · 404 · 2026-11-09 | Page not found | unverified; keep model | [existing vendor fallback](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001) |
+| `replicate/google/imagen-4-ultra` | [channel page](https://replicate.com/google/imagen-4-ultra) · 404 · 2026-11-09 | Page not found | unverified; keep model | [existing vendor fallback](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001) |
+| `runware/openai:1@1` | [channel page](https://runware.ai/models/openai-1) · 404 · 2026-11-09 | Runware &#124; AI Infrastructure Rebuilt to Cost Less | unverified; keep model | [existing vendor fallback](https://developers.openai.com/api/docs/models/gpt-image-1) |
+| `runware/xai:grok-imagine@image-quality` | [channel page](https://runware.ai/models/grok-imagine-image-quality) · 404 · 2026-11-09 | Runware &#124; AI Infrastructure Rebuilt to Cost Less | unverified; keep model | [existing vendor fallback](https://docs.x.ai/developers/migration/imagine-image-quality-nov-2) |
+
+### Item 4 — product path inventory and recount
+
+The earlier 389 static / 623 full-object numbers describe earlier audit stages. Frozen pre-Phase-1 R10 rules now reproduce 698/1,061 on their preserved fixture. The immediate Phase 1 baseline used for this change is **659/1,061** differing cards (616 first-source, 575 modality; overlapping counts). All denominators and baselines are explicit; historical reports are preserved.
+
+| Product path | Resolution / preservation | Regression coverage |
+| --- | --- | --- |
+| Web `ModelPicker` → `ModelSpecifications` | Picker options preserve complete registry models; the shared card resolver resolves legacy ID-only objects against an explicit registry, then the enriched static registry. Full live specifications take precedence. | All 1,061 `modelOption` outputs retain the original object; full vs saved-ID cards deep-equal with supplied registry. |
+| Web `WorkspaceModelCatalog` (`catalogRows`, `libraryRows`) | Catalog and saved-library rows carry the complete model into the same card resolver. | Every resulting card has the same fields as its full Core model. |
+| Web unavailable-model labels / `modelCardName` | ID-only historical labels use the same exact-ID resolver; curated names retain precedence. | Existing unavailable-picker/name regressions plus all-card resolution. |
+| Core `modelRegistry` enrichment | Exact channel tables precede base records; the pure display helper computes optional `cardSpecifications` from each full model. The field contains fields/sourceUrl/sourceLabel/note and grants no execution permission. | 34 tables, 30 review entries, 7 retained models; base records unchanged; all 1,061 projections match Web. |
+| Gateway registry relay | Relays complete Core objects without reducing them to IDs. | Real in-memory Express middleware round-trips the full 1,061-model response unchanged; no listening socket or sign-in. |
+| Mini registry normalization → compiled picker | Preserves Core `cardSpecifications` and renders it first. Offline ID lookup reads facts generated from full static objects. A required provider may be omitted only with an explicit nonempty unavailable-provider reason. | Actual full Core response, compiled normalizer and presenter for all 1,061 cards; unexplained provider omissions still reject; all 1,064 offline projections checked. |
+
+| Comparison | Before | After |
+| --- | ---: | ---: |
+| Full Core vs ID-only/resolved: first source | 616 | 0 |
+| Full Core vs ID-only/resolved: modality icons | 575 | 0 |
+| Either first source or modality | 659 | 0 |
+| All four fields, full object vs ID resolved with the same registry | Not previously counted | 0 |
+| Full Core display projection vs Web | No projection before | 0 |
+
+The zero for all four fields uses the same complete registry on both sides. Offline static fallback cannot refresh live context lengths and is not claimed to reproduce account/live metadata; its first source and modality icons match all 1,061 audited full objects. Unknown values are preserved. Three static-only historical identities remain outside the 1,061 denominator.
+
+R13’s historical 50 full/static notice-first cards and Mini’s 34 static notice-first cards are still asserted against archived code and inputs. Current static cards now use the full-object source priority: 16 notice-first cards in each representation. Notice links and labels remain available in Web secondary sources; the seven item-3 vendor fallbacks are unchanged. Historical R10/R11/R12 reports use frozen code and, for R12, frozen static input objects.
+
+Full-model first-source changes caused by the new channel facts (six), plus one static-only alignment to an existing full specification:
+
+| Exact identity | Before | After |
+| --- | --- | --- |
+| `bailian/deepseek-v4.1-flash` | [previous](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash) | [current](https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash) |
+| `bailian/qwen-image-3.0` | [previous](https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference) | [current](https://help.aliyun.com/zh/model-studio/qwen-image-3-0) |
+| `bailian/MiniMax/MiniMax-M3.1-Flash` | [previous](https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax) | [current](https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash) |
+| `bailian/xiaomi/mimo-v2.6-pro-ultraspeed` | [previous](https://help.aliyun.com/zh/model-studio/mimo) | [current](https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed) |
+| `fal/google/nano-banana-2.1` | [previous](https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1) | [current](https://fal.ai/models/google/nano-banana-2.1/api) |
+| `replicate/google/nano-banana-2.1` | [previous](https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1) | [current](https://replicate.com/google/nano-banana-2.1) |
+| `stability/sd3.5-flash` (static-only) | [previous](https://docs.stability.ai/api-reference/generate/stable-diffusion-35) | [current](https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1sd3/post) |
+
+The six channel destinations were fetched with 200 responses today; the Replicate visible model page has its own capture. The static-only Stability link is inherited from its existing full specification. A separate 200 capture shows only a documentation-relocation notice, **not** fresh capability/availability evidence; its previous metadata is not re-certified by this audit.
+
+### Validation and size
+
+| Check | Result |
+| --- | --- |
+| Core affected tests | 35/35; `model-modality-phase2`, `model-modality-r21`, `model-audit`, `provider-catalog`; TypeScript check and local production bundle build pass. The dependency-graph regression verifies every local bundle input is covered by Core Docker COPY instructions. |
+| Gateway affected tests | 17/17; generated audit, both modality audits, complete-object relay, and R14/R17 catalog relay. |
+| Web affected tests | 121/122. The only failure is unchanged `provider-catalogs.test.mjs:28`, reproduced by loading Phase 1 `d1fe6ff6`: expected 图研既有核实, actual 渠道 for TokenDance Qwen3.8 Max. Both versions show the same input and 1M context. The assertion remains unchanged. Focused R6A/R12/R13/Phase-2 checks: 28/28. |
+| Mini complete suite | 159/159, including budget and stricter R15 size regression; build and TypeScript check pass. |
+| Script suite | 42/42; generation provenance rejects missing quotes, wrong channel/date, mismatched table identities/values and invalid availability evidence; codec round trips include nested array deltas and literal reference-prefix strings. |
+| Web / Core builds | Pass locally; existing bundle-size advisories remain. Core Docker build inputs now include the two pure Web display modules and three evidence JSON files. No Docker image was built or deployed. |
+| Generation / sync `--check` | Audit, model catalog, reference upload, thinking, agent knowledge and model version report pass. Frozen R10/R11/R12 and both R21 reports pass. |
+| Allowed sync exception | `sync-workflow.mjs --check`: pre-existing `apps/miniprogram/miniprogram/utils/workflow.ts` drift, left unchanged as instructed. `sync-agent-distributions` requires an independent target repository and is inapplicable to this one-worktree task. |
+
+**Mini source: 1,569,244 bytes**; unchanged limit **1,572,864**; headroom **3,620**. Runtime **1,144,677**; media **189,978**. Source is 44 bytes smaller than Phase 1. Lossless positional-array deltas and compact dictionary references fund the added facts. The generator preflights prospective generated TypeScript and compiled JavaScript before writing Mini outputs; neither the budget nor its tests were relaxed.
+
+All requested implementation and per-item evidence work is complete. The seven channel availabilities remain unverified because public pages did not establish the exact identities. The unrelated pre-existing Web expectation and allowed workflow drift remain visible above. Production, account access, paid inference, real browser screenshots and WeChat native scanning were not performed; existing external acceptance work remains pending.
+
+Reproduction (all commands run in this checkout; tests use injected offline transports):
+
+```sh
+node scripts/generate-model-audit.mjs --check
+node scripts/sync-model-catalog.mjs --check
+node scripts/sync-reference-upload.mjs --check
+node scripts/sync-thinking.mjs --check
+node scripts/sync-agent-knowledge.mjs --check
+node scripts/sync-model-version-report.mjs --check
+node scripts/report-model-card-r10.mjs --frozen-head --check
+node scripts/report-model-card-r11.mjs --frozen-head --frozen-main --check
+node scripts/report-model-card-r12.mjs --frozen-head --check
+node scripts/report-model-modality-r21.mjs --check
+node scripts/report-model-modality-phase2.mjs --check
+node --test scripts/*.test.mjs
+# In apps/paperbanana-api:
+node --import tsx --test tests/model-modality-phase2.test.ts tests/model-modality-r21.test.ts tests/model-audit.test.ts tests/provider-catalog.test.ts
+pnpm check
+pnpm build
+# In apps/auth-gateway:
+node --test tests/model-audit.test.js tests/model-modality-r21.test.js tests/model-modality-phase2.test.js tests/tokendance-catalog.test.js
+# In apps/web:
+pnpm test tests/model-audit*.test.mjs tests/model-modality*.test.mjs tests/provider-catalogs.test.mjs tests/model-picker-unavailable.test.mjs tests/workspace-model-picker.test.mjs
+pnpm build
+# In apps/miniprogram:
+pnpm build
+pnpm check
+pnpm test
+```

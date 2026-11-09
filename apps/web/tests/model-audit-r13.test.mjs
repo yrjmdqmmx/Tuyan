@@ -1,5 +1,8 @@
 import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
+import vm from 'node:vm'
+import path from 'node:path'
+import {fileURLToPath} from 'node:url'
 import React from 'react'
 import { render, cleanup } from '@testing-library/react'
 import { ModelSpecifications } from '../src/components/ModelSpecifications.jsx'
@@ -7,7 +10,7 @@ import { modelCardSpecifications } from '../src/lib/modelCardSpecifications.js'
 import { modelCardSources, modelSourceName, isDeadSource } from '../src/lib/modelCardSources.js'
 import { MODEL_AUDIT_DATA, removedModel } from '../src/lib/modelAudit.js'
 import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
-import { unpackRegistry, rowsOf } from '../../../scripts/lib/model-card-audit.mjs'
+import { unpackRegistry, rowsOf, loadCard, archivedAuditText } from '../../../scripts/lib/model-card-audit.mjs'
 import full from './fixtures/r11-registry-head.json' with { type: 'json' }
 import deadLinks from '../../../config/channel-audit/dead-links-20261109.json' with { type: 'json' }
 import noticeCards from './fixtures/r13b-notice-cards.json' with { type: 'json' }
@@ -24,6 +27,21 @@ const expected = [
 ]
 const all = [...rowsOf(unpackRegistry(full)), ...rowsOf(STATIC_MODEL_REGISTRY)]
 afterEach(cleanup)
+
+test('R13 historical 50 notice-first cards and all 25 per-model priorities remain reproducible', async () => {
+  const root=path.resolve(fileURLToPath(new URL('../../../',import.meta.url)))
+  const archived=await loadCard(root,'d1fe6ff6')
+  const source=archivedAuditText(root,'d1fe6ff6','apps/web/src/lib/staticModelCatalog.js').replace(/export const /g,'const ')
+  const oldStatic=vm.runInNewContext(source+';STATIC_MODEL_REGISTRY')
+  const historical=[...rowsOf(unpackRegistry(full)),...rowsOf(oldStatic)]
+  for(const {channel,modelId,url,fullFirstUrl} of noticeCards) {
+    const matches=historical.filter(row=>row.channel===channel&&row.model.id===modelId)
+    assert.equal(matches.length,2)
+    matches.forEach((row,i)=>assert.equal(archived(channel,row.model).sources[0],i===0?fullFirstUrl:url))
+  }
+  const visible=historical.filter(({channel,model})=>{const card=archived(channel,model);return card.sources[0]&&modelSourceName(card,card.sources[0])==='下线公告'})
+  assert.equal(visible.length,50)
+})
 
 test('R13 exactly seven cards render verified vendor links in full/static and normal/compact layouts without delisting', t => {
   t.mock.method(Date, 'now', () => Date.parse('2026-11-09'))
@@ -89,9 +107,9 @@ test('R13B every specified notice has 下线公告 in full/static cards and pres
   for (const { channel, modelId, url, fullFirstUrl } of noticeCards) {
     const matches = all.filter(row => row.channel === channel && row.model.id === modelId)
     assert.equal(matches.length, 2)
-    for (const [i, { model }] of matches.entries()) {
+    for (const { model } of matches) {
       const card = modelCardSpecifications(channel, model)
-      assert.equal(card.sources[0], i === 0 ? fullFirstUrl : url)
+      assert.equal(card.sources[0], fullFirstUrl, 'static cards now resolve the same complete specifications as Core')
       assert.ok(card.sources.includes(url), channel + '/' + modelId)
       assert.equal(modelSourceName(card, url), '下线公告')
       for (const compactSources of [false, true]) {
@@ -125,7 +143,7 @@ test('R13B catalog-wide notice links are labelled 下线公告 regardless of cha
       }
     }
   }
-  assert.equal(visible, 50, '16 full-registry and 34 static notice cards')
+  assert.equal(visible, 32, '16 full-registry and 16 fully resolved static notice cards')
   const ordinary = modelCardSources({ channel: 'unknown', audit: {}, fields: {}, model: { officialSourceUrl: 'https://example.test/notice/118177' } })
   assert.equal(modelSourceName(ordinary, ordinary.sources[0]), '官方文档')
 })

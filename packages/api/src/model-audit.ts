@@ -7,6 +7,8 @@ export interface AuditFact {
   sourceUrl: string | null
   verifiedAt: string | null
   unknownModalities?: string[]
+  modalityMasks?: string[]
+  approximate?: boolean
   unsupportedModalities?: string[]
   suppressFallback?: boolean
 }
@@ -19,6 +21,7 @@ export function auditedModelSpecs(channel: string, id: string) {
   })
   const details = MODEL_AUDIT_DATA.details?.[channel + '/' + id]
   if (details?.unknownInputModalities) result.inputModalities.unknownModalities = details.unknownInputModalities
+  for (const [field, values] of Object.entries(details?.modalityMasks || {})) result[field].modalityMasks = values as string[]
   for (const [field, values] of Object.entries(details?.unsupportedModalities || {})) result[field].unsupportedModalities = values as string[]
   for (const field of details?.suppressFallback || []) result[field].suppressFallback = true
   return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: details?.sourceUrls || [], sourceLinks: details?.sourceLinks || [], note: details?.note || '' }

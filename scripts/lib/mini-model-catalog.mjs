@@ -24,7 +24,7 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
     const existing = fallback(channel, model)
     const audit = { fields: Object.fromEntries(data.fields.map((field, index) => {
       const fact = data.rows[key] ? data.facts[row[index]] : [null, 'unknown', null, null]
-      return [field, { value: fact[0], state: fact[1], provenance: fact[2], sourceUrl: data.sources[fact[3]] || null, suppressFallback: data.details[key]?.suppressFallback?.includes(field), unsupportedModalities: data.details[key]?.unsupportedModalities?.[field] }]
+      return [field, { value: fact[0], state: fact[1], provenance: fact[2], sourceUrl: data.sources[fact[3]] || null, suppressFallback: data.details[key]?.suppressFallback?.includes(field), unsupportedModalities: data.details[key]?.unsupportedModalities?.[field], modalityMasks: data.details[key]?.modalityMasks?.[field] }]
     })) }
     // Roles are already in the registry: apply their image floor at runtime.
     const merged = mergeCardFacts(audit, existing).fields
@@ -40,7 +40,7 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
       if (field.endsWith('Modalities')) {
         const original = audit.fields[field]
         // Store operands, never the union. Zero references the registry field.
-        if (original.state === 'known' && !original.suppressFallback && !original.unsupportedModalities?.length && existing[field]?.value?.some(x => !original.value.includes(x))) {
+        if (original.state === 'known' && !original.suppressFallback && !original.modalityMasks?.length && !original.unsupportedModalities?.length && existing[field]?.value?.some(x => !original.value.includes(x))) {
           value = original.value
           prior = existing[field].value
         }
@@ -61,6 +61,7 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
     if (note || suffix) details[key] = { ...(note ? { note } : {}), ...(suffix ? { suffix } : {}) }
     if (data.details[key]?.unsupportedModalities) details[key] = { ...details[key], unsupportedModalities: data.details[key].unsupportedModalities }
     if (data.details[key]?.suppressFallback) details[key] = { ...details[key], suppressFallback: data.details[key].suppressFallback }
+    if (data.details[key]?.modalityMasks) details[key] = { ...details[key], modalityMasks: data.details[key].modalityMasks }
   }
   // Encode only exact round trips of already resolved links. Shared templates
   // reuse registry IDs; they never choose or invent a model's destination.

@@ -4,6 +4,18 @@ import { catalogCardFacts, mergeCardFacts } from './catalogCardFacts.js'
 import { formatContextLimit } from './modelPresentation.js'
 import reviewedModels from '../data/model-card-specifications.json'
 import specificPages from '../../../../config/channel-audit/specific-model-page-overrides.json'
+import { STATIC_MODEL_REGISTRY } from './staticModelCatalog.js'
+
+// Saved settings contain identities, not facts. Resolve before presentation;
+// live full objects take precedence, including intentional null/unknown values.
+export function resolveCardModel(provider, model, registry) {
+  const id = typeof model === 'string' ? model : model?.id
+  if (model?.specifications || model?.specificModelSpecifications || provider === 'custom') return model
+  const full = registry?.providers?.[provider]?.models?.find(row => row.id === id)
+    || STATIC_MODEL_REGISTRY[provider]?.models.find(row => row.id === id)
+  return { ...full, ...(typeof model === 'object' ? model : { id }),
+    ...(!model?.roles?.length && full?.roles ? { roles: full.roles } : {}) }
+}
 
 const reviewedById = new Map()
 for (const entry of reviewedModels.models) {
@@ -28,13 +40,15 @@ function reviewedSpecification(provider, model) {
 
 // Display only. Neither request IDs nor adapter capabilities/limits are changed here.
 export function modelCardName(provider, model) {
+  model = resolveCardModel(provider, model)
   const resolved = model.specificModelSpecifications?.resolvedModel
-  const name = resolved?.modelId && resolved?.displayName && safeOfficialSources(resolved.sourceUrls).length
-    ? resolved.displayName : reviewedSpecification(provider, model)?.displayName || model.label || model.id
+  const name = reviewedSpecification(provider, model)?.displayName || (resolved?.modelId && resolved?.displayName && safeOfficialSources(resolved.sourceUrls).length
+    ? resolved.displayName : model.label || model.id)
   return name.replace(/（具体版本待确认）|\(具体版本待确认\)/g, '').trim()
 }
 
-export function modelCardSpecifications(provider, model) {
+export function modelCardSpecifications(provider, model, registry) {
+  model = resolveCardModel(provider, model, registry)
   const audit = auditedModelSpecs(provider, model.id)
   const { fields, conflicts } = mergeCardFacts(audit, catalogCardFacts(provider, model, reviewedModels, specificPages), model)
   const labels = { unknown: '未知', unsupported: '不支持', 'not-applicable': '不适用' }

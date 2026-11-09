@@ -61,11 +61,11 @@ export function packModelCatalog(value) {
     node = node[0] === 3 ? [3, remap.get(node[1]), node[2]] : [node[0], ...node.slice(1).map(index => remap.get(index))]
     if (node.every(value => typeof value === 'number')) {
       const compact = [4, node.map(value => value.toString(36)).join('.')]
-      if (JSON.stringify(compact).length < JSON.stringify(node).length) node = compact
+      if (JSON.stringify('~' + compact[1]).length < JSON.stringify(node).length) node = compact
     }
     return node
   })
-  // Similar records share the same key list. Store only changed values against
+  // Similar records share keys; same-length arrays share positional keys. Store changed values against
   // an earlier record, without dropping fields or changing their order.
   const expanded = packed.map(node => Array.isArray(node) && node[0] === 4
     ? node[1].split('.').map(value => parseInt(value, 36)) : node)
@@ -81,18 +81,20 @@ export function packModelCatalog(value) {
   const groups = new Map(), depths = []
   for (const index of dependencyOrder) {
     const node = expanded[index]
-    if (!Array.isArray(node) || node[0] !== 2) continue
-    const candidates = groups.get(node[1]) || []
+    if (!Array.isArray(node) || ![1, 2].includes(node[0])) continue
+    const start = node[0] === 1 ? 1 : 2
+    const group = node[0] === 1 ? `array:${node.length}` : `object:${node[1]}`
+    const candidates = groups.get(group) || []
     let best = packed[index], depth = 0
     for (const base of candidates) {
       if (depths[base] >= 8) continue
       const positions = [], values = []
-      for (let i = 2; i < node.length; i++) if (node[i] !== expanded[base][i]) {
-        positions.push(i - 2)
+      for (let i = start; i < node.length; i++) if (node[i] !== expanded[base][i]) {
+        positions.push(i - start)
         values.push(node[i])
       }
       const delta = [5, `${base.toString(36)}:${positions.map(i => i.toString(36)).join('.')}:${values.map(i => i.toString(36)).join('.')}`]
-      if (JSON.stringify(delta).length < JSON.stringify(best).length) {
+      if (JSON.stringify(delta).length < JSON.stringify(Array.isArray(best) && best[0] === 4 ? '~' + best[1] : best).length) {
         best = delta
         depth = depths[base] + 1
       }
@@ -100,7 +102,11 @@ export function packModelCatalog(value) {
     packed[index] = best
     depths[index] = depth
     candidates.push(index)
-    groups.set(node[1], candidates)
+    groups.set(group, candidates)
   }
-  return { sourceDigest: createHash('sha256').update(JSON.stringify(value)).digest('hex'), root: remap.get(root), nodes: packed }
+  // Numeric references are common enough to warrant a one-character tag.
+  // Escape literal strings with that prefix; the decoder still accepts tag 4.
+  const compact = packed.map(node => typeof node === 'string' && node.startsWith('~') ? [6, node]
+    : Array.isArray(node) && node[0] === 4 ? '~' + node[1] : node)
+  return { sourceDigest: createHash('sha256').update(JSON.stringify(value)).digest('hex'), root: remap.get(root), nodes: compact }
 }

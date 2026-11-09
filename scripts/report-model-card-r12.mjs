@@ -1,15 +1,20 @@
 // Offline final-link manifest, reconciled with the operator's recorded HTTP checks.
 import fs from 'node:fs'
 import path from 'node:path'
+import vm from 'node:vm'
 import { fileURLToPath } from 'node:url'
-import { loadCard, readPackedRegistry, rowsOf, writeOrCheck } from './lib/model-card-audit.mjs'
+import { loadCard, archivedAuditText, readPackedRegistry, rowsOf, writeOrCheck } from './lib/model-card-audit.mjs'
 import { STATIC_MODEL_REGISTRY } from '../apps/web/src/lib/staticModelCatalog.js'
 import { isApiSource, sourceSpecificity, isDeadSource } from '../apps/web/src/lib/modelCardSources.js'
 const root = fileURLToPath(new URL('../', import.meta.url)), check = process.argv.includes('--check')
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))
 const before = read('apps/web/tests/fixtures/r12-links-before.json')
-const card = await loadCard(root, process.argv.includes('--frozen-head') ? '8c456709' : null)
-const models = new Map(rowsOf(STATIC_MODEL_REGISTRY).map(row => [row.channel + '/' + row.model.id, row.model]))
+const frozenHead = process.argv.includes('--frozen-head') ? '8c456709' : null
+const card = await loadCard(root, frozenHead)
+// Freeze the input objects as well as their renderer; current static objects
+// now include full specifications and cannot reproduce an older ID-only audit.
+const staticRegistry = frozenHead ? vm.runInNewContext(archivedAuditText(root, frozenHead, 'apps/web/src/lib/staticModelCatalog.js').replace(/export const /g, 'const ') + ';STATIC_MODEL_REGISTRY') : STATIC_MODEL_REGISTRY
+const models = new Map(rowsOf(staticRegistry).map(row => [row.channel + '/' + row.model.id, row.model]))
 for (const row of rowsOf(readPackedRegistry(path.join(root, 'apps/web/tests/fixtures/r11-registry-head.json')))) models.set(row.channel + '/' + row.model.id, row.model)
 const checks = read('config/channel-audit/model-audit-supplement-20261109.json').sourceChecks
 const all = before.rows.map(row => {
@@ -35,7 +40,7 @@ const summary = channels.flatMap(channel => [...new Set(categorized.filter(row =
 })))
 const exceptions = read('apps/web/tests/fixtures/r12-specificity-exceptions.json')
 const staticApi = before.staticApiOnlyRows.map(row => {
-  const finalUrl = card(row.channel, STATIC_MODEL_REGISTRY[row.channel].models.find(model => model.id === row.modelId)).sources[0]
+  const finalUrl = card(row.channel, staticRegistry[row.channel].models.find(model => model.id === row.modelId)).sources[0]
   if (!finalUrl || isApiSource(finalUrl, checks)) throw new Error('Missing static fallback: ' + row.channel + '/' + row.modelId)
   return { ...row, finalUrl }
 })

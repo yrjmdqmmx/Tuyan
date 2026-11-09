@@ -1,0 +1,4020 @@
+{
+  "date": "2026-11-09",
+  "basis": "Actual offline Core modelRegistry, complete models, actual Web resolver, ID resolution and Core-generated Mini projection",
+  "totals": {
+    "registryCards": 1061,
+    "legacyBailianCards": 20,
+    "bailianFullCards": 34,
+    "tableFields": 68,
+    "misleadingCards": 27,
+    "reviewedModalityEntries": 30,
+    "supported": 2,
+    "unknown": 28,
+    "unsupported": 0,
+    "links": 7,
+    "verifiedChannelAvailability": 0,
+    "unverifiedChannelAvailability": 7,
+    "sourceChanges": 7,
+    "beforeObjectDifferences": {
+      "sourceDiff": 616,
+      "modalityDiff": 575,
+      "eitherDiff": 659
+    },
+    "remainingProductDifferences": {
+      "source": 0,
+      "modalities": 0,
+      "either": 0,
+      "fullResolvedFields": 0,
+      "coreProjection": 0
+    }
+  },
+  "tables": [
+    {
+      "key": "bailian/deepseek-v4.1-flash",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text、Image 输出模态 Text",
+      "identityQuote": "deepseek-v4.1-flash模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+          "sourceUrls": [
+            "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": "1M",
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": "384K",
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": "1M",
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": "384K",
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen3.8-27b",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "qwen3.8-27b模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen3.8-2.4t-a95b",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen3.8-2.4t-a95b模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen-image-3.0",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text 输出模态 Image",
+      "identityQuote": "qwen-image-3.0模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "text",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen-image-3.0-pro",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text 输出模态 Image",
+      "identityQuote": "qwen-image-3.0-pro模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "text",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/glm-5.2",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "glm-5.2模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1048576,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1048576,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/glm-5.1",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "glm-5.1模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 202745,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 202745,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/kimi-k2.7-code",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image Video 输出模态 Text",
+      "identityQuote": "kimi-k2.7-code模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 262144,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 262144,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/kimi-k2.6",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "kimi-k2.6模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 262144,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 262144,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/kimi-k2.5",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-5",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image Video 输出模态 Text",
+      "identityQuote": "kimi-k2.5模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 262144,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-5",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-5",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-5",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 262144,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-5",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen-image-2.0-pro-2026-06-22",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image 输出模态 Image",
+      "identityQuote": "qwen-image-2.0-pro-2026-06-22模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "text",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen-image-2.0",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image 输出模态 Image",
+      "identityQuote": "qwen-image-2.0模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "text",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen-image-2.0-2026-03-03",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image 输出模态 Image",
+      "identityQuote": "qwen-image-2.0-2026-03-03模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "text",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen-image-2.0-pro",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image 输出模态 Image",
+      "identityQuote": "qwen-image-2.0-pro模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "text",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen-image-2.0-pro-2026-03-03",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image 输出模态 Image",
+      "identityQuote": "qwen-image-2.0-pro-2026-03-03模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "text",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen-image-2.0-pro-2026-04-22",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text 输出模态 Image",
+      "identityQuote": "qwen-image-2.0-pro-2026-04-22模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "text",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen3.7-max",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen3.7-max模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen3.7-max-2026-05-17",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen3.7-max-2026-05-17模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen3.7-max-2026-05-20",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen3.7-max-2026-05-20模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen3.7-max-2026-06-08",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "qwen3.7-max-2026-06-08模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen3.7-max-preview",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen3.7-max-preview模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen3.7-plus",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "qwen3.7-plus模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen3.7-plus-2026-05-26",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "qwen3.7-plus-2026-05-26模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/wan2.7-image",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text 输出模态 Image",
+      "identityQuote": "wan2.7-image模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "text",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/wan2.7-image-pro",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image-pro",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text 输出模态 Image",
+      "identityQuote": "wan2.7-image-pro模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image-pro",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image-pro",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "text",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/wan2.6-image",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image 输出模态 Image Text",
+      "identityQuote": "wan2.6-image模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image",
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "image",
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M3.1-Flash",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "MiniMax/MiniMax-M3.1-Flash 模型的推理服务供应商为 MiniMax。",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+            "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+            "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+            "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+            "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen-plus-2025-01-25",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen-plus-2025-01-25模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 8192,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 8192,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen-plus-2025-04-28",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen-plus-2025-04-28模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen-plus-2025-07-14",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen-plus-2025-07-14模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/unisound/unisound-u2",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "unisound/unisound-u2模型的推理服务供应商为云知声。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound"
+          ],
+          "verifiedAt": "2026-10-16",
+          "displayValue": "文本"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound"
+          ],
+          "verifiedAt": "2026-10-16",
+          "displayValue": "文本"
+        },
+        "totalContextTokens": {
+          "value": 163840,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound"
+          ],
+          "verifiedAt": "2026-10-16",
+          "suffix": ""
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 163840,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound"
+          ],
+          "verifiedAt": "2026-10-16",
+          "suffix": ""
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/xiaomi/mimo-v2.6-pro-ultraspeed",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image Video Audio 输出模态 Text",
+      "identityQuote": "xiaomi/mimo-v2.6-pro-ultraspeed模型的推理服务供应商为小米Mimo。",
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video",
+            "audio"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "totalContextTokens": {
+          "value": 1048576,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video",
+            "audio"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1048576,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen3.8-max",
+      "legacy20": true,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "模型调用 ID（model 参数取值）：qwen3.8-max 快照版本：qwen3.8-max-0902（别名 qwen3.8-max-2026-09-02）",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen3-8-max"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    },
+    {
+      "key": "bailian/qwen3.8-max-0902",
+      "legacy20": false,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "模型调用 ID（model 参数取值）：qwen3.8-max 快照版本：qwen3.8-max-0902（别名 qwen3.8-max-2026-09-02）",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "before": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "after": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "audio"
+          ],
+          "suppressFallback": true
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+          "verifiedAt": "2026-11-09",
+          "unsupportedModalities": [
+            "image",
+            "audio",
+            "video"
+          ],
+          "suppressFallback": true
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "key": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+      "quote": "Input# prompt string* required The prompt to generate an image from. ",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/klein/text-to-image",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+      "quote": "Input# prompt string* required The prompt to generate an image from. ",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/text-to-image",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+      "quote": "Input# prompt string* required The prompt to generate an image from.",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/bytedance/seedream/v5/flash/text-to-image",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+      "quote": "Input# prompt string* required The text prompt used to generate the image.",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/bytedance/seedream/v5/pro/text-to-image",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+      "quote": "Input# prompt string* required The text prompt used to generate the image.",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+      "quote": "Input# prompt string* required The text prompt used to generate the image",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+      "quote": "Input# prompt string* required The text prompt used to generate the image",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/fal-ai/flux-2-pro",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+      "quote": "Input# prompt string* required The prompt to generate an image from.",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/google/nano-banana-2.1",
+      "field": "outputModalities",
+      "modality": "text",
+      "before": "supported",
+      "after": "supported",
+      "sourceUrl": "https://fal.ai/models/google/nano-banana-2.1/api",
+      "quote": "Output# images list<ImageFile>* required The generated images. description string* required The description of the generated images.",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/krea/v3/text-to-image",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/krea/v3/text-to-image/api",
+      "quote": "Input# prompt string* required Description of the image to generate.",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/meta/muse-image/text-to-image",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+      "quote": "Input# prompt string* required The text prompt used to generate or edit the image.",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/openai/gpt-image-2.5/flare/text-to-image",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+      "quote": "Input# prompt string* required The prompt for image generation",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+      "quote": "Input# prompt string* required The prompt for image generation",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/xai/grok-imagine-image",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/api",
+      "quote": "Input# prompt string* required Text description of the desired image.",
+      "mode": "positive-only"
+    },
+    {
+      "key": "fal/xai/grok-imagine-image/quality/text-to-image",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+      "quote": "Input# prompt string* required Text description of the desired image.",
+      "mode": "positive-only"
+    },
+    {
+      "key": "ideogram/ideogram-v4",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+      "quote": "Generate images with Ideogram 4.0 from a natural-language or structured JSON prompt.",
+      "mode": "positive-only"
+    },
+    {
+      "key": "qianfan/ernie-5.0-thinking-exp",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "quote": "模型列表",
+      "mode": "mask"
+    },
+    {
+      "key": "qianfan/glm-5.3-flash",
+      "field": "inputModalities",
+      "modality": "video",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "quote": "glm-5.3-flash",
+      "mode": "mask"
+    },
+    {
+      "key": "qianfan/internvl3-38b",
+      "field": "inputModalities",
+      "modality": "video",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "quote": "internvl3-38b",
+      "mode": "mask"
+    },
+    {
+      "key": "qianfan/kimi-k2.6",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "quote": "kimi-k2.6",
+      "mode": "mask"
+    },
+    {
+      "key": "qianfan/kimi-k2.6",
+      "field": "inputModalities",
+      "modality": "video",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "quote": "kimi-k2.6",
+      "mode": "mask"
+    },
+    {
+      "key": "qianfan/qwen3.5-122b-a10b",
+      "field": "inputModalities",
+      "modality": "video",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "quote": "qwen3.5-122b-a10b",
+      "mode": "mask"
+    },
+    {
+      "key": "qianfan/qwen3.5-27b",
+      "field": "inputModalities",
+      "modality": "video",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "quote": "qwen3.5-27b",
+      "mode": "mask"
+    },
+    {
+      "key": "qianfan/qwen3.5-35b-a3b",
+      "field": "inputModalities",
+      "modality": "video",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "quote": "qwen3.5-35b-a3b",
+      "mode": "mask"
+    },
+    {
+      "key": "qianfan/qwen3.5-397b-a17b",
+      "field": "inputModalities",
+      "modality": "video",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "quote": "qwen3.5-397b-a17b",
+      "mode": "mask"
+    },
+    {
+      "key": "replicate/google/nano-banana-2.1",
+      "field": "inputModalities",
+      "modality": "file",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://replicate.com/google/nano-banana-2.1/api/schema",
+      "quote": "Input images to transform or use as reference (supports up to 14 images)",
+      "mode": "positive-only"
+    },
+    {
+      "key": "replicate/google/nano-banana-2.1",
+      "field": "inputModalities",
+      "modality": "video",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://replicate.com/google/nano-banana-2.1/api/schema",
+      "quote": "Input images to transform or use as reference (supports up to 14 images)",
+      "mode": "positive-only"
+    },
+    {
+      "key": "replicate/google/nano-banana-2.1",
+      "field": "outputModalities",
+      "modality": "text",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://replicate.com/google/nano-banana-2.1/api/schema",
+      "quote": "Google's fast image generation and editing model, with sharp text rendering, multi-image editing, and up to 4K output.",
+      "mode": "positive-only"
+    },
+    {
+      "key": "replicate/prunaai/flux-kontext-fast",
+      "field": "inputModalities",
+      "modality": "image",
+      "before": "supported",
+      "after": "supported",
+      "sourceUrl": "https://replicate.com/prunaai/flux-kontext-fast/api/schema",
+      "quote": "Input image for image to image mode. The aspect ratio of your output will match this image",
+      "mode": "positive-only"
+    },
+    {
+      "key": "sensenova/kimi-k3",
+      "field": "inputModalities",
+      "modality": "video",
+      "before": "supported",
+      "after": "unknown",
+      "sourceUrl": "https://platform.sensenova.cn/docs",
+      "quote": "SenseNova · LLM API 服务平台",
+      "mode": "mask"
+    }
+  ],
+  "links": [
+    {
+      "key": "replicate/google/imagen-3",
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence.",
+      "attempts": [
+        {
+          "sourceUrl": "https://replicate.com/google/imagen-3",
+          "status": 404,
+          "finalUrl": "https://replicate.com/google/imagen-3",
+          "checkedAt": "2026-11-09T16:12:42.608116+00:00",
+          "sha256": "4d5a749d96e4dbdc2bf4408928c8dc1d57fb2aa21f971398393b3993c6958369",
+          "quote": "Page not found",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/collections/official",
+          "status": 200,
+          "finalUrl": "https://replicate.com/collections/official",
+          "checkedAt": "2026-11-09T16:15:35.300551+00:00",
+          "sha256": "33ba878bd6d517c64e0bdc774e2b13013ea718ec4e8898266ed813a65f90a332",
+          "quote": "Run our collection of official AI models - Replicate MiniMax logoMinimax H3 Lite and Highspeed are 5",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/google",
+          "status": 200,
+          "finalUrl": "https://replicate.com/google",
+          "checkedAt": "2026-11-09T16:17:59.390574+00:00",
+          "sha256": "33cf181d69a95a599111035aa89bce9175bb309508a27875acbc389b9908a95a",
+          "quote": "google | Replicate google Google google / lyria-3.5 Generate full-length songs with vocals and lyric",
+          "matchesExactModel": false
+        }
+      ]
+    },
+    {
+      "key": "replicate/google/imagen-3-fast",
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence.",
+      "attempts": [
+        {
+          "sourceUrl": "https://replicate.com/google/imagen-3-fast",
+          "status": 404,
+          "finalUrl": "https://replicate.com/google/imagen-3-fast",
+          "checkedAt": "2026-11-09T16:12:43.150327+00:00",
+          "sha256": "6e4c2f63bc96ca2ceb42d150cfc269ad824a98b5da64f9089fc2ecca2451b195",
+          "quote": "Page not found",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/collections/official",
+          "status": 200,
+          "finalUrl": "https://replicate.com/collections/official",
+          "checkedAt": "2026-11-09T16:15:35.300551+00:00",
+          "sha256": "33ba878bd6d517c64e0bdc774e2b13013ea718ec4e8898266ed813a65f90a332",
+          "quote": "Run our collection of official AI models - Replicate MiniMax logoMinimax H3 Lite and Highspeed are 5",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/google",
+          "status": 200,
+          "finalUrl": "https://replicate.com/google",
+          "checkedAt": "2026-11-09T16:17:59.390574+00:00",
+          "sha256": "33cf181d69a95a599111035aa89bce9175bb309508a27875acbc389b9908a95a",
+          "quote": "google | Replicate google Google google / lyria-3.5 Generate full-length songs with vocals and lyric",
+          "matchesExactModel": false
+        }
+      ]
+    },
+    {
+      "key": "replicate/google/imagen-4",
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence.",
+      "attempts": [
+        {
+          "sourceUrl": "https://replicate.com/google/imagen-4",
+          "status": 404,
+          "finalUrl": "https://replicate.com/google/imagen-4",
+          "checkedAt": "2026-11-09T16:12:43.150437+00:00",
+          "sha256": "4438c15d0c772c6046d818ac7978af2a209fe7e933b138c450d592bb9535b5e5",
+          "quote": "Page not found",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/collections/official",
+          "status": 200,
+          "finalUrl": "https://replicate.com/collections/official",
+          "checkedAt": "2026-11-09T16:15:35.300551+00:00",
+          "sha256": "33ba878bd6d517c64e0bdc774e2b13013ea718ec4e8898266ed813a65f90a332",
+          "quote": "Run our collection of official AI models - Replicate MiniMax logoMinimax H3 Lite and Highspeed are 5",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/google",
+          "status": 200,
+          "finalUrl": "https://replicate.com/google",
+          "checkedAt": "2026-11-09T16:17:59.390574+00:00",
+          "sha256": "33cf181d69a95a599111035aa89bce9175bb309508a27875acbc389b9908a95a",
+          "quote": "google | Replicate google Google google / lyria-3.5 Generate full-length songs with vocals and lyric",
+          "matchesExactModel": false
+        }
+      ]
+    },
+    {
+      "key": "replicate/google/imagen-4-fast",
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence.",
+      "attempts": [
+        {
+          "sourceUrl": "https://replicate.com/google/imagen-4-fast",
+          "status": 404,
+          "finalUrl": "https://replicate.com/google/imagen-4-fast",
+          "checkedAt": "2026-11-09T16:12:43.150802+00:00",
+          "sha256": "9914ef2d022856ed5ae522c2c48592243c407f7248c89d7f9a72b72c108459b3",
+          "quote": "Page not found",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/collections/official",
+          "status": 200,
+          "finalUrl": "https://replicate.com/collections/official",
+          "checkedAt": "2026-11-09T16:15:35.300551+00:00",
+          "sha256": "33ba878bd6d517c64e0bdc774e2b13013ea718ec4e8898266ed813a65f90a332",
+          "quote": "Run our collection of official AI models - Replicate MiniMax logoMinimax H3 Lite and Highspeed are 5",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/google",
+          "status": 200,
+          "finalUrl": "https://replicate.com/google",
+          "checkedAt": "2026-11-09T16:17:59.390574+00:00",
+          "sha256": "33cf181d69a95a599111035aa89bce9175bb309508a27875acbc389b9908a95a",
+          "quote": "google | Replicate google Google google / lyria-3.5 Generate full-length songs with vocals and lyric",
+          "matchesExactModel": false
+        }
+      ]
+    },
+    {
+      "key": "replicate/google/imagen-4-ultra",
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence.",
+      "attempts": [
+        {
+          "sourceUrl": "https://replicate.com/google/imagen-4-ultra",
+          "status": 404,
+          "finalUrl": "https://replicate.com/google/imagen-4-ultra",
+          "checkedAt": "2026-11-09T16:12:43.175522+00:00",
+          "sha256": "4f392bff1ffcedd470a8ff9fecd9a6d1e3fce80825273c060c4cd75493b317c2",
+          "quote": "Page not found",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/collections/official",
+          "status": 200,
+          "finalUrl": "https://replicate.com/collections/official",
+          "checkedAt": "2026-11-09T16:15:35.300551+00:00",
+          "sha256": "33ba878bd6d517c64e0bdc774e2b13013ea718ec4e8898266ed813a65f90a332",
+          "quote": "Run our collection of official AI models - Replicate MiniMax logoMinimax H3 Lite and Highspeed are 5",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/google",
+          "status": 200,
+          "finalUrl": "https://replicate.com/google",
+          "checkedAt": "2026-11-09T16:17:59.390574+00:00",
+          "sha256": "33cf181d69a95a599111035aa89bce9175bb309508a27875acbc389b9908a95a",
+          "quote": "google | Replicate google Google google / lyria-3.5 Generate full-length songs with vocals and lyric",
+          "matchesExactModel": false
+        }
+      ]
+    },
+    {
+      "key": "runware/openai:1@1",
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://developers.openai.com/api/docs/models/gpt-image-1",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence.",
+      "attempts": [
+        {
+          "sourceUrl": "https://runware.ai/models/openai-1",
+          "status": 404,
+          "finalUrl": "https://runware.ai/models/openai-1",
+          "checkedAt": "2026-11-09T16:12:43.191884+00:00",
+          "sha256": "dc5bc997cc45abc6ded798adfab40d40d7bf2b64df3be4153883175fb01092d4",
+          "quote": "Runware | AI Infrastructure Rebuilt to Cost Less",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/models/gpt-image-1",
+          "status": 404,
+          "finalUrl": "https://runware.ai/models/openai-gpt-image-1",
+          "checkedAt": "2026-11-09T16:15:32.339980+00:00",
+          "sha256": "28f660707fe35b43f993234104585f4d46d226ecf1f8e0d3d507c1ba609e429b",
+          "quote": "Runware | AI Infrastructure Rebuilt to Cost Less",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1",
+          "status": 404,
+          "finalUrl": "https://runware.ai/docs/models/openai-gpt-image-1",
+          "checkedAt": "2026-11-09T16:15:32.340807+00:00",
+          "sha256": "9a1c4fd2d6fcb77802b91c3bd69c4bd4a72f6a026caf9c1976fcaadfa671e7e8",
+          "quote": "Page Not Found | Runware Docs / docs_ Search⌘K AllModelsGuidesExamplesModels APIServerlessToolsLearn",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/models/openai-gpt-image-1",
+          "status": 404,
+          "finalUrl": "https://runware.ai/models/openai-gpt-image-1",
+          "checkedAt": "2026-11-09T16:17:59.389681+00:00",
+          "sha256": "28f660707fe35b43f993234104585f4d46d226ecf1f8e0d3d507c1ba609e429b",
+          "quote": "Runware | AI Infrastructure Rebuilt to Cost Less",
+          "matchesExactModel": false
+        }
+      ]
+    },
+    {
+      "key": "runware/xai:grok-imagine@image-quality",
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence. The sibling Grok image page has a different AIR and cannot establish quality availability.",
+      "attempts": [
+        {
+          "sourceUrl": "https://runware.ai/models/grok-imagine-image-quality",
+          "status": 404,
+          "finalUrl": "https://runware.ai/models/grok-imagine-image-quality",
+          "checkedAt": "2026-11-09T16:12:44.717033+00:00",
+          "sha256": "662c0dba2a5ebd6c935d6b8feb86c97261edfd11fee9c95bb449367fdbec9511",
+          "quote": "Runware | AI Infrastructure Rebuilt to Cost Less",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/models/grok-imagine-image",
+          "status": 200,
+          "finalUrl": "https://runware.ai/models/xai-grok-imagine-image",
+          "checkedAt": "2026-11-09T16:15:32.340675+00:00",
+          "sha256": "2073830b3a972ab1e6f861f16dd34e04c8e795316b1847822fba0c7541b4a857",
+          "quote": "Grok Imagine Imagexai:grok-imagine@image",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/models/xai-grok-imagine-image-quality",
+          "status": 404,
+          "finalUrl": "https://runware.ai/models/xai-grok-imagine-image-quality",
+          "checkedAt": "2026-11-09T16:15:32.340752+00:00",
+          "sha256": "a361e85409c7308c2957f857f81f6fcfeaa0b78c4170ecd2bc4b1ce397d9d9e3",
+          "quote": "Runware | AI Infrastructure Rebuilt to Cost Less",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality",
+          "status": 404,
+          "finalUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality",
+          "checkedAt": "2026-11-09T16:15:32.340857+00:00",
+          "sha256": "9a1c4fd2d6fcb77802b91c3bd69c4bd4a72f6a026caf9c1976fcaadfa671e7e8",
+          "quote": "Page Not Found | Runware Docs / docs_ Search⌘K AllModelsGuidesExamplesModels APIServerlessToolsLearn",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/models/xai-grok-imagine-image-quality",
+          "status": 404,
+          "finalUrl": "https://runware.ai/models/xai-grok-imagine-image-quality",
+          "checkedAt": "2026-11-09T16:17:59.389904+00:00",
+          "sha256": "a361e85409c7308c2957f857f81f6fcfeaa0b78c4170ecd2bc4b1ce397d9d9e3",
+          "quote": "Runware | AI Infrastructure Rebuilt to Cost Less",
+          "matchesExactModel": false
+        }
+      ]
+    }
+  ],
+  "sourceChanges": [
+    {
+      "key": "bailian/deepseek-v4.1-flash",
+      "before": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+      "after": "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash"
+    },
+    {
+      "key": "bailian/qwen-image-3.0",
+      "before": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+      "after": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0"
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M3.1-Flash",
+      "before": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+      "after": "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash"
+    },
+    {
+      "key": "bailian/xiaomi/mimo-v2.6-pro-ultraspeed",
+      "before": "https://help.aliyun.com/zh/model-studio/mimo",
+      "after": "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed"
+    },
+    {
+      "key": "fal/google/nano-banana-2.1",
+      "before": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+      "after": "https://fal.ai/models/google/nano-banana-2.1/api"
+    },
+    {
+      "key": "replicate/google/nano-banana-2.1",
+      "before": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+      "after": "https://replicate.com/google/nano-banana-2.1"
+    },
+    {
+      "key": "stability/sd3.5-flash",
+      "before": "https://docs.stability.ai/api-reference/generate/stable-diffusion-35",
+      "after": "https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1sd3/post",
+      "staticOnly": true
+    }
+  ]
+}

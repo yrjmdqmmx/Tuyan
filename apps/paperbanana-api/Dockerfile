@@ -17,6 +17,10 @@ COPY packages/benchmark-core packages/benchmark-core
 COPY packages/api/src packages/api/src
 COPY packages/types/src packages/types/src
 COPY packages/figure-taxonomy/src packages/figure-taxonomy/src
+# Pure card display rules and reviewed evidence shared with Web; no Web runtime.
+COPY apps/web/src/lib/catalogCardFacts.js apps/web/src/lib/modelCardSources.js apps/web/src/lib/
+COPY apps/web/src/data/model-card-specifications.json apps/web/src/data/model-card-specifications.json
+COPY config/channel-audit/specific-model-page-overrides.json config/channel-audit/dead-links-20261109.json config/channel-audit/
 RUN pnpm --filter @paperbanana/paperbanana-api build
 RUN pnpm --filter @paperbanana/paperbanana-api deploy --prod --legacy /opt/paperbanana-api
 RUN printf '%s' "$PAPERBANANA_CODE_SHA" | grep -Eq '^[0-9a-f]{40}$' && printf '{"codeSha":"%s"}\n' "$PAPERBANANA_CODE_SHA" > /opt/paperbanana-api/build-provenance.json && chmod 0444 /opt/paperbanana-api/build-provenance.json

@@ -1,3 +1,15 @@
+## 2026-11-09 · R21 Phase 2：渠道模态与完整模型展示（未发布）
+
+按 2 → 1 → 3 → 4 完成；仅公开官方文档/型号页无认证 GET，无 Git 写命令、其他工作树写入、登录、推理/付费调用或部署。逐项引文、HTTP 状态和复现命令见 [Phase 2](docs/model-modality-audit-20261109.md#phase-2)。
+
+- [x] Shared / Core：版本化证据覆盖百炼原 20 / 完整 34 卡、68 个表格字段；27 卡 / 30 项误导模态复核为 2 支持、28 未知。渠道表格优先，未知仅遮蔽被复核模态；原厂归档与执行能力不改。完整 registry 增加可选展示投影 `cardSpecifications`（fields/sourceUrl/sourceLabel/note）。
+- [x] Gateway：生成事实同步，原样转发全部 1,061 个完整对象及展示投影，无新增 action/env/路由。
+- [x] Web：统一精确 ID 解析完整 live/static 对象；目录、模型库、选择器和历史 ID 回退均覆盖。完整 Core 对象与 ID 解析的首链接/模态差异 659 → 0；使用同一 registry 的四字段差异 0。
+- [x] 小程序：normalizer 保留完整展示投影，picker 优先使用；离线投影从完整静态规格生成，包体使用无损编码。159/159、build/check 通过；源码 1,569,244 bytes，原 1,572,864 上限不变，余 3,620；继续暂停发布。
+- [x] 七条死链：5 Replicate Imagen + 2 Runware 全部保留，渠道 availability 均 unverified；404/目录静默不作下线证据，同级 Grok AIR 不替代 quality 身份；既有原厂可见链接保留。
+- [x] 验收：Core 35/35、Gateway 17/17、脚本 42/42；Web 定向 121/122，唯一失败为 d1fe6ff6 已有 TokenDance 来源标签旧期望，原断言未改。Web/Core build、Core/Mini 类型检查与生成/同步/历史冻结报告通过；Core Docker COPY 已补齐展示模块及 JSON，并校验完整打包依赖图；sync-workflow 保留任务允许的既有漂移。各端新增契约接入已完成。
+- [ ] 外部边界：七型号真实渠道在列/账号权益、既有实屏/微信原生扫描和生产验收未进行；只读公开文档不能替代上述验收。既有 Web 标签期望失败与 workflow 漂移仍记录在报告中。
+
 ## 2026-11-09 · R21 P1：TokenDance 渠道模态优先（未发布）
 
 仅使用操作方已捕获的公开快照；无网络、推理/付费调用、Git 写操作、部署或其他工作树写入。新证据 `tokendance-catalog-snapshot-20261109b.json` 保留旧快照；119 个目录 ID、119 个门户 200，目录新增/缺失均 0，协议集合仅 kimi-k3 新增两项（不启用执行协议）。

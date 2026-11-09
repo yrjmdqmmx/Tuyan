@@ -92,7 +92,7 @@ test('Ark requires management credentials and resumes from next unread phase',as
 })
 test('specific Qwen pages distinguish text-only alias and multimodal dated snapshot',()=>{
  assert.deepEqual(exactModelDetails('bailian','qwen3.7-max').specifications.officialInputModalities,['text'])
- assert.deepEqual(exactModelDetails('bailian','qwen3.7-max-2026-06-08').specifications.officialInputModalities,['text','image','video'])
+ assert.deepEqual(exactModelDetails('bailian','qwen3.7-max-2026-06-08').specifications.officialInputModalities,['image','text','video'])
  assert.equal(exactModelDetails('bailian','qwen3.5-35b-a3b').specifications.contextWindowTokens,262144)
  assert.equal(exactModelDetails('openrouter','qwen/qwen3.8-max-prime'),undefined)
 })

@@ -35,7 +35,7 @@ test('packing preserves Unicode, primitive values, object order and independent 
   const value = {
     modelB:{...shared,label:'科学图研模型🌏版本 B',url:'https://example.org/models/science/B'},
     modelA:{...shared,label:'科学图研模型🌏版本 A',url:'https://example.org/models/science/A'},
-    empty:'', literalNumbers:[0,-1,1.25], numericKeys:{10:'ten',2:'two'},
+    empty:'', numericReferenceLookalikes:['~1.a.0','~','~~模型'], literalNumbers:[0,-1,1.25], numericKeys:{10:'ten',2:'two'},
   }
   const {restored} = verify(value)
   restored.modelA.roles.push('fixture-change')
@@ -60,6 +60,14 @@ test('similar nested records round-trip without cyclic bases or shared mutable f
 test('the decoder still accepts the previous packed format', () => {
   const legacy = { root: 0, nodes: [[2, 1, 2, 3], [1, 4, 5], 'legacy', [4, '1.6.6'], 'id', 'roles', 'vision'] }
   assert.deepEqual(unpackModelCatalog(legacy), { id: 'legacy', roles: ['vision', 'vision'] })
+})
+
+test('positional array deltas round-trip nested arrays with independent ownership', () => {
+  const rows = Array.from({length: 24}, (_, i) => [null, false, {name:'相同🌏'}, ...Array.from({length:30}, (_, j) => j === 15 ? i : j)])
+  const {packed, restored} = verify(rows)
+  assert.ok(packed.nodes.some(node => Array.isArray(node) && node[0] === 5))
+  restored[0][2].name = 'changed'
+  assert.equal(restored[1][2].name, '相同🌏')
 })
 
 test('the full catalog round-trips through the shipped decoder and stays below the unchanged package budget', () => {

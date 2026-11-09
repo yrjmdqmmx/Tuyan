@@ -92,13 +92,30 @@ test('R13 compiled picker shows all seven vendor replacements and no catalog car
   assert.equal(cards, 1064)
 })
 
-test('R13B compiled picker labels every notice and uses the R21 DeepSeek channel page', () => {
+test('R13B pre-phase-2 static notice priorities and all 34 visible notices remain reproducible', async () => {
+  const { archivedAuditText, loadCard } = await import('../../../scripts/lib/model-card-audit.mjs')
+  const web = await loadCard(root, 'd1fe6ff6')
+  const source = archivedAuditText(root, 'd1fe6ff6', 'apps/web/src/lib/staticModelCatalog.js').replace(/export const /g, 'const ')
+  const oldStatic = vm.runInNewContext(source + ';STATIC_MODEL_REGISTRY')
+  const cases = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r13b-notice-cards.json')))
+  assert.equal(cases.length, 25)
+  for (const { channel, modelId, url } of cases) {
+    assert.equal(web(channel, oldStatic[channel].models.find(model => model.id === modelId)).sources[0], url)
+  }
+  let notices = 0
+  for (const [channel, provider] of Object.entries(oldStatic)) for (const model of provider.models) {
+    if (/deprecat|depreciat|retire|sunset|下线|aliyun\.com\/notice\/\d+|docs\.x\.ai\/developers\/migration\//i.test(web(channel, model).sources[0])) notices++
+  }
+  assert.equal(notices, 34)
+})
+
+test('R13B compiled picker resolves full-model source priorities and retains notice labels', () => {
   const cases = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r13b-notice-cards.json')))
   assert.equal(cases.length, 25)
   const filename = path.join(root, 'apps/miniprogram/miniprogram/components/model-picker/model-picker.js')
   const context = { Component() {}, exports: {}, require: createRequire(filename) }
   vm.runInNewContext(fs.readFileSync(filename, 'utf8') + '\nthis.present = presentModel', context, { filename })
-  for (const row of [...cases.map(row => ({ ...row, label: '下线公告' })), {
+  for (const row of [...cases.map(row => ({ ...row, url: row.fullFirstUrl, label: row.url === row.fullFirstUrl ? '下线公告' : '官方文档' })), {
     channel: 'tokendance', modelId: 'deepseek-chat-v3-0324', url: 'https://tokendance.space/models/deepseek-chat-v3-0324', label: '官方文档',
   }]) {
     const { channel, modelId, url, label } = row
@@ -116,5 +133,5 @@ test('R13B compiled picker labels every notice and uses the R21 DeepSeek channel
       }
     }
   }
-  assert.equal(notices, 34)
+  assert.equal(notices, 16)
 })

@@ -6,8 +6,12 @@ exports.unpackModelCatalog = unpackModelCatalog;
 function unpackModelCatalog(data) {
     function expand(index) {
         let node = data.nodes[index];
+        if (typeof node === 'string' && node.startsWith('~'))
+            node = node.slice(1).split('.').map(n => parseInt(n, 36));
         if (!Array.isArray(node))
             return node;
+        if (node[0] === 6)
+            return node[1];
         if (node[0] === 4)
             node = String(node[1]).split('.').map(n => parseInt(n, 36));
         if (node[0] === 5) {

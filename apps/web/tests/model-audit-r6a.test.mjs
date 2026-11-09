@@ -1,6 +1,9 @@
 import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
+import vm from 'node:vm'
+import { fileURLToPath } from 'node:url'
+import { loadCard, archivedAuditText, readPackedRegistry } from '../../../scripts/lib/model-card-audit.mjs'
 import React from 'react'
 import { render, screen, cleanup, fireEvent } from '@testing-library/react'
 import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
@@ -10,11 +13,31 @@ import { mergeCardFacts } from '../src/lib/catalogCardFacts.js'
 import { modalityIconStates } from '../src/lib/modelModalityIcons.js'
 import channelSnapshot from '../../../config/channel-audit/tokendance-catalog-snapshot-20261109b.json' with { type: 'json' }
 import baseline from './fixtures/model-modalities-main-c7b6a2fc.json' with { type: 'json' }
+import phase2 from '../../../config/channel-audit/model-modality-phase2-20261109.json' with { type: 'json' }
 
 const require = createRequire(import.meta.url)
 const mini = require('../../miniprogram/miniprogram/utils/model-audit.js')
 const rows = Object.entries(STATIC_MODEL_REGISTRY).flatMap(([provider, entry]) => entry.models.map(model => ({ provider, model })))
 afterEach(cleanup)
+const root = fileURLToPath(new URL('../../../', import.meta.url))
+const beforeCard = await loadCard(root, 'd1fe6ff6')
+const beforeCore = readPackedRegistry(root + 'apps/web/tests/fixtures/r11-registry-head.json')
+
+test('the pre-phase-2 static baseline still retains every previously supported modality', () => {
+  const source = archivedAuditText(root, 'd1fe6ff6', 'apps/web/src/lib/staticModelCatalog.js').replace(/export const /g, 'const ')
+  const registry = vm.runInNewContext(source + ';STATIC_MODEL_REGISTRY')
+  let count = 0
+  for (const [provider, entry] of Object.entries(registry)) for (const model of entry.models) {
+    count++
+    if (provider === 'tokendance') continue // all 74 are separately asserted against the phase-1 channel snapshot below
+    const card = beforeCard(provider, model), caps = model.capabilities || {}
+    if (model.roles.some(role => ['vision','edit','source-image','reference-image'].includes(role)) || caps.referenceImages || caps.requiresSourceImage || caps.imageEditing || caps.imageEditMode === 'direct-edit')
+      assert.ok(card.fields.inputModalities.value?.includes('image'), provider+'/'+model.id)
+    for (const field of ['inputModalities','outputModalities']) for (const value of baseline.modalities[provider+'/'+model.id]?.[field] || [])
+      assert.ok(card.fields[field].value?.includes(value), provider+'/'+model.id+'/'+value)
+  }
+  assert.equal(count,1064)
+})
 
 test('every static card retains main supported modalities and all product image-input requirements', () => {
   assert.equal(baseline.commit, 'c7b6a2fc')
@@ -34,10 +57,20 @@ test('every static card retains main supported modalities and all product image-
       assert.deepEqual(model, before, key + ' display must not mutate execution data')
       continue
     }
-    if (needsImage) assert.ok(card.fields.inputModalities.value?.includes('image'), key + ' requires image input')
+    const reviewedState = (field, modality) => phase2.tables[key]
+      ? phase2.tables[key][field].includes(modality) ? 'supported' : 'unsupported'
+      : phase2.reviews[key]?.[field]?.decisions[modality]
+    const checkSupport = (field, modality) => {
+      const state = reviewedState(field, modality), fact = card.fields[field]
+      const fullBefore = beforeCore.providers[provider]?.models.find(row => row.id === model.id)
+      const previouslySupported = fullBefore ? beforeCard(provider, fullBefore).fields[field].value?.includes(modality) || false : true
+      assert.equal(fact.value?.includes(modality) || false, state ? state === 'supported' : previouslySupported, key + '/' + field + '/' + modality)
+      if (state) assert.equal(fact.unsupportedModalities?.includes(modality) || false, state === 'unsupported', key + '/reviewed-' + modality)
+    }
+    if (needsImage) checkSupport('inputModalities', 'image')
     for (const field of ['inputModalities', 'outputModalities']) {
       for (const modality of baseline.modalities[key]?.[field] || []) {
-        assert.ok(card.fields[field].value?.includes(modality), key + '/' + field + ' lost main ' + modality)
+        checkSupport(field, modality)
       }
     }
     assert.deepEqual(model, before, key + ' display must not mutate execution data')

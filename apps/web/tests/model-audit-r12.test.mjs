@@ -15,12 +15,14 @@ import final from './fixtures/r12-final-changed-links.json' with { type: 'json' 
 import linkChecks from './fixtures/r12-final-link-check-20261109.json' with { type: 'json' }
 import rendered from './fixtures/r12-tokendance-rendered.json' with { type: 'json' }
 import exceptions from './fixtures/r12-specificity-exceptions.json' with { type: 'json' }
+import phase2 from '../../../docs/model-modality-audit-20261109-phase2-results.json' with { type: 'json' }
 const registry = unpackRegistry(full), rows = rowsOf(registry)
 const model = (channel, id) => registry.providers[channel].models.find(m => m.id === id)
 const models = new Map(rowsOf(STATIC_MODEL_REGISTRY).map(row => [row.channel + '/' + row.model.id, row.model]))
 for (const row of rows) models.set(row.channel + '/' + row.model.id, row.model)
 const linkIdentity = ({ channel, modelId, oldUrl, finalUrl }) => ({ channel, modelId, oldUrl, finalUrl })
-const r21Url = row => row.channel === 'tokendance' ? 'https://tokendance.space/models/' + row.modelId : row.finalUrl
+const r21Url = row => phase2.sourceChanges.find(change => change.key === row.channel + '/' + row.modelId)?.after
+  || (row.channel === 'tokendance' ? 'https://tokendance.space/models/' + row.modelId : row.finalUrl)
 const expectedR21Changes = before.rows.map(({ channel, modelId, oldUrl }) => {
   const archived = final.find(row => row.channel === channel && row.modelId === modelId)
   return { channel, modelId, oldUrl, finalUrl: r21Url({ channel, modelId, finalUrl: archived?.finalUrl || oldUrl }) }

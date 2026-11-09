@@ -81,5 +81,13 @@ export function mergeCardFacts(audit, existing, model = {}) {
     const prior = fields.inputModalities
     fields.inputModalities = { ...prior, value: supportedModalities(prior.value, [], true), state: 'known', provenance: 'product', sourceUrl: null, sourceUrls: [], displayValue: undefined }
   }
+  for (const field of cardFields.filter(field => field.endsWith('Modalities'))) {
+    const unknown = audit.fields[field].modalityMasks
+    if (unknown?.length) {
+      const fact = fields[field], value = fact.value?.filter?.(id => !unknown.includes(id)) || null
+      fields[field] = { ...fact, value: value?.length ? value : null, state: value?.length ? 'known' : 'unknown', displayValue: undefined,
+        modalityMasks: unknown, unsupportedModalities: fact.unsupportedModalities?.filter(id => !unknown.includes(id)) }
+    }
+  }
   return { fields, conflicts }
 }

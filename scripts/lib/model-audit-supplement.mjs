@@ -3,6 +3,7 @@ import deadLinks from '../../config/channel-audit/dead-links-20261109.json' with
 import { isDeadSource } from '../../apps/web/src/lib/modelCardSources.js'
 import tokenDance from '../../config/channel-audit/tokendance-catalog-snapshot-20261109b.json' with { type: 'json' }
 import tokenDanceCatalog from '../../config/tokendance/catalog.json' with { type: 'json' }
+import { applyPhase2 } from './model-modality-phase2.mjs'
 export function supplementModelAudit(snapshot, supplement, removed, addendum = { scheduledDeprecations: [] }) {
   const data = structuredClone(snapshot)
   const intern = (list, value) => {
@@ -95,6 +96,7 @@ export function supplementModelAudit(snapshot, supplement, removed, addendum = {
       row[5] = intern(data.sources, sourceUrl)
     }
   }
+  applyPhase2(data)
   // Drop unused facts/sources as well as removed rows, keeping regeneration stable.
   const facts = [], sources = []
   for (const row of Object.values(data.rows)) {

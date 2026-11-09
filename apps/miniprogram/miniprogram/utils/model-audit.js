@@ -21,13 +21,14 @@ function auditedModelSpecs(channel, id) {
     result.totalContextTokens.suffix = details === null || details === void 0 ? void 0 : details.suffix;
     if (details === null || details === void 0 ? void 0 : details.unknownInputModalities)
         result.inputModalities.unknownModalities = details.unknownInputModalities;
+    for (const [field, values] of Object.entries((details === null || details === void 0 ? void 0 : details.modalityMasks) || {}))
+        result[field].modalityMasks = values;
     for (const [field, values] of Object.entries((details === null || details === void 0 ? void 0 : details.unsupportedModalities) || {}))
         result[field].unsupportedModalities = values;
     for (const field of (details === null || details === void 0 ? void 0 : details.suppressFallback) || [])
         result[field].suppressFallback = true;
     return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: (details === null || details === void 0 ? void 0 : details.sourceUrls) || [], sourceLabel: (row === null || row === void 0 ? void 0 : row[6]) || '官方文档', note: (details === null || details === void 0 ? void 0 : details.note) || '' };
 }
-// Tombstones preserve exact identities for messages and explicit replacement choices, never catalog entries.
 function removedModel(channel, id, now = Date.now()) {
     var _a;
     const key = channel + '/' + String(id).trim();
@@ -48,8 +49,6 @@ function removedModelHint(channel, id, now = Date.now()) {
     const removed = removedModel(channel, id, now);
     return removed ? `${removed.displayName}：原型号已不可用，请重新选择。${removed.replacementApiId ? `推荐：${removed.replacementDisplayName}` : ''}` : '';
 }
-// Date-only notices take effect at the start of the stated UTC calendar day.
-// Serverless notices apply only to the Fireworks adapter used by this product.
 function auditedModelLifecycle(channel, id, now = Date.now()) {
     const notice = MODEL_AUDIT_DATA.notices[channel + '/' + String(id).trim()];
     if (!notice || notice.scope === 'serverless' && channel !== 'fireworks')
