@@ -1200,51 +1200,61 @@
     "channel": "replicate",
     "modelId": "google/imagen-3",
     "oldUrl": "https://replicate.com/google/imagen-3/api/schema",
-    "finalUrl": "https://replicate.com/google/imagen-3",
-    "status": 404,
+    "finalUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate",
+    "status": 200,
     "contentType": "text/html",
-    "checkedAt": "2026-11-09T10:38:46.634Z",
-    "originalStatus": 404
+    "checkedAt": "2026-11-09",
+    "originalStatus": 404,
+    "previousUrl": "https://replicate.com/google/imagen-3",
+    "previousStatus": 404
   },
   {
     "channel": "replicate",
     "modelId": "google/imagen-3-fast",
     "oldUrl": "https://replicate.com/google/imagen-3-fast/api/schema",
-    "finalUrl": "https://replicate.com/google/imagen-3-fast",
-    "status": 404,
+    "finalUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001",
+    "status": 200,
     "contentType": "text/html",
-    "checkedAt": "2026-11-09T10:38:46.634Z",
-    "originalStatus": 404
+    "checkedAt": "2026-11-09",
+    "originalStatus": 404,
+    "previousUrl": "https://replicate.com/google/imagen-3-fast",
+    "previousStatus": 404
   },
   {
     "channel": "replicate",
     "modelId": "google/imagen-4",
     "oldUrl": "https://replicate.com/google/imagen-4/api/schema",
-    "finalUrl": "https://replicate.com/google/imagen-4",
-    "status": 404,
+    "finalUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001",
+    "status": 200,
     "contentType": "text/html",
-    "checkedAt": "2026-11-09T10:38:46.634Z",
-    "originalStatus": 404
+    "checkedAt": "2026-11-09",
+    "originalStatus": 404,
+    "previousUrl": "https://replicate.com/google/imagen-4",
+    "previousStatus": 404
   },
   {
     "channel": "replicate",
     "modelId": "google/imagen-4-fast",
     "oldUrl": "https://replicate.com/google/imagen-4-fast/api/schema",
-    "finalUrl": "https://replicate.com/google/imagen-4-fast",
-    "status": 404,
+    "finalUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001",
+    "status": 200,
     "contentType": "text/html",
-    "checkedAt": "2026-11-09T10:38:46.634Z",
-    "originalStatus": 404
+    "checkedAt": "2026-11-09",
+    "originalStatus": 404,
+    "previousUrl": "https://replicate.com/google/imagen-4-fast",
+    "previousStatus": 404
   },
   {
     "channel": "replicate",
     "modelId": "google/imagen-4-ultra",
     "oldUrl": "https://replicate.com/google/imagen-4-ultra/api/schema",
-    "finalUrl": "https://replicate.com/google/imagen-4-ultra",
-    "status": 404,
+    "finalUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001",
+    "status": 200,
     "contentType": "text/html",
-    "checkedAt": "2026-11-09T10:38:46.634Z",
-    "originalStatus": 404
+    "checkedAt": "2026-11-09",
+    "originalStatus": 404,
+    "previousUrl": "https://replicate.com/google/imagen-4-ultra",
+    "previousStatus": 404
   },
   {
     "channel": "replicate",
@@ -2438,11 +2448,13 @@
     "channel": "runware",
     "modelId": "openai:1@1",
     "oldUrl": "https://runware.ai/docs/models/openai-gpt-image-1/schema.json",
-    "finalUrl": "https://runware.ai/docs/models/openai-gpt-image-1",
-    "status": 404,
+    "finalUrl": "https://developers.openai.com/api/docs/models/gpt-image-1",
+    "status": 200,
     "contentType": "text/html",
-    "checkedAt": "2026-11-09T10:38:46.634Z",
-    "originalStatus": 404
+    "checkedAt": "2026-11-09",
+    "originalStatus": 404,
+    "previousUrl": "https://runware.ai/docs/models/openai-gpt-image-1",
+    "previousStatus": 404
   },
   {
     "channel": "runware",
@@ -3006,11 +3018,13 @@
     "channel": "runware",
     "modelId": "xai:grok-imagine@image-quality",
     "oldUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json",
-    "finalUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality",
-    "status": 404,
+    "finalUrl": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2",
+    "status": 200,
     "contentType": "text/html",
-    "checkedAt": "2026-11-09T10:38:46.634Z",
-    "originalStatus": 404
+    "checkedAt": "2026-11-09",
+    "originalStatus": 404,
+    "previousUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality",
+    "previousStatus": 404
   },
   {
     "channel": "runware",
@@ -3079,10 +3093,10 @@
     "channel": "tokendance",
     "modelId": "deepseek-chat-v3-0324",
     "oldUrl": "https://tokendance.space/gateway/v1/models",
-    "finalUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "finalUrl": "https://api-docs.deepseek.com/news/news250325",
     "status": 200,
     "contentType": "text/html",
-    "checkedAt": "2026-11-09T10:38:46.634Z"
+    "checkedAt": "2026-11-09"
   },
   {
     "channel": "tokendance",

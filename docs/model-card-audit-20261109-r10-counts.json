@@ -6,7 +6,7 @@
   "totals": {
     "cards": 1061,
     "tableUnknown": 34,
-    "sourceDiff": 623,
+    "sourceDiff": 616,
     "modalityDiff": 614,
     "eitherDiff": 698
   },
@@ -147,7 +147,7 @@
     "replicate": {
       "cards": 108,
       "tableUnknown": 0,
-      "sourceDiff": 103,
+      "sourceDiff": 98,
       "modalityDiff": 101,
       "eitherDiff": 103
     },
@@ -161,7 +161,7 @@
     "runware": {
       "cards": 148,
       "tableUnknown": 0,
-      "sourceDiff": 145,
+      "sourceDiff": 143,
       "modalityDiff": 142,
       "eitherDiff": 147
     },
@@ -2444,27 +2444,27 @@
     },
     {
       "key": "replicate/google/imagen-4",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "replicate/google/imagen-4-fast",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "replicate/google/imagen-4-ultra",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "replicate/google/imagen-3",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "replicate/google/imagen-3-fast",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -3259,7 +3259,7 @@
     },
     {
       "key": "runware/xai:grok-imagine@image-quality",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -3709,7 +3709,7 @@
     },
     {
       "key": "runware/openai:1@1",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {

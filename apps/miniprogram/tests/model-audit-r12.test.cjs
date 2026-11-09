@@ -64,3 +64,58 @@ test('R12C projection keeps every rendered fact, qualifier, note and source; onl
   assert.ok(data.sources.every(url => !templatedUrls.has(url)))
   assert.ok(Object.values(data.details).every(detail => !detail.sourceLinks && !detail.sourceUrls))
 })
+
+test('R13 compiled picker shows all seven vendor replacements and no catalog card selects a denylisted URL', () => {
+  const checks = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r12-final-link-check-20261109.json')))
+  const dead = JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/dead-links-20261109.json')))
+  const deadUrls = new Set(dead.map(row => row.url))
+  const filename = path.join(root, 'apps/miniprogram/miniprogram/components/model-picker/model-picker.js')
+  const context = { Component() {}, exports: {}, require: createRequire(filename) }
+  vm.runInNewContext(fs.readFileSync(filename, 'utf8') + '\nthis.present = presentModel', context, { filename })
+  const repaired = checks.filter(row => row.originalStatus === 404)
+  assert.equal(repaired.length, 7)
+  for (const { channel, modelId, finalUrl } of repaired) {
+    const entry = STATIC_MODEL_REGISTRY[channel].models.find(model => model.id === modelId)
+    const small = auditedModelSpecs(channel, modelId)
+    const label = modelId === 'xai:grok-imagine@image-quality' ? '下线公告' : '原厂规格'
+    assert.equal(small.sourceUrl, finalUrl); assert.equal(small.sourceLabel, label)
+    assert.equal(require('../miniprogram/utils/model-audit.js').removedModel(channel, modelId), null)
+    const presented = context.present(entry, '', '', channel)
+    assert.deepEqual(structuredClone(presented.specSources), [{ url: finalUrl, label: label + ' · ' + new URL(finalUrl).hostname }])
+  }
+  let cards = 0
+  for (const [channel, provider] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of provider.models) {
+    cards++
+    const presented = context.present(model, '', '', channel)
+    for (const source of presented.specSources) assert.ok(!deadUrls.has(source.url), channel + '/' + model.id)
+    assert.ok(!deadUrls.has(auditedModelSpecs(channel, model.id).sourceUrl))
+  }
+  assert.equal(cards, 1064)
+})
+
+test('R13B compiled picker labels every notice and uses the exact DeepSeek vendor release', () => {
+  const cases = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r13b-notice-cards.json')))
+  assert.equal(cases.length, 25)
+  const filename = path.join(root, 'apps/miniprogram/miniprogram/components/model-picker/model-picker.js')
+  const context = { Component() {}, exports: {}, require: createRequire(filename) }
+  vm.runInNewContext(fs.readFileSync(filename, 'utf8') + '\nthis.present = presentModel', context, { filename })
+  for (const row of [...cases.map(row => ({ ...row, label: '下线公告' })), {
+    channel: 'tokendance', modelId: 'deepseek-chat-v3-0324', url: 'https://api-docs.deepseek.com/news/news250325', label: '原厂规格',
+  }]) {
+    const { channel, modelId, url, label } = row
+    const entry = STATIC_MODEL_REGISTRY[channel].models.find(model => model.id === modelId)
+    const small = auditedModelSpecs(channel, modelId)
+    assert.equal(small.sourceUrl, url); assert.equal(small.sourceLabel, label)
+    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ url, label: label + ' · ' + new URL(url).hostname }])
+  }
+  let notices = 0
+  for (const [channel, provider] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of provider.models) {
+    for (const { url, label } of context.present(model, '', '', channel).specSources) {
+      if (/deprecat|depreciat|retire|sunset|下线|aliyun\.com\/notice\/\d+|docs\.x\.ai\/developers\/migration\//i.test(url)) {
+        notices++
+        assert.equal(label, '下线公告 · ' + new URL(url).hostname, channel + '/' + model.id)
+      }
+    }
+  }
+  assert.equal(notices, 34)
+})

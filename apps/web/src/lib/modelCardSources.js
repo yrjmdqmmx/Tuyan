@@ -1,4 +1,11 @@
 import { safeSources } from './catalogCardFacts.js'
+import deadLinks from '../../../../config/channel-audit/dead-links-20261109.json' with { type: 'json' }
+
+const sourcePath = value => { const url = new URL(value); return url.origin + url.pathname.replace(/\/$/, '') }
+const deadPaths = new Set(deadLinks.map(row => sourcePath(row.url)))
+export function isDeadSource(value) {
+  try { return deadPaths.has(sourcePath(value)) } catch { return false }
+}
 
 // Source evidence stays intact; only human-facing links are filtered/ranked.
 export function isApiSource(value, checks = {}) {
@@ -23,7 +30,12 @@ export function sourceSpecificity(value) {
     || /\/api-reference\/?$/i.test(path) && !url.hash) return 1
   return 2
 }
-const noticePage = url => /(?:deprecat|depreciat|retire|sunset|下线)/i.test(new URL(url).pathname)
+const noticePage = value => {
+  const { hostname, pathname } = new URL(value)
+  return /(?:deprecat|depreciat|retire|sunset|下线)/i.test(pathname)
+    || /(^|\.)aliyun\.com$/i.test(hostname) && /^\/notice\/\d+\/?$/i.test(pathname)
+    || hostname === 'docs.x.ai' && /^\/developers\/migration\//i.test(pathname)
+}
 
 function modelPageForEndpoint(value, model, captured) {
   const url = new URL(value)
@@ -53,11 +65,13 @@ export function modelCardSources({ channel, model = {}, audit, fields, lifecycle
     ...links.map(link => link.url)])
   const urls = safeSources([...links.filter(link => link.kind === 'model-page' || link.scope === 'vendor').map(link => link.url),
     ...captured.map(url => isApiSource(url, checks) ? modelPageForEndpoint(url, model, captured) : url)])
-    .filter(url => !isApiSource(url, checks) && checks[url]?.rendersModel !== false)
+    .filter(url => !isDeadSource(url) && !isApiSource(url, checks) && checks[url]?.rendersModel !== false)
   const channelHosts = new Set(channelSources.map(url => new URL(url).hostname))
   for (const url of urls) if (channelOwns(channel, url) && !channelSources.includes(url)) channelSources.push(url)
-  const lifecycleSources = urls.filter(url => ['scheduled', 'retired'].includes(lifecycle?.state)
-    && (url === lifecycle.sourceUrl || noticePage(url) || links.some(link => link.url === url && ['lifecycle', 'retirement-notice'].includes(link.kind))))
+  // A tagged vendor announcement describes the source, not channel availability.
+  const lifecycleSources = urls.filter(url => links.some(link => link.url === url && link.kind === 'retirement-notice')
+    || ['scheduled', 'retired'].includes(lifecycle?.state)
+    && (url === lifecycle.sourceUrl || noticePage(url) || links.some(link => link.url === url && link.kind === 'lifecycle')))
   // Preserve existing priority outside the requested lifecycle/API/list cases.
   // In particular, a generic channel table must not displace a vendor page.
   const isChannel = url => channelSources.includes(url) || channelHosts.has(new URL(url).hostname)
@@ -70,7 +84,9 @@ export function modelCardSources({ channel, model = {}, audit, fields, lifecycle
   return { sources, channelSources, vendorSources, lifecycleSources }
 }
 
-export const modelSourceName = (data, url) => data.lifecycleSources.includes(url) ? '下线公告'
+// A notice's label describes the page even without a channel retirement state.
+// Keep the existing lifecycle source ranking independent from this label.
+export const modelSourceName = (data, url) => data.lifecycleSources.includes(url) || noticePage(url) ? '下线公告'
   : data.channelSources.includes(url) ? '官方文档' : data.vendorSources.includes(url) ? '原厂规格' : '官方文档'
 
 const channelDomains = {

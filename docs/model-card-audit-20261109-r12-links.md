@@ -1,6 +1,6 @@
-# R12C 最终首链接清单
+# R13B 最终首链接清单
 
-口径：完整 R11 Core 捕获 1061 卡，加 3 个仅静态目录身份；相同对象分别由 R8/pre-R9（785b99df）与当前卡片代码计算。共 1064 卡，397 张相对 R8 首链接变化，405 张相对 R11 变化。交付 JSON 保持 channel/modelId/oldUrl/finalUrl 四字段；“完整对象”指各侧计算使用完整 Core model，而非仅 id。**最终 HTTP 检查待操作方执行并回填状态/时间；R11 的旧 46 项 200 不能作为本轮最终 URL 的状态。**
+口径：完整 R11 Core 捕获 1061 卡，加 3 个仅静态目录身份；相同对象分别由 R8/pre-R9（785b99df）与当前卡片代码计算。共 1064 卡，397 张相对 R8 首链接变化，405 张相对 R11 变化。交付 JSON 保持 channel/modelId/oldUrl/finalUrl 四字段；“完整对象”指各侧计算使用完整 Core model，而非仅 id。**最终检查：397 卡 / 374 个不同 URL / 全部 200（HTML），404 例外为空。**沿用操作方 2026-11-09 18:38 UTC+8 检查；七条替换链接使用 R13 约 19:05 UTC+8 的 GET / 浏览器 UA / 跟随重定向核验；R13B 的 DeepSeek V3-0324 原厂发布页另经操作方 2026-11-09 核实为 200 / text/html（尾斜杠重定向）。这八条 checkedAt 为 2026-11-09。旧可见 URL 与原 API/schema 的 404 证据保留在死链夹具和[主验收表](model-card-audit-20261109.md#r12d最终链接-http-检查当前验收)。
 
 ## 按渠道和原因汇总
 
@@ -12,18 +12,21 @@
 | fal | API/JSON 替换为同型号人可读页 | 37 |
 | iflytek | API/JSON 无具体人可读页，按夹具回退 | 7 |
 | kimi | 渠道具体型号页优先于总表 | 3 |
-| replicate | API/JSON 替换为同型号人可读页 | 90 |
+| replicate | API/JSON 替换为同型号人可读页 | 85 |
+| replicate | 已核实死链改用原厂具体页/公告 | 5 |
 | replicate | 渠道具体型号页优先于总表 | 4 |
-| runware | API/JSON 替换为同型号人可读页 | 145 |
+| runware | API/JSON 替换为同型号人可读页 | 143 |
+| runware | 已核实死链改用原厂具体页/公告 | 2 |
 | stability | 渠道具体型号页优先于总表 | 1 |
 | stepfun | 渠道具体型号页优先于总表 | 4 |
-| tokendance | API/JSON 无具体人可读页，按夹具回退 | 2 |
+| tokendance | API/JSON 无具体人可读页，按夹具回退 | 1 |
+| tokendance | API/JSON 替换为同型号人可读页 | 1 |
 | tokendance | Chrome 核实的渠道型号页 | 52 |
 | xiaomi | 渠道具体型号页优先于总表 | 2 |
 
 ## 具体程度例外
 
-完整与静态目录各 1064 卡逐一对照 R11，除以下 9 个身份的 API/JSON 回退外不得降低具体程度。夹具 `apps/web/tests/fixtures/r12-specificity-exceptions.json` 记录每个投影的旧/新 URL、理由和全部可用人可读来源；测试同时排除“已有具体页面却回退”及过期例外。只表示当前捕获证据未含具体页，不声称全网不存在。
+完整与静态目录各 1064 卡逐一对照 R11，除以下 8 个身份的 API/JSON 回退外不得降低具体程度。夹具 `apps/web/tests/fixtures/r12-specificity-exceptions.json` 记录每个投影的旧/新 URL、理由和全部可用人可读来源；测试同时排除“已有具体页面却回退”及过期例外。只表示当前捕获证据未含具体页，不声称全网不存在。
 
 | 渠道 / 型号 | 原因（完整与静态投影均逐项登记） | 最终 URL |
 | --- | --- | --- |
@@ -34,7 +37,6 @@
 | iflytek / `spark-x2.6-4b` | R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。 | https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html |
 | iflytek / `xsparkx2` | R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。 | https://www.xfyun.cn/doc/spark/HTTP调用文档.html |
 | iflytek / `xsparkx2flash` | R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。 | https://www.xfyun.cn/doc/spark/HTTP调用文档.html |
-| tokendance / `deepseek-chat-v3-0324` | R11 首链接为 JSON 模型列表；2026-11-09 Chrome 捕获确认此型号页不展示指定模型，已有来源无具体型号人可读页，回退到原厂文档。 | https://api-docs.deepseek.com/quick_start/pricing/ |
 | tokendance / `qwen3-max` | R11 首链接为 JSON 模型列表；2026-11-09 Chrome 捕获确认此型号页不展示指定模型，已有来源无具体型号人可读页，回退到原厂文档。 | https://help.aliyun.com/zh/model-studio/models |
 
 ## 原首链接命中 API/JSON 规则的卡片
@@ -122,11 +124,11 @@
 | replicate | `fofr/sdxl-emoji` | https://replicate.com/fofr/sdxl-emoji/api/schema | https://replicate.com/fofr/sdxl-emoji |
 | replicate | `fofr/sticker-maker` | https://replicate.com/fofr/sticker-maker/api/schema | https://replicate.com/fofr/sticker-maker |
 | replicate | `google/gemini-3-flash` | https://replicate.com/google/gemini-3-flash/api/schema | https://replicate.com/google/gemini-3-flash |
-| replicate | `google/imagen-3` | https://replicate.com/google/imagen-3/api/schema | https://replicate.com/google/imagen-3 |
-| replicate | `google/imagen-3-fast` | https://replicate.com/google/imagen-3-fast/api/schema | https://replicate.com/google/imagen-3-fast |
-| replicate | `google/imagen-4` | https://replicate.com/google/imagen-4/api/schema | https://replicate.com/google/imagen-4 |
-| replicate | `google/imagen-4-fast` | https://replicate.com/google/imagen-4-fast/api/schema | https://replicate.com/google/imagen-4-fast |
-| replicate | `google/imagen-4-ultra` | https://replicate.com/google/imagen-4-ultra/api/schema | https://replicate.com/google/imagen-4-ultra |
+| replicate | `google/imagen-3` | https://replicate.com/google/imagen-3/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate |
+| replicate | `google/imagen-3-fast` | https://replicate.com/google/imagen-3-fast/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001 |
+| replicate | `google/imagen-4` | https://replicate.com/google/imagen-4/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001 |
+| replicate | `google/imagen-4-fast` | https://replicate.com/google/imagen-4-fast/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001 |
+| replicate | `google/imagen-4-ultra` | https://replicate.com/google/imagen-4-ultra/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001 |
 | replicate | `ideogram-ai/ideogram-4-5` | https://replicate.com/ideogram-ai/ideogram-4-5/api/schema | https://replicate.com/ideogram-ai/ideogram-4-5 |
 | replicate | `ideogram-ai/ideogram-4-5-precise-edit` | https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema | https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit |
 | replicate | `ideogram-ai/ideogram-v2` | https://replicate.com/ideogram-ai/ideogram-v2/api/schema | https://replicate.com/ideogram-ai/ideogram-v2 |
@@ -256,7 +258,7 @@
 | runware | `minimax:m2.7@0` | https://runware.ai/docs/models/minimax-m2-7/schema.json | https://runware.ai/docs/models/minimax-m2-7 |
 | runware | `minimax:m2.7@highspeed` | https://runware.ai/docs/models/minimax-m2-7-highspeed/schema.json | https://runware.ai/docs/models/minimax-m2-7-highspeed |
 | runware | `minimax:m3@0` | https://runware.ai/docs/models/minimax-m3/schema.json | https://runware.ai/docs/models/minimax-m3 |
-| runware | `openai:1@1` | https://runware.ai/docs/models/openai-gpt-image-1/schema.json | https://runware.ai/docs/models/openai-gpt-image-1 |
+| runware | `openai:1@1` | https://runware.ai/docs/models/openai-gpt-image-1/schema.json | https://developers.openai.com/api/docs/models/gpt-image-1 |
 | runware | `openai:1@2` | https://runware.ai/docs/models/openai-gpt-image-1-mini/schema.json | https://runware.ai/docs/models/openai-gpt-image-1-mini |
 | runware | `openai:4@1` | https://runware.ai/docs/models/openai-gpt-image-1-5/schema.json | https://runware.ai/docs/models/openai-gpt-image-1-5 |
 | runware | `openai:gpt-image@2` | https://runware.ai/docs/models/openai-gpt-image-2/schema.json | https://runware.ai/docs/models/openai-gpt-image-2 |
@@ -319,10 +321,10 @@
 | runware | `vidu:q1@image` | https://runware.ai/docs/models/vidu-q1-image/schema.json | https://runware.ai/docs/models/vidu-q1-image |
 | runware | `xai:grok-imagine@image` | https://runware.ai/docs/models/xai-grok-imagine-image/schema.json | https://runware.ai/docs/models/xai-grok-imagine-image |
 | runware | `xai:grok-imagine@image-2.0` | https://runware.ai/docs/models/xai-grok-imagine-image-2-0/schema.json | https://runware.ai/docs/models/xai-grok-imagine-image-2-0 |
-| runware | `xai:grok-imagine@image-quality` | https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json | https://runware.ai/docs/models/xai-grok-imagine-image-quality |
+| runware | `xai:grok-imagine@image-quality` | https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json | https://docs.x.ai/developers/migration/imagine-image-quality-nov-2 |
 | runware | `xai:grok@4.3` | https://runware.ai/docs/models/xai-grok-4-3/schema.json | https://runware.ai/docs/models/xai-grok-4-3 |
 | runware | `zai:glm@5.1` | https://runware.ai/docs/models/zai-glm-5-1/schema.json | https://runware.ai/docs/models/zai-glm-5-1 |
-| tokendance | `deepseek-chat-v3-0324` | https://tokendance.space/gateway/v1/models | https://api-docs.deepseek.com/quick_start/pricing/ |
+| tokendance | `deepseek-chat-v3-0324` | https://tokendance.space/gateway/v1/models | https://api-docs.deepseek.com/news/news250325 |
 | tokendance | `deepseek-v4-flash-0731` | https://tokendance.space/gateway/v1/models | https://tokendance.space/models/deepseek-v4-flash-0731 |
 | tokendance | `deepseek-v4-pro` | https://tokendance.space/gateway/v1/models | https://tokendance.space/models/deepseek-v4-pro |
 | tokendance | `deepseek-v4-pro-0813` | https://tokendance.space/gateway/v1/models | https://tokendance.space/models/deepseek-v4-pro-0813 |
@@ -397,7 +399,7 @@
 | tokendance | `deepseek-v3.2` | https://tokendance.space/gateway/v1/models | https://huggingface.co/deepseek-ai/DeepSeek-V3.2 |
 | tokendance | `qwen3-30b-a3b-instruct-2507` | https://tokendance.space/gateway/v1/models | https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507 |
 
-## 相对 R8 的最终变化（待最终 HTTP 检查）
+## 相对 R8 的最终变化（397 卡 / 374 URL / 全部 200）
 
 | channel | model id | old URL | final URL |
 | --- | --- | --- | --- |
@@ -534,11 +536,11 @@
 | replicate | `fofr/sdxl-emoji` | https://replicate.com/fofr/sdxl-emoji/api/schema | https://replicate.com/fofr/sdxl-emoji |
 | replicate | `fofr/sticker-maker` | https://replicate.com/fofr/sticker-maker/api/schema | https://replicate.com/fofr/sticker-maker |
 | replicate | `google/gemini-3-flash` | https://replicate.com/google/gemini-3-flash/api/schema | https://replicate.com/google/gemini-3-flash |
-| replicate | `google/imagen-3` | https://replicate.com/google/imagen-3/api/schema | https://replicate.com/google/imagen-3 |
-| replicate | `google/imagen-3-fast` | https://replicate.com/google/imagen-3-fast/api/schema | https://replicate.com/google/imagen-3-fast |
-| replicate | `google/imagen-4` | https://replicate.com/google/imagen-4/api/schema | https://replicate.com/google/imagen-4 |
-| replicate | `google/imagen-4-fast` | https://replicate.com/google/imagen-4-fast/api/schema | https://replicate.com/google/imagen-4-fast |
-| replicate | `google/imagen-4-ultra` | https://replicate.com/google/imagen-4-ultra/api/schema | https://replicate.com/google/imagen-4-ultra |
+| replicate | `google/imagen-3` | https://replicate.com/google/imagen-3/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate |
+| replicate | `google/imagen-3-fast` | https://replicate.com/google/imagen-3-fast/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001 |
+| replicate | `google/imagen-4` | https://replicate.com/google/imagen-4/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001 |
+| replicate | `google/imagen-4-fast` | https://replicate.com/google/imagen-4-fast/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001 |
+| replicate | `google/imagen-4-ultra` | https://replicate.com/google/imagen-4-ultra/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001 |
 | replicate | `ideogram-ai/ideogram-4-5` | https://replicate.com/ideogram-ai/ideogram-4-5/api/schema | https://replicate.com/ideogram-ai/ideogram-4-5 |
 | replicate | `ideogram-ai/ideogram-4-5-precise-edit` | https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema | https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit |
 | replicate | `ideogram-ai/ideogram-v2` | https://replicate.com/ideogram-ai/ideogram-v2/api/schema | https://replicate.com/ideogram-ai/ideogram-v2 |
@@ -671,7 +673,7 @@
 | runware | `minimax:m2.7@0` | https://runware.ai/docs/models/minimax-m2-7/schema.json | https://runware.ai/docs/models/minimax-m2-7 |
 | runware | `minimax:m2.7@highspeed` | https://runware.ai/docs/models/minimax-m2-7-highspeed/schema.json | https://runware.ai/docs/models/minimax-m2-7-highspeed |
 | runware | `minimax:m3@0` | https://runware.ai/docs/models/minimax-m3/schema.json | https://runware.ai/docs/models/minimax-m3 |
-| runware | `openai:1@1` | https://runware.ai/docs/models/openai-gpt-image-1/schema.json | https://runware.ai/docs/models/openai-gpt-image-1 |
+| runware | `openai:1@1` | https://runware.ai/docs/models/openai-gpt-image-1/schema.json | https://developers.openai.com/api/docs/models/gpt-image-1 |
 | runware | `openai:1@2` | https://runware.ai/docs/models/openai-gpt-image-1-mini/schema.json | https://runware.ai/docs/models/openai-gpt-image-1-mini |
 | runware | `openai:4@1` | https://runware.ai/docs/models/openai-gpt-image-1-5/schema.json | https://runware.ai/docs/models/openai-gpt-image-1-5 |
 | runware | `openai:gpt-image@2` | https://runware.ai/docs/models/openai-gpt-image-2/schema.json | https://runware.ai/docs/models/openai-gpt-image-2 |
@@ -734,7 +736,7 @@
 | runware | `vidu:q1@image` | https://runware.ai/docs/models/vidu-q1-image/schema.json | https://runware.ai/docs/models/vidu-q1-image |
 | runware | `xai:grok-imagine@image` | https://runware.ai/docs/models/xai-grok-imagine-image/schema.json | https://runware.ai/docs/models/xai-grok-imagine-image |
 | runware | `xai:grok-imagine@image-2.0` | https://runware.ai/docs/models/xai-grok-imagine-image-2-0/schema.json | https://runware.ai/docs/models/xai-grok-imagine-image-2-0 |
-| runware | `xai:grok-imagine@image-quality` | https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json | https://runware.ai/docs/models/xai-grok-imagine-image-quality |
+| runware | `xai:grok-imagine@image-quality` | https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json | https://docs.x.ai/developers/migration/imagine-image-quality-nov-2 |
 | runware | `xai:grok@4.3` | https://runware.ai/docs/models/xai-grok-4-3/schema.json | https://runware.ai/docs/models/xai-grok-4-3 |
 | runware | `zai:glm@5.1` | https://runware.ai/docs/models/zai-glm-5-1/schema.json | https://runware.ai/docs/models/zai-glm-5-1 |
 | stability | `sd3.5-flash` | https://platform.stability.ai/docs/getting-started/models | https://docs.stability.ai/api-reference/generate/stable-diffusion-35 |
@@ -742,7 +744,7 @@
 | stepfun | `step-3.5-flash-2603` | https://platform.stepfun.com/docs/zh/guides/models/list | https://platform.stepfun.com/docs/zh/guides/models/step-3.5-flash |
 | stepfun | `step-3.7-flash` | https://platform.stepfun.com/docs/zh/guides/models/list | https://platform.stepfun.com/docs/zh/guides/models/step-3.7-flash |
 | stepfun | `step-5-preview` | https://platform.stepfun.com/docs/zh/guides/models/list | https://platform.stepfun.com/docs/zh/guides/models/step-5-preview |
-| tokendance | `deepseek-chat-v3-0324` | https://tokendance.space/gateway/v1/models | https://api-docs.deepseek.com/quick_start/pricing/ |
+| tokendance | `deepseek-chat-v3-0324` | https://tokendance.space/gateway/v1/models | https://api-docs.deepseek.com/news/news250325 |
 | tokendance | `deepseek-v4-pro` | https://api-docs.deepseek.com/quick_start/pricing/ | https://tokendance.space/models/deepseek-v4-pro |
 | tokendance | `deepseek-v4-pro-0813` | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 | https://tokendance.space/models/deepseek-v4-pro-0813 |
 | tokendance | `deepseek-v4.1-flash` | https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash | https://tokendance.space/models/deepseek-v4.1-flash |

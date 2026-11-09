@@ -22,17 +22,9 @@ for (const row of rows) models.set(row.channel + '/' + row.model.id, row.model)
 const linkIdentity = ({ channel, modelId, oldUrl, finalUrl }) => ({ channel, modelId, oldUrl, finalUrl })
 const changedLinksFromR8 = () => before.rows.map(({ channel, modelId, oldUrl }) => ({ channel, modelId, oldUrl,
   finalUrl: modelCardSpecifications(channel, models.get(channel + '/' + modelId)).sources[0] || null })).filter(row => row.oldUrl !== row.finalUrl)
-// Operator decision in CODEX_TASK_R12D.md: retain these human-page links for
-// PM / next PR because every original R8 API/schema link also returned 404.
-const httpExceptions = [
-  { channel: 'replicate', modelId: 'google/imagen-3', reason: 'original link also 404/API' },
-  { channel: 'replicate', modelId: 'google/imagen-3-fast', reason: 'original link also 404/API' },
-  { channel: 'replicate', modelId: 'google/imagen-4', reason: 'original link also 404/API' },
-  { channel: 'replicate', modelId: 'google/imagen-4-fast', reason: 'original link also 404/API' },
-  { channel: 'replicate', modelId: 'google/imagen-4-ultra', reason: 'original link also 404/API' },
-  { channel: 'runware', modelId: 'openai:1@1', reason: 'original link also 404/API' },
-  { channel: 'runware', modelId: 'xai:grok-imagine@image-quality', reason: 'original link also 404/API' },
-]
+// R13 replaces all seven failures with operator-verified vendor sources.
+const httpExceptions = []
+const repairedLinks = linkChecks.filter(row => row.originalStatus === 404)
 beforeEach(t => t.mock.method(Date, 'now', () => Date.parse('2026-11-09')))
 afterEach(cleanup)
 function assertLink(channel, entry, url, label) {
@@ -110,7 +102,8 @@ test('R12 ranking is general: tagged lifecycle wins; dedicated channel pages bea
       { url: general, scope: 'channel', kind: 'documentation' }, { url: dedicated, scope: 'channel', kind: 'model-page' },
       { url: notice, scope: 'channel', kind: 'retirement-notice' },
     ] } }
-    assert.equal(modelCardSources(args).sources[0], dedicated)
+    assert.equal(modelCardSources({ ...args, audit: { sourceLinks: args.audit.sourceLinks.slice(0, 2) } }).sources[0], dedicated)
+    assert.equal(modelCardSources(args).sources[0], notice)
     for (const state of ['scheduled', 'retired']) {
       const data = modelCardSources({ ...args, lifecycle: { state } })
       assert.equal(data.sources[0], notice); assert.equal(modelSourceName(data, notice), '下线公告')
@@ -137,7 +130,7 @@ test('R12C keeps OpenAI/Together docs and replaces Replicate/fal endpoints with 
       row.channel === 'openai' ? openai++ : together++
     }
     if (/^https:\/\/replicate\.com\/[^/]+\/[^/]+\/api\/schema/.test(row.r11Url)) {
-      assert.equal(url, row.r11Url.replace(/\/api\/schema(?:\?.*)?$/, '')); replicate++
+      assert.equal(url, repairedLinks.find(item => item.channel === row.channel && item.modelId === row.modelId)?.finalUrl || row.r11Url.replace(/\/api\/schema(?:\?.*)?$/, '')); replicate++
     }
     if (row.channel === 'replicate' && row.r11Url.startsWith('https://developers.openai.com/api/docs/models/')) {
       assert.equal(url, row.r11Url); replicateOpenAI++
@@ -169,7 +162,7 @@ test('R12C every full/static card preserves R11 specificity with exact, reasoned
     } else assert.ok(sourceSpecificity(finalUrl) >= sourceSpecificity(row.r11Url), key + ': ' + row.r11Url + ' -> ' + finalUrl)
   }
   assert.deepEqual(actualExceptions, exceptions.rows, 'no stale or broadened exception entries')
-  assert.equal(new Set(exceptions.rows.map(row => row.channel + '/' + row.modelId)).size, 9)
+  assert.equal(new Set(exceptions.rows.map(row => row.channel + '/' + row.modelId)).size, 8)
 })
 test('R12C an endpoint replacement prefers same-host model documentation, then vendor model documentation, then generic', () => {
   const endpoint = 'https://docs.example.test/api/v1/models', generic = 'https://docs.example.test/models'
@@ -196,11 +189,12 @@ test('R12D final HTTP fixture exactly covers all 397 full-object R8 first-link c
   for (const row of linkChecks) {
     const key = row.channel + '/' + row.modelId
     const fields = ['channel', 'modelId', 'oldUrl', 'finalUrl', 'status', 'contentType', 'checkedAt']
-    if ([404, 410].includes(row.status)) fields.push('originalStatus')
+    if (row.originalStatus === 404) fields.push('originalStatus', 'previousUrl', 'previousStatus')
     assert.deepEqual(Object.keys(row).sort(), fields.sort(), key)
     assert.ok(Number.isInteger(row.status) && row.status >= 200 && row.status <= 599, key)
     assert.ok(Number.isFinite(Date.parse(row.checkedAt)), key)
-    assert.equal(row.checkedAt, '2026-11-09T10:38:46.634Z', key)
+    const refreshed = row.originalStatus === 404 || key === 'tokendance/deepseek-chat-v3-0324'
+    assert.equal(row.checkedAt, refreshed ? '2026-11-09' : '2026-11-09T10:38:46.634Z', key)
     assert.doesNotMatch(row.contentType, /json/i, key)
     assert.match(row.contentType, /^text\/html(?:;|$)/i, key)
     assert.equal(isApiSource(row.finalUrl, { [row.finalUrl]: row }), false, key)
@@ -210,11 +204,11 @@ test('R12D final HTTP fixture exactly covers all 397 full-object R8 first-link c
   }
   assert.equal(distinct.size, 374)
   const counts = entries => entries.reduce((result, row) => ({ ...result, [row.status]: (result[row.status] || 0) + 1 }), {})
-  assert.deepEqual(counts(linkChecks), { 200: 390, 404: 7 })
-  assert.deepEqual(counts([...distinct.values()]), { 200: 367, 404: 7 })
+  assert.deepEqual(counts(linkChecks), { 200: 397 })
+  assert.deepEqual(counts([...distinct.values()]), { 200: 374 })
 })
 
-test('R12D every 404/410 has an exact operator exception and original 404/API evidence', () => {
+test('R13 has no remaining 404/410 exceptions and preserves seven original 404/API records', () => {
   const actual = []
   for (const row of linkChecks.filter(row => [404, 410].includes(row.status))) {
     const key = row.channel + '/' + row.modelId
@@ -225,7 +219,14 @@ test('R12D every 404/410 has an exact operator exception and original 404/API ev
     assert.equal(isApiSource(row.oldUrl), true, key)
     actual.push(exception)
   }
-  assert.equal(actual.length, 7)
+  assert.equal(actual.length, 0)
+  assert.equal(repairedLinks.length, 7)
+  for (const row of repairedLinks) {
+    assert.equal(row.status, 200)
+    assert.equal(row.previousStatus, 404)
+    assert.equal(isApiSource(row.oldUrl), true)
+    assert.notEqual(row.previousUrl, row.finalUrl)
+  }
   assert.deepEqual(actual, httpExceptions, 'no missing, stale or broadened HTTP exceptions')
 })
 
@@ -244,9 +245,9 @@ test('R12D audit tables exactly preserve all checked links and seven original-li
   const tableRows = [...complete.matchAll(/^\| ([^|]+) \| `([^`]+)` \| (\S+) \| (\d+) \| (\S+) \|$/gm)]
     .map(([, channel, modelId, finalUrl, status, oldUrl]) => ({ channel, modelId, finalUrl, status: Number(status), oldUrl }))
   assert.deepEqual(tableRows, linkChecks.map(({ channel, modelId, finalUrl, status, oldUrl }) => ({ channel, modelId, finalUrl, status, oldUrl })))
-  const failed = section.split('### 7 个 404 例外与处理决定')[1].split('\n### ')[0]
-  const failures = [...failed.matchAll(/^\| ([^|]+) \| `([^`]+)` \| (\S+) \| (\d+) \| (\S+) \| (\d+) \|$/gm)]
-    .map(([, channel, modelId, finalUrl, status, oldUrl, originalStatus]) => ({ channel, modelId, finalUrl, status: Number(status), oldUrl, originalStatus: Number(originalStatus) }))
-  assert.deepEqual(failures, linkChecks.filter(row => [404, 410].includes(row.status))
-    .map(({ channel, modelId, finalUrl, status, oldUrl, originalStatus }) => ({ channel, modelId, finalUrl, status, oldUrl, originalStatus })))
+  const failed = section.split('### 7 个死链修复与旧 404 证据')[1].split('\n### ')[0]
+  const failures = [...failed.matchAll(/^\| ([^|]+) \| `([^`]+)` \| (\S+) \| (\d+) \| (\S+) \| (\d+) \| (\S+) \| (\d+) \|$/gm)]
+    .map(([, channel, modelId, finalUrl, status, oldUrl, originalStatus, previousUrl, previousStatus]) => ({ channel, modelId, finalUrl, status: Number(status), oldUrl, originalStatus: Number(originalStatus), previousUrl, previousStatus: Number(previousStatus) }))
+  assert.deepEqual(failures, repairedLinks
+    .map(({ channel, modelId, finalUrl, status, oldUrl, originalStatus, previousUrl, previousStatus }) => ({ channel, modelId, finalUrl, status, oldUrl, originalStatus, previousUrl, previousStatus })))
 })

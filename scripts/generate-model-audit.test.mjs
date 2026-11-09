@@ -190,3 +190,52 @@ test('versioned Ant Ling deprecations regenerate deterministically without priva
   const catalog = read('model-catalog-updates.json')
   for (const old of addendum.alreadyRetiredOnOfficialPage) assert.equal(catalog.providers.antling.some(m => m.id === old.apiModelId), false)
 })
+
+test('R13 generator filters denied Core/API source pointers, preserves field evidence and never creates channel retirements', () => {
+  const read = file => JSON.parse(fs.readFileSync(new URL('../' + file, import.meta.url)))
+  const data = read('config/model-audit.generated.json'), supplement = read('config/channel-audit/model-audit-supplement-20261109.json')
+  const removed = read('config/removed-models.json'), dead = read('config/channel-audit/dead-links-20261109.json')
+  const repaired = read('apps/web/tests/fixtures/r12-final-link-check-20261109.json').filter(row => row.originalStatus === 404)
+  assert.equal(repaired.length, 7); assert.equal(dead.length, 14)
+  const denied = new Set(dead.map(row => row.url))
+  for (const { url, ...check } of dead) assert.deepEqual(data.sourceChecks[url], check)
+  for (const { channel, modelId, finalUrl, oldUrl, previousUrl } of repaired) {
+    const key = channel + '/' + modelId, row = data.rows[key]
+    assert.ok(!denied.has(data.sources[row[5]]))
+    assert.equal(data.details[key].sourceLinks[0].url, finalUrl)
+    assert.equal(data.details[key].sourceLinks[0].scope, 'vendor')
+    assert.equal(data.removed[key], undefined); assert.equal(data.notices[key], undefined)
+    assert.deepEqual(dead.filter(item => item.cards.includes(key)).map(item => item.url).sort(), [oldUrl, previousUrl].sort())
+    const noFallback = structuredClone(supplement), original = structuredClone(data)
+    delete noFallback.sourceLinks[key]
+    original.rows[key][5] = original.sources.push(oldUrl) - 1
+    const result = supplementModelAudit(original, noFallback, removed)
+    assert.equal(result.rows[key][5], null, 'unknown source must not restore a 404')
+    for (let i = 0; i < 4; i++) {
+      const before = data.facts[row[i]], after = result.facts[result.rows[key][i]]
+      assert.deepEqual(after.slice(0, 3), before.slice(0, 3))
+      assert.equal(result.sources[after[3]], data.sources[before[3]])
+    }
+  }
+  for (const [key, row] of Object.entries(data.rows)) {
+    assert.ok(!denied.has(data.sources[row[5]]), key)
+    for (const link of data.details[key]?.sourceLinks || []) assert.ok(!denied.has(link.url), key)
+  }
+})
+
+test('R13B generator carries the exact DeepSeek vendor release without replacing field evidence', () => {
+  const read = file => JSON.parse(fs.readFileSync(new URL('../' + file, import.meta.url)))
+  const data = read('config/model-audit.generated.json'), supplement = read('config/channel-audit/model-audit-supplement-20261109.json')
+  const key = 'tokendance/deepseek-chat-v3-0324', url = 'https://api-docs.deepseek.com/news/news250325'
+  assert.equal(supplement.sourceLinks[key][0].url, url)
+  assert.equal(supplement.sourceLinks[key][0].scope, 'vendor')
+  assert.equal(supplement.sourceLinks[key][0].checkedAt, '2026-11-09')
+  assert.deepEqual(data.details[key].sourceLinks, supplement.sourceLinks[key])
+  assert.deepEqual(data.sourceChecks[url], { status: 200, contentType: 'text/html', checkedAt: '2026-11-09', finalUrl: url + '/', title: 'V3-0324 Release | DeepSeek API Docs' })
+  const original = read('config/channel-audit/input-20261109.json').pairs.find(row => row.channel + '/' + row.apiModelId === key)
+  for (const field of data.fields) {
+    const fact = data.facts[data.rows[key][data.fields.indexOf(field)]]
+    const evidence = original.fieldProvenance[field]?.sourceUrl
+    if (evidence) assert.equal(data.sources[fact[3]], evidence)
+  }
+})

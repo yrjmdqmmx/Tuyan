@@ -88,18 +88,6 @@
     {
       "scope": "full",
       "channel": "tokendance",
-      "modelId": "deepseek-chat-v3-0324",
-      "r11Url": "https://tokendance.space/gateway/v1/models",
-      "finalUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
-      "reason": "R11 首链接为 JSON 模型列表；2026-11-09 Chrome 捕获确认此型号页不展示指定模型，已有来源无具体型号人可读页，回退到原厂文档。",
-      "evidence": "apps/web/tests/fixtures/r12-tokendance-rendered.json",
-      "availableHumanSources": [
-        "https://api-docs.deepseek.com/quick_start/pricing/"
-      ]
-    },
-    {
-      "scope": "full",
-      "channel": "tokendance",
       "modelId": "qwen3-max",
       "r11Url": "https://tokendance.space/gateway/v1/models",
       "finalUrl": "https://help.aliyun.com/zh/model-studio/models",
@@ -191,18 +179,6 @@
       "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
       "availableHumanSources": [
         "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
-      ]
-    },
-    {
-      "scope": "static",
-      "channel": "tokendance",
-      "modelId": "deepseek-chat-v3-0324",
-      "r11Url": "https://tokendance.space/gateway/v1/models",
-      "finalUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
-      "reason": "R11 首链接为 JSON 模型列表；2026-11-09 Chrome 捕获确认此型号页不展示指定模型，已有来源无具体型号人可读页，回退到原厂文档。",
-      "evidence": "apps/web/tests/fixtures/r12-tokendance-rendered.json",
-      "availableHumanSources": [
-        "https://api-docs.deepseek.com/quick_start/pricing/"
       ]
     },
     {

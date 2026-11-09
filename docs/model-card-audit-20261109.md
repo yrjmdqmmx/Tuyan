@@ -1,41 +1,109 @@
-# 模型卡审计验收 · 2026-11-09 R12D
+# 模型卡审计验收 · 2026-11-09 R13B
+
+## R13B：公告标签与 DeepSeek V3-0324 来源（当前验收）
+
+按 `.audit-input/r13/CODEX_TASK_R13B.md` 完成两项补充，保留 R13 未提交修改。未运行 Git 写命令、未触碰只读基线、未发起真实或付费模型调用；TokenDance 空目录隐藏逻辑及其计数夹具未改。
+
+1. 公告页面统一显示“下线公告”：百炼 6 张 `/notice/<id>` 卡、小米公告在百炼和 TokenHub 的 2 张卡、OpenAI **15** 张静态快照卡（实际目录多于任务列出的 11 张）及 xAI migration 退役公告。Runware xAI 原有公告标签保持；全目录规则还纠正硅基 `Qwen/Qwen-Image-Edit`、千帆 `qwen-image-edit` 两张静态卡的百炼退役公告标签。页面标签独立于渠道生命周期，既有退役来源优先级保留；完整对象中已有更优型号页的 OpenAI / xAI 卡继续显示该型号页，公告作为次级来源正确命名。Core 提供原审计来源，由消费端共用解析器命名；小程序在生成阶段使用同一解析器，编译 presenter 已验证。
+2. `tokendance/deepseek-chat-v3-0324` 首链接改为 `https://api-docs.deepseek.com/news/news250325`，显示“原厂规格”。审计 supplement / 生成物记录 vendor、checkedAt=2026-11-09、操作方提供的 200 / text/html、标题 “V3-0324 Release | DeepSeek API Docs” 及尾斜杠重定向。R12 最终检查夹具与两份表已同步；完整 / 静态具体程度例外各移除该项，剩 **8** 个身份。最终仍是 **397 卡 / 374 个不同 URL / 全部 200 / 404 例外为空**；本轮仅沿用操作方 HTTP 证据。
+
+首链接标签计数（相对本轮开始的 R13 工作树）：
+
+| 投影 | 卡数 | 官方文档 | 原厂规格 | 下线公告 | 改标签卡数 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 完整 Core 对象 | 1061 | 1011 → 1005 | 42 → 40 | 8 → 16 | 8 |
+| 静态 / 小程序 | 1064 | 1003 → 981 | 53 → 49 | 8 → 34 | 26 |
+
+含次级链接时，两种投影各有 **45** 个来源标签改为“下线公告”。全部 **2,125** 个卡片对象与开始快照逐项比较，仅 DeepSeek 这一身份的来源集合 / 首链接变化；四项规格和生命周期完全一致。共享审计的 rows、facts、sources、notices、removed、additions 与开始快照一致；R10 / R11 计数及 27 卡 / 30 项待复核清单不变。
+
+- 验证：Web 受影响 **118/118**、scripts 全套 **37/37**、小程序全套 **142/142**、Core/API 审计与 HTTP **11/11**、Gateway 审计 **6/6**；0 失败、0 跳过。新增覆盖所有指定完整 / 静态对象的普通 / 紧凑 DOM、全目录可见及次级公告标签、编译小程序 presenter、Core 审计来源消费和 DeepSeek 精确发布页 / 核验日期。
+- 审计 / 目录 / 参考上传生成器完成；审计 `--check`、目录与参考上传双 `sync --check`、R12 清单 `--check`、R10 `--check`、R11 `--frozen-main --check` 均通过。Web / 小程序 build、小程序 / Core 类型检查通过；Web 仍有既有大 chunk 提示。复现命令沿用下方 R13 段落。
+- 小程序源码 **1,567,342 bytes**，较本轮开始 **1,567,353** 少 **11 bytes**；runtime **1,144,058**、媒体 **189,978 bytes**。原上限 **1,572,864 bytes** 未改，余 **5,522 bytes**。仅缩短生成数据文件的注释抵消新标签 / URL 字节，未删字段或改预算测试。
+
+## R13：仅修复七个可见死链（当前验收）
+
+按 `.audit-input/r13/CODEX_TASK_R13.md`，仅为下列七张卡补入原厂官方来源；通过审计 supplement、生成器及共享来源选择实现，无 UI 型号硬编码。规格、角色、价格、权限、请求与渠道生命周期不变；七个身份均保留，未标记 delisted/removed。未运行 Git 写命令、未触碰 `../Tuyan-wt-baseline`、未发起付费调用或部署。
+
+`config/channel-audit/dead-links-20261109.json` 固化 **14** 个旧可见/API URL，逐项含 url、404、checkedAt=2026-11-09、cards。Web 在所有候选和 API 派生链接之后过滤（包括查询参数/片段变体）；Core/API 生成来源指针也排除黑名单，字段来源仅作为历史证据保留。无可用来源时为空。小程序在生成阶段采用相同选择规则，运行时仅接收最终 URL 与标签，不打包黑名单。
+
+六张卡显示“原厂规格”：Replicate Imagen 3、3 Fast、4、4 Fast、4 Ultra，以及 Runware GPT-Image-1。Runware Grok Imagine Image Quality 的精确原厂退役公告显示“下线公告”；该来源标签不改变 Runware 可用性。OpenAI 页面自身注明 shut down/retired，也不外推渠道状态。
+
+### 下一 PR 核实清单
+
+下列七项的 **Replicate / Runware 渠道可用性与有效渠道页面均未核实**；原厂页面可达性不构成渠道下线证据，本轮均未 delisted/removed。下一 PR 逐项核实渠道是否继续提供、精确 ID 与可用官方渠道页：
+
+- [ ] `replicate/google/imagen-3`
+- [ ] `replicate/google/imagen-3-fast`
+- [ ] `replicate/google/imagen-4`
+- [ ] `replicate/google/imagen-4-fast`
+- [ ] `replicate/google/imagen-4-ultra`
+- [ ] `runware/openai:1@1`
+- [ ] `runware/xai:grok-imagine@image-quality`
+
+### R13 验证与包体
+
+- Web 受影响测试 **115/115**、scripts 全套 **36/36**、小程序全套 **141/141**、Core/API 审计与 HTTP **9/9**、Gateway 审计 **6/6** 通过；均为 0 失败 / 0 跳过。覆盖七张卡普通/紧凑 DOM、完整/静态对象、小程序编译 presenter、全目录黑名单、无来源回退、原 404 证据和全部 397 条最终链接表。
+- 审计/目录/参考上传生成完成；`generate-model-audit --check`、目录与参考上传两个 `sync --check`、R12 清单 `--check`、R11 `--frozen-main --check` 均通过。Web build、小程序 build / check 通过；Web 仍有既有大 chunk 提示。
+- 开始/结束快照逐项对照：**2,125** 个完整/静态卡片对象仅 **7** 个身份的来源集合变化；**1,106** 个审计身份的四字段 value/state/provenance/source、增加/移除身份与生命周期完全不变。R11 计数与 27 卡 / 30 项模态待复核清单不变。R10 报告依赖当前来源，重新生成后 sourceDiff **623 → 616**（Replicate −5、Runware −2），仅这七项完整对象与 ID-only 的来源差异消失，模态计数不变。
+- 小程序源码 **1,567,353 bytes**，较起始 **1,567,582** 少 **229**；runtime **1,144,069**、媒体 **189,978 bytes**。原上限 **1,572,864 bytes** 未改，余 **5,511 bytes**。只对已有审计数据初始化代码使用现有 esbuild 压缩，保留全部字段/链接/标签与原解码格式，黑名单留在生成侧；编译 presenter 和全目录字段对照已通过。
+
+复现命令：
+
+```sh
+# apps/web 下执行
+pnpm test tests/model-audit*.test.mjs tests/model-specifications.test.mjs tests/provider-catalogs.test.mjs tests/workspace-model-catalog.test.mjs
+# 仓库根目录下执行
+node --test scripts/*.test.mjs
+pnpm --dir apps/miniprogram test
+node --test apps/auth-gateway/tests/model-audit.test.js
+node scripts/generate-model-audit.mjs --check
+node scripts/sync-model-catalog.mjs --check
+node scripts/sync-reference-upload.mjs --check
+node scripts/report-model-card-r12.mjs --check
+node scripts/report-model-card-r11.mjs --frozen-main --check
+pnpm --dir apps/web build
+pnpm --dir apps/miniprogram build
+pnpm --dir apps/miniprogram check
+# apps/paperbanana-api 下执行
+node --import tsx --test tests/model-audit.test.ts tests/model-audit-r13.test.ts tests/model-audit-http.test.ts
+```
 
 ## R12D：最终链接 HTTP 检查（当前验收）
 
-按 `.audit-input/r12/CODEX_TASK_R12D.md` 回填操作方的最终检查；本轮仅改文档、测试及证据夹具，卡片链接、事实、UI、运行时契约和小程序产物均未修改。未运行 Git 写命令，未提交、推送或部署，未发起网络检查或真实/付费模型请求。
+本节已按 R13 / R13B 更新最终链接与状态；旧 URL / 404 历史证据保留，404 例外列表现为空。以下检查均来自操作方提供的结果，本轮未重新发起网络检查。
 
 ### 方法、时间与状态计数
 
-操作方在 Mac mini 沙箱外对每个不同的最终首链接执行 HTTP **GET**，使用浏览器 User-Agent、跟随重定向、**25 秒**超时。检查时间为 **2026-11-09 18:38 UTC+8**，原始 `checkedAt` 为 `2026-11-09T10:38:46.634Z`。原始结果来自 `.audit-input/r12/final-link-check.json`；七条原链接的 404 复核结果和保留决定来自操作方任务说明，未从最终 URL 的状态推断。
+原批次：Mac mini 沙箱外 HTTP **GET**，浏览器 User-Agent，跟随重定向，**25 秒**超时；2026-11-09 **18:38 UTC+8**，`checkedAt=2026-11-09T10:38:46.634Z`，来自 `.audit-input/r12/final-link-check.json`。R13 七条新链接：操作方在 2026-11-09 **约 19:05 UTC+8** 使用 GET、浏览器 UA、跟随重定向核实为 200 / text/html；`checkedAt=2026-11-09`，证据来自 `.audit-input/r13/CODEX_TASK_R13.md`。R13B 的 `tokendance/deepseek-chat-v3-0324` 原厂发布页由操作方于 2026-11-09 核实：200 / text/html，标题 “V3-0324 Release | DeepSeek API Docs”，尾斜杠重定向；该行 `checkedAt=2026-11-09`，证据来自 `.audit-input/r13/CODEX_TASK_R13B.md`。
 
-范围沿用 R12 完整对象助手：完整 Core **1061** 卡加 **3** 个仅静态身份，共 **1064** 卡；与 R8/pre-R9 `785b99df` 相比，最终首链接变化 **397** 卡，包含 **374** 个不同 URL。每个 URL 的一次检查结果映射到对应卡片，不把重复 URL 算成重复网络检查。
+范围：完整 Core **1061** 卡加 **3** 个仅静态身份，共 **1064** 卡；与 R8/pre-R9 `785b99df` 相比，最终首链接变化 **397** 卡，重新计算得到 **374** 个不同 URL，**全部 200**。URL 按完整字符串去重（保留型号章节锚点）；重复 URL 不重复计数。
 
 | 统计口径 | 总数 | 200 | 404 | 410 | 其他状态 |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 不同最终 URL | 374 | 367 | 7 | 0 | 0 |
-| 卡片记录 | 397 | 390 | 7 | 0 | 0 |
+| 不同最终 URL | 374 | 374 | 0 | 0 | 0 |
+| 卡片记录 | 397 | 397 | 0 | 0 | 0 |
 
-全部响应为 `text/html`，无 JSON content-type，无重定向错误记录。HTTP 200 仅表示本次可达性；不据此推断页面渲染出指定模型、模型能力或账户权益。
+全部响应为 `text/html`，无 JSON content-type，无重定向错误记录。HTTP 200 仅表示所记录检查时可达，不据此推断模型能力或账户权益。
 
-可提交夹具：[r12-final-link-check-20261109.json](../apps/web/tests/fixtures/r12-final-link-check-20261109.json)，每行仅含 `channel`、`modelId`、`oldUrl`、`finalUrl`、`status`、`contentType`、`checkedAt`；七条例外另含 `originalStatus`。当前验收以该夹具和本节为准，R11 的 **46 条 ID-only** 检查已被完整对象检查替代；历史表和原始证据保留。[R12C 生成清单](model-card-audit-20261109-r12-links.md)仍作为链接变化及原因的历史清单，其中生成时的“待最终 HTTP 检查”说明也由本节补齐。
+可提交夹具：[r12-final-link-check-20261109.json](../apps/web/tests/fixtures/r12-final-link-check-20261109.json)。每行保留 channel、modelId、oldUrl、finalUrl、status、contentType、checkedAt；七条修复记录另保留 originalStatus=404、previousUrl（R12 旧可见链接）、previousStatus=404。R11 的 46 条 ID-only 检查已被完整对象检查替代。[生成清单](model-card-audit-20261109-r12-links.md)与当前选择和本节一致。
 
-### 7 个 404 例外与处理决定
+### 7 个死链修复与旧 404 证据
 
-以下七张卡的最终 URL 和原 R8 URL 都返回 **404**。原链接均为 API/schema（Replicate `/api/schema`、Runware `/schema.json`），回退仍会 404，且违反不显示 API/JSON 链接的规则。因此按操作方决定**保留当前链接，不回退**；七项明确登记为 **PM / 下一 PR 待跟进**，不将例外认定为链接健康。测试中的显式名单逐项限定 channel/modelId，理由统一为 `original link also 404/API`；所有 404/410 必须命中名单且原链接状态为 404，禁止扩大或遗留例外。
+最终 404/410 例外列表：**空（0 项）**。原渠道页与 API/schema 均 404；新首链接采用任务给定的精确原厂页，不回退到失效链接。xAI 泛型号列表重定向页未使用。
 
-| channel | model id | new URL | status | old URL | old status |
-| --- | --- | --- | ---: | --- | ---: |
-| replicate | `google/imagen-3` | https://replicate.com/google/imagen-3 | 404 | https://replicate.com/google/imagen-3/api/schema | 404 |
-| replicate | `google/imagen-3-fast` | https://replicate.com/google/imagen-3-fast | 404 | https://replicate.com/google/imagen-3-fast/api/schema | 404 |
-| replicate | `google/imagen-4` | https://replicate.com/google/imagen-4 | 404 | https://replicate.com/google/imagen-4/api/schema | 404 |
-| replicate | `google/imagen-4-fast` | https://replicate.com/google/imagen-4-fast | 404 | https://replicate.com/google/imagen-4-fast/api/schema | 404 |
-| replicate | `google/imagen-4-ultra` | https://replicate.com/google/imagen-4-ultra | 404 | https://replicate.com/google/imagen-4-ultra/api/schema | 404 |
-| runware | `openai:1@1` | https://runware.ai/docs/models/openai-gpt-image-1 | 404 | https://runware.ai/docs/models/openai-gpt-image-1/schema.json | 404 |
-| runware | `xai:grok-imagine@image-quality` | https://runware.ai/docs/models/xai-grok-imagine-image-quality | 404 | https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json | 404 |
+| channel | model id | new URL | status | old URL | old status | previous visible URL | previous status |
+| --- | --- | --- | ---: | --- | ---: | --- | ---: |
+| replicate | `google/imagen-3` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate | 200 | https://replicate.com/google/imagen-3/api/schema | 404 | https://replicate.com/google/imagen-3 | 404 |
+| replicate | `google/imagen-3-fast` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001 | 200 | https://replicate.com/google/imagen-3-fast/api/schema | 404 | https://replicate.com/google/imagen-3-fast | 404 |
+| replicate | `google/imagen-4` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001 | 200 | https://replicate.com/google/imagen-4/api/schema | 404 | https://replicate.com/google/imagen-4 | 404 |
+| replicate | `google/imagen-4-fast` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001 | 200 | https://replicate.com/google/imagen-4-fast/api/schema | 404 | https://replicate.com/google/imagen-4-fast | 404 |
+| replicate | `google/imagen-4-ultra` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001 | 200 | https://replicate.com/google/imagen-4-ultra/api/schema | 404 | https://replicate.com/google/imagen-4-ultra | 404 |
+| runware | `openai:1@1` | https://developers.openai.com/api/docs/models/gpt-image-1 | 200 | https://runware.ai/docs/models/openai-gpt-image-1/schema.json | 404 | https://runware.ai/docs/models/openai-gpt-image-1 | 404 |
+| runware | `xai:grok-imagine@image-quality` | https://docs.x.ai/developers/migration/imagine-image-quality-nov-2 | 200 | https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json | 404 | https://runware.ai/docs/models/xai-grok-imagine-image-quality | 404 |
 
 ### 全部 397 张卡的最终链接检查
 
-下表的 new URL 是当前完整对象卡片的首链接，old URL 是同对象在 R8 的首链接；状态和统一检查时间均来自上述最终检查夹具。
+new URL 为当前完整对象首链接，old URL 为相同对象在 R8 的首链接；状态和分批 checkedAt 来自上述夹具。
 
 | channel | model id | new URL | status | old URL |
 | --- | --- | --- | ---: | --- |
@@ -172,11 +240,11 @@
 | replicate | `fofr/sdxl-emoji` | https://replicate.com/fofr/sdxl-emoji | 200 | https://replicate.com/fofr/sdxl-emoji/api/schema |
 | replicate | `fofr/sticker-maker` | https://replicate.com/fofr/sticker-maker | 200 | https://replicate.com/fofr/sticker-maker/api/schema |
 | replicate | `google/gemini-3-flash` | https://replicate.com/google/gemini-3-flash | 200 | https://replicate.com/google/gemini-3-flash/api/schema |
-| replicate | `google/imagen-3` | https://replicate.com/google/imagen-3 | 404 | https://replicate.com/google/imagen-3/api/schema |
-| replicate | `google/imagen-3-fast` | https://replicate.com/google/imagen-3-fast | 404 | https://replicate.com/google/imagen-3-fast/api/schema |
-| replicate | `google/imagen-4` | https://replicate.com/google/imagen-4 | 404 | https://replicate.com/google/imagen-4/api/schema |
-| replicate | `google/imagen-4-fast` | https://replicate.com/google/imagen-4-fast | 404 | https://replicate.com/google/imagen-4-fast/api/schema |
-| replicate | `google/imagen-4-ultra` | https://replicate.com/google/imagen-4-ultra | 404 | https://replicate.com/google/imagen-4-ultra/api/schema |
+| replicate | `google/imagen-3` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate | 200 | https://replicate.com/google/imagen-3/api/schema |
+| replicate | `google/imagen-3-fast` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001 | 200 | https://replicate.com/google/imagen-3-fast/api/schema |
+| replicate | `google/imagen-4` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001 | 200 | https://replicate.com/google/imagen-4/api/schema |
+| replicate | `google/imagen-4-fast` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001 | 200 | https://replicate.com/google/imagen-4-fast/api/schema |
+| replicate | `google/imagen-4-ultra` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001 | 200 | https://replicate.com/google/imagen-4-ultra/api/schema |
 | replicate | `ideogram-ai/ideogram-4-5` | https://replicate.com/ideogram-ai/ideogram-4-5 | 200 | https://replicate.com/ideogram-ai/ideogram-4-5/api/schema |
 | replicate | `ideogram-ai/ideogram-4-5-precise-edit` | https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit | 200 | https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema |
 | replicate | `ideogram-ai/ideogram-v2` | https://replicate.com/ideogram-ai/ideogram-v2 | 200 | https://replicate.com/ideogram-ai/ideogram-v2/api/schema |
@@ -309,7 +377,7 @@
 | runware | `minimax:m2.7@0` | https://runware.ai/docs/models/minimax-m2-7 | 200 | https://runware.ai/docs/models/minimax-m2-7/schema.json |
 | runware | `minimax:m2.7@highspeed` | https://runware.ai/docs/models/minimax-m2-7-highspeed | 200 | https://runware.ai/docs/models/minimax-m2-7-highspeed/schema.json |
 | runware | `minimax:m3@0` | https://runware.ai/docs/models/minimax-m3 | 200 | https://runware.ai/docs/models/minimax-m3/schema.json |
-| runware | `openai:1@1` | https://runware.ai/docs/models/openai-gpt-image-1 | 404 | https://runware.ai/docs/models/openai-gpt-image-1/schema.json |
+| runware | `openai:1@1` | https://developers.openai.com/api/docs/models/gpt-image-1 | 200 | https://runware.ai/docs/models/openai-gpt-image-1/schema.json |
 | runware | `openai:1@2` | https://runware.ai/docs/models/openai-gpt-image-1-mini | 200 | https://runware.ai/docs/models/openai-gpt-image-1-mini/schema.json |
 | runware | `openai:4@1` | https://runware.ai/docs/models/openai-gpt-image-1-5 | 200 | https://runware.ai/docs/models/openai-gpt-image-1-5/schema.json |
 | runware | `openai:gpt-image@2` | https://runware.ai/docs/models/openai-gpt-image-2 | 200 | https://runware.ai/docs/models/openai-gpt-image-2/schema.json |
@@ -372,7 +440,7 @@
 | runware | `vidu:q1@image` | https://runware.ai/docs/models/vidu-q1-image | 200 | https://runware.ai/docs/models/vidu-q1-image/schema.json |
 | runware | `xai:grok-imagine@image` | https://runware.ai/docs/models/xai-grok-imagine-image | 200 | https://runware.ai/docs/models/xai-grok-imagine-image/schema.json |
 | runware | `xai:grok-imagine@image-2.0` | https://runware.ai/docs/models/xai-grok-imagine-image-2-0 | 200 | https://runware.ai/docs/models/xai-grok-imagine-image-2-0/schema.json |
-| runware | `xai:grok-imagine@image-quality` | https://runware.ai/docs/models/xai-grok-imagine-image-quality | 404 | https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json |
+| runware | `xai:grok-imagine@image-quality` | https://docs.x.ai/developers/migration/imagine-image-quality-nov-2 | 200 | https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json |
 | runware | `xai:grok@4.3` | https://runware.ai/docs/models/xai-grok-4-3 | 200 | https://runware.ai/docs/models/xai-grok-4-3/schema.json |
 | runware | `zai:glm@5.1` | https://runware.ai/docs/models/zai-glm-5-1 | 200 | https://runware.ai/docs/models/zai-glm-5-1/schema.json |
 | stability | `sd3.5-flash` | https://docs.stability.ai/api-reference/generate/stable-diffusion-35 | 200 | https://platform.stability.ai/docs/getting-started/models |
@@ -380,7 +448,7 @@
 | stepfun | `step-3.5-flash-2603` | https://platform.stepfun.com/docs/zh/guides/models/step-3.5-flash | 200 | https://platform.stepfun.com/docs/zh/guides/models/list |
 | stepfun | `step-3.7-flash` | https://platform.stepfun.com/docs/zh/guides/models/step-3.7-flash | 200 | https://platform.stepfun.com/docs/zh/guides/models/list |
 | stepfun | `step-5-preview` | https://platform.stepfun.com/docs/zh/guides/models/step-5-preview | 200 | https://platform.stepfun.com/docs/zh/guides/models/list |
-| tokendance | `deepseek-chat-v3-0324` | https://api-docs.deepseek.com/quick_start/pricing/ | 200 | https://tokendance.space/gateway/v1/models |
+| tokendance | `deepseek-chat-v3-0324` | https://api-docs.deepseek.com/news/news250325 | 200 | https://tokendance.space/gateway/v1/models |
 | tokendance | `deepseek-v4-pro` | https://tokendance.space/models/deepseek-v4-pro | 200 | https://api-docs.deepseek.com/quick_start/pricing/ |
 | tokendance | `deepseek-v4-pro-0813` | https://tokendance.space/models/deepseek-v4-pro-0813 | 200 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 |
 | tokendance | `deepseek-v4.1-flash` | https://tokendance.space/models/deepseek-v4.1-flash | 200 | https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash |
@@ -437,7 +505,7 @@
 | xiaomi | `mimo-v2.6-flash` | https://mimo.mi.com/models/en-US/mimo-v2.6-flash | 200 | https://mimo.mi.com/docs/zh-CN/quick-start/summary/model |
 | xiaomi | `mimo-v2.6-pro` | https://mimo.mi.com/models/en-US/mimo-v2.6-pro | 200 | https://mimo.mi.com/docs/zh-CN/quick-start/summary/model |
 
-### R12D 离线验证
+### R12D 离线验证（历史记录，R13 结果见上）
 
 - Web 受影响测试 **112/112** 通过，失败/跳过均为 0；当前链接与普通/紧凑 DOM 从 R11 的 46 条历史样本扩展到全部 **397** 条，精确核对完整对象差异、时间、HTML content-type、7 个例外、状态统计和两张文档表。
 - scripts 全套 **35/35** 通过，失败/跳过均为 0；含 R10/R11 离线报告一致性及既有小程序包体预算验证。R12 清单 `--check` 通过，397 项链接和原因清单无漂移。

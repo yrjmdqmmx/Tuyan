@@ -598,11 +598,11 @@
     ],
     "tokendance/deepseek-chat-v3-0324": [
       {
-        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "url": "https://api-docs.deepseek.com/news/news250325",
         "scope": "vendor",
         "kind": "vendor-doc",
         "checkedAt": "2026-11-09",
-        "evidence": "R11 captured vendor source; TokenDance model page rejected by .audit-input/r12/tokendance-all-rendered.json"
+        "evidence": "Operator verified 2026-11-09: 200 text/html; title \"V3-0324 Release | DeepSeek API Docs\"; trailing-slash redirect. TokenDance model page remains rejected by the existing rendered capture."
       }
     ],
     "tokendance/glm-5.3": [
@@ -919,6 +919,62 @@
         "checkedAt": "2026-11-09",
         "evidence": "R11 captured vendor source; TokenDance model page rejected by .audit-input/r12/tokendance-all-rendered.json"
       }
+    ],
+    "replicate/google/imagen-3": [
+      {
+        "url": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate",
+        "scope": "vendor",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09"
+      }
+    ],
+    "replicate/google/imagen-3-fast": [
+      {
+        "url": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001",
+        "scope": "vendor",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09"
+      }
+    ],
+    "replicate/google/imagen-4": [
+      {
+        "url": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001",
+        "scope": "vendor",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09"
+      }
+    ],
+    "replicate/google/imagen-4-fast": [
+      {
+        "url": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001",
+        "scope": "vendor",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09"
+      }
+    ],
+    "replicate/google/imagen-4-ultra": [
+      {
+        "url": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001",
+        "scope": "vendor",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09"
+      }
+    ],
+    "runware/openai:1@1": [
+      {
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1",
+        "scope": "vendor",
+        "kind": "model-page",
+        "checkedAt": "2026-11-09"
+      }
+    ],
+    "runware/xai:grok-imagine@image-quality": [
+      {
+        "url": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2",
+        "scope": "vendor",
+        "kind": "retirement-notice",
+        "checkedAt": "2026-11-09"
+      }
     ]
   },
   "sourceChecks": {
@@ -961,6 +1017,69 @@
       "rendersModel": false,
       "checkedAt": "2026-11-09",
       "evidence": ".audit-input/r12/tokendance-all-rendered.json"
+    },
+    "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate": {
+      "status": 200,
+      "contentType": "text/html",
+      "checkedAt": "2026-11-09",
+      "method": "Operator GET with browser User-Agent, follow redirects (~19:05 UTC+8)",
+      "evidence": ".audit-input/r13/CODEX_TASK_R13.md",
+      "note": "Imagen 3；含 imagen-3.0-generate-001/-002。"
+    },
+    "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001": {
+      "status": 200,
+      "contentType": "text/html",
+      "checkedAt": "2026-11-09",
+      "method": "Operator GET with browser User-Agent, follow redirects (~19:05 UTC+8)",
+      "evidence": ".audit-input/r13/CODEX_TASK_R13.md",
+      "note": "Imagen 3 Fast 精确章节。"
+    },
+    "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001": {
+      "status": 200,
+      "contentType": "text/html",
+      "checkedAt": "2026-11-09",
+      "method": "Operator GET with browser User-Agent, follow redirects (~19:05 UTC+8)",
+      "evidence": ".audit-input/r13/CODEX_TASK_R13.md",
+      "note": "Imagen 4 精确章节。"
+    },
+    "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001": {
+      "status": 200,
+      "contentType": "text/html",
+      "checkedAt": "2026-11-09",
+      "method": "Operator GET with browser User-Agent, follow redirects (~19:05 UTC+8)",
+      "evidence": ".audit-input/r13/CODEX_TASK_R13.md",
+      "note": "Imagen 4 Fast 精确章节。"
+    },
+    "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001": {
+      "status": 200,
+      "contentType": "text/html",
+      "checkedAt": "2026-11-09",
+      "method": "Operator GET with browser User-Agent, follow redirects (~19:05 UTC+8)",
+      "evidence": ".audit-input/r13/CODEX_TASK_R13.md",
+      "note": "Imagen 4 Ultra 精确章节。"
+    },
+    "https://developers.openai.com/api/docs/models/gpt-image-1": {
+      "status": 200,
+      "contentType": "text/html",
+      "checkedAt": "2026-11-09",
+      "method": "Operator GET with browser User-Agent, follow redirects (~19:05 UTC+8)",
+      "evidence": ".audit-input/r13/CODEX_TASK_R13.md",
+      "note": "GPT-Image-1 原厂型号页；页面注明 shut down/retired，不据此判定 Runware 可用性。"
+    },
+    "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2": {
+      "status": 200,
+      "contentType": "text/html",
+      "checkedAt": "2026-11-09",
+      "method": "Operator GET with browser User-Agent, follow redirects (~19:05 UTC+8)",
+      "evidence": ".audit-input/r13/CODEX_TASK_R13.md",
+      "note": "grok-imagine-image-quality Retirement on November 2, 2026；精确型号退役公告，不据此判定 Runware 可用性。"
+    },
+    "https://api-docs.deepseek.com/news/news250325": {
+      "status": 200,
+      "contentType": "text/html",
+      "checkedAt": "2026-11-09",
+      "finalUrl": "https://api-docs.deepseek.com/news/news250325/",
+      "title": "V3-0324 Release | DeepSeek API Docs"
     }
   }
 }
