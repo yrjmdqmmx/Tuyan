@@ -3,14 +3,16 @@
 import fs from 'node:fs'
 import { build } from 'esbuild'
 import { fileURLToPath } from 'node:url'
+import { readRegistry, readPackedRegistry } from './lib/model-card-audit.mjs'
 const root = fileURLToPath(new URL('../', import.meta.url))
 const read = name => JSON.parse(fs.readFileSync(root + name, 'utf8'))
-const bundle = await build({ stdin: { contents: `export { STATIC_MODEL_REGISTRY as registry } from './apps/web/src/lib/staticModelCatalog.js';
-export { modelCardSpecifications as card } from './apps/web/src/lib/modelCardSpecifications.js';
+const bundle = await build({ stdin: { contents: `export { modelCardSpecifications as card } from './apps/web/src/lib/modelCardSpecifications.js';
 export { modalityIconStates as icons } from './apps/web/src/lib/modelModalityIcons.js';`, resolveDir: root }, bundle: true, format: 'cjs', platform: 'node', write: false, logLevel: 'silent' })
 const module = { exports: {} }
 new Function('module', 'exports', bundle.outputFiles[0].text)(module, module.exports)
-const { registry, card, icons } = module.exports
+const { card, icons } = module.exports
+const arg = process.argv.indexOf('--registry')
+const registry = (arg >= 0 ? readRegistry(process.argv[arg + 1]) : readPackedRegistry(root + 'apps/web/tests/fixtures/r11-registry-head.json')).providers
 const pairs = new Map(read('config/channel-audit/input-20261109.json').pairs.map(row => [row.channel + '/' + row.apiModelId, row]))
 const evidence = read('config/channel-audit/modality-table-review-r10-20261109.json')
 const fields = ['inputModalities', 'outputModalities']
@@ -35,7 +37,7 @@ for (const [channel, provider] of Object.entries(registry)) {
     }
   }
 }
-const report = { date: '2026-11-09', scope: evidence.scope, fullObject: 'STATIC_MODEL_REGISTRY model entries; minimal object is {id}. Differences compare the first visible source URL and all four input/output icon states, not undisplayed secondary URLs.',
+const report = { date: '2026-11-09', scope: 'R11 captured Core registry (1061 cards); R10 table matching rules retained.', tableEvidenceScope: evidence.scope, fullObject: 'R11: captured Core modelRegistry full objects (compact fixture by default, --registry for raw JSON); minimal object is {id}. First visible source and four input/output icon states; R10 static counts are historical.',
   totals: Object.fromEntries(Object.keys(Object.values(counts)[0]).map(key => [key, Object.values(counts).reduce((sum, row) => sum + row[key], 0)])), counts, tableUnknown, differences }
 const output = root + 'docs/model-card-audit-20261109-r10-counts.json', content = JSON.stringify(report, null, 2) + '\n'
 if (process.argv.includes('--check')) { if (fs.readFileSync(output, 'utf8') !== content) throw new Error('R10 report drift') }

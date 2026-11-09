@@ -1,6 +1,187 @@
-# 模型卡审计验收 · 2026-11-09 R10
+# 模型卡审计验收 · 2026-11-09 R11
 
-## R10：渠道明确排除、完整 registry 回归与改选正文（当前验收）
+
+## R11：链接证据、完整 Core 对象计数与模态待复核清单（当前验收）
+
+基线为 main `c7b6a2fc`，head 为 `1576ee00`。本轮只改审计脚本、测试、夹具与文档；4 个 DeepSeek-V4 显示名保留去括号状态，所有卡片事实与链接保持不变。未运行 Git 写命令，未写入 `../Tuyan-wt-baseline`，无真实/付费模型调用或部署。
+
+### 46 个 R9 首链接检查
+
+采用操作方提供的 `.audit-input/r11/linkcheck-result.json`，不是本沙箱重发网络请求。方法：HTTP **GET**、浏览器 User-Agent、跟随重定向、**25 秒**超时，操作方 Mac mini 沙箱外执行；原始时间 `2026-11-09T09:45:47.209Z`，表格按分钟记为 **2026-11-09 17:45 UTC+8**。
+
+规则：**仅 404 / 410 回退**；403、超时及其他状态保留链接并标记。46 项新 URL 最终均 **200**，均无重定向，**0 项符合回退条件**。冻结精简结果在 `apps/web/tests/fixtures/r11-link-check-20261109.json`。离线测试精确核对 R9 的 46 个 channel/id、每行 status/checkedAt、完整 Core 对象的首来源及普通/紧凑 DOM 链接；全 registry / 静态目录均不得渲染记录为 404/410 的来源。
+
+**供 PM 复核：`https://tokendance.space/gateway/v1/models` 是返回 JSON 的 API 模型列表端点，不是文档页面。** 该事实已标记；此次保留原链接及展示。
+
+| channel | model id | new URL | final status | checked | old URL |
+| --- | --- | --- | --- | --- | --- |
+| antling | `Ling-3.0-flash` | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 200 | 2026-11-09 17:45 UTC+8 | https://developer.ant-ling.com/zh-CN/docs/models/ling/ |
+| antling | `Ling-3.0-flash-VL` | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 200 | 2026-11-09 17:45 UTC+8 | https://developer.ant-ling.com/zh-CN/docs/models/ling/ |
+| antling | `Ling-3.0-tiny` | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 200 | 2026-11-09 17:45 UTC+8 | https://developer.ant-ling.com/zh-CN/docs/models/ling/ |
+| antling | `Ling-3.1-flash` | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 200 | 2026-11-09 17:45 UTC+8 | https://developer.ant-ling.com/zh-CN/docs/models/ling/ |
+| antling | `Ling-3.2-flash` | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 200 | 2026-11-09 17:45 UTC+8 | https://developer.ant-ling.com/zh-CN/docs/models/ling/ |
+| bailian | `qwen3.7-max-2026-06-08` | https://help.aliyun.com/zh/model-studio/models | 200 | 2026-11-09 17:45 UTC+8 | https://help.aliyun.com/zh/model-studio/qwen3-7-max |
+| bailian | `qwen3.8-flash` | https://help.aliyun.com/zh/model-studio/models | 200 | 2026-11-09 17:45 UTC+8 | https://help.aliyun.com/zh/model-studio/vision-model |
+| bailian | `qwen3.8-max` | https://help.aliyun.com/zh/model-studio/models | 200 | 2026-11-09 17:45 UTC+8 | https://help.aliyun.com/zh/model-studio/qwen3-8-max |
+| tokendance | `deepseek-v4-pro` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://api-docs.deepseek.com/quick_start/pricing/ |
+| tokendance | `deepseek-v4.1-flash` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://api-docs.deepseek.com/quick_start/pricing/ |
+| tokendance | `dots-3-note-preview` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://github.com/studio-dots-ai/dots3-note-prev |
+| tokendance | `glm-5.3-flashx` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash |
+| tokendance | `hy4-preview` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://huggingface.co/tencent/Hy4-preview |
+| tokendance | `kimi-k2.5` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://tokendance.space/docs/kimi-thinking-models.md |
+| tokendance | `kimi-k2.6` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://platform.kimi.com/docs/models |
+| tokendance | `kimi-k2.7-code` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://platform.kimi.com/docs/models |
+| tokendance | `kimi-k3` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://platform.kimi.com/docs/models |
+| tokendance | `mimo-v2.5` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://mimo.mi.com/docs/zh-CN/updates/deprecate |
+| tokendance | `mimo-v2.5-pro` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://mimo.mi.com/docs/zh-CN/updates/deprecate |
+| tokendance | `qwen3-vl-plus` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://platform.qianwenai.com/docs/developer-guides/getting-started/vision-models |
+| tokendance | `qwen3.5-35b-a3b` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://help.aliyun.com/zh/model-studio/models |
+| tokendance | `qwen3.5-flash` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://help.aliyun.com/zh/model-studio/models |
+| tokendance | `qwen3.5-plus` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://help.aliyun.com/zh/model-studio/model-depreciation |
+| tokendance | `qwen3.6-plus` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://help.aliyun.com/zh/model-studio/models |
+| tokendance | `qwen3.7-max` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://help.aliyun.com/zh/model-studio/models |
+| tokendance | `qwen3.7-plus` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://help.aliyun.com/zh/model-studio/models |
+| tokendance | `qwen3.8-flash` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://help.aliyun.com/zh/model-studio/vision-model |
+| tokendance | `qwen3.8-max` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://help.aliyun.com/zh/model-studio/qwen3-8-max |
+| tokendance | `qwen3.8-max-0902` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://help.aliyun.com/zh/model-studio/models |
+| tokendance | `seed-2.0-lite` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://www.volcengine.com/docs/82379/1330310 |
+| tokendance | `seed-2.0-mini` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://www.volcengine.com/docs/82379/1330310 |
+| tokendance | `seed-2.0-pro` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://www.volcengine.com/docs/82379/1330310 |
+| tokendance | `seed-2.1-pro` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://www.volcengine.com/docs/82379/1330310 |
+| tokendance | `seed-2.1-turbo` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://www.volcengine.com/docs/82379/1330310 |
+| tokendance | `seed-evolving` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://www.volcengine.com/docs/82379/1330310 |
+| tokendance | `seedream-5.0-lite` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh |
+| tokendance | `seedream-5.0-pro` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh |
+| tokendance | `spark-x2.5-1.7b` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999 |
+| tokendance | `spark-x2.5-4b` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999 |
+| tokendance | `step-3.5-flash` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://platform.stepfun.com/docs/zh/guides/models/list |
+| tokendance | `step-3.7-flash` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://platform.stepfun.com/docs/zh/guides/models/list |
+| tokendance | `step-5-preview` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://platform.stepfun.com/docs/zh/guides/models/list |
+| tokendance | `unifuncs-s3` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://unifuncs.com/api/deepsearch |
+| tokendance | `unifuncs-s3-pro` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://unifuncs.com/api/deepsearch |
+| tokendance | `unifuncs-u3` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://unifuncs.com/api/deepresearch |
+| tokendance | `unifuncs-u3-pro` | https://tokendance.space/gateway/v1/models | 200 | 2026-11-09 17:45 UTC+8 | https://unifuncs.com/api/deepresearch |
+
+### 完整对象计数与口径
+
+使用提供的 Core `modelRegistry` 捕获：main **1122** 模型、head **1061** 模型。main 从只读基线导入自己的 `apps/web/src/lib/modelCardSpecifications.js`，head 使用当前工作树同名模块；不再把 head 的显示规则套在 main 上。计数涵盖捕获返回的全部模型，包含不可选/历史卡，不是可见目录或真实账号可用数量。
+
+“已知”严格按显示值**不是未知**计数：旧 main 的 `待确认`、`官方未公布`、`未单列`及缺失的最大输出行统一视为未知；head 的 `不适用`属于非未知显示值，计入主表并在下面单列。main 的实际组件没有展示最大输出，隐藏的 `limitRows`、最大输入及提示词上限不充当最大输出或上下文。
+
+| 对象 | 代码侧 | 模型总数 | 已知输入 | 已知输出 | 已知上下文 | 已知最大输出 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 完整 Core 对象 | main | 1122 | 983 | 968 | 534 | 0 |
+| 完整 Core 对象 | head | 1061 | 997 | 967 | 926 | 616 |
+| ID-only（旧方法对照） | main | 1122 | 199 | 200 | 141 | 0 |
+| ID-only（旧方法对照） | head | 1061 | 403 | 397 | 390 | 260 |
+
+完整对象的数值补充（避免将不适用当作已公布 token 上限）：
+
+| 代码侧 | 有数值上下文 | 上下文不适用 | 有数值最大输出 | 最大输出不适用 |
+| --- | --- | --- | --- | --- |
+| main | 534 | 0 | 0 | 0 |
+| head | 519 | 407 | 209 | 407 |
+
+逐渠道如下。每组数字依次为 **输入 / 输出 / 上下文 / 最大输出**；ID-only 只作旧方法对照，不参与完整对象验收。
+
+| 渠道 | 总数 main → head | main 完整 | head 完整 | main ID-only | head ID-only |
+| --- | --- | --- | --- | --- | --- |
+| anthropic | 14 → 14 | 14 / 14 / 14 / 0 | 14 / 14 / 14 / 4 | 0 / 0 / 0 / 0 | 2 / 2 / 0 / 0 |
+| antling | 6 → 8 | 6 / 6 / 4 / 0 | 8 / 8 / 6 / 0 | 0 / 0 / 0 / 0 | 5 / 5 / 4 / 0 |
+| ark | 36 → 36 | 26 / 26 / 12 / 0 | 30 / 26 / 17 / 5 | 23 / 23 / 12 / 0 | 23 / 23 / 15 / 3 |
+| bailian | 183 → 126 | 128 / 128 / 98 / 0 | 116 / 116 / 114 / 94 | 34 / 34 / 31 / 0 | 93 / 92 / 87 / 86 |
+| bfl | 14 → 14 | 14 / 14 / 0 / 0 | 14 / 14 / 14 / 14 | 0 / 0 / 0 / 0 | 0 / 0 / 0 / 0 |
+| deepseek | 4 → 4 | 4 / 4 / 4 / 0 | 4 / 4 / 4 / 4 | 3 / 3 / 3 / 0 | 4 / 4 / 4 / 4 |
+| fal | 48 → 48 | 41 / 41 / 0 / 0 | 48 / 48 / 43 / 48 | 5 / 5 / 0 / 0 | 41 / 41 / 36 / 41 |
+| fireworks | 26 → 20 | 24 / 8 / 20 / 0 | 19 / 8 / 17 / 1 | 3 / 3 / 2 / 0 | 16 / 5 / 15 / 1 |
+| gemini | 17 → 17 | 17 / 17 / 1 / 0 | 17 / 17 / 1 / 17 | 5 / 5 / 0 / 0 | 5 / 5 / 0 / 5 |
+| ideogram | 14 → 14 | 14 / 14 / 0 / 0 | 14 / 14 / 14 / 14 | 0 / 0 / 0 / 0 | 0 / 0 / 0 / 0 |
+| iflytek | 34 → 34 | 10 / 10 / 8 / 0 | 16 / 10 / 8 / 0 | 8 / 8 / 6 / 0 | 8 / 8 / 6 / 0 |
+| kimi | 6 → 6 | 6 / 6 / 6 / 0 | 6 / 6 / 6 / 2 | 1 / 1 / 1 / 0 | 1 / 1 / 1 / 0 |
+| longcat | 2 → 3 | 2 / 2 / 2 / 0 | 2 / 3 / 3 / 0 | 1 / 1 / 1 / 0 | 1 / 2 / 2 / 0 |
+| minimax | 11 → 11 | 11 / 11 / 9 / 0 | 11 / 11 / 11 / 3 | 3 / 3 / 3 / 0 | 3 / 3 / 3 / 0 |
+| mistral | 18 → 18 | 18 / 18 / 18 / 0 | 18 / 18 / 18 / 0 | 3 / 3 / 3 / 0 | 3 / 3 / 3 / 0 |
+| novita | 1 → 1 | 1 / 1 / 0 / 0 | 1 / 1 / 1 / 1 | 1 / 1 / 0 / 0 | 1 / 1 / 1 / 1 |
+| openai | 69 → 71 | 69 / 69 / 60 / 0 | 71 / 71 / 69 / 45 | 4 / 4 / 4 / 0 | 46 / 46 / 44 / 42 |
+| qianfan | 37 → 37 | 30 / 31 / 27 / 0 | 31 / 32 / 31 / 11 | 13 / 14 / 14 / 0 | 17 / 20 / 21 / 9 |
+| recraft | 17 → 17 | 17 / 17 / 0 / 0 | 17 / 17 / 17 / 17 | 0 / 0 / 0 / 0 | 0 / 0 / 0 / 0 |
+| replicate | 108 → 108 | 104 / 104 / 4 / 0 | 106 / 104 / 98 / 105 | 5 / 5 / 0 / 0 | 5 / 5 / 0 / 5 |
+| runware | 148 → 148 | 148 / 148 / 20 / 0 | 148 / 148 / 137 / 122 | 14 / 14 / 5 / 0 | 14 / 14 / 8 / 8 |
+| sensenova | 8 → 8 | 6 / 6 / 5 / 0 | 8 / 6 / 7 / 5 | 3 / 3 / 2 / 0 | 3 / 3 / 2 / 2 |
+| siliconflow | 68 → 68 | 68 / 68 / 55 / 0 | 68 / 68 / 62 / 13 | 9 / 9 / 9 / 0 | 17 / 18 / 18 / 9 |
+| stability | 5 → 5 | 5 / 5 / 0 / 0 | 5 / 5 / 5 / 5 | 0 / 0 / 0 / 0 | 0 / 0 / 0 / 0 |
+| stepfun | 7 → 5 | 5 / 5 / 5 / 0 | 5 / 5 / 5 / 1 | 1 / 1 / 1 / 0 | 5 / 4 / 5 / 1 |
+| together | 53 → 53 | 38 / 38 / 21 / 0 | 39 / 38 / 45 / 34 | 8 / 8 / 3 / 0 | 15 / 18 / 13 / 16 |
+| tokendance | 74 → 74 | 72 / 72 / 68 / 0 | 72 / 72 / 71 / 18 | 25 / 25 / 17 / 0 | 37 / 35 / 61 / 16 |
+| tokenhub | 49 → 50 | 40 / 40 / 35 / 0 | 46 / 40 / 45 / 19 | 12 / 12 / 9 / 0 | 14 / 15 / 17 / 8 |
+| xai | 12 → 12 | 12 / 12 / 9 / 0 | 12 / 12 / 12 / 3 | 2 / 2 / 2 / 0 | 9 / 9 / 9 / 0 |
+| xiaomi | 5 → 3 | 5 / 5 / 5 / 0 | 3 / 3 / 3 / 3 | 1 / 1 / 1 / 0 | 3 / 3 / 3 / 3 |
+| zhipu | 28 → 28 | 28 / 28 / 24 / 0 | 28 / 28 / 28 / 8 | 12 / 12 / 12 / 0 | 12 / 12 / 12 / 0 |
+
+损失按精确 channel/id/field 核对：输入 **31**、输出 **27**、上下文 **24**、最大输出 **0** 项 main 已知值不在 head 中，全部属于 `config/removed-models.json` 已登记移除型号；**存续型号损失 0，未解释损失 0**。逐项含原值、移除来源与日期见 [R11 counts JSON](model-card-audit-20261109-r11-counts.json)。这也解释输出净减少 1：移除 27 项，同时其余卡片增加 26 项。
+
+`scripts/count-model-catalog.mjs <root> --registry <json>` 优先使用传入的完整 Core 对象；不传 JSON 时调用离线 mock Core，在完整 `STATIC_MODEL_REGISTRY` 上由 Core 补入 `specificModelSpecifications`（`exactModelDetails`）、审计、生命周期、参考图能力与离线目录状态。仅静态存在的身份保留整个静态 entry 并补 exactModelDetails；不会退化为 `{id}`。两边无 JSON 的离线 Core 路径也已运行，四项总数与提供的捕获一致。可见/可选数量仍为 main 923/884、head 919/878。
+
+精简夹具 `r11-registry-{main,head}.json` 保留两侧卡片读取的所有 model 字段（roles、capabilities 所用字段、operations、完整 specifications / specificModelSpecifications、来源等），共享值仅在文件内去重，解码后不共享可变对象。`prepare-model-card-r11-fixtures.mjs` 对 **2183 个模型**逐一断言原始完整对象与精简对象的整个卡片结果相同，记录原始捕获及卡片代码 SHA-256；未纳入 6MB 原始响应。main 渲染快照支持没有兄弟工作树的 CI 离线复算。
+
+R10 计数脚本也改用完整 Core 捕获：首来源差异 **561**、模态差异 **614**、任一差异 **623 / 1061**；同表格且仍未知卡为 **34**。旧 R10 的 **389 / 1064** 与 **20** 是完整静态对象口径，保留为历史记录；现有 `r10-counts.json` 已按新对象口径重生成。这里只修正审计输入，没有批量修复这些卡片。
+
+### 模态待复核清单（只列出）
+
+完整 head 对象中 **27 张卡 / 30 个字段图标**显示支持，但该渠道已捕获官方证据未列该模态；反向“显示不支持而官方列为支持” **0 项**。**406 / 1061 张卡没有渠道官方模态证据**，另有 28 张仅有单侧模态证据，137 张使用官方任务标签的正向证据；缺证不判为不支持。
+
+只使用 `config/channel-audit/*`、`config/model-audit.generated.json` 中 channel scope 的事实与 R10 表格复核。精确身份和渠道域名均须匹配，原厂页不能证明第三方渠道支持；产品角色/输入要求不作为官方能力证据。R10 新表优先，旧输入快照已撤回的字段不重新使用；Qwen3.7 Max 同页多变体表取并集并记录歧义。明确写出 PDF 输入/pdf_url 的渠道捕获也计入 file 支持。Runware 的 text-to-image 等官方标签只证明所列正向能力，并非完整输入清单：137 张此类卡不因标签省略而列为多余模态，但仍核对“显示不支持、标签明确支持”的反向矛盾。未知图标不算不支持，官方未列不等于明确排除。结果受现有捕获覆盖和日期限制，不代表今日全网事实。
+
+| 渠道 | 卡片 | 差异项 | 按字段 | 无渠道证据卡片 |
+| --- | --- | --- | --- | --- |
+| fal | 15 | 15 | input/image: 14；output/text: 1 | 5 |
+| ideogram | 1 | 1 | input/image: 1 | 0 |
+| qianfan | 8 | 9 | input/image: 2；input/video: 7 | 1 |
+| replicate | 2 | 4 | input/file: 1；input/image: 1；input/video: 1；output/text: 1 | 19 |
+| sensenova | 1 | 1 | input/video: 1 | 0 |
+| 其余渠道 | 0 | 0 | 各字段均为 0 | 381 |
+
+前 10 个复核示例（先覆盖不同渠道/字段，再补齐；不是按严重程度排序）：
+
+| channel | model id | field | card value | official value | source URL |
+| --- | --- | --- | --- | --- | --- |
+| fal | `blackforestlabs/flux-3/klein/base/text-to-image` | input/image | 支持 | 未列支持（不等于明确不支持） | https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api |
+| fal | `google/nano-banana-2.1` | output/text | 支持 | 未列支持（不等于明确不支持） | https://fal.ai/models/google/nano-banana-2.1/api |
+| ideogram | `ideogram-v4` | input/image | 支持 | 未列支持（不等于明确不支持） | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4 |
+| qianfan | `ernie-5.0-thinking-exp` | input/image | 支持 | 未列支持（不等于明确不支持） | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j |
+| qianfan | `glm-5.3-flash` | input/video | 支持 | 未列支持（不等于明确不支持） | https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j |
+| replicate | `google/nano-banana-2.1` | input/file | 支持 | 未列支持（不等于明确不支持） | https://replicate.com/google/nano-banana-2.1/api/schema |
+| replicate | `google/nano-banana-2.1` | input/video | 支持 | 未列支持（不等于明确不支持） | https://replicate.com/google/nano-banana-2.1/api/schema |
+| replicate | `google/nano-banana-2.1` | output/text | 支持 | 未列支持（不等于明确不支持） | https://replicate.com/google/nano-banana-2.1/api/schema |
+| replicate | `prunaai/flux-kontext-fast` | input/image | 支持 | 未列支持（不等于明确不支持） | https://replicate.com/prunaai/flux-kontext-fast/api/schema |
+| sensenova | `kimi-k3` | input/video | 支持 | 未列支持（不等于明确不支持） | https://platform.sensenova.cn/docs |
+
+完整逐项清单、全渠道计数和无证据身份见 [R11 misleading Markdown](model-card-audit-20261109-r11-misleading.md) / [JSON](model-card-audit-20261109-r11-misleading.json)。所有项目仅供 PM 下轮决策，未改显示事实、链接、排除规则或运行时契约。
+
+### R11 验证与包体
+
+- Web 受影响测试 **134/134**，含 R11 的完整对象总数/逐渠道断言、46 链接普通/紧凑 DOM 和全目录失效状态检查；未删改或跳过旧断言。
+- scripts 全套 **35/35**；覆盖旧标签/不适用/隐藏最大输出计数、精简对象独立性、证据渠道隔离及双向差异、无需私有输入的报告重生成。
+- 小程序全套 **138/138**，`build` / `check` 通过；Web `build` 通过，仅既有大 chunk 提示。
+- 审计、目录、参考上传与 thinking 生成器已执行；`generate-model-audit --check`、`sync-model-catalog --check`、`sync-reference-upload --check`、`sync-thinking --check` 及 R10/R11 报告 `--check` 通过。派生产物无变化。
+- 小程序精确源码 **1,568,676 bytes**，runtime **1,145,277 bytes**，媒体 **189,978 bytes**；原源码上限 **1,572,864** 未改，余 **4,188 bytes**。未超过停止线。
+- Git 仅做只读状态/差异检查；`git diff --check` 通过。没有提交/推送、基线写入、真实模型调用或部署。
+
+可复现命令（输出仅写当前工作树或 `/tmp`）：
+
+```sh
+node scripts/count-model-catalog.mjs ../Tuyan-wt-baseline --registry .audit-input/r11/registry-main.json
+node scripts/count-model-catalog.mjs . --registry .audit-input/r11/registry-head.json
+node scripts/report-model-card-r11.mjs --main-registry .audit-input/r11/registry-main.json --head-registry .audit-input/r11/registry-head.json --check
+node scripts/report-model-card-r11.mjs --frozen-main --check
+node scripts/report-model-card-r10.mjs --check
+node --test scripts/*.test.mjs
+```
+
+
+<a id="r10渠道明确排除完整-registry-回归与改选正文当前验收"></a>
+
+## R10：渠道明确排除、完整 registry 回归与改选正文（历史验收）
 
 保留工作区现状继续完成任务；未运行 Git 写命令，无真实/付费模型调用、提交、推送或部署。小米原名仍为 `MiMo-v2.5` / `MiMo-v2.5-pro`，源码预算及既有测试断言均未放宽。
 
@@ -53,7 +234,7 @@
 | novita | 0 | 0 | 0 | 0 |
 | **合计** | **20** | **89** | **388** | **389** |
 
-逐 ID 清单和完整分母见 [R10 计数](model-card-audit-20261109-r10-counts.json)，可用 `node scripts/report-model-card-r10.mjs --check` 离线复核。报告和表格证据仅供审计，不参与运行时生成规则。
+上表保留 R10 当时的静态对象结果；[R10 计数脚本输出](model-card-audit-20261109-r10-counts.json) 已按 R11 要求改为完整 Core 对象（623 / 1061），可用 `node scripts/report-model-card-r10.mjs --check` 离线复核当前输出。报告和表格证据仅供审计，不参与运行时生成规则。
 
 ### B / C：显示名与确认弹窗
 

@@ -1,0 +1,62 @@
+import test, { afterEach } from 'node:test'
+import assert from 'node:assert/strict'
+import fs from 'node:fs'
+import React from 'react'
+import { render, cleanup } from '@testing-library/react'
+import { modelCardSpecifications } from '../src/lib/modelCardSpecifications.js'
+import { ModelSpecifications } from '../src/components/ModelSpecifications.jsx'
+import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
+import { unpackRegistry, rowsOf, countCards } from '../../../scripts/lib/model-card-audit.mjs'
+import headFixture from './fixtures/r11-registry-head.json' with { type: 'json' }
+import linkFixture from './fixtures/r11-link-check-20261109.json' with { type: 'json' }
+import counts from '../../../docs/model-card-audit-20261109-r11-counts.json' with { type: 'json' }
+const registry = unpackRegistry(headFixture), rows = rowsOf(registry)
+afterEach(cleanup)
+
+test('R11 captured full Core objects reproduce total and every channel count; ID-only is comparison only', () => {
+  assert.equal(rows.length, 1061)
+  for (const idOnly of [false, true]) {
+    const result = countCards(rows, modelCardSpecifications, idOnly)
+    const expected = counts.head[idOnly ? 'idOnly' : 'fullObject']
+    assert.deepEqual(result.totals, expected.totals)
+    assert.deepEqual(result.perChannel, expected.perChannel)
+  }
+  assert.deepEqual(Object.values(counts.head.fullObject.totals).slice(0, 5), [1061, 997, 967, 926, 616])
+  assert.deepEqual(Object.values(counts.head.idOnly.totals).slice(0, 5), [1061, 403, 397, 390, 260])
+  assert.ok(rows.filter(row => row.model.specificModelSpecifications).length > 500)
+  assert.deepEqual(counts.unexplainedLosses, [])
+  assert.ok(counts.losses.every(row => row.reason === 'removed-model' && row.removalSource))
+})
+
+test('R11 link evidence covers exactly the 46 R9 identities and their rendered first source', () => {
+  const doc = fs.readFileSync(new URL('../../../docs/model-card-audit-20261109.md', import.meta.url), 'utf8')
+  const section = doc.split('### R9 附录：46 张首链接变化完整列表')[1].split('\n## ')[0]
+  const expected = [...section.matchAll(/^\| `([^/`]+)\/([^`]+)` \| (\S+) \| (\S+) \|$/gm)]
+    .map(([, channel, modelId, oldUrl, newUrl]) => ({ channel, modelId, oldUrl, newUrl }))
+  assert.equal(expected.length, 46)
+  assert.deepEqual(linkFixture.rows.map(({ channel, modelId, oldUrl, newUrl }) => ({ channel, modelId, oldUrl, newUrl })), expected)
+  assert.equal(new Set(linkFixture.rows.map(row => row.channel + '/' + row.modelId)).size, 46)
+  assert.match(linkFixture.method, /GET.*browser.*follow.*25s/)
+  for (const row of linkFixture.rows) {
+    assert.ok(Object.hasOwn(row, 'status')); assert.ok(Number.isFinite(Date.parse(row.checkedAt)))
+    assert.equal(row.checkedAt, '2026-11-09T09:45:47.209Z')
+    assert.equal(row.status, 200); assert.equal(row.redirected, false); assert.equal(row.finalUrl, row.newUrl)
+    const model = registry.providers[row.channel].models.find(model => model.id === row.modelId)
+    assert.ok(model, row.channel + '/' + row.modelId)
+    assert.equal(modelCardSpecifications(row.channel, model).sources[0], row.newUrl)
+    for (const compactSources of [false, true]) {
+      const view = render(React.createElement(ModelSpecifications, { provider: row.channel, model, compactSources }))
+      assert.equal(view.getByRole('link').getAttribute('href'), row.newUrl)
+      view.unmount()
+    }
+  }
+})
+
+test('R11 no rendered registry or static-card source has a recorded 404/410', () => {
+  const rejected = new Set(linkFixture.rows.filter(row => [404, 410].includes(row.status)).map(row => row.newUrl))
+  // Check all sources, including those reachable through the touch dialog.
+  for (const { channel, model } of [...rows, ...rowsOf(STATIC_MODEL_REGISTRY)]) {
+    const card = modelCardSpecifications(channel, model)
+    assert.ok(card.sources.every(url => !rejected.has(url)), channel + '/' + model.id)
+  }
+})
