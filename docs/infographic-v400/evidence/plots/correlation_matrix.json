@@ -1,0 +1,72 @@
+{
+  "figureTypeId": "correlation_matrix",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic QA fixture only; no research claims.",
+    "rows": [
+      {
+        "row": "A",
+        "column": "A",
+        "value": 1
+      },
+      {
+        "row": "A",
+        "column": "B",
+        "value": 0.3
+      },
+      {
+        "row": "B",
+        "column": "A",
+        "value": 0.3
+      },
+      {
+        "row": "B",
+        "column": "B",
+        "value": 1
+      }
+    ],
+    "units": {
+      "value": "dimensionless",
+      "x": "dimensionless",
+      "y": "dimensionless",
+      "size": "dimensionless",
+      "low": "dimensionless",
+      "high": "dimensionless",
+      "start": "dimensionless",
+      "end": "dimensionless",
+      "effect": "dimensionless",
+      "p": "dimensionless",
+      "mean": "dimensionless",
+      "fpr": "dimensionless",
+      "tpr": "dimensionless",
+      "recall": "dimensionless",
+      "precision": "dimensionless",
+      "predicted": "dimensionless",
+      "observed": "dimensionless",
+      "count": "dimensionless",
+      "a": "dimensionless",
+      "b": "dimensionless",
+      "se": "dimensionless",
+      "u": "dimensionless",
+      "v": "dimensionless",
+      "time": "dimensionless",
+      "event": "dimensionless"
+    },
+    "options": {
+      "bandwidth": 0.5,
+      "bins": 5,
+      "nullValue": 0,
+      "initialValue": 0,
+      "levels": [
+        0.5,
+        1,
+        1.5
+      ]
+    }
+  },
+  "figureAnalysis": {
+    "method": "pca",
+    "description": "Synthetic precomputed QA values; not a statistical analysis of research data.",
+    "pKind": "p"
+  }
+}

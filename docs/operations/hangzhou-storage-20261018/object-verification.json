@@ -1,0 +1,29 @@
+{
+  "prod": {
+    "bucket": "paperbanana-prod-hz-20261018",
+    "verified": 640,
+    "bytes": 290933342,
+    "elapsedMs": 7827,
+    "sha256": "all-matched",
+    "metadata": "all-matched",
+    "endpoint": "Hangzhou internal"
+  },
+  "bench": {
+    "bucket": "paperbanana-bench-hz-20261018",
+    "verified": 2043,
+    "bytes": 957915498,
+    "elapsedMs": 22097,
+    "sha256": "all-matched",
+    "metadata": "all-matched",
+    "endpoint": "Hangzhou internal"
+  },
+  "backup": {
+    "bucket": "paperbanana-backup-hz-20261018",
+    "verified": 92,
+    "bytes": 2732103778,
+    "elapsedMs": 37988,
+    "sha256": "all-matched",
+    "metadata": "all-matched",
+    "endpoint": "Hangzhou internal"
+  }
+}

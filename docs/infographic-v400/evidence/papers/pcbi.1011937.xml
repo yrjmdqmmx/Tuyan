@@ -1,0 +1,826 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-23-01682</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1011937</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Statistics</subject><subj-group><subject>Statistical models</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Computational techniques</subject><subj-group><subject>Computational pipelines</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Research design</subject><subj-group><subject>Experimental design</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Mathematical and statistical techniques</subject><subj-group><subject>Bayesian method</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Molecular biology</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>Sequencing techniques</subject><subj-group><subject>DNA sequencing</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>Sequencing techniques</subject><subj-group><subject>DNA sequencing</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Molecular biology</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>DNA barcoding</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>DNA barcoding</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Evolutionary biology</subject><subj-group><subject>Evolutionary systematics</subject><subj-group><subject>Molecular systematics</subject><subj-group><subject>DNA barcoding</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Taxonomy</subject><subj-group><subject>Evolutionary systematics</subject><subj-group><subject>Molecular systematics</subject><subj-group><subject>DNA barcoding</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Data management</subject><subj-group><subject>Taxonomy</subject><subj-group><subject>Evolutionary systematics</subject><subj-group><subject>Molecular systematics</subject><subj-group><subject>DNA barcoding</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Microbiology</subject><subj-group><subject>Microbial evolution</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Evolutionary biology</subject><subj-group><subject>Organismal evolution</subject><subj-group><subject>Microbial evolution</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Probability theory</subject><subj-group><subject>Probability distribution</subject></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Bayesian inference of relative fitness on high-throughput pooled competition assays</article-title>
+<alt-title alt-title-type="running-head">Bayesian inference of relative fitness on high-throughput pooled competition assays</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-9510-0527</contrib-id>
+<name name-style="western">
+<surname>Razo-Mejia</surname> <given-names>Manuel</given-names></name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/project-administration/">Project administration</role>
+<role content-type="http://credit.niso.org/contributor-roles/software/">Software</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/validation/">Validation</role>
+<role content-type="http://credit.niso.org/contributor-roles/visualization/">Visualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Mani</surname> <given-names>Madhav</given-names></name>
+<role content-type="http://credit.niso.org/contributor-roles/funding-acquisition/">Funding acquisition</role>
+<role content-type="http://credit.niso.org/contributor-roles/project-administration/">Project administration</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Petrov</surname> <given-names>Dmitri</given-names></name>
+<role content-type="http://credit.niso.org/contributor-roles/funding-acquisition/">Funding acquisition</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001">
+<label>1</label>
+<addr-line>Department of Biology, Stanford University, Stanford, California, United States of America</addr-line>
+</aff>
+<aff id="aff002">
+<label>2</label>
+<addr-line>NSF-Simons Center for Quantitative Biology, Northwestern University, Chicago, Illinois, United States of America</addr-line>
+</aff>
+<aff id="aff003">
+<label>3</label>
+<addr-line>Department of Engineering Sciences and Applied Mathematics, Northwestern University, Chicago, Illinois, United States of America</addr-line>
+</aff>
+<aff id="aff004">
+<label>4</label>
+<addr-line>Stanford Cancer Institute, Stanford University School of Medicine, Stanford, California, United States of America</addr-line>
+</aff>
+<aff id="aff005">
+<label>5</label>
+<addr-line>Chan Zuckerberg Biohub, San Francisco, California, United States of America</addr-line>
+</aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Maslov</surname> <given-names>Sergei</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1">
+<addr-line>University of Illinois at Urbana-Champaign, UNITED STATES</addr-line>
+</aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>I have read the journal’s policy and the authors of this manuscript have the following competing interests: MM is a Simons Investigator. DP is a CZ Biohub Investigator.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">mrazo@stanford.edu</email></corresp>
+</author-notes>
+<pub-date pub-type="collection">
+<month>3</month>
+<year>2024</year>
+</pub-date>
+<pub-date pub-type="epub">
+<day>15</day>
+<month>3</month>
+<year>2024</year>
+</pub-date>
+<volume>20</volume>
+<issue>3</issue>
+<elocation-id>e1011937</elocation-id>
+<history>
+<date date-type="received">
+<day>18</day>
+<month>10</month>
+<year>2023</year>
+</date>
+<date date-type="accepted">
+<day>21</day>
+<month>2</month>
+<year>2024</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2024</copyright-year>
+<copyright-holder>Razo-Mejia et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1011937"/>
+<abstract>
+<p>The tracking of lineage frequencies via DNA barcode sequencing enables the quantification of microbial fitness. However, experimental noise coming from biotic and abiotic sources complicates the computation of a reliable inference. We present a Bayesian pipeline to infer relative microbial fitness from high-throughput lineage tracking assays. Our model accounts for multiple sources of noise and propagates uncertainties throughout all parameters in a systematic way. Furthermore, using modern variational inference methods based on automatic differentiation, we are able to scale the inference to a large number of unique barcodes. We extend this core model to analyze multi-environment assays, replicate experiments, and barcodes linked to genotypes. On simulations, our method recovers known parameters within posterior credible intervals. This work provides a generalizable Bayesian framework to analyze lineage tracking experiments. The accompanying open-source software library enables the adoption of principled statistical methods in experimental evolution.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author summary</title>
+<p>In this study, we present a novel Bayesian pipeline for analyzing DNA barcode tracking sequencing data, addressing the challenge of accurately quantifying competitive microbial fitness in the presence of experimental noise. Our method uniquely contributes to understanding microbial evolutionary dynamics by enabling reliable inference of the relative fitness of diverse microbial strains from high-throughput lineage tracking assays. Our approach is distinct in its ability to systematically account for and propagate uncertainties from various noise sources throughout all inferred parameters. Furthermore, the error-propagation quality of our Bayesian method allows us to extend the inference pipeline to common dataset structures, such as jointly analyzing multiple experimental replicates or accounting for multiple unique barcodes mapping the equivalent genotypes. This comprehensive treatment of uncertainties is crucial in experimental settings where noise can significantly influence the results. Furthermore, we have optimized our pipeline for scalability, allowing it to handle large numbers of unique barcodes effectively. This scalability is essential for analyzing complex datasets typical in microbial fitness studies.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution>NIH</institution>
+</funding-source>
+<award-id>R35GM11816506, R01CA23125303, R01CA263715,U01AG077922, R01CA230025</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Petrov</surname> <given-names>Dmitri</given-names></name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100000001</institution-id>
+<institution>National Science Foundation</institution>
+</institution-wrap>
+</funding-source>
+<award-id>597491</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Mani</surname> <given-names>Madhav</given-names></name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award003">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100000893</institution-id>
+<institution>Simons Foundation</institution>
+</institution-wrap>
+</funding-source>
+<award-id>597491</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Mani</surname> <given-names>Madhav</given-names></name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award004">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100014989</institution-id>
+<institution>Chan Zuckerberg Initiative</institution>
+</institution-wrap>
+</funding-source>
+<award-id>DAF2023-329587</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Mani</surname> <given-names>Madhav</given-names></name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award005">
+<funding-source>
+<institution>Schmidt Science Fellowship</institution>
+</funding-source>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-9510-0527</contrib-id>
+<name name-style="western">
+<surname>Razo-Mejia</surname> <given-names>Manuel</given-names></name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>This work was supported by - The NIH/NIGMS, Genomics of rapid adaptation in the lab and in the wild R35GM11816506 (MIRA grant, to DP) - The NIH, Unravelling mechanisms of tumor suppression in lung cancer (R01CA23434903, to DP) - The NIH (PQ4), Quantitative and multiplexed analysis of gene function in cancer in vivo (R01CA23125303, to DP) - The NIH, Genetic Determinants of Tumor Growth and Drug Sensitivity in EGFR Mutant Lung Cancer (R01CA263715, to DP) - The NIH, Dissecting the interplay between aging, genotype, and the microenvironment in lung cancer (U01AG077922, to DP) - The NIH, Genetic dissection of oncogenic Kras signaling (R01CA230025, to DP) - The National Science Foundation-Simons Center for Quantitative Biology at Northwestern University and the Simons Foundation grant (597491, to MM) - The Chan Zuckerberg Initiative, an advised fund of Silicon Valley Community Foundation (DAF2023-329587, to MM) - MRM was supported by the Schmidt Science Fellowship. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="6"/>
+<table-count count="0"/>
+<page-count count="18"/>
+</counts>
+<custom-meta-group>
+<custom-meta>
+<meta-name>PLOS Publication Stage</meta-name>
+<meta-value>vor-update-to-uncorrected-proof</meta-value>
+</custom-meta>
+<custom-meta>
+<meta-name>Publication Update</meta-name>
+<meta-value>2024-03-27</meta-value>
+</custom-meta>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>This paper is accompanied by a highly documented Julia software library—BarBay.jl (see documentation in <ext-link ext-link-type="uri" xlink:href="https://mrazomej.github.io/BarBay.jl" xlink:type="simple">https://mrazomej.github.io/BarBay.jl</ext-link>). Furthermore, to ensure transparency with every piece of information presented in this paper, we have made all of the code used in the processing, analysis, and figure generation for this work also publicly available on this paper’s GitHub repository (<ext-link ext-link-type="uri" xlink:href="https://github.com/mrazomej/bayesian_fitness" xlink:type="simple">https://github.com/mrazomej/bayesian_fitness</ext-link>).</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>The advent of DNA barcoding—the ability to uniquely identify cell lineages with DNA sequences integrated at a specific locus—and high-throughput sequencing has opened new venues for understanding microbial evolutionary dynamics with an unprecedented level of temporal resolution [<xref ref-type="bibr" rid="pcbi.1011937.ref001">1</xref>–<xref ref-type="bibr" rid="pcbi.1011937.ref003">3</xref>]. These experimental efforts rely on our ability to reliably infer the relative fitness of an ensemble of diverse genotypes. Moreover, inferring these fitness values over an ensemble of environmental conditions can help us determine the phenotypic diversity of a rapid adaptation process [<xref ref-type="bibr" rid="pcbi.1011937.ref004">4</xref>].</p>
+<p>As with any other sequencing-based quantification, tracking lineages via DNA barcode sequencing is inexorably accompanied by noise sources coming from experimental manipulation of the microbial cultures, DNA extraction, and sequencing library preparation that involves multiple rounds of PCR amplification, and the sequencing process itself. Thus, accounting for the uncertainty when inferring the relevant parameters from the data is a crucial step to draw reliable conclusions. Bayesian statistics presents a paradigm by which one can account for all known sources of uncertainty in a principled way [<xref ref-type="bibr" rid="pcbi.1011937.ref005">5</xref>]. This, combined with the development of modern Markov Chain Monte Carlo sampling algorithms [<xref ref-type="bibr" rid="pcbi.1011937.ref006">6</xref>] and approximate variational approaches [<xref ref-type="bibr" rid="pcbi.1011937.ref007">7</xref>] have boosted a resurgence of Bayesian methods in different fields [<xref ref-type="bibr" rid="pcbi.1011937.ref008">8</xref>].</p>
+<p>We present a Bayesian inference pipeline to quantify the uncertainty about the parametric information we can extract from high-throughput competitive fitness assays given a model of the data generation process and experimental data. In these assays, the fitness of an ensemble of genotypes is determined relative to a reference genotype [<xref ref-type="bibr" rid="pcbi.1011937.ref003">3</xref>, <xref ref-type="bibr" rid="pcbi.1011937.ref004">4</xref>]. <xref ref-type="fig" rid="pcbi.1011937.g001">Fig 1(A)</xref> shows a schematic of the experimental procedure in which an initial pool of barcoded strains are mixed with a reference strain and inoculated into fresh media. After some time—usually, enough time for the culture to saturate—an aliquot is transferred to fresh media, while the remaining culture is used for DNA sequencing of the lineage barcodes. The time-series information of the relative abundance of each lineage, i.e., the barcode frequency depicted in <xref ref-type="fig" rid="pcbi.1011937.g001">Fig 1(B)</xref>, is used to infer the relative fitness—the growth advantage on a per-cycle basis—for each lineage with respect to the reference strain. The proposed statistical model accounts for multiple sources of uncertainty when inferring the lineages’ relative fitness values (see Section “Experimental setup” for details on sources of uncertainty accounted for by the model). Furthermore, minor changes to the core statistical model allow us to account for relevant experimental variations of these competition assays. More specifically, in Section “Fitness inference on multiple environments”, we present a variation of the statistical model to infer fitness on growth dilution cycles in multiple environments with proper error propagation. Furthermore, as described in Section “Accounting for experimental replicates via hierarchical models”, our statistical model can account for batch-to-batch differences when jointly analyzing multiple experimental replicates using a Bayesian hierarchical model. Finally, a variant of these hierarchical models, presented in Section “<italic>Accounting for multiple barcodes per genotype via hierarchical models</italic>”, can account for variability within multiple barcodes mapping to equivalent genotypes within the same experiment.</p>
+<fig id="pcbi.1011937.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1011937.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Typical competitive fitness experiment.</title>
+<p>(A) Schematic of the typical experimental design to determine the competitive fitness of an ensemble of barcoded genotypes. Genotypes are pooled together and grown over multiple growth-dilution cycles. At the end of each cycle, a sample is processed to generate a library for amplicon sequencing. (B) Typical barcode trajectory dataset. From each time point, the relative frequency of each barcode is determined from the total number of reads. Shades of blue represent different relative fitness. Darker gray lines define the typical trajectory of neutral lineages. (C) Sources of uncertainty accounted for by our method. The Bayesian model fit to the data propagates uncertainties from the categories schematically depicted to all parameters in the inference.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1011937.g001" xlink:type="simple"/>
+</fig>
+<p>For all the model variations presented in this paper, we benchmark the ability of our pipeline to infer relative fitness parameters against synthetic data generated from logistic growth simulations with added random noise. A <monospace specific-use="no-wrap">Julia</monospace> package accompanies the present method to readily implement the inference pipeline with state-of-the-art scientific computing software.</p>
+</sec>
+<sec id="sec002" sec-type="results">
+<title>Results</title>
+<sec id="sec003">
+<title>Experimental setup</title>
+<p>The present work is designed to analyze time-series data of relative abundance of multiple microbial lineages uniquely identified by a DNA barcode [<xref ref-type="bibr" rid="pcbi.1011937.ref003">3</xref>, <xref ref-type="bibr" rid="pcbi.1011937.ref004">4</xref>]. In these competition assays, an ensemble of genotypes is pooled together with an unlabeled reference strain that, initially, represents the vast majority (≥90%) of the cells in the culture (see schematic in <xref ref-type="fig" rid="pcbi.1011937.g001">Fig 1(A)</xref>). Furthermore, a fraction of labeled genotypes equivalent to the unlabeled reference strain—hereafter defined as <italic>neutral</italic> lineages—are spiked in at a relatively high abundance (≈ 3 − 5%). The rest of the culture is left for the ensemble of genotypes of interest. This experimental design in which the barcodes of interest represent a small fraction of the culture serves three main purposes: First, the model used to infer the relative fitness differences between genotypes is valid in the regime where the genotype frequency is significantly smaller than one (see Section “<italic>Fitness model</italic>”). Second, potential problems with frequency-dependent selection are minimized as long as the frequency of each genotype remains small. Third, having a single genotype dominating the culture standardizes the environment experienced by all genotypes. This is because variations in the chemistry of the environment are effectively dictated by the dominating genotype, allowing for reproducible growth-dilution cycles.</p>
+<p>To determine the relative fitness of the ensemble of genotypes, a series of growth-dilution cycles are performed on either a single or multiple environments. In other words, the cultures are grown for some time; then, an aliquot is inoculated into fresh media for the next growth cycle. This process is repeated for roughly 4–7 cycles, depending on the initial abundances of the mutants and their relative growth rates. The DNA barcodes are sequenced at the end of each growth cycle to quantify the relative abundance of each of the barcodes. We point the reader to [<xref ref-type="bibr" rid="pcbi.1011937.ref004">4</xref>] for specific details on these assays for <italic>S. cerevisiae</italic> and to [<xref ref-type="bibr" rid="pcbi.1011937.ref003">3</xref>] for equivalent assays for <italic>E. coli</italic>. <xref ref-type="fig" rid="pcbi.1011937.g001">Fig 1(B)</xref> presents a typical barcode trajectory where the black trajectories represent the so-called <italic>neutral lineages</italic>, genetically equivalent to the untagged ancestor strain that initially dominates the culture. These spiked-in neutral lineages simplify the inference problem since the fitness metric of all relevant barcodes is quantified with respect to these barcodes—thus referred to as <italic>relative fitness</italic>.</p>
+</sec>
+<sec id="sec004">
+<title>Preliminaries on mathematical notation</title>
+<p>Before jumping directly into the Bayesian inference pipeline, let us establish the mathematical notation used throughout this paper. We define (column) vectors as underlined lowercase symbols such as
+<disp-formula id="pcbi.1011937.e001"><alternatives><graphic id="pcbi.1011937.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e001" xlink:type="simple"/><mml:math display="block" id="M1"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:munder><mml:mi>x</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>=</mml:mo> <mml:mo>[</mml:mo> <mml:mtable><mml:mtr><mml:mtd><mml:msub><mml:mi>x</mml:mi> <mml:mn>1</mml:mn></mml:msub></mml:mtd></mml:mtr> <mml:mtr><mml:mtd><mml:msub><mml:mi>x</mml:mi> <mml:mn>2</mml:mn></mml:msub></mml:mtd></mml:mtr> <mml:mtr><mml:mtd><mml:mo>⋮</mml:mo></mml:mtd></mml:mtr> <mml:mtr><mml:mtd><mml:msub><mml:mi>x</mml:mi> <mml:mi>N</mml:mi></mml:msub></mml:mtd></mml:mtr></mml:mtable> <mml:mo>]</mml:mo> <mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(1)</label></disp-formula></p>
+<p>In the same way, we define matrices as double-underline uppercase symbols such as
+<disp-formula id="pcbi.1011937.e002"><alternatives><graphic id="pcbi.1011937.e002g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e002" xlink:type="simple"/><mml:math display="block" id="M2"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:munder><mml:munder><mml:mi>A</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>=</mml:mo> <mml:mo>[</mml:mo> <mml:mtable><mml:mtr><mml:mtd><mml:msub><mml:mi>A</mml:mi> <mml:mn>11</mml:mn></mml:msub></mml:mtd> <mml:mtd><mml:msub><mml:mi>A</mml:mi> <mml:mn>12</mml:mn></mml:msub></mml:mtd> <mml:mtd><mml:mo>⋯</mml:mo></mml:mtd> <mml:mtd><mml:msub><mml:mi>A</mml:mi> <mml:mrow><mml:mn>1</mml:mn> <mml:mi>N</mml:mi></mml:mrow></mml:msub></mml:mtd></mml:mtr> <mml:mtr><mml:mtd><mml:msub><mml:mi>A</mml:mi> <mml:mn>21</mml:mn></mml:msub></mml:mtd> <mml:mtd><mml:msub><mml:mi>A</mml:mi> <mml:mn>22</mml:mn></mml:msub></mml:mtd> <mml:mtd><mml:mo>⋯</mml:mo></mml:mtd> <mml:mtd><mml:msub><mml:mi>A</mml:mi> <mml:mrow><mml:mn>2</mml:mn> <mml:mi>N</mml:mi></mml:mrow></mml:msub></mml:mtd></mml:mtr> <mml:mtr><mml:mtd><mml:mo>⋮</mml:mo></mml:mtd> <mml:mtd><mml:mo>⋮</mml:mo></mml:mtd> <mml:mtd><mml:mo>⋱</mml:mo></mml:mtd> <mml:mtd><mml:mo>⋮</mml:mo></mml:mtd></mml:mtr> <mml:mtr><mml:mtd><mml:msub><mml:mi>A</mml:mi> <mml:mrow><mml:mi>M</mml:mi> <mml:mn>1</mml:mn></mml:mrow></mml:msub></mml:mtd> <mml:mtd><mml:msub><mml:mi>A</mml:mi> <mml:mrow><mml:mi>M</mml:mi> <mml:mn>2</mml:mn></mml:mrow></mml:msub></mml:mtd> <mml:mtd><mml:mo>⋯</mml:mo></mml:mtd> <mml:mtd><mml:msub><mml:mi>A</mml:mi> <mml:mrow><mml:mi>M</mml:mi> <mml:mi>N</mml:mi></mml:mrow></mml:msub></mml:mtd></mml:mtr></mml:mtable> <mml:mo>]</mml:mo> <mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(2)</label></disp-formula></p>
+</sec>
+<sec id="sec005">
+<title>Fitness model</title>
+<p>Empirically, each barcode frequency trajectory follows an exponential function of the form [<xref ref-type="bibr" rid="pcbi.1011937.ref001">1</xref>, <xref ref-type="bibr" rid="pcbi.1011937.ref003">3</xref>, <xref ref-type="bibr" rid="pcbi.1011937.ref004">4</xref>]
+<disp-formula id="pcbi.1011937.e003"><alternatives><graphic id="pcbi.1011937.e003g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e003" xlink:type="simple"/><mml:math display="block" id="M3"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msubsup><mml:mi>f</mml:mi> <mml:mrow><mml:mi>t</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup> <mml:mo>=</mml:mo> <mml:msubsup><mml:mi>f</mml:mi> <mml:mrow><mml:mi>t</mml:mi></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup> <mml:msup><mml:mi mathvariant="normal">e</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:mi>s</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msup> <mml:mo>-</mml:mo> <mml:msub><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mi>t</mml:mi></mml:msub> <mml:mo>)</mml:mo> <mml:mi>τ</mml:mi></mml:mrow></mml:msup> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(3)</label></disp-formula>
+where <inline-formula id="pcbi.1011937.e004"><alternatives><graphic id="pcbi.1011937.e004g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e004" xlink:type="simple"/><mml:math display="inline" id="M4"><mml:msubsup><mml:mi>f</mml:mi> <mml:mrow><mml:mi>t</mml:mi></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup></mml:math></alternatives></inline-formula> is the frequency of barcode <italic>b</italic> at the end of cycle number <italic>t</italic>, <italic>s</italic><sup>(<italic>b</italic>)</sup> is the relative fitness with respect to the reference strain—the quantity we want to infer from the data—<inline-formula id="pcbi.1011937.e005"><alternatives><graphic id="pcbi.1011937.e005g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e005" xlink:type="simple"/><mml:math display="inline" id="M5"><mml:msub><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mi>t</mml:mi></mml:msub></mml:math></alternatives></inline-formula> is the mean fitness of the culture at the end of cycle number <italic>t</italic>, and <italic>τ</italic> is the time pass between cycle <italic>t</italic> and <italic>t</italic> + 1. We can rewrite <xref ref-type="disp-formula" rid="pcbi.1011937.e003">Eq 3</xref> as
+<disp-formula id="pcbi.1011937.e006"><alternatives><graphic id="pcbi.1011937.e006g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e006" xlink:type="simple"/><mml:math display="block" id="M6"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mfrac><mml:mn>1</mml:mn> <mml:mi>τ</mml:mi></mml:mfrac> <mml:mtext>ln</mml:mtext> <mml:mfrac><mml:msubsup><mml:mi>f</mml:mi> <mml:mrow><mml:mi>t</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup> <mml:msubsup><mml:mi>f</mml:mi> <mml:mrow><mml:mi>t</mml:mi></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup></mml:mfrac> <mml:mo>=</mml:mo> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:mi>s</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msup> <mml:mo>-</mml:mo> <mml:msub><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mi>t</mml:mi></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(4)</label></disp-formula></p>
+<p>
+<xref ref-type="disp-formula" rid="pcbi.1011937.e006">Eq 4</xref> separates the measurements—the barcode frequencies—from the unobserved (sometimes referred to as latent) parameters we want to infer from the data—the population mean fitness and the barcode relative fitness. This is ultimately the functional form used in our inference pipeline. Therefore, the relative fitness is computed by knowing the log frequency ratio of each barcode throughout the growth-dilution cycles.</p>
+<p>The presence of the neutral lineages facilitates the determination of the population mean fitness value <inline-formula id="pcbi.1011937.e007"><alternatives><graphic id="pcbi.1011937.e007g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e007" xlink:type="simple"/><mml:math display="inline" id="M7"><mml:msub><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mi>t</mml:mi></mml:msub></mml:math></alternatives></inline-formula>. Since every relative fitness is determined relative to the neutral lineage that dominates the culture, we define their fitness to be <italic>s</italic><sup>(<italic>n</italic>)</sup> = 0, where the superscript (<italic>n</italic>) specifies their neutrality. This means that <xref ref-type="disp-formula" rid="pcbi.1011937.e006">Eq 4</xref> for a neutral lineage takes the simpler form
+<disp-formula id="pcbi.1011937.e008"><alternatives><graphic id="pcbi.1011937.e008g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e008" xlink:type="simple"/><mml:math display="block" id="M8"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mfrac><mml:mn>1</mml:mn> <mml:mi>τ</mml:mi></mml:mfrac> <mml:mtext>ln</mml:mtext> <mml:mfrac><mml:msubsup><mml:mi>f</mml:mi> <mml:mrow><mml:mi>t</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup> <mml:msubsup><mml:mi>f</mml:mi> <mml:mrow><mml:mi>t</mml:mi></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup></mml:mfrac> <mml:mo>=</mml:mo> <mml:mo>-</mml:mo> <mml:msub><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mi>t</mml:mi></mml:msub> <mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(5)</label></disp-formula></p>
+<p>Therefore, we can use the data from these reference barcodes to directly infer the value of the population mean fitness.</p>
+<p>It is important to notice that the frequencies <inline-formula id="pcbi.1011937.e009"><alternatives><graphic id="pcbi.1011937.e009g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e009" xlink:type="simple"/><mml:math display="inline" id="M9"><mml:msubsup><mml:mi>f</mml:mi> <mml:mrow><mml:mi>t</mml:mi></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup></mml:math></alternatives></inline-formula> are not the allele frequencies in the population (most of the culture is not sequenced since the reference strain is not barcoded), but rather the relative frequencies in the total number of sequencing reads. A way to conceptualize this subtle but important point is to assume exponential growth in the <italic>number of cells</italic> <inline-formula id="pcbi.1011937.e010"><alternatives><graphic id="pcbi.1011937.e010g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e010" xlink:type="simple"/><mml:math display="inline" id="M10"><mml:msubsup><mml:mi>N</mml:mi> <mml:mi>t</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup></mml:math></alternatives></inline-formula> of the form
+<disp-formula id="pcbi.1011937.e011"><alternatives><graphic id="pcbi.1011937.e011g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e011" xlink:type="simple"/><mml:math display="block" id="M11"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msubsup><mml:mi>N</mml:mi> <mml:mrow><mml:mi>t</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup> <mml:mo>=</mml:mo> <mml:msubsup><mml:mi>N</mml:mi> <mml:mrow><mml:mi>t</mml:mi></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup> <mml:msup><mml:mi mathvariant="normal">e</mml:mi> <mml:mrow><mml:msup><mml:mo>λ</mml:mo> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msup> <mml:mi>τ</mml:mi></mml:mrow></mml:msup> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(6)</label></disp-formula>
+for every barcode <italic>b</italic> with growth rate λ<sup>(<italic>b</italic>)</sup>. However, when we sequence barcodes, we do not directly measure the number of cells, but some number of reads <inline-formula id="pcbi.1011937.e012"><alternatives><graphic id="pcbi.1011937.e012g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e012" xlink:type="simple"/><mml:math display="inline" id="M12"><mml:msubsup><mml:mi>r</mml:mi> <mml:mi>t</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup></mml:math></alternatives></inline-formula> that map to barcode <italic>b</italic>. In the simplest possible scenario, we assume
+<disp-formula id="pcbi.1011937.e013"><alternatives><graphic id="pcbi.1011937.e013g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e013" xlink:type="simple"/><mml:math display="block" id="M13"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msubsup><mml:mi>r</mml:mi> <mml:mrow><mml:mi>t</mml:mi></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup> <mml:mo>∝</mml:mo> <mml:msubsup><mml:mi>N</mml:mi> <mml:mrow><mml:mi>t</mml:mi></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(7)</label></disp-formula>
+where, importantly, the proportionality constant depends on the total number of reads for the library for cycle <italic>t</italic>, which might vary from library to library. Therefore, to compare the number of reads between libraries at different time points, we must normalize the number of reads to the same scale. The simplest form is to define a relative abundance, i.e., a frequency with respect to the total number of reads,
+<disp-formula id="pcbi.1011937.e014"><alternatives><graphic id="pcbi.1011937.e014g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e014" xlink:type="simple"/><mml:math display="block" id="M14"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msubsup><mml:mi>f</mml:mi> <mml:mrow><mml:mi>t</mml:mi></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup> <mml:mo>≡</mml:mo> <mml:mfrac><mml:msubsup><mml:mi>r</mml:mi> <mml:mrow><mml:mi>t</mml:mi></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup> <mml:mrow><mml:msub><mml:mo>∑</mml:mo> <mml:msup><mml:mi>b</mml:mi> <mml:mo>′</mml:mo></mml:msup></mml:msub> <mml:msubsup><mml:mi>r</mml:mi> <mml:mrow><mml:mi>t</mml:mi></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:mi>b</mml:mi> <mml:mo>′</mml:mo></mml:msup> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup></mml:mrow></mml:mfrac> <mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(8)</label></disp-formula></p>
+<p>This is the frequency <xref ref-type="disp-formula" rid="pcbi.1011937.e003">Eq 3</xref> describes.</p>
+<p>Our ultimate objective is to infer the relative fitness <italic>s</italic><sup>(<italic>b</italic>)</sup> for each of the <italic>M</italic> relevant barcodes in the experiment—hereafter referred to as <italic>s</italic><sup>(<italic>m</italic>)</sup> to distinguish from the general <italic>s</italic><sup>(<italic>b</italic>)</sup> and the neutral lineages <italic>s</italic><sup>(<italic>n</italic>)</sup> relative fitness. To do so, we account for the three primary sources of uncertainty in our model:</p>
+<list list-type="order">
+<list-item>
+<p>Uncertainty in the determination of frequencies. Our model relates frequencies between adjacent growth-dilution cycles to the fitness of the corresponding strain. However, we do not directly measure frequencies. Instead, our data for each barcode consists of a length <italic>T</italic> vector of counts <inline-formula id="pcbi.1011937.e015"><alternatives><graphic id="pcbi.1011937.e015g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e015" xlink:type="simple"/><mml:math display="inline" id="M15"><mml:msup><mml:munder><mml:mi>r</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>b</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msup></mml:math></alternatives></inline-formula> for each of the <italic>T</italic> cycles in which the measurements were taken.</p>
+</list-item>
+<list-item>
+<p>Uncertainty in the value of the population mean fitness. We define neutral lineages to have fitness <italic>s</italic><sup>(<italic>n</italic>)</sup> = 0, helping us anchor the value of the population mean fitness <inline-formula id="pcbi.1011937.e016"><alternatives><graphic id="pcbi.1011937.e016g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e016" xlink:type="simple"/><mml:math display="inline" id="M16"><mml:msub><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mi>t</mml:mi></mml:msub></mml:math></alternatives></inline-formula> for each pair of adjacent growth cycles. Moreover, we take this parameter as an empirical parameter to be obtained from the data, meaning that we do not impose a functional form that relates <inline-formula id="pcbi.1011937.e017"><alternatives><graphic id="pcbi.1011937.e017g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e017" xlink:type="simple"/><mml:math display="inline" id="M17"><mml:msub><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mi>t</mml:mi></mml:msub></mml:math></alternatives></inline-formula> to <inline-formula id="pcbi.1011937.e018"><alternatives><graphic id="pcbi.1011937.e018g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e018" xlink:type="simple"/><mml:math display="inline" id="M18"><mml:msub><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mrow><mml:mi>t</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msub></mml:math></alternatives></inline-formula>. Thus, we must infer the <italic>T</italic>−1 values of this population mean fitness with their uncertainty that must be propagated to the value of the mutants’ relative fitness.</p>
+</list-item>
+<list-item>
+<p>Uncertainty in each of the mutants’ fitness values.</p>
+</list-item>
+</list>
+<p>
+<xref ref-type="fig" rid="pcbi.1011937.g001">Fig 1(C)</xref> shows schematically the sources of uncertainty accounted for by our model. The first three sources—population composition, barcode read counts, and barcode frequencies—all contribute to uncertainty source 1. Uncertainty source 2 and 3 are depicted by the last two sources, respectively. To account for all these sources of uncertainty in a principled way, in the next section, we develop a Bayesian inference pipeline.</p>
+</sec>
+<sec id="sec006">
+<title>Bayesian inference</title>
+<p>As defined in the previous section, our ultimate objective is to infer the vector of relative fitness values
+<disp-formula id="pcbi.1011937.e019"><alternatives><graphic id="pcbi.1011937.e019g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e019" xlink:type="simple"/><mml:math display="block" id="M19"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>=</mml:mo> <mml:msup><mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:mi>s</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mn>1</mml:mn> <mml:mo>)</mml:mo></mml:mrow></mml:msup> <mml:mo>,</mml:mo> <mml:msup><mml:mi>s</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mn>2</mml:mn> <mml:mo>)</mml:mo></mml:mrow></mml:msup> <mml:mo>,</mml:mo><mml:mo>…</mml:mo><mml:mo>,</mml:mo> <mml:msup><mml:mi>s</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>M</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msup> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>†</mml:mo></mml:msup> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(9)</label></disp-formula>
+where <sup>†</sup> indicates the transpose. Our data consists of an <italic>T</italic> × <italic>B</italic> matrix <inline-formula id="pcbi.1011937.e020"><alternatives><graphic id="pcbi.1011937.e020g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e020" xlink:type="simple"/><mml:math display="inline" id="M20"><mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder></mml:math></alternatives></inline-formula>, where <italic>B</italic> = <italic>M</italic> + <italic>N</italic> is the number of unique barcodes given by the sum of the number of unique, relevant barcodes we care about, <italic>M</italic>, and the number of unique neutral barcodes, <italic>N</italic>, and <italic>T</italic> is the number of growth cycles where measurements were taken. The data matrix is then of the form
+<disp-formula id="pcbi.1011937.e021"><alternatives><graphic id="pcbi.1011937.e021g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e021" xlink:type="simple"/><mml:math display="block" id="M21"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>=</mml:mo> <mml:mo>[</mml:mo> <mml:mtable><mml:mtr><mml:mtd><mml:mo>-</mml:mo></mml:mtd> <mml:mtd><mml:msub><mml:munder><mml:mi>r</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mn>1</mml:mn></mml:msub></mml:mtd> <mml:mtd><mml:mo>-</mml:mo></mml:mtd></mml:mtr> <mml:mtr><mml:mtd><mml:mo>-</mml:mo></mml:mtd> <mml:mtd><mml:msub><mml:munder><mml:mi>r</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mn>2</mml:mn></mml:msub></mml:mtd> <mml:mtd><mml:mo>-</mml:mo></mml:mtd></mml:mtr> <mml:mtr><mml:mtd/><mml:mtd><mml:mo>⋮</mml:mo></mml:mtd> <mml:mtd/></mml:mtr> <mml:mtr><mml:mtd><mml:mo>-</mml:mo></mml:mtd> <mml:mtd><mml:msub><mml:munder><mml:mi>r</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub></mml:mtd> <mml:mtd><mml:mo>-</mml:mo></mml:mtd></mml:mtr></mml:mtable> <mml:mo>]</mml:mo> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(10)</label></disp-formula>
+where each row <inline-formula id="pcbi.1011937.e022"><alternatives><graphic id="pcbi.1011937.e022g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e022" xlink:type="simple"/><mml:math display="inline" id="M22"><mml:msub><mml:munder><mml:mi>r</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>t</mml:mi></mml:msub></mml:math></alternatives></inline-formula> is a <italic>B</italic>-dimensional array containing the raw barcode counts at cycle <italic>t</italic>. We can further split each vector <inline-formula id="pcbi.1011937.e023"><alternatives><graphic id="pcbi.1011937.e023g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e023" xlink:type="simple"/><mml:math display="inline" id="M23"><mml:msub><mml:munder><mml:mi>r</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>t</mml:mi></mml:msub></mml:math></alternatives></inline-formula> into two vectors of the form
+<disp-formula id="pcbi.1011937.e024"><alternatives><graphic id="pcbi.1011937.e024g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e024" xlink:type="simple"/><mml:math display="block" id="M24"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msub><mml:munder><mml:mi>r</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>t</mml:mi></mml:msub> <mml:mo>=</mml:mo> <mml:mo>[</mml:mo> <mml:mtable><mml:mtr><mml:mtd><mml:msubsup><mml:munder><mml:mi>r</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>t</mml:mi> <mml:mi>N</mml:mi></mml:msubsup></mml:mtd></mml:mtr> <mml:mtr><mml:mtd><mml:msubsup><mml:munder><mml:mi>r</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>t</mml:mi> <mml:mi>M</mml:mi></mml:msubsup></mml:mtd></mml:mtr></mml:mtable> <mml:mo>]</mml:mo> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(11)</label></disp-formula>
+i.e., the vector containing the neutral lineage barcode counts <inline-formula id="pcbi.1011937.e025"><alternatives><graphic id="pcbi.1011937.e025g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e025" xlink:type="simple"/><mml:math display="inline" id="M25"><mml:msubsup><mml:munder><mml:mi>r</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>t</mml:mi> <mml:mi>N</mml:mi></mml:msubsup></mml:math></alternatives></inline-formula> and the corresponding vector containing the mutant barcode counts <inline-formula id="pcbi.1011937.e026"><alternatives><graphic id="pcbi.1011937.e026g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e026" xlink:type="simple"/><mml:math display="inline" id="M26"><mml:msubsup><mml:munder><mml:mi>r</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>t</mml:mi> <mml:mi>M</mml:mi></mml:msubsup></mml:math></alternatives></inline-formula>. Following the same logic, matrix <inline-formula id="pcbi.1011937.e027"><alternatives><graphic id="pcbi.1011937.e027g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e027" xlink:type="simple"/><mml:math display="inline" id="M27"><mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder></mml:math></alternatives></inline-formula> can be split into two matrices as
+<disp-formula id="pcbi.1011937.e028"><alternatives><graphic id="pcbi.1011937.e028g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e028" xlink:type="simple"/><mml:math display="block" id="M28"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>=</mml:mo> <mml:mo>[</mml:mo> <mml:msup><mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mi>N</mml:mi></mml:msup> <mml:mspace width="0.277778em"/><mml:msup><mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>]</mml:mo> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(12)</label></disp-formula>
+where <inline-formula id="pcbi.1011937.e029"><alternatives><graphic id="pcbi.1011937.e029g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e029" xlink:type="simple"/><mml:math display="inline" id="M29"><mml:msup><mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mi>N</mml:mi></mml:msup></mml:math></alternatives></inline-formula> is a <italic>T</italic> × <italic>N</italic> matrix with the barcode reads time series for each neutral lineage and <inline-formula id="pcbi.1011937.e030"><alternatives><graphic id="pcbi.1011937.e030g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e030" xlink:type="simple"/><mml:math display="inline" id="M30"><mml:msup><mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup></mml:math></alternatives></inline-formula> is the equivalent <italic>T</italic> × <italic>M</italic> matrix for the non-neutral lineages.</p>
+<p>Our objective is to compute the joint probability distribution for all relative fitness values given our data. We can express this joint posterior distribution using Bayes theorem as
+<disp-formula id="pcbi.1011937.e031"><alternatives><graphic id="pcbi.1011937.e031g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e031" xlink:type="simple"/><mml:math display="block" id="M31"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>∣</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>=</mml:mo> <mml:mfrac><mml:mrow><mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>∣</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>)</mml:mo></mml:mrow> <mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>)</mml:mo></mml:mrow></mml:mrow> <mml:mrow><mml:mi>π</mml:mi> <mml:mo>(</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow></mml:mfrac> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(13)</label></disp-formula>
+where hereafter <italic>π</italic>(⋅) defines a probability density function. When defining our statistical model, we need not to focus on the denominator on the right-hand side of <xref ref-type="disp-formula" rid="pcbi.1011937.e031">Eq 13</xref>. Thus, we can write
+<disp-formula id="pcbi.1011937.e032"><alternatives><graphic id="pcbi.1011937.e032g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e032" xlink:type="simple"/><mml:math display="block" id="M32"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>∣</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>∝</mml:mo> <mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>∣</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>)</mml:mo></mml:mrow> <mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(14)</label></disp-formula></p>
+<p>However, when implementing the model computationally, the normalization constant on the right-hand side of <xref ref-type="disp-formula" rid="pcbi.1011937.e031">Eq 13</xref> must be computed. This can be done from the definition of the model via an integral of the form
+<disp-formula id="pcbi.1011937.e033"><alternatives><graphic id="pcbi.1011937.e033g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e033" xlink:type="simple"/><mml:math display="block" id="M33"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>=</mml:mo> <mml:mo>∫</mml:mo> <mml:msup><mml:mi>d</mml:mi> <mml:mi>M</mml:mi></mml:msup> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>∣</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>)</mml:mo></mml:mrow> <mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(15)</label></disp-formula>
+also known as a marginalization integral. Hereafter, differentials of the form <italic>d</italic><sup><italic>n</italic></sup> imply a <italic>n</italic>-dimensional integral.</p>
+<p>Although Eqs <xref ref-type="disp-formula" rid="pcbi.1011937.e031">13</xref> and <xref ref-type="disp-formula" rid="pcbi.1011937.e032">14</xref> seem simple enough, recall that <xref ref-type="disp-formula" rid="pcbi.1011937.e003">Eq 3</xref> relates barcode frequency values and the population mean fitness to the mutant relative fitness. Therefore, we must include these nuisance parameters as part of our inference problem. We direct the reader to Section B of <xref ref-type="supplementary-material" rid="pcbi.1011937.s001">S1 Text</xref> for the exact definitions of these parameters. Here, it suffices to say that the inference problem must include the vector <inline-formula id="pcbi.1011937.e034"><alternatives><graphic id="pcbi.1011937.e034g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e034" xlink:type="simple"/><mml:math display="inline" id="M34"><mml:msub><mml:munder><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub></mml:math></alternatives></inline-formula> of all population mean fitness values and the matrix <inline-formula id="pcbi.1011937.e035"><alternatives><graphic id="pcbi.1011937.e035g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e035" xlink:type="simple"/><mml:math display="inline" id="M35"><mml:munder><mml:munder><mml:mi>F</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder></mml:math></alternatives></inline-formula> of all barcode frequencies within the sequencing data. With these nuisance variables in hand, the full inference problem we must solve takes the form
+<disp-formula id="pcbi.1011937.e036"><alternatives><graphic id="pcbi.1011937.e036g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e036" xlink:type="simple"/><mml:math display="block" id="M36"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>,</mml:mo> <mml:msub><mml:munder><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub> <mml:mo>,</mml:mo> <mml:munder><mml:munder><mml:mi>F</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>∣</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>∝</mml:mo> <mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>∣</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>,</mml:mo> <mml:msub><mml:munder><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub> <mml:mo>,</mml:mo> <mml:munder><mml:munder><mml:mi>F</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow> <mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>,</mml:mo> <mml:msub><mml:munder><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub> <mml:mo>,</mml:mo> <mml:munder><mml:munder><mml:mi>F</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(16)</label></disp-formula></p>
+<p>To recover the marginal distribution over the non-neutral barcodes relative fitness values, we can numerically integrate out all nuisance parameters, i.e.,
+<disp-formula id="pcbi.1011937.e037"><alternatives><graphic id="pcbi.1011937.e037g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e037" xlink:type="simple"/><mml:math display="block" id="M37"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>∣</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>=</mml:mo> <mml:mo>∫</mml:mo> <mml:msup><mml:mi>d</mml:mi> <mml:mrow><mml:mi>T</mml:mi> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msup> <mml:msub><mml:munder><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub> <mml:mo>∫</mml:mo> <mml:msup><mml:mi>d</mml:mi> <mml:mi>B</mml:mi></mml:msup> <mml:msub><mml:munder><mml:mi>f</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mn>1</mml:mn></mml:msub> <mml:mo>⋯</mml:mo> <mml:mo>∫</mml:mo> <mml:msup><mml:mi>d</mml:mi> <mml:mi>B</mml:mi></mml:msup> <mml:msub><mml:munder><mml:mi>f</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub> <mml:mspace width="0.277778em"/><mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>,</mml:mo> <mml:msub><mml:munder><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub> <mml:mo>,</mml:mo> <mml:munder><mml:munder><mml:mi>F</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>∣</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(17)</label></disp-formula></p>
+<sec id="sec007">
+<title>Factorizing the posterior distribution</title>
+<p>The left-hand side of <xref ref-type="disp-formula" rid="pcbi.1011937.e036">Eq 16</xref> is extremely difficult to work with. However, we can take advantage of the structure of our inference problem to rewrite it in a more manageable form. Specifically, the statistical dependencies of our observations and latent variables allow us to factorize the joint distribution into the product of multiple conditional distributions. To gain some intuition about this factorization, let us focus on the inference of the population mean fitness values <inline-formula id="pcbi.1011937.e038"><alternatives><graphic id="pcbi.1011937.e038g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e038" xlink:type="simple"/><mml:math display="inline" id="M38"><mml:msub><mml:munder><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub></mml:math></alternatives></inline-formula>. <xref ref-type="disp-formula" rid="pcbi.1011937.e008">Eq 5</xref> relates the value of the population mean fitness to the neutral lineage frequencies and nothing else. This suggests that when writing the posterior for these population mean fitness parameters, we should be able to condition it only on the neutral lineage frequency values, i.e., <inline-formula id="pcbi.1011937.e039"><alternatives><graphic id="pcbi.1011937.e039g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e039" xlink:type="simple"/><mml:math display="inline" id="M39"><mml:mrow><mml:mi>π</mml:mi> <mml:mo>(</mml:mo> <mml:msub><mml:munder><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub> <mml:mo>∣</mml:mo> <mml:msup><mml:munder><mml:munder><mml:mi>F</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mi>N</mml:mi></mml:msup> <mml:mo>)</mml:mo></mml:mrow></mml:math></alternatives></inline-formula>. We point the reader to Section B in <xref ref-type="supplementary-material" rid="pcbi.1011937.s001">S1 Text</xref> for the full mathematical details on this factorization. For our purpose here, it suffices to say we can rewrite the joint probability distribution as a product of conditional distributions of the form
+<disp-formula id="pcbi.1011937.e040"><alternatives><graphic id="pcbi.1011937.e040g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e040" xlink:type="simple"/><mml:math display="block" id="M40"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>,</mml:mo> <mml:msub><mml:munder><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub> <mml:mo>,</mml:mo> <mml:munder><mml:munder><mml:mi>F</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>∣</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>=</mml:mo> <mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>∣</mml:mo> <mml:msub><mml:munder><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub> <mml:mo>,</mml:mo> <mml:msup><mml:munder><mml:munder><mml:mi>F</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>)</mml:mo></mml:mrow> <mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:munder><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub> <mml:mo>∣</mml:mo> <mml:msup><mml:munder><mml:munder><mml:mi>F</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mi>N</mml:mi></mml:msup> <mml:mo>)</mml:mo></mml:mrow> <mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:munder><mml:munder><mml:mi>F</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>∣</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(18)</label></disp-formula></p>
+<p>Written in this form, <xref ref-type="disp-formula" rid="pcbi.1011937.e040">Eq 18</xref> captures the three sources of uncertainty listed in Section “Fitness model” in each term. Starting from right to left, the first term on the right-hand side of <xref ref-type="disp-formula" rid="pcbi.1011937.e040">Eq 18</xref> accounts for the uncertainty when inferring the frequency values given the barcode reads. The second term accounts for the uncertainty in the values of the mean population fitness at different time points. The last term accounts for the uncertainty in the parameter we care about—the mutants’ relative fitnesses. We refer the reader to Section B in <xref ref-type="supplementary-material" rid="pcbi.1011937.s001">S1 Text</xref> for an extended description of the model with specific functional forms for each term on the left-hand side of <xref ref-type="disp-formula" rid="pcbi.1011937.e040">Eq 18</xref> as well as the extension of the model to account for multiple experimental replicates or hierarchical genotypes.</p>
+</sec>
+<sec id="sec008">
+<title>Variational inference</title>
+<p>One of the technical challenges to the adoption of Bayesian methods is the analytical intractability of integrals such as that of <xref ref-type="disp-formula" rid="pcbi.1011937.e037">Eq 17</xref>. Furthermore, even though efficient Markov Chain Monte Carlo (MCMC) algorithms such as Hamiltonian Montecarlo can numerically perform this integration [<xref ref-type="bibr" rid="pcbi.1011937.ref006">6</xref>], the dimensionality of the problem in <xref ref-type="disp-formula" rid="pcbi.1011937.e040">Eq 18</xref> makes an MCMC-based approach prohibitively slow.</p>
+<p>To overcome this computational limitation, we rely on the recent development of the automatic differentiation variational inference algorithm (ADVI) [<xref ref-type="bibr" rid="pcbi.1011937.ref007">7</xref>]. Briefly, when performing ADVI, our target posterior distribution <inline-formula id="pcbi.1011937.e041"><alternatives><graphic id="pcbi.1011937.e041g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e041" xlink:type="simple"/><mml:math display="inline" id="M41"><mml:mrow><mml:mi>π</mml:mi> <mml:mo>(</mml:mo> <mml:mi>θ</mml:mi> <mml:mo>∣</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow></mml:math></alternatives></inline-formula>, where <inline-formula id="pcbi.1011937.e042"><alternatives><graphic id="pcbi.1011937.e042g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e042" xlink:type="simple"/><mml:math display="inline" id="M42"><mml:mrow><mml:mi>θ</mml:mi> <mml:mo>=</mml:mo> <mml:mo>(</mml:mo> <mml:msup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup> <mml:mo>,</mml:mo> <mml:msub><mml:munder><mml:mover accent="true"><mml:mi>s</mml:mi> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>_</mml:mo></mml:munder> <mml:mi>T</mml:mi></mml:msub> <mml:mo>,</mml:mo> <mml:munder><mml:munder><mml:mi>F</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow></mml:math></alternatives></inline-formula>, is replaced by an approximate posterior distribution <italic>q</italic><sub><italic>ϕ</italic></sub>(<italic>θ</italic>), where <italic>ϕ</italic> fully parametrizes the approximate distribution. As further explained in Section A in <xref ref-type="supplementary-material" rid="pcbi.1011937.s001">S1 Text</xref>, the numerical integration problem is replaced by an optimization problem of the form
+<disp-formula id="pcbi.1011937.e043"><alternatives><graphic id="pcbi.1011937.e043g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e043" xlink:type="simple"/><mml:math display="block" id="M43"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msubsup><mml:mi>q</mml:mi> <mml:mi>ϕ</mml:mi> <mml:mo>*</mml:mo></mml:msubsup> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>θ</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>=</mml:mo> <mml:munder><mml:mrow><mml:mtext>min</mml:mtext><mml:mspace width="2pt"/></mml:mrow><mml:mi>ϕ</mml:mi></mml:munder> <mml:msub><mml:mi>D</mml:mi> <mml:mrow><mml:mi>K</mml:mi> <mml:mi>L</mml:mi></mml:mrow></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi>q</mml:mi> <mml:mi>ϕ</mml:mi></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>θ</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>|</mml:mo></mml:mrow> <mml:mrow><mml:mo>|</mml:mo> <mml:mi>π</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>θ</mml:mi> <mml:mo>∣</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(19)</label></disp-formula>
+where <italic>D</italic><sub><italic>KL</italic></sub> is the Kulback-Leibler divergence. In other words, the complicated high-dimensional numerical integration problem is transformed into a much simpler problem of finding the value of the parameters <italic>ϕ</italic> such that <xref ref-type="disp-formula" rid="pcbi.1011937.e043">Eq 19</xref> is satisfied as best as possible within some finite computation time. Although to compute <xref ref-type="disp-formula" rid="pcbi.1011937.e043">Eq 19</xref>, we require the posterior distribution we are trying to approximate <inline-formula id="pcbi.1011937.e044"><alternatives><graphic id="pcbi.1011937.e044g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e044" xlink:type="simple"/><mml:math display="inline" id="M44"><mml:mrow><mml:mi>π</mml:mi> <mml:mo>(</mml:mo> <mml:mi>θ</mml:mi> <mml:mo>∣</mml:mo> <mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mo>)</mml:mo></mml:mrow></mml:math></alternatives></inline-formula>, it can be shown that maximizing the so-called evidence lower bound (ELBO) [<xref ref-type="bibr" rid="pcbi.1011937.ref009">9</xref>]—equivalent to minimizing the variational free energy [<xref ref-type="bibr" rid="pcbi.1011937.ref010">10</xref>]—is mathematically equivalent to performing the optimization prescribed by <xref ref-type="disp-formula" rid="pcbi.1011937.e043">Eq 19</xref>. We direct the reader to Section A in <xref ref-type="supplementary-material" rid="pcbi.1011937.s001">S1 Text</xref> for a short primer on variational inference.</p>
+<p>This work is accompanied by the Julia library <monospace specific-use="no-wrap">BarBay.jl</monospace> that makes use of the implementation of both MCMC-based integration as well as ADVI optimization to numerically approximate the solution of <xref ref-type="disp-formula" rid="pcbi.1011937.e037">Eq 17</xref> within the Julia ecosystem [<xref ref-type="bibr" rid="pcbi.1011937.ref011">11</xref>].</p>
+</sec>
+</sec>
+<sec id="sec009">
+<title>Inference on a single dataset</title>
+<p>To assess the inference pipeline performance, we applied it to a simulated dataset with known ground truth relative fitness values (See Section D in <xref ref-type="supplementary-material" rid="pcbi.1011937.s001">S1 Text</xref> for details on simulation). <xref ref-type="fig" rid="pcbi.1011937.g002">Fig 2(A)</xref> shows the structure of the synthetic dataset. The majority of barcodes of interest (faint color lines) are adaptive compared to the neutral barcodes (<italic>s</italic><sup>(<italic>m</italic>)</sup> &gt; 0). Although the barcode frequency trajectories look relatively smooth, our fitness model requires the computation of the log frequency ratio between adjacent time points as derived in <xref ref-type="disp-formula" rid="pcbi.1011937.e006">Eq 4</xref>. <xref ref-type="fig" rid="pcbi.1011937.g002">Fig 2(B)</xref> shows such data transformation where we can better appreciate the observational noise input into our statistical model. This noise is evident for the darker lines representing the neutral barcodes since all of these lineages are assumed to be identically distributed.</p>
+<fig id="pcbi.1011937.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1011937.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Single dataset inference.</title>
+<p>(A) Frequency trajectories that represent the raw data going into the inference. (B) Log frequency ratio between two adjacent time points used by the inference pipeline. Darker lines represent the neutral barcodes. These transformed data are much more noisy than the seemingly smooth frequency trajectories. (C) Examples of the posterior predictive checks for all neutral lineages (upper left panel) and a subset of representative mutant lineages. Shaded regions represent the 95%, 68%, and 5% credible regions for the data. The reported errors above the plot represent the 68% credible region on the mutant relative fitness marginal distribution. (D) Comparison between the ground truth fitness value from the logistic-growth simulation and the inferred fitness value. Gray error bars represent the 68% posterior credible region for the relative fitness values. (E) The empirical cumulative distribution function (ECDF) for the absolute z-score value of the ground truth parameter value within the inferred fitness posterior distribution.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1011937.g002" xlink:type="simple"/>
+</fig>
+<p>To visualize the performance of our inference pipeline in fitting our fitness model to the observed data, we compute the so-called posterior predictive checks (PPC). In short, the PPC consists of repeatedly generating synthetic datasets in agreement with the results from the inference results. In other words, we use the resulting parameter values from the ADVI inference to generate possible datasets in agreement with the inferred values (See Section C in <xref ref-type="supplementary-material" rid="pcbi.1011937.s001">S1 Text</xref> for further details on these computations). <xref ref-type="fig" rid="pcbi.1011937.g002">Fig 2(C)</xref> shows these results for all neutral lineages (upper left corner plot) and a few representative non-neutral barcodes. The different color shades represent the 95%, 68%, and 5% credible regions, i.e., the regions where we expect to find the data with the corresponding probability—or in terms of our parameter, the <italic>X</italic>% credible region is the interval where we expect the true parameter value to lie with <italic>X</italic>% probability.</p>
+<p>The main advantage of our method is the natural interpretability of these credible regions where an <italic>X</italic>% credible region indeed captures the region of parameter space where we expect with <italic>X</italic>% probability the actual value of the parameter lies given our statistical model, our prior information, and the observed experimental data. Bayesian methods avoid common misconceptions associated with the construction of frequentists confidence intervals [<xref ref-type="bibr" rid="pcbi.1011937.ref012">12</xref>].</p>
+<p>To capture the global performance of the model, <xref ref-type="fig" rid="pcbi.1011937.g002">Fig 2(D)</xref> compares the known ground truth with the inferred relative fitness value for all barcodes of interest. There is an excellent degree of correspondence between these values, with the error bars representing the 68% credible region for the parameter value crossing the identity line for most barcodes. This latter point is made clear with <xref ref-type="fig" rid="pcbi.1011937.g002">Fig 2(E)</xref> where ≈90% of ground truth fitness values fall within one standard deviation of the mean in the inferred posterior distributions.</p>
+</sec>
+<sec id="sec010">
+<title>Fitness inference on multiple environments</title>
+<p>The fitness model in <xref ref-type="disp-formula" rid="pcbi.1011937.e003">Eq 3</xref> relates nuisance parameters such as the population mean fitness and the barcode frequencies to the relative fitness parameter we want to infer from the data. These dependencies imply that uncertainty on the estimates of these nuisance parameters influences the inference of the relevant parameters. For example, imagine a scenario where the neutral lineages data were incredibly noisy, leading to poor estimates of the population mean fitness values <inline-formula id="pcbi.1011937.e045"><alternatives><graphic id="pcbi.1011937.e045g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e045" xlink:type="simple"/><mml:math display="inline" id="M45"><mml:mrow><mml:msub><mml:munder accentunder="true"><mml:mover accent="true"><mml:mi>s</mml:mi><mml:mo>¯</mml:mo></mml:mover><mml:mo>_</mml:mo></mml:munder><mml:mi>T</mml:mi></mml:msub></mml:mrow></mml:math></alternatives></inline-formula>. Since the relative fitness of any non-neutral barcode <italic>s</italic><sup>(<italic>m</italic>)</sup> is determined with respect to these neutral barcodes, not accounting for the lack of precision in the value of the population mean fitness would result in misleading estimates of the accuracy with which we determine the value of the parameter we care about. Thus, propagating these sources of uncertainty in nuisance parameters is vital to generate an unbiased estimate of the relevant information we want to extract from the data. One of the benefits of Bayesian methods is the intrinsic error propagation embedded in the mathematical framework. For our previous example, the uncertainty on the value of the population mean fitness values is propagated to the relative fitness of a non-neutral barcode since we defined a joint posterior distribution over all parameters as fully expressed in <xref ref-type="disp-formula" rid="pcbi.1011937.e036">Eq 16</xref>.</p>
+<p>This natural error propagation can help us with the experimental design schematized in <xref ref-type="fig" rid="pcbi.1011937.g003">Fig 3(A)</xref>. Here, rather than performing growth-dilution cycles in the same environment, the cells are diluted into a different environment. Thus, the uncertainty on the fitness estimate for the previous environment must be propagated to that of the next one. To validate the extension of our statistical model to this scenario, <xref ref-type="fig" rid="pcbi.1011937.g003">Fig 3(B)</xref> shows the trajectory of the log frequency ratios between adjacent time points. The different colored regions correspond to the different environments. For this simulation, the growth rate of Environment 2 was set to be, on average, half of the average growth rate in Environment 1. Equivalently, the growth rate in Environment 3 was set to be, on average, twice the average growth rate in Environment 1. <xref ref-type="fig" rid="pcbi.1011937.g003">Fig 3(C)–3(E)</xref> show the correspondence between the simulation ground truth and the inferred fitness values, where the error bars represent the 68% credible region. <xref ref-type="fig" rid="pcbi.1011937.g003">Fig 3(F)</xref> summarizes the performance of our inference pipeline by showing the empirical cumulative distribution functions for the absolute value of the ground truth fitness value z-score within the posterior distribution. This plot shows that, overall, ≈75% of inferred mean values fall within one standard deviation of the ground truth. For completeness, <xref ref-type="fig" rid="pcbi.1011937.g003">Fig 3(G)</xref> shows the posterior predictive checks for a few example barcodes.</p>
+<fig id="pcbi.1011937.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1011937.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Multi-environment fitness inference.</title>
+<p>(A) Schematic of the simulated experimental design where growth-dilution cycles are performed into different environments for each cycle. (B) log frequency rations between adjacent time points. Darker lines represent the neutral barcodes. The colors in the background demark the corresponding environment, matching colors in (A). Environment 2 is set to have, on average, half the growth rate of environment 1. Likewise, environment 3 is set to have, on average, twice the growth rate of environment 1. (C-E) Comparison between the ground truth fitness value from the logistic-growth simulation and the inferred fitness value for each environment. Gray error bars represent the 68% posterior credible region. (F) The empirical cumulative distribution function (ECDF) for the absolute z-score value of the ground truth parameter value within the inferred fitness posterior distribution for all fitness values (black line) and each environment individually (color lines). (G) Examples of the posterior predictive checks for all neutral lineages (upper left panel) and a subset of representative mutant lineages. Shaded regions surrounding the data represent the 95%, 68%, and 5% credible regions for the data. The reported errors above the plot represent the 68% credible region on the mutant relative fitness marginal distribution. Background colors match those of (A).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1011937.g003" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec011">
+<title>Accounting for experimental replicates via hierarchical models</title>
+<p>Our inference pipeline can be extended to account for multiple experimental replicates via Bayesian hierarchical models [<xref ref-type="bibr" rid="pcbi.1011937.ref013">13</xref>]. Briefly, when accounting for multiple repeated measurements of the same phenomena, there are two extreme cases one can use to perform the data analysis: On the one hand, we can treat each measurement as entirely independent, losing the power to utilize multiple measurements when trying to learn a single parameter. This can negatively impact the inference since, in principle, the value of our parameter of interest should not depend on the particular experimental replicate in question. However, this approach does not allow us to properly “combine” the uncertainties in both experiments when performing the inference. On the other hand, we can pool all data together and treat our different experiments as a single measurement with higher coverage. However, by doing so, we lose all information about experiment-to-experiment variability due to intrinsic biological variability and environmental fluctuations—such as small temperature fluctuations—that we cannot control. In this sense, combining the datasets defeats the purpose of performing multiple measurements to account for this variability when extracting the relevant information from the observations.</p>
+<p>Hierarchical models present a middle ground between these extremes. First, hierarchical models rely on the definition of so-called <italic>hyper-parameters</italic>, that capture the parametric inference we are interested in—for this inference problem, we have a hyper-fitness value <italic>θ</italic><sup>(<italic>m</italic>)</sup> for each non-neutral barcode. Second, each experiment draws randomly from the distribution of this hyper-parameter, allowing for subtle variability between experiments to be accounted for—in the present inference pipeline, each experimental replicate gets assigned a <italic>local</italic> fitness value <inline-formula id="pcbi.1011937.e046"><alternatives><graphic id="pcbi.1011937.e046g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e046" xlink:type="simple"/><mml:math display="inline" id="M46"><mml:msubsup><mml:mi>s</mml:mi> <mml:mi>i</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>m</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup></mml:math></alternatives></inline-formula>, where the extra sub-index indicates the <italic>i</italic>-th experimental replicate. Conceptually, we can think of the local fitness for replicate <italic>i</italic> as being sampled from a distribution that depends on the value of the global hyper-fitness value, i.e., <inline-formula id="pcbi.1011937.e047"><alternatives><graphic id="pcbi.1011937.e047g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e047" xlink:type="simple"/><mml:math display="inline" id="M47"><mml:mrow><mml:msubsup><mml:mi>s</mml:mi> <mml:mi>i</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>m</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup> <mml:mo>∼</mml:mo> <mml:msub><mml:mi>π</mml:mi> <mml:msup><mml:mi>θ</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>m</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msup></mml:msub></mml:mrow></mml:math></alternatives></inline-formula>, where the subindex <italic>θ</italic><sup>(<italic>m</italic>)</sup> indicates the distribution’s parametric dependence on the hyper-fitness value. This way of interpreting the connection between the distribution <italic>π</italic><sub><italic>θ</italic><sup>(<italic>m</italic>)</sup></sub> and the local fitness implies that a large replicate-to-replicate variability would lead to a broad hyper-fitness distribution—implying a large uncertainty when determining the parameter that characterizes the overall relative fitness. We point the reader to Section B.4 in <xref ref-type="supplementary-material" rid="pcbi.1011937.s001">S1 Text</xref> for the full definition of the hierarchical model used in this section. Importantly, as schematized in <xref ref-type="fig" rid="pcbi.1011937.g004">Fig 4(A)</xref>, the influence between different experimental replicates runs both ways. First, the data from one experimental replicate (<inline-formula id="pcbi.1011937.e048"><alternatives><graphic id="pcbi.1011937.e048g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e048" xlink:type="simple"/><mml:math display="inline" id="M48"><mml:msubsup><mml:munder><mml:munder><mml:mi>R</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mo>_</mml:mo></mml:munder> <mml:mi>k</mml:mi> <mml:mi>M</mml:mi></mml:msubsup></mml:math></alternatives></inline-formula> in the diagram) informs all local fitness values via the global hyper-fitness (upper panel in <xref ref-type="fig" rid="pcbi.1011937.g004">Fig 4(A)</xref>). Second, the local fitness value is informed by the data from all experimental replicates via the same global hyper-fitness parameter (lower panel in <xref ref-type="fig" rid="pcbi.1011937.g004">Fig 4(A)</xref>).</p>
+<fig id="pcbi.1011937.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1011937.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Hierarchical model on experimental replicates.</title>
+<p>(A) Schematic depiction of the interactions between local fitness values <inline-formula id="pcbi.1011937.e049"><alternatives><graphic id="pcbi.1011937.e049g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e049" xlink:type="simple"/><mml:math display="inline" id="M49"><mml:msubsup><mml:munder><mml:mi>s</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>k</mml:mi> <mml:mi>M</mml:mi></mml:msubsup></mml:math></alternatives></inline-formula> through the global hyper-fitness value <inline-formula id="pcbi.1011937.e050"><alternatives><graphic id="pcbi.1011937.e050g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e050" xlink:type="simple"/><mml:math display="inline" id="M50"><mml:msup><mml:munder><mml:mi>θ</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>M</mml:mi></mml:msup></mml:math></alternatives></inline-formula> for <italic>K</italic> hypothetical experimental replicates. The upper diagram shows how the data from replicate <italic>k</italic> informs all local fitness values via the hyper-fitness parameter. The lower panel shows the reverse, where all other datasets inform the local fitness value. (B-C) Simulated replicate datasets with 900 barcodes of interest and 100 neutral lineages. (D) Comparison between the simulation ground truth hyper-fitness and each replicate ground truth fitness. The scatter between parameters captures experimental batch effects. (E) Examples of the posterior predictive checks for all neutral lineages (upper left panels) and a subset of representative mutant lineages. Shaded regions from light to dark represent the 95%, 68%, and 5% credible regions. (F-G) Comparison between the simulation’s ground truth hyper-fitness (F) and replicate fitness (G) values and the inferred parameters. Gray error bars represent the 68% posterior credible region. (H-I) The empirical cumulative distribution function (ECDF) for the absolute z-score value of the ground truth parameter value within the inferred hyper-fitness posterior distribution (H) and replicate fitness (I).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1011937.g004" xlink:type="simple"/>
+</fig>
+<p>To test the performance of this model, we simulated two experimental replicates with 1000 unique barcodes (see <xref ref-type="fig" rid="pcbi.1011937.g004">Fig 4(B) and 4(C)</xref>) where we randomly sampled a ground truth hyper-fitness value <italic>θ</italic><sup>(<italic>m</italic>)</sup> for each barcode. We sampled a variation from this hyper-fitness value for each experimental replicate <inline-formula id="pcbi.1011937.e051"><alternatives><graphic id="pcbi.1011937.e051g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e051" xlink:type="simple"/><mml:math display="inline" id="M51"><mml:msubsup><mml:mi>s</mml:mi> <mml:mi>i</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>m</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:msubsup></mml:math></alternatives></inline-formula> to capture experimental batch effects. <xref ref-type="fig" rid="pcbi.1011937.g004">Fig 4(D)</xref> shows the relationship between hyper-fitness and replicate fitness values for this simulation. The spread around the identity line represents the expected batch-to-batch variation. The posterior predictive checks examples in <xref ref-type="fig" rid="pcbi.1011937.g004">Fig 4(E)</xref> show that the hierarchical model can correctly fit the data for each experimental replicate. Furthermore, <xref ref-type="fig" rid="pcbi.1011937.g004">Fig 4(F) and 4(G)</xref> show a high correlation between the ground truth and the inferred fitness values. The empirical cumulative distribution functions shown in <xref ref-type="fig" rid="pcbi.1011937.g004">Fig 4(H) and 4(I)</xref> reveal that for ≈75% of the non-neutral barcodes, the ground truth hyper-fitness values fall within one standard deviation from the mean value in the posterior distributions.</p>
+<p>As shown in <xref ref-type="fig" rid="pcbi.1011937.g005">Fig 5</xref>, the structure imposed by the hierarchical model schematized in <xref ref-type="fig" rid="pcbi.1011937.g004">Fig 4(A)</xref>, where we explicitly account for the connection between experimental replicates can improve the quality of the inference. Inferred fitness values between experimental replicates exhibit a stronger degree of correlation in the hierarchical model (<xref ref-type="fig" rid="pcbi.1011937.g005">Fig 5(A)</xref>) compared to conducting inference on each replicate independently (<xref ref-type="fig" rid="pcbi.1011937.g005">Fig 5(B)</xref>). Moreover, when comparing the inferred hyper-fitness values—the objective parameter when performing multiple experimental measurements—the hierarchical model outperforms averaging the independent experimental replicates as shown in <xref ref-type="fig" rid="pcbi.1011937.g005">Fig 5(C) and 5(D)</xref>.</p>
+<fig id="pcbi.1011937.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1011937.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Comparison between hierarchical model and single dataset model.</title>
+<p>(A-B) comparison of inferred fitness values between experimental replicates when fitting a hierarchical model (A) or independently fitting each dataset (B). Gray error bars represent the 68% credible regions. (C) Comparison between the ground truth hyper-fitness value and the inferred parameters. The blue dots show the inferred hyper-fitness values when assuming a hierarchical model. Gray error bars show the 68% credible region for this inference. The yellow dots show the average of the mean inferred fitness values for the two experimental replicates. No error bars are shown for these, as it is inappropriate to compute one with two data points per non-neutral barcode. (D) Empirical cumulative distribution function (ECDF) of the absolute difference between the inferred mean and the ground truth hyper-fitness.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1011937.g005" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec012">
+<title>Accounting for multiple barcodes per genotype via hierarchical models</title>
+<p>Hierarchical models can also capture another experimental design in which multiple barcodes map to the same or an equivalent genotype. As we will show, this many-to-one mapping can improve the inference compared to the extreme cases of inferring the fitness of each barcode independently or pooling the data of all barcodes mapping to a single genotype. As schematized in <xref ref-type="fig" rid="pcbi.1011937.g006">Fig 6(A)</xref>, a small modification of the base model allows us to map the structure of our original model to that of a hierarchical model with a fitness hyperparameter vector <inline-formula id="pcbi.1011937.e052"><alternatives><graphic id="pcbi.1011937.e052g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1011937.e052" xlink:type="simple"/><mml:math display="inline" id="M52"><mml:msup><mml:munder><mml:mi>θ</mml:mi> <mml:mo>_</mml:mo></mml:munder> <mml:mi>G</mml:mi></mml:msup></mml:math></alternatives></inline-formula>, where <italic>G</italic> is the number of genotypes in the dataset. This analysis pipeline assumes a known barcode-to-genotype mapping to assign each barcode to the corresponding hyper-fitness parameter uniquely.</p>
+<fig id="pcbi.1011937.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1011937.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Hierarchical model for multiple barcodes per genotype.</title>
+<p>(A) Schematic depiction of the hierarchical structure for multiple barcodes mapping to a single genotype. A set of barcodes mapping to an equivalent genotype map to “local” fitness values <italic>s</italic><sup>(<italic>b</italic>)</sup> that are connected via a hyper-fitness parameter for the genotype <italic>θ</italic><sup>(<italic>g</italic>)</sup>. (B) Simulated dataset with 100 neutral lineages and 900 barcodes of interest distributed among 90 genotypes. (C-E) Comparison between the inferred and ground truth fitness values for a hierarchical model (C), a model where each barcode is inferred independently (D), and a model where barcodes mapping to the same genotype are pooled together (E). Gray error bars represent the 68% credible regions. (F) Empirical cumulative distribution function (ECDF) of the absolute difference between the inferred mean and the ground truth fitness values for all three models. (G) Examples of the posterior predictive checks for all neutral lineages (upper left panels) and a subset of representative mutant lineages. Shaded regions from light to dark represent the 95%, 68%, and 5% credible regions.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1011937.g006" xlink:type="simple"/>
+</fig>
+<p>
+<xref ref-type="fig" rid="pcbi.1011937.g006">Fig 6(B)</xref> shows a single experimental replicate in which 90 genotypes were assigned a random number of barcodes (a multinomial distribution with a mean of ten barcodes per genotype) for a total of 900 non-neutral barcodes. To assess the performance of the hierarchical model proposed in <xref ref-type="fig" rid="pcbi.1011937.g006">Fig 6(A)</xref>, we performed inference using this hierarchical model, as well as the two extreme cases of ignoring the connection between the barcodes belonging to the same genotype—equivalent to performing inference using the model presented in <xref ref-type="fig" rid="pcbi.1011937.g002">Fig 2(A)</xref> over the barcodes—or pooling the data of all barcodes belonging to the same genotype into a single count—equivalent to performing inference using the model presented in <xref ref-type="fig" rid="pcbi.1011937.g002">Fig 2(A)</xref> over the pooled barcodes. <xref ref-type="fig" rid="pcbi.1011937.g006">Fig 6(C) and 6(D)</xref> shows the comparison between the simulation ground truth and the inferred values for these three cases. Not only do the hierarchical model results show higher degrees of correlation with the ground truth, but the error bars (representing the 68% credible regions) are smaller, meaning that the uncertainty in the estimate of the parameter we care about decreases when using the hierarchical model. The improvement in the prediction can be seen in <xref ref-type="fig" rid="pcbi.1011937.g006">Fig 6(F)</xref> where the empirical cumulative distribution function of the absolute difference between the mean inferred value and the simulation ground truth is shown for all three inference models. The hierarchical model’s curve ascends more rapidly, showing that, in general, the inferred values are closer to the ground truth. For completeness, <xref ref-type="fig" rid="pcbi.1011937.g006">Fig 6(G)</xref> shows some examples of how the hierarchical model can capture the raw log-frequency count observations.</p>
+</sec>
+</sec>
+<sec id="sec013" sec-type="conclusions">
+<title>Discussion</title>
+<p>Experimental evolution of microbial systems has dramatically advanced our understanding of the basic principles of biological evolution [<xref ref-type="bibr" rid="pcbi.1011937.ref014">14</xref>]. From questions related to the optimal fine-tuning of gene expression programs [<xref ref-type="bibr" rid="pcbi.1011937.ref015">15</xref>], to the dimensionality, geometry, and accessibility of the adaptive fitness landscape explored by these rapidly adapting populations [<xref ref-type="bibr" rid="pcbi.1011937.ref004">4</xref>, <xref ref-type="bibr" rid="pcbi.1011937.ref016">16</xref>], to the emergence of eco-evolutionary dynamics in a long-term evolution experiment [<xref ref-type="bibr" rid="pcbi.1011937.ref017">17</xref>]; for all of these and other cases, the microbial experimental platform combined with high-throughput sequencing has been essential to tackling these questions with empirical data. This exciting research area promises to improve as new culturing technologies [<xref ref-type="bibr" rid="pcbi.1011937.ref018">18</xref>] as well as more complex lineage barcoding schemes [<xref ref-type="bibr" rid="pcbi.1011937.ref002">2</xref>, <xref ref-type="bibr" rid="pcbi.1011937.ref019">19</xref>], are adopted.</p>
+<p>For this data-heavy field, properly accounting for the uncertainty in parameters inferred from experiments is vital to ensure the conclusions drawn are reliable. Bayesian statistics presents a principled way to quantify this uncertainty systematically [<xref ref-type="bibr" rid="pcbi.1011937.ref020">20</xref>]. Moreover, Bayesian analysis offers a more natural way to interpret the role that probability theory plays when performing data analysis compared to the often-misinterpreted frequentist methods [<xref ref-type="bibr" rid="pcbi.1011937.ref021">21</xref>]. Nevertheless, the technical challenges associated with Bayesian analysis has limited its application. This is set to change as recognition of the misuse of frequentist concepts such as the p-value is receiving more attention [<xref ref-type="bibr" rid="pcbi.1011937.ref022">22</xref>]. Moreover, advances in numerical methods such as Hamiltonian Monte Carlo [<xref ref-type="bibr" rid="pcbi.1011937.ref006">6</xref>] and variational inference [<xref ref-type="bibr" rid="pcbi.1011937.ref007">7</xref>] allows for complex Bayesian models to be fit to empirical data.</p>
+<p>In this paper, we present a computational pipeline to analyze lineage-tracking time-series data for massive-parallel competition assays. More specifically, we fit a Bayesian model to infer the fitness of multiple genotypes relative to a reference [<xref ref-type="bibr" rid="pcbi.1011937.ref003">3</xref>, <xref ref-type="bibr" rid="pcbi.1011937.ref004">4</xref>]. The proposed model accounts for multiple sources of uncertainty with proper error propagation intrinsic to Bayesian methods. To scale the inference pipeline to large datasets with &gt;10, 000 barcodes, we use the ADVI algorithm [<xref ref-type="bibr" rid="pcbi.1011937.ref007">7</xref>] to fit a variational posterior distribution. The main difference between our method and previous inference pipelines, such as [<xref ref-type="bibr" rid="pcbi.1011937.ref023">23</xref>], is that the present analysis provides interpretable errors on the inferred fitness values. The reported uncertainty intervals—known as credible regions—can be formally interpreted as capturing the corresponding probability mass of finding the true value of the parameter given the model, the prior information, and the data. Furthermore, minor modifications to the structure of the statistical model presented in this work allow for the analysis of different experimental designs, such as growth-dilution cycles in different environments, joint analysis of multiple experimental replicates of the same experiment via hierarchical models, and a hierarchical model for multiple barcodes mapping to equivalent genotypes. We validate our analysis pipeline on simulated datasets with known ground truth, showing that the model fits the data adequately, capturing the ground truth parameters within the posterior distribution.</p>
+<p>It is important to highlight some of the consequences of the general experimental design and the implicit assumptions within the proposed statistical model to analyze the resulting data. First, the composition of the population is such that the initial fraction of the population occupied by the barcoded genotypes is small—usually &gt;90% of the initial population is the non-labeled reference strain. This constraint is important as the fitness model used to fit the time series data assumes that the tracked frequencies are ≪ 1. Second, when computing log frequency ratios, we can run into the issue of dividing by zero. This is a common problem when dealing with molecular count data [<xref ref-type="bibr" rid="pcbi.1011937.ref024">24</xref>]. Our model gets around this issue by assuming that the frequency of any barcode cannot be, but still can get arbitrarily close to, zero. Therefore, we implicitly assume that no lineage goes extinct during the experiment. Moreover, the statistical model directly accounts for the uncertainty associated with having zero barcode counts, increasing the corresponding uncertainty. Third, the models presented in this paper require the existence of a labeled sub-population of barcoded reference strains. These barcodes help determine the fitness baseline, as every fitness is quantified with respect to this reference genotype. This experimental design constraint facilitates the inference of the population mean fitness since most of the culture—the unlabeled reference genotype—is not tracked. Fourth, the fitness model in <xref ref-type="disp-formula" rid="pcbi.1011937.e003">Eq 3</xref> does not assume any functional form for the cellular growth dynamics. This description of the changes in the relative frequency of the genotypes can approximate the dynamics for multiple growth forms. For example, in Section E in <xref ref-type="supplementary-material" rid="pcbi.1011937.s001">S1 Text</xref>, we apply our inference pipeline to simulations like those presented in [<xref ref-type="bibr" rid="pcbi.1011937.ref023">23</xref>] with non-logistic growth models. Moreover, Section F in <xref ref-type="supplementary-material" rid="pcbi.1011937.s001">S1 Text</xref>, in the supplementary materials, reanalyzes experimental data from [<xref ref-type="bibr" rid="pcbi.1011937.ref004">4</xref>], where previous work showed that the fitness advantage from some of the mutants results from a shorter lag phase at the beginning of the growth cycle [<xref ref-type="bibr" rid="pcbi.1011937.ref025">25</xref>]. Thus, our method’s inferred relative fitness is a coarse-grained quantity that integrates the differences in fitness across the entire growth cycle as long as frequencies and frequency changes are small enough to be approximated by <xref ref-type="disp-formula" rid="pcbi.1011937.e003">Eq 3</xref>. Finally, the presented statistical model assumes that relative fitness is solely a constant of the environment and the genotype. Future directions of this work could extend the fitness model to properly analyze data with time-varying or frequency-dependent fitness values.</p>
+<p>In total, the statistical model presented in this work and the software package accompanying the paper allow for a principled way of quantifying the accuracy with which we can extract relevant parametric information from large-scale multiplexed fitness competition assays. Furthermore, the implementation of Bayesian models and their fitting via automatic differentiation approaches opens the gate to extend this type of formal analysis to the data-rich literature in experimental evolution and other high-throughput technologies applications.</p>
+</sec>
+<sec id="sec014" sec-type="materials|methods">
+<title>Materials and methods</title>
+<p>All synthetic data generation and custom scripts used in this work were stored using Git version control. Code for analysis and figure generation can be found on the GitHub repository (<ext-link ext-link-type="uri" xlink:href="https://github.com/mrazomej/bayesian_fitness" xlink:type="simple">https://github.com/mrazomej/bayesian_fitness</ext-link>). The accompanying software package <monospace specific-use="no-wrap">BarBay.jl</monospace> can be directly installed from the <monospace specific-use="no-wrap">Julia</monospace> package repository, or via cloning the corresponding GitHub repository (<ext-link ext-link-type="uri" xlink:href="https://github.com/mrazomej/BarBay.jl" xlink:type="simple">https://github.com/mrazomej/BarBay.jl</ext-link>).</p>
+</sec>
+<sec id="sec015" sec-type="supplementary-material">
+<title>Supporting information</title>
+<supplementary-material id="pcbi.1011937.s001" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1011937.s001" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Supplementary materials.</title>
+<p>Section A gives a short primer on variational inference. Section B defines the probabilistic models used throughout the main text. Section C details how the validity of the model is computed via posterior predictive checks. Section D explains how the simulated frequency trajectories are generated. Section E compares the inferences of our method with state-of-the-art methods in the literature. Section F reanalyzes experimental data from yeast evolution experiments. Section G details how the computation time scales with the number of barcodes.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We would like to thank Griffin Chure and Michael Betancourt for their helpful advice and discussion. We would like to thank Karna Gowda, Spencer Farrell, and Shaili Mathur for critical observations on the manuscript. We are especially thankful to Grant Kinsler for kindly providing raw experimental data as well as lengthy discussions about the state-of-the-art inference method.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1011937.ref001">
+<label>1</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Levy</surname> <given-names>SF</given-names></name>, <name name-style="western"><surname>Blundell</surname> <given-names>JR</given-names></name>, <name name-style="western"><surname>Venkataram</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Petrov</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Fisher</surname> <given-names>DS</given-names></name>, <name name-style="western"><surname>Sherlock</surname> <given-names>G</given-names></name>. <source>Quantitative Evolutionary Dynamics Using High-Resolution Lineage Tracking</source>;<volume>519</volume>(<issue>7542</issue>):<fpage>181</fpage>–<lpage>186</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref002">
+<label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Nguyen Ba</surname> <given-names>AN</given-names></name>, <name name-style="western"><surname>Cvijović</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Rojas Echenique</surname> <given-names>JI</given-names></name>, <name name-style="western"><surname>Lawrence</surname> <given-names>KR</given-names></name>, <name name-style="western"><surname>Rego-Costa</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>X</given-names></name>, <etal>et al</etal>. <source>High-Resolution Lineage Tracking Reveals Travelling Wave of Adaptation in Laboratory Yeast</source>;<volume>575</volume>(<issue>7783</issue>):<fpage>494</fpage>–<lpage>499</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref003">
+<label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Ascensao</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Wetmore</surname> <given-names>KM</given-names></name>, <name name-style="western"><surname>Good</surname> <given-names>BH</given-names></name>, <name name-style="western"><surname>Arkin</surname> <given-names>AP</given-names></name>, <name name-style="western"><surname>Hallatschek</surname> <given-names>O</given-names></name>. <source>Quantifying the Local Adaptive Landscape of a Nascent Bacterial Community</source>;<volume>14</volume>(<issue>1</issue>):<fpage>248</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref004">
+<label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Kinsler</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Geiler-Samerotte</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Petrov</surname> <given-names>DA</given-names></name>. <source>Fitness Variation across Subtle Environmental Perturbations Reveals Local Modularity and Global Pleiotropy of Adaptation</source>;<volume>9</volume>:<fpage>1</fpage>–<lpage>52</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref005">
+<label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Eddy</surname> <given-names>SR</given-names></name>. <source>What Is Bayesian Statistics?</source>;<volume>22</volume>(<issue>9</issue>):<fpage>1177</fpage>–<lpage>1178</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref006">
+<label>6</label>
+<mixed-citation publication-type="other" xlink:type="simple">Betancourt M. A Conceptual Introduction to Hamiltonian Monte Carlo;.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref007">
+<label>7</label>
+<mixed-citation publication-type="other" xlink:type="simple">Kucukelbir A, Tran D, Ranganath R, Gelman A, Blei DM. Automatic Differentiation Variational Inference;.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref008">
+<label>8</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Efron</surname> <given-names>B</given-names></name>. <source>Bayes’ Theorem in the 21st Century</source>;<volume>340</volume>(<issue>6137</issue>):<fpage>1177</fpage>–<lpage>1178</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref009">
+<label>9</label>
+<mixed-citation publication-type="other" xlink:type="simple">Kingma DP, Welling M. Auto-Encoding Variational Bayes;. Available from: <ext-link ext-link-type="uri" xlink:href="http://arxiv.org/abs/1312.6114" xlink:type="simple">http://arxiv.org/abs/1312.6114</ext-link>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref010">
+<label>10</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Gottwald</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Braun</surname> <given-names>DA</given-names></name>. <source>The Two Kinds of Free Energy and the Bayesian Revolution</source>;<volume>16</volume>(<issue>12</issue>):<fpage>e1008420</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref011">
+<label>11</label>
+<mixed-citation publication-type="other" xlink:type="simple">Ge H, Xu K, Ghahramani Z. Turing: A Language for Flexible Probabilistic Inference. In: Proceedings of the Twenty-First International Conference on Artificial Intelligence and Statistics. PMLR;. p. 1682–1690. Available from: <ext-link ext-link-type="uri" xlink:href="https://proceedings.mlr.press/v84/ge18b.html" xlink:type="simple">https://proceedings.mlr.press/v84/ge18b.html</ext-link>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref012">
+<label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Morey</surname> <given-names>RD</given-names></name>, <name name-style="western"><surname>Hoekstra</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Rouder</surname> <given-names>JN</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>MD</given-names></name>, <name name-style="western"><surname>Wagenmakers</surname> <given-names>EJ</given-names></name>. <source>The Fallacy of Placing Confidence in Confidence Intervals</source>;<volume>23</volume>(<issue>1</issue>):<fpage>103</fpage>–<lpage>123</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref013">
+<label>13</label>
+<mixed-citation publication-type="other" xlink:type="simple">Betancourt MJ, Girolami M. Hamiltonian Monte Carlo for Hierarchical Models;. Available from: <ext-link ext-link-type="uri" xlink:href="http://arxiv.org/abs/1312.0906" xlink:type="simple">http://arxiv.org/abs/1312.0906</ext-link>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref014">
+<label>14</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Kussell</surname> <given-names>E</given-names></name>. <source>Evolution in Microbes</source>;<volume>42</volume>:<fpage>493</fpage>–<lpage>514</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref015">
+<label>15</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Dekel</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Alon</surname> <given-names>U</given-names></name>. <source>Optimality and Evolutionary Tuning of the Expression Level of a Protein</source>;<volume>436</volume>(<issue>7050</issue>):<fpage>588</fpage>–<lpage>592</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref016">
+<label>16</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Maeda</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Iwasawa</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Kotani</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Sakata</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Kawada</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Horinouchi</surname> <given-names>T</given-names></name>, <etal>et al</etal>. <source>High-Throughput Laboratory Evolution Reveals Evolutionary Constraints in Escherichia Coli</source>;<volume>11</volume>(<issue>1</issue>):<fpage>5970</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref017">
+<label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Good</surname> <given-names>BH</given-names></name>, <name name-style="western"><surname>Mcdonald</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Barrick</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Lenski</surname> <given-names>RE</given-names></name>, <name name-style="western"><surname>Desai</surname> <given-names>MM</given-names></name>. <source>The Dynamics of Molecular Evolution over 60,000 Generations</source>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref018">
+<label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Jagdish</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Nguyen Ba</surname> <given-names>AN</given-names></name>. <source>Microbial Experimental Evolution in a Massively Multiplexed and High-Throughput Era</source>;<volume>75</volume>:<fpage>101943</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref019">
+<label>19</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Yang</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Jones</surname> <given-names>MG</given-names></name>, <name name-style="western"><surname>Naranjo</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Rideout</surname> <given-names>WM</given-names></name>, <name name-style="western"><surname>Min</surname> <given-names>KHJ</given-names></name>, <name name-style="western"><surname>Ho</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <source>Lineage Tracing Reveals the Phylodynamics, Plasticity, and Paths of Tumor Evolution</source>;<volume>185</volume>(<issue>11</issue>):<fpage>1905</fpage>–<lpage>1923.e25</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref020">
+<label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Gelman</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Shalizi</surname> <given-names>CR</given-names></name>. <source>Philosophy and the Practice of Bayesian Statistics;math.ST</source>(<year>1996</year>):<fpage>36</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref021">
+<label>21</label>
+<mixed-citation publication-type="other" xlink:type="simple">VanderPlas J. Frequentism and Bayesianism: A Python-driven Primer; p. 1–9.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref022">
+<label>22</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Nuzzo</surname> <given-names>R</given-names></name>. <source>Statistical Errors</source>;<volume>506</volume>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref023">
+<label>23</label>
+<mixed-citation publication-type="other" xlink:type="simple">Li F, Tarkington J, Sherlock G. Fit-Seq2.0: An Improved Software for High-Throughput Fitness Measurements Using Pooled Competition Assays.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref024">
+<label>24</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Lovell</surname> <given-names>DR</given-names></name>, <name name-style="western"><surname>Chua</surname> <given-names>XY</given-names></name>, <name name-style="western"><surname>McGrath</surname> <given-names>A</given-names></name>. <source>Counts: An Outstanding Challenge for Log-Ratio Analysis of Compositional Data in the Molecular Biosciences</source>;<volume>2</volume>(<issue>2</issue>):<fpage>lqaa040</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1011937.ref025">
+<label>25</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Li</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Venkataram</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Agarwala</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Dunn</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Petrov</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Sherlock</surname> <given-names>G</given-names></name>, <etal>et al</etal>. <source>Hidden Complexity of Yeast Adaptation under Simple Evolutionary Conditions</source>;<volume>28</volume>(<issue>4</issue>):<fpage>515</fpage>–<lpage>525.e6</lpage>.</mixed-citation>
+</ref>
+</ref-list>
+</back>
+<sub-article article-type="aggregated-review-documents" id="pcbi.1011937.r001" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1011937.r001</article-id>
+<title-group>
+<article-title>Decision Letter 0</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Maslov</surname>
+<given-names>Sergei</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Zhang</surname>
+<given-names>Zhaolei</given-names>
+</name>
+<role>Section Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2024</copyright-year>
+<copyright-holder>Maslov, Zhang</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pcbi.1011937" document-id-type="doi" document-type="article" id="rel-obj001" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>0</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">15 Nov 2023</named-content>
+</p>
+<p>Dear Dr. Razo-Mejia,</p>
+<p>Thank you very much for submitting your manuscript "Bayesian inference of relative fitness on high-throughput pooled competition assays" for consideration at PLOS Computational Biology.</p>
+<p>As with all papers reviewed by the journal, your manuscript was reviewed by members of the editorial board and by several independent reviewers. In light of the reviews (below this email), we would like to invite the resubmission of a significantly-revised version that takes into account the reviewers' comments.</p>
+<p>Two major issues raised by several reviewers are that the algorithm has not been tested on experimental data and has not been compared to currently available algorithms. Addressing at least one of these issues is required for publication.</p>
+<p>We cannot make any decision about publication until we have seen the revised manuscript and your response to the reviewers' comments. Your revised manuscript is also likely to be sent to reviewers for further evaluation.</p>
+<p>When you are ready to resubmit, please upload the following:</p>
+<p>[1] A letter containing a detailed list of your responses to the review comments and a description of the changes you have made in the manuscript. Please note while forming your response, if your article is accepted, you may have the opportunity to make the peer review history publicly available. The record will include editor decision letters (with reviews) and your responses to reviewer comments. If eligible, we will contact you to opt in or out.</p>
+<p>[2] Two versions of the revised manuscript: one with either highlights or tracked changes denoting where the text has been changed; the other a clean version (uploaded as the manuscript file).</p>
+<p>Important additional instructions are given below your reviewer comments.</p>
+<p>Please prepare and submit your revised manuscript within 60 days. If you anticipate any delay, please let us know the expected resubmission date by replying to this email. Please note that revised manuscripts received after the 60-day due date may require evaluation and peer review similar to newly submitted manuscripts.</p>
+<p>Thank you again for your submission. We hope that our editorial process has been constructive so far, and we welcome your feedback at any time. Please don't hesitate to contact us if you have any questions or comments.</p>
+<p>Sincerely,</p>
+<p>Sergei Maslov</p>
+<p>Academic Editor</p>
+<p>PLOS Computational Biology</p>
+<p>Zhaolei Zhang</p>
+<p>Section Editor</p>
+<p>PLOS Computational Biology</p>
+<p>***********************</p>
+<p>Reviewer's Responses to Questions</p>
+<p><bold>Comments to the Authors:</bold></p>
+<p><bold>Please note here if the review is uploaded as an attachment.</bold></p>
+<p>Reviewer #1: Review is uploaded as an attachment</p>
+<p>Reviewer #2: By tracking lineages frequency via DNA barcodes in competitive cultures, it is possible to measure microbial fitness and phenotypic diversity on a large scale. However, many biological and non-biological noises will have a significant impact on the relationship between barcodes and phenotypes (fitness). Accordingly, the authors of this manuscript developed a Bayesian model-based pipeline that takes into account some of these uncertainties in the experimental setup described above. Additionally, this model was applied to analyze simulated multi-environment and replicate (by batches, or barcodes of the same genotype) experiments. As a whole, the manuscript has a solid theoretical basis and should be of general interest to the field. I believe that additional work is necessary before it can be published. My concerns are listed below.</p>
+<p>== MAJOR ==</p>
+<p>1. The manuscript contains a little bit too many technical details, so that readers might become distracted from the main logic flow. As an example, I do not believe it is necessary to comment on frequentist confidence intervals versus Bayesian credible regions starting at line 247. However, I lack a strong statistical background to provide a more subjective or comprehensive assessment or to say that all the technical details are trivial/unnecessary. Other reviewers with expertise in that area may be able to provide better suggestions. Nonetheless, moving some details to supplementary to better emphasize the main logic seems reasonable.</p>
+<p>2. There is no description of the detailed simulation procedure in the main text or in SI. This would make reproducing the results difficult. The reader must also understand the factors that have been taken into consideration during the simulation in order to determine (i) whether the results presented are related to the reader's own experimental environment or not, and (ii) whether the performance assessment based on the simulation is just expected since the simulation entails exactly the same type of noise as those considered in the inference model. I understand from the manuscript that (ii) is exactly the case. I am not saying this approach is wrong, but it certainly needs clarification. Even better, sometimes the simulation may include some additional noise or perturbation that the inference model is unable to account for, so that one can determine whether the inference is robust against those specific additional noises or perturbations.</p>
+<p>3. There is a disconnect between the results and the actual experimental data. In all tests, inferences are drawn based on simulated data. I understand that it gives the authors the ground truth fitness. Nevertheless, every simulation is based on some simplification or assumption that may not be valid in reality. It is difficult to determine the relevance of the method without actually relating the model to real data. I would like to provide two more specific comments in this regard.</p>
+<p>3.1. The authors seem to assume some specific composition of the competing population (e.g. most strains are not barcoded), as well as some specific distribution of mutational fitness effects (s) (most barcodes are slightly more adaptive than wild-type). In my opinion, both assumptions are frequently violated. For example, in <ext-link ext-link-type="uri" xlink:href="https://www.science.org/doi/10.1126/science.aae0568" xlink:type="simple">https://www.science.org/doi/10.1126/science.aae0568</ext-link>, <ext-link ext-link-type="uri" xlink:href="https://www.nature.com/articles/nature17995" xlink:type="simple">https://www.nature.com/articles/nature17995</ext-link> and <ext-link ext-link-type="uri" xlink:href="https://academic.oup.com/mbe/article/39/5/msac086/6575838" xlink:type="simple">https://academic.oup.com/mbe/article/39/5/msac086/6575838</ext-link>, all genotypes are barcoded. In the commonly used "deep mutational scanning" assays, where only proximal mutations are tested, most mutants (containing only a few simple mutations) have fitness very similar to that of the wild-type. Can the model accurately estimate their fitness? What is the significance of their differences with wild-type?</p>
+<p>3.2. There should be some analysis based on actual experimental data (such as those in the three papers mentioned above). A straightforward test would be to determine whether the Bayesian-inferred fitness shows better between-replicate-correlations than the more naively estimated fitness reported in those papers. I am certain that the author can come up with more analyses relating the actual experimental data to the accuracy of their methodology.</p>
+<p>==Minor==</p>
+<p>1. The schematic diagram in Figure 1 could use a lot more details, especially regarding the source of uncertainties (at least those have been considered in the model)</p>
+<p>2. Figure2D and E. This is related to major comment 2. Please explain how the “ground truth” is chosen/defined and used in the simulation. Also, why “68%” is used ? The number just seems weird.</p>
+<p>3.Figure6F. It would be more prefessional to connect the two lines reaching y=1.0 early on, to the top right corner of the plot area (ECD = 1 across that range).</p>
+<p>4.Line 310, “This loses the subtle differences due to biotic and abiotic batch effects, effectively halving the data that goes into our inference problem” I don’t understand this, please elaborate.</p>
+<p>5. I am unable to see the name of the particular section whenever the author refers to one (for example, line 53, "... See Section ?? for details...", also in line 56, etc.). I have tried two PCs (both using Acrobat on Win11). Are there invisible symbols due to PDF transformation?</p>
+<p>Reviewer #3: In Razo Mejia et al, the authors describe a Bayesian framework for the analysis of barcode fitness assays. The authors show how general the framework can be, and test the validity of the inference on synthetic data. I really enjoyed the reading and seeing this type of inference approach finally seeing the light is a blessing to the community. I particularly enjoyed the section dealing with hyperparameters and how it can be used for interesting assays. While it is not the first time barcode fitness inferences have taken a Bayesian spin, it is the first to do so with a true Bayesian perspective on many different parameters. Unfortunately, I am not familiar with Julia (and don’t have it installed) and so cannot evaluate the software within the allotted review timeframe as the documentations are fairly lengthy.</p>
+<p>The only major issue I have is that I am unable to judge how much this framework improves on the inference compared to the general approaches the community have undertaken. How poor are the current approaches implemented by the community? Or is it less so about the fitness estimates in the simple case (single environment, assuming replicates are same fitnesses), and more about the fact that the approach can be expanded? Or is it just the credible intervals on fitness values (augmented by priors)? Because my understanding is that almost all the ad hoc approaches taken currently by the community (by the lab of Levy, Petrov, Sherlock, Desai, Dunham, Gresham, or even earlier by the genomic era through the barcoded yeast deletion collection). are very adequate for their purposes. It would have been interesting and borderline necessary to compare at least the simple approaches to this. If it is simply differences between confidence intervals and credible intervals, then it would be ideal if the authors show distinct differences in their output notwithstanding the philosophical differences between them as the differences are usually fairly minimal when priors are not strong.</p>
+<p>I have a few minor comments:</p>
+<p>1) There are a few missing references to specific sections (e.g. line 53, line 56, but there are at least dozens throughout).</p>
+<p>2) I’m very familiar with the experimental setup, but I think the readers will not appreciate why the unlabeled reference strain should be at ~90% of the population in these assays as described in lines 69-75. Many barcode assays have not done this in the literature and as far as I know there have been no reported issues. From my recollection, this is done due to frequency-dependent selection on some key lineages, but there is no evidence that this design resolves this (and frequency-dependent selection is not solved by any inference approach).</p>
+<p>3) Is the simulation really sufficient for this work? Without going overboard and testing every single scenarios, it seems overly simple for the power of the proposed approach. I guess I see drift being implemented through the Poisson noise but is the Gaussian noise really adequate for the read frequency if one does not sequence to extremely high coverage? I’m also wondering if systematic noise that all play a role influence the framework at all: such as prolonged lag phase leading to uncertainty on the generations per transfer, exponential jackpotting issues during sequencing that may be poorly estimated from the neutral lineages, day to day variations etc. The main issue is that I feel like all the older approaches can adequately infer fitness for the simulation that was performed.</p>
+<p>4) I think the aside debating the fundamental differences between confidence intervals and credible intervals is a bit misplaced. Yet if the authors want to keep this in, then perhaps the frequentist confidence intervals should be made more precise by emphasizing the repeated construction of CIs: “frequentist CIs represent the rangeS (emphasis on plural) of values where X% of ranges …” since upon repeating the experiments the confidence intervals would differ. As is written (in singular ‘range’), it may imply a fixed range of values between repetitions (vs a fixed construction method) and the ‘repetition’ containing the true population parameter would not really make sense.</p>
+<p>**********</p>
+<p><bold>Have the authors made all data and (if applicable) computational code underlying the findings in their manuscript fully available?</bold></p>
+<p>The <ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/ploscompbiol/s/materials-and-software-sharing" xlink:type="simple">PLOS Data policy</ext-link> requires authors to make all data and code underlying the findings described in their manuscript fully available without restriction, with rare exception (please refer to the Data Availability Statement in the manuscript PDF file). The data and code should be provided as part of the manuscript or its supporting information, or deposited to a public repository. For example, in addition to summary statistics, the data points behind means, medians and variance measures should be available. If there are restrictions on publicly sharing data or code —e.g. participant privacy or use of data from a third party—those must be specified.</p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: Yes</p>
+<p>**********</p>
+<p>PLOS authors have the option to publish the peer review history of their article (<ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/ploscompbiol/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link>). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link>.</p>
+<p>Reviewer #1: No</p>
+<p>Reviewer #2: No</p>
+<p>Reviewer #3: No</p>
+<p><underline>Figure Files:</underline></p>
+<p>While revising your submission, please upload your figure files to the Preflight Analysis and Conversion Engine (PACE) digital diagnostic tool, <underline><ext-link ext-link-type="uri" xlink:href="https://pacev2.apexcovantage.com/" xlink:type="simple">https://pacev2.apexcovantage.com</ext-link></underline>. PACE helps ensure that figures meet PLOS requirements. To use PACE, you must first register as a user. Then, login and navigate to the UPLOAD tab, where you will find detailed instructions on how to use the tool. If you encounter any issues or have any questions when using PACE, please email us at <underline><email xlink:type="simple">figures@plos.org</email></underline>.</p>
+<p><underline>Data Requirements:</underline></p>
+<p>Please note that, as a condition of publication, PLOS' data policy requires that you make available all data used to draw the conclusions outlined in your manuscript. Data must be deposited in an appropriate repository, included within the body of the manuscript, or uploaded as supporting information. This includes all numerical values that were used to generate graphs, histograms etc.. For an example in PLOS Biology see here: <ext-link ext-link-type="uri" xlink:href="http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001908#s5" xlink:type="simple">http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001908#s5</ext-link>.</p>
+<p><underline>Reproducibility:</underline></p>
+<p>To enhance the reproducibility of your results, we recommend that you deposit your laboratory protocols in protocols.io, where a protocol can be assigned its own identifier (DOI) such that it can be cited independently in the future. Additionally, PLOS ONE offers an option to publish peer-reviewed clinical study protocols. Read more information on sharing protocols at <ext-link ext-link-type="uri" xlink:href="https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols" xlink:type="simple">https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols</ext-link></p>
+<supplementary-material id="pcbi.1011937.s002" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1011937.s002" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">ploscompbio_review_11122023.pdf</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pcbi.1011937.r002">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1011937.r002</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 0</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pcbi.1011937" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj002" link-type="rebutted-decision-letter" object-id="10.1371/journal.pcbi.1011937.r001" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="author-response-date">30 Jan 2024</named-content>
+</p>
+<supplementary-material id="pcbi.1011937.s003" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1011937.s003" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">ploscompbio_reviews.pdf</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="aggregated-review-documents" id="pcbi.1011937.r003" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1011937.r003</article-id>
+<title-group>
+<article-title>Decision Letter 1</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Maslov</surname>
+<given-names>Sergei</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Zhang</surname>
+<given-names>Zhaolei</given-names>
+</name>
+<role>Section Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2024</copyright-year>
+<copyright-holder>Maslov, Zhang</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pcbi.1011937" document-id-type="doi" document-type="article" id="rel-obj003" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">21 Feb 2024</named-content>
+</p>
+<p>Dear Dr. Razo-Mejia,</p>
+<p>We are pleased to inform you that your manuscript 'Bayesian inference of relative fitness on high-throughput pooled competition assays' has been provisionally accepted for publication in PLOS Computational Biology.</p>
+<p>Before your manuscript can be formally accepted you will need to complete some formatting changes, which you will receive in a follow up email. A member of our team will be in touch with a set of requests.</p>
+<p>Please note that your manuscript will not be scheduled for publication until you have made the required changes, so a swift response is appreciated.</p>
+<p>IMPORTANT: The editorial review process is now complete. PLOS will only permit corrections to spelling, formatting or significant scientific errors from this point onwards. Requests for major changes, or any which affect the scientific understanding of your work, will cause delays to the publication date of your manuscript.</p>
+<p>Should you, your institution's press office or the journal office choose to press release your paper, you will automatically be opted out of early publication. We ask that you notify us now if you or your institution is planning to press release the article. All press must be co-ordinated with PLOS.</p>
+<p>Thank you again for supporting Open Access publishing; we are looking forward to publishing your work in PLOS Computational Biology. </p>
+<p>Best regards,</p>
+<p>Sergei Maslov</p>
+<p>Academic Editor</p>
+<p>PLOS Computational Biology</p>
+<p>Zhaolei Zhang</p>
+<p>Section Editor</p>
+<p>PLOS Computational Biology</p>
+<p>***********************************************************</p>
+<p>Reviewer's Responses to Questions</p>
+<p><bold>Comments to the Authors:</bold></p>
+<p><bold>Please note here if the review is uploaded as an attachment.</bold></p>
+<p>Reviewer #1: Thanks to the authors for a very thorough and thoughtful response and revision. The analysis of the Kinsler dataset greatly adds to the paper, and I also appreciate their clarification of the flexibility of the model to handle non-logistic growth. I have no further comments.</p>
+<p>Reviewer #2: In general, I am satisfied with the author's response, especially after they applied their method to empirical datasets. My congratulations go out to the authors for their nice work.</p>
+<p>**********</p>
+<p><bold>Have the authors made all data and (if applicable) computational code underlying the findings in their manuscript fully available?</bold></p>
+<p>The <ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/ploscompbiol/s/materials-and-software-sharing" xlink:type="simple">PLOS Data policy</ext-link> requires authors to make all data and code underlying the findings described in their manuscript fully available without restriction, with rare exception (please refer to the Data Availability Statement in the manuscript PDF file). The data and code should be provided as part of the manuscript or its supporting information, or deposited to a public repository. For example, in addition to summary statistics, the data points behind means, medians and variance measures should be available. If there are restrictions on publicly sharing data or code —e.g. participant privacy or use of data from a third party—those must be specified.</p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p>PLOS authors have the option to publish the peer review history of their article (<ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/ploscompbiol/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link>). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link>.</p>
+<p>Reviewer #1: No</p>
+<p>Reviewer #2: No</p>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pcbi.1011937.r004" specific-use="acceptance-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1011937.r004</article-id>
+<title-group>
+<article-title>Acceptance letter</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Maslov</surname>
+<given-names>Sergei</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Zhang</surname>
+<given-names>Zhaolei</given-names>
+</name>
+<role>Section Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2024</copyright-year>
+<copyright-holder>Maslov, Zhang</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pcbi.1011937" document-id-type="doi" document-type="article" id="rel-obj004" link-type="peer-reviewed-article"/>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">11 Mar 2024</named-content>
+</p>
+<p>PCOMPBIOL-D-23-01682R1 </p>
+<p>Bayesian inference of relative fitness on high-throughput pooled competition assays</p>
+<p>Dear Dr Razo-Mejia,</p>
+<p>I am pleased to inform you that your manuscript has been formally accepted for publication in PLOS Computational Biology. Your manuscript is now with our production department and you will be notified of the publication date in due course.</p>
+<p>The corresponding author will soon be receiving a typeset proof for review, to ensure errors have not been introduced during production. Please review the PDF proof of your manuscript carefully, as this is the last chance to correct any errors. Please note that major changes, or those which affect the scientific understanding of the work, will likely cause delays to the publication date of your manuscript. </p>
+<p>Soon after your final files are uploaded, unless you have opted out, the early version of your manuscript will be published online. The date of the early version will be your article's publication date. The final article will be published to the same URL, and all versions of the paper will be accessible to readers.</p>
+<p>Thank you again for supporting PLOS Computational Biology and open-access publishing. We are looking forward to publishing your work! </p>
+<p>With kind regards,</p>
+<p>Lilla Horvath</p>
+<p>PLOS Computational Biology | Carlyle House, Carlyle Road, Cambridge CB4 3DN | United Kingdom <email xlink:type="simple">ploscompbiol@plos.org</email> | Phone +44 (0) 1223-442824 | <ext-link ext-link-type="uri" xlink:href="http://ploscompbiol.org" xlink:type="simple">ploscompbiol.org</ext-link> | @PLOSCompBiol</p>
+</body>
+</sub-article>
+</article>

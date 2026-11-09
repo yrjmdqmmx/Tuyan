@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="discussion" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosbiol</journal-id>
+<journal-title-group>
+<journal-title>PLOS Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1544-9173</issn>
+<issn pub-type="epub">1545-7885</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pbio.3002213</article-id>
+<article-id pub-id-type="publisher-id">PBIOLOGY-D-23-01192</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Perspective</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Computer software</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Engineering and technology</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Computer software</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Database and informatics methods</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Artificial intelligence</subject><subj-group><subject>Machine learning</subject><subj-group><subject>Deep learning</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Computer software</subject><subj-group><subject>Open source software</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Engineering and technology</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Computer software</subject><subj-group><subject>Open source software</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Science policy</subject><subj-group><subject>Open science</subject><subj-group><subject>Open source software</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Imaging techniques</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Imaging techniques</subject><subj-group><subject>Image analysis</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Computer architecture</subject><subj-group><subject>User interfaces</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Microscopy</subject><subj-group><subject>Electron microscopy</subject></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Bioimage informatics: Investing in software usability is essential</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-4822-165X</contrib-id>
+<name name-style="western">
+<surname>Paul-Gilloteaux</surname>
+<given-names>Perrine</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Nantes Université, CHU Nantes, CNRS, Inserm, BioCore, US16, SFR Bonamy, Nantes, France</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Nantes Université, CNRS, Inserm, l’Institut du Thorax, Nantes, France</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The author has declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">perrine.paul-gilloteaux@univ-nantes.fr</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>31</day>
+<month>7</month>
+<year>2023</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>7</month>
+<year>2023</year>
+</pub-date>
+<volume>21</volume>
+<issue>7</issue>
+<elocation-id>e3002213</elocation-id>
+<permissions>
+<copyright-year>2023</copyright-year>
+<copyright-holder>Perrine Paul-Gilloteaux</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pbio.3002213"/>
+<related-article ext-link-type="uri" id="related001" related-article-type="companion" xlink:href="info:doi/10.1371/journal.pbio.2005970" xlink:type="simple">
+<article-title>CellProfiler 3.0: Next-generation image processing for biology</article-title>
+</related-article>
+<abstract>
+<p>In 2018, <italic>PLOS Biology</italic> announced CellProfiler 3.0, which has become one of the most used pieces of image analysis software in biology. The rapid adoption of this software speaks to the importance of user experience to disseminate new methods of bioimage informatics.</p>
+</abstract>
+<abstract abstract-type="toc">
+<p>In 2018, PLOS Biology announced CellProfiler 3.0, which has since become one of the most used pieces of image analysis software in biology. This Perspective looks at the past 20 years of bioimage informatics and highlights the importance of software usability for diffusing new methods within the field.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100001665</institution-id>
+<institution>Agence Nationale de la Recherche</institution>
+</institution-wrap>
+</funding-source>
+<award-id>ANR-10-INBS-0004</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-4822-165X</contrib-id>
+<name name-style="western">
+<surname>Paul-Gilloteaux</surname>
+<given-names>Perrine</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100001665</institution-id>
+<institution>Agence Nationale de la Recherche</institution>
+</institution-wrap>
+</funding-source>
+<award-id>ANR-18-CE45-0015</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-4822-165X</contrib-id>
+<name name-style="western">
+<surname>Paul-Gilloteaux</surname>
+<given-names>Perrine</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>PPG is part of the IBISA MicroPICell facility (Biogenouest), member of the national infrastructure France-Bioimaging supported by the French National Research Agency (ANR-10-INBS-04). PPG is supported by the ANR CROCOVAL (ANR-18-CE45-0015). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="1"/>
+<table-count count="0"/>
+<page-count count="4"/>
+</counts>
+</article-meta>
+</front>
+<body>
+<disp-quote>
+<p>This article is part of the <italic>PLOS Biology</italic> 20th Anniversary Collection.</p>
+</disp-quote>
+<p>Microscopy has drastically evolved over the past few decades, pushing back the frontiers in all dimensions and bringing new insights about the organization of biological processes in space and time. Microscopy is no longer an observational tool, but a quantitative tool for biology. This progress has been made as a result of collaborative efforts between the fields of biology, physics, and chemistry, but also computer sciences. Nowadays computational methods are one of the components of most microscopic acquisitions (e.g., super-resolution microscopy) and are required to extract quantitative content from these images. Bioimage informatics involves the development of these methods and software for processing, analyzing, managing, and visualizing cellular and molecular imaging data [<xref ref-type="bibr" rid="pbio.3002213.ref001">1</xref>].</p>
+<p>The premises of bioimage informatics were set as early as the 1960s, but even in the 1990s, automation of biological object recognition was met with great skepticism [<xref ref-type="bibr" rid="pbio.3002213.ref002">2</xref>]. Bioimage informatics is now recognized as an essential tool for biological research that relies on light or electron microscopy. As shown in <xref ref-type="fig" rid="pbio.3002213.g001">Fig 1</xref>, it was only in the 2000s that researchers working on developing computer vision methods for microscopy systems in biology started to openly self-affirm as a separate group [<xref ref-type="bibr" rid="pbio.3002213.ref001">1</xref>,<xref ref-type="bibr" rid="pbio.3002213.ref003">3</xref>], having originally been associated with the medical image processing community. Bioimage informatics was still considered a nascent field in 2012 [<xref ref-type="bibr" rid="pbio.3002213.ref004">4</xref>], driven by progress in genomics that called for scalable phenotyping of cells and by supporting analysis of new microscopy instrumentation and methods. It has also pushed the imaging process towards higher resolution (e.g., deconvolution or single-particle localization techniques), higher speed, and longer acquisitions (e.g., denoising), among other advances.</p>
+<fig id="pbio.3002213.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.3002213.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Timeline of key events in the past 2 decades of bioimage informatics.</title>
+<p>This timeline highlights key events that have contributed to the current status of bioimage informatics as an indispensable tool in biological research involving bioimaging. The events presented are based on the author’s perspective and bias. While the history of bioimage informatics started earlier, notably with ImageJ in 1987 for NIH ImageJ and IMOD in 1996, the timeline covers the years from 2003 to the present day. It includes milestones such as the development of open-source software for image analysis, the establishment of standardized file formats, and the emergence of deep learning–based approaches, as well as the construction of the community. This timeline is not meant to be comprehensive but rather to provide a simplified overview of the major events in bioimage informatics during this period. Note that due to reference limitations, no citations are provided. EM, electron microscopy; FAIR, findable, accessible, interoperable, and reusable; NEUBIAS, Network of EUropean BioImage AnalystS; OME, Open Microscopy Environment.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002213.g001" xlink:type="simple"/>
+</fig>
+<p>Over the past decade, the landscape of bioimage informatics has evolved and some key free and open-source platforms have proved their usefulness to the biosciences community [<xref ref-type="bibr" rid="pbio.3002213.ref005">5</xref>]. The success of these platforms has relied not only on the quality of the methods implemented but also on the user interface and user experience, ease of installation, shallowness of the learning curve, presence of guidance and examples, availability of training, and a reactive community.</p>
+<p>One such platform is CellProfiler, which was initially published in 2006 for high-throughput screening of images and to detect cell phenotypic consequences of different types of perturbations [<xref ref-type="bibr" rid="pbio.3002213.ref006">6</xref>]. The interface allows users to construct their image analysis pipeline easily without requiring coding skills, test each step of the pipeline with visual feedback, and move to batch processing effortlessly. The first version was limited to 2D images. In 2018, the release of version 3.0 in <italic>PLOS Biology</italic> brought several key improvements [<xref ref-type="bibr" rid="pbio.3002213.ref007">7</xref>]. It added the ability to process 3D data sets, switched to using the coding language Python, thereby giving users access to more open-source libraries to extend its functionalities, and provided architecture adapted to cloud computing. Furthermore, it was one of the first software platforms to pave the way for deep learning integration, allowing users to apply existing models or train new ones.</p>
+<p>Software is an essential component of bioimage informatics, enabling researchers to access and utilize newly developed methods and algorithms. However, software is more than just a gateway to accessing these methods; it is also crucial for disseminating these methods to a broader audience. From a user perspective, a new investigation comes with the need to fine-tune parameters of workflows, and the power and impact of CellProfiler comes from its usability for this purpose. The minimal criteria for usability that software should meet to ensure it has a broad impact have already been discussed [<xref ref-type="bibr" rid="pbio.3002213.ref008">8</xref>], criteria that are easily met by CellProfiler [<xref ref-type="bibr" rid="pbio.3002213.ref006">6</xref>,<xref ref-type="bibr" rid="pbio.3002213.ref007">7</xref>]. It has to be underlined that even the best methods will have limited or no impact in the life science community if they are not integrated into an easy-to-use, well-documented, and exemplified software platform. An illustrative example of this is the outcomes of the challenges organized by the bioimage informatics community. In these <ext-link ext-link-type="uri" xlink:href="https://grand-challenge.org/" xlink:type="simple">challenges</ext-link>, organizers define a specific task such as cell tracking, deconvolution, or nuclei segmentation and provide data sets and metrics to benchmark candidate methods [<xref ref-type="bibr" rid="pbio.3002213.ref009">9</xref>]. When looking at the leader boards, one can see that the methods that perform the best are rarely used further in biological applications. The main reason is that they are usually not easily accessible to the end user. They often have software for implementation, but it is not usable because of a lack of interface and guidance or because of the complexity of the parameters used.</p>
+<p>The effort required to develop software usability takes time and resources but is not recognized by the academic world, including funders, as a scientific output. These efforts have to be shared between bioimage informaticians and biologists or bioimage analysts who are the software users. Software users can help by acknowledging the use of implemented methods instead of only citing the main software platform’s reference paper. They also need to understand the main principles of the methods implemented in the software in order to apply them correctly. For this purpose, good teaching materials should explain not only how to use the software but also how the methods work and under which assumptions. Advertising and getting feedback on how to use methods is also important; the <ext-link ext-link-type="uri" xlink:href="https://forum.image.sc/" xlink:type="simple">Image.sc forum</ext-link> is a great venue for that [<xref ref-type="bibr" rid="pbio.3002213.ref010">10</xref>], as well as repositories of bioimaging software such as <ext-link ext-link-type="uri" xlink:href="http://www.biii.eu/" xlink:type="simple">BioImage Informatics Index</ext-link>. Bioimage informaticians should also better recognize the providers of biological data and problems in the publications in their fields, and the efforts made to test or produce tutorials on software usage.</p>
+<p>New challenges for bioimage informatics are arising from the usability side. The transition to deep learning and the use of particular hardware and deep learning libraries has caused software installation to become more difficult. Efforts are underway to improve access to deep learning, both locally from the biologist’s computer [<xref ref-type="bibr" rid="pbio.3002213.ref011">11</xref>] but also via virtualization and cloud computing. In a similar vein, the open data revolution [<xref ref-type="bibr" rid="pbio.3002213.ref012">12</xref>] should be applied to processing: Bioimage processing needs to be FAIR (findable, accessible, interoperable, and reusable), whether you are sharing pretrained deep learning models or developing workflows, for which sharing code is only a first step [<xref ref-type="bibr" rid="pbio.3002213.ref013">13</xref>].</p>
+<p>Beyond the usability of software, bioimage informatics is facing new methodological challenges, in particular those related to the integration of data extracted from images with other “omics” data, and the rise of deep learning algorithms. New statistical methods for analysis and visualization are needed to deal with the large quantities of data involved. One of the challenges from this side is the ability to provide the uncertainty attached to data extracted from images, in the sense of the level of confidence of quantitative measurements. Another challenge for the field that affects both methods and software development is how to facilitate the democratization of smart microscopy technology, in which the immediate processing of acquired images is used to adapt the acquisition accordingly. This will require bioimage informaticians to work even more closely with hardware, not just software.</p>
+<p>Bioimage informatics is now an established field that relies on developments in image analysis methods but also those in software and computer science. The success of CellProfiler [<xref ref-type="bibr" rid="pbio.3002213.ref006">6</xref>,<xref ref-type="bibr" rid="pbio.3002213.ref007">7</xref>] shows how investment in software usability can lead to a high impact in the life sciences and the importance of supporting it.</p>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pbio.3002213.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Peng</surname> <given-names>H.</given-names></name> <article-title>Bioimage informatics: a new area of engineering biology</article-title>. <source>Bioinformatics</source>. <year>2008</year>;<volume>24</volume>:<fpage>1827</fpage>–<lpage>1836</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/bioinformatics/btn346" xlink:type="simple">10.1093/bioinformatics/btn346</ext-link></comment> <object-id pub-id-type="pmid">18603566</object-id></mixed-citation></ref>
+<ref id="pbio.3002213.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Baker</surname> <given-names>M.</given-names></name> <name name-style="western"><surname>Robert</surname> <given-names>F</given-names></name>. <article-title>Murphy.</article-title> <source>Nat Methods.</source> <year>2012</year>;<volume>9</volume>:<fpage>629</fpage>–629. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nmeth.2088" xlink:type="simple">10.1038/nmeth.2088</ext-link></comment></mixed-citation></ref>
+<ref id="pbio.3002213.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Swedlow</surname> <given-names>JR</given-names></name>, <name name-style="western"><surname>Goldberg</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Brauner</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Sorger</surname> <given-names>PK</given-names></name>. <article-title>Informatics and Quantitative Analysis in Biological Imaging</article-title>. <source>Science</source>. <year>2003</year>;<volume>300</volume>:<fpage>100</fpage>–<lpage>102</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/science.1082602" xlink:type="simple">10.1126/science.1082602</ext-link></comment> <object-id pub-id-type="pmid">12677061</object-id></mixed-citation></ref>
+<ref id="pbio.3002213.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Myers</surname> <given-names>G.</given-names></name> <article-title>Why bioimage informatics matters.</article-title> <source>Nat Methods</source>. <year>2012</year>;<volume>9</volume>:<fpage>659</fpage>–<lpage>660</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nmeth.2024" xlink:type="simple">10.1038/nmeth.2024</ext-link></comment> <object-id pub-id-type="pmid">22743769</object-id></mixed-citation></ref>
+<ref id="pbio.3002213.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Eliceiri</surname> <given-names>KW</given-names></name>, <name name-style="western"><surname>Berthold</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Goldberg</surname> <given-names>IG</given-names></name>, <name name-style="western"><surname>Ibáñez</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Manjunath</surname> <given-names>BS</given-names></name>, <name name-style="western"><surname>Martone</surname> <given-names>ME</given-names></name>, <etal>et al</etal>. <article-title>Biological imaging software tools.</article-title> <source>Nat Methods</source>. <year>2012</year>;<volume>9</volume>:<fpage>697</fpage>–<lpage>710</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nmeth.2084" xlink:type="simple">10.1038/nmeth.2084</ext-link></comment> <object-id pub-id-type="pmid">22743775</object-id></mixed-citation></ref>
+<ref id="pbio.3002213.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Carpenter</surname> <given-names>AE</given-names></name>, <name name-style="western"><surname>Jones</surname> <given-names>TR</given-names></name>, <name name-style="western"><surname>Lamprecht</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Clarke</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Kang</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Friman</surname> <given-names>O</given-names></name>, <etal>et al</etal>. <article-title>CellProfiler: image analysis software for identifying and quantifying cell phenotypes</article-title>. <source>Genome Biol</source>. <year>2006</year>;<volume>7</volume>:<fpage>R100</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/gb-2006-7-10-r100" xlink:type="simple">10.1186/gb-2006-7-10-r100</ext-link></comment> <object-id pub-id-type="pmid">17076895</object-id></mixed-citation></ref>
+<ref id="pbio.3002213.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McQuin</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Goodman</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Chernyshev</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Kamentsky</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Cimini</surname> <given-names>BA</given-names></name>, <name name-style="western"><surname>Karhohs</surname> <given-names>KW</given-names></name>, <etal>et al</etal>. <article-title>CellProfiler 3.0: Next-generation image processing for biology</article-title>. <source>PLoS Biol</source>. <year>2018</year>;<volume>16</volume>(<issue>7</issue>):<fpage>e2005970</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pbio.2005970" xlink:type="simple">10.1371/journal.pbio.2005970</ext-link></comment> <object-id pub-id-type="pmid">29969450</object-id></mixed-citation></ref>
+<ref id="pbio.3002213.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Carpenter</surname> <given-names>AE</given-names></name>, <name name-style="western"><surname>Kamentsky</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Eliceiri</surname> <given-names>KW</given-names></name>. <article-title>A call for bioimaging software usability.</article-title> <source>Nat Methods.</source> <year>2012</year>;<volume>9</volume>:<fpage>666</fpage>–<lpage>670</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nmeth.2073" xlink:type="simple">10.1038/nmeth.2073</ext-link></comment> <object-id pub-id-type="pmid">22743771</object-id></mixed-citation></ref>
+<ref id="pbio.3002213.ref009"><label>9</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Kozubek</surname> <given-names>M.</given-names></name> <article-title>Challenges and Benchmarks in Bioimage Analysis</article-title>. In: <name name-style="western"><surname>De Vos</surname> <given-names>WH</given-names></name>, <name name-style="western"><surname>Munck</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Timmermans</surname> <given-names>J-P</given-names></name>, editors. <source>Focus on Bio-Image Informatics</source>. Cham: <publisher-name>Springer International Publishing</publisher-name>; <year>2016</year>. p. <fpage>231</fpage>–<lpage>262</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/978-3-319-28549-8%5F9" xlink:type="simple">10.1007/978-3-319-28549-8_9</ext-link></comment> <object-id pub-id-type="pmid">27207369</object-id></mixed-citation></ref>
+<ref id="pbio.3002213.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rueden</surname> <given-names>CT</given-names></name>, <name name-style="western"><surname>Ackerman</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Arena</surname> <given-names>ET</given-names></name>, <name name-style="western"><surname>Eglinger</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Cimini</surname> <given-names>BA</given-names></name>, <name name-style="western"><surname>Goodman</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>Scientific Community Image Forum: A discussion forum for scientific image software</article-title>. <source>PLoS Biol</source>. <year>2019</year>;<volume>17</volume>(<issue>6</issue>):<fpage>e3000340</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pbio.3000340" xlink:type="simple">10.1371/journal.pbio.3000340</ext-link></comment> <object-id pub-id-type="pmid">31216269</object-id></mixed-citation></ref>
+<ref id="pbio.3002213.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gómez-de-Mariscal</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>García-López-de-Haro</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Ouyang</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Donati</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Lundberg</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Unser</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>DeepImageJ: A user-friendly environment to run deep learning models in ImageJ</article-title>. <source>Nat Methods</source>. <year>2021</year>;<volume>18</volume>:<fpage>1192</fpage>–<lpage>1195</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41592-021-01262-9" xlink:type="simple">10.1038/s41592-021-01262-9</ext-link></comment> <object-id pub-id-type="pmid">34594030</object-id></mixed-citation></ref>
+<ref id="pbio.3002213.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ellenberg</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Swedlow</surname> <given-names>JR</given-names></name>, <name name-style="western"><surname>Barlow</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Cook</surname> <given-names>CE</given-names></name>, <name name-style="western"><surname>Sarkans</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Patwardhan</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>A call for public archives for biological image data.</article-title> <source>Nat Methods.</source> <year>2018</year>;<volume>15</volume>:<fpage>849</fpage>–<lpage>854</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41592-018-0195-8" xlink:type="simple">10.1038/s41592-018-0195-8</ext-link></comment> <object-id pub-id-type="pmid">30377375</object-id></mixed-citation></ref>
+<ref id="pbio.3002213.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Paul-Gilloteaux</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Tosi</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Hériché</surname> <given-names>J-K</given-names></name>, <name name-style="western"><surname>Gaignard</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Ménager</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Marée</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>Bioimage analysis workflows: community resources to navigate through a complex ecosystem.</article-title> <source>F1000Res.</source> <year>2021</year>;<volume>10</volume>:<fpage>320</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.12688/f1000research.52569.1" xlink:type="simple">10.12688/f1000research.52569.1</ext-link></comment> <object-id pub-id-type="pmid">34136134</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

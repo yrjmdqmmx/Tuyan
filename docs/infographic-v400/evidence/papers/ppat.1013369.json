@@ -1,0 +1,99 @@
+{
+  "doi": "10.1371/journal.ppat.1013369",
+  "sourceUrl": "https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1013369",
+  "title": "Comparison of HIV-1 A6 dispersal dynamics in Poland before and after the war in Ukraine",
+  "journal": "PLOS Pathogens",
+  "authors": [
+    "Karol Serwin",
+    "Kaja Mielczak",
+    "Anna Urbańska",
+    "Bogusz Aksak-Wąs",
+    "Malwina Karasińska-Cieślak",
+    "Piotr Ząbek",
+    "Ewa Siwak",
+    "Iwona Cielniak",
+    "Elżbieta Jabłonowska",
+    "Paweł Jakubowski",
+    "Błażej Rozpłochowski",
+    "Aleksandra Szymczak",
+    "Bartosz Szetela",
+    "Anna Kalinowska-Nowak",
+    "Monika Bociąga-Jasik",
+    "Elżbieta Mularska",
+    "Adam Witor",
+    "Anita Olczak",
+    "Władysław Łojewski",
+    "Maria Hlebowicz",
+    "Miłosz Parczewski"
+  ],
+  "year": "2025",
+  "license": "2025\nSerwin et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "ppat.1013369.g001",
+      "label": "Fig 1",
+      "caption": "Alluvial diagram shows from left to right the HIV-1 A6 sequence distribution among people linked to care in Poland by country of origin, gender, and risk factor; PL – Poland/Polish; UA – Ukraine/Ukrainian; MSM – men who have sex with men; HET – heterosexual individuals; PWID – people who inject drugs.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1013369.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.ppat.1013369.g001</object-id><label>Fig 1</label><caption><title>Alluvial diagram shows from left to right the HIV-1 A6 sequence distribution among people linked to care in Poland by country of origin, gender, and risk factor; PL – Poland/Polish; UA – Ukraine/Ukrainian; MSM – men who have sex with men; HET – heterosexual individuals; PWID – people who inject drugs.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1013369.g001\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1013369.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "ppat.1013369.g002",
+      "label": "Fig 2",
+      "caption": "Characteristics of HIV-1 A6 sequence distribution among identified cluster sizes.(A) Sampling density by cluster size and country of origin. Cluster categories are defined as Large Clusters (n > 14), Networks (3 ≤ n ≤ 13), Singletons (n = 1), and Dyads (n = 2) – S&D; (B) Donut charts showing gender and country of birth distribution for various cluster sizes; HET – heterosexual individuals; MSM - men who have sex with men; PWID - people who inject drugs.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1013369.g002\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.ppat.1013369.g002</object-id><label>Fig 2</label><caption><title>Characteristics of HIV-1 A6 sequence distribution among identified cluster sizes.</title><p>(A) Sampling density by cluster size and country of origin. Cluster categories are defined as Large Clusters (n &gt; 14), Networks (3 ≤ n ≤ 13), Singletons (n = 1), and Dyads (n = 2) – S&amp;D; (B) Donut charts showing gender and country of birth distribution for various cluster sizes; HET – heterosexual individuals; MSM - men who have sex with men; PWID - people who inject drugs.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1013369.g002\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1013369.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "ppat.1013369.g003",
+      "label": "Fig 3",
+      "caption": "Discrete phylogeographic reconstruction of A6 lineage migration events between regions and national groups (PLWH diagnosed in Poland born in Poland or Ukraine) over time with a bar graph depicting the relative contribution of population groups to the spread of the A6 sub-subtype: (A) all migration events from 1996 to 2023, (B) between 2017 and 2022, (C) after 2022.Arrow thickness corresponds to the average number of inferred migration events between regions, while transparent circle sizes represent lineage dispersal events inferred within regions. Calculations were averaged over posterior trees sampled from each posterior distribution. Inward movements between specific groups (PLWH born in PL - Locals and PLWH born in UA - Migrants) are depicted in the same color. Only migration events with an adjusted Bayes factor support ≥3 are reported. Abbreviations: HIV, human immunodeficiency virus; PL, Poland/Polish; UA, Ukraine/Ukrainian. Detailed information is found in Table C in S1 Text. Base layer source: GADM database of Global Administrative Areas, version 4.0, available at https://gadm.org.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1013369.g003\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.ppat.1013369.g003</object-id><label>Fig 3</label><caption><title>Discrete phylogeographic reconstruction of A6 lineage migration events between regions and national groups (PLWH diagnosed in Poland born in Poland or Ukraine) over time with a bar graph depicting the relative contribution of population groups to the spread of the A6 sub-subtype: (A) all migration events from 1996 to 2023, (B) between 2017 and 2022, (C) after 2022.</title><p>Arrow thickness corresponds to the average number of inferred migration events between regions, while transparent circle sizes represent lineage dispersal events inferred within regions. Calculations were averaged over posterior trees sampled from each posterior distribution. Inward movements between specific groups (PLWH born in PL - Locals and PLWH born in UA - Migrants) are depicted in the same color. Only migration events with an adjusted Bayes factor support ≥3 are reported. Abbreviations: HIV, human immunodeficiency virus; PL, Poland/Polish; UA, Ukraine/Ukrainian. Detailed information is found in Table C in <xref ref-type=\"supplementary-material\" rid=\"ppat.1013369.s001\">S1 Text</xref>. Base layer source: GADM database of Global Administrative Areas, version 4.0, available at <ext-link ext-link-type=\"uri\" ns0:href=\"https://gadm.org\" ns0:type=\"simple\">https://gadm.org</ext-link>.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1013369.g003\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1013369.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "ppat.1013369.g004",
+      "label": "Fig 4",
+      "caption": "Continuous phylogeographic reconstruction of migration events between regions in Poland over time: (A) all migration events from 1996 to 2023, (B) between 2017 and 2022, (C) after 2022.We depict the maximum clade credibility (MCC) tree and the 80% highest posterior density (HPD) regions to illustrate the uncertainty associated with the Bayesian inference. The nodes of the MCC tree are color-coded according to their temporal occurrence, and the 80% HPD regions were calculated for successive time intervals and overlaid using a consistent color scale to reflect time. Base layer source: GADM database of Global Administrative Areas, version 4.0, available at https://gadm.org.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1013369.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.ppat.1013369.g004</object-id><label>Fig 4</label><caption><title>Continuous phylogeographic reconstruction of migration events between regions in Poland over time: (A) all migration events from 1996 to 2023, (B) between 2017 and 2022, (C) after 2022.</title><p>We depict the maximum clade credibility (MCC) tree and the 80% highest posterior density (HPD) regions to illustrate the uncertainty associated with the Bayesian inference. The nodes of the MCC tree are color-coded according to their temporal occurrence, and the 80% HPD regions were calculated for successive time intervals and overlaid using a consistent color scale to reflect time. Base layer source: GADM database of Global Administrative Areas, version 4.0, available at <ext-link ext-link-type=\"uri\" ns0:href=\"https://gadm.org\" ns0:type=\"simple\">https://gadm.org</ext-link>.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1013369.g004\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1013369.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "ppat.1013369.g005",
+      "label": "Fig 5",
+      "caption": "Investigation of spatio-temporal distribution of singletons and dyads.Phylogenetic clusters identified from the maximum clade credibility (MCC) tree, including n = 1 (singletons) and n = 2 (dyads) sequences, are randomly placed on the map, maintaining regional specificity. Points represent individual sequences colored by origin: Local (born in Poland - blue) and Migrant (born in Ukraine - red). Lines represent phylogenetic branches between dyads. The points and lines in this figure do not represent migration events. Instead, they illustrate the spatial placement of singletons and dyads based on their sampling region. (A) Singletons and dyads before 2022; (B) singletons and dyads after 2022; (C) distribution of singletons and dyads across two population groups, including dyad linkage composition and intra- or inter-regional dispersal before and after 2022; Base layer source: GADM database of Global Administrative Areas, version 4.0, available at https://gadm.org.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1013369.g005\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.ppat.1013369.g005</object-id><label>Fig 5</label><caption><title>Investigation of spatio-temporal distribution of singletons and dyads.</title><p>Phylogenetic clusters identified from the maximum clade credibility (MCC) tree, including n = 1 (singletons) and n = 2 (dyads) sequences, are randomly placed on the map, maintaining regional specificity. Points represent individual sequences colored by origin: Local (born in Poland - blue) and Migrant (born in Ukraine - red). Lines represent phylogenetic branches between dyads. The points and lines in this figure do not represent migration events. Instead, they illustrate the spatial placement of singletons and dyads based on their sampling region. (A) Singletons and dyads before 2022; (B) singletons and dyads after 2022; (C) distribution of singletons and dyads across two population groups, including dyad linkage composition and intra- or inter-regional dispersal before and after 2022; Base layer source: GADM database of Global Administrative Areas, version 4.0, available at <ext-link ext-link-type=\"uri\" ns0:href=\"https://gadm.org\" ns0:type=\"simple\">https://gadm.org</ext-link>.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1013369.g005\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1013369.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

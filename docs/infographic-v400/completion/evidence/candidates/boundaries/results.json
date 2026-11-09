@@ -1,0 +1,86 @@
+{
+  "total": 16,
+  "passed": 16,
+  "results": [
+    {
+      "name": "euler-equal",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "euler-disjoint",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "euler-overlap",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "qq-unequal-sample",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "cif-all-censored",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "cif-time-zero-ties",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "network-unweighted",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "treemap-single-leaf",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "circle_packing-single-leaf",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "protein-single-residue",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "logo-frequency",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "logo-conserved",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "cluster-supplied-linkage",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "cluster-duplicate-observations",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "choropleth-highest-boundary",
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "name": "zero-overlap-enrichment",
+      "passed": true,
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "doi": "10.1371/journal.pone.0251385",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0251385",
+  "title": "Improving the diagnostic recognition of thoracic endometriosis: Spotlight on a new histo-morphological indicator",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Okechukwu Charles Okafor",
+    "Ndubueze Ezemba",
+    "Nnaemeka Thaddeus Onyishi",
+    "Kevin Nwabueze Ezike"
+  ],
+  "year": "2021",
+  "license": "2021\nOkafor et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0251385.g001",
+      "label": "Fig 1",
+      "caption": "A: Typical thoracic endometriosis simulating native proliferative endometrium. H&E staining, original magnification X300. B: Dilated endometrioid gland with intraluminal pseudoxanthoma cells; the surrounding stroma is inconspicuous. H&E staining, original magnification X150. C: Lymphocytic aggregate and dilated and congested blood vessels in oedematous nonspecific stroma; a distorted endometrioid gland is also present. H&E staining, original magnification X100. D: Oedematous hyalinised stroma with congested capillaries and siderophages with golden-brown pigments. H&E staining, original magnification X300. E: Ceroid macrophages with brownish finely granular cytoplasm. H&E staining, original magnification X300. F: Foamy macrophages in the stroma. H&E staining, original magnification X150. G: Cholesterol crystals and multinucleated foreign body-type giant cells. H&E staining, original magnification X300. H: Bundles of smooth muscle cells. H&E staining, original magnification X150. I: Pleural fibrosis. H&E staining, original magnification X150.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0251385.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0251385.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title />\n<p>A: Typical thoracic endometriosis simulating native proliferative endometrium. H&amp;E staining, original magnification X300. B: Dilated endometrioid gland with intraluminal pseudoxanthoma cells; the surrounding stroma is inconspicuous. H&amp;E staining, original magnification X150. C: Lymphocytic aggregate and dilated and congested blood vessels in oedematous nonspecific stroma; a distorted endometrioid gland is also present. H&amp;E staining, original magnification X100. D: Oedematous hyalinised stroma with congested capillaries and siderophages with golden-brown pigments. H&amp;E staining, original magnification X300. E: Ceroid macrophages with brownish finely granular cytoplasm. H&amp;E staining, original magnification X300. F: Foamy macrophages in the stroma. H&amp;E staining, original magnification X150. G: Cholesterol crystals and multinucleated foreign body-type giant cells. H&amp;E staining, original magnification X300. H: Bundles of smooth muscle cells. H&amp;E staining, original magnification X150. I: Pleural fibrosis. H&amp;E staining, original magnification X150.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0251385.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0251385.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0251385.g002",
+      "label": "Fig 2",
+      "caption": "Barplot showing the frequency distribution of the various histological features in the test (thoracic endometriosis) population.\nThe stripped red line marks the point of separation between the frequent or Group A features (darker bars) affecting more than 13 (>13/26; 50%) patients from the features (lighter bars) affecting less than 13 (<13/26; 50%) patients.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0251385.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0251385.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Barplot showing the frequency distribution of the various histological features in the test (thoracic endometriosis) population.</title>\n<p>The stripped red line marks the point of separation between the frequent or Group A features (darker bars) affecting more than 13 (&gt;13/26; 50%) patients from the features (lighter bars) affecting less than 13 (&lt;13/26; 50%) patients.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0251385.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0251385.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0251385.g003",
+      "label": "Fig 3",
+      "caption": "Lollipop plot showing the strength of association with disease of the various histological features using the Cramér’s V coefficient.\nThe dashed lines divide the histological features into those of high association (brick red), medium association (coral) and low association (blanched almond).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0251385.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0251385.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Lollipop plot showing the strength of association with disease of the various histological features using the Cramér’s V coefficient.</title>\n<p>The dashed lines divide the histological features into those of high association (brick red), medium association (coral) and low association (blanched almond).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0251385.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0251385.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0251385.g004",
+      "label": "Fig 4",
+      "caption": "Boxplot of distribution of scores based on 3 groups of features: all features (Group Omnibus), those with association to disease by Chi-squared test (Group B) and those with high strength of association by Cramér’s V coefficient (Group C).\nThe tips of the whiskers in these boxplots represent the minimum and maximum scores of the various groups.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0251385.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0251385.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Boxplot of distribution of scores based on 3 groups of features: all features (Group Omnibus), those with association to disease by Chi-squared test (Group B) and those with high strength of association by Cramér’s V coefficient (Group C).</title>\n<p>The tips of the whiskers in these boxplots represent the minimum and maximum scores of the various groups.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0251385.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0251385.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0251385.g005",
+      "label": "Fig 5",
+      "caption": "Venn plot showing the overlap of the 6 frequent features (Group A), the 8 features with significant association to disease by Chi-squared test (Group B), and the 4 features with high strength of association to disease by the Cramér’s V coefficient (Group C).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0251385.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0251385.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Venn plot showing the overlap of the 6 frequent features (Group A), the 8 features with significant association to disease by Chi-squared test (Group B), and the 4 features with high strength of association to disease by the Cramér’s V coefficient (Group C).</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0251385.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0251385.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

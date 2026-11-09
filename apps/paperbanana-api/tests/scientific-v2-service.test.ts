@@ -344,3 +344,66 @@ test('Riverflow V2 Pro withdrawal removes all public entry points, preserves evi
   assert.deepEqual(structuredClone(release), frozenRelease)
   assert.deepEqual(evidenceRows, frozenRows)
 })
+
+for (const variantCount of [1, 4]) test(`scientific profile bounds concurrent evidence reads and preserves order with ${variantCount} variants`, async () => {
+  const release = scientificRelease()
+  const generationCases = PB_SCIENTIFIC_FIGURE_V2.cases.filter(item => item.kind === 'generation')
+  const rows = generationCases.map((item, index) => ({
+    sourceReleaseHash: release.releaseHash, profileId: release.profileId, canonicalModelId: 'scientific-model',
+    caseId: item.id, kind: item.kind, status: 'succeeded', requestedResolution: '2K',
+    attemptSummary: { count: 1, responseClasses: ['succeeded'] },
+    imageHash: 'a'.repeat(64), actualOutputPixels: { width: 2048, height: 1152, megapixels: 2.3593, fileSizeBytes: 4096 },
+    scores: Object.fromEntries(item.applicableAxes.map(axis => [axis, 8])), reviewNotes: [],
+    variants: Array.from({ length: variantCount }, (_, variantIndex) => ({ kind: 'detail', objectKey: `bench/scientific-v2/public/${'a'.repeat(64)}/${index}-${variantIndex}.webp`, imageHash: 'b'.repeat(64), width: 1600 + variantIndex, height: 900, fileSizeBytes: 2048, mimeType: 'image/webp' })),
+  }))
+  const readLimit = Math.min(12, generationCases.length * variantCount)
+  let active = 0, peak = 0, started = 0, signed = 0, unblock!: () => void, entered!: () => void
+  const barrier = new Promise<void>(resolve => { unblock = resolve })
+  const boundedReads = new Promise<void>(resolve => { entered = resolve })
+  const repository: any = { releaseByModel: async () => release, publicEvidenceForRelease: async () => ({ items: rows, nextCursor: null }) }
+  const service = createBenchmarkService({ repository,
+    signEvidence: async () => { signed++; return 'https://signed.example/public.webp' },
+    verifyEvidence: async () => { active++; started++; peak = Math.max(peak, active); if (started === readLimit) entered(); await barrier; active-- },
+  })
+  const pending = service.handle({ action: 'benchmarkModelProfile', profileId: release.profileId }, false)
+  let timer: ReturnType<typeof setTimeout> | undefined
+  try {
+    await Promise.race([boundedReads, new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('Evidence reads remained serial')), 1000) })])
+    assert.equal(started, readLimit); assert.equal(signed, 0)
+  } finally { clearTimeout(timer); unblock() }
+  const result = await pending
+  assert.equal(peak, readLimit); assert.equal(started, 6 * variantCount); assert.equal(signed, 6 * variantCount)
+  assert.deepEqual(result.profile.evidence.map((item: any) => item.caseId), generationCases.map(item => item.id))
+
+  assert.deepEqual(result.profile.evidence[0].variants.map((item: any) => item.width), Array.from({ length: variantCount }, (_, i) => 1600 + i))
+
+  const rejected = createBenchmarkService({ repository, signEvidence: async () => { throw new Error('must verify first') },
+    verifyEvidence: async () => { throw new Error('BENCHMARK_EVIDENCE_HASH_MISMATCH') } })
+  await assert.rejects(rejected.handle({ action: 'benchmarkModelProfile', profileId: release.profileId }, false), /BENCHMARK_EVIDENCE_HASH_MISMATCH/)
+})
+
+test('scientific evidence deduplicates only identical key/hash pairs within one response', async () => {
+  const release = scientificRelease()
+  const variant = { kind: 'detail', objectKey: `bench/scientific-v2/public/${'a'.repeat(64)}/detail.webp`, imageHash: 'b'.repeat(64), width: 1600, height: 900, fileSizeBytes: 2048, mimeType: 'image/webp' }
+  const row = {
+    sourceReleaseHash: release.releaseHash, profileId: release.profileId,
+    ...release.models[0].evidence.find((item: any) => item.caseId === release.editCase.id),
+    variants: [variant, { ...variant }],
+    beforeVariants: [{ ...variant, objectKey: `bench/scientific-v2/public/${release.editCase.sourceHash}/detail.webp` }],
+  }
+  const verified: string[] = []
+  const service = createBenchmarkService({
+    repository: { releaseByModel: async () => release, publicEvidenceForRelease: async () => ({ items: [row], nextCursor: null }) } as any,
+    signEvidence: async () => 'https://signed.example/evidence.webp',
+    verifyEvidence: async (key, hash) => { verified.push(key); if (hash !== 'b'.repeat(64)) throw new Error('BENCHMARK_EVIDENCE_HASH_MISMATCH') },
+  })
+  const body = { action: 'benchmarkModelProfile', profileId: release.profileId }
+  const first = await service.handle(body, false)
+  assert.equal(first.profile.evidence[0].variants.length, 2)
+  assert.equal(verified.length, 2)
+  await service.handle(body, false)
+  assert.equal(verified.length, 4, 'a new request must reverify the objects')
+  row.variants[1].imageHash = 'c'.repeat(64)
+  await assert.rejects(service.handle(body, false), /BENCHMARK_EVIDENCE_HASH_MISMATCH/)
+  assert.equal(verified.length, 6, 'same key with a different hash must not reuse verification')
+})

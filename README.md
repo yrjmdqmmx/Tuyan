@@ -195,6 +195,8 @@ skills/
 
 ## 本地开发
 
+`main` 是统一开发基线。先同步最新 `origin/main`，再创建功能分支；完成后通过 PR 合回 `main`。分支保护禁止强推和删除，现有工作树中的未提交改动应先保留，不能用旧副本覆盖新版本。
+
 要求：Node.js `>=24`、pnpm `10.28.2`。
 
 ```bash
@@ -229,11 +231,10 @@ node --test apps/miniprogram/tests/*.test.cjs
 
 ## CI 与部署
 
-- `.github/workflows/ci.yml` 验证 Web、小程序、共享包、后端和 Worker。
-- `.github/workflows/deploy-pages.yml` 发布 Web 与公开排行榜。
-- 香港 Debian 12 / 4 vCPU / 16 GB 主机通过 Docker Compose 运行网关、Node Core、MongoDB、Plot Worker 和关闭执行器的 Benchmark Worker；Nginx 暴露唯一 API 域名，图片存于香港私有 OSS。新加坡 Ubuntu 24.04 / 2 vCPU / 4 GB 运行 WireGuard 与 Squid，提供受控模型出口。
-- `.github/workflows/deploy-hk.yml` 手动构建固定版本并按镜像 digest 部署；`.github/workflows/deploy-sg-egress.yml` 单独管理出口。CI 构建不发布生产服务。
-- Sealos / Sealaf 已退役，不能作为回滚目标。当前入口：[架构与实机证据](docs/operations/current-architecture.md)、[香港部署与监控](deploy/hk-single-host/README.md)、[新加坡出口](deploy/sg-egress/README.md)。
+- `.github/workflows/ci.yml` 在 `main`、功能分支与 PR 上验证客户端、共享包、后端和 Worker；普通 CI 不发布生产服务。
+- `.github/workflows/deploy-hangzhou.yml` 只跟随 `codex/hangzhou-production` 的符合路径条件的推送，测试通过后发布杭州。后续开发统一合入 `main`；获得发布授权后，再从已验收的 `main` 同步发布分支。本次主分支合并不改变部署触发器。
+- 业务、数据库和私有 OSS 使用杭州部署；香港与新加坡保留受控模型出口及文档约定的恢复用途。历史 HK / Pages 工作流不是日常发布入口，不应因主分支合并而手动启用。
+- Sealos / Sealaf 已退役，不能作为回滚目标。当前入口：[架构与实机证据](docs/operations/current-architecture.md)、[杭州部署](deploy/hangzhou/README.md)、[新加坡出口](deploy/sg-egress/README.md)。
 
 ## 贡献约定
 

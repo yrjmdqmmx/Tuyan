@@ -1,0 +1,88 @@
+{
+  "filename": "mixed-research.pdf",
+  "format": "pdf",
+  "operation": {
+    "op": "render",
+    "pages": [
+      3,
+      5
+    ]
+  },
+  "status": "read",
+  "warnings": [],
+  "chunks": [
+    {
+      "page": 3,
+      "text": "VECTOR FIGURE: Input -> Check -> Output\nInput   Check   Output ",
+      "positionedText": [
+        {
+          "text": "VECTOR FIGURE: Input -> Check -> Output",
+          "x": 50,
+          "y": 740,
+          "width": 237.42000000000013,
+          "height": 12
+        },
+        {
+          "text": "Input",
+          "x": 70,
+          "y": 610,
+          "width": 26.688,
+          "height": 12
+        },
+        {
+          "text": " ",
+          "x": 96.68799999999999,
+          "y": 610,
+          "width": 153.312,
+          "height": 0
+        },
+        {
+          "text": "Check",
+          "x": 250,
+          "y": 610,
+          "width": 34.007999999999996,
+          "height": 12
+        },
+        {
+          "text": " ",
+          "x": 284.00800000000004,
+          "y": 610,
+          "width": 155.99199999999996,
+          "height": 0
+        },
+        {
+          "text": "Output",
+          "x": 440,
+          "y": 610,
+          "width": 36.023999999999994,
+          "height": 12
+        }
+      ],
+      "warning": "文字顺序和表格结构以整页画面核对；坐标为 PDF 原始坐标。"
+    },
+    {
+      "page": 5,
+      "text": "",
+      "positionedText": [],
+      "warning": "无文字层；尚未理解页面，请调用 render 读取扫描画面。"
+    }
+  ],
+  "images": [
+    {
+      "page": 3,
+      "mimeType": "image/png",
+      "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070",
+      "renderer": "PDFium 2.1.13, whole page",
+      "width": 1224,
+      "height": 1584
+    },
+    {
+      "page": 5,
+      "mimeType": "image/png",
+      "sha256": "928239f0684567e37f47cb7879c1102f443666a06fb43402bcd74c5503779eb6",
+      "renderer": "PDFium 2.1.13, whole page",
+      "width": 1224,
+      "height": 1584
+    }
+  ]
+}

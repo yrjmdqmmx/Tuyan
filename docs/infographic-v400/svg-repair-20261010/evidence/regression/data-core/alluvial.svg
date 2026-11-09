@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="364.5pt" viewBox="0 0 648 364.5" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 364.5  L 648 364.5  L 648 0  L 0 0  z " style="fill: #ffffff" />
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 3.00024 341.05976  L 644.99976 341.05976  L 644.99976 27.80024  L 3.00024 27.80024  z " style="fill: #ffffff" />
+   </g>
+   <g id="patch_3">
+    <path d="M 70.904035 327.439781  L 83.25018 327.439781  L 83.25018 176.106679  L 70.904035 176.106679  z " clip-path="url(#pa50d80bfc2)" style="fill: #506956; opacity: 0.8; stroke: #506956; stroke-linejoin: miter" />
+   </g>
+   <g id="patch_4">
+    <path d="M 70.904035 162.4867  L 83.25018 162.4867  L 83.25018 41.420219  L 70.904035 41.420219  z " clip-path="url(#pa50d80bfc2)" style="fill: #506956; opacity: 0.8; stroke: #506956; stroke-linejoin: miter" />
+   </g>
+   <g id="patch_5">
+    <path d="M 317.826928 327.439781  L 330.173072 327.439781  L 330.173072 236.63992  L 317.826928 236.63992  z " clip-path="url(#pa50d80bfc2)" style="fill: #506956; opacity: 0.8; stroke: #506956; stroke-linejoin: miter" />
+   </g>
+   <g id="patch_6">
+    <path d="M 317.826928 223.019941  L 330.173072 223.019941  L 330.173072 41.420219  L 317.826928 41.420219  z " clip-path="url(#pa50d80bfc2)" style="fill: #506956; opacity: 0.8; stroke: #506956; stroke-linejoin: miter" />
+   </g>
+   <g id="patch_7">
+    <path d="M 564.74982 327.439781  L 577.095965 327.439781  L 577.095965 115.573439  L 564.74982 115.573439  z " clip-path="url(#pa50d80bfc2)" style="fill: #506956; opacity: 0.8; stroke: #506956; stroke-linejoin: miter" />
+   </g>
+   <g id="patch_8">
+    <path d="M 564.74982 101.95346  L 577.095965 101.95346  L 577.095965 41.420219  L 564.74982 41.420219  z " clip-path="url(#pa50d80bfc2)" style="fill: #506956; opacity: 0.8; stroke: #506956; stroke-linejoin: miter" />
+   </g>
+   <g id="patch_9">
+    <path d="M 83.25018 327.439781  C 188.809716 327.439781 212.267391 327.439781 317.826928 327.439781  L 317.826928 236.63992  C 212.267391 236.63992 188.809716 236.63992 83.25018 236.63992  z " clip-path="url(#pa50d80bfc2)" style="fill: #487968; opacity: 0.45" />
+   </g>
+   <g id="patch_10">
+    <path d="M 330.173072 327.439781  C 435.732609 327.439781 459.190284 327.439781 564.74982 327.439781  L 564.74982 236.63992  C 459.190284 236.63992 435.732609 236.63992 330.173072 236.63992  z " clip-path="url(#pa50d80bfc2)" style="fill: #487968; opacity: 0.45" />
+   </g>
+   <g id="patch_11">
+    <path d="M 83.25018 236.63992  C 188.809716 236.63992 212.267391 223.019941 317.826928 223.019941  L 317.826928 162.4867  C 212.267391 162.4867 188.809716 176.106679 83.25018 176.106679  z " clip-path="url(#pa50d80bfc2)" style="fill: #c58b53; opacity: 0.45" />
+   </g>
+   <g id="patch_12">
+    <path d="M 330.173072 223.019941  C 435.732609 223.019941 459.190284 101.95346 564.74982 101.95346  L 564.74982 41.420219  C 459.190284 41.420219 435.732609 162.4867 330.173072 162.4867  z " clip-path="url(#pa50d80bfc2)" style="fill: #c58b53; opacity: 0.45" />
+   </g>
+   <g id="patch_13">
+    <path d="M 83.25018 162.4867  C 188.809716 162.4867 212.267391 162.4867 317.826928 162.4867  L 317.826928 41.420219  C 212.267391 41.420219 188.809716 41.420219 83.25018 41.420219  z " clip-path="url(#pa50d80bfc2)" style="fill: #647da6; opacity: 0.45" />
+   </g>
+   <g id="patch_14">
+    <path d="M 330.173072 162.4867  C 435.732609 162.4867 459.190284 236.63992 564.74982 236.63992  L 564.74982 115.573439  C 459.190284 115.573439 435.732609 41.420219 330.173072 41.420219  z " clip-path="url(#pa50d80bfc2)" style="fill: #647da6; opacity: 0.45" />
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m783222674b" d="M 0 0  L 0 3.5  " style="stroke: #000000; stroke-width: 0.8" />
+      </defs>
+      <g>
+       <use xlink:href="#m783222674b" x="77.077108" y="341.05976" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="77.077108" y="358.61976" transform="rotate(-0 77.077108 358.61976)">Before</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m783222674b" x="324" y="341.05976" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="324" y="358.61976" transform="rotate(-0 324 358.61976)">During</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m783222674b" x="570.922892" y="341.05976" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="570.922892" y="358.61976" transform="rotate(-0 570.922892 358.61976)">After</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2" />
+   <g id="patch_15">
+    <path d="M 3.00024 341.05976  L 3.00024 27.80024  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square" />
+   </g>
+   <g id="patch_16">
+    <path d="M 3.00024 341.05976  L 644.99976 341.05976  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square" />
+   </g>
+   <g id="text_4">
+    <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="324" y="11.80024" transform="rotate(-0 324 11.80024)">Fixed cohort; ribbon width: people</text>
+   </g>
+   <g id="text_5">
+    <g id="patch_17">
+     <path d="M 73.685233 256.73323  L 80.468983 256.73323  L 80.468983 246.81323  L 73.685233 246.81323  z " style="fill: #ffffff; opacity: 0.8" />
+    </g>
+    <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="77.077108" y="254.81323" transform="rotate(-0 77.077108 254.81323)">A</text>
+   </g>
+   <g id="text_6">
+    <g id="patch_18">
+     <path d="M 73.488983 106.91346  L 80.665233 106.91346  L 80.665233 96.99346  L 73.488983 96.99346  z " style="fill: #ffffff; opacity: 0.8" />
+    </g>
+    <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="77.077108" y="104.99346" transform="rotate(-0 77.077108 104.99346)">B</text>
+   </g>
+   <g id="text_7">
+    <g id="patch_19">
+     <path d="M 320.488125 286.99985  L 327.511875 286.99985  L 327.511875 277.07985  L 320.488125 277.07985  z " style="fill: #ffffff; opacity: 0.8" />
+    </g>
+    <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="324" y="285.07985" transform="rotate(-0 324 285.07985)">C</text>
+   </g>
+   <g id="text_8">
+    <g id="patch_20">
+     <path d="M 320.288125 137.18008  L 327.711875 137.18008  L 327.711875 127.26008  L 320.288125 127.26008  z " style="fill: #ffffff; opacity: 0.8" />
+    </g>
+    <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="324" y="135.26008" transform="rotate(-0 324 135.26008)">D</text>
+   </g>
+   <g id="text_9">
+    <g id="patch_21">
+     <path d="M 567.606642 226.46661  L 574.239142 226.46661  L 574.239142 216.54661  L 567.606642 216.54661  z " style="fill: #ffffff; opacity: 0.8" />
+    </g>
+    <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="570.922892" y="224.54661" transform="rotate(-0 570.922892 224.54661)">E</text>
+   </g>
+   <g id="text_10">
+    <g id="patch_22">
+     <path d="M 567.754767 76.646839  L 574.091017 76.646839  L 574.091017 66.726839  L 567.754767 66.726839  z " style="fill: #ffffff; opacity: 0.8" />
+    </g>
+    <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="570.922892" y="74.726839" transform="rotate(-0 570.922892 74.726839)">F</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pa50d80bfc2">
+   <rect x="3.00024" y="27.80024" width="641.99952" height="313.25952" />
+  </clipPath>
+ </defs>
+</svg>

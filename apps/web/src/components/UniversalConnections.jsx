@@ -1,3 +1,4 @@
+import MenuSelect from './MenuSelect.jsx';
 import {useEffect, useState, useRef} from 'react'
 import {readConnectionLibrary, mutateConnectionLibrary, CONNECTION_LIBRARY_KEY, connectionFacts, profilePatch, exportUniversalConfiguration, importUniversalConfiguration, universalImportDiff, UNIVERSAL_FILE_MAX_BYTES} from '../lib/universalProfiles.js'
 
@@ -79,7 +80,7 @@ export default function UniversalConnections({role, label, draft, thinking, onCh
   }
   return <details className="universal-details universal-connections"><summary>已命名连接与无密钥配置文件</summary>
     <p className="universal-hint">连接仅保存地址、协议、鉴权方式、目录规则与兼容变体。角色保存独立副本；更新或删除连接不会改写其他角色。</p>
-    <label className="field"><span>已保存连接</span><select disabled={saving} aria-label={`${label} 已保存连接`} value={selected} onChange={e => select(e.target.value)}><option value="">选择连接</option>{profiles.map(p => <option value={p.id} key={p.id}>{p.name}</option>)}</select></label>
+    <label className="field"><span>已保存连接</span><MenuSelect disabled={saving} aria-label={`${label} 已保存连接`} value={selected} onChange={e => select(e.target.value)}><option value="">选择连接</option>{profiles.map(p => <option value={p.id} key={p.id}>{p.name}</option>)}</MenuSelect></label>
     {chosen && <><p className="universal-hint">{chosen.connection.protocol} · {chosen.connection.baseUrl}</p><div className="universal-recovery">
       <button type="button" disabled={saving} className="universal-button" onClick={apply}>应用连接到{label}（不含密钥）</button>
       <button type="button" disabled={saving} className="universal-button" onClick={() => persist({type:'delete', id:chosen.id, expected:baseline.current}, () => {

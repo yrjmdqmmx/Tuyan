@@ -1,0 +1,330 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "sourceProtocol": {
+    "protocolVersion": 2,
+    "catalogVersion": 1,
+    "scope": "job:1791632803045-itevyvam",
+    "originalHash": "73815400b236f90796b15ef122a7ca34115e95c1550247785435b4f8362c89d1",
+    "catalogs": [
+      {
+        "scope": "job:1791632803045-itevyvam",
+        "originalHash": "9fea87e5a0e629057c45fd72c336b786a08c65a298417ca030946acd9260d1b2",
+        "catalogHash": "b07f56d36878d010c6c9a8824607fd79f65337aafb183546d7eac1dbf1d81025"
+      }
+    ]
+  },
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": {
+    "stage": "rendering",
+    "stageLabel": "图像生成",
+    "category": "input",
+    "code": "DIAGRAM_TOPOLOGY_INVALID",
+    "reason": "模型结构化输出仍不符合格式合同，未接受该图。",
+    "suggestion": "请查看已保留的模型原文和格式错误；系统未接受连续失败的输出，也未追加第二次结构纠正。 已使用一次额外主模型结构格式纠正。 已发生调用以阶段记录和渠道账单为准。",
+    "requestState": "not_sent",
+    "billingStatus": "not_called",
+    "billingMessage": "失败步骤在模型请求发出前停止；该步骤未发起模型调用。此前费用请结合调用记录核对。",
+    "message": "图像生成失败：模型结构化输出仍不符合格式合同，未接受该图。 请查看已保留的模型原文和格式错误；系统未接受连续失败的输出，也未追加第二次结构纠正。 已使用一次额外主模型结构格式纠正。 已发生调用以阶段记录和渠道账单为准。"
+  },
+  "referenceSelection": {
+    "proposedCount": 1,
+    "selectedCount": 1,
+    "requestedTypeId": "state_transition",
+    "exactCount": 1,
+    "compatibleCount": 0,
+    "manualUnmatchedCount": 0,
+    "matchStatus": "matched",
+    "skippedCount": 0,
+    "imageCount": 1,
+    "mode": "images",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "none",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "failed",
+      "error": "SOURCE_PROTOCOL_INVALID: invalid anonymous initial fields"
+    }
+  ],
+  "id": "1791632803045-itevyvam",
+  "status": "failed",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "Synthetic teaching example of an instrument state machine. States: Idle, Running, Paused, Completed. Initial dot enters Idle. Transitions: Idle→Running: start; Running→Paused: pause; Paused→Running: resume; Running→Completed: finish; Paused→Idle: cancel; Completed→Idle: reset. Each named state appears once. Arrows are labelled events, not process activities. Completed is not a terminal state because reset returns to Idle. English text. Reference is for structural design only.",
+  "negativePrompt": "No invented numbers, statistical significance, or scientific conclusions. Preserve all supplied labels and relations.",
+  "caption": "Explicit synthetic teaching example",
+  "infographicCategory": "状态转移图",
+  "figureTypeId": "state_transition",
+  "figureSpecVersion": "2026-10-10.v1",
+  "figureInputValidation": {
+    "status": "content_review_required",
+    "checks": [
+      "核对：节点是状态不是动作",
+      "核对：边标注事件",
+      "核对：自循环与不可达态显式检查",
+      "逐项核对必要输入；记录证据缺口，不把模型的自信作为事实依据。"
+    ]
+  },
+  "outputFormat": "svg",
+  "mainModelName": "qwen3.7-plus",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "main_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "planner_critic",
+  "retrievalSetting": "manual",
+  "manualReferenceIds": [
+    "journal_pcbi.1009702.g001"
+  ],
+  "retrievedReferenceIds": [
+    "journal_pcbi.1009702.g001"
+  ],
+  "retrievedReferences": [
+    {
+      "id": "journal_pcbi.1009702.g001",
+      "source": "journal-curated",
+      "corpusVersion": "journal-2026-10-10.v2",
+      "figureTypeId": "multipanel",
+      "panelTypes": [
+        {
+          "panel": "A",
+          "typeId": "network"
+        },
+        {
+          "panel": "B",
+          "typeId": "state_transition"
+        },
+        {
+          "panel": "C",
+          "typeId": "mechanism"
+        }
+      ],
+      "title": "Identification of periodic attractors in Boolean networks using a priori information",
+      "titleZh": "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。",
+      "summary": "Example of a BN.\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].",
+      "originalCaption": "Example of a BN.\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].",
+      "shortIntroZh": "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。",
+      "detailZh": "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。 A节点是变量，B节点是整组布尔状态，C含反应节点，不能互相混用。D是表格，不能为了填补覆盖而标成二值矩阵图。",
+      "paper": {
+        "title": "Identification of periodic attractors in Boolean networks using a priori information",
+        "authors": [
+          "Ulrike Münzner",
+          "Tomoya Mori",
+          "Marcus Krantz",
+          "Edda Klipp",
+          "Tatsuya Akutsu"
+        ],
+        "journal": "PLOS Computational Biology",
+        "year": "2022",
+        "doi": "10.1371/journal.pcbi.1009702",
+        "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009702"
+      },
+      "figureNumber": "Fig 1",
+      "researchDomain": "系统生物学与布尔网络",
+      "layout": "grid",
+      "density": "high",
+      "tags": [
+        "multipanel",
+        "系统生物学与布尔网络",
+        "grid"
+      ],
+      "designLessons": [
+        "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。"
+      ],
+      "doNotTransfer": [
+        "A节点是变量，B节点是整组布尔状态，C含反应节点，不能互相混用。D是表格，不能为了填补覆盖而标成二值矩阵图。",
+        "原论文的实体名称、样本、数值、显著性、模型性能与科学结论。"
+      ],
+      "imageUrl": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1009702.g001",
+      "localPreviewUrl": "/reference-library/pcbi.1009702.g001.png",
+      "assets": {
+        "large": {
+          "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1009702.g001",
+          "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009702.g001.png",
+          "bytes": 367246,
+          "sha256": "1626940dd34b4372305aa26c217199da6895a7252701f5aeb838a5b0707e0a63"
+        },
+        "original": {
+          "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1009702.g001",
+          "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009702.g001.tif",
+          "bytes": 432340,
+          "sha256": "f2680160c6cc4ed9419bf90d4edf5b09b7cf3bfcbcedaefbfa245ce28a0be1bc"
+        }
+      },
+      "modifications": [],
+      "license": {
+        "id": "CC-BY-4.0",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "status": "verified",
+        "attributionRequired": true,
+        "verifiedAt": "2026-10-10",
+        "basis": "2022\nMünzner et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+        "evidenceFile": "docs/infographic-v400/evidence/papers/pcbi.1009702.xml",
+        "captionEvidence": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009702.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009702.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Example of a BN.</title>\n<p>(A) Network structure <italic>G</italic>(<italic>V</italic>, <italic>E</italic>) for a BN consisting of <italic>n</italic> = 3 nodes <italic>x</italic><sub>1</sub>, <italic>x</italic><sub>2</sub>, and <italic>x</italic><sub>3</sub>. The Boolean functions are represented by the edges. (B) State transition diagram of all 2<sup>3</sup> = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component <italic>x</italic><sub>1</sub> are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) <italic>x</italic><sub>1</sub> undergoes phosphorylation by consuming its elemental state <italic>x</italic><sub>1</sub>-{0} to produce its modified state <italic>x</italic><sub>1</sub>-{P} by reaction <italic>r</italic><sub>1</sub> (phosphorylation). The modified <italic>x</italic><sub>1</sub>-{P} undergoes consumption thereby producing the neutral state <italic>x</italic><sub>1</sub>-{0} via reaction <italic>r</italic><sub>2</sub> (dephosphorylation) (details in [<xref ref-type=\"bibr\" rid=\"pcbi.1009702.ref029\">29</xref>]). (D) Relationship between initial states of both elemental states <italic>x</italic><sub>1</sub>-{0} and <italic>x</italic><sub>1</sub>-{P} of component <italic>x</italic><sub>1</sub> and the attractors. When at least either of the two elemental states <italic>x</italic><sub>1</sub>-{0} or <italic>x</italic><sub>1</sub>-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes <italic>r</italic><sub>1</sub> and <italic>r</italic><sub>2</sub> are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [<xref ref-type=\"bibr\" rid=\"pcbi.1009702.ref029\">29</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009702.g001\" ns0:type=\"simple\" />\n</fig>\n",
+        "reviewEvidence": null,
+        "thirdPartyReview": "已检查出版方XML、全文素材声明、图注和图像；未发现该图另行限制或第三方署名例外。",
+        "permissions": {
+          "storage": true,
+          "display": true,
+          "modelInput": true,
+          "adaptation": true
+        },
+        "conditions": [
+          "保留论文、作者、图号、来源及许可链接（CC0为学术溯源要求，非额外许可义务）",
+          "如修改，明确说明修改并保留原图",
+          "不暗示原作者认可新作品",
+          "仅基于许可的复制与改编权判断模型输入；不额外授予训练、商标、隐私等权利"
+        ],
+        "attribution": "Ulrike Münzner, Tomoya Mori, Marcus Krantz, Edda Klipp, Tatsuya Akutsu. Identification of periodic attractors in Boolean networks using a priori information. PLOS Computational Biology (2022), Fig 1. 10.1371/journal.pcbi.1009702. CC-BY-4.0."
+      },
+      "quality": {
+        "status": "reviewed",
+        "inspection": "publisher-caption-and-image",
+        "reason": "结构与科学编码可作为所标注类型的参考；局限写在 doNotTransfer 中。"
+      },
+      "attribution": "Ulrike Münzner, Tomoya Mori, Marcus Krantz, Edda Klipp, Tatsuya Akutsu. Identification of periodic attractors in Boolean networks using a priori information. PLOS Computational Biology (2022), Fig 1. 10.1371/journal.pcbi.1009702. CC-BY-4.0.",
+      "taskName": "diagram",
+      "visualCategory": "multipanel",
+      "visualCategoryLabel": "组合表达 / 多面板组合图",
+      "keywords": [
+        "多面板组合图",
+        "multipanel",
+        "系统生物学与布尔网络",
+        "grid"
+      ],
+      "match": {
+        "level": "exact",
+        "score": 1010,
+        "requestedTypeId": "state_transition",
+        "preferences": {},
+        "reason": "图型或明确标注的子图精确匹配"
+      }
+    }
+  ],
+  "stages": [
+    {
+      "id": "stage-fa7b17cd-bd70-4bd2-9cb8-7524d050025b",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "**Advisory Plan: Instrument State Machine Diagram**\n\n**1. Content & Structure Verification**\n*   **Nodes (States):** 4 named states exactly as specified: `Idle`, `Running`, `Paused`, `Completed`.\n*   **Initial Marker:** Unnamed solid dot (initial state indicator) entering `Idle`.\n*   **Transitions (Edges):** 6 directed edges labeled strictly with event names:\n    *   `Idle` → `Running`: \"start\"\n    *   `Running` → `Paused`: \"pause\"\n    *   `Paused` → `Running`: \"resume\"\n    *   `Running` → `Completed`: \"finish\"\n    *   `Paused` → `Idle`: \"cancel\"\n    *   `Completed` → `Idle`: \"reset\"\n*   **Topology Check:** The graph contains a cycle (`Idle` ↔ `Running` ↔ `Paused` ↔ `Idle`) and a branch to `Completed` that loops back. This confirms `Completed` is not a terminal sink. Layout must accommodate the return path from `Completed` to `Idle` without overlapping the forward path.\n\n**2. Visual Style & Renderer Constraints**\n*   **Shape Vocabulary:**\n    *   States (`Idle`, `Running`, `Paused`, `Completed`): Rounded rectangles (standard process/state shape).\n    *   Initial Marker: Small filled circle (dot).\n*   **Color Palette (Fixed Compiler Contract):**\n    *   Node Fill: `#e5efeb` (Pale Green/Grey).\n    *   Stroke/Arrow: `#355c53` (Dark Teal).\n    *   Text: `#203d37` (Dark Green/Black).\n    *   Background: White.\n*   **Typography:** Noto Sans, regular weight. Minimum 14px font size at 1K resolution. English text only.\n*   **Connectors:** Orthogonal polylines with filled triangle arrowheads. No curved lines. Labels placed on edge segments.\n\n**3. Layout Strategy (ELK Topology)**\n*   **Direction Hint:** RIGHT (Left-to-Right flow).\n*   **Arrangement Logic:**\n    *   Place `Idle` on the far left (entry point).\n    *   Place `Running` centrally.\n    *   Place `Paused` and `Completed` to the right of `Running`.\n    *   *Critical:* The `cancel` (Paused→Idle) and `reset` (Completed→Idle) edges are backward transitions. The layout algorithm must route these around the periphery (likely below or above the main chain) to prevent crossing the forward \"start/pause/finish\" arrows.\n*   **Reference Usage:** Use Reference Panel B *only* for the concept of distinct nodes with clear labels and orthogonal connections. Do not copy the binary numbering or grid arrangement.\n\n**4. Compliance & Avoidance**\n*   **No Terminal State:** Ensure `Completed` has an outgoing arrow (`reset`). Do not use a double-circle or bullseye symbol often reserved for final states in other notations, as this is a cyclic machine.\n*   **Label Fidelity:** Edge labels are events (\"start\", \"pause\"), not actions (\"starting\", \"pausing\").\n*   **No Invented Data:** No timing values, probabilities, or guard conditions added.\n\n**5. Evidence of Requirements**\n*   *Methodology:* \"States: Idle, Running, Paused, Completed... Transitions: ... Completed→Idle: reset.\"\n*   *Visual Intent:* \"Explicit synthetic teaching example.\"\n*   *Renderer Contract:* \"Named process/state: rounded rectangle... explicitly unnamed initial: dot... orthogonal polylines.\"",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T11:46:43.257Z",
+      "completedAt": "2026-10-10T11:46:59.845Z",
+      "durationMs": 16588,
+      "error": ""
+    },
+    {
+      "id": "stage-abf612ab-b8f1-40de-8b75-2ec19b108106",
+      "candidateId": 0,
+      "type": "topology_extraction",
+      "title": "拓扑提取原文（第1次）",
+      "round": 0,
+      "text": "{\"sourceCatalog\":{\"protocolVersion\":2,\"catalogVersion\":1,\"scope\":\"job:1791632803045-itevyvam\",\"originalHash\":\"9fea87e5a0e629057c45fd72c336b786a08c65a298417ca030946acd9260d1b2\",\"offsetUnit\":\"utf16\",\"entries\":[{\"id\":\"methodology:0-480\",\"sourceField\":\"methodology\",\"start\":0,\"end\":480,\"text\":\"Synthetic teaching example of an instrument state machine. States: Idle, Running, Paused, Completed. Initial dot enters Idle. Transitions: Idle→Running: start; Running→Paused: pause; Paused→Running: resume; Running→Completed: finish; Paused→Idle: cancel; Completed→Idle: reset. Each named state appears once. Arrows are labelled events, not process activities. Completed is not a terminal state because reset returns to Idle. English text. Reference is for structural design only.\",\"sha256\":\"f8789d879fc8aef19e79ce214af29035a1181fd6112ccde49a0b1f4d5a3515dc\"},{\"id\":\"methodology:0-58\",\"sourceField\":\"methodology\",\"start\":0,\"end\":58,\"text\":\"Synthetic teaching example of an instrument state machine.\",\"sha256\":\"91f9dadb6420187f326cfda8c284935cf4db9a0861d1f0d98ad9a9cc4aff9a67\"},{\"id\":\"methodology:59-100\",\"sourceField\":\"methodology\",\"start\":59,\"end\":100,\"text\":\"States: Idle, Running, Paused, Completed.\",\"sha256\":\"3096afbabb5fa215b55c1a5ac8929e9058fd1052ebbc90198b86c1170c0956e7\"},{\"id\":\"methodology:101-125\",\"sourceField\":\"methodology\",\"start\":101,\"end\":125,\"text\":\"Initial dot enters Idle.\",\"sha256\":\"c624aa306cb45c814468114703cf16c92dd2f9c5ac7f6d325bd10d87bab4b4bc\"},{\"id\":\"methodology:126-159\",\"sourceField\":\"methodology\",\"start\":126,\"end\":159,\"text\":\"Transitions: Idle→Running: start;\",\"sha256\":\"61b0be719908b2e1576411d0ffb7cf42c10ba61c688683b2d4ad58318be5479f\"},{\"id\":\"methodology:160-182\",\"sourceField\":\"methodology\",\"start\":160,\"end\":182,\"text\":\"Running→Paused: pause;\",\"sha256\":\"6671bcce05bb8ddf08f0aacc349803706db6f948cd9e1083dccfddd6eb69b671\"},{\"id\":\"methodology:183-206\",\"sourceField\":\"methodology\",\"start\":183,\"end\":206,\"text\":\"Paused→Running: resume;\",\"sha256\":\"5503fa406a0cf41e3d15dd3220a8f3628fbe398ddd54c4bbd260e04cb732f962\"},{\"id\":\"methodology:207-233\",\"sourceField\":\"methodology\",\"start\":207,\"end\":233,\"text\":\"Running→Completed: finish;\",\"sha256\":\"6c67ca4a3ab39077cebc3ce06382b597b47a2828919ec7d885422dec6338c3c0\"},{\"id\":\"methodology:234-254\",\"sourceField\":\"methodology\",\"start\":234,\"end\":254,\"text\":\"Paused→Idle: cancel;\",\"sha256\":\"abbec4b89d8df44d1f3290cb82cb5fa77dea9a62a6d77441fb05328c9b6a3d92\"},{\"id\":\"methodology:255-277\",\"sourceField\":\"methodology\",\"start\":255,\"end\":277,\"text\":\"Completed→Idle: reset.\",\"sha256\":\"90075746d739e5e84f96418edf4a2f0265216ab48b5d56cee5b8324c790d785d\"},{\"id\":\"methodology:278-308\",\"sourceField\":\"methodology\",\"start\":278,\"end\":308,\"text\":\"Each named state appears once.\",\"sha256\":\"14e67d62fa9ce120612790bcf918bbf9b7af527555f1473c3d53a30aab1a5620\"},{\"id\":\"methodology:309-360\",\"sourceField\":\"methodology\",\"start\":309,\"end\":360,\"text\":\"Arrows are labelled events, not process activities.\",\"sha256\":\"6de87f9892f8f04a0e9586d23f748f9520a63fa56ec449ea0f27edfc758e925c\"},{\"id\":\"methodology:361-425\",\"sourceField\":\"methodology\",\"start\":361,\"end\":425,\"text\":\"Completed is not a terminal state because reset returns to Idle.\",\"sha256\":\"704e7d96f4a01bf108815d2e6399eeeb71374bda5bb225f585376a4ca42a2a88\"},{\"id\":\"methodology:426-439\",\"sourceField\":\"methodology\",\"start\":426,\"end\":439,\"text\":\"English text.\",\"sha256\":\"879b7de76b230c620d73da3100868e065afc64a4748417bf72b70442ccb2082e\"},{\"id\":\"methodology:440-480\",\"sourceField\":\"methodology\",\"start\":440,\"end\":480,\"text\":\"Reference is for structural design only.\",\"sha256\":\"259f15e36fd51cda9d4e59df1953a8d1b672ccc3b7172efa208d9c5d8e9938fe\"},{\"id\":\"visualIntent:0-35\",\"sourceField\":\"visualIntent\",\"start\":0,\"end\":35,\"text\":\"Explicit synthetic teaching example\",\"sha256\":\"1990f2e9edf1fb8c6e529d2fbf6d438bec761d3275ed716787c8e8c6d429576e\"},{\"id\":\"avoid:0-117\",\"sourceField\":\"avoid\",\"start\":0,\"end\":117,\"text\":\"No invented numbers, statistical significance, or scientific conclusions. Preserve all supplied labels and relations.\",\"sha256\":\"d36647097f92e6018f6ede39823069b049562c4423cb38b4b77b3b6c81562754\"},{\"id\":\"avoid:0-73\",\"sourceField\":\"avoid\",\"start\":0,\"end\":73,\"text\":\"No invented numbers, statistical significance, or scientific conclusions.\",\"sha256\":\"69666f2315e5c84a9491f2af113aa1abc4dce3a21bc2b70cddf86dc25399b0fb\"},{\"id\":\"avoid:74-117\",\"sourceField\":\"avoid\",\"start\":74,\"end\":117,\"text\":\"Preserve all supplied labels and relations.\",\"sha256\":\"50975f47ca45201e30ef17603bd2f70520ae159af15e7221dfc959f88d75d902\"}],\"catalogHash\":\"b07f56d36878d010c6c9a8824607fd79f65337aafb183546d7eac1dbf1d81025\"},\"attempt\":1,\"rawHash\":\"7e1c43f3f976c238a4c3a9be6cfc2a7673318f4ccc1273262da4ffba1cad3ec0\",\"rawResponse\":\"{\\n  \\\"schemaVersion\\\": 2,\\n  \\\"sourceProtocolVersion\\\": 2,\\n  \\\"sourceCatalogHash\\\": \\\"b07f56d36878d010c6c9a8824607fd79f65337aafb183546d7eac1dbf1d81025\\\",\\n  \\\"namedNodes\\\": {\\n    \\\"Idle\\\": {\\n      \\\"shape\\\": \\\"process\\\",\\n      \\\"role\\\": \\\"normal\\\",\\n      \\\"sourceRef\\\": \\\"methodology:59-100\\\"\\n    },\\n    \\\"Running\\\": {\\n      \\\"shape\\\": \\\"process\\\",\\n      \\\"role\\\": \\\"normal\\\",\\n      \\\"sourceRef\\\": \\\"methodology:59-100\\\"\\n    },\\n    \\\"Paused\\\": {\\n      \\\"shape\\\": \\\"process\\\",\\n      \\\"role\\\": \\\"normal\\\",\\n      \\\"sourceRef\\\": \\\"methodology:59-100\\\"\\n    },\\n    \\\"Completed\\\": {\\n      \\\"shape\\\": \\\"process\\\",\\n      \\\"role\\\": \\\"normal\\\",\\n      \\\"sourceRef\\\": \\\"methodology:59-100\\\"\\n    }\\n  },\\n  \\\"anonymousInitials\\\": {\\n    \\\"sourceRef\\\": \\\"methodology:101-125\\\",\\n    \\\"markerQuote\\\": \\\"Initial dot enters Idle\\\",\\n    \\\"interpretation\\\": \\\"explicit_unnamed_initial\\\"\\n  },\\n  \\\"edges\\\": [\\n    {\\n      \\\"source\\\": {\\n        \\\"initial\\\": \\\"anonymousInitials\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Idle\\\"\\n      },\\n      \\\"label\\\": \\\"\\\",\\n      \\\"sourceRef\\\": \\\"methodology:101-125\\\"\\n    },\\n    {\\n      \\\"source\\\": {\\n        \\\"name\\\": \\\"Idle\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Running\\\"\\n      },\\n      \\\"label\\\": \\\"start\\\",\\n      \\\"sourceRef\\\": \\\"methodology:126-159\\\"\\n    },\\n    {\\n      \\\"source\\\": {\\n        \\\"name\\\": \\\"Running\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Paused\\\"\\n      },\\n      \\\"label\\\": \\\"pause\\\",\\n      \\\"sourceRef\\\": \\\"methodology:160-182\\\"\\n    },\\n    {\\n      \\\"source\\\": {\\n        \\\"name\\\": \\\"Paused\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Running\\\"\\n      },\\n      \\\"label\\\": \\\"resume\\\",\\n      \\\"sourceRef\\\": \\\"methodology:183-206\\\"\\n    },\\n    {\\n      \\\"source\\\": {\\n        \\\"name\\\": \\\"Running\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Completed\\\"\\n      },\\n      \\\"label\\\": \\\"finish\\\",\\n      \\\"sourceRef\\\": \\\"methodology:207-233\\\"\\n    },\\n    {\\n      \\\"source\\\": {\\n        \\\"name\\\": \\\"Paused\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Idle\\\"\\n      },\\n      \\\"label\\\": \\\"cancel\\\",\\n      \\\"sourceRef\\\": \\\"methodology:234-254\\\"\\n    },\\n    {\\n      \\\"source\\\": {\\n        \\\"name\\\": \\\"Completed\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Idle\\\"\\n      },\\n      \\\"label\\\": \\\"reset\\\",\\n      \\\"sourceRef\\\": \\\"methodology:255-277\\\"\\n    }\\n  ],\\n  \\\"uncertainties\\\": [],\\n  \\\"layout\\\": {\\n    \\\"direction\\\": \\\"RIGHT\\\"\\n  }\\n}\",\"validationError\":\"SOURCE_PROTOCOL_INVALID: invalid anonymous initial fields\",\"correctionEligible\":true,\"correctionUsed\":false}",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T11:47:15.151Z",
+      "completedAt": "2026-10-10T11:47:15.151Z",
+      "durationMs": 0,
+      "error": "SOURCE_PROTOCOL_INVALID: invalid anonymous initial fields"
+    },
+    {
+      "id": "stage-42c85169-fe1d-4fb4-ad9f-d59672c92372",
+      "candidateId": 0,
+      "type": "protocol_correction",
+      "title": "拓扑结构格式纠正（额外主模型调用 1/1）",
+      "round": 1,
+      "text": "{\"kind\":\"topology_schema\",\"code\":\"source_initial_fields\",\"error\":\"SOURCE_PROTOCOL_INVALID: invalid anonymous initial fields\",\"failedRawHash\":\"7e1c43f3f976c238a4c3a9be6cfc2a7673318f4ccc1273262da4ffba1cad3ec0\",\"additionalModelCall\":true,\"limit\":1,\"status\":\"requesting\"}",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T11:47:15.152Z",
+      "completedAt": "2026-10-10T11:47:15.152Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-924f71c4-d909-4433-9c29-d9bcd950304e",
+      "candidateId": 0,
+      "type": "topology_extraction",
+      "title": "拓扑提取原文（第2次）",
+      "round": 1,
+      "text": "{\"sourceCatalog\":{\"protocolVersion\":2,\"catalogVersion\":1,\"scope\":\"job:1791632803045-itevyvam\",\"originalHash\":\"9fea87e5a0e629057c45fd72c336b786a08c65a298417ca030946acd9260d1b2\",\"offsetUnit\":\"utf16\",\"entries\":[{\"id\":\"methodology:0-480\",\"sourceField\":\"methodology\",\"start\":0,\"end\":480,\"text\":\"Synthetic teaching example of an instrument state machine. States: Idle, Running, Paused, Completed. Initial dot enters Idle. Transitions: Idle→Running: start; Running→Paused: pause; Paused→Running: resume; Running→Completed: finish; Paused→Idle: cancel; Completed→Idle: reset. Each named state appears once. Arrows are labelled events, not process activities. Completed is not a terminal state because reset returns to Idle. English text. Reference is for structural design only.\",\"sha256\":\"f8789d879fc8aef19e79ce214af29035a1181fd6112ccde49a0b1f4d5a3515dc\"},{\"id\":\"methodology:0-58\",\"sourceField\":\"methodology\",\"start\":0,\"end\":58,\"text\":\"Synthetic teaching example of an instrument state machine.\",\"sha256\":\"91f9dadb6420187f326cfda8c284935cf4db9a0861d1f0d98ad9a9cc4aff9a67\"},{\"id\":\"methodology:59-100\",\"sourceField\":\"methodology\",\"start\":59,\"end\":100,\"text\":\"States: Idle, Running, Paused, Completed.\",\"sha256\":\"3096afbabb5fa215b55c1a5ac8929e9058fd1052ebbc90198b86c1170c0956e7\"},{\"id\":\"methodology:101-125\",\"sourceField\":\"methodology\",\"start\":101,\"end\":125,\"text\":\"Initial dot enters Idle.\",\"sha256\":\"c624aa306cb45c814468114703cf16c92dd2f9c5ac7f6d325bd10d87bab4b4bc\"},{\"id\":\"methodology:126-159\",\"sourceField\":\"methodology\",\"start\":126,\"end\":159,\"text\":\"Transitions: Idle→Running: start;\",\"sha256\":\"61b0be719908b2e1576411d0ffb7cf42c10ba61c688683b2d4ad58318be5479f\"},{\"id\":\"methodology:160-182\",\"sourceField\":\"methodology\",\"start\":160,\"end\":182,\"text\":\"Running→Paused: pause;\",\"sha256\":\"6671bcce05bb8ddf08f0aacc349803706db6f948cd9e1083dccfddd6eb69b671\"},{\"id\":\"methodology:183-206\",\"sourceField\":\"methodology\",\"start\":183,\"end\":206,\"text\":\"Paused→Running: resume;\",\"sha256\":\"5503fa406a0cf41e3d15dd3220a8f3628fbe398ddd54c4bbd260e04cb732f962\"},{\"id\":\"methodology:207-233\",\"sourceField\":\"methodology\",\"start\":207,\"end\":233,\"text\":\"Running→Completed: finish;\",\"sha256\":\"6c67ca4a3ab39077cebc3ce06382b597b47a2828919ec7d885422dec6338c3c0\"},{\"id\":\"methodology:234-254\",\"sourceField\":\"methodology\",\"start\":234,\"end\":254,\"text\":\"Paused→Idle: cancel;\",\"sha256\":\"abbec4b89d8df44d1f3290cb82cb5fa77dea9a62a6d77441fb05328c9b6a3d92\"},{\"id\":\"methodology:255-277\",\"sourceField\":\"methodology\",\"start\":255,\"end\":277,\"text\":\"Completed→Idle: reset.\",\"sha256\":\"90075746d739e5e84f96418edf4a2f0265216ab48b5d56cee5b8324c790d785d\"},{\"id\":\"methodology:278-308\",\"sourceField\":\"methodology\",\"start\":278,\"end\":308,\"text\":\"Each named state appears once.\",\"sha256\":\"14e67d62fa9ce120612790bcf918bbf9b7af527555f1473c3d53a30aab1a5620\"},{\"id\":\"methodology:309-360\",\"sourceField\":\"methodology\",\"start\":309,\"end\":360,\"text\":\"Arrows are labelled events, not process activities.\",\"sha256\":\"6de87f9892f8f04a0e9586d23f748f9520a63fa56ec449ea0f27edfc758e925c\"},{\"id\":\"methodology:361-425\",\"sourceField\":\"methodology\",\"start\":361,\"end\":425,\"text\":\"Completed is not a terminal state because reset returns to Idle.\",\"sha256\":\"704e7d96f4a01bf108815d2e6399eeeb71374bda5bb225f585376a4ca42a2a88\"},{\"id\":\"methodology:426-439\",\"sourceField\":\"methodology\",\"start\":426,\"end\":439,\"text\":\"English text.\",\"sha256\":\"879b7de76b230c620d73da3100868e065afc64a4748417bf72b70442ccb2082e\"},{\"id\":\"methodology:440-480\",\"sourceField\":\"methodology\",\"start\":440,\"end\":480,\"text\":\"Reference is for structural design only.\",\"sha256\":\"259f15e36fd51cda9d4e59df1953a8d1b672ccc3b7172efa208d9c5d8e9938fe\"},{\"id\":\"visualIntent:0-35\",\"sourceField\":\"visualIntent\",\"start\":0,\"end\":35,\"text\":\"Explicit synthetic teaching example\",\"sha256\":\"1990f2e9edf1fb8c6e529d2fbf6d438bec761d3275ed716787c8e8c6d429576e\"},{\"id\":\"avoid:0-117\",\"sourceField\":\"avoid\",\"start\":0,\"end\":117,\"text\":\"No invented numbers, statistical significance, or scientific conclusions. Preserve all supplied labels and relations.\",\"sha256\":\"d36647097f92e6018f6ede39823069b049562c4423cb38b4b77b3b6c81562754\"},{\"id\":\"avoid:0-73\",\"sourceField\":\"avoid\",\"start\":0,\"end\":73,\"text\":\"No invented numbers, statistical significance, or scientific conclusions.\",\"sha256\":\"69666f2315e5c84a9491f2af113aa1abc4dce3a21bc2b70cddf86dc25399b0fb\"},{\"id\":\"avoid:74-117\",\"sourceField\":\"avoid\",\"start\":74,\"end\":117,\"text\":\"Preserve all supplied labels and relations.\",\"sha256\":\"50975f47ca45201e30ef17603bd2f70520ae159af15e7221dfc959f88d75d902\"}],\"catalogHash\":\"b07f56d36878d010c6c9a8824607fd79f65337aafb183546d7eac1dbf1d81025\"},\"attempt\":2,\"rawHash\":\"7e1c43f3f976c238a4c3a9be6cfc2a7673318f4ccc1273262da4ffba1cad3ec0\",\"rawResponse\":\"{\\n  \\\"schemaVersion\\\": 2,\\n  \\\"sourceProtocolVersion\\\": 2,\\n  \\\"sourceCatalogHash\\\": \\\"b07f56d36878d010c6c9a8824607fd79f65337aafb183546d7eac1dbf1d81025\\\",\\n  \\\"namedNodes\\\": {\\n    \\\"Idle\\\": {\\n      \\\"shape\\\": \\\"process\\\",\\n      \\\"role\\\": \\\"normal\\\",\\n      \\\"sourceRef\\\": \\\"methodology:59-100\\\"\\n    },\\n    \\\"Running\\\": {\\n      \\\"shape\\\": \\\"process\\\",\\n      \\\"role\\\": \\\"normal\\\",\\n      \\\"sourceRef\\\": \\\"methodology:59-100\\\"\\n    },\\n    \\\"Paused\\\": {\\n      \\\"shape\\\": \\\"process\\\",\\n      \\\"role\\\": \\\"normal\\\",\\n      \\\"sourceRef\\\": \\\"methodology:59-100\\\"\\n    },\\n    \\\"Completed\\\": {\\n      \\\"shape\\\": \\\"process\\\",\\n      \\\"role\\\": \\\"normal\\\",\\n      \\\"sourceRef\\\": \\\"methodology:59-100\\\"\\n    }\\n  },\\n  \\\"anonymousInitials\\\": {\\n    \\\"sourceRef\\\": \\\"methodology:101-125\\\",\\n    \\\"markerQuote\\\": \\\"Initial dot enters Idle\\\",\\n    \\\"interpretation\\\": \\\"explicit_unnamed_initial\\\"\\n  },\\n  \\\"edges\\\": [\\n    {\\n      \\\"source\\\": {\\n        \\\"initial\\\": \\\"anonymousInitials\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Idle\\\"\\n      },\\n      \\\"label\\\": \\\"\\\",\\n      \\\"sourceRef\\\": \\\"methodology:101-125\\\"\\n    },\\n    {\\n      \\\"source\\\": {\\n        \\\"name\\\": \\\"Idle\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Running\\\"\\n      },\\n      \\\"label\\\": \\\"start\\\",\\n      \\\"sourceRef\\\": \\\"methodology:126-159\\\"\\n    },\\n    {\\n      \\\"source\\\": {\\n        \\\"name\\\": \\\"Running\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Paused\\\"\\n      },\\n      \\\"label\\\": \\\"pause\\\",\\n      \\\"sourceRef\\\": \\\"methodology:160-182\\\"\\n    },\\n    {\\n      \\\"source\\\": {\\n        \\\"name\\\": \\\"Paused\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Running\\\"\\n      },\\n      \\\"label\\\": \\\"resume\\\",\\n      \\\"sourceRef\\\": \\\"methodology:183-206\\\"\\n    },\\n    {\\n      \\\"source\\\": {\\n        \\\"name\\\": \\\"Running\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Completed\\\"\\n      },\\n      \\\"label\\\": \\\"finish\\\",\\n      \\\"sourceRef\\\": \\\"methodology:207-233\\\"\\n    },\\n    {\\n      \\\"source\\\": {\\n        \\\"name\\\": \\\"Paused\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Idle\\\"\\n      },\\n      \\\"label\\\": \\\"cancel\\\",\\n      \\\"sourceRef\\\": \\\"methodology:234-254\\\"\\n    },\\n    {\\n      \\\"source\\\": {\\n        \\\"name\\\": \\\"Completed\\\"\\n      },\\n      \\\"target\\\": {\\n        \\\"name\\\": \\\"Idle\\\"\\n      },\\n      \\\"label\\\": \\\"reset\\\",\\n      \\\"sourceRef\\\": \\\"methodology:255-277\\\"\\n    }\\n  ],\\n  \\\"uncertainties\\\": [],\\n  \\\"layout\\\": {\\n    \\\"direction\\\": \\\"RIGHT\\\"\\n  }\\n}\",\"validationError\":\"SOURCE_PROTOCOL_INVALID: invalid anonymous initial fields\",\"correctionEligible\":true,\"correctionUsed\":true}",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T11:47:30.427Z",
+      "completedAt": "2026-10-10T11:47:30.427Z",
+      "durationMs": 0,
+      "error": "SOURCE_PROTOCOL_INVALID: invalid anonymous initial fields"
+    },
+    {
+      "id": "stage-9afbac99-b8d1-48bc-9e58-e2f90e7e9260",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "拓扑或布局校验失败",
+      "round": 0,
+      "text": "模型结构化输出仍不符合格式合同，未接受该图。 请查看已保留的模型原文和格式错误；系统未接受连续失败的输出，也未追加第二次结构纠正。 已使用一次额外主模型结构格式纠正。 已发生调用以阶段记录和渠道账单为准。",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T11:47:30.428Z",
+      "completedAt": "2026-10-10T11:47:30.428Z",
+      "durationMs": 0,
+      "error": "SOURCE_PROTOCOL_INVALID: invalid anonymous initial fields"
+    }
+  ],
+  "criticMode": "visual_code",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 2,
+  "promptCharCount": 632,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [],
+  "logs": [
+    "2026-10-10T11:46:43.257Z 参考图选择：采用 1 张，排除重复 0 张、无法使用 0 张、超出预算 0 张；主模型规划请求合计 1 张图片，上限 8 张。",
+    "ERROR: 图像生成失败：模型结构化输出仍不符合格式合同，未接受该图。 请查看已保留的模型原文和格式错误；系统未接受连续失败的输出，也未追加第二次结构纠正。 已使用一次额外主模型结构格式纠正。 已发生调用以阶段记录和渠道账单为准。"
+  ],
+  "error": "图像生成失败：模型结构化输出仍不符合格式合同，未接受该图。 请查看已保留的模型原文和格式错误；系统未接受连续失败的输出，也未追加第二次结构纠正。 已使用一次额外主模型结构格式纠正。 已发生调用以阶段记录和渠道账单为准。",
+  "createdAt": "2026-10-10T11:46:43.045Z",
+  "updatedAt": "2026-10-10T11:47:30.429Z",
+  "startedAt": "2026-10-10T11:46:43.047Z",
+  "completedAt": "2026-10-10T11:47:30.429Z"
+}

@@ -1,0 +1,47 @@
+{
+  "id": "pbio.3002213.g001",
+  "paper": "pbio.3002213",
+  "figure": {
+    "id": "pbio.3002213.g001",
+    "label": "Fig 1",
+    "caption": "Timeline of key events in the past 2 decades of bioimage informatics.\nThis timeline highlights key events that have contributed to the current status of bioimage informatics as an indispensable tool in biological research involving bioimaging. The events presented are based on the author’s perspective and bias. While the history of bioimage informatics started earlier, notably with ImageJ in 1987 for NIH ImageJ and IMOD in 1996, the timeline covers the years from 2003 to the present day. It includes milestones such as the development of open-source software for image analysis, the establishment of standardized file formats, and the emergence of deep learning–based approaches, as well as the construction of the community. This timeline is not meant to be comprehensive but rather to provide a simplified overview of the major events in bioimage informatics during this period. Note that due to reference limitations, no citations are provided. EM, electron microscopy; FAIR, findable, accessible, interoperable, and reusable; NEUBIAS, Network of EUropean BioImage AnalystS; OME, Open Microscopy Environment.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002213.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002213.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Timeline of key events in the past 2 decades of bioimage informatics.</title>\n<p>This timeline highlights key events that have contributed to the current status of bioimage informatics as an indispensable tool in biological research involving bioimaging. The events presented are based on the author’s perspective and bias. While the history of bioimage informatics started earlier, notably with ImageJ in 1987 for NIH ImageJ and IMOD in 1996, the timeline covers the years from 2003 to the present day. It includes milestones such as the development of open-source software for image analysis, the establishment of standardized file formats, and the emergence of deep learning–based approaches, as well as the construction of the community. This timeline is not meant to be comprehensive but rather to provide a simplified overview of the major events in bioimage informatics during this period. Note that due to reference limitations, no citations are provided. EM, electron microscopy; FAIR, findable, accessible, interoperable, and reusable; NEUBIAS, Network of EUropean BioImage AnalystS; OME, Open Microscopy Environment.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002213.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002213.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pbio.3002213",
+    "sourceUrl": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3002213",
+    "title": "Bioimage informatics: Investing in software usability is essential",
+    "journal": "PLOS Biology",
+    "authors": [
+      "Perrine Paul-Gilloteaux"
+    ],
+    "year": "2023",
+    "license": "2023\nPerrine Paul-Gilloteaux\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosbiology/article/figure/image?size=large&id=10.1371/journal.pbio.3002213.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pbio.3002213.g001.png",
+      "bytes": 403123,
+      "sha256": "4fb87a3c0c4b6265056b54138cacf14bf86acaa9429d7433c2cf5791a80f4e4a"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosbiology/article/figure/image?size=original&id=10.1371/journal.pbio.3002213.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pbio.3002213.g001.tif",
+      "bytes": 424488,
+      "sha256": "e42c73a0e4680d7acfee387511ae5e08ae9250ed85a490d9f1300939e9651870"
+    }
+  }
+}

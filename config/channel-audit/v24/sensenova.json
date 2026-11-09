@@ -1352,5 +1352,64 @@
       ],
       "notes": "已核对免费公测页面；付费 Lite/Pro 尚待上线。60,000 积分不等于 60,000 tokens，也不证明当前账号已开通。"
     }
+  ],
+  "incrementalReviews": [
+    {
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "models": [
+        {
+          "id": "deepseek-flash",
+          "label": "DeepSeek V4.1 Flash",
+          "developer": "DeepSeek",
+          "roles": [
+            "main",
+            "vision"
+          ],
+          "protocol": "openai-chat",
+          "inputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "limits": {
+            "contextLabel": "1M",
+            "maxOutputTokens": 393216,
+            "imageCount": 200,
+            "imageBytes": 50000000,
+            "requestBytes": 64000000,
+            "formats": [
+              "jpeg",
+              "png",
+              "gif",
+              "webp"
+            ]
+          },
+          "request": {
+            "endpoint": "https://token.sensenova.cn/v1/chat/completions",
+            "method": "POST",
+            "constants": {
+              "stream": false
+            },
+            "maxOutputField": "max_tokens",
+            "reasoningEffort": [
+              "none",
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "sourceUrls": [
+            "https://platform.sensenova.cn/docs"
+          ],
+          "notes": "Current channel docs, not DeepSeek native API limits. Tuyan keeps 8192 output tokens and 3 input images; video/GIF not adapted."
+        }
+      ]
+    }
   ]
 }

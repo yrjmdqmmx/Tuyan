@@ -1,0 +1,87 @@
+{
+  "figureTypeId": "motif_logo",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "position": 1,
+        "symbol": "A",
+        "value": 8
+      },
+      {
+        "position": 1,
+        "symbol": "C",
+        "value": 1
+      },
+      {
+        "position": 1,
+        "symbol": "G",
+        "value": 1
+      },
+      {
+        "position": 1,
+        "symbol": "T",
+        "value": 0
+      },
+      {
+        "position": 2,
+        "symbol": "A",
+        "value": 2
+      },
+      {
+        "position": 2,
+        "symbol": "C",
+        "value": 2
+      },
+      {
+        "position": 2,
+        "symbol": "G",
+        "value": 2
+      },
+      {
+        "position": 2,
+        "symbol": "T",
+        "value": 2
+      },
+      {
+        "position": 3,
+        "symbol": "A",
+        "value": 0
+      },
+      {
+        "position": 3,
+        "symbol": "C",
+        "value": 0
+      },
+      {
+        "position": 3,
+        "symbol": "G",
+        "value": 1
+      },
+      {
+        "position": 3,
+        "symbol": "T",
+        "value": 9
+      }
+    ],
+    "units": {
+      "position": "alignment column",
+      "value": "count"
+    },
+    "options": {
+      "alphabet": [
+        "A",
+        "C",
+        "G",
+        "T"
+      ],
+      "input": "counts",
+      "mode": "frequency",
+      "correction": "none"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

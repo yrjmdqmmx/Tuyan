@@ -1,0 +1,40 @@
+{
+  "figureTypeId": "gene_track",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "label": "Gene A",
+        "chrom": "chr1",
+        "start": 100,
+        "end": 400,
+        "strand": "+"
+      },
+      {
+        "label": "Gene B",
+        "chrom": "chr1",
+        "start": 550,
+        "end": 800,
+        "strand": "-"
+      }
+    ],
+    "units": {
+      "start": "bp",
+      "end": "bp"
+    },
+    "options": {
+      "sequences": [
+        {
+          "id": "chr1",
+          "length": 1000
+        }
+      ],
+      "assembly": "Synthetic v1",
+      "coordinateSystem": "zero_based_half_open"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

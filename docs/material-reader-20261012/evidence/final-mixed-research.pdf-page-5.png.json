@@ -1,0 +1,31 @@
+{
+  "filename": "mixed-research.pdf",
+  "format": "pdf",
+  "operation": {
+    "op": "render",
+    "pages": [
+      5
+    ]
+  },
+  "status": "partial",
+  "warnings": [
+    "第 5 页没有可提取文字，需要页面视觉读取。"
+  ],
+  "chunks": [
+    {
+      "page": 5,
+      "text": "",
+      "warning": "无文字层；尚未理解页面，请调用 render 读取扫描画面。"
+    }
+  ],
+  "images": [
+    {
+      "page": 5,
+      "mimeType": "image/png",
+      "sha256": "928239f0684567e37f47cb7879c1102f443666a06fb43402bcd74c5503779eb6",
+      "renderer": "PDFium 2.1.13, whole page",
+      "width": 1224,
+      "height": 1584
+    }
+  ]
+}

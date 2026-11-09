@@ -90,5 +90,25 @@
       "billingVerified": false
     }
   ],
-  "excluded": []
+  "excluded": [],
+  "incrementalReviews": [
+    {
+      "checkedAt": "2026-10-09",
+      "models": [
+        {
+          "id": "deepseek-flash",
+          "apiId": "deepseek-flash",
+          "roles": [
+            "main",
+            "vision"
+          ],
+          "developer": "DeepSeek",
+          "adapter": "implemented-local-unverified",
+          "realInference": false,
+          "accountEntitlement": false,
+          "billingVerified": false
+        }
+      ]
+    }
+  ]
 }

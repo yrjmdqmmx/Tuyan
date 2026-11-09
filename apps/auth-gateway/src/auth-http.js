@@ -68,6 +68,7 @@ function incomingHeaders(request) {
     const value = raw[index + 1];
     if (name && value !== undefined) headers.append(name, value);
   }
+  headers.set("x-tuyan-client-ip", String(request.ip || request.socket?.remoteAddress || ""));
   return headers;
 }
 

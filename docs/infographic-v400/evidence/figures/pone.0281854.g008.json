@@ -1,0 +1,53 @@
+{
+  "id": "pone.0281854.g008",
+  "paper": "pone.0281854",
+  "figure": {
+    "id": "pone.0281854.g008",
+    "label": "Fig 8",
+    "caption": "Contribution of fungal genera to different metabolic pathways.\nDifferent colours represent the contributions of different taxa to the glycolysis pathway (a), the glyoxylic acid pathway (b), the phosphopantothenic acid biosynthesis (c) and the non-oxidative pentose phosphate pathway (d) at the genus level (the first 20 genera).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Contribution of fungal genera to different metabolic pathways.</title>\n<p>Different colours represent the contributions of different taxa to the glycolysis pathway (a), the glyoxylic acid pathway (b), the phosphopantothenic acid biosynthesis (c) and the non-oxidative pentose phosphate pathway (d) at the genus level (the first 20 genera).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g008\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g008",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0281854",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0281854",
+    "title": "Passion fruit plants alter the soil microbial community with continuous cropping and improve plant disease resistance by recruiting beneficial microorganisms",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Ye Wang",
+      "Yao Teng",
+      "Jianli Zhang",
+      "Zixiong Zhang",
+      "Chen Wang",
+      "Xiukun Wu",
+      "Xiuqin Long"
+    ],
+    "year": "2023",
+    "license": "2023\nWang et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0281854.g008",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0281854.g008.png",
+      "bytes": 1512013,
+      "sha256": "fb2c41ec5eabfa6f5653776ee29c840d08df2c21f37e6587ff49b4454cd5c4ab"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0281854.g008",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0281854.g008.tif",
+      "bytes": 2035068,
+      "sha256": "1a0f2f3a4ef04d2ba1c6b03b9c86a7bac4f176e63f37b5938f59b3b869722756"
+    }
+  }
+}

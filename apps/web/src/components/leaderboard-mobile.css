@@ -19,7 +19,7 @@
   .bench-phone-method > div { display: grid; gap: 8px; padding: 8px 0 16px; line-height: 1.75; color: var(--bench-muted); }
   .bench-phone-method p { margin: 0; }
   .bench-phone-method a { display: inline-flex; align-items: center; min-height: 44px; color: var(--sage); }
-  .benchmark-site-shell :is(a, button, input, select, summary):focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; }
+  .benchmark-site-shell :is(a, button, input, :is(select, .ui-select), summary):focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; }
   .benchmark-site-shell .bench-view-switch { width: 100%; margin: 0 0 20px; padding: 4px; gap: 4px; border-radius: 10px; background: #eaf0e7; }
   .benchmark-site-shell .bench-view-switch button { flex: 1; min-width: 0; min-height: 44px; padding: 8px 12px; font-size: 14px; border-radius: 7px; }
   .benchmark-site-shell .bench-view-switch button[aria-pressed=true] { color: #28523f; background: #fffefa; box-shadow: 0 1px 3px #203c2f12; }
@@ -30,12 +30,12 @@
   .benchmark-site-shell .pareto-toolbar .bench-view-switch { grid-column: 1 / -1; margin: 0 0 4px; }
   .benchmark-site-shell .pareto-metric-label { grid-column: 1 / -1; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 16px; max-width: none; margin: 0; }
   .benchmark-site-shell .pareto-metric-label > span { position: static; width: auto; height: auto; margin: 0; clip: auto; overflow: visible; white-space: normal; color: var(--bench-muted); font-size: 13px; }
-  .benchmark-site-shell .pareto-metric-label select { min-width: 0; min-height: 48px; font-size: 16px; border-radius: 10px; }
+  .benchmark-site-shell .pareto-metric-label :is(select, .ui-select) { min-width: 0; min-height: 48px; font-size: 16px; border-radius: 10px; }
   .benchmark-site-shell .pareto-search input { height: 48px; font-size: 16px; border-radius: 10px; padding-right: 42px; }
   .benchmark-site-shell .pareto-search button { width: 44px; height: 44px; right: 2px; }
   .benchmark-site-shell .pareto-filter-toggle { min-height: 48px; border-radius: 10px; font-size: 14px; }
   .benchmark-site-shell .pareto-filters { padding: 16px; gap: 20px; border-radius: 12px; margin-bottom: 20px; background: #f3f6ef; }
-  .benchmark-site-shell .pareto-filters :is(select, input:not([type=range])) { min-height: 48px; font-size: 16px; border-radius: 8px; }
+  .benchmark-site-shell .pareto-filters :is(:is(select, .ui-select), input:not([type=range])) { min-height: 48px; font-size: 16px; border-radius: 8px; }
   .benchmark-site-shell .pareto-filters :is(label, legend) { font-size: 14px; }
   .benchmark-site-shell .pareto-budget-values { font-size: 13px; margin-block: 8px 16px; }
   .benchmark-site-shell .pareto-budget-presets { gap: 8px; }
@@ -54,7 +54,7 @@
   .benchmark-site-shell .pareto-touch-hint { padding: 10px 4px 4px; line-height: 1.65; }
   .benchmark-site-shell .pareto-chart-footer { gap: 4px 12px; padding-top: 8px; font-size: 12px; }
   .benchmark-site-shell .pareto-legend { font-size: 11px; }
-  .benchmark-site-shell .pareto-chart-settings select { min-height: 44px; font-size: 16px; }
+  .benchmark-site-shell .pareto-chart-settings :is(select, .ui-select) { min-height: 44px; font-size: 16px; }
   .benchmark-site-shell .pareto-popover-footer button, .benchmark-site-shell .pareto-detail-link, .benchmark-site-shell .pareto-cost-info button { min-height: 44px; font-size: 13px; }
   .benchmark-site-shell .pareto-frontier { padding: 20px 16px 16px; background: #f5f7f1; }
   .benchmark-site-shell .pareto-frontier h2 { font-size: 18px; }
@@ -69,7 +69,7 @@
   .benchmark-site-shell .pareto-cost-ranking h2 { font-size: 20px; }
   .benchmark-site-shell .pareto-cost-ranking header p { font-size: 13px; line-height: 1.65; }
   .benchmark-site-shell .pareto-cost-controls { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin-top: 16px; }
-  .benchmark-site-shell .pareto-cost-controls select { width: 100%; min-height: 48px; font-size: 16px; border-radius: 10px; }
+  .benchmark-site-shell .pareto-cost-controls :is(select, .ui-select) { width: 100%; min-height: 48px; font-size: 16px; border-radius: 10px; }
   .benchmark-site-shell .pareto-checkbox { min-height: 44px; font-size: 14px; }
   .benchmark-site-shell .pareto-cost-row { grid-template-columns: minmax(0, 1fr) 86px; column-gap: 12px; row-gap: 8px; min-height: 84px; padding: 14px 4px; }
   .benchmark-site-shell .pareto-cost-model { gap: 8px; }
@@ -87,7 +87,7 @@
   .benchmark-site-shell .pareto-data > summary { min-height: 52px; font-size: 14px; }
   .benchmark-site-shell .pareto-data-settings { padding: 16px; }
   .benchmark-site-shell .pareto-data-settings label { min-width: 0; font-size: 14px; }
-  .benchmark-site-shell .pareto-data-settings select { width: 100%; min-width: 0; min-height: 48px; font-size: 16px; white-space: normal; }
+  .benchmark-site-shell .pareto-data-settings :is(select, .ui-select) { width: 100%; min-width: 0; min-height: 48px; font-size: 16px; white-space: normal; }
   .benchmark-site-shell .pareto-data-settings p, .benchmark-site-shell .pareto-method-grid p { font-size: 13px; line-height: 1.75; }
   .benchmark-site-shell .pareto-method-grid h3 { margin-bottom: 6px; font-size: 15px; }
   .benchmark-site-shell .pareto-exclusions > summary, .benchmark-site-shell .pareto-source-details > summary { min-height: 44px; align-content: center; font-size: 13px; }

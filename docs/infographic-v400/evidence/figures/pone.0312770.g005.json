@@ -1,0 +1,53 @@
+{
+  "id": "pone.0312770.g005",
+  "paper": "pone.0312770",
+  "figure": {
+    "id": "pone.0312770.g005",
+    "label": "Fig 5",
+    "caption": "Rearrangement of observations between cluster’s DoLP quartiles.\n(a) HCA clusters. (b) GMM clusters. Left panels show rearrangements between the unpolarized and the DoLP datasets, and right panels illustrate differences between co-polarized and DoLP datasets. Each quartile (Q_{1}—Q_{4}) is labeled with the number of observations. The flows (lines) between quartiles indicate the fraction of observations, with line width proportional to the number of observations. To plot the alluvial diagrams we use RAWGraphs [65].",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0312770.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0312770.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Rearrangement of observations between cluster’s DoLP quartiles.</title>\n<p>(a) HCA clusters. (b) GMM clusters. Left panels show rearrangements between the unpolarized and the DoLP datasets, and right panels illustrate differences between co-polarized and DoLP datasets. Each quartile (Q<sub>1</sub>—Q<sub>4</sub>) is labeled with the number of observations. The flows (lines) between quartiles indicate the fraction of observations, with line width proportional to the number of observations. To plot the alluvial diagrams we use RAWGraphs [<xref ref-type=\"bibr\" rid=\"pone.0312770.ref065\">65</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0312770.g005\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0312770.g005",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0312770",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0312770",
+    "title": "Insect diversity estimation in polarimetric lidar",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Dolores Bernenko",
+      "Meng Li",
+      "Hampus Månefjord",
+      "Samuel Jansson",
+      "Anna Runemark",
+      "Carsten Kirkeby",
+      "Mikkel Brydegaard"
+    ],
+    "year": "2024",
+    "license": "2024\nBernenko et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0312770.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0312770.g005.png",
+      "bytes": 1756378,
+      "sha256": "bbb838523db7f3da118416a7ec6484289145c4ee3ad6a803bd8d1d6c590fe400"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0312770.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0312770.g005.tif",
+      "bytes": 2224144,
+      "sha256": "389b947c1d05f93bf9416e9419d619032957f74e5c24b1b7cc4f0eff785c1818"
+    }
+  }
+}

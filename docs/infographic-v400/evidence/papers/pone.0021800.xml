@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="EN">
+  <front>
+    <journal-meta><journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="pmc">plosone</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS ONE</journal-title></journal-title-group><issn pub-type="epub">1932-6203</issn><publisher>
+        <publisher-name>Public Library of Science</publisher-name>
+        <publisher-loc>San Francisco, USA</publisher-loc>
+      </publisher></journal-meta>
+    <article-meta><article-id pub-id-type="publisher-id">PONE-D-11-04111</article-id><article-id pub-id-type="doi">10.1371/journal.pone.0021800</article-id><article-categories>
+        <subj-group subj-group-type="heading">
+          <subject>Research Article</subject>
+        </subj-group>
+        <subj-group subj-group-type="Discipline-v2">
+          <subject>Biology</subject>
+          <subj-group>
+            <subject>Genetics</subject>
+            <subj-group>
+              <subject>Gene function</subject>
+            </subj-group>
+          </subj-group>
+          <subj-group>
+            <subject>Genomics</subject>
+            <subj-group>
+              <subject>Genome analysis tools</subject>
+              <subj-group>
+                <subject>Gene ontologies</subject>
+              </subj-group>
+            </subj-group>
+            <subj-group>
+              <subject>Functional genomics</subject>
+              <subject>Genome expression analysis</subject>
+            </subj-group>
+          </subj-group>
+        </subj-group>
+        <subj-group subj-group-type="Discipline-v2">
+          <subject>Computer science</subject>
+          <subj-group>
+            <subject>Computer applications</subject>
+            <subj-group>
+              <subject>Web-based applications</subject>
+            </subj-group>
+          </subj-group>
+        </subj-group>
+        <subj-group subj-group-type="Discipline">
+          <subject>Genetics and Genomics</subject>
+          <subject>Computer Science</subject>
+        </subj-group>
+      </article-categories><title-group><article-title>REVIGO Summarizes and Visualizes Long Lists of Gene Ontology Terms</article-title><alt-title alt-title-type="running-head">REVIGO Summarizes and Visualizes Lists of GO Terms</alt-title></title-group><contrib-group>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Supek</surname>
+            <given-names>Fran</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff2">
+            <sup>2</sup>
+          </xref>
+          <xref ref-type="corresp" rid="cor1">
+            <sup>*</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Bošnjak</surname>
+            <given-names>Matko</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Škunca</surname>
+            <given-names>Nives</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Šmuc</surname>
+            <given-names>Tomislav</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+      </contrib-group><aff id="aff1"><label>1</label><addr-line>Division of Electronics, Rudjer Boskovic Institute, Zagreb, Croatia</addr-line>       </aff><aff id="aff2"><label>2</label><addr-line>Bioinformatics and Genomics Programme, Centre for Genomic Regulation (CRG) and UPF, Barcelona, Spain</addr-line>       </aff><contrib-group>
+        <contrib contrib-type="editor" xlink:type="simple">
+          <name name-style="western">
+            <surname>Gibas</surname>
+            <given-names>Cynthia</given-names>
+          </name>
+          <role>Editor</role>
+          <xref ref-type="aff" rid="edit1"/>
+        </contrib>
+      </contrib-group><aff id="edit1">University of North Carolina at Charlotte, United States of America</aff><author-notes>
+        <corresp id="cor1">* E-mail: <email xlink:type="simple">fran.supek@irb.hr</email></corresp>
+        <fn fn-type="con">
+          <p>Conceived and designed the experiments: FS TS. Performed the experiments: FS MB. Analyzed the data: FS MB NS. Wrote the paper: FS NS.</p>
+        </fn>
+      <fn fn-type="conflict">
+        <p>The authors have declared that no competing interests exist.</p>
+      </fn></author-notes><pub-date pub-type="collection">
+        <year>2011</year>
+      </pub-date><pub-date pub-type="epub">
+        <day>18</day>
+        <month>7</month>
+        <year>2011</year>
+      </pub-date><volume>6</volume><issue>7</issue><elocation-id>e21800</elocation-id><history>
+        <date date-type="received">
+          <day>2</day>
+          <month>3</month>
+          <year>2011</year>
+        </date>
+        <date date-type="accepted">
+          <day>7</day>
+          <month>6</month>
+          <year>2011</year>
+        </date>
+      </history><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2011</copyright-year><copyright-holder>Supek et al</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><abstract>
+        <p>Outcomes of high-throughput biological experiments are typically interpreted by statistical testing for enriched gene functional categories defined by the Gene Ontology (GO). The resulting lists of GO terms may be large and highly redundant, and thus difficult to interpret.</p>
+        <p>REVIGO is a Web server that summarizes long, unintelligible lists of GO terms by finding a representative subset of the terms using a simple clustering algorithm that relies on semantic similarity measures. Furthermore, REVIGO visualizes this non-redundant GO term set in multiple ways to assist in interpretation: multidimensional scaling and graph-based visualizations accurately render the subdivisions and the semantic relationships in the data, while treemaps and tag clouds are also offered as alternative views. REVIGO is freely available at <ext-link ext-link-type="uri" xlink:href="http://revigo.irb.hr/" xlink:type="simple">http://revigo.irb.hr/</ext-link>.</p>
+      </abstract><funding-group><funding-statement>This work was supported by grant 098-0000000-3168 and by iProject 2008-057 of the Ministry of Science, Education, and Sport of Croatia. FS was co-funded by Marie Curie Actions. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts>
+        <page-count count="9"/>
+      </counts></article-meta>
+  </front>
+  <body>
+    <sec id="s1">
+      <title>Introduction</title>
+      <p>Today's high-throughput experiments measure the expression of thousands of genes simultaneously using microarrays, RNA-Seq or various proteomics approaches. ChIP-on-chip or ChIP-Seq experiments are used to determine the genome-wide DNA binding pattern of a specific protein, which may affect a large number of genes. New genomes are being sequenced at an ever-increasing pace and their genes characterized by homology-based annotation transfer. In order to interpret the results of such experiments, statistical testing for over- and under-representation of gene functional categories is used <xref ref-type="bibr" rid="pone.0021800-Rivals1">[1]</xref>. The formality and structure, along with extensive manual curation, have made Gene Ontology (GO) <xref ref-type="bibr" rid="pone.0021800-Ashburner1">[2]</xref> the vocabulary of choice in these analyses. A multitude of Web servers exists to assist in this task, including but not limited to: L2L <xref ref-type="bibr" rid="pone.0021800-Newman1">[3]</xref>, FatiGO <xref ref-type="bibr" rid="pone.0021800-AlShahrour1">[4]</xref>, GOrilla <xref ref-type="bibr" rid="pone.0021800-Eden1">[5]</xref> or agriGO <xref ref-type="bibr" rid="pone.0021800-Du1">[6]</xref>.</p>
+      <p>As high-throughput techniques become cheaper and more accurate, they detect even slight changes in gene expression or other measured properties. The lists of relevant genes will grow in size, and so will the derived lists of GO terms. Additionally, the redundancy in the resulting set of GO terms confounds interpretation and inflates the perceived number of biologically relevant results. This is frequently the case when analyzing terms in a parent-child relationship, e.g. the parent term “GO:0009058 biosynthetic process” fully encompasses its child term “GO:0008610 lipid biosynthetic process”. In a list of terms enriched with overexpressed genes, if the child term has highly statistically significant enrichment, the parent term might appear significantly enriched purely as a consequence of including all the genes from the child term.</p>
+      <p>Thus, a need arises for software that would complement the above-mentioned servers that test for GO category enrichment by starting from their output and providing the facilities for summarizing and visualizing this data. To our knowledge, tools that would assist researchers in interpretation of long GO term lists are scarce, although some Web servers have made a step in this direction, e.g. GOrilla <xref ref-type="bibr" rid="pone.0021800-Eden1">[5]</xref> offers a visualization of the enriched GO categories overlaid on the standard GO graph structure. Very recently, a software called RedundancyMiner <xref ref-type="bibr" rid="pone.0021800-Zeeberg1">[7]</xref> has been made available that attempts to more directly address the issues of interpretability in GO term lists; we examine its features in more detail in the <xref ref-type="sec" rid="s2">Results and discussion</xref> section below.</p>
+      <p>In the same vein, researchers may attempt to simplify long GO term lists by replacing the full Gene Ontology with “GO Slims”, cut-down versions of the Gene Ontology. The GO slims are, however, limited to general (high-level) GO terms which are typically less interesting than the more fine-grained terms – the ones that have been removed from the GO slims. Thus, the problem of weeding out the redundant GO terms is not easily solved by removing the GO terms' descendants (or ancestors) in this manner. The complex structure of the GO warrants a solution that takes into account the terms' proximity in the GO graph, quantified by the GO term ‘semantic similarity’ measures <xref ref-type="bibr" rid="pone.0021800-Pesquita1">[8]</xref>.</p>
+      <p>We have implemented a computational approach that (a) summarizes long GO lists by reducing functional redundancies, and (b) visualizes the remaining GO terms in two-dimensional plots, interactive graphs, treemaps or tag clouds. Both the summarization and the visualization step draw on the concept of GO term semantic similarity, reviewed in <xref ref-type="bibr" rid="pone.0021800-Pesquita1">[8]</xref>. In particular, several common measures of semantic similarity <xref ref-type="bibr" rid="pone.0021800-Schlicker1">[9]</xref> that employ the ‘most informative common ancestor’ approach are supported. The implementation is freely available as the REVIGO Web server at <ext-link ext-link-type="uri" xlink:href="http://revigo.irb.hr/" xlink:type="simple">http://revigo.irb.hr/</ext-link>.</p>
+    </sec>
+    <sec id="s2">
+      <title>Results and Discussion</title>
+      <sec id="s2a">
+        <title>A simple algorithm to reduce redundancy within lists of GO terms</title>
+        <p>Researchers analyzing annotations of gene products are often faced with long lists of GO terms that are either close in the GO hierarchy (sibling terms) or are related by inheritance (child and parent terms). These redundant lists are difficult to interpret, but are likely to contain clusters of semantically similar GO terms.</p>
+        <p>To mitigate the problem of large and redundant lists, we aim to find a single representative GO term for each of these clusters. REVIGO performs a simple clustering procedure which is in concept similar to the hierarchical (agglomerative) clustering methods such as the neighbor joining approach <xref ref-type="bibr" rid="pone.0021800-Saitou1">[10]</xref>. A flowchart of the steps in the algorithm is given in <xref ref-type="fig" rid="pone-0021800-g001">Fig. 1</xref>.</p>
+        <fig id="pone-0021800-g001" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pone.0021800.g001</object-id>
+          <label>Figure 1</label>
+          <caption>
+            <title>A flowchart describing the REVIGO algorithm to remove redundant GO terms from the provided GO term list.</title>
+            <p><bold>*</bold> In a special case when the parent term in question is composed almost exclusively of the child term (&gt;75%), the parent term is rejected instead.</p>
+          </caption>
+          <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0021800.g001" xlink:type="simple"/>
+        </fig>
+        <p>The intuition behind this procedure is to form groups of highly similar GO terms, where the choice of the groups' representatives is guided by the <italic>p</italic>-values, enrichments or similar values that the user supplies alongside the GO terms (<xref ref-type="fig" rid="pone-0021800-g001">Fig. 1</xref>). If the <italic>p</italic>-values are quite close and one term is a child node of the other, REVIGO will tend to choose the parent term, with a possible exception when the terms are deemed to be <italic>de facto</italic> equivalent (<xref ref-type="fig" rid="pone-0021800-g001">Fig. 1</xref>, see caption). Note that REVIGO generally does not prioritize higher-level or lower-level GO terms as cluster representatives – instead, the user-supplied <italic>p</italic>-values/enrichments are used to guide the selection, if possible. Very general GO terms, however, are always avoided as cluster representatives (<xref ref-type="fig" rid="pone-0021800-g001">Fig. 1</xref>) as they tend to be uninformative. It is also possible to manually override the choice of the representative GO term using the ‘pin’ option in case the default solution is not satisfactory for the user e.g. when a more general, higher-level term is desired to represent the group. The user does not necessarily need to provide previously determined <italic>p</italic>-values or another numerical value alongside the GO terms. In that case, REVIGO will prioritize the terms with higher ‘uniqueness’ - the negative of average similarity of a term to all other terms.</p>
+        <p>The terms that remain in the list after the algorithm has finished are the cluster representatives, where it is guaranteed that no two representatives will be more similar than a user-provided cutoff value <italic>C</italic>. In other words, a lower (more stringent) value of <italic>C</italic> will result in a shorter, but also a more semantically diverse list. To offer some bearing on the relationship of <italic>C</italic> to statistical significance, we conducted a simulation where we drew random pairs of GO terms and recorded the distribution of the SimRel semantic similarity measure <xref ref-type="bibr" rid="pone.0021800-Schlicker2">[11]</xref> (default in REVIGO). One percent of randomly generated GO term pairs have SimRel&gt;0.53. Therefore, at <italic>C</italic> = 0.53 there is a 99% chance an above-background similarity exists between each pair of terms in a cluster. REVIGO offers four pre-defined values of <italic>C</italic> (0.9, 0.7, 0.5 and 0.4) to the user. The lowest value of <italic>C</italic> = 0.4 – corresponding to the “tiny” list size – should be used with caution, as many GO terms might be removed from the list without strong statistical support for their redundancy with respect to other terms. The values of <italic>C</italic> = 0.7 (default) and 0.9 are much more conservative in this respect, but may not shorten the list enough.</p>
+      </sec>
+      <sec id="s2b">
+        <title>Visualization in scatterplots and interactive graphs</title>
+        <p>After the clustering procedure described above, the cluster representatives may be submitted to four different visualization procedures: scatterplots, a graph-based visualization, tree maps, and tag clouds.</p>
+        <p>In drawing scatterplots (<xref ref-type="fig" rid="pone-0021800-g002">Fig. 2</xref>), the challenge lies in assigning <italic>x</italic> and <italic>y</italic> coordinates to each term so that more semantically similar GO terms are also closer in the plot. Here, we employ a multidimensional scaling procedure which initially places the terms using an eigenvalue decomposition of the terms' pairwise distance matrix. This is followed by a stress minimization step which iteratively improves the agreement between the GO terms' semantic similarities and their closeness in the displayed two-dimensional space. The GO terms' and associated data (term descriptions, <italic>p</italic>-values/enrichments, uniqueness, etc.) can be exported to a convenient text table and downloaded.</p>
+        <fig id="pone-0021800-g002" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pone.0021800.g002</object-id>
+          <label>Figure 2</label>
+          <caption>
+            <title>The “Scatterplot &amp; Table” view of REVIGO.</title>
+            <p>The scatterplot shows the cluster representatives (i.e. terms remaining after the redundancy reduction) in a two dimensional space derived by applying multidimensional scaling to a matrix of the GO terms' semantic similarities. The table view in the lower part of the figure is truncated; cluster representatives are given in black and other cluster members in gray letters. Bubble color indicates the user-provided p-value (legend in upper right-hand corner); size indicates the frequency of the GO term in the underlying GOA database (bubbles of more general terms are larger).</p>
+          </caption>
+          <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0021800.g002" xlink:type="simple"/>
+        </fig>
+        <p>REVIGO also allows the user to make a graph-based visualization (<xref ref-type="fig" rid="pone-0021800-g003">Fig. 3</xref>). Each of the GO terms is a node in the graph, and 3% of the strongest GO term pairwise similarities are designated as edges in the graph. The threshold value of 3% was derived empirically; we found it strikes a good balance between over-connected graphs with no visible subgroups on the one hand, and very fragmented graphs with too many small groups on the other hand. The placement of the nodes is determined by the ForceDirected layout algorithm as implemented in Cytoscape Web <xref ref-type="bibr" rid="pone.0021800-Lopes1">[12]</xref>. In addition to being viewed in the Web browser, the graph may be exported to a XGMML file, or opened in the stand-alone Cytoscape program <xref ref-type="bibr" rid="pone.0021800-Cline1">[13]</xref> via Java Web Start to produce high resolution, publication-quality images. Both visualizations indicate the generality of the GO terms by the bubble radius, where smaller bubbles imply more specific terms; the user-supplied <italic>p</italic>-values/enrichments are shown using color shading.</p>
+        <fig id="pone-0021800-g003" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pone.0021800.g003</object-id>
+          <label>Figure 3</label>
+          <caption>
+            <title>The “Interactive graph” view of REVIGO.</title>
+            <p>Bubble color indicates the user-provided <italic>p</italic>-value; bubble size indicates the frequency of the GO term in the underlying GOA database. Highly similar GO terms are linked by edges in the graph, where the line width indicates the degree of similarity. The initial placement of the nodes is determined by a ‘force-directed’ layout algorithm that aims to keep the more similar nodes closer together, but the placement may later be adjusted by the user.</p>
+          </caption>
+          <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0021800.g003" xlink:type="simple"/>
+        </fig>
+        <p>Two additional views of the user's data are supported in REVIGO. Treemaps (<xref ref-type="fig" rid="pone-0021800-g004">Fig. 4</xref>) show a two-level hierarchy of GO terms – the cluster representatives from the scatterplot and the graph are here joined into several very high-level groups. Tag clouds show (a) keywords which are overrepresented in the GO terms' descriptions in the GO term list provided by the user (<xref ref-type="fig" rid="pone-0021800-g005">Fig. 5</xref>), and also (b) keywords which are correlated to the <italic>p</italic>-values/enrichments supplied by the user.</p>
+        <fig id="pone-0021800-g004" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pone.0021800.g004</object-id>
+          <label>Figure 4</label>
+          <caption>
+            <title>The “TreeMap” view of REVIGO.</title>
+            <p>Each rectangle is a single cluster representative. The representatives are joined into ‘superclusters’ of loosely related terms, visualized with different colors. Size of the rectangles may be adjusted to reflect either the <italic>p</italic>-value, or the frequency of the GO term in the underlying GOA database.</p>
+          </caption>
+          <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0021800.g004" xlink:type="simple"/>
+        </fig>
+        <fig id="pone-0021800-g005" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pone.0021800.g005</object-id>
+          <label>Figure 5</label>
+          <caption>
+            <title>The “Tag Cloud” view of REVIGO.</title>
+            <p>All displayed words are overrepresented in the descriptions of the GO terms in the user-supplied list, with larger and darker letters signifying stronger overrepresentation. Underrepresented keywords are not displayed in the Tag Cloud.</p>
+          </caption>
+          <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0021800.g005" xlink:type="simple"/>
+        </fig>
+      </sec>
+      <sec id="s2c">
+        <title>An example use-case: summarizing the putative targets of a transcription factor</title>
+        <p>To illustrate how REVIGO's redundancy elimination algorithm (<xref ref-type="fig" rid="pone-0021800-g001">Fig. 1</xref>) works, we turn to a ‘toy example’ which has seven GO categories with associated <italic>p</italic>-values (<xref ref-type="fig" rid="pone-0021800-g006">Fig. 6</xref>). This dataset <xref ref-type="bibr" rid="pone.0021800-Nowick1">[14]</xref> lists gene functional categories co-expressed with the human gene coding for the transcription factor ZNF417, but not with the highly related protein ZNF587, measured using Affymetrix U133plus2 microarrays. The ZNF417 is an evolutionarily recent, great ape-specific transcription factor of which the ZNF587 is a more ancient homolog <xref ref-type="bibr" rid="pone.0021800-Nowick1">[14]</xref>; gene functions associated specifically to ZNF417 were found to be associated with brain development.</p>
+        <fig id="pone-0021800-g006" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pone.0021800.g006</object-id>
+          <label>Figure 6</label>
+          <caption>
+            <title>REVIGO's “Table” view of seven gene functional categories co-expressed with the human transcription factor ZNF417; data from <xref ref-type="bibr" rid="pone.0021800-Nowick1">[<bold>14</bold>]</xref>.</title>
+            <p>“Frequency” is the percentage of human proteins in UniProt which were annotated with a GO term in the GOA database, i.e. a higher frequency denotes a more general term. Cluster representatives are given in black letters and other cluster members are in gray italics and indented. The seven terms are subdivided into four clusters, two of which contain a single term. The ‘pin’ column can be used to manually override the choice of cluster representative.</p>
+          </caption>
+          <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0021800.g006" xlink:type="simple"/>
+        </fig>
+        <p>A casual inspection reveals subgroups of redundant gene functions. For instance, the GO term “<italic>cerebral cortex neuron differentiation</italic>” has a high semantic similarity (SimRel = 0.72) to “<italic>telencephalon development</italic>” and is therefore removed by merging it into the cluster represented by the term having a more significant <italic>p</italic>-value (<xref ref-type="fig" rid="pone-0021800-g006">Fig. 6</xref>). The removed term is assigned a ‘dispensability’ value of 0.72, a relatively high value reflecting the removed term's strong redundancy with respect to the chosen representative. In the next group of terms, “<italic>astrocyte differentiation</italic>” and “<italic>negative regulation of neuron differentiation</italic>” are similar (0.74 and 0.62, respectively) to “<italic>negative regulation of glial cell differentiation</italic>”. Due to a weaker <italic>p</italic>-value, the first two terms are merged into a cluster represented by the last term (<xref ref-type="fig" rid="pone-0021800-g006">Fig. 6</xref>). Note how the choice of cluster representatives is unaffected by whether terms are more general or more specific. The highest remaining pairwise similarity (here, 0.40) is below the user-defined threshold <italic>C</italic>, here set to 0.5, and the clustering algorithm stops. In other words, after having removed the redundant terms, the ones that remain as the cluster representatives are those terms having dispensability values below <italic>C</italic>. The example list of seven GO terms has been reduced to four clusters, of which two are singletons.</p>
+        <p>A possible alternative for REVIGO's summarization procedure are the frequently used “GO slims”. Here, the seven terms are quite specific and consequently none of them is in the “generic” or “PIR” GO slims (<ext-link ext-link-type="uri" xlink:href="http://www.geneontology.org/GO.slims.shtml" xlink:type="simple">http://www.geneontology.org/GO.slims.shtml</ext-link>). Therefore, the GO slim approach would not apply to this dataset, illustrating the general principle of how summarizing the list by filtering out the more specific (or equivalently, higher information content) GO terms results in a loss of the potentially more interesting results.</p>
+        <p>In addition to the ‘dispensability’ values, REVIGO provides ‘uniqueness’ values. These two values are anticorrelated, though not perfectly, since ‘uniqueness’ measures whether the term is an outlier when compared semantically to the whole list (without regard for the <italic>p</italic>-values), while the ‘dispensability’ compares a term to other semantically close terms and is assigned based both on the semantic distance and the supplied <italic>p</italic>-values.</p>
+        <p>To demonstrate the multidimensional scaling-based visualization in REVIGO, we visualize these terms in <xref ref-type="fig" rid="pone-0021800-g007">Fig. 7</xref>; for illustrative purposes, all seven terms are visible in this instance, instead of only the four cluster representatives. Here, it can be seen how two terms are quite distinct from the rest and also from each other: “<italic>regulation of dopamine metabolism</italic>” and “<italic>sensory perception of chemical stimulus</italic>” – these terms were not assigned to any of the clusters in the redundancy elimination procedure described above. The remaining five terms are more closely related, where the “<italic>telencephalon development</italic>” and “<italic>negative regulation of glial cell differentiation</italic>” have more significant <italic>p</italic>-values than the three other terms and were thus chosen as cluster representatives.</p>
+        <fig id="pone-0021800-g007" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pone.0021800.g007</object-id>
+          <label>Figure 7</label>
+          <caption>
+            <title>REVIGO's “Scatterplot view” of seven gene functional categories co-expressed with the human transcription factor ZNF417; data from <xref ref-type="bibr" rid="pone.0021800-Nowick1">[<bold>14</bold>]</xref>, also given in <xref ref-type="fig" rid="pone-0021800-g006"><bold>Fig. 6</bold></xref>.</title>
+            <p>Blue and green bubbles are GO terms with more significant <italic>p</italic>-values than the orange and red bubbles. The bubbles' <italic>x</italic> and <italic>y</italic> coordinates were derived by applying multidimensional scaling to a matrix of the GO terms' semantic similarities; consequently, their closeness on the plot should closely reflect their closeness in the GO graph structure i.e. the semantic similarity. The cluster representatives (see legend of <xref ref-type="fig" rid="pone-0021800-g006">Fig. 6</xref>) have their description printed on a dark background, while the other cluster members' descriptions have white backgrounds.</p>
+          </caption>
+          <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0021800.g007" xlink:type="simple"/>
+        </fig>
+        <p>We provide three ready-to-use examples on the entry Web page of REVIGO. Contrary to the ‘toy example’ described above, these examples contain data a researcher would encounter in a real-life situation: very long, unintelligible lists of GO terms. The data sets cover diverse areas of the life sciences: example #1, a comparative analysis of predicted gene expression levels in bacteria and archaea <xref ref-type="bibr" rid="pone.0021800-Supek1">[15]</xref>; example #2, finding putative targets for the cytostatic activity of a small molecule against cancer cell lines <xref ref-type="bibr" rid="pone.0021800-Ester1">[16]</xref>; and example #3, gene expression profiling of aggressive breast cancer samples <xref ref-type="bibr" rid="pone.0021800-vantVeer1">[17]</xref>. Data from the example #3 was used to generate the visualizations in <xref ref-type="fig" rid="pone-0021800-g002">Figs. 2</xref>, <xref ref-type="fig" rid="pone-0021800-g003">3</xref>, <xref ref-type="fig" rid="pone-0021800-g004">4</xref>, <xref ref-type="fig" rid="pone-0021800-g005">5</xref>.</p>
+      </sec>
+      <sec id="s2d">
+        <title>A comparison with a related software package</title>
+        <p>Very recently, software called RedundancyMiner (RM) has been made available <xref ref-type="bibr" rid="pone.0021800-Ester1">[16]</xref> that has similar aims as REVIGO – to mitigate the issue of redundancy in lists of GO terms. While it is difficult to quantitatively benchmark and compare programs dealing with subjective categories such as interpretability of a list of GO terms, or the utility of a visualization method in leading to novel insight, we here provide a comparison the features of the two packages. Ultimately, the choice of the best software for a given purpose rests on the user.</p>
+        <list list-type="bullet">
+          <list-item>
+            <p>Implementation: RM is a standalone software meant to be installed and run locally, and also requires Perl and a Java virtual machine to be installed. REVIGO is a Web server, meaning no special software needs to be installed on the user's computer prior to use.</p>
+          </list-item>
+          <list-item>
+            <p>Interoperability: due to the requirement for a specific data input format, RM is tied to the GoMiner package <xref ref-type="bibr" rid="pone.0021800-Zeeberg2">[18]</xref> for finding enriched GO terms. REVIGO accepts input from any Web server or software that generates lists of GO terms, and is currently coupled with GOrilla <xref ref-type="bibr" rid="pone.0021800-Du1">[6]</xref> and agriGO <xref ref-type="bibr" rid="pone.0021800-Saitou1">[10]</xref> to automate the transfer of data.</p>
+          </list-item>
+          <list-item>
+            <p>Measuring GO term similarity: RM uses a novel approach – a <italic>p</italic>-value of the correlation (by Fisher's exact test) of the genes' assignment to the two categories. This <italic>p</italic>-value-based similarity will appear stronger for two broad (general) GO terms than for two narrow (specific) ones, even if the overlap is the same in both cases. REVIGO by default uses the established SimRel measure of GO term similarity which has been thoroughly benchmarked by examining semantic similarities in GO assignments of homologous proteins <xref ref-type="bibr" rid="pone.0021800-Schlicker2">[11]</xref>.</p>
+          </list-item>
+          <list-item>
+            <p>Threshold for redundancy reduction: In RM, the user can tune the size of the resulting list by selecting the threshold for the Fisher's exact test <italic>p</italic>-value, or the “nominal number of merged pairs” <xref ref-type="bibr" rid="pone.0021800-Schlicker1">[9]</xref> in the list. The range spanned by these quantities is dataset-dependant. In REVIGO, the user chooses the threshold value of SimRel or a related measure <xref ref-type="bibr" rid="pone.0021800-Schlicker2">[11]</xref>, which always varies between 0 and 1, and is also independent of the specific dataset, facilitating interpretation and comparison across datasets.</p>
+          </list-item>
+          <list-item>
+            <p>Overlapping clusters: RM employs a procedure where the same GO term may be assigned to more than one cluster. In contrast, REVIGO always assigns each GO term to a single cluster, thus avoiding a source of redundancy in the results. This may be advantageous since the primary goal of the procedure was to reduce redundancy in the input data.</p>
+          </list-item>
+          <list-item>
+            <p>Cluster representatives: RM does not explicitly select representatives of the GO term cluster; rather, it labels each cluster using a concatenation of the names of all the GO terms in the cluster. REVIGO uses the user-supplied <italic>p</italic>-values or enrichments to guide the selection of representatives which are well supported by the statistical tests.</p>
+          </list-item>
+          <list-item>
+            <p>Visualization: as a novel visualization method, RM introduces “Meta-CIMs” (clustered image maps) that show the composition of the GO term clusters. REVIGO offers interactive plots based on semantic similarity and multidimensional scaling, interactive graph visualizations, treemaps and tag clouds.</p>
+          </list-item>
+        </list>
+        <p>In addition to RedundancyMiner, in <xref ref-type="table" rid="pone-0021800-t001">Table 1</xref> we provide an overview of other, more remotely related software. In contrast to REVIGO, these tools perform GO term enrichment analysis i.e. they start from a user-supplied list of genes, but offer additional features to assist in interpretation of the results, typically visualization and clustering facilities.</p>
+        <table-wrap id="pone-0021800-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pone.0021800.t001</object-id><label>Table 1</label><caption>
+            <title>Tools that perform GO term enrichment analyses, while additionally offering facilities to assist in the interpretation of results, primarily through visualization.</title>
+          </caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pone-0021800-t001-1" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0021800.t001" xlink:type="simple"/><table>
+            <colgroup span="1">
+              <col align="left" span="1"/>
+              <col align="center" span="1"/>
+            </colgroup>
+            <thead>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">Tool</td>
+                <td align="left" colspan="1" rowspan="1">Brief description</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">BINGO <xref ref-type="bibr" rid="pone.0021800-Maere1">[21]</xref></td>
+                <td align="left" colspan="1" rowspan="1">Cytoscape plug-in that tests for GO category enrichment in a list or network of genes, and displays the results in a graph of GO terms.</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">GOrilla <xref ref-type="bibr" rid="pone.0021800-Eden1">[5]</xref></td>
+                <td align="left" colspan="1" rowspan="1">Web server that tests for GO terms that are significantly enriched at the top of a ranked gene list. Visualizes results overlaid on the standard GO structure.</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">SimCT <xref ref-type="bibr" rid="pone.0021800-Herrmann1">[22]</xref></td>
+                <td align="left" colspan="1" rowspan="1">Standalone Java program that performs a hierarchical clustering of a list of gene-GO term annotation pairs. The subtrees of the final clustering are annotated with a relevance score and representative GO terms, and visualized interactively.</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">Ontologizer <xref ref-type="bibr" rid="pone.0021800-Bauer1">[23]</xref></td>
+                <td align="left" colspan="1" rowspan="1">Standalone Java program that supports multiple statistical approaches for testing for GO term enrichment in a list of genes, while compensating for GO term redundancy due to parent-child relationships, including PCU <xref ref-type="bibr" rid="pone.0021800-Grossmann1">[24]</xref> and MGSA <xref ref-type="bibr" rid="pone.0021800-Bauer2">[25]</xref> methods. Interactive visualization of the results.</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">GENERATOR <xref ref-type="bibr" rid="pone.0021800-Pehkonen1">[26]</xref></td>
+                <td align="left" colspan="1" rowspan="1">Standalone Windows executable. Uses Non-negative Matrix Factorization to cluster genes into groups with more homogenous GO annotation. Visualizes the clusters at several levels of granularity, together with GO term representatives for each cluster.</td>
+              </tr>
+            </tbody>
+          </table></alternatives></table-wrap>
+        <p>REVIGO is the tool of choice for users that wish to be able to quickly analyze their list of GO terms and see if the output fits their needs, without needing to install any software on their machine or to master complex input formats. Furthermore, REVIGO might appeal to users wanting to experiment with different visualization techniques and choose the one best suited to facilitate interpretation of a particular dataset.</p>
+      </sec>
+      <sec id="s2e">
+        <title>Conclusion</title>
+        <p>We anticipate REVIGO will be useful to researchers in the life sciences who deal with data from any kind of high-throughput experiments which is subsequently analyzed for overrepresentation in the Gene Ontology functional categories. By relying on semantic similarity measures, REVIGO starts with the output of other software for finding enriched GO terms, forming GO term clusters and displaying only their representatives to ease interpretation by reducing redundancy, while prioritizing the more enriched/statistically significant terms. Several supported modes of visualization allow the researcher to interactively explore the results: for instance, to further group the cluster representatives together into several broad categories, or examine how this grouping relates to the GO terms' generality or their significance in the particular experiment.</p>
+      </sec>
+    </sec>
+    <sec id="s3" sec-type="methods">
+      <title>Methods</title>
+      <p>REVIGO is a server-side Java web application running on a Glassfish 3 application server. For data visualization, REVIGO relies on Google Motion Chart for scatterplots, Cytoscape Web <xref ref-type="bibr" rid="pone.0021800-Lopes1">[12]</xref> for graphs and DrasticTreemap for treemaps. For multidimensional scaling, the MSDJ library <xref ref-type="bibr" rid="pone.0021800-Pich1">[19]</xref> is used.</p>
+      <p>For calculation of semantic similarity measures between GO terms, REVIGO relies on pre-computed information content (IC) for the GO terms. The IC is calculated as a negative logarithm of the GO term's relative frequency in a reference database – the EBI GOA database <xref ref-type="bibr" rid="pone.0021800-Barrell1">[20]</xref> – which annotates all UniProt entries with GO terms. The user may optionally decide to select the database with one of the 11 species-specific GOA subsets for common model organisms, in order to fine-tune the calculation of semantic distances (which rely on IC) for the problem at hand. If the particular organism is not offered in REVIGO, the closest available organism or the default UniProt database should generally be adequate replacements, assuming that the relative frequencies of gene functions in the user's genome are not far from the ones in the selected genome, or in case UniProt was selected, from the overall trends in the genomic databases.</p>
+      <p>REVIGO supports four semantic similarity measures based on the concept of the “most informative common ancestor”: Lin's, Resnik's, Jiang and Conrath's measures, and the SimRel measure <xref ref-type="bibr" rid="pone.0021800-Pesquita1">[8]</xref>. These and other measures and the role of the IC in their calculation are reviewed in <xref ref-type="bibr" rid="pone.0021800-Lopes1">[12]</xref>. The employed semantic similarity measures are quite robust with regard to future changes in the EBI GOA database due to new or updated annotations, as they don't rely on the GO annotations of each particular gene, but only on the terms' overall IC, which is expected to change little with time. Therefore, an aggressive update schedule is not necessary for REVIGO, and the underlying Gene Ontology and the EBI GOA database will normally be updated on a yearly basis, and more frequently in case of a large-scale release of new GO terms by the GO Consortium.</p>
+      <p>REVIGO also has a facility for integration with Web servers/software which produce lists of GO categories, typically by testing for statistically significant enrichment of a variable in GO terms; see <xref ref-type="sec" rid="s1">Introduction</xref> for several examples. Owners of such Web servers can use a HTTP POST request to pre-populate REVIGO's input form with output of their server; please refer to the online instructions for technical details.</p>
+      <p>REVIGO is freely available from <ext-link ext-link-type="uri" xlink:href="http://revigo.irb.hr/" xlink:type="simple">http://revigo.irb.hr/</ext-link>. Any modern internet browser with Adobe Flash capabilities is sufficient to access the server; additionaly, client-side Java is required if Cytoscape <xref ref-type="bibr" rid="pone.0021800-Cline1">[13]</xref> is invoked via Java Web Start.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <p>We thank Josip Brajković, Tibor Pakozdi and John C. Matese for submitting feedback that helped improve REVIGO's functionality, and Toni Gabaldón, Gabriela Aguileta and Salvador Capella Gutierrez for suggestions on the manuscript.</p>
+    </ack>
+    <ref-list>
+      <title>References</title>
+      <ref id="pone.0021800-Rivals1">
+        <label>1</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Rivals</surname><given-names>I</given-names></name><name name-style="western"><surname>Personnaz</surname><given-names>L</given-names></name><name name-style="western"><surname>Taing</surname><given-names>L</given-names></name><name name-style="western"><surname>Potier</surname><given-names>M-C</given-names></name></person-group>             <year>2007</year>             <article-title>Enrichment or depletion of a GO category within a class of genes: which test?</article-title>             <source>Bioinformatics</source>             <volume>23</volume>             <fpage>401</fpage>             <lpage>407</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Ashburner1">
+        <label>2</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Ashburner</surname><given-names>M</given-names></name><name name-style="western"><surname>Ball</surname><given-names>CA</given-names></name><name name-style="western"><surname>Blake</surname><given-names>JA</given-names></name><name name-style="western"><surname>Botstein</surname><given-names>D</given-names></name><name name-style="western"><surname>Butler</surname><given-names>H</given-names></name><etal/></person-group>             <year>2000</year>             <article-title>Gene ontology: tool for the unification of biology. The Gene Ontology Consortium.</article-title>             <source>Nat Genet</source>             <volume>25</volume>             <fpage>25</fpage>             <lpage>29</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Newman1">
+        <label>3</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Newman</surname><given-names>JC</given-names></name><name name-style="western"><surname>Weiner</surname><given-names>AM</given-names></name></person-group>             <year>2005</year>             <article-title>L2L: a simple tool for discovering the hidden significance in microarray expression data.</article-title>             <source>Genome Biol</source>             <volume>6</volume>             <fpage>R81</fpage>             <lpage>R81</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-AlShahrour1">
+        <label>4</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Al-Shahrour</surname><given-names>F</given-names></name><name name-style="western"><surname>Minguez</surname><given-names>P</given-names></name><name name-style="western"><surname>Tárraga</surname><given-names>J</given-names></name><name name-style="western"><surname>Medina</surname><given-names>I</given-names></name><name name-style="western"><surname>Alloza</surname><given-names>E</given-names></name><etal/></person-group>             <year>2007</year>             <article-title>FatiGO +: a functional profiling tool for genomic data. Integration of functional annotation, regulatory motifs and interaction data with microarray experiments.</article-title>             <source>Nucleic Acids Res</source>             <volume>35</volume>             <fpage>W91</fpage>             <lpage>W96</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Eden1">
+        <label>5</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Eden</surname><given-names>E</given-names></name><name name-style="western"><surname>Navon</surname><given-names>R</given-names></name><name name-style="western"><surname>Steinfeld</surname><given-names>I</given-names></name><name name-style="western"><surname>Lipson</surname><given-names>D</given-names></name><name name-style="western"><surname>Yakhini</surname><given-names>Z</given-names></name></person-group>             <year>2009</year>             <article-title>GOrilla: a tool for discovery and visualization of enriched GO terms in ranked gene lists.</article-title>             <source>BMC Bioinformatics</source>             <volume>10</volume>             <fpage>48</fpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Du1">
+        <label>6</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Du</surname><given-names>Z</given-names></name><name name-style="western"><surname>Zhou</surname><given-names>X</given-names></name><name name-style="western"><surname>Ling</surname><given-names>Y</given-names></name><name name-style="western"><surname>Zhang</surname><given-names>Z</given-names></name><name name-style="western"><surname>Su</surname><given-names>Z</given-names></name></person-group>             <year>2010</year>             <article-title>agriGO: a GO analysis toolkit for the agricultural community.</article-title>             <source>Nucleic Acids Res</source>             <volume>38</volume>             <fpage>W64</fpage>             <lpage>W70</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Zeeberg1">
+        <label>7</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Zeeberg</surname><given-names>B</given-names></name><name name-style="western"><surname>Liu</surname><given-names>H</given-names></name><name name-style="western"><surname>Kahn</surname><given-names>A</given-names></name><name name-style="western"><surname>Ehler</surname><given-names>M</given-names></name><name name-style="western"><surname>Rajapakse</surname><given-names>V</given-names></name><etal/></person-group>             <year>2011</year>             <article-title>RedundancyMiner: De-replication of redundant GO categories in microarray and proteomics analysis.</article-title>             <source>BMC Bioinformatics</source>             <volume>12</volume>             <fpage>52</fpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Pesquita1">
+        <label>8</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Pesquita</surname><given-names>C</given-names></name><name name-style="western"><surname>Faria</surname><given-names>D</given-names></name><name name-style="western"><surname>Falcão</surname><given-names>AO</given-names></name><name name-style="western"><surname>Lord</surname><given-names>P</given-names></name><name name-style="western"><surname>Couto</surname><given-names>FM</given-names></name></person-group>             <year>2009</year>             <article-title>Semantic Similarity in Biomedical Ontologies.</article-title>             <source>PLoS Comput Biol</source>             <volume>5</volume>             <fpage>e1000443</fpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Schlicker1">
+        <label>9</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Schlicker</surname><given-names>A</given-names></name><name name-style="western"><surname>Albrecht</surname><given-names>M</given-names></name></person-group>             <year>2007</year>             <article-title>FunSimMat: a comprehensive functional similarity database.</article-title>             <source>Nucleic Acids Res</source>             <volume>36</volume>             <fpage>D434</fpage>             <lpage>D439</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Saitou1">
+        <label>10</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Saitou</surname><given-names>N</given-names></name><name name-style="western"><surname>Nei</surname><given-names>M</given-names></name></person-group>             <year>1987</year>             <article-title>The neighbor-joining method: a new method for reconstructing phylogenetic trees.</article-title>             <source>Mol Biol Evol</source>             <volume>4</volume>             <fpage>406</fpage>             <lpage>425</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Schlicker2">
+        <label>11</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Schlicker</surname><given-names>A</given-names></name><name name-style="western"><surname>Domingues</surname><given-names>F</given-names></name><name name-style="western"><surname>Rahnenfuhrer</surname><given-names>J</given-names></name><name name-style="western"><surname>Lengauer</surname><given-names>T</given-names></name></person-group>             <year>2006</year>             <article-title>A new measure for functional similarity of gene products based on Gene Ontology.</article-title>             <source>BMC Bioinformatics</source>             <volume>7</volume>             <fpage>302</fpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Lopes1">
+        <label>12</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Lopes</surname><given-names>CT</given-names></name><name name-style="western"><surname>Franz</surname><given-names>M</given-names></name><name name-style="western"><surname>Kazi</surname><given-names>F</given-names></name><name name-style="western"><surname>Donaldson</surname><given-names>SL</given-names></name><name name-style="western"><surname>Morris</surname><given-names>Q</given-names></name><etal/></person-group>             <year>2010</year>             <article-title>Cytoscape Web: an interactive web-based network browser.</article-title>             <source>Bioinformatics</source>             <volume>26</volume>             <fpage>2347</fpage>             <lpage>2348</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Cline1">
+        <label>13</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Cline</surname><given-names>MS</given-names></name><name name-style="western"><surname>Smoot</surname><given-names>M</given-names></name><name name-style="western"><surname>Cerami</surname><given-names>E</given-names></name><name name-style="western"><surname>Kuchinsky</surname><given-names>A</given-names></name><name name-style="western"><surname>Landys</surname><given-names>N</given-names></name><etal/></person-group>             <year>2007</year>             <article-title>Integration of biological networks and gene expression data using Cytoscape.</article-title>             <source>Nat Protoc</source>             <volume>2</volume>             <fpage>2366</fpage>             <lpage>2382</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Nowick1">
+        <label>14</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Nowick</surname><given-names>K</given-names></name><name name-style="western"><surname>Hamilton</surname><given-names>AT</given-names></name><name name-style="western"><surname>Zhang</surname><given-names>H</given-names></name><name name-style="western"><surname>Stubbs</surname><given-names>L</given-names></name></person-group>             <year>2010</year>             <article-title>Rapid Sequence and Expression Divergence Suggest Selection for Novel Function in Primate-Specific KRAB-ZNF Genes.</article-title>             <source>Mol Biol Evol</source>             <volume>27</volume>             <fpage>2606</fpage>             <lpage>2617</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Supek1">
+        <label>15</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Supek</surname><given-names>F</given-names></name><name name-style="western"><surname>Škunca</surname><given-names>N</given-names></name><name name-style="western"><surname>Repar</surname><given-names>J</given-names></name><name name-style="western"><surname>Vlahoviček</surname><given-names>K</given-names></name><name name-style="western"><surname>Šmuc</surname><given-names>T</given-names></name></person-group>             <year>2010</year>             <article-title>Translational Selection Is Ubiquitous in Prokaryotes.</article-title>             <source>PLoS Genet</source>             <volume>6</volume>             <fpage>e1001004</fpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Ester1">
+        <label>16</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Ester</surname><given-names>K</given-names></name><name name-style="western"><surname>Supek</surname><given-names>F</given-names></name><name name-style="western"><surname>Majsec</surname><given-names>K</given-names></name><name name-style="western"><surname>Marjanović</surname><given-names>M</given-names></name><name name-style="western"><surname>Lembo</surname><given-names>D</given-names></name><etal/></person-group>             <year>2010</year>             <article-title>Putative mechanisms of antitumor activity of cyano-substituted heteroaryles in HeLa cells.</article-title>             <source>Invest New Drugs</source>             <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s10637-010-9571-7" xlink:type="simple">10.1007/s10637-010-9571-7</ext-link></comment>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-vantVeer1">
+        <label>17</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>van't Veer</surname><given-names>LJ</given-names></name><name name-style="western"><surname>Dai</surname><given-names>H</given-names></name><name name-style="western"><surname>van de Vijver</surname><given-names>MJ</given-names></name><name name-style="western"><surname>He</surname><given-names>YD</given-names></name><name name-style="western"><surname>Hart</surname><given-names>AAM</given-names></name><etal/></person-group>             <year>2002</year>             <article-title>Gene expression profiling predicts clinical outcome of breast cancer.</article-title>             <source>Nature</source>             <volume>415</volume>             <fpage>530</fpage>             <lpage>536</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Zeeberg2">
+        <label>18</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Zeeberg</surname><given-names>B</given-names></name><name name-style="western"><surname>Qin</surname><given-names>H</given-names></name><name name-style="western"><surname>Narasimhan</surname><given-names>S</given-names></name><name name-style="western"><surname>Sunshine</surname><given-names>M</given-names></name><name name-style="western"><surname>Cao</surname><given-names>H</given-names></name><etal/></person-group>             <year>2005</year>             <article-title>High-Throughput GoMiner, an “industrial-strength” integrative gene ontology tool for interpretation of multiple-microarray experiments, with application to studies of Common Variable Immune Deficiency (CVID).</article-title>             <source>BMC Bioinformatics</source>             <volume>6</volume>             <fpage>168</fpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Pich1">
+        <label>19</label>
+        <element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Pich</surname><given-names>C</given-names></name></person-group>             <year>2009</year>             <article-title>MDSJ: Java Library for Multidimensional Scaling (Version 0.2).</article-title>             <comment>Available at: <ext-link ext-link-type="uri" xlink:href="http://www.inf.uni-konstanz.de/algo/software/mdsj/" xlink:type="simple">http://www.inf.uni-konstanz.de/algo/software/mdsj/</ext-link>. Accessed 2010 Nov 2</comment>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Barrell1">
+        <label>20</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Barrell</surname><given-names>D</given-names></name><name name-style="western"><surname>Dimmer</surname><given-names>E</given-names></name><name name-style="western"><surname>Huntley</surname><given-names>RP</given-names></name><name name-style="western"><surname>Binns</surname><given-names>D</given-names></name><name name-style="western"><surname>O'Donovan</surname><given-names>C</given-names></name><etal/></person-group>             <year>2009</year>             <article-title>The GOA database in 2009–an integrated Gene Ontology Annotation resource.</article-title>             <source>Nucleic Acids Res</source>             <volume>37</volume>             <fpage>D396</fpage>             <lpage>403</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Maere1">
+        <label>21</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Maere</surname><given-names>S</given-names></name><name name-style="western"><surname>Heymans</surname><given-names>K</given-names></name><name name-style="western"><surname>Kuiper</surname><given-names>M</given-names></name></person-group>             <year>2005</year>             <article-title>BiNGO: a Cytoscape plugin to assess overrepresentation of Gene Ontology categories in Biological Networks.</article-title>             <source>Bioinformatics</source>             <volume>21</volume>             <fpage>3448</fpage>             <lpage>3449</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Herrmann1">
+        <label>22</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Herrmann</surname><given-names>C</given-names></name><name name-style="western"><surname>Bérard</surname><given-names>S</given-names></name><name name-style="western"><surname>Tichit</surname><given-names>L</given-names></name></person-group>             <year>2009</year>             <article-title>SimCT: a generic tool to visualize ontology-based relationships for biological objects.</article-title>             <source>Bioinformatics</source>             <volume>25</volume>             <fpage>3197</fpage>             <lpage>3198</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Bauer1">
+        <label>23</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Bauer</surname><given-names>S</given-names></name><name name-style="western"><surname>Grossmann</surname><given-names>S</given-names></name><name name-style="western"><surname>Vingron</surname><given-names>M</given-names></name><name name-style="western"><surname>Robinson</surname><given-names>PN</given-names></name></person-group>             <year>2008</year>             <article-title>Ontologizer 2.0—a multifunctional tool for GO term enrichment analysis and data exploration.</article-title>             <source>Bioinformatics</source>             <volume>24</volume>             <fpage>1650</fpage>             <lpage>1651</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Grossmann1">
+        <label>24</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Grossmann</surname><given-names>S</given-names></name><name name-style="western"><surname>Bauer</surname><given-names>S</given-names></name><name name-style="western"><surname>Robinson</surname><given-names>PN</given-names></name><name name-style="western"><surname>Vingron</surname><given-names>M</given-names></name></person-group>             <year>2007</year>             <article-title>Improved detection of overrepresentation of Gene-Ontology annotations with parent–child analysis.</article-title>             <source>Bioinformatics</source>             <volume>23</volume>             <fpage>3024</fpage>             <lpage>3031</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Bauer2">
+        <label>25</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Bauer</surname><given-names>S</given-names></name><name name-style="western"><surname>Gagneur</surname><given-names>J</given-names></name><name name-style="western"><surname>Robinson</surname><given-names>PN</given-names></name></person-group>             <year>2010</year>             <article-title>GOing Bayesian: model-based gene set analysis of genome-scale data.</article-title>             <source>Nucleic Acids Res</source>             <volume>38</volume>             <fpage>3523</fpage>             <lpage>3532</lpage>          </element-citation>
+      </ref>
+      <ref id="pone.0021800-Pehkonen1">
+        <label>26</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Pehkonen</surname><given-names>P</given-names></name><name name-style="western"><surname>Wong</surname><given-names>G</given-names></name><name name-style="western"><surname>Törönen</surname><given-names>P</given-names></name></person-group>             <article-title>Theme discovery from gene lists for identification and viewing of multiple functional groups.</article-title>             <source>BMC Bioinformatics</source>             <volume>6</volume>             <fpage>162</fpage>             <lpage>162</lpage>          </element-citation>
+      </ref>
+    </ref-list>
+    
+  </back>
+</article>

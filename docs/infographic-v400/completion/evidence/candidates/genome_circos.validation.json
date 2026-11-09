@@ -1,0 +1,100 @@
+{
+  "typeId": "genome_circos",
+  "computations": {
+    "sequenceArcsRadians": {
+      "chr1": [
+        0,
+        3.4239918373219926
+      ],
+      "chr2": [
+        3.4839918373219927,
+        6.223185307179587
+      ]
+    },
+    "radiansPerBase": 0.0034239918373219925,
+    "intervalSpansRadians": [
+      [
+        0.34239918373219924,
+        1.369596734928797
+      ],
+      [
+        3.826391021054192,
+        5.538386939715188
+      ]
+    ],
+    "suppliedLinks": [
+      {
+        "source": "chr1",
+        "sourcePosition": 250,
+        "target": "chr2",
+        "targetPosition": 350
+      }
+    ]
+  },
+  "checks": {
+    "chr1_sequence_angle": {
+      "actual": 3.4239918373219926,
+      "expected": 3.4239918373219926,
+      "absoluteError": 0.0
+    },
+    "chr2_sequence_angle": {
+      "actual": 2.739193469857594,
+      "expected": 2.739193469857594,
+      "absoluteError": 0.0
+    },
+    "interval_0_span": {
+      "actual": 1.0271975511965976,
+      "expected": 1.0271975511965978,
+      "absoluteError": 2.220446049250313e-16
+    },
+    "interval_1_span": {
+      "actual": 1.711995918660997,
+      "expected": 1.7119959186609963,
+      "absoluteError": 6.661338147750939e-16
+    },
+    "source_row_count": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "chrom",
+      "label",
+      "start",
+      "end",
+      "value"
+    ],
+    "options": {
+      "sequences": [
+        {
+          "id": "chr1",
+          "length": 1000
+        },
+        {
+          "id": "chr2",
+          "length": 800
+        }
+      ],
+      "assembly": "Synthetic v1",
+      "coordinateSystem": "zero_based_half_open",
+      "valueRange": [
+        0,
+        1
+      ],
+      "links": [
+        {
+          "source": "chr1",
+          "sourcePosition": 250,
+          "target": "chr2",
+          "targetPosition": 350
+        }
+      ]
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-10-12T11:39:27.348460+00:00",
+  "baselineCount": 4229,
+  "missing": [],
+  "changed": [
+    "apps/paperbanana-api/assets/material-reader/worker.mjs",
+    "apps/paperbanana-api/src/material-agent.ts",
+    "apps/paperbanana-api/src/material-files.ts",
+    "apps/paperbanana-api/tests/material-agent.test.ts",
+    "apps/paperbanana-api/tests/model-material-workflow.test.ts",
+    "apps/paperbanana-api/tests/original-material-workflow.test.ts",
+    "apps/paperbanana-api/tests/png-white-canvas.test.ts",
+    "apps/paperbanana-api/tests/svg-workflow.test.ts",
+    "apps/paperbanana-api/tests/task-material-lifecycle.test.ts",
+    "packages/api/src/png-workflow.ts",
+    "packages/api/src/svg-workflow.ts",
+    "packages/api/src/workflow-prompts.ts",
+    "SYNC.md",
+    "apps/paperbanana-api/runtime/handler.ts",
+    "apps/paperbanana-api/src/provider-workflow.ts",
+    "apps/web/src/lib/thinkingSettings.js",
+    "apps/web/tests/thinking-settings.test.mjs",
+    "packages/api/src/execution-errors.ts"
+  ],
+  "unchanged": 4211,
+  "miniProgramCount": 224,
+  "miniProgramChanged": [],
+  "miniProgramRelatedPathCount": 360,
+  "miniProgramRelatedChanged": []
+}

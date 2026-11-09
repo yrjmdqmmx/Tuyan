@@ -1,0 +1,267 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="576" viewBox="0 0 1024 576"><title>Synthetic QA</title><rect width="100%" height="100%" fill="white"/><g data-panel="甲" data-figure-type="bar"><text x="25.6" y="44.800000000000004" font-size="17.919999999999998" font-family="Noto Sans">甲 · Independent scale</text><svg id="panel0_scope" x="25.6" y="51.2" width="477.18399999999997" height="499.19999999999993" viewBox="0 0 343.57248 359.424" preserveAspectRatio="xMidYMid meet"><svg version="1.1" width="100%" height="100%" viewBox="0 0 343.57248 359.424" id="panel0_sourceRoot"><defs>
+  <style type="text/css">#panel0_scope *{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs><g id="panel0_figure_1">
+  <g id="panel0_patch_1">
+   <path d="M 0 359.424  L 343.57248 359.424  L 343.57248 0  L 0 0  z " style="fill: #ffffff"></path>
+  </g>
+  <g id="panel0_axes_1">
+   <g id="panel0_patch_2">
+    <path d="M 16.48024 321.04136  L 340.57224 321.04136  L 340.57224 3.00024  L 16.48024 3.00024  z " style="fill: #ffffff"></path>
+   </g>
+   <g id="panel0_patch_3">
+    <path d="M 16.48024 17.456655  L 139.943859 17.456655  L 139.943859 100.064738  L 16.48024 100.064738  z " clip-path="url(#panel0_p9f198aa094)" style="fill: #487968"></path>
+   </g>
+   <g id="panel0_patch_4">
+    <path d="M 16.48024 120.716758  L 325.139288 120.716758  L 325.139288 203.324842  L 16.48024 203.324842  z " clip-path="url(#panel0_p9f198aa094)" style="fill: #487968"></path>
+   </g>
+   <g id="panel0_patch_5">
+    <path d="M 16.48024 223.976862  L 201.675669 223.976862  L 201.675669 306.584945  L 16.48024 306.584945  z " clip-path="url(#panel0_p9f198aa094)" style="fill: #487968"></path>
+   </g>
+   <g id="panel0_matplotlib.axis_1">
+    <g id="panel0_xtick_1">
+     <g id="panel0_line2d_1">
+      <defs>
+       <path id="panel0_m783222674b" d="M 0 0  L 0 3.5  " style="stroke: #000000; stroke-width: 0.8"></path>
+      </defs>
+      <g>
+       <use xlink:href="#panel0_m783222674b" x="16.48024" y="321.04136" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel0_text_1">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="16.48024" y="336.91176" transform="rotate(-0 16.48024 336.91176)">0</text>
+     </g>
+    </g>
+    <g id="panel0_xtick_2">
+     <g id="panel0_line2d_2">
+      <g>
+       <use xlink:href="#panel0_m783222674b" x="78.21205" y="321.04136" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel0_text_2">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="78.21205" y="336.91176" transform="rotate(-0 78.21205 336.91176)">1</text>
+     </g>
+    </g>
+    <g id="panel0_xtick_3">
+     <g id="panel0_line2d_3">
+      <g>
+       <use xlink:href="#panel0_m783222674b" x="139.943859" y="321.04136" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel0_text_3">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="139.943859" y="336.91176" transform="rotate(-0 139.943859 336.91176)">2</text>
+     </g>
+    </g>
+    <g id="panel0_xtick_4">
+     <g id="panel0_line2d_4">
+      <g>
+       <use xlink:href="#panel0_m783222674b" x="201.675669" y="321.04136" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel0_text_4">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="201.675669" y="336.91176" transform="rotate(-0 201.675669 336.91176)">3</text>
+     </g>
+    </g>
+    <g id="panel0_xtick_5">
+     <g id="panel0_line2d_5">
+      <g>
+       <use xlink:href="#panel0_m783222674b" x="263.407478" y="321.04136" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel0_text_5">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="263.407478" y="336.91176" transform="rotate(-0 263.407478 336.91176)">4</text>
+     </g>
+    </g>
+    <g id="panel0_xtick_6">
+     <g id="panel0_line2d_6">
+      <g>
+       <use xlink:href="#panel0_m783222674b" x="325.139288" y="321.04136" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel0_text_6">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="325.139288" y="336.91176" transform="rotate(-0 325.139288 336.91176)">5</text>
+     </g>
+    </g>
+    <g id="panel0_text_7">
+     <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="178.52624" y="353.54376" transform="rotate(-0 178.52624 353.54376)">arbitrary test units</text>
+    </g>
+   </g>
+   <g id="panel0_matplotlib.axis_2">
+    <g id="panel0_ytick_1">
+     <g id="panel0_line2d_7">
+      <defs>
+       <path id="panel0_mfd9ef9222c" d="M 0 0  L -3.5 0  " style="stroke: #000000; stroke-width: 0.8"></path>
+      </defs>
+      <g>
+       <use xlink:href="#panel0_mfd9ef9222c" x="16.48024" y="58.760696" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel0_text_8">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: end" x="9.48024" y="63.195896" transform="rotate(-0 9.48024 63.195896)">A</text>
+     </g>
+    </g>
+    <g id="panel0_ytick_2">
+     <g id="panel0_line2d_8">
+      <g>
+       <use xlink:href="#panel0_mfd9ef9222c" x="16.48024" y="162.0208" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel0_text_9">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: end" x="9.48024" y="166.456" transform="rotate(-0 9.48024 166.456)">B</text>
+     </g>
+    </g>
+    <g id="panel0_ytick_3">
+     <g id="panel0_line2d_9">
+      <g>
+       <use xlink:href="#panel0_mfd9ef9222c" x="16.48024" y="265.280904" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel0_text_10">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: end" x="9.48024" y="269.716104" transform="rotate(-0 9.48024 269.716104)">C</text>
+     </g>
+    </g>
+   </g>
+   <g id="panel0_patch_6">
+    <path d="M 16.48024 321.04136  L 16.48024 3.00024  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path>
+   </g>
+   <g id="panel0_patch_7">
+    <path d="M 16.48024 321.04136  L 340.57224 321.04136  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path>
+   </g>
+  </g>
+ </g><defs>
+  <clipPath id="panel0_p9f198aa094">
+   <rect x="16.48024" y="3.00024" width="324.092" height="318.04112"></rect>
+  </clipPath>
+ </defs></svg></svg></g><g data-panel="乙" data-figure-type="bar"><text x="521.216" y="44.800000000000004" font-size="17.919999999999998" font-family="Noto Sans">乙 · Independent scale</text><svg id="panel1_scope" x="521.216" y="51.2" width="477.18399999999997" height="499.19999999999993" viewBox="0 0 343.57248 359.424" preserveAspectRatio="xMidYMid meet"><svg version="1.1" width="100%" height="100%" viewBox="0 0 343.57248 359.424" id="panel1_sourceRoot"><defs>
+  <style type="text/css">#panel1_scope *{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs><g id="panel1_figure_1">
+  <g id="panel1_patch_1">
+   <path d="M 0 359.424  L 343.57248 359.424  L 343.57248 0  L 0 0  z " style="fill: #ffffff"></path>
+  </g>
+  <g id="panel1_axes_1">
+   <g id="panel1_patch_2">
+    <path d="M 16.48024 321.04136  L 340.57224 321.04136  L 340.57224 3.00024  L 16.48024 3.00024  z " style="fill: #ffffff"></path>
+   </g>
+   <g id="panel1_patch_3">
+    <path d="M 16.48024 17.456655  L 139.943859 17.456655  L 139.943859 100.064738  L 16.48024 100.064738  z " clip-path="url(#panel1_p9f198aa094)" style="fill: #487968"></path>
+   </g>
+   <g id="panel1_patch_4">
+    <path d="M 16.48024 120.716758  L 325.139288 120.716758  L 325.139288 203.324842  L 16.48024 203.324842  z " clip-path="url(#panel1_p9f198aa094)" style="fill: #487968"></path>
+   </g>
+   <g id="panel1_patch_5">
+    <path d="M 16.48024 223.976862  L 201.675669 223.976862  L 201.675669 306.584945  L 16.48024 306.584945  z " clip-path="url(#panel1_p9f198aa094)" style="fill: #487968"></path>
+   </g>
+   <g id="panel1_matplotlib.axis_1">
+    <g id="panel1_xtick_1">
+     <g id="panel1_line2d_1">
+      <defs>
+       <path id="panel1_m783222674b" d="M 0 0  L 0 3.5  " style="stroke: #000000; stroke-width: 0.8"></path>
+      </defs>
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="16.48024" y="321.04136" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_1">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="16.48024" y="336.91176" transform="rotate(-0 16.48024 336.91176)">0</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_2">
+     <g id="panel1_line2d_2">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="78.21205" y="321.04136" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_2">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="78.21205" y="336.91176" transform="rotate(-0 78.21205 336.91176)">1</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_3">
+     <g id="panel1_line2d_3">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="139.943859" y="321.04136" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_3">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="139.943859" y="336.91176" transform="rotate(-0 139.943859 336.91176)">2</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_4">
+     <g id="panel1_line2d_4">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="201.675669" y="321.04136" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_4">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="201.675669" y="336.91176" transform="rotate(-0 201.675669 336.91176)">3</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_5">
+     <g id="panel1_line2d_5">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="263.407478" y="321.04136" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_5">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="263.407478" y="336.91176" transform="rotate(-0 263.407478 336.91176)">4</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_6">
+     <g id="panel1_line2d_6">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="325.139288" y="321.04136" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_6">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="325.139288" y="336.91176" transform="rotate(-0 325.139288 336.91176)">5</text>
+     </g>
+    </g>
+    <g id="panel1_text_7">
+     <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="178.52624" y="353.54376" transform="rotate(-0 178.52624 353.54376)">arbitrary test units</text>
+    </g>
+   </g>
+   <g id="panel1_matplotlib.axis_2">
+    <g id="panel1_ytick_1">
+     <g id="panel1_line2d_7">
+      <defs>
+       <path id="panel1_mfd9ef9222c" d="M 0 0  L -3.5 0  " style="stroke: #000000; stroke-width: 0.8"></path>
+      </defs>
+      <g>
+       <use xlink:href="#panel1_mfd9ef9222c" x="16.48024" y="58.760696" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_8">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: end" x="9.48024" y="63.195896" transform="rotate(-0 9.48024 63.195896)">A</text>
+     </g>
+    </g>
+    <g id="panel1_ytick_2">
+     <g id="panel1_line2d_8">
+      <g>
+       <use xlink:href="#panel1_mfd9ef9222c" x="16.48024" y="162.0208" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_9">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: end" x="9.48024" y="166.456" transform="rotate(-0 9.48024 166.456)">B</text>
+     </g>
+    </g>
+    <g id="panel1_ytick_3">
+     <g id="panel1_line2d_9">
+      <g>
+       <use xlink:href="#panel1_mfd9ef9222c" x="16.48024" y="265.280904" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_10">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: end" x="9.48024" y="269.716104" transform="rotate(-0 9.48024 269.716104)">C</text>
+     </g>
+    </g>
+   </g>
+   <g id="panel1_patch_6">
+    <path d="M 16.48024 321.04136  L 16.48024 3.00024  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path>
+   </g>
+   <g id="panel1_patch_7">
+    <path d="M 16.48024 321.04136  L 340.57224 321.04136  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path>
+   </g>
+  </g>
+ </g><defs>
+  <clipPath id="panel1_p9f198aa094">
+   <rect x="16.48024" y="3.00024" width="324.092" height="318.04112"></rect>
+  </clipPath>
+ </defs></svg></svg></g><style>text,tspan{font-family:Noto Sans !important;}</style></svg>

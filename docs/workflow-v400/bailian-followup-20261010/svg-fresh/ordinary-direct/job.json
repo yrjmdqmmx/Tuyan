@@ -1,0 +1,239 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": null,
+  "referenceSelection": {
+    "proposedCount": 0,
+    "selectedCount": 0,
+    "skippedCount": 0,
+    "imageCount": 0,
+    "mode": "text",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "none",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "succeeded",
+      "review": {
+        "limit": 1,
+        "roundsUsed": 1,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "5d46a17d1259a07f43221151d2f3dfbbc82b163fda1b2abd4aa2b30496979ead",
+            "pngHash": "6c1b263a3fb84e49e1a4e80517e63fc98bbe2d2bbd0ce3f309bd85b9c1ab1d43",
+            "status": "passed",
+            "submittedImageHash": "7e11be3f82ec3ec3148ccd4ee0413e48957c4b194c474df62317acbc1953d688",
+            "assessment": "{\"version\":1,\"svgHash\":\"5d46a17d1259a07f43221151d2f3dfbbc82b163fda1b2abd4aa2b30496979ead\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 1,
+        "deliveredSvgHash": "5d46a17d1259a07f43221151d2f3dfbbc82b163fda1b2abd4aa2b30496979ead",
+        "reviewedVersion": 1,
+        "reviewedSvgHash": "5d46a17d1259a07f43221151d2f3dfbbc82b163fda1b2abd4aa2b30496979ead",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      }
+    }
+  ],
+  "id": "1791601164455-70g9l9uv",
+  "status": "succeeded",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。",
+  "negativePrompt": "禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。",
+  "caption": "从样品输入到标准化结果的三步方法流程。",
+  "infographicCategory": "method",
+  "outputFormat": "svg",
+  "mainModelName": "qwen3.7-plus",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "main_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "planner_critic",
+  "retrievalSetting": "none",
+  "manualReferenceIds": [],
+  "retrievedReferenceIds": [],
+  "retrievedReferences": [],
+  "stages": [
+    {
+      "id": "stage-b6bcd93d-f6ce-4a5a-afa9-1f57356347b9",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "Here is the detailed description for the illustrative figure, designed to strictly follow the methodology constraints and visual style requirements.\n\n**Figure Description:**\n\n**1. General Layout & Style:**\n*   **Canvas:** A wide rectangular canvas with a pure white background (`#FFFFFF`). No borders or grid lines.\n*   **Style:** Clean, modern scientific infographic style using flat vector graphics.\n*   **Color Palette:** Use a professional, muted scientific color scheme.\n    *   Primary Shape Fill: Very light pastel blue (`#E3F2FD`) or light gray (`#F5F5F5`) for the process boxes.\n    *   Border/Stroke: Medium-dark slate blue (`#455A64`) or charcoal gray (`#37474F`), 2px thickness.\n    *   Text Color: Dark gray/black (`#212121`) for high readability.\n    *   Arrow Color: Same as border color (`#455A64`).\n*   **Typography:** Use \"Noto Sans CJK SC\" for Chinese characters and \"Noto Sans Math\" or standard sans-serif for mathematical expressions. Font weight: Regular. Font size: Large enough to be clearly legible (e.g., 14-16pt for main labels).\n\n**2. Structural Elements (Left-to-Right Flow):**\nThe figure consists of three distinct stages connected by arrows, arranged horizontally from left to right. Each stage is represented by a rounded rectangle box.\n\n*   **Stage 1: Input (Left)**\n    *   **Shape:** A rounded rectangle with a light pastel fill and dark border.\n    *   **Content:** Centered text in Chinese: `样品输入` followed by a new line or parenthetical note: `(n=12)`.\n    *   **Position:** Aligned to the left third of the canvas, vertically centered.\n\n*   **Connector 1:**\n    *   **Shape:** A straight, horizontal arrow pointing right.\n    *   **Style:** Solid line, 2px thickness, matching the box border color. The arrowhead is a simple, filled triangle.\n    *   **Position:** Connects the right edge of Stage 1 to the left edge of Stage 2.\n\n*   **Stage 2: Processing (Center)**\n    *   **Shape:** A rounded rectangle identical in size and style to Stage 1.\n    *   **Content:** Centered text in Chinese: `数据标准化`. Below it, accurately rendered mathematical expression: `x / x₀`. Ensure the subscript '0' is properly formatted.\n    *   **Position:** Aligned to the center of the canvas, vertically centered.\n\n*   **Connector 2:**\n    *   **Shape:** A straight, horizontal arrow pointing right, identical to Connector 1.\n    *   **Position:** Connects the right edge of Stage 2 to the left edge of Stage 3.\n\n*   **Stage 3: Output (Right)**\n    *   **Shape:** A rounded rectangle identical in size and style to Stage 1 and 2.\n    *   **Content:** Centered text in Chinese: `结果输出` followed by a new line or parenthetical note: `(均值 1.0)`.\n    *   **Position:** Aligned to the right third of the canvas, vertically centered.\n\n**3. Specific Constraints & Details:**\n*   **No Extra Elements:** Do not add any other steps, decorative icons, background patterns, or numerical values not explicitly mentioned in the methodology.\n*   **Directionality:** The flow must be strictly Left → Right. No feedback loops or vertical connections.\n*   **Reference Identifier:** If a reference image was provided (though none is listed in `referenceRequirements`, the prompt mentions \"if provided\"), place the short identifier from the top-right corner of the reference image exactly in the top-right corner of this new figure. Since no reference is uploaded, omit this element unless a placeholder is strictly required by the system (in which case, leave blank). *Note: Based on the input `referenceRequirements: { mode: \"none\" }`, no identifier needs to be added.*\n*   **Mathematical Accuracy:** The expression `x / x₀` must be visually clear. Use standard mathematical notation styling.\n*   **Language:** All textual labels must be in Simplified Chinese as specified.\n\n**4. SVG Rendering Notes:**\n*   Use `<rect>` elements with `rx` and `ry` attributes for rounded corners.\n*   Use `<path>` or `<line>` with `<marker-end>` for arrows.\n*   Use `<text>` elements with `text-anchor=\"middle\"` for centering labels within boxes.\n*   Ensure no shadows, filters, or gradients are used (flat design only).",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T02:59:24.457Z",
+      "completedAt": "2026-10-10T02:59:43.419Z",
+      "durationMs": 18962,
+      "error": ""
+    },
+    {
+      "id": "stage-f346418f-1421-4e46-9713-81774e281969",
+      "candidateId": 0,
+      "type": "svg_source",
+      "title": "SVG v1 文件",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"5d46a17d1259a07f43221151d2f3dfbbc82b163fda1b2abd4aa2b30496979ead\",\"pngHash\":\"6c1b263a3fb84e49e1a4e80517e63fc98bbe2d2bbd0ce3f309bd85b9c1ab1d43\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Noto Sans CJK SC\",\"sans-serif\",\"Noto Sans Math\",\"Noto Sans\"]},\"codeIssues\":[\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791601164455-70g9l9uv/candidate-0-svg-v1.svg",
+        "url": "http://127.0.0.1:50137/objects/1791601164455-70g9l9uv/candidate-0-svg-v1.svg",
+        "mimeType": "image/svg+xml",
+        "objectKey": "1791601164455-70g9l9uv/candidate-0-svg-v1.svg"
+      },
+      "startedAt": "2026-10-10T02:59:59.606Z",
+      "completedAt": "2026-10-10T02:59:59.606Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-712c12ef-0347-4364-b971-ee12206c98f6",
+      "candidateId": 0,
+      "type": "render",
+      "title": "SVG v1 实际渲染",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"5d46a17d1259a07f43221151d2f3dfbbc82b163fda1b2abd4aa2b30496979ead\",\"pngHash\":\"6c1b263a3fb84e49e1a4e80517e63fc98bbe2d2bbd0ce3f309bd85b9c1ab1d43\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Noto Sans CJK SC\",\"sans-serif\",\"Noto Sans Math\",\"Noto Sans\"]},\"codeIssues\":[\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791601164455-70g9l9uv/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:50137/objects/1791601164455-70g9l9uv/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791601164455-70g9l9uv/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T02:59:59.606Z",
+      "completedAt": "2026-10-10T02:59:59.606Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-c9f97859-957f-4f94-a039-c93bb357b89a",
+      "candidateId": 0,
+      "type": "critic",
+      "title": "SVG v1 画面与代码评审（第1轮）",
+      "round": 1,
+      "text": "{\"version\":1,\"svgHash\":\"5d46a17d1259a07f43221151d2f3dfbbc82b163fda1b2abd4aa2b30496979ead\",\"pngHash\":\"6c1b263a3fb84e49e1a4e80517e63fc98bbe2d2bbd0ce3f309bd85b9c1ab1d43\",\"submittedImageHash\":\"7e11be3f82ec3ec3148ccd4ee0413e48957c4b194c474df62317acbc1953d688\",\"round\":1,\"previousAssessment\":\"\",\"referenceAnalysis\":\"\",\"retrievalContext\":\"\",\"decision\":{\"version\":1,\"svgHash\":\"5d46a17d1259a07f43221151d2f3dfbbc82b163fda1b2abd4aa2b30496979ead\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791601164455-70g9l9uv/candidate-0-svg-v1-review-1.png",
+        "url": "http://127.0.0.1:50137/objects/1791601164455-70g9l9uv/candidate-0-svg-v1-review-1.png",
+        "mimeType": "image/png",
+        "objectKey": "1791601164455-70g9l9uv/candidate-0-svg-v1-review-1.png"
+      },
+      "startedAt": "2026-10-10T03:00:02.615Z",
+      "completedAt": "2026-10-10T03:00:02.615Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-495f7a9f-cc91-496d-9eb2-f1e2b73ab2b7",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "SVG v1 交付状态",
+      "round": 0,
+      "text": "主模型已检查当前交付 SVG 的实际画面和完整代码。",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791601164455-70g9l9uv/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:50137/objects/1791601164455-70g9l9uv/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791601164455-70g9l9uv/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T03:00:02.615Z",
+      "completedAt": "2026-10-10T03:00:02.615Z",
+      "durationMs": 0,
+      "error": ""
+    }
+  ],
+  "criticMode": "visual_code",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 1,
+  "promptCharCount": 195,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [
+    {
+      "candidateId": 0,
+      "filename": "1791601164455-70g9l9uv/candidate-0.svg",
+      "objectKey": "1791601164455-70g9l9uv/candidate-0.svg",
+      "url": "http://127.0.0.1:50137/objects/1791601164455-70g9l9uv/candidate-0.svg",
+      "storage": "bucket",
+      "mimeType": "image/svg+xml",
+      "description": "Here is the detailed description for the illustrative figure, designed to strictly follow the methodology constraints and visual style requirements.\n\n**Figure Description:**\n\n**1. General Layout & Style:**\n*   **Canvas:** A wide rectangular canvas with a pure white background (`#FFFFFF`). No borders or grid lines.\n*   **Style:** Clean, modern scientific infographic style using flat vector graphics.\n*   **Color Palette:** Use a professional, muted scientific color scheme.\n    *   Primary Shape Fill: Very light pastel blue (`#E3F2FD`) or light gray (`#F5F5F5`) for the process boxes.\n    *   Border/Stroke: Medium-dark slate blue (`#455A64`) or charcoal gray (`#37474F`), 2px thickness.\n    *   Text Color: Dark gray/black (`#212121`) for high readability.\n    *   Arrow Color: Same as border color (`#455A64`).\n*   **Typography:** Use \"Noto Sans CJK SC\" for Chinese characters and \"Noto Sans Math\" or standard sans-serif for mathematical expressions. Font weight: Regular. Font size: Large enough to be clearly legible (e.g., 14-16pt for main labels).\n\n**2. Structural Elements (Left-to-Right Flow):**\nThe figure consists of three distinct stages connected by arrows, arranged horizontally from left to right. Each stage is represented by a rounded rectangle box.\n\n*   **Stage 1: Input (Left)**\n    *   **Shape:** A rounded rectangle with a light pastel fill and dark border.\n    *   **Content:** Centered text in Chinese: `样品输入` followed by a new line or parenthetical note: `(n=12)`.\n    *   **Position:** Aligned to the left third of the canvas, vertically centered.\n\n*   **Connector 1:**\n    *   **Shape:** A straight, horizontal arrow pointing right.\n    *   **Style:** Solid line, 2px thickness, matching the box border color. The arrowhead is a simple, filled triangle.\n    *   **Position:** Connects the right edge of Stage 1 to the left edge of Stage 2.\n\n*   **Stage 2: Processing (Center)**\n    *   **Shape:** A rounded rectangle identical in size and style to Stage 1.\n    *   **Content:** Centered text in Chinese: `数据标准化`. Below it, accurately rendered mathematical expression: `x / x₀`. Ensure the subscript '0' is properly formatted.\n    *   **Position:** Aligned to the center of the canvas, vertically centered.\n\n*   **Connector 2:**\n    *   **Shape:** A straight, horizontal arrow pointing right, identical to Connector 1.\n    *   **Position:** Connects the right edge of Stage 2 to the left edge of Stage 3.\n\n*   **Stage 3: Output (Right)**\n    *   **Shape:** A rounded rectangle identical in size and style to Stage 1 and 2.\n    *   **Content:** Centered text in Chinese: `结果输出` followed by a new line or parenthetical note: `(均值 1.0)`.\n    *   **Position:** Aligned to the right third of the canvas, vertically centered.\n\n**3. Specific Constraints & Details:**\n*   **No Extra Elements:** Do not add any other steps, decorative icons, background patterns, or numerical values not explicitly mentioned in the methodology.\n*   **Directionality:** The flow must be strictly Left → Right. No feedback loops or vertical connections.\n*   **Reference Identifier:** If a reference image was provided (though none is listed in `referenceRequirements`, the prompt mentions \"if provided\"), place the short identifier from the top-right corner of the reference image exactly in the top-right corner of this new figure. Since no reference is uploaded, omit this element unless a placeholder is strictly required by the system (in which case, leave blank). *Note: Based on the input `referenceRequirements: { mode: \"none\" }`, no identifier needs to be added.*\n*   **Mathematical Accuracy:** The expression `x / x₀` must be visually clear. Use standard mathematical notation styling.\n*   **Language:** All textual labels must be in Simplified Chinese as specified.\n\n**4. SVG Rendering Notes:**\n*   Use `<rect>` elements with `rx` and `ry` attributes for rounded corners.\n*   Use `<path>` or `<line>` with `<marker-end>` for arrows.\n*   Use `<text>` elements with `text-anchor=\"middle\"` for centering labels within boxes.\n*   Ensure no shadows, filters, or gradients are used (flat design only).",
+      "review": {
+        "limit": 1,
+        "roundsUsed": 1,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "5d46a17d1259a07f43221151d2f3dfbbc82b163fda1b2abd4aa2b30496979ead",
+            "pngHash": "6c1b263a3fb84e49e1a4e80517e63fc98bbe2d2bbd0ce3f309bd85b9c1ab1d43",
+            "status": "passed",
+            "submittedImageHash": "7e11be3f82ec3ec3148ccd4ee0413e48957c4b194c474df62317acbc1953d688",
+            "assessment": "{\"version\":1,\"svgHash\":\"5d46a17d1259a07f43221151d2f3dfbbc82b163fda1b2abd4aa2b30496979ead\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 1,
+        "deliveredSvgHash": "5d46a17d1259a07f43221151d2f3dfbbc82b163fda1b2abd4aa2b30496979ead",
+        "reviewedVersion": 1,
+        "reviewedSvgHash": "5d46a17d1259a07f43221151d2f3dfbbc82b163fda1b2abd4aa2b30496979ead",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      }
+    }
+  ],
+  "logs": [],
+  "error": "",
+  "createdAt": "2026-10-10T02:59:24.455Z",
+  "updatedAt": "2026-10-10T03:00:02.616Z",
+  "startedAt": "2026-10-10T02:59:24.455Z",
+  "completedAt": "2026-10-10T03:00:02.616Z"
+}

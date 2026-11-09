@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1005740</article-id>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-17-01003</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Education</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Chemical elements</subject><subj-group><subject>Sodium</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Systems biology</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Systems science</subject><subj-group><subject>Systems biology</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Systems science</subject><subj-group><subject>Systems biology</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Cell biology</subject><subj-group><subject>Cellular structures and organelles</subject><subj-group><subject>Cytoplasm</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Data visualization</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Polymer chemistry</subject><subj-group><subject>Macromolecules</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Science policy</subject><subj-group><subject>Science and technology workforce</subject><subj-group><subject>Careers in research</subject><subj-group><subject>Scientists</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>People and places</subject><subj-group><subject>Population groupings</subject><subj-group><subject>Professions</subject><subj-group><subject>Scientists</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biophysics</subject><subj-group><subject>Ion channels</subject><subj-group><subject>Sodium channels</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Physics</subject><subj-group><subject>Biophysics</subject><subj-group><subject>Ion channels</subject><subj-group><subject>Sodium channels</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Physiology</subject><subj-group><subject>Electrophysiology</subject><subj-group><subject>Ion channels</subject><subj-group><subject>Sodium channels</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Physiology</subject><subj-group><subject>Electrophysiology</subject><subj-group><subject>Ion channels</subject><subj-group><subject>Sodium channels</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Physiology</subject><subj-group><subject>Electrophysiology</subject><subj-group><subject>Neurophysiology</subject><subj-group><subject>Ion channels</subject><subj-group><subject>Sodium channels</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Physiology</subject><subj-group><subject>Electrophysiology</subject><subj-group><subject>Neurophysiology</subject><subj-group><subject>Ion channels</subject><subj-group><subject>Sodium channels</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Neurophysiology</subject><subj-group><subject>Ion channels</subject><subj-group><subject>Sodium channels</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Proteins</subject><subj-group><subject>Ion channels</subject><subj-group><subject>Sodium channels</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Network analysis</subject></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Quick tips for creating effective and impactful biological pathways using the Systems Biology Graphical Notation</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-4639-4431</contrib-id>
+<name name-style="western">
+<surname>Touré</surname>
+<given-names>Vasundra</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+<xref ref-type="fn" rid="currentaff001"><sup>¤</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-6309-7327</contrib-id>
+<name name-style="western">
+<surname>Le Novère</surname>
+<given-names>Nicolas</given-names>
+</name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-5886-5563</contrib-id>
+<name name-style="western">
+<surname>Waltemath</surname>
+<given-names>Dagmar</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0001-6105-2937</contrib-id>
+<name name-style="western">
+<surname>Wolkenhauer</surname>
+<given-names>Olaf</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Department of Systems Biology and Bioinformatics, University of Rostock, Rostock, Germany</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Babraham Institute, Babraham Research Campus, Cambridge, United Kingdom</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Stellenbosch Institute for Advanced Study (STIAS), Wallenberg Research Centre, Stellenbosch, South Africa</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Ouellette</surname>
+<given-names>Francis</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Genome Quebec, CANADA</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="current-aff" id="currentaff001">
+<label>¤</label>
+<p>Current address: Department of Biology, Norwegian University of Science and Technology (NTNU), Trondheim, Norway</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">vasundra.toure@ntnu.no</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>15</day>
+<month>2</month>
+<year>2018</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>2</month>
+<year>2018</year>
+</pub-date>
+<volume>14</volume>
+<issue>2</issue>
+<elocation-id>e1005740</elocation-id>
+<permissions>
+<copyright-year>2018</copyright-year>
+<copyright-holder>Touré et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1005740"/>
+<funding-group>
+<funding-statement>DW and VT were funded through the Federal Germany Ministry for Education and Research (BMBF) e:Bio program SBGN-ED+ (grant no. FKZ0316181, <ext-link ext-link-type="uri" xlink:href="http://bmbf.de/" xlink:type="simple">http://bmbf.de/</ext-link>). OW was funded through the Federal Germany Ministry for Education and Research (BMBF) as part of the ERASySApp Systeract project (FKZ031L0016B, <ext-link ext-link-type="uri" xlink:href="https://www.erasysapp.eu/" xlink:type="simple">https://www.erasysapp.eu/</ext-link>). NLN was funded through the Biotechnology and Biological Sciences Research Council (BBSRC) (grant no. BBS/E/B/000C0419, <ext-link ext-link-type="uri" xlink:href="http://www.bbsrc.ac.uk/" xlink:type="simple">http://www.bbsrc.ac.uk/</ext-link>). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="3"/>
+<table-count count="0"/>
+<page-count count="6"/>
+</counts>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>With the rise of Systems Biology, the research focus moved from studying a single biological object to studying an ensemble of objects in interaction. This ensemble can be described as a network delineating the biological aspects of a data item or as a map visually representing the network’s structure and behaviour [<xref ref-type="bibr" rid="pcbi.1005740.ref001">1</xref>]. Maps have proven useful to understand biological networks, and they are frequently drawn to visually support scientific facts in presentations and journal publications. Visual representations of biological facts thus play an important role in science communication, particularly for the interdisciplinary dialogue between experimental and theoretical groups. The comprehension of such maps in a journal publication relies either on lengthy legends or, more often, on the reader’s interpretation. This interpretation is largely based on context, prior knowledge, and assumptions about the intentions of the map designer. Common symbols help to unambiguously communicate facts.</p>
+<p>The Systems Biology Graphical Notation (SBGN, [<xref ref-type="bibr" rid="pcbi.1005740.ref002">2</xref>]) is an international, established, and widely used standard to reduce the ambiguity in representations of biological maps. The community standard provides sets of well-defined symbols, each of them with a specific biological meaning. For example, a round-corner rectangle in an SBGN map represents a macromolecule. The SBGN offers the following three complementary languages to visually describe the biology: SBGN Process Descriptions (SBGN PD [<xref ref-type="bibr" rid="pcbi.1005740.ref011">11</xref>]), SBGN Entity Relationships (SBGN ER [<xref ref-type="bibr" rid="pcbi.1005740.ref012">12</xref>]), and SBGN Activity Flows (SBGN AF [<xref ref-type="bibr" rid="pcbi.1005740.ref013">13</xref>]). Metabolic maps depicting detailed biochemical reactions, state transitions, and transport are best represented with SBGN PD. Nonmechanistic influences between biological entities, such as signaling pathways and regulatory networks, are best highlighted in SBGN AF. Finally, SBGN ER visualises independent interactions between biological entities without any temporal aspect. Maps in SBGN ER are therefore useful to avoid combinatorial explosions resulting from multicomponent complexes and molecules with multiple states.</p>
+<p>SBGN is supported by a range of visualisation tools, including CellDesigner [<xref ref-type="bibr" rid="pcbi.1005740.ref005">5</xref>], SBGN-Editor (SBGN-ED) [<xref ref-type="bibr" rid="pcbi.1005740.ref006">6</xref>], PathVisio [<xref ref-type="bibr" rid="pcbi.1005740.ref007">7</xref>] and SBGNViz [<xref ref-type="bibr" rid="pcbi.1005740.ref008">8</xref>]. SBGN diagrams are published in open repositories such as BioModels [<xref ref-type="bibr" rid="pcbi.1005740.ref009">9</xref>] (for computational models) and Reactome [<xref ref-type="bibr" rid="pcbi.1005740.ref010">10</xref>] (for pathway data). To help scientists understand SBGN maps, the SBGN community provides detailed specification documents, software libraries [<xref ref-type="bibr" rid="pcbi.1005740.ref003">3</xref>], and online learning materials (<ext-link ext-link-type="uri" xlink:href="http://sbgn.github.io/sbgn/" xlink:type="simple">http://sbgn.github.io/sbgn/</ext-link>). The benefits of having a network represented in SBGN can be summarised as: providing consistent syntax and unambiguous semantics of your visual representation [<xref ref-type="bibr" rid="pcbi.1005740.ref003">3</xref>, <xref ref-type="bibr" rid="pcbi.1005740.ref004">4</xref>]; improving shareability, reusability, and reproducibility of your network [<xref ref-type="bibr" rid="pcbi.1005740.ref002">2</xref>]; and enabling conversion of a visual network into an executable mathematical model [<xref ref-type="bibr" rid="pcbi.1005740.ref005">5</xref>].</p>
+<p>The creation of expressive and impactful SBGN maps requires some exercise. In the following, we share our experiences with creating SBGN maps. We offer guidelines and hints to scientists who wish to beautify and export their biological networks in SBGN. When reading the tips, please keep in mind that SBGN is a flexible standard. The provided tips should be considered as recommendations—your map will not be wrong if you do not follow them, but hopefully it will gain more impact.</p>
+</sec>
+<sec id="sec002">
+<title>Guidelines</title>
+<sec id="sec003">
+<title>Tip 1. Know the message your network should convey</title>
+<p>The scientific question you want to address should be clear, as should the message you want to communicate to the reader. Specifying your message will help you choose what to omit, what to represent, and how to represent it. For example, when representing a network, you should think about the type of pathway you want to model: Do you want to say that phosphoinositide 3-Kinase (PI3K) activates protein kinase B (AKT, signaling information), or do you want to say that PI3K transforms phosphatidylinositol 4,5-bisphosphate (PIP2) into phosphatidylinositol (3,4,5)-trisphosphate (PIP3) and that PIP3 binds to AKT (metabolic information)? The understanding of the network’s biochemical and biophysical organisation will help you structure the map, and SBGN helps you to sketch it out.</p>
+</sec>
+<sec id="sec004">
+<title>Tip 2. Know your audience</title>
+<p>Keep your target audience in mind: different readers perceive different messages and focus on different aspects of a network. For example, a biochemist will generally be interested in a detailed map highlighting biological entities (e.g., macromolecules depicted in an SBGN PD map) and their interactions; whereas a cancer researcher will be concerned about mechanisms and feedback loops that occur in a specific cell type (depicted in SBGN AF notation). To ensure the successful transmission of your message, identify your audience and adapt the network's representation accordingly. Ask yourself: What do they know and what do they not know? What are they interested in? This will lead you to determine the most appropriate level of representation to visualise your network.</p>
+</sec>
+<sec id="sec005">
+<title>Tip 3. Choose the right SBGN language</title>
+<p>Design your map in a reasonable level of detail. <xref ref-type="fig" rid="pcbi.1005740.g001">Fig 1</xref> shows one biological system represented with glyphs from the three SBGN languages. In SBGN PD, we represent the fact that the depolarisation of the membrane triggers the opening of the sodium ion (Na+) channel, which enables the import of Na+ from the extracellular space to the cytoplasm. In SBGN ER, the depolarisation stimulates the assignment of value “true” to the state “open” of the Na+ channel, necessary to stimulate the relocation of Na+ into the cytoplasm. In SBGN AF, a cascade of signals is shown where the depolarisation stimulates the activity of Na+ channels, which in turn, is necessary to stimulate the activity of Na+ in the cytoplasm. For more details about the symbols used, please refer to the SBGN reference cards (<ext-link ext-link-type="uri" xlink:href="http://sbgn.github.io/sbgn/templates" xlink:type="simple">http://sbgn.github.io/sbgn/templates</ext-link>). Deciding what knowledge to transport through your map will guide you in choosing the right SBGN flavour.</p>
+<fig id="pcbi.1005740.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005740.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Three different SBGN representations of Na+ transport into the cytoplasm by voltage-dependant channels.</title>
+<p>(a), The depolarisation (“perturbation” symbol) of the membrane triggers (“stimulation” symbol, arrow with white head) the opening of the Na+ channel, which enables the import of Na+ from the extracellular space to the cytoplasm. Each sodium channel glyph contains a “unit of information” glyph (rectangle at the top left) that gives information about the conformational state of the channel. (b), The depolarisation stimulates the assignment of value “true” to the state “open” of the Na+ channel. This value is necessary to stimulate (“necessary stimulation” symbol, arrow with white head and a vertical line) the relocation of Na+ into the cytoplasm. (c), A cascade of signals is represented where the depolarisation stimulates the activity of Na+ channels, which in turn, is necessary to stimulate the activity of Na+ in the cytoplasm. Na+, sodium ion; SBGN, Systems Biology Graphical Notation.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005740.g001" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec006">
+<title>Tip 4. Define components and interactions in the network</title>
+<p>List the reactions constituting your network and carefully choose the names of the biological components that will be displayed as labels in the SBGN nodes. The suitable SBGN glyph to represent a biological component can be chosen by using either the reference cards (<ext-link ext-link-type="uri" xlink:href="http://sbgn.github.io/sbgn/templates" xlink:type="simple">http://sbgn.github.io/sbgn/templates</ext-link>), the information provided by your SBGN-compliant software, or the information given in the language specifications. For example, if your component is a protein, you may use the SBGN macromolecule glyph depicted on the reference card for SBGN PD. Once your biological components are mapped on SBGN glyphs, you should choose appropriate arcs to link the components together and build the connectivity of your network.</p>
+</sec>
+<sec id="sec007">
+<title>Tip 5. Select the right level of granularity for your map</title>
+<p>A network can be visualised at different levels of detail, as exemplified in <xref ref-type="fig" rid="pcbi.1005740.g002">Fig 2</xref>.</p>
+<fig id="pcbi.1005740.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005740.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Representation of energy storage by the ATP synthase at different levels of detail from the more abstract layer (left) to the more detailed layer (right).</title>
+<p>In the first diagram, the nature of the entities is unspecified (oval shaped glyphs) and the modulation is of unknown direction. The second diagram is more detailed with a macromolecule “ATP synthase” that stimulates the reaction consuming the simple chemicals “ADP” and “Pi” to produce the simple chemical “ATP.” In the third diagram, the ATP glyph has been substituted by a complex, making the diagram even more precise. Finally, the forth diagram highlights an identified complex catalysing the synthesis of a simple chemical. ADP, adenosine diphosphate; Pi, inorganic phosphate.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005740.g002" xlink:type="simple"/>
+</fig>
+<p>The SBGN does not tell you how to represent a system, but tells your readers how to interpret what you have drawn. It is important to be as specific as you can be about the encoded biology without diluting your message. In particular, omitted information might make it hard for others to interpret your network and hence, to understand your message. At the same time, the right level of abstraction must be chosen for the important parts of your network to stand out to the readers.</p>
+</sec>
+<sec id="sec008">
+<title>Tip 6. Design your SBGN map</title>
+<p>A careful design of your SBGN map could provide additional biological information on top of your network. Start by creating the components and their interactions (as mentioned in Tip 4), then add necessary information in respect to Tip 5.</p>
+<p>A good layout improves the readability of your network and can also speed up interpretation, in particular if you followed Tip 2. For instance, people working on signaling pathways generally put the plasma membrane on the top of a map and the nucleus on the bottom, with the main flow of information going downward. You can either apply an automatic layout provided by the software tool, or create the layout manually. A manual layout may be time-consuming, but the result will highlight your message better (Tip 1). Often, a combination of a an automatic layout with a manual enhancement leads to the most satisfying results.</p>
+</sec>
+<sec id="sec009">
+<title>Tip 7. Beautify your SBGN map</title>
+<p>Our eye catches and our brain focuses on things we find attractive. Therefore, your map should be visually appealing to your audience if you expect others to look into the details of your work. Although such graphical characteristics are neither covered nor regulated by the SBGN, add carefully chosen colors, adapt the label fonts and the size of the symbol to the components, and keep arc lengths short, etc. To limit the number of crossing arcs, make use of clone markers to duplicate “hub nodes.” This will help break up the pathway and clear the visualisation, as shown in <xref ref-type="fig" rid="pcbi.1005740.g003">Fig 3</xref>. Beautify your network so people want to look at it!</p>
+<fig id="pcbi.1005740.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005740.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Example of the <italic>Drosophila</italic> cell cycle initial SBGN drawing (left) and beautified SBGN network (right).</title>
+<p>We generated the SBGN map of the following study “Dynamical modeling of syncytial mitotic cycles in <italic>Drosophila</italic> embryos” by Calzone et al. [<xref ref-type="bibr" rid="pcbi.1005740.ref016">16</xref>, <xref ref-type="bibr" rid="pcbi.1005740.ref017">17</xref>]. First, we created an initial map with the different reactions found in the <italic>Drosophila</italic> cell cycle. Then we beautified the map by duplicating FZY with clone markers in order to reduce edge crossings, adding colors, and optimising arc positions. The colors categorise the different reactions: green processes represent creation or degradation of entities (“source and sink”) and grey processes show import and export of entities between compartments. The red processes and arcs visualise the positive feedback exerted by the MPF. The purple processes highlight the switch between the activation and the inactivation of MPF. FZY, fizzy; MPF, maturation promoting factor; SBGN, Systems Biology Graphical Notation.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005740.g003" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec010">
+<title>Tip 8. Manage your SBGN map and its content</title>
+<p>When satisfied with the map you designed, save it in different formats. To be able to edit the map in the future, save it in the richest source format recognised by the software (e.g., Inkscape Scalable Vector Graphics (SVG) for Inkscape, or SBML with CellDesigner extension for CellDesigner). To ensure that your readers can view your map as you designed it, a raster file format (an image made up of pixels) such as Portable Network Graphics (PNG) is probably the best, or a vector format such as Portable Document Format (PDF) for a zoomable image. Finally, save the formal representation of your map in the SBGN Markup Language (SBGN-ML) format to increase compatibility between editor and viewer software (see <xref ref-type="supplementary-material" rid="pcbi.1005740.s002">S1 Supporting information</xref> for the SBGN-ML files of the figures). SBGN-ML is an Extensible Markup Language (XML)-based format specifically designed to store and exchange SBGN maps [<xref ref-type="bibr" rid="pcbi.1005740.ref003">3</xref>]. By providing your map in several formats, your work will be shareable and reusable by machines and by humans.</p>
+</sec>
+<sec id="sec011">
+<title>Tip 9. Link the original data to your SBGN map</title>
+<p>When publishing your data, provide the SBGN visualisations saved in formats as described in Tip 8, and link them to your original data, whether the data is a model, a publication, a data set, or other. It will benefit your work and help the readers to understand your network. You can, for instance, build a Computational Modeling in Biology Network (COMBINE) archive, a container format that facilitates the sharing and reproducibility of Systems Biology projects [<xref ref-type="bibr" rid="pcbi.1005740.ref014">14</xref>]. By using the web-based CombineArchive tool [<xref ref-type="bibr" rid="pcbi.1005740.ref015">15</xref>], you can easily and quickly create a COMBINE archive by uploading and packing all files relevant to the study, among which the newly generated SBGN file.</p>
+</sec>
+<sec id="sec012">
+<title>Tip 10. Seek help from the SBGN community</title>
+<p>The SBGN editorial board provides and maintains guidelines, tutorials, and examples on their homepage (see <xref ref-type="supplementary-material" rid="pcbi.1005740.s001">S1 Table</xref> for a list of useful links). Feedback can be requested and questions can be asked on the SBGN mailing lists for end-users and developers (<ext-link ext-link-type="uri" xlink:href="http://sbgn.github.io/sbgn/contact" xlink:type="simple">http://sbgn.github.io/sbgn/contact</ext-link>). The SBGN community is an extremely diverse and well-established community of computational biologists, modelers, computer scientists, and scientists from related fields. There will always be people willing to help, and questions are in general answered quickly. Remember, if you asked yourself a question, someone probably wondered the same before, so don’t be shy!</p>
+</sec>
+</sec>
+<sec id="sec013" sec-type="conclusions">
+<title>Conclusions</title>
+<p>A structured, standardised, and eye-catching map tremendously improves the readability and the reusability of your work. Communication will be more effective and your message will be passed successfully. Please consider providing your next network in SBGN!</p>
+</sec>
+<sec id="sec014">
+<title>Supporting information</title>
+<supplementary-material id="pcbi.1005740.s001" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005740.s001" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>SBGN online resources.</title>
+<p>This table provides a list of links that are useful for working with the SBGN standard. SBGN, Systems Biology Graphical Notation.</p>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005740.s002" mimetype="application/zip" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005740.s002" xlink:type="simple">
+<label>S1 Supporting information</label>
+<caption>
+<title>Compressed SBGN-ML documents.</title>
+<p>This compressed zip file contains the SBGN-ML documents generated for the three figures presented in the quick tips. SBGN-ML, Systems Biology Graphical Notation Markup Language.</p>
+<p>(ZIP)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1005740.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gehlenborg</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>O'Donoghue</surname> <given-names>SI</given-names></name>, <name name-style="western"><surname>Baliga</surname> <given-names>NS</given-names></name>, <name name-style="western"><surname>Goesmann</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Hibbs</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Kitano</surname> <given-names>H</given-names></name>, <etal>et al</etal>. <article-title>Visualization of omics data for systems biology</article-title>. <source>Nature Methods</source>. <year>2010</year> <month>Mar</month> <day>1</day>;<volume>7</volume>:<fpage>S56</fpage>–<lpage>68</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nmeth.1436" xlink:type="simple">10.1038/nmeth.1436</ext-link></comment> <object-id pub-id-type="pmid">20195258</object-id></mixed-citation></ref>
+<ref id="pcbi.1005740.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Le Novère</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Hucka</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Mi</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Moodie</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Schreiber</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Sorokin</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>The Systems Biology Graphical Notation</article-title>. <source>Nature Biotechnology</source>. <year>2009</year> <month>Aug</month> <day>1</day>;<volume>27</volume>(<issue>8</issue>):<fpage>735</fpage>–<lpage>41</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nbt.1558" xlink:type="simple">10.1038/nbt.1558</ext-link></comment> <object-id pub-id-type="pmid">19668183</object-id></mixed-citation></ref>
+<ref id="pcbi.1005740.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Van Iersel</surname> <given-names>MP</given-names></name>, <name name-style="western"><surname>Villéger</surname> <given-names>AC</given-names></name>, <name name-style="western"><surname>Czauderna</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Boyd</surname> <given-names>SE</given-names></name>, <name name-style="western"><surname>Bergmann</surname> <given-names>FT</given-names></name>, <name name-style="western"><surname>Luna</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>Software support for SBGN maps: SBGN-ML and LibSBGN</article-title>. <source>Bioinformatics</source>. <year>2012</year> <month>Aug</month> <day>1</day>;<volume>28</volume>(<issue>15</issue>):<fpage>2016</fpage>–<lpage>21</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/bioinformatics/bts270" xlink:type="simple">10.1093/bioinformatics/bts270</ext-link></comment> <object-id pub-id-type="pmid">22581176</object-id></mixed-citation></ref>
+<ref id="pcbi.1005740.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Matsuoka</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Ghosh</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Kitano</surname> <given-names>H</given-names></name>. <article-title>Consistent design schematics for biological systems: standardization of representation in biological engineering</article-title>. <source>Journal of The Royal Society Interface</source>. <year>2009</year> <month>Jun</month> <day>3</day>;<fpage>rsif20090046</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1005740.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Matsuoka</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Funahashi</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Ghosh</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Kitano</surname> <given-names>H</given-names></name>. <article-title>Modeling and simulation using CellDesigner</article-title>. <source>Transcription Factor Regulatory Networks: Methods and Protocols</source>. <year>2014</year> <month>May</month> <day>6</day>;<volume>1164</volume>:<fpage>121</fpage>–<lpage>45</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1005740.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Czauderna</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Klukas</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Schreiber</surname> <given-names>F</given-names></name>. <article-title>Editing, validating and translating of SBGN maps</article-title>. <source>Bioinformatics</source>. <year>2010</year> <month>Sep</month> <day>15</day>;<volume>26</volume>(<issue>18</issue>):<fpage>2340</fpage>–<lpage>1</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/bioinformatics/btq407" xlink:type="simple">10.1093/bioinformatics/btq407</ext-link></comment> <object-id pub-id-type="pmid">20628075</object-id></mixed-citation></ref>
+<ref id="pcbi.1005740.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kutmon</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>van Iersel</surname> <given-names>MP</given-names></name>, <name name-style="western"><surname>Bohler</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Kelder</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Nunes</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Pico</surname> <given-names>AR</given-names></name>, <etal>et al</etal>. <article-title>PathVisio 3: an extendable pathway analysis toolbox</article-title>. <source>PLoS Comput Biol</source>. <year>2015</year> <month>Feb</month> <day>23</day>;<volume>11</volume>(<issue>2</issue>):<fpage>e1004085</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pcbi.1004085" xlink:type="simple">10.1371/journal.pcbi.1004085</ext-link></comment> <object-id pub-id-type="pmid">25706687</object-id></mixed-citation></ref>
+<ref id="pcbi.1005740.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sari</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Bahceci</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Dogrusoz</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Sumer</surname> <given-names>SO</given-names></name>, <name name-style="western"><surname>Aksoy</surname> <given-names>BA</given-names></name>, <name name-style="western"><surname>Babur</surname> <given-names>Ö</given-names></name>, <etal>et al</etal>. <article-title>SBGNViz: a tool for visualization and complexity management of SBGN process description maps</article-title>. <source>PLoS ONE</source>. <year>2015</year> <month>Jun</month> <day>1</day>;<volume>10</volume>(<issue>6</issue>):<fpage>e0128985</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pone.0128985" xlink:type="simple">10.1371/journal.pone.0128985</ext-link></comment> <object-id pub-id-type="pmid">26030594</object-id></mixed-citation></ref>
+<ref id="pcbi.1005740.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Donizelli</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Rodriguez</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Dharuri</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Endler</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Chelliah</surname> <given-names>V</given-names></name>, <etal>et al</etal>. <article-title>BioModels Database: An enhanced, curated and annotated resource for published quantitative kinetic models</article-title>. <source>BMC Systems Biology</source>. <year>2010</year> <month>Jun</month> <day>29</day>;<volume>4</volume>(<issue>1</issue>):<fpage>92</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1005740.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Croft</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>O’Kelly</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Wu</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Haw</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Gillespie</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Matthews</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>Reactome: a database of reactions, pathways and biological processes</article-title>. <source>Nucleic Acids Research</source>. <year>2010</year> <month>Nov</month> <day>9</day>;<fpage>gkq1018</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1005740.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Moodie</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Le Novère</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Demir</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Mi</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Villeger</surname> <given-names>A</given-names></name>. <article-title>Systems Biology Graphical Notation: process description language level 1 version 1.3</article-title>. <source>Journal of Integrative Bioinformatics</source>. <year>2015</year> <month>Jun</month> <day>1</day>;<volume>12</volume>(<issue>2</issue>):<fpage>213</fpage>–<lpage>80</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1515/jib-2015-263" xlink:type="simple">10.1515/jib-2015-263</ext-link></comment> <object-id pub-id-type="pmid">29220962</object-id></mixed-citation></ref>
+<ref id="pcbi.1005740.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sorokin</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Le Novère</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Luna</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Czauderna</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Demir</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Haw</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>Systems Biology Graphical Notation: entity relationship language level 1 version 2</article-title>. <source>Journal of Integrative Bioinformatics</source>. <year>2015</year> <month>Jun</month> <day>1</day>;<volume>12</volume>(<issue>2</issue>):<fpage>281</fpage>–<lpage>339</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1515/jib-2015-264" xlink:type="simple">10.1515/jib-2015-264</ext-link></comment> <object-id pub-id-type="pmid">29220959</object-id></mixed-citation></ref>
+<ref id="pcbi.1005740.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mi</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Schreiber</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Moodie</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Czauderna</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Demir</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Haw</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>Systems Biology Graphical Notation: activity flow language level 1 version 1.2</article-title>. <source>Journal of Integrative Bioinformatics</source>. <year>2015</year> <month>Jun</month> <day>1</day>;<volume>12</volume>(<issue>2</issue>):<fpage>340</fpage>–<lpage>81</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1515/jib-2015-265" xlink:type="simple">10.1515/jib-2015-265</ext-link></comment> <object-id pub-id-type="pmid">29220968</object-id></mixed-citation></ref>
+<ref id="pcbi.1005740.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bergmann</surname> <given-names>FT</given-names></name>, <name name-style="western"><surname>Adams</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Moodie</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Cooper</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Glont</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Golebiewski</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>COMBINE archive and OMEX format: one file to share all information to reproduce a modeling project</article-title>. <source>BMC Bioinformatics</source>. <year>2014</year> <month>Dec</month> <day>14</day>;<volume>15</volume>(<issue>1</issue>):<fpage>369</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1005740.ref015"><label>15</label><mixed-citation publication-type="other" xlink:type="simple">Scharm M, Wendland F, Peters M, Wolfien M, Theile T, Waltemath D. The CombineArchiveWeb applications–A web based tool to handle files associated with modelling results. Proceedings of the 7th International Workshop on Semantic Web Applications and Tools for Life Sciences (SWAT4LS); Berlin, Germany, December 9–11, 2014.</mixed-citation></ref>
+<ref id="pcbi.1005740.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Calzone</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Thieffry</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Tyson</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Novak</surname> <given-names>B</given-names></name>. <article-title>Dynamical modeling of syncytial mitotic cycles in Drosophila embryos</article-title>. <source>Molecular Systems Biology</source>. <year>2007</year> <month>Jan</month> <day>1</day>;<volume>3</volume>(<issue>1</issue>):<fpage>131</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1005740.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Scharm</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Waltemath</surname> <given-names>D</given-names></name>. <article-title>A fully featured COMBINE archive of a simulation study on syncytial mitotic cycles in Drosophila embryos</article-title>. <source>F1000Research</source>. <year>2016</year>;<volume>5</volume>:<fpage>2421</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.12688/f1000research.9379.1" xlink:type="simple">10.12688/f1000research.9379.1</ext-link></comment> <object-id pub-id-type="pmid">27830063</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

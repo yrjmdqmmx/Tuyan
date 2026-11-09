@@ -1,0 +1,371 @@
+{
+  "registryVersion": "2026-10-16.v34",
+  "checkedAt": "2026-10-16",
+  "newPaused": [
+    {
+      "provider": "runware",
+      "id": "deepseek:v4@flash",
+      "evidence": [
+        "https://runware.ai/docs/models/index.json",
+        "https://runware.ai/docs/models/deepseek-v4-flash",
+        "https://runware.ai/docs/models/deepseek-v4-flash/schema.json"
+      ],
+      "reason": "完整托管索引无精确 ID；专页及 schema 均为 404，暂停该渠道身份，不推断其他渠道。"
+    }
+  ],
+  "falRecoveredByExactQuery": [
+    "fal-ai/bytedance/seedream/v5/lite/edit",
+    "blackforestlabs/flux-3/klein/base/text-to-image",
+    "imagineart/imagineart-2.0-preview/text-to-image"
+  ],
+  "newScheduledOpenAI": [
+    "gpt-4o-2024-08-06",
+    "gpt-4o-2024-11-20",
+    "gpt-4o-mini-2024-07-18",
+    "gpt-4.1-2025-04-14",
+    "gpt-4.1-mini-2025-04-14",
+    "gpt-5.3-codex",
+    "gpt-5.4-nano",
+    "gpt-5.1"
+  ],
+  "statusCounts": {
+    "暂停选择与调用": 18,
+    "已到停用日期": 82,
+    "预告停用，尚未到期": 72,
+    "目录排除（保留历史调用拦截）": 14
+  },
+  "channels": [
+    {
+      "provider": "openrouter",
+      "access": "public",
+      "catalogState": "ready",
+      "scope": "文本与独立图像目录",
+      "lifecycleCounts": {
+        "暂停选择与调用": 11,
+        "预告停用，尚未到期": 16
+      },
+      "source": "https://openrouter.ai/docs/api-reference/models/get-models",
+      "availabilityEvidence": "公开目录与精确 ID 核对；目录故障保留已知结果"
+    },
+    {
+      "provider": "tokendance",
+      "access": "public",
+      "catalogState": "partial",
+      "scope": "",
+      "lifecycleCounts": {
+        "暂停选择与调用": 4,
+        "预告停用，尚未到期": 2
+      },
+      "source": "https://tokendance.space/gateway/v1/models",
+      "availabilityEvidence": "公开目录与精确 ID 核对；目录故障保留已知结果"
+    },
+    {
+      "provider": "fal",
+      "access": "public",
+      "catalogState": "partial",
+      "scope": "public-hosted",
+      "lifecycleCounts": {},
+      "source": "https://fal.ai/docs/platform-apis/v1/models",
+      "availabilityEvidence": "公开目录与精确 ID 核对；目录故障保留已知结果"
+    },
+    {
+      "provider": "runware",
+      "access": "public",
+      "catalogState": "ready",
+      "scope": "public-hosted",
+      "lifecycleCounts": {
+        "暂停选择与调用": 1,
+        "预告停用，尚未到期": 4,
+        "已到停用日期": 1
+      },
+      "source": "https://runware.ai/docs/models-api/model-schemas",
+      "availabilityEvidence": "公开目录与精确 ID 核对；目录故障保留已知结果"
+    },
+    {
+      "provider": "novita",
+      "access": "public",
+      "catalogState": "ready",
+      "scope": "public-llm",
+      "lifecycleCounts": {},
+      "source": "https://novita.ai/docs/api-reference/model-apis-llm-list-models",
+      "availabilityEvidence": "公开目录与精确 ID 核对；目录故障保留已知结果"
+    },
+    {
+      "provider": "openai",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {
+        "预告停用，尚未到期": 42,
+        "已到停用日期": 1
+      },
+      "source": "https://developers.openai.com/api/reference/resources/models/methods/list",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "anthropic",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {
+        "预告停用，尚未到期": 1
+      },
+      "source": "https://platform.claude.com/docs/en/api/models/list",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "gemini",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {
+        "预告停用，尚未到期": 1
+      },
+      "source": "https://ai.google.dev/api/models",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "deepseek",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {
+        "暂停选择与调用": 2
+      },
+      "source": "https://api-docs.deepseek.com/api/list-models",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "kimi",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {},
+      "source": "https://platform.kimi.com/docs/api/list-models",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "siliconflow",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {
+        "已到停用日期": 5
+      },
+      "source": "https://docs.siliconflow.com/en/api-reference/models/get-model-list",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "mistral",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {
+        "预告停用，尚未到期": 1,
+        "已到停用日期": 1
+      },
+      "source": "https://docs.mistral.ai/api/endpoint/models",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "together",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {
+        "已到停用日期": 2,
+        "目录排除（保留历史调用拦截）": 1
+      },
+      "source": "https://docs.together.ai/reference/models",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "fireworks",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "默认读取 fireworks 托管模型；填写账户 ID 可读取该账户模型",
+      "lifecycleCounts": {},
+      "source": "https://docs.fireworks.ai/api-reference/list-models",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "xai",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {
+        "预告停用，尚未到期": 1,
+        "目录排除（保留历史调用拦截）": 8
+      },
+      "source": "https://docs.x.ai/developers/rest-api-reference/inference/models",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "minimax",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {},
+      "source": "https://platform.minimax.io/docs/api-reference/models/openai/list-models",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "stepfun",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {
+        "已到停用日期": 2
+      },
+      "source": "https://platform.stepfun.com/docs/zh/api-reference/models/list",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "tokenhub",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {
+        "预告停用，尚未到期": 2,
+        "已到停用日期": 3
+      },
+      "source": "https://cloud.tencent.com/document/product/1823/130078",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "xiaomi",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {
+        "预告停用，尚未到期": 2
+      },
+      "source": "https://mimo.mi.com/docs/en-US/api/model/list-models",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "qianfan",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {
+        "已到停用日期": 7
+      },
+      "source": "https://cloud.baidu.com/doc/qianfan-api/s/Dmba8k71y",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "longcat",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {},
+      "source": "https://longcat.chat/platform/docs/zh/api/models.html",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "replicate",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "",
+      "lifecycleCounts": {},
+      "source": "https://replicate.com/docs/reference/http/#models.list",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "bailian",
+      "access": "workspace",
+      "catalogState": "needs-configuration",
+      "scope": "北京目录需要业务空间 ID；不会把中国区密钥发送到海外区域",
+      "lifecycleCounts": {
+        "已到停用日期": 60,
+        "目录排除（保留历史调用拦截）": 1
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/list-models",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "ark",
+      "access": "control-plane",
+      "catalogState": "needs-configuration",
+      "scope": "目录管理使用 AccessKey/SecretKey；推理 API Key 不能替代管理凭据",
+      "lifecycleCounts": {
+        "目录排除（保留历史调用拦截）": 4
+      },
+      "source": "https://docs.volcengine.com/docs/ark/list-foundation-models-api?lang=zh",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "sensenova",
+      "access": "control-plane",
+      "catalogState": "needs-configuration",
+      "scope": "旧版目录需要 SenseCore JWT，不能套用 token.sensenova.cn 的推理密钥",
+      "lifecycleCounts": {},
+      "source": "https://console.sensecore.cn/micro/help/docs/model-as-a-service/nova/overview/Models/GetModelList/",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "zhipu",
+      "access": "documents",
+      "catalogState": "documents",
+      "scope": "官方接口索引未列出模型目录 API，按具体型号文档核查",
+      "lifecycleCounts": {},
+      "source": "https://docs.bigmodel.cn/llms.txt",
+      "availabilityEvidence": "按已取得的官方型号/API 文档及公告核对，不从缺失枚举接口推断已下架"
+    },
+    {
+      "provider": "recraft",
+      "access": "documents",
+      "catalogState": "documents",
+      "scope": "官方未提供已确认的模型枚举接口",
+      "lifecycleCounts": {},
+      "source": "https://www.recraft.ai/docs/llms.txt",
+      "availabilityEvidence": "按已取得的官方型号/API 文档及公告核对，不从缺失枚举接口推断已下架"
+    },
+    {
+      "provider": "bfl",
+      "access": "documents",
+      "catalogState": "documents",
+      "scope": "按具体模型的生成与编辑接口核查，未确认目录 API",
+      "lifecycleCounts": {},
+      "source": "https://docs.bfl.ai/llms.txt",
+      "availabilityEvidence": "按已取得的官方型号/API 文档及公告核对，不从缺失枚举接口推断已下架"
+    },
+    {
+      "provider": "stability",
+      "access": "key",
+      "catalogState": "needs-key",
+      "scope": "此接口仅枚举 v1 引擎；v2 模型按各自文档保留",
+      "lifecycleCounts": {},
+      "source": "https://platform.stability.ai/docs/api-reference#tag/v1generation",
+      "availabilityEvidence": "已记录的官方停用公告生效；本轮未提供账户或管理凭据，不能宣称该账户目录已完整核验"
+    },
+    {
+      "provider": "ideogram",
+      "access": "documents",
+      "catalogState": "documents",
+      "scope": "官方未提供已确认的模型枚举接口",
+      "lifecycleCounts": {},
+      "source": "https://developer.ideogram.ai/api-reference/api-reference",
+      "availabilityEvidence": "按已取得的官方型号/API 文档及公告核对，不从缺失枚举接口推断已下架"
+    },
+    {
+      "provider": "iflytek",
+      "access": "documents",
+      "catalogState": "documents",
+      "scope": "按模型及独立服务接口核查，未确认统一目录 API",
+      "lifecycleCounts": {},
+      "source": "https://www.xfyun.cn/doc/spark/Web.html",
+      "availabilityEvidence": "按已取得的官方型号/API 文档及公告核对，不从缺失枚举接口推断已下架"
+    },
+    {
+      "provider": "antling",
+      "access": "documents",
+      "catalogState": "documents",
+      "scope": "未找到可用于现有接入凭据的官方模型枚举接口",
+      "lifecycleCounts": {},
+      "source": "https://www.tbox.cn/",
+      "availabilityEvidence": "按已取得的官方型号/API 文档及公告核对，不从缺失枚举接口推断已下架"
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import { mkdtemp, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import test from 'node:test';
+import { createHash } from 'node:crypto';
 
 let publisher = {};
 try {
@@ -29,18 +30,26 @@ test('publishes one canonical skill source as a complete well-known bundle', asy
     'references/client-installation.md',
     'references/offline-snapshot.v1.json',
     'references/paperbanana-bench.md',
+    'references/journal-rules.md',
+    'references/runtime-licenses.txt',
     'scripts/finalize-output-bundle.mjs',
     'scripts/retrieve-paperbanana-bench.mjs',
     'scripts/verify-paperbanana-bench.mjs',
+    'scripts/knowledge-runtime.mjs',
+    'scripts/prepare-knowledge.mjs',
   ]);
 
   for (const path of skill.files) {
+    assert.equal(createHash('sha256').update(await readFile(join(outputRoot, '.well-known', 'skills', skill.name, path))).digest('hex'), skill.fileHashes[path]);
     assert.equal(
       await readFile(join(outputRoot, '.well-known', 'skills', skill.name, path), 'utf8'),
       await readFile(join(sourceRoot, path), 'utf8'),
       `${path} must be copied byte-for-byte from the canonical source`,
     );
   }
+  const snapshot = JSON.parse(await readFile(join(sourceRoot, 'references/offline-snapshot.v1.json'), 'utf8'));
+  assert.equal(skill.knowledgeHash, snapshot.manifest.knowledgeHash);
+  assert.equal(skill.journalVersion, snapshot.manifest.journalVersion);
 });
 
 test('published index description matches SKILL.md frontmatter', async () => {

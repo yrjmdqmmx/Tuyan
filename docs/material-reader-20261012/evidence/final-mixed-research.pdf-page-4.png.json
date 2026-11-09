@@ -1,0 +1,29 @@
+{
+  "filename": "mixed-research.pdf",
+  "format": "pdf",
+  "operation": {
+    "op": "render",
+    "pages": [
+      4
+    ]
+  },
+  "status": "read",
+  "warnings": [],
+  "chunks": [
+    {
+      "page": 4,
+      "text": "Complex table: merged group header, exact saved values\nMerged header: observations (original values, samples)\nGroup   Measure A   Measure B\nControl   35   12\nTreatment   21   9 ",
+      "warning": "文字顺序和表格结构以整页画面核对；坐标为 PDF 原始坐标。"
+    }
+  ],
+  "images": [
+    {
+      "page": 4,
+      "mimeType": "image/png",
+      "sha256": "f753719a7d0fdb3da1fdcfc93e21390f0a09882b2a79406c25f1541f4e70ba4b",
+      "renderer": "PDFium 2.1.13, whole page",
+      "width": 1224,
+      "height": 1584
+    }
+  ]
+}

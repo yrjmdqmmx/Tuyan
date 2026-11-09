@@ -1,0 +1,97 @@
+{
+  "qianfan/deepseek-v4.1-flash-1017": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+    "checkedAt": "2026-10-19",
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-v4.1-flash-1017"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    },
+    "catalogSource": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-10-19",
+      "status": "public-price-not-bill",
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "高峰时段：8:00-22:00",
+          "amount": "0.002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "高峰时段：8:00-22:00",
+          "amount": "0.00004",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "高峰时段：8:00-22:00",
+          "amount": "0.008",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入",
+          "condition": "空闲时段：22:00-次日8:00",
+          "amount": "0.001",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "空闲时段：22:00-次日8:00",
+          "amount": "0.00002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "空闲时段：22:00-次日8:00",
+          "amount": "0.004",
+          "unit": "元/千tokens"
+        }
+      ],
+      "caveat": "按官网该精确型号与原始时段记录；不推断账户折扣、发票或最终账单。"
+    }
+  }
+}

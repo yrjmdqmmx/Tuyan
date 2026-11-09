@@ -1,3 +1,4 @@
+import MenuSelect from './MenuSelect.jsx';
 import { useState } from 'react'
 import { Search, SlidersHorizontal, X } from 'lucide-react'
 import { useBenchmarkLocale } from './BenchmarkLocale.jsx'
@@ -15,7 +16,7 @@ export default function BenchmarkRankingFilters({ models, count, query, vendor, 
       <button type="button" className="pareto-filter-toggle" aria-expanded={open} aria-controls="ranking-filters" onClick={() => setOpen(value => !value)}><SlidersHorizontal size={16} />{t(open ? '收起筛选' : '筛选')}{vendor && <b>1</b>}</button>
     </div>
     {open && <div className="pareto-filters bench-ranking-filter-panel" id="ranking-filters">
-      <label className="pareto-vendor-label">{t('模型研发厂商')}<select aria-label={t('模型研发厂商')} value={vendor} onChange={event => onVendor(event.target.value)}><option value="">{t('全部研发厂商')}</option>{options.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}</select></label>
+      <label className="pareto-vendor-label">{t('模型研发厂商')}<MenuSelect aria-label={t('模型研发厂商')} value={vendor} onChange={event => onVendor(event.target.value)}><option value="">{t('全部研发厂商')}</option>{options.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}</MenuSelect></label>
     </div>}
     <div className="pareto-active-filters bench-ranking-summary" role="status">
       <span>{t('匹配 {count} / {total} 个模型', { count, total: models.length })}</span>

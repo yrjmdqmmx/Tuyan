@@ -1,5 +1,20 @@
 # AGENTS.md
 
+## 开发分支约定（2026-11-09 更新）
+
+- `main` 是统一开发基线；本次将 `codex/hangzhou-production` 的已有提交合并回 `main`，保留两边历史。后续开发先同步最新 `origin/main`，功能分支从它创建，完成后通过 PR 合回 `main`。
+- `main` 保留必须通过 PR、禁止强推和删除的保护规则。不要直接向旧生产分支积累新功能，也不要用旧工作树覆盖新的 `main`。
+- `codex/hangzhou-production` 继续作为现有杭州发布入口；本次不迁移自动部署触发器。生产发布仍需单独授权，获准后从已验收的 `main` 同步发布。合并进 `main` 只触发普通 CI，不代表已经部署。
+- 多会话现有分支、未提交改动及未合并成果先保留；逐项检查后再迁入 `main`，不得自动重置、清理或批量合并。
+
+## 当前生产位置（2026-10-18 更新）
+
+2026-10-18 分渠道线路已部署：国内入口与 Fireworks 从杭州直连；OpenRouter、xAI、Novita、Stability、Together、Ideogram、Runware API、Mistral、BFL 三个入口、fal、Recraft、Replicate、MiniMax 国际共 16 个精确主机走新增香港受控代理（10.78.0.1:3128）；OpenAI / Anthropic / Gemini / Bedrock 等其余既有海外目标保留新加坡。SG 代理 DNS 已修正。禁止因网络超时自动换线重发付费请求。零推理测试不证明账户权益或模型质量；见[线路发布记录](docs/operations/provider-routing-rollout-20261018/report.md)。
+
+图研和 OpenAcad 业务与数据库已在杭州 `116.62.146.226`；本轮业务素材、评测证据及 Mongo 备份也已迁杭州私有 OSS，服务端使用杭州 HTTPS 内网端点。2,775 个有效对象逐一校验，新备份完整读回通过，存储切换基线为 Core `3c90bb72011c69f350f41ec6fb27449022819682`，后续当前发行见杭州自动发布验收。国内主入口 `tuyansci.cn` / `openacad.xyz` 直连杭州，旧 `api.paperbanana.asia` 仍经香港兼容转发。
+
+香港保留受控模型出口、冻结业务与 OSS 恢复副本，旧业务不得直接重启写入；切换后回退须先同步杭州新增数据。日常备份与业务同在杭州，香港旧备份不是持续异地保护。Compose 名 `paperbanana-hk` 只是历史名称。日常发布源为独立 `codex/hangzhou-production`，代码推送通过测试后自动部署杭州；`main` 与其他开发分支不自动部署。旧 HK / SG 与 Pages 发布工作流保持停用；受保护的[杭州发布入口](deploy/hangzhou/README.md)保留人工维护/恢复能力。自动发布实际验收以[本轮记录](docs/operations/2026-10-18-hangzhou-auto-deploy.md)为准。结果和边界见[存储验收](docs/operations/2026-10-18-hangzhou-storage.md)与[业务迁移记录](docs/operations/2026-10-18-hangzhou-migration.md)；下方 2026-09-27 架构仅为历史记录。小程序继续暂停，恢复前核实杭州 OSS 合法域名。
+
 图研Tuyan monorepo：用户客户端只保留 Web（`apps/web`，React + Vite）与微信小程序（`apps/miniprogram`）；服务端继续保留 `paperbanana-api`、`auth-gateway`、`plot-worker` 和 `benchmark-worker`。**各模块常由不同的、互不可见的 AI 会话分别开发。**
 
 ## ⚠️ 跨端协调（最重要）

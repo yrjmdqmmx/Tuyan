@@ -1,0 +1,933 @@
+{
+  "checkedAt": "2026-10-19T01:23:43.079116+00:00",
+  "channels": [
+    {
+      "provider": "openrouter",
+      "currentDirectoryAccess": "public",
+      "currentDirectorySource": "https://openrouter.ai/docs/api-reference/models/get-models",
+      "status": "public-complete",
+      "finding": "聊天 471 条、图像 61 条；聊天新增 6 ID，图像新增 Qwen 2.1 Pro/Turbo。既有动态目录读取；batch 保持禁选，图像缺格式证据仍待接入。",
+      "publicSources": [
+        {
+          "key": "openrouter",
+          "url": "https://openrouter.ai/api/v1/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/openrouter.raw",
+          "sha256": "20ba43ec740d3fc2b400bf2501b5ac671487b15f94a7b3cd40c60c504382e337"
+        },
+        {
+          "key": "openrouter-images",
+          "url": "https://openrouter.ai/api/v1/images/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/openrouter-images.raw",
+          "sha256": "61512003b34cc032b1b172dcf1ffce1b9e9f189245bfe216b73573b78ae2fc29"
+        },
+        {
+          "key": "openrouter-qwen-pro",
+          "url": "https://openrouter.ai/api/v1/images/models/qwen/qwen-image-2.1-pro/endpoints",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/openrouter-qwen-pro.raw",
+          "sha256": "be4d5112f3cc5f592ed18e3483f81651085a5b5f699135e8909eac60d995a694"
+        },
+        {
+          "key": "openrouter-qwen-turbo",
+          "url": "https://openrouter.ai/api/v1/images/models/qwen/qwen-image-2.1-turbo/endpoints",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/openrouter-qwen-turbo.raw",
+          "sha256": "799db8013fe6cb3c82e174e6283ad65dcd18012ceeda05205d39248001bc34db"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "tokendance",
+      "currentDirectoryAccess": "public",
+      "currentDirectorySource": "https://tokendance.space/gateway/v1/models",
+      "status": "public-complete-modality-partial",
+      "finding": "公开目录 110 条，较 10/16 多 4 条。仅将 deepseek-v4.1-flash-1017 加入 main/optimize；页面未证明视觉输入，未启用 vision。2 个 Qwen 2.1 和 Seedream Flash 待适配/证据。",
+      "publicSources": [
+        {
+          "key": "td-live",
+          "url": "https://tokendance.space/gateway/v1/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/td-live.raw",
+          "sha256": "d2f8a013f9dc1f9845963e97744e2442c72b3e327f85ef07f6e790591c2cd3bf"
+        },
+        {
+          "key": "td-changelog",
+          "url": "https://tokendance.space/docs/changelog.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/td-changelog.raw",
+          "sha256": "6706f602d7411b0ce5a5a4d80fa16711c1c4c49ed9a8dad2274166f4360b3ae6"
+        },
+        {
+          "key": "td-model1017",
+          "url": "https://tokendance.space/models/deepseek-v4.1-flash-1017",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/td-model1017.raw",
+          "sha256": "642e783129d4fe159c1c51ad8fa8878584fd36fb497a6ba6ee7da3f6d5219955"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "fal",
+      "currentDirectoryAccess": "public",
+      "currentDirectorySource": "https://fal.ai/docs/platform-apis/v1/models",
+      "status": "public-partial",
+      "finding": "11 页 1100 条后第 12 页 HTTP 429，已停止，无重试/下架推断。Krea V3 reasoning_level 文档默认改为 medium，应用显式 low 保持。",
+      "publicSources": [
+        {
+          "key": "fal-public",
+          "url": "https://api.fal.ai/v1/models?limit=100",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/fal-public.raw",
+          "sha256": "949d4a3d2acbcd5470da18fe176caa072c712bba7b37600e8f1cdf1a72df27c2"
+        },
+        {
+          "key": "fal-page-12",
+          "url": "https://api.fal.ai/v1/models?limit=100&cursor=MTI",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/fal-page-12.raw",
+          "sha256": "0fe9d8eac5478e2ba91cda15adfbad2db45b820b71fe57a4f14b99cc7a661444"
+        },
+        {
+          "key": "falkrea3",
+          "url": "https://fal.ai/models/krea/v3/text-to-image/api",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/falkrea3.raw",
+          "sha256": "9ab683206fa7ea8c8328fc9fdc473062104d8911f5a4673f5a5c2f179695865f"
+        },
+        {
+          "key": "falkrea3edit",
+          "url": "https://fal.ai/models/krea/v3/edit/api",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/falkrea3edit.raw",
+          "sha256": "42c417cd2934206c2b015d53a5df4c4b35244c292f80096adaab7c5ca0118a15"
+        },
+        {
+          "key": "fal-schema-4",
+          "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=krea/v3/text-to-image",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/fal-schema-4.raw",
+          "sha256": "3384b4a45077bf115d7108e3c5bdab22d8c747fc90c32f7003a4e6f7b77eb283"
+        },
+        {
+          "key": "fal-schema-5",
+          "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=krea/v3/edit",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/fal-schema-5.raw",
+          "sha256": "7fef795b20e341f15a946128b733dbea9ba42253cc576e54b6bd5cb8b92168de"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "runware",
+      "currentDirectoryAccess": "public",
+      "currentDirectorySource": "https://runware.ai/docs/models-api/model-schemas",
+      "status": "public-complete",
+      "finding": "380 条公开托管目录，解析内容与 10/16 快照一致。账号私有/社区模型未查询。",
+      "publicSources": [
+        {
+          "key": "runware-index",
+          "url": "https://runware.ai/docs/models/index.json",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/runware-index.raw",
+          "sha256": "7dbe0d1ef8a9acdd375e0bcefcd0eca81d92fde1a5387408acc0dba75165163c"
+        },
+        {
+          "key": "runwareklein",
+          "url": "https://runware.ai/docs/models/bfl-flux-3-image-klein/schema.json",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/runwareklein.raw",
+          "sha256": "11925f6537f2715cdf8b9cfec5f4160a26ba82a8af9c4c11a2711485c719aae3"
+        },
+        {
+          "key": "runwarekleinbase",
+          "url": "https://runware.ai/docs/models/bfl-flux-3-image-klein-base/schema.json",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/runwarekleinbase.raw",
+          "sha256": "a42f9eec4f9163523dc6bff584c2c05fe896e370cac50144ff1552b13c55e441"
+        },
+        {
+          "key": "runwareqwen21turbo",
+          "url": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo/schema.json",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/runwareqwen21turbo.raw",
+          "sha256": "0df031ec1dd9e222205e7164da81a9f5e157d542fbdd01b85683aed5f99daf2e"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "novita",
+      "currentDirectoryAccess": "public",
+      "currentDirectorySource": "https://novita.ai/docs/api-reference/model-apis-llm-list-models",
+      "status": "public-llm-complete",
+      "finding": "95 条公开 LLM 目录与 10/16 一致。图像/私有模型需 Key，未验证。",
+      "publicSources": [
+        {
+          "key": "novitadir",
+          "url": "https://api.novita.ai/v3/openai/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/novitadir.raw",
+          "sha256": "acc4f454b718542639c70d944823c178ff10a82f34a7fc196c93790aa91b8803"
+        },
+        {
+          "key": "novitaprice",
+          "url": "https://novita.ai/pricing",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/novitaprice.raw",
+          "sha256": "34f983389cb2017a1f9ed485c6f4f505bd3cfac0aab159d2a7d01b1ffa95010e"
+        },
+        {
+          "key": "novitaindex",
+          "url": "https://docs.novita.ai/llms.txt",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/novitaindex.raw",
+          "sha256": "15a025e1aee1b711f3fd0fdfb7237177e2d2918ff57c1f61556d1c984c8d219a"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "openai",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://developers.openai.com/api/reference/resources/models/methods/list",
+      "status": "public-docs-account-unverified",
+      "finding": "现有 2027-01-14 五个快照、2027-04-01 三项停服记录已覆盖；gpt-image-1 于 10/23 停服仍需关注。LiveVoice/Decisions 不属于当前同步文本/图像适配。",
+      "publicSources": [
+        {
+          "key": "openai",
+          "url": "https://developers.openai.com/api/docs/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/openai.raw",
+          "sha256": "1fc257c024c76858e99f692947dc7ee41adc3708cc8a6495268baf948763980f"
+        },
+        {
+          "key": "openai-changelog",
+          "url": "https://developers.openai.com/api/docs/changelog.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/openai-changelog.raw",
+          "sha256": "51d96059b0cf06e5141c137b45fe1a729969b8eb37ada7905995ba0056c8b47c"
+        },
+        {
+          "key": "openai-deprecations",
+          "url": "https://developers.openai.com/api/docs/deprecations.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/openai-deprecations.raw",
+          "sha256": "79a2e58476139c48e39bafa5f352f98c034bb4171f99c3aedff2e53368c0d33a"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "anthropic",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://platform.claude.com/docs/en/api/models/list",
+      "status": "public-docs-account-unverified",
+      "finding": "Sonnet/Haiku 5.5 已存在；Sonnet 4.5 的 11/30 停服已登记，无充分证据新增当前范围条目。",
+      "publicSources": [
+        {
+          "key": "anthropic",
+          "url": "https://platform.claude.com/docs/en/models/overview.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/anthropic.raw",
+          "sha256": "02faed97309963e7c90d18a80ff0f6ba7cf6099d46a7cc1b2ac600ceaebac578"
+        },
+        {
+          "key": "anthropic-deprecations",
+          "url": "https://platform.claude.com/docs/en/about-claude/model-deprecations.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/anthropic-deprecations.raw",
+          "sha256": "ad1c50227e13e9d3e194da3cc109db9b18012453059ed792eaae178d2aca206a"
+        },
+        {
+          "key": "anthropic-changelog",
+          "url": "https://platform.claude.com/docs/en/release-notes/overview.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/anthropic-changelog.raw",
+          "sha256": "ceadf38268e3097f1bca1243d65a1c050c8ce3a768997a410860e85044aba1d2"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "gemini",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://ai.google.dev/api/models",
+      "status": "public-docs-account-unverified",
+      "finding": "补记 Argon 无 Free tier；未将上下文当输出。未来视频/omni/research 更新不扩展当前适配。",
+      "publicSources": [
+        {
+          "key": "gemini",
+          "url": "https://ai.google.dev/gemini-api/docs/changelog",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/gemini.raw",
+          "sha256": "af72ea12fce5b844918ef0d5db539defd81d272b73955e2bce064b132b3e1bde"
+        },
+        {
+          "key": "geminilatest",
+          "url": "https://ai.google.dev/gemini-api/docs/latest-model",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/geminilatest.raw",
+          "sha256": "47834e20338c035b49c8e9cf48a65133fc907333d3802f3a07f0758b314dce08"
+        },
+        {
+          "key": "gemini-deprecations",
+          "url": "https://ai.google.dev/gemini-api/docs/deprecations",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/gemini-deprecations.raw",
+          "sha256": "4c19861c00c4d22908102e1aa02635780f96d7628717843fb5f4d176efa6eb44"
+        },
+        {
+          "key": "gemini-pricing",
+          "url": "https://ai.google.dev/gemini-api/docs/pricing",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/gemini-pricing.raw",
+          "sha256": "cf8e69c4e820ccf184161d6cebdbf0da93295ab3fb95bd4d0a03470b2127b357"
+        },
+        {
+          "key": "geminiargon",
+          "url": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/geminiargon.raw",
+          "sha256": "78bb761a1215b64e92f7cbc2aa9d3bc86c1d30085169926e0debadd0aa52c20a"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "deepseek",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://api-docs.deepseek.com/api/list-models",
+      "status": "public-docs-account-unverified",
+      "finding": "deepseek-flash 及两个兼容旧 ID 的服务版本更新为 V4.1-Flash-1017；官方称价格/调用方式不变。旧 ID 原禁选状态保留。",
+      "publicSources": [
+        {
+          "key": "deepseek",
+          "url": "https://api-docs.deepseek.com/quick_start/pricing",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/deepseek.raw",
+          "sha256": "38f583f627523f45a0cacd00d43ad49cd4f7e3aa5c20cc98bdbc3674f5c74c95"
+        },
+        {
+          "key": "deepseek-changelog",
+          "url": "https://api-docs.deepseek.com/updates/",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/deepseek-changelog.raw",
+          "sha256": "44aa1245d5d65d5fc54c8f47a9a3d3235e1ab064a8fc64d6a6e57f570ec8c99c"
+        },
+        {
+          "key": "deepseek1017",
+          "url": "https://api-docs.deepseek.com/news/news261017/",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/deepseek1017.raw",
+          "sha256": "8125b7812df5c3bf3caf1dbddd2048381232970ea71dffd2df8b97bffc5f8c59"
+        },
+        {
+          "key": "deepseek-chat",
+          "url": "https://api-docs.deepseek.com/api/create-chat-completion",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/deepseek-chat.raw",
+          "sha256": "dd1838ffe374797130d1db0fe983bd10041c2c1f17718011cf76abe6e40cfd37"
+        },
+        {
+          "key": "deepseek-vision",
+          "url": "https://api-docs.deepseek.com/guides/vision",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/deepseek-vision.raw",
+          "sha256": "7e0dc62d53ed1cfa3f22b28099de3b459133965d9255d03f67dbbbe1c2a22d17"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "kimi",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://platform.kimi.com/docs/api/list-models",
+      "status": "public-docs-account-unverified",
+      "finding": "Kimi 官方模型页复核；未确认需本轮新增的兼容 ID，账户目录未验证。",
+      "publicSources": [
+        {
+          "key": "kimi",
+          "url": "https://platform.kimi.com/docs/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/kimi.raw",
+          "sha256": "99144f89c75a96e5a340ad2dde39f9e622ea8c1c7565093f849ddcac511f6046"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "siliconflow",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://docs.siliconflow.com/en/api-reference/models/get-model-list",
+      "status": "public-docs-account-unverified",
+      "finding": "公开目录、Chat API 和更新日志复核；现有下线条目保持，未确认新兼容增量。",
+      "publicSources": [
+        {
+          "key": "siliconflow",
+          "url": "https://www.siliconflow.cn/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/siliconflow.raw",
+          "sha256": "e988f38803c2d34f65ad11f7c85a18c3ed7d7d7a9fb9a630301aa8545aa4509f"
+        },
+        {
+          "key": "siliconchat",
+          "url": "https://docs.siliconflow.cn/cn/api-reference/chat-completions/chat-completions",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/siliconchat.raw",
+          "sha256": "28a3c265ac7f3506fcf3360eb6ef37aad9745e8d476536e0e1607b2834bab793"
+        },
+        {
+          "key": "siliconflow-changelog",
+          "url": "https://docs.siliconflow.cn/docs/release-notes/overview",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/siliconflow-changelog.raw",
+          "sha256": "e1bd1ee69625c26d401a89641aee8a43727f530cc2cfe37b7c6a13748e8f8669"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "mistral",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://docs.mistral.ai/api/endpoint/models",
+      "status": "public-docs-account-unverified",
+      "finding": "Large 4 已存在；10/6 起两周促销价格属于时限信息，未作为永久价覆盖；GLM 5.2 的 10/31 停服已登记。",
+      "publicSources": [
+        {
+          "key": "mistral-models",
+          "url": "https://docs.mistral.ai/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/mistral-models.raw",
+          "sha256": "f5f22f99fd19c3094ce41c7cf5076995e002721d32d54ec3d114b6551d756951"
+        },
+        {
+          "key": "mistral-changelog",
+          "url": "https://docs.mistral.ai/getting-started/changelog",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/mistral-changelog.raw",
+          "sha256": "e978f64414a8a07e5d9101de69a600d994761f765205e0543028927d243c773a"
+        },
+        {
+          "key": "mistral-index",
+          "url": "https://docs.mistral.ai/llms.txt",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/mistral-index.raw",
+          "sha256": "b61ae7bedde65f197ebf509351b32b1c8574ba52e4278749f2e45e72fcec51a0"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "together",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://docs.together.ai/reference/models",
+      "status": "public-docs-account-unverified",
+      "finding": "新增精确 ID reflection/Beam-1.0-501B-A23B，文本、1,048,576 上下文；公开 USD/百万 token 输入 0.40、缓存 0.04、输出 1.20。",
+      "publicSources": [
+        {
+          "key": "together",
+          "url": "https://docs.together.ai/docs/serverless/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/together.raw",
+          "sha256": "ac3eb99a4a87c25213db2ad3bebcf5bb68a4226469c09cb41728afc95ca9cc20"
+        },
+        {
+          "key": "together-chat",
+          "url": "https://docs.together.ai/reference/chat-completions.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/together-chat.raw",
+          "sha256": "ed394dfb764e974f22a4356b24072315acd4be08ddc6d6ef464c50103ded8beb"
+        },
+        {
+          "key": "beam-model-card",
+          "url": "https://huggingface.co/reflection/Beam-1.0-501B-A23B/raw/main/README.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/beam-model-card.raw",
+          "sha256": "cd8158d2564574def5920058feeed17a310465896f6b8f761530ed7b33f4cc05"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "fireworks",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://docs.fireworks.ai/api-reference/list-models",
+      "status": "public-docs-account-unverified",
+      "finding": "新增 Serverless DeepSeek 1017；Beam/Step-5/Muse NVFP4 页面明确不支持 Serverless，待独立部署接入，不新增选择。",
+      "publicSources": [
+        {
+          "key": "fireworkslive",
+          "url": "https://fireworks.ai/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/fireworkslive.raw",
+          "sha256": "b2f6d6e987e16d95f04a58f32dc4a7aeeb83c348c4f0571d0e718eabc4ad4005"
+        },
+        {
+          "key": "fireworks-deprecations",
+          "url": "https://docs.fireworks.ai/deployments/deprecation",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/fireworks-deprecations.raw",
+          "sha256": "152ef9895bb1f751901b8eca510f8c9e9d00e19064971bcfa630d7d22f70caab"
+        },
+        {
+          "key": "fw-deepseek1017",
+          "url": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash-1017",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/fw-deepseek1017.raw",
+          "sha256": "efbd5f22eecfcf5f20d22d22c91cc6f24367c492b56b87f8babe8b40d9953fcf"
+        },
+        {
+          "key": "fw-beam",
+          "url": "https://fireworks.ai/models/fireworks/beam-1p0-501b-a23b",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/fw-beam.raw",
+          "sha256": "4c128db8133bf2beca5f396a998365d4e44e774598fd08087853d750df147f38"
+        },
+        {
+          "key": "fw-step5",
+          "url": "https://fireworks.ai/models/fireworks/step-5-preview-fp8",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/fw-step5.raw",
+          "sha256": "ab2403717a42af66239f23a1fd3e4571806aba881b413776a6e1d9e4d84eeea2"
+        },
+        {
+          "key": "fw-musefp4",
+          "url": "https://fireworks.ai/models/fireworks/muse-spark-open-nvfp4",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/fw-musefp4.raw",
+          "sha256": "d49ffb9d30a46057b59caf897452ebc2dc2d87b03031394f46b79833e622d85b"
+        },
+        {
+          "key": "fw-chat",
+          "url": "https://docs.fireworks.ai/api-reference/post-chatcompletions.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/fw-chat.raw",
+          "sha256": "7bb5e3fd2c9ab08220300aec4bece77e8b845e3c34c1bf0dd047f43b717f724d"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "xai",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://docs.x.ai/developers/rest-api-reference/inference/models",
+      "status": "public-docs-account-unverified",
+      "finding": "模型目录及更新日志复核，未确认目录范围新增；账户/区域权益未验证。",
+      "publicSources": [
+        {
+          "key": "xai",
+          "url": "https://docs.x.ai/developers/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/xai.raw",
+          "sha256": "6d651387a7543280e09c7b436b7278b3c70c01f891e44d3895db0f65703bc937"
+        },
+        {
+          "key": "xai-changelog",
+          "url": "https://docs.x.ai/developers/release-notes",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/xai-changelog.raw",
+          "sha256": "7cb28928c078cc3e7c58ac74f2de22c8b448670a3e3b8a39ad1314ef8a658eda"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "minimax",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://platform.minimax.io/docs/api-reference/models/openai/list-models",
+      "status": "public-docs-account-unverified",
+      "finding": "官方模型更新页复核，现有 M3 记录保持；视频 H3 不扩展当前适配。",
+      "publicSources": [
+        {
+          "key": "minimax",
+          "url": "https://platform.minimax.io/docs/release-notes/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/minimax.raw",
+          "sha256": "6dfabafea1730effa961cdd913422de9c681ea3e01e2bd475a071b2a680a97c2"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "stepfun",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://platform.stepfun.com/docs/zh/api-reference/models/list",
+      "status": "public-docs-account-unverified",
+      "finding": "Step 5 Preview 已在直连目录；复核列表与停服文档，未将原厂规格复制到其他渠道。",
+      "publicSources": [
+        {
+          "key": "stepindex",
+          "url": "https://platform.stepfun.com/docs/llms.txt",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/stepindex.raw",
+          "sha256": "f8ece176aef59bbc3a2ff99c19830ab724ca476b93910818a77b503eaa489fdb"
+        },
+        {
+          "key": "steplist",
+          "url": "https://platform.stepfun.com/docs/zh/guides/models/list.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/steplist.raw",
+          "sha256": "68d0bed3b710a8827c6d37d030832d11af338ae10463a19c1a5e0e2fcc893c8a"
+        },
+        {
+          "key": "stepretire",
+          "url": "https://platform.stepfun.com/docs/zh/guides/models/deprecations.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/stepretire.raw",
+          "sha256": "1ec34a9b9782361f1fe9d4a3a7e3658de4a2e8fd14051f634a870f91d1e5cb38"
+        },
+        {
+          "key": "step5",
+          "url": "https://platform.stepfun.com/docs/zh/guides/models/step-5-preview.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/step5.raw",
+          "sha256": "adc3bd0a02e7ce92f541bc5e2afc2dc42cb80c8f1b35926f09d8807751887dad"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "tokenhub",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://cloud.tencent.com/document/product/1823/130078",
+      "status": "public-docs-account-unverified",
+      "finding": "HTTP 原文为防护/渲染壳，使用官方公开页面渲染内容；仅精确 deepseek/deepseek-flash 的服务版本改 1017，未传播到近似 ID。",
+      "publicSources": [
+        {
+          "key": "tokenhuball",
+          "url": "https://cloud.tencent.com/document/product/1823/130051",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/tokenhuball.raw",
+          "sha256": "627e119a2eaf5be5d81e02ae00e52b82dc955cee649e7294e8faa4d95c1cb12e"
+        },
+        {
+          "key": "tokenhub-rendered",
+          "url": "https://cloud.tencent.com/document/product/1823/130051",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/coverage-web.txt",
+          "sha256": "1e869cad1898e37e8c77c3dd6be6ae9afc2e29deadc0f99aa3a8cfb6c0de82f2"
+        },
+        {
+          "key": "tokenhubguide",
+          "url": "https://cloud.tencent.com/document/product/1823/130079",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/tokenhubguide.raw",
+          "sha256": "7101487d6304632b52fa1ecc397fc909cbab11abef16eaf65dd844594737a9e3"
+        },
+        {
+          "key": "tokenhubretire",
+          "url": "https://intl.cloud.tencent.com/zh/announce/detail/101537",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/tokenhubretire.raw",
+          "sha256": "4a476a188bd566b8d5657855475eba323e37339d0cf1e99a4e799251ae00788e"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "xiaomi",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://mimo.mi.com/docs/en-US/api/model/list-models",
+      "status": "public-docs-account-unverified",
+      "finding": "MiMo V2.5/Pro 10/21 10:00 UTC+8 停服已登记。官方旧别名重映射公告时间存在表格/注释差异，未主动改写保存 ID。",
+      "publicSources": [
+        {
+          "key": "xiaomi",
+          "url": "https://mimo.mi.com/docs/en-US/quick-start/model",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/xiaomi.raw",
+          "sha256": "9f245db5af0b49f519147801085aaa8d18ade5046c34a7bb1e5f849dd1ad4d7d"
+        },
+        {
+          "key": "xiaomiall",
+          "url": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/xiaomiall.raw",
+          "sha256": "13cca8e23c4b96f4da3254b2e440352925d05d909b0e60f2266891a8c6449cd8"
+        },
+        {
+          "key": "xiaomi-deprecations",
+          "url": "https://mimo.mi.com/docs/en-US/updates/deprecate",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/xiaomi-deprecations.raw",
+          "sha256": "49fe0b2bb10204d378c4e681147fd6f46e3a2a46a24399a78c7af4273e45f781"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "qianfan",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://cloud.baidu.com/doc/qianfan-api/s/Dmba8k71y",
+      "status": "public-docs-account-unverified",
+      "finding": "新增 deepseek-v4.1-flash-1017；1M 上下文、最大输出 393216 分开记录。应用 max_tokens 保持 8192，记录峰谷公开价。",
+      "publicSources": [
+        {
+          "key": "qianfan",
+          "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/qianfan.raw",
+          "sha256": "f2debdb32bbb8e0fc96dbeea986d0aa3ecb2729125491cec7878db1c0d4f3822"
+        },
+        {
+          "key": "qianfan-chat",
+          "url": "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/qianfan-chat.raw",
+          "sha256": "5a3c5d6991b392717ced89455073e6405d989c2379b1e9a03bafe62b351127d6"
+        },
+        {
+          "key": "qianfan-vision",
+          "url": "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/qianfan-vision.raw",
+          "sha256": "3b006c8b729edfbe17cbc7f0b8a9a9851f041c9e554ae2162594b8ca0358ecd6"
+        },
+        {
+          "key": "qianfan-price",
+          "url": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/qianfan-price.raw",
+          "sha256": "685210e45dd447ee83a85bb3e30664915ce309d2a11a74c1b1cd772473ed67d7"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "longcat",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://longcat.chat/platform/docs/zh/api/models.html",
+      "status": "public-docs-account-unverified",
+      "finding": "公开模型与图像/视频理解文档复核；未确认新兼容条目，不新增视频输入角色。",
+      "publicSources": [
+        {
+          "key": "longcat-models",
+          "url": "https://longcat.ai/platform/docs/zh/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/longcat-models.raw",
+          "sha256": "4ae4c37d1093c4034fc907458447fb3f195fe21428004eed7b6b8677d76b2370"
+        },
+        {
+          "key": "longcat",
+          "url": "https://longcat.ai/platform/docs/zh/image-video-understanding",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/longcat.raw",
+          "sha256": "413c8da94625f76b4ddda09869c4a57be48c56c8709db1c3e3ee418ef9c9bd70"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "replicate",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://replicate.com/docs/reference/http/#models.list",
+      "status": "public-docs-account-unverified",
+      "finding": "官方模型集合/图像集合复核；私有目录和版本 schema 需账户时不查询，未确认可安全新增项。",
+      "publicSources": [
+        {
+          "key": "replicate-official",
+          "url": "https://replicate.com/collections/official",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/replicate-official.raw",
+          "sha256": "87dd787b1e063022258c10dcea66ce64786190a08fdb11b5afe3083a1f1aa42f"
+        },
+        {
+          "key": "replicate",
+          "url": "https://replicate.com/collections/text-to-image",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/replicate.raw",
+          "sha256": "f772d2590fe18218b56153186e887f4c2631c9a4e336921972719f60140e97bf"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "bailian",
+      "currentDirectoryAccess": "workspace",
+      "currentDirectorySource": "https://help.aliyun.com/zh/model-studio/list-models",
+      "status": "public-docs-workspace-unverified",
+      "finding": "new-features 返回页面壳，使用新发布模型及具体 Qwen 接口页；现有 2.1 原厂路由已覆盖，不复制到 TokenDance。业务空间/海外区域未验证。",
+      "publicSources": [
+        {
+          "key": "bailian-models",
+          "url": "https://help.aliyun.com/zh/model-studio/models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/bailian-models.raw",
+          "sha256": "0dbb0d6949f50bf4fa2488e567464f81eb6be69c71d4ba349a6f9f14c682beec"
+        },
+        {
+          "key": "bailian-new",
+          "url": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/bailian-new.raw",
+          "sha256": "18f8023f13d1ed58d663b0c94fd13f219eb2f5b1dfdc5b7707240f5ae1b6f993"
+        },
+        {
+          "key": "qwen21",
+          "url": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/qwen21.raw",
+          "sha256": "3788020dcc95b40d02296ec693f5ac2add9b5e2a778f4bc55bad4b85a8259175"
+        },
+        {
+          "key": "qwenimageapi",
+          "url": "https://help.aliyun.com/zh/model-studio/qwen-image-api",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/qwenimageapi.raw",
+          "sha256": "01b579aeeb9e42dfff7078ec717cf21f524104e4e626c766cac72d531b236b0f"
+        },
+        {
+          "key": "qwenimageedit",
+          "url": "https://help.aliyun.com/zh/model-studio/qwen-image-edit-api",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/qwenimageedit.raw",
+          "sha256": "276b156a198f1ab3917ea827699a9919d69dd4e9a24d554ec86bf7aa3bead19c"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "ark",
+      "currentDirectoryAccess": "control-plane",
+      "currentDirectorySource": "https://docs.volcengine.com/docs/ark/list-foundation-models-api?lang=zh",
+      "status": "public-docs-control-plane-unverified",
+      "finding": "公开渲染公告证实本地漏记 12 个已 EOS + 8 个未来 EOS，补齐精确时区。管理目录需 AK/SK，未读取；默认接入点/上游自动迁移未验证。",
+      "publicSources": [
+        {
+          "key": "ark-rendered",
+          "url": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/ark-rendered.txt",
+          "sha256": "a9f560fde864aa4d6e7cfbd0d7099b2d1949840388c024e051a33f0c201e75eb"
+        },
+        {
+          "key": "ark-retirement-rendered",
+          "url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/ark-retirement-rendered.txt",
+          "sha256": "25814a103cce18858d3e53be01fe1ea2080395b3af18643acb15753c03747188"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "sensenova",
+      "currentDirectoryAccess": "control-plane",
+      "currentDirectorySource": "https://console.sensecore.cn/micro/help/docs/model-as-a-service/nova/overview/Models/GetModelList/",
+      "status": "public-docs-new-directory-pending",
+      "finding": "公开模型总览覆盖现有 7 型号；发现 token.sensenova.cn/v1/models + API Key，与现有旧 SenseCore JWT 目录不同。新目录及 Responses/Anthropic 协议待适配，未调用认证接口。",
+      "publicSources": [
+        {
+          "key": "sensenova-rendered",
+          "url": "https://platform.sensenova.cn/docs",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/sensenova-rendered.txt",
+          "sha256": "1143bcd3277fabc96237c4fe9ed7155b234c61cc2e728a1d9c68883d3a6cd3ac"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "zhipu",
+      "currentDirectoryAccess": "documents",
+      "currentDirectorySource": "https://docs.bigmodel.cn/llms.txt",
+      "status": "public-docs-account-unverified",
+      "finding": "官方模型总览复核；现有 GLM 5.3/Flash 等保持，未确认当前范围新增。",
+      "publicSources": [
+        {
+          "key": "zhipu",
+          "url": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/zhipu.raw",
+          "sha256": "cfa5b519bbf5aaa97f0f8abac0eb85b783ac6547098cdfa553957a70ed1c14e7"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "recraft",
+      "currentDirectoryAccess": "documents",
+      "currentDirectorySource": "https://www.recraft.ai/docs/llms.txt",
+      "status": "public-docs-adaptation-pending",
+      "finding": "V4 Styles 需要独立 style_id/端点合同，继续待适配；未将页面营销能力直接启用。",
+      "publicSources": [
+        {
+          "key": "recraft",
+          "url": "https://www.recraft.ai/docs/api-reference/appendix",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/recraft.raw",
+          "sha256": "d33b072fe156eba4956e6b0119e8f0c3481b4050333bd6b592bb82f83769fb84"
+        },
+        {
+          "key": "recraftstyles",
+          "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-styles",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/recraftstyles.raw",
+          "sha256": "3c0a4bc2414699b2bc37907712327e9be21b4d8fe33b1dc5e8995f5097a83d9b"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "bfl",
+      "currentDirectoryAccess": "documents",
+      "currentDirectorySource": "https://docs.bfl.ai/llms.txt",
+      "status": "public-schema-reviewed",
+      "finding": "官方 OpenAPI 复核，现有 Klein/Base 合同保留；原厂与各聚合渠道单独核对，未发现需新增的原厂兼容端点。",
+      "publicSources": [
+        {
+          "key": "bfl",
+          "url": "https://api.bfl.ai/openapi.json",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/bfl.raw",
+          "sha256": "7fbcacd8a21b381f9ad52e091899aac09c262cd180290082f4a9cd16a75329f2"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "stability",
+      "currentDirectoryAccess": "key",
+      "currentDirectorySource": "https://platform.stability.ai/docs/api-reference#tag/v1generation",
+      "status": "public-schema-reviewed",
+      "finding": "参考页为渲染壳，公开 v2alpha OpenAPI 可读且与上轮一致；v1 引擎目录需 Key，未验证。",
+      "publicSources": [
+        {
+          "key": "stability-schema",
+          "url": "https://api.stability.ai/v2alpha/openapi",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/stability-schema.raw",
+          "sha256": "a617c326f0457566bb35320421efe792080b3e8d4828ad62ee03bff750574891"
+        },
+        {
+          "key": "stability",
+          "url": "https://platform.stability.ai/docs/api-reference",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/stability.raw",
+          "sha256": "3e79e858de439baecd18ed043b21eccf23cc2980f13d6e8ba06d1ab178ea72c3"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "ideogram",
+      "currentDirectoryAccess": "documents",
+      "currentDirectorySource": "https://developer.ideogram.ai/api-reference/api-reference",
+      "status": "public-docs-adaptation-pending",
+      "finding": "官方转向 v2，并列出 4.5 Generate/Precise Edit。新路径、字段、编辑输入与可选异步需适配；官方明确 v1 继续工作，未停用旧条目。",
+      "publicSources": [
+        {
+          "key": "ideogram-v2",
+          "url": "https://developer.ideogram.ai/v2/llms.txt",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/ideogram-v2.raw",
+          "sha256": "020e2408c086e19121956dfff45f15bb9979448b8d1316bf32d1ac4d89dafaec"
+        },
+        {
+          "key": "ideogram-v2-overview",
+          "url": "https://developer.ideogram.ai/v2/ideogram-api/api-overview.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/ideogram-v2-overview.raw",
+          "sha256": "5fbdddd0d64d9a0a2b91bb2c6d6be6e45d958e3ccd1a83eeab75e8e82ba08018"
+        },
+        {
+          "key": "ideogram-v2-generate45",
+          "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-5.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/ideogram-v2-generate45.raw",
+          "sha256": "3910a726c81900f15534ef2ba5a42456b1040b536256f42708cefb49f9142982"
+        },
+        {
+          "key": "ideogram-v2-precise45",
+          "url": "https://developer.ideogram.ai/v2/api-reference/images/precise-edit/ideogram-4-5.md",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/ideogram-v2-precise45.raw",
+          "sha256": "def43c7f1ad90d58257c8a65fa441aa60b58f33068550712dd6804b9154d649d"
+        },
+        {
+          "key": "ideogram-v1",
+          "url": "https://developer.ideogram.ai/v1/llms.txt",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/ideogram-v1.raw",
+          "sha256": "7567fbb870698825a8cd7dd34e82c92d0b9b8183fa96fba8b62183be4ffde36d"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "iflytek",
+      "currentDirectoryAccess": "documents",
+      "currentDirectorySource": "https://www.xfyun.cn/doc/spark/Web.html",
+      "status": "public-docs-reviewed",
+      "finding": "公开基础模型列表只读核对；未将平台总表全部视为现有 Spark 适配器可用，未确认本轮兼容增量。",
+      "publicSources": [
+        {
+          "key": "iflytek",
+          "url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/iflytek.raw",
+          "sha256": "854a6c13d2c694fc180b63465aa704f3ecc6b1439af44c8593d9d8cadc0372d3"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    },
+    {
+      "provider": "antling",
+      "currentDirectoryAccess": "documents",
+      "currentDirectorySource": "https://www.tbox.cn/",
+      "status": "public-docs-account-unverified",
+      "finding": "官方更新日志复核；页面更新日期变化不等于新模型能力，现有 Ling 3.1 保持，TBox 账户目录未验证。",
+      "publicSources": [
+        {
+          "key": "antling",
+          "url": "https://developer.ant-ling.com/zh-CN/docs/getting-started/changelog/",
+          "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/sources/antling.raw",
+          "sha256": "545d4d7c3a2c1b583308e30cc219b86398f1a1b3eb7086f6cbe9311ca13301bb"
+        }
+      ],
+      "accountAvailability": "unverified",
+      "realInvocation": "unverified"
+    }
+  ]
+}

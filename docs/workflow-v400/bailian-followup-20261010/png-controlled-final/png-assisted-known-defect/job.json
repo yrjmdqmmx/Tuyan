@@ -1,0 +1,170 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": {
+    "stage": "rendering",
+    "stageLabel": "图像生成",
+    "category": "input",
+    "code": "MODEL_INPUT",
+    "reason": "完整生图方案超过当前万相型号的 5000 字符上限，已停止图像请求；未截断方案，请缩短要求或更换模型后重试。",
+    "suggestion": "请减少图片、裁剪过大的图片或缩短文字，也可更换支持该输入的模型。",
+    "requestState": "not_sent",
+    "billingStatus": "not_called",
+    "billingMessage": "失败步骤在模型请求发出前停止；该步骤未发起模型调用。此前费用请结合调用记录核对。",
+    "message": "图像生成失败：完整生图方案超过当前万相型号的 5000 字符上限，已停止图像请求；未截断方案，请缩短要求或更换模型后重试。 请减少图片、裁剪过大的图片或缩短文字，也可更换支持该输入的模型。"
+  },
+  "referenceSelection": {
+    "proposedCount": 1,
+    "selectedCount": 1,
+    "skippedCount": 0,
+    "imageCount": 1,
+    "mode": "images",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "assist",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "failed",
+      "error": "完整生图方案超过当前万相型号的 5000 字符上限，已停止图像请求；未截断方案，请缩短要求或更换模型后重试。"
+    }
+  ],
+  "id": "1791602123204-xa1npxu1",
+  "status": "failed",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "deepseek-v4-pro"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.7）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。",
+  "negativePrompt": "禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。",
+  "caption": "从样品输入到标准化结果的三步方法流程。",
+  "infographicCategory": "method",
+  "outputFormat": "png",
+  "mainModelName": "deepseek-v4-pro",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "vision_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "full",
+  "retrievalSetting": "manual",
+  "manualReferenceIds": [
+    "live-svg-reference"
+  ],
+  "retrievedReferenceIds": [
+    "live-svg-reference"
+  ],
+  "retrievedReferences": [
+    {
+      "id": "live-svg-reference",
+      "taskName": "diagram",
+      "title": "双节点方法图参考",
+      "summary": "观察该图的颜色、布局和右上角标识，作为版式参考。",
+      "titleZh": "",
+      "introZh": "",
+      "shortIntroZh": "",
+      "detailZh": "",
+      "visualCategory": "",
+      "researchDomain": "",
+      "keywords": [],
+      "corpusVersion": "zh-CN.v2",
+      "imageUrl": "http://127.0.0.1:53565/objects/library/reference.png",
+      "imageObjectKey": "library/reference.png",
+      "source": "paperbanana-bench"
+    }
+  ],
+  "stages": [
+    {
+      "id": "stage-7260f5e6-6d12-4022-9bcf-e54717d56330",
+      "candidateId": 0,
+      "type": "reference_observation",
+      "title": "图库参考图观察",
+      "round": 0,
+      "text": "```json\n{\n  \"content\": \"The image is a horizontal flowchart diagram on a white background. It features two rounded rectangular boxes connected by a single arrow pointing from left to right. The left box has a light blue fill and contains the text '样品输入'. The right box has a light green fill and contains the text '结果输出'. In the top right corner, there is a text identifier 'REF-73'.\",\n  \"layout\": \"Horizontal linear arrangement with two nodes. Left node (blue) connects to right node (green) via a central horizontal arrow. A label is positioned in the absolute top-right corner.\",\n  \"actual_text\": [\n    \"REF-73\",\n    \"样品输入\",\n    \"结果输出\"\n  ],\n  \"connections\": [\n    \"Arrow from '样品输入' box to '结果输出' box\"\n  ],\n  \"problems\": [\n    {\n      \"issue\": \"Missing Process Step\",\n      \"location\": \"Between '样品输入' and '结果输出'\",\n      \"evidence\": \"The user request specifies a three-step process including '数据标准化（x / x₀）', but the reference image only shows two boxes ('样品输入' and '结果输出').\",\n      \"suggestion\": \"The generated figure must insert a middle node for '数据标准化（x / x₀）' between the existing two nodes to satisfy the three-step requirement.\"\n    },\n    {\n      \"issue\": \"Missing Data Values\",\n      \"location\": \"Inside '样品输入' and '结果输出' boxes\",\n      \"evidence\": \"The reference image labels are bare ('样品输入', '结果输出'), whereas the request requires specific values: 'n=12' for input and '均值 1.7' for output.\",\n      \"suggestion\": \"Append '(n=12)' to the first box and '(均值 1.7)' to the third box in the final generation.\"\n    }\n  ],\n  \"suggestions\": [\n    \"Borrow the light blue fill color for the first node and light green fill for the last node.\",\n    \"Borrow the rounded rectangle shape style and border thickness.\",\n    \"Borrow the dark grey/black arrow style connecting the nodes.\",\n    \"Replicate the 'REF-73' identifier placement and font style in the top right corner exactly as seen in the reference.\",\n    \"Maintain the left-to-right flow direction.\"\n  ],\n  \"uncertainties\": [\n    \"The reference image does not show a middle node; the color for the middle '数据标准化' step is not defined by the reference and may need to be inferred or chosen neutrally.\",\n    \"The exact font family used in the reference is not identifiable from the image alone, though it appears to be a standard sans-serif Chinese font.\"\n  ]\n}\n```",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T03:15:34.461Z",
+      "completedAt": "2026-10-10T03:15:34.461Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-95ca5902-bf51-4a9c-a6f3-b0300a54c0e1",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "Based on the provided methodology, figure caption, and reference image analysis, here is the detailed description of the target figure.\n\n**Figure Description:**\n\nA clean, horizontal three-step flowchart on a pure white background, strictly designed from left to right.\n\n**Layout and Structure:**\n- Three evenly spaced, rounded rectangular boxes are connected by two distinct, dark grey rightward-pointing arrows. The arrows are positioned centrally between the boxes.\n- No other elements, text, or values are added.\n\n**Styling (Derived from Reference):**\n- **First Box (Left):** Light blue fill, subtle grey border. Text: \"样品输入 (n=12)\" in a standard dark sans-serif Chinese font, centered.\n- **Second Box (Middle, Newly Introduced):** The fill color is a neutral light yellow/orange, bridging the blue and green. Same rounded rectangle style and border as the reference. Text: \"数据标准化 (x / x₀)\" in the same font, centered. The mathematical expression `x / x₀` is presented clearly.\n- **Third Box (Right):** Light green fill, identical style to the reference's right box. Text: \"结果输出 (均值 1.7)\" in the same font, centered.\n- **Identifier:** Exactly as in the reference, the text identifier \"REF-73\" is placed in the absolute top-right corner of the entire figure, in a small, discreet font.",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T03:15:34.462Z",
+      "completedAt": "2026-10-10T03:15:41.811Z",
+      "durationMs": 7349,
+      "error": ""
+    },
+    {
+      "id": "stage-4c8b758a-e428-4704-90da-83c6321476f3",
+      "candidateId": 0,
+      "type": "stylist",
+      "title": "风格",
+      "round": 0,
+      "text": "A clean, horizontal, three-step method flowchart on a pure white background, strictly left-to-right reading order.\n\n**Layout & Structure:**\nThree evenly spaced, rounded-rectangle process boxes aligned horizontally and connected by two distinct, dark-grey, orthogonal rightward-pointing arrows with standard arrowheads. The arrows are placed centrally between the boxes. No additional elements, values, or annotations are present.\n\n**Style (NeurIPS-adherent “Soft Tech” refinement):**\n- **Background:** Pure white artboard, ensuring a crisp, high-contrast academic presentation.\n- **Box Shapes:** Softened-geometry rounded rectangles with a subtle border (`#B0B0B0`). Corner radius ~8 px for a modern, refined look.\n- **Typography:** \n    - Chinese text labels: Clean, dark (`#333333`) **Sans-Serif** font (e.g., Arial/Noto Sans CJK), Bold weight.\n    - Mathematical expressions (`n=12`, `x / x₀`, `均值 1.7`): **Serif** font (Times New Roman/LaTeX-style), Italicized where applicable, to strictly separate module names from variable data.\n\n**Color Palette (Borrowing reference aesthetic with NeurIPS soft-pastel enhancement):**\n- **First Box (Left):** Soft Tech Pastel Blue fill (`#E6F3FF`). Label: “样品输入” and “(n=12)”.\n- **Second Box (Middle):** Bridging neutral Soft Cream/Yellow fill (`#FFF2CC`). Label: “数据标准化” and “(x / x₀)”. The fraction is clearly legible.\n- **Third Box (Right):** Soft Pastel Green fill (`#E0F2E9`). Label: “结果输出” and “(均值 1.7)”.\n\n**Identifier:**\nThe text identifier “REF-73” is placed in the absolute top-right corner of the figure, in a small, discreet, light-grey Sans-Serif font, exactly replicating the reference style.",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T03:15:41.811Z",
+      "completedAt": "2026-10-10T03:15:52.852Z",
+      "durationMs": 11041,
+      "error": ""
+    }
+  ],
+  "criticMode": "image",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 2,
+  "promptCharCount": 195,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [],
+  "logs": [
+    "2026-10-10T03:15:34.461Z 参考图选择：采用 1 张，排除重复 0 张、无法使用 0 张、超出预算 0 张；辅助视觉观察请求合计 1 张图片，上限 8 张。",
+    "ERROR: 图像生成失败：完整生图方案超过当前万相型号的 5000 字符上限，已停止图像请求；未截断方案，请缩短要求或更换模型后重试。 请减少图片、裁剪过大的图片或缩短文字，也可更换支持该输入的模型。"
+  ],
+  "error": "图像生成失败：完整生图方案超过当前万相型号的 5000 字符上限，已停止图像请求；未截断方案，请缩短要求或更换模型后重试。 请减少图片、裁剪过大的图片或缩短文字，也可更换支持该输入的模型。",
+  "createdAt": "2026-10-10T03:15:23.204Z",
+  "updatedAt": "2026-10-10T03:15:52.853Z",
+  "startedAt": "2026-10-10T03:15:23.205Z",
+  "completedAt": "2026-10-10T03:15:52.853Z"
+}

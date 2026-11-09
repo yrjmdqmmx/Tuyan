@@ -1,0 +1,1555 @@
+{
+  "simulated": true,
+  "realModelQualityVerified": false,
+  "matrix": [
+    {
+      "outputFormat": "png",
+      "retrievalSetting": "none",
+      "withImage": false,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "calls": [
+        {
+          "kind": "plan",
+          "images": 0
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "png",
+      "retrievalSetting": "none",
+      "withImage": true,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "calls": [
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "plan",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "png",
+      "retrievalSetting": "auto",
+      "withImage": false,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "calls": [
+        {
+          "kind": "retrieval",
+          "images": 0
+        },
+        {
+          "kind": "plan",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "png",
+      "retrievalSetting": "auto",
+      "withImage": true,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "calls": [
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "retrieval",
+          "images": 0
+        },
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "plan",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "png",
+      "retrievalSetting": "random",
+      "withImage": false,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "calls": [
+        {
+          "kind": "plan",
+          "images": 3
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "png",
+      "retrievalSetting": "random",
+      "withImage": true,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "calls": [
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "observation",
+          "images": 3
+        },
+        {
+          "kind": "plan",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "png",
+      "retrievalSetting": "manual",
+      "withImage": false,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "calls": [
+        {
+          "kind": "plan",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "png",
+      "retrievalSetting": "manual",
+      "withImage": true,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "calls": [
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "plan",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "svg",
+      "retrievalSetting": "none",
+      "withImage": false,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5",
+            "pngHash": "f84960163711e5d688764f45627cf74b08df86790b95dcf335128e3d3829c1fc",
+            "status": "issues_found",
+            "submittedImageHash": "3790d756f0c668297ff6c231209ee543585b0114efaaeac29ad32bd09969b9e6",
+            "assessment": "{\"version\":1,\"svgHash\":\"428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+            "pngHash": "01cb14bf7d3240987f9fb1f3797b351a08b25230887e6e699a5c3687560f51fd",
+            "status": "passed",
+            "submittedImageHash": "b41e93e889b0521dbeea4ad1e8edd96b26be0dbe2aff27167866588d6cedc537",
+            "assessment": "{\"version\":2,\"svgHash\":\"28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "plan",
+          "images": 0
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "svg",
+      "retrievalSetting": "none",
+      "withImage": true,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5",
+            "pngHash": "f84960163711e5d688764f45627cf74b08df86790b95dcf335128e3d3829c1fc",
+            "status": "issues_found",
+            "submittedImageHash": "3790d756f0c668297ff6c231209ee543585b0114efaaeac29ad32bd09969b9e6",
+            "assessment": "{\"version\":1,\"svgHash\":\"428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+            "pngHash": "01cb14bf7d3240987f9fb1f3797b351a08b25230887e6e699a5c3687560f51fd",
+            "status": "passed",
+            "submittedImageHash": "b41e93e889b0521dbeea4ad1e8edd96b26be0dbe2aff27167866588d6cedc537",
+            "assessment": "{\"version\":2,\"svgHash\":\"28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "plan",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "svg",
+      "retrievalSetting": "auto",
+      "withImage": false,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5",
+            "pngHash": "f84960163711e5d688764f45627cf74b08df86790b95dcf335128e3d3829c1fc",
+            "status": "issues_found",
+            "submittedImageHash": "3790d756f0c668297ff6c231209ee543585b0114efaaeac29ad32bd09969b9e6",
+            "assessment": "{\"version\":1,\"svgHash\":\"428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+            "pngHash": "01cb14bf7d3240987f9fb1f3797b351a08b25230887e6e699a5c3687560f51fd",
+            "status": "passed",
+            "submittedImageHash": "b41e93e889b0521dbeea4ad1e8edd96b26be0dbe2aff27167866588d6cedc537",
+            "assessment": "{\"version\":2,\"svgHash\":\"28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "retrieval",
+          "images": 0
+        },
+        {
+          "kind": "plan",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "svg",
+      "retrievalSetting": "auto",
+      "withImage": true,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5",
+            "pngHash": "f84960163711e5d688764f45627cf74b08df86790b95dcf335128e3d3829c1fc",
+            "status": "issues_found",
+            "submittedImageHash": "3790d756f0c668297ff6c231209ee543585b0114efaaeac29ad32bd09969b9e6",
+            "assessment": "{\"version\":1,\"svgHash\":\"428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+            "pngHash": "01cb14bf7d3240987f9fb1f3797b351a08b25230887e6e699a5c3687560f51fd",
+            "status": "passed",
+            "submittedImageHash": "b41e93e889b0521dbeea4ad1e8edd96b26be0dbe2aff27167866588d6cedc537",
+            "assessment": "{\"version\":2,\"svgHash\":\"28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "retrieval",
+          "images": 0
+        },
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "plan",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "svg",
+      "retrievalSetting": "random",
+      "withImage": false,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5",
+            "pngHash": "f84960163711e5d688764f45627cf74b08df86790b95dcf335128e3d3829c1fc",
+            "status": "issues_found",
+            "submittedImageHash": "3790d756f0c668297ff6c231209ee543585b0114efaaeac29ad32bd09969b9e6",
+            "assessment": "{\"version\":1,\"svgHash\":\"428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+            "pngHash": "01cb14bf7d3240987f9fb1f3797b351a08b25230887e6e699a5c3687560f51fd",
+            "status": "passed",
+            "submittedImageHash": "b41e93e889b0521dbeea4ad1e8edd96b26be0dbe2aff27167866588d6cedc537",
+            "assessment": "{\"version\":2,\"svgHash\":\"28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "plan",
+          "images": 3
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "svg",
+      "retrievalSetting": "random",
+      "withImage": true,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5",
+            "pngHash": "f84960163711e5d688764f45627cf74b08df86790b95dcf335128e3d3829c1fc",
+            "status": "issues_found",
+            "submittedImageHash": "3790d756f0c668297ff6c231209ee543585b0114efaaeac29ad32bd09969b9e6",
+            "assessment": "{\"version\":1,\"svgHash\":\"428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+            "pngHash": "01cb14bf7d3240987f9fb1f3797b351a08b25230887e6e699a5c3687560f51fd",
+            "status": "passed",
+            "submittedImageHash": "b41e93e889b0521dbeea4ad1e8edd96b26be0dbe2aff27167866588d6cedc537",
+            "assessment": "{\"version\":2,\"svgHash\":\"28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "observation",
+          "images": 3
+        },
+        {
+          "kind": "plan",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "svg",
+      "retrievalSetting": "manual",
+      "withImage": false,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5",
+            "pngHash": "f84960163711e5d688764f45627cf74b08df86790b95dcf335128e3d3829c1fc",
+            "status": "issues_found",
+            "submittedImageHash": "3790d756f0c668297ff6c231209ee543585b0114efaaeac29ad32bd09969b9e6",
+            "assessment": "{\"version\":1,\"svgHash\":\"428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+            "pngHash": "01cb14bf7d3240987f9fb1f3797b351a08b25230887e6e699a5c3687560f51fd",
+            "status": "passed",
+            "submittedImageHash": "b41e93e889b0521dbeea4ad1e8edd96b26be0dbe2aff27167866588d6cedc537",
+            "assessment": "{\"version\":2,\"svgHash\":\"28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "plan",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "svg",
+      "retrievalSetting": "manual",
+      "withImage": true,
+      "figureTypeId": "workflow",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5",
+            "pngHash": "f84960163711e5d688764f45627cf74b08df86790b95dcf335128e3d3829c1fc",
+            "status": "issues_found",
+            "submittedImageHash": "3790d756f0c668297ff6c231209ee543585b0114efaaeac29ad32bd09969b9e6",
+            "assessment": "{\"version\":1,\"svgHash\":\"428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+            "pngHash": "01cb14bf7d3240987f9fb1f3797b351a08b25230887e6e699a5c3687560f51fd",
+            "status": "passed",
+            "submittedImageHash": "b41e93e889b0521dbeea4ad1e8edd96b26be0dbe2aff27167866588d6cedc537",
+            "assessment": "{\"version\":2,\"svgHash\":\"28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "plan",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "png",
+      "retrievalSetting": "none",
+      "withImage": false,
+      "figureTypeId": "bar",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "calls": [
+        {
+          "kind": "plan",
+          "images": 0
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "png",
+      "retrievalSetting": "none",
+      "withImage": false,
+      "figureTypeId": "state_transition",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "calls": [
+        {
+          "kind": "plan",
+          "images": 0
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "png",
+      "retrievalSetting": "none",
+      "withImage": false,
+      "figureTypeId": "multipanel",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "calls": [
+        {
+          "kind": "plan",
+          "images": 0
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "svg",
+      "retrievalSetting": "none",
+      "withImage": false,
+      "figureTypeId": "bar",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5",
+            "pngHash": "f84960163711e5d688764f45627cf74b08df86790b95dcf335128e3d3829c1fc",
+            "status": "issues_found",
+            "submittedImageHash": "3790d756f0c668297ff6c231209ee543585b0114efaaeac29ad32bd09969b9e6",
+            "assessment": "{\"version\":1,\"svgHash\":\"428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+            "pngHash": "01cb14bf7d3240987f9fb1f3797b351a08b25230887e6e699a5c3687560f51fd",
+            "status": "passed",
+            "submittedImageHash": "b41e93e889b0521dbeea4ad1e8edd96b26be0dbe2aff27167866588d6cedc537",
+            "assessment": "{\"version\":2,\"svgHash\":\"28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "plan",
+          "images": 0
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "svg",
+      "retrievalSetting": "none",
+      "withImage": false,
+      "figureTypeId": "state_transition",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5",
+            "pngHash": "f84960163711e5d688764f45627cf74b08df86790b95dcf335128e3d3829c1fc",
+            "status": "issues_found",
+            "submittedImageHash": "3790d756f0c668297ff6c231209ee543585b0114efaaeac29ad32bd09969b9e6",
+            "assessment": "{\"version\":1,\"svgHash\":\"428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+            "pngHash": "01cb14bf7d3240987f9fb1f3797b351a08b25230887e6e699a5c3687560f51fd",
+            "status": "passed",
+            "submittedImageHash": "b41e93e889b0521dbeea4ad1e8edd96b26be0dbe2aff27167866588d6cedc537",
+            "assessment": "{\"version\":2,\"svgHash\":\"28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "plan",
+          "images": 0
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "svg",
+      "retrievalSetting": "none",
+      "withImage": false,
+      "figureTypeId": "multipanel",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5",
+            "pngHash": "f84960163711e5d688764f45627cf74b08df86790b95dcf335128e3d3829c1fc",
+            "status": "issues_found",
+            "submittedImageHash": "3790d756f0c668297ff6c231209ee543585b0114efaaeac29ad32bd09969b9e6",
+            "assessment": "{\"version\":1,\"svgHash\":\"428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+            "pngHash": "01cb14bf7d3240987f9fb1f3797b351a08b25230887e6e699a5c3687560f51fd",
+            "status": "passed",
+            "submittedImageHash": "b41e93e889b0521dbeea4ad1e8edd96b26be0dbe2aff27167866588d6cedc537",
+            "assessment": "{\"version\":2,\"svgHash\":\"28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "plan",
+          "images": 0
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    },
+    {
+      "outputFormat": "png",
+      "scenario": "eight extracted formats + uploaded image + manual library + auxiliary vision",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "calls": [
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "plan",
+          "images": 0
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "review",
+          "images": 0
+        },
+        {
+          "kind": "image",
+          "images": 0
+        },
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "review",
+          "images": 0
+        }
+      ]
+    },
+    {
+      "outputFormat": "svg",
+      "scenario": "eight extracted formats + uploaded image + manual library + auxiliary vision",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5",
+            "pngHash": "f84960163711e5d688764f45627cf74b08df86790b95dcf335128e3d3829c1fc",
+            "status": "issues_found",
+            "submittedImageHash": "3790d756f0c668297ff6c231209ee543585b0114efaaeac29ad32bd09969b9e6",
+            "assessment": "{\"version\":1,\"svgHash\":\"428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+            "pngHash": "01cb14bf7d3240987f9fb1f3797b351a08b25230887e6e699a5c3687560f51fd",
+            "status": "passed",
+            "submittedImageHash": "b41e93e889b0521dbeea4ad1e8edd96b26be0dbe2aff27167866588d6cedc537",
+            "assessment": "{\"version\":2,\"svgHash\":\"28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "plan",
+          "images": 0
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "review",
+          "images": 0
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "observation",
+          "images": 1
+        },
+        {
+          "kind": "review",
+          "images": 0
+        }
+      ]
+    },
+    {
+      "outputFormat": "svg",
+      "scenario": "edit using original SVG code and data",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5",
+            "pngHash": "f84960163711e5d688764f45627cf74b08df86790b95dcf335128e3d3829c1fc",
+            "status": "issues_found",
+            "submittedImageHash": "3790d756f0c668297ff6c231209ee543585b0114efaaeac29ad32bd09969b9e6",
+            "assessment": "{\"version\":1,\"svgHash\":\"428495cfc8ce94aa72309b341599e29c6bf55db367ba433e185caa59d64d40c5\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Synthetic first version too close\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Complete plan: A=35 B=12, move labels apart; keep exact data.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+            "pngHash": "01cb14bf7d3240987f9fb1f3797b351a08b25230887e6e699a5c3687560f51fd",
+            "status": "passed",
+            "submittedImageHash": "b41e93e889b0521dbeea4ad1e8edd96b26be0dbe2aff27167866588d6cedc537",
+            "assessment": "{\"version\":2,\"svgHash\":\"28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "28274b8662b075a66bc9b63f566dad056979bbce3d10ec91192bcd4d2158af9e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "plan",
+          "images": 0
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        },
+        {
+          "kind": "svg",
+          "images": 0
+        },
+        {
+          "kind": "review",
+          "images": 1
+        }
+      ]
+    }
+  ]
+}

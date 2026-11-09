@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1009809</article-id>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-21-01663</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Education</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Computer software</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Engineering and technology</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Computer software</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Programming languages</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Engineering and technology</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Programming languages</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Cognitive science</subject><subj-group><subject>Cognition</subject><subj-group><subject>Memory</subject><subj-group><subject>Short term memory</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Learning and memory</subject><subj-group><subject>Memory</subject><subj-group><subject>Short term memory</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Software design</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Engineering and technology</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Software design</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Software tools</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Engineering and technology</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Software tools</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Cognitive science</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Research design</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Head</subject><subj-group><subject>Eyes</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Head</subject><subj-group><subject>Eyes</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Ocular system</subject><subj-group><subject>Eyes</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Ocular system</subject><subj-group><subject>Eyes</subject></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Twelve quick tips for software design</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0001-8659-8979</contrib-id>
+<name name-style="western">
+<surname>Wilson</surname>
+<given-names>Greg</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"/>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><addr-line>Third Bit, Toronto, Canada</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Ouellette</surname>
+<given-names>Francis</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>McGill University, CANADA</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">gvwilson@third-bit.com</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>24</day>
+<month>2</month>
+<year>2022</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>2</month>
+<year>2022</year>
+</pub-date>
+<volume>18</volume>
+<issue>2</issue>
+<elocation-id>e1009809</elocation-id>
+<permissions>
+<copyright-year>2022</copyright-year>
+<copyright-holder>Greg Wilson</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1009809"/>
+<funding-group>
+<funding-statement>The author received no specific funding for this work.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="4"/>
+<table-count count="0"/>
+<page-count count="12"/>
+</counts>
+</article-meta>
+</front>
+<body>
+<disp-quote>
+<p>This is a <italic>PLOS Computational Biology</italic> Software paper.</p>
+</disp-quote>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Most people can lift one kilogram, but would struggle to lift one hundred, and could not lift a thousand without planning and support. Similarly, many researchers who can write a few lines of Python, R, or MATLAB to create a plot struggle to create programs that are a few hundred lines long, and don’t know where to start designing an application made up of dozens or hundreds of files or packages.</p>
+<p>The core challenge is that <italic>programming in the large</italic> is qualitatively different from <italic>programming in the small</italic>. As the number of pieces in a program grows, the number of possible interactions between those pieces grows much more quickly because <italic>N</italic> components can be paired in <italic>N</italic><sup>2</sup> ways. Programmers who don’t manage this complexity invariably produce software that behaves in unexpected (usually unfortunate) ways and cannot be modified without heroic effort.</p>
+<p>This paper presents a dozen tips that can help data scientists design large programs. These tips are taken from published sources like [<xref ref-type="bibr" rid="pcbi.1009809.ref001">1</xref>,<xref ref-type="bibr" rid="pcbi.1009809.ref002">2</xref>], the author’s personal experience, and discussions over 35 years with the creators of widely used libraries and applications. They aren’t always appropriate—for example, short scripts written for exploratory data analysis don’t need to worry about unit testing—but if you find yourself sketching data structures on the whiteboard, thinking about how different configuration options interact, or wondering how you’re going to support old releases while working on the new one, these tips may help.</p>
+<list list-type="simple">
+<list-item><p>Tip 1: Design after the fact.</p></list-item>
+<list-item><p>Tip 2: Design for people’s cognitive capacity.</p></list-item>
+<list-item><p>Tip 3: Design in coherent levels.</p></list-item>
+<list-item><p>Tip 4: Design for evolution.</p></list-item>
+<list-item><p>Tip 5: Group related information together.</p></list-item>
+<list-item><p>Tip 6: Use common patterns.</p></list-item>
+<list-item><p>Tip 7: Design for delivery.</p></list-item>
+<list-item><p>Tip 8: Design for testability.</p></list-item>
+<list-item><p>Tip 9: Design as if code was data.</p></list-item>
+<list-item><p>Tip 10: Design graphically.</p></list-item>
+<list-item><p>Tip 11: Design with everyone in mind.</p></list-item>
+<list-item><p>Tip 12: Design for contribution.</p></list-item>
+</list>
+<sec id="sec002">
+<title>Tip 1: Design after the fact</title>
+<p>When we are doing research, we often don’t know what the code should do tomorrow until we’ve seen today’s results. It’s therefore often pointless to invest as much in up-front planning for our software as we would in drawing up blueprints for a building. But this isn’t a license to create a tangled mess: We can and should make it <italic>look</italic> as though we had a plan so that the next person who has to read our code will be able to understand it (<xref ref-type="boxed-text" rid="pcbi.1009809.box001">Box 1</xref>) [<xref ref-type="bibr" rid="pcbi.1009809.ref003">3</xref>].</p>
+<boxed-text id="pcbi.1009809.box001" position="float">
+<sec id="sec003">
+<title>Box 1. Challenge and response</title>
+<p>Many designers explain the design of their software by recapitulating its history [<xref ref-type="bibr" rid="pcbi.1009809.ref007">7</xref>,<xref ref-type="bibr" rid="pcbi.1009809.ref008">8</xref>]. This is sometimes called <italic>challenge and response</italic>: The only way to understand why something works the way it does is to understand the problems that existed at the time it was written and the tools that were available then. Neither programming languages nor existing graphical notations (Tip 10) are particularly good at capturing this, and while many tools have been written for tracking and managing requirements, none have worked well enough that the average programmer would voluntarily adopt them.</p>
+</sec>
+</boxed-text>
+<p><italic>Refactoring</italic> is the process of reorganizing or rewriting code without changing its externally visible behavior. [<xref ref-type="bibr" rid="pcbi.1009809.ref004">4</xref>] describes common refactorings, such as “extract function” (i.e., move some code out of the function it is in and put it in a new function so that it can be called separately) and “combine parameters into object” (which we will revisit in Tip 5). Just as the tidying steps in a data pipeline either convert messy data to a tidy layout or move the data from one tidy layout to another [<xref ref-type="bibr" rid="pcbi.1009809.ref005">5</xref>], most refactoring operations move code toward or between well-defined patterns [<xref ref-type="bibr" rid="pcbi.1009809.ref006">6</xref>].</p>
+</sec>
+<sec id="sec004">
+<title>Tip 2: Design for people’s cognitive capacity</title>
+<p>Just as computers have hard drives and RAM, human brains have long-term and short-term memory [<xref ref-type="bibr" rid="pcbi.1009809.ref009">9</xref>]. We only have conscious access to short-term memory, and it is much smaller than most people realize: Early estimates were that the average person could hold 7 ± 2 items in short-term memory at once [<xref ref-type="bibr" rid="pcbi.1009809.ref010">10</xref>], and more recent estimates put its capacity closer to 4 ± 1.</p>
+<p>This limitation leads to the second tip for software design: to ensure that the number of things someone has to remember at any time in order to understand the code fits in short-term memory. For example, if a function takes 37 parameters, then the odds are slim that someone will remember them all and put them in the right order without a lot of trial and error. Breaking the function into pieces, each of which takes only a handful parameters, reduces the <italic>cognitive load</italic>. Similarly, defining default values for parameters (for example, “black” as a default font color) allows people not to worry about them most of the time.</p>
+<p>A complementary approach is to create families of functions that all take similar inputs and outputs and then combine them using <italic>pipes</italic>. The pipe operator is one of Unix’s key contributions to computing [<xref ref-type="bibr" rid="pcbi.1009809.ref011">11</xref>], and the idea has been adopted by many other programming systems, including the “tidyverse” family of packages in R [<xref ref-type="bibr" rid="pcbi.1009809.ref005">5</xref>]. Where a mathematician would write <italic>f</italic>(<italic>g</italic>(<italic>h</italic>(<italic>x</italic>))), a programmer using pipes would write <italic>h</italic>(<italic>x</italic>)|<italic>g</italic>|<italic>f</italic> so that the functions’ names appear in the order in which they are applied. As a result, the reader only has to hold one piece of information in their head at a time, which frees up more space for worrying about other things.</p>
+</sec>
+<sec id="sec005">
+<title>Tip 3: Design in coherent levels</title>
+<p>Another tip for designing functions is that each function should be short, shallow, and single-purpose, i.e., it should implement a single mental operation so that it only takes up a single slot in short-term memory. The easiest way to check if this tip is being followed is to read the function aloud and ask whether all the steps are at the same conceptual level. For example, if I read this Python function aloud:</p>
+<p specific-use="line">def main():</p>
+<p specific-use="line"> config = buildConfiguration(sys.argv)</p>
+<p specific-use="line"> state = initializeState(config)</p>
+<p specific-use="line"> while config.currentTime &lt; config.haltTime:</p>
+<p specific-use="line">  updateState(config, state)</p>
+<p specific-use="line"> report(config, state)</p>
+<p>the highlighted comparison of the current time to the halting time in the while loop feels like it’s at a lower level of detail than the function calls. I would probably replace the comparison with a function called something like <monospace>stillEvolving:</monospace></p>
+<p specific-use="line">def main():</p>
+<p specific-use="line"> config = buildConfiguration(sys.argv)</p>
+<p specific-use="line"> state = initializeState(config)</p>
+<p specific-use="line"> while stillEvolving(config, state):</p>
+<p specific-use="line">  updateState(config, state)</p>
+<p specific-use="line"> report(config, state)</p>
+<p>This rewrite saves the reader from having to jump between two different levels of detail while they’re trying to figure out what this function does (<xref ref-type="boxed-text" rid="pcbi.1009809.box002">Box 2</xref>).</p>
+<boxed-text id="pcbi.1009809.box002" position="float">
+<sec id="sec006">
+<title>Box 2. Expert designers’ thought processes</title>
+<p>While the final design should be leveled, the process used to create it almost certainly won’t be. Studies of expert designers have found that they constantly drill down from high-level ideas to concrete implications to find out whether their plan will work or not [<xref ref-type="bibr" rid="pcbi.1009809.ref012">12</xref>].</p>
+</sec>
+</boxed-text>
+</sec>
+<sec id="sec007">
+<title>Tip 4: Design for evolution</title>
+<p>Replacing a low-level test with a function as shown above also makes future evolution easier. If we decide that the simulation should run until a specified time <italic>or</italic> until its state has stabilized, we can make that change in the <monospace>stillEvolving</monospace> function without modifying anything else.</p>
+<p>Hiding details like this is another general rule of software design. Software changes over time because our problems change, our environments change, and because our skills improve. A good design makes independent evolution of parts easier: Basically, a fix <italic>here</italic> shouldn’t require changes <italic>there</italic>. More realistically, a change in one place should only require a small number of changes in a few predictable places.</p>
+<p>Software designers achieve this in two ways. <italic>Information hiding</italic> means putting the data each part of a program needs in one place, and only accessing that data through a small set of functions. Doing this reduces cognitive load by allowing people to focus on one part of the program at a time. <italic>Loose coupling</italic> means making those parts independent of one another so that they can be combined in many different ways. Again, one of the reasons the Unix command line and R’s tidyverse have been so successful is how easily their elements can be rearranged to do different things.</p>
+<p>Programmers usually implement these principles by separating <italic>interface</italic> from <italic>implementation</italic>. The interface specifies what a piece of software can do; its implementation is how it achieves that, and no other piece of software should be tied to its implementation details. The goal is to enable the construction of software components that can be mixed and matched in the way that USB interfaces allow pieces of hardware to be combined. Many of the more advanced features of programming languages exist to support or enforce this, such as being able to derive classes from one another in object-oriented languages like Python, or creating generic functions that do the same logical thing in different ways for different types of data in languages like R and Julia.</p>
+<p><italic>Design by contract</italic> is one way to enforce this idea [<xref ref-type="bibr" rid="pcbi.1009809.ref013">13</xref>]. Any function can be characterized by the <italic>preconditions</italic> that must be true of its inputs in order for it to run and the <italic>postconditions</italic> that it guarantees will be true of its output. For example, a function might require that its input be an array of numbers in sorted order, and its postcondition might be that it returns the median of those numbers. If the input isn’t an array, doesn’t contain numbers, or isn’t sorted, the function may not work; if the input satisfies all three conditions, the output is guaranteed to be the median.</p>
+<p>If design by contract is followed, then a new version of this function can only <italic>weaken</italic> the preconditions, i.e., place <italic>fewer</italic> restrictions on what it accepts. This rule ensures that the new function will be able to handle everything that the old one could: If the new version placed extra restrictions, such as requiring all the numbers in the input to be positive as well as sorted, then the new version might reject some inputs that the original version would accept.</p>
+<p>Similarly, a new version of the function can only <italic>strengthen</italic> the postconditions, i.e., make <italic>more</italic> guarantees about its outputs so that the values the new version produces are a subset of the values the old version could produce. For example, if the old version of the function returned positive numbers, the new version could guarantee to return positive numbers in the range zero to one, but could <italic>not</italic> return negative numbers as well as positive ones. This rule ensures that anything using the old function’s output will still be able to handle everything the new one produces.</p>
+</sec>
+<sec id="sec008">
+<title>Tip 5: Group related information together</title>
+<p>If several things are closely related or frequently occur together, our brains combine them into a “chunk” that only takes up one slot in short-term memory [<xref ref-type="bibr" rid="pcbi.1009809.ref014">14</xref>]. We can aid this by combining related values into data structures. For example, instead of storing the X, Y, and Z coordinates of points separately like this:</p>
+<p specific-use="line">def enclose (x0, y0, z0, x1, y1, z1, nearness):</p>
+<p specific-use="line">…</p>
+<p>we can store each point’s coordinates in an object and write our code like this:</p>
+<p specific-use="line">def enclose (p0, p1, nearness):</p>
+<p specific-use="line">…</p>
+<p>This allows us to think about each point as one “thing”. Where we need the individual coordinates, we can refer to them as <monospace>p0.X, p0.Y</monospace>, and so on.</p>
+<p>Grouping related information together also aids code evolution (Tip 4). If, for example, we decide to use radial coordinates instead of Cartesian coordinates, we can change how points are represented without changing most of the functions that pass them around.</p>
+</sec>
+<sec id="sec009">
+<title>Tip 6: Use common patterns</title>
+<p>Some chunks appear so often that we call them “patterns” and give them names (<xref ref-type="boxed-text" rid="pcbi.1009809.box003">Box 3</xref>). Good programmers use <italic>design patterns</italic> to structure their code, both to reduce the amount of thinking they have to do and because these patterns have proven to be useful in the past. Learning patterns helps make someone a better programmer, i.e., there is causation, not just correlation [<xref ref-type="bibr" rid="pcbi.1009809.ref015">15</xref>]. Conforming to widely understood patterns also makes code more comprehensible, just as dividing this paper into sections and a bibliography that are consistent with what you’ve read before makes it easier to read.</p>
+<boxed-text id="pcbi.1009809.box003" position="float">
+<sec id="sec010">
+<title>Box 3. Patterns and precision</title>
+<p>Patterns don’t have to be precisely defined in order to be useful. A classic example is concept of a porch [<xref ref-type="bibr" rid="pcbi.1009809.ref016">16</xref>]: Two people might disagree over whether a specific structure is one or not, but the idea is still useful.</p>
+</sec>
+</boxed-text>
+<p>Patterns can be found at all scales of programming. For example, introductory programming courses often show a pattern for finding the “most valuable” element of a collection, such as the minimum or maximum [<xref ref-type="bibr" rid="pcbi.1009809.ref017">17</xref>], while “filter the rows, group them by category, and calculate a summary for each group” is a common pattern in introductory data analysis. In more advanced courses, students may be introduced to object-oriented design patterns for traversing complex data structures or using one set of objects to hide the details of how another set of objects work [<xref ref-type="bibr" rid="pcbi.1009809.ref018">18</xref>,<xref ref-type="bibr" rid="pcbi.1009809.ref019">19</xref>].</p>
+<p>But design patterns can be a mixed blessing. First, our brains try so hard to match inputs to patterns that they will sometimes misclassify things. For example, it once took me the better part of an hour to spot the error in this code:</p>
+<p specific-use="line">for (i = 0; i&lt;a.width; i++) {</p>
+<p specific-use="line"> for (j = 0; i&lt;a.height; j++) {</p>
+<p specific-use="line">  a[i][j] = cos(abs(a[i][j])—lemaitre(b_norm, a[j][i]))</p>
+<p specific-use="line"> }</p>
+<p specific-use="line">}</p>
+<p>The problem is in the second line, which mistakenly uses the variable <monospace>i</monospace> where it should use the variable <monospace>j</monospace> (<xref ref-type="boxed-text" rid="pcbi.1009809.box004">Box 4</xref>). I couldn’t find the mistake because the code was so close to what it should have been that my brain “corrected” what my eyes were seeing, and because I assumed that since the third line was the most complicated, the error had to be there.</p>
+<boxed-text id="pcbi.1009809.box004" position="float">
+<sec id="sec011">
+<title>Box 4. Naming conventions</title>
+<p>In the same way that you shouldn’t write a math problem with a function <monospace>x</monospace> of variable <monospace>g</monospace>, you should use the same naming conventions as your peers to make your code easier to read. It doesn’t matter what these are, any more than it matters whether you spell “color” the correct way or the British way; what matters is the predictability that comes from consistency.</p>
+</sec>
+</boxed-text>
+<p>This example illustrates a corollary to Tip 2: We should write programs that maximize the ratio of unique code to boilerplate. In most modern languages, the five lines shown above can be written as:</p>
+<p specific-use="line">a = cos(abs(a)—lemaitre(b_norm, a.transpose()))</p>
+<p>This version is probably as efficient as the first, but it is much easier to read and therefore much less likely to mislead.</p>
+</sec>
+<sec id="sec012">
+<title>Tip 7: Design for delivery</title>
+<p>Developer operations (DevOps) has become a buzzword in the last few years. Like “data science” or “computational thinking”, the term is popular because people can use it to mean whatever they want, but the core idea is a good one: managing compilation, packaging, distribution, deployment, and monitoring to make them faster and more reliable [<xref ref-type="bibr" rid="pcbi.1009809.ref020">20</xref>,<xref ref-type="bibr" rid="pcbi.1009809.ref021">21</xref>]. Automating these tasks pays off many times over, but only if you design things so that they can be automated. [<xref ref-type="bibr" rid="pcbi.1009809.ref022">22</xref>] lays out some rules for doing this, and a few others include:</p>
+<list list-type="order">
+<list-item><p>Use the same tools to build packages as everyone else who uses your language, for example, <monospace>pip</monospace> for Python or <monospace>devtools</monospace> for R.</p></list-item>
+<list-item><p>Organize your source files in the way your build system expects so that those tools can do their job.</p></list-item>
+<list-item><p>Use a logging library rather than <monospace>print</monospace> commands to report what your program is doing and any errors it has encountered. Logging libraries allow you to enable and disable certain categories of messages selectively. This is very useful during development, but even more so in production, since it lets whoever is using your software turn reporting on without having to rebuild anything.</p></list-item>
+</list>
+</sec>
+<sec id="sec013">
+<title>Tip 8: Design for testability</title>
+<p>Research software is notoriously difficult to test [<xref ref-type="bibr" rid="pcbi.1009809.ref023">23</xref>,<xref ref-type="bibr" rid="pcbi.1009809.ref024">24</xref>], in part because its developers often don’t know precisely what output the code is supposed to produce. (As a frustrated chemist once said to the author, “If I knew what the right answer was, I’d have published it already.”) It <italic>is</italic> possible to test the “other 90%” of a typical data science application—the parts that parse input files, clean up messy data, and so on, but only if those parts are designed with testing in mind.</p>
+<p><italic>Legacy code</italic> is software that we’re afraid to try to modify because it’s hard to understand and things will break unexpectedly. A comprehensive set of tests makes us less afraid [<xref ref-type="bibr" rid="pcbi.1009809.ref025">25</xref>], but we can only create those tests if we design the software in testable pieces. We can check how well we’ve done this by asking:</p>
+<list list-type="bullet">
+<list-item><p>How easy is it to create a <italic>fixture</italic> (i.e., the input that a test runs on)?</p></list-item>
+<list-item><p>How easy is it to invoke just the behavior we want?</p></list-item>
+<list-item><p>How easy is it to check the result?</p></list-item>
+<list-item><p>How easy is it to figure out what “right” is?</p></list-item>
+<list-item><p>How easy is it to delete the feature?</p></list-item>
+</list>
+<p>For example, suppose that our program uses species data stored in a large database that takes several seconds to query. In order to make our program easier to test, we can create a second version of the lookup function that returns hard-coded values for the two or three species used in testing. When the program is running in production, it uses the original function; when we are testing, we swap out that function and use the testing version instead. This trick only works if <italic>all</italic> requests for species information are made via that function, but doing this ensures that if we want to change how information is looked up in future we can be certain that we’ll only have to modify one small piece of code.</p>
+</sec>
+<sec id="sec014">
+<title>Tip 9: Design as if code was data</title>
+<p>The insight on which all modern computing is based is that code is just another kind of data. Programs are just text files, which means we can process it like any other piece of text. Examples of this include:</p>
+<list list-type="bullet">
+<list-item><p>style-checking tools that check that the layout, variable names, and other properties conform to coding standards;</p></list-item>
+<list-item><p>documentation tools that extract specially formatted comments and create cross-referenced manual pages; and</p></list-item>
+<list-item><p>indexing and navigation tools that enable us to jump directly to the definition of a function or variable.</p></list-item>
+</list>
+<p>Similarly, once a program is loaded into memory, it is just another data structure: Instead of interpreting its bytes as characters or pixels, we interpret them as instructions, but they’re still just bytes. This fact impacts design in many ways:</p>
+<list list-type="bullet">
+<list-item><p>Passing functions as arguments to other functions so that common operations only have to be written once.</p></list-item>
+<list-item><p>Storing functions in data structures so that new operations can be added to a program without changing any of the preexisting code.</p></list-item>
+<list-item><p>Loading modules based on configuration parameters (as in the earlier example of getting species information).</p></list-item>
+</list>
+<p>For example, if we want to count the number of positive values in an array, we can write:</p>
+<p specific-use="line">def count_positive(array):</p>
+<p specific-use="line"> number = 0</p>
+<p specific-use="line"> for value in array:</p>
+<p specific-use="line">  if value &gt; = 0:</p>
+<p specific-use="line">   number = number + 1</p>
+<p specific-use="line">return number</p>
+<p>If we want to count the number that are negative, we could write a <monospace>count_negative</monospace> function that differed by only one character (replacing the &gt; with &lt;). Alternatively, we could write a generic function like this:</p>
+<p specific-use="line">def count_interesting(array, test):</p>
+<p specific-use="line"> number = 0</p>
+<p specific-use="line"> for value in array:</p>
+<p specific-use="line">  if test(value):</p>
+<p specific-use="line">   number = number + 1</p>
+<p specific-use="line"> return number</p>
+<p>then put each test in a function like this:</p>
+<p specific-use="line">def is_positive(value):</p>
+<p specific-use="line"> return value &gt; = 0</p>
+<p>and then write something like:</p>
+<p specific-use="line">count_interesting(pressures, is_positive)</p>
+<p>Many features in modern languages, such as lazy evaluation in R or decorators in Python, leverage this insight, and taking advantage of it can make code much smaller and easier to understand—but only if you remember that what is powerful in the hands of experts is spooky action-at-a-distance for novices.</p>
+<p>The best balance between abstraction and detail depends on how much people already know. For a novice, too many low-level details obscure the meaning, while too much abstraction makes it impossible to figure out what’s actually going on (<xref ref-type="fig" rid="pcbi.1009809.g001">Fig 1</xref>). As that person gains experience, they become better able to synthesize meaning from detail and translate generalities into specifics, but their optimum balance also shifts. Software that is easiest for them to understand may not be optimal for someone else.</p>
+<fig id="pcbi.1009809.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1009809.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Comprehension curves for novices and experts.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1009809.g001" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec015">
+<title>Tip 10: Design graphically</title>
+<p>Many formal graphical notations for software have been designed over the years. The most famous is the Unified Modeling Language (UML), but in practice, it is taught more often than it is used, and when it <italic>is</italic> used, it is usually not in the ways its creators intended [<xref ref-type="bibr" rid="pcbi.1009809.ref026">26</xref>].</p>
+<p>However, many programmers do sketch when they’re designing, and these sketches do help them design. These sketches are usually not meant as blueprints: Instead, they help people <italic>externalize cognition</italic>, i.e., get their thoughts out where they can see them [<xref ref-type="bibr" rid="pcbi.1009809.ref027">27</xref>,<xref ref-type="bibr" rid="pcbi.1009809.ref028">28</xref>]. Among the drawings that working programmers often find helpful are:</p>
+<list list-type="bullet">
+<list-item><p>flowcharts, which are unfairly maligned [<xref ref-type="bibr" rid="pcbi.1009809.ref029">29</xref>] (<xref ref-type="fig" rid="pcbi.1009809.g002">Fig 2</xref>);</p></list-item>
+<list-item><p>entity-relationship diagrams showing how database tables relate to one another (<xref ref-type="fig" rid="pcbi.1009809.g003">Fig 3</xref>);</p></list-item>
+<list-item><p>concept maps showing how the designer thinks about the overall problem (<xref ref-type="fig" rid="pcbi.1009809.g004">Fig 4</xref>); and</p></list-item>
+<list-item><p>many others, such as dataflow diagrams, system architecture diagrams showing the major components of an application, and use case maps that show how activity flows through an architecture [<xref ref-type="bibr" rid="pcbi.1009809.ref030">30</xref>].</p></list-item>
+</list>
+<fig id="pcbi.1009809.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1009809.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Flowchart.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1009809.g002" xlink:type="simple"/>
+</fig>
+<fig id="pcbi.1009809.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1009809.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Entity-relationship diagram.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1009809.g003" xlink:type="simple"/>
+</fig>
+<fig id="pcbi.1009809.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1009809.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Concept map.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1009809.g004" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec016">
+<title>Tip 11: Design with everyone</title>
+<p>If the last few years have taught us anything about software, it’s that fairness, privacy, and security cannot be sprinkled on after the fact. For example, if a program is initially designed in a way that allows every user to see everyone else’s data, adding privacy controls later will be expensive and almost certainly buggy. Programmers call this the <italic>Principle of Least Privilege</italic>: Every component in the system should require as few permissions as possible for as short as possible.</p>
+<p>But there is much more to safety-conscious design than just data protection. For example, if an application requires users to change their password every few weeks, <italic>security fatigue</italic> will soon set in and people will choose less and less secure passwords [<xref ref-type="bibr" rid="pcbi.1009809.ref031">31</xref>]. Similarly, programs should not email files to people: Doing that trains them to open attachments, which is a common channel for attacks. And in many jurisdictions, application must allow people to erase data, which means its data structures and database tables have to be designed to allow for actual erasure, not just “mark as inactive”.</p>
+<p>Accessibility also can’t be sprinkled onto software after the fact. Close your eyes and try to navigate your institution’s website. Now imagine having to do that all day, every day. Imagine trying to use a computer when your hands are crippled by arthritis. Better yet, don’t imagine it: Have one of your teammates tape some popsicle sticks to your fingers so you can’t bend them and see what it’s like to reply to an email.</p>
+<p>Making software accessible doesn’t just help people with obvious disabilities: The population is aging, and everything you do to help people who are deaf also helps people who are gradually losing their hearing [<xref ref-type="bibr" rid="pcbi.1009809.ref032">32</xref>]. [<xref ref-type="bibr" rid="pcbi.1009809.ref033">33</xref>] is a good short guide for accessible design: Each poster in this series lays out a few simple do’s and don’ts that will help make your software accessible to people who are neurodivergent, use screen readers, are dyslexic, have physical or motor challenges, or are hard of hearing.</p>
+</sec>
+<sec id="sec017">
+<title>Tip 12: Design for contribution</title>
+<p>Study after study has shown that diversity improves outcomes in fields from business to healthcare because many perspectives make for fewer errors [<xref ref-type="bibr" rid="pcbi.1009809.ref034">34</xref>,<xref ref-type="bibr" rid="pcbi.1009809.ref035">35</xref>]. Good design makes it easier for people who aren’t already immersed in your project to figure out where and how they can contribute to it [<xref ref-type="bibr" rid="pcbi.1009809.ref036">36</xref>], but just as good programmers consider things like packaging and deployment in their designs, so too do they think about the factors that influence contribution:</p>
+<list list-type="bullet">
+<list-item><p>Software licensing is a design issue, since a program can’t use libraries whose licenses are incompatible with its own. Many designers therefore prefer permissive licenses like the MIT License to maximize the number of people who will be able to take advantage of their work.</p></list-item>
+<list-item><p>Applications that support plug-ins—i.e., that allow people to write small modules that the main program can load and use—are often easier for newcomers to contribute to. Similarly, libraries with strong and consistent conventions for passing data (like Unix command-line tools or R’s tidyverse functions) enable people to start with small contributions.</p></list-item>
+</list>
+<p>Designing with contribution in mind is also essential to designing inclusively. Many well-meaning attempts at inclusive design fall short because the designers don’t involve the people they intend to help in the process. Nobody can simultaneously be an expert on programming, a research domain, and the needs of multiple overlapping diversities. Asking for help early on maximizes your chance to get things right; designing in ways that make contribution easy maximizes your chances that people who know more than you will share their insights.</p>
+</sec>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1009809.ref001"><label>1</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Kernighan</surname> <given-names>BW</given-names></name>, <name name-style="western"><surname>Pike</surname> <given-names>R</given-names></name>. <source>The Practice of Programming</source>. <publisher-name>Addison-Wesley</publisher-name>; <year>1999</year>. <object-id pub-id-type="pmid">10328269</object-id></mixed-citation></ref>
+<ref id="pcbi.1009809.ref002"><label>2</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Budgen</surname> <given-names>D.</given-names></name> <source>Software Design</source>. <edition designator="3">3rd</edition> ed. <publisher-name>Routledge</publisher-name>; <year>2020</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Parnas</surname> <given-names>DL</given-names></name>, <name name-style="western"><surname>Clements</surname> <given-names>PC</given-names></name>. <article-title>A Rational Design Process: How and Why to Fake It</article-title>. <source>IEEE Trans Softw Eng</source>. <year>1986</year>;<volume>SE-12</volume>(<issue>2</issue>):<fpage>251</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1109/tse.1986.6312940" xlink:type="simple">10.1109/tse.1986.6312940</ext-link></comment></mixed-citation></ref>
+<ref id="pcbi.1009809.ref004"><label>4</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Fowler</surname> <given-names>M.</given-names></name> <source>Refactoring: Improving the Design of Existing Code</source>. <edition designator="2">2nd</edition> ed. <publisher-name>Addison-Wesley Professional</publisher-name>; <year>2018</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref005"><label>5</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Wickham</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Grolemund</surname> <given-names>G</given-names></name>. <source>R for Data Science: Import, Tidy, Transform, Visualize, and Model Data</source>. <publisher-name>O’Reilly</publisher-name>; <year>2017</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref006"><label>6</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Kerievsky</surname> <given-names>J.</given-names></name> <source>Refactoring to Patterns</source>. <publisher-name>Addison-Wesley Professional</publisher-name>; <year>2004</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref007"><label>7</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Brown</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>G</given-names></name>, editors. <source>The Architecture of Open Source Applications: Elegance, Evolution, and a Few Fearless Hacks</source>. <publisher-name>Lulu</publisher-name>; <year>2011</year>. Available from: <ext-link ext-link-type="uri" xlink:href="https://aosabook.org" xlink:type="simple">https://aosabook.org</ext-link>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref008"><label>8</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Brown</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>G</given-names></name>, editors. <source>The Architecture of Open Source Applications: Structure, Scale, and a Few More Fearless Hacks</source>. <publisher-name>Lulu</publisher-name>; <year>2012</year>. Available from: <ext-link ext-link-type="uri" xlink:href="https://aosabook.org" xlink:type="simple">https://aosabook.org</ext-link>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hermans</surname> <given-names>F.</given-names></name> <article-title>The Programmer’s Brain: What every programmer needs to know about cognition</article-title>. <source>Man Ther</source>. <year>2021</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Miller</surname> <given-names>GA</given-names></name>. <article-title>The Magical Number Seven, Plus or Minus Two: Some Limits on Our Capacity for Processing Information</article-title>. <source>Psychol Rev</source>. <year>1956</year>;<volume>63</volume>(<issue>2</issue>):<fpage>81</fpage>–<lpage>97</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1037/h0043158" xlink:type="simple">10.1037/h0043158</ext-link></comment> <object-id pub-id-type="pmid">13310704</object-id></mixed-citation></ref>
+<ref id="pcbi.1009809.ref011"><label>11</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Kernighan</surname> <given-names>BW</given-names></name>. <source>UNIX: A History and a Memoir</source>. <publisher-name>Independently published</publisher-name>. <year>2019</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref012"><label>12</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Schön</surname> <given-names>DA</given-names></name>. <source>The Reflective Practitioner: How Professionals Think In Action</source>. <publisher-name>Basic Books</publisher-name>; <year>1984</year>. Available from: <ext-link ext-link-type="uri" xlink:href="https://isbndb.com/book/0465068782" xlink:type="simple">https://isbndb.com/book/0465068782</ext-link>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref013"><label>13</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Meyer</surname> <given-names>B.</given-names></name> <source>Object-Oriented Software Construction</source>. <publisher-name>Prentice-Hall</publisher-name>; <year>1994</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thalmann</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Souza</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Oberauer</surname> <given-names>K</given-names></name>. <article-title>How does chunking help working memory?</article-title> <source>J Exp Psychol Learn Mem Cogn</source>. <year>2019</year>;<volume>45</volume>(<issue>1</issue>):<fpage>37</fpage>–<lpage>55</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1037/xlm0000578" xlink:type="simple">10.1037/xlm0000578</ext-link></comment> <object-id pub-id-type="pmid">29698045</object-id></mixed-citation></ref>
+<ref id="pcbi.1009809.ref015"><label>15</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Tichy</surname> <given-names>W.</given-names></name> <chapter-title>The Evidence for Design Patterns</chapter-title>. In: <name name-style="western"><surname>Oram</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>G</given-names></name>, editors. <source>Making Software</source>. <publisher-name>O’Reilly</publisher-name>; <year>2010</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref016"><label>16</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Brand</surname> <given-names>S.</given-names></name> <source>How Buildings Learn: What Happens after They’re Built</source>. <publisher-name>Penguin USA</publisher-name>; <year>1995</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref017"><label>17</label><mixed-citation publication-type="other" xlink:type="simple">Byckling P, Gerdt P, Sajaniemi J. Roles of Variables in Object-Oriented Programming. OOPSLA ‘05: Companion to the 20th annual ACM SIGPLAN conference on Object-oriented programming, systems, languages, and applications; October 2005. p. 350–55. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1145/1094855.1094972" xlink:type="simple">10.1145/1094855.1094972</ext-link></comment></mixed-citation></ref>
+<ref id="pcbi.1009809.ref018"><label>18</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Gamma</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Helm</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Johnson</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Vlissides</surname> <given-names>J</given-names></name>. <source>Design Patterns: Elements of Reusable Object-Oriented Software</source>. <publisher-name>Addison-Wesley Professional</publisher-name>; <year>1994</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref019"><label>19</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Freeman</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Robson</surname> <given-names>E</given-names></name>. <source>Head First Design Patterns: Building Extensible and Maintainable Object-Oriented Software</source>. <edition designator="2">2nd</edition> ed. <year>2020</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref020"><label>20</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Kim</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Debois</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Willis</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Humble</surname> <given-names>J</given-names></name>. <source>The DevOps Handbook</source> <publisher-name>IT Revolution Press</publisher-name>; <year>2016</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref021"><label>21</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Forsgren</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Humble</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>G</given-names></name>. <source>Accelerate: The Science of DevOps</source>. <publisher-name>IT Revolution Press</publisher-name>; <year>2017</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Taschuk</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>G</given-names></name>. <article-title>Ten Simple Rules for Making Research Software More Robust</article-title>. <source>PLoS Comput Biol</source>. <year>2017</year>;<volume>13</volume>(<issue>4</issue>). <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pcbi.1005412" xlink:type="simple">10.1371/journal.pcbi.1005412</ext-link></comment> <object-id pub-id-type="pmid">28407023</object-id></mixed-citation></ref>
+<ref id="pcbi.1009809.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hook</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Kelly</surname> <given-names>D</given-names></name>. <article-title>Testing for trustworthiness in scientific software. 2009</article-title> <source>ICSE Workshop on Software Engineering for Computational Science and Engineering. IEEE</source>; <year>2009</year>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1109/secse.2009.5069163" xlink:type="simple">10.1109/secse.2009.5069163</ext-link></comment></mixed-citation></ref>
+<ref id="pcbi.1009809.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kanewala</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Bieman</surname> <given-names>JM</given-names></name>. <article-title>Testing scientific software: A systematic literature review</article-title>. <source>Inf Softw Technol</source>. <year>2014</year>;<volume>56</volume>(<issue>10</issue>):<fpage>1219</fpage>–<lpage>32</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.infsof.2014.05.006" xlink:type="simple">10.1016/j.infsof.2014.05.006</ext-link></comment> <object-id pub-id-type="pmid">25125798</object-id></mixed-citation></ref>
+<ref id="pcbi.1009809.ref025"><label>25</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Feathers</surname> <given-names>MC</given-names></name>. <source>Working Effectively with Legacy Code</source>. <publisher-name>Prentice-Hall</publisher-name>; <year>2004</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref026"><label>26</label><mixed-citation publication-type="other" xlink:type="simple">Petre M. UML in practice. ICSE ‘13: Proceedings of the 2013 International Conference on Software Engineering; 2013. p. 722–31.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref027"><label>27</label><mixed-citation publication-type="other" xlink:type="simple">Cherubini M, Venolia G, DeLine R, Ko AJ. Let’s go to the whiteboard: how and why software developers use drawings. CHI ‘07: Proceedings of the SIGCHI Conference on Human Factors in Computing Systems; April 2007. p. 557–66. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1145/1240624.1240714" xlink:type="simple">10.1145/1240624.1240714</ext-link></comment></mixed-citation></ref>
+<ref id="pcbi.1009809.ref028"><label>28</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Petre</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>van der Hoek</surname> <given-names>A</given-names></name>. <source>Software Design Decoded: 66 Ways Experts Think</source>. <publisher-name>MIT Press</publisher-name>; <year>2016</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Scanlan</surname> <given-names>DA</given-names></name>. <article-title>Structured Flowcharts Outperform Pseudocode: An Experimental Comparison</article-title>. <source>IEEE Softw</source>. <year>1989</year>;<volume>6</volume>(<issue>5</issue>):<fpage>28</fpage>–<lpage>36</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1109/52.35587" xlink:type="simple">10.1109/52.35587</ext-link></comment></mixed-citation></ref>
+<ref id="pcbi.1009809.ref030"><label>30</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Reekie</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>McAdam</surname> <given-names>R</given-names></name>. <source>A Software Architecture Primer</source>. <publisher-name>Angophora Press</publisher-name>. <year>2006</year>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/sj.bdj.4813253" xlink:type="simple">10.1038/sj.bdj.4813253</ext-link></comment> <object-id pub-id-type="pmid">16501533</object-id></mixed-citation></ref>
+<ref id="pcbi.1009809.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Smalls</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>G</given-names></name>. <article-title>Ten quick tips for staying safe online</article-title>. <source>PLoS Comput Biol</source>. <year>2021</year>;<volume>17</volume>(<issue>3</issue>):<fpage>e1008563</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pcbi.1008563" xlink:type="simple">10.1371/journal.pcbi.1008563</ext-link></comment> <object-id pub-id-type="pmid">33657103</object-id></mixed-citation></ref>
+<ref id="pcbi.1009809.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Johnson</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Finn</surname> <given-names>K</given-names></name>. <article-title>Designing User Interfaces for an Aging Population: Towards Universal Design</article-title>. <source>Morgan Kaufmann</source>; <year>2017</year>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref033"><label>33</label><mixed-citation publication-type="other" xlink:type="simple">UK Home Office. Designing for accessibility; viewed August 2021. Available from: <ext-link ext-link-type="uri" xlink:href="https://ukhomeoffice.github.io/accessibility-posters/posters/accessibility-posters.pdf" xlink:type="simple">https://ukhomeoffice.github.io/accessibility-posters/posters/accessibility-posters.pdf</ext-link>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gompers</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Kovvali</surname> <given-names>S</given-names></name>. <article-title>The Other Diversity Dividend</article-title>. <source>Harv Bus Rev</source>. <year>2018</year>;<volume>96</volume>(<issue>4</issue>):<fpage>72</fpage>–<lpage>7</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1009809.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gomez</surname> <given-names>LE</given-names></name>, <name name-style="western"><surname>Bernet</surname> <given-names>P</given-names></name>. <article-title>Diversity improves performance and outcomes</article-title>. <source>J Natl Med Assoc</source>. <year>2019</year>;<volume>111</volume>(<issue>4</issue>):<fpage>383</fpage>–<lpage>92</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.jnma.2019.01.006" xlink:type="simple">10.1016/j.jnma.2019.01.006</ext-link></comment> <object-id pub-id-type="pmid">30765101</object-id></mixed-citation></ref>
+<ref id="pcbi.1009809.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sholler</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Steinmacher</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Ford</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Averick</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Hoye</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>G</given-names></name>. <article-title>Ten simple rules for helping newcomers become contributors to open projects</article-title>. <source>PLoS Comput Biol</source>. <year>2019</year>;<volume>15</volume>(<issue>9</issue>):<fpage>e1007296</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pcbi.1007296" xlink:type="simple">10.1371/journal.pcbi.1007296</ext-link></comment> <object-id pub-id-type="pmid">31513567</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

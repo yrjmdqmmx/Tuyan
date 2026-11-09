@@ -1,3 +1,4 @@
+import MenuSelect from '../MenuSelect.jsx';
 import { Loader2, AlertTriangle } from 'lucide-react';
 import { date, label } from './adminState';
 import { errorText } from './adminApi';
@@ -12,7 +13,7 @@ export function Identity({ id, email, go }) { return id ? <div className="ops-id
 export function Pager({ pagination, change }) {
   if (!pagination) return null;
   const { page, total, totalPages, pageSize } = pagination;
-  return <div className="ops-pager"><span>共 <strong>{total}</strong> 条 · 第 {page} / {Math.max(totalPages, 1)} 页</span><div><label>每页<select aria-label="每页条数" value={pageSize} onChange={(e) => change({ pageSize: Number(e.target.value), page: 1 })}>{[10, 20, 50].map((n) => <option key={n}>{n}</option>)}</select></label><button disabled={page <= 1} onClick={() => change({ page: page - 1 })}>上一页</button><button disabled={page >= totalPages} onClick={() => change({ page: page + 1 })}>下一页</button></div></div>;
+  return <div className="ops-pager"><span>共 <strong>{total}</strong> 条 · 第 {page} / {Math.max(totalPages, 1)} 页</span><div><label>每页<MenuSelect aria-label="每页条数" value={pageSize} onChange={(e) => change({ pageSize: Number(e.target.value), page: 1 })}>{[10, 20, 50].map((n) => <option key={n}>{n}</option>)}</MenuSelect></label><button disabled={page <= 1} onClick={() => change({ page: page - 1 })}>上一页</button><button disabled={page >= totalPages} onClick={() => change({ page: page + 1 })}>下一页</button></div></div>;
 }
 export function Facts({ items }) { return <dl className="ops-facts">{items.map(([title, value]) => <div key={title}><dt>{title}</dt><dd>{value || '未记录'}</dd></div>)}</dl>; }
 export function History({ entries = [], legacy }) {

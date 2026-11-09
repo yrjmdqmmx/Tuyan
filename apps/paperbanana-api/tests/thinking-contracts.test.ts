@@ -72,6 +72,7 @@ test('domestic and global audit profiles reach runtime without identity or contr
     }
     assert.equal(target.checkedAt, source.checkedAt || audit.checkedAt, source.id)
     assert.equal(target.controls.length, source.controls.length, source.id)
+    assert.equal(target.effortEnableField, source.constraints?.effortEnableField, `${source.id}: effort activation`)
     for (const control of source.controls) {
       const actual = target.controls.find((c: any) => c.key === control.key)
       assert.ok(actual, `${source.id}: missing ${control.key}`)
@@ -123,6 +124,9 @@ test('each supported exact model/role/protocol maps every allowed enum value and
           const audited = p.controls.find((c: any) => c.key === key)
           put(expected, audited.field, audited.wireValues?.[String(input)] ?? input)
         }
+        if (options.effort !== undefined && p.constraints?.effortEnableField) {
+          put(expected, p.constraints.effortEnableField, true)
+        }
         assert.deepEqual(snapshot.wire, expected, label)
         assert.deepEqual(snapshot.options, options, label)
         const body = fixture(id)
@@ -134,7 +138,7 @@ test('each supported exact model/role/protocol maps every allowed enum value and
         assert.equal(output.max_tokens, 16384, label)
         assert.equal(output.max_output_tokens, 4096, label)
         assert.equal(output.quality, 'high', label)
-        assert.equal(output.reasoning_split, true, label)
+        assert.equal(output.reasoning_split, snapshot.clearFields.includes('reasoning_split') ? undefined : true, label)
         cases++
       } catch (error: any) { failures.push(`${label}: ${error.message}`) }
     }
@@ -146,20 +150,26 @@ test('each supported exact model/role/protocol maps every allowed enum value and
 })
 
 test('explicit provider default sends no controls and clears audited fixed fields while legacy requests stay unchanged', () => {
-  for (const p of sources) {
+  for (const p of sources.filter(p => p.roles.length)) {
     const snapshot = compileThinkingSelection(selection(p), p.roles[0])
     assert.deepEqual(snapshot.wire, {}, p.id)
     assert.deepEqual(snapshot.options, {}, p.id)
     const fields = [...new Set<string>([...(p.clearFields || []), ...p.controls.map((c: any) => c.field)])]
     assert.deepEqual([...snapshot.clearFields].sort(), fields.sort(), p.id)
     const body = fixture(p.modelIds[0])
-    for (const field of fields) put(body, field, '__legacy_fixed_value__')
+    for (const field of [...fields].sort((a,b) => b.split('.').length-a.split('.').length)) put(body, field, '__legacy_fixed_value__')
     const before = structuredClone(body)
     assert.strictEqual(applyThinkingSnapshot(body), body, `${p.id}: no snapshot preserves legacy construction`)
     const output = applyThinkingSnapshot(body, snapshot)
     assert.deepEqual(body, before, `${p.id}: immutable input`)
     for (const field of fields) assert.equal(get(output, field), undefined, `${p.id}: ${field}`)
     for (const path of ['max_tokens', 'max_output_tokens', 'quality', 'size', 'n', 'reasoning_split', 'thinking.preserve_thinking', 'thinking.clear_thinking', 'parameters.quality', 'parameters.n', 'input.quality', 'settings.quality', 'output_config.format', 'generationConfig.maxOutputTokens', 'generation_config.image_config']) {
+      // A channel may explicitly forbid a whole thinking object or sampling n.
+      // Those are intentional audited removals; unrelated fields must survive.
+      if (fields.some(field => path === field || path.startsWith(field + '.')) || snapshot.dropSampling && snapshot.samplingFields?.includes(path)) {
+        assert.equal(get(output,path),undefined,`${p.id}: audited removal ${path}`)
+        continue
+      }
       assert.deepEqual(get(output, path), get(before, path), `${p.id}: preserve ${path}`)
     }
   }

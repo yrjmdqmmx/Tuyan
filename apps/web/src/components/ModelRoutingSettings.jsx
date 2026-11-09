@@ -1,3 +1,4 @@
+import MenuSelect from './MenuSelect.jsx';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { TokenDanceStatus } from './TokenDancePanel'
 import { MODEL_CHANNEL_LABELS, orderModelChannels } from '../lib/modelPresentation'
@@ -20,8 +21,10 @@ function probeRoleLabel(role) {
 }
 
 export default function ModelRoutingSettings({
+  catalogControls,
   configurationMode,
-  renderUniversalSettings, universalSummaries, renderThinkingSettings, renderRoutingPersistence,
+  visionMode = 'assist', onVisionModeChange, visionNotice,
+  renderUniversalSettings, universalSummaries, renderThinkingSettings,
   onModeChange,
   simpleProvider,
   onSimpleProviderChange,
@@ -32,6 +35,7 @@ export default function ModelRoutingSettings({
   onRetryRegistry,
   providerConfigs,
   outputFormat,
+  operation = 'generation',
   executionRouteRoles = [],
   credentialProviders,
   apiKeys,
@@ -69,7 +73,7 @@ export default function ModelRoutingSettings({
             <Settings2 size={16} /><span>{t("专业模式")}</span><small>{t("分角色选择渠道与模型")}</small>
           </button>
         </div>
-        {isAdvancedMode ? <ModelRegistryNotice status={registryStatus} supported={routeContractSupported} onRetry={onRetryRegistry} unsupportedMessage="当前后端不支持专业模式的多渠道路由，请切回普通模式。" /> : null}
+        <ModelRegistryNotice status={registryStatus} supported={!isAdvancedMode || routeContractSupported} onRetry={onRetryRegistry} unsupportedMessage="当前后端不支持专业模式的多渠道路由，请切回普通模式。" />
       </div>
 
       {!isAdvancedMode ? (
@@ -96,22 +100,23 @@ export default function ModelRoutingSettings({
         </div>
       ) : null}
       <div className="model-grid model-route-grid">
-        {[['main','主模型','main-model'],['image','图像生成模型','image-model'],['vision','视觉模型','vision-model']].map(([role,label,focusSetting]) => {
+        {[['main','主模型','main-model'],['image','图像生成模型','image-model'],['vision','视觉模型','vision-model']].filter(([role]) => (role!=='image'||executionRouteRoles.includes('image')) && (isAdvancedMode || role !== 'vision' || visionMode !== 'none')).map(([role,label,focusSetting]) => {
           const route = modelRoutes[role]
           const model = modelRegistry?.providers?.[route.accessProvider]?.models?.find(entry => entry.id === route.modelId)
           return <div className="model-role-settings" data-model-role={role} key={role}>
-            {isAdvancedMode ? <ModelPicker label={t(label)} role={role} route={route}
+            {isAdvancedMode ? <ModelPicker label={t(label)} role={role} route={route} operation={operation}
+              visionMode={role === 'vision' ? visionMode : undefined} onVisionModeChange={role === 'vision' ? onVisionModeChange : undefined}
               outputFormat={role === 'image' && !executionRouteRoles.includes('image') ? '' : outputFormat}
-              registry={modelRegistry} providerConfigs={providerConfigs} allowCustom
+              registry={modelRegistry} catalogControls={catalogControls} providerConfigs={providerConfigs} providerRegions={providerRegions} allowCustom
               renderCustomSettings={() => renderUniversalSettings?.(role)} customSummary={universalSummaries?.[role]}
-              onRouteChange={next => onRouteChange(role,next)} focusSetting={focusSetting} />
-              : <div className="simple-model-summary"><span>{t(label)}</span><strong>{model?.label || route.modelId}</strong></div>}
-            {route.accessProvider !== 'custom' && renderThinkingSettings?.(role)}
+              onRouteChange={next => {if(role === 'vision')onVisionModeChange?.('assist');onRouteChange(role,next)}} focusSetting={focusSetting} />
+              : <div className="simple-model-summary"><span>{t(label)}</span><strong>{model?.label || route.modelId}</strong>{role === 'main' && visionMode === 'none' ? <small>{t('同时负责图片理解')}</small> : role === 'vision' ? <small>{t('自动辅助主模型理解图片')}</small> : null}</div>}
+            {!(role === 'vision' && visionMode === 'none') && route.accessProvider !== 'custom' && renderThinkingSettings?.(role)}
           </div>
         })}
       </div>
 
-      {isAdvancedMode ? renderRoutingPersistence?.() : null}
+      {isAdvancedMode && visionNotice ? <p className="vision-role-note" role="note">{t(visionNotice)}</p> : null}
 
       {credentialProviders.some(provider => provider !== 'custom') && <details className="api-keys-panel access-credentials" data-focus-setting="api-key" open>
         <summary><KeyRound size={17} />{t(" 接入凭据")}</summary>
@@ -125,9 +130,9 @@ export default function ModelRoutingSettings({
             <div className="credential-provider" key={provider}>
               {provider === 'minimax' ? <label className="field">
                 <span>{t("稀宇科技区域")}</span>
-                <select aria-label={t("稀宇科技区域")} value={minimaxRegion(providerRegions)} onChange={event => onMiniMaxRegionChange(event.target.value)}>
+                <MenuSelect aria-label={t("稀宇科技区域")} value={minimaxRegion(providerRegions)} onChange={event => onMiniMaxRegionChange(event.target.value)}>
                   {Object.entries(MINIMAX_REGIONS).map(([id, region]) => <option key={id} value={id} disabled={id === 'cn' && !modelRegistry?.providerRegionContractVersion}>{t(region.label)}</option>)}
-                </select>
+                </MenuSelect>
                 <small>{MINIMAX_REGIONS[minimaxRegion(providerRegions)].apiBase}{t(" · 请填写该区域平台的 Key")}</small>
               </label> : null}
               <label className="field">

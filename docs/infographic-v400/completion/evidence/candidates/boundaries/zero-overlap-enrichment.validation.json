@@ -1,0 +1,56 @@
+{
+  "typeId": "enrichment",
+  "computations": {
+    "geneRatio": [
+      0.0,
+      0.3
+    ],
+    "foldEnrichment": [
+      0.0,
+      1.0
+    ],
+    "suppliedP": [
+      1.0,
+      0.08
+    ],
+    "bubbleAreaPointsSquared": [
+      0,
+      60
+    ],
+    "bubbleAreaRule": "20 * count; zero counts explicitly marked with x"
+  },
+  "checks": {
+    "fold_coordinate_error": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "p_color_error": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic supplied hypergeometric results, BH adjusted externally",
+    "pKind": "adjusted_p"
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "term",
+      "count",
+      "background",
+      "p"
+    ],
+    "options": {
+      "inputSize": 10,
+      "backgroundSize": 100
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

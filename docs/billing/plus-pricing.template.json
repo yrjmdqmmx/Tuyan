@@ -1,0 +1,113 @@
+{
+  "version": "UNVALIDATED",
+  "creditCostMicros": 10000,
+  "tariff": {
+    "version": "bailian-beijing-public-20261031-unverified-usage",
+    "validated": false,
+    "rates": {
+      "qwen3.8-flash": {
+        "input_non_cached": {
+          "priceMicros": 800000,
+          "perUnits": 1000000,
+          "source": "https://help.aliyun.com/zh/model-studio/qwen3-8-flash",
+          "checkedAt": "2026-10-31"
+        },
+        "input_cached": {
+          "priceMicros": 100000,
+          "perUnits": 1000000,
+          "source": "https://help.aliyun.com/zh/model-studio/qwen3-8-flash",
+          "checkedAt": "2026-10-31"
+        },
+        "output_total": {
+          "priceMicros": 2700000,
+          "perUnits": 1000000,
+          "source": "https://help.aliyun.com/zh/model-studio/qwen3-8-flash",
+          "checkedAt": "2026-10-31"
+        }
+      },
+      "qwen3.8-max-0902": {
+        "input_non_cached": {
+          "priceMicros": 12000000,
+          "perUnits": 1000000,
+          "source": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+          "checkedAt": "2026-10-31"
+        },
+        "input_cached": {
+          "priceMicros": 1500000,
+          "perUnits": 1000000,
+          "source": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+          "checkedAt": "2026-10-31"
+        },
+        "output_total": {
+          "priceMicros": 36000000,
+          "perUnits": 1000000,
+          "source": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+          "checkedAt": "2026-10-31"
+        }
+      },
+      "qwen-image-3.0-pro": {
+        "qima_input_1k": {
+          "priceMicros": 20000,
+          "perUnits": 1,
+          "source": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "checkedAt": "2026-10-31"
+        },
+        "qima_input_2k": {
+          "priceMicros": 20000,
+          "perUnits": 1,
+          "source": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "checkedAt": "2026-10-31"
+        },
+        "qima_output_1k": {
+          "priceMicros": 250000,
+          "perUnits": 1,
+          "source": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "checkedAt": "2026-10-31"
+        },
+        "qima_output_2k": {
+          "priceMicros": 500000,
+          "perUnits": 1,
+          "source": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "checkedAt": "2026-10-31"
+        }
+      }
+    }
+  },
+  "transportLimits": {
+    "validated": false,
+    "maxInputBytes": null,
+    "maxImages": null,
+    "maxImageInputTokens": null,
+    "maxOutputTokens": null
+  },
+  "taskCaps": {
+    "png": {
+      "fast": {
+        "generate": null,
+        "edit": null
+      },
+      "balanced": {
+        "generate": null,
+        "edit": null
+      },
+      "extreme": {
+        "generate": null,
+        "edit": null
+      }
+    },
+    "svg": {
+      "fast": {
+        "generate": null,
+        "edit": null
+      },
+      "balanced": {
+        "generate": null,
+        "edit": null
+      },
+      "extreme": {
+        "generate": null,
+        "edit": null
+      }
+    }
+  }
+}

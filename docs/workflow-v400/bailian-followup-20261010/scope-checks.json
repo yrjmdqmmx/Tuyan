@@ -1,0 +1,7 @@
+{
+  "credentialFilesScanned": 93,
+  "credentialMatches": 0,
+  "miniSnapshotFiles": 50,
+  "miniChanged": [],
+  "parallelTaxonomyIntegration": "API fixture migration included in local 1198-test regression; taxonomy product/scientific/real-call acceptance excluded"
+}

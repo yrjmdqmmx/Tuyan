@@ -36,7 +36,9 @@ test('API keys remain React memory state and are not written to browser storage 
   assert.match(source, /const \[apiKeyRing, setApiKeys\] = useState/u)
   assert.match(source, /setApiKeys\(\{ openrouter: '', gemini: '', openai: '', bailian: '', ark: '' \}\)/u)
   assert.match(source, /function clearPrivateWorkspace\(\)[\s\S]*?setArkVerification\(\{\}\)/u)
-  assert.doesNotMatch(source, /localStorage|sessionStorage|URLSearchParams/u)
+  const storageLines=source.split('\n').filter(line=>/localStorage|sessionStorage|URLSearchParams/u.test(line))
+  assert.equal(storageLines.length, 2)
+  assert.ok(storageLines.every(line=>/(?:load|save)JournalSelection\(window\.localStorage/u.test(line)), 'only non-secret journal selection may use storage in App')
 })
 
 test('wide model drawer has desktop rails, incremental model rows, and a mobile replacement layout', () => {
@@ -60,7 +62,8 @@ test('model picker supports provider grouping, search, disabled reasons and boun
   assert.match(source, /COMPATIBLE_PAGE_SIZE/u)
   assert.match(source, /rows\.slice\(0, compatibleLimit\)/u)
   assert.match(source, /t\("显示更多模型"\)/u)
-  assert.match(source, /复制模型 ID/u)
+  assert.doesNotMatch(source, /复制模型 ID|model-option-details|model-option-badges/u)
+  assert.match(source, /<ModelSpecifications provider=/u)
   assert.match(source, /API 接入渠道/u)
   assert.match(source, /模型厂商/u)
   assert.doesNotMatch(source, /暂不兼容/u)

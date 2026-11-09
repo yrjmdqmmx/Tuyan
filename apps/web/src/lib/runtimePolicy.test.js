@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {
   INPUT_LIMITS,
+  accountPageUrl,
   officialApiBase,
   shouldPollJob,
   validateApiBase,
@@ -27,5 +28,17 @@ test('input limits are bounded for cost protection', () => {
   assert.equal(INPUT_LIMITS.methodContent, 12000)
   assert.equal(INPUT_LIMITS.caption, 1000)
   assert.equal(INPUT_LIMITS.negativePrompt, 1000)
-  assert.equal(INPUT_LIMITS.maxCriticRounds, 2)
+  assert.equal(INPUT_LIMITS.maxCriticRounds, 5)
+})
+
+
+test('Hangzhou website uses its same-origin API without accepting lookalike hosts', () => {
+  assert.equal(officialApiBase('https://tuyansci.cn'), 'https://tuyansci.cn')
+  assert.equal(officialApiBase('https://tuyansci.cn.evil.example'), 'https://api.paperbanana.asia')
+  assert.equal(validateApiBase('https://tuyansci.cn/', false), 'https://tuyansci.cn')
+  for (const url of ['http://tuyansci.cn', 'https://tuyansci.cn:444', 'https://tuyansci.cn.evil.example', 'https://user@tuyansci.cn', 'https://tuyansci.cn/path', 'https://tuyansci.cn?url=evil']) {
+    assert.throws(() => validateApiBase(url, false), /official/)
+  }
+  assert.equal(accountPageUrl('reset-password.html', 'https://tuyansci.cn'), 'https://tuyansci.cn/account/reset-password.html')
+  assert.equal(accountPageUrl('reset-password.html', 'https://www.paperbanana.asia'), 'https://www.paperbanana.asia/account/reset-password.html')
 })

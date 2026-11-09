@@ -1,0 +1,49 @@
+{
+  "id": "pcbi.1011436.g003",
+  "paper": "pcbi.1011436",
+  "figure": {
+    "id": "pcbi.1011436.g003",
+    "label": "Fig 3",
+    "caption": "The predictive capability of the MiRNN outperforms an unconstrained RNN model using experimental data.\n(a.) Schematic of experiment in which 95 unique microbial consortia were selected from a set of 25 health-relevant human gut bacteria. After inoculation, species abundances and metabolite concentrations were measured at 16 hour intervals over a course of 48 hours. (b.) A comparison of the MiRNN architecture to a standard RNN, where the constraint highlighted in blue prevents the model from predicting the spontaneous emergence of a species. (c.) Comparison RNN and MiRNN performance in species predictions according to the Pearson correlation coefficient between predictions and measured values. The height of the bars and error bars correspond to the median and interquartile range in prediction performance after running 20-fold cross-validation over 10 trials, where samples were randomly shuffled in each trial. (d.) Same as in panel (c.), except that metabolite prediction performance is shown. (e.) Representative temporal changes in MiRNN predicted metabolite concentrations, where measured values are shown as dots, the mean predicted value is shown as a line, and the uncertainty region shows ± 1 standard deviation.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011436.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>The predictive capability of the MiRNN outperforms an unconstrained RNN model using experimental data.</title>\n<p>(a.) Schematic of experiment in which 95 unique microbial consortia were selected from a set of 25 health-relevant human gut bacteria. After inoculation, species abundances and metabolite concentrations were measured at 16 hour intervals over a course of 48 hours. (b.) A comparison of the MiRNN architecture to a standard RNN, where the constraint highlighted in blue prevents the model from predicting the spontaneous emergence of a species. (c.) Comparison RNN and MiRNN performance in species predictions according to the Pearson correlation coefficient between predictions and measured values. The height of the bars and error bars correspond to the median and interquartile range in prediction performance after running 20-fold cross-validation over 10 trials, where samples were randomly shuffled in each trial. (d.) Same as in panel (c.), except that metabolite prediction performance is shown. (e.) Representative temporal changes in MiRNN predicted metabolite concentrations, where measured values are shown as dots, the mean predicted value is shown as a line, and the uncertainty region shows ± 1 standard deviation.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1011436",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011436",
+    "title": "Integrating a tailored recurrent neural network with Bayesian experimental design to optimize microbial community functions",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Jaron C. Thompson",
+      "Victor M. Zavala",
+      "Ophelia S. Venturelli"
+    ],
+    "year": "2023",
+    "license": "2023\nThompson et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1011436.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011436.g003.png",
+      "bytes": 566812,
+      "sha256": "4fa30ea9b716e0360efba7a397e6db592e569d0f7214c2b9a8a9f3d355c47173"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1011436.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011436.g003.tif",
+      "bytes": 946552,
+      "sha256": "f499ccb71c97808bbedb964b2ba27ef778a066041240dd3343d6a6075ddcf9c6"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+checked_at,channel,api_model_id,roles,verification,source,notes
+2026-10-16,gemini,gemini-4-argon,main|vision,catalog; no real invocation,https://ai.google.dev/gemini-api/docs/models/gemini-4-argon,同步文本/识图；1M 是输入、思考与输出共享窗口；未开启后台长输出。
+2026-10-16,together,meta-models/Muse-Spark-Open-816B-A42B,main,catalog; no real invocation,https://docs.together.ai/docs/serverless/models,仅开放此渠道目录明确列出的角色；输出上限未单独确认。
+2026-10-16,together,nvidia/NVIDIA-Nemotron-3.5-Super-VL,main|vision,catalog; no real invocation,https://docs.together.ai/docs/serverless/models,仅开放此渠道目录明确列出的角色；输出上限未单独确认。
+2026-10-16,siliconflow,deepseek-ai/DeepSeek-V4.1-Flash,main|vision,catalog; no real invocation,https://www.siliconflow.cn/models,中国站；账号须完成实名。
+2026-10-16,siliconflow,zai-org/GLM-5.3-Flash,main|vision,catalog; no real invocation,https://www.siliconflow.cn/models,中国站；账号须完成实名。
+2026-10-16,fireworks,accounts/fireworks/models/muse-spark-open,main|vision,catalog; no real invocation,https://fireworks.ai/models/fireworks/muse-spark-open,Serverless 为截至 2026-10-29 的限时预览，仅美国容量；之后需重新核验渠道可用性。
+2026-10-16,tokenhub,deepseek-v4.1-flash,main|vision,catalog; no real invocation,https://cloud.tencent.com/document/product/1823/130051,腾讯云托管渠道；不等同于原厂直供 ID。
+2026-10-16,tokenhub,mimo-v2.6-pro,main|vision,catalog; no real invocation,https://cloud.tencent.com/document/product/1823/130051,腾讯云托管渠道；不等同于原厂直供 ID。
+2026-10-16,tokenhub,mimo-v2.6-flash,main|vision,catalog; no real invocation,https://cloud.tencent.com/document/product/1823/130051,腾讯云托管渠道；不等同于原厂直供 ID。
+2026-10-16,tokenhub,step-5-preview,main|vision,catalog; no real invocation,https://cloud.tencent.com/document/product/1823/130051,腾讯云托管渠道；不等同于原厂直供 ID。
+2026-10-16,xiaomi,mimo-v2.6-pro-ultraspeed,main|vision,catalog; no real invocation,https://mimo.mi.com/docs/zh-CN/quick-start/summary/model,定制服务，需厂商单独开通；普通账户不保证可用。
+2026-10-16,bfl,flux-3-image-klein,image,catalog; no real invocation,https://api.bfl.ai/openapi.json,原生支持最多 10 张参考图；当前沿用单张原图编辑。
+2026-10-16,bailian,qwen-image-2.1-pro,image,catalog; no real invocation,https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference,官方最多 10 张参考图，图研当前沿用单张原图精修；最高 2K 总像素档位。
+2026-10-16,bailian,qwen-image-2.1-turbo,image,catalog; no real invocation,https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference,官方最多 10 张参考图，图研当前沿用单张原图精修；最高 2K 总像素档位。
+2026-10-16,runware,bfl:flux@3-image-klein,image,catalog; no real invocation,https://runware.ai/docs/models/bfl-flux-3-image-klein,尺寸及参考图数量按 Runware schema，独立于原厂。
+2026-10-16,runware,bfl:flux@3-image-klein-base,image,catalog; no real invocation,https://runware.ai/docs/models/bfl-flux-3-image-klein-base,尺寸及参考图数量按 Runware schema，独立于原厂。
+2026-10-16,runware,alibaba:qwen-image@2.1-turbo,image,catalog; no real invocation,https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo,尺寸及参考图数量按 Runware schema，独立于原厂。
+2026-10-16,fal,blackforestlabs/flux-3/klein/text-to-image,image,catalog; no real invocation,https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api,沿用单张原图精修；高级布局参数未开放。
+2026-10-16,fal,blackforestlabs/flux-3/klein/base/text-to-image,image,catalog; no real invocation,https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api,沿用单张原图精修；高级布局参数未开放。
+2026-10-16,fal,krea/v3/text-to-image,image,catalog; no real invocation,https://fal.ai/models/krea/v3/text-to-image/api,沿用单张原图精修；高级布局参数未开放。默认 berry / low，不自动启用联网 high 推理。

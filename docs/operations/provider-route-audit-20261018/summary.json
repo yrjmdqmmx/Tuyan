@@ -1,0 +1,270 @@
+{
+  "samples": 156,
+  "first_sample": "2026-10-18T04:00:30.065324+00:00",
+  "last_sample": "2026-10-18T04:03:13.180433+00:00",
+  "transport_failures": 0,
+  "bytes_downloaded": 2334668,
+  "model_inferences": 0,
+  "metrics": [
+    {
+      "route": "hangzhou",
+      "channel": "tokendance",
+      "samples": 7,
+      "http_statuses": [
+        200
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 60.9,
+      "ttfb_max_ms": 113.0,
+      "total_median_ms": 74.2,
+      "bytes_downloaded": 415765
+    },
+    {
+      "route": "hangzhou",
+      "channel": "bailian",
+      "samples": 7,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 143.5,
+      "ttfb_max_ms": 165.5,
+      "total_median_ms": 143.6,
+      "bytes_downloaded": 1599
+    },
+    {
+      "route": "hangzhou",
+      "channel": "ark",
+      "samples": 7,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 67.8,
+      "ttfb_max_ms": 108.9,
+      "total_median_ms": 67.9,
+      "bytes_downloaded": 1470
+    },
+    {
+      "route": "hangzhou",
+      "channel": "openrouter",
+      "samples": 7,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 720.1,
+      "ttfb_max_ms": 785.3,
+      "total_median_ms": 720.2,
+      "bytes_downloaded": 469
+    },
+    {
+      "route": "hangzhou-confirm",
+      "channel": "tokendance",
+      "samples": 9,
+      "http_statuses": [
+        200
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 56.4,
+      "ttfb_max_ms": 123.8,
+      "total_median_ms": 71.8,
+      "bytes_downloaded": 534555
+    },
+    {
+      "route": "hangzhou-confirm",
+      "channel": "bailian",
+      "samples": 9,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 134.1,
+      "ttfb_max_ms": 155.7,
+      "total_median_ms": 134.3,
+      "bytes_downloaded": 2057
+    },
+    {
+      "route": "hangzhou-confirm",
+      "channel": "ark",
+      "samples": 9,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 69.2,
+      "ttfb_max_ms": 108.3,
+      "total_median_ms": 69.3,
+      "bytes_downloaded": 1890
+    },
+    {
+      "route": "hangzhou-confirm",
+      "channel": "openrouter",
+      "samples": 9,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 666.9,
+      "ttfb_max_ms": 745.9,
+      "total_median_ms": 684.3,
+      "bytes_downloaded": 603
+    },
+    {
+      "route": "hangzhou-via-hongkong",
+      "channel": "openrouter",
+      "samples": 9,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 157.6,
+      "ttfb_max_ms": 166.4,
+      "total_median_ms": 160.8,
+      "bytes_downloaded": 603
+    },
+    {
+      "route": "hangzhou-via-singapore",
+      "channel": "tokendance",
+      "samples": 9,
+      "http_statuses": [
+        200
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 506.3,
+      "ttfb_max_ms": 514.9,
+      "total_median_ms": 668.3,
+      "bytes_downloaded": 534555
+    },
+    {
+      "route": "hangzhou-via-singapore",
+      "channel": "ark",
+      "samples": 9,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 1312.5,
+      "ttfb_max_ms": 1332.8,
+      "total_median_ms": 1312.6,
+      "bytes_downloaded": 1890
+    },
+    {
+      "route": "hangzhou-via-singapore",
+      "channel": "openrouter",
+      "samples": 9,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 311.5,
+      "ttfb_max_ms": 324.5,
+      "total_median_ms": 311.7,
+      "bytes_downloaded": 603
+    },
+    {
+      "route": "hongkong",
+      "channel": "tokendance",
+      "samples": 7,
+      "http_statuses": [
+        200
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 139.0,
+      "ttfb_max_ms": 147.9,
+      "total_median_ms": 217.2,
+      "bytes_downloaded": 415765
+    },
+    {
+      "route": "hongkong",
+      "channel": "bailian",
+      "samples": 7,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 167.8,
+      "ttfb_max_ms": 188.8,
+      "total_median_ms": 167.9,
+      "bytes_downloaded": 1598
+    },
+    {
+      "route": "hongkong",
+      "channel": "ark",
+      "samples": 7,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 169.0,
+      "ttfb_max_ms": 1193.7,
+      "total_median_ms": 169.0,
+      "bytes_downloaded": 1470
+    },
+    {
+      "route": "hongkong",
+      "channel": "openrouter",
+      "samples": 7,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 46.7,
+      "ttfb_max_ms": 51.2,
+      "total_median_ms": 47.0,
+      "bytes_downloaded": 469
+    },
+    {
+      "route": "singapore",
+      "channel": "tokendance",
+      "samples": 7,
+      "http_statuses": [
+        200
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 235.4,
+      "ttfb_max_ms": 403.3,
+      "total_median_ms": 378.5,
+      "bytes_downloaded": 415765
+    },
+    {
+      "route": "singapore",
+      "channel": "bailian",
+      "samples": 7,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 312.7,
+      "ttfb_max_ms": 696.3,
+      "total_median_ms": 312.8,
+      "bytes_downloaded": 1603
+    },
+    {
+      "route": "singapore",
+      "channel": "ark",
+      "samples": 7,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 655.3,
+      "ttfb_max_ms": 695.6,
+      "total_median_ms": 655.4,
+      "bytes_downloaded": 1470
+    },
+    {
+      "route": "singapore",
+      "channel": "openrouter",
+      "samples": 7,
+      "http_statuses": [
+        401
+      ],
+      "transport_failures": 0,
+      "ttfb_median_ms": 44.2,
+      "ttfb_max_ms": 48.1,
+      "total_median_ms": 44.2,
+      "bytes_downloaded": 469
+    }
+  ]
+}

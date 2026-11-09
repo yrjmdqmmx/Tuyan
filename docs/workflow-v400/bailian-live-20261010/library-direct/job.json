@@ -1,0 +1,219 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": null,
+  "referenceSelection": {
+    "proposedCount": 1,
+    "selectedCount": 1,
+    "skippedCount": 0,
+    "imageCount": 1,
+    "mode": "images",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "none",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "succeeded",
+      "review": {
+        "limit": 0,
+        "roundsUsed": 0,
+        "mode": "visual_code",
+        "status": "not_requested",
+        "history": [],
+        "deliveredVersion": 1,
+        "deliveredSvgHash": "513adb1d08bc5765159ccf11fd36fc68f881f6227b43dad2a2709cc707c6f3aa",
+        "note": "未评审。"
+      }
+    }
+  ],
+  "id": "1791598612171-tt8svox2",
+  "status": "succeeded",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。",
+  "negativePrompt": "禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。",
+  "caption": "从样品输入到标准化结果的三步方法流程。",
+  "infographicCategory": "method",
+  "outputFormat": "svg",
+  "mainModelName": "qwen3.7-plus",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "main_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "vanilla",
+  "retrievalSetting": "manual",
+  "manualReferenceIds": [
+    "live-svg-reference"
+  ],
+  "retrievedReferenceIds": [
+    "live-svg-reference"
+  ],
+  "retrievedReferences": [
+    {
+      "id": "live-svg-reference",
+      "taskName": "diagram",
+      "title": "双节点方法图参考",
+      "summary": "观察该图的颜色、布局和右上角标识，作为版式参考。",
+      "titleZh": "",
+      "introZh": "",
+      "shortIntroZh": "",
+      "detailZh": "",
+      "visualCategory": "",
+      "researchDomain": "",
+      "keywords": [],
+      "corpusVersion": "zh-CN.v2",
+      "imageUrl": "http://127.0.0.1:62139/objects/library/reference.png",
+      "imageObjectKey": "library/reference.png",
+      "source": "paperbanana-bench"
+    }
+  ],
+  "stages": [
+    {
+      "id": "stage-5d7b44ef-24f6-4aef-ba58-44ad94e52f3b",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "基于您提供的方法论描述和参考图风格，以下是生成该流程图的详细设计说明：\n\n**整体布局与风格 (Layout & Style)**\n*   **画布背景**：纯白色（#FFFFFF），保持极简、干净的学术风格。\n*   **构图方向**：严格的从左至右水平线性布局。\n*   **视觉语言**：扁平化设计，使用圆角矩形作为主要节点容器，线条清晰，配色柔和且专业。\n*   **右上角标识**：在画布的右上角区域，放置文本 \"REF-73\"，字体为黑色无衬线体，字号适中，不加粗，位置独立于主流程图之外。\n\n**元素详细描述 (Element Details)**\n\n1.  **第一步：样品输入 (左侧节点)**\n    *   **形状**：圆角矩形（Rounded Rectangle），宽高比约为 3:2。\n    *   **颜色**：填充色为淡蓝色（类似参考图中的 #E3F2FD），边框为细实线深蓝色（类似 #1565C0）。\n    *   **内容**：框内居中显示两行文字。\n        *   第一行（主标题）：**样品输入**（黑色，加粗，无衬线字体，字号较大）。\n        *   第二行（参数）：**n=12**（黑色，常规字重，位于主标题正下方，字号略小）。\n\n2.  **连接箭头 1 (左中)**\n    *   **样式**：一条水平的直线箭头，从第一个框的右侧中心指向第二个框的左侧中心。\n    *   **颜色**：深灰色或黑色（#333333）。\n    *   **粗细**：中等粗细（约 2px），箭头头部为实心三角形。\n\n3.  **第二步：数据标准化 (中间节点)**\n    *   **形状**：圆角矩形，尺寸与左右两个框保持一致，确保视觉平衡。\n    *   **颜色**：为了区分步骤但保持协调，建议使用淡紫色或淡黄色填充（例如 #F3E5F5 或 #FFF9C4），边框颜色对应加深（如 #7B1FA2 或 #FBC02D）。*注：若严格遵循参考图的双色逻辑，也可沿用淡蓝色或改为淡绿色，但引入第三种柔和色调能更好地区分“处理过程”。这里推荐淡紫色以体现“计算/处理”的含义。*\n    *   **内容**：框内居中显示两行内容。\n        *   第一行（主标题）：**数据标准化**（黑色，加粗，无衬线字体）。\n        *   第二行（公式）：**$x / x_0$**（黑色，数学符号格式，$x_0$ 的 0 必须为下标，字体清晰易读）。\n\n4.  **连接箭头 2 (右中)**\n    *   **样式**：与第一个箭头完全一致，水平向右，连接中间框与右侧框。\n    *   **颜色**：深灰色或黑色。\n\n5.  **第三步：结果输出 (右侧节点)**\n    *   **形状**：圆角矩形，尺寸与前两个框一致。\n    *   **颜色**：填充色为淡绿色（参考图中的 #E8F5E9），边框为细实线深绿色（类似 #2E7D32），代表最终结果的完成状态。\n    *   **内容**：框内居中显示两行文字。\n        *   第一行（主标题）：**结果输出**（黑色，加粗，无衬线字体）。\n        *   第二行（数值）：**均值 1.0**（黑色，常规字重，位于主标题正下方）。\n\n**排版注意事项**\n*   **对齐**：三个矩形的垂直中心线必须在同一水平轴上。\n*   **间距**：矩形之间的间距应相等，箭头长度适中，不要过长或过短，保持紧凑感。\n*   **字体**：全图使用清晰的无衬线中文字体（如思源黑体或微软雅黑），数学公式部分使用标准的数学字体（如 Times New Roman 或 LaTeX 默认字体）以确保 $x_0$ 的下标显示正确。",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T02:16:52.179Z",
+      "completedAt": "2026-10-10T02:17:08.825Z",
+      "durationMs": 16646,
+      "error": ""
+    },
+    {
+      "id": "stage-5c4994bf-d51a-4387-91c4-7280928d1a76",
+      "candidateId": 0,
+      "type": "svg_source",
+      "title": "SVG v1 文件",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"513adb1d08bc5765159ccf11fd36fc68f881f6227b43dad2a2709cc707c6f3aa\",\"pngHash\":\"ac081102fe749562bb9cdf760310e406e8868469a067acbcbbb5f46bab7f6e4e\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Arial\",\"sans-serif\",\"Times New Roman\",\"serif\"]},\"codeIssues\":[\"Font \\\"Arial\\\" is not bundled; this raster uses the bundled Noto fallback.\",\"Only regular Noto font faces are bundled; verify requested bold/italic styling in the raster.\",\"Font \\\"Times New Roman\\\" is not bundled; this raster uses the bundled Noto fallback.\",\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598612171-tt8svox2/candidate-0-svg-v1.svg",
+        "url": "http://127.0.0.1:62139/objects/1791598612171-tt8svox2/candidate-0-svg-v1.svg",
+        "mimeType": "image/svg+xml",
+        "objectKey": "1791598612171-tt8svox2/candidate-0-svg-v1.svg"
+      },
+      "startedAt": "2026-10-10T02:17:29.318Z",
+      "completedAt": "2026-10-10T02:17:29.318Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-4ca945b0-d9e3-415f-b7be-256c5714a782",
+      "candidateId": 0,
+      "type": "render",
+      "title": "SVG v1 实际渲染",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"513adb1d08bc5765159ccf11fd36fc68f881f6227b43dad2a2709cc707c6f3aa\",\"pngHash\":\"ac081102fe749562bb9cdf760310e406e8868469a067acbcbbb5f46bab7f6e4e\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Arial\",\"sans-serif\",\"Times New Roman\",\"serif\"]},\"codeIssues\":[\"Font \\\"Arial\\\" is not bundled; this raster uses the bundled Noto fallback.\",\"Only regular Noto font faces are bundled; verify requested bold/italic styling in the raster.\",\"Font \\\"Times New Roman\\\" is not bundled; this raster uses the bundled Noto fallback.\",\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598612171-tt8svox2/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:62139/objects/1791598612171-tt8svox2/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791598612171-tt8svox2/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T02:17:29.318Z",
+      "completedAt": "2026-10-10T02:17:29.318Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-a35285c9-75c2-4c48-b22d-077fa067b052",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "SVG v1 交付状态",
+      "round": 0,
+      "text": "未评审。",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598612171-tt8svox2/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:62139/objects/1791598612171-tt8svox2/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791598612171-tt8svox2/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T02:17:29.319Z",
+      "completedAt": "2026-10-10T02:17:29.319Z",
+      "durationMs": 0,
+      "error": ""
+    }
+  ],
+  "criticMode": "visual_code",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 0,
+  "promptCharCount": 195,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [
+    {
+      "candidateId": 0,
+      "filename": "1791598612171-tt8svox2/candidate-0.svg",
+      "objectKey": "1791598612171-tt8svox2/candidate-0.svg",
+      "url": "http://127.0.0.1:62139/objects/1791598612171-tt8svox2/candidate-0.svg",
+      "storage": "bucket",
+      "mimeType": "image/svg+xml",
+      "description": "基于您提供的方法论描述和参考图风格，以下是生成该流程图的详细设计说明：\n\n**整体布局与风格 (Layout & Style)**\n*   **画布背景**：纯白色（#FFFFFF），保持极简、干净的学术风格。\n*   **构图方向**：严格的从左至右水平线性布局。\n*   **视觉语言**：扁平化设计，使用圆角矩形作为主要节点容器，线条清晰，配色柔和且专业。\n*   **右上角标识**：在画布的右上角区域，放置文本 \"REF-73\"，字体为黑色无衬线体，字号适中，不加粗，位置独立于主流程图之外。\n\n**元素详细描述 (Element Details)**\n\n1.  **第一步：样品输入 (左侧节点)**\n    *   **形状**：圆角矩形（Rounded Rectangle），宽高比约为 3:2。\n    *   **颜色**：填充色为淡蓝色（类似参考图中的 #E3F2FD），边框为细实线深蓝色（类似 #1565C0）。\n    *   **内容**：框内居中显示两行文字。\n        *   第一行（主标题）：**样品输入**（黑色，加粗，无衬线字体，字号较大）。\n        *   第二行（参数）：**n=12**（黑色，常规字重，位于主标题正下方，字号略小）。\n\n2.  **连接箭头 1 (左中)**\n    *   **样式**：一条水平的直线箭头，从第一个框的右侧中心指向第二个框的左侧中心。\n    *   **颜色**：深灰色或黑色（#333333）。\n    *   **粗细**：中等粗细（约 2px），箭头头部为实心三角形。\n\n3.  **第二步：数据标准化 (中间节点)**\n    *   **形状**：圆角矩形，尺寸与左右两个框保持一致，确保视觉平衡。\n    *   **颜色**：为了区分步骤但保持协调，建议使用淡紫色或淡黄色填充（例如 #F3E5F5 或 #FFF9C4），边框颜色对应加深（如 #7B1FA2 或 #FBC02D）。*注：若严格遵循参考图的双色逻辑，也可沿用淡蓝色或改为淡绿色，但引入第三种柔和色调能更好地区分“处理过程”。这里推荐淡紫色以体现“计算/处理”的含义。*\n    *   **内容**：框内居中显示两行内容。\n        *   第一行（主标题）：**数据标准化**（黑色，加粗，无衬线字体）。\n        *   第二行（公式）：**$x / x_0$**（黑色，数学符号格式，$x_0$ 的 0 必须为下标，字体清晰易读）。\n\n4.  **连接箭头 2 (右中)**\n    *   **样式**：与第一个箭头完全一致，水平向右，连接中间框与右侧框。\n    *   **颜色**：深灰色或黑色。\n\n5.  **第三步：结果输出 (右侧节点)**\n    *   **形状**：圆角矩形，尺寸与前两个框一致。\n    *   **颜色**：填充色为淡绿色（参考图中的 #E8F5E9），边框为细实线深绿色（类似 #2E7D32），代表最终结果的完成状态。\n    *   **内容**：框内居中显示两行文字。\n        *   第一行（主标题）：**结果输出**（黑色，加粗，无衬线字体）。\n        *   第二行（数值）：**均值 1.0**（黑色，常规字重，位于主标题正下方）。\n\n**排版注意事项**\n*   **对齐**：三个矩形的垂直中心线必须在同一水平轴上。\n*   **间距**：矩形之间的间距应相等，箭头长度适中，不要过长或过短，保持紧凑感。\n*   **字体**：全图使用清晰的无衬线中文字体（如思源黑体或微软雅黑），数学公式部分使用标准的数学字体（如 Times New Roman 或 LaTeX 默认字体）以确保 $x_0$ 的下标显示正确。",
+      "review": {
+        "limit": 0,
+        "roundsUsed": 0,
+        "mode": "visual_code",
+        "status": "not_requested",
+        "history": [],
+        "deliveredVersion": 1,
+        "deliveredSvgHash": "513adb1d08bc5765159ccf11fd36fc68f881f6227b43dad2a2709cc707c6f3aa",
+        "note": "未评审。"
+      }
+    }
+  ],
+  "logs": [
+    "2026-10-10T02:16:52.178Z 参考图选择：采用 1 张，排除重复 0 张、无法使用 0 张、超出预算 0 张；主模型规划请求合计 1 张图片，上限 8 张。"
+  ],
+  "error": "",
+  "createdAt": "2026-10-10T02:16:52.171Z",
+  "updatedAt": "2026-10-10T02:17:29.319Z",
+  "startedAt": "2026-10-10T02:16:52.171Z",
+  "completedAt": "2026-10-10T02:17:29.319Z"
+}

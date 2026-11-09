@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="364.5pt" viewBox="0 0 648 364.5" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 364.5  L 648 364.5  L 648 0  L 0 0  z " style="fill: #ffffff" />
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 17.92024 340.216349  L 644.99976 340.216349  L 644.99976 3.00024  L 17.92024 3.00024  z " style="fill: #ffffff" />
+   </g>
+   <g id="PathCollection_1">
+    <defs>
+     <path id="m799048f4a4" d="M 0 2.5  C 0.663008 2.5 1.29895 2.236584 1.767767 1.767767  C 2.236584 1.29895 2.5 0.663008 2.5 0  C 2.5 -0.663008 2.236584 -1.29895 1.767767 -1.767767  C 1.29895 -2.236584 0.663008 -2.5 0 -2.5  C -0.663008 -2.5 -1.29895 -2.236584 -1.767767 -1.767767  C -2.236584 -1.29895 -2.5 -0.663008 -2.5 0  C -2.5 0.663008 -2.236584 1.29895 -1.767767 1.767767  C -1.29895 2.236584 -0.663008 2.5 0 2.5  z " style="stroke: #487968" />
+    </defs>
+    <g clip-path="url(#p5ccc5deeda)">
+     <use xlink:href="#m799048f4a4" x="46.423855" y="18.328245" style="fill: #487968; stroke: #487968" />
+    </g>
+   </g>
+   <g id="PathCollection_2">
+    <defs>
+     <path id="m0749064531" d="M 0 1.369306  C 0.363144 1.369306 0.711464 1.225028 0.968246 0.968246  C 1.225028 0.711464 1.369306 0.363144 1.369306 0  C 1.369306 -0.363144 1.225028 -0.711464 0.968246 -0.968246  C 0.711464 -1.225028 0.363144 -1.369306 0 -1.369306  C -0.363144 -1.369306 -0.711464 -1.225028 -0.968246 -0.968246  C -1.225028 -0.711464 -1.369306 -0.363144 -1.369306 0  C -1.369306 0.363144 -1.225028 0.711464 -0.968246 0.968246  C -0.711464 1.225028 -0.363144 1.369306 0 1.369306  z " style="stroke: #487968" />
+    </defs>
+    <g clip-path="url(#p5ccc5deeda)">
+     <use xlink:href="#m0749064531" x="616.496145" y="18.328245" style="fill: #487968; stroke: #487968" />
+    </g>
+   </g>
+   <g id="PathCollection_3">
+    <g clip-path="url(#p5ccc5deeda)">
+     <use xlink:href="#m0749064531" x="46.423855" y="324.888344" style="fill: #487968; stroke: #487968" />
+    </g>
+   </g>
+   <g id="PathCollection_4">
+    <g clip-path="url(#p5ccc5deeda)">
+     <use xlink:href="#m799048f4a4" x="616.496145" y="324.888344" style="fill: #487968; stroke: #487968" />
+    </g>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m783222674b" d="M 0 0  L 0 3.5  " style="stroke: #000000; stroke-width: 0.8" />
+      </defs>
+      <g>
+       <use xlink:href="#m783222674b" x="46.423855" y="340.216349" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'" transform="translate(39.909467 359.995315) rotate(-40)">A</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m783222674b" x="616.496145" y="340.216349" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'" transform="translate(609.53075 360.373757) rotate(-40)">B</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_3">
+      <defs>
+       <path id="mfd9ef9222c" d="M 0 0  L -3.5 0  " style="stroke: #000000; stroke-width: 0.8" />
+      </defs>
+      <g>
+       <use xlink:href="#mfd9ef9222c" x="17.92024" y="18.328245" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="10.92024" y="23.608245" transform="rotate(-0 10.92024 23.608245)">A</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#mfd9ef9222c" x="17.92024" y="324.888344" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="10.92024" y="330.168344" transform="rotate(-0 10.92024 330.168344)">B</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 17.92024 340.216349  L 17.92024 3.00024  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square" />
+   </g>
+   <g id="patch_4">
+    <path d="M 17.92024 340.216349  L 644.99976 340.216349  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square" />
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p5ccc5deeda">
+   <rect x="17.92024" y="3.00024" width="627.07952" height="337.216109" />
+  </clipPath>
+ </defs>
+</svg>

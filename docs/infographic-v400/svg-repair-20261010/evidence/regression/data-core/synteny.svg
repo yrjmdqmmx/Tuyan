@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="364.5pt" viewBox="0 0 648 364.5" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 364.5  L 648 364.5  L 648 0  L 0 0  z " style="fill: #ffffff" />
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 6.24024 325.05976  L 644.99976 325.05976  L 644.99976 27.80024  L 6.24024 27.80024  z " style="fill: #ffffff" />
+   </g>
+   <g id="patch_3">
+    <path d="M 64.309287 80.882297  L 209.481905 80.882297  L 267.550953 293.210526  L 122.378335 293.210526  z " clip-path="url(#paf57af63b1)" style="fill: #487968; opacity: 0.4" />
+   </g>
+   <g id="patch_4">
+    <path d="M 354.654524 80.882297  L 470.792618 80.882297  L 383.689047 293.210526  L 528.861665 293.210526  z " clip-path="url(#paf57af63b1)" style="fill: #c58b53; opacity: 0.4" />
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m783222674b" d="M 0 0  L 0 3.5  " style="stroke: #000000; stroke-width: 0.8" />
+      </defs>
+      <g>
+       <use xlink:href="#m783222674b" x="6.24024" y="325.05976" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="6.24024" y="342.61976" transform="rotate(-0 6.24024 342.61976)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m783222674b" x="122.378335" y="325.05976" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="122.378335" y="342.61976" transform="rotate(-0 122.378335 342.61976)">200</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m783222674b" x="238.516429" y="325.05976" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="238.516429" y="342.61976" transform="rotate(-0 238.516429 342.61976)">400</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m783222674b" x="354.654524" y="325.05976" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="354.654524" y="342.61976" transform="rotate(-0 354.654524 342.61976)">600</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#m783222674b" x="470.792618" y="325.05976" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="470.792618" y="342.61976" transform="rotate(-0 470.792618 342.61976)">800</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m783222674b" x="586.930713" y="325.05976" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="586.930713" y="342.61976" transform="rotate(-0 586.930713 342.61976)">1000</text>
+     </g>
+    </g>
+    <g id="text_7">
+     <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="325.62" y="358.61976" transform="rotate(-0 325.62 358.61976)">Sequence coordinate (bp; common scale, zero-based half-open)</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2" />
+   <g id="line2d_7">
+    <path d="M 6.24024 80.882297  L 586.930713 80.882297  " clip-path="url(#paf57af63b1)" style="fill: none; stroke: #487968; stroke-width: 5; stroke-linecap: square" />
+   </g>
+   <g id="line2d_8">
+    <path d="M 6.24024 293.210526  L 644.99976 293.210526  " clip-path="url(#paf57af63b1)" style="fill: none; stroke: #c58b53; stroke-width: 5; stroke-linecap: square" />
+   </g>
+   <g id="patch_5">
+    <path d="M 6.24024 325.05976  L 6.24024 27.80024  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square" />
+   </g>
+   <g id="patch_6">
+    <path d="M 6.24024 325.05976  L 644.99976 325.05976  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square" />
+   </g>
+   <g id="text_8">
+    <text style="font-size: 9px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: start" x="6.24024" y="61.772757" transform="rotate(-0 6.24024 61.772757)">Genome A</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 9px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: start" x="6.24024" y="274.100985" transform="rotate(-0 6.24024 274.100985)">Genome B</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="325.62" y="11.80024" transform="rotate(-0 325.62 11.80024)">Supplied syntenic blocks; green = forward, amber = inversion</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="paf57af63b1">
+   <rect x="6.24024" y="27.80024" width="638.75952" height="297.25952" />
+  </clipPath>
+ </defs>
+</svg>

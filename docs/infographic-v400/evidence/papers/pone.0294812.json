@@ -1,0 +1,118 @@
+{
+  "doi": "10.1371/journal.pone.0294812",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0294812",
+  "title": "A machine learning-enabled open biodata resource inventory from the scientific literature",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Heidi J. Imker",
+    "Kenneth E. Schackart",
+    "Ana-Maria Istrate",
+    "Charles E. Cook"
+  ],
+  "year": "2023",
+  "license": "2023\nImker et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0294812.g001",
+      "label": "Fig 1",
+      "caption": "Flowchart of overall study design to identify biodata resources from the scientific literature.\nStudy design for creating an inventory of biodata resources starting with a targeted query of articles found in Europe PMC, predicting biodata resources from article titles and abstracts using NLP, then reviewing and augmenting with additional metadata from Europe PMC to create the final inventory.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0294812.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0294812.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Flowchart of overall study design to identify biodata resources from the scientific literature.</title>\n<p>Study design for creating an inventory of biodata resources starting with a targeted query of articles found in Europe PMC, predicting biodata resources from article titles and abstracts using NLP, then reviewing and augmenting with additional metadata from Europe PMC to create the final inventory.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0294812.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0294812.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0294812.g002",
+      "label": "Fig 2",
+      "caption": "Flowchart of the process used to extract mentions and URLs of biodata resources.\nThe article title and abstract are first fed into an article classification model, which determines if the article is about a biodata resource or not. Articles that are classified as being about a biodata resource are then fed into an additional Named Entity Recognition (NER) model which extracts the name(s) of the biodata resource and reports the average probability score of the tokens constituting the predicted name. A regular-expression based URL extraction algorithm separately extracts URLs from the abstract. In this example, the NER model extracted both a “full name” (Protein Data Bank) and a “common name” (PDB) for the resource, both of which are valid in this case.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0294812.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0294812.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Flowchart of the process used to extract mentions and URLs of biodata resources.</title>\n<p>The article title and abstract are first fed into an article classification model, which determines if the article is about a biodata resource or not. Articles that are classified as being about a biodata resource are then fed into an additional Named Entity Recognition (NER) model which extracts the name(s) of the biodata resource and reports the average probability score of the tokens constituting the predicted name. A regular-expression based URL extraction algorithm separately extracts URLs from the abstract. In this example, the NER model extracted both a “full name” (Protein Data Bank) and a “common name” (PDB) for the resource, both of which are valid in this case.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0294812.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0294812.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0294812.g003",
+      "label": "Fig 3",
+      "caption": "Machine learning model architectures for article classification and named entity recognition.\nModel architecture for (A) sequence classification used to classify articles based on title and abstract and (B) token classification used to perform NER to obtain the resource names. Each architecture shows the possible classification labels resulting from model prediction. Additional details for token classification are shown in S2 Fig.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0294812.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0294812.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Machine learning model architectures for article classification and named entity recognition.</title>\n<p>Model architecture for (A) sequence classification used to classify articles based on title and abstract and (B) token classification used to perform NER to obtain the resource names. Each architecture shows the possible classification labels resulting from model prediction. Additional details for token classification are shown in <xref ref-type=\"supplementary-material\" rid=\"pone.0294812.s002\">S2 Fig</xref>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0294812.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0294812.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0294812.g004",
+      "label": "Fig 4",
+      "caption": "Counts of articles and resources as they passed through the pipeline.\nThe area of each circle is proportional to the count at that step. Most attrition occurs during the initial classification step that predicts which articles describe a biodata resource, while losses are relatively low as additional steps build and finalize the inventory.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0294812.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0294812.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Counts of articles and resources as they passed through the pipeline.</title>\n<p>The area of each circle is proportional to the count at that step. Most attrition occurs during the initial classification step that predicts which articles describe a biodata resource, while losses are relatively low as additional steps build and finalize the inventory.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0294812.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0294812.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0294812.g005",
+      "label": "Fig 5",
+      "caption": "Examples of (A) a correctly classified article and (B) an incorrectly classified article.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0294812.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0294812.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title />\n<p>Examples of (A) a correctly classified article and (B) an incorrectly classified article.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0294812.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0294812.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0294812.g006",
+      "label": "Fig 6",
+      "caption": "Example of correct extraction of common and partial extraction of full name.\nExample of a detailed abstract where the common name of the resource, “ESTHER” (bold/blue), was only mentioned once but correctly predicted. The predicted full name, “Hydrolase” (bold/orange), was partially correct while the entire full name (peach) is much longer. The uncertainty is accurately reflected in the scores where the correctly predicted common name is associated with a probability of 0.9933 while the partially correct full name was lower at 0.7105.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0294812.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0294812.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Example of correct extraction of common and partial extraction of full name.</title>\n<p>Example of a detailed abstract where the common name of the resource, “ESTHER” (bold/blue), was only mentioned once but correctly predicted. The predicted full name, “Hydrolase” (bold/orange), was partially correct while the entire full name (peach) is much longer. The uncertainty is accurately reflected in the scores where the correctly predicted common name is associated with a probability of 0.9933 while the partially correct full name was lower at 0.7105.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0294812.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0294812.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0294812.g007",
+      "label": "Fig 7",
+      "caption": "Biodata resource geolocation metadata.\n(A) URL host IP address coordinates (n = 1679). Transparency is constant for all points; darker regions indicate overlapping points. (B) Number of biodata resources per country after determining the country of origin for the most frequently identified funding agencies. Funding agencies that could not be mapped to a single country are not shown; specifically, 111 resources were funded by international agencies. Figures were created using the R ggplot2 package which obtains map data from Natural Earth [71], which is in the public domain.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0294812.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0294812.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Biodata resource geolocation metadata.</title>\n<p>(A) URL host IP address coordinates (n = 1679). Transparency is constant for all points; darker regions indicate overlapping points. (B) Number of biodata resources per country after determining the country of origin for the most frequently identified funding agencies. Funding agencies that could not be mapped to a single country are not shown; specifically, 111 resources were funded by international agencies. Figures were created using the R ggplot2 package which obtains map data from Natural Earth [<xref ref-type=\"bibr\" rid=\"pone.0294812.ref071\">71</xref>], which is in the public domain.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0294812.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0294812.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0294812.g008",
+      "label": "Fig 8",
+      "caption": "Inventory text mining potential.\nText mining potential of (A) individual articles found to describe biodata resources, and (B) the collective articles describing a particular biodata resource.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0294812.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0294812.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Inventory text mining potential.</title>\n<p>Text mining potential of (A) individual articles found to describe biodata resources, and (B) the collective articles describing a particular biodata resource.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0294812.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0294812.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

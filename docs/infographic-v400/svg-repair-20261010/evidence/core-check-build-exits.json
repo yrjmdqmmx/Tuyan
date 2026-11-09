@@ -1,0 +1,35 @@
+{
+  "contractTests": {
+    "passed": 2,
+    "failed": 0,
+    "exitCode": 0,
+    "log": "round3-prompt-contract-tests.log"
+  },
+  "focused": {
+    "passed": 39,
+    "failed": 0,
+    "exitCode": 0,
+    "log": "round3-prompt-focused-tests.log"
+  },
+  "coreCheck": {
+    "exitCode": 0,
+    "log": "round3-prompt-core-check.log"
+  },
+  "coreBuild": {
+    "exitCode": 0,
+    "log": "round3-prompt-core-build.log"
+  },
+  "changedFiles": [
+    "apps/paperbanana-api/src/diagram-topology.ts",
+    "apps/paperbanana-api/tests/diagram-topology.test.ts",
+    "apps/paperbanana-api/src/renderer-contract.ts"
+  ],
+  "scopeCheck": "round3-prompt-scope-check.json",
+  "unchanged": [
+    "strict topology parser",
+    "strict renderer audit validator",
+    "all rendering geometry and numeric programs",
+    "handler/call budgets/failure persistence"
+  ],
+  "fullCore": "controller-owned; prior P2 freeze passed 1228/1228, exit 0; no claim that run covers new prompt templates"
+}

@@ -1,0 +1,94 @@
+{
+  "doi": "10.1371/journal.pone.0327092",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0327092",
+  "title": "Masking noise reduces the anti-predator-like response to an acoustic stimulus: Application of Signal Detection Theory to fish behaviour",
+  "journal": "PLOS One",
+  "authors": [
+    "Helen A. L. Currie",
+    "Paul R. White",
+    "Timothy G. Leighton",
+    "Paul S. Kemp"
+  ],
+  "year": "2025",
+  "license": "2025\nCurrie et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0327092.g001",
+      "label": "Fig 1",
+      "caption": "Example power spectral density (dB re 1 µPa^{2} Hz^{-1}) of acoustic conditions within the experimental area (sampling rate: 25.6 kHz; FFT size 8192 [3 Hz bin width], overlap 91.5%, von Hann Window, frequency range 50-5000 Hz) for (a) baseline ambient noise conditions (bottom grey line) with masking broadband noise (120–3000 Hz) conditions (top black line); and (b) 170 Hz tonal stimuli; and (c) insonified experimental area showing the dimensionless signal-to-noise ratio (SNR [dB]) in the1/3^{rd} octave band at 13.5 cm depth.Note: dots indicate the location of the hydrophone when measuring the sound field.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0327092.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0327092.g001</object-id><label>Fig 1</label><caption><title> Example power spectral density (dB re 1 µPa<sup>2</sup> Hz<sup>-1</sup>) of acoustic conditions within the experimental area (sampling rate: 25.6 kHz; FFT size 8192 [3 Hz bin width], overlap 91.5%, von Hann Window, frequency range 50-5000 Hz) for (<italic>a</italic>) baseline ambient noise conditions (bottom grey line) with masking broadband noise (120–3000 Hz) conditions (top black line); and (<italic>b</italic>) 170 Hz tonal stimuli; and (<italic>c</italic>) insonified experimental area showing the dimensionless signal-to-noise ratio (SNR [dB]) in the1/3<sup>rd</sup> octave band at 13.5 cm depth.</title><p>Note: dots indicate the location of the hydrophone when measuring the sound field.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0327092.g001\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0327092.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0327092.g002",
+      "label": "Fig 2",
+      "caption": "(a) Number of individuals within a group of five carp (Cyprinus carpio) exhibiting a startle response during experimental trials (n) at the onset of tonal stimuli under ambient conditions; and (b): number of continuous startle responses from the onset of tonal stimuli under ambient conditions, by at least one individual fish within a group of five carp: AMB-LOW (110 dB re 1 µPa), AMB-INT (121 dB re 1 µPa), and AMB-HIGH (130 dB re 1 µPa), (RMS) displayed. Note: ** indicates significance of p < 0.01; * significance of p < 0.05; and NS symbolises non-significance for Kruskal-Wallis rank sum tests ([a] χ2 = 30.88; d.f. = 3; p < 0.01 & [b] χ2 = 30.854; d.f. = 3; p < 0.01, respectively) with post hoc Dunn-Bonferroni tests. Note: for (b), raincloud plots show main summary statistics (i.e., boxplot with median, interquartile range, max/min), raw data (i.e., points), and kernel density estimate (i.e., shaded grey area indicating probability density function of the variable).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0327092.g002\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0327092.g002</object-id><label>Fig 2</label><caption><title>(<italic>a</italic>) Number of individuals within a group of five carp (<italic>Cyprinus carpio</italic>) exhibiting a startle response during experimental trials (n) at the onset of tonal stimuli under ambient conditions; and (<italic>b</italic>): number of continuous startle responses from the onset of tonal stimuli under ambient conditions, by at least one individual fish within a group of five carp: AMB-LOW (110 dB re 1 µPa), AMB-INT (121 dB re 1 µPa), and AMB-HIGH (130 dB re 1 µPa), (RMS) displayed. Note: ** indicates significance of p &lt; 0.01; * significance of p &lt; 0.05; and NS symbolises non-significance for Kruskal-Wallis rank sum tests ([a] χ2 = 30.88; d.f. = 3; p &lt; 0.01 &amp; [b] χ2 = 30.854; d.f. = 3; p &lt; 0.01, respectively) with <italic>post hoc</italic> Dunn-Bonferroni tests. Note: for (b), raincloud plots show main summary statistics (i.e., boxplot with median, interquartile range, max/min), raw data (i.e., points), and kernel density estimate (i.e., shaded grey area indicating probability density function of the variable).</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0327092.g002\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0327092.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0327092.g003",
+      "label": "Fig 3",
+      "caption": "(a) Swimming speed (m s^{-1}) for groups (n = 10 per condition) of five carp (Cyprinus carpio) during experimental trials under ambient and masked conditions; and median swimming speed ± median absolute deviation over time during the ambient control (“AMB-C”: solid line) and treatment (dash-dotted line) conditions: (b) ambient low SPL (‘AMB-LOW’); (c) ambient intermediate SPL (‘AMB-INT’); (d) ambient high SPL (‘AMB-HIGH’); (e) masking low SPL (‘MASK-LOW’); (f) masking intermediate SPL (‘MASK-INT’); and (g) masking high SPL (‘MASK-HIGH’). Notes: ‘SPL’ is Sound Pressure Level, while ‘MASK-C’ is the masking control. Raincloud plots show main summary statistics (i.e., boxplot with median, interquartile range, max/min), kernel density estimate (i.e., shaded grey area indicating probability density function of the variable), and raw data (i.e., points). As individual trials consist of repeated measures over time, for each condition in panel ‘a’, raw data points are shown per trial for each treatment using the viridis colour scale. In panels ‘b’ to ‘g’, vertical green dashed lines (speaker with “waves”) indicate start of the tonal exposure period and vertical purple dashed lines (speaker with an X), the end.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0327092.g003\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0327092.g003</object-id><label>Fig 3</label><caption><title>(<italic>a</italic>) Swimming speed (m s<sup>-1</sup>) for groups (n = 10 per condition) of five carp (<italic>Cyprinus carpio</italic>) during experimental trials under ambient and masked conditions; and median swimming speed ± median absolute deviation over time during the ambient control (“AMB-C”: solid line) and treatment (dash-dotted line) conditions: (<italic>b</italic>) ambient low SPL (‘AMB-LOW’); (<italic>c</italic>) ambient intermediate SPL (‘AMB-INT’); (<italic>d</italic>) ambient high SPL (‘AMB-HIGH’); (<italic>e</italic>) masking low SPL (‘MASK-LOW’); (<italic>f</italic>) masking intermediate SPL (‘MASK-INT’); and (<italic>g</italic>) masking high SPL (‘MASK-HIGH’). Notes: ‘SPL’ is Sound Pressure Level, while ‘MASK-C’ is the masking control. Raincloud plots show main summary statistics (i.e., boxplot with median, interquartile range, max/min), kernel density estimate (i.e., shaded grey area indicating probability density function of the variable), and raw data (i.e., points). As individual trials consist of repeated measures over time, for each condition in panel ‘a’, raw data points are shown per trial for each treatment using the viridis colour scale. In panels ‘b’ to ‘g’, vertical green dashed lines (speaker with “waves”) indicate start of the tonal exposure period and vertical purple dashed lines (speaker with an X), the end.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0327092.g003\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0327092.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0327092.g004",
+      "label": "Fig 4",
+      "caption": "(a) Inter-individual distance (m) for groups (n = 10 per condition) of five carp (Cyprinus carpio) during experimental trials under ambient and masked conditions; and median inter-individual distance ± median absolute deviation over time during ambient control (AMB-C: solid line) and treatment (dash-dotted line) conditions.(b) ambient low SPL (‘AMB-LOW’); (c) ambient intermediate SPL (‘AMB-INT’); (d) ambient high SPL (‘AMB-HIGH’); (e) masking low SPL (‘MASK-LOW’); (f) masking intermediate SPL (‘MASK-INT’); and (g) masking high SPL (‘MASK-HIGH’). Notes: ‘SPL’ is Sound Pressure Level, while ‘MASK-C’ is the masking control. Raincloud plots show main summary statistics (i.e., boxplot with median, interquartile range, max/min), kernel density estimate (i.e., shaded grey area indicating probability density function of the variable), and raw data (i.e., points). As individual trials consist of repeated measures over time, for each condition in panel ‘a’, raw data points are shown per trial using the viridis colour scale. In panels ‘b’ to ‘g’, vertical green dashed lines (speaker with “waves”) indicate start of the tonal exposure period and vertical purple dashed lines (speaker with an X), the end.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0327092.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0327092.g004</object-id><label>Fig 4</label><caption><title>(a) Inter-individual distance (m) for groups (n = 10 per condition) of five carp (<italic>Cyprinus carpio</italic>) during experimental trials under ambient and masked conditions; and median inter-individual distance ± median absolute deviation over time during ambient control (AMB-C: solid line) and treatment (dash-dotted line) conditions.</title><p>(<italic>b</italic>) ambient low SPL (‘AMB-LOW’); (<italic>c</italic>) ambient intermediate SPL (‘AMB-INT’); (<italic>d</italic>) ambient high SPL (‘AMB-HIGH’); (<italic>e</italic>) masking low SPL (‘MASK-LOW’); (<italic>f</italic>) masking intermediate SPL (‘MASK-INT’); and (<italic>g</italic>) masking high SPL (‘MASK-HIGH’). Notes: ‘SPL’ is Sound Pressure Level, while ‘MASK-C’ is the masking control. Raincloud plots show main summary statistics (i.e., boxplot with median, interquartile range, max/min), kernel density estimate (i.e., shaded grey area indicating probability density function of the variable), and raw data (i.e., points). As individual trials consist of repeated measures over time, for each condition in panel ‘a’, raw data points are shown per trial using the viridis colour scale. In panels ‘b’ to ‘g’, vertical green dashed lines (speaker with “waves”) indicate start of the tonal exposure period and vertical purple dashed lines (speaker with an X), the end.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0327092.g004\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0327092.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0327092.g005",
+      "label": "Fig 5",
+      "caption": "(a) Orientation (°) for groups (n = 10 per condition) of five carp (Cyprinus carpio) during experimental trials under ambient and masked conditions; and median orientation ± median absolute deviation over time during ambient control (AMB-C: solid line) and treatment (dash-dotted line) conditions: (b) ambient low SPL (‘AMB-LOW’); (c) ambient intermediate SPL (‘AMB-INT’); (d) ambient high SPL (‘AMB-HIGH’); (e) masking low SPL (‘MASK-LOW’); (f) masking intermediate SPL (‘MASK-INT’); and (g) masking high SPL (‘MASK-HIGH’). Notes: ‘SPL’ is Sound Pressure Level, while ‘MASK-C’ is the masking control. Lower orientation values represent greater alignment. Raincloud plots show main summary statistics (i.e., boxplot with median, interquartile range, max/min), kernel density estimate (i.e., shaded grey area indicating probability density function of the variable), and raw data (i.e., points). As individual trials consist of repeated measures over time, for each condition in panel ‘a’, raw data points are shown per trial using the viridis colour scale. In panels ‘b’ to ‘g’, vertical green dashed lines (speaker with “waves”) indicate start of the tonal exposure period and vertical purple dashed lines (speaker with an X), the end.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0327092.g005\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0327092.g005</object-id><label>Fig 5</label><caption><title>(<italic>a</italic>) Orientation (°) for groups (n = 10 per condition) of five carp (<italic>Cyprinus carpio</italic>) during experimental trials under ambient and masked conditions; and median orientation ± median absolute deviation over time during ambient control (AMB-C: solid line) and treatment (dash-dotted line) conditions: (<italic>b</italic>) ambient low SPL (‘AMB-LOW’); (<italic>c</italic>) ambient intermediate SPL (‘AMB-INT’); (<italic>d</italic>) ambient high SPL (‘AMB-HIGH’); (<italic>e</italic>) masking low SPL (‘MASK-LOW’); (<italic>f</italic>) masking intermediate SPL (‘MASK-INT’); and (<italic>g</italic>) masking high SPL (‘MASK-HIGH’). Notes: ‘SPL’ is Sound Pressure Level, while ‘MASK-C’ is the masking control. Lower orientation values represent greater alignment. Raincloud plots show main summary statistics (i.e., boxplot with median, interquartile range, max/min), kernel density estimate (i.e., shaded grey area indicating probability density function of the variable), and raw data (i.e., points). As individual trials consist of repeated measures over time, for each condition in panel ‘a’, raw data points are shown per trial using the viridis colour scale. In panels ‘b’ to ‘g’, vertical green dashed lines (speaker with “waves”) indicate start of the tonal exposure period and vertical purple dashed lines (speaker with an X), the end.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0327092.g005\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0327092.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0327092.g006",
+      "label": "Fig 6",
+      "caption": "Receiver-operating characteristics (ROC) plots of hit rate against false-alarm rate for masked.(●,■,▲) and ambient (○,□,△) treatment (a) coarse-scale (startle response); and (b) fine-scale (inter-individual distance) behavioural responses of Cyprinus carpio to onset of a tonal acoustic stimuli at low SPL (‘LOW’●,○); intermediate SPL (‘INT’■,□); and high SPL (‘HIGH’▲,△) signal-to-noise ratio (SNR). Solid light grey lines indicate reference discriminability (d’ = 0, 1, 2, 3), with an increase in d’ representing a greater signal discriminability. Dashed lines show response criterion (c = −1, −0.5, 0, 0.5, 1), with an increase in c representing a greater bias toward responding. Note: ‘SPL’ is Sound Pressure Level.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0327092.g006\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0327092.g006</object-id><label>Fig 6</label><caption><title>Receiver-operating characteristics (ROC) plots of hit rate against false-alarm rate for masked.</title><p>(●,■,▲) and ambient (○,□,△) treatment (<italic>a</italic>) coarse-scale (startle response); and (<italic>b</italic>) fine-scale (inter-individual distance) behavioural responses of <italic>Cyprinus carpio</italic> to onset of a tonal acoustic stimuli at low SPL (‘LOW’●,○); intermediate SPL (‘INT’■,□); and high SPL (‘HIGH’▲,△) signal-to-noise ratio (SNR). Solid light grey lines indicate reference discriminability (<italic>d’</italic> = 0, 1, 2, 3), with an increase in <italic>d’</italic> representing a greater signal discriminability. Dashed lines show response criterion (<italic>c</italic> = −1, −0.5, 0, 0.5, 1), with an increase in <italic>c</italic> representing a greater bias toward responding. Note: ‘SPL’ is Sound Pressure Level.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0327092.g006\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0327092.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

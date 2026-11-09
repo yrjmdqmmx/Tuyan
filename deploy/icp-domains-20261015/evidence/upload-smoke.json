@@ -1,0 +1,12 @@
+{
+  "testedAtDate": "2026-10-15",
+  "origin": "https://tuyansci.cn",
+  "syntheticPngBytes": 68,
+  "prepareCode": 0,
+  "putStatus": 200,
+  "allowOrigin": "https://tuyansci.cn",
+  "finalizeCode": 0,
+  "abortCode": 0,
+  "secureHostOnlyGuestCookie": true,
+  "realModelCalls": 0
+}

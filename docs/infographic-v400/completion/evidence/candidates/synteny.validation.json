@@ -1,0 +1,101 @@
+{
+  "typeId": "synteny",
+  "computations": {
+    "ribbonVertices": [
+      [
+        [
+          100,
+          1
+        ],
+        [
+          350,
+          1
+        ],
+        [
+          450,
+          0
+        ],
+        [
+          200,
+          0
+        ]
+      ],
+      [
+        [
+          600,
+          1
+        ],
+        [
+          800,
+          1
+        ],
+        [
+          650,
+          0
+        ],
+        [
+          900,
+          0
+        ]
+      ]
+    ],
+    "inversionCount": 1
+  },
+  "checks": {
+    "source_0_width": {
+      "actual": 250.0,
+      "expected": 250.0,
+      "absoluteError": 0.0
+    },
+    "target_0_width": {
+      "actual": 250.0,
+      "expected": 250.0,
+      "absoluteError": 0.0
+    },
+    "source_1_width": {
+      "actual": 200.0,
+      "expected": 200.0,
+      "absoluteError": 0.0
+    },
+    "target_1_width": {
+      "actual": 250.0,
+      "expected": 250.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "source",
+      "start",
+      "end",
+      "target",
+      "targetStart",
+      "targetEnd",
+      "strand"
+    ],
+    "options": {
+      "sequences": [
+        {
+          "id": "Genome A",
+          "length": 1000
+        },
+        {
+          "id": "Genome B",
+          "length": 1100
+        }
+      ],
+      "assembly": "Synthetic paired assemblies",
+      "coordinateSystem": "zero_based_half_open",
+      "alignmentMethod": "Synthetic explicit correspondence; no alignment inferred"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

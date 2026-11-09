@@ -1,0 +1,82 @@
+[
+  {
+    "candidate": "pone.0178731.g007",
+    "targetType": "roadmap",
+    "reasonCategory": "structure",
+    "reason": "候选图是文字清单，缺少阶段、里程碑和依赖结构。",
+    "status": "not-approved-for-this-use",
+    "reviewedAt": "2026-10-10"
+  },
+  {
+    "candidate": "pone.0344555.g005",
+    "targetType": "roadmap",
+    "reasonCategory": "structure-and-rights",
+    "reason": "输入—处理—输出框架不等于路线图；素材图标及同文其他图的第三方改编背景也不能推定全部获准。",
+    "status": "not-approved-for-this-use",
+    "reviewedAt": "2026-10-10"
+  },
+  {
+    "candidate": "s13643-021-01779-2.g004",
+    "targetType": "streamgraph",
+    "reasonCategory": "structure",
+    "reason": "论文称 streamgraph，但实图按固定零线在两侧镜像堆叠；没有本分类定义的移动基线。",
+    "status": "not-approved-for-this-use",
+    "reviewedAt": "2026-10-10"
+  },
+  {
+    "candidate": "10.1038/s41598-024-83710-y",
+    "targetType": "waterfall",
+    "reasonCategory": "license",
+    "reason": "文章采用 CC BY-NC-ND 4.0，不能批准本产品所需的商业使用与改编。正式池改用 pone.0272825.g004。",
+    "status": "not-approved-for-this-use",
+    "reviewedAt": "2026-10-10"
+  },
+  {
+    "candidate": "pcbi.1011795.g005",
+    "targetType": "ridgeline",
+    "reasonCategory": "structure-and-quality",
+    "reason": "图为按时间绘制的堆积面积，非密度山脊；图注与图中 A/B 对应还存在歧义。",
+    "status": "not-approved-for-this-use",
+    "reviewedAt": "2026-10-10"
+  },
+  {
+    "candidate": "pone.0253617.g004",
+    "targetType": "contour",
+    "reasonCategory": "structure",
+    "reason": "主表达是三维曲面与底面投影，不能清楚代表二维等值线。改用 pone.0191835.g002。",
+    "status": "not-approved-for-this-use",
+    "reviewedAt": "2026-10-10"
+  },
+  {
+    "candidate": "pone.0128213.g005",
+    "targetType": "bubble",
+    "reasonCategory": "encoding",
+    "reason": "缺少清楚的圆大小图例或定义；采用第三变量大小图例明确的 pcbi.1007732.g005。",
+    "status": "not-approved-for-this-use",
+    "reviewedAt": "2026-10-10"
+  },
+  {
+    "candidate": "pone.0339350.g004",
+    "targetType": "causal_dag",
+    "reasonCategory": "semantics",
+    "reason": "结构方程模型中的双向协方差不等于有向无环因果关系，不映射为 DAG。",
+    "status": "not-approved-for-this-use",
+    "reviewedAt": "2026-10-10"
+  },
+  {
+    "candidate": "pcbi.1006024.g002/g003/g007",
+    "targetType": "energy_diagram/contour",
+    "reasonCategory": "semantics",
+    "reason": "自由能时间曲线、热图或机制图不代表化学反应状态的能量剖面或有标量定义的等值线。",
+    "status": "not-approved-for-this-use",
+    "reviewedAt": "2026-10-10"
+  },
+  {
+    "candidate": "pone.0021800 / pone.0021723",
+    "targetType": "treemap/chemical_reaction",
+    "reasonCategory": "license-evidence",
+    "reason": "旧文章 XML 未提供本轮可确认的准确许可版本链接，不自行推定 CC BY 4.0。",
+    "status": "not-approved-for-this-use",
+    "reviewedAt": "2026-10-10"
+  }
+]

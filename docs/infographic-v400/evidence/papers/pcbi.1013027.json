@@ -1,0 +1,83 @@
+{
+  "doi": "10.1371/journal.pcbi.1013027",
+  "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1013027",
+  "title": "scSDNE: A semi-supervised method for inferring cell-cell interactions based on graph embedding",
+  "journal": "PLOS Computational Biology",
+  "authors": [
+    "Chenchen Jia",
+    "Haiyun Wang",
+    "Jianping Zhao",
+    "Junfeng Xia",
+    "Chunhou Zheng"
+  ],
+  "year": "2025",
+  "license": "2025\nJia et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pcbi.1013027.g001",
+      "label": "Fig 1",
+      "caption": "Overview of scSDNE.(A) Overview of the LRdb. (B) Construction of adjacency matrix (including adjacency matrices of gene regulatory networks and crosstalk score matrices of cell types). (C) Learning of latent representations for each gene pair through graph embedding. (D) Detection and visualization of significant L-R pairs based on the distances observed in the latent space.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1013027.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1013027.g001</object-id><label>Fig 1</label><caption><title>Overview of scSDNE.</title><p>(A) Overview of the LRdb. (B) Construction of adjacency matrix (including adjacency matrices of gene regulatory networks and crosstalk score matrices of cell types). (C) Learning of latent representations for each gene pair through graph embedding. (D) Detection and visualization of significant L-R pairs based on the distances observed in the latent space.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1013027.g001\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1013027.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1013027.g002",
+      "label": "Fig 2",
+      "caption": "Identification of intercellular communication in diseased human skin.(A) Dot plot displays the predicted interactions between Inflam. FIB and the specified immune cell types. The color of the points reflects the communication probability, while the size of the points represents the calculated p-value. Blank areas signify a communication probability of zero. (B) Violin plot shows the expression levels of genes IL-13 and THBS2 across samples. (C) Circos plot depicts intercellular communication from Inflam. FIB to other cell types. The arrow points from the ligands in the sending cells to the receptors in the receiving cells. The thickness of the line and the size of the arrow reflect the expression of the ligands and receptors, respectively. (D) Illustration of representative ligands from Inflam. FIB to other cell types.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1013027.g002\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1013027.g002</object-id><label>Fig 2</label><caption><title>Identification of intercellular communication in diseased human skin.</title><p><bold>(A)</bold> Dot plot displays the predicted interactions between Inflam. FIB and the specified immune cell types. The color of the points reflects the communication probability, while the size of the points represents the calculated p-value. Blank areas signify a communication probability of zero. <bold>(B)</bold> Violin plot shows the expression levels of genes IL-13 and THBS2 across samples. <bold>(C)</bold> Circos plot depicts intercellular communication from Inflam. FIB to other cell types. The arrow points from the ligands in the sending cells to the receptors in the receiving cells. The thickness of the line and the size of the arrow reflect the expression of the ligands and receptors, respectively. <bold>(D)</bold> Illustration of representative ligands from Inflam. FIB to other cell types.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1013027.g002\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1013027.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1013027.g003",
+      "label": "Fig 3",
+      "caption": "Comparison analysis of intercellular communication between HCC and tumor-adjacent tissues.(A) Overview of the cell clusters derived from scRNA-seq data of tumor-adjacent and HCC tissues (UMAP). (B) Heatmap illustrates intercellular communication from hepatocytes to other immune cell types (normalized score greater than 0. 5). (C) Dot plot shows the predicted interactions between hepatocyte and the specified immune cell types in both HCC and tumor-adjacent tissues. (D) Enrichment analysis of the KEGG pathways. (E) Comparison of the number of significant L-R pairs from hepatocytes to immune cell types. (F) Sankey plot represents intercellular communication from hepatocytes to Mono/Macro in HCC where the thickness of the connecting bands reflects the intensity of L-R interactions.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1013027.g003\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1013027.g003</object-id><label>Fig 3</label><caption><title>Comparison analysis of intercellular communication between HCC and tumor-adjacent tissues.</title><p><bold>(A)</bold> Overview of the cell clusters derived from scRNA-seq data of tumor-adjacent and HCC tissues (UMAP). <bold>(B)</bold> Heatmap illustrates intercellular communication from hepatocytes to other immune cell types (normalized score greater than 0. 5). <bold>(C)</bold> Dot plot shows the predicted interactions between hepatocyte and the specified immune cell types in both HCC and tumor-adjacent tissues. <bold>(D)</bold> Enrichment analysis of the KEGG pathways. <bold>(E)</bold> Comparison of the number of significant L-R pairs from hepatocytes to immune cell types. <bold>(F)</bold> Sankey plot represents intercellular communication from hepatocytes to Mono/Macro in HCC where the thickness of the connecting bands reflects the intensity of L-R interactions.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1013027.g003\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1013027.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1013027.g004",
+      "label": "Fig 4",
+      "caption": "A case study on the application of scSDNE in the human lymph node microenvironment.(A) Spatial plots show cell abundance (color intensity) for the specified cell types. (B) Dot plot shows the predicted interactions between the immune cell types. (C) The edge width represents the strength of intercellular communication between the cell types. (D) Circos plot. The arrow points from the ligands in the sending cells to the receptors in the receiving cells.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1013027.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1013027.g004</object-id><label>Fig 4</label><caption><title>A case study on the application of scSDNE in the human lymph node microenvironment.</title><p><bold>(A)</bold> Spatial plots show cell abundance (color intensity) for the specified cell types. <bold>(B)</bold> Dot plot shows the predicted interactions between the immune cell types. <bold>(C)</bold> The edge width represents the strength of intercellular communication between the cell types. <bold>(D)</bold> Circos plot. The arrow points from the ligands in the sending cells to the receptors in the receiving cells.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1013027.g004\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1013027.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1013027.g005",
+      "label": "Fig 5",
+      "caption": "Comparison of the performance of scSDNE with CellChat, CellPhoneDB, iTALK and scTenifoldXct on the scRNA-seq dataset of gastric cancer (from fibroblasts to macrophages).(A) Circos plot depicts the strength of intercellular communication from fibroblasts to other cell types in TME. (B) UpSetR plot illustrates the results from the five tools utilizing their respective LR database. The horizontal bar graph in the lower left corner represents the total number of L-R pairs detected by each method. The intercellular communication results obtained by the different methods are represented by multiple black dots and connecting lines, and the number of intersections displayed in the bar graph above. (C) UpSetR plot shows the results from the five tools using a common LRdb. (D) ROC curves plot depicts the performance of the five methods in assessing intercellular communication. (E) Overlap analysis of the LR database. (F) Comparison of literature support rates for scSDNE using different databases.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1013027.g005\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1013027.g005</object-id><label>Fig 5</label><caption><title>Comparison of the performance of scSDNE with CellChat, CellPhoneDB, iTALK and scTenifoldXct on the scRNA-seq dataset of gastric cancer (from fibroblasts to macrophages).</title><p><bold>(A)</bold> Circos plot depicts the strength of intercellular communication from fibroblasts to other cell types in TME. <bold>(B)</bold> UpSetR plot illustrates the results from the five tools utilizing their respective LR database. The horizontal bar graph in the lower left corner represents the total number of L-R pairs detected by each method. The intercellular communication results obtained by the different methods are represented by multiple black dots and connecting lines, and the number of intersections displayed in the bar graph above. <bold>(C)</bold> UpSetR plot shows the results from the five tools using a common LRdb. <bold>(D)</bold> ROC curves plot depicts the performance of the five methods in assessing intercellular communication. <bold>(E)</bold> Overlap analysis of the LR database. <bold>(F)</bold> Comparison of literature support rates for scSDNE using different databases.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1013027.g005\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1013027.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

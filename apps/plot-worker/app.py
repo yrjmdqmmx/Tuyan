@@ -56,6 +56,7 @@ _PLOT_WORKER_TOKEN: Optional[str] = load_worker_token()
 class RenderRequest(BaseModel):
     code: str = Field(..., description="Python/matplotlib source to render.")
     token: Optional[str] = Field(None, description="Auth token (alt to header).")
+    vector_output: bool = Field(False, description="Return PNG and editable vector SVG from the same scene.")
 
 
 def _check_auth(body_token: Optional[str], header_token: Optional[str]) -> bool:
@@ -92,5 +93,5 @@ def render(
     # {"ok": False, "error": ...}. Both are HTTP 200 so the Core critic loop can
     # read the error string and revise (errors are an expected outcome, not a
     # transport failure).
-    result = run_render(req.code, timeout_s=WALL_CLOCK_TIMEOUT_S)
+    result = run_render(req.code, timeout_s=WALL_CLOCK_TIMEOUT_S, vector_output=req.vector_output)
     return result

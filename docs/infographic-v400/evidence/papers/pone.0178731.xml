@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0178731</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-16-25386</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Ecology</subject><subj-group><subject>Biodiversity</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Ecology and environmental sciences</subject><subj-group><subject>Ecology</subject><subj-group><subject>Biodiversity</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Computational biology</subject><subj-group><subject>Biological data management</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Data management</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Earth sciences</subject><subj-group><subject>Geography</subject><subj-group><subject>Cartography</subject><subj-group><subject>Latitude</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Earth sciences</subject><subj-group><subject>Geography</subject><subj-group><subject>Cartography</subject><subj-group><subject>Longitude</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Taxonomy</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Data management</subject><subj-group><subject>Taxonomy</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Cognitive science</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Language</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Language</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Social sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Language</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Software development</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Engineering and technology</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Software development</subject></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>A conceptual framework for quality assessment and management of biodiversity data</article-title>
+<alt-title alt-title-type="running-head">Biodiversity data quality conceptual framework</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-2672-8115</contrib-id>
+<name name-style="western">
+<surname>Veiga</surname>
+<given-names>Allan Koch</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Saraiva</surname>
+<given-names>Antonio Mauro</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Chapman</surname>
+<given-names>Arthur David</given-names>
+</name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Morris</surname>
+<given-names>Paul John</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Gendreau</surname>
+<given-names>Christian</given-names>
+</name>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Schigel</surname>
+<given-names>Dmitry</given-names>
+</name>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Robertson</surname>
+<given-names>Tim James</given-names>
+</name>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>University of São Paulo, Research Center on Biodiversity and Computing, São Paulo, São Paulo, Brazil</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Australian Biodiversity Information Services, Ballan, Victoria, Australia</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Harvard University, Museum of Comparative Zoology, Cambridge, Massachusetts, United States of America</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Université de Montréal, Institut de Recherche en Biologie Végétale, Montréal, Québec, Canada</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>Global Biodiversity Information Facility, Secretariat, Copenhagen, Denmark</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Melcher</surname>
+<given-names>Ulrich</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Oklahoma State University, UNITED STATES</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist. There are no patents, products in development, or marketed products to declare.</p>
+</fn>
+<fn fn-type="con">
+<p><list list-type="simple"><list-item>
+<p><bold>Conceptualization:</bold> AKV AMS.</p></list-item> <list-item>
+<p><bold>Data curation:</bold> AKV PJM.</p></list-item> <list-item>
+<p><bold>Formal analysis:</bold> AKV AMS PJM.</p></list-item> <list-item>
+<p><bold>Funding acquisition:</bold> AMS DS.</p></list-item> <list-item>
+<p><bold>Investigation:</bold> AKV AMS.</p></list-item> <list-item>
+<p><bold>Methodology:</bold> AKV AMS.</p></list-item> <list-item>
+<p><bold>Project administration:</bold> AMS ADC DS.</p></list-item> <list-item>
+<p><bold>Resources:</bold> AMS PJM DS.</p></list-item> <list-item>
+<p><bold>Software:</bold> AKV PJM.</p></list-item> <list-item>
+<p><bold>Supervision:</bold> AMS ADC.</p></list-item> <list-item>
+<p><bold>Validation:</bold> AKV PJM.</p></list-item> <list-item>
+<p><bold>Writing – original draft:</bold> AKV AMS ADC CG DS TJR.</p></list-item> <list-item>
+<p><bold>Writing – review &amp; editing:</bold> AKV AMS ADC PJM CG DS TJR.</p></list-item></list>
+</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">allan.kv@gmail.com</email> (AKV); <email xlink:type="simple">saraiva@usp.br</email> (AMS)</corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>28</day>
+<month>6</month>
+<year>2017</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2017</year>
+</pub-date>
+<volume>12</volume>
+<issue>6</issue>
+<elocation-id>e0178731</elocation-id>
+<history>
+<date date-type="received">
+<day>4</day>
+<month>7</month>
+<year>2016</year>
+</date>
+<date date-type="accepted">
+<day>18</day>
+<month>5</month>
+<year>2017</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2017</copyright-year>
+<copyright-holder>Veiga et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0178731"/>
+<abstract>
+<p>The increasing availability of digitized biodiversity data worldwide, provided by an increasing number of institutions and researchers, and the growing use of those data for a variety of purposes have raised concerns related to the "fitness for use" of such data and the impact of data quality (DQ) on the outcomes of analyses, reports, and decisions. A consistent approach to assess and manage data quality is currently critical for biodiversity data users. However, achieving this goal has been particularly challenging because of idiosyncrasies inherent in the concept of quality. DQ assessment and management cannot be performed if we have not clearly established the quality needs from a data user’s standpoint. This paper defines a formal conceptual framework to support the biodiversity informatics community allowing for the description of the meaning of "fitness for use" from a data user’s perspective in a common and standardized manner. This proposed framework defines nine concepts organized into three classes: DQ Needs, DQ Solutions and DQ Report. The framework is intended to formalize human thinking into well-defined components to make it possible to share and reuse concepts of DQ needs, solutions and reports in a common way among user communities. With this framework, we establish a common ground for the collaborative development of solutions for DQ assessment and management based on data fitness for use principles. To validate the framework, we present a proof of concept based on a case study at the Museum of Comparative Zoology of Harvard University. In future work, we will use the framework to engage the biodiversity informatics community to formalize and share DQ profiles related to DQ needs across the community.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution>Conselho Nacional de Desenvolvimento Científico e Tecnológico (BR)</institution>
+</funding-source>
+<award-id>233676/2014-7</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-2672-8115</contrib-id>
+<name name-style="western">
+<surname>Veiga</surname>
+<given-names>Allan Koch</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100002322</institution-id>
+<institution>Coordenação de Aperfeiçoamento de Pessoal de Nível Superior</institution>
+</institution-wrap>
+</funding-source>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-2672-8115</contrib-id>
+<name name-style="western">
+<surname>Veiga</surname>
+<given-names>Allan Koch</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award003">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100003593</institution-id>
+<institution>Conselho Nacional de Desenvolvimento Científico e Tecnológico</institution>
+</institution-wrap>
+</funding-source>
+<award-id>308326/2010-5</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Saraiva</surname>
+<given-names>Antonio Mauro</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award004">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100003593</institution-id>
+<institution>Conselho Nacional de Desenvolvimento Científico e Tecnológico</institution>
+</institution-wrap>
+</funding-source>
+<award-id>311531/2014-8</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Saraiva</surname>
+<given-names>Antonio Mauro</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award005">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100005639</institution-id>
+<institution>Universidade de São Paulo</institution>
+</institution-wrap>
+</funding-source>
+<award-id>11.1.9359.1.2</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Saraiva</surname>
+<given-names>Antonio Mauro</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award006">
+<funding-source>
+<institution>São Paulo Research Foundation</institution>
+</funding-source>
+<award-id>FAPESP 2015/241683</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Saraiva</surname>
+<given-names>Antonio Mauro</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>The study is part of the Doctorate Degree thesis of AKV, who was supported by a Brazilian Governmental National Research Agency - Coordenação de Aperfeiçoamento de Pessoal de Nível Superior - CAPES. In addition, the author AKV was granted an exchange scholarship by the Conselho Nacional de Desenvolvimento Científico e Tecnológico – CNPq (grant #233676/2014-7). The author AMS is a professor at Universidade de São Paulo, which supported the Research Center on Biodiversity and Computing, BioComp (grant #11.1.9359.1.2). AMS was also supported by Conselho Nacional de Desenvolvimento Científico e Tecnológico (grants #308326/2010-5 and #311531/2014-8), and by São Paulo Research Foundation, FAPESP, (grant #2015/241683). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="7"/>
+<table-count count="0"/>
+<page-count count="20"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All data used and generated are available from the API <ext-link ext-link-type="uri" xlink:href="http://case.bdq.biocomp.org.br:3010/explorer/" xlink:type="simple">http://case.bdq.biocomp.org.br:3010/explorer/</ext-link>. All the information needed for interested researchers to query the available data, using a standard RESTful API interface, is available in the S1 Appendix, with the proof of concept.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>1. Introduction</title>
+<p>Data Quality (DQ) is a subject that permeates most research. As a result, research on DQ, information quality, or data fitness for use has been conducted and applied in a number of domains, covering multiple aspects and approaches [<xref ref-type="bibr" rid="pone.0178731.ref001">1</xref>–<xref ref-type="bibr" rid="pone.0178731.ref006">6</xref>].</p>
+<p>Most DQ investigations can be classified into three branches: DQ assessment, DQ management and contextual DQ [<xref ref-type="bibr" rid="pone.0178731.ref001">1</xref>]. Research on DQ assessment aims at the measurement, validation and classification of the quality of data [<xref ref-type="bibr" rid="pone.0178731.ref007">7</xref>–<xref ref-type="bibr" rid="pone.0178731.ref011">11</xref>]. DQ management research aims at the improvement of the usefulness of data through error prevention and correction by quality control or quality assurance [<xref ref-type="bibr" rid="pone.0178731.ref008">8</xref>, <xref ref-type="bibr" rid="pone.0178731.ref012">12</xref>, <xref ref-type="bibr" rid="pone.0178731.ref013">13</xref>]. Contextual DQ research aims at the evaluation of the impact of DQ in organizations [<xref ref-type="bibr" rid="pone.0178731.ref002">2</xref>, <xref ref-type="bibr" rid="pone.0178731.ref014">14</xref>–<xref ref-type="bibr" rid="pone.0178731.ref016">16</xref>].</p>
+<p>Biodiversity sciences are one of those data intensive research fields that demand investigations on DQ, especially on DQ assessment and management. Biodiversity informatics aims at applying computing concepts, techniques and tools to research on biological diversity [<xref ref-type="bibr" rid="pone.0178731.ref017">17</xref>–<xref ref-type="bibr" rid="pone.0178731.ref024">24</xref>]. During the past 40 years, much effort has been applied to enable the digitization, integration and sharing of distributed biodiversity data. Biodiversity data are stored in heterogeneous formats and spread across many providers around the world, such as museums, botanical gardens, universities, and other institutions holding biological collections and related data [<xref ref-type="bibr" rid="pone.0178731.ref025">25</xref>–<xref ref-type="bibr" rid="pone.0178731.ref032">32</xref>].</p>
+<p>To support the international collaboration of biodiversity informatics institutions and projects, Biodiversity Information Standards (TDWG, from its former name Taxonomic Databases Working Group) was established to develop, adopt and promote standards and guidelines for the recording and exchange of data about organisms [<xref ref-type="bibr" rid="pone.0178731.ref033">33</xref>]. Standards and protocols developed, adopted and promoted by TDWG have enabled many initiatives to create efficient platforms for the interoperability, integration and publishing of biodiversity data around the world.</p>
+<p>The largest platform in number of published records of species occurrences in the world is the Global Biodiversity Information Facility (GBIF) [<xref ref-type="bibr" rid="pone.0178731.ref034">34</xref>]. GBIF has delivered an international open data infrastructure for encouraging and helping institutions to aggregate and publish data according to common standards and allowing anyone, anywhere to access data about all types of life on Earth, shared across national boundaries via the Internet [<xref ref-type="bibr" rid="pone.0178731.ref035">35</xref>]. By 2017, GBIF had aggregated and enabled access to more than seven hundred million occurrence records provided from more than 50 countries. These published data are being used for an expanding range of applications as more users become aware of the significant resource that is available [<xref ref-type="bibr" rid="pone.0178731.ref003">3</xref>].</p>
+<p>Such data aggregation initiatives, however, have highlighted DQ problems, which, despite the long-standing focus on standards and data quality in the domain (e.g. [<xref ref-type="bibr" rid="pone.0178731.ref019">19</xref>, <xref ref-type="bibr" rid="pone.0178731.ref027">27</xref>]), are common and present in much biodiversity data from providers around the world. Several efforts for determining and improving DQ have been proposed and put into practice (some examples include [<xref ref-type="bibr" rid="pone.0178731.ref003">3</xref>, <xref ref-type="bibr" rid="pone.0178731.ref036">36</xref>–<xref ref-type="bibr" rid="pone.0178731.ref044">44</xref>]). To date, no consistent framework has been developed for describing, assessing and managing the quality of biodiversity data; thus, it is difficult for users of such data to adequately compare the quality of one dataset to another and determine the fitness of data for their particular uses. In other words, DQ needs are common, but formal language to express those in a comparable and repeatable way has been lacking.</p>
+<p>Inadequacies of quality assessment and quality management of biodiversity data are currently highlighted by the use of the data for modeling of species distributions. The quality of a significant amount of the available data is currently not satisfactory or is undetermined for many of the desired uses [<xref ref-type="bibr" rid="pone.0178731.ref045">45</xref>, <xref ref-type="bibr" rid="pone.0178731.ref046">46</xref>]. To enable the DQ assessment and management of biodiversity data, it is necessary to define relevant components to allow biodiversity data users, curators, holders and owners to determine and improve the fitness of data for use.</p>
+<p>We define <bold>DQ assessment</bold> as the action of judging the data fitness for use in a given context. The assessment can be performed in two ways; (1) <bold>Quantitatively</bold>: the evaluation of the level of fitness for a specific use; (2) <bold>Qualitatively</bold>: the judgment whether the quality of data is or is not fit for a specific use. It is important not to confuse DQ assessment with DQ measurement. DQ assessment uses a set of quality measurements to determine the fitness for use, but data with the same quality measures may have different levels of fitness for different uses. Broadly, three interrelated components are necessary to determine <bold>data fitness for use</bold>:</p>
+<list list-type="bullet">
+<list-item><p><bold>Use</bold>: What is the purpose or use for which data must have quality?</p></list-item>
+<list-item><p><bold>Data</bold>: What kind of data are relevant and must have quality in the context of the Use?</p></list-item>
+<list-item><p><bold>Fitness</bold>: What constitutes “fitness” for the relevant Data in the context of the Use?</p></list-item>
+</list>
+<p><bold>DQ management</bold> is defined as the action of improving the quality of data and, consequently, making data fitter for use for a particular purpose. DQ management can be performed using two approaches:</p>
+<list list-type="bullet">
+<list-item><p><bold>DQ Control</bold>: aims to improve the quality of data by preventing errors, correcting errors or proposing corrections;</p></list-item>
+<list-item><p><bold>DQ Assurance</bold>: aims to ensure that data selected for use have satisfactory quality for a particular purpose; this approach implies filtering and excluding data which lack the required quality for the purpose.</p></list-item>
+</list>
+<p>This paper introduces a conceptual framework to define and organize the necessary concepts for enabling the assessment and management of the data fitness for use in the domain of biodiversity informatics. The design of the conceptual framework draws from the DQ literature [<xref ref-type="bibr" rid="pone.0178731.ref001">1</xref>, <xref ref-type="bibr" rid="pone.0178731.ref047">47</xref>, <xref ref-type="bibr" rid="pone.0178731.ref048">48</xref>]. The framework organizes relevant concepts to tackle DQ issues in the context of biodiversity informatics, specifically scenarios that deal with distributed data, encompassing a diverse community of users and a wide range of data usages, and where DQ requirements may not be clearly and easily defined, accepted and standardized universally. Inherent in biodiversity, particularly in taxonomy, is the complexity of differing opinions about acceptable sources of truth (e.g. [<xref ref-type="bibr" rid="pone.0178731.ref049">49</xref>]).</p>
+<p>Based on the DQ research area, this framework is consistent with several DQ models available in the literature [<xref ref-type="bibr" rid="pone.0178731.ref001">1</xref>], such as TDQM [<xref ref-type="bibr" rid="pone.0178731.ref050">50</xref>]. TDMQ is a comprehensive and structured approach to organizational management for improving the DQ [<xref ref-type="bibr" rid="pone.0178731.ref012">12</xref>, <xref ref-type="bibr" rid="pone.0178731.ref051">51</xref>, <xref ref-type="bibr" rid="pone.0178731.ref052">52</xref>].</p>
+<p>TDQM is organized into four main steps: (1) define, (2) measure, (3) analyze and (4) improve, as illustrated in <xref ref-type="fig" rid="pone.0178731.g001">Fig 1</xref>. The first step defines the DQ needs in a given context. In the second step, the DQ is measured according to the defined DQ needs. The third step intends to analyze whether the quality of data is suitable for use. The fourth step implements actions to improve the measures of quality making data fitter for use.</p>
+<fig id="pone.0178731.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0178731.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>The relationship between TDQM steps and the proposed conceptual framework.</title>
+<p>The relationship between TDQM steps and the conceptual framework is given by the following related components: (1) Define—DQ profiling; (2) Measure—DQ status reporting; (3) Analyze—DQ assessment; and (4) Improve—DQ management.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0178731.g001" xlink:type="simple"/>
+</fig>
+<p>In the conceptual framework context, the TDQM first step is related to DQ profiling (see Sections 2.1 and 3.1), the second step to DQ status reporting (see Sections 2.2, 2.3 and 3.2), the third step to the DQ assessment (the action of judging the fitness for use) and fourth step to DQ management (the action of improving DQ, making data fitter for use).</p>
+<p>To validate the conceptual framework, we present a proof of concept that addresses the framework concepts and their application to enable the assessment and management of fitness for use of a real dataset. Details of the proof of concept are available in <xref ref-type="supplementary-material" rid="pone.0178731.s001">S1 Appendix</xref>. For quick reference we compile most of the main terms used in this work in <xref ref-type="supplementary-material" rid="pone.0178731.s002">S2 Appendix</xref>.</p>
+<p>The framework, presented in Section 2, introduces the components for formalizing the DQ needs/solutions to generate relevant reports with quality measures, validations and amendments, allowing users to draw conclusions concerning the quality of datasets and single records for particular purposes, as presented in Section 3.</p>
+</sec>
+<sec id="sec002">
+<title>2. Conceptual framework</title>
+<p>The Biodiversity Informatics community has successfully supported initiatives to deliver platforms for the free access to biodiversity data integrated from many data providers around the world in a standardized and common way. However, before using such data, the data user has to ask if such available data are fit for their particular use.</p>
+<p>To answer that question, it is necessary to define the <bold>DQ needs</bold> according to data users as illustrated in <xref ref-type="fig" rid="pone.0178731.g002">Fig 2</xref>. Due to the idiosyncratic nature of the concept of “quality,” it is essential to understand what "data fitness for use" means according to the data user’s perspective to enable the DQ assessment and management.</p>
+<fig id="pone.0178731.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0178731.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Components to enable the DQ assessment and management in the context of biodiversity informatics.</title>
+<p>Three main components are necessary to enable DQ assessment and management: (1) DQ needs according to data users, (2) DQ solutions to meet the defined DQ needs and (3) DQ reports presenting the status of quality of data according to data users perspective.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0178731.g002" xlink:type="simple"/>
+</fig>
+<p>Given some user’s DQ needs, DQ solutions must be delivered to meet those defined DQ needs. <bold>DQ solutions</bold> are anything able to perform DQ measures, validations or amendments in datasets or single records. The results obtained by the DQ solutions must be reported.</p>
+<p>A <bold>DQ report</bold> is a set of DQ assertions assigned to a dataset or a single record, generated by DQ solutions according to users’ DQ needs. The DQ report describes the current status of quality of a dataset or a single record according to the perspectives of data users. Such report contains DQ measures, validations and amendments that enable data users to perform the DQ assessment and, perhaps, the selection of a subset of the data from the original dataset that is fit for use, i.e. to perform the DQ management by the DQ assurance approach. A DQ report can also be used by data providers to improve their own data by accepting proposed amendments as changes to their data, and by evaluating proposed amendments and identifying user training needs or systemic needs of their information management systems, or by just highlighting the quality of the data, that is, to perform DQ management by the DQ control approach. See more details in Section 3.</p>
+<p>The scenario described demonstrates that three main components are necessary to enable the DQ assessment and management in the context of biodiversity informatics: DQ Needs, DQ Solutions and DQ Report. Accordingly, the proposed conceptual framework defines nine concepts organized in three classes of concepts, as illustrated in <xref ref-type="fig" rid="pone.0178731.g003">Fig 3</xref>. In <xref ref-type="fig" rid="pone.0178731.g003">Fig 3</xref>, the nine small yellow boxes represent the concepts, which are organized in the three larger boxes that represent the concepts classes.</p>
+<fig id="pone.0178731.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0178731.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>The conceptual framework: Concepts and classes.</title>
+<p>DQ Needs concepts: Use Case, Information Element, DQ Dimension, DQ Criterion and DQ Enhancement. DQ Solutions concepts: Specification and Mechanism. DQ Report concepts: Data Source and Assertion.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0178731.g003" xlink:type="simple"/>
+</fig>
+<p>The next three Sections (2.1, 2.2, 2.3) describe the nine concepts in each respective concepts class. Section 3 illustrates how to use the framework in a practical way. Section 3.1 demonstrates how the framework concepts enable the creation of DQ profiles that represents DQ needs for a specific data purpose. Section 3.2 describes how the concepts can be used to create a DQ status report that enables data users, aggregators, owners, curators and providers to assess and manage the fitness for use of data according to a specific DQ profile.</p>
+<sec id="sec003">
+<title>2.1 DQ needs concepts class</title>
+<p>The class DQ Needs contains the concepts Use Case, Information Element, DQ Dimension, DQ Criterion and DQ Enhancement. These concepts describe DQ requirements according to the data user’s perspective.</p>
+<sec id="sec004">
+<title>2.1.1 Use Case</title>
+<p>By definition, DQ is a concept related to fitness for use [<xref ref-type="bibr" rid="pone.0178731.ref053">53</xref>]. Therefore, it is necessary to clearly define what the data use context is in order to define the meaning of DQ or "fitness for use” in such context. The concept Use Case defines a scope delimitation concerning DQ Needs. A Use Case may represent specific or general task performed by data users with biodiversity data, e.g., to generate a distribution model for the wild bee <italic>Tetragonisca angustula</italic> s.l. in Brazil or to generate species distribution models. In other words, Use Case is a data use story together with its purpose and data transformations/processing.</p>
+<p>Every attempt to assess and manage fitness for use should be guided by the Use Case context; that is, it must be used as a reference to define any effort regarding DQ, including actions such as DQ measurement, validation and amendment. Use Cases are inherently framed from the perspective of a data user, but the point of view of other stakeholders, such data curators', may help guide the prioritization of data quality control efforts, given the scarce resources available to biodiversity data providers.</p>
+<p>See an example in the Section 1.1 in <xref ref-type="supplementary-material" rid="pone.0178731.s001">S1 Appendix</xref> for details.</p>
+</sec>
+<sec id="sec005">
+<title>2.1.2 Information Element</title>
+<p>An <bold>Information Element (IE)</bold> is an abstraction that represents relevant content in the Use Case context. An IE can be a single element or a set of elements that may represent an event, an object, an abstract data concept such as a GUID (Globally Unique Identifier), or an entity of the real world, and has some importance in a data use context.</p>
+<p>IE can be classified as a single IE or a composed IE. For example, "decimal latitude" may be a single IE that represents, in decimal degrees, the position from the Equator to the north (positive values) or to the south (negative values) with valid values between -90 and 90, inclusive, which in biodiversity data is normally found under the Darwin Core term dwc:decimalLatitude. "Decimal coordinates" is an example of a composed IE consisting of decimal latitude, decimal longitude, coordinate uncertainty and geodetic datum, which together represent a position on the surface of the Earth using decimal degrees [<xref ref-type="bibr" rid="pone.0178731.ref054">54</xref>], and are found in biodiversity data under the terms dwc:decimalLatitude, dwc:decimalLongitude, dwc:coordinateUncertantyInMeters, and dwc:geodeticDatum.</p>
+<p>Some specific subset of all possible IE is valuable for a specific Use Case. These valuable IE are required and must have an appropriate level of quality to be fit for use in the associated Use Case; therefore, these IE should be the target of efforts concerning DQ, either for quality measurement, validation or amendment. It is essential to identify which IE are valuable for a specific Use Case.</p>
+<p>For software implementations, it is also essential to identify which metadata schema and which specific terms are involved in each single or composed IE. To allow software interoperability, it is strongly recommended to define IE based on terms from metadata schema standards of an appropriate domain, such as Darwin Core, Audubon Core, Structured Descriptive Data, Dublin Core, etc. For example, either or both of dwc:decimalLatitude plus dwc:decimalLongitude and dwc:footprintWKT may describe a location in Darwin Core. “A Location may have both a point-radius representation (see dwc:decimalLatitude) and a footprint representation, and they may differ from each other." While in currently available data, dwc:footprintWKT is almost never populated, a Use Case which defines coordinate without reference to dwc:decimalLatitude and dwc:decimalLongitude will leave implementers unclear on how to proceed.</p>
+<p>See examples of IE in Section 1.2 in <xref ref-type="supplementary-material" rid="pone.0178731.s001">S1 Appendix</xref> for details.</p>
+</sec>
+<sec id="sec006">
+<title>2.1.3 DQ Dimension</title>
+<p>The representation of an instance of a “thing” (the most general class in an ontology; all individuals are by definition instances of a “thing”, including physical objects, virtual objects, events, collections or any other abstract or concrete elements [<xref ref-type="bibr" rid="pone.0178731.ref055">55</xref>]) is different from the “thing” itself [<xref ref-type="bibr" rid="pone.0178731.ref056">56</xref>]; there is a gap between a “thing" and the data that represent that "thing". This gap can be measured according to different data quality aspects or attributes, called <bold>DQ Dimensions</bold>, such as completeness (measuring the completeness gap between the information and the thing that it represents), precision (measuring the precision gap between the information and the thing that it represents), accuracy, etc. In general, the smaller the gap between a "thing" and the information that represents it, in all the relevant DQ Dimensions in the context of a specific Use Case, the better the quality of the data. For reference, we can list some Dimensions, such as currency, credibility, accuracy, conformity, consistency, integrity, completeness, trust, readability, accessibility, precision and believability [<xref ref-type="bibr" rid="pone.0178731.ref005">5</xref>].</p>
+<p>DQ is a multidimensional concept defined by a set of quality attributes [<xref ref-type="bibr" rid="pone.0178731.ref003">3</xref>, <xref ref-type="bibr" rid="pone.0178731.ref004">4</xref>, <xref ref-type="bibr" rid="pone.0178731.ref047">47</xref>, <xref ref-type="bibr" rid="pone.0178731.ref057">57</xref>]. To define DQ in some context, a set of relevant measurable data quality attributes must be determined [<xref ref-type="bibr" rid="pone.0178731.ref048">48</xref>]; that is, the meaning of DQ can be completely and concisely defined by a set of relevant DQ Dimensions for a specific Use Case.</p>
+<p>When the quality of some data is measured, a set of Dimensions is used to obtain that quality measurement. For example, data may have high quality for some use when they are complete, precise, credible and accurate for some set of relevant properties. That is, the DQ measurement was high because the measurements of the dimensions of completeness, precision, credibility and accuracy were also high.</p>
+<p>The relevance of a single Dimension for a specific use is relative [<xref ref-type="bibr" rid="pone.0178731.ref003">3</xref>, <xref ref-type="bibr" rid="pone.0178731.ref047">47</xref>] to that use. In a data set that dates from the 1800s with high values on measurements of completeness, precision, credibility, and accuracy, for a use that involves analysis of the current state of the world, the overall DQ could be considered poor because an important dimension for that analysis is the timeliness, and for that data set (accurately representing the state of the world more than 100 years ago), the measurement of timeliness would be low.</p>
+<p>There are three approaches for identifying a set of relevant dimensions for a Use Case [<xref ref-type="bibr" rid="pone.0178731.ref001">1</xref>].</p>
+<list list-type="bullet">
+<list-item><p><bold>Intuitive</bold>: based on the researchers’ experience;</p></list-item>
+<list-item><p><bold>Theoretical</bold>: based on data deficiencies or DQ problems;</p></list-item>
+<list-item><p><bold>Empirical</bold>: based on the data user’s needs.</p></list-item>
+</list>
+<p>Despite the extensive number of classical DQ Dimensions discussed in the literature that can be used as reference [<xref ref-type="bibr" rid="pone.0178731.ref005">5</xref>, <xref ref-type="bibr" rid="pone.0178731.ref056">56</xref>, <xref ref-type="bibr" rid="pone.0178731.ref058">58</xref>, <xref ref-type="bibr" rid="pone.0178731.ref059">59</xref>], there is no consensus on what constitutes a good set of DQ Dimensions and on what is an appropriate definition of each Dimension [<xref ref-type="bibr" rid="pone.0178731.ref056">56</xref>]. Therefore any well-defined measurable attribute useful for measuring the quality of data in the context of a Use Case can be adopted as a DQ Dimension.</p>
+<p>To measure the quality of data according to a DQ Dimension, it is necessary to contextualize the Dimension, that is to specify a context for the Dimension. The quality of data is measured by a set of abstract Dimensions (e.g. completeness, consistency, conformity) in the context of some specific IE (e.g. coordinates, event date, country, scientific name) and data resource type (i.e. single record or dataset).</p>
+<p>For example, the Dimension <italic>completeness</italic> in the context of the IE <italic>coordinates</italic> and the resource type <italic>single record</italic> could measure the presence of values for the latitude, longitude, geodetic datum and coordinate uncertainty in a single record, with a binary conclusion of “is complete” or “is not complete.” Consider, in contrast, the same Dimension of <italic>completeness</italic> still in the context of the IE <italic>coordinates</italic>, but now in the context of the resource type <italic>dataset</italic>. This Dimension in context would measure the proportion of records that have values for latitude, longitude, geodetic datum and coordinate uncertainty, reporting some proportion between zero and one for a given data set. See examples in the Section 1.3 in <xref ref-type="supplementary-material" rid="pone.0178731.s001">S1 Appendix</xref> for details.</p>
+<p>DQ Dimensions are used to measure the quality of single records or datasets, but they are not intended to determine if the quality measures assigned to the data are satisfactory for considering if the data are fit for use in a specific Use Case context. To determine the acceptable measures for the DQ Dimensions for some specific Use Case, it is necessary to go one step further than a Data Quality Dimension in Context and to define DQ Criteria.</p>
+</sec>
+<sec id="sec007">
+<title>2.1.4 DQ Criterion</title>
+<p>A <bold>DQ Criterion</bold> is a statement that describes acceptable DQ measures by which data are judged regarding their fitness for some use. DQ Criteria are used to validate whether the quality of data is satisfactory to be used in a specific Use Case. Data compliant with the Criterion means the data are fit for use according to the related DQ Dimension.</p>
+<p>For example, "coordinate completeness of a dataset must be equal to 100%” is a Criterion used to validate if the measure of the DQ Dimension completeness, in the context IE coordinates and resource type dataset, has a value equal to 100%. If some data has a measure equaling 100%, then the data are compliant with the Criterion, otherwise, the data are not compliant with the Criterion, and consequently unfit for (this) use. See examples in the Section 1.4 in <xref ref-type="supplementary-material" rid="pone.0178731.s001">S1 Appendix</xref> for details.</p>
+<p>A set of selected Criteria splits data that is fit for use from data which is not fit for use for a particular Use Case.</p>
+</sec>
+<sec id="sec008">
+<title>2.1.5 DQ Enhancement</title>
+<p><bold>DQ Enhancements</bold> are statements that describe activities required to improve DQ. An Enhancement can be a description of a procedure, protocol, training, a best practice or anything that can be used to improve DQ. There are three types of Enhancements:</p>
+<list list-type="bullet">
+<list-item><p><bold>Prevention</bold>: for preventing incidents (errors);
+<list list-type="bullet">
+<list-item><p>Ex.: "Suggest similar and valid scientific names while typing."</p></list-item>
+</list></p></list-item>
+<list-item><p><bold>Correction</bold>: for correcting errors;
+<list list-type="bullet">
+<list-item><p>Ex.: "Fill in taxon hierarchy based on the most specific name."</p></list-item>
+</list></p></list-item>
+<list-item><p><bold>Recommendation</bold>: for recommending corrections.
+<list list-type="bullet">
+<list-item><p>Ex.: "Recommending coordinates based on the locality description."</p></list-item>
+</list></p></list-item>
+</list>
+<p>See examples in the Section 1.4 in <xref ref-type="supplementary-material" rid="pone.0178731.s001">S1 Appendix</xref> for details. In the domain of biodiversity informatics with distributed data and differing opinions we see prevention and recommendations as more important forms of Enhancements to express than corrections. It will generally be more palatable to a data curator to recommend some change to their data based on some defined criteria than to assert a correction of their data.</p>
+</sec>
+</sec>
+<sec id="sec009">
+<title>2.2 DQ solutions concepts class</title>
+<p>The concepts Specification and Mechanism belong to the class DQ Solutions. These concepts describe how to proceed and what to use to comply with DQ Needs.</p>
+<sec id="sec010">
+<title>2.2.1 Specification</title>
+<p><bold>Specifications</bold> are a formal or informal description of methods for performing DQ measurements, validations and enhancements. Specifications can be highly mathematical and computational, using any of several formal languages defined for that purpose, or can be informal, using, for example, natural language to describe how to proceed [<xref ref-type="bibr" rid="pone.0178731.ref060">60</xref>]. Preferentially, it is recommended to use both levels of formalization to define a Specification, to make the method description easily readable by both software developer and non-developer audiences (so long as the formal and human readable specifications are and remain consistent).</p>
+<p>A measurement of a particular Dimension, a validation according to a specific Criterion or an amendment according to a specific Enhancement could be specified in several different ways. For example, the Dimension "precision" could be measured using a numerical or a statistical approach. The Criterion “Coordinates must be consistent" could specify that data are compliant if “the coordinate falls inside the related country boundary” or if “the coordinate falls inside country boundary or up to 1 km from the boundary of the related country". The Enhancement "Fill taxonomic hierarchy based on the most specific name" could be performed using a number of different taxonomic authority sources and algorithms.</p>
+<p>Thus, the concept Specification describes methods, techniques and/or algorithms used to obtain the value of the DQ measurement, validation or enhancement. See examples in the Section 2 in <xref ref-type="supplementary-material" rid="pone.0178731.s001">S1 Appendix</xref> for details.</p>
+</sec>
+<sec id="sec011">
+<title>2.2.2 Mechanism</title>
+<p>A <bold>Mechanism</bold> can be software, hardware, a technique, a tool, a person or any other thing that implements one or more Specifications. Mechanisms generate the measurements, validations and amendment results, collectively called Assertions, according to the methods described by the Specifications.</p>
+<p>Critical to understanding the conceptual framework is the distinction between, on one side, Criterion, Dimension and Enhancement, on the other side, and Mechanisms. Criterion, Dimension and Enhancement are statements that describe DQ Needs according to the data user perspective. Mechanisms are technical or nontechnical artifacts used to determine or enforce compliance with the DQ Needs [<xref ref-type="bibr" rid="pone.0178731.ref060">60</xref>].</p>
+<p>There are two types of Mechanism based on its coverage:</p>
+<list list-type="bullet">
+<list-item><p><bold>Broad</bold>: implements multiple Specifications.
+<list list-type="bullet">
+<list-item><p>Ex.: DwC-A Validator 2.0 is software that implements several Specifications for asserting DQ validations and enhancements [<xref ref-type="bibr" rid="pone.0178731.ref061">61</xref>].</p></list-item>
+</list></p></list-item>
+<list-item><p><bold>Specific</bold>: implements a single Specification.
+<list list-type="bullet">
+<list-item><p>Ex.: A specific Web Service in the Google Maps Application Programming Interface (API) could be a precise Mechanism designed to implement a specific enhancement Specification, which provides an amendment recommending a value for country name on the basis of provided coordinates.</p></list-item>
+</list></p></list-item>
+</list>
+<p>In some cases, we use more than one Mechanism to implement a Specification. To take advantage of reuse, we can define Mechanisms that depend on (or use) other existing Mechanisms.</p>
+<p>For instance, a Specification for measuring the DQ Dimension “Coordinate Conformity of Single Record" requires that the latitude and longitude must be numbers, do not have invalid characters and be in the correct range. In this case, we could implement a Mechanism that uses four other Mechanisms: (1) Check whether each provided value is a number; (2) Check whether each provided value contains only valid characters; (3) Check whether latitude is in the correct range; and (4) Check whether longitude is in the correct range.</p>
+<p>Reusing existing Mechanisms wherever possible is strongly encouraged to avoid duplication of effort. See examples in the Section 2 in <xref ref-type="supplementary-material" rid="pone.0178731.s001">S1 Appendix</xref> for details. Specifications should, by their nature, help facilitate the reuse of existing Mechanisms.</p>
+</sec>
+</sec>
+<sec id="sec012">
+<title>2.3 DQ report concepts class</title>
+<p>The concepts Data Source and Assertion belong to the class DQ Report. A DQ Report is the target of DQ Solution concepts and is used to support the DQ assessment and management according to the DQ Needs concepts. Informally, users examine DQ reports produced by DQ solutions to assess whether their particular DQ needs are met.</p>
+<sec id="sec013">
+<title>2.3.1 Data Resource</title>
+<p><bold>Data Resource</bold> is an instance of data and the target to the DQ assessment and management.</p>
+<p>Data Resources have a property called “resource type.” Resource type, in the context of the conceptual framework, can be "single record" or "multi-record (dataset)". This property is important because it affects the method for measuring, validating and improving a Data Resource. For example, coordinate completeness of a single record could be measured qualitatively by checking whether the latitude and longitude of the record are filled or not; whereas the coordinate completeness of a dataset could be measured quantitatively, measuring the percentage of records in the dataset which have the latitude and longitude fields filled. Both measurements are for coordinate completeness, but they are measured in different ways due to the different resource type.</p>
+<p>In the context of this paper, a single record may refer to a database tuple in the strict sense, that is, a row in a concrete table or to a row in a flattened view or query across several related tables. Likewise, structured (e.g. Star Schema, or RDF) DarwinCore representations of an Occurrence (e.g. an Occurrence with a determination history comprising a current identification and five previous identifications), are referred to here as a single record, even though it is composed of several records of structured data. See examples in Section 3 in <xref ref-type="supplementary-material" rid="pone.0178731.s001">S1 Appendix</xref> for details. Both single record and dataset, as used here, are encoded data with a defined structure, and can be described as dcmitype:Dataset.</p>
+</sec>
+<sec id="sec014">
+<title>2.3.2 DQ Assertion</title>
+<p><bold>A DQ Assertion</bold> is the result of a measurement (of a DQ Dimension), a validation (according to a DQ Criterion) or an amendment (according to a DQ Enhancement), obtained by a Mechanism operating on a specific Data Resource (single record or dataset) using a specific method defined by a Specification. A set of DQ Assertions assigned to a Data Resource defines the current status of quality of the Data Resource for the explicit context of a specific Use Case.</p>
+<p>DQ Assertions can be classified into three types: DQ Measures, DQ Validations and DQ Amendments. DQ Measures assign a DQ measure to a Data Resource according to a DQ Dimension, a measurement method defined by a Specification, and the Mechanism used to obtain the measure. DQ Validations assign a DQ validation to a Data Resource according to a DQ Criterion, a validation method, defined by a Specification, and the Mechanism used to obtain the validation. DQ Amendments namely assign a DQ amendment to a specific Data Resource according to a DQ Enhancement, an enhancement method defined by a Specification, and the Mechanism used to obtain the amendment.</p>
+<p>Therefore, a DQ Assertion is composed of five components: (1) DQ Dimension or DQ Criterion or DQ Enhancement; (2) Specification; (3) Mechanism; (4) Data Resource and (5) Assertion Result. The component (1) defines the DQ Dimension that was measured, the DQ Criterion on which the validation was based or the DQ Enhancement on which the amendment was based. The component (2) defines which method (Specification) was used to perform the measure, validation or improvement. The component (3) defines the Mechanism used to obtain the assertion. The component (4) defines the specific target of the assertion. Finally, the component (5) defines the asserted result obtained (measure, validation or amendment).</p>
+<p>A hypothetical example of a DQ Measure assertion is:</p>
+<list list-type="bullet">
+<list-item><p><bold>DQ Dimension</bold>: Coordinate consistency of single record</p></list-item>
+<list-item><p><bold>Specification</bold>: Coordinate is "Consistent" only if the circumference around the position of latitude and longitude, with a radius equal to the coordinate uncertainty in meters, intersects the area within the boundary of the country, according to the Global Administrative Areas [<xref ref-type="bibr" rid="pone.0178731.ref062">62</xref>].</p></list-item>
+<list-item><p><bold>Mechanism</bold>: BDQ-Toolkit [<xref ref-type="bibr" rid="pone.0178731.ref063">63</xref>]</p></list-item>
+<list-item><p><bold>Data Resource</bold>: decimalLatitude: -35.3848; decimalLongitude: 13.8352; coordinateUncertaintyInMeters: 100; geodeticDatum: SIRGAS2000; countryName: Brazil</p></list-item>
+<list-item><p><bold>Assertion result</bold>: Not Consistent</p></list-item>
+</list>
+<p>See examples in the Section 3 in <xref ref-type="supplementary-material" rid="pone.0178731.s001">S1 Appendix</xref> for details.</p>
+</sec>
+</sec>
+</sec>
+<sec id="sec015">
+<title>3. Using the conceptual framework</title>
+<p>The conceptual framework defines concepts which can be organized to define the meaning of DQ in a specific context, to guide the determination of DQ status of Data Resource to enable the fitness for use assessment and DQ management.</p>
+<p>In this context, we show how to use the conceptual framework for DQ profiling (Section 3.1) and DQ status reporting based on a DQ profiling (Section 3.2).</p>
+<sec id="sec016">
+<title>3.1 DQ profiling</title>
+<p>A <bold>DQ profile</bold> organizes the DQ Needs concepts to clearly describe how DQ must be tackled to enable the DQ assessment and management in a specific Use Case context. The concepts of the DQ Needs class define a set of modular and reusable components for defining DQ requirements. In other words, DQ profile is a formalized “wish-list” for DQ with a certain future use in mind. As illustrated in the <xref ref-type="fig" rid="pone.0178731.g004">Fig 4</xref>, to define DQ Needs for a specific Use Case, it is necessary to follow the next five steps:</p>
+<list list-type="order">
+<list-item><p><bold>Define the Context</bold>: describe the Use Case that will be used as a DQ scope delimitation for the next four steps.</p></list-item>
+<list-item><p><bold>Define the Valuable IE</bold>: select and describe a set of IE that are important and should have a satisfactory level of quality for use in the Use Case context.</p></list-item>
+<list-item><p><bold>Define the DQ Measurement Policy</bold>: select and describe a set of DQ Dimensions in context for each relevant Valuable IE, to be measured to assess and manage the fitness for use in the Use Case context. High quality of all the defined contextualized DQ Dimensions indicates that conforming data are highly fit for use in the Use Case context.</p></list-item>
+<list-item><p><bold>Define the DQ Validation Policy</bold>: select and describe a set of DQ Criteria that rule how data must be presented to be considered fit for use in the Use Case context based on the DQ Measurement Policy. Data compliant with all the defined DQ Criteria denote that the data are fit for use in the Use Case context.</p></list-item>
+<list-item><p><bold>Define the DQ Enhancement Policy</bold>: select and describe a set of DQ Enhancements that may make data fitter for use in the Use Case context by enhancing the measures of quality defined by the DQ Measurement Policy and, consequently, may make data compliant with the defined DQ Validation Policy.</p></list-item>
+</list>
+<fig id="pone.0178731.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0178731.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>The steps to define a DQ profile.</title>
+<p>DQ profiling can be performed by the following steps: (1) Define the Context, (2) Define a set of Valuable IE, (3) Define a set of relevant DQ Dimensions as DQ Measurement Policy, (4) Define a set of relevant DQ Criteria as DQ Validation Policy and (5) Define a set of relevant DQ Enhancements as DQ Enhancement Policy.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0178731.g004" xlink:type="simple"/>
+</fig>
+<p>The result of these five steps clearly defines a DQ scope delimitation, the information that must have quality in this scope, how to measure the quality of such relevant information, what are the acceptable measures and, finally, how to improve the measures of quality. See an example in Section 1 in <xref ref-type="supplementary-material" rid="pone.0178731.s001">S1 Appendix</xref> for details.</p>
+</sec>
+<sec id="sec017">
+<title>3.2 DQ status reporting</title>
+<p><bold>DQ status</bold> is a subset of DQ Assertions assigned to a specific Data Resource, selected according to a DQ profile. The goal of the DQ status is to enable the DQ assessment and management of a Data Resource according to a particular DQ profile, as illustrated in <xref ref-type="fig" rid="pone.0178731.g005">Fig 5</xref>.</p>
+<fig id="pone.0178731.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0178731.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>The relation between DQ profile and DQ status.</title>
+<p>Based on a DQ profile we can report the DQ status of Data Resource in the context of a specific Use Case for each Valuable IE. For each DQ Dimension in the DQ Measurement Policy of the DQ profile, there is a DQ Measure in the DQ status report; for each DQ Criterion in the DQ Validation Policy of the DQ profile, there is a DQ Validation in the DQ status report; and for each DQ Enhancement of the DQ Enhancement Policy of the DQ profile, there is a DQ Amendment (when applicable).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0178731.g005" xlink:type="simple"/>
+</fig>
+<p>A DQ status report describes the current and relevant level of quality of a specific Data Resource according to a particular DQ profile. For each Data Resource, a DQ report presents three components: (1) DQ Measures—a set of DQ Measures assertions of the DQ Dimensions defined by the DQ Measurement Policy of a DQ profile; (2) DQ Validations—a set of DQ Validations assertions according to the DQ Criteria defined by the DQ Validations Policy of a DQ profile; (3) DQ Amendments—a set of DQ Amendments assertions according to the DQ Enhancements defined by the DQ Enhancement Policy of a DQ profile. DQ Amendments asserting that changes should be made to the original data are best phrased as “proposed,” to make it clear that their acceptance is a decision of the data curators or data owners. See examples in Section 3 in <xref ref-type="supplementary-material" rid="pone.0178731.s001">S1 Appendix</xref> for details of DQ reporting according to the DQ profile presented in Section 1 in <xref ref-type="supplementary-material" rid="pone.0178731.s001">S1 Appendix</xref>.</p>
+<p>A DQ status can clearly report the relevant components of quality about a Data Resource for enabling the DQ assessment and management.</p>
+</sec>
+</sec>
+<sec id="sec018" sec-type="conclusions">
+<title>4. Discussion</title>
+<p>A consistent approach to assess and manage DQ is critical for biodiversity data users [<xref ref-type="bibr" rid="pone.0178731.ref046">46</xref>]. However, achieving this goal has been particularly challenging because of the idiosyncrasies inherent to the concept of quality [<xref ref-type="bibr" rid="pone.0178731.ref064">64</xref>]. DQ assessment and management cannot be performed if we have not clearly established the quality needs of a data user [<xref ref-type="bibr" rid="pone.0178731.ref065">65</xref>].</p>
+<p>The proposed conceptual framework supports the biodiversity informatics community to describe the meaning of "fitness for use" from a data user’s perspective in a common and standardized way. Based on well-established principles and concepts from DQ literature [<xref ref-type="bibr" rid="pone.0178731.ref001">1</xref>], the framework allows the biodiversity informatics community to organize the way it addresses DQ so that data users can judge whether data are fit for use for a particular purpose and data owners can improve the quality of unsuitable data.</p>
+<p>With a common "Fitness For Use Backbone" (FFUB) backed by the conceptual framework, the biodiversity informatics community would have a tool to express and share its understanding of DQ needs and DQ solutions in a common way, thus improving the synergy of the community and consequently increasing the reusability of solutions and decreasing the duplication of efforts, as illustrated in the <xref ref-type="fig" rid="pone.0178731.g006">Fig 6</xref>.</p>
+<fig id="pone.0178731.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0178731.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>A Fitness for Use Backbone.</title>
+<p>Basic architecture for a computational platform based on the conceptual framework, composed of three main parts: (1) DQ Report (registering and retrieving DQ status assigned to Data Resources according to DQ profiles definitions), (2) DQ Solutions (registering and retrieving methods and tools for meeting DQ needs) and (3) DQ Needs (registering and retrieving entire DQ profiles or individual parts, such DQ Dimensions, DQ Criterion and DQ Enhancement).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0178731.g006" xlink:type="simple"/>
+</fig>
+<p>For example, if an institution (as Institution 1, in <xref ref-type="fig" rid="pone.0178731.g006">Fig 6</xref>) has a specific requirement (e.g. validate geolocation), it can implement a tool (as Tool X, in <xref ref-type="fig" rid="pone.0178731.g006">Fig 6</xref>) to meet such requirements, that will generate results (as Results X’, in <xref ref-type="fig" rid="pone.0178731.g006">Fig 6</xref>). Concurrently, another different institution (as Institution 2, in <xref ref-type="fig" rid="pone.0178731.g006">Fig 6</xref>) may have the same requirement (i.e. validate geolocation) and it also implements a tool (as Tool Y, in <xref ref-type="fig" rid="pone.0178731.g006">Fig 6</xref>) to meet the requirement that also will generate results (as Results Y’, in <xref ref-type="fig" rid="pone.0178731.g006">Fig 6</xref>). This scenario clearly demonstrates duplication of effort when two different tools are developed to meet the same requirement. Also, the results generated by the tools, usually can't be compared, and may be inconsistent, because they do not share a common standard.</p>
+<p>If all the requirements, tools and results were mapped to a common standard, it would enable interoperability among the metadata about such components, making them comparable, sharable and reusable. It would enable, for example, an institution (as Institution 3, in <xref ref-type="fig" rid="pone.0178731.g006">Fig 6</xref>), which has a DQ requirement (e.g. validate geolocation) but doesn’t have a tool to meet such requirement, to search in this “common Fitness for Use Backbone" for available tools being used by other institutions to meet the specific requirement. In this scenario, the conceptual framework can map the requirements, tools and results by respectively using the concepts of DQ Needs, DQ Solutions and DQ Report classes.</p>
+<p>With the implementation of the collaborative platform promoted by the framework, we can generate a searchable repository of common and reusable DQ profiles, DQ reports, Use Cases, IE, DQ Dimensions, DQ Criteria, DQ Enhancements, Specifications and Mechanisms for a range of data uses, enabling institutions to compose their DQ profiles to better suit their goals by reusing the DQ Needs and DQ Solutions shared by other institutions.</p>
+<p>To achieve a level of implementation of the conceptual framework, however, as illustrated in <xref ref-type="fig" rid="pone.0178731.g006">Fig 6</xref>, in a way that allows computational interoperability and a broader adoption, it is necessary to follow a roadmap, as illustrated by <xref ref-type="fig" rid="pone.0178731.g007">Fig 7</xref>, which is organized in three levels: usage, formalization and system/data interoperability.</p>
+<fig id="pone.0178731.g007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0178731.g007</object-id>
+<label>Fig 7</label>
+<caption>
+<title>Roadmap for implementing the conceptual framework.</title>
+<p>The roadmap is organized into three levels: Usage (to bring the conceptual framework closer to the reality of different stakeholders, by presenting it with different abstractions depending the audience), Formalization (to continue the progress of this work, going deeper on the formalization and extending the current version of the conceptual framework) and System/Data Interoperability (to enable the interoperability of DQ related systems and data).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0178731.g007" xlink:type="simple"/>
+</fig>
+<p>The presented framework is in a formalization level, where we define the concepts to describe the necessary components to deal with DQ Needs, DQ Solutions and DQ Reports to enable DQ assessment and management. Still, in the formalization level, we are working on a controlled vocabulary for some of the framework concepts. We also plan to discuss and refine the terminology of the framework, extend it to include new concepts and define a common metadata schema.</p>
+<p>For example, the authors have considered, at length, the word to use to express the concept DQ Amendment, with enhancement, improvement, and amendment all being candidates. We adopt amendment as it most readily carries the connotation of a proposal for a change rather than a bald assertion. The language proposed amendment, rejected amendment, and accepted amendment comes naturally without connotations of value. Thus the fundamental concept Enhancement relates to derived concepts Enhancement in Context, Enhancement Policy in data quality needs, Enhancement Method in data quality solutions, but to DQ Amendment in DQ reports.</p>
+<p>Primarily, those actions will be undertaken in the context of the TDWG/GBIF community, but we can potentially extend it to collaboration with the Assessment of Data Fitness Use Working Group [<xref ref-type="bibr" rid="pone.0178731.ref066">66</xref>] of the Research Data Alliance (RDA), since this initiative has been working on a similar approach to this work, and both initiatives may take advantage of this collaboration.</p>
+<p>With a proper formalization, we will be able to work at a system/data interoperability level, which includes incorporating the framework into existing and future DQ software, such as that already being done in the Kurator project, developing the mentioned FFUB and enable interoperability among different DQ software. We are working with partners such as Museum of Comparative Zoology of Harvard University, GBIF Secretariat, iDigBio, Brazilian Biodiversity Information System (SiBBr), Atlas of Living Australia (ALA), VertNet, Ocean Biogeographic Information System (OBIS) and other potential collaborators to further this aim.</p>
+<p>We also plan to foster the use of the conceptual framework in the TDWG/GBIF community by presenting material about how the framework can be useful for stakeholders from different biodiversity communities and disciplines.</p>
+<p>Another strength of the presented conceptual framework is the division of the concepts into three classes, which increases the potential for mutual collaboration between stakeholders with different skills and knowledge. Biodiversity experts typically are better able to address concepts belonging to the DQ Needs class, whereas concepts belonging to DQ Solutions are typically better addressed by informatics experts. With this separation, data users can individually define DQ needs, and developers can propose already existing DQ solutions for attending them or can develop new mechanisms when necessary. Also, this model allows us to systematically identify gaps on DQ solutions, for example, to identify that there is no effective DQ measurement method for measuring a determined DQ Dimension or that there is a measurement method, but there is no Mechanism that implements it.</p>
+<p>The DQ Report concepts class allows the generation of comparable DQ documentation that can be interpreted by data users to judge whether a Data Resource is fit for use and how its quality can be improved. When data users or data owners have DQ report elements (DQ Measures, Validations, and Amendments) assigned to a Data Resource, they can make a coherent assessment concerning the fitness for the use of the Data Resource and compare its quality with that of other Data Resources.</p>
+<p>Improvement in biodiversity data is an essential step for many workflows in biodiversity sciences, located between data generation and aggregation and the statistical analysis of improved data. Research satisfaction and trust in the results is often based on loose feelings or strict measurements of the data to be “enough to answer the research questions.” Understanding “what works” and “how much is enough” can be supported by the presented conceptual framework.</p>
+<p>The conceptual framework was designed specifically for tackling DQ issues in the biodiversity informatics domain. However, the presented conceptual framework can potentially be applied without adaptation to any other domain because the concepts are generic enough to be domain independent. The generality of the framework enables its use for others domains, especially those scenarios which share some specific features, as previously mentioned, <italic>viz</italic>.: deal with distributed data, have a diverse community of users and a wide range of data usages, where there are competing concepts (e.g. taxonomies, [<xref ref-type="bibr" rid="pone.0178731.ref049">49</xref>]) and the DQ requirements cannot always be clearly and easily defined and universally accepted.</p>
+</sec>
+<sec id="sec019">
+<title>5. Final remarks</title>
+<p>The conceptual framework presented here is the foundation for DQ Task Group 1 of the Biodiversity Data Quality Interest Group (BDQ-IG) [<xref ref-type="bibr" rid="pone.0178731.ref067">67</xref>], created by TDWG and merged with an ongoing discussion group of GBIF on Biodiversity Data Quality. The goal of this task group is to develop a conceptual framework that serves as a common ground for a collaborative development of solutions (encompassing tools, policies, and concepts) for DQ assessment and management based on data fitness for use [<xref ref-type="bibr" rid="pone.0178731.ref068">68</xref>].</p>
+<p>The BDQ-IG has created two additional task groups within TDWG. Task Group 2 addresses DQ Tools Tests and Assertions, to catalog existing DQ tools, tests and assertions and to identify gaps concerning the availability of these, and Task Group 3 addresses DQ Use Cases, to identify DQ requirements for specific uses of data. In this context, the presented Framework can be used to map the outcomes from the Use Cases Task Group into the DQ Needs concepts, based on data users’ expertise/knowledge and to map the outcomes from the DQ Tools Task Group into DQ Solutions concepts based on developers<sc>’</sc> expertise. In this way, all groups can work in parallel, while maintaining the same foundation.</p>
+<p>Also, the presented conceptual framework has been used to support two GBIF task groups formed of experts on Species Distribution Modeling and Agrobiodiversity, convened by the GBIF Secretariat, that have been working to shape the meaning of data fitness for use in the context of Species Distribution Modeling and Agrobiodiversity.</p>
+<p>As further work, the Task Group 1 of the TDWG/GBIF BDQ IG has established an agenda to foster the use of the conceptual framework as common ground to tackle DQ issues among the community. This agenda involves presenting the formal conceptual framework in a more practical way to bring it closer to the reality of different stakeholders, such as data providers, data and collections curators and holders, digitizers, taxonomists, software programmers and data users. This will include practical guidelines, training material and interactive tools for DQ profiling and reporting.</p>
+</sec>
+<sec id="sec020">
+<title>Supporting information</title>
+<supplementary-material id="pone.0178731.s001" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0178731.s001" xlink:type="simple">
+<label>S1 Appendix</label>
+<caption>
+<title>Framework validation—Proof of concept.</title>
+<p>The purpose of this document is to present a proof of concept that tests all the concepts of the framework and shows how it can be used to assess and manage the fitness for use of biodiversity data, providing a worked example with a real dataset.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0178731.s002" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0178731.s002" xlink:type="simple">
+<label>S2 Appendix</label>
+<caption>
+<title>Glossary of terms.</title>
+<p>The purpose of this document is to serve as quick reference for definitions of terms frequently used in this work.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pone.0178731.ref001"><label>1</label><mixed-citation publication-type="other" xlink:type="simple">Ge M, Helfert M. A review of information quality research-develop a research agenda. ICIQ Paper, MIT; 2007. pp. 76–91.</mixed-citation></ref>
+<ref id="pone.0178731.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Berndt</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Fisher</surname> <given-names>JW</given-names></name>, <name name-style="western"><surname>Hevner</surname> <given-names>AR</given-names></name>, <name name-style="western"><surname>Studnicki</surname> <given-names>J</given-names></name>. <article-title>Healthcare Data Warehousing and Quality Assurance</article-title>, <source>Computer</source>; <year>2001</year>; pp. <fpage>56</fpage>–<lpage>65</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref003"><label>3</label><mixed-citation publication-type="other" xlink:type="simple">Chapman AD. Principles of data Quality. Report for the Global Biodiversity Information Facility; 2005, [cited 15 Mar 2015] pp. 61. Copenhagen: Global Biodiversity Information Facility. <ext-link ext-link-type="uri" xlink:href="http://www.gbif.org/orc/?doc\_id=1229" xlink:type="simple">http://www.gbif.org/orc/?doc\_id=1229</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Strong</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>YW</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>RY</given-names></name>. <article-title>Data Quality in context</article-title>. <source>Commun ACM</source>. <year>1997</year>;<volume>40</volume>: <fpage>103</fpage>–<lpage>110</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cai</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Zhu</surname> <given-names>Y</given-names></name>. <article-title>The Challenges of Data Quality and Data Quality Assessment in the Big Data Era</article-title>. <source>Data Science Journal</source>; <year>2015</year>; <volume>14</volume>(<issue>0</issue>), p.<fpage>2</fpage>. <ext-link ext-link-type="uri" xlink:href="http://doi.org/10.5334/dsj-2015-002" xlink:type="simple">http://doi.org/10.5334/dsj-2015-002</ext-link></mixed-citation></ref>
+<ref id="pone.0178731.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Johnson</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Leitch</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Neter</surname> <given-names>J</given-names></name>. <article-title>Characteristics of Errors in Accounts Receivable and Invetory Audits</article-title>. <source>Accounting Review</source>. <year>1981</year>; <volume>56</volume> (<issue>2</issue>): <fpage>270</fpage>–<lpage>293</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref007"><label>7</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Redman</surname> <given-names>T</given-names></name>. <source>Data Quality: The Field Guide</source>. <publisher-name>DigitalPress</publisher-name>; <year>2001</year>; ISBN:1555582516.</mixed-citation></ref>
+<ref id="pone.0178731.ref008"><label>8</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Huang</surname> <given-names>KT</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>YW</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>RY</given-names></name>. <source>Quality Information and Knowledge Management</source>. <publisher-name>Prentice Hall</publisher-name> <edition>1st ed</edition>.; <year>1999</year>; ISBN: 0130101419</mixed-citation></ref>
+<ref id="pone.0178731.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lee</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Strong</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Kahn</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>RY</given-names></name>. <article-title>AIMQ: A Methodology for Information Quality Assessment</article-title>, <source>Information &amp; Management</source>; <year>2002</year>; <volume>Volume 40</volume>, <issue>Issue 2</issue>, pp. <fpage>133</fpage>–<lpage>146</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pipino</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>YW</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>RY</given-names></name>. <article-title>Data Quality Assessment</article-title>, <source>Communications of the ACM</source>; <year>2002</year>; pp. <fpage>211</fpage>–<lpage>218</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stvilia</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Gasser</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Twidale</surname> <given-names>MB</given-names></name>, <name name-style="western"><surname>Smith</surname> <given-names>LC</given-names></name>. <article-title>A Framework for Information Quality Assessment</article-title>, <source>Journal of the American Society for Information Science and Technology</source>; <year>2006</year>.</mixed-citation></ref>
+<ref id="pone.0178731.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>RY</given-names></name>. <article-title>A Product Perspective on Total Data Quality Management</article-title>, <source>Communications of the ACM</source>; <year>1998</year>; pp. <fpage>58</fpage>–<lpage>63</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref013"><label>13</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Eppler</surname> <given-names>MJ</given-names></name>. <source>Managing Information Quality</source>. <publisher-name>Springer</publisher-name>, <edition>2nd ed</edition>.; <year>2006</year>; ISBN:978-3-540-31408-0</mixed-citation></ref>
+<ref id="pone.0178731.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chengalur-Smith</surname> <given-names>IN</given-names></name>, <name name-style="western"><surname>Ballou</surname> <given-names>DP</given-names></name>, <name name-style="western"><surname>Pazer</surname> <given-names>HL</given-names></name>. <article-title>The Impact of Data Quality Information on Decision Making: An Exploratory Analysis</article-title>. <source>IEEE Trans. Knowl. Data Eng</source>; <year>1999</year>; <volume>11</volume>(<issue>6</issue>): <fpage>853</fpage>–<lpage>864</lpage></mixed-citation></ref>
+<ref id="pone.0178731.ref015"><label>15</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Teflian</surname> <given-names>M</given-names></name>. <source>Information Liquidity</source>. <publisher-name>Time0/PerotSystems</publisher-name>. <publisher-loc>Cambridge, MA</publisher-loc>.<year>1999</year>.</mixed-citation></ref>
+<ref id="pone.0178731.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kaplan</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Krishnan</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Padman</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Peters</surname> <given-names>J</given-names></name>. <article-title>Assessing Data Quality in Accounting Information Systems</article-title>, <source>Communications of the ACM</source>. <month>February</month>;<year>1998</year>; pp. <fpage>72</fpage>–<lpage>78</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref017"><label>17</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Busby</surname> <given-names>JR</given-names></name>. <source>Australian Biotaxonomic information system. Introduction and data interchange standards</source>. <publisher-loc>Canberra</publisher-loc>: <publisher-name>Australian Biological Resources Study, Department of Science and the Environment</publisher-name>; <year>1979</year>. pp. <fpage>25</fpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref018"><label>18</label><mixed-citation publication-type="other" xlink:type="simple">ASC [Association of Systematics Collections]. An information model for biological collections. Report of the Biological Collections Data Standards Workshop, 8–24 August 1992. ASC. Washington DC [cited 2015 Mar 10] <ext-link ext-link-type="uri" xlink:href="http://cool.conservation-us.org/lex/datamodl.html" xlink:type="simple">http://cool.conservation-us.org/lex/datamodl.html</ext-link></mixed-citation></ref>
+<ref id="pone.0178731.ref019"><label>19</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Croft</surname> <given-names>JR</given-names></name>, editor. <source>HISPID—herbarium information standards and protocols for interchange of data</source>. <publisher-loc>Canberra</publisher-loc>: <publisher-name>Australian National Botanic Gardens</publisher-name>; <year>1989</year>.</mixed-citation></ref>
+<ref id="pone.0178731.ref020"><label>20</label><mixed-citation publication-type="other" xlink:type="simple">Conn BJ, editor. HISPID3. Herbarium information standards and protocols for interchange of data. Version 3; 1996 [cited 2015 Aug 2015]. Sydney: Royal Botanic Gardens, <ext-link ext-link-type="uri" xlink:href="http://www.rbgsyd.gov.au/HISCOM" xlink:type="simple">http://www.rbgsyd.gov.au/HISCOM</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref021"><label>21</label><mixed-citation publication-type="other" xlink:type="simple">TDWG [Biodiversity Information Standards]. HISPID3 –herbarium information standards and protocols for the interchange of data; 2007 [cited 2015 Mar 10] <ext-link ext-link-type="uri" xlink:href="http://www.tdwg.org/standards/110" xlink:type="simple">http://www.tdwg.org/standards/110</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stockwell</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Peters</surname> <given-names>D</given-names></name>. <article-title>The GARP modelling system: problems and solutions to automated spatial prediction</article-title>. <source>Int J Geogr Inf Sci</source>. <year>1999</year>;<volume>13</volume>: <fpage>143</fpage>–<lpage>158</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref023"><label>23</label><mixed-citation publication-type="other" xlink:type="simple">Phillips SJ, Anderson RP, Schapire RE. Maximum entropy modeling of species geographic distributions in proceedings 21st International Conference on Machine Learning; 2004 [cited 2015 Mar 10]. pp. 655–622. <ext-link ext-link-type="uri" xlink:href="http://www.cs.princeton.edu/~schapire/papers/maxent_icml.pdf" xlink:type="simple">http://www.cs.princeton.edu/~schapire/papers/maxent_icml.pdf</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Edwards</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Lane</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Nielsen</surname> <given-names>ES</given-names></name>. <article-title>Interoperability of biodiversity databases: biodiversity information on every desktop</article-title>. <source>Science</source>. <year>2000</year>;<volume>289</volume>: <fpage>2312</fpage>–<lpage>2314</lpage>. <object-id pub-id-type="pmid">11009409</object-id></mixed-citation></ref>
+<ref id="pone.0178731.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sunderland</surname> <given-names>ME</given-names></name>. <article-title>Computerizing Natural History Collections</article-title>. <source>Endeavour</source>; <year>2013</year>; <volume>37</volume>(<issue>3</issue>): <fpage>150</fpage>–<lpage>161</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.endeavour.2013.04.001" xlink:type="simple">10.1016/j.endeavour.2013.04.001</ext-link></comment> <object-id pub-id-type="pmid">23664113</object-id></mixed-citation></ref>
+<ref id="pone.0178731.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rosenberg</surname> <given-names>G</given-names></name>. <article-title>A database approach to studies of molluscan taxonomy, biogeography and diversity, with examples from Western Atlantic marine gastropods</article-title>. <source>American Malacological Bulletin</source>; <year>1993</year>. <volume>10</volume>:<fpage>257</fpage>–<lpage>266</lpage></mixed-citation></ref>
+<ref id="pone.0178731.ref027"><label>27</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Williams</surname> <given-names>SM.</given-names></name>, <name name-style="western"><surname>Smolen</surname> <given-names>MJ.</given-names></name>, <name name-style="western"><surname>Brigda</surname> <given-names>AA</given-names></name>. <source>Documentation standards for automatic data processing in Mammalogy</source>. <publisher-name>The Museum of Texas Tech University</publisher-name>. <year>1979</year>; <volume>vii</volume>. pp. <fpage>48</fpage>. <publisher-loc>Lubbock, TX</publisher-loc>.</mixed-citation></ref>
+<ref id="pone.0178731.ref028"><label>28</label><mixed-citation publication-type="other" xlink:type="simple">MVZ [Museum of Vertebrate Zoology, Berkeley]. The MVZ Collections Information Model. 1996. [cited 2015 Mar 10] <ext-link ext-link-type="uri" xlink:href="http://mvz.berkeley.edu/cis/mvzmodel.pdf" xlink:type="simple">http://mvz.berkeley.edu/cis/mvzmodel.pdf</ext-link></mixed-citation></ref>
+<ref id="pone.0178731.ref029"><label>29</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Chapman</surname> <given-names>AD</given-names></name>. <chapter-title>Australian plant name index</chapter-title>. <source>Australian Flora and fauna series, series Nos 12–15</source>. <publisher-loc>Canberra</publisher-loc>: <publisher-name>Australian Government Publishing</publisher-name>; <year>1991</year>. pp. <fpage>1</fpage>–<lpage>3053</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref030"><label>30</label><mixed-citation publication-type="book" xlink:type="simple"><collab>ABRS</collab>. <source>Australian faunal directory</source>; <year>2004</year>. <publisher-loc>Canberra</publisher-loc>: <publisher-name>Australian Biological Resources Study</publisher-name>. [cited 2015 Aug 21] <ext-link ext-link-type="uri" xlink:href="http://www.environment.gov.au/biodiversity/abrs/online-resources/fauna/index.html" xlink:type="simple">http://www.environment.gov.au/biodiversity/abrs/online-resources/fauna/index.html</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref031"><label>31</label><mixed-citation publication-type="other" xlink:type="simple">Missouri Botanical Garden. W3 TROPICOS; 2001 [cited 2015 Mar 15]. <ext-link ext-link-type="uri" xlink:href="http://mobot.mobot.org/W3T/Search/vast.html" xlink:type="simple">http://mobot.mobot.org/W3T/Search/vast.html</ext-link></mixed-citation></ref>
+<ref id="pone.0178731.ref032"><label>32</label><mixed-citation publication-type="other" xlink:type="simple">IPNI. International plant names index; 1999 [cited 2015 Mar 15]. <ext-link ext-link-type="uri" xlink:href="http://www.ipni.org/index.html" xlink:type="simple">http://www.ipni.org/index.html</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref033"><label>33</label><mixed-citation publication-type="other" xlink:type="simple">TDWG [Biodiversity Information Standards]. About TDWG; 2015. [cited 2015 Mar 10] <ext-link ext-link-type="uri" xlink:href="http://www.tdwg.org/about-tdwg/" xlink:type="simple">http://www.tdwg.org/about-tdwg/</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yesson</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Brewer</surname> <given-names>PW</given-names></name>, <name name-style="western"><surname>Sutton</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Caithness</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Pahwa</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Burgess</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>How Global Is the Global Biodiversity Information Facility?</article-title> <name name-style="western"><surname>Beach</surname> <given-names>J</given-names></name>, editor. <source>PLoS One [Internet]. Public Library of Science</source>; <year>2007</year> <month>Nov</month> <day>7</day> [cited 2017 Jan 26];<volume>2</volume>(<issue>11</issue>):<fpage>e1124</fpage>. Available from: <ext-link ext-link-type="uri" xlink:href="http://dx.plos.org/10.1371/journal.pone.0001124" xlink:type="simple">http://dx.plos.org/10.1371/journal.pone.0001124</ext-link></mixed-citation></ref>
+<ref id="pone.0178731.ref035"><label>35</label><mixed-citation publication-type="other" xlink:type="simple">GBIF [Global Biodiversity Information Facility]. What is GBIF; 2015. [cited 2015 Mar 10] <ext-link ext-link-type="uri" xlink:href="http://www.gbif.org/what-is-gbif" xlink:type="simple">http://www.gbif.org/what-is-gbif</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref036"><label>36</label><mixed-citation publication-type="other" xlink:type="simple">Chapman AD. Quality control and validation of environmental resource data in data quality and standards: proceedings of a seminar organized by the Commonwealth Land Information Forum, Canberra; 5 December 1991. Canberra: Commonwealth Land Information Forum, 1992.</mixed-citation></ref>
+<ref id="pone.0178731.ref037"><label>37</label><mixed-citation publication-type="other" xlink:type="simple">Chapman AD. Environmental data quality–b. Data cleaning tools. In: Appendix I to Sistema de Informação Distribuído para Coleções Biológicas: a Integração do Species Analyst e SinBiota. FAPESP/Biota Process no. 2001/02175-5 March 2003–March 2004; [cited 2015 Jun 28]. 57 pp. São Paulo Research Foundation, Campinas, Brazil: CRIA 2004. <ext-link ext-link-type="uri" xlink:href="http://splink.cria.org.br/docs/appendix_i.pdf" xlink:type="simple">http://splink.cria.org.br/docs/appendix_i.pdf</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref038"><label>38</label><mixed-citation publication-type="other" xlink:type="simple">Chapman AD. Principles and methods of data cleaning primary species occurrence data. Report for the Global Biodiversity Information Facility; 2005 [cited 2015 Mar 15] pp. 75. Copenhagen: Global Biodiversity Information Facility. <ext-link ext-link-type="uri" xlink:href="http://www.gbif.org/orc/?doc\_id=1262" xlink:type="simple">http://www.gbif.org/orc/?doc\_id=1262</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref039"><label>39</label><mixed-citation publication-type="other" xlink:type="simple">Dalcin EC. Data quality concepts and techniques applied to taxonomic databases. PhD Dissertation. University of Southampton, UK. 2005.</mixed-citation></ref>
+<ref id="pone.0178731.ref040"><label>40</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Veiga</surname> <given-names>AK</given-names></name>, <name name-style="western"><surname>Saraiva</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Cartolano</surname> <given-names>EA</given-names></name>. <chapter-title>Data quality concepts and methods applied to biological species occurrence data</chapter-title>. In: <source>ICT for agriculture, rural development and environment–where we are? Where we will go?</source> <publisher-loc>Prague</publisher-loc>: <publisher-name>Czech Centre for Science and Society</publisher-name>; <year>2012</year>.</mixed-citation></ref>
+<ref id="pone.0178731.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dou</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Cao</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Morris</surname> <given-names>PJ</given-names></name>, <name name-style="western"><surname>Morris</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Ludäscher</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Macklin</surname> <given-names>JA</given-names></name>, <etal>et al</etal>. <article-title>Kurator: a Kepler package for data curation workflows</article-title>. <source>Procedia Comput Sci</source>. <year>2012</year>;<volume>9</volume>: <fpage>1614</fpage>–<lpage>1619</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Veiga</surname> <given-names>AK</given-names></name>, <name name-style="western"><surname>Cartolano</surname> <given-names>EA</given-names></name>, <name name-style="western"><surname>Saraiva</surname> <given-names>AM</given-names></name>. <article-title>Data Quality control in biodiversity informatics: the case of species occurrence data</article-title>. <source>IEEE Latin America Transactions</source>. <year>2014</year>;<volume>12</volume>: <fpage>683</fpage>–<lpage>693</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Otegui</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Ariño</surname> <given-names>AH</given-names></name>, <name name-style="western"><surname>Encinas</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Pando</surname> <given-names>F</given-names></name>. <article-title>Assessing the Primary Data Hosted by the Spanish Node of the Global Biodiversity Information Facility (GBIF)</article-title>. <source>PLoS ONE</source> <volume>8</volume>(<issue>1</issue>): <fpage>e55144</fpage>. <year>2013</year>; <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pone.0055144" xlink:type="simple">10.1371/journal.pone.0055144</ext-link></comment> <object-id pub-id-type="pmid">23372828</object-id></mixed-citation></ref>
+<ref id="pone.0178731.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Otegui</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Guralnick</surname> <given-names>RP</given-names></name>. <article-title>The geospatial data quality REST API for primary biodiversity data</article-title>. <source>Bioinformatics</source>. <year>2016</year>: <fpage>btw057v2</fpage>–<lpage>btw057</lpage>. <ext-link ext-link-type="uri" xlink:href="http://bioinformatics.oxfordjournals.org/content/early/2016/02/16/bioinformatics.btw057.full" xlink:type="simple">http://bioinformatics.oxfordjournals.org/content/early/2016/02/16/bioinformatics.btw057.full</ext-link></mixed-citation></ref>
+<ref id="pone.0178731.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Beck</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Böller</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Erhardt</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Schwanghart</surname> <given-names>W</given-names></name>. <article-title>Spatial bias in the GBIF database and its effect on modeling species’ geographic distributions</article-title>. <source>Ecol Inform</source>. <year>2014</year>;<volume>19</volume>: <fpage>10</fpage>–<lpage>15</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Maldonado</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Molina</surname> <given-names>CI</given-names></name>, <name name-style="western"><surname>Zizka</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Persson</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Taylor</surname> <given-names>CM</given-names></name>, <name name-style="western"><surname>Albán</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>Estimating species diversity and distribution in the era of big data: to what extent can we trust public databases?</article-title> <source>Glob Ecol Biogeogr</source>. <year>2015</year>;<volume>24</volume>: <fpage>973</fpage>–<lpage>984</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/geb.12326" xlink:type="simple">10.1111/geb.12326</ext-link></comment> <object-id pub-id-type="pmid">27656106</object-id></mixed-citation></ref>
+<ref id="pone.0178731.ref047"><label>47</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>McGilvray</surname> <given-names>D</given-names></name>. <source>Executing data quality projects: ten steps to quality data and trusted information</source>. <publisher-name>Morgan Kaufmann Publishing House, Elsevier</publisher-name>; <year>2008</year>.</mixed-citation></ref>
+<ref id="pone.0178731.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>RY</given-names></name>, <name name-style="western"><surname>Strong</surname> <given-names>DM</given-names></name><article-title>. Beyond accuracy: what data quality means to data consumers</article-title>. <source>J Manag Inf Syst</source>. <year>1996</year>;<volume>12</volume>: <fpage>5</fpage>–<lpage>33</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nelson</surname> <given-names>D</given-names></name>. <article-title>Phage taxonomy: we agree to disagree</article-title>. <source>J Bacteriol [Internet]. American Society for Microbiology</source>; <year>2004</year> <month>Nov</month>; <volume>186</volume>(<issue>21</issue>):<fpage>7029</fpage>–<lpage>31</lpage>. [cited 2017 Jan 26] Available from: <ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/pubmed/15489416" xlink:type="simple">http://www.ncbi.nlm.nih.gov/pubmed/15489416</ext-link></mixed-citation></ref>
+<ref id="pone.0178731.ref050"><label>50</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>YR</given-names></name>, <name name-style="western"><surname>Ziad</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>YW</given-names></name>. <source>Data quality</source>. <publisher-name>Kluwer Academic Publishers</publisher-name>; <year>2001</year>. <fpage>167</fpage> p. ISBN 0792372158.</mixed-citation></ref>
+<ref id="pone.0178731.ref051"><label>51</label><mixed-citation publication-type="book" xlink:type="simple"><collab>SearchCIO</collab>. <source>What is Total Quality Management (TQM)? [Internet]</source>. <publisher-name>TechTarget</publisher-name>. <year>2005</year> [cited 2016 Aug 30]. <ext-link ext-link-type="uri" xlink:href="http://searchcio.techtarget.com/definition/Total-Quality-Management" xlink:type="simple">http://searchcio.techtarget.com/definition/Total-Quality-Management</ext-link></mixed-citation></ref>
+<ref id="pone.0178731.ref052"><label>52</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Lee</surname> <given-names>YW</given-names></name>. <source>Journey to data quality</source>. <publisher-name>MIT Press</publisher-name>; <year>2006</year>. <publisher-loc>Cambridge, MA</publisher-loc>.</mixed-citation></ref>
+<ref id="pone.0178731.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chrisman</surname> <given-names>NR</given-names></name>. <article-title>The role of quality information in the long-term functioning of a GIS</article-title>. <source>APRS</source>. <year>1983</year>;<volume>2</volume>: <fpage>303</fpage>–<lpage>321</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref054"><label>54</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Chapman</surname> <given-names>AD</given-names></name>, <name name-style="western"><surname>Wieczorek</surname> <given-names>J</given-names></name>, editors. <source>Guide to best practices for georeferencing</source>. <publisher-loc>Copenhagen</publisher-loc>: <publisher-name>Global Biodiversity Information Facility</publisher-name>; <year>2006</year>.</mixed-citation></ref>
+<ref id="pone.0178731.ref055"><label>55</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Noy</surname> <given-names>NF</given-names></name>, <name name-style="western"><surname>McGuinness</surname> <given-names>DL</given-names></name>. <source>What is an ontology and why we need it</source>. <publisher-name>Stanford University</publisher-name>, <publisher-loc>Stanford, CA</publisher-loc>, 94305. [cited 2016 May 31]. <ext-link ext-link-type="uri" xlink:href="http://protege.stanford.edu/publications/ontology_development/ontology101-noy-mcguinness.html" xlink:type="simple">http://protege.stanford.edu/publications/ontology_development/ontology101-noy-mcguinness.html</ext-link></mixed-citation></ref>
+<ref id="pone.0178731.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wand</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>RY</given-names></name>. <article-title>Anchoring data quality dimensions in ontological foundations</article-title>. <source>Commun ACM</source>. <year>1996</year>;<volume>39</volume>: <issue>11</issue>:<fpage>86</fpage>–<lpage>95</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref057"><label>57</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>RY</given-names></name>, <name name-style="western"><surname>Reddy</surname> <given-names>MP</given-names></name>, <name name-style="western"><surname>Kon</surname> <given-names>HB</given-names></name>. <article-title>Toward quality data: an attribute- based approach</article-title>. <source>Decision Support Systems</source>. <year>1995</year>;<volume>13</volume>: <fpage>349</fpage>–<lpage>372</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref058"><label>58</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Askham</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Cook</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Doyle</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Fereday</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Gibson</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Landbeck</surname> <given-names>U</given-names></name>, <etal>et al</etal>. <article-title>The six primary dimension for data quality assessment-defining data quality dimensions</article-title>. <source>DAMA</source>; <year>2013</year>; [cited 2015 Aug 21] <ext-link ext-link-type="uri" xlink:href="http://www.damauk.org/RWFilePub.php?&amp;cat=403&amp;dx=2&amp;ob=3&amp;rpn=catviewleafpublic403&amp;id=106193" xlink:type="simple">http://www.damauk.org/RWFilePub.php?&amp;cat=403&amp;dx=2&amp;ob=3&amp;rpn=catviewleafpublic403&amp;id=106193</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref059"><label>59</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fox</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Levitin</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Redman</surname> <given-names>T</given-names></name>. <article-title>The notion of data and its quality dimensions</article-title>. <source>Inf Process Manag</source>. <year>1994</year>;<volume>30</volume>: <fpage>9</fpage>–<lpage>19</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref060"><label>60</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Bishop</surname> <given-names>M</given-names></name>. <source>Computer security: art and science. Section 1.5.1</source>. <publisher-name>Addison-Wesley</publisher-name>; <year>2003</year>. <publisher-loc>Boston, MA, USA</publisher-loc>.</mixed-citation></ref>
+<ref id="pone.0178731.ref061"><label>61</label><mixed-citation publication-type="other" xlink:type="simple">GBIF [Global Biodiversity Information Facility]. dwca-validator, GitHub repository; 2015 [cited 2015 June 14]. Accessed: <ext-link ext-link-type="uri" xlink:href="https://github.com/gbif/dwca-validator" xlink:type="simple">https://github.com/gbif/dwca-validator</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref062"><label>62</label><mixed-citation publication-type="other" xlink:type="simple">GADM [Global Administrative Areas]. GADM database of Global Administrative Areas. [cited 2016 May 31]. <ext-link ext-link-type="uri" xlink:href="http://www.gadm.org/" xlink:type="simple">http://www.gadm.org/</ext-link></mixed-citation></ref>
+<ref id="pone.0178731.ref063"><label>63</label><mixed-citation publication-type="other" xlink:type="simple">BDQ Toolkit. bdq-toolkit-case, GitHub repository; 2017 [cited 2017 January 19]. Accessed: <ext-link ext-link-type="uri" xlink:href="https://github.com/allankv/bdq-toolkit-case" xlink:type="simple">https://github.com/allankv/bdq-toolkit-case</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref064"><label>64</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Klobas</surname> <given-names>JE</given-names></name>. <article-title>Beyond information quality: fitness for purpose and electronic information resource use</article-title>. <source>J Inf Sci</source>. <year>1995</year>;<volume>21</volume>: <fpage>95</fpage>–<lpage>114</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref065"><label>65</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nicolaou</surname> <given-names>AI</given-names></name>, <name name-style="western"><surname>McKnight</surname> <given-names>DH</given-names></name>. <article-title>Perceived information quality in data exchanges: effects on risk, trust, and intention to use</article-title>. <source>Inf Syst Res</source>. <year>2006</year>;<volume>17</volume>: <fpage>332</fpage>–<lpage>351</lpage>.</mixed-citation></ref>
+<ref id="pone.0178731.ref066"><label>66</label><mixed-citation publication-type="other" xlink:type="simple">Research Data Alliance [RDA]. Assessment of Data Fitness for Use RDA/WDS WG Case Statement [Internet]. 2016. [cited 2015 Aug 21] <ext-link ext-link-type="uri" xlink:href="https://www.rd-alliance.org/group/assessment-data-fitness-use/case-statement/assessment-data-fitness-use-wg-case-statement" xlink:type="simple">https://www.rd-alliance.org/group/assessment-data-fitness-use/case-statement/assessment-data-fitness-use-wg-case-statement</ext-link></mixed-citation></ref>
+<ref id="pone.0178731.ref067"><label>67</label><mixed-citation publication-type="other" xlink:type="simple">BDQIG. GBIF Community Site [Internet]: GBIF/TDWG biodiversity data quality interest group; 2015. [cited 2015 Aug 21] <ext-link ext-link-type="uri" xlink:href="http://community.gbif.org/pg/groups/21292/gbiftdwg-biodiversity-data-quality-interest-group/" xlink:type="simple">http://community.gbif.org/pg/groups/21292/gbiftdwg-biodiversity-data-quality-interest-group/</ext-link>.</mixed-citation></ref>
+<ref id="pone.0178731.ref068"><label>68</label><mixed-citation publication-type="other" xlink:type="simple">TDWG [Biodiversity Information Standards]. Task Group Charter: BDQ Framework. 2015. [cited 2016 May 19] <ext-link ext-link-type="uri" xlink:href="http://www.tdwg.org/activities/biodiversity-data-quality/bdq-framework/task-group-charter/" xlink:type="simple">http://www.tdwg.org/activities/biodiversity-data-quality/bdq-framework/task-group-charter/</ext-link></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

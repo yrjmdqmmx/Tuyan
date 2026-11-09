@@ -1,0 +1,76 @@
+{
+  "source": "https://replicate.com/anthropic/claude-opus-5.5/api/schema",
+  "sha256": "7e38aabeec194dbf5029eab47505c8c283328a0790a55047e333350d68bce855",
+  "version": "2b34585f42fc1b504790158f605972051c387bfd2e8abd863f314fff6d010b48",
+  "input": {
+    "type": "object",
+    "title": "Input",
+    "required": [
+      "prompt"
+    ],
+    "properties": {
+      "image": {
+        "type": "string",
+        "title": "Image",
+        "format": "uri",
+        "x-order": 1,
+        "nullable": true,
+        "description": "Optional input image. Images are priced as (width px * height px)/750 input tokens"
+      },
+      "effort": {
+        "enum": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "type": "string",
+        "title": "effort",
+        "description": "How much thinking Claude does before responding. Opus 5.5 always uses adaptive thinking; higher effort improves quality on hard coding and agentic tasks, but is slower and uses more output tokens. 'low' is the fastest and cheapest.",
+        "default": "low",
+        "x-order": 4
+      },
+      "prompt": {
+        "type": "string",
+        "title": "Prompt",
+        "x-order": 0,
+        "description": "Input prompt"
+      },
+      "max_tokens": {
+        "type": "integer",
+        "title": "Max Tokens",
+        "default": 8192,
+        "maximum": 128000,
+        "minimum": 1024,
+        "x-order": 3,
+        "description": "Maximum number of output tokens, including thinking tokens. Opus 5.5 always thinks before responding, so leave headroom at higher effort levels (Anthropic recommends starting at 64000 for 'xhigh' and 'max')."
+      },
+      "system_prompt": {
+        "type": "string",
+        "title": "System Prompt",
+        "default": "",
+        "x-order": 2,
+        "description": "System prompt"
+      },
+      "max_image_resolution": {
+        "type": "number",
+        "title": "Max Image Resolution",
+        "default": 0.5,
+        "maximum": 2,
+        "minimum": 0.001,
+        "x-order": 5,
+        "description": "Maximum image resolution in megapixels. Scales down image before sending it to Claude, to save time and money."
+      }
+    }
+  },
+  "output": {
+    "type": "array",
+    "items": {
+      "type": "string"
+    },
+    "title": "Output",
+    "x-cog-array-type": "iterator",
+    "x-cog-array-display": "concatenate"
+  }
+}

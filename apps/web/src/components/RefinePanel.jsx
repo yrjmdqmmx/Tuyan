@@ -1,3 +1,4 @@
+import {JournalTaskSummary} from './JournalExportPanel.jsx';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useRef, useState } from 'react';
 import { AlertTriangle, ArrowRight, Check, ImagePlus, Loader2, RefreshCcw, Send, Settings2, Upload, X } from 'lucide-react';
@@ -12,8 +13,8 @@ import ReferenceUploadPanel from './ReferenceUploadPanel';
 import RefineMaskEditor from './RefineMaskEditor';
 
 export default function RefinePanel({
-  controls, references, referencePolicy, mask, onMaskChange, structuredEnabled, onStructuredEnabledChange, structured, onStructuredChange, controlsIssue,
-  source = {}, upload = {}, uploadLimits, uploadEnabled, capability, instruction, imageSize, resolutionOptions = [],
+  materialPanel, controls, references, referencePolicy, mask, onMaskChange, structuredEnabled, onStructuredEnabledChange, structured, onStructuredChange, controlsIssue,
+  source = {}, sourceContext,upload = {}, uploadLimits, uploadEnabled, capability, instruction, imageSize, resolutionOptions = [],
   aspectRatio, aspectRatioOptions = [], settingsSummary, canSubmit, submitHint, isSubmitting, error, job, pollError,
   apiBase, optimizationSupported, optimizationDisabledReason, optimizationHasUndo, optimizationGuidance,
   onOptimize, onRestore, onInstructionChange, onImageSizeChange, onAspectRatioChange, onOpenSettings,
@@ -23,10 +24,10 @@ export default function RefinePanel({
   const fileInput = useRef(null);
   const [dragging, setDragging] = useState(false);
   const dragDepth = useRef(0);
-  const uploading = ['validating', 'uploading', 'checking'].includes(upload.status);
+  const uploading = ['loading','validating', 'uploading', 'checking'].includes(upload.status);
   const running = isSubmitting || job?.status === 'running' || job?.status === 'queued';
   const images = job?.result_images || [];
-  const statusLabel = { validating: '正在读取图片…', uploading: `正在上传 ${upload.progress || 0}%`, checking: '上传完成，正在校验图片…', ready: '原图已就绪', failed: '上传未完成' }[upload.status];
+  const statusLabel = { loading: '正在读取原任务…', validating: '正在读取图片…', uploading: `正在上传 ${upload.progress || 0}%`, checking: '上传完成，正在校验图片…', ready: source.browserSource?'原图已保存到浏览器 · 提交时上传':'原图已就绪', failed: '上传未完成' }[upload.status];
   const chooseFile = () => fileInput.current?.click();
   const allowUpload = uploadEnabled && !running;
 
@@ -46,7 +47,7 @@ export default function RefinePanel({
             onDragLeave={(event) => { event.preventDefault(); dragDepth.current = Math.max(0, dragDepth.current - 1); if (!dragDepth.current) setDragging(false); }}
             onDrop={(event) => { event.preventDefault(); dragDepth.current = 0; setDragging(false); if (allowUpload) onUpload(Array.from(event.dataTransfer.files)); }}>
             {source.url ? <figure className="refine-original"><img src={source.url} alt={t("待精修原图")} /><figcaption>{t(source.filename || '来自任务结果')}{source.width ? ` · ${source.width} × ${source.height}` : ''}</figcaption></figure>
-              : <button className="refine-upload-button" type="button" disabled={!allowUpload} onClick={chooseFile}><Upload size={26} /><strong>{t("点击上传或拖拽图片到这里")}</strong><span>{t(uploadEnabled ? `PNG / JPG / WebP · 最大 ${(uploadLimits.maxBytes / 1024 / 1024).toFixed(1)} MiB` : '连接支持上传精修的后端后即可上传')}</span></button>}
+              : <button className="refine-upload-button" type="button" disabled={!allowUpload} onClick={chooseFile}><Upload size={26} /><strong>{t("点击上传或拖拽图片到这里")}</strong><span>{t(uploadEnabled ? `PNG / JPG / WebP · 最大 ${(uploadLimits.maxBytes / 1000000).toFixed(0)} MB` : '连接支持上传精修的后端后即可上传')}</span></button>}
             {dragging ? <div className="refine-drop-overlay">{t("松开以上传原图")}</div> : null}
           </div>
           {uploadLimits?.processingHint ? <details className="reference-processing-details"><summary>{t("模型限制与图片处理")}</summary><p className="reference-processing-note">{uploadLimits.processingHint}</p></details> : null}
@@ -54,9 +55,9 @@ export default function RefinePanel({
           {upload.error ? <div className="refine-upload-error" role="alert"><span>{formatErrorMessage(upload.error)}</span>{upload.status === 'failed' ? <button type="button" disabled={running} onClick={onRetryUpload}>{t("重新上传")}</button> : null}</div> : null}
           <div className="refine-source-links"><span>{t("也可从")}</span><button type="button" disabled={running} onClick={onOpenGenerate}>{t("生成结果")}</button><span>{t("或")}</span><button type="button" disabled={running} onClick={onOpenRecords}>{t("任务记录")}</button><span>{t("选择原图")}</span></div>
         </section>
+        {sourceContext}
+        {materialPanel}
         {references && referencePolicy ? <section className="refine-step" aria-label={t("辅助参考图与编辑控制")}>
-          <ReferenceUploadPanel title={t("辅助参考图")} images={references.images} policy={referencePolicy} disabled={running} uploadBlocked={!controls || referencePolicy.maxCount === 0} isUploading={references.busy} error={references.error} onAddFiles={references.add} onRemove={references.remove} onPurposeChange={references.update} help={t("原图是修改对象；辅助图按所选用途一同传给最终编辑模型。")} processingHint={`原图占用 1 个模型图片名额，当前最多 ${referencePolicy.maxCount} 张辅助图。提交前只校正方向并转为无损 PNG；不自动缩小、截断或有损压缩。超限将保留输入并阻止提交。SVG 会栅格化，文字需转曲；不是矢量对象编辑。单张提交额度 ${(referencePolicy.submission.maxBytes/1048576).toFixed(1)} MiB。`}/>
-          {!controls ? <p className="refine-submit-hint">{t("当前型号尚未接入辅助参考图、遮罩或结构化控制；已有输入保留。")}</p> : <p className="refine-submit-hint">{t("模型总名额 ")}{controls.maxImages}{t(" 张，包含待精修原图。")}{t(controls.mask ? '遮罩仅限一张原图，不能同时使用辅助参考图。' : '')}</p>}
           {controls?.mask && source.url ? <RefineMaskEditor source={source} value={mask} onChange={onMaskChange} disabled={running}/> : mask ? <p>{t("遮罩已保留，当前模型不能提交。")}<button type="button" disabled={running} onClick={()=>onMaskChange(null)}>{t("清除遮罩")}</button></p> : null}
           {controls?.structured || structuredEnabled ? <div className="refine-structured">
             <label><input type="checkbox" checked={structuredEnabled} disabled={running || !controls?.structured && !structuredEnabled} onChange={event=>onStructuredEnabledChange(event.target.checked)}/>{t("使用原生结构化编辑")}</label>
@@ -92,7 +93,8 @@ export default function RefinePanel({
         {running ? <div className="refine-processing" role="status"><Loader2 className="spin" size={20} /><div><strong>{t(job?.status === 'running' ? '正在调整图片细节' : '正在提交与等待处理')}</strong><p>{t("原图保持不变，完成后会自动显示精修结果。")}</p></div></div> : null}
         {pollError ? <p className="error-line" role="alert">{formatErrorMessage(pollError)}</p> : null}
         {job?.error ? <p className="error-line" role="alert">{formatErrorMessage(job.error)}</p> : null}
-        {images.length ? <div className="refine-output-images">{images.map((image, index) => <ResultFigure key={image.filename || index} image={image} apiBase={apiBase} outputFormat={job.output_format} labelPrefix="精修结果" onUseForRefine={onUseForRefine} />)}</div>
+        <JournalTaskSummary job={job}/>
+        {images.length ? <div className="refine-output-images">{images.map((image, index) => <ResultFigure key={image.filename || index} image={image} apiBase={apiBase} outputFormat={job.output_format} journalProfile={job.journalProfile} jobId={job.id} labelPrefix="精修结果" onUseForRefine={onUseForRefine} />)}</div>
           : <div className={`refine-result-empty${running ? ' processing' : ''}`}><ImagePlus size={38} /><h3>{t(running ? '精修结果生成中' : job?.status === 'failed' ? '本次精修未完成' : '让原图更接近你的想法')}</h3><p>{t(running ? '完成后会在这里显示，可下载或继续精修。' : job?.status === 'failed' ? job?.recovery?.canResume ? '原图和指令已保留，请使用上方任务恢复入口。' : '原图和指令已保留。若调用结果或费用未知，请先核对渠道记录，勿重复提交。' : '选择一张原图，写下修改要求，再提交精修。')}</p>{!job && !running ? <div><span>{t("选择原图")}</span><ArrowRight size={14} /><span>{t("描述修改")}</span><ArrowRight size={14} /><span>{t("查看结果")}</span></div> : null}</div>}
         {job?.providerCalls?.length ? <details className="refine-process-details"><summary>{t("调用用量与费用记录")}</summary>{job.providerCalls.map((call,index)=><div key={index}><p>{t(call.provider || call.channel || '渠道')} · {t(call.model || call.requestedModel || '型号待确认')}{t(" · 请求 ")}{t(call.requestId || '待确认')}</p><p>{t("公开单价：")}{t(call.publicPrice?.amount ?? '待确认')}{t("；估算费用：")}{t(call.estimatedCost?.amount ?? '未估算')}{t("；渠道返回费用：")}{t(call.reportedCost ? `${call.reportedCost.amount} ${call.reportedCost.currency}` : '未返回')}{t("；已核对账单：")}{t(call.invoiceCost?.amount ?? '待确认')}。</p>{call.usage ? <p>{t("渠道用量：")}{JSON.stringify(call.usage)}</p> : null}{call.structuredInstruction ? <details><summary>{t("查看模型返回的结构化指令")}</summary><pre>{JSON.stringify(call.structuredInstruction,null,2)}</pre></details> : null}</div>)}</details> : null}
         {job?.stages?.length ? <details className="refine-process-details"><summary>{t("查看处理过程")}</summary><StageTimeline job={job} apiBase={apiBase} /></details> : null}

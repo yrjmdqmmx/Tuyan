@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0138155</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-15-20582</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>The Diagnostic Value of Capillary Refill Time for Detecting Serious Illness in Children: A Systematic Review and Meta-Analysis</article-title>
+<alt-title alt-title-type="running-head">Diagnostic Value of Capillary Refill Time in Children</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Fleming</surname>
+<given-names>Susannah</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="cor001" ref-type="corresp">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Gill</surname>
+<given-names>Peter</given-names>
+</name>
+<xref rid="aff002" ref-type="aff"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Jones</surname>
+<given-names>Caroline</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Taylor</surname>
+<given-names>James A.</given-names>
+</name>
+<xref rid="aff003" ref-type="aff"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Van den Bruel</surname>
+<given-names>Ann</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Heneghan</surname>
+<given-names>Carl</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Roberts</surname>
+<given-names>Nia</given-names>
+</name>
+<xref rid="aff004" ref-type="aff"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Thompson</surname>
+<given-names>Matthew</given-names>
+</name>
+<xref rid="aff005" ref-type="aff"><sup>5</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Nuffield Department of Primary Care Health Sciences, University of Oxford, Oxford, Oxfordshire, United Kingdom</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>The Hospital for Sick Children, Department of Pediatrics, University of Toronto, Toronto, Ontario, Canada</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Child Health Institute, University of Washington, Seattle, Washington, United States of America</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Bodleian Health Care Libraries, University of Oxford, Oxford, Oxfordshire, United Kingdom</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>Department of Family Medicine, University of Washington, Seattle, Washington, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Huy</surname>
+<given-names>Nguyen Tien</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Institute of Tropical Medicine (NEKKEN), Nagasaki University, JAPAN</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The study received funding from the European Union Seventh Framework Programme (FP7/2007-2013) under grant agreement no 305292 for the program "Supporting Life"; SF was funded by a fellowship award from the National Institute for Health Research School for Primary Care Research (NIHR SPCR). The views represented are those of the author(s) and not necessarily those of the NIHR, the NHS or the Department of Health. PG received studentship funding from the Rhodes Trust, Alberta Innovates—Health Solutions, and the Canadian Institute of Health Research. There are no patents, products in development or marketed products to declare. This does not alter the authors' adherence to all the PLOS ONE policies on sharing data and materials.</p>
+</fn>
+<fn fn-type="con" id="contrib001">
+<p>Conceived and designed the experiments: SF PG JAT AVdB MT NR. Performed the experiments: SF PG JAT AVdB MT. Analyzed the data: SF PG AVdB CJ. Wrote the paper: SF PG JAT AVdB MT NR CJ CH.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">susannah.fleming@phc.ox.ac.uk</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>16</day>
+<month>9</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2015</year>
+</pub-date>
+<volume>10</volume>
+<issue>9</issue>
+<elocation-id>e0138155</elocation-id>
+<history>
+<date date-type="received">
+<day>18</day>
+<month>5</month>
+<year>2015</year>
+</date>
+<date date-type="accepted">
+<day>25</day>
+<month>8</month>
+<year>2015</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Fleming et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0138155" xlink:type="simple"/>
+<abstract>
+<sec id="sec001">
+<title>Importance</title>
+<p>Capillary refill time (CRT) is widely recommended as part of the routine assessment of unwell children.</p>
+</sec>
+<sec id="sec002">
+<title>Objective</title>
+<p>To determine the diagnostic value of capillary refill time for a range of serious outcomes in children.</p>
+</sec>
+<sec id="sec003">
+<title>Methods</title>
+<p>We searched Medline, Embase and CINAHL from inception to June 2014. We included studies that measured both capillary refill time and a relevant clinical outcome such as mortality, dehydration, meningitis, or other serious illnesses in children aged up to 18 years of age. We screened 1,265 references, of which 24 papers were included in this review. Where sufficient studies were available, we conducted meta-analysis and constructed hierarchical summary ROC curves.</p>
+</sec>
+<sec id="sec004">
+<title>Results</title>
+<p>Meta-analysis on the relationship between capillary refill time and mortality resulted in sensitivity of 34.6% (95% CI 23.9 to 47.1%), specificity 92.3% (88.6 to 94.8%), positive likelihood ratio 4.49 (3.06 to 6.57), and negative likelihood ratio 0.71 (0.60 to 0.84). Studies of children attending Emergency Departments with vomiting and diarrhea showed that capillary refill time had specificity of 89 to 94% for identifying 5% dehydration, but sensitivity ranged from 0 to 94%. This level of heterogeneity precluded formal meta-analysis of this outcome. Meta-analysis was not possible for other outcomes due to insufficient data, but we found consistently high specificity for a range of outcomes including meningitis, sepsis, admission to hospital, hypoxia, severity of illness and dengue.</p>
+</sec>
+<sec id="sec005">
+<title>Conclusions</title>
+<p>Our results show that capillary refill time is a specific sign, indicating that it can be used as a “red-flag”: children with prolonged capillary refill time have a four-fold risk of dying compared to children with normal capillary refill time. The low sensitivity means that a normal capillary refill time should not reassure clinicians.</p>
+</sec>
+</abstract>
+<funding-group>
+<funding-statement>This paper presents independent research funded by the European Union Seventh Framework Programme (FP7/2007-2013) under grant agreement no 305292 for the program “Supporting Life” (<ext-link ext-link-type="uri" xlink:href="http://ec.europa.eu/research/fp7/index_en.cfm" xlink:type="simple">http://ec.europa.eu/research/fp7/index_en.cfm</ext-link>). SF was funded by a fellowship award from the National Institute for Health Research School for Primary Care Research (NIHR SPCR: <ext-link ext-link-type="uri" xlink:href="http://www.spcr.nihr.ac.uk/" xlink:type="simple">http://www.spcr.nihr.ac.uk/</ext-link>). PG received funding from the Rhodes Trust (<ext-link ext-link-type="uri" xlink:href="http://www.rhodeshouse.ox.ac.uk/" xlink:type="simple">http://www.rhodeshouse.ox.ac.uk/</ext-link>), Alberta Innovates – Health Solutions (<ext-link ext-link-type="uri" xlink:href="http://www.aihealthsolutions.ca/" xlink:type="simple">http://www.aihealthsolutions.ca/</ext-link>), and the Canadian Institute of Health Research (<ext-link ext-link-type="uri" xlink:href="http://www.cihr-irsc.gc.ca" xlink:type="simple">http://www.cihr-irsc.gc.ca</ext-link>). JAT was funded by the University of Washington Pediatric Endowed Professorship for Research Sabbaticals (<ext-link ext-link-type="uri" xlink:href="http://depts.washington.edu/givemed/prof-chair/endowments/pediatrics-endowed-professorship-for-research-sabbaticals/" xlink:type="simple">http://depts.washington.edu/givemed/prof-chair/endowments/pediatrics-endowed-professorship-for-research-sabbaticals/</ext-link>). CH also received funding from the NIHR SPCR (<ext-link ext-link-type="uri" xlink:href="http://www.spcr.nihr.ac.uk/" xlink:type="simple">http://www.spcr.nihr.ac.uk/</ext-link>). The views expressed in this paper are those of the authors and not necessarily those of the NHS, the NIHR, or the Department of Health. The funders had no role in the design and conduct of the study, collection, management, analysis, and interpretation of the data, and preparation, review, or approval of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="5"/>
+<table-count count="1"/>
+<page-count count="15"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec006" sec-type="intro">
+<title>Introduction</title>
+<p>Identifying children who may have hemodynamic compromise or shock is a routine part of clinical assessment and a core component of Pediatric Advanced Life Support.[<xref rid="pone.0138155.ref001" ref-type="bibr">1</xref>–<xref rid="pone.0138155.ref003" ref-type="bibr">3</xref>] In most settings, this includes assessment of peripheral perfusion such as capillary refill time (CRT) as well as measurement of blood pressure to assess cardiovascular status. However, blood pressure is maintained in children in the early stages of shock to a greater extent than in adults, to the expense of reduced peripheral perfusion and raised heart rate, so may be a less valuable measure particularly in triage or other frontline healthcare settings.[<xref rid="pone.0138155.ref004" ref-type="bibr">4</xref>, <xref rid="pone.0138155.ref005" ref-type="bibr">5</xref>]</p>
+<p>In a recent systematic review of the validity and reliability of CRT,[<xref rid="pone.0138155.ref006" ref-type="bibr">6</xref>] we found that CRT is 2 seconds or less when measured on the finger in healthy children and older infants, but may extend to 4 seconds when measured on the chest or foot. In addition to the influence of the body site at which CRT is measured, changes in both ambient and skin temperature may have a significant effect on measured values. Current evidence also indicates that inter-observer reliability of CRT is highly variable, and may be related to the measurement method, with those made using stopwatches displaying lower inter-observer variability than simple counting.</p>
+<p>Despite the evidence on variability in measurements and a lack of standardization, CRT is included as part of the routine or initial assessment of seriously ill or injured children in Pediatric Advanced Life Support and in a number of major international guidelines (<xref rid="pone.0138155.t001" ref-type="table">Table 1</xref>).[<xref rid="pone.0138155.ref001" ref-type="bibr">1</xref>–<xref rid="pone.0138155.ref003" ref-type="bibr">3</xref>, <xref rid="pone.0138155.ref007" ref-type="bibr">7</xref>–<xref rid="pone.0138155.ref009" ref-type="bibr">9</xref>] CRT is also frequently recommended in monitoring and guiding the treatment of children with severe sepsis or septic shock.[<xref rid="pone.0138155.ref004" ref-type="bibr">4</xref>, <xref rid="pone.0138155.ref005" ref-type="bibr">5</xref>]</p>
+<table-wrap id="pone.0138155.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0138155.t001</object-id>
+<label>Table 1</label> <caption><title>Current guideline recommendations for CRT.</title></caption>
+<alternatives>
+<graphic id="pone.0138155.t001g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0138155.t001" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="1" colspan="1">Guideline</th>
+<th align="left" rowspan="1" colspan="1">Recommendations for CRT use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Advanced Paediatric Life Support (APLS)[<xref rid="pone.0138155.ref001" ref-type="bibr">1</xref>]</bold></td>
+<td align="left" rowspan="1" colspan="1">CRT assessment advised as part of primary circulation assessment.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">“…capillary refill should occur within 2–3 seconds. A slower refill time than this …. is a particularly useful sign in early septic shock… Poor capillary refill and differential pulse volumes are neither sensitive nor specific indicators of shock in infants and children. . .”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Pediatric Advanced Life Support (PALS)[<xref rid="pone.0138155.ref002" ref-type="bibr">2</xref>]</bold></td>
+<td align="left" rowspan="1" colspan="1">CRT assessment advised as part of primary circulation assessment.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">“Frequent causes of sluggish, delayed or prolonged capillary refill (a refill time &gt;2 seconds) include dehydration, shock, and hypothermia. Shock can be present despite a normal capillary refill time. Children in “warm” septic shock may have excellent (ie, &lt;2 seconds) capillary refill time.”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>WHO guidelines for the management of children with severe infection or severe malnutrition[<xref rid="pone.0138155.ref003" ref-type="bibr">3</xref>]</bold></td>
+<td align="left" rowspan="1" colspan="1">“Emergency signs include: … signs of shock (capillary refill longer than 3 seconds; and fast weak pulse)…. Children with emergency signs require immediate treatment to avert death.”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">“If capillary refill is longer than 3 seconds, check the pulse.”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>ACCCM Guidelines for pediatric and neonatal septic shock[<xref rid="pone.0138155.ref004" ref-type="bibr">4</xref>]</bold></td>
+<td align="left" rowspan="1" colspan="1">“The clinical diagnosis of septic shock is made in children who 1) have a suspected infection manifested by hypothermia or hyperthermia, and 2) have clinical signs of inadequate tissue perfusion including any of the following; … prolonged capillary refill &gt;2 secs (cold shock), … or flash capillary refill (warm shock)”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">“Therapeutic End Points (Level III). Capillary refill &lt; = 2 secs,…”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>International guidelines for severe sepsis and septic shock[<xref rid="pone.0138155.ref005" ref-type="bibr">5</xref>]</bold></td>
+<td align="left" rowspan="1" colspan="1">“We suggest that the initial therapeutic endpoints of resuscitation of septic shock be capillary refill of &lt; = 2 s…”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>NICE Guidelines on Feverish Illness in children[<xref rid="pone.0138155.ref009" ref-type="bibr">9</xref>]</bold></td>
+<td align="left" rowspan="1" colspan="1">“Measure and record temperature, heart rate, respiratory rate and capillary refill time as part of the routine assessment of a child with fever.”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">“Recognize that a capillary refill time of 3 seconds or longer is an intermediate-risk group marker for serious illness (‘amber’ sign).”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">“Assess children with fever for signs of dehydration. Look for: prolonged capillary refill time…”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">“Consider meningococcal disease in any child with fever and a non-blanching rash, particularly if any of the following features are present: … a capillary refill time of 3 seconds or longer”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">“A prolonged CRT may be a sign of circulatory insufficiency (e.g. shock) or dehydration”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>NICE Guidelines on Bacterial meningitis and meningococcal septicemia[<xref rid="pone.0138155.ref008" ref-type="bibr">8</xref>]</bold></td>
+<td align="left" rowspan="1" colspan="1">Capillary refill time more than 2 seconds defined as “more specific symptoms/signs” for meningococcal disease and meningococcal septicemia, but not for bacterial meningitis.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">“Signs of shock: Capillary refill time more than 2 seconds…”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">“In children and young people with suspected bacterial meningitis or meningococcal septicemia, undertake and record physiological observations of … perfusion (capillary refill) … at least hourly.”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">“The clinical features in a febrile child or young person with petechiae that are more likely to suggest meningococcal disease are … prolonged capillary refill time …”</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">“A prolonged CRT may be a sign of circulatory insufficiency (such as shock) or dehydration.”</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>Prolonged CRT or decreased peripheral perfusion is cited as a red flag for serious illness in children.[<xref rid="pone.0138155.ref010" ref-type="bibr">10</xref>–<xref rid="pone.0138155.ref013" ref-type="bibr">13</xref>] However, to our knowledge there has not been a comprehensive and systematic assessment of the diagnostic value of CRT across a range of serious conditions in children of all ages in all settings. This systematic review assesses the current evidence for the diagnostic and prognostic value of CRT for identifying children with serious illnesses such as dehydration and meningitis, and to predict adverse outcomes such as death.</p>
+</sec>
+<sec id="sec007" sec-type="materials|methods">
+<title>Methods</title>
+<p>A protocol was developed by the authors for this review. This has not been registered or published, but is provided as <xref rid="pone.0138155.s008" ref-type="supplementary-material">S1 Text</xref>.</p>
+<sec id="sec008">
+<title>Search strategies</title>
+<p>A detailed search strategy was developed in collaboration with an information specialist (NR) to identify papers on the diagnostic accuracy of CRT in children (see <xref rid="pone.0138155.s009" ref-type="supplementary-material">S2 Text</xref> for details). The search strategy was applied to three bibliographic databases Medline (OvidSP) [1946-present], Embase (OvidSP) [1974-present] and CINAHL (OvidSP) [1980-present]. Additional papers were identified from the reference lists of relevant papers and consultation with experts. Search date was 9 June 2014. Searches were not restricted by language or country of origin.</p>
+</sec>
+<sec id="sec009">
+<title>Inclusion and exclusion criteria</title>
+<p>We included papers which reported measurement of CRT by any method on a minimum of 20 subjects under the age of 18 years. We excluded papers that reported data only on subjects over the age of 18 years, or in which more than 50% of the children were neonates born prematurely (&lt;35 weeks gestation). We also excluded studies in which more than 50% of subjects had significant pre-existing cardiorespiratory disease such as cardiac malformations. However, we included studies that reported these groups separately, allowing extraction of a group with at least 20 children who fulfilled the inclusion criteria.</p>
+<p>Eligible studies measured and reported the relationship between CRT and a relevant clinical outcome, with no other restriction on study design or clinical setting. Acceptable outcomes included: mortality; final diagnosis of a specific serious illness (e.g. meningitis, dehydration, or pneumonia); admission to secondary care facilities; hypoxia; and measures of severity of illness or infection composed of groupings of other acceptable outcomes (e.g. where “severe illness” is defined by hypoxia or a specific list of final diagnoses). Studies performing multivariate analyses including CRT with other clinical and/or laboratory tests were not included in this review unless univariate results for CRT and a relevant outcome were also presented.</p>
+<p>References were screened for inclusion by two reviewers using title and abstract, using full-text where necessary. Subsequently, four reviewers assessed selected studies for eligibility using the full text. Where necessary we attempted to contact authors for further information to clarify eligibility.</p>
+</sec>
+<sec id="sec010">
+<title>Quality criteria</title>
+<p>Quality assessment criteria were developed based on the QUADAS-2 checklist.[<xref rid="pone.0138155.ref014" ref-type="bibr">14</xref>] The criteria (<xref rid="pone.0138155.s002" ref-type="supplementary-material">S1 Table</xref>) assessed patient selection, performance of the index test (CRT), performance of the comparator, and aspects of timing and flow.</p>
+</sec>
+<sec id="sec011">
+<title>Data extraction</title>
+<p>Data from all included studies were extracted on a pre-specified form by one author and checked by a second author, with any disagreements resolved by consensus. We extracted data on patient characteristics and study design, country of origin, and method of measuring CRT. Measurements of CRT were considered to be prolonged based on the definitions used by the investigators for each included study. All relevant outcomes were identified and extracted. Where they were not reported, we calculated sensitivity, specificity, and likelihood ratios, including 95% confidence intervals, from the 2x2 tables. Where one or more cells of a 2x2 table was empty, we added 0.5 to each cell before calculating summary statistics.[<xref rid="pone.0138155.ref015" ref-type="bibr">15</xref>] Where insufficient data were reported to calculate outcome measures or reconstruct 2x2 tables, we contacted study authors to obtain further information. Study settings were categorized into high-income, upper-middle-income, lower-middle-income, and low-income countries based on their World Bank classification in July 2013.[<xref rid="pone.0138155.ref016" ref-type="bibr">16</xref>]</p>
+</sec>
+<sec id="sec012">
+<title>Analysis</title>
+<p>Results are reported descriptively, identifying and explaining differences between studies and any resulting heterogeneity. When comparable outcomes were reported by at least four studies and no apparent clinical heterogeneity was present, meta-analysis was performed using the bivariate method.[<xref rid="pone.0138155.ref017" ref-type="bibr">17</xref>] Based on the parameters from this analysis, a hierarchical summary receiver operative characteristic (ROC) curve was constructed. When data on more than one cut-off was available, only one was included in the meta-analysis to avoid inclusion of data on the same patient twice. Where necessary, we included the data corresponding to the cut-off which was used most frequently in other studies within the meta-analysis, in an attempt to reduce overall heterogeneity. Statistical heterogeneity was inspected visually on the ROC plot by checking the distance of the individual studies from the hierarchical summary ROC curve. When statistical heterogeneity was present, no pooled results were reported.</p>
+<p>Analyses were carried out using R (version 3.0.1, The R Foundation for Statistical Computing), with Stata (version 11.2, Statacorp) additionally used to generate hierarchical summary ROC curves.</p>
+</sec>
+</sec>
+<sec id="sec013" sec-type="results">
+<title>Results</title>
+<p>After removal of duplicates, we screened 1,265 references (<xref rid="pone.0138155.g001" ref-type="fig">Fig 1</xref>), and included 24 papers in this review, of which 13 reported studies carried out in high income countries, and 11 in low or middle income countries. Nine studies on 17,285 children assessed the relationship between CRT and mortality, and six studies on approximately 680 children assessed the relationship between CRT and dehydration, allowing meta-analyses on both outcomes. We also identified 11 papers on 41,287 children reporting other outcomes related to serious illness, including meningitis (four studies, n = 10,205), hospital admission (three studies, n = 17,742), sepsis (three studies, n = 19,923), dengue fever (two studies, n = 2,039), urinary tract infection (one study, n = 15,781), pneumonia (one study, n = 15,781), hypoxia (one study, n = 3,176), and combined measures of severity of illness (three studies, n = 8,555), with some studies reporting multiple outcomes. Full details of individual study characteristics are given in <xref rid="pone.0138155.s003" ref-type="supplementary-material">S2 Table</xref>.</p>
+<fig id="pone.0138155.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0138155.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Flow chart for papers identified by the search strategy.</title>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0138155.g001" position="float" xlink:type="simple"/>
+</fig>
+<p>The quality assessment of the included papers is summarized in <xref rid="pone.0138155.g002" ref-type="fig">Fig 2</xref>, with details in <xref rid="pone.0138155.s004" ref-type="supplementary-material">S3 Table</xref>. Although performance on most of the quality criteria was good, reporting of the method of measurement of CRT was generally poor, with 11 papers reporting neither the site nor the methods of time measurement, and a further six reporting only one of these (noted as unclear reporting). Blinding was also poorly reported, particularly for the clinical outcomes. In many cases, blinding of CRT measurement could only be established by timing, in that the measurement was made before determination of the clinical outcome. Few studies had contemporaneous measurement of CRT and clinical outcome, although it should be noted that this was impractical or impossible for some outcomes, such as final clinical diagnosis, or mortality. Missing data were generally not reported leading to uncertainty regarding the representativeness of the sample.</p>
+<fig id="pone.0138155.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0138155.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Summary of quality of included papers.</title>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0138155.g002" position="float" xlink:type="simple"/>
+</fig>
+<sec id="sec014">
+<title>Predictive accuracy of CRT for mortality</title>
+<p>We extracted 2x2 tables from seven of the studies on mortality, and data from the other two[<xref rid="pone.0138155.ref018" ref-type="bibr">18</xref>, <xref rid="pone.0138155.ref019" ref-type="bibr">19</xref>] were obtained after communication with the authors (for details of extracted data, see <xref rid="pone.0138155.s005" ref-type="supplementary-material">S4 Table</xref>). The nine included studies provided data on 17,285 children, of whom 1,149 died. Eight of the studies were conducted in hospital settings in low or lower-middle income countries.</p>
+<p>In all nine studies, CRT had high specificity for predicting overall mortality (range of 80–98%). All but two showed low sensitivity: one reporting moderate sensitivity was a very small study with wide confidence intervals,[<xref rid="pone.0138155.ref020" ref-type="bibr">20</xref>] and the second recruited children in a different setting (pre-hospital emergency transport in a high income country).[<xref rid="pone.0138155.ref021" ref-type="bibr">21</xref>] We used data from the nine studies to calculate a hierarchical summary ROC (HSROC) curve, shown in green in <xref rid="pone.0138155.g003" ref-type="fig">Fig 3</xref>. The summary point calculated by the meta-analysis (shown as a red box in <xref rid="pone.0138155.g003" ref-type="fig">Fig 3</xref>) has a sensitivity of 34 6% (95% CI 23 9–47 1%), specificity 92 3% (88 6–94 8%), positive likelihood ratio 4 49 (3 06–6 57), and negative likelihood ratio 0 71 (0 60–0 84) for prolonged CRT as a predictor of mortality. A bivariate random effects model was used to estimate a 95% prediction region for the curve, and a 95% confidence region for the summary point.</p>
+<fig id="pone.0138155.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0138155.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Hierarchical summary ROC curve showing diagnostic accuracy of CRT for predicting mortality.</title>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0138155.g003" position="float" xlink:type="simple"/>
+</fig>
+<p>In the dumbbell plot in <xref rid="pone.0138155.g004" ref-type="fig">Fig 4</xref>, the pre-test probability (prevalence) is shown in blue for each study, with the post-test probability after finding prolonged CRT (positive test) in red, and the post-test probability after finding normal CRT (negative test) in green. It can be seen that prolonged CRT consistently increases the post-test probability, whereas normal CRT does not greatly reduce it.</p>
+<fig id="pone.0138155.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0138155.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Pre/post test probability plot of prolonged CRT for predicting mortality.</title>
+<p>Markers show pre-test prevalence (blue), and post-test probabilities after positive (red) and negative (green) tests. Multiple results are shown for two studies: results are shown for two different cut-offs reported by Maitland et al,[<xref rid="pone.0138155.ref022" ref-type="bibr">22</xref>] and results from a subgroup analysis by Pamba and Maitland showing the performance for predicting death from different conditions[<xref rid="pone.0138155.ref023" ref-type="bibr">23</xref>].</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0138155.g004" position="float" xlink:type="simple"/>
+</fig>
+<p>One large study[<xref rid="pone.0138155.ref023" ref-type="bibr">23</xref>] reported the mortality due to various causes with an abnormal CRT, as shown in the lower portion of the dumbbell plot in <xref rid="pone.0138155.g004" ref-type="fig">Fig 4</xref>. This indicates that CRT longer than 3 seconds is predictive of mortality from malaria (without severe anemia), malnutrition, meningitis, and sepsis, but not from acute respiratory infection or malarial anemia (Hb&lt;50g/l).</p>
+</sec>
+<sec id="sec015">
+<title>Diagnostic accuracy of CRT for dehydration</title>
+<p>Of the six papers reporting the diagnostic accuracy of CRT for dehydration, recruitment overlapped in two[<xref rid="pone.0138155.ref024" ref-type="bibr">24</xref>, <xref rid="pone.0138155.ref025" ref-type="bibr">25</xref>] (we selected the one with the larger cohort, more clearly defined measurement method, and more data on the outcome of interest for analysis.[<xref rid="pone.0138155.ref025" ref-type="bibr">25</xref>]) The number of children in the five included studies is 499, of whom 147 had ≥5% dehydration (see <xref rid="pone.0138155.s006" ref-type="supplementary-material">S5 Table</xref>).</p>
+<p>We were able to extract sufficient data to reconstruct 2x2 tables for the outcome of ≥ 5% dehydration from all five studies. One study investigated the relationship between CRT and dehydration in children with diabetic ketoacidosis.[<xref rid="pone.0138155.ref026" ref-type="bibr">26</xref>] However, given that dehydration as a result of diabetic ketoacidosis has a markedly different pathophysiology from other causes of dehydration (e.g. infectious gastroenteritis), we did not include this study in the meta-analysis but it is presented in the dumbbell plot. The three studies reporting data for children attending Emergency Departments with gastrointestinal symptoms[<xref rid="pone.0138155.ref025" ref-type="bibr">25</xref>, <xref rid="pone.0138155.ref027" ref-type="bibr">27</xref>, <xref rid="pone.0138155.ref028" ref-type="bibr">28</xref>] all showed high specificity (range 88–94%). A hierarchical summary ROC curve for this data is shown in <xref rid="pone.0138155.s001" ref-type="supplementary-material">S1 Fig</xref>. The dumbbell plot in <xref rid="pone.0138155.g005" ref-type="fig">Fig 5</xref> shows that prolonged CRT markedly increases the probability of a child having ≥ 5% dehydration, except in the case of diabetic ketoacidosis, where the utility of CRT is greatly reduced. Positive likelihood ratios ranged from 1.3 to 16.9, with negative likelihood ratios ranging from 0.06 to 0.99 (<xref rid="pone.0138155.s006" ref-type="supplementary-material">S5 Table</xref>).</p>
+<fig id="pone.0138155.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0138155.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Pre/post test probability plot of prolonged CRT for predicting significant dehydration and severe illness.</title>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0138155.g005" position="float" xlink:type="simple"/>
+</fig>
+<p>The high heterogeneity of the data, as evidenced by the large confidence and prediction regions and the large distance of the individual study results from the summary ROC curve, means that reporting of the position of the summary point is not statistically relevant.</p>
+</sec>
+<sec id="sec016">
+<title>Diagnostic accuracy of CRT for other serious illnesses</title>
+<p>We identified 11 studies with data on the accuracy of CRT for eight other clinical outcomes: dengue, meningitis, admission, sepsis, urinary tract infection, pneumonia, hypoxia, and severity of illness. Leonard and Beattie[<xref rid="pone.0138155.ref029" ref-type="bibr">29</xref>] reported no significant association between CRT and meningococcal disease or other significant bacterial illness but did not provide specific data (and contact with the authors failed to yield additional data). Three further studies did not report 2x2 tables for any outcomes;[<xref rid="pone.0138155.ref019" ref-type="bibr">19</xref>, <xref rid="pone.0138155.ref030" ref-type="bibr">30</xref>, <xref rid="pone.0138155.ref031" ref-type="bibr">31</xref>] data were obtained after contact with two study authors,[<xref rid="pone.0138155.ref019" ref-type="bibr">19</xref>, <xref rid="pone.0138155.ref031" ref-type="bibr">31</xref>] but attempts to obtain results from the third study[<xref rid="pone.0138155.ref030" ref-type="bibr">30</xref>] were unsuccessful, although odds ratios are reported for all outcomes. One study[<xref rid="pone.0138155.ref032" ref-type="bibr">32</xref>] was excluded from the pre/post test probability plot as the case-control design precluded calculation of true prevalence. The results obtained are summarized in <xref rid="pone.0138155.s007" ref-type="supplementary-material">S6 Table</xref>.</p>
+<p>Prolonged CRT shows consistently high specificity for prediction of dengue, meningitis, admission, sepsis, hypoxia, and severity of illness. No sensitivity or specificity values could be calculated for the outcomes of urinary tract infection or pneumonia, but reported odds ratios of between 2 and 5 are similar to those for other outcomes. In two studies of dengue, prolonged CRT showed variable sensitivity, which is likely to be explained by the large differences in the sample size and study design. Prolonged CRT showed low sensitivity for meningitis in one study carried out in low and lower-middle income settings, but moderate sensitivity in two studies carried out in high income settings. The sensitivity of CRT was relatively low for prediction of admission, sepsis, hypoxia, and severity of illness.</p>
+<p>The pre/post test probability plots (<xref rid="pone.0138155.g005" ref-type="fig">Fig 5</xref>) for the eight studies for which prevalence and likelihood ratios were available, show that in most cases, prolonged CRT considerably increases the probability of an adverse clinical outcome. However, this is not the case for the study of meningitis in low and lower-middle income countries, although it does appear to hold for studies of meningitis in high-income countries. Few studies show any noticeable reduction in the probability of an adverse outcome following a normal CRT result, even where prevalence is relatively high.</p>
+</sec>
+</sec>
+<sec id="sec017" sec-type="conclusions">
+<title>Discussion</title>
+<p>Our results show that CRT is an important “red flag” vital sign for identifying children with serious illness: finding an abnormal CRT increases the likelihood of a serious outcome including death and dehydration, but a normal CRT does not make a serious outcome less likely. Therefore, a normal CRT should not be used to rule out serious illness in children.</p>
+<p>Our review identified 24 studies on over 53,000 children across a variety of outcomes and settings including primary and secondary care, low- and high-income countries, and emergency services. A prolonged CRT consistently performed well as a red flag in all these different situations, but the most robust evidence is found in low or middle income settings. Considering it is a clinical feature that does not require sophisticated equipment and can be measured in children of all ages in all circumstances, the measurement of CRT should be part of the standard evaluation of all acutely ill children worldwide.</p>
+<p>The most convincing data were found for predicting death, indicating that a child with a prolonged CRT has a 4-fold greater risk of dying compared to a child with normal CRT. This strongly reinforces the recommendations in the World Health Organization’s Integrated Management of Childhood Illness (IMCI) guidelines that an abnormal CRT indicates shock and should be managed accordingly, and suggests that measurement of CRT should become part of routine IMCI protocols.[<xref rid="pone.0138155.ref003" ref-type="bibr">3</xref>] However, all of these studies were carried out in high mortality settings (lower income countries or high acuity settings in high income countries), and are unlikely to be generalizable to settings with low mortality rates.</p>
+<p>Although heterogeneity precluded drawing firm conclusions from meta-analysis, abnormal CRT was shown to markedly increase the post-test probability of significant dehydration, with the exception of children presenting with diabetic ketoacidosis. The majority of these studies were performed in high-income settings, and reaffirm the importance of routinely measuring CRT in children with suspected dehydration, a common reason why parents bring children to healthcare professionals.</p>
+<p>CRT specificity may vary for certain diseases. For example, it was less useful for meningitis than for sepsis, dengue, hypoxia, or need for hospital admission for serious infection. This may be because of the rapid evolving illness in meningitis leaving a narrow window for delivering life-saving treatments, or due to the infrequent presence of shock in these situations, as reduced peripheral perfusion secondary to shock is likely to be a common cause of prolonged CRT. Prolonged CRT clearly has a diagnostic role in assessing children, but we found a somewhat lower positive likelihood ratio (4.5 for outcome of mortality) compared to other markers of serious illness in children in high income settings (such as tachypnea, body temperature ≥ 40°C, or meningeal irritation[<xref rid="pone.0138155.ref012" ref-type="bibr">12</xref>, <xref rid="pone.0138155.ref013" ref-type="bibr">13</xref>]) where positive likelihood ratios typically range between 5 and 10. Although likelihood ratios of 5 are generally considered to only moderately change the probability of disease, this may be all that can be expected from a clinical feature.[<xref rid="pone.0138155.ref033" ref-type="bibr">33</xref>] Moreover, the inconsistent and non-standardized measurement of CRT in clinical practice may also reduce the potential utility of this vital sign.[<xref rid="pone.0138155.ref034" ref-type="bibr">34</xref>, <xref rid="pone.0138155.ref035" ref-type="bibr">35</xref>]</p>
+<p>To our knowledge, this is the first systematic review of the diagnostic accuracy of CRT in children worldwide. We used a comprehensive search strategy that identified all available studies. However, studies often evaluate CRT together with many other clinical features, and thus terms referring to CRT or peripheral perfusion may not have picked up all available studies. We therefore supplemented our literature searches by reference tracking and expert consultation. We were unable to assess our results for publication bias, as there were fewer than 10 studies for any given outcome.</p>
+<p>We found substantial heterogeneity particularly between studies reporting CRT for predicting dehydration. The statistical heterogeneity cannot be fully explained by clinical factors alone, but may be partly due to differences in measurement technique, which were incompletely reported. Nevertheless, the results of the individual studies suggest that while CRT could be an important red flag for dehydration, more evidence from better specified and appropriately powered studies are needed to obtain a precise estimate of CRT’s diagnostic value.</p>
+<p>Poor reporting was a significant issue across included studies. In particular, we found inconsistent or incomplete reporting on how CRT was measured. The results of our previous review indicate that measurement methods such as the choice of body site, pressing time or ambient temperature impact the test’s validity and reliability.[<xref rid="pone.0138155.ref006" ref-type="bibr">6</xref>] The paucity of reporting of these factors suggests that the estimates of diagnostic accuracy we report may be more conservative than if the studies had used more consistent and valid measurement methods. However, where reported, included studies used the finger as the measurement site, and use cut-offs of 2 or 3 seconds to define prolonged CRT. These are consistent with the findings of our previous review, which recommends that CRT should be measured on the finger, and found that normal CRT in healthy children at this site is 2 seconds or less. Standardization of CRT measurement is essential for future diagnostic accuracy studies.</p>
+<p>There was also poor reporting of whether all included children received measurements of both CRT and the clinical outcome, which was typically due to retrospective or observational study designs, leading to missing data. This incomplete reporting introduces both risk of selection bias and may limit the representativeness of the findings as children who were particularly unwell may have been excluded in the studies. We were unable to assess the diagnostic value of CRT in detecting serious illness at different age groups, and the inclusion of wide age ranges in some studies may have obscured potential age-related differences. We also found very limited data from primary care settings where access to diagnostic investigations may be limited and clinical signs such as CRT play a vital role in clinical assessment.</p>
+<p>For clinicians, our findings emphasize the diagnostic value of CRT; highlighting that CRT is generally highly specific, but has variable and often low sensitivity–hence better for ruling in than ruling out. Since CRT has limited reliability, repeating measurement is important before getting alarmed. Clinical guidelines need to emphasize their rationale for including CRT, including the method for measurement (making it clearer where and for how long to press, and use of a stopwatch, or equivalent, to measure), and the interpretation of CRT values (avoiding terms like prolonged or sluggish, and instead provide whole second cut off values).</p>
+<p>A number of important issues remain unresolved. First, we found only one study in primary care, and no studies that looked at the outcomes of dehydration in this setting. Yet, the numbers presenting with acute gastroenteritis and dehydration in these settings worldwide are considerable. Second, using more consistent and standardized methods of measuring CRT to determine its clinical utility across a wide range of diseases could aid its interpretation and use. Third, studies are needed to determine the added diagnostic value of CRT or its independent diagnostic value over and above other vital signs and clinical features. Finally, there are opportunities to explore the use of new technologies to improve the measurement and detection of CRT, and determine whether they perform better when compared with heart rate or other non-invasive measures of cardiovascular status such as blood pressure.</p>
+</sec>
+<sec id="sec018" sec-type="conclusions">
+<title>Conclusions</title>
+<p>A capillary refill time of 3 seconds or more is an important warning sign for serious illness and risk of death in children, and can easily be used in a wide range of settings and with only minimal training. Normal CRT in children does not make a serious outcome less likely, and should not be used to rule out serious illness. Standardization of CRT measurement would likely increase the diagnostic utility of this test.</p>
+</sec>
+<sec id="sec019">
+<title>Supporting Information</title>
+<supplementary-material id="pone.0138155.s001" xlink:href="info:doi/10.1371/journal.pone.0138155.s001" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Hierarchical summary ROC curve showing diagnostic accuracy of CRT for predicting significant dehydration.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0138155.s002" xlink:href="info:doi/10.1371/journal.pone.0138155.s002" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>Quality assessment criteria.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0138155.s003" xlink:href="info:doi/10.1371/journal.pone.0138155.s003" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S2 Table</label>
+<caption>
+<title>Characteristics of included studies.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0138155.s004" xlink:href="info:doi/10.1371/journal.pone.0138155.s004" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S3 Table</label>
+<caption>
+<title>Quality assessment of included papers.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0138155.s005" xlink:href="info:doi/10.1371/journal.pone.0138155.s005" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S4 Table</label>
+<caption>
+<title>Extracted data on diagnostic accuracy of CRT for predicting mortality in children.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0138155.s006" xlink:href="info:doi/10.1371/journal.pone.0138155.s006" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S5 Table</label>
+<caption>
+<title>Extracted data on diagnostic accuracy of CRT for ≥5% dehydration.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0138155.s007" xlink:href="info:doi/10.1371/journal.pone.0138155.s007" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S6 Table</label>
+<caption>
+<title>Diagnostic accuracy of CRT in predicting serious illness and admission to hospital.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0138155.s008" xlink:href="info:doi/10.1371/journal.pone.0138155.s008" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Systematic review protocol.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0138155.s009" xlink:href="info:doi/10.1371/journal.pone.0138155.s009" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S2 Text</label>
+<caption>
+<title>Search strategy for diagnostic accuracy studies.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0138155.s010" xlink:href="info:doi/10.1371/journal.pone.0138155.s010" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S3 Text</label>
+<caption>
+<title>Completed PRISMA checklist.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pone.0138155.ref001"><label>1</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Mackway-Jones</surname> <given-names>K</given-names></name>, <collab xlink:type="simple">Advanced Life Support Group (Manchester England)</collab>. <chapter-title>Advanced paediatric life support: the practical approach</chapter-title>. <edition>4th ed.</edition> <publisher-loc>Malden, Mass.</publisher-loc>: <publisher-name>Blackwell</publisher-name>; <year>2005</year>.</mixed-citation></ref>
+<ref id="pone.0138155.ref002"><label>2</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Ralston</surname> <given-names>M</given-names></name>, <collab xlink:type="simple">American Heart Association., American Academy of Pediatrics</collab>. <chapter-title>PALS provider manual</chapter-title>. <publisher-loc>Dallas, Tex.</publisher-loc>: <publisher-name>American Heart Association</publisher-name>; <year>2006</year>. <volume>viii</volume>, 274 p. p.</mixed-citation></ref>
+<ref id="pone.0138155.ref003"><label>3</label><mixed-citation publication-type="book" xlink:type="simple"><collab xlink:type="simple">World Health Organization. Department of Child and Adolescent Health and Development., UNICEF</collab>. <chapter-title>Management of the child with a serious infection or severe malnutrition: guidelines for care at the first-referral level in developing countries</chapter-title>. <publisher-loc>Geneva</publisher-loc>: <publisher-name>Dept. of Child and Adolescent Health and Development UNICEF</publisher-name>; <year>2000</year>. <volume>xiii</volume>, 162 p. p.</mixed-citation></ref>
+<ref id="pone.0138155.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Brierley</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Carcillo</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Choong</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Cornell</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Decaen</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Deymann</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>Clinical practice parameters for hemodynamic support of pediatric and neonatal septic shock: 2007 update from the American College of Critical Care Medicine</article-title>. <source>Critical care medicine</source>. <year>2009</year>;<volume>37</volume>(<issue>2</issue>):<fpage>666</fpage>–<lpage>88</lpage>. Epub 2009/03/28. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1097/CCM.0b013e31819323c6" xlink:type="simple">10.1097/CCM.0b013e31819323c6</ext-link></comment> <object-id pub-id-type="pmid">19325359</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dellinger</surname> <given-names>RP</given-names></name>, <name name-style="western"><surname>Levy</surname> <given-names>MM</given-names></name>, <name name-style="western"><surname>Rhodes</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Annane</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Gerlach</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Opal</surname> <given-names>SM</given-names></name>, <etal>et al</etal>. <article-title>Surviving Sepsis Campaign: International Guidelines for Management of Severe Sepsis and Septic Shock, 2012</article-title>. <source>Intens Care Med</source>. <year>2013</year>;<volume>39</volume>(<issue>2</issue>):<fpage>165</fpage>–<lpage>228</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s00134-012-2769-8" xlink:type="simple">10.1007/s00134-012-2769-8</ext-link></comment> <object-id pub-id-type="pmid">ISI:000314765000001</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fleming</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Gill</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Jones</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Taylor</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Van den Bruel</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Heneghan</surname> <given-names>C</given-names></name>, <etal>et al</etal>. <article-title>Validity and reliability of measurement of capillary refill time in children: a systematic review</article-title>. <source>Archives of disease in childhood</source>. <year>2014</year>. Epub 2014/09/28. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1136/archdischild-2014-307079" xlink:type="simple">10.1136/archdischild-2014-307079</ext-link></comment> <object-id pub-id-type="pmid">25260515</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref007"><label>7</label><mixed-citation publication-type="book" xlink:type="simple"><collab xlink:type="simple">National Institute for Health and Care Excellence</collab>. <chapter-title>Feverish illness in children—Assessment and initial management in children younger than 5 years. CG47</chapter-title>. <publisher-loc>London</publisher-loc>: <publisher-name>National Institute for Health and Care Excellence</publisher-name>; <year>2007</year>.</mixed-citation></ref>
+<ref id="pone.0138155.ref008"><label>8</label><mixed-citation publication-type="book" xlink:type="simple"><collab xlink:type="simple">National Institute for Health and Care Excellence</collab>. <chapter-title>Bacterial meningitis and meningococcal septicaemia. CG102</chapter-title>. <publisher-loc>London</publisher-loc>: <publisher-name>National Institute for Health and Care Excellence</publisher-name>; <year>2010</year>.</mixed-citation></ref>
+<ref id="pone.0138155.ref009"><label>9</label><mixed-citation publication-type="book" xlink:type="simple"><collab xlink:type="simple">National Institute for Health and Care Excellence</collab>. <chapter-title>Feverish illness in children. CG160</chapter-title>. <publisher-loc>London</publisher-loc>: <publisher-name>National Institute for Health and Care Excellence</publisher-name>; <year>2013</year>.</mixed-citation></ref>
+<ref id="pone.0138155.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Colletti</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Brown</surname> <given-names>KM</given-names></name>, <name name-style="western"><surname>Sharieff</surname> <given-names>GQ</given-names></name>, <name name-style="western"><surname>Barata</surname> <given-names>IA</given-names></name>, <name name-style="western"><surname>Ishimine</surname> <given-names>P</given-names></name>. <article-title>The management of children with gastroenteritis and dehydration in the emergency department</article-title>. <source>The Journal of emergency medicine</source>. <year>2010</year>;<volume>38</volume>(<issue>5</issue>):<fpage>686</fpage>–<lpage>98</lpage>. Epub 2009/04/07. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jemermed.2008.06.015" xlink:type="simple">10.1016/j.jemermed.2008.06.015</ext-link></comment> <object-id pub-id-type="pmid">19345549</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Steiner</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>DeWalt</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Byerley</surname> <given-names>JS</given-names></name>. <article-title>Is this child dehydrated?</article-title> <source>JAMA: the journal of the American Medical Association</source>. <year>2004</year>;<volume>291</volume>(<issue>22</issue>):<fpage>2746</fpage>–<lpage>54</lpage>. Epub 2004/06/10. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1001/jama.291.22.2746" xlink:type="simple">10.1001/jama.291.22.2746</ext-link></comment> <object-id pub-id-type="pmid">15187057</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thompson</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Van den Bruel</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Verbakel</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Lakhanpaul</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Haj-Hassan</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Stevens</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>Systematic review and validation of prediction rules for identifying children with serious infections in emergency departments and urgent-access primary care</article-title>. <source>Health Technology Assessment (Winchester, England)</source>. <year>2012</year>;<volume>16</volume>(<issue>15</issue>):<fpage>1</fpage>–<lpage>100</lpage>. <object-id pub-id-type="pmid">22452986</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Van den Bruel</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Haj-Hassan</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Thompson</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Buntinx</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Mant</surname> <given-names>D</given-names></name>. <article-title>Diagnostic value of clinical features at presentation to identify serious infection in children in developed countries: a systematic review</article-title>. <source>Lancet</source>. <year>2010</year>;<volume>375</volume>(<issue>9717</issue>):<fpage>834</fpage>–<lpage>45</lpage>. Epub 2010/02/06. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0140-6736(09)62000-6" xlink:type="simple">10.1016/S0140-6736(09)62000-6</ext-link></comment> <object-id pub-id-type="pmid">20132979</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Whiting</surname> <given-names>PF</given-names></name>, <name name-style="western"><surname>Rutjes</surname> <given-names>AW</given-names></name>, <name name-style="western"><surname>Westwood</surname> <given-names>ME</given-names></name>, <name name-style="western"><surname>Mallett</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Deeks</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Reitsma</surname> <given-names>JB</given-names></name>, <etal>et al</etal>. <article-title>QUADAS-2: a revised tool for the quality assessment of diagnostic accuracy studies</article-title>. <source>Annals of internal medicine</source>. <year>2011</year>;<volume>155</volume>(<issue>8</issue>):<fpage>529</fpage>–<lpage>36</lpage>. Epub 2011/10/19. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1059/0003-4819-155-8-201110180-00009" xlink:type="simple">10.1059/0003-4819-155-8-201110180-00009</ext-link></comment> <object-id pub-id-type="pmid">22007046</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref015"><label>15</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Agresti</surname> <given-names>A</given-names></name>. <chapter-title>An introduction to categorical data analysis</chapter-title>. <edition>2nd ed.</edition> <publisher-loc>New Jersey</publisher-loc>: <publisher-name>Wiley</publisher-name>; <year>2007</year>.</mixed-citation></ref>
+<ref id="pone.0138155.ref016"><label>16</label><mixed-citation publication-type="other" xlink:type="simple">The World Bank. Data—Country Groups [cited 2013 12 July]. Available from: <ext-link ext-link-type="uri" xlink:href="http://go.worldbank.org/47F97HK2P0" xlink:type="simple">http://go.worldbank.org/47F97HK2P0</ext-link>.</mixed-citation></ref>
+<ref id="pone.0138155.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reitsma</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Glas</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Rutjes</surname> <given-names>AW</given-names></name>, <name name-style="western"><surname>Scholten</surname> <given-names>RJ</given-names></name>, <name name-style="western"><surname>Bossuyt</surname> <given-names>PM</given-names></name>, <name name-style="western"><surname>Zwinderman</surname> <given-names>AH</given-names></name>. <article-title>Bivariate analysis of sensitivity and specificity produces informative summary measures in diagnostic reviews</article-title>. <source>Journal of clinical epidemiology</source>. <year>2005</year>;<volume>58</volume>(<issue>10</issue>):<fpage>982</fpage>–<lpage>90</lpage>. Epub 2005/09/20. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jclinepi.2005.02.022" xlink:type="simple">10.1016/j.jclinepi.2005.02.022</ext-link></comment> <object-id pub-id-type="pmid">16168343</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mathur</surname> <given-names>NB</given-names></name>, <name name-style="western"><surname>Arora</surname> <given-names>D</given-names></name>. <article-title>Role of TOPS (a simplified assessment of neonatal acute physiology) in predicting mortality in transported neonates</article-title>. <source>Acta Paediatrica</source>. <year>2007</year>;<volume>96</volume>(<issue>2</issue>):<fpage>172</fpage>–<lpage>5</lpage>. Epub 2007/04/13. <object-id pub-id-type="pmid">17429899</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Weber</surname> <given-names>MW</given-names></name>, <name name-style="western"><surname>Carlin</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Gatchalian</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Lehmann</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Muhe</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Mulholland</surname> <given-names>EK</given-names></name>. <article-title>Predictors of neonatal sepsis in developing countries</article-title>. <source>The Pediatric infectious disease journal</source>. <year>2003</year>;<volume>22</volume>(<issue>8</issue>):<fpage>711</fpage>–<lpage>7</lpage>. Epub 2003/08/13. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1097/01.inf.0000078163.80807.88" xlink:type="simple">10.1097/01.inf.0000078163.80807.88</ext-link></comment> <object-id pub-id-type="pmid">12913772</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ahmed</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Mahmood</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Sharma</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Hoque</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Zaman</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Hasan</surname> <given-names>M</given-names></name>. <article-title>Dengue and dengue haemorrhagic fever in children during the 2000 outbreak in Chittagong, Bangladesh</article-title>. <source>Dengue Bulletin</source>. <year>2001</year>;<volume>25</volume>(<month>December</month>):<fpage>33</fpage>–<lpage>9</lpage>.</mixed-citation></ref>
+<ref id="pone.0138155.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Carcillo</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Kuch</surname> <given-names>BA</given-names></name>, <name name-style="western"><surname>Han</surname> <given-names>YY</given-names></name>, <name name-style="western"><surname>Day</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Greenwald</surname> <given-names>BM</given-names></name>, <name name-style="western"><surname>McCloskey</surname> <given-names>KA</given-names></name>, <etal>et al</etal>. <article-title>Mortality and functional morbidity after use of PALS/APLS by community physicians</article-title>. <source>Pediatrics</source>. <year>2009</year>;<volume>124</volume>(<issue>2</issue>):<fpage>500</fpage>–<lpage>8</lpage>. Epub 2009/08/05. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1542/peds.2008-1967" xlink:type="simple">10.1542/peds.2008-1967</ext-link></comment> <object-id pub-id-type="pmid">19651576</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Maitland</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Berkley</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Shebbe</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Peshu</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>English</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Newton</surname> <given-names>CR</given-names></name>. <article-title>Children with severe malnutrition: can those at highest risk of death be identified with the WHO protocol?</article-title> <source>PLoS medicine</source>. <year>2006</year>;<volume>3</volume>(<issue>12</issue>):<fpage>e500</fpage>. Epub 2006/12/30. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pmed.0030500" xlink:type="simple">10.1371/journal.pmed.0030500</ext-link></comment> <object-id pub-id-type="pmid">17194194</object-id>; PubMed Central PMCID: PMC1716191.</mixed-citation></ref>
+<ref id="pone.0138155.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pamba</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Maitland</surname> <given-names>K</given-names></name>. <article-title>Capillary refill: prognostic value in Kenyan children</article-title>. <source>Archives of disease in childhood</source>. <year>2004</year>;<volume>89</volume>(<issue>10</issue>):<fpage>950</fpage>–<lpage>5</lpage>. Epub 2004/09/24. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1136/adc.2003.032516" xlink:type="simple">10.1136/adc.2003.032516</ext-link></comment> <object-id pub-id-type="pmid">15383440</object-id>; PubMed Central PMCID: PMC1719664.</mixed-citation></ref>
+<ref id="pone.0138155.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gorelick</surname> <given-names>MH</given-names></name>, <name name-style="western"><surname>Shaw</surname> <given-names>KN</given-names></name>, <name name-style="western"><surname>Murphy</surname> <given-names>KO</given-names></name>. <article-title>Validity and reliability of clinical signs in the diagnosis of dehydration in children</article-title>. <source>Pediatrics</source>. <year>1997</year>;<volume>99</volume>(<issue>5</issue>):<fpage>E6</fpage>. Epub 1997/05/01. <object-id pub-id-type="pmid">9113963</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gorelick</surname> <given-names>MH</given-names></name>, <name name-style="western"><surname>Shaw</surname> <given-names>KN</given-names></name>, <name name-style="western"><surname>Murphy</surname> <given-names>KO</given-names></name>, <name name-style="western"><surname>Baker</surname> <given-names>MD</given-names></name>. <article-title>Effect of fever on capillary refill time</article-title>. <source>Pediatric emergency care</source>. <year>1997</year>;<volume>13</volume>(<issue>5</issue>):<fpage>305</fpage>–<lpage>7</lpage>. Epub 1997/11/22. <object-id pub-id-type="pmid">9368239</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref026"><label>26</label><mixed-citation publication-type="other" xlink:type="simple">Morrison G, Sottosanti M, Singh R, Sharma A, Fraser D, Alawi K, et al. Quantifying dehydration in children with diabetic ketoacidosis (DKA): Does it matter? Pediatric Critical Care Medicine. 2011;Conference: 6th World Congress on Pediatric Critical Care: One World Sharing Knowledge Sydney, NSW Australia. Conference Start: 20110313 Conference End: 20110317. Conference Publication:(var.pagings). 12 (3 SUPPL. 1):A122-A3. <object-id pub-id-type="pmid">70418978</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Saavedra</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Harris</surname> <given-names>GD</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Finberg</surname> <given-names>L</given-names></name>. <article-title>Capillary refilling (skin turgor) in the assessment of dehydration</article-title>. <source>Am J Dis Child</source>. <year>1991</year>;<volume>145</volume>(<issue>3</issue>):<fpage>296</fpage>–<lpage>8</lpage>. Epub 1991/03/01. <object-id pub-id-type="pmid">2003478</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shavit</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Brant</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Nijssen-Jordan</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Galbraith</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Johnson</surname> <given-names>DW</given-names></name>. <article-title>A novel imaging technique to measure capillary-refill time: improving diagnostic accuracy for dehydration in young children with gastroenteritis</article-title>. <source>Pediatrics</source>. <year>2006</year>;<volume>118</volume>(<issue>6</issue>):<fpage>2402</fpage>–<lpage>8</lpage>. Epub 2006/12/05. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1542/peds.2006-1108" xlink:type="simple">10.1542/peds.2006-1108</ext-link></comment> <object-id pub-id-type="pmid">17142525</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Leonard</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Beattie</surname> <given-names>TF</given-names></name>. <article-title>Is measurement of capillary refill time useful as part of the initial assessment of children?</article-title> <source>European Journal of Emergency Medicine</source>. <year>2004</year>;<volume>11</volume>(<issue>3</issue>):<fpage>158</fpage>–<lpage>63</lpage>. <object-id pub-id-type="pmid">15167177</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Craig</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Williams</surname> <given-names>GJ</given-names></name>, <name name-style="western"><surname>Jones</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Codarini</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Macaskill</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Hayen</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>The accuracy of clinical symptoms and signs for the diagnosis of serious bacterial infection in young febrile children: prospective cohort study of 15 781 febrile illnesses</article-title>. <source>BMJ</source>. <year>2010</year>;<volume>340</volume>:<fpage>c1594</fpage>. Epub 2010/04/22. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1136/bmj.c1594" xlink:type="simple">10.1136/bmj.c1594</ext-link></comment> <object-id pub-id-type="pmid">20406860</object-id>; PubMed Central PMCID: PMC2857748.</mixed-citation></ref>
+<ref id="pone.0138155.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><collab xlink:type="simple">Young Infants Clinical Signs Study G</collab>. <article-title>Clinical signs that predict severe illness in children under age 2 months: a multicentre study</article-title>. <source>Lancet</source>. <year>2008</year>;<volume>371</volume>(<issue>9607</issue>):<fpage>135</fpage>–<lpage>42</lpage>. <object-id pub-id-type="pmid">18191685</object-id>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0140-6736(08)60106-3" xlink:type="simple">10.1016/S0140-6736(08)60106-3</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0138155.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Verbakel</surname> <given-names>JY</given-names></name>, <name name-style="western"><surname>MacFaul</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Aertgeerts</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Buntinx</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Thompson</surname> <given-names>M</given-names></name>. <article-title>Sepsis and meningitis in hospitalized children: performance of clinical signs and their prediction rules in a case-control study</article-title>. <source>Pediatric emergency care</source>. <year>2014</year>;<volume>30</volume>(<issue>6</issue>):<fpage>373</fpage>–<lpage>80</lpage>. Epub 2014/05/23. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1097/PEC.0000000000000142" xlink:type="simple">10.1097/PEC.0000000000000142</ext-link></comment> <object-id pub-id-type="pmid">24849278</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jaeschke</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Guyatt</surname> <given-names>GH</given-names></name>, <name name-style="western"><surname>Sackett</surname> <given-names>DL</given-names></name>. <article-title>Users' guides to the medical literature. III. How to use an article about a diagnostic test. B. What are the results and will they help me in caring for my patients? The Evidence-Based Medicine Working Group</article-title>. <source>JAMA: the journal of the American Medical Association</source>. <year>1994</year>;<volume>271</volume>(<issue>9</issue>):<fpage>703</fpage>–<lpage>7</lpage>. Epub 1994/03/02. <object-id pub-id-type="pmid">8309035</object-id>.</mixed-citation></ref>
+<ref id="pone.0138155.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Blacklock</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Haj-Hassan</surname> <given-names>TA</given-names></name>, <name name-style="western"><surname>Thompson</surname> <given-names>MJ</given-names></name>. <article-title>When and how do GPs record vital signs in children with acute infections? A cross-sectional study</article-title>. <source>The British journal of general practice: the journal of the Royal College of General Practitioners</source>. <year>2012</year>;<volume>62</volume>(<issue>603</issue>):<fpage>e679</fpage>–<lpage>86</lpage>. Epub 2012/12/26. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.3399/bjgp12X656810" xlink:type="simple">10.3399/bjgp12X656810</ext-link></comment> <object-id pub-id-type="pmid">23265227</object-id>; PubMed Central PMCID: PMC3459775.</mixed-citation></ref>
+<ref id="pone.0138155.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thompson</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Mayon-White</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Harnden</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Perera</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>McLeod</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Mant</surname> <given-names>D</given-names></name>. <article-title>Using vital signs to assess children with acute infections: a survey of current practice</article-title>. <source>The British journal of general practice: the journal of the Royal College of General Practitioners</source>. <year>2008</year>;<volume>58</volume>(<issue>549</issue>):<fpage>236</fpage>–<lpage>41</lpage>. Epub 2008/05/23. <object-id pub-id-type="pmid">18494174</object-id>; PubMed Central PMCID: PMC2277108.</mixed-citation></ref>
+</ref-list>
+</back>
+</article>

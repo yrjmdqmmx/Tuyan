@@ -1,0 +1,444 @@
+{
+  "doi": "10.1371/journal.pone.0242453",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0242453",
+  "title": "Data analysis and modeling pipelines for controlled networked social science experiments",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Vanessa Cedeno-Mieles",
+    "Zhihao Hu",
+    "Yihui Ren",
+    "Xinwei Deng",
+    "Noshir Contractor",
+    "Saliya Ekanayake",
+    "Joshua M. Epstein",
+    "Brian J. Goode",
+    "Gizem Korkmaz",
+    "Chris J. Kuhlman",
+    "Dustin Machi",
+    "Michael Macy",
+    "Madhav V. Marathe",
+    "Naren Ramakrishnan",
+    "Parang Saraf",
+    "Nathan Self"
+  ],
+  "year": "2020",
+  "license": "2020\nCedeno-Mieles et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0242453.g001",
+      "label": "Fig 1",
+      "caption": "A representation of the steps in iterative abductive analysis.\nThe process begins with conducting experiments and flows clockwise through reasoning about data and what experiments to perform next, whereupon the process repeats. Deductive analyses include these steps, but modeling occurs before experiments, so that the steps are rearranged. Parts of many of these steps (e.g., computing model properties) can be automated, and this automation is the focus of this paper. Other steps are not automated, such as the process of developing a model, because this requires a significant element of human reasoning. Thus, our software system requires human-in-the-loop execution. The process can be used in a purely experimental approach (i.e., no modeling). See the text for a description of this graphic.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>A representation of the steps in iterative abductive analysis.</title>\n<p>The process begins with conducting experiments and flows clockwise through reasoning about data and what experiments to perform next, whereupon the process repeats. Deductive analyses include these steps, but modeling occurs before experiments, so that the steps are rearranged. Parts of many of these steps (e.g., computing model properties) can be automated, and this automation is the focus of this paper. Other steps are not automated, such as the process of developing a model, because this requires a significant element of human reasoning. Thus, our software system requires human-in-the-loop execution. The process can be used in a purely experimental approach (i.e., no modeling). See the text for a description of this graphic.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g002",
+      "label": "Fig 2",
+      "caption": "Roadmap of, and relationships among, sections in this manuscript.\nArrows indicate dependencies among sections, and dashed arrows identify the theoretical models that impact the design and implement of the software pipeline system. The Introduction, Related Work, and Conclusions are not shown. See text for details.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Roadmap of, and relationships among, sections in this manuscript.</title>\n<p>Arrows indicate dependencies among sections, and dashed arrows identify the theoretical models that impact the design and implement of the software pipeline system. The Introduction, Related Work, and Conclusions are not shown. See text for details.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g003",
+      "label": "Fig 3",
+      "caption": "Five software pipelines (in gray) for NESS experiments.\nThe five pipelines are itemized and described in Table 1. In this human-in-the-analysis loop, experiments (upper left in figure) are performed. Any experiment whose data can be cast in terms of the data model specification can be analyzed with this system. These pipelines are the focus of this work. The pipeline composition shown here, for abductive looping, is one of several possibilities. See Table 1 for descriptions of the pipelines in this figure. The first, second, and fifth pipelines can be used with a purely experimental approach (omitting modeling). An earlier version of the pipeline system is provided in [34], Fig 1.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Five software pipelines (in gray) for NESS experiments.</title>\n<p>The five pipelines are itemized and described in <xref ref-type=\"table\" rid=\"pone.0242453.t001\">Table 1</xref>. In this human-in-the-analysis loop, experiments (upper left in figure) are performed. Any experiment whose data can be cast in terms of the data model specification can be analyzed with this system. These pipelines are the focus of this work. The pipeline composition shown here, for abductive looping, is one of several possibilities. See <xref ref-type=\"table\" rid=\"pone.0242453.t001\">Table 1</xref> for descriptions of the pipelines in this figure. The first, second, and fifth pipelines can be used with a purely experimental approach (omitting modeling). An earlier version of the pipeline system is provided in [<xref ref-type=\"bibr\" rid=\"pone.0242453.ref034\">34</xref>], <xref ref-type=\"fig\" rid=\"pone.0242453.g001\">Fig 1</xref>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g004",
+      "label": "Fig 4",
+      "caption": "The three types of models described in this work: (Abstract) data model, graph dynamical system model, and pipeline model.\nThe data model enables rigorous reasoning about both (i) experiments and experimental data specifications (requirements) and (ii) modeling and simulation (MAS) specifications. It, along with the graph dynamical system (GDS) model, help to ensure consistency and correspondence between experiments and MAS. We use GDS to model the dynamics of particular applications systems. Specific data sources and modeling approaches are shown. These are used within our pipeline model. Figure adapted from [34].",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>The three types of models described in this work: (Abstract) data model, graph dynamical system model, and pipeline model.</title>\n<p>The data model enables rigorous reasoning about both (<italic>i</italic>) experiments and experimental data specifications (requirements) and (<italic>ii</italic>) modeling and simulation (MAS) specifications. It, along with the graph dynamical system (GDS) model, help to ensure consistency and correspondence between experiments and MAS. We use GDS to model the dynamics of particular applications systems. Specific data sources and modeling approaches are shown. These are used within our pipeline model. Figure adapted from [<xref ref-type=\"bibr\" rid=\"pone.0242453.ref034\">34</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g005",
+      "label": "Fig 5",
+      "caption": "An application-specific pipeline is composed of an invariant framework that performs general operations (see text) and application-specific h-functions.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>An application-specific pipeline is composed of an invariant framework that performs general operations (see text) and application-specific <italic>h</italic>-functions.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g006",
+      "label": "Fig 6",
+      "caption": "Sequence of data models for reasoning about experiments and modeling and simulation.\nWe advocate for pre-pending the abstract data model to the front end of the model process, as shown here. Table 3 shows our abstract data model and Fig 7 shows this data model translated into a entity-relationship diagram in unified modeling language (UML) form. The table and figures in A (which support Section 7) show the Data Common Specification for our software design.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Sequence of data models for reasoning about experiments and modeling and simulation.</title>\n<p>We advocate for pre-pending the abstract data model to the front end of the model process, as shown here. <xref ref-type=\"table\" rid=\"pone.0242453.t003\">Table 3</xref> shows our abstract data model and <xref ref-type=\"fig\" rid=\"pone.0242453.g007\">Fig 7</xref> shows this data model translated into a entity-relationship diagram in unified modeling language (UML) form. The table and figures in A (which support Section 7) show the Data Common Specification for our software design.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g007",
+      "label": "Fig 7",
+      "caption": "Data model of Table 3 translated into a entity-relationship diagram in unified modeling language (UML) form.\nThis illustrates that the abstract data model can be translated to customary forms of data models (e.g., UML) that are more amenable for software development.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Data model of <xref ref-type=\"table\" rid=\"pone.0242453.t003\">Table 3</xref> translated into a entity-relationship diagram in unified modeling language (UML) form.</title>\n<p>This illustrates that the abstract data model can be translated to customary forms of data models (e.g., UML) that are more amenable for software development.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g008",
+      "label": "Fig 8",
+      "caption": "Network G(V, E) for a GDS example, with V = {v_{1}, v_{2}, v_{3}, v_{4}, v_{5}, v_{6}}.\nThresholds θ_{i} are provided for nodes v_{i}, in blue, by the respective nodes. The local functions f_{i} are threshold functions for v_{i} ∈ V, 1 ≤ i ≤ 6; see text for details. The discrete system dynamics are given by the configurations at successive times from 0 to 4, at the right in the figure. Each configuration is given by C ( t ) = ( s 1 t , s 2 t , s 3 t , s 4 t , s 5 t , s 6 t ). The system reaches a fixed point at time t = 3, as evidenced by no change in the configuration in going from t = 3 to t = 4.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pone.0242453.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Network <italic>G</italic>(<italic>V</italic>, <italic>E</italic>) for a GDS example, with <italic>V</italic> = {<italic>v</italic><sub>1</sub>, <italic>v</italic><sub>2</sub>, <italic>v</italic><sub>3</sub>, <italic>v</italic><sub>4</sub>, <italic>v</italic><sub>5</sub>, <italic>v</italic><sub>6</sub>}.</title>\n<p>Thresholds <italic>θ</italic><sub><italic>i</italic></sub> are provided for nodes <italic>v</italic><sub><italic>i</italic></sub>, in blue, by the respective nodes. The local functions <italic>f</italic><sub><italic>i</italic></sub> are threshold functions for <italic>v</italic><sub><italic>i</italic></sub> ∈ <italic>V</italic>, 1 ≤ <italic>i</italic> ≤ 6; see text for details. The discrete system dynamics are given by the configurations at successive times from 0 to 4, at the right in the figure. Each configuration is given by <inline-formula id=\"pone.0242453.e045\"><alternatives><graphic id=\"pone.0242453.e045g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.e045\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M45\"><ns1:mrow><ns1:mi>C</ns1:mi> <ns1:mrow><ns1:mo>(</ns1:mo> <ns1:mi>t</ns1:mi> <ns1:mo>)</ns1:mo></ns1:mrow> <ns1:mo>=</ns1:mo> <ns1:mrow><ns1:mo>(</ns1:mo> <ns1:msubsup><ns1:mi>s</ns1:mi> <ns1:mn>1</ns1:mn> <ns1:mi>t</ns1:mi></ns1:msubsup> <ns1:mo>,</ns1:mo> <ns1:msubsup><ns1:mi>s</ns1:mi> <ns1:mn>2</ns1:mn> <ns1:mi>t</ns1:mi></ns1:msubsup> <ns1:mo>,</ns1:mo> <ns1:msubsup><ns1:mi>s</ns1:mi> <ns1:mn>3</ns1:mn> <ns1:mi>t</ns1:mi></ns1:msubsup> <ns1:mo>,</ns1:mo> <ns1:msubsup><ns1:mi>s</ns1:mi> <ns1:mn>4</ns1:mn> <ns1:mi>t</ns1:mi></ns1:msubsup> <ns1:mo>,</ns1:mo> <ns1:msubsup><ns1:mi>s</ns1:mi> <ns1:mn>5</ns1:mn> <ns1:mi>t</ns1:mi></ns1:msubsup> <ns1:mo>,</ns1:mo> <ns1:msubsup><ns1:mi>s</ns1:mi> <ns1:mn>6</ns1:mn> <ns1:mi>t</ns1:mi></ns1:msubsup> <ns1:mo>)</ns1:mo></ns1:mrow></ns1:mrow></ns1:math></alternatives></inline-formula>. The system reaches a fixed point at time <italic>t</italic> = 3, as evidenced by no change in the configuration in going from <italic>t</italic> = 3 to <italic>t</italic> = 4.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "id": "pone.0242453.e045g",
+        "mimetype": "image",
+        "position": "anchor",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.e045",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g009",
+      "label": "Fig 9",
+      "caption": "Conceptual view of a pipeline that is composed of the pipeline framework (represented by the bounding box) and the h-functions that provide the application-based functionality of a particular pipeline.\nFunctions, or h-function, h_{i}, 1 ≤ i ≤ 3 are implemented as software within a pipeline. The pipeline framework (red box) controls the execution order of functions and the inputs and outputs for each function, through a pipeline job specification. Circles in the figure denote input and output digital objects, such as ASCII files or database tables. This figure is a more detailed representation of Fig 4. Adapted from [34] Fig 3.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Conceptual view of a pipeline that is composed of the pipeline framework (represented by the bounding box) and the <italic>h</italic>-functions that provide the application-based functionality of a particular pipeline.</title>\n<p>Functions, or <italic>h</italic>-function, <italic>h</italic><sub><italic>i</italic></sub>, 1 ≤ <italic>i</italic> ≤ 3 are implemented as software within a pipeline. The pipeline framework (red box) controls the execution order of functions and the inputs and outputs for each function, through a pipeline job specification. Circles in the figure denote input and output digital objects, such as ASCII files or database tables. This figure is a more detailed representation of <xref ref-type=\"fig\" rid=\"pone.0242453.g004\">Fig 4</xref>. Adapted from [<xref ref-type=\"bibr\" rid=\"pone.0242453.ref034\">34</xref>] <xref ref-type=\"fig\" rid=\"pone.0242453.g003\">Fig 3</xref>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g009\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g009",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g010",
+      "label": "Fig 10",
+      "caption": "One arbitrary software h-function within a pipeline.\nData instances q ^ 1, q ^ 2, and q ^ 3 are transformed by transformation code τ_{1} to conform to required input k ^ 1 for h. Similary, q ^ 4 and q ^ 5 are used by τ_{2} to produce input k ^ 2. Outputs from the h-function are ℓ ^ 1, ℓ ^ 2, and ℓ ^ 3. Inputs and outputs are subjected to verification through comparisons with specified schema (not shown here). The pipeline framework is represented by the red box that controls execution of the h-functions and transformation codes. This is a more detailed representation of Figs 5 and 9.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pone.0242453.g010\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g010</object-id>\n<label>Fig 10</label>\n<caption>\n<title>One arbitrary software <italic>h</italic>-function within a pipeline.</title>\n<p>Data instances <inline-formula id=\"pone.0242453.e053\"><alternatives><graphic id=\"pone.0242453.e053g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.e053\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M53\"><ns1:msub><ns1:mover accent=\"true\"><ns1:mi>q</ns1:mi> <ns1:mo>^</ns1:mo></ns1:mover> <ns1:mn>1</ns1:mn></ns1:msub></ns1:math></alternatives></inline-formula>, <inline-formula id=\"pone.0242453.e054\"><alternatives><graphic id=\"pone.0242453.e054g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.e054\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M54\"><ns1:msub><ns1:mover accent=\"true\"><ns1:mi>q</ns1:mi> <ns1:mo>^</ns1:mo></ns1:mover> <ns1:mn>2</ns1:mn></ns1:msub></ns1:math></alternatives></inline-formula>, and <inline-formula id=\"pone.0242453.e055\"><alternatives><graphic id=\"pone.0242453.e055g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.e055\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M55\"><ns1:msub><ns1:mover accent=\"true\"><ns1:mi>q</ns1:mi> <ns1:mo>^</ns1:mo></ns1:mover> <ns1:mn>3</ns1:mn></ns1:msub></ns1:math></alternatives></inline-formula> are transformed by transformation code <italic>τ</italic><sub>1</sub> to conform to required input <inline-formula id=\"pone.0242453.e056\"><alternatives><graphic id=\"pone.0242453.e056g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.e056\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M56\"><ns1:msub><ns1:mover accent=\"true\"><ns1:mi>k</ns1:mi> <ns1:mo>^</ns1:mo></ns1:mover> <ns1:mn>1</ns1:mn></ns1:msub></ns1:math></alternatives></inline-formula> for <italic>h</italic>. Similary, <inline-formula id=\"pone.0242453.e057\"><alternatives><graphic id=\"pone.0242453.e057g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.e057\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M57\"><ns1:msub><ns1:mover accent=\"true\"><ns1:mi>q</ns1:mi> <ns1:mo>^</ns1:mo></ns1:mover> <ns1:mn>4</ns1:mn></ns1:msub></ns1:math></alternatives></inline-formula> and <inline-formula id=\"pone.0242453.e058\"><alternatives><graphic id=\"pone.0242453.e058g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.e058\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M58\"><ns1:msub><ns1:mover accent=\"true\"><ns1:mi>q</ns1:mi> <ns1:mo>^</ns1:mo></ns1:mover> <ns1:mn>5</ns1:mn></ns1:msub></ns1:math></alternatives></inline-formula> are used by <italic>τ</italic><sub>2</sub> to produce input <inline-formula id=\"pone.0242453.e059\"><alternatives><graphic id=\"pone.0242453.e059g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.e059\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M59\"><ns1:msub><ns1:mover accent=\"true\"><ns1:mi>k</ns1:mi> <ns1:mo>^</ns1:mo></ns1:mover> <ns1:mn>2</ns1:mn></ns1:msub></ns1:math></alternatives></inline-formula>. Outputs from the <italic>h</italic>-function are <inline-formula id=\"pone.0242453.e060\"><alternatives><graphic id=\"pone.0242453.e060g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.e060\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M60\"><ns1:msub><ns1:mover accent=\"true\"><ns1:mi>ℓ</ns1:mi> <ns1:mo>^</ns1:mo></ns1:mover> <ns1:mn>1</ns1:mn></ns1:msub></ns1:math></alternatives></inline-formula>, <inline-formula id=\"pone.0242453.e061\"><alternatives><graphic id=\"pone.0242453.e061g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.e061\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M61\"><ns1:msub><ns1:mover accent=\"true\"><ns1:mi>ℓ</ns1:mi> <ns1:mo>^</ns1:mo></ns1:mover> <ns1:mn>2</ns1:mn></ns1:msub></ns1:math></alternatives></inline-formula>, and <inline-formula id=\"pone.0242453.e062\"><alternatives><graphic id=\"pone.0242453.e062g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.e062\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M62\"><ns1:msub><ns1:mover accent=\"true\"><ns1:mi>ℓ</ns1:mi> <ns1:mo>^</ns1:mo></ns1:mover> <ns1:mn>3</ns1:mn></ns1:msub></ns1:math></alternatives></inline-formula>. Inputs and outputs are subjected to verification through comparisons with specified schema (not shown here). The pipeline framework is represented by the red box that controls execution of the h-functions and transformation codes. This is a more detailed representation of Figs <xref ref-type=\"fig\" rid=\"pone.0242453.g005\">5</xref> and <xref ref-type=\"fig\" rid=\"pone.0242453.g009\">9</xref>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g010\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "id": "pone.0242453.e053g",
+        "mimetype": "image",
+        "position": "anchor",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.e053",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g011",
+      "label": "Fig 11",
+      "caption": "Two pipelines are shown to illustrate similarities and differences between them.\nTo run a pipeline (called a job), a pipeline-specific configuration input file is verified and is read by the pipeline framework. The file specifies h-functions and their order of execution, as well as required input files to the pipeline. Here we show how function h_{1} is executed in a pipeline 1 and how h_{4} is executed in pipeline 2. The pipeline framework invokes the corresponding functions. If specified in the configuration file, the pipeline framework invokes a transformation function that transforms the contents of one or more files into an input file of correct format for the h-function. There may be one transformation function for each direct input to an h-function. At appropriate points in a pipeline, data files are verified against their corresponding JSON schema (input file verification). The h-function is executed and output files are generated (these digital object outputs may be, e.g., plot files, ASCII data files, and binary data files). There may be additional h-functions within pipeline 1, indicated by the ellipsis below pipeline 1 function h_{1} execution. In this example, outputs from the generic pipeline 1 are inputs for the generic pipeline 2. Function h_{4} in pipeline 2 is executed in a similar fashion to function h_{1} in pipeline 1. See the text for descriptions of these various components. Note: the pipeline framework (in brown) is the same code for all pipelines. See Table 5 for implementation details of the elements in this figure.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g011\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g011</object-id>\n<label>Fig 11</label>\n<caption>\n<title>Two pipelines are shown to illustrate similarities and differences between them.</title>\n<p>To run a pipeline (called a job), a pipeline-specific configuration input file is verified and is read by the pipeline framework. The file specifies <italic>h</italic>-functions and their order of execution, as well as required input files to the pipeline. Here we show how function <italic>h</italic><sub>1</sub> is executed in a pipeline 1 and how <italic>h</italic><sub>4</sub> is executed in pipeline 2. The pipeline framework invokes the corresponding functions. If specified in the configuration file, the pipeline framework invokes a transformation function that transforms the contents of one or more files into an input file of correct format for the <italic>h</italic>-function. There may be one transformation function for each direct input to an <italic>h</italic>-function. At appropriate points in a pipeline, data files are verified against their corresponding JSON schema (input file verification). The <italic>h</italic>-function is executed and output files are generated (these digital object outputs may be, e.g., plot files, ASCII data files, and binary data files). There may be additional <italic>h</italic>-functions within pipeline 1, indicated by the ellipsis below pipeline 1 function <italic>h</italic><sub>1</sub> execution. In this example, outputs from the generic pipeline 1 are inputs for the generic pipeline 2. Function <italic>h</italic><sub>4</sub> in pipeline 2 is executed in a similar fashion to function <italic>h</italic><sub>1</sub> in pipeline 1. See the text for descriptions of these various components. Note: the pipeline framework (in brown) is the same code for all pipelines. See <xref ref-type=\"table\" rid=\"pone.0242453.t005\">Table 5</xref> for implementation details of the elements in this figure.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g011\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g011",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g012",
+      "label": "Fig 12",
+      "caption": "The anagram game screen, phase-2, for one player.\nThis player has own letters “R,” “O,” and “L” and has requested an “E” and “A” from neighbors. The “E” is green, so this player’s request has been fulfilled and so “E” can be used in forming words; but the request for “A” is still outstanding so cannot be used in words. Below these letters, it shows that Player 2 has requested “O” and “L” from this player. This player can reply to these requests, if she so chooses. Below that is a box where the player types and submits new words.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g012\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g012</object-id>\n<label>Fig 12</label>\n<caption>\n<title>The anagram game screen, phase-2, for one player.</title>\n<p>This player has own letters “R,” “O,” and “L” and has requested an “E” and “A” from neighbors. The “E” is green, so this player’s request has been fulfilled and so “E” can be used in forming words; but the request for “A” is still outstanding so cannot be used in words. Below these letters, it shows that Player 2 has requested “O” and “L” from this player. This player can reply to these requests, if she so chooses. Below that is a box where the player types and submits new words.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g012\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g012",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g013",
+      "label": "Fig 13",
+      "caption": "Case study 1.\nPartial representation of the data model for the online experiment composed of 3 phases with a set of V players (n = |V|). The phase 1 DIFI measure, a proxy for CI, uses a null (i.e., empty) network on n players; i.e., there are no edges in the graph because players play individually. In phase 2, a team-based CI-priming game, edges E are communication channels. Initial conditions B^{v} include letter assignments to players. The individual DIFI measure is repeated in phase 3. The action set A and illustrative action tuples T_{i} are given for each phase.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g013\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g013</object-id>\n<label>Fig 13</label>\n<caption>\n<title>Case study 1.</title>\n<p>Partial representation of the data model for the online experiment composed of 3 phases with a set of <italic>V</italic> players (<italic>n</italic> = |<italic>V</italic>|). The phase 1 DIFI measure, a proxy for CI, uses a null (i.e., empty) network on <italic>n</italic> players; i.e., there are no edges in the graph because players play individually. In phase 2, a team-based CI-priming game, edges <italic>E</italic> are communication channels. Initial conditions <italic>B</italic><sup><italic>v</italic></sup> include letter assignments to players. The individual DIFI measure is repeated in phase 3. The action set <italic>A</italic> and illustrative action tuples <italic>T</italic><sub><italic>i</italic></sub> are given for each phase.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g013\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g013",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g014",
+      "label": "Fig 14",
+      "caption": "The Data Analytics Pipeline (DAP) was executed to analyze phase 2 of three experiments with n = 6 and d = 5.\nThe time series of number of words formed by player for experiment #2 is generated by function h_{3}.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g014\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g014</object-id>\n<label>Fig 14</label>\n<caption>\n<title>The Data Analytics Pipeline (DAP) was executed to analyze phase 2 of three experiments with <italic>n</italic> = 6 and <italic>d</italic> = 5.</title>\n<p>The time series of number of words formed by player for experiment #2 is generated by function <italic>h</italic><sub>3</sub>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g014\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g014",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g015",
+      "label": "Fig 15",
+      "caption": "The Data Analytics Pipeline (DAP) was executed to analyze phase 2 of three experiments with n = 6 and d = 5.\nThe histogram for the number of actions “letter request” for three experiments is generated by function h_{5}. The x-axis is time in the group anagram game, binned in 30 seconds intervals.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g015\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g015</object-id>\n<label>Fig 15</label>\n<caption>\n<title>The Data Analytics Pipeline (DAP) was executed to analyze phase 2 of three experiments with <italic>n</italic> = 6 and <italic>d</italic> = 5.</title>\n<p>The histogram for the number of actions “letter request” for three experiments is generated by function <italic>h</italic><sub>5</sub>. The x-axis is time in the group anagram game, binned in 30 seconds intervals.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g015\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g015",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g016",
+      "label": "Fig 16",
+      "caption": "The Data Analytics Pipeline (DAP) was executed to analyze phase 2 of three experiments with n = 6 and d = 5.\nThe discrete time actions for all three experiments is generates by function h_{7}. This latter output will inform the Property Inference pipeline for computing parameters for simulation models. Time (in seconds) is shown in the first row as 1, 2, 3, …, and counts of the z vector components, per player and per experiment are given.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g016\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g016</object-id>\n<label>Fig 16</label>\n<caption>\n<title>The Data Analytics Pipeline (DAP) was executed to analyze phase 2 of three experiments with <italic>n</italic> = 6 and <italic>d</italic> = 5.</title>\n<p>The discrete time actions for all three experiments is generates by function <italic>h</italic><sub>7</sub>. This latter output will inform the Property Inference pipeline for computing parameters for simulation models. Time (in seconds) is shown in the first row as 1, 2, 3, …, and counts of the <italic>z</italic> vector components, per player and per experiment are given.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g016\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g016",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g017",
+      "label": "Fig 17",
+      "caption": "The Property Inference pipeline receives the input from h_{7} of the Data Analysis Pipeline (DAP).\nThe parameters in this figure were generated to inform an ABM model for the Modeling and Simulation Pipeline (MASP). The transitions in the figure are from from i to j, where a_{i} ∈ A is the action at time t and a_{j} ∈ A is the action at (t + 1). Rows not shown mean there are no such transitions in the data.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g017\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g017</object-id>\n<label>Fig 17</label>\n<caption>\n<title>The Property Inference pipeline receives the input from <italic>h</italic><sub>7</sub> of the Data Analysis Pipeline (DAP).</title>\n<p>The parameters in this figure were generated to inform an ABM model for the Modeling and Simulation Pipeline (MASP). The transitions in the figure are from from <italic>i</italic> to <italic>j</italic>, where <italic>a</italic><sub><italic>i</italic></sub> ∈ <italic>A</italic> is the action at time <italic>t</italic> and <italic>a</italic><sub><italic>j</italic></sub> ∈ <italic>A</italic> is the action at (<italic>t</italic> + 1). Rows not shown mean there are no such transitions in the data.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g017\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g017",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g018",
+      "label": "Fig 18",
+      "caption": "The Modeling And Simulation Pipeline (MASP) and Model Evaluation And Prediction Pipeline (MEAPP) were run to obtain simulation results and model predictions, and to compare experimental data to model predictions.\nAll three plots contain model predictions and use results from h_{1} of the MASP. Function h_{1} of MEAPP plots corresponding experimental and model output data (top plot) and compares experiment and model output using KL-divergence (center plot) for six parameters. Function h_{2} of MEAPP uses h_{3} of the Data Analysis pipeline (DAP) to plot model predictions from h_{1} of the MASP (bottom plot) where now n = 15 (in experiments, n = 6).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g018\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g018</object-id>\n<label>Fig 18</label>\n<caption>\n<title>The Modeling And Simulation Pipeline (MASP) and Model Evaluation And Prediction Pipeline (MEAPP) were run to obtain simulation results and model predictions, and to compare experimental data to model predictions.</title>\n<p>All three plots contain model predictions and use results from <italic>h</italic><sub>1</sub> of the MASP. Function <italic>h</italic><sub>1</sub> of MEAPP plots corresponding experimental and model output data (top plot) and compares experiment and model output using KL-divergence (center plot) for six parameters. Function <italic>h</italic><sub>2</sub> of MEAPP uses <italic>h</italic><sub>3</sub> of the Data Analysis pipeline (DAP) to plot model predictions from <italic>h</italic><sub>1</sub> of the MASP (bottom plot) where now <italic>n</italic> = 15 (in experiments, <italic>n</italic> = 6).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g018\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g018",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g019",
+      "label": "Fig 19",
+      "caption": "JSON schema for the “Experiment” of the data common specification.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g019\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g019</object-id>\n<label>Fig 19</label>\n<caption>\n<title>JSON schema for the “Experiment” of the data common specification.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g019\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g019",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g020",
+      "label": "Fig 20",
+      "caption": "JSON schema for the “Phase” of the data common specification.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g020\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g020</object-id>\n<label>Fig 20</label>\n<caption>\n<title>JSON schema for the “Phase” of the data common specification.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g020\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g020",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g021",
+      "label": "Fig 21",
+      "caption": "JSON schema for the “Phase Description” of the data common specification.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g021\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g021</object-id>\n<label>Fig 21</label>\n<caption>\n<title>JSON schema for the “Phase Description” of the data common specification.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g021\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g021",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g022",
+      "label": "Fig 22",
+      "caption": "JSON schema for the “Player” of the data common specification.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g022\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g022</object-id>\n<label>Fig 22</label>\n<caption>\n<title>JSON schema for the “Player” of the data common specification.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g022\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g022",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g023",
+      "label": "Fig 23",
+      "caption": "JSON schema for the “Action” of the data common specification.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g023\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g023</object-id>\n<label>Fig 23</label>\n<caption>\n<title>JSON schema for the “Action” of the data common specification.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g023\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g023",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g024",
+      "label": "Fig 24",
+      "caption": "To run a pipeline (called a job), a configuration input file specifies functions and their order of execution.\nThis figure shows a portion of the schema for a configuration file that specifies the experiment JSON schema file location.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g024\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g024</object-id>\n<label>Fig 24</label>\n<caption>\n<title>To run a pipeline (called a job), a configuration input file specifies functions and their order of execution.</title>\n<p>This figure shows a portion of the schema for a configuration file that specifies the experiment JSON schema file location.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g024\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g024",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g025",
+      "label": "Fig 25",
+      "caption": "To run a pipeline (called a job), a configuration input file specifies functions and their order of execution.\nThis Figure shows a portion of the schema for a configuration file that specifies the phase description JSON schema file location.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g025\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g025</object-id>\n<label>Fig 25</label>\n<caption>\n<title>To run a pipeline (called a job), a configuration input file specifies functions and their order of execution.</title>\n<p>This Figure shows a portion of the schema for a configuration file that specifies the phase description JSON schema file location.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g025\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g025",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g026",
+      "label": "Fig 26",
+      "caption": "To run a pipeline (called a job), a configuration input file specifies functions and their order of execution.\nThis Figure shows a portion of the schema for a configuration file that specifies the phase JSON schema file location.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g026\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g026</object-id>\n<label>Fig 26</label>\n<caption>\n<title>To run a pipeline (called a job), a configuration input file specifies functions and their order of execution.</title>\n<p>This Figure shows a portion of the schema for a configuration file that specifies the phase JSON schema file location.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g026\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g026",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g027",
+      "label": "Fig 27",
+      "caption": "To run a pipeline (called a job), a configuration input file specifies functions and their order of execution.\nThis Figure shows a portion of the schema for a configuration file that specifies the action description JSON schema file location.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g027\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g027</object-id>\n<label>Fig 27</label>\n<caption>\n<title>To run a pipeline (called a job), a configuration input file specifies functions and their order of execution.</title>\n<p>This Figure shows a portion of the schema for a configuration file that specifies the action description JSON schema file location.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g027\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g027",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g028",
+      "label": "Fig 28",
+      "caption": "To run a pipeline (called a job), a configuration input file specifies functions and their order of execution.\nThis Figure shows a portion of the schema for a configuration file that specifies the player description JSON schema file location.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g028\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g028</object-id>\n<label>Fig 28</label>\n<caption>\n<title>To run a pipeline (called a job), a configuration input file specifies functions and their order of execution.</title>\n<p>This Figure shows a portion of the schema for a configuration file that specifies the player description JSON schema file location.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g028\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g028",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g029",
+      "label": "Fig 29",
+      "caption": "To run a pipeline (called a job), a configuration input file specifies functions and their order of execution.\nIn this configuration file there are five possible functions that can be executed in any order. This Figure shows a portion of the schema for a configuration file that specifies how to compose and execute one or more functions of a simple pipeline. For example, here it defines that a parameter called “actionId” is only necessary for functions h_{2} through h_{5}.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g029\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g029</object-id>\n<label>Fig 29</label>\n<caption>\n<title>To run a pipeline (called a job), a configuration input file specifies functions and their order of execution.</title>\n<p>In this configuration file there are five possible functions that can be executed in any order. This Figure shows a portion of the schema for a configuration file that specifies how to compose and execute one or more functions of a simple pipeline. For example, here it defines that a parameter called “actionId” is only necessary for functions <italic>h</italic><sub>2</sub> through <italic>h</italic><sub>5</sub>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g029\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g029",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g030",
+      "label": "Fig 30",
+      "caption": "This is an example of the (1) experimental data transformation pipeline execution to transform raw experimental data into the data common specification.\nHere we show how function h_{1} is executed. Here we show an input CSV file as an example for the “Completed Session Summary” input file. If necessary, file contents are transformed to obtain the direct input for a function in the correct format. Here we show how the “Completed Session Summary” CSV input file is transformed into a “Completed Session Summary” json file that becomes the input for the function. After verification of formats by the corresponding JSON schemas, the function is executed and output files are generated. Here we show the output json file for the “Experiment” data common specification.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g030\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g030</object-id>\n<label>Fig 30</label>\n<caption>\n<title>This is an example of the (1) experimental data transformation pipeline execution to transform raw experimental data into the data common specification.</title>\n<p>Here we show how function <italic>h</italic><sub>1</sub> is executed. Here we show an input CSV file as an example for the “Completed Session Summary” input file. If necessary, file contents are transformed to obtain the direct input for a function in the correct format. Here we show how the “Completed Session Summary” CSV input file is transformed into a “Completed Session Summary” json file that becomes the input for the function. After verification of formats by the corresponding JSON schemas, the function is executed and output files are generated. Here we show the output json file for the “Experiment” data common specification.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g030\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g030",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g031",
+      "label": "Fig 31",
+      "caption": "This is an example of the (2) data analytics pipeline execution to analyze files of data in the common specification.\nHere we show how function h_{7} is executed. Input files are validated against their corresponding JSON schema. Here we show an example of a json schema file for the “Experiment” description input file. Fig 19 contains the whole file. After verification of formats by the corresponding JSON schemas, if necessary, file contents are transformed to obtain the direct input for a function in the correct format. After verification of formats by the corresponding JSON schemas, function h_{7} is executed and output files are generated. In this example the output file is an input for the (3) Property Inference pipeline.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g031\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g031</object-id>\n<label>Fig 31</label>\n<caption>\n<title>This is an example of the (2) data analytics pipeline execution to analyze files of data in the common specification.</title>\n<p>Here we show how function <italic>h</italic><sub>7</sub> is executed. Input files are validated against their corresponding JSON schema. Here we show an example of a json schema file for the “Experiment” description input file. <xref ref-type=\"fig\" rid=\"pone.0242453.g019\">Fig 19</xref> contains the whole file. After verification of formats by the corresponding JSON schemas, if necessary, file contents are transformed to obtain the direct input for a function in the correct format. After verification of formats by the corresponding JSON schemas, function <italic>h</italic><sub>7</sub> is executed and output files are generated. In this example the output file is an input for the (3) Property Inference pipeline.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g031\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g031",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g032",
+      "label": "Fig 32",
+      "caption": "Elements of the data model (Table 3), for the online social network experiment in [3].",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g032\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g032</object-id>\n<label>Fig 32</label>\n<caption>\n<title>Elements of the data model (<xref ref-type=\"table\" rid=\"pone.0242453.t003\">Table 3</xref>), for the online social network experiment in [<xref ref-type=\"bibr\" rid=\"pone.0242453.ref003\">3</xref>].</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g032\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g032",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g033",
+      "label": "Fig 33",
+      "caption": "Data model of Table 14 translated into a entity-relationship diagram in Unified Modeling Language (UML) form.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g033\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g033</object-id>\n<label>Fig 33</label>\n<caption>\n<title>Data model of <xref ref-type=\"table\" rid=\"pone.0242453.t014\">Table 14</xref> translated into a entity-relationship diagram in Unified Modeling Language (UML) form.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g033\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g033",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0242453.g034",
+      "label": "Fig 34",
+      "caption": "Data model of Table 15 translated into a entity-relationship diagram in Unified Modeling Language (UML) form.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g034\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g034</object-id>\n<label>Fig 34</label>\n<caption>\n<title>Data model of <xref ref-type=\"table\" rid=\"pone.0242453.t015\">Table 15</xref> translated into a entity-relationship diagram in Unified Modeling Language (UML) form.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g034\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g034",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

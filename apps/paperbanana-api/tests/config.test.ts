@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import { readFileSync } from 'node:fs'
+import { REFERENCE_UPLOAD_PLATFORM } from '../../../packages/api/src/reference-upload.js'
 
 import { loadConfig } from '../src/config.js'
 
@@ -63,6 +65,25 @@ test('sg-required accepts only the fixed credential-free Singapore proxy origin'
 
 test('disabled provider egress does not require or expose a proxy URL', () => {
   assert.deepEqual(loadConfig(validEnv).providerEgress, { mode: 'disabled' })
+})
+
+test('direct provider routes are explicit, exact and limited to the two measured domestic origins', () => {
+  assert.deepEqual(loadConfig({ ...validEnv, PAPERBANANA_PROVIDER_DIRECT_HOSTS: 'tokendance.space,ark.cn-beijing.volces.com' }).providerEgress,
+    { mode: 'disabled', directHosts: ['tokendance.space', 'ark.cn-beijing.volces.com'] })
+  for (const hosts of ['', '*', 'openrouter.ai', 'tokendance.space.evil.example', 'https://tokendance.space', 'tokendance.space:443', 'tokendance.space,', 'tokendance.space,tokendance.space', ' tokendance.space']) {
+    assert.throws(() => loadConfig({ ...validEnv, PAPERBANANA_PROVIDER_DIRECT_HOSTS: hosts }), /PAPERBANANA_PROVIDER_DIRECT_HOSTS/)
+  }
+})
+
+test('business OSS supports an explicit cross-region public server endpoint without relaxing endpoint validation', () => {
+  const original = loadConfig(validEnv).oss
+  assert.equal(original.serverEndpointMode, 'internal')
+  const publicConfig = loadConfig({ ...validEnv, PAPERBANANA_OSS_SERVER_ENDPOINT_MODE: 'public' }).oss
+  assert.deepEqual(publicConfig, { ...original, serverEndpointMode: 'public' })
+  for (const value of ['', 'direct', ' public', 'PUBLIC']) {
+    assert.throws(() => loadConfig({ ...validEnv, PAPERBANANA_OSS_SERVER_ENDPOINT_MODE: value }), /PAPERBANANA_OSS_SERVER_ENDPOINT_MODE/)
+  }
+  assert.throws(() => loadConfig({ ...validEnv, PAPERBANANA_OSS_SERVER_ENDPOINT_MODE: 'public', OSS_INTERNAL_ENDPOINT: validEnv.OSS_PUBLIC_ENDPOINT }), /OSS_INTERNAL_ENDPOINT/)
 })
 
 test('benchmark API is disabled by default and enabled only with isolated Mongo, OSS and immutable code provenance', () => {
@@ -156,9 +177,9 @@ test('startup config provides bounded admission and readiness defaults', () => {
     maxPerIp: 1,
   })
   assert.equal(config.readinessProbeTimeoutMs, 2000)
-  assert.equal(config.referenceImageMaxBytes, 20 * 1024 * 1024)
-  assert.equal(config.referenceImageMaxCount, 8)
-  assert.equal(config.referenceImageMaxTotalBytes, 80 * 1024 * 1024)
+  assert.equal(config.referenceImageMaxBytes, REFERENCE_UPLOAD_PLATFORM.maxBytes)
+  assert.equal(config.referenceImageMaxCount, REFERENCE_UPLOAD_PLATFORM.maxCount)
+  assert.equal(config.referenceImageMaxTotalBytes, REFERENCE_UPLOAD_PLATFORM.maxTotalBytes)
   assert.equal(config.providerImageMaxBytes, 20 * 1024 * 1024)
 })
 
@@ -169,17 +190,18 @@ test('startup config rejects unsafe admission and readiness bounds', () => {
     ['PAPERBANANA_MAX_PENDING_JOBS', '-1'],
     ['PAPERBANANA_MAX_PENDING_JOBS', '33'],
     ['PAPERBANANA_MAX_JOBS_PER_OWNER', '0'],
-    ['PAPERBANANA_MAX_JOBS_PER_IP', '9'],
+    ['PAPERBANANA_MAX_JOBS_PER_IP', '41'],
     ['PAPERBANANA_READINESS_PROBE_TIMEOUT_MS', '99'],
     ['PAPERBANANA_READINESS_PROBE_TIMEOUT_MS', '10001'],
     ['PAPERBANANA_MAX_REFERENCE_BYTES', '0'],
-    ['PAPERBANANA_MAX_REFERENCE_BYTES', String(20 * 1024 * 1024 + 1)],
-    ['PAPERBANANA_MAX_REFERENCE_IMAGES', '9'],
+    ['PAPERBANANA_MAX_REFERENCE_BYTES', String(REFERENCE_UPLOAD_PLATFORM.maxBytes + 1)],
+    ['PAPERBANANA_MAX_REFERENCE_BYTES', String(20 * 1024 * 1024)],
+    ['PAPERBANANA_MAX_REFERENCE_IMAGES', String(REFERENCE_UPLOAD_PLATFORM.maxCount + 1)],
     ['PAPERBANANA_MAX_REFERENCE_IMAGES', '1.5'],
     ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', 'invalid'],
     ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', '1.5'],
     ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', '0'],
-    ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', String(80 * 1024 * 1024 + 1)],
+    ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', String(REFERENCE_UPLOAD_PLATFORM.maxTotalBytes + 1)],
     ['PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES', String(5 * 1024 * 1024 - 1)],
     ['PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES', String(50 * 1024 * 1024 + 1)],
   ]
@@ -187,6 +209,21 @@ test('startup config rejects unsafe admission and readiness bounds', () => {
   for (const [name, value] of invalid) {
     assert.throws(() => loadConfig({ ...validEnv, [name]: value }), new RegExp(name))
   }
+})
+
+test('deployment template reference limits match the shared upload contract and startup parser', () => {
+  const template = readFileSync(new URL('../../../deploy/hk-single-host/scripts/generate-runtime-secrets.sh', import.meta.url), 'utf8')
+  const env = { ...validEnv }
+  for (const [key, expected] of Object.entries({
+    PAPERBANANA_MAX_REFERENCE_IMAGES: REFERENCE_UPLOAD_PLATFORM.maxCount,
+    PAPERBANANA_MAX_REFERENCE_BYTES: REFERENCE_UPLOAD_PLATFORM.maxBytes,
+    PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES: REFERENCE_UPLOAD_PLATFORM.maxTotalBytes,
+  })) {
+    const value = template.match(new RegExp(`^${key}=(\\d+)$`, 'm'))?.[1]
+    assert.equal(Number(value), expected, key)
+    Object.assign(env, { [key]: value })
+  }
+  assert.doesNotThrow(() => loadConfig(env))
 })
 
 test('startup config requires distinct internal and public OSS endpoints', () => {
@@ -205,3 +242,24 @@ test('startup config requires distinct internal and public OSS endpoints', () =>
   assert.equal(config.oss.internalEndpoint, validEnv.OSS_INTERNAL_ENDPOINT)
   assert.equal(config.oss.publicEndpoint, validEnv.OSS_PUBLIC_ENDPOINT)
 })
+
+test('Hong Kong routing requires the fixed private proxy, reviewed exact hosts and SG mode', () => {
+  const env = {...validEnv, PAPERBANANA_PROVIDER_EGRESS_MODE:'sg-required', PAPERBANANA_SG_PROXY_URL:'http://10.77.0.2:3128', PAPERBANANA_HK_PROXY_URL:'http://10.78.0.1:3128', PAPERBANANA_PROVIDER_HK_HOSTS:'openrouter.ai,api.x.ai'}
+  assert.deepEqual(loadConfig(env).providerEgress, {mode:'sg-required',proxyUrl:'http://10.77.0.2:3128',hongkong:{proxyUrl:'http://10.78.0.1:3128',hosts:['openrouter.ai','api.x.ai']}})
+  for (const hosts of ['', '*', 'api.openai.com', 'api.anthropic.com', 'generativelanguage.googleapis.com', 'api.bfl.ai.evil.example', 'openrouter.ai,openrouter.ai', 'https://openrouter.ai', 'openrouter.ai:443', ' openrouter.ai', 'api.fireworks.ai']) {
+    assert.throws(()=>loadConfig({...env,PAPERBANANA_PROVIDER_HK_HOSTS:hosts}), /PAPERBANANA_PROVIDER_HK_HOSTS/)
+  }
+  for (const url of ['', 'http://10.77.0.1:3128', 'http://10.78.0.1:3128/path', 'http://user:secret@10.78.0.1:3128', 'http://10.78.0.1:3128?x=1', 'https://10.78.0.1:3128']) {
+    assert.throws(()=>loadConfig({...env,PAPERBANANA_HK_PROXY_URL:url}), /PAPERBANANA_HK_PROXY_URL/)
+  }
+  assert.throws(()=>loadConfig({...env,PAPERBANANA_PROVIDER_EGRESS_MODE:'disabled'}), /PAPERBANANA_PROVIDER_HK_HOSTS/)
+  assert.throws(()=>loadConfig({...env,PAPERBANANA_HK_PROXY_URL:undefined}), /PAPERBANANA_HK_PROXY_URL/)
+  assert.throws(()=>loadConfig({...env,PAPERBANANA_PROVIDER_HK_HOSTS:undefined}), /PAPERBANANA_PROVIDER_HK_HOSTS/)
+  assert.deepEqual(loadConfig({...validEnv,PAPERBANANA_PROVIDER_DIRECT_HOSTS:'api.fireworks.ai'}).providerEgress,{mode:'disabled',directHosts:['api.fireworks.ai']})
+})
+
+
+test('eight running plus thirty-two queued tasks can share NAT without merging account quotas',()=>{
+ const c=loadConfig({...validEnv,PAPERBANANA_MAX_ACTIVE_JOBS:'8',PAPERBANANA_MAX_PENDING_JOBS:'32',PAPERBANANA_MAX_JOBS_PER_OWNER:'2',PAPERBANANA_MAX_JOBS_PER_IP:'40'});
+ assert.deepEqual(c.admission,{maxActive:8,maxPending:32,maxPerOwner:2,maxPerIp:40});
+});

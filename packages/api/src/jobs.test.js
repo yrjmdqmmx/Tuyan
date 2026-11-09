@@ -9,8 +9,11 @@ test('uploaded refinement source serializes only its object key and marks finali
       editInstruction: '放大标签', imageSize: '1K', aspectRatio: '1:1',
     });
     assert.deepEqual(JSON.parse(mock.calls[0].options.body).sourceImageUpload, { objectKey: 'references/owner/source.png' });
+    await refineImageRequest('https://gateway.example', {backendMode:'gateway'}, {sourceImageUpload:{materialId:'material-1',objectKey:'forged/path.png',userId:'forged-owner'},materialFiles:[{id:'auxiliary-1'}],editInstruction:'Use source and auxiliary original'});
+    assert.deepEqual(JSON.parse(mock.calls[1].options.body).sourceImageUpload,{materialId:'material-1'});
+    assert.deepEqual(JSON.parse(mock.calls[1].options.body).materialFiles,[{id:'auxiliary-1'}]);
     const result = await finalizeReferenceUploadRequest('https://gateway.example', { backendMode: 'gateway' }, [], { purpose: 'refine' });
-    assert.equal(JSON.parse(mock.calls[1].options.body).purpose, 'refine');
+    assert.equal(JSON.parse(mock.calls[2].options.body).purpose, 'refine');
     assert.deepEqual(result.source, { width: 120, height: 80 });
   } finally { mock.restore(); }
 });
@@ -23,6 +26,7 @@ import {
   formatClientPlatform,
   getJobRequest,
   modelRegistryRequest,
+  fetchBackendHealth,
   benchmarkLeaderboardRequest,
   benchmarkCaseEvidenceRequest,
   benchmarkModelProfileRequest,
@@ -92,6 +96,17 @@ test('createJobRequest sends retrieval and task fields to gateway', async () => 
   } finally {
     fetchMock.restore();
   }
+});
+
+test('createJobRequest preserves canonical full and legacy full aliases through the shared adapter', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: { code: 0, jobId: 'full-flow', status: 'queued' } }));
+  try {
+    for (const pipelineMode of ['full', 'demo_full', 'planner_critic', 'demo_planner_critic', 'vanilla']) {
+      await createJobRequest('https://gateway.example', { backendMode: 'gateway' }, { pipelineMode });
+      const actual = JSON.parse(fetchMock.calls.at(-1).options.body).pipelineMode;
+      assert.equal(actual, pipelineMode.replace(/^demo_/, ''));
+    }
+  } finally { fetchMock.restore(); }
 });
 
 test('createJobRequest sends negative prompt through the gateway and rejects retired transports', async () => {
@@ -788,6 +803,22 @@ test('modelRegistryRequest reads the server-authoritative model roles and defaul
   }
 });
 
+test('health and registry reads pass cancellation to fetch without changing the API body', async () => {
+  const controller = new AbortController();
+  const fetchMock = mockJsonFetch(() => ({ body: { code: 0, runtime: 'gateway', providers: {} } }));
+  try {
+    await fetchBackendHealth('https://gateway.example', { signal: controller.signal });
+    await modelRegistryRequest('https://gateway.example', { backendMode: 'gateway' }, '', { signal: controller.signal });
+    assert.equal(fetchMock.calls[0].options.signal, controller.signal);
+    assert.equal(fetchMock.calls[1].options.signal, controller.signal);
+    assert.deepEqual(JSON.parse(fetchMock.calls[1].options.body), { action: 'modelRegistry' });
+    controller.abort();
+    assert.equal(fetchMock.calls[1].options.signal.aborted, true);
+  } finally {
+    fetchMock.restore();
+  }
+});
+
 test('benchmark clients use only the public and admin action contracts', async () => {
   const fetchMock = mockJsonFetch((_url, options) => ({ body: { code: 0, echoed: JSON.parse(options.body) } }));
   try {
@@ -833,4 +864,25 @@ test('shared job payloads preserve 512 and native-size resolution values', async
       assert.equal(JSON.parse(fetchMock.calls.at(-1).options.body).imageSize, imageSize)
     }
   } finally { fetchMock.restore() }
+})
+
+test('model material generation and refined recovery preserve files and independent manual references',async()=>{
+ const sourceMaterials=[{id:'a',filename:'data.csv',format:'csv',size:11,text:'A,35',status:'ready',warnings:[],sha256:'a'.repeat(64)}];
+ const context={generationPath:'model-v1',sourceMaterials,figureTypeId:'bar',retrievalSetting:'manual',manualReferenceIds:['paper-1']};
+ const mock=mockJsonFetch((_url,options)=>JSON.parse(options.body).action==='createJob'?{code:0,jobId:'new',status:'queued'}:{code:0,job:{id:'refined',...context,generationContext:context}});
+ try{
+  await createJobRequest('https://gateway.example',{backendMode:'gateway'},{...context,outputFormat:'svg'});
+  const sent=JSON.parse(mock.calls[0].options.body);assert.equal(sent.generationPath,'model-v1');assert.deepEqual(sent.sourceMaterials,sourceMaterials);assert.equal(sent.retrievalSetting,'manual');
+  const restored=await getJobRequest('https://gateway.example',{backendMode:'gateway'},'refined');assert.deepEqual(restored.generationContext,context);assert.deepEqual(restored.manual_reference_ids,['paper-1']);assert.deepEqual(restored.sourceMaterials,sourceMaterials);
+ }finally{mock.restore()}
+})
+
+test('read-only account catalogs isolate keys and reject probes before transport',async()=>{
+ const mock=mockJsonFetch(()=>({body:{code:0,catalog:{state:'ready'},providerRegistry:{models:[]}}}))
+ try{
+  await providerAccountCatalogRequest('https://gateway.example',{runtime:'gateway'},{mode:'catalog',provider:'openai',apiKeys:{openai:'selected',ark:'unrelated'},continuation:{page:2}})
+  const body=JSON.parse(mock.calls[0].options.body);assert.deepEqual(body.apiKeys,{openai:'selected'});assert.deepEqual(body.continuation,{page:2});assert.equal(body.mode,'catalog')
+  await assert.rejects(()=>providerAccountCatalogRequest('https://gateway.example',{runtime:'gateway'},{mode:'catalog',provider:'openai',probes:[]}))
+  assert.equal(mock.calls.length,1)
+ }finally{mock.restore()}
 })

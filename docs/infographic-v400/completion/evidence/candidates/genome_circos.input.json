@@ -1,0 +1,57 @@
+{
+  "figureTypeId": "genome_circos",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "chrom": "chr1",
+        "label": "Region A",
+        "start": 100,
+        "end": 400,
+        "value": 0.3
+      },
+      {
+        "chrom": "chr2",
+        "label": "Region B",
+        "start": 100,
+        "end": 600,
+        "value": 0.8
+      }
+    ],
+    "units": {
+      "start": "bp",
+      "end": "bp",
+      "value": "fraction"
+    },
+    "options": {
+      "sequences": [
+        {
+          "id": "chr1",
+          "length": 1000
+        },
+        {
+          "id": "chr2",
+          "length": 800
+        }
+      ],
+      "assembly": "Synthetic v1",
+      "coordinateSystem": "zero_based_half_open",
+      "valueRange": [
+        0,
+        1
+      ],
+      "links": [
+        {
+          "source": "chr1",
+          "sourcePosition": 250,
+          "target": "chr2",
+          "targetPosition": 350
+        }
+      ]
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

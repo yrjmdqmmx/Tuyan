@@ -1,0 +1,46 @@
+{
+  "checked_at": "2026-10-18T04:27:37.555875+00:00",
+  "containers": [
+    {
+      "name": "paperbanana-hk-paperbanana-api-1",
+      "status": "Up 26 seconds (healthy)"
+    },
+    {
+      "name": "paperbanana-hk-auth-gateway-1",
+      "status": "Up About an hour (healthy)"
+    },
+    {
+      "name": "openacad-api-1",
+      "status": "Up About an hour (healthy)"
+    },
+    {
+      "name": "openacad-worker-two-1",
+      "status": "Up About an hour (healthy)"
+    },
+    {
+      "name": "openacad-worker-one-1",
+      "status": "Up About an hour (healthy)"
+    },
+    {
+      "name": "openacad-redis-1",
+      "status": "Up About an hour (healthy)"
+    },
+    {
+      "name": "tuyan-cn-gateway-auth-gateway-1",
+      "status": "Up About an hour (healthy)"
+    },
+    {
+      "name": "paperbanana-hk-benchmark-worker-1",
+      "status": "Up About an hour (healthy)"
+    },
+    {
+      "name": "paperbanana-hk-mongodb-1",
+      "status": "Up About an hour (healthy)"
+    },
+    {
+      "name": "paperbanana-hk-plot-worker-1",
+      "status": "Up About an hour (healthy)"
+    }
+  ],
+  "production_changed_this_audit": false
+}

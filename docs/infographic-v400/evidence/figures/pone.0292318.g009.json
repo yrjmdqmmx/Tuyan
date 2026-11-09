@@ -1,0 +1,47 @@
+{
+  "id": "pone.0292318.g009",
+  "paper": "pone.0292318",
+  "figure": {
+    "id": "pone.0292318.g009",
+    "label": "Fig 9",
+    "caption": "Stratigraphic cross-section A–A’.\nCross-section A-A’ is based on data from 35 wells logs (Fig 1, Table 1, S1 Fig). Logs are not illustrated in the cross-section due to image-size constraints. Instead, the cross-section exhibits color-coded formational thicknesses within and between adjacent wells. Numbers relate to well locations shown in Fig 1. Numbers in red indicate reference logs shown in detail in Figs 5–8. Note the southward thickening (mostly up-section) of the Oldman Formation and the commensurate thinning of the Dinosaur Park Fm in southeastern-most, as originally hypothesized by Eberth and Hamblin [1]. The Foremost-Oldman formational contact rises slightly to the north due to stratigraphic thinning of the Oldman Fm. Also note the occurrence of a well-developed two-fold stratigraphic division of the Oldman Fm in the southern-most corner of the field area (Twp 01–05). This pattern of a lower sandstone dominated interval overlain by a mudstone dominated interval compares closely to that described by Rogers et al. [9, 14] for the Judith River Formation. The contact between the two intervals in southeast Alberta thus likely marks the mid-Judith discontinuity (MJD) described by those authors.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Stratigraphic cross-section A–A’.</title>\n<p>Cross-section A-A’ is based on data from 35 wells logs (<xref ref-type=\"fig\" rid=\"pone.0292318.g001\">Fig 1</xref>, <xref ref-type=\"table\" rid=\"pone.0292318.t001\">Table 1</xref>, <xref ref-type=\"supplementary-material\" rid=\"pone.0292318.s001\">S1 Fig</xref>). Logs are not illustrated in the cross-section due to image-size constraints. Instead, the cross-section exhibits color-coded formational thicknesses within and between adjacent wells. Numbers relate to well locations shown in <xref ref-type=\"fig\" rid=\"pone.0292318.g001\">Fig 1</xref>. Numbers in red indicate reference logs shown in detail in Figs <xref ref-type=\"fig\" rid=\"pone.0292318.g005\">5</xref>–<xref ref-type=\"fig\" rid=\"pone.0292318.g008\">8</xref>. Note the southward thickening (mostly up-section) of the Oldman Formation and the commensurate thinning of the Dinosaur Park Fm in southeastern-most, as originally hypothesized by Eberth and Hamblin [<xref ref-type=\"bibr\" rid=\"pone.0292318.ref001\">1</xref>]. The Foremost-Oldman formational contact rises slightly to the north due to stratigraphic thinning of the Oldman Fm. Also note the occurrence of a well-developed two-fold stratigraphic division of the Oldman Fm in the southern-most corner of the field area (Twp 01–05). This pattern of a lower sandstone dominated interval overlain by a mudstone dominated interval compares closely to that described by Rogers et al. [<xref ref-type=\"bibr\" rid=\"pone.0292318.ref009\">9</xref>, <xref ref-type=\"bibr\" rid=\"pone.0292318.ref014\">14</xref>] for the Judith River Formation. The contact between the two intervals in southeast Alberta thus likely marks the mid-Judith discontinuity (MJD) described by those authors.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g009\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g009",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0292318",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0292318",
+    "title": "Stratigraphic architecture of the Belly River Group (Campanian, Cretaceous) in the plains of southern Alberta: Revisions and updates to an existing model and implications for correlating dinosaur-rich strata",
+    "journal": "PLOS ONE",
+    "authors": [
+      "David A. Eberth"
+    ],
+    "year": "2024",
+    "license": "2024\nDavid A. Eberth\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0292318.g009",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0292318.g009.png",
+      "bytes": 277806,
+      "sha256": "a26c88d582ef75209002173558e85caf9ecd77910a5ace53d53d6ff3e0abb4e3"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0292318.g009",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0292318.g009.tif",
+      "bytes": 887904,
+      "sha256": "ac47aec421dd79ac2deb2a57bcecb4be06758e784663703110790863e4202dfb"
+    }
+  }
+}

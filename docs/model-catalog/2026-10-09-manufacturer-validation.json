@@ -1,0 +1,58 @@
+{
+  "checkedAt": "2026-10-09",
+  "registryVersion": "2026-10-09.v31",
+  "webTests": {
+    "pass": 598,
+    "fail": 0
+  },
+  "coreRelatedTests": {
+    "pass": 198,
+    "fail": 0
+  },
+  "finalSpecificationTests": {
+    "pass": 11,
+    "fail": 0
+  },
+  "coreTypes": "passed",
+  "webBuild": "passed; existing chunk size warning",
+  "generator": "no drift; --skip-miniprogram",
+  "registryCompatibility": {
+    "baseline": "26424cb",
+    "staticIdentities": 1079,
+    "unchangedExceptSpecifications": true,
+    "defaultModelsUnchanged": true
+  },
+  "miniPreservation": {
+    "checkedFiles": 219,
+    "changedFiles": []
+  },
+  "browserRegistry": "mocked from generated static catalog; real browser, no model inference",
+  "replicateBrowserResults": [
+    {
+      "width": 1440,
+      "detailsOpened": true,
+      "overflow": false,
+      "channelMaxOutput": 65535,
+      "manufacturerMaxOutput": 65536
+    },
+    {
+      "width": 390,
+      "detailsOpened": true,
+      "overflow": false,
+      "channelMaxOutput": 65535,
+      "manufacturerMaxOutput": 65536
+    },
+    {
+      "width": 320,
+      "detailsOpened": true,
+      "overflow": false,
+      "channelMaxOutput": 65535,
+      "manufacturerMaxOutput": 65536
+    }
+  ],
+  "realAccountInference": "not performed",
+  "productionDeployment": "not performed",
+  "coreBuild": "passed",
+  "googleDesktopScreenshot": "2026-10-09-manufacturer-assets/google-1440.png",
+  "discardedNativeMobileAttempt": "Viewport was changed by overlapping QA script; the 752px-wide capture is not counted as mobile evidence. Replicate 390/320px captures were separately checked."
+}

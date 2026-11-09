@@ -1,0 +1,2 @@
+FROM ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:97803f67dca036490f4571c485c8fe5714839710feddfd024bf5fdc98a29f0fb
+COPY --chown=node:node config.js /app/apps/auth-gateway/src/config.js

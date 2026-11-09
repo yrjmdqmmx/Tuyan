@@ -1,0 +1,53 @@
+{
+  "id": "pone.0281854.g003",
+  "paper": "pone.0281854",
+  "figure": {
+    "id": "pone.0281854.g003",
+    "label": "Fig 3",
+    "caption": "Alpha diversity analysis for fungi (a) and bacteria (b) in different soil and rhizosphere samples. The significance is expressed by the p value according to the Kruskal-Wallis test.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title />\n<p>Alpha diversity analysis for fungi (a) and bacteria (b) in different soil and rhizosphere samples. The significance is expressed by the <italic>p</italic> value according to the Kruskal-Wallis test.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0281854",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0281854",
+    "title": "Passion fruit plants alter the soil microbial community with continuous cropping and improve plant disease resistance by recruiting beneficial microorganisms",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Ye Wang",
+      "Yao Teng",
+      "Jianli Zhang",
+      "Zixiong Zhang",
+      "Chen Wang",
+      "Xiukun Wu",
+      "Xiuqin Long"
+    ],
+    "year": "2023",
+    "license": "2023\nWang et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0281854.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0281854.g003.png",
+      "bytes": 1420326,
+      "sha256": "b94982b7446d38f0833fe5195dfad76cb48db5cce8d6d7e5df369e9460e8b75d"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0281854.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0281854.g003.tif",
+      "bytes": 2438632,
+      "sha256": "89fc7f537dced2ddfbc595a1ee75e1f08e3ebf6b11797ce4466b12fe439ecc03"
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "typeId": "protein_domain",
+  "computations": {
+    "domains": [
+      {
+        "protein": "P1",
+        "label": "Domain A",
+        "residues": 71,
+        "leftEdge": 9.5,
+        "rightEdge": 80.5
+      },
+      {
+        "protein": "P1",
+        "label": "Domain B",
+        "residues": 71,
+        "leftEdge": 59.5,
+        "rightEdge": 130.5
+      }
+    ]
+  },
+  "checks": {
+    "domain_0_residues": {
+      "actual": 71.0,
+      "expected": 71.0,
+      "absoluteError": 0.0
+    },
+    "domain_1_residues": {
+      "actual": 71.0,
+      "expected": 71.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "protein",
+      "label",
+      "start",
+      "end",
+      "evidence"
+    ],
+    "options": {
+      "proteins": [
+        {
+          "id": "P1",
+          "length": 180
+        }
+      ],
+      "database": "Synthetic domain annotations v1",
+      "coordinateSystem": "one_based_inclusive"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

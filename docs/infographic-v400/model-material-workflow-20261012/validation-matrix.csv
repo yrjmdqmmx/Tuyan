@@ -1,0 +1,26 @@
+scenario,format,retrieval,uploaded_image,version_delivered,version_reviewed,review_status_mock,image_model_calls,svg_model_calls,actual_image_inspections,real_model_quality_verified
+workflow,png,none,False,2,2,passed,2,0,2,False
+workflow,png,none,True,2,2,passed,2,0,3,False
+workflow,png,auto,False,2,2,passed,2,0,2,False
+workflow,png,auto,True,2,2,passed,2,0,4,False
+workflow,png,random,False,2,2,passed,2,0,2,False
+workflow,png,random,True,2,2,passed,2,0,4,False
+workflow,png,manual,False,2,2,passed,2,0,2,False
+workflow,png,manual,True,2,2,passed,2,0,4,False
+workflow,svg,none,False,2,2,passed,0,2,2,False
+workflow,svg,none,True,2,2,passed,0,2,3,False
+workflow,svg,auto,False,2,2,passed,0,2,2,False
+workflow,svg,auto,True,2,2,passed,0,2,4,False
+workflow,svg,random,False,2,2,passed,0,2,2,False
+workflow,svg,random,True,2,2,passed,0,2,4,False
+workflow,svg,manual,False,2,2,passed,0,2,2,False
+workflow,svg,manual,True,2,2,passed,0,2,4,False
+bar,png,none,False,2,2,passed,2,0,2,False
+state_transition,png,none,False,2,2,passed,2,0,2,False
+multipanel,png,none,False,2,2,passed,2,0,2,False
+bar,svg,none,False,2,2,passed,0,2,2,False
+state_transition,svg,none,False,2,2,passed,0,2,2,False
+multipanel,svg,none,False,2,2,passed,0,2,2,False
+eight extracted formats + uploaded image + manual library + auxiliary vision,png,manual or source-edit,see scenario,2,2,passed,2,0,4,False
+eight extracted formats + uploaded image + manual library + auxiliary vision,svg,manual or source-edit,see scenario,2,2,passed,0,2,4,False
+edit using original SVG code and data,svg,manual or source-edit,see scenario,2,2,passed,0,2,2,False

@@ -1,0 +1,20 @@
+{
+  "source_commit": "30699d3e",
+  "production_code_sha": "5f15e5e0bb2e2c67f23ebe09000a9a7ec76e70ad",
+  "development_worktree": "/Users/a1-6/.config/superpowers/worktrees/paperbanana-tuyan/tuyan-v400-workflow-20261009",
+  "source_paths": [
+    "apps/paperbanana-api/src/config.ts",
+    "apps/paperbanana-api/src/provider-egress.ts",
+    "apps/paperbanana-api/src/provider-route-policy.ts",
+    "apps/paperbanana-api/tests/config.test.ts",
+    "apps/paperbanana-api/tests/provider-egress.test.ts",
+    "deploy/sg-egress/README.md",
+    "deploy/sg-egress/scripts/install-egress.sh",
+    "deploy/sg-egress/tests/behavior.test.mjs",
+    "deploy/sg-egress/tests/scan-egress-secrets.mjs",
+    "deploy/regional-egress"
+  ],
+  "index_modified": false,
+  "scoped_patch_applied": true,
+  "sync_header_added": true
+}

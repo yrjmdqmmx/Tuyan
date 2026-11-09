@@ -6,6 +6,7 @@ import ModelRoutingSettings from './ModelRoutingSettings.jsx'
 import UniversalApiSettings from './UniversalApiSettings.jsx'
 import { buildModelSubmission, providerDefaultRoutes } from '../lib/modelRouting.js'
 import { PROVIDERS } from '../constants.js'
+import { workflowPreflight } from '../lib/workflowSettings.js'
 
 afterEach(cleanup)
 const h = React.createElement
@@ -46,4 +47,20 @@ test('advanced submissions remain blocked with accurate reasons until capability
   }
   assert.throws(() => buildModelSubmission({ configurationMode: 'advanced', modelRoutes: routes, registry: { routeContractVersion: 0 } }), /不支持专业模式/)
   assert.deepEqual(buildModelSubmission({ configurationMode: 'advanced', modelRoutes: routes, registry: { routeContractVersion: 1 } }).modelRoutes, routes)
+})
+
+test('both modes retain a retry control for a stale catalog and cannot submit it', () => {
+  for (const configurationMode of ['simple', 'advanced']) {
+    let retried = 0
+    render(h(ModelRoutingSettings, { ...props, configurationMode, simpleProvider: 'tokendance',
+      modelRegistry: { providers: {}, routeContractVersion: 1 }, registryStatus: 'stale', onRetryRegistry: () => retried++ }))
+    assert.match(screen.getByRole('alert').textContent, /上次目录/)
+    fireEvent.click(screen.getByRole('button', { name: '重新读取模型与渠道能力' }))
+    assert.equal(retried, 1)
+    assert.throws(() => buildModelSubmission({ configurationMode, modelRoutes: routes,
+      registry: { routeContractVersion: 1 }, registryStatus: 'stale' }), /重新读取/)
+    assert.match(workflowPreflight({ action: 'createJob' }, {}, 'stale'), /重新读取/)
+    assert.match(workflowPreflight({ action: 'refineImage' }, {}, 'stale'), /重新读取/)
+    cleanup()
+  }
 })

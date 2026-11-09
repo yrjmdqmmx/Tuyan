@@ -2,18 +2,25 @@ FROM node:24-alpine
 
 WORKDIR /app
 
-RUN corepack enable
+# Raster CAPTCHA rendering needs a known font in the minimal Alpine image.
+RUN apk add --no-cache font-dejavu && corepack enable
 
 # Build from the repository root:
 #   docker build -f apps/auth-gateway/Dockerfile -t paperbanana-auth-gateway .
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/auth-gateway/package.json apps/auth-gateway/package.json
 COPY packages/tuyan-knowledge/package.json packages/tuyan-knowledge/package.json
+COPY packages/figure-taxonomy/package.json packages/figure-taxonomy/package.json
 
 RUN pnpm install --filter @paperbanana/auth-gateway --prod --frozen-lockfile
 
 COPY --chown=node:node apps/auth-gateway apps/auth-gateway
 COPY --chown=node:node packages/tuyan-knowledge packages/tuyan-knowledge
+COPY --chown=node:node packages/figure-taxonomy packages/figure-taxonomy
+COPY --chown=node:node packages/api/src/workspace-*.mjs packages/api/src/
+COPY --chown=node:node packages/api/src/plus*.mjs packages/api/src/
+COPY --chown=node:node packages/api/src/ops-read-contract.mjs packages/api/src/
+COPY --chown=node:node packages/api/src/journal-*.js packages/api/src/
 
 WORKDIR /app/apps/auth-gateway
 

@@ -1,0 +1,98 @@
+{
+  "doi": "10.1371/journal.pone.0253617",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0253617",
+  "title": "Optimization of diosgenin extraction from Dioscorea deltoidea tubers using response surface methodology and artificial neural network modelling",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Romaan Nazir",
+    "Devendra Kumar Pandey",
+    "Babita Pandey",
+    "Vijay Kumar",
+    "Padmanabh Dwivedi",
+    "Aditya Khampariya",
+    "Abhijit Dey",
+    "Tabarak Malik"
+  ],
+  "year": "2021",
+  "license": "2021\nNazir et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0253617.g001",
+      "label": "Fig 1",
+      "caption": "Chemical structure of diosgenin.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253617.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253617.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Chemical structure of diosgenin.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253617.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253617.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253617.g002",
+      "label": "Fig 2",
+      "caption": "A HPTLC fingerprinting of BBD samples (1–27) after derivatizing by anisaldehyde regent. B Chromatogram I of BBD samples (1–14); Chromatogram II of BBD samples (15–27).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253617.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253617.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title />\n<p><bold>A</bold> HPTLC fingerprinting of BBD samples (1–27) after derivatizing by anisaldehyde regent. <bold>B</bold> Chromatogram I of BBD samples (1–14); Chromatogram II of BBD samples (15–27).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253617.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253617.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253617.g003",
+      "label": "Fig 3",
+      "caption": "Calibration plot for diosgenin.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253617.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253617.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Calibration plot for diosgenin.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253617.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253617.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253617.g004",
+      "label": "Fig 4",
+      "caption": "A. Three-dimensional surface response plots for diosgenin extraction at varying level of temperature and solid/solvent ratio. B. Contour plot for diosgenin extraction at varying level of temperature and particle size. C. Contour plot for diosgenin extraction at varying level of temperature and time. D. Contour plot for diosgenin extraction at varying level of time and particle size. E. Contour plot for diosgenin extraction at varying level of time and solid/solvent ratio. F. Contour plot for diosgenin extraction at varying level of particle size and solid/solvent ratio.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253617.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253617.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title />\n<p>A. Three-dimensional surface response plots for diosgenin extraction at varying level of temperature and solid/solvent ratio. B. Contour plot for diosgenin extraction at varying level of temperature and particle size. C. Contour plot for diosgenin extraction at varying level of temperature and time. D. Contour plot for diosgenin extraction at varying level of time and particle size. E. Contour plot for diosgenin extraction at varying level of time and solid/solvent ratio. F. Contour plot for diosgenin extraction at varying level of particle size and solid/solvent ratio.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253617.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253617.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253617.g005",
+      "label": "Fig 5",
+      "caption": "Correlation between experimental versus computed yield of ANN.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253617.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253617.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Correlation between experimental versus computed yield of ANN.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253617.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253617.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253617.g006",
+      "label": "Fig 6",
+      "caption": "A-B Performance data obtained (ANN) over entire training data and gradient loss for diosgenin.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253617.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253617.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>A-B Performance data obtained (ANN) over entire training data and gradient loss for diosgenin.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253617.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253617.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

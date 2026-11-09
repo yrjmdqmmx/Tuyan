@@ -1,0 +1,6 @@
+// Shared navigation metadata. Importing this list never starts a renderer.
+export const ECOSYSTEM_TOOLS = [
+  { id: 'semiotic', name: '交互图表与关系图', engine: 'Semiotic', description: '把表格变成清晰的图表，探索变量关系、趋势与数据流向。', input: 'CSV / JSON', output: 'SVG 矢量图', source: 'https://github.com/nteract/semiotic', catalog: 'https://world.tashan.chat/mcphub/nteract-semiotic', license: 'Apache-2.0', aliases: ['Semiotic', '交互图表', '关系图'], keywords: ['他山', '科研生态', 'CSV', 'JSON', 'SVG', '散点图', '折线图', '柱状图', '桑基图', '数据流向'] },
+  { id: 'viznoir', name: '三维科研渲染', engine: 'VizNoir', description: '呈现科学数据的空间形态，用字段、色标与视角表达研究结果。', input: 'VTK / VTU / VTP / STL', output: 'PNG 图片', source: 'https://github.com/kimimgo/viznoir', catalog: 'https://world.tashan.chat/mcphub/kimimgo-viznoir', license: 'MIT', aliases: ['VizNoir', '三维可视化', '3D 渲染', '科学渲染'], keywords: ['他山', '科研生态', 'VTK', 'VTU', 'VTP', 'STL', '网格', '标量', '色标', '视角', 'PNG'] },
+  { id: 'dataviz', name: '交互数据探索', engine: 'DataViz', description: '用可筛选的交互视图观察数据，在浏览器中探索和分享。', input: 'CSV / JSON', output: '交互 HTML', source: 'https://github.com/SuMayaBee/DataViz-MCP', catalog: 'https://world.tashan.chat/mcphub/pypi-holoviz-mcp-server', license: 'BSD-3-Clause', aliases: ['DataViz', 'DataViz MCP', '数据探索', '仪表盘', 'dashboard'], keywords: ['他山', '科研生态', 'CSV', 'JSON', 'HTML', '交互筛选', '直方图', '分组', '离线', 'Panel', 'Bokeh'] },
+];

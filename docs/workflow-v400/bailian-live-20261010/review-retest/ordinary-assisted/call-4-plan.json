@@ -1,0 +1,37 @@
+{
+  "number": 4,
+  "kind": "plan",
+  "model": "deepseek-v4-pro",
+  "request": {
+    "model": "deepseek-v4-pro",
+    "messages": [
+      {
+        "role": "system",
+        "content": "I am working on a task: given the 'Methodology' section of a paper, and the caption of the desired figure, automatically generate a corresponding illustrative diagram. I will input the text of the 'Methodology' section, the figure caption, and your output should be a detailed description of an illustrative figure that effectively represents the methods described in the text.\n\nTo help you understand the task better, and grasp the principles for generating such figures, I will also provide you with several examples. You should learn from these examples to provide your figure description.\n\n** IMPORTANT: **\nYour description should be as detailed as possible. Semantically, clearly describe each element and their connections. Formally, include various details such as background style (typically pure white or very light pastel), colors, line thickness, icon styles, etc. Remember: vague or unclear specifications will only make the generated figure worse, not better.\n\nIf reference image analysis is provided, use it as structure and style guidance without copying irrelevant content. Do not include the figure title or caption text inside the image."
+      },
+      {
+        "role": "user",
+        "content": "Methodology Section:\n这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\n\nFigure Caption:\n从样品输入到标准化结果的三步方法流程。\n\nDetailed description of the target figure:\n\nInfographic category: method — emphasize the conventions of this figure type.\n\n<avoidance_constraints>\n禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。\n</avoidance_constraints>\nComplete task context:\n{\n  \"originalRequest\": \"这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\",\n  \"methodology\": \"这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\",\n  \"visualIntent\": \"从样品输入到标准化结果的三步方法流程。\",\n  \"completePlan\": \"\",\n  \"figureType\": \"method\",\n  \"aspectRatio\": \"16:9\",\n  \"resolution\": \"1K\",\n  \"outputFormat\": \"svg\",\n  \"svgRenderingConstraints\": \"The final SVG uses a strict static renderer: use flat vector geometry and ordinary arrows. Do not propose or emit shadows, filter/feDropShadow, mask, pattern, clipPath, group opacity, blending, embedded images, HTML or external assets, including unused definitions. These constraints override any incompatible styling in plans or references. Use Noto Sans CJK SC / Noto Sans / Noto Sans Math with regular weight and normal style; preserve the required labels and relationships.\",\n  \"mustPreserve\": \"All user-specified scientific facts, labels, relationships and required content unless the user explicitly requests changing them.\",\n  \"avoid\": \"禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。\",\n  \"referenceRequirements\": {\n    \"mode\": \"none\",\n    \"retrieval\": \"none\",\n    \"uploaded\": []\n  },\n  \"modificationGoal\": \"Check fidelity, readable labels, layout and connections against the original request.\",\n  \"referenceAnalysis\": \"\",\n  \"retrievalContext\": \"\",\n  \"planningMode\": \"planner_critic\"\n}"
+      }
+    ],
+    "stream": true,
+    "enable_thinking": false,
+    "max_tokens": 8192,
+    "stream_options": {
+      "include_usage": true
+    }
+  },
+  "originalParameters": {},
+  "httpStatus": 200,
+  "elapsedMs": 15249,
+  "requestId": "chatcmpl-0e23db88-d90a-91a9-a9ef-c9163d0554a1",
+  "responseText": "好的，这是目标图示的详细描述。\n\n***\n\n**整体布局与风格**\n*   **画布**: 背景为纯白色。\n*   **布局**: 三个主要元素水平排列，方向严格从左到右。它们之间由向右的箭头连接。\n*   **图形风格**: 所有主元素均为带有显著圆角的圆角矩形边框。采用扁平化设计，无阴影、无渐变。边框线条清晰，粗细适中（例如 2px）。\n*   **配色方案**: 使用清爽的学术风格配色。\n    *   第一个框：浅蓝色背景，深蓝色边框。\n    *   第二个框：浅黄色背景，深橙色或琥珀色边框。\n    *   第三个框：浅绿色背景，深绿色边框。\n    *   连接箭头：中灰色。\n*   **字体**: 所有中文和数学文本均使用 'Noto Sans CJK SC' 或 'Noto Sans Math'，常规字重，样式正常。\n*   **标识**: 在画布的绝对右上角，放置一个与参考图（如有）右上角完全相同的短标识（例如，一个代表团队或会议的小图章或缩写，根据提供者要求原样复制）。\n\n**具体元素与连接**\n1.  **第一个模块 (左侧)**\n    *   **形状**: 圆角矩形框。\n    *   **颜色**: 填充浅蓝色 `#E6F2FF`，边框深蓝色 `#0050B3`。\n    *   **内部文本**:\n        *   第一行: 中文 \"样品输入\"\n        *   第二行: 文本 \"(n=12)\"，注意字体大小略小于标题，以区分主次。\n    *   **位置**: 画布左侧三分之一处，垂直居中。\n\n2.  **向右箭头 (中间)**\n    *   **形状**: 一个简单的向右箭头。\n    *   **颜色**: 填充色或描边色为 `#808080`。\n    *   **位置**: 连接第一个框的右边缘中心和第二个框的左边缘中心。\n\n3.  **第二个模块 (中间)**\n    *   **形状**: 圆角矩形框。\n    *   **颜色**: 填充浅黄色 `#FFF7E6`，边框深橙色 `#D46B08`。\n    *   **内部文本**:\n        *   第一行: 中文 \"数据标准化\"\n        *   第二行: 数学表达式 \"x / x₀\"，使用斜体变量，下标样式，准确保留。\n    *   **位置**: 画布正中，垂直居中。\n\n4.  **向右箭头 (中间)**\n    *   **形状**: 一个简单的向右箭头。\n    *   **颜色**: 与上一个相同，中灰色 `#808080`。\n    *   **位置**: 连接第二个框的右边缘中心和第三个框的左边缘中心。\n\n5.  **第三个模块 (右侧)**\n    *   **形状**: 圆角矩形框。\n    *   **颜色**: 填充浅绿色 `#E6FFE6`，边框深绿色 `#228B22`。\n    *   **内部文本**:\n        *   第一行: 中文 \"结果输出\"\n        *   第二行: 文本 \"(均值 1.0)\"，括号内文字为描述性信息。\n    *   **位置**: 画布右侧三分之一处，垂直居中。",
+  "usage": {
+    "prompt_tokens": 889,
+    "completion_tokens": 718,
+    "total_tokens": 1607,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  }
+}

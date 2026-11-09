@@ -1,0 +1,1830 @@
+[
+  {
+    "typeId": "method_framework",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1004076.g002"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "bdcb723e440941784b5131b50e4e197364f4c5486dbfb42d747c15d8dce48a9e"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "method_framework",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1004076.g002"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "bdcb723e440941784b5131b50e4e197364f4c5486dbfb42d747c15d8dce48a9e"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "experimental_design",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pbio.2003779.g002"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "cab1ac19a597307f5b07f0901ce3853fddd8ef4341378cd7dbb3f07c846225e6"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "experimental_design",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pbio.2003779.g002"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "cab1ac19a597307f5b07f0901ce3853fddd8ef4341378cd7dbb3f07c846225e6"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "apparatus",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1004076.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "75883c8ef80c4e5baff0eaab88f5657d64ac7bfcd79884e92ec03cacc6214a11"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "apparatus",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1004076.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "75883c8ef80c4e5baff0eaab88f5657d64ac7bfcd79884e92ec03cacc6214a11"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "mechanism",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1005857.g002"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "54746dfd807d0c5da7d70bd59e20b6455194a614fba53c299a7b2617094ad419"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "mechanism",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1005857.g002"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "54746dfd807d0c5da7d70bd59e20b6455194a614fba53c299a7b2617094ad419"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "anatomical",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1009527.g002"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "5de7ebe210d778d5f3235276b57e4a5735749ddff849e048fcb8debab2a1e96e"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "anatomical",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1009527.g002"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "5de7ebe210d778d5f3235276b57e4a5735749ddff849e048fcb8debab2a1e96e"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "chemical_reaction",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0179333.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "64c96157dfcbfd8687924aab1555bcdc1c6731d84eedfa8929f859b32218c9d3"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "chemical_reaction",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0179333.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "64c96157dfcbfd8687924aab1555bcdc1c6731d84eedfa8929f859b32218c9d3"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "energy_diagram",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0179333.g004"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "471c0f9ecc4e363601140ebe798ca7b2a9ccca2c19f5b1d2007cf387cc7b7a37"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "energy_diagram",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0179333.g004"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "471c0f9ecc4e363601140ebe798ca7b2a9ccca2c19f5b1d2007cf387cc7b7a37"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "sbgn_pd",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1005740.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "7efd53361cfce611c06fdec9dd57e58449084f465e78cca3a9bbf5d49fb11d11"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "sbgn_pd",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1005740.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "7efd53361cfce611c06fdec9dd57e58449084f465e78cca3a9bbf5d49fb11d11"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "sbgn_af",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1005740.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "7efd53361cfce611c06fdec9dd57e58449084f465e78cca3a9bbf5d49fb11d11"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "sbgn_af",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1005740.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "7efd53361cfce611c06fdec9dd57e58449084f465e78cca3a9bbf5d49fb11d11"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "sbgn_er",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1005740.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "7efd53361cfce611c06fdec9dd57e58449084f465e78cca3a9bbf5d49fb11d11"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "sbgn_er",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1005740.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "7efd53361cfce611c06fdec9dd57e58449084f465e78cca3a9bbf5d49fb11d11"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "workflow",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pbio.2003779.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "1f3c577a7913cc88cf9cae2c9710015e8e734d1826e2af56eaea32661e92789f"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "workflow",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pbio.2003779.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "1f3c577a7913cc88cf9cae2c9710015e8e734d1826e2af56eaea32661e92789f"
+        ]
+      },
+      {
+        "kind": "topology",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "15ae01972afe4d7df77017f0429164c7f3d875f7f0100ad58d39213267a35851"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "swimlane",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_s13012-022-01192-w.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "8d19b22986a76f158f7c74a0ee615ccb1789dae0f3cf1356c3cc5aee1342d1f2"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "swimlane",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_s13012-022-01192-w.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "8d19b22986a76f158f7c74a0ee615ccb1789dae0f3cf1356c3cc5aee1342d1f2"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "decision_tree",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0254358.g002"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "66a83f4bc783129e25a26e69a8e6ad103bd685f03c463d94b01b69edc6f1a4d6"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "decision_tree",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0254358.g002"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "66a83f4bc783129e25a26e69a8e6ad103bd685f03c463d94b01b69edc6f1a4d6"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "state_transition",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1009702.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "4a7d0950b4b2d78a88a0da97b41292b614f293d009c6f8953b3bd6e030814ee2"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "state_transition",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1009702.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "4a7d0950b4b2d78a88a0da97b41292b614f293d009c6f8953b3bd6e030814ee2"
+        ]
+      },
+      {
+        "kind": "topology",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "15ae01972afe4d7df77017f0429164c7f3d875f7f0100ad58d39213267a35851"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "sequence_diagram",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0243139.g007"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "f665477af79411a69e8b4f7edfd7fcc91d431e8246515781853569c69d361a22"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "sequence_diagram",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0243139.g007"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "f665477af79411a69e8b4f7edfd7fcc91d431e8246515781853569c69d361a22"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "dataflow",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0242453.g003"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "c46beb4f3923b6cb9f8c070449efdab1e5a445df6e7e75a10c0a914baf5c2918"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "dataflow",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0242453.g003"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "c46beb4f3923b6cb9f8c070449efdab1e5a445df6e7e75a10c0a914baf5c2918"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "timeline",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pbio.3002213.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "232972aea6e0ce7de3fa1fd5409dac507f4850346060fd66bf90217c334766a7"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "timeline",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pbio.3002213.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "232972aea6e0ce7de3fa1fd5409dac507f4850346060fd66bf90217c334766a7"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "roadmap",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "no_qualified_match",
+    "referenceIds": [],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "roadmap",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "no_qualified_match",
+    "referenceIds": [],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "system_architecture",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1010086.g010"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "2845e862300c0c849e21566d40b890750fb1bd383cc5554ca21d13eab46bcb3e"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "system_architecture",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1010086.g010"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "2845e862300c0c849e21566d40b890750fb1bd383cc5554ca21d13eab46bcb3e"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "neural_architecture",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1011436.g003"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "22c3ab5d49a3efd240e2f4c43989f8607bf71278fbe66f0212a5c949f54192d0"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "neural_architecture",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1011436.g003"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "22c3ab5d49a3efd240e2f4c43989f8607bf71278fbe66f0212a5c949f54192d0"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "entity_relationship",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1009809.g003"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "054d4d039731917066ac5683ec636f7e6c0469bcb34401f6e3d2d21997d4d2f2"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "entity_relationship",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1009809.g003"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "054d4d039731917066ac5683ec636f7e6c0469bcb34401f6e3d2d21997d4d2f2"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "circuit",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1009527.g002"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "5de7ebe210d778d5f3235276b57e4a5735749ddff849e048fcb8debab2a1e96e"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "circuit",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pcbi.1009527.g002"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "5de7ebe210d778d5f3235276b57e4a5735749ddff849e048fcb8debab2a1e96e"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "concept_map",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0274948.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "0c14ea08d4c458a6caebda24aed362c0d92ab31d8d24109d78565c88e4bc87ee"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "concept_map",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0274948.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "0c14ea08d4c458a6caebda24aed362c0d92ab31d8d24109d78565c88e4bc87ee"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "hierarchy",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0141039.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "9c398e77c2d6dedb5fa340d099685d0d74a0b13b7e39d7710cf5d766959f5ba2"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "hierarchy",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0141039.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "9c398e77c2d6dedb5fa340d099685d0d74a0b13b7e39d7710cf5d766959f5ba2"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "causal_dag",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0222362.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "66d9f81ebdd8ea1682319d055438717f9f5ad8c9520536ba1497ff615fbdb8de"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "causal_dag",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0222362.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "66d9f81ebdd8ea1682319d055438717f9f5ad8c9520536ba1497ff615fbdb8de"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "geological_section",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0292318.g009"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "2aec7357a4879b1d3ff6ef6f6f5b4c36ca18dcf837c405eeab9e95d8380a3526"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "geological_section",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pone.0292318.g009"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "2aec7357a4879b1d3ff6ef6f6f5b4c36ca18dcf837c405eeab9e95d8380a3526"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "comparison",
+    "format": "png",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pbio.1002128.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "2dc9bfe34674917e42db407a42693d844762d887630c2bd9e4a902a5668db73f"
+        ]
+      },
+      {
+        "kind": "image",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "png-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "7b181902afc621af38a5b6ad0e49a7e0966fc04d020b0041770bce195eea1b58"
+        ]
+      }
+    ]
+  },
+  {
+    "typeId": "comparison",
+    "format": "svg",
+    "input": "schematic_evidence_requires_user_and_review",
+    "reference": "licensed_pixels_transmitted",
+    "referenceIds": [
+      "journal_pbio.1002128.g001"
+    ],
+    "planning": "type_rules_checked",
+    "drawing": "mock_model_response_real_svg_rasterizer_if_svg",
+    "review": "mock_model_decision_on_actual_raster",
+    "realModel": "not_tested",
+    "calls": [
+      {
+        "kind": "plan",
+        "imageCount": 1,
+        "imageHashes": [
+          "2dc9bfe34674917e42db407a42693d844762d887630c2bd9e4a902a5668db73f"
+        ]
+      },
+      {
+        "kind": "svg",
+        "imageCount": 0,
+        "imageHashes": []
+      },
+      {
+        "kind": "svg-review",
+        "imageCount": 1,
+        "imageHashes": [
+          "556ca5271875cc94c8ebe0295737707c7a5c56693902d7f7e543a762ca22dc2d"
+        ]
+      }
+    ]
+  }
+]

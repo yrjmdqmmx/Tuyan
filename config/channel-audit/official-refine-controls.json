@@ -79,5 +79,60 @@
     "structured": null,
     "checkedAt": "2026-09-22",
     "source": "https://docs.x.ai/developers/rest-api-reference/inference/images"
+  },
+  "ideogram/ideogram-4-5": {
+    "version": 1,
+    "maxImages": 1,
+    "sourceCounts": true,
+    "mask": false,
+    "maskWithReferences": false,
+    "structured": null,
+    "singleImageInheritsSize": true,
+    "checkedAt": "2026-10-09",
+    "source": "https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5"
+  },
+  "replicate/google/nano-banana-2.1": {
+    "version": 1,
+    "maxImages": 1,
+    "sourceCounts": true,
+    "mask": false,
+    "maskWithReferences": false,
+    "structured": null,
+    "singleImageInheritsSize": false,
+    "checkedAt": "2026-10-09",
+    "source": "https://replicate.com/google/nano-banana-2.1/api/schema"
+  },
+  "replicate/black-forest-labs/flux-3-image": {
+    "version": 1,
+    "maxImages": 1,
+    "sourceCounts": true,
+    "mask": false,
+    "maskWithReferences": false,
+    "structured": null,
+    "singleImageInheritsSize": false,
+    "checkedAt": "2026-10-09",
+    "source": "https://replicate.com/black-forest-labs/flux-3-image/api/schema"
+  },
+  "replicate/ideogram-ai/ideogram-4-5": {
+    "version": 1,
+    "maxImages": 1,
+    "sourceCounts": true,
+    "mask": false,
+    "maskWithReferences": false,
+    "structured": null,
+    "singleImageInheritsSize": false,
+    "checkedAt": "2026-10-09",
+    "source": "https://replicate.com/ideogram-ai/ideogram-4-5/api/schema"
+  },
+  "replicate/ideogram-ai/ideogram-4-5-precise-edit": {
+    "version": 1,
+    "maxImages": 1,
+    "sourceCounts": true,
+    "mask": false,
+    "maskWithReferences": false,
+    "structured": null,
+    "singleImageInheritsSize": true,
+    "checkedAt": "2026-10-09",
+    "source": "https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema"
   }
 }

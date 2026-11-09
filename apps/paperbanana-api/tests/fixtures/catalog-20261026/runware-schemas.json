@@ -1,0 +1,1229 @@
+{
+  "runware/bria:20@1": {
+    "source": "https://runware.ai/docs/models/bria-fibo-2-0/schema.json",
+    "sha256": "a11ed7dd1e62027239c418e84871d51a92d89f86de5da4ca00a68a793a9b63c4",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "const": "bria:20@1"
+        },
+        "inputs": {
+          "type": "object",
+          "properties": {
+            "image": {
+              "type": "string",
+              "anyOf": [
+                {
+                  "format": "uuid"
+                },
+                {
+                  "format": "uri"
+                },
+                {
+                  "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                },
+                {
+                  "pattern": "^[a-zA-Z0-9+/=]+$"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "positivePrompt": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 3000
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "seed": {
+          "maximum": 2147483647,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "providerSettings": {
+          "type": "object",
+          "properties": {
+            "bria": {
+              "type": "object",
+              "properties": {
+                "ipSignal": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "taskType": {
+          "type": "string",
+          "const": "imageInference"
+        },
+        "taskUUID": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "webhookURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "includeCost": {
+          "type": "boolean"
+        },
+        "routing": {
+          "type": "object",
+          "properties": {
+            "preferences": {
+              "type": "object",
+              "properties": {
+                "quality": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "speed": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "cost": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxPrice": {
+              "type": "number",
+              "minimum": 0
+            },
+            "requirements": {
+              "type": "string",
+              "maxLength": 3000
+            }
+          },
+          "additionalProperties": false
+        },
+        "numberResults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "uploadEndpoint": {
+          "type": "string",
+          "format": "uri"
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 60
+        },
+        "outputType": {
+          "type": "string",
+          "enum": [
+            "URL",
+            "base64Data",
+            "dataURI"
+          ]
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": [
+            "JPG",
+            "PNG",
+            "WEBP"
+          ]
+        },
+        "outputQuality": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 99
+        },
+        "deliveryMethod": {
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "sync"
+            },
+            {
+              "const": "async"
+            }
+          ]
+        },
+        "safety": {
+          "type": "object",
+          "properties": {
+            "checkContent": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "advancedFeatures": {
+          "type": "object",
+          "properties": {
+            "watermark": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 32
+                },
+                "image": {
+                  "type": "string",
+                  "anyOf": [
+                    {
+                      "format": "uuid"
+                    },
+                    {
+                      "format": "uri"
+                    },
+                    {
+                      "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                    },
+                    {
+                      "pattern": "^[a-zA-Z0-9+/=]+$"
+                    }
+                  ]
+                },
+                "displayPosition": {
+                  "type": "string",
+                  "enum": [
+                    "top-left",
+                    "top-center",
+                    "top-right",
+                    "center-left",
+                    "center-center",
+                    "center-right",
+                    "bottom-left",
+                    "bottom-center",
+                    "bottom-right",
+                    "tiled"
+                  ]
+                },
+                "opacity": {
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0.1,
+                  "maximum": 1
+                },
+                "fontColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                },
+                "bgColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "text"
+                  ]
+                },
+                {
+                  "required": [
+                    "image"
+                  ]
+                }
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "positivePrompt",
+        "width",
+        "height",
+        "taskType",
+        "taskUUID",
+        "model"
+      ],
+      "allOf": [
+        {
+          "dependentRequired": {
+            "width": [
+              "height"
+            ],
+            "height": [
+              "width"
+            ]
+          }
+        },
+        {
+          "if": {
+            "anyOf": [
+              {
+                "required": [
+                  "width"
+                ]
+              },
+              {
+                "required": [
+                  "height"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "width": {
+                    "const": 1024
+                  },
+                  "height": {
+                    "const": 1024
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 832
+                  },
+                  "height": {
+                    "const": 1248
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1248
+                  },
+                  "height": {
+                    "const": 832
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 864
+                  },
+                  "height": {
+                    "const": 1152
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1152
+                  },
+                  "height": {
+                    "const": 864
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 896
+                  },
+                  "height": {
+                    "const": 1120
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1120
+                  },
+                  "height": {
+                    "const": 896
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 792
+                  },
+                  "height": {
+                    "const": 1408
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1408
+                  },
+                  "height": {
+                    "const": 792
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 800
+                  },
+                  "height": {
+                    "const": 1280
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1280
+                  },
+                  "height": {
+                    "const": 800
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 720
+                  },
+                  "height": {
+                    "const": 1440
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1440
+                  },
+                  "height": {
+                    "const": 720
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 672
+                  },
+                  "height": {
+                    "const": 1568
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1568
+                  },
+                  "height": {
+                    "const": 672
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 592
+                  },
+                  "height": {
+                    "const": 1776
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1776
+                  },
+                  "height": {
+                    "const": 592
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 512
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 512
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 464
+                  },
+                  "height": {
+                    "const": 2320
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2320
+                  },
+                  "height": {
+                    "const": 464
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1536
+                  },
+                  "height": {
+                    "const": 2304
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2304
+                  },
+                  "height": {
+                    "const": 1536
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1536
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 1536
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1536
+                  },
+                  "height": {
+                    "const": 1920
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1920
+                  },
+                  "height": {
+                    "const": 1536
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1152
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 1152
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "runware/bria:21@1": {
+    "source": "https://runware.ai/docs/models/bria-fibo-2-0-edit/schema.json",
+    "sha256": "4e536f96699a591fe99e0f8cc65d83a36cf0255977e4cc22fe146864bebad776",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "const": "bria:21@1"
+        },
+        "inputs": {
+          "type": "object",
+          "properties": {
+            "image": {
+              "type": "string",
+              "anyOf": [
+                {
+                  "format": "uuid"
+                },
+                {
+                  "format": "uri"
+                },
+                {
+                  "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                },
+                {
+                  "pattern": "^[a-zA-Z0-9+/=]+$"
+                }
+              ]
+            },
+            "referenceImages": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "anyOf": [
+                  {
+                    "format": "uuid"
+                  },
+                  {
+                    "format": "uri"
+                  },
+                  {
+                    "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                  },
+                  {
+                    "pattern": "^[a-zA-Z0-9+/=]+$"
+                  }
+                ]
+              },
+              "maxItems": 4
+            },
+            "mask": {
+              "type": "string",
+              "anyOf": [
+                {
+                  "format": "uuid"
+                },
+                {
+                  "format": "uri"
+                },
+                {
+                  "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                },
+                {
+                  "pattern": "^[a-zA-Z0-9+/=]+$"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "positivePrompt": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 3000
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "seed": {
+          "maximum": 2147483647,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "providerSettings": {
+          "type": "object",
+          "properties": {
+            "bria": {
+              "type": "object",
+              "properties": {
+                "ipSignal": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "taskType": {
+          "type": "string",
+          "const": "imageInference"
+        },
+        "taskUUID": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "webhookURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "includeCost": {
+          "type": "boolean"
+        },
+        "routing": {
+          "type": "object",
+          "properties": {
+            "preferences": {
+              "type": "object",
+              "properties": {
+                "quality": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "speed": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "cost": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxPrice": {
+              "type": "number",
+              "minimum": 0
+            },
+            "requirements": {
+              "type": "string",
+              "maxLength": 3000
+            }
+          },
+          "additionalProperties": false
+        },
+        "numberResults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "uploadEndpoint": {
+          "type": "string",
+          "format": "uri"
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 60
+        },
+        "outputType": {
+          "type": "string",
+          "enum": [
+            "URL",
+            "base64Data",
+            "dataURI"
+          ]
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": [
+            "JPG",
+            "PNG",
+            "WEBP"
+          ]
+        },
+        "outputQuality": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 99
+        },
+        "deliveryMethod": {
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "sync"
+            },
+            {
+              "const": "async"
+            }
+          ]
+        },
+        "safety": {
+          "type": "object",
+          "properties": {
+            "checkContent": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "advancedFeatures": {
+          "type": "object",
+          "properties": {
+            "watermark": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 32
+                },
+                "image": {
+                  "type": "string",
+                  "anyOf": [
+                    {
+                      "format": "uuid"
+                    },
+                    {
+                      "format": "uri"
+                    },
+                    {
+                      "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                    },
+                    {
+                      "pattern": "^[a-zA-Z0-9+/=]+$"
+                    }
+                  ]
+                },
+                "displayPosition": {
+                  "type": "string",
+                  "enum": [
+                    "top-left",
+                    "top-center",
+                    "top-right",
+                    "center-left",
+                    "center-center",
+                    "center-right",
+                    "bottom-left",
+                    "bottom-center",
+                    "bottom-right",
+                    "tiled"
+                  ]
+                },
+                "opacity": {
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0.1,
+                  "maximum": 1
+                },
+                "fontColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                },
+                "bgColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "text"
+                  ]
+                },
+                {
+                  "required": [
+                    "image"
+                  ]
+                }
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "inputs",
+        "positivePrompt",
+        "taskType",
+        "taskUUID",
+        "model"
+      ],
+      "allOf": [
+        {
+          "dependentRequired": {
+            "width": [
+              "height"
+            ],
+            "height": [
+              "width"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "inputs": {
+                "properties": {
+                  "referenceImages": {
+                    "minItems": 2
+                  }
+                },
+                "required": [
+                  "referenceImages"
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          },
+          "then": {
+            "not": {
+              "properties": {
+                "inputs": {
+                  "required": [
+                    "mask"
+                  ]
+                }
+              },
+              "required": [
+                "inputs"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "inputs": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "image"
+                    ]
+                  },
+                  {
+                    "properties": {
+                      "referenceImages": {
+                        "maxItems": 1
+                      }
+                    },
+                    "required": [
+                      "referenceImages"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "width"
+                  ]
+                },
+                {
+                  "required": [
+                    "height"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "anyOf": [
+              {
+                "required": [
+                  "width"
+                ]
+              },
+              {
+                "required": [
+                  "height"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "width": {
+                    "const": 1024
+                  },
+                  "height": {
+                    "const": 1024
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 832
+                  },
+                  "height": {
+                    "const": 1248
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1248
+                  },
+                  "height": {
+                    "const": 832
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 864
+                  },
+                  "height": {
+                    "const": 1152
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1152
+                  },
+                  "height": {
+                    "const": 864
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 896
+                  },
+                  "height": {
+                    "const": 1120
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1120
+                  },
+                  "height": {
+                    "const": 896
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 792
+                  },
+                  "height": {
+                    "const": 1408
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1408
+                  },
+                  "height": {
+                    "const": 792
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 800
+                  },
+                  "height": {
+                    "const": 1280
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1280
+                  },
+                  "height": {
+                    "const": 800
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 720
+                  },
+                  "height": {
+                    "const": 1440
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1440
+                  },
+                  "height": {
+                    "const": 720
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 672
+                  },
+                  "height": {
+                    "const": 1568
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1568
+                  },
+                  "height": {
+                    "const": 672
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 592
+                  },
+                  "height": {
+                    "const": 1776
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1776
+                  },
+                  "height": {
+                    "const": 592
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 512
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 512
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 464
+                  },
+                  "height": {
+                    "const": 2320
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2320
+                  },
+                  "height": {
+                    "const": 464
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "oneOf": [
+            {
+              "properties": {
+                "inputs": {
+                  "required": [
+                    "image"
+                  ]
+                }
+              },
+              "required": [
+                "inputs"
+              ]
+            },
+            {
+              "properties": {
+                "inputs": {
+                  "required": [
+                    "referenceImages"
+                  ]
+                }
+              },
+              "required": [
+                "inputs"
+              ]
+            }
+          ]
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}

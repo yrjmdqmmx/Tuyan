@@ -1,0 +1,57 @@
+{
+  "id": "pcbi.1010086.g010",
+  "paper": "pcbi.1010086",
+  "figure": {
+    "id": "pcbi.1010086.g010",
+    "label": "Fig 10",
+    "caption": "Multi-layer microcircuit model with three inhibitory neuron types.\n(A) Schematic overview of all neuronal populations, external inputs, and main connections. Inhibitory populations are grouped by boxes. In panels A and B, for probabilistic connections, only those with a probability of at least 4% are shown (thin lines: 4 to 8%, thick lines: ≥8%). (B) Detailed L2/3 connectivity between excitatory population and all three inhibitory populations; in panel A these connections are combined in two arrows (from and to the box). (C) Excitatory-inhibitory subnetwork with external inputs depicted with annotations according to the graphical notation in Fig 8. The connectivity is described with the rules “one-to-one” (δ) and “pairwise Bernoulli” (p), and the constraints autapses allowed (A) and multapses prohibited (M). The synaptic weights (w) and delays (d) are specified as either constant (i.e., w ¯) or sampled from lognormal distributions (i.e., w ∼ LN). Interneuron types: somatostatin expressing (SOM), vasoactive intestinal peptide expressing (VIP), parvalbumin expressing (PV).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pcbi.1010086.g010\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g010</object-id>\n<label>Fig 10</label>\n<caption>\n<title>Multi-layer microcircuit model with three inhibitory neuron types.</title>\n<p>(A) Schematic overview of all neuronal populations, external inputs, and main connections. Inhibitory populations are grouped by boxes. In panels A and B, for probabilistic connections, only those with a probability of at least 4% are shown (thin lines: 4 to 8%, thick lines: ≥8%). (B) Detailed L2/3 connectivity between excitatory population and all three inhibitory populations; in panel A these connections are combined in two arrows (from and to the box). (C) Excitatory-inhibitory subnetwork with external inputs depicted with annotations according to the graphical notation in <xref ref-type=\"fig\" rid=\"pcbi.1010086.g008\">Fig 8</xref>. The connectivity is described with the rules “one-to-one” (<italic>δ</italic>) and “pairwise Bernoulli” (<italic>p</italic>), and the constraints autapses allowed (<italic>A</italic>) and multapses prohibited (<inline-formula id=\"pcbi.1010086.e102\"><alternatives><graphic id=\"pcbi.1010086.e102g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e102\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M102\"><ns1:menclose notation=\"updiagonalstrike\"><ns1:mi>M</ns1:mi></ns1:menclose></ns1:math></alternatives></inline-formula>). The synaptic weights (<italic>w</italic>) and delays (<italic>d</italic>) are specified as either constant (i.e., <inline-formula id=\"pcbi.1010086.e103\"><alternatives><graphic id=\"pcbi.1010086.e103g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e103\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M103\"><ns1:mover><ns1:mi>w</ns1:mi> <ns1:mo>¯</ns1:mo></ns1:mover></ns1:math></alternatives></inline-formula>) or sampled from lognormal distributions (i.e., <inline-formula id=\"pcbi.1010086.e104\"><alternatives><graphic id=\"pcbi.1010086.e104g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e104\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M104\"><ns1:mi>w</ns1:mi> <ns1:mo>∼</ns1:mo> <ns1:mrow><ns1:mi mathvariant=\"script\">L</ns1:mi><ns1:mi mathvariant=\"script\">N</ns1:mi></ns1:mrow></ns1:math></alternatives></inline-formula>). Interneuron types: somatostatin expressing (SOM), vasoactive intestinal peptide expressing (VIP), parvalbumin expressing (PV).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g010\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "id": "pcbi.1010086.e102g",
+      "mimetype": "image",
+      "position": "anchor",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.e102",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1010086",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010086",
+    "title": "Connectivity concepts in neuronal network modeling",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Johanna Senk",
+      "Birgit Kriener",
+      "Mikael Djurfeldt",
+      "Nicole Voges",
+      "Han-Jia Jiang",
+      "Lisa Schüttler",
+      "Gabriele Gramelsberger",
+      "Markus Diesmann",
+      "Hans E. Plesser",
+      "Sacha J. van Albada"
+    ],
+    "year": "2022",
+    "license": "2022\nSenk et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1010086.g010",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1010086.g010.png",
+      "bytes": 434492,
+      "sha256": "f096533cd2e9cf514aab2d6a0e3499f7316d5f1479b83595708e091e2aafef4d"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1010086.g010",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1010086.g010.tif",
+      "bytes": 538620,
+      "sha256": "f8ddef8603224ad9fb2f4861a73d2806dbf69b5ddba81a03309cbc7923ac842d"
+    }
+  }
+}

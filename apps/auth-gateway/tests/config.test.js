@@ -17,6 +17,15 @@ function validEnv(overrides = {}) {
   };
 }
 
+test('ecosystem service is optional but configured URL and token must be complete and bounded', () => {
+  assert.deepEqual(loadGatewayConfig(validEnv()).ecosystem, {});
+  const token = 'test-ecosystem-token-at-least-32-bytes';
+  assert.deepEqual(loadGatewayConfig(validEnv({ECOSYSTEM_WORKER_URL:'http://ecosystem-worker:8092',ECOSYSTEM_WORKER_TOKEN:token})).ecosystem, {url:'http://ecosystem-worker:8092',token});
+  for (const url of ['file:///tmp/worker', 'http://user:pass@worker', 'http://worker/render', 'http://worker?secret=x', 'http://worker#x']) assert.throws(() => loadGatewayConfig(validEnv({ECOSYSTEM_WORKER_URL:url,ECOSYSTEM_WORKER_TOKEN:token})));
+  assert.throws(() => loadGatewayConfig(validEnv({ECOSYSTEM_WORKER_URL:'http://worker',ECOSYSTEM_WORKER_TOKEN:'short'})));
+  assert.throws(() => loadGatewayConfig(validEnv({ECOSYSTEM_WORKER_TOKEN:token})));
+});
+
 test('requires an explicit backend URL', () => {
   assert.throws(
     () => loadGatewayConfig(validEnv({ PAPERBANANA_API_URL: '', LAF_API_URL: '' })),
@@ -191,4 +200,21 @@ test('Watcha defaults disabled and enabling requires credentials, mail and appro
   assert.throws(() => loadGatewayConfig(validEnv({ ...enabled, WATCHA_CLIENT_SECRET: '' })), /WATCHA_CLIENT_SECRET/);
   for (const scope of ['email', 'read profile', 'read admin']) assert.throws(() => loadGatewayConfig(validEnv({ ...enabled, WATCHA_OAUTH_SCOPES: scope })), /WATCHA_OAUTH_SCOPES/);
   assert.equal(loadGatewayConfig(validEnv({ ...enabled, WATCHA_OAUTH_SCOPES: 'read' })).watcha.scopes, 'read');
+});
+
+
+test('new gateway can use exact Hangzhou account origin while old gateway stays unchanged', () => {
+  const config = loadGatewayConfig(validEnv({
+    AUTH_BASE_URL: 'https://tuyansci.cn', FRONTEND_ORIGINS: 'https://tuyansci.cn',
+    AUTH_VERIFICATION_CALLBACK_URL: 'https://tuyansci.cn/account/email-verified.html',
+    AUTH_PASSWORD_RESET_URL: 'https://tuyansci.cn/account/reset-password.html',
+  }));
+  assert.equal(config.authBaseUrl, 'https://tuyansci.cn/');
+  assert.equal(config.cookieSameSite, 'lax');
+  assert.equal(config.cookieDomain, '');
+  assert.ok(config.frontendOrigins.includes('https://tuyansci.cn'));
+  for (const origin of ['https://tuyansci.cn.evil.example', 'https://evil.tuyansci.cn', 'https://tuyansci.cn:444', 'http://tuyansci.cn']) {
+    assert.throws(() => loadGatewayConfig(validEnv({ AUTH_PASSWORD_RESET_URL: origin + '/account/reset-password.html' })));
+  }
+  assert.equal(loadGatewayConfig(validEnv()).authEmail.resetPasswordUrl, 'https://www.paperbanana.asia/account/reset-password.html');
 });

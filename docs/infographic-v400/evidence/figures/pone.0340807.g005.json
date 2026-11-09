@@ -1,0 +1,49 @@
+{
+  "id": "pone.0340807.g005",
+  "paper": "pone.0340807",
+  "figure": {
+    "id": "pone.0340807.g005",
+    "label": "Fig 5",
+    "caption": "Micro-averaged ROC and precision–recall curves for disease and variety heads on the test set.(a) Disease ROC (b) Disease PR (c) Variety ROC (d) Variety PR.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0340807.g005\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0340807.g005</object-id><label>Fig 5</label><caption><title>Micro-averaged ROC and precision–recall curves for disease and variety heads on the test set.</title><p>(a) Disease ROC (b) Disease PR (c) Variety ROC (d) Variety PR.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0340807.g005\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0340807.g005",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0340807",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0340807",
+    "title": "Multi-objective Big Bang Big Crunch framework for reliable rice disease and variety classification with conditional calibration",
+    "journal": "PLOS One",
+    "authors": [
+      "Chatter Singh",
+      "Amar Singh",
+      "Sahraoui Dhelim"
+    ],
+    "year": "2026",
+    "license": "2026\nSingh et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0340807.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0340807.g005.png",
+      "bytes": 593891,
+      "sha256": "a4ea14daa83f87ecb517c776074fc7242fa0ba6e5a58012d2f6fcbe662e41023"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0340807.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0340807.g005.tif",
+      "bytes": 846300,
+      "sha256": "e4431c4695db3f856890fdbd7241c87e22d57dbd1b6f7d98364f386bb2b3c9ce"
+    }
+  }
+}

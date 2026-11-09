@@ -1,0 +1,53 @@
+{
+  "id": "pone.0281854.g004",
+  "paper": "pone.0281854",
+  "figure": {
+    "id": "pone.0281854.g004",
+    "label": "Fig 4",
+    "caption": "Venn diagram of unique and shared fungal (a) and bacterial (b) ASVs among different soil and rhizosphere samples. Each colour represents a group, and the numbers indicate the quantities of ASVs contained in the block.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title />\n<p>Venn diagram of unique and shared fungal (a) and bacterial (b) ASVs among different soil and rhizosphere samples. Each colour represents a group, and the numbers indicate the quantities of ASVs contained in the block.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g004\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0281854",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0281854",
+    "title": "Passion fruit plants alter the soil microbial community with continuous cropping and improve plant disease resistance by recruiting beneficial microorganisms",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Ye Wang",
+      "Yao Teng",
+      "Jianli Zhang",
+      "Zixiong Zhang",
+      "Chen Wang",
+      "Xiukun Wu",
+      "Xiuqin Long"
+    ],
+    "year": "2023",
+    "license": "2023\nWang et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0281854.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0281854.g004.png",
+      "bytes": 1140194,
+      "sha256": "d299cb924cefd3e24d940307af6217360b189ab79c2d3ae87e900ed1c110ff4e"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0281854.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0281854.g004.tif",
+      "bytes": 1469128,
+      "sha256": "7968c08274ca22545cc60506b236d5a285d1c9d93c9b355e7d3c2297ab44a65a"
+    }
+  }
+}

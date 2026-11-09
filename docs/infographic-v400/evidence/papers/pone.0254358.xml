@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0254358</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-20-33754</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Engineering and technology</subject><subj-group><subject>Management engineering</subject><subj-group><subject>Decision analysis</subject><subj-group><subject>Decision trees</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Decision analysis</subject><subj-group><subject>Decision trees</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Pharmacology</subject><subj-group><subject>Drug research and development</subject><subj-group><subject>Drug safety</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Health care</subject><subj-group><subject>Patients</subject><subj-group><subject>Inpatients</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Pharmacology</subject><subj-group><subject>Drug interactions</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Health care</subject><subj-group><subject>Health care providers</subject><subj-group><subject>Physicians</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>People and places</subject><subj-group><subject>Population groupings</subject><subj-group><subject>Professions</subject><subj-group><subject>Medical personnel</subject><subj-group><subject>Physicians</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>People and places</subject><subj-group><subject>Population groupings</subject><subj-group><subject>Professions</subject><subj-group><subject>Medical personnel</subject><subj-group><subject>Nurses</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Health care</subject><subj-group><subject>Health care providers</subject><subj-group><subject>Nurses</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Artificial intelligence</subject><subj-group><subject>Machine learning</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Epidemiology</subject><subj-group><subject>Medical risk factors</subject></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Predicting self-intercepted medication ordering errors using machine learning</article-title>
+<alt-title alt-title-type="running-head">Predicting self-intercepted medication ordering errors using machine learning</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-4574-8616</contrib-id>
+<name name-style="western">
+<surname>King</surname>
+<given-names>Christopher Ryan</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Formal analysis</role>
+<role content-type="https://casrai.org/credit/">Writing – original draft</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Abraham</surname>
+<given-names>Joanna</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Conceptualization</role>
+<role content-type="https://casrai.org/credit/">Data curation</role>
+<role content-type="https://casrai.org/credit/">Funding acquisition</role>
+<role content-type="https://casrai.org/credit/">Investigation</role>
+<role content-type="https://casrai.org/credit/">Supervision</role>
+<role content-type="https://casrai.org/credit/">Writing – original draft</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Fritz</surname>
+<given-names>Bradley A.</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Formal analysis</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Cui</surname>
+<given-names>Zhicheng</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Data curation</role>
+<role content-type="https://casrai.org/credit/">Formal analysis</role>
+<role content-type="https://casrai.org/credit/">Writing – original draft</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Galanter</surname>
+<given-names>William</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Conceptualization</role>
+<role content-type="https://casrai.org/credit/">Methodology</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Chen</surname>
+<given-names>Yixin</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Supervision</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Kannampallil</surname>
+<given-names>Thomas</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Conceptualization</role>
+<role content-type="https://casrai.org/credit/">Data curation</role>
+<role content-type="https://casrai.org/credit/">Investigation</role>
+<role content-type="https://casrai.org/credit/">Project administration</role>
+<role content-type="https://casrai.org/credit/">Writing – original draft</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Department of Anesthesiology, Washington University School of Medicine, Saint Louis, Missouri, United States of America</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Institute for Informatics, Washington University School of Medicine, Saint Louis, Missouri, United States of America</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Department of Computer Science, McKelvey School of Engineering, Washington University in St Louis, Saint Louis, Missouri, United States of America</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Department of Medicine, College of Medicine, University of Illinois at Chicago, Chicago, Illinois, United States of America</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>Department of Pharmacy Systems, Outcomes and Policy, College of Pharmacy, University of Illinois at Chicago, Chicago, Illinois, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Qamar</surname>
+<given-names>Usman</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>National University of Sciences and Technology (NUST), PAKISTAN</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">thomas.k@wustl.edu</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>14</day>
+<month>7</month>
+<year>2021</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2021</year>
+</pub-date>
+<volume>16</volume>
+<issue>7</issue>
+<elocation-id>e0254358</elocation-id>
+<history>
+<date date-type="received">
+<day>27</day>
+<month>10</month>
+<year>2020</year>
+</date>
+<date date-type="accepted">
+<day>27</day>
+<month>6</month>
+<year>2021</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2021</copyright-year>
+<copyright-holder>King et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0254358"/>
+<abstract>
+<p>Current approaches to understanding medication ordering errors rely on relatively small manually captured error samples. These approaches are resource-intensive, do not scale for computerized provider order entry (CPOE) systems, and are likely to miss important risk factors associated with medication ordering errors. Previously, we described a dataset of CPOE-based medication voiding accompanied by univariable and multivariable regression analyses. However, these traditional techniques require expert guidance and may perform poorly compared to newer approaches. In this paper, we update that analysis using machine learning (ML) models to predict erroneous medication orders and identify its contributing factors. We retrieved patient demographics (race/ethnicity, sex, age), clinician characteristics, type of medication order (inpatient, prescription, home medication by history), and order content. We compared logistic regression, random forest, boosted decision trees, and artificial neural network models. Model performance was evaluated using area under the receiver operating characteristic curve (AUROC) and the area under the precision-recall curve (AUPRC). The dataset included 5,804,192 medication orders, of which 28,695 (0.5%) were voided. ML correctly classified voids at reasonable accuracy; with a positive predictive value of 10%, ~20% of errors were included. Gradient boosted decision trees achieved the highest AUROC (0.7968) and AUPRC (0.0647) among all models. Logistic regression had the poorest performance. Models identified predictive factors with high face validity (e.g., student orders), and a decision tree revealed interacting contexts with high rates of errors not identified by previous regression models. Prediction models using order-entry information offers promise for error surveillance, patient safety improvements, and targeted clinical review. The improved performance of models with complex interactions points to the importance of contextual medication ordering information for understanding contributors to medication errors.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution>Agency for Healthcare Research and Quality (US)</institution>
+</funding-source>
+<award-id>R21HS025443</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Abraham</surname>
+<given-names>Joanna</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>This project was supported in part by grant (R21HS025443) from the Agency for Healthcare Research and Quality to JA. The content is solely the responsibility of the authors and does not represent the official views of the Agency for Healthcare Research and Quality [<ext-link ext-link-type="uri" xlink:href="https://www.ahrq.gov/" xlink:type="simple">https://www.ahrq.gov/</ext-link>]. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="2"/>
+<table-count count="2"/>
+<page-count count="12"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>This study is protected by the institutional review protocols approved by the University of Illinois (IRB #2015-0767) and from the human research protection office (HRPO) of Washington University (IRB #2018-06061). The data used for this study contains protected health information and cannot be shared without explicit data use agreements in place. Data requests can be sent to either of the following institutional offices: Institutional Review Board at Washington University, Human Research Protection Office 660 South Euclid Avenue, Campus Box 8089, St. Louis, MO 63110, <email xlink:type="simple">hrpo@wustl.edu</email> 1-800-438-0445 Institutional Review Board at University of Illinois, Office of Protection of Research Subjects, 1737 West Polk Street, Suite 310, MC 672, Chicago, IL 60612, <email xlink:type="simple">uicirb@uic.edu</email> 1-312-996-1711.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Computerized provider order entry (CPOE) systems streamline medication ordering process by creating standardized templates for the entry of legible, accurate, and complete medication orders, thereby mitigating the potential for medication errors [<xref ref-type="bibr" rid="pone.0254358.ref001">1</xref>–<xref ref-type="bibr" rid="pone.0254358.ref006">6</xref>]. By integration with electronic health record (EHR) systems, CPOE systems promote the coordination of medication ordering [<xref ref-type="bibr" rid="pone.0254358.ref007">7</xref>], allow real-time collaboration among care team members for medication administration, delivery and monitoring [<xref ref-type="bibr" rid="pone.0254358.ref008">8</xref>], and reduce the potential for misinterpretation of orders [<xref ref-type="bibr" rid="pone.0254358.ref009">9</xref>]. Tight coupling of the EHR with an ordering system has also led to the development of clinical decision support tools for alerting clinicians regarding improperly composed orders, clinically inappropriate orders, duplicate orders [<xref ref-type="bibr" rid="pone.0254358.ref010">10</xref>], wrong patient orders, and formulary non-compliance [<xref ref-type="bibr" rid="pone.0254358.ref011">11</xref>].</p>
+<p>With the widespread use of CPOE systems, the volume of medications orders, and correspondingly, medication errors have increased exponentially. Rough estimates suggest that 25–30 orders are placed per inpatient admission, with nearly 4–6 additional orders per patient per day [<xref ref-type="bibr" rid="pone.0254358.ref012">12</xref>, <xref ref-type="bibr" rid="pone.0254358.ref013">13</xref>]. Clinician interactions with CPOE systems are a source of medication errors [<xref ref-type="bibr" rid="pone.0254358.ref014">14</xref>–<xref ref-type="bibr" rid="pone.0254358.ref017">17</xref>]; errors during CPOE use account for 6–25% of detected medication errors in hospitalized patients [<xref ref-type="bibr" rid="pone.0254358.ref015">15</xref>]. In spite of its prevalence, much of the prior research on the causes of medication ordering errors has relied on small samples from retrospective chart reviews, clinician self-reports, analysis of malpractice claims data, and survey-based studies [<xref ref-type="bibr" rid="pone.0254358.ref018">18</xref>, <xref ref-type="bibr" rid="pone.0254358.ref019">19</xref>]. One of the larger analysis of CPOE-based errors used manual reviews to categorize over 10,000 reported errors drawn from a national database [<xref ref-type="bibr" rid="pone.0254358.ref020">20</xref>], classifying the causes of such errors. Although such analyses are useful in understanding the sources of CPOE-based medication errors, these databases include limited details regarding the context of a reported error with considerable variability regarding the content of reported errors. Additionally, because of the lack of matched control (non-error) orders, they cannot be used for developing prediction models.</p>
+<p>Previous estimates of medication errors have relied on self-reports, which often capture only the most severe errors or errors that lead to patient harm. Studies using pharmacy-based reviews are also likely to undercount errors, as orders that seem “plausible” go undetected even if they are on an incorrect patient. One approach that has received traction is the use of CPOE-integrated tools that help clinicians record self-intercepted errors within their workflow (e.g., [<xref ref-type="bibr" rid="pone.0254358.ref014">14</xref>, <xref ref-type="bibr" rid="pone.0254358.ref021">21</xref>, <xref ref-type="bibr" rid="pone.0254358.ref022">22</xref>]). Such intercepted ordering errors, although still a fraction of overall medication errors, provide considerable advantages: first, the volume of self-intercepted errors within a CPOE system is exponentially larger than manually reported errors to external incident reporting systems. Second, given that self-intercepted errors are recorded within the CPOE workflow, additional information regarding the context of the order is also easily available.</p>
+<p>We previously described a dataset of self-intercepted errors and identified associated factors using bivariate and regression analyses [<xref ref-type="bibr" rid="pone.0254358.ref022">22</xref>]. That analysis identified several highly plausible risk factors for error (or interception) such as order type (e.g., inpatient, prescription) and prescriber role (e.g., physician, pharmacist, student, nurse). However, exploratory data analysis and manual stepwise modeling with massive scale data, rare outcomes, and large numbers of variables is inherently limited in its scope.</p>
+<p>In this paper, we propose the use of machine learning (ML) approaches for characterizing the risk factors associated with medication ordering errors. Towards this end, we evaluated the performance of multiple ML methods on a large dataset of self-intercepted medication ordering errors. Such automated predictions afford opportunities for characterizing the potential causes and sources medication errors as well as allowing for automated error surveillance. We also discuss methodological advantages of using ML for predicting medication ordering errors and opportunities for using these approaches to guide patient safety efforts that are targeted towards medication orders within high-risk contexts.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Method</title>
+<p>A TRIPOD checklist was used for the development of the prediction model and is included in the <xref ref-type="supplementary-material" rid="pone.0254358.s001">S1 Checklist</xref>.</p>
+<sec id="sec003">
+<title>Setting</title>
+<p>Medication orders generated over a 6-year period (2006–2011) at the University of Illinois Hospital and Health Sciences System (UI Health) were studied. UI Health is a 495-bed tertiary, urban academic medical center. Orders were placed using Cerner Powerchart and Firstnet. Pharmacists or nurses entered orders based on verbal, written, or protocol orders from physicians; students entered orders requiring physician approval. Additional details of the data collection are found in a previous report [<xref ref-type="bibr" rid="pone.0254358.ref022">22</xref>]. This study was approved by the Institutional Review Board of Washington University in St Louis and University of Illinois at Chicago with a waiver of consent.</p>
+<p>Medication order voiding is a CPOE-integrated function for physicians, pharmacists, nurses, and students to <italic>self-intercept</italic> and remove erroneous medication orders. As opposed to Medication Error Reporting Systems (MERS) reports, voiding can be performed within the ordering workflow, allowing clinicians to document errors without accessing external systems or requiring providing detailed descriptions of the error. Previous studies have shown that voided orders are a good proxy for medication errors, with voided medication orders having a 70±10% positive predictive value of being an error [<xref ref-type="bibr" rid="pone.0254358.ref014">14</xref>, <xref ref-type="bibr" rid="pone.0254358.ref022">22</xref>]. In the paper, medication ordering errors refer to the errors identified using the voiding process. Although a field for choosing a reason for voiding existed, we have found it to be unreliable and did not use it for this analysis [<xref ref-type="bibr" rid="pone.0254358.ref014">14</xref>].</p>
+</sec>
+<sec id="sec004">
+<title>Data</title>
+<p>The outcome variable or label was order status (i.e., whether an order was voided or not). Other variables (predictors or features) included: patient demographics (race/ethnicity, sex, age), clinician type, type of medication order (inpatient, prescription, home medication by history), order date and time, and order content. Reported race was categorized into: White, Black, Hispanic, and other. Order type was classified as: inpatient (i.e., medication order for a hospitalized patient), prescriptions, and home medications by history (a non-actionable record of a medication that a patient was taking at home and was not recorded as a prescription). Time was categorized as: day (7<sc>am</sc>–5<sc>pm</sc>), night (5<sc>pm</sc>–12<sc>am</sc>), or overnight (12<sc>am</sc>–7<sc>am</sc>); Weekday was classified as: work weekday (Monday through Friday) or weekend (Saturday or Sunday). Clinician type was categorized as: physician, pharmacist, nurse, student, or other. Order content included: drug name, route, strength, volume, frequency, and dispensing unit (e.g., tablet, cap box). For each unique medication and route combination, doses were z-scored. All data were retrieved from the EHR using custom queries.</p>
+</sec>
+<sec id="sec005">
+<title>Statistical analysis</title>
+<p>We constructed the following models: logistic regression (LR), decision tree (DT), random forest (RF), gradient boosted decision tree (GBDT), deep embedding logistic regression (DELR), and multilayer perceptron (MLP) models. DELR is an extension of logistic regression in which each feature is fed into its own deep, narrow neural network to allow nonlinear transformation prior to entry into the logistic regression model [<xref ref-type="bibr" rid="pone.0254358.ref023">23</xref>]. LR, DT, RF, GBDT, and DELR were selected due to the ease of determining feature importance in each of these model architectures. Despite its generally poor interpretability, MLP was selected for its high accuracy of neural networks other applications such as image classification [<xref ref-type="bibr" rid="pone.0254358.ref024">24</xref>] and object detection [<xref ref-type="bibr" rid="pone.0254358.ref025">25</xref>].</p>
+<p>The dataset was split into training, validation, and testing sets with a ratio of roughly 7:1:2. Because of the large sample size, repeated k-fold splits were not constructed. Missing categorical variables were added as a level of the feature. For models (such as logistic regression and MLP) that do not natively handle missing quantitative predictors, missing values were imputed with the mean observed value and a “missing value” indicator feature was concatenated. For each model, hyperparameters were searched over a grid of plausible values with tests for expansion at each endpoint, where possible. Hyperparameters that resulted in the highest area under the receiver operating characteristic curve (AUROC) in the validation set were selected and carried forward to the test set evaluation.</p>
+<p>As the dataset was highly imbalanced (0.5% of medication orders were voided), we utilized two techniques to address class imbalance in the training set [<xref ref-type="bibr" rid="pone.0254358.ref026">26</xref>]. First, class weights were set as inversely proportional to their proportion. Second, we up-sampled positive training cases by 201 times, equalizing proportions. For each model architecture, both of these techniques were applied to the training set. Neither weighting nor up-sampling were performed in the validation or testing sets. The choice of class imbalance resolution technique with better performance in the validation set was used in the training model to be evaluated on the test set. That is, we treated reweighting versus up-sampling as a hyperparameter.</p>
+<p>LR was tested with or without L2 (ridge) and L1 ratio (lasso) penalty selected from 1000, 100, 10, 1,.1 and 0,.1,.25,.5,.75, 1. LR with pairwise interactions and filtering by L1 penalty was attempted, but this classifier was difficult to optimize during training, tested very poorly, and is not reported. For DT, tree depth ranged from 3 to 8, and minimum sample split was selected from 2, 1000, 2000, 10,000, and 20,000 (a minimum sample split of 2 represents no early termination). For RF and GBDT, the number of decision trees was 100, 200, 300, 400, or 500, decision tree depth ranged from 2 to 8, and minimum sample split ranged from 2 to 20,000. For DELR, each transformation network had depth of 2 to 6 layers and width of 4 to 6 nodes. For MLP, network depth ranged from 2 to 6 layers and hidden layer width was selected from 32, 64, or 128 neurons. For both DELR and MLP, two optimizers (stochastic gradient descent with learning rate 0.1 or 0.01 and Adam optimizer with learning rate 0.001 [<xref ref-type="bibr" rid="pone.0254358.ref024">24</xref>]) were tested. Presence or absence of batch normalization was also tested.</p>
+<p>Once the hyperparameters were fixed, model performance in the testing set was quantified using the AUROC metric. In highly imbalanced datasets, AUROC can sometimes be deceptive on evaluating the model performance [<xref ref-type="bibr" rid="pone.0254358.ref025">25</xref>]. As such, we also constructed the precision-recall curve for each model and calculated the area under the precision-recall curve (AUPRC), which is a measure of average precision. Confidence intervals for AUROC and AUPRC were created using the non-parametric logit method [<xref ref-type="bibr" rid="pone.0254358.ref027">27</xref>] in MatlabAUC package [<xref ref-type="bibr" rid="pone.0254358.ref028">28</xref>]. Each classifier was re-calibrated using isotonic regression in the validation cohort [<xref ref-type="bibr" rid="pone.0254358.ref029">29</xref>].</p>
+<p>For each model, the most important features contributing to the predictions were identified. For LR, feature importance was defined by the absolute value of the regression coefficient. For DELR, feature importance was defined as the product of feature embedding value and regression coefficient. In models with deep interactions, “explainability” was approached in multiple ways. Global feature importance was assessed, for example, by permutation; however, in complex models the direction and magnitude of effect for a feature in a specific example depends on the context. For DT, feature importance was defined as the weighted entropy decrease on that feature during training phase. For RF and GBDT, feature importance was determined for the component DTs and averaged across all DTs in the model. For MLP, feature importance was quantified using backpropagation-based salience detection (integrated gradients) [<xref ref-type="bibr" rid="pone.0254358.ref030">30</xref>]. In this technique, the gradient of the output prediction with respect to the input feature values for each case was calculated, and the gradient with respect to each feature was averaged across the population. Integrated gradients and Shapely values were calculated for each observation, permitting local measures of feature relevance [<xref ref-type="bibr" rid="pone.0254358.ref031">31</xref>]. To highlight important deep interactions, we used a large global decision tree that can approximate GBDT and RF fitted surfaces [<xref ref-type="bibr" rid="pone.0254358.ref032">32</xref>] when appropriately supervised. We also permuted features to assess global importance to model fit. All analyses were conducted using Python version 3.7, unless otherwise specified.</p>
+</sec>
+</sec>
+<sec id="sec006" sec-type="results">
+<title>Results</title>
+<p>The dataset included 5,804,192 orders, of which 28,695 (0.5%) were voided orders. Characteristics of the orders are shown in <xref ref-type="table" rid="pone.0254358.t001">Table 1</xref>. Nearly two-thirds of orders were inpatient medication orders, and most orders were placed during day shifts. Overall, there were more order voiding on orders created by students (4%) or by nurses (i.e., as verbal orders, 1%).</p>
+<table-wrap id="pone.0254358.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0254358.t001</object-id>
+<label>Table 1</label> <caption><title>Characteristics of orders in the dataset.</title></caption>
+<alternatives>
+<graphic id="pone.0254358.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0254358.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="2">Variable</th>
+<th align="center">Non-Voided Orders</th>
+<th align="center">Voided Orders</th>
+</tr>
+<tr>
+<th align="center">(N = 5,775,497)</th>
+<th align="center">(N = 28,695)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><bold>Age (mean, SD)</bold></td>
+<td align="center">45.5 (22.3)</td>
+<td align="center">46.5 (22.2)</td>
+</tr>
+<tr>
+<td align="left"><bold>Age Group</bold></td>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">0–19</td>
+<td align="center">793,672 (14%)</td>
+<td align="center">3,861 (13%)</td>
+</tr>
+<tr>
+<td align="left">20–39</td>
+<td align="center">1,333,142 (23%)</td>
+<td align="center">6,131 (20%)</td>
+</tr>
+<tr>
+<td align="left">40–49</td>
+<td align="center">826,481 (14%)</td>
+<td align="center">3,741 (12%)</td>
+</tr>
+<tr>
+<td align="left">50–59</td>
+<td align="center">1,127,423 (20%)</td>
+<td align="center">7,941 (26%)</td>
+</tr>
+<tr>
+<td align="left">60–69</td>
+<td align="center">899,144 (16%)</td>
+<td align="center">4,888 (16%)</td>
+</tr>
+<tr>
+<td align="left">70–79</td>
+<td align="center">540,829 (9%)</td>
+<td align="center">2,817 (9%)</td>
+</tr>
+<tr>
+<td align="left">&gt;80</td>
+<td align="center">254,806 (4%)</td>
+<td align="center">1,296 (4%)</td>
+</tr>
+<tr>
+<td align="left"><bold>Sex</bold></td>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">Female</td>
+<td align="center">3,444,161 (60%)</td>
+<td align="center">16,910 (59%)</td>
+</tr>
+<tr>
+<td align="left">Male</td>
+<td align="center">2,330,629 (40%)</td>
+<td align="center">11,778 (41%)</td>
+</tr>
+<tr>
+<td align="left"><bold>Race/Ethnicity</bold></td>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">Black</td>
+<td align="center">2,938,539 (51%)</td>
+<td align="center">14,075 (49%)</td>
+</tr>
+<tr>
+<td align="left">Caucasian</td>
+<td align="center">1,217,607 (21%)</td>
+<td align="center">6,794 (24%)</td>
+</tr>
+<tr>
+<td align="left">Hispanic</td>
+<td align="center">729,051 (13%)</td>
+<td align="center">3,550 (12%)</td>
+</tr>
+<tr>
+<td align="left">Other</td>
+<td align="center">890,300 (15%)</td>
+<td align="center">4,276 (15%)</td>
+</tr>
+<tr>
+<td align="left"><bold>Order Type</bold></td>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">Normal Order</td>
+<td align="center">3,620,733 (63%)</td>
+<td align="center">17,455 (61%)</td>
+</tr>
+<tr>
+<td align="left">Prescription/Discharge Order</td>
+<td align="center">1,689,052 (29%)</td>
+<td align="center">5,056 (18%)</td>
+</tr>
+<tr>
+<td align="left">Recorded/Home Meds</td>
+<td align="center">465,708 (8%)</td>
+<td align="center">6,184 (21%)</td>
+</tr>
+<tr>
+<td align="left"><bold>Shift</bold></td>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">Day</td>
+<td align="center">3,957,683 (69%)</td>
+<td align="center">19,991 (70%)</td>
+</tr>
+<tr>
+<td align="left">Night</td>
+<td align="center">1,177,477 (20%)</td>
+<td align="center">6,148 (21%)</td>
+</tr>
+<tr>
+<td align="left">Overnight</td>
+<td align="center">640,336 (11%)</td>
+<td align="center">2,556 (9%)</td>
+</tr>
+<tr>
+<td align="left"><bold>Title of Ordering Provider</bold></td>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">Nurse</td>
+<td align="center">546,650 (9%)</td>
+<td align="center">5,684 (20%)</td>
+</tr>
+<tr>
+<td align="left">Pharmacist</td>
+<td align="center">627,963 (11%)</td>
+<td align="center">2,382 (8%)</td>
+</tr>
+<tr>
+<td align="left">Physician</td>
+<td align="center">3,954,439 (68%)</td>
+<td align="center">15,769 (55%)</td>
+</tr>
+<tr>
+<td align="left">Student</td>
+<td align="center">38,050 (1%)</td>
+<td align="center">1,655 (6%)</td>
+</tr>
+<tr>
+<td align="left">Other</td>
+<td align="center">608,395 (11%)</td>
+<td align="center">3,205 (11%)</td>
+</tr>
+<tr>
+<td align="left"><bold>Normalized Drug Dose</bold></td>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">Normalized Strength (mean, SD)</td>
+<td align="center">2.6e-4 (0.99)</td>
+<td align="center">-5.4e-2 (1.16)</td>
+</tr>
+<tr>
+<td align="left">Normalized Volume (mean, SD)</td>
+<td align="center">5.7e-6 (0.98)</td>
+<td align="center">-1.9e-3 (2.66)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p>SD = standard deviation</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<sec id="sec007">
+<title>Comparing model performance</title>
+<p>Hyperparameters that resulted in superior AUROC in the validation set were identified. For LR, presence of L2 penalty was selected. For DT, tree depth of 8 and minimum sample split of 20,000 were selected. For RF, decision tree number of 500, decision tree depth of 8, and minimum sample split of 20000 were selected. For GBDT, decision tree number of 100, decision tree depth of 8, and minimum sample split of 2000 were selected. For DELR, transformation network depth of 4 layers, hidden layer width of 5 neurons were selected and batch normalization was enabled. For MLP, network depth of 3 layers and hidden layer width of 32 neurons were selected. For DELR and MLP, stochastic gradient descent with learning rate of 0.1 and 0.01 was selected respectively. The inverse weighting method for addressing class imbalance performed better than the up-sampling method for the DT and GBDT, while the up-sampling method performed better for the LR, RF, DELR and MLP.</p>
+<p>After fixing the hyperparameters, model performance in the testing set was computed (see <xref ref-type="table" rid="pone.0254358.t002">Table 2</xref>). GBDT achieved the highest AUROC and AUPRC across all models. RF had approximately the same accuracy as DT, with marginally better AUPRC and marginally worse AUROC. LR and DELR demonstrated the poorest performance of all the models, especially in the AUPRC metric. Receiver operating characteristic and precision-recall curves for all models are shown in <xref ref-type="fig" rid="pone.0254358.g001">Fig 1</xref>. All models had acceptable calibration in the test set; the calibration curve for each model is shown in the <xref ref-type="supplementary-material" rid="pone.0254358.s001">S1 Checklist</xref>.</p>
+<fig id="pone.0254358.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0254358.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Model performance.</title>
+<p>Receiver operating characteristic curves (left panel) and precision-recall curves (right panel) demonstrating performance of each model in the testing set.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0254358.g001" xlink:type="simple"/>
+</fig>
+<table-wrap id="pone.0254358.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0254358.t002</object-id>
+<label>Table 2</label> <caption><title>Model performance using the test data set (<italic>N</italic> = 1160839).</title></caption>
+<alternatives>
+<graphic id="pone.0254358.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0254358.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" rowspan="2">Model</th>
+<th align="center">AUROC</th>
+<th align="center">AUPRC</th>
+<th align="center">NORMAL AUROC</th>
+<th align="center">NORMAL AUPRC</th>
+</tr>
+<tr>
+<th align="center">[95% CI]</th>
+<th align="center">[95% CI]</th>
+<th align="center">[95% CI]</th>
+<th align="center">[95% CI]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center" rowspan="2">LR</td>
+<td align="center">0.7468</td>
+<td align="center">0.0225</td>
+<td align="center">0.7518</td>
+<td align="center">0.0223</td>
+</tr>
+<tr>
+<td align="center">[0.7398, 0.7536]</td>
+<td align="center">[0.0165, 0.0306]</td>
+<td align="center">[0.7430, 0.7604]</td>
+<td align="center">[0.0160, 0.0338]</td>
+</tr>
+<tr>
+<td align="center" rowspan="2">DT</td>
+<td align="center">0.7769</td>
+<td align="center">0.0407</td>
+<td align="center">0.7810</td>
+<td align="center">0.0416</td>
+</tr>
+<tr>
+<td align="center">[0.7590, 0.7938]</td>
+<td align="center">[0.0265, 0.0662]</td>
+<td align="center">[0.7581, 0.8023]</td>
+<td align="center">[0.0243, 0.0702]</td>
+</tr>
+<tr>
+<td align="center" rowspan="2">RF</td>
+<td align="center">0.7635</td>
+<td align="center">0.0242</td>
+<td align="center">0.7679</td>
+<td align="center">0.0248</td>
+</tr>
+<tr>
+<td align="center">[0.7568, 0.7701]</td>
+<td align="center">[0.0183, 0.0318]</td>
+<td align="center">[0.7594, 0.7762]</td>
+<td align="center">[0.0177, 0.0347]</td>
+</tr>
+<tr>
+<td align="center" rowspan="2">DELR</td>
+<td align="center">0.7561</td>
+<td align="center">0.0230</td>
+<td align="center">0.7617</td>
+<td align="center">0.0239</td>
+</tr>
+<tr>
+<td align="center">[0.7493, 0.7627]</td>
+<td align="center">[0.0172, 0.0308]</td>
+<td align="center">[0.7532, 0.7700]</td>
+<td align="center">[0.0168, 0.0339]</td>
+</tr>
+<tr>
+<td align="center" rowspan="2">MLP</td>
+<td align="center">0.7868</td>
+<td align="center">0.0562</td>
+<td align="center">0.7888</td>
+<td align="center">0.0567</td>
+</tr>
+<tr>
+<td align="center">[0.7803, 0.7932]</td>
+<td align="center">[0.0501, 0.0630]</td>
+<td align="center">[0.7804, 0.7969]</td>
+<td align="center">[0.0490, 0.0655]</td>
+</tr>
+<tr>
+<td align="center" rowspan="2">GBDT</td>
+<td align="center">0.7968</td>
+<td align="center">0.0647</td>
+<td align="center">0.8005</td>
+<td align="center">0.0661</td>
+</tr>
+<tr>
+<td align="center">[0.7905, 0.8030]</td>
+<td align="center">[0.0587, 0.0713]</td>
+<td align="center">[0.7925, 0.8083]</td>
+<td align="center">[0.0586, 0.0745]</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+</sec>
+<sec id="sec008">
+<title>Model interpretation</title>
+<p>We also investigated the potential for deriving meaningful explanations from the developed models. <xref ref-type="fig" rid="pone.0254358.g002">Fig 2</xref> represents a partial decision tree for voided orders with an overall depth of 7, 54 decision nodes, and 63 leaf nodes. Displayed leaf nodes had &gt;100 examples in the testing data; error rates within this tree varied between 0.003% to 46%. A large segment of the presented tree includes medication ordering without a value for the feature “volume dose unit” (e.g., milliliters, tablets, capsules, allowed to differ from “dispense unit” and “strength unit”). For example, the top, left-most leaf node represents orders related to the medication, nalbupine, with a volume dose unit missing or unspecified. Such orders have a high rate of being voided (~34%). This is potentially because these orders are often added outside of an order set (e.g., for pain management after surgery) or using a prespecified “order sentence.” The second node highlights orders that are entered by a medical student; for inpatient orders, 24% of such orders were likely voided.</p>
+<fig id="pone.0254358.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0254358.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Example partial tree from the DT model showing the causal patterns for medication errors.</title>
+<p>In this tree, if the decision is false (i.e., not a voided order), take the right branch; similarly, if the decision is true (i.e., voided order), take the left branch. Red and green boxes highlight the positive rates of greater than and less than 5% respectively. Note that this is a small portion of the total tree.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0254358.g002" xlink:type="simple"/>
+</fig>
+<p>The root node, missing volume dose unit, also highlights a contextual aspect related to the source of the medication errors. Medication orders were sometimes created using “order sentences,” where medication-related information was standardized and incorporated into an order. For instance, for the common blood pressure medication, amlodipine, an order sentence is available for a standard “10 mg, PO (“per os” or by mouth), daily.” If the clinician wanted an unusual dose or frequency, they would need to enter it as text; for example, “2.5 mg, PO, 2 AM and 1 PM.” Another situation where this occurs is when no order sentences are available, usually for rarely used medications or medications with highly varying doses. During such situations, the volume dose unit is unlikely to be defined, potentially leading to voided orders. We found that such orders with missing volume dose unit have a higher likelihood of being errors as highlighted by the sample decision tree (<xref ref-type="fig" rid="pone.0254358.g002">Fig 2</xref>).</p>
+</sec>
+</sec>
+<sec id="sec009" sec-type="conclusions">
+<title>Discussion</title>
+<p>To the best of our knowledge, this is the first study to utilize a large, routinely collected data set of self-intercepted medication ordering errors to forecast error status and identify associated features of these errors. Using a database of &gt;5 million medication orders, we compared five classification algorithms for predicting medication ordering errors based primarily on the contextual features associated with a medication order. We found that GBDT was the top performing model (AUROC = 0.797) and was able to predict errors with a 10% PPV at a sensitivity of 20%. Based on a simplified classification rule using the DT algorithm, most of the voided orders had a low risk (rate ~0.3%), and about 5% with a much higher risk (rate &gt;4%). The models highlighted the association of errors to known risk-increasing features of an order such as student-formulated orders, and to previously unknown and likely local setting-based features such as missing fields (e.g., missing volume dose unit).</p>
+<p>The methodological approach of using ML algorithms for predicting medication errors has two potential applications. First, it is possible to identify factors associated with order entry errors that potentially represent generalizable knowledge for mitigating such errors. In <xref ref-type="fig" rid="pone.0254358.g002">Fig 2</xref>, orders that had a volume dose unit specified, most likely arising from standardized order sentences, had a lower likelihood of being voided. It is not surprising that orders that do not have a pre-defined dose unit would be associated with more errors. Such orders require more “clicks” as well as clinician recall or the need to look up dose units, fragmenting the ordering workflow. Further investigation of the use of order sentences is a promising line of investigation. Similarly, the high rate of voided student and verbal orders likely represent real and generalizable finding. Again, although not surprising, these findings have implications for training of future users. Unlike raw counts, model-based outputs are adjusted for related features, reducing the effects of confounding.</p>
+<p>Second, ML-based medication ordering error identification offers opportunities to guide patient safety efforts that are targeted towards medication orders within high-risk contexts. “Context” has two potential meanings here. First, is the modeling interpretation of “interactions between features.” Models that did not include interactions, such as logistic regression, were less accurate, suggesting that multiple features forming a “context” is potentially required to identify medication ordering errors. In our example (<xref ref-type="fig" rid="pone.0254358.g002">Fig 2</xref>), low naloxone doses in particular were likely to be voided, suggesting that these are a confusing or easily mistaken option rather than naloxone itself as a problematic drug.</p>
+<p>The second meaning of “context” is that many of these findings are likely situated within the context of the customized CPOE of our dataset and would neither be apparent or relevant to a multi-institutional or national database. To revisit the above example of missing volume dose unit, other CPOEs may not use the same structure to indicate “written without an order sentence/order set.” More specifically, the high rate of voided nalbuphine orders likely reflects ordering options that are not working as intended. In the limiting case, it is also possible to narrow the explanation to an individual clinician’s medication ordering characteristics [<xref ref-type="bibr" rid="pone.0254358.ref033">33</xref>]. Such an approach can account for the context of historical errors that are aligned with a specific clinician’s ordering characteristics or characteristics of a medication (e.g., a high-risk drug). These local findings are important to find issues in a specific CPOE implementation and user behaviors that can affect patient safety. Our methodological approach, hence, can be applied directly to hospital-scale data.</p>
+<p>Finally, there may be value in using model-based predictions to target orders for further scrutiny. With the use of voiding function (or similar self-interception detection techniques), observed counts of errors can be a valuable source for patient safety investigations. However, in any self-report mechanism false negatives are also likely. Orders sharing characteristics with frequently voided ones (i.e., high forecasted probability) could be prospectively reviewed even if the yield is below the threshold to justify clinician-facing decision support. In our case, at a 20% sensitivity, the 10% positive predictive value implies a 20-fold decrease in the number of orders to review to discover one error. Drawing these enriched samples is a prerequisite for feasible patient safety review given that the total error rate is very low, especially for smaller clinical units within a hospital. Additionally, if units within a hospital have differential accuracy in error reporting, then forecasted error rates may be necessary to identify safety issues. Another way to understand this application is that the predicted error rate can act as a prior for a more stable estimate than the naïve reported rate in a small or noisy population. Conversely, medication ordering errors that are “easily explained” (e.g., a student order, redundant order-set orders) can be filtered out, and more complex errors investigated in greater detail for safety and quality improvement purposes.</p>
+</sec>
+<sec id="sec010">
+<title>Conclusions and limitations</title>
+<p>Our study has several limitations. The data was from a single academic medical center. The content findings are likely of limited generalizability. However, the methodology we have developed can be easily applied to similar datasets to identify contributors to medication ordering errors; a key advantage of ML approaches is that they are designed to be theory agnostic and account for tuning and discovery using split-sample methods. As described in our previous studies, not all voided orders were true errors. Based on chart review of voided orders in a previous study, we found that voided orders had a 60%-80% positive predictive value of being a true error [<xref ref-type="bibr" rid="pone.0254358.ref022">22</xref>, <xref ref-type="bibr" rid="pone.0254358.ref034">34</xref>]. Approximately 22% of the self-intercepted voided orders reached the patient [<xref ref-type="bibr" rid="pone.0254358.ref034">34</xref>]. As voiding is optional for clinicians, certain types of orders may have been preferentially voided more frequently than others. For instance, clinicians may have preferentially voided duplicate student orders over physician orders, thus biasing the feature importance metrics. We would also like to highlight that the performance of these models is below what is needed for directly incorporating into clinical practice. For example, the false-positive rate of 90% to capture 20% of voided orders would create an unacceptable alarm burden (see <xref ref-type="fig" rid="pone.0254358.g001">Fig 1</xref> right panel). Our dataset does not allow direct review of false-negative orders (unmarked errors); doing so would be impossible given the scale of orders that would be required. Our goal was not to replicate the domain knowledge dependent clinical decision support integrated into pharmacy systems, but to consider medication order-related factors that contribute to medication ordering errors. As such, our models did not consider details regarding the patient medical history, laboratory values, or other drug orders, which are central to most heuristic based CDS. Future studies can incorporate additional features of the medication, patient, and prescriber to improve performance. As this study was based on historical data with different configurations and order sentences, we could not verify some of the settings of the order entry system. Finally, the considered models have very different degrees of interpretability in the discussed potential applications. Logistic regression and decision trees can be directly “read off” to identify the driving factors. Although many promising efforts [<xref ref-type="bibr" rid="pone.0254358.ref035">35</xref>, <xref ref-type="bibr" rid="pone.0254358.ref036">36</xref>] are increasing the interpretability of other classifiers, these are inherently much more complex and vulnerable to misinterpretation. Future applications will have to balance their need for interpretability and the benefits of complexity.</p>
+<p>Medication voiding offers a promising approach for detecting, tracking and organizing medication errors. Our findings, based on applying ML models to voided orders, highlight the potential for identifying common failures of CPOE use and finding orders likely to be errors based on contextual factors. This opens new opportunities for supplementation of clinical decision support development, real-time error surveillance of efficacy of innovations in CPOE, and pragmatic patient safety efforts.</p>
+</sec>
+<sec id="sec011" sec-type="supplementary-material">
+<title>Supporting information</title>
+<supplementary-material id="pone.0254358.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0254358.s001" xlink:type="simple">
+<label>S1 Checklist</label>
+<caption>
+<title>TRIPOD checklist &amp; calibration curves.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pone.0254358.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ammenwerth</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Schnell-Inderst</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Machan</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Siebert</surname> <given-names>U</given-names></name>. <article-title>The effect of electronic prescribing on medication errors and adverse drug events: a systematic review</article-title>. <source>JAMIA</source>. <year>2008</year>;<volume>15</volume>(<issue>5</issue>):<fpage>585</fpage>–<lpage>600</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1197/jamia.M2667" xlink:type="simple">10.1197/jamia.M2667</ext-link></comment> <object-id pub-id-type="pmid">18579832</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bates</surname> <given-names>DW</given-names></name>, <name name-style="western"><surname>Leape</surname> <given-names>LL</given-names></name>, <name name-style="western"><surname>Cullen</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Laird</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Petersen</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Teich</surname> <given-names>JM</given-names></name>, <etal>et al</etal>. <article-title>Effect of computerized physician order entry and a team intervention on prevention of serious medication errors</article-title>. <source>Jama</source>. <year>1998</year>;<volume>280</volume>(<issue>15</issue>):<fpage>1311</fpage>–<lpage>6</lpage>. Epub 1998/10/30. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1001/jama.280.15.1311" xlink:type="simple">10.1001/jama.280.15.1311</ext-link></comment> <object-id pub-id-type="pmid">9794308</object-id>.</mixed-citation></ref>
+<ref id="pone.0254358.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bates</surname> <given-names>DW</given-names></name>, <name name-style="western"><surname>Teich</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Seger</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Kuperman</surname> <given-names>GJ</given-names></name>, <name name-style="western"><surname>Ma’Luf</surname> <given-names>N</given-names></name>, <etal>et al</etal>. <article-title>The impact of computerized physician order entry on medication error prevention</article-title>. <source>JAMIA</source>. <year>1999</year>;<volume>6</volume>(<issue>4</issue>):<fpage>313</fpage>–<lpage>21</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1136/jamia.1999.00660313" xlink:type="simple">10.1136/jamia.1999.00660313</ext-link></comment> <object-id pub-id-type="pmid">10428004</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kuperman</surname> <given-names>GJ</given-names></name>, <name name-style="western"><surname>Gibson</surname> <given-names>RF</given-names></name>. <article-title>Computer physician order entry: benefits, costs, and issues</article-title>. <source>Annals of internal medicine</source>. <year>2003</year>;<volume>139</volume>(<issue>1</issue>):<fpage>31</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.7326/0003-4819-139-1-200307010-00010" xlink:type="simple">10.7326/0003-4819-139-1-200307010-00010</ext-link></comment> <object-id pub-id-type="pmid">12834316</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Prgomet</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Niazkhani</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Georgiou</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Westbrook</surname> <given-names>JI</given-names></name>. <article-title>Impact of commercial computerized provider order entry (CPOE) and clinical decision support systems (CDSSs) on medication errors, length of stay, and mortality in intensive care units: a systematic review and meta-analysis</article-title>. <source>Journal of the American Medical Informatics Association</source>. <year>2016</year>;<volume>24</volume>(<issue>2</issue>):<fpage>413</fpage>–<lpage>22</lpage>.</mixed-citation></ref>
+<ref id="pone.0254358.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>van Rosse</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Maat</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Rademaker</surname> <given-names>CM</given-names></name>, <name name-style="western"><surname>van Vught</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Egberts</surname> <given-names>AC</given-names></name>, <name name-style="western"><surname>Bollen</surname> <given-names>CW</given-names></name>. <article-title>The effect of computerized physician order entry on medication prescription errors and clinical outcome in pediatric and intensive care: a systematic review</article-title>. <source>Pediatrics</source>. <year>2009</year>;<volume>123</volume>(<issue>4</issue>):<fpage>1184</fpage>–<lpage>90</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1542/peds.2008-1494" xlink:type="simple">10.1542/peds.2008-1494</ext-link></comment> <object-id pub-id-type="pmid">19336379</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Potts</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Barr</surname> <given-names>FE</given-names></name>, <name name-style="western"><surname>Gregory</surname> <given-names>DF</given-names></name>, <name name-style="western"><surname>Wright</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Patel</surname> <given-names>NR</given-names></name>. <article-title>Computerized physician order entry and medication errors in a pediatric critical care unit</article-title>. <source>Pediatrics</source>. <year>2004</year>;<volume>113</volume>(<issue>1</issue>):<fpage>59</fpage>–<lpage>63</lpage>.</mixed-citation></ref>
+<ref id="pone.0254358.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cordero</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Kuehn</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Kumar</surname> <given-names>RR</given-names></name>, <name name-style="western"><surname>Mekhjian</surname> <given-names>HS</given-names></name>. <article-title>Impact of computerized physician order entry on clinical practice in a newborn intensive care unit</article-title>. <source>Journal of Perinatology</source>. <year>2004</year>;<volume>24</volume>(<issue>2</issue>):<fpage>88</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/sj.jp.7211000" xlink:type="simple">10.1038/sj.jp.7211000</ext-link></comment> <object-id pub-id-type="pmid">14872207</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bates</surname> <given-names>DW</given-names></name>. <article-title>Using information technology to reduce rates of medication errors in hospitals</article-title>. <source>BMJ</source>. <year>2000</year>;<volume>320</volume>(<issue>7237</issue>):<fpage>788</fpage>–<lpage>91</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1136/bmj.320.7237.788" xlink:type="simple">10.1136/bmj.320.7237.788</ext-link></comment> <object-id pub-id-type="pmid">10720369</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wetterneck</surname> <given-names>TB</given-names></name>, <name name-style="western"><surname>Walker</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Blosky</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Cartmill</surname> <given-names>RS</given-names></name>, <name name-style="western"><surname>Hoonakker</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Johnson</surname> <given-names>MA</given-names></name>, <etal>et al</etal>. <article-title>Factors contributing to an increase in duplicate medication order errors after CPOE implementation</article-title>. <source>JAMIA</source>. <year>2011</year>;<volume>18</volume>(<issue>6</issue>):<fpage>774</fpage>–<lpage>82</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1136/amiajnl-2011-000255" xlink:type="simple">10.1136/amiajnl-2011-000255</ext-link></comment> <object-id pub-id-type="pmid">21803925</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nuckols</surname> <given-names>TK</given-names></name>, <name name-style="western"><surname>Smith-Spangler</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Morton</surname> <given-names>SC</given-names></name>, <name name-style="western"><surname>Asch</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Patel</surname> <given-names>VM</given-names></name>, <name name-style="western"><surname>Anderson</surname> <given-names>LJ</given-names></name>, <etal>et al</etal>. <article-title>The effectiveness of computerized order entry at reducing preventable adverse drug events and medication errors in hospital settings: a systematic review and meta-analysis</article-title>. <source>Systematic Reviews</source>. <year>2014</year>;<volume>3</volume>(<issue>1</issue>):<fpage>56</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/2046-4053-3-56" xlink:type="simple">10.1186/2046-4053-3-56</ext-link></comment> <object-id pub-id-type="pmid">24894078</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shawahna</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Rahman</surname> <given-names>NU</given-names></name>, <name name-style="western"><surname>Ahmad</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Debray</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Yliperttula</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Decleves</surname> <given-names>X</given-names></name>. <article-title>Electronic prescribing reduces prescribing error in public hospitals</article-title>. <source>Journal of Clinical Nursing</source>. <year>2011</year>;<volume>20</volume>(<issue>21–22</issue>):<fpage>3233</fpage>–<lpage>45</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/j.1365-2702.2011.03714.x" xlink:type="simple">10.1111/j.1365-2702.2011.03714.x</ext-link></comment> <object-id pub-id-type="pmid">21627699</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>van Doormaal</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>van den Bemt</surname> <given-names>PM</given-names></name>, <name name-style="western"><surname>Zaal</surname> <given-names>RJ</given-names></name>, <name name-style="western"><surname>Egberts</surname> <given-names>AC</given-names></name>, <name name-style="western"><surname>Lenderink</surname> <given-names>BW</given-names></name>, <name name-style="western"><surname>Kosterink</surname> <given-names>JG</given-names></name>, <etal>et al</etal>. <article-title>The Influence that Electronic Prescribing Has on Medication Errors and Preventable Adverse Drug Events: an Interrupted Time-series Study</article-title>. <source>Journal of the American Medical Informatics Association</source>. <year>2009</year>;<volume>16</volume>(<issue>6</issue>):<fpage>816</fpage>–<lpage>25</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1197/jamia.M3099" xlink:type="simple">10.1197/jamia.M3099</ext-link></comment> <object-id pub-id-type="pmid">19717798</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Abraham</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Kannampallil</surname> <given-names>TG</given-names></name>, <name name-style="western"><surname>Jarman</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Sharma</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Rash</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Schiff</surname> <given-names>G</given-names></name>, <etal>et al</etal>. <article-title>Reasons for computerised provider order entry (CPOE)-based inpatient medication ordering errors: an observational study of voided orders</article-title>. <source>BMJ Quality &amp; Safety</source>. <year>2018</year>;<volume>27</volume>(<issue>4</issue>):<fpage>299</fpage>–<lpage>307</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1136/bmjqs-2017-006606" xlink:type="simple">10.1136/bmjqs-2017-006606</ext-link></comment> <object-id pub-id-type="pmid">28698381</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Korb-Savoldelli</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Boussadi</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Durieux</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Sabatier</surname> <given-names>B</given-names></name>. <article-title>Prevalence of computerized physician order entry systems–related medication prescription errors: A systematic review</article-title>. <source>International Journal of Medical Informatics</source>. <year>2018</year>;<volume>111</volume>:<fpage>112</fpage>–<lpage>22</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijmedinf.2017.12.022" xlink:type="simple">10.1016/j.ijmedinf.2017.12.022</ext-link></comment> <object-id pub-id-type="pmid">29425622</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reckmann</surname> <given-names>MH</given-names></name>, <name name-style="western"><surname>Westbrook</surname> <given-names>JI</given-names></name>, <name name-style="western"><surname>Koh</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Lo</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Day</surname> <given-names>RO</given-names></name>. <article-title>Does computerized provider order entry reduce prescribing errors for hospital inpatients? A systematic review</article-title>. <source>JAMIA</source>. <year>2009</year>;<volume>16</volume>(<issue>5</issue>):<fpage>613</fpage>–<lpage>23</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1197/jamia.M3050" xlink:type="simple">10.1197/jamia.M3050</ext-link></comment> <object-id pub-id-type="pmid">19567798</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Westbrook</surname> <given-names>JI</given-names></name>, <name name-style="western"><surname>Reckmann</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Runciman</surname> <given-names>WB</given-names></name>, <name name-style="western"><surname>Burke</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Lo</surname> <given-names>C</given-names></name>, <etal>et al</etal>. <article-title>Effects of two commercial electronic prescribing systems on prescribing error rates in hospital in-patients: a before and after study</article-title>. <source>PLoS Medicine</source>. <year>2012</year>;<volume>9</volume>(<issue>1</issue>):<fpage>e1001164</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pmed.1001164" xlink:type="simple">10.1371/journal.pmed.1001164</ext-link></comment> <object-id pub-id-type="pmid">22303286</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ghaleb</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Barber</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Franklin</surname> <given-names>BD</given-names></name>, <name name-style="western"><surname>Yeung</surname> <given-names>VW</given-names></name>, <name name-style="western"><surname>Khaki</surname> <given-names>ZF</given-names></name>, <name name-style="western"><surname>Wong</surname> <given-names>IC</given-names></name>. <article-title>Systematic Review of Medication Errors in Pediatric Patients</article-title>. <source>Annals of Pharmacotherapy</source>. <year>2006</year>;<volume>40</volume>(<issue>10</issue>):<fpage>1766</fpage>–<lpage>76</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1345/aph.1G717" xlink:type="simple">10.1345/aph.1G717</ext-link></comment> <object-id pub-id-type="pmid">16985096</object-id>.</mixed-citation></ref>
+<ref id="pone.0254358.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vrbnjak</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Denieffe</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>O’Gorman</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Pajnkihar</surname> <given-names>M</given-names></name>. <article-title>Barriers to reporting medication errors and near misses among nurses: A systematic review</article-title>. <source>International journal of nursing studies</source>. <year>2016</year>;<volume>63</volume>:<fpage>162</fpage>–<lpage>78</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijnurstu.2016.08.019" xlink:type="simple">10.1016/j.ijnurstu.2016.08.019</ext-link></comment> <object-id pub-id-type="pmid">27637011</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schiff</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Amato</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Eguale</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Boehne</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Wright</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Koppel</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>Computerised physician order entry-related medication errors: analysis of reported errors and vulnerability testing of current systems</article-title>. <source>BMJ Qual Saf</source>. <year>2015</year>;<volume>24</volume>(<issue>4</issue>):<fpage>264</fpage>–<lpage>71</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1136/bmjqs-2014-003555" xlink:type="simple">10.1136/bmjqs-2014-003555</ext-link></comment> <object-id pub-id-type="pmid">25595599</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hickman</surname> <given-names>T-TT</given-names></name>, <name name-style="western"><surname>Quist</surname> <given-names>AJL</given-names></name>, <name name-style="western"><surname>Salazar</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Amato</surname> <given-names>MG</given-names></name>, <name name-style="western"><surname>Wright</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Volk</surname> <given-names>LA</given-names></name>, <etal>et al</etal>. <article-title>Outpatient CPOE orders discontinued due to ‘erroneous entry’: prospective survey of prescribers’ explanations for errors</article-title>. <source>BMJ Qual Saf</source>. <year>2018</year>;<volume>27</volume>(<issue>4</issue>):<fpage>293</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1136/bmjqs-2017-006597" xlink:type="simple">10.1136/bmjqs-2017-006597</ext-link></comment> <object-id pub-id-type="pmid">28754812</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kannampallil</surname> <given-names>TG</given-names></name>, <name name-style="western"><surname>Abraham</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Solotskoya</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>George</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Lambert</surname> <given-names>BL</given-names></name>, <name name-style="western"><surname>Schiff</surname> <given-names>G</given-names></name>, <etal>et al</etal>. <article-title>Learning from Errors: Analysis of Medication Order Voiding in CPOE Systems</article-title> <source>Journal of the American Medical Informatics Association</source>. <year>2017</year>;<volume>24</volume>(<issue>4</issue>):<fpage>762</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/jamia/ocw187" xlink:type="simple">10.1093/jamia/ocw187</ext-link></comment> <object-id pub-id-type="pmid">28339698</object-id></mixed-citation></ref>
+<ref id="pone.0254358.ref023"><label>23</label><mixed-citation publication-type="other" xlink:type="simple">Liu Y, Wang Y, Wang S, Liang T, Zhao Q, Tang Z, et al., editors. CBNet: A Novel Composite Backbone Network Architecture for Object Detection. arXiv preprint arXiv:190903625; 2019.</mixed-citation></ref>
+<ref id="pone.0254358.ref024"><label>24</label><mixed-citation publication-type="other" xlink:type="simple">Kingma DP, Ba J. Adam: A method for stochastic optimization. arXiv preprint 2014.</mixed-citation></ref>
+<ref id="pone.0254358.ref025"><label>25</label><mixed-citation publication-type="other" xlink:type="simple">Davis J, Goadrich M. The relationship between Precision-Recall and ROC curves. In Proceedings of the 23rd international conference on Machine learning: ACM; 2006. p. 233–40.</mixed-citation></ref>
+<ref id="pone.0254358.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chawla</surname> <given-names>NV</given-names></name>, <name name-style="western"><surname>Bowyer</surname> <given-names>KW</given-names></name>, <name name-style="western"><surname>Hall</surname> <given-names>LO</given-names></name>, <name name-style="western"><surname>Kegelmeyer</surname> <given-names>WP</given-names></name>. <article-title>SMOTE: synthetic minority over-sampling technique</article-title>. <source>Journal of artificial intelligence research</source>. <year>2002</year>;<volume>16</volume>:<fpage>321</fpage>–<lpage>57</lpage>.</mixed-citation></ref>
+<ref id="pone.0254358.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Qin</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Hotilovac</surname> <given-names>L</given-names></name>. <article-title>Comparison of non-parametric confidence intervals for the area under the ROC curve of a continuous-scale diagnostic test</article-title>. <source>Stat Meth Med Res</source>. <year>2008</year>;<volume>17</volume>:<fpage>207</fpage>–<lpage>21</lpage>.</mixed-citation></ref>
+<ref id="pone.0254358.ref028"><label>28</label><mixed-citation publication-type="other" xlink:type="simple">MatlabAUC. <ext-link ext-link-type="uri" xlink:href="https://github.com/brian-lau/MatlabAUC" xlink:type="simple">https://github.com/brian-lau/MatlabAUC</ext-link>.</mixed-citation></ref>
+<ref id="pone.0254358.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liao</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Meyer</surname> <given-names>MC</given-names></name>. <source>cgam: An R Package for the Constrained Generalized Additive Model. 2019</source>. <year>2019</year>;<volume>89</volume>(<issue>5</issue>):<fpage>24</fpage>. Epub 2019-05-09. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.18637/jss.v089.i05" xlink:type="simple">10.18637/jss.v089.i05</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0254358.ref030"><label>30</label><mixed-citation publication-type="other" xlink:type="simple">Springenberg JT, Dosovitskiy A, Brox T, Riedmiller M. Striving for simplicity: The all convolutional net. arXiv preprint arXiv:141268062014.</mixed-citation></ref>
+<ref id="pone.0254358.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lundberg</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>S-I</given-names></name>, editors. <article-title>A unified approach to interpreting model predictions</article-title>. <source>Advances in neural information processing systems</source>; <year>2017</year>.</mixed-citation></ref>
+<ref id="pone.0254358.ref032"><label>32</label><mixed-citation publication-type="other" xlink:type="simple">Hinton G, Vinyals O, Dean J. Distilling the knowledge in a neural network. arXiv preprint arXiv:150302531. 2015.</mixed-citation></ref>
+<ref id="pone.0254358.ref033"><label>33</label><mixed-citation publication-type="other" xlink:type="simple">Lundberg SM, Erion GG, Lee S-I. Consistent individualized feature attribution for tree ensembles. arXiv preprint arXiv:180203888. 2018.</mixed-citation></ref>
+<ref id="pone.0254358.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Abraham</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Galanter</surname> <given-names>WL</given-names></name>, <name name-style="western"><surname>Touchette</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Xia</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Holzer</surname> <given-names>KJ</given-names></name>, <name name-style="western"><surname>Leung</surname> <given-names>V</given-names></name>, <etal>et al</etal>. <article-title>Risk factors associated with medication ordering errors</article-title>. <source>J Am Med Inform Assoc</source>. <year>2021</year>;<volume>28</volume>(<issue>1</issue>):<fpage>86</fpage>–<lpage>94</lpage>. Epub 2020/11/23. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/jamia/ocaa264" xlink:type="simple">10.1093/jamia/ocaa264</ext-link></comment> <object-id pub-id-type="pmid">33221852</object-id>.</mixed-citation></ref>
+<ref id="pone.0254358.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lundberg</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Erion</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>DeGrave</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Prutkin</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Nair</surname> <given-names>B</given-names></name>, <etal>et al</etal>. <article-title>From Local Explanations to Global Understanding with Explainable AI for Trees</article-title>. <source>Nat Mach Intell</source>. <year>2020</year>;<volume>2</volume>(<issue>1</issue>):<fpage>56</fpage>–<lpage>67</lpage>. Epub 2020/07/02. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s42256-019-0138-9" xlink:type="simple">10.1038/s42256-019-0138-9</ext-link></comment> <object-id pub-id-type="pmid">32607472</object-id>.</mixed-citation></ref>
+<ref id="pone.0254358.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lundberg</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Nair</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Vavilala</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Horibe</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Eisses</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Adams</surname> <given-names>T</given-names></name>, <etal>et al</etal>. <article-title>Explainable machine-learning predictions for the prevention of hypoxaemia during surgery</article-title>. <source>Nat Biomed Eng</source>. <year>2018</year>;<volume>2</volume>(<issue>10</issue>):<fpage>749</fpage>–<lpage>60</lpage>. Epub 2019/04/20. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41551-018-0304-0" xlink:type="simple">10.1038/s41551-018-0304-0</ext-link></comment> <object-id pub-id-type="pmid">31001455</object-id>.</mixed-citation></ref>
+</ref-list>
+</back>
+</article>

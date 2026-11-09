@@ -1,0 +1,122 @@
+{
+  "vector": true,
+  "editableText": true,
+  "sameScene": true,
+  "figureCount": 1,
+  "codeHash": "3578f68026adea73031e544ffa3016aeed809aec3bc2411347c5f075b99310fa",
+  "pngHash": "dd5974c0dd8c4eff9be4c983530f788f0937cafe9548ffe54fdc72da658b6621",
+  "svgHash": "8487ae00fe8a675ea2d59a2d0d3972bc04828256d244b99005cbd3204ed6fac5",
+  "numeric": {
+    "typeId": "sankey",
+    "computations": {
+      "nodeTotals": {
+        "A": 5,
+        "B": 4,
+        "C": 3,
+        "D": 6
+      },
+      "totalFlow": 9,
+      "dataSpaceWidthPerValue": 1
+    },
+    "checks": {
+      "A_node_height": {
+        "actual": 5.0,
+        "expected": 5.0,
+        "absoluteError": 0.0
+      },
+      "B_node_height": {
+        "actual": 4.0,
+        "expected": 4.0,
+        "absoluteError": 0.0
+      },
+      "C_node_height": {
+        "actual": 3.0,
+        "expected": 3.0,
+        "absoluteError": 0.0
+      },
+      "D_node_height": {
+        "actual": 6.0,
+        "expected": 6.0,
+        "absoluteError": 0.0
+      },
+      "ribbon_5_width": {
+        "actual": 3.0,
+        "expected": 3.0,
+        "absoluteError": 0.0
+      },
+      "ribbon_6_width": {
+        "actual": 2.0,
+        "expected": 2.0,
+        "absoluteError": 0.0
+      },
+      "ribbon_7_width": {
+        "actual": 3.999999999999999,
+        "expected": 4.0,
+        "absoluteError": 8.881784197001252e-16
+      },
+      "A_allocated_flow": {
+        "actual": 5.0,
+        "expected": 5.0,
+        "absoluteError": 0.0
+      },
+      "B_allocated_flow": {
+        "actual": 4.0,
+        "expected": 4.0,
+        "absoluteError": 0.0
+      },
+      "C_allocated_flow": {
+        "actual": 3.0,
+        "expected": 3.0,
+        "absoluteError": 0.0
+      },
+      "D_allocated_flow": {
+        "actual": 6.0,
+        "expected": 6.0,
+        "absoluteError": 0.0
+      },
+      "both_column_total": {
+        "actual": 18.0,
+        "expected": 18.0,
+        "absoluteError": 0.0
+      },
+      "source_row_count": {
+        "actual": 3.0,
+        "expected": 3.0,
+        "absoluteError": 0.0
+      }
+    },
+    "analysis": {
+      "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+    },
+    "suppliedFields": {
+      "rowFields": [
+        "source",
+        "target",
+        "value"
+      ],
+      "options": {
+        "nodes": [
+          {
+            "id": "A",
+            "stage": 0
+          },
+          {
+            "id": "B",
+            "stage": 0
+          },
+          {
+            "id": "C",
+            "stage": 1
+          },
+          {
+            "id": "D",
+            "stage": 1
+          }
+        ],
+        "layout": "bipartite",
+        "flowSemantics": "Observed people moving once from origin to destination"
+      }
+    },
+    "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+  }
+}

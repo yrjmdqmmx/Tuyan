@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import React from 'react';
@@ -7,6 +8,11 @@ import { useWatcha } from '../src/hooks/useWatcha.js';
 import WatchaIdentityPanel from '../src/components/WatchaIdentityPanel.jsx';
 import AccountSettingsDialog from '../src/components/AccountSettingsDialog.jsx';
 import AuthPanel from '../src/components/AuthPanel.jsx';
+test('local account bridge displays existing Watcha binding and an explicit official-site management link without creating OAuth transactions',async()=>{
+ const original=globalThis.fetch;const calls=[];globalThis.fetch=async(url,options)=>{calls.push(options?.method||'GET');return Response.json({available:true,linked:true,managedExternally:true,managementUrl:'https://www.paperbanana.asia/',hasPassword:true});};
+ function Fixture(){const c=useWatcha('', 'existing',true,()=>{});return React.createElement(WatchaIdentityPanel,{controller:c,user:{id:'existing'}});}
+ try{render(React.createElement(Fixture));await waitFor(()=>assert.ok(screen.getByRole('link',{name:'管理观猹绑定'})));assert.equal(screen.getByRole('link',{name:'管理观猹绑定'}).getAttribute('href'),'https://www.paperbanana.asia/');assert.equal(screen.queryByRole('button',{name:'解绑观猹'})===null,true);assert.ok(calls.every(method=>method==='GET'));}finally{cleanup();globalThis.fetch=original;}
+});
 
 test('status failures keep a visible retry and preserve the pending signup form', async () => {
   const originalFetch = globalThis.fetch;
@@ -17,11 +23,11 @@ test('status failures keep a visible retry and preserve the pending signup form'
     render(React.createElement(Fixture));
     await waitFor(() => assert.ok(screen.getByRole('alert')));
     assert.ok(screen.getByRole('button', { name: '刷新登录状态' }));
-    assert.equal(screen.queryByRole('button', { name: '使用观猹登录' }), null);
+    assert.equal(screen.queryByRole('button', { name: '使用观猹登录' }) === null, true);
     failed = false;
     await act(async () => fireEvent.click(screen.getByRole('button', { name: '刷新登录状态' })));
-    fireEvent.change(screen.getByLabelText('接收验证的邮箱'), { target: { value: 'keep@example.test' } });
-    fireEvent.change(screen.getByLabelText('邮箱验证码'), { target: { value: '123456' } });
+    changeControl(screen.getByLabelText('接收验证的邮箱'), { target: { value: 'keep@example.test' } });
+    changeControl(screen.getByLabelText('邮箱验证码'), { target: { value: '123456' } });
     failed = true;
     await act(async () => window.dispatchEvent(new window.Event('focus')));
     assert.ok(screen.getByRole('alert'));
@@ -55,7 +61,7 @@ test('focus recovers a completed pending authorization when the provider severs 
       assert.equal(authenticated, 0);
       if (user) assert.equal(screen.getByRole('button', { name: '确认绑定当前图研账号' }).disabled, false);
       else {
-        fireEvent.change(screen.getByLabelText('接收验证的邮箱'), { target: { value: 'signup@example.test' } });
+        changeControl(screen.getByLabelText('接收验证的邮箱'), { target: { value: 'signup@example.test' } });
         assert.equal(screen.getByRole('button', { name: '发送验证码' }).disabled, false);
       }
       cleanup();
@@ -73,6 +79,22 @@ test('disabled login is hidden and unverified existing users can verify before b
   } finally { cleanup(); }
 });
 
+test('new-domain disabled Watcha keeps email login and the original-site fallback visible', () => {
+  const originalLocation = globalThis.location;
+  try {
+    Object.defineProperty(globalThis, 'location', { configurable: true, value: { origin: 'https://tuyansci.cn' } });
+    render(React.createElement(AuthPanel, { watcha: { status: { available: false, pending: null } } }));
+    assert.equal(screen.getByRole('link', { name: '前往原站使用观猹登录' }).href, 'https://www.paperbanana.asia/');
+    assert.ok(screen.getByLabelText('邮箱'));
+    assert.ok(screen.getByLabelText('密码'));
+    assert.equal(document.body.textContent.includes('尚待开通'), false);
+    assert.equal(screen.queryByRole('button', { name: '使用观猹登录' }) === null, true);
+  } finally {
+    cleanup();
+    Object.defineProperty(globalThis, 'location', { configurable: true, value: originalLocation });
+  }
+});
+
 test('passwordless deletion verifies a purpose-specific code and submits only its one-use confirmation', async () => {
   const originalFetch = globalThis.fetch, calls = [];
   globalThis.fetch = async (url, options) => {
@@ -88,9 +110,9 @@ test('passwordless deletion verifies a purpose-specific code and submits only it
     await waitFor(() => assert.equal(screen.getByRole('button', { name: '发送注销验证码' }).disabled, false));
     assert.equal(screen.queryByLabelText('当前登录密码'), null);
     await act(async () => fireEvent.click(screen.getByRole('button', { name: '发送注销验证码' })));
-    fireEvent.change(screen.getByLabelText('注销邮箱验证码'), { target: { value: '123456' } });
+    changeControl(screen.getByLabelText('注销邮箱验证码'), { target: { value: '123456' } });
     assert.equal(screen.getByRole('button', { name: '永久删除账号' }).disabled, true);
-    fireEvent.change(screen.getByLabelText('输入“删除账号”确认'), { target: { value: '删除账号' } });
+    changeControl(screen.getByLabelText('输入“删除账号”确认'), { target: { value: '删除账号' } });
     await act(async () => fireEvent.click(screen.getByRole('button', { name: '永久删除账号' })));
     assert.deepEqual(calls, [['code', 'delete'], ['confirm', '123456'], ['delete', { email: 'person@example.test', confirmationToken: 'one-use-test-proof' }], ['deleted']]);
   } finally { cleanup(); globalThis.fetch = originalFetch; }
@@ -103,8 +125,8 @@ test('choosing an existing account returns to email sign-in and never implicitly
     render(React.createElement(AuthPanel, { watcha, client: { signIn: { email: async data => { calls.push(data); return { data: {} }; } } }, onAuthenticated: async () => calls.push('authenticated') }));
     assert.equal(screen.queryByLabelText('密码'), null);
     fireEvent.click(screen.getByRole('button', { name: '登录已有图研账号并绑定' }));
-    fireEvent.change(screen.getByLabelText('邮箱'), { target: { value: 'existing@example.test' } });
-    fireEvent.change(screen.getByLabelText('密码'), { target: { value: 'test-password' } });
+    changeControl(screen.getByLabelText('邮箱'), { target: { value: 'existing@example.test' } });
+    changeControl(screen.getByLabelText('密码'), { target: { value: 'test-password' } });
     await act(async () => fireEvent.click(screen.getByRole('button', { name: '登录' })));
     assert.deepEqual(calls, [{ email: 'existing@example.test', password: 'test-password' }, 'authenticated']);
   } finally { cleanup(); }
@@ -161,10 +183,10 @@ test('pending identity signup and existing-account choice require explicit actio
   try {
     render(React.createElement(WatchaIdentityPanel, { controller, onSignIn: () => calls.push(['signin']) }));
     assert.ok(screen.getByText('观猹授权已完成'));
-    fireEvent.change(screen.getByLabelText('接收验证的邮箱'), { target: { value: 'new@example.test' } });
+    changeControl(screen.getByLabelText('接收验证的邮箱'), { target: { value: 'new@example.test' } });
     await act(async () => fireEvent.click(screen.getByRole('button', { name: '发送验证码' })));
     assert.deepEqual(calls[0], ['code', 'signup', 'new@example.test']);
-    fireEvent.change(screen.getByLabelText('邮箱验证码'), { target: { value: '123456' } });
+    changeControl(screen.getByLabelText('邮箱验证码'), { target: { value: '123456' } });
     await act(async () => fireEvent.submit(screen.getByRole('form', { name: '验证邮箱并创建图研账号' })));
     assert.deepEqual(calls[1], ['complete', 'new@example.test', '123456']);
     fireEvent.click(screen.getByRole('button', { name: '登录已有图研账号并绑定' }));

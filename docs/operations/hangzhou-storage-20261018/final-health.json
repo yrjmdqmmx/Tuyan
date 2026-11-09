@@ -1,0 +1,131 @@
+{
+  "containers": [
+    {
+      "name": "tuyan-cn-gateway-auth-gateway-1",
+      "id": "f1e081b624f0546511529691a5f14c487e034c06507f31a405b4835fe7b0be4c",
+      "image": "sha256:84bc9fd55434fa54c5f421e90232a7deab8266b62d2b40b7ce1267f80e5f8782",
+      "health": "healthy",
+      "restarts": 0,
+      "routes": {},
+      "storage": {
+        "PAPERBANANA_BUCKET": "paperbanana-prod-hz-20261018",
+        "OSS_PUBLIC_ENDPOINT": "https://oss-cn-hangzhou.aliyuncs.com"
+      }
+    },
+    {
+      "name": "paperbanana-hk-auth-gateway-1",
+      "id": "6826f034df10c2970c0226497c5ecdf39f5c896d99a0a3a0d0603872026bc457",
+      "image": "sha256:84bc9fd55434fa54c5f421e90232a7deab8266b62d2b40b7ce1267f80e5f8782",
+      "health": "healthy",
+      "restarts": 0,
+      "routes": {},
+      "storage": {
+        "PAPERBANANA_BUCKET": "paperbanana-prod-hz-20261018",
+        "OSS_PUBLIC_ENDPOINT": "https://oss-cn-hangzhou.aliyuncs.com"
+      }
+    },
+    {
+      "name": "paperbanana-hk-benchmark-worker-1",
+      "id": "0497ba7f7acf5f8377abb08b8e65d0c503fff1aa1baaa72f6bda9d06a40cb4e3",
+      "image": "sha256:92761e403768654480f2592c8de52c50d8440224d3b6a3f32dae25a482a8a1f7",
+      "health": "healthy",
+      "restarts": 0,
+      "routes": {
+        "PAPERBANANA_BENCH_ENABLED": "false"
+      },
+      "storage": {
+        "PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT": "https://oss-cn-hangzhou-internal.aliyuncs.com",
+        "PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT": "https://oss-cn-hangzhou.aliyuncs.com",
+        "PAPERBANANA_BENCH_OSS_BUCKET": "paperbanana-bench-hz-20261018",
+        "PAPERBANANA_BENCH_OSS_REGION": "oss-cn-hangzhou",
+        "PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE": "internal"
+      }
+    },
+    {
+      "name": "paperbanana-hk-paperbanana-api-1",
+      "id": "b32f62171d071b683f4dabc3db2df06e4f67400336674c0eee69ba8b9e084378",
+      "image": "sha256:f890e328295ed722021a45da8469f8c3dd805f78cbbe4c4b7270889f3630015f",
+      "health": "healthy",
+      "restarts": 0,
+      "routes": {
+        "PAPERBANANA_HK_PROXY_URL": "http://10.78.0.1:3128",
+        "PAPERBANANA_PROVIDER_DIRECT_HOSTS": "tokendance.space,ark.cn-beijing.volces.com,api.fireworks.ai",
+        "PAPERBANANA_SG_PROXY_URL": "http://10.77.0.2:3128",
+        "PAPERBANANA_PROVIDER_HK_HOSTS": "openrouter.ai,api.x.ai,api.novita.ai,api.stability.ai,api.together.ai,api.ideogram.ai,api.runware.ai,api.mistral.ai,api.bfl.ai,api.us.bfl.ai,api.eu.bfl.ai,queue.fal.run,api.fal.ai,external.api.recraft.ai,api.replicate.com,api.minimax.io"
+      },
+      "storage": {
+        "OSS_INTERNAL_ENDPOINT": "https://oss-cn-hangzhou-internal.aliyuncs.com",
+        "OSS_PUBLIC_ENDPOINT": "https://oss-cn-hangzhou.aliyuncs.com",
+        "PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT": "https://oss-cn-hangzhou-internal.aliyuncs.com",
+        "OSS_REGION": "oss-cn-hangzhou",
+        "PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT": "https://oss-cn-hangzhou.aliyuncs.com",
+        "PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE": "internal",
+        "PAPERBANANA_OSS_SERVER_ENDPOINT_MODE": "internal",
+        "PAPERBANANA_BENCH_OSS_BUCKET": "paperbanana-bench-hz-20261018",
+        "PAPERBANANA_BENCH_OSS_REGION": "oss-cn-hangzhou",
+        "PAPERBANANA_BUCKET": "paperbanana-prod-hz-20261018"
+      }
+    },
+    {
+      "name": "openacad-api-1",
+      "id": "c08573900692eff380b1bddb78ec2c7e7a22aabfe874bdc7c25c4aea24cd8c0c",
+      "image": "sha256:a270e2a3b16af6d08f79e9c493727074ef7f26d36bbd994697db1c535f1092ce",
+      "health": "healthy",
+      "restarts": 0,
+      "routes": {},
+      "storage": {}
+    },
+    {
+      "name": "openacad-worker-two-1",
+      "id": "7dd934295755062f1db660516f1d242335ac5e73497eddde74daee5fa7419fa0",
+      "image": "sha256:a270e2a3b16af6d08f79e9c493727074ef7f26d36bbd994697db1c535f1092ce",
+      "health": "healthy",
+      "restarts": 0,
+      "routes": {},
+      "storage": {}
+    },
+    {
+      "name": "openacad-worker-one-1",
+      "id": "f5bf9fcacaba84d42b2747f15f4a23011b6483610eae3a696e6af90b187f6aec",
+      "image": "sha256:a270e2a3b16af6d08f79e9c493727074ef7f26d36bbd994697db1c535f1092ce",
+      "health": "healthy",
+      "restarts": 0,
+      "routes": {},
+      "storage": {}
+    },
+    {
+      "name": "openacad-redis-1",
+      "id": "97e6c3db2c1f1322a6d0109d965388f8b6d7a9630ee80d6f986577698b58e213",
+      "image": "sha256:02f2cc4882f8bf87c79a220ac958f58c700bdec0dfb9b9ea61b62fb0e8f1bfcf",
+      "health": "healthy",
+      "restarts": 0,
+      "routes": {},
+      "storage": {}
+    },
+    {
+      "name": "paperbanana-hk-mongodb-1",
+      "id": "9c8c664f59b6ea8d765923cf2c870bffb93d942423b5430dfe7c53218269321c",
+      "image": "sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+      "health": "healthy",
+      "restarts": 0,
+      "routes": {},
+      "storage": {}
+    },
+    {
+      "name": "paperbanana-hk-plot-worker-1",
+      "id": "c79b4350865ebb6c5d4af6aaa89186e5c3a640f5927b31b3916436f1850aa318",
+      "image": "sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+      "health": "healthy",
+      "restarts": 0,
+      "routes": {},
+      "storage": {}
+    }
+  ],
+  "maintenance": false,
+  "backup_timer": "active",
+  "backup_result": "Result=success\nExecMainStatus=0",
+  "bundle_sha256": "995d6fa31e9282eeff91e419fd53d41e4f433f7a3e63fb3298714dda8ebd75e9",
+  "other_six_containers_unchanged": true,
+  "model_routes_unchanged": true,
+  "checked_at": "2026-10-18T05:44:26.101050+00:00"
+}

@@ -1,3 +1,10 @@
+import { loadGoogleConfig } from './google-oauth.js';
+import { loadIdentityProxy } from './identity-transport.js';
+import { loadGithubConfig } from './github-oauth.js';
+import { loadWechatConfig } from './wechat-oauth.js';
+import { loadPlusConfig } from './plus-config.js';
+import { loadOpsConfig } from './ops-config.js';
+import { loadSmsConfig } from './sms.js';
 const DEFAULT_ORIGINS = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
@@ -82,9 +89,18 @@ export function loadGatewayConfig(env = process.env) {
   }
 
   return {
+    opsAgent: loadOpsConfig(env),
+    plus: loadPlusConfig(env),
+    identityProxyUrl: loadIdentityProxy(env),
+    sms: loadSmsConfig(env),
+    wechat: loadWechatConfig(env),
+    github: loadGithubConfig(env),
+    google: loadGoogleConfig(env),
     watcha: { enabled: watchaEnabled, clientId: watchaEnabled ? required(env, 'WATCHA_CLIENT_ID') : '',
       clientSecret: watchaEnabled ? required(env, 'WATCHA_CLIENT_SECRET') : '', scopes: watchaScopes.join(' ') },
     production,
+    requireLogin: env.PAPERBANANA_REQUIRE_LOGIN !== 'false',
+    ecosystem: ecosystemConfig(env),
     port: boundedInteger(env.PORT, 3005, 1, 65_535),
     listenHost: stringValue(env.HOST) || '0.0.0.0',
     authBaseUrl: validHttpUrl('AUTH_BASE_URL', required(env, 'AUTH_BASE_URL')),
@@ -105,6 +121,7 @@ export function loadGatewayConfig(env = process.env) {
     cookieDomain: stringValue(env.COOKIE_DOMAIN),
     cookieSameSite: sameSite || (production ? 'lax' : 'lax'),
     backend,
+    imageLibraryEnabled: parseBoolean(env.PAPERBANANA_IMAGE_LIBRARY_ENABLED),
     gatewayToken: required(env, 'PAPERBANANA_GATEWAY_TOKEN'),
     adminTransportToken: stringValue(env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN),
     adminUserIds: new Set(adminUserIds),
@@ -126,6 +143,15 @@ export function loadGatewayConfig(env = process.env) {
     },
     trustProxy: 1,
   };
+}
+
+function ecosystemConfig(env) {
+  const url = stringValue(env.ECOSYSTEM_WORKER_URL), token = stringValue(env.ECOSYSTEM_WORKER_TOKEN);
+  if (!url && !token) return {};
+  const parsed = new URL(validHttpUrl('ECOSYSTEM_WORKER_URL', url));
+  if (parsed.username || parsed.password || parsed.search || parsed.hash || parsed.pathname !== '/') throw new Error('ECOSYSTEM_WORKER_URL must be a service origin');
+  requireMinBytes('ECOSYSTEM_WORKER_TOKEN', token, 32);
+  return { url: parsed.origin, token };
 }
 
 function required(env, name) {
@@ -161,8 +187,8 @@ function validAccountHttpsUrl(name, value) {
   const normalized = validHttpUrl(name, value);
   const parsed = new URL(normalized);
   if (parsed.protocol !== 'https:') throw new Error(`${name} must use https`);
-  if (parsed.hostname !== 'paperbanana.asia' && !parsed.hostname.endsWith('.paperbanana.asia')) {
-    throw new Error(`${name} must use paperbanana.asia`);
+  if (parsed.origin !== 'https://tuyansci.cn' && parsed.hostname !== 'paperbanana.asia' && !parsed.hostname.endsWith('.paperbanana.asia')) {
+    throw new Error(`${name} must use paperbanana.asia or tuyansci.cn`);
   }
   return normalized;
 }

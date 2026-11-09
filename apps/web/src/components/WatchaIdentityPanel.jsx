@@ -1,23 +1,31 @@
+import { accountPageUrl } from '../lib/runtimePolicy.js';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useState } from 'react';
 import { appPath } from '../appPaths.js';
 import { authClient } from '../config';
 
-export default function WatchaIdentityPanel({ controller, user, onSignIn }) {
+export default function WatchaIdentityPanel({ controller, user, onSignIn, compact = false }) {
   const { t } = useAppLocale()
   const [email, setEmail] = useState(''), [code, setCode] = useState(''), [cooldown, setCooldown] = useState(0);
   const [unlinking, setUnlinking] = useState(false), [emailNotice, setEmailNotice] = useState('');
   const [sendingVerification, setSendingVerification] = useState(false);
   useEffect(() => { if (cooldown <= 0) return; const timer = window.setTimeout(() => setCooldown(cooldown - 1), 1000); return () => window.clearTimeout(timer); }, [cooldown]);
   useEffect(() => { setCode(''); setUnlinking(false); setEmailNotice(''); }, [user?.id, controller?.status?.linked]);
-  if (!controller?.status?.available && !controller?.error) return null;
+  const isNewDomain = globalThis.location?.origin === 'https://tuyansci.cn';
+  if (!controller?.status || (!controller.status.available && !controller.error && !isNewDomain)) return null;
   const c = controller, pending = c.status.pending, linked = c.status.linked;
+  if (compact && !user && !pending && !linked && !c.status.managedExternally) return <section className="watcha-login-compact" aria-label={t('观猹身份登录')}>
+    {c.status.available ? <button className="account-button watcha-login-button auth-provider-button" type="button" disabled={c.busy} aria-busy={c.busy || undefined} aria-label={c.busy ? t('等待完成授权…') : undefined} onClick={() => c.start('login')}><WatchaMark /><span>{t(c.busy ? '等待授权' : '观猹登录')}</span></button> : <p role="status">{t('观猹登录暂不可用')}{isNewDomain && <>，<a href="https://www.paperbanana.asia/" target="_blank" rel="noopener noreferrer">{t('前往原站使用观猹登录')}</a></>}</p>}
+    {c.notice && <p role="status">{c.notice}</p>}{c.error && <p className="error-line" role="alert">{c.error}</p>}
+    {c.error && <button className="text-button" type="button" onClick={c.refresh} disabled={c.busy}>{t('刷新登录状态')}</button>}
+  </section>;
+  if(c.status.managedExternally)return <section className="watcha-identity" aria-label={t('观猹身份登录')}><div className="watcha-heading"><WatchaMark/><strong>{t(linked?'已绑定观猹':'观猹登录与绑定')}</strong></div><p>{t(linked?'观猹已绑定当前图研账号，任务与模型连接仍属于同一账号。':'观猹用于登录和绑定图研账号；TokenDance 是独立的模型授权连接。')}</p><p>{t('本地预览读取正式账号的绑定状态；登录、绑定和解绑继续由正式站点完成，返回后刷新状态。')}</p><div className="watcha-actions"><a className="account-button" href={c.status.managementUrl} target="_blank" rel="noopener noreferrer">{t(linked?'管理观猹绑定':'打开观猹登录入口')}</a><button className="account-button" onClick={c.refresh} disabled={c.busy}>{t('刷新登录状态')}</button></div>{c.error&&<p role="alert">{c.error}</p>}</section>;
   async function sendCode(purpose) { if (await c.requestCode(purpose, purpose === 'signup' ? email.trim() : undefined)) { setCooldown(60); setCode(''); } }
   async function sendLocalVerification() {
     if (cooldown > 0 || sendingVerification) return;
     setEmailNotice(''); setSendingVerification(true);
     try {
-      const { error } = await authClient.sendVerificationEmail({ email: user.email, callbackURL: 'https://www.paperbanana.asia/account/email-verified.html' });
+      const { error } = await authClient.sendVerificationEmail({ email: user.email, callbackURL: accountPageUrl('email-verified.html') });
       setEmailNotice(error ? '验证邮件暂时未能发送，请稍后重试。' : '请在邮件中确认验证，然后刷新账户状态。');
       setCooldown(60);
     } catch { setEmailNotice('验证邮件暂时未能发送，请稍后重试。'); }
@@ -26,7 +34,7 @@ export default function WatchaIdentityPanel({ controller, user, onSignIn }) {
   const verifyEmailButton = <button className="account-button" type="button" onClick={sendLocalVerification} disabled={c.busy || sendingVerification || cooldown > 0}>{t(cooldown > 0 ? `${cooldown} 秒后重发` : '发送图研邮箱验证邮件')}</button>;
   return <section className="watcha-identity" aria-label={t("观猹身份登录")}>
     <div className="watcha-heading"><WatchaMark /><strong>{t(linked ? '已绑定观猹' : pending ? '观猹授权已完成' : '观猹登录')}</strong></div>
-    {!c.status.available ? <p>{t("观猹登录状态暂时无法获取，可继续使用邮箱登录。")}</p> : linked ? <><p>{t("使用观猹登录同一个图研账号，继续访问已有任务和图片。")}</p>
+    {!c.status.available ? (isNewDomain ? <p>{t("观猹登录状态暂时无法获取，可继续使用邮箱登录。")} <a href="https://www.paperbanana.asia/" target="_blank" rel="noopener noreferrer">{t("前往原站使用观猹登录")}</a>。</p> : <p>{t("观猹登录状态暂时无法获取，可继续使用邮箱登录。")}</p>) : linked ? <><p>{t("使用观猹登录同一个图研账号，继续访问已有任务和图片。")}</p>
       {c.status.hasPassword ? <>{!unlinking ? <button className="text-button" type="button" onClick={() => setUnlinking(true)}>{t("解绑观猹")}</button> : <form aria-label={t("验证邮箱并解绑观猹")} onSubmit={async event => { event.preventDefault(); if (await c.unlink(code)) setUnlinking(false); }}>
         <p>{t("解绑后使用图研邮箱和密码登录。请用当前图研邮箱的验证码确认。")}</p>
         <CodeInput code={code} setCode={setCode} />

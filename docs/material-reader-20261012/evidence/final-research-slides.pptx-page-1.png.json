@@ -1,0 +1,38 @@
+{
+  "filename": "research-slides.pptx",
+  "format": "pptx",
+  "operation": {
+    "op": "render",
+    "pages": [
+      1
+    ]
+  },
+  "status": "partial",
+  "warnings": [
+    "LibreOffice 转换视图，可能与 PowerPoint/Word 的布局不同；动画/音视频/嵌入对象不执行。",
+    "字体 Calibri 不匹配可用字体 Noto Sans，页面可能替换字体。"
+  ],
+  "chunks": [
+    {
+      "page": 1,
+      "text": "研究材料：   Alpha 35   ，   Beta 12 \n输入   检查   输出 ",
+      "warning": "文字顺序和表格结构以整页画面核对；坐标为 PDF 原始坐标。",
+      "source": "ppt/slides/slide1.xml",
+      "notes": {
+        "visibility": "speaker_notes_not_visible_on_slide",
+        "text": "备注专属：这是合成测试材料，不是研究结论。样本单位为个。"
+      },
+      "charts": []
+    }
+  ],
+  "images": [
+    {
+      "page": 1,
+      "mimeType": "image/png",
+      "sha256": "78de767ec44bd34dda050b70158ff83f3e077746fae68d01c605bc2aca635e0c",
+      "renderer": "PDFium 2.1.13, whole page",
+      "width": 1440,
+      "height": 864
+    }
+  ]
+}

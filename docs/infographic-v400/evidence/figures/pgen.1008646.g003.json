@@ -1,0 +1,62 @@
+{
+  "id": "pgen.1008646.g003",
+  "paper": "pgen.1008646",
+  "figure": {
+    "id": "pgen.1008646.g003",
+    "label": "Fig 3",
+    "caption": "A representative Circos visualization comparing a centromere-containing scaffold in Sanger V3 (Scaffold 2) with its corresponding contigs in the Psojae2019.1 assembly.\nFor the inner circle, track A illustrates assembled contigs (in Psojae2019.1) or scaffold (in P. sojae V3) that are color coded as shown at the top. The locations of centromeres (CENP-A binding regions) are highlighted in yellow. Tracks B-E show the location of other genomic features as given in the key on the bottom. Blue and orange lines in track F link regions with collinearity extending over 2 kb, with orange lines corresponding to inversions. Grey box-shaded centromere-containing regions are magnified for detailed visualization (the two outer arcs).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1008646.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pgen.1008646.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>A representative Circos visualization comparing a centromere-containing scaffold in Sanger V3 (Scaffold 2) with its corresponding contigs in the Psojae2019.1 assembly.</title>\n<p>For the inner circle, track A illustrates assembled contigs (in Psojae2019.1) or scaffold (in P. sojae V3) that are color coded as shown at the top. The locations of centromeres (CENP-A binding regions) are highlighted in yellow. Tracks B-E show the location of other genomic features as given in the key on the bottom. Blue and orange lines in track F link regions with collinearity extending over 2 kb, with orange lines corresponding to inversions. Grey box-shaded centromere-containing regions are magnified for detailed visualization (the two outer arcs).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1008646.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1008646.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pgen.1008646",
+    "sourceUrl": "https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008646",
+    "title": "Long transposon-rich centromeres in an oomycete reveal divergence of centromere features in Stramenopila-Alveolata-Rhizaria lineages",
+    "journal": "PLOS Genetics",
+    "authors": [
+      "Yufeng Fang",
+      "Marco A. Coelho",
+      "Haidong Shu",
+      "Klaas Schotanus",
+      "Bhagya C. Thimmappa",
+      "Vikas Yadav",
+      "Han Chen",
+      "Ewa P. Malc",
+      "Jeremy Wang",
+      "Piotr A. Mieczkowski",
+      "Brent Kronmiller",
+      "Brett M. Tyler",
+      "Kaustuv Sanyal",
+      "Suomeng Dong",
+      "Minou Nowrousian",
+      "Joseph Heitman"
+    ],
+    "year": "2020",
+    "license": "2020\nFang et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosgenetics/article/figure/image?size=large&id=10.1371/journal.pgen.1008646.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pgen.1008646.g003.png",
+      "bytes": 4263703,
+      "sha256": "455f66e38a6350c19eb4b9e6cb55b4d9715738acaf0044af3ed60d2c2266d650"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosgenetics/article/figure/image?size=original&id=10.1371/journal.pgen.1008646.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pgen.1008646.g003.tif",
+      "bytes": 4447396,
+      "sha256": "32589925c80b9774f313622c0650ecee4fa076ba6c3c7651f69b76c926db0acf"
+    }
+  }
+}

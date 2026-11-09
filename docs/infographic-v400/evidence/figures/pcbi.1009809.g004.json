@@ -1,0 +1,47 @@
+{
+  "id": "pcbi.1009809.g004",
+  "paper": "pcbi.1009809",
+  "figure": {
+    "id": "pcbi.1009809.g004",
+    "label": "Fig 4",
+    "caption": "Concept map.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009809.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009809.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Concept map.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009809.g004\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1009809.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1009809",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009809",
+    "title": "Twelve quick tips for software design",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Greg Wilson"
+    ],
+    "year": "2022",
+    "license": "2022\nGreg Wilson\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1009809.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009809.g004.png",
+      "bytes": 641361,
+      "sha256": "462e620cd76de9a261be73124ffc7b924c3dc4bb0e4e45471fbe5188f62864c8"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1009809.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009809.g004.tif",
+      "bytes": 648616,
+      "sha256": "3fca991f08271880bd461e77dace344ed10ad48487a2349bd901cb01544dc7a5"
+    }
+  }
+}

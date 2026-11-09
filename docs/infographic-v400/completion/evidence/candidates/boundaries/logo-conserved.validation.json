@@ -1,0 +1,116 @@
+{
+  "typeId": "motif_logo",
+  "computations": {
+    "positions": [
+      1,
+      2,
+      3
+    ],
+    "frequencies": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "informationBits": [
+      2.0,
+      2.0,
+      2.0
+    ],
+    "letterHeights": [
+      [
+        2.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        2.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        2.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "background": "uniform",
+    "smallSampleCorrection": "none"
+  },
+  "checks": {
+    "position_1_A_height": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    },
+    "position_1_stack": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    },
+    "position_2_A_height": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    },
+    "position_2_stack": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    },
+    "position_3_A_height": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    },
+    "position_3_stack": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 12.0,
+      "expected": 12.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "position",
+      "symbol",
+      "value"
+    ],
+    "options": {
+      "alphabet": [
+        "A",
+        "C",
+        "G",
+        "T"
+      ],
+      "input": "counts",
+      "mode": "information",
+      "correction": "none"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

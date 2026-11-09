@@ -1,0 +1,34 @@
+{
+  "changed_at": "2026-10-18T04:49:14.116272+00:00",
+  "code_sha": "5f15e5e0bb2e2c67f23ebe09000a9a7ec76e70ad",
+  "previous_image": "sha256:631f11b065a9974c6f6034b4e37546ffc7e17199d2bd81ea2a9edaee775ea85d",
+  "image": "sha256:75cbc12e7969af32be4cd8a6e38d0adf5425623b0c14db5ac118d7dfa0248dfb",
+  "direct_hosts": [
+    "tokendance.space",
+    "ark.cn-beijing.volces.com",
+    "api.fireworks.ai"
+  ],
+  "hongkong_proxy": "http://10.78.0.1:3128",
+  "hongkong_hosts": [
+    "openrouter.ai",
+    "api.x.ai",
+    "api.novita.ai",
+    "api.stability.ai",
+    "api.together.ai",
+    "api.ideogram.ai",
+    "api.runware.ai",
+    "api.mistral.ai",
+    "api.bfl.ai",
+    "api.us.bfl.ai",
+    "api.eu.bfl.ai",
+    "queue.fal.run",
+    "api.fal.ai",
+    "external.api.recraft.ai",
+    "api.replicate.com",
+    "api.minimax.io"
+  ],
+  "overseas_proxy": "http://10.77.0.2:3128",
+  "status": "healthy",
+  "active_jobs_before": 0,
+  "model_calls": 0
+}

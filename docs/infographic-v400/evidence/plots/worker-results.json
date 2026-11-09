@@ -1,0 +1,202 @@
+[
+  {
+    "typeId": "bar",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "dotplot",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "lollipop",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "dumbbell",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "forest",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "waterfall",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "gantt",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "histogram",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "boxplot",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "violin",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "ecdf",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "line",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "area",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "scatter",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "bubble",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "heatmap",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "adjacency_matrix",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "bubble_matrix",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "correlation_matrix",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "pie",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "rose",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "volcano",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "ma_plot",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "roc",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "pr_curve",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "confusion_matrix",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "calibration",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "bland_altman",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "funnel_meta",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "ordination",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "vector_field",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "contour",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "kaplan_meier",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "venn",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "upset",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "density",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "raincloud",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "ridgeline",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "stripplot",
+    "passed": true,
+    "error": ""
+  },
+  {
+    "typeId": "binary_matrix",
+    "passed": true,
+    "error": ""
+  }
+]

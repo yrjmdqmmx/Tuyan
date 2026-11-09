@@ -1,11 +1,33 @@
+import {createPlusReconciler} from './plus-reconciler.js';
+import {createPlusCoreExecutor} from './plus-executor.js';
+import { createTaskDeletionCleanup } from './workspace-task-deletion.js';
+import { createPlusRouter } from './plus-router.js';
+import { createPlusService, createPlusSimulationExecutor } from './plus-service.js';
+import { createPlusWatcha } from './plus-watcha.js';
+import { createImageLibraryRouter, createImageLibraryBridge } from './image-library.js';
+import { bailianRouteFields } from './bailian-workspace.js';
+import { workspaceExecutionMiddleware } from './workspace-execution.js';
+import {workflowRequiredRoles} from './workflow.js';
 import cors from 'cors';
 import express from 'express';
+import { gzip } from 'node:zlib';
+import { promisify } from 'node:util';
 
 import { createBoundedAuthHandler } from './auth-http.js';
 import { readGuestIdentity, resolveGuestIdentity } from './guest-identity.js';
 import { createTuyanMcpRouter } from './mcp.js';
+import { createOpsRouter } from './ops-router.js';
 import { authorizeJobOwner, normalizeRefineSource } from './ownership.js';
 import { redactErrorForLog } from './redaction.js';
+import { createWorkspaceHistory } from './workspace-history.js';
+import { createWorkspaceRouter } from './workspace-sync.js';
+import { createModelLibraryRouter } from './model-library.js';
+import { createAccountProfileRouter } from './account-profile.js';
+import { createEcosystemRouter } from './ecosystem.js';
+
+const gzipAsync = promisify(gzip);
+
+const PUBLIC_READ_ACTIONS = new Set(['health', 'adminStatus', 'modelRegistry', 'modelCapability', 'referenceLibrary', 'benchmarkLeaderboard', 'benchmarkModelProfile', 'benchmarkMethodology', 'benchmarkCaseEvidence']);
 
 const ADMIN_BACKEND_ACTIONS = new Set([
   'adminOperationsOverview',
@@ -34,7 +56,9 @@ const ADMIN_BACKEND_ACTIONS = new Set([
   'adminBenchmarkPromptDecision',
 ]);
 const ADMIN_MUTATING_ACTIONS = new Set(['adminTaskFollowup', 'adminCommunityEdit', 'adminBenchmarkPromptDecision', 'importReferences', 'evaluateJob', 'initDatabase']);
+const MATERIAL_ACTIONS=new Set(['prepareMaterialUpload','finalizeMaterialUpload','getMaterial','listMaterialFiles','readMaterial','deleteMaterial']);
 const MAINTENANCE_ACTIONS = new Set([
+  ...MATERIAL_ACTIONS,
   'tokenDanceResume', 'providerResume', 'tokenDanceAuthorize', 'tokenDanceExchange', 'tokenDancePaymentCreate',
   'createJob',
   'refineImage',
@@ -62,6 +86,8 @@ export function createApp({
   const accountDeletionOperations = new Map();
   app.disable('x-powered-by');
   app.set('trust proxy', config.trustProxy);
+  app.use('/api/agent-ops', createOpsRouter({ config: config.opsAgent, accounts: auth.adminAccounts,
+    coreUrl: config.backend?.url, logger, nowMs: () => nowSeconds() * 1000 }));
   app.use('/mcp', createTuyanMcpRouter({ logger, nowMs: () => nowSeconds() * 1000 }));
 
   const origins = new Set(config.frontendOrigins);
@@ -75,17 +101,38 @@ export function createApp({
       },
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Workspace-Account'],
     }),
   );
 
   app.all('/api/auth/*', (request, response, next) => {
     const path = request.path.replace(/\/+$/, '');
-    if (isMaintenance() && ((request.method === 'POST' && path.startsWith('/api/auth/watcha/'))
-      || path === '/api/auth/oauth2/callback/watcha' || path === '/api/auth/watcha/mini-launch')) return maintenanceResponse(response, config);
+    if (isMaintenance() && ((request.method === 'POST' && (path.startsWith('/api/auth/watcha/') || path.startsWith('/api/auth/phone/') || path.startsWith('/api/auth/wechat/') || path.startsWith('/api/auth/github/') || path.startsWith('/api/auth/google/')))
+      || path === '/api/auth/oauth2/callback/google' || path === '/api/auth/google/launch' || path === '/api/auth/oauth2/callback/github' || path === '/api/auth/github/launch' || path === '/api/auth/oauth2/callback/wechat' || path === '/api/auth/wechat/launch' || path === '/api/auth/oauth2/callback/watcha' || path === '/api/auth/watcha/mini-launch')) return maintenanceResponse(response, config);
     next();
   }, createBoundedAuthHandler(auth.webHandler));
+  if(config.imageLibraryEnabled)auth.configureImageLibrary?.(createImageLibraryBridge(backend));
+  app.use('/api/account/images',createImageLibraryRouter({auth,backend,frontendOrigins:config.frontendOrigins,isMaintenance,enabled:config.imageLibraryEnabled}));
+  app.use('/api/workspace', createWorkspaceRouter({ auth, store: auth.workspaceStore, frontendOrigins: config.frontendOrigins, isMaintenance, history:createWorkspaceHistory({backend,auth}), cleanupTask:createTaskDeletionCleanup({backend}) }));
+  app.use('/api/model-library', createModelLibraryRouter({ auth, store: auth.modelLibraryStore, frontendOrigins: config.frontendOrigins, isMaintenance }));
+  app.use('/api/account/profile', createAccountProfileRouter({ auth, backend, frontendOrigins: config.frontendOrigins, isMaintenance }));
+  const plusService=config.plus?.enabled&&auth.plusStore?createPlusService({config:config.plus,store:auth.plusStore,payment:createPlusWatcha({config:config.plus}),secret:config.authSecret,executor:config.plus.executionMode==='simulation'?createPlusSimulationExecutor():config.plus.executionMode==='managed'?createPlusCoreExecutor({backend,workspaceStore:auth.workspaceStore,config:config.plus}):undefined}):undefined;
+  if(plusService&&config.plus.backgroundReconciliationEnabled)app.locals.plusReconciler=createPlusReconciler({service:plusService,store:auth.plusStore,logger});
+  app.use('/api/plus',createPlusRouter({auth,service:plusService,config:config.plus,frontendOrigins:config.frontendOrigins,isMaintenance,isAllowed:user=>isAdminUser(config,user)}));
+  app.use('/api/ecosystem', createEcosystemRouter({ auth, frontendOrigins: config.frontendOrigins, worker: config.ecosystem, isMaintenance }));
   app.use(express.json({ limit: '1mb' }));
+  // Enforce account access before either workspace execution or the legacy action router.
+  app.use('/paperbanana-api', asyncRoute(async (request, _response, next) => {
+    if(request.body?.action==='getPlusOperation')return _response.status(403).json({error:'此查询仅供套餐后端使用'});
+    // Managed billing authority is server-only; legacy/BYOK input cannot forge it.
+    if(request.body){delete request.body.plusBilling;delete request.body.plusPreset;}
+
+    if (request.method === 'POST' && config.requireLogin !== false && !PUBLIC_READ_ACTIONS.has(String(request.body?.action || 'health'))) {
+      await requireSession(auth, request);
+    }
+    next();
+  }));
+  app.use('/paperbanana-api', workspaceExecutionMiddleware({ auth, backend, store: auth.workspaceExecutionStore, libraryStore: auth.modelLibraryStore, workspaceStore: auth.workspaceStore, frontendOrigins: config.frontendOrigins, isMaintenance }));
   app.use((request, response, next) => {
     response.on('finish', () => {
       logger.info?.('request completed', {
@@ -104,6 +151,12 @@ export function createApp({
       code: 0,
       ok: true,
       runtime: 'gateway',
+      workspaceExecutionContractVersion: 1,
+      executionMode: 'production',
+      executionEnabled: Boolean(auth.workspaceStore && auth.modelLibraryStore && auth.workspaceExecutionStore),
+      inputOptimizationMaterialsVersion: 1,
+      imageLibraryEnabled: config.imageLibraryEnabled === true,
+      loginRequired: config.requireLogin !== false,
       auth: 'better-auth',
       authReady: authStatus.ok === true,
       backend: backendStatus,
@@ -194,7 +247,7 @@ export function createApp({
       }
 
       const context = requestContext(request);
-      if (auth.deletionStore && ['createJob', 'refineImage', 'prepareReferenceUpload', 'submitFeedback', 'benchmarkPromptSubmission', 'optimizeInputs'].includes(action)) {
+      if (auth.deletionStore && (MATERIAL_ACTIONS.has(action)||['createJob', 'refineImage', 'prepareReferenceUpload', 'submitFeedback', 'benchmarkPromptSubmission', 'optimizeInputs'].includes(action))) {
         const session = await auth.optionalSession(request);
         const operation = session?.user?.id ? await auth.deletionStore.get(String(session.user.id)) : null;
         if (operation) return response.status(409).json({ code: 409, error: operation.status === 'review_required' ? 'ACCOUNT_DELETION_REVIEW_REQUIRED' : 'ACCOUNT_DELETION_PROCESSING' });
@@ -262,7 +315,11 @@ export function createApp({
         || action === 'benchmarkMethodology'
         || action === 'benchmarkCaseEvidence'
       ) {
-        return relay(response, await backend.call(request.body, context));
+        // Evidence reads verify complete OSS bytes, hashes and metadata. Allow
+        // their cross-region I/O a separate budget without slowing account checks.
+        const evidenceRead = action === 'benchmarkModelProfile' || action === 'benchmarkCaseEvidence';
+        const result = await backend.call(request.body, context, evidenceRead ? { timeoutMs: 60_000 } : undefined);
+        return action === 'modelRegistry' ? relayModelRegistry(request, response, result) : relay(response, result);
       }
 
       if (action === 'benchmarkPromptSubmission') {
@@ -282,11 +339,16 @@ export function createApp({
       }
 
       if (action === 'optimizeInputs') {
-        const td = ['tokendance','custom'].includes(request.body?.mainRoute?.accessProvider);
+        const td = ['tokendance','custom'].includes(request.body?.mainRoute?.accessProvider) || request.body?.materialFiles !== undefined;
         const session = td ? await requireSession(auth, request) : null;
-        return relay(response, await backend.call({ ...normalizeOptimizeInputsBody(request.body), ...(td ? { userId: String(session.user.id) } : {}) }, context, { timeoutMs: 50_000, ...(td ? { authUserId: String(session.user.id) } : {}) }));
+        return relay(response, await backend.call({ ...normalizeOptimizeInputsBody(request.body), ...(td ? { userId: String(session.user.id) } : {}) }, context, { timeoutMs: request.body?.materialFiles?.length ? 120_000 : 50_000, ...(td ? { authUserId: String(session.user.id) } : {}) }));
       }
 
+      if(MATERIAL_ACTIONS.has(action)){
+        const principal=await writePrincipal(config,auth,request,response,nowSeconds,randomBytes);
+        const {files,materialId,operation,jobId}=request.body||{};
+        return relay(response,await backend.call({action,files,materialId,operation,jobId,userId:principal.userId,userEmail:principal.userEmail},context,{timeoutMs:75000,...(!principal.guestOwner?{authUserId:principal.userId}:{})}));
+      }
       if (action === 'submitFeedback') {
         const session = await auth.optionalSession(request);
         return relay(
@@ -309,7 +371,10 @@ export function createApp({
         action === 'abortReferenceUpload' ||
         action === 'providerAccountCatalog' || action === 'universalApiCheck'
       ) {
-        const td = ['tokendance', 'custom'].includes(request.body?.provider) || action === 'universalApiCheck' || Object.values(request.body?.modelRoutes || {}).some(route => ['tokendance', 'custom'].includes(route?.accessProvider));
+        const activeRoles = action==='createJob' ? workflowRequiredRoles({...request.body,outputFormat:request.body.outputFormat || request.body.output_format,referenceImageMode:'vision_model'}) : ['main','image','vision'];
+        // Basic-flow direct vision depends on Core's authoritative model capability.
+        // Core checks the actual required roles and trusted auth header before any call.
+        const td = ['tokendance', 'custom'].includes(request.body?.provider) || action === 'universalApiCheck' || Object.entries(request.body?.modelRoutes || {}).some(([role, route]) => activeRoles.includes(role) && (role !== 'vision' || request.body?.visionMode !== 'none' && !(action==='createJob' && request.body?.pipelineMode==='vanilla' && request.body?.taskName!=='plot')) && ['tokendance', 'custom'].includes(route?.accessProvider));
         if (td) await requireSession(auth, request);
         const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
         const body = action === 'createJob'
@@ -326,13 +391,13 @@ export function createApp({
               userEmail: principal.userEmail,
             },
             context,
-            { ...(td ? { authUserId: principal.userId } : {}), ...(action === 'finalizeReferenceUpload' ? { timeoutMs: 40_000 } : {}) },
+            { ...(!principal.guestOwner ? { authUserId: principal.userId } : {}), ...(action === 'finalizeReferenceUpload' ? { timeoutMs: 40_000 } : {}), ...(action === 'providerAccountCatalog' && request.body.mode === 'catalog' ? { timeoutMs: 60_000 } : {}) },
           ),
         );
       }
 
       if (action === 'refineImage') {
-        const td = ['tokendance', 'custom'].includes(request.body?.provider) || action === 'universalApiCheck' || Object.values(request.body?.modelRoutes || {}).some(route => ['tokendance', 'custom'].includes(route?.accessProvider));
+        const td = ['tokendance', 'custom'].includes(request.body?.provider) || action === 'universalApiCheck' || Object.entries(request.body?.modelRoutes || {}).some(([role, route]) => (role !== 'vision' || request.body?.visionMode !== 'none') && ['tokendance', 'custom'].includes(route?.accessProvider));
         if (td) await requireSession(auth, request);
         const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
         const source = normalizeRefineSource(request.body, {
@@ -369,6 +434,14 @@ export function createApp({
           delete body.sourceImageObjectKey;
         } else delete body.sourceImageUpload;
         return relay(response, await backend.call(body, context, td ? { authUserId: principal.userId } : {}));
+      }
+
+      if (action === 'journalFigureExport') {
+        const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
+        const result = await backend.call({action:'getJob',jobId:request.body.jobId},context);
+        if (result.status < 200 || result.status >= 300 || Number(result.data?.code || 0) !== 0) return relay(response,result);
+        if (!authorizeJobOwner(result.data?.job,principal)) return forbidden(response);
+        return relay(response,await backend.call({action:'journalFigureExport',jobId:request.body.jobId,candidateId:request.body.candidateId,format:request.body.format,flattenWhite:request.body.flattenWhite,download:request.body.download,userId:principal.userId},context));
       }
 
       if (action === 'getJob') {
@@ -409,6 +482,7 @@ export function createApp({
               action: 'userJobs',
               userId: String(session.user.id || ''),
               limit: request.body?.limit || 50,
+              offset: request.body?.offset || 0,
             },
             context,
             { authUserId: String(session.user.id || '') },
@@ -459,6 +533,22 @@ function asyncRoute(handler) {
 
 function relay(response, result) {
   return response.status(boundedStatus(result?.status || 502)).json(result?.data || {});
+}
+
+async function relayModelRegistry(request, response, result) {
+  // Only the public capability catalog uses this path. Do not compress account,
+  // credential, authorization or task responses, or cache them alongside it.
+  response.set('Cache-Control', 'no-store');
+  response.vary('Accept-Encoding');
+  const data = result?.data;
+  if (result?.status !== 200 || data?.code !== 0 || !data.providers
+    || typeof data.providers !== 'object' || Array.isArray(data.providers)
+    || request.acceptsEncodings('gzip', 'identity') !== 'gzip') return relay(response, result);
+  const json = Buffer.from(JSON.stringify(data));
+  if (json.length < 1024) return relay(response, result);
+  const compressed = await gzipAsync(json);
+  if (compressed.length >= json.length) return relay(response, result);
+  return response.status(200).type('application/json').set('Content-Encoding', 'gzip').send(compressed);
 }
 
 function maintenanceResponse(response, config) {
@@ -550,6 +640,18 @@ function normalizeFeedbackBody(body) {
 }
 
 function normalizeProviderAccountCatalogBody(body) {
+  if (body?.mode === 'catalog') {
+    const provider = typeof body.provider === 'string' ? body.provider : '';
+    const key = typeof body.apiKeys?.[provider] === 'string' ? body.apiKeys[provider] : '';
+    return { action:'providerAccountCatalog', mode:'catalog', provider,
+      apiKeys: { [provider]: key }, continuation:body.continuation, region:body.region, workspaceId:body.workspaceId,
+      privateModels:body.privateModels === true,
+      ...(provider==='ark' ? {catalogCredentials:{accessKeyId:body.catalogCredentials?.accessKeyId,secretAccessKey:body.catalogCredentials?.secretAccessKey,sessionToken:body.catalogCredentials?.sessionToken}} : {}),
+      // Preserve forbidden fields so Core rejects a mixed metadata/inference request.
+      ...(body.probes !== undefined ? {probes:body.probes} : {}),
+      ...(body.confirmPaidImageProbe !== undefined ? {confirmPaidImageProbe:body.confirmPaidImageProbe} : {}),
+    };
+  }
   const arkKey = typeof body?.apiKeys?.ark === 'string' ? body.apiKeys.ark : undefined;
   return {
     action: 'providerAccountCatalog',
@@ -564,6 +666,7 @@ function normalizeOptimizeInputsBody(body) {
   return {
     action: 'optimizeInputs',
     target: body?.target,
+    ...(body?.materialFiles !== undefined ? { materialFiles: body.materialFiles } : {}),
     inputs: {
       methodContent: body?.inputs?.methodContent,
       caption: body?.inputs?.caption,
@@ -573,6 +676,7 @@ function normalizeOptimizeInputsBody(body) {
     mainRoute: {
       accessProvider: body?.mainRoute?.accessProvider,
       modelId: body?.mainRoute?.modelId,
+      ...bailianRouteFields(body?.mainRoute?.accessProvider, body?.mainRoute?.modelId, body?.mainRoute?.bailian),
       ...(body?.mainRoute?.accessProvider === 'custom' ? {custom: body.mainRoute.custom} : {}),
     },
     apiKey: body?.apiKey,

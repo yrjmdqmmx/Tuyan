@@ -1,0 +1,53 @@
+{
+  "id": "pone.0281854.g007",
+  "paper": "pone.0281854",
+  "figure": {
+    "id": "pone.0281854.g007",
+    "label": "Fig 7",
+    "caption": "Co-occurrence network among the first 100 genera of fungi (a) and bacteria (b). The correlation matrix is constructed using the SparCC algorithm, but ASVs with a total number of sequences less than 10 are filtered based on random matrix theory (RMT) before matrix construction, with thresholds of 0.33 (fungi) and 0.6 (bacteria) (Chi-Square, p≤0.05). The top 100 ASVs were extracted to construct a network by the induced_subgraph function of igraph R package. The deeper and thicker lines represent stronger correlations between genera.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title />\n<p>Co-occurrence network among the first 100 genera of fungi (a) and bacteria (b). The correlation matrix is constructed using the SparCC algorithm, but ASVs with a total number of sequences less than 10 are filtered based on random matrix theory (RMT) before matrix construction, with thresholds of 0.33 (fungi) and 0.6 (bacteria) (Chi-Square, <italic>p</italic>≤0.05). The top 100 ASVs were extracted to construct a network by the induced_subgraph function of igraph R package. The deeper and thicker lines represent stronger correlations between genera.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g007\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g007",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0281854",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0281854",
+    "title": "Passion fruit plants alter the soil microbial community with continuous cropping and improve plant disease resistance by recruiting beneficial microorganisms",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Ye Wang",
+      "Yao Teng",
+      "Jianli Zhang",
+      "Zixiong Zhang",
+      "Chen Wang",
+      "Xiukun Wu",
+      "Xiuqin Long"
+    ],
+    "year": "2023",
+    "license": "2023\nWang et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0281854.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0281854.g007.png",
+      "bytes": 2210089,
+      "sha256": "4ddaa88cf2b6955e47708db47e28a522b54217ecd87ee9ff37d0c80dc082c0fc"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0281854.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0281854.g007.tif",
+      "bytes": 2706064,
+      "sha256": "c05b0f2047139a61be7c5466990f4cde6e1e38c6347597956e49c07a8ab23920"
+    }
+  }
+}

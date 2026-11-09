@@ -1,0 +1,72 @@
+{
+  "figureTypeId": "matrix_link_overlay",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "row": "A",
+        "column": "A",
+        "value": 1
+      },
+      {
+        "row": "A",
+        "column": "B",
+        "value": 0.2
+      },
+      {
+        "row": "A",
+        "column": "C",
+        "value": 0.4
+      },
+      {
+        "row": "B",
+        "column": "A",
+        "value": 0.2
+      },
+      {
+        "row": "B",
+        "column": "B",
+        "value": 1
+      },
+      {
+        "row": "B",
+        "column": "C",
+        "value": 0.6000000000000001
+      },
+      {
+        "row": "C",
+        "column": "A",
+        "value": 0.4
+      },
+      {
+        "row": "C",
+        "column": "B",
+        "value": 0.6000000000000001
+      },
+      {
+        "row": "C",
+        "column": "C",
+        "value": 1
+      }
+    ],
+    "units": {
+      "value": "correlation"
+    },
+    "options": {
+      "links": [
+        {
+          "source": "A",
+          "target": "C",
+          "value": 0.45
+        }
+      ],
+      "matrixStatistic": "Supplied Pearson correlation",
+      "linkStatistic": "Supplied association estimate; no test calculated",
+      "linkUnit": "dimensionless"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

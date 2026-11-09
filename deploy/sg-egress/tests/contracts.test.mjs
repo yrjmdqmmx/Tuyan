@@ -376,6 +376,8 @@ test('Singapore policy contains the reviewed overseas channels and keeps MiniMax
     'api.together.ai',
     'api.fireworks.ai',
     'queue.fal.run',
+    'api.fal.ai',
+    'runware.ai',
     'api.replicate.com',
     'api.runware.ai',
     'api.novita.ai',

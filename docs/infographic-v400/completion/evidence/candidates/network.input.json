@@ -1,0 +1,42 @@
+{
+  "figureTypeId": "network",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "source": "A",
+        "target": "B",
+        "value": 2
+      },
+      {
+        "source": "B",
+        "target": "C",
+        "value": 1
+      }
+    ],
+    "units": {},
+    "options": {
+      "nodes": [
+        {
+          "id": "A"
+        },
+        {
+          "id": "B"
+        },
+        {
+          "id": "C"
+        },
+        {
+          "id": "Isolate"
+        }
+      ],
+      "directed": true,
+      "layout": "circular",
+      "weightUnit": "contacts"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

@@ -7,6 +7,12 @@ import ts from '../apps/paperbanana-api/node_modules/typescript/lib/typescript.j
 import { packModelCatalog } from './lib/pack-model-catalog.mjs'
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const check = process.argv.includes('--check')
+// Explicit opt-out for isolated Web/Core work while the Mini Program stream is paused.
+// The default still checks/generates every client and therefore exposes pending drift.
+const skipMiniprogram = process.argv.includes('--skip-miniprogram')
+const specifications = JSON.parse(fs.readFileSync(path.join(root, 'config/model-specifications.json'), 'utf8'))
+const specificationsRuntime = fs.readFileSync(path.join(root, 'packages/types/src/model-specifications.ts'), 'utf8')
+write(path.join(root, 'apps/web/src/lib/modelSpecifications.js'), '// Generated from packages/types/src/model-specifications.ts\n' + ts.transpileModule(specificationsRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
 const config = JSON.parse(fs.readFileSync(path.join(root, 'config/model-catalog-updates.json'), 'utf8'))
 const backend = path.join(root, 'apps/paperbanana-api/runtime/handler.ts')
 let source = fs.readFileSync(backend, 'utf8')
@@ -29,7 +35,7 @@ const presentationRuntime = presentationData + fs.readFileSync(path.join(root, '
 lines.push(presentationRuntime)
 write(path.join(root, 'apps/web/src/lib/modelPresentation.js'), '// Generated from packages/types/src/model-presentation.ts and config/model-presentation.json\n' + ts.transpileModule(presentationRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
 // Keep the dictionary once, rather than in both Mini TS and compiled JS.
-write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-presentation-data.js'), '// Generated from config/model-presentation.json\nmodule.exports = ' + JSON.stringify(presentation) + '\n')
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-presentation-data.js'), '// Generated from config/model-presentation.json; existing lossless catalog codec.\nmodule.exports = require("./unpack-model-catalog.js").unpackModelCatalog(' + JSON.stringify(packModelCatalog(presentation)) + ')\n')
 const miniPresentation = presentationRuntime.replace(JSON.stringify(presentation), "require('./model-presentation-data.js')")
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-presentation.ts'), '// Generated from packages/types/src/model-presentation.ts and config/model-presentation.json\n' + miniPresentation)
 const aspectRuntime = fs.readFileSync(path.join(root, 'packages/types/src/aspect-ratios.ts'), 'utf8')
@@ -39,8 +45,8 @@ const imageChannelRoutes = JSON.parse(fs.readFileSync(path.join(root, 'config/im
 const routeModule = '// Generated from config/image-channel-routes.json.\nexport const IMAGE_CHANNEL_ROUTES: Record<string, any> = ' + JSON.stringify(imageChannelRoutes) + '\n'
 write(path.join(root, 'packages/api/src/image-channel-routes.ts'), routeModule)
 const channelAuditDir = path.join(root, 'config/channel-audit')
-const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json','v381-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
-const auditRefine = Object.assign({}, ...['runware-refine-controls.json','cn-refine-controls.json','official-refine-controls.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
+const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json','v381-contracts.json','catalog-20261009-contracts.json','catalog-20261016-contracts.json','catalog-20261019-contracts.json','catalog-20261026-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
+const auditRefine = Object.assign({}, ...['runware-refine-controls.json','cn-refine-controls.json','official-refine-controls.json','catalog-20261016-refine-controls.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
 const auditData = 'export const AUDITED_CHANNEL_CONTRACTS: Record<string, any> = ' + JSON.stringify(auditContracts) + '\n'
 const auditedInputPolicy = Object.fromEntries(Object.entries(auditContracts).filter(([,c])=>c.generateInputPolicy!==false).map(([key,c]) => {
   const policy = {maxCount:c.productImageCap ?? Math.min(3,c.maxImages || 0),source:c.source}
@@ -73,6 +79,15 @@ lines.push(regionRuntime)
 const regionJs = ts.transpileModule(regionRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText
 write(path.join(root, 'apps/web/src/lib/providerRegions.js'), '// Generated from packages/types/src/provider-regions.ts\n' + regionJs)
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/provider-regions.ts'), '// Generated from packages/types/src/provider-regions.ts\n' + regionRuntime)
+// New Bailian workspace routes share one validator across Web, Gateway and Core.
+const bailianContract = JSON.parse(fs.readFileSync(path.join(root, 'config/bailian-workspace.json'), 'utf8'))
+const bailianData = 'export const BAILIAN_WORKSPACE_CONTRACT: {version:number; checkedAt:string; regions:Record<string,string>; models:Record<string,{regions:string[]; sourceUrls:string[]; productInputModalities:string[]; notes:string}>} = ' + JSON.stringify(bailianContract) + '\n'
+write(path.join(root, 'packages/api/src/bailian-workspace-data.ts'), '// Generated from config/bailian-workspace.json\n' + bailianData)
+const bailianRuntime = bailianData + fs.readFileSync(path.join(root, 'packages/api/src/bailian-workspace.ts'), 'utf8').replace(/^import .* from .*\n/gm, '')
+lines.push(bailianRuntime)
+const bailianJs = '// Generated from config/bailian-workspace.json and packages/api/src/bailian-workspace.ts\n' + ts.transpileModule(bailianRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText
+write(path.join(root, 'apps/web/src/lib/bailianWorkspace.js'), bailianJs)
+write(path.join(root, 'apps/auth-gateway/src/bailian-workspace.js'), bailianJs)
 const textChannelRuntime = fs.readFileSync(path.join(root, 'packages/api/src/text-channel-adapters.ts'), 'utf8').replace(/^import .* from .*\n/gm, '')
 for (const [file, names] of [['official-image-channels.ts',['callOfficialImageChannel','buildOfficialImageRequest','STEP_IMAGE_SUBMISSION_CUTOFF']],['qianfan-image-channel.ts',['callQianfanImageChannel','buildQianfanImageRequest']],['novita-image-channel.ts',['callNovitaImageChannel','buildNovitaImageRequest']]]) {
   const moduleSource=fs.readFileSync(path.join(root,'packages/api/src',file),'utf8').replace(/^import .* from .*\n/gm,'').replace(/\bexport /g,'')
@@ -92,7 +107,7 @@ config.providers.tokendance = [...tokenDanceCatalog.models].filter(m => m.roles.
     roles:m.roles.filter(role => ['main','vision','image'].includes(role)), protocol:image?'ark-images':'openai-chat-completions',
     availabilityNotes:'官方目录及协议已核对，真实调用待验证。'+m.conflicts.join(''),
     capabilities:{referenceImages:vision||image,maxReferenceImages:vision?3:image?1:0,imageGeneration:image,imageEditing:image,imageEditMode:image?'direct-edit':'none',outputFormats:image?['png']:[],...(image?{providerMaxReferenceImages:m.id.endsWith('pro')?10:14}:{})},
-    metadata:{vendor:m.vendorId,lifecycle:m.lifecycle || 'unknown',releaseKind:m.releaseKind || '',lifecycleSourceUrl:m.lifecycleSourceUrl,verified:false,verificationState:'catalog',officialSourceUrl:m.sourceUrl,inputModalities:m.inputModalities,outputModalities:m.outputModalities,regions:['tokendance-global']}}
+    metadata:{catalogPresence:m.catalogPresence,vendor:m.vendorId,lifecycle:m.lifecycle || 'unknown',releaseKind:m.releaseKind || '',lifecycleSourceUrl:m.lifecycleSourceUrl,verified:false,verificationState:'catalog',officialSourceUrl:m.sourceUrl,inputModalities:m.inputModalities,outputModalities:m.outputModalities,regions:['tokendance-global']}}
 })
 const tokenDanceModels = 'export const TOKENDANCE_MODELS: {id: string; roles: string[]; protocols: string[]}[] = ' + JSON.stringify(tokenDanceCatalog.models.map(m => ({id:m.id, roles:m.roles, protocols:m.supported_protocols}))) + '\n'
 write(path.join(root, 'packages/api/src/tokendance-models.ts'), '// Generated from config/tokendance/catalog.json\n' + tokenDanceModels)
@@ -100,6 +115,7 @@ lines.push(fs.readFileSync(path.join(root, 'packages/api/src/execution-errors.ts
 const universalRuntime = fs.readFileSync(path.join(root, 'packages/api/src/universal-api.ts'), 'utf8')
 lines.push(universalRuntime)
 write(path.join(root, 'apps/web/src/lib/universalContract.js'), '// Generated from packages/api/src/universal-api.ts\n' + ts.transpileModule(universalRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
+write(path.join(root, 'apps/auth-gateway/src/universal-contract.js'), '// Generated from packages/api/src/universal-api.ts\n' + ts.transpileModule(universalRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
 const universalMiniTypes = universalRuntime.slice(0, universalRuntime.indexOf('const universalErrorMessages')) + universalRuntime.slice(universalRuntime.indexOf('export interface UniversalInputLimits'), universalRuntime.indexOf('export const UNIVERSAL_PLATFORM_LIMITS'))
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/universal-api.ts'), '// Generated shared history types; configuration and execution are Web/Core-only.\n' + universalMiniTypes)
 lines.push(fs.readFileSync(path.join(root, 'packages/api/src/tokendance-catalog.ts'), 'utf8'))
@@ -154,6 +170,18 @@ lines.push(`for (const [key, route] of Object.entries(imageSizeRoutes)) {
   }
 }`)
 const versionAudit = JSON.parse(fs.readFileSync(path.join(root, 'config/model-version-audit.json'), 'utf8'))
+for (const row of specifications.models) {
+  const facts = row.specifications
+  if (facts.version !== 1 || !facts.sourceUrls?.length || !/^\d{4}-\d{2}-\d{2}$/.test(facts.checkedAt)) throw new Error('Invalid specification provenance: ' + row.provider + '/' + row.modelId)
+  for (const key of ['contextWindowTokens','maxInputTokens','maxOutputTokens']) if (facts[key] !== undefined && (!Number.isSafeInteger(facts[key]) || facts[key] <= 0)) throw new Error('Invalid token limit: ' + row.modelId)
+  if (facts.manufacturer) {
+    const reference = facts.manufacturer
+    if (!reference.modelId || !['matched', 'reference-only'].includes(reference.identity) || !reference.sourceUrls?.length || !/^\d{4}-\d{2}-\d{2}$/.test(reference.checkedAt)) throw new Error('Invalid manufacturer provenance: ' + row.modelId)
+    for (const url of reference.sourceUrls) if (new URL(url).protocol !== 'https:') throw new Error('Invalid manufacturer source: ' + row.modelId)
+    for (const key of ['contextWindowTokens','maxInputTokens','maxOutputTokens']) if (reference[key] !== undefined && (!Number.isSafeInteger(reference[key]) || reference[key] <= 0)) throw new Error('Invalid manufacturer token limit: ' + row.modelId)
+  }
+  lines.push(`{ const model = staticModelRegistry[${JSON.stringify(row.provider)}]?.models.find(model => model.id === ${JSON.stringify(row.modelId)}); if (!model || model.protocol !== ${JSON.stringify(row.protocol)}) throw new Error('Specification identity mismatch: ${row.provider}/${row.modelId}'); model.specifications = ${JSON.stringify(facts)} }`)
+}
 for (const row of versionAudit.models.filter(row => row.channel !== 'openrouter')) {
   const version = {kind:row.kind, id:row.versionId, checkedAt:row.checkedAt, sourceUrl:row.sourceUrls[0]}
   lines.push(`Object.assign(staticModelRegistry[${JSON.stringify(row.channel)}].models.find(model => model.id === ${JSON.stringify(row.apiModelId)})!, ${JSON.stringify({label:row.displayName,version,...(row.apiIdentifier ? {apiIdentifier:row.apiIdentifier} : {})})})`)
@@ -182,6 +210,8 @@ function useModule(file, embedded) {
     }
   }
   const specifier = '../../../' + file.replace(/\.ts$/, '.js')
+  // Core wraps job stages in the existing performance recorder; regeneration must retain it.
+  if (file === 'packages/api/src/execution-errors.ts') names[names.indexOf('atJobStage')] = 'atJobStage as rawAtJobStage'
   if (names.length) runtimeImports.push(`import { ${names.join(', ')} } from '${specifier}'`)
   runtimeImports.push(`export * from '${specifier}'`)
 }
@@ -206,12 +236,15 @@ for (const file of ['execution-errors.ts','reference-selection.ts','universal-ap
 useModule('packages/api/src/tokendance-models.ts', tokenDanceModels)
 useModule('packages/api/src/tokendance.ts', fs.readFileSync(path.join(root,'packages/api/src/tokendance.ts'),'utf8').replace(/^import .* from .*\n/gm,''))
 useModule('packages/types/src/image-size-contract.ts', sizeRuntime)
+runtimeImports.push("import { measureGeneration, withGenerationPerformance } from '../src/generation-performance.js'",
+  "function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, operation: () => Promise<T>): Promise<T> { return measureGeneration('phase:' + stage, () => rawAtJobStage(stage, operation)) }")
 runtimeBlock = runtimeBlock.replace(start, start+'\n'+runtimeImports.join('\n'))
 source = source.includes(start)
   ? source.slice(0, source.indexOf(start)) + runtimeBlock + source.slice(source.indexOf(end) + end.length)
   : source.replace('const fallbackReferences:', runtimeBlock + '\n\nconst fallbackReferences:')
 source = source.replace(/const modelRegistryVersion = '[^']+'/, `const modelRegistryVersion = '${config.version}'`)
 function write(file, content) {
+  if (skipMiniprogram && path.relative(root, file).startsWith('apps/miniprogram/')) return
   const previous = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : ''
   if (previous === content) return
   if (check) throw new Error(`Generated model catalog drift: ${path.relative(root, file)}`)
@@ -227,7 +260,8 @@ const selected = ast.statements.filter((statement) =>
   || ts.isVariableStatement(statement) && statement.declarationList.declarations.some((node) => names.has(node.name.getText(ast))))
 const js = ts.transpileModule(selected.map((node) => node.getText(ast)).join('\n') + '\n' + block.replace(/^export /gm, '') + '\nglobalThis.catalog = staticModelRegistry', { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.None } }).outputText
 const context = vm.createContext({})
-vm.runInContext(js, context, { timeout: 5000 })
+// Full catalog schema evaluation can exceed 5s while other isolated builds are running.
+vm.runInContext(js, context, { timeout: 30000 })
 const providers = JSON.parse(JSON.stringify(context.catalog))
 for (const [provider, registry] of Object.entries(providers)) {
   const ids = new Set()
@@ -252,4 +286,4 @@ export const EXTENDED_MODEL_CHANNELS: Record<string, any> = catalog.channels
 export const STATIC_MODEL_REGISTRY_VERSION = ${JSON.stringify(config.version)}
 export const STATIC_MODEL_REGISTRY: Record<string, any> = catalog.registry
 `)
-console.log(`Catalog ${config.version}: ${Object.values(providers).reduce((n, p) => n + p.models.length, 0)} static models; ${check ? 'no drift' : 'generated'}`)
+console.log(`Catalog ${config.version}: ${Object.values(providers).reduce((n, p) => n + p.models.length, 0)} static models; ${check ? 'no drift' : 'generated'}${skipMiniprogram ? ' (Web/Core only; Mini Program skipped)' : ''}`)

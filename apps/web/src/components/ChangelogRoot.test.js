@@ -4,8 +4,52 @@ import React from 'react'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import ChangelogRoot, { ChangelogPage } from './ChangelogRoot.jsx'
 import { LeaderboardSessionProvider } from './LeaderboardRoot.jsx'
+import { BenchmarkLocaleProvider, BenchmarkLanguageSwitch } from './BenchmarkLocale.jsx'
+import changelog from '../data/changelog.json'
 
 afterEach(() => { cleanup(); window.history.replaceState({}, '', '/changelog') })
+
+test('topics start collapsed, open independently, and bulk controls preserve source disclosure', () => {
+  window.history.replaceState({}, '', '/changelog#v4-0-0')
+  render(React.createElement(ChangelogPage, { embedded: true }))
+  const entry = document.getElementById('v4-0-0')
+  const topics = [...entry.querySelectorAll('.changelog-topic')]
+  assert.equal(topics.length, 12)
+  assert.ok(topics.every(topic => !topic.open))
+  const svg = topics.find(topic => topic.querySelector('strong').textContent === 'SVG 编辑与手工绘图')
+  const journal = topics.find(topic => topic.querySelector('strong').textContent === '期刊规则与投稿检查')
+  fireEvent.click(svg.querySelector('summary'))
+  fireEvent.click(journal.querySelector('summary'))
+  assert.ok(svg.open && journal.open)
+  assert.equal(svg.querySelectorAll('.changelog-changes li').length, 5)
+  assert.match(svg.textContent, /修复旧 SVG 草稿覆盖历史原件/)
+  fireEvent.click(svg.querySelector('summary'))
+  assert.ok(!svg.open && journal.open)
+  const source = entry.querySelector('.changelog-sources')
+  fireEvent.click(source.querySelector('summary'))
+  fireEvent.click(within(entry).getByRole('button', { name: '全部展开' }))
+  assert.ok(topics.every(topic => topic.open))
+  assert.deepEqual([...entry.querySelectorAll('.changelog-changes li')].map(li => li.textContent).sort(), changelog.entries[0].changes.map(c => c.text).sort())
+  fireEvent.click(within(entry).getByRole('button', { name: '全部收起' }))
+  assert.ok(topics.every(topic => !topic.open))
+  assert.equal(source.open, true)
+  assert.equal(window.location.hash, '#v4-0-0')
+  assert.equal(document.querySelector('#v3-8-1 .changelog-topic'), null)
+})
+
+test('topic controls and summaries switch languages without closing the current topic', () => {
+  render(React.createElement(BenchmarkLocaleProvider, null, React.createElement(BenchmarkLanguageSwitch), React.createElement(ChangelogPage)))
+  const topic = document.querySelector('#v4-0-0 .changelog-topic')
+  fireEvent.click(topic.querySelector('summary'))
+  try {
+    fireEvent.click(screen.getByRole('button', { name: 'English', exact: true }))
+    assert.ok(topic.open)
+    assert.match(topic.querySelector('summary').textContent, /Workspace and task management/)
+    assert.ok(screen.getByRole('button', { name: 'Expand all' }))
+    assert.ok(screen.getByRole('button', { name: 'Collapse all' }))
+    assert.match(topic.querySelector('summary').textContent, /12 updates/)
+  } finally { fireEvent.click(screen.getByRole('button', { name: '中文', exact: true })) }
+})
 
 test('legacy published fragments scroll to the independent product entry', () => {
   const original = HTMLElement.prototype.scrollIntoView
@@ -24,10 +68,11 @@ test('first load selects the overview and shows every public update in date grou
   assert.deepEqual(nav.getAllByRole('link').map(link => link.textContent), ['更新日志', '图研工作台', 'Tuyan Benchmark', 'OpenAcad', '生态事件'])
   assert.equal(nav.getByRole('link', { name: '更新日志', exact: true }).getAttribute('aria-current'), 'page')
   const overview = screen.getByRole('region', { name: '更新日志', exact: true })
-  assert.equal(within(overview).getAllByRole('article').length, 27)
+  assert.equal(within(overview).getAllByRole('article').length, 28)
   assert.equal(document.querySelectorAll('[id="date-2026-09-07"]').length, 1)
   assert.equal(within(screen.getByRole('region', { name: '2026-09-07' })).getAllByRole('article').length, 5)
-  assert.equal(overview.querySelector('time').dateTime, '2026-09-28')
+  assert.equal(overview.querySelector('time').dateTime, '2026-10-21')
+  assert.ok(screen.getByRole('heading', { name: 'Tuyan v4.0.0' }))
   assert.ok(screen.getByRole('heading', { name: 'Tuyan v3.7.1' }))
   assert.ok(screen.getByRole('heading', { name: 'Tuyan Benchmark v2.5' }))
   assert.ok(screen.getByRole('heading', { name: 'OpenAcad v1.1.0' }))
@@ -46,7 +91,7 @@ test('first load selects the overview and shows every public update in date grou
 test('category selection shows only that category, updates selection and returns to the overview', async () => {
   render(React.createElement(ChangelogPage))
   const nav = within(screen.getByRole('navigation', { name: '更新分类' }))
-  for (const [label, count] of [['图研工作台', 14], ['Tuyan Benchmark', 5], ['OpenAcad', 4], ['生态事件', 4], ['更新日志', 27]]) {
+  for (const [label, count] of [['图研工作台', 15], ['Tuyan Benchmark', 5], ['OpenAcad', 4], ['生态事件', 4], ['更新日志', 28]]) {
     fireEvent.click(nav.getByRole('link', { name: label, exact: true }))
     await waitFor(() => assert.equal(nav.getByRole('link', { name: label, exact: true }).getAttribute('aria-current'), 'page'))
     assert.equal(nav.getAllByRole('link').filter(link => link.hasAttribute('aria-current')).length, 1)

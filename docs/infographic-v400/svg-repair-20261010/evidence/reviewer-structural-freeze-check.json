@@ -1,0 +1,27 @@
+{
+  "manifest": "000903ba165f2dbaaee3ba3f2319bd9747975adf73e80668099d15a2effac679",
+  "files": 30,
+  "mismatches": [],
+  "protected": 238,
+  "protected_mismatches": [],
+  "changed": [
+    "apps/paperbanana-api/src/diagram-topology.ts",
+    "apps/paperbanana-api/runtime/handler.ts",
+    "apps/paperbanana-api/tests/diagram-topology-runtime.test.ts",
+    "apps/paperbanana-api/src/renderer-contract.ts",
+    "apps/paperbanana-api/src/protocol-correction.ts",
+    "apps/paperbanana-api/src/source-provenance.ts",
+    "apps/paperbanana-api/src/provider-workflow.ts",
+    "apps/paperbanana-api/tests/source-provenance.test.ts"
+  ],
+  "added": [
+    "apps/paperbanana-api/tests/reference-selection.test.ts"
+  ],
+  "hashes": {
+    "apps/paperbanana-api/runtime/handler.ts": "b2b6cb28928fe09553fb235ef6ebad72c48c1b4fea487a5761666ea1cfc7f548",
+    "apps/paperbanana-api/src/source-provenance.ts": "3503bfcdbaf2cdbccc2f938c1a7e047ba25e795a6fc99afd5c30b0da1740b80f",
+    "apps/paperbanana-api/src/provider-workflow.ts": "25210528f3d672babc10f11227bbde912f47cf93e4a2f7f9e8cdfbcf857e8869",
+    "docs/infographic-v400/svg-repair-20261010/runner.mjs": "3a2d80b208788662f2ed8454a367054eedc637ac61d3df215f47fa092f2a91e1",
+    "docs/infographic-v400/svg-repair-20261010/final-review.mjs": "fa2d5c4a9b2ed253bd39951f92bba6afa7e65e53930fb1fb2340172cec0456df"
+  }
+}

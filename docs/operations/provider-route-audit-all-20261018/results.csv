@@ -1,0 +1,170 @@
+入口,渠道,API 地址,测试类型,线路,样本数,传输完成数,HTTP 状态计数,首响应中位数 ms,最小 ms,最大 ms,TLS 完成中位数 ms,下载字节,建议
+anthropic,anthropic,https://api.anthropic.com/v1/models,metadata,杭州直连,5,5,"{""403"": 5}",624.1,524.9,1115.3,381.7,450,保留新加坡；香港不列入候选，地区与账户要求仍需满足
+anthropic,anthropic,https://api.anthropic.com/v1/models,metadata,香港直连,5,5,"{""403"": 5}",44.4,40.7,55.0,36.0,450,保留新加坡；香港不列入候选，地区与账户要求仍需满足
+anthropic,anthropic,https://api.anthropic.com/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",268.2,262.9,282.9,25.0,697,保留新加坡；香港不列入候选，地区与账户要求仍需满足
+anthropic,anthropic,https://api.anthropic.com/v1/models,metadata,杭州→新加坡,5,5,"{""401"": 5}",542.9,530.9,558.0,225.1,697,保留新加坡；香港不列入候选，地区与账户要求仍需满足
+antling,antling,https://api.ant-ling.com/v1/chat/completions,inference-path-GET-only,杭州直连,5,5,"{""404"": 5}",75.1,70.4,121.1,53.1,703,保持杭州；GET 返回 404，仅证明网络响应，非推理成功
+antling,antling,https://api.ant-ling.com/v1/chat/completions,inference-path-GET-only,香港直连,5,5,"{""404"": 5}",119.5,115.3,417.6,34.2,706,保持杭州；GET 返回 404，仅证明网络响应，非推理成功
+antling,antling,https://api.ant-ling.com/v1/chat/completions,inference-path-GET-only,新加坡直连,5,5,"{""404"": 5}",145.6,106.0,1609.6,25.9,706,保持杭州；GET 返回 404，仅证明网络响应，非推理成功
+ark,ark,https://ark.cn-beijing.volces.com/api/v3/models,auth-metadata,杭州直连,5,5,"{""401"": 5}",69.4,64.4,97.0,51.7,1050,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+ark,ark,https://ark.cn-beijing.volces.com/api/v3/models,auth-metadata,香港直连,5,5,"{""401"": 5}",166.3,142.3,1424.8,111.8,1050,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+ark,ark,https://ark.cn-beijing.volces.com/api/v3/models,auth-metadata,新加坡直连,5,5,"{""401"": 5}",668.7,602.0,770.1,467.8,1050,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+bailian,bailian,https://dashscope.aliyuncs.com/compatible-mode/v1/models,auth-metadata,杭州直连,5,5,"{""401"": 5}",133.7,127.2,171.1,87.8,1142,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+bailian,bailian,https://dashscope.aliyuncs.com/compatible-mode/v1/models,auth-metadata,香港直连,5,5,"{""401"": 5}",179.0,157.8,185.9,119.3,1146,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+bailian,bailian,https://dashscope.aliyuncs.com/compatible-mode/v1/models,auth-metadata,新加坡直连,5,5,"{""401"": 5}",385.1,341.9,391.6,297.0,1142,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+bedrock-us-east-1,bedrock,https://bedrock-runtime.us-east-1.amazonaws.com/,transport-root,杭州直连,5,5,"{""404"": 5}",726.2,636.1,935.4,499.5,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-east-1,bedrock,https://bedrock-runtime.us-east-1.amazonaws.com/,transport-root,香港直连,5,5,"{""404"": 5}",618.6,584.3,655.1,415.0,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-east-1,bedrock,https://bedrock-runtime.us-east-1.amazonaws.com/,transport-root,新加坡直连,5,5,"{""404"": 5}",687.8,686.6,717.4,459.7,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-east-1,bedrock,https://bedrock-runtime.us-east-1.amazonaws.com/,transport-root,杭州→新加坡,5,5,"{""404"": 5}",979.9,975.0,999.6,678.4,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-east-1,bedrock,https://bedrock-runtime.us-east-1.amazonaws.com/,transport-root,杭州→香港,5,5,"{""404"": 5}",820.2,766.1,940.3,545.9,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-east-2,bedrock,https://bedrock-runtime.us-east-2.amazonaws.com/,transport-root,杭州直连,5,5,"{""404"": 5}",833.5,715.8,4434.1,586.8,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-east-2,bedrock,https://bedrock-runtime.us-east-2.amazonaws.com/,transport-root,香港直连,5,5,"{""404"": 5}",616.4,606.8,663.1,411.7,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-east-2,bedrock,https://bedrock-runtime.us-east-2.amazonaws.com/,transport-root,新加坡直连,5,5,"{""404"": 5}",722.8,695.9,812.2,482.9,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-east-2,bedrock,https://bedrock-runtime.us-east-2.amazonaws.com/,transport-root,杭州→新加坡,5,5,"{""404"": 5}",1015.7,987.7,1036.7,702.6,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-east-2,bedrock,https://bedrock-runtime.us-east-2.amazonaws.com/,transport-root,杭州→香港,5,5,"{""404"": 5}",853.7,787.5,937.5,564.9,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-west-2,bedrock,https://bedrock-runtime.us-west-2.amazonaws.com/,transport-root,杭州直连,5,5,"{""404"": 5}",618.9,612.9,672.1,430.2,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-west-2,bedrock,https://bedrock-runtime.us-west-2.amazonaws.com/,transport-root,香港直连,5,5,"{""404"": 5}",507.7,471.9,532.5,341.8,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-west-2,bedrock,https://bedrock-runtime.us-west-2.amazonaws.com/,transport-root,新加坡直连,5,5,"{""404"": 5}",755.5,745.6,824.8,505.1,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-west-2,bedrock,https://bedrock-runtime.us-west-2.amazonaws.com/,transport-root,杭州→新加坡,5,5,"{""404"": 5}",1039.0,1029.5,1052.5,720.0,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bedrock-us-west-2,bedrock,https://bedrock-runtime.us-west-2.amazonaws.com/,transport-root,杭州→香港,5,5,"{""404"": 5}",731.3,701.4,744.3,452.7,145,仅根路径可达性；保持原策略，需账户、模型及资源区域验证
+bfl,bfl,https://api.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,杭州直连,5,5,"{""405"": 5}",1214.9,1127.0,1264.7,452.3,155,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+bfl,bfl,https://api.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,香港直连,5,5,"{""405"": 5}",585.7,560.8,833.3,47.1,155,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+bfl,bfl,https://api.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,新加坡直连,5,5,"{""405"": 5}",636.4,563.3,655.7,31.3,155,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+bfl,bfl,https://api.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,杭州→新加坡,5,5,"{""405"": 5}",1111.3,977.4,1207.4,301.7,155,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+bfl,bfl,https://api.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,杭州→香港,5,5,"{""405"": 5}",931.3,814.2,1097.5,255.7,155,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+bfl-eu,bfl,https://api.eu.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,杭州直连,5,5,"{""405"": 5}",1244.9,739.1,1423.5,441.4,155,保留新加坡；香港仅快约 19 ms，不足以证明值得换线
+bfl-eu,bfl,https://api.eu.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,香港直连,5,5,"{""405"": 5}",706.4,662.0,725.3,48.1,155,保留新加坡；香港仅快约 19 ms，不足以证明值得换线
+bfl-eu,bfl,https://api.eu.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,新加坡直连,5,5,"{""405"": 5}",598.1,565.4,867.3,32.5,155,保留新加坡；香港仅快约 19 ms，不足以证明值得换线
+bfl-eu,bfl,https://api.eu.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,杭州→新加坡,5,5,"{""405"": 5}",964.7,909.9,1116.2,316.0,155,保留新加坡；香港仅快约 19 ms，不足以证明值得换线
+bfl-eu,bfl,https://api.eu.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,杭州→香港,5,5,"{""405"": 5}",945.9,934.2,990.0,227.2,155,保留新加坡；香港仅快约 19 ms，不足以证明值得换线
+bfl-us,bfl,https://api.us.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,杭州直连,5,5,"{""405"": 5}",1133.7,1020.1,1303.9,456.0,155,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+bfl-us,bfl,https://api.us.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,香港直连,5,5,"{""405"": 5}",590.8,567.3,651.6,51.5,155,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+bfl-us,bfl,https://api.us.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,新加坡直连,5,5,"{""405"": 5}",679.8,622.2,720.4,42.2,155,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+bfl-us,bfl,https://api.us.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,杭州→新加坡,5,5,"{""405"": 5}",988.7,981.0,1092.3,309.5,155,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+bfl-us,bfl,https://api.us.bfl.ai/v1/flux-pro-1.1,inference-path-GET-only,杭州→香港,5,5,"{""405"": 5}",850.8,751.7,922.1,271.0,155,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+deepseek,deepseek,https://api.deepseek.com/models,metadata,杭州直连,5,5,"{""401"": 5}",124.6,111.7,131.2,46.6,155,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+deepseek,deepseek,https://api.deepseek.com/models,metadata,香港直连,5,5,"{""401"": 5}",172.3,155.6,186.5,37.0,155,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+deepseek,deepseek,https://api.deepseek.com/models,metadata,新加坡直连,5,5,"{""401"": 5}",131.7,113.6,183.4,27.6,155,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+fal,fal,https://api.fal.ai/v1/models,metadata,杭州直连,5,5,"{""200"": 5}",985.1,701.2,1089.6,213.3,79704,公开目录出现 429；不以混合状态响应判最优，推理入口另行测量
+fal,fal,https://api.fal.ai/v1/models,metadata,香港直连,5,5,"{""200"": 5}",540.0,421.1,712.3,35.6,79844,公开目录出现 429；不以混合状态响应判最优，推理入口另行测量
+fal,fal,https://api.fal.ai/v1/models,metadata,新加坡直连,5,5,"{""200"": 3, ""429"": 2}",502.3,378.9,665.3,25.9,47989,公开目录出现 429；不以混合状态响应判最优，推理入口另行测量
+fal,fal,https://api.fal.ai/v1/models,metadata,杭州→新加坡,5,5,"{""200"": 3, ""429"": 2}",910.5,541.1,1197.5,221.9,47918,公开目录出现 429；不以混合状态响应判最优，推理入口另行测量
+fal-queue,fal,https://queue.fal.run/fal-ai/flux/schnell,inference-path-GET-only,杭州直连,5,5,"{""405"": 5}",850.7,661.2,866.6,624.6,0,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+fal-queue,fal,https://queue.fal.run/fal-ai/flux/schnell,inference-path-GET-only,香港直连,5,5,"{""405"": 5}",597.7,577.7,630.1,399.5,0,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+fal-queue,fal,https://queue.fal.run/fal-ai/flux/schnell,inference-path-GET-only,新加坡直连,5,5,"{""405"": 5}",712.7,697.7,728.3,476.4,0,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+fal-queue,fal,https://queue.fal.run/fal-ai/flux/schnell,inference-path-GET-only,杭州→新加坡,5,5,"{""405"": 5}",978.3,962.2,1050.5,677.9,0,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+fal-queue,fal,https://queue.fal.run/fal-ai/flux/schnell,inference-path-GET-only,杭州→香港,5,5,"{""405"": 5}",762.8,717.2,805.9,496.0,0,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+fireworks,fireworks,https://api.fireworks.ai/v1/accounts/fireworks/models,metadata,杭州直连,5,5,"{""401"": 5}",216.7,212.3,282.5,168.9,1240,保留现网新加坡；杭州直连为优先复核候选，代理路径异常待查
+fireworks,fireworks,https://api.fireworks.ai/v1/accounts/fireworks/models,metadata,香港直连,5,5,"{""401"": 5}",730.7,692.6,760.4,488.3,1240,保留现网新加坡；杭州直连为优先复核候选，代理路径异常待查
+fireworks,fireworks,https://api.fireworks.ai/v1/accounts/fireworks/models,metadata,新加坡直连,5,5,"{""401"": 5}",34.1,26.9,61.1,30.4,1240,保留现网新加坡；杭州直连为优先复核候选，代理路径异常待查
+fireworks,fireworks,https://api.fireworks.ai/v1/accounts/fireworks/models,metadata,杭州→新加坡,5,5,"{""401"": 5}",1024.6,1004.1,1045.7,707.7,1240,保留现网新加坡；杭州直连为优先复核候选，代理路径异常待查
+fireworks,fireworks,https://api.fireworks.ai/v1/accounts/fireworks/models,metadata,杭州→香港,5,5,"{""401"": 5}",710.4,612.0,772.5,436.1,1240,保留现网新加坡；杭州直连为优先复核候选，代理路径异常待查
+fireworks-inference,fireworks,https://api.fireworks.ai/inference/v1/chat/completions,inference-path-GET-only,杭州直连,5,5,"{""405"": 5}",153.0,143.8,221.5,103.4,945,保留现网新加坡；杭州直连为优先复核候选，代理路径异常待查
+fireworks-inference,fireworks,https://api.fireworks.ai/inference/v1/chat/completions,inference-path-GET-only,香港直连,5,5,"{""405"": 5}",460.6,451.7,475.5,307.8,945,保留现网新加坡；杭州直连为优先复核候选，代理路径异常待查
+fireworks-inference,fireworks,https://api.fireworks.ai/inference/v1/chat/completions,inference-path-GET-only,新加坡直连,5,5,"{""405"": 5}",26.8,25.9,42.1,23.5,945,保留现网新加坡；杭州直连为优先复核候选，代理路径异常待查
+fireworks-inference,fireworks,https://api.fireworks.ai/inference/v1/chat/completions,inference-path-GET-only,杭州→新加坡,5,5,"{""405"": 5}",841.9,830.2,878.0,586.3,945,保留现网新加坡；杭州直连为优先复核候选，代理路径异常待查
+gemini,gemini,https://generativelanguage.googleapis.com/v1beta/models,metadata,杭州直连,5,0,"{""0"": 5}",,,,,0,保留新加坡；香港不列入候选，地区与账户要求仍需满足
+gemini,gemini,https://generativelanguage.googleapis.com/v1beta/models,metadata,香港直连,5,5,"{""403"": 5}",62.8,60.7,69.1,36.3,1010,保留新加坡；香港不列入候选，地区与账户要求仍需满足
+gemini,gemini,https://generativelanguage.googleapis.com/v1beta/models,metadata,新加坡直连,5,5,"{""403"": 5}",35.2,32.3,924.1,24.7,1010,保留新加坡；香港不列入候选，地区与账户要求仍需满足
+gemini,gemini,https://generativelanguage.googleapis.com/v1beta/models,metadata,杭州→新加坡,5,5,"{""403"": 5}",301.4,296.2,308.9,220.7,1010,保留新加坡；香港不列入候选，地区与账户要求仍需满足
+ideogram,ideogram,https://api.ideogram.ai/generate,inference-path-GET-only,杭州直连,5,0,"{""0"": 5}",,,,,0,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+ideogram,ideogram,https://api.ideogram.ai/generate,inference-path-GET-only,香港直连,5,5,"{""405"": 5}",250.8,246.8,254.2,35.0,590,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+ideogram,ideogram,https://api.ideogram.ai/generate,inference-path-GET-only,新加坡直连,5,5,"{""405"": 5}",255.0,229.2,299.0,24.5,590,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+ideogram,ideogram,https://api.ideogram.ai/generate,inference-path-GET-only,杭州→新加坡,5,5,"{""405"": 5}",528.6,516.9,561.1,228.8,590,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+ideogram,ideogram,https://api.ideogram.ai/generate,inference-path-GET-only,杭州→香港,5,5,"{""405"": 5}",409.7,360.2,456.9,154.3,590,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+iflytek,iflytek,https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions,inference-path-GET-only,杭州直连,5,5,"{""401"": 5}",115.2,100.4,174.8,81.2,130,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+iflytek,iflytek,https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions,inference-path-GET-only,香港直连,5,5,"{""401"": 5}",158.2,145.1,174.2,107.0,130,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+iflytek,iflytek,https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions,inference-path-GET-only,新加坡直连,5,5,"{""401"": 5}",286.3,252.7,2370.2,192.6,130,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+kimi,kimi,https://api.moonshot.cn/v1/models,metadata,杭州直连,5,5,"{""401"": 5}",244.8,218.1,283.0,143.9,415,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+kimi,kimi,https://api.moonshot.cn/v1/models,metadata,香港直连,5,5,"{""401"": 5}",290.1,262.5,413.9,177.0,415,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+kimi,kimi,https://api.moonshot.cn/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",526.0,463.1,816.3,362.7,415,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+longcat,longcat,https://api.longcat.chat/openai/v1/models,metadata,杭州直连,5,5,"{""401"": 5}",174.1,158.9,200.5,122.2,470,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+longcat,longcat,https://api.longcat.chat/openai/v1/models,metadata,香港直连,5,5,"{""401"": 5}",118.4,115.1,948.5,35.6,470,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+longcat,longcat,https://api.longcat.chat/openai/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",226.6,135.5,343.2,24.8,470,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+minimax,minimax,https://api.minimax.io/v1/models,metadata,杭州直连,5,5,"{""401"": 5}",552.7,428.1,693.6,190.1,1160,国际端保留新加坡；杭州优势小，不能与国内 Key/端点混用
+minimax,minimax,https://api.minimax.io/v1/models,metadata,香港直连,5,5,"{""401"": 5}",660.8,254.2,724.7,38.3,1160,国际端保留新加坡；杭州优势小，不能与国内 Key/端点混用
+minimax,minimax,https://api.minimax.io/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",728.3,268.3,1077.5,28.6,1160,国际端保留新加坡；杭州优势小，不能与国内 Key/端点混用
+minimax,minimax,https://api.minimax.io/v1/models,metadata,杭州→新加坡,5,5,"{""401"": 5}",587.7,545.7,1334.0,223.4,1160,国际端保留新加坡；杭州优势小，不能与国内 Key/端点混用
+minimax,minimax,https://api.minimax.io/v1/models,metadata,杭州→香港,5,5,"{""401"": 5}",841.7,414.2,985.2,157.7,1160,国际端保留新加坡；杭州优势小，不能与国内 Key/端点混用
+minimax-cn,minimax,https://api.minimax.cn/v1/models,metadata,杭州直连,5,5,"{""401"": 5}",159.9,153.6,188.8,69.0,1160,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+minimax-cn,minimax,https://api.minimax.cn/v1/models,metadata,香港直连,5,5,"{""401"": 5}",232.7,214.8,260.4,126.1,1160,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+minimax-cn,minimax,https://api.minimax.cn/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",367.5,337.3,544.0,230.5,1160,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+mistral,mistral,https://api.mistral.ai/v1/models,metadata,杭州直连,5,0,"{""0"": 5}",,,,,0,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+mistral,mistral,https://api.mistral.ai/v1/models,metadata,香港直连,5,5,"{""401"": 5}",284.1,249.6,300.3,36.7,145,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+mistral,mistral,https://api.mistral.ai/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",244.5,229.8,282.6,24.5,145,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+mistral,mistral,https://api.mistral.ai/v1/models,metadata,杭州→新加坡,5,5,"{""401"": 5}",510.8,499.0,531.3,231.4,145,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+mistral,mistral,https://api.mistral.ai/v1/models,metadata,杭州→香港,5,5,"{""401"": 5}",436.1,425.5,467.3,156.8,145,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+novita,novita,https://api.novita.ai/v3/openai/models,metadata,杭州直连,5,5,"{""200"": 5}",1085.9,860.4,1288.5,728.9,624740,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+novita,novita,https://api.novita.ai/v3/openai/models,metadata,香港直连,5,5,"{""200"": 5}",198.4,190.1,210.9,37.4,103051,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+novita,novita,https://api.novita.ai/v3/openai/models,metadata,新加坡直连,5,5,"{""200"": 5}",221.4,209.3,309.1,25.3,102954,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+novita,novita,https://api.novita.ai/v3/openai/models,metadata,杭州→新加坡,5,5,"{""200"": 5}",485.6,476.9,522.5,225.5,103173,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+novita,novita,https://api.novita.ai/v3/openai/models,metadata,杭州→香港,5,5,"{""200"": 5}",362.9,346.2,398.2,157.2,103433,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+openai,openai,https://api.openai.com/v1/models,metadata,杭州直连,5,0,"{""0"": 5}",,,,,0,保留新加坡；香港不列入候选，地区与账户要求仍需满足
+openai,openai,https://api.openai.com/v1/models,metadata,香港直连,5,5,"{""403"": 5}",45.2,41.6,49.2,39.7,525,保留新加坡；香港不列入候选，地区与账户要求仍需满足
+openai,openai,https://api.openai.com/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",420.6,231.3,428.9,24.9,755,保留新加坡；香港不列入候选，地区与账户要求仍需满足
+openai,openai,https://api.openai.com/v1/models,metadata,杭州→新加坡,5,5,"{""401"": 5}",567.9,486.9,739.0,224.7,755,保留新加坡；香港不列入候选，地区与账户要求仍需满足
+openrouter,openrouter,https://openrouter.ai/api/v1/key,auth-metadata,杭州直连,5,5,"{""401"": 5}",650.6,518.8,1741.7,414.5,335,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+openrouter,openrouter,https://openrouter.ai/api/v1/key,auth-metadata,香港直连,5,5,"{""401"": 5}",48.3,45.1,152.5,37.2,335,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+openrouter,openrouter,https://openrouter.ai/api/v1/key,auth-metadata,新加坡直连,5,5,"{""401"": 5}",49.0,39.1,67.3,24.7,335,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+openrouter,openrouter,https://openrouter.ai/api/v1/key,auth-metadata,杭州→新加坡,5,5,"{""401"": 5}",317.0,301.6,321.0,226.0,335,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+openrouter,openrouter,https://openrouter.ai/api/v1/key,auth-metadata,杭州→香港,5,5,"{""401"": 5}",173.1,163.1,241.2,120.1,335,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+qianfan,qianfan,https://qianfan.baidubce.com/v2/models,metadata,杭州直连,5,5,"{""403"": 5}",139.8,125.2,161.3,70.6,505,保持杭州；三地均 403 AccessDenied，账户/API 权限未证实
+qianfan,qianfan,https://qianfan.baidubce.com/v2/models,metadata,香港直连,5,5,"{""403"": 5}",125.6,118.7,130.5,36.6,505,保持杭州；三地均 403 AccessDenied，账户/API 权限未证实
+qianfan,qianfan,https://qianfan.baidubce.com/v2/models,metadata,新加坡直连,5,5,"{""403"": 5}",253.1,247.1,547.0,128.2,505,保持杭州；三地均 403 AccessDenied，账户/API 权限未证实
+recraft,recraft,https://external.api.recraft.ai/v1/images/generations,inference-path-GET-only,杭州直连,5,5,"{""405"": 5}",834.6,741.9,1008.5,585.3,0,现网新加坡；香港与杭州直连近似，改善候选仍需推理验证
+recraft,recraft,https://external.api.recraft.ai/v1/images/generations,inference-path-GET-only,香港直连,5,5,"{""405"": 5}",610.8,604.4,640.5,407.7,0,现网新加坡；香港与杭州直连近似，改善候选仍需推理验证
+recraft,recraft,https://external.api.recraft.ai/v1/images/generations,inference-path-GET-only,新加坡直连,5,5,"{""405"": 5}",681.0,671.2,697.9,456.5,0,现网新加坡；香港与杭州直连近似，改善候选仍需推理验证
+recraft,recraft,https://external.api.recraft.ai/v1/images/generations,inference-path-GET-only,杭州→新加坡,5,5,"{""405"": 5}",967.4,961.0,1013.0,666.4,0,现网新加坡；香港与杭州直连近似，改善候选仍需推理验证
+recraft,recraft,https://external.api.recraft.ai/v1/images/generations,inference-path-GET-only,杭州→香港,5,5,"{""405"": 5}",831.7,745.9,847.6,510.4,0,现网新加坡；香港与杭州直连近似，改善候选仍需推理验证
+replicate,replicate,https://api.replicate.com/v1/models,metadata,杭州直连,5,5,"{""401"": 5}",776.0,729.3,1598.3,495.1,465,保留新加坡；完整路径快于本次香港中转
+replicate,replicate,https://api.replicate.com/v1/models,metadata,香港直连,5,5,"{""401"": 5}",229.8,211.0,809.9,36.1,465,保留新加坡；完整路径快于本次香港中转
+replicate,replicate,https://api.replicate.com/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",229.9,224.7,460.1,25.1,465,保留新加坡；完整路径快于本次香港中转
+replicate,replicate,https://api.replicate.com/v1/models,metadata,杭州→新加坡,5,5,"{""401"": 5}",504.7,497.4,576.6,233.6,465,保留新加坡；完整路径快于本次香港中转
+replicate,replicate,https://api.replicate.com/v1/models,metadata,杭州→香港,5,5,"{""401"": 5}",819.8,640.0,948.3,150.1,465,保留新加坡；完整路径快于本次香港中转
+runware,runware,https://api.runware.ai/v1,inference-path-GET-only,杭州直连,5,5,"{""400"": 5}",974.0,697.4,1165.4,565.8,870,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+runware,runware,https://api.runware.ai/v1,inference-path-GET-only,香港直连,5,5,"{""400"": 5}",256.3,245.8,266.8,38.0,870,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+runware,runware,https://api.runware.ai/v1,inference-path-GET-only,新加坡直连,5,5,"{""400"": 5}",226.9,217.5,241.3,28.9,870,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+runware,runware,https://api.runware.ai/v1,inference-path-GET-only,杭州→新加坡,5,5,"{""400"": 5}",499.8,489.7,569.7,228.9,870,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+runware,runware,https://api.runware.ai/v1,inference-path-GET-only,杭州→香港,5,5,"{""400"": 5}",410.8,362.1,516.0,151.6,870,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+sensenova,sensenova,https://api.sensenova.cn/v1/llm/models,metadata,杭州直连,5,5,"{""401"": 5}",81.6,77.4,129.1,63.5,300,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+sensenova,sensenova,https://api.sensenova.cn/v1/llm/models,metadata,香港直连,5,5,"{""401"": 5}",216.2,118.1,1148.2,106.9,300,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+sensenova,sensenova,https://api.sensenova.cn/v1/llm/models,metadata,新加坡直连,5,5,"{""401"": 5}",743.2,652.8,1427.1,449.8,300,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+sensenova-inference,sensenova,https://token.sensenova.cn/v1/chat/completions,inference-path-GET-only,杭州直连,5,5,"{""404"": 5}",75.8,71.7,95.0,55.8,295,保持杭州；GET 返回 404，仅证明网络响应，非推理成功
+sensenova-inference,sensenova,https://token.sensenova.cn/v1/chat/completions,inference-path-GET-only,香港直连,5,5,"{""404"": 5}",202.4,115.3,375.8,94.8,295,保持杭州；GET 返回 404，仅证明网络响应，非推理成功
+sensenova-inference,sensenova,https://token.sensenova.cn/v1/chat/completions,inference-path-GET-only,新加坡直连,5,5,"{""404"": 5}",666.6,606.5,1514.7,466.9,295,保持杭州；GET 返回 404，仅证明网络响应，非推理成功
+siliconflow,siliconflow,https://api.siliconflow.cn/v1/models,metadata,杭州直连,5,5,"{""401"": 5}",72.7,63.2,115.6,56.7,280,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+siliconflow,siliconflow,https://api.siliconflow.cn/v1/models,metadata,香港直连,5,5,"{""401"": 5}",111.8,103.3,136.3,76.5,280,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+siliconflow,siliconflow,https://api.siliconflow.cn/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",321.7,217.0,419.4,254.2,280,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+stability,stability,https://api.stability.ai/v1/engines/list,metadata,杭州直连,5,5,"{""401"": 5}",530.5,500.0,782.8,241.5,525,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+stability,stability,https://api.stability.ai/v1/engines/list,metadata,香港直连,5,5,"{""401"": 5}",205.3,200.4,232.4,38.3,525,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+stability,stability,https://api.stability.ai/v1/engines/list,metadata,新加坡直连,5,5,"{""401"": 5}",253.2,213.4,727.0,26.6,525,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+stability,stability,https://api.stability.ai/v1/engines/list,metadata,杭州→新加坡,5,5,"{""401"": 5}",865.6,492.9,933.2,227.9,525,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+stability,stability,https://api.stability.ai/v1/engines/list,metadata,杭州→香港,5,5,"{""401"": 5}",371.7,356.0,672.8,159.0,525,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+stepfun,stepfun,https://api.stepfun.com/v1/models,metadata,杭州直连,5,5,"{""401"": 5}",94.5,85.1,133.1,75.8,375,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+stepfun,stepfun,https://api.stepfun.com/v1/models,metadata,香港直连,5,5,"{""401"": 5}",618.9,108.8,1160.7,572.8,375,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+stepfun,stepfun,https://api.stepfun.com/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",628.9,603.1,2103.8,417.8,375,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+together,together,https://api.together.ai/v1/models,metadata,杭州直连,5,5,"{""403"": 5}",340.2,257.7,1949.6,251.1,8731,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+together,together,https://api.together.ai/v1/models,metadata,香港直连,5,5,"{""401"": 5}",220.7,201.9,278.9,35.2,75,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+together,together,https://api.together.ai/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",244.0,213.3,311.6,24.2,75,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+together,together,https://api.together.ai/v1/models,metadata,杭州→新加坡,5,5,"{""401"": 5}",513.0,479.3,557.3,225.8,75,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+together,together,https://api.together.ai/v1/models,metadata,杭州→香港,5,5,"{""401"": 5}",369.5,355.0,383.0,147.5,75,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+tokendance,tokendance,https://tokendance.space/gateway/v1/models,metadata,杭州直连,5,5,"{""200"": 5}",139.5,56.3,159.6,128.1,296975,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+tokendance,tokendance,https://tokendance.space/gateway/v1/models,metadata,香港直连,5,5,"{""200"": 5}",139.4,137.9,152.1,93.9,296975,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+tokendance,tokendance,https://tokendance.space/gateway/v1/models,metadata,新加坡直连,5,5,"{""200"": 5}",283.6,220.7,293.2,211.5,296975,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+tokenhub,tokenhub,https://tokenhub.tencentcloudmaas.com/v1/models,metadata,杭州直连,5,5,"{""401"": 5}",106.3,96.7,120.2,77.9,1900,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+tokenhub,tokenhub,https://tokenhub.tencentcloudmaas.com/v1/models,metadata,香港直连,5,5,"{""401"": 5}",99.0,97.2,356.0,34.8,1900,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+tokenhub,tokenhub,https://tokenhub.tencentcloudmaas.com/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",190.7,147.9,962.7,91.9,1900,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+tokenhub-inference,tokenhub,https://tokenhub.tencentmaas.com/v1/chat/completions,inference-path-GET-only,杭州直连,5,5,"{""405"": 5}",93.7,73.1,149.6,53.2,95,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+tokenhub-inference,tokenhub,https://tokenhub.tencentmaas.com/v1/chat/completions,inference-path-GET-only,香港直连,5,5,"{""405"": 5}",76.6,68.3,386.1,47.7,95,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+tokenhub-inference,tokenhub,https://tokenhub.tencentmaas.com/v1/chat/completions,inference-path-GET-only,新加坡直连,5,5,"{""405"": 5}",154.5,104.6,668.0,25.8,95,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+xai,xai,https://api.x.ai/v1/models,metadata,杭州直连,5,0,"{""0"": 5}",,,,,0,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+xai,xai,https://api.x.ai/v1/models,metadata,香港直连,5,5,"{""401"": 5}",202.6,194.4,257.3,35.7,385,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+xai,xai,https://api.x.ai/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",217.1,210.7,229.2,25.1,385,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+xai,xai,https://api.x.ai/v1/models,metadata,杭州→新加坡,5,5,"{""401"": 5}",487.1,471.8,585.2,221.1,385,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+xai,xai,https://api.x.ai/v1/models,metadata,杭州→香港,5,5,"{""401"": 5}",360.9,311.3,440.2,153.7,385,香港为网络候选；现网仍保留新加坡，未进行真实模型验证
+xiaomi,xiaomi,https://api.xiaomimimo.com/v1/models,metadata,杭州直连,5,5,"{""401"": 5}",135.0,117.5,139.9,92.7,825,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+xiaomi,xiaomi,https://api.xiaomimimo.com/v1/models,metadata,香港直连,5,5,"{""401"": 5}",131.4,106.0,143.4,86.9,825,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+xiaomi,xiaomi,https://api.xiaomimimo.com/v1/models,metadata,新加坡直连,5,5,"{""401"": 5}",94.1,31.3,156.4,86.9,825,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+zhipu,zhipu,https://open.bigmodel.cn/api/paas/v4/chat/completions,inference-path-GET-only,杭州直连,5,5,"{""401"": 5}",98.4,89.2,105.3,45.6,525,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+zhipu,zhipu,https://open.bigmodel.cn/api/paas/v4/chat/completions,inference-path-GET-only,香港直连,5,5,"{""401"": 5}",93.4,88.4,116.3,37.7,525,保持杭州直连；按现有国内端点，不按模型厂商所在地改线
+zhipu,zhipu,https://open.bigmodel.cn/api/paas/v4/chat/completions,inference-path-GET-only,新加坡直连,5,5,"{""401"": 5}",210.6,179.3,250.9,88.3,525,保持杭州直连；按现有国内端点，不按模型厂商所在地改线

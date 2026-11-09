@@ -1,0 +1,37 @@
+{
+  "egress": {
+    "mode": "sg-required",
+    "proxyUrl": "http://10.77.0.2:3128",
+    "directHosts": [
+      "tokendance.space",
+      "ark.cn-beijing.volces.com"
+    ]
+  },
+  "results": [
+    {
+      "channel": "tokendance",
+      "status": 200,
+      "ttfb_ms": 94.6,
+      "bytes": 59395
+    },
+    {
+      "channel": "bailian",
+      "status": 401,
+      "ttfb_ms": 145.7,
+      "bytes": 280
+    },
+    {
+      "channel": "ark",
+      "status": 401,
+      "ttfb_ms": 77.5,
+      "bytes": 210
+    },
+    {
+      "channel": "openrouter",
+      "status": 401,
+      "ttfb_ms": 317,
+      "bytes": 67
+    }
+  ],
+  "inference_calls": 0
+}

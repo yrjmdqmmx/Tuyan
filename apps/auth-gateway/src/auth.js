@@ -1,7 +1,23 @@
+import { createGoogleOAuth, isGoogleEmail } from './google-oauth.js';
+import { createGithubOAuth, isGithubEmail } from './github-oauth.js';
+import { createWechatOAuth, isWechatEmail } from './wechat-oauth.js';
+import { createPlusStore, PLUS_MUTATIONS } from './plus-store.js';
+import { ensurePlusIndexes } from './plus-indexes.js';
+import { createPhoneAuth, isPhoneEmail } from './phone-auth.js';
+import { createSmsTransport } from './sms.js';
+import { accountWorkspaceStore, WORKSPACE_ACCOUNT_COLLECTIONS } from './workspace-lifecycle.js';
+import { createAccountProfile } from './account-profile.js';
+import { createIdentityTransport } from './identity-transport.js';
+import { createLegacyImageCleanup } from './image-library.js';
+import { APIError } from 'better-auth/api';
+import { createWorkspaceExecutionStore } from './workspace-execution.js';
 import { createWatchaOAuth } from './watcha-oauth.js';
 import { createAdminAccounts } from './admin-accounts.js';
 import { createAccountWriteGuard } from './account-write-guard.js';
+import { createWorkspaceStore } from './workspace-sync.js';
+import { createModelLibraryStore } from './model-library.js';
 import { randomBytes } from 'node:crypto';
+import { createAuthRateLimitStorage } from './auth-rate-limit-storage.js';
 import { createAccountVerification, authUserFilter } from './account-verification.js';
 import { createDeletionStore } from './account-deletion.js';
 import { ensureAccountIndexes, normalizeAccountInput } from './account-indexes.js';
@@ -28,14 +44,25 @@ export async function createAuthRuntime(
     logger = console,
     watchaFetch = fetch,
     watchaNow,
+    wechatFetch = fetch,
+    wechatNow,
+    githubFetch,
+    githubNow,
+    googleFetch,
+    googleNow,
+    smsTransport,
+    phoneNow,
+    phoneCaptchaRenderer,
   } = {},
 ) {
   const mongoClient = new MongoClientClass(config.mongoUri);
   await mongoClient.connect();
   const db = mongoClient.db(config.mongoDbName);
+  let imageLibrary, legacyImageCleanup;
   let status = { ok: true, checkedAt: null };
   try { await ensureAccountIndexes(db); } catch (error) { await mongoClient.close(); throw error; }
-  const deletionStore = createDeletionStore(db.collection('accountDeletionOperations'), () => new Date(), { mongoClient, users: db.collection('user') });
+  if(config.plus?.enabled)try{await ensurePlusIndexes(db);}catch(error){await mongoClient.close();throw error;}
+  const deletionStore = createDeletionStore(db.collection('accountDeletionOperations'), () => new Date(), { mongoClient, users: db.collection('user'),plusCycles:db.collection('plusCycles'),plusOperations:db.collection('plusOperations'),plusAccounts:db.collection('plusAccounts') });
 
   const advanced = {
     useSecureCookies: config.production,
@@ -92,20 +119,49 @@ export async function createAuthRuntime(
     watcha = createWatchaOAuth({ config, db, mongoClient, limiter, transport, fetchImpl: watchaFetch, ...(watchaNow ? { now: watchaNow } : {}) });
     await watcha.ensureIndexes();
   } catch (error) { await mongoClient.close(); throw error; }
+  let phone;
+  try {
+    if (config.production && smsTransport) throw Error("SMS_TEST_TRANSPORT_FORBIDDEN_IN_PRODUCTION");
+    phone = createPhoneAuth({ config, db, mongoClient, transport: smsTransport || createSmsTransport(config.sms), ...(phoneNow ? {now:phoneNow} : {}), ...(phoneCaptchaRenderer ? {renderCaptcha:phoneCaptchaRenderer} : {}) });
+    await phone.ensureIndexes();
+  } catch(error) { await mongoClient.close(); throw error; }
+  let wechat;
+  try {
+    wechat = createWechatOAuth({config,db,mongoClient,fetchImpl:wechatFetch,...(wechatNow?{now:wechatNow}:{})});
+    await wechat.ensureIndexes();
+  } catch(error) { await mongoClient.close(); throw error; }
+  const identityTransport = createIdentityTransport(config.identityProxyUrl);
+  let github;
+  try {
+    github = createGithubOAuth({config,db,mongoClient,fetchImpl:githubFetch || identityTransport.fetch,...(githubNow?{now:githubNow}:{})});
+    await github.ensureIndexes();
+  } catch(error) { await mongoClient.close(); throw error; }
+  let google;
+  try {
+    google = createGoogleOAuth({config,db,mongoClient,fetchImpl:googleFetch || identityTransport.fetch,...(googleNow?{now:googleNow}:{})});
+    await google.ensureIndexes();
+  } catch(error) { await mongoClient.close(); throw error; }
   const auth = betterAuthFactory({
-    plugins: [watcha.plugin],
+    plugins: [watcha.plugin, phone.plugin, wechat.plugin, github.plugin, google.plugin],
+    user: { additionalFields: { phoneOnly: {type:"boolean",required:false,input:false}, wechatOnly: {type:"boolean",required:false,input:false}, googleOnly: {type:"boolean",required:false,input:false}, githubOnly: {type:"boolean",required:false,input:false} } },
     account: { accountLinking: { disableImplicitLinking: true } },
     appName: 'PaperBanana',
     databaseHooks: { ...createAccountWriteGuard(db), user: {
-      create: { before: async (user) => ({ data: normalizeAccountInput(user) }) },
-      update: { before: async (user) => ({ data: normalizeAccountInput(user) }) },
+      create: { before: async (user) => {
+        if ((isPhoneEmail(String(user.email).toLowerCase()) || (isWechatEmail(user.email) || isGithubEmail(user.email) || isGoogleEmail(user.email)))) throw new APIError("BAD_REQUEST", {code:"INVALID_EMAIL",message:"Invalid email"});
+        return { data: { ...normalizeAccountInput(user), image: null } };
+      } },
+      update: { before: async (user) => {
+        if (user.image !== undefined) throw new APIError('BAD_REQUEST', { code:'PROFILE_AVATAR_ENDPOINT_REQUIRED', message:'Use the avatar upload endpoint.' });
+        return { data: normalizeAccountInput(user) };
+      } },
     } },
     secret: config.authSecret,
     baseURL: config.authBaseUrl,
     trustedOrigins: config.frontendOrigins,
     // The custom confirmation handler is the only verification endpoint.
     // Disable the library route as well, including its normalized path aliases.
-    disabledPaths: ['/verify-email', '/unlink-account'],
+    disabledPaths: ['/verify-email', '/unlink-account', '/change-email'],
     // Better Auth 1.6.11 includes full email addresses in several negative-path
     // log records. Application and account-email logs remain available through
     // the injected redacting logger, so disable the library logger completely.
@@ -117,6 +173,7 @@ export async function createAuthRuntime(
       autoSignInAfterVerification: false,
       expiresIn: 60 * 60,
       async sendVerificationEmail({ user, url, token }, request) {
+        if (isPhoneEmail(user.email) || (isWechatEmail(user.email) || isGithubEmail(user.email) || isGoogleEmail(user.email))) return;
         const boundToken = await verification.issue(user);
         await accountEmail.sendVerification({ email: user.email, url, token: boundToken, request });
       },
@@ -130,6 +187,14 @@ export async function createAuthRuntime(
       revokeSessionsOnPasswordReset: true,
       autoSignIn: false,
       async sendResetPassword({ user, url, token }, request) {
+        // A reset request may have read the old email just before a profile
+        // change. Its token already exists now: never send it to a stale inbox.
+        if (isPhoneEmail(user.email) || (isWechatEmail(user.email) || isGithubEmail(user.email) || isGoogleEmail(user.email))) return;
+        const current = await db.collection('user').findOne(authUserFilter(user.id));
+        if (current?.email !== user.email || await db.collection('accountDeletionOperations').findOne({_id:String(user.id)})) {
+          await db.collection('verification').deleteMany({identifier:`reset-password:${token}`,value:user.id});
+          return;
+        }
         await accountEmail.sendPasswordReset({ email: user.email, url, token, request });
       },
       async onPasswordReset({ user }) {
@@ -146,9 +211,19 @@ export async function createAuthRuntime(
     rateLimit: {
       enabled: true,
       storage: 'database',
+      customStorage: createAuthRateLimitStorage(db),
       window: 60,
       max: 100,
       customRules: {
+        '/google/start': { window: 15 * 60, max: 10 },
+        '/google/complete': { window: 15 * 60, max: 30 },
+        '/google/launch': { window: 15 * 60, max: 30 },
+        '/github/start': { window: 15 * 60, max: 10 },
+        '/github/complete': { window: 15 * 60, max: 30 },
+        '/github/launch': { window: 15 * 60, max: 30 },
+        '/wechat/start': { window: 15 * 60, max: 10 },
+        '/wechat/complete': { window: 15 * 60, max: 30 },
+        '/wechat/launch': { window: 15 * 60, max: 30 },
         '/watcha/mini-start': { window: 15 * 60, max: 10 },
         '/watcha/mini-exchange': { window: 15 * 60, max: 30 },
         '/sign-in/email': { window: 15 * 60, max: 10 },
@@ -163,8 +238,17 @@ export async function createAuthRuntime(
   });
 
   return {
+    configureImageLibrary(service) {
+      imageLibrary=service;
+      if(!legacyImageCleanup){legacyImageCleanup=createLegacyImageCleanup({db,imageLibrary:service});legacyImageCleanup.start();}
+    },
+    accountProfile: createAccountProfile({db,mongoClient,limiter,transport,deliveryEnabled:emailConfig.deliveryEnabled,secret:config.authSecret}),
     deletionStore,
-    consumeDeletionConfirmation: watcha.consumeDeletionConfirmation,
+    plusStore: config.plus?.enabled ? accountWorkspaceStore({db,mongoClient,factory:options=>createPlusStore({...options,namespace:`${config.plus.environment}:${config.plus.applicationId}:${config.plus.entitlementId}`}),mutations:PLUS_MUTATIONS}) : undefined,
+    workspaceExecutionStore: accountWorkspaceStore({ db, mongoClient, factory:createWorkspaceExecutionStore, mutations:['claim','closeUnaccepted','update','adoptHistory'] }),
+    modelLibraryStore: accountWorkspaceStore({ db, mongoClient, factory:options=>createModelLibraryStore({...options,secret:config.authSecret}), mutations:['put'] }),
+    workspaceStore: accountWorkspaceStore({ db, mongoClient, factory:options=>createWorkspaceStore({...options,imageLibrary:config.imageLibraryEnabled?{save:(...args)=>imageLibrary.save(...args),read:(...args)=>imageLibrary.read(...args),status:(...args)=>imageLibrary.status(...args)}:undefined}), mutations:['put','saveResult','importHistory','beginDelete','finishDelete'] }),
+    consumeDeletionConfirmation: async args => await google.consumeDeletionConfirmation(args) || await github.consumeDeletionConfirmation(args) || await wechat.consumeDeletionConfirmation(args) || await phone.consumeDeletionConfirmation(args) || watcha.consumeDeletionConfirmation(args),
     webHandler: createRegistrationPrivacyHandler(
       async (request) => await verification.handler(request) || watcha.handle(request, (input) => auth.handler(input)),
       async (email) => Boolean(await db.collection('user').findOne(
@@ -226,6 +310,8 @@ export async function createAuthRuntime(
       }
     },
     async close() {
+      await identityTransport.close();
+      await legacyImageCleanup?.stop();
       await mongoClient.close();
     },
   };
@@ -317,7 +403,7 @@ async function deleteAuthUser(mongoClient, db, userId, operation) {
         }, options);
         if (!op) throw new Error('ACCOUNT_DELETION_OPERATION_MISMATCH');
       }
-      for (const name of ['watchaTransactions', 'watchaEmailCodes', 'watchaDeletionConfirmations']) {
+      for (const name of ['watchaTransactions', 'watchaEmailCodes', 'watchaDeletionConfirmations', 'phoneCodes', 'phoneChallenges', 'phoneConfirmations', 'wechatTransactions', 'wechatConfirmations', 'githubTransactions', 'githubConfirmations', 'googleTransactions', 'googleConfirmations', ...WORKSPACE_ACCOUNT_COLLECTIONS]) {
         await db.collection(name).deleteMany({ userId: id }, options);
       }
       await db.collection('session').deleteMany({ userId: { $in: candidates } }, options);

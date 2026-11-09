@@ -1,0 +1,57 @@
+{
+  "id": "pcbi.1010086.g007",
+  "paper": "pcbi.1010086",
+  "figure": {
+    "id": "pcbi.1010086.g007",
+    "label": "Fig 7",
+    "caption": "Connectivity patterns reflecting the most common rules.\nThe ordered set of sources S is depicted by the green squares on the left. They are connected to the ordered set of targets T, depicted by the orange squares on the right. The respective in- and out-degrees are given next to the nodes. (A) One-to-one. (B) All-to-all. (C) Random, fixed in-degree with K_{in} connections per target node. (D) Random, fixed out-degree with K_{out} connections per source node. (E) Random, fixed total number of connections N_{syn}. (F) Pairwise Bernoulli with connection probability p. (G) Autapse (self-connection). (H) Multapse (multi-connection).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pcbi.1010086.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Connectivity patterns reflecting the most common rules.</title>\n<p>The ordered set of sources <inline-formula id=\"pcbi.1010086.e001\"><alternatives><graphic id=\"pcbi.1010086.e001g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e001\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M1\"><ns1:mi mathvariant=\"script\">S</ns1:mi></ns1:math></alternatives></inline-formula> is depicted by the green squares on the left. They are connected to the ordered set of targets <inline-formula id=\"pcbi.1010086.e002\"><alternatives><graphic id=\"pcbi.1010086.e002g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e002\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M2\"><ns1:mi mathvariant=\"script\">T</ns1:mi></ns1:math></alternatives></inline-formula>, depicted by the orange squares on the right. The respective in- and out-degrees are given next to the nodes. (A) One-to-one. (B) All-to-all. (C) Random, fixed in-degree with <italic>K</italic><sub>in</sub> connections per target node. (D) Random, fixed out-degree with <italic>K</italic><sub>out</sub> connections per source node. (E) Random, fixed total number of connections <italic>N</italic><sub>syn</sub>. (F) Pairwise Bernoulli with connection probability <italic>p</italic>. (G) Autapse (self-connection). (H) Multapse (multi-connection).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g007\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "id": "pcbi.1010086.e001g",
+      "mimetype": "image",
+      "position": "anchor",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.e001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1010086",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010086",
+    "title": "Connectivity concepts in neuronal network modeling",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Johanna Senk",
+      "Birgit Kriener",
+      "Mikael Djurfeldt",
+      "Nicole Voges",
+      "Han-Jia Jiang",
+      "Lisa Schüttler",
+      "Gabriele Gramelsberger",
+      "Markus Diesmann",
+      "Hans E. Plesser",
+      "Sacha J. van Albada"
+    ],
+    "year": "2022",
+    "license": "2022\nSenk et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1010086.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1010086.g007.png",
+      "bytes": 396459,
+      "sha256": "259ebe9900d0c7d053b82a90a5eb4a8a18a8f9cf13351bd6ca884a3eee2b1c2f"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1010086.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1010086.g007.tif",
+      "bytes": 452304,
+      "sha256": "b8126fa67a3bb206e17217a30df9de2b06c209ce9c48164a5640161db53f6ec9"
+    }
+  }
+}

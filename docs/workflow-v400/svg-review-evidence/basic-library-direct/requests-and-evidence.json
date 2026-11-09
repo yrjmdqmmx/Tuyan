@@ -1,0 +1,292 @@
+{
+  "scenario": "basic-library-direct",
+  "simulated": true,
+  "realModelEffectsVerified": false,
+  "job": {
+    "recovery": null,
+    "providerCalls": [],
+    "refineInputs": null,
+    "refineInputMetadata": null,
+    "failure": null,
+    "referenceSelection": {
+      "proposedCount": 1,
+      "selectedCount": 1,
+      "skippedCount": 0,
+      "imageCount": 1,
+      "mode": "images",
+      "limit": 8,
+      "omitted": {
+        "duplicate": 0,
+        "unavailable": 0,
+        "budget": 0
+      },
+      "policyStatus": "partial"
+    },
+    "visionMode": "assist",
+    "candidateProgress": [
+      {
+        "candidateId": 0,
+        "status": "succeeded",
+        "review": {
+          "limit": 0,
+          "roundsUsed": 0,
+          "mode": "visual_code",
+          "status": "not_requested",
+          "history": [],
+          "deliveredVersion": 1,
+          "deliveredSvgHash": "b65dea5276d68843b8c6edb3ae948194a566ceaf19b132bc5d2c65fcb0d0f1a3",
+          "note": "未评审。"
+        }
+      }
+    ],
+    "id": "1791539736133-subkzycj",
+    "status": "succeeded",
+    "provider": "openai",
+    "modelRoutes": {
+      "main": {
+        "accessProvider": "openai",
+        "modelId": "gpt-5.6-sol"
+      },
+      "image": {
+        "accessProvider": "openai",
+        "modelId": "gpt-image-2"
+      },
+      "vision": {
+        "accessProvider": "openai",
+        "modelId": "gpt-4.1"
+      }
+    },
+    "routingMode": "single",
+    "modelRoutingVersion": 1,
+    "modelRoutingSource": "explicit",
+    "clientPlatform": "",
+    "client_platform": "",
+    "jobType": "generate",
+    "userId": "refine-owner",
+    "userEmail": "local@example.invalid",
+    "configurationMode": "advanced",
+    "taskName": "diagram",
+    "methodContent": "Input A connects to B with value 35. Preserve scientific label ATP.",
+    "negativePrompt": "Never invent measurements.",
+    "caption": "A directed method overview.",
+    "infographicCategory": "method",
+    "outputFormat": "svg",
+    "mainModelName": "gpt-5.6-sol",
+    "imageModelName": "gpt-image-2",
+    "imageRefineMode": "direct-edit",
+    "imageRefineReason": "GPT Image 2 · 2026-04-21 accepts the source image for direct image-to-image editing",
+    "refineMode": "",
+    "refineReason": "",
+    "referenceVisionModelName": "gpt-4.1",
+    "referenceImageMode": "main_model",
+    "referenceImageModeUsed": "none",
+    "pipelineMode": "vanilla",
+    "retrievalSetting": "manual",
+    "manualReferenceIds": [
+      "svg-reference"
+    ],
+    "retrievedReferenceIds": [
+      "svg-reference"
+    ],
+    "retrievedReferences": [
+      {
+        "id": "svg-reference",
+        "taskName": "diagram",
+        "title": "Real reference title",
+        "summary": "Actual layout description",
+        "titleZh": "",
+        "introZh": "",
+        "shortIntroZh": "",
+        "detailZh": "",
+        "visualCategory": "",
+        "researchDomain": "",
+        "keywords": [],
+        "corpusVersion": "zh-CN.v2",
+        "imageUrl": "http://127.0.0.1:58995/objects/library/reference.png",
+        "imageObjectKey": "library/reference.png",
+        "source": "paperbanana-bench"
+      }
+    ],
+    "stages": [
+      {
+        "id": "stage-f04b7392-3b23-4060-876b-cbbca87599e7",
+        "candidateId": 0,
+        "type": "planner",
+        "title": "规划",
+        "round": 0,
+        "text": "COMPLETE PLAN: Input A connects to B, value 35, label ATP, leave margins and preserve direction.",
+        "suggestion": "",
+        "image": null,
+        "startedAt": "2026-10-09T09:55:36.134Z",
+        "completedAt": "2026-10-09T09:55:36.134Z",
+        "durationMs": 0,
+        "error": ""
+      },
+      {
+        "id": "stage-cc89a47b-965b-4364-8021-33d1e3e33fc0",
+        "candidateId": 0,
+        "type": "svg_source",
+        "title": "SVG v1 文件",
+        "round": 0,
+        "text": "{\"version\":1,\"svgHash\":\"b65dea5276d68843b8c6edb3ae948194a566ceaf19b132bc5d2c65fcb0d0f1a3\",\"pngHash\":\"9dc9dc9b30c42d7b2d1cb1c462141c58bb24496d0ade03fff6c3da57ca3af7a0\",\"width\":512,\"height\":512,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[]},\"codeIssues\":[\"SVG has no title element; check the figure description separately.\"]}",
+        "suggestion": "",
+        "image": {
+          "storage": "bucket",
+          "filename": "1791539736133-subkzycj/candidate-0-svg-v1.svg",
+          "url": "http://127.0.0.1:58995/objects/1791539736133-subkzycj/candidate-0-svg-v1.svg",
+          "mimeType": "image/svg+xml",
+          "objectKey": "1791539736133-subkzycj/candidate-0-svg-v1.svg"
+        },
+        "startedAt": "2026-10-09T09:55:36.198Z",
+        "completedAt": "2026-10-09T09:55:36.198Z",
+        "durationMs": 0,
+        "error": ""
+      },
+      {
+        "id": "stage-9f3f6375-9775-4cd3-82cd-1d716bf2d7ed",
+        "candidateId": 0,
+        "type": "render",
+        "title": "SVG v1 实际渲染",
+        "round": 0,
+        "text": "{\"version\":1,\"svgHash\":\"b65dea5276d68843b8c6edb3ae948194a566ceaf19b132bc5d2c65fcb0d0f1a3\",\"pngHash\":\"9dc9dc9b30c42d7b2d1cb1c462141c58bb24496d0ade03fff6c3da57ca3af7a0\",\"width\":512,\"height\":512,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[]},\"codeIssues\":[\"SVG has no title element; check the figure description separately.\"]}",
+        "suggestion": "",
+        "image": {
+          "storage": "bucket",
+          "filename": "1791539736133-subkzycj/candidate-0-svg-v1-render.png",
+          "url": "http://127.0.0.1:58995/objects/1791539736133-subkzycj/candidate-0-svg-v1-render.png",
+          "mimeType": "image/png",
+          "objectKey": "1791539736133-subkzycj/candidate-0-svg-v1-render.png"
+        },
+        "startedAt": "2026-10-09T09:55:36.198Z",
+        "completedAt": "2026-10-09T09:55:36.198Z",
+        "durationMs": 0,
+        "error": ""
+      },
+      {
+        "id": "stage-64cbe968-db0f-418a-8292-196831e2f7b5",
+        "candidateId": 0,
+        "type": "review_status",
+        "title": "SVG v1 交付状态",
+        "round": 0,
+        "text": "未评审。",
+        "suggestion": "",
+        "image": {
+          "storage": "bucket",
+          "filename": "1791539736133-subkzycj/candidate-0-svg-v1-render.png",
+          "url": "http://127.0.0.1:58995/objects/1791539736133-subkzycj/candidate-0-svg-v1-render.png",
+          "mimeType": "image/png",
+          "objectKey": "1791539736133-subkzycj/candidate-0-svg-v1-render.png"
+        },
+        "startedAt": "2026-10-09T09:55:36.198Z",
+        "completedAt": "2026-10-09T09:55:36.198Z",
+        "durationMs": 0,
+        "error": ""
+      }
+    ],
+    "criticMode": "visual_code",
+    "aspectRatio": "1:1",
+    "imageSize": "1K",
+    "numCandidates": 1,
+    "maxCriticRounds": 1,
+    "promptCharCount": 120,
+    "referenceImageCount": 0,
+    "referenceImages": [],
+    "resultImages": [
+      {
+        "candidateId": 0,
+        "filename": "1791539736133-subkzycj/candidate-0.svg",
+        "objectKey": "1791539736133-subkzycj/candidate-0.svg",
+        "url": "http://127.0.0.1:58995/objects/1791539736133-subkzycj/candidate-0.svg",
+        "storage": "bucket",
+        "mimeType": "image/svg+xml",
+        "description": "COMPLETE PLAN: Input A connects to B, value 35, label ATP, leave margins and preserve direction.",
+        "review": {
+          "limit": 0,
+          "roundsUsed": 0,
+          "mode": "visual_code",
+          "status": "not_requested",
+          "history": [],
+          "deliveredVersion": 1,
+          "deliveredSvgHash": "b65dea5276d68843b8c6edb3ae948194a566ceaf19b132bc5d2c65fcb0d0f1a3",
+          "note": "未评审。"
+        }
+      }
+    ],
+    "logs": [
+      "2026-10-09T09:55:36.134Z 参考图选择：采用 1 张，排除重复 0 张、无法使用 0 张、超出预算 0 张；主模型规划请求合计 1 张图片，上限 8 张。"
+    ],
+    "error": "",
+    "createdAt": "2026-10-09T09:55:36.133Z",
+    "updatedAt": "2026-10-09T09:55:36.198Z",
+    "startedAt": "2026-10-09T09:55:36.133Z",
+    "completedAt": "2026-10-09T09:55:36.198Z"
+  },
+  "artifacts": [
+    {
+      "file": "candidate-0-svg-v1.svg",
+      "mimeType": "image/svg+xml",
+      "sha256": "b65dea5276d68843b8c6edb3ae948194a566ceaf19b132bc5d2c65fcb0d0f1a3"
+    },
+    {
+      "file": "candidate-0-svg-v1-render.png",
+      "mimeType": "image/png",
+      "sha256": "9dc9dc9b30c42d7b2d1cb1c462141c58bb24496d0ade03fff6c3da57ca3af7a0"
+    },
+    {
+      "file": "candidate-0.svg",
+      "mimeType": "image/svg+xml",
+      "sha256": "b65dea5276d68843b8c6edb3ae948194a566ceaf19b132bc5d2c65fcb0d0f1a3"
+    }
+  ],
+  "requests": [
+    {
+      "kind": "plan",
+      "url": "https://api.openai.com/v1/chat/completions",
+      "wire": {
+        "model": "gpt-5.6-sol",
+        "messages": [
+          {
+            "role": "system",
+            "content": "I am working on a task: given the 'Methodology' section of a paper, and the caption of the desired figure, automatically generate a corresponding illustrative diagram. I will input the text of the 'Methodology' section, the figure caption, and your output should be a detailed description of an illustrative figure that effectively represents the methods described in the text.\n\nTo help you understand the task better, and grasp the principles for generating such figures, I will also provide you with several examples. You should learn from these examples to provide your figure description.\n\n** IMPORTANT: **\nYour description should be as detailed as possible. Semantically, clearly describe each element and their connections. Formally, include various details such as background style (typically pure white or very light pastel), colors, line thickness, icon styles, etc. Remember: vague or unclear specifications will only make the generated figure worse, not better.\n\nIf reference image analysis is provided, use it as structure and style guidance without copying irrelevant content. Do not include the figure title or caption text inside the image."
+          },
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Methodology Section:\nInput A connects to B with value 35. Preserve scientific label ATP.\n\nFigure Caption:\nA directed method overview.\n\nDetailed description of the target figure:\n\nRetrieved 图研 reference examples for layout/style guidance:\nReference 1 (svg-reference): Real reference title\nActual layout description\n\nUse these examples as high-level few-shot guidance. Do not copy their scientific content unless it matches the provided methodology.\n\nInfographic category: method — emphasize the conventions of this figure type.\n\nIMPORTANT: One or more reference images are ATTACHED to this request. Treat them as VISUAL STYLE references only: distil a single coherent visual style from them — color palette, shape/line language, iconography, and typography — so the generated figure feels clearly and strongly stylistically consistent. Do NOT replicate any reference's spatial layout or composition, and when several references are attached do not merge their structures. The figure's layout — the number, type, and arrangement of blocks and the overall flow — MUST be derived from the provided methodology/data and caption, never from the references, so the result stays internally coherent even when a reference depicts an unrelated subject. Keep the semantic content faithful to the methodology/data and caption.\n\n<avoidance_constraints>\nNever invent measurements.\n</avoidance_constraints>\nComplete task context:\n{\n  \"originalRequest\": \"Input A connects to B with value 35. Preserve scientific label ATP.\",\n  \"methodology\": \"Input A connects to B with value 35. Preserve scientific label ATP.\",\n  \"visualIntent\": \"A directed method overview.\",\n  \"completePlan\": \"\",\n  \"figureType\": \"method\",\n  \"aspectRatio\": \"1:1\",\n  \"resolution\": \"1K\",\n  \"outputFormat\": \"svg\",\n  \"mustPreserve\": \"All user-specified scientific facts, labels, relationships and required content unless the user explicitly requests changing them.\",\n  \"avoid\": \"Never invent measurements.\",\n  \"referenceRequirements\": {\n    \"mode\": \"none\",\n    \"retrieval\": \"manual\",\n    \"uploaded\": []\n  },\n  \"modificationGoal\": \"Check fidelity, readable labels, layout and connections against the original request.\",\n  \"referenceAnalysis\": \"\",\n  \"retrievalContext\": \"Reference 1 (svg-reference): Real reference title\\nActual layout description\",\n  \"planningMode\": \"vanilla\"\n}"
+              },
+              {
+                "type": "image_url",
+                "image_url": {
+                  "url": {
+                    "mediaType": "image/png",
+                    "bytes": 2309,
+                    "sha256": "d707a319e449cde9bdd323ead0860135615cb19a3edae2c4b104b171a451bd18"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "svg",
+      "url": "https://api.openai.com/v1/chat/completions",
+      "wire": {
+        "model": "gpt-5.6-sol",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are the SVG Diagram Agent for 图研.\nReturn one standalone, valid SVG document only. Do not use Markdown fences.\nUse inline SVG elements such as rect, circle, ellipse, path, line, polyline, polygon, text, defs, marker, linearGradient, and g.\nDo not use script, style, foreignObject, image, external URLs, event handlers, JavaScript links, embedded HTML, filters, masks, patterns, group opacity or blending. Use direct geometry, solid fills and gradients; avoid clipping effects.\nUse a clean academic diagram style with readable labels, balanced whitespace, and a light background.\nDo not include the figure title or caption text inside the SVG."
+          },
+          {
+            "role": "user",
+            "content": "Create an editable SVG academic diagram from this visual specification.\nUse viewBox=\"0 0 1600 1600\" for the requested 1:1 aspect ratio. Keep all artwork within this viewBox.\nPrefer simple geometric shapes, arrows, concise labels, and semantic grouping.\n\n{\n  \"originalRequest\": \"Input A connects to B with value 35. Preserve scientific label ATP.\",\n  \"methodology\": \"Input A connects to B with value 35. Preserve scientific label ATP.\",\n  \"visualIntent\": \"A directed method overview.\",\n  \"completePlan\": \"COMPLETE PLAN: Input A connects to B, value 35, label ATP, leave margins and preserve direction.\",\n  \"figureType\": \"method\",\n  \"aspectRatio\": \"1:1\",\n  \"resolution\": \"1K\",\n  \"outputFormat\": \"svg\",\n  \"mustPreserve\": \"All user-specified scientific facts, labels, relationships and required content unless the user explicitly requests changing them.\",\n  \"avoid\": \"Never invent measurements.\",\n  \"referenceRequirements\": {\n    \"mode\": \"none\",\n    \"retrieval\": \"manual\",\n    \"uploaded\": []\n  },\n  \"modificationGoal\": \"Check fidelity, readable labels, layout and connections against the original request.\",\n  \"referenceAnalysis\": \"\",\n  \"retrievalContext\": \"Reference 1 (svg-reference): Real reference title\\nActual layout description\",\n  \"revisionRequirements\": \"Initial generation.\",\n  \"previousSvg\": \"\"\n}"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+/** Shared execution policy. No provider calls or browser state in this module. */
+export const WORKFLOW_CONTRACT_VERSION = 2 as const
+export const WORKFLOW_LIMITS = Object.freeze({ maxCandidates: 6, maxCriticRounds: 5 })
+export type VisionMode = 'none' | 'assist'
+export type WorkflowCapability = 'supported' | 'unsupported' | 'unknown'
+export type WorkflowRole = 'main' | 'image' | 'vision'
+
+export function normalizeVisionMode(value?: unknown): VisionMode {
+  if (value === undefined || value === 'assist') return 'assist'
+  if (value === 'none') return 'none'
+  throw new Error('视觉协作设置无效，请选择独立视觉模型或“无”。')
+}
+
+export function validateWorkflowCounts(body: Record<string, any>, limits: { maxCandidates: number; maxCriticRounds: number } = WORKFLOW_LIMITS) {
+  const numCandidates = body.numCandidates === undefined ? 1 : body.numCandidates
+  const maxCriticRounds = body.maxCriticRounds === undefined ? 1 : body.maxCriticRounds
+  const candidateLimit = Math.min(WORKFLOW_LIMITS.maxCandidates, limits.maxCandidates)
+  const reviewLimit = Math.min(WORKFLOW_LIMITS.maxCriticRounds, limits.maxCriticRounds)
+  if (!Number.isInteger(numCandidates) || numCandidates < 1 || numCandidates > candidateLimit) {
+    throw new Error(`候选图数量必须是 1～${candidateLimit} 的整数。`)
+  }
+  if (!Number.isInteger(maxCriticRounds) || maxCriticRounds < 0 || maxCriticRounds > reviewLimit) {
+    throw new Error(`评审轮数必须是 0～${reviewLimit} 的整数；0 表示不执行评审。`)
+  }
+  return { numCandidates: numCandidates as number, maxCriticRounds: maxCriticRounds as number }
+}
+
+export function workflowPipeline(body: Record<string, any>) {
+  if (body.pipelineMode === 'demo_full') return 'full'
+  if (body.pipelineMode === 'demo_planner_critic') return 'planner_critic'
+  return body.pipelineMode || 'planner_critic'
+}
+
+export function workflowNativeVector(body: Record<string, any>) {
+  if (body.generationPath === 'model-v1') return false
+  const route = body.modelRoutes?.image || {accessProvider:body.provider,modelId:body.imageModelName || body.imageGenModelName}
+  return route?.accessProvider === 'recraft' && /^recraftv(?:[23]|4(?:_1)?)(?:_utility)?(?:_pro)?_vector$/.test(route.modelId)
+}
+
+export function workflowVisionRequirements(body: Record<string, any>): string[] {
+  if (body.action === 'refineImage') return ['分析原图并制定精修方案']
+  if(body.generationPath !== 'model-v1' && body.figurePanels?.length)return [...new Set<string>(body.figurePanels.flatMap((panel:any)=>workflowVisionRequirements({...body,figurePanels:undefined,taskName:panel.figureData?'plot':'diagram',outputFormat:'svg'}))) ]
+  const needs: string[] = []
+  if (body.referenceImages?.length) needs.push('读取上传的参考图片')
+  if (body.retrievalSetting && body.retrievalSetting !== 'none' && (body.generationPath === 'model-v1' || !body.referenceImages?.length)) needs.push('读取检索图库的参考图片')
+  const reviews = Number(body.maxCriticRounds ?? 1)
+  if (reviews > 0 && (body.taskName === 'plot' || workflowPipeline(body) !== 'vanilla')) {
+    needs.push(body.outputFormat === 'svg' && body.taskName !== 'plot' ? '对当前 SVG 实际画面和完整代码执行评审' : '对生成图片执行视觉评审')
+  }
+  return needs
+}
+
+export function workflowModelVisionStatus(entry: any): WorkflowCapability {
+  if (!entry || entry.selectable === false) return 'unknown'
+  if (entry.capabilities?.referenceImages === true && entry.roles?.some((role: string) => ['main', 'vision'].includes(role))) return 'supported'
+  if (entry.capabilities?.referenceImages === false) return 'unsupported'
+  return 'unknown'
+}
+
+export function workflowVisionError(body: Record<string, any>, mainStatus: WorkflowCapability, visionStatus: WorkflowCapability): string {
+  const needs = workflowVisionRequirements(body)
+  if (!needs.length) return ''
+  const mode = normalizeVisionMode(body.visionMode)
+  const directBasic = workflowPipeline(body) === 'vanilla' && !body.figurePanels?.some((panel:any)=>panel.figureData) && body.taskName !== 'plot' && body.action !== 'refineImage' && mainStatus === 'supported'
+  const status = directBasic || mode === 'none' ? mainStatus : visionStatus
+  if (status === 'supported') return ''
+  const role = mode === 'assist' && !directBasic ? '所选独立视觉模型' : '主模型（视觉模型为“无”）'
+  const reason = status === 'unknown' ? '图片理解能力尚未确认' : '不支持图片理解'
+  return `当前功能需要视觉能力：${needs.join('；')}。${role}${reason}。请配置可用的视觉模型、更换支持识图的主模型并选择“无”，或关闭相应功能。已保留填写内容；任务未启动，不会产生本次任务的推理费用。`
+}
+
+export function workflowRequiredRoles(body: Record<string, any>, maxCriticRounds = Number(body.maxCriticRounds ?? 1)): WorkflowRole[] {
+  if(body.generationPath !== 'model-v1' && body.figurePanels?.length){const roles=new Set<WorkflowRole>(body.figurePanels.flatMap((panel:any)=>workflowRequiredRoles({...body,figurePanels:undefined,taskName:panel.figureData?'plot':'diagram',outputFormat:'svg'},maxCriticRounds)));return (['main','image','vision'] as WorkflowRole[]).filter(role=>roles.has(role))}
+  const current = { ...body, maxCriticRounds }
+  const roles = new Set<WorkflowRole>(['main'])
+  if (body.action === 'refineImage' || body.generationPath === 'model-v1' && body.outputFormat !== 'svg' || body.taskName !== 'plot' && (body.outputFormat !== 'svg' && !body.figurePanels?.length || workflowNativeVector(body))) roles.add('image')
+  if (!body.figureTypeId && body.taskName === 'plot' && ['1.5K', '2K', '3K', '4K'].includes(body.imageSize) && body.imageRefineMode === 'direct-edit') roles.add('image')
+  if (workflowVisionRequirements(current).length && normalizeVisionMode(body.visionMode) === 'assist' && !(workflowPipeline(body) === 'vanilla' && body.taskName !== 'plot' && body.action !== 'refineImage' && body.referenceImageMode === 'main_model')) roles.add('vision')
+  return (['main', 'image', 'vision'] as WorkflowRole[]).filter(role => roles.has(role))
+}
+
+/** Successful path estimate, excluding retries/recovery and external plot-worker runs. */
+export function workflowCallEstimate(body: Record<string, any>): {min:number;max:number;rounds:number;perReview:number;initial:number;enhancement:number} {
+  const {numCandidates:n,maxCriticRounds:configured}=validateWorkflowCounts(body)
+  if(body.generationPath !== 'model-v1' && body.figurePanels?.length){
+    const children=body.figurePanels.map((panel:any)=>workflowCallEstimate({...body,...panel,figurePanels:undefined,taskName:panel.figureData?'plot':'diagram',outputFormat:'svg',numCandidates:1}))
+    const rounds=workflowPipeline(body)==='vanilla'?0:configured,perReview=normalizeVisionMode(body.visionMode)==='assist'?2:1
+    return {min:n*(children.reduce((sum:number,c:any)=>sum+c.min,0)+(rounds?perReview:0)),max:n*(children.reduce((sum:number,c:any)=>sum+c.max,0)+(rounds?perReview:0))+2,rounds,perReview,initial:children.reduce((sum:number,c:any)=>sum+c.initial,0),enhancement:0}
+  }
+  const pipeline=workflowPipeline(body), plot=body.generationPath !== 'model-v1' && body.taskName==='plot'
+  const rounds=pipeline==='vanilla' && !plot ? 0 : configured
+  const assistant=normalizeVisionMode(body.visionMode)==='assist'
+  const referenceAssistant=assistant && !(pipeline==='vanilla' && !plot && body.referenceImageMode==='main_model')
+  const perReview=assistant?2:1
+  const enhancement=plot && !body.figureTypeId && ['1.5K','2K','3K','4K'].includes(body.imageSize) && body.imageRefineMode==='direct-edit'?1:0
+  const initial=(plot&&body.figureTypeId?1:2)+(pipeline==='full'?1:0)+enhancement
+  const uploaded=Boolean(body.referenceImages?.length)
+  const shared=(uploaded&&(referenceAssistant||body.generationPath==='model-v1')?1:0)+((body.generationPath==='model-v1'||!uploaded)&&body.retrievalSetting==='auto'?1:0)
+  const optionalShared=(body.generationPath==='model-v1'||!uploaded)&&body.retrievalSetting&&body.retrievalSetting!=='none'&&(referenceAssistant||body.generationPath==='model-v1'&&uploaded)?1:0
+  return {min:n*(initial+(rounds?perReview:0))+(uploaded&&referenceAssistant?1:0),max:n*(initial+rounds*(perReview+1))+shared+optionalShared,rounds,perReview,initial,enhancement}
+}

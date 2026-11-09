@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="576" viewBox="0 0 1024 576"><title>Explicit synthetic teaching example</title><rect width="100%" height="100%" fill="white"/><g data-panel="A" data-figure-type="workflow"><text x="25.6" y="44.800000000000004" font-size="17.919999999999998" font-family="Noto Sans">A</text><svg id="panel0_scope" x="25.6" y="51.2" width="477.18399999999997" height="499.19999999999993" viewBox="0 0 477.18399999999997 499.19999999999993" preserveAspectRatio="xMidYMid meet"><svg font-family="Noto Sans" width="100%" height="100%" viewBox="0 0 477.18399999999997 499.19999999999993" id="panel0_sourceRoot"><title>Deterministic relational diagram</title><rect width="477.18399999999997" height="499.19999999999993" fill="white"></rect><path id="panel0_edge_edge_1" d="M238.592 36.792 L238.592 62.452" fill="none" stroke="#355c53" stroke-width="1.369"></path><polygon id="panel0_arrow_edge_1" points="238.592,62.452 241.586,55.609 235.598,55.609" fill="#355c53"></polygon><path id="panel0_edge_edge_2" d="M238.592 119.76 L238.592 145.42" fill="none" stroke="#355c53" stroke-width="1.369"></path><polygon id="panel0_arrow_edge_2" points="238.592,145.42 241.586,138.577 235.598,138.577" fill="#355c53"></polygon><path id="panel0_edge_edge_3" d="M284.021 202.514 L284.021 222.486 L307.573 222.486 L307.573 291.34" fill="none" stroke="#355c53" stroke-width="1.369"></path><polygon id="panel0_arrow_edge_3" points="307.573,291.34 310.567,284.497 304.579,284.497" fill="#355c53"></polygon><text id="panel0_edgeLabel_edge_3" x="331.899" y="256.7" font-size="15.396" text-anchor="middle" fill="#203d37">yes</text><path id="panel0_edge_edge_4" d="M307.573 329.403 L307.573 364.686" fill="none" stroke="#355c53" stroke-width="1.369"></path><polygon id="panel0_arrow_edge_4" points="307.573,364.686 310.567,357.843 304.579,357.843" fill="#355c53"></polygon><path id="panel0_edge_edge_5" d="M307.573 402.748 L307.573 420.924 L220.534 420.924 L220.534 438.031" fill="none" stroke="#355c53" stroke-width="1.369"></path><polygon id="panel0_arrow_edge_5" points="220.534,438.031 223.528,431.188 217.54,431.188" fill="#355c53"></polygon><path id="panel0_edge_edge_6" d="M193.163 202.514 L193.163 355.063" fill="none" stroke="#355c53" stroke-width="1.369"></path><polygon id="panel0_arrow_edge_6" points="193.163,355.063 196.157,348.22 190.169,348.22" fill="#355c53"></polygon><text id="panel0_edgeLabel_edge_6" x="175.235" y="256.7" font-size="15.396" text-anchor="middle" fill="#203d37">no</text><path id="panel0_edge_edge_7" d="M193.163 412.371 L193.163 438.031" fill="none" stroke="#355c53" stroke-width="1.369"></path><polygon id="panel0_arrow_edge_7" points="193.163,438.031 196.157,431.188 190.169,431.188" fill="#355c53"></polygon><circle id="panel0_node_node_start" cx="238.592" cy="29.95" r="6.843" fill="#355c53"></circle><rect id="panel0_node_node_receive" x="190.59" y="62.452" width="96.003" height="57.308" rx="4.277" fill="#e5efeb" stroke="#355c53" stroke-width="1.369"></rect><text id="panel0_nodeLabel_node_receive_0" x="238.592" y="86.41" font-size="15.396" text-anchor="middle" fill="#203d37">Receive</text><text id="panel0_nodeLabel_node_receive_1" x="238.592" y="105.655" font-size="15.396" text-anchor="middle" fill="#203d37">sample</text><polygon id="panel0_node_node_quality_check" points="238.592,145.42 374.878,179.676 238.592,213.933 102.306,179.676" fill="#f5ead6" stroke="#355c53" stroke-width="1.369"></polygon><text id="panel0_nodeLabel_node_quality_check_0" x="238.592" y="184.603" font-size="15.396" text-anchor="middle" fill="#203d37">Quality check</text><rect id="panel0_node_node_normalize" x="251.258" y="291.34" width="112.631" height="38.062" rx="4.277" fill="#e5efeb" stroke="#355c53" stroke-width="1.369"></rect><text id="panel0_nodeLabel_node_normalize_0" x="307.574" y="315.298" font-size="15.396" text-anchor="middle" fill="#203d37">Normalize</text><rect id="panel0_node_node_output" x="262.343" y="364.686" width="90.46" height="38.062" rx="4.277" fill="#e5efeb" stroke="#355c53" stroke-width="1.369"></rect><text id="panel0_nodeLabel_node_output_0" x="307.573" y="388.644" font-size="15.396" text-anchor="middle" fill="#203d37">Output</text><rect id="panel0_node_node_reject" x="147.933" y="355.063" width="90.46" height="57.308" rx="4.277" fill="#e5efeb" stroke="#355c53" stroke-width="1.369"></rect><text id="panel0_nodeLabel_node_reject_0" x="193.163" y="379.021" font-size="15.396" text-anchor="middle" fill="#203d37">Reject</text><text id="panel0_nodeLabel_node_reject_1" x="193.163" y="398.266" font-size="15.396" text-anchor="middle" fill="#203d37">sample</text><rect id="panel0_node_node_end" x="165.793" y="438.031" width="82.112" height="38.062" rx="10.264" fill="#e5efeb" stroke="#355c53" stroke-width="1.369"></rect><text id="panel0_nodeLabel_node_end_0" x="206.849" y="461.989" font-size="15.396" text-anchor="middle" fill="#203d37">End</text></svg></svg></g><g data-panel="B" data-figure-type="bar"><text x="521.216" y="44.800000000000004" font-size="17.919999999999998" font-family="Noto Sans">B</text><svg id="panel1_scope" x="521.216" y="51.2" width="477.18399999999997" height="499.19999999999993" viewBox="0 0 343.57248 359.424" preserveAspectRatio="xMidYMid meet"><svg version="1.1" width="100%" height="100%" viewBox="0 0 343.57248 359.424" id="panel1_sourceRoot"><defs>
+  <style type="text/css">#panel1_scope *{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs><g id="panel1_figure_1">
+  <g id="panel1_patch_1">
+   <path d="M 0 359.424  L 343.57248 359.424  L 343.57248 0  L 0 0  z " style="fill: #ffffff"></path>
+  </g>
+  <g id="panel1_axes_1">
+   <g id="panel1_patch_2">
+    <path d="M 47.44024 322.71176  L 340.57224 322.71176  L 340.57224 3.00024  L 47.44024 3.00024  z " style="fill: #ffffff"></path>
+   </g>
+   <g id="panel1_patch_3">
+    <path d="M 47.44024 17.532582  L 159.109573 17.532582  L 159.109573 100.574535  L 47.44024 100.574535  z " clip-path="url(#panel1_p49fa17c9c7)" style="fill: #487968"></path>
+   </g>
+   <g id="panel1_patch_4">
+    <path d="M 47.44024 121.335023  L 326.613573 121.335023  L 326.613573 204.376977  L 47.44024 204.376977  z " clip-path="url(#panel1_p49fa17c9c7)" style="fill: #487968"></path>
+   </g>
+   <g id="panel1_patch_5">
+    <path d="M 47.44024 225.137465  L 214.94424 225.137465  L 214.94424 308.179418  L 47.44024 308.179418  z " clip-path="url(#panel1_p49fa17c9c7)" style="fill: #487968"></path>
+   </g>
+   <g id="panel1_matplotlib.axis_1">
+    <g id="panel1_xtick_1">
+     <g id="panel1_line2d_1">
+      <defs>
+       <path id="panel1_m783222674b" d="M 0 0  L 0 3.5  " style="stroke: #000000; stroke-width: 0.8"></path>
+      </defs>
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="47.44024" y="322.71176" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_1">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="47.44024" y="338.58216" transform="rotate(-0 47.44024 338.58216)">0</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_2">
+     <g id="panel1_line2d_2">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="103.274907" y="322.71176" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_2">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="103.274907" y="338.58216" transform="rotate(-0 103.274907 338.58216)">1</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_3">
+     <g id="panel1_line2d_3">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="159.109573" y="322.71176" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_3">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="159.109573" y="338.58216" transform="rotate(-0 159.109573 338.58216)">2</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_4">
+     <g id="panel1_line2d_4">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="214.94424" y="322.71176" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_4">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="214.94424" y="338.58216" transform="rotate(-0 214.94424 338.58216)">3</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_5">
+     <g id="panel1_line2d_5">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="270.778907" y="322.71176" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_5">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="270.778907" y="338.58216" transform="rotate(-0 270.778907 338.58216)">4</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_6">
+     <g id="panel1_line2d_6">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="326.613573" y="322.71176" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_6">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="326.613573" y="338.58216" transform="rotate(-0 326.613573 338.58216)">5</text>
+     </g>
+    </g>
+    <g id="panel1_text_7">
+     <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: middle" x="194.00624" y="355.21416" transform="rotate(-0 194.00624 355.21416)">dimensionless</text>
+    </g>
+   </g>
+   <g id="panel1_matplotlib.axis_2">
+    <g id="panel1_ytick_1">
+     <g id="panel1_line2d_7">
+      <defs>
+       <path id="panel1_mfd9ef9222c" d="M 0 0  L -3.5 0  " style="stroke: #000000; stroke-width: 0.8"></path>
+      </defs>
+      <g>
+       <use xlink:href="#panel1_mfd9ef9222c" x="47.44024" y="59.053558" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_8">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: end" x="40.44024" y="63.488758" transform="rotate(-0 40.44024 63.488758)">Alpha</text>
+     </g>
+    </g>
+    <g id="panel1_ytick_2">
+     <g id="panel1_line2d_8">
+      <g>
+       <use xlink:href="#panel1_mfd9ef9222c" x="47.44024" y="162.856" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_9">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: end" x="40.44024" y="167.2912" transform="rotate(-0 40.44024 167.2912)">Beta</text>
+     </g>
+    </g>
+    <g id="panel1_ytick_3">
+     <g id="panel1_line2d_9">
+      <g>
+       <use xlink:href="#panel1_mfd9ef9222c" x="47.44024" y="266.658442" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_10">
+      <text style="font-size: 10.08px; font-family:Noto Sans; text-anchor: end" x="40.44024" y="271.093642" transform="rotate(-0 40.44024 271.093642)">Gamma</text>
+     </g>
+    </g>
+   </g>
+   <g id="panel1_patch_6">
+    <path d="M 47.44024 322.71176  L 47.44024 3.00024  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path>
+   </g>
+   <g id="panel1_patch_7">
+    <path d="M 47.44024 322.71176  L 340.57224 322.71176  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path>
+   </g>
+  </g>
+ </g><defs>
+  <clipPath id="panel1_p49fa17c9c7">
+   <rect x="47.44024" y="3.00024" width="293.132" height="319.71152"></rect>
+  </clipPath>
+ </defs></svg></svg></g><style>text,tspan{font-family:Noto Sans !important;}</style></svg>

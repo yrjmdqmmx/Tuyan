@@ -182,7 +182,7 @@ for scenario in empty private oversized partial-error watcha-empty watcha-privat
   }
 done
 
-for scenario in create flush append-1 append-2 append-3 append-4 append-5 append-6 append-7 append-8 insert delete; do
+for scenario in create flush append-1 append-2 append-3 append-4 append-5 append-6 append-7 append-8 append-9 insert delete; do
   reset_state
   fail_action="$scenario"
   expect_failure
@@ -201,7 +201,11 @@ import sys
 rules = open(sys.argv[1]).read().splitlines()
 source = '-s 172.31.0.10/32 '
 allows = [r for r in rules if r.startswith(source) and '--ctstate NEW -j ACCEPT' in r]
-assert len(allows) == 2
+assert len(allows) == 3
+identity = source + '-d 10.78.0.1 -p tcp --dport 3129 -m conntrack --ctstate NEW -j ACCEPT'
+assert identity in allows
+assert rules.index(identity) < rules.index(source + '-m conntrack --ctstate NEW -j REJECT')
+assert not any('--dport 3128' in r for r in allows), 'identity must not share the model proxy port'
 for ip in ('47.246.1.1', '101.201.111.157'):
     rule = source + '-d ' + ip + ' -p tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT'
     assert rule in allows

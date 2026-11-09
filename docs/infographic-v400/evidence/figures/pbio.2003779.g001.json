@@ -1,0 +1,58 @@
+{
+  "id": "pbio.2003779.g001",
+  "paper": "pbio.2003779",
+  "figure": {
+    "id": "pbio.2003779.g001",
+    "label": "Fig 1",
+    "caption": "The Experimental Design Assistant (EDA) workflow.\nThe workflow is not fixed and different users might prefer to do some steps in a different order. A potential workflow using the different functionalities of the EDA is described as follows: (1) The user starts by drawing a diagram (with nodes and links) representing the experiment they are planning. Assistance is provided in the form of examples, templates, and video tutorials. (2) Information is added into the node properties, providing more details about the specific step of the process represented by each node. (3) The “Critique” functionality (see Table 2) enables the researcher to obtain feedback on the diagram and the design it represents. The feedback might prompt a change in their plans or the addition of missing information. This is an iterative process and the user might go through the first 3 steps a number of times. (4) Once feedback from the critique has been addressed and the user is satisfied with the final design, the analysis method suggested by the system can be reviewed (see Table 2). (5) Depending on how the data will be analysed, a suitable sample size can be calculated using one of the calculators provided within the system. (6) Once the number of animals needed per group is known, the EDA can generate the randomisation sequence. The spreadsheet detailing the group allocation for each animal can be sent directly to a third party nominated by the user, thus blinding the allocation. This enables the researcher to remain unaware of the group allocation until the data have been collected and analysed. (7) Diagrams can be safely shared with colleagues and collaborators at any stage of the process. (8) The user can export a PDF report, which contains key information about the internal validity of the experiment, a summary of the feedback from the system, and the EDA diagram itself. This report can be submitted as part of a grant application, as part of the ethical review process, or, later on, with a journal manuscript. Alternatively, the diagram data can be exported (as an.eda file) and saved locally or used to register the protocol before the experiment is conducted. (9) Once the planning is complete, the experiment is carried out. (10) The diagram can be updated after data collection to enable the user to keep an accurate record (e.g., to record the number of animals analysed if some failed to complete the experiment or if data are missing for other reasons).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.2003779.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.2003779.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>The Experimental Design Assistant (EDA) workflow.</title>\n<p>The workflow is not fixed and different users might prefer to do some steps in a different order. A potential workflow using the different functionalities of the EDA is described as follows: (1) The user starts by drawing a diagram (with nodes and links) representing the experiment they are planning. Assistance is provided in the form of examples, templates, and video tutorials. (2) Information is added into the node properties, providing more details about the specific step of the process represented by each node. (3) The “Critique” functionality (see <xref ref-type=\"table\" rid=\"pbio.2003779.t002\">Table 2</xref>) enables the researcher to obtain feedback on the diagram and the design it represents. The feedback might prompt a change in their plans or the addition of missing information. This is an iterative process and the user might go through the first 3 steps a number of times. (4) Once feedback from the critique has been addressed and the user is satisfied with the final design, the analysis method suggested by the system can be reviewed (see <xref ref-type=\"table\" rid=\"pbio.2003779.t002\">Table 2</xref>). (5) Depending on how the data will be analysed, a suitable sample size can be calculated using one of the calculators provided within the system. (6) Once the number of animals needed per group is known, the EDA can generate the randomisation sequence. The spreadsheet detailing the group allocation for each animal can be sent directly to a third party nominated by the user, thus blinding the allocation. This enables the researcher to remain unaware of the group allocation until the data have been collected and analysed. (7) Diagrams can be safely shared with colleagues and collaborators at any stage of the process. (8) The user can export a PDF report, which contains key information about the internal validity of the experiment, a summary of the feedback from the system, and the EDA diagram itself. This report can be submitted as part of a grant application, as part of the ethical review process, or, later on, with a journal manuscript. Alternatively, the diagram data can be exported (as an.eda file) and saved locally or used to register the protocol before the experiment is conducted. (9) Once the planning is complete, the experiment is carried out. (10) The diagram can be updated after data collection to enable the user to keep an accurate record (e.g., to record the number of animals analysed if some failed to complete the experiment or if data are missing for other reasons).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.2003779.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.2003779.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pbio.2003779",
+    "sourceUrl": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.2003779",
+    "title": "The Experimental Design Assistant",
+    "journal": "PLOS Biology",
+    "authors": [
+      "Nathalie Percie du Sert",
+      "Ian Bamsey",
+      "Simon T. Bate",
+      "Manuel Berdoy",
+      "Robin A. Clark",
+      "Innes Cuthill",
+      "Derek Fry",
+      "Natasha A. Karp",
+      "Malcolm Macleod",
+      "Lawrence Moon",
+      "S. Clare Stanford",
+      "Brian Lings"
+    ],
+    "year": "2017",
+    "license": "2017\ndu Sert et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosbiology/article/figure/image?size=large&id=10.1371/journal.pbio.2003779.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pbio.2003779.g001.png",
+      "bytes": 138119,
+      "sha256": "345f95cc2ce8808451665017576dbb749079486e42d02a24349db767dd71a072"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosbiology/article/figure/image?size=original&id=10.1371/journal.pbio.2003779.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pbio.2003779.g001.tif",
+      "bytes": 248176,
+      "sha256": "d2a5b6dfa079e4db20b0c0827e02c065a24cab84be1466f786ca9fc3190e7c87"
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "doi": "10.1371/journal.pcbi.1009226",
+  "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009226",
+  "title": "Ten simple rules for creating reusable pathway models for computational analysis and visualization",
+  "journal": "PLOS Computational Biology",
+  "authors": [
+    "Kristina Hanspers",
+    "Martina Kutmon",
+    "Susan L. Coort",
+    "Daniela Digles",
+    "Lauren J. Dupuis",
+    "Friederike Ehrhart",
+    "Finterly Hu",
+    "Elisson N. Lopes",
+    "Marvin Martens",
+    "Nhung Pham",
+    "Woosub Shin",
+    "Denise N. Slenter",
+    "Andra Waagmeester",
+    "Egon L. Willighagen",
+    "Laurent A. Winckers",
+    "Chris T. Evelo",
+    "Alexander R. Pico"
+  ],
+  "year": "2021",
+  "license": "2021\nHanspers et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pcbi.1009226.g001",
+      "label": "Fig 1",
+      "caption": "Level of detail/abstraction.\nThe citric acid cycle (TCA cycle or Krebs cycle) represented as the canonical version (panel A, wikipathways:WP78) [37] and as part of processes involved in metabolic reprogramming in colon cancer (panel B, wikipathways:WP4290) [38]. In the canonical model, each enzymatic step in the cycle is represented in detail, whereas when the same process is represented in the context of colon cancer, specific steps in the cycle are summarized and abstracted at a higher level. Pathway nodes are depicted in green, metabolites in blue, and genes and proteins in black. TCA, tricarboxylic acid.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009226.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009226.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Level of detail/abstraction.</title>\n<p>The citric acid cycle (TCA cycle or Krebs cycle) represented as the canonical version (panel A, wikipathways:WP78) [<xref ref-type=\"bibr\" rid=\"pcbi.1009226.ref037\">37</xref>] and as part of processes involved in metabolic reprogramming in colon cancer (panel B, wikipathways:WP4290) [<xref ref-type=\"bibr\" rid=\"pcbi.1009226.ref038\">38</xref>]. In the canonical model, each enzymatic step in the cycle is represented in detail, whereas when the same process is represented in the context of colon cancer, specific steps in the cycle are summarized and abstracted at a higher level. Pathway nodes are depicted in green, metabolites in blue, and genes and proteins in black. TCA, tricarboxylic acid.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009226.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1009226.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1009226.g002",
+      "label": "Fig 2",
+      "caption": "Use of graphical annotations in the NAD+ metabolism pathway at WikiPathways (wikipathways:WP3644) [62].\nSince one of the most common uses of pathway models is data visualization on nodes, nodes must be adequately sized to allow for efficient data visualization. Accounting for this, node size can then be optimized to the overall size and complexity of the pathway model, utilizing a smaller node size for models with many nodes and a larger node size for sparse models. A consistent representation of different molecular types in terms of size and shape is important, for example, using a specific shape for gene products/proteins and another for metabolites. Any nonstandard nodes or entities should be defined in a legend in the model, as well as in the textual description. NAD+, nicotinamide adenine dinucleotide.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009226.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009226.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Use of graphical annotations in the NAD+ metabolism pathway at WikiPathways (wikipathways:WP3644) [<xref ref-type=\"bibr\" rid=\"pcbi.1009226.ref062\">62</xref>].</title>\n<p>Since one of the most common uses of pathway models is data visualization on nodes, nodes must be adequately sized to allow for efficient data visualization. Accounting for this, node size can then be optimized to the overall size and complexity of the pathway model, utilizing a smaller node size for models with many nodes and a larger node size for sparse models. A consistent representation of different molecular types in terms of size and shape is important, for example, using a specific shape for gene products/proteins and another for metabolites. Any nonstandard nodes or entities should be defined in a legend in the model, as well as in the textual description. NAD+, nicotinamide adenine dinucleotide.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009226.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1009226.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1009226.g003",
+      "label": "Fig 3",
+      "caption": "Three visualizations of part of the “PKC-gamma calcium signaling pathway in ataxia” at WikiPathways (wikipathways:WP4760) [63].\nVisualizations of part of the “PKC-gamma calcium signaling pathway in ataxia.” (A) Node fill color is used to describe genes with mutations relevant to ataxia; orange indicates an activating mutation, and gray indicates an inactivating mutation. (B) When experimental data are visualized as node fill color, the mutation information is lost. (C) Mutations are shown as an added graphic to nodes; an orange triangle indicates an activating mutation, and a gray hexagon indicates an inactivating mutation. (D) Data visualization does not interfere with the mutation information, and both data types are visualized. Pathways were visualized in Cytoscape [64]. PKC, protein kinase C.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009226.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009226.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Three visualizations of part of the “PKC-gamma calcium signaling pathway in ataxia” at WikiPathways (wikipathways:WP4760) [<xref ref-type=\"bibr\" rid=\"pcbi.1009226.ref063\">63</xref>].</title>\n<p>Visualizations of part of the “PKC-gamma calcium signaling pathway in ataxia.” <bold>(A)</bold> Node fill color is used to describe genes with mutations relevant to ataxia; orange indicates an activating mutation, and gray indicates an inactivating mutation. <bold>(B)</bold> When experimental data are visualized as node fill color, the mutation information is lost. <bold>(C)</bold> Mutations are shown as an added graphic to nodes; an orange triangle indicates an activating mutation, and a gray hexagon indicates an inactivating mutation. <bold>(D)</bold> Data visualization does not interfere with the mutation information, and both data types are visualized. Pathways were visualized in Cytoscape [<xref ref-type=\"bibr\" rid=\"pcbi.1009226.ref064\">64</xref>]. PKC, protein kinase C.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009226.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1009226.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1009226.g004",
+      "label": "Fig 4",
+      "caption": "The development of the complement activation pathway model at 3 time points.\n(A) Revision number 63169 as of May 8, 2013 [73]. (B) Revision number 82136 as of September 9, 2015 [74]. (C) Revision number 106816 as of September 17, 2019 [75].",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009226.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009226.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>The development of the complement activation pathway model at 3 time points.</title>\n<p><bold>(A)</bold> Revision number 63169 as of May 8, 2013 [<xref ref-type=\"bibr\" rid=\"pcbi.1009226.ref073\">73</xref>]. <bold>(B)</bold> Revision number 82136 as of September 9, 2015 [<xref ref-type=\"bibr\" rid=\"pcbi.1009226.ref074\">74</xref>]. <bold>(C)</bold> Revision number 106816 as of September 17, 2019 [<xref ref-type=\"bibr\" rid=\"pcbi.1009226.ref075\">75</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009226.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1009226.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

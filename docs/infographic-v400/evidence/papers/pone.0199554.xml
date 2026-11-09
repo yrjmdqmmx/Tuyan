@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0199554</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-18-00941</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Research design</subject><subj-group><subject>Survey research</subject><subj-group><subject>Surveys</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Emotions</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Social sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Emotions</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Research assessment</subject><subj-group><subject>Research validity</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Bioassays and physiological analysis</subject><subj-group><subject>Electrophysiological techniques</subject><subj-group><subject>Brain electrophysiology</subject><subj-group><subject>Transcranial stimulation</subject><subj-group><subject>Transcranial magnetic stimulation</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Physiology</subject><subj-group><subject>Electrophysiology</subject><subj-group><subject>Neurophysiology</subject><subj-group><subject>Brain electrophysiology</subject><subj-group><subject>Transcranial stimulation</subject><subj-group><subject>Transcranial magnetic stimulation</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Physiology</subject><subj-group><subject>Electrophysiology</subject><subj-group><subject>Neurophysiology</subject><subj-group><subject>Brain electrophysiology</subject><subj-group><subject>Transcranial stimulation</subject><subj-group><subject>Transcranial magnetic stimulation</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Neurophysiology</subject><subj-group><subject>Brain electrophysiology</subject><subj-group><subject>Transcranial stimulation</subject><subj-group><subject>Transcranial magnetic stimulation</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Brain mapping</subject><subj-group><subject>Transcranial stimulation</subject><subj-group><subject>Transcranial magnetic stimulation</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Cognitive science</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Decision making</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Decision making</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Social sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Decision making</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Cognitive science</subject><subj-group><subject>Cognition</subject><subj-group><subject>Decision making</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Psychology</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Social sciences</subject><subj-group><subject>Psychology</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Cognitive science</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Attention</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Attention</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Social sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Attention</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Social sciences</subject><subj-group><subject>Sociology</subject><subj-group><subject>Social research</subject></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Self-reports from behind the scenes: Questionable research practices and rates of replication in ego depletion research</article-title>
+<alt-title alt-title-type="running-head">Behind the scenes</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Wolff</surname>
+<given-names>Wanja</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Supervision</role>
+<role content-type="http://credit.casrai.org/">Visualization</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Baumann</surname>
+<given-names>Lorena</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Data curation</role>
+<role content-type="http://credit.casrai.org/">Formal analysis</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" equal-contrib="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-4757-8040</contrib-id>
+<name name-style="western">
+<surname>Englert</surname>
+<given-names>Chris</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Formal analysis</role>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Project administration</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<role content-type="http://credit.casrai.org/">Visualization</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Department of Sport Psychology, University of Konstanz, Konstanz, Germany</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Department of Educational Psychology, University of Bern, Bern, Switzerland</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Perales</surname>
+<given-names>José César</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Universidad de Granada, SPAIN</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">christoph.englert@edu.unibe.ch</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>25</day>
+<month>6</month>
+<year>2018</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2018</year>
+</pub-date>
+<volume>13</volume>
+<issue>6</issue>
+<elocation-id>e0199554</elocation-id>
+<history>
+<date date-type="received">
+<day>10</day>
+<month>1</month>
+<year>2018</year>
+</date>
+<date date-type="accepted">
+<day>8</day>
+<month>6</month>
+<year>2018</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2018</copyright-year>
+<copyright-holder>Wolff et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0199554"/>
+<abstract>
+<p>The strength model of self-control is one of the most influential and well-established models of self-regulation in social psychology. However, recent attempts to replicate the ego depletion effect have sometimes failed. The goal of this study is to investigate self-reported replication rates and the frequency of a set of questionable research practices (QRP) in ego depletion research. A literature search resulted in 1721 researchers who had previously published on ego depletion. They were invited to participate in an anonymous online survey. The respondents (<italic>n</italic> = 277), on average, had published over three papers on ego depletion, and had completed more than two additional, unpublished studies. Respondents indicated that in more than 40% of their studies, results were similar in magnitude to those reported in the existing literature, and more than 60% reported conducting a priori power analyses. 39.2% of respondents were aware of other researchers who engaged in the surveyed QRP’s, while 37.7% affirmed to have employed said QRP’s. These results underline the importance of reducing QRP’s to reliably test the validity of the ego depletion effect.</p>
+</abstract>
+<funding-group>
+<funding-statement>The authors received no specific funding for this work.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="1"/>
+<table-count count="1"/>
+<page-count count="11"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>The file is available at figshare (<ext-link ext-link-type="uri" xlink:href="https://figshare.com/articles/Survey_sav/5759520" xlink:type="simple">https://figshare.com/articles/Survey_sav/5759520</ext-link>). The study protocol is available at <ext-link ext-link-type="uri" xlink:href="https://www.protocols.io/view/s2-file-full-protocol-mf9c3r6" xlink:type="simple">https://www.protocols.io/view/s2-file-full-protocol-mf9c3r6</ext-link>.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>The strength model of self-control is one of the most cited research paradigms in social psychology [<xref ref-type="bibr" rid="pone.0199554.ref001">1</xref>].It defines self-control as a process that enables an individual to volitionally override behavioral impulses or dominant response tendencies (e.g., eating a cookie), and thus facilitates the achievement of long-term goals (e.g., healthy nutrition) [<xref ref-type="bibr" rid="pone.0199554.ref002">2</xref>]. According to Baumeister et al. [<xref ref-type="bibr" rid="pone.0199554.ref001">1</xref>], all self-control acts are based on one global resource. This self-control strength is assumed to have a limited capacity, meaning that it can become temporarily depleted after having exerted self-control. A temporary loss of self-control strength (ego depletion) negatively affects performance in subsequent self-control tasks[<xref ref-type="bibr" rid="pone.0199554.ref003">3</xref>].</p>
+<p>The ego depletion effect is primarily investigated with the sequential two-task paradigm [<xref ref-type="bibr" rid="pone.0199554.ref001">1</xref>]: Participants are randomly assigned to an experimental condition or a control condition. The demands of the first task are similar in both conditions (e.g., watching an emotional video clip), but self-control strength is required only in the experimental condition (e.g., emotional suppression while watching the video clip) [<xref ref-type="bibr" rid="pone.0199554.ref004">4</xref>]. The subsequent secondary task is identical in both conditions and requires self-control (e.g., the Stroop task) [<xref ref-type="bibr" rid="pone.0199554.ref005">5</xref>]. It is assumed that participants in the control condition should outperform participants from the experimental condition in the secondary task, as their resources have not been taxed in the primary task. There have been plenty of studies supporting the ego depletion effect, and a meta-analysis by Hagger, Wood, Stiff, and Chatzisarantis (2010) found a medium-to-large effect size of ego depletion [<xref ref-type="bibr" rid="pone.0199554.ref006">6</xref>]. Additionally, a recently published meta-analysis by Dang [<xref ref-type="bibr" rid="pone.0199554.ref007">7</xref>] also found sound empirical evidence for the ego depletion effect.</p>
+<p>Even though most ego depletion studies have supported the strength model’s propositions, there are some recent studies which have found no empirical evidence for the ego depletion effect [<xref ref-type="bibr" rid="pone.0199554.ref008">8</xref>,<xref ref-type="bibr" rid="pone.0199554.ref009">9</xref>]. Furthermore, a re-analysis of the findings by Hagger et al. [<xref ref-type="bibr" rid="pone.0199554.ref006">6</xref>] indicates that this effect size might reflect a case of publication bias which may have caused an overestimation of the true ego depletion effect [<xref ref-type="bibr" rid="pone.0199554.ref010">10</xref>–<xref ref-type="bibr" rid="pone.0199554.ref012">12</xref>].</p>
+<p>These inconsistent findings and the general replication crisis in psychological science [<xref ref-type="bibr" rid="pone.0199554.ref013">13</xref>] led Hagger et al. [<xref ref-type="bibr" rid="pone.0199554.ref014">14</xref>] to initiate a Registered Replication Report (RRR), which included 23 labs and more than 2,000 participants. The authors tested the assumptions of the strength model with a standardized and fully computerized ego-depletion protocol [<xref ref-type="bibr" rid="pone.0199554.ref015">15</xref>]. Participants were randomly assigned to a control condition or a depletion condition and worked on the modified letter <italic>e</italic> task to manipulate self-control strength [<xref ref-type="bibr" rid="pone.0199554.ref003">3</xref>]. Then, all participants worked on a secondary task, the multisource interference task (MSIT) [<xref ref-type="bibr" rid="pone.0199554.ref016">16</xref>], which required self-control from all participants. According to the strength model [<xref ref-type="bibr" rid="pone.0199554.ref001">1</xref>], participants from the depletion condition should have performed significantly worse in this secondary task compared to participants from the control condition. However, the RRR failed to find a significant ego depletion effect. Hagger et al. [<xref ref-type="bibr" rid="pone.0199554.ref014">14</xref>] stress that the results do not imply that the ego depletion effect does not exist, but that it is highly necessary to identify the potential causes for these null-findings.</p>
+<p>These unexpected results have instigated debate regarding the validity of the strength model [<xref ref-type="bibr" rid="pone.0199554.ref017">17</xref>]. For instance, Baumeister and Vohs [<xref ref-type="bibr" rid="pone.0199554.ref018">18</xref>] published a response letter in which they argue that the tasks applied in the RRR were not appropriate to test the strength model and that “in retrospect, the decision to use new, mostly untested procedures for a large replication project was foolish” (p. 574) [<xref ref-type="bibr" rid="pone.0199554.ref019">19</xref>]. It has also been argued that the general experimental setup chosen in the RRR was not appropriate to test the validity of the strength model [<xref ref-type="bibr" rid="pone.0199554.ref018">18</xref>]. It needs to be pointed out that the protocol was vetted by Baumeister [<xref ref-type="bibr" rid="pone.0199554.ref015">15</xref>] and the tasks applied in the RRR were adopted from a previous study which found empirical evidence for the ego depletion effect [<xref ref-type="bibr" rid="pone.0199554.ref015">15</xref>]. Still, it is conceivable that whether or not an ego depletion effect is found, seems to largely depend on the chosen tasks. Furthermore, the RRR data have been reanalyzed by applying alternative statistical methods or by focusing on certain subsamples (e.g., only English-speaking labs), which led to different but still non-significant results [<xref ref-type="bibr" rid="pone.0199554.ref020">20</xref>–<xref ref-type="bibr" rid="pone.0199554.ref022">22</xref>].</p>
+<p>The recent discussions regarding the strength model have led us to shift our focus from testing the strength model’s validity to asking researchers that have contributed to ego depletion research about their experiences and research practices in the field of ego depletion. We would like to stress that we are not taking a stand regarding the validity of the strength models’ propositions. Our research’s focus is to provide a “behind the scenes” look into the current state of research on ego depletion as reported by ego depletion researchers. Such a behind the scenes look is highly necessary because—as recently stressed by Nelson, Simmons, and Simonsohn—“psychologists spent several decades relying on methods of data collection and analysis that make it too easy to publish false-positive, nonreplicable results” [<xref ref-type="bibr" rid="pone.0199554.ref023">23</xref>] (p 512). The inconsistencies regarding the ego depletion effect might also be a product of this scientific approach [<xref ref-type="bibr" rid="pone.0199554.ref024">24</xref>]. In recent years, psychological research has gone to great lengths to assess how frequently questionable research practices (QRP; e.g. selective reporting of subgroups or outlier rejection without statistical support), that might eventually lead to the publication of false-positive results, are employed [<xref ref-type="bibr" rid="pone.0199554.ref023">23</xref>]. A recent systematic review on QRP’s in the field of social sciences found substantial evidence for QRP’s in 91% of the analyzed studies [<xref ref-type="bibr" rid="pone.0199554.ref025">25</xref>]. Therefore, QRP’s appear to be a serious issue. However, some evidence suggests that methodological issues might cause an overestimation of QRP’s [<xref ref-type="bibr" rid="pone.0199554.ref026">26</xref>]. On the other hand, socially desirable responding might also affect QRP-reporting [<xref ref-type="bibr" rid="pone.0199554.ref027">27</xref>]. Addressing the use of QRP’s–which mostly does not represent an ill-intended act of data manipulation [<xref ref-type="bibr" rid="pone.0199554.ref023">23</xref>]–has led to ‘Psychology’s Renaissance’ and an improvement of research practices [<xref ref-type="bibr" rid="pone.0199554.ref023">23</xref>]. In light of the heated debate regarding the validity of the ego depletion effect, we believe it is paramount to directly ask relevant researchers on their research practices and experiences.</p>
+<p>In order to accomplish this goal, we mirrored the approach by Héroux, Taylor, and Gandevia [<xref ref-type="bibr" rid="pone.0199554.ref028">28</xref>], who recently surveyed researchers to investigate practices and experiences regarding the effects of transcranial magnetic stimulation (TMS). Although TMS refers to a technique and ego depletion is a proposed psychological state, there are similarities: TMS and ego depletion have garnered substantial scientific and public attention, and, like the ego depletion effect, TMS effects have been difficult to replicate [<xref ref-type="bibr" rid="pone.0199554.ref028">28</xref>]. Héroux et al. found that 50% of their 47 respondents were able to reproduce TMS effects [<xref ref-type="bibr" rid="pone.0199554.ref028">28</xref>]. Furthermore, while only 18% affirmed applying QRP’s, 44% reportedly knew of researchers who applied such practices. In a more recent study, Héroux and colleagues reported similar results for electrical brain stimulation [<xref ref-type="bibr" rid="pone.0199554.ref029">29</xref>].</p>
+<p>We conducted a literature search to identify researchers who had previously published on ego depletion. We invited all researchers of whom we were able to find a publicly available email-address to participate in an anonymized online survey that focused on their replication success of the ego depletion effect and QRP’s. More specifically, the survey focused on the number of published and unpublished studies on ego depletion per researcher, the rate at which researchers were able to find the ego depletion effect as a function of the ego depletion task employed in a given study, and the decisions made when no significant effects were found. Additionally, researchers were surveyed on their use and their knowledge of others’ use of QRP’s in the field of ego depletion. Following Héroux and colleagues, QRP’s are defined as “an unhealthy flexibility in collecting and analyzing research data” [<xref ref-type="bibr" rid="pone.0199554.ref028">28</xref>] (p. 6).</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Materials and methods</title>
+<sec id="sec003">
+<title>Ethics statement</title>
+<p>This study has been approved by the local ethics committee of the faculty of Human Sciences at the University of Bern, Switzerland. The study was carried out in accordance with the Declaration of Helsinki and the ethical guidelines for experimental research with human participants as proposed by the German Psychological Society (DGPs) and the American Psychological Association (APA). All persons gave their informed consent prior to their inclusion in the study.</p>
+</sec>
+<sec id="sec004">
+<title>Procedure</title>
+<p>To identify the researchers who had previously published on ego depletion in scientific journals, a literature search was conducted in PubMed and PMC in July 2017 (search terms “ego depletion”, “ego-depletion”, and “egodepletion”). We also extracted all the authors whose studies had been included in the meta-analysis by Hagger et al. [<xref ref-type="bibr" rid="pone.0199554.ref006">6</xref>] and all the authors who participated in the Registered Replication Report [<xref ref-type="bibr" rid="pone.0199554.ref014">14</xref>]. This led to a total of 2094 researchers and 1721 researchers whose email addresses could be identified (see also <xref ref-type="supplementary-material" rid="pone.0199554.s001">S1 File</xref>). It is important to note that this number is likely a substantial overestimation of the number of active ego depletion researchers. Email addresses were collected from all authors listed in each publication. It is therefore likely that many had left academia, changed fields, or contributed to the publications in ways that are not directly related to ego depletion (e.g., by conducting the statistical analyses or collecting neuroimaging data). An email link to an anonymous online survey was sent out to all researchers, inviting them to participate. The respondents who entered the online survey were informed about the purpose of the study, delivered informed consent and confirmed that they voluntarily agreed to participate.</p>
+<p>On the first page of the online survey, respondents were asked to report their research area, the number of years they had been working in the field of ego depletion, the number of published and unpublished studies on ego depletion they had conducted, and how they usually determine their sample sizes (<xref ref-type="supplementary-material" rid="pone.0199554.s002">S2 File</xref>; for full protocol, see also <ext-link ext-link-type="uri" xlink:href="https://www.protocols.io/view/s2-file-full-protocol-mf9c3r6" xlink:type="simple">https://www.protocols.io/view/s2-file-full-protocol-mf9c3r6</ext-link>).</p>
+<p>Next, respondents were presented with seven of the most commonly used ego depletion tasks and asked which they had used in their own research. The tasks were the Stroop task [<xref ref-type="bibr" rid="pone.0199554.ref030">30</xref>], the attention control video [<xref ref-type="bibr" rid="pone.0199554.ref031">31</xref>], the letter <italic>e</italic> task [<xref ref-type="bibr" rid="pone.0199554.ref003">3</xref>], the transcription task [<xref ref-type="bibr" rid="pone.0199554.ref032">32</xref>], the N-back task [<xref ref-type="bibr" rid="pone.0199554.ref030">30</xref>], MSIT [<xref ref-type="bibr" rid="pone.0199554.ref016">16</xref>], and the emotional suppression video [<xref ref-type="bibr" rid="pone.0199554.ref033">33</xref>]. The respondents also had the opportunity to name any other tasks they had applied in their work on ego depletion. For each of the tasks they had previously used, respondents indicated whether they had been able to reproduce a similar effect for the respective task as reported in the original literature and what steps they took if they had not been able to reproduce the effect.</p>
+<p>Next, questionable research practices were identified by asking respondents to provide information on how they generally conduct and report studies on ego depletion and how they think other ego depletion researchers conduct and report studies [<xref ref-type="bibr" rid="pone.0199554.ref028">28</xref>] (<xref ref-type="supplementary-material" rid="pone.0199554.s002">S2 File</xref>). Finally, respondents had the opportunity to provide any additional comments.</p>
+</sec>
+</sec>
+<sec id="sec005" sec-type="results">
+<title>Results</title>
+<p>Out of the 1721 invited researchers, 119 could not be contacted due to mail delivery failures. A total of 379 researchers started the study, and a total of 277 worked through the survey to the end. Respondents were always given the option to skip any question, so the results below pertain to different subsamples, depending on whether or not respondents chose to skip a question. To increase the transparency of the results, we indicate for each question how many researchers answered (<xref ref-type="supplementary-material" rid="pone.0199554.s003">S3 file</xref> for full data set; <ext-link ext-link-type="uri" xlink:href="https://figshare.com/articles/Survey_sav/5759520" xlink:type="simple">https://figshare.com/articles/Survey_sav/5759520</ext-link>).</p>
+<p>The 277 respondents worked in the following research areas: <italic>n</italic> = 242 in psychology (87.4%), <italic>n</italic> = 40 in neuroscience (14.4%), <italic>n</italic> = 15 in sport science (5.1%), <italic>n</italic> = 3 in clinical neurology (1.1%), <italic>n</italic> = 5 in neurophysiology (1.8%), <italic>n</italic> = 40 in other sciences (14.4%). Within the “other” domain, organizational behavior was the most prominent occupation (<italic>n</italic> = 5, 1.8%; <xref ref-type="supplementary-material" rid="pone.0199554.s004">S4 File</xref>). Respondents (<italic>n</italic> = 190) had been working in the field of ego depletion for on average 5.43 years (<italic>SD</italic> = 4.68) and had published on average 3.4 (<italic>n</italic> = 183) papers in scientific journals (<italic>SD</italic> = 7.48). Furthermore, respondents (<italic>n</italic> = 182) on average had completed 2.68 additional studies that they did not publish (<italic>SD</italic> = 4.13). The number of published and unpublished studies and papers per researcher is highly correlated, <italic>r</italic> = .63, <italic>p</italic> &lt; .001, CI95% = .53 - .71. Thus, the more studies a researcher had published on ego depletion, the more studies on the topic he or she had not yet published.</p>
+<p>Most of the <italic>n</italic> = 176 respondents had previously applied more than one ego depletion task in their research. From the frequently used ego depletion tasks, 85 had used the letter <italic>e</italic> task (48.3%), 62 had used the Stroop task (35.2%), 41 had used the emotion suppression task (23.3%), 38 had used attention control video (21.6%), 18 had used N-back (10.2%), 16 had used the transcription task (9.1%), and 15 had used the MSIT (8.5%). The provided categories were not exhaustive as 70 (39.8%) reported to have used other ego depletion tasks.</p>
+<p>Respondents (<italic>n</italic> = 190) had used several different methods in the past to determine sample sizes. 121 (63.7%) of them reported that they had conducted a priori power analyses based on previously published studies and 77 (40.5%) had determined their sample sizes based on their personal experiences. Some respondents deviated from their predetermined sample sizes. 13 (6.8%) had collected additional subjects if needed or stopped data collection either because a clear effect (<italic>n</italic> = 5; 2.6%) or no clear effect (<italic>n</italic> = 7; 3.7%) was noted. Finally, 5 respondents (2.6%) reported to have determined their sample sizes based on the appearance of the data.</p>
+<p>Out of <italic>n</italic> = 253 respondents, 107 (42.29%) reported to have found (on average) similar results to those reported in the original literature when using the respective ego depletion tasks in their research. The replication rate varied between 33.3% for the letter <italic>e</italic> task) and 54.1% for the emotion suppression task. Even if the published effect was not found, many researchers still tried to publish findings while reporting the inability to reproduce the published effect. The full results for these questions are displayed in <xref ref-type="table" rid="pone.0199554.t001">Table 1</xref>.</p>
+<table-wrap id="pone.0199554.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0199554.t001</object-id>
+<label>Table 1</label> <caption><title>Primary self-control tasks: Were you able to reproduce an effect similar to the one reported in the literature?</title></caption>
+<alternatives>
+<graphic id="pone.0199554.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0199554.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="2"/>
+<th align="left" colspan="2">Some-times</th>
+<th align="left" colspan="3">If „Yes“–how big was the effect compared to the literature?</th>
+<th align="left" colspan="7">If “No”–what steps did you take? Please select all that apply (Q1-Q6)</th>
+</tr>
+<tr>
+<th align="center"/>
+<th align="center"/>
+<th align="center">Ʃ</th>
+<th align="center">&lt;</th>
+<th align="center">=</th>
+<th align="center">&gt;</th>
+<th align="center">Ʃ</th>
+<th align="center">Q1</th>
+<th align="center">Q2</th>
+<th align="center">Q3</th>
+<th align="center">Q4</th>
+<th align="center">Q5</th>
+<th align="center">Q6</th>
+</tr>
+<tr>
+<th align="left"/>
+<th align="center">n<break/>(%)</th>
+<th align="center">n<break/>(%)</th>
+<th align="center">n<break/>(%)</th>
+<th align="center" colspan="2">n<break/>(%)</th>
+<th align="center">n<break/>(%)</th>
+<th align="center">n<break/>(%)</th>
+<th align="center">n<break/>(%)</th>
+<th align="center" colspan="2">n<break/>(%)</th>
+<th align="center">n<break/>(%)</th>
+<th align="center">n<break/>(%)</th>
+<th align="center">n<break/>(%)</th>
+<th align="center">n<break/>(%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Letter e</td>
+<td align="center">18 (22,2%)</td>
+<td align="center"><bold>27 (33,3%)</bold></td>
+<td align="center">6 (26,1%)</td>
+<td align="center">16 (69,6%)</td>
+<td align="center">1<break/>(4,3%)</td>
+<td align="center"><bold>36 (44,4%)</bold></td>
+<td align="center">3<break/>(8,6%)</td>
+<td align="center">2 (5,7%)</td>
+<td align="center">2 (5,7%)</td>
+<td align="center">14 (40,0%)</td>
+<td align="center">7 (20,0%)</td>
+<td align="center">16 (45,7%)</td>
+</tr>
+<tr>
+<td align="left">Stroop</td>
+<td align="center">13 (21,3%)</td>
+<td align="center"><bold>25 (41,0%)</bold></td>
+<td align="center">4<break/>(17,4%)</td>
+<td align="center">17 (73,9%)</td>
+<td align="center">2<break/>(8,7%)</td>
+<td align="center"><bold>23 (37,7%)</bold></td>
+<td align="center">5<break/>(22,7%)</td>
+<td align="center">0</td>
+<td align="center">1 (4,5%)</td>
+<td align="center">7 (31,8%)</td>
+<td align="center">10 (45,5%)</td>
+<td align="center">7 (31,8%)</td>
+</tr>
+<tr>
+<td align="left">Emotion Suppres-sion</td>
+<td align="center">7 (18,9%)</td>
+<td align="center"><bold>20 (54,1%)</bold></td>
+<td align="center">3 (15,0%)</td>
+<td align="center">17 (85,0%)</td>
+<td align="center">0</td>
+<td align="center"><bold>10 (27,0%)</bold></td>
+<td align="center">1<break/>(10,0%)</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">2 (20,0%)</td>
+<td align="center">3<break/>(30,0%)</td>
+<td align="center">5<break/>(50,0%)</td>
+</tr>
+<tr>
+<td align="left">Attention Control</td>
+<td align="center">9 (25,0%)</td>
+<td align="center"><bold>15 (41,7%)</bold></td>
+<td align="center">5 (35,7%)</td>
+<td align="center">9 (64,3%)</td>
+<td align="center">0</td>
+<td align="center"><bold>12 (33,3%)</bold></td>
+<td align="center">1<break/>(8,3%)</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">3 (25,0%)</td>
+<td align="center">2 (16,7%)</td>
+<td align="center">9<break/>(75,0%)</td>
+</tr>
+<tr>
+<td align="left">n-back Task</td>
+<td align="center">2 (11,8%)</td>
+<td align="center"><bold>7 (41,2%)</bold></td>
+<td align="center">3 (42,9%)</td>
+<td align="center">4 (57,1%)</td>
+<td align="center">0</td>
+<td align="center"><bold>8 (47,1%)</bold></td>
+<td align="center">1<break/>(12,5%)</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">4 (50,0%)</td>
+<td align="center">3<break/>(37,5%)</td>
+<td align="center">2<break/>(25,0%)</td>
+</tr>
+<tr>
+<td align="left">Transcription Task</td>
+<td align="center">1 (6,7%)</td>
+<td align="center"><bold>8</bold><break/><bold>(53,3%)</bold></td>
+<td align="center">3 (37,0%)</td>
+<td align="center">5 (62,5%)</td>
+<td align="center">0</td>
+<td align="center"><bold>6 (40,0%)</bold></td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">4 (66,7%)</td>
+<td align="center">0</td>
+<td align="center">1 (16,7%)</td>
+</tr>
+<tr>
+<td align="left">MSIT<xref ref-type="table-fn" rid="t001fn002"><sup>a</sup></xref></td>
+<td align="center">2 (15,4%)</td>
+<td align="center"><bold>5 (38,5%)</bold></td>
+<td align="center">n/a<xref ref-type="table-fn" rid="t001fn003"><sup>b</sup></xref></td>
+<td align="center">n/a<xref ref-type="table-fn" rid="t001fn003"><sup>b</sup></xref><xref ref-type="table-fn" rid="t001fn003"><sup>b</sup></xref></td>
+<td align="center">n/a<xref ref-type="table-fn" rid="t001fn003"><sup>b</sup></xref></td>
+<td align="center"><bold>6 (46,2%)</bold></td>
+<td align="center">1 (16,7%)</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">6<break/>(100%)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p><italic>Note</italic>. Q1 = Collect data from a greater number of subjects; Q2 = Select a subset of subjects that were "susceptible" to the investigated effect; Q3 = Contact the original authors for clarification; Q4 = Stop the assessment; Q5 = Modify the ego depletion task; Q6 = Try to publish the finding stating that you were unable to reproduce the published effect.</p></fn>
+<fn id="t001fn002"><p><sup><italic>a</italic></sup> <italic>=</italic> Multi Source Interference Task</p></fn>
+<fn id="t001fn003"><p><sup>b</sup> = no analyzable data due to survey malfunction.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p><xref ref-type="fig" rid="pone.0199554.g001">Fig 1</xref> displays the data on QRP’s as conceptualized by Héroux et al. [<xref ref-type="bibr" rid="pone.0199554.ref028">28</xref>]. The percentages of respondents who affirmed to have used QRP’s varied between 2.6% and 21.2%, depending on the research practice in question. These values are slightly higher, when respondents were asked if they were aware of other researchers who had used such practices, 12.6% - 25.8%. The most frequently applied questionable research practice was to selectively report outcomes. Still, an overwhelming majority of 94.3% of respondents stressed that questionable research practices should be reported when publishing.</p>
+<fig id="pone.0199554.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0199554.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Dumbbell plot.</title>
+<p>Dumbbell plot visualizing the proportion of questionable research practices.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0199554.g001" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec006" sec-type="conclusions">
+<title>Discussion</title>
+<p>Based on the current debate regarding the ego depletion effect [<xref ref-type="bibr" rid="pone.0199554.ref008">8</xref>–<xref ref-type="bibr" rid="pone.0199554.ref010">10</xref>,<xref ref-type="bibr" rid="pone.0199554.ref012">12</xref>,<xref ref-type="bibr" rid="pone.0199554.ref014">14</xref>] and the heated discussion surrounding the strength model [<xref ref-type="bibr" rid="pone.0199554.ref018">18</xref>], this study aimed at collecting information on replication rates and QRP’s in the field of ego depletion. To gather this information, researchers who had previously published on ego depletion were invited to participate in an anonymous online survey. Researchers in our dataset had published, on average, three studies on ego depletion and had completed an additional two unpublished studies on ego depletion. The number of published and unpublished studies was highly correlated, suggesting replication rates that are similar for different researchers. This speaks against the idea that some researchers are <italic>always</italic> successful (or unsuccessful) in their ego depletion studies. In fact, the proportion of published and unpublished studies aligns with the findings by Carter and McCullough who suggested that the ego depletion effect is overestimated and that this overestimation is likely caused by publication bias [<xref ref-type="bibr" rid="pone.0199554.ref024">24</xref>]. However, it is important to note, that it cannot be concluded that none of the unpublished studies found evidence for the ego depletion effect. It might also be possible that these studies did not get published for other reasons. However, Carter and McCullough’s analyses reveal a striking lack of non-significant findings in published ego depletion research [<xref ref-type="bibr" rid="pone.0199554.ref024">24</xref>], which hints at a body of unpublished non-significant findings. Indeed, our findings suggest, that a large body of grey literature on ego depletion exists [<xref ref-type="bibr" rid="pone.0199554.ref034">34</xref>] and further research is needed to analyze these currently unpublished studies.</p>
+<p>The respondents indicated that in over 40% of their studies the results were similar in magnitude to those reported in the original literature when using the respective ego depletion tasks. Interestingly, this replication rate varied substantially between the tasks used. While only 27% of researchers who had used the emotion suppression task did not find the expected effect, 47.1% who had used the n-back task failed to replicate the initial effect. Thus, whether or not an ego depletion effect is found also depends on the chosen self-control task and even well-established tasks differ substantially in terms of their replication rate. More than 60% of respondents reported that they had applied a priori power analyses to determine the required sample sizes, which is a high value compared to other fields. For instance, in the aforementioned study by Héroux et al. [<xref ref-type="bibr" rid="pone.0199554.ref028">28</xref>], only 20% of respondents conducted a priori power analyses.</p>
+<p>In this study, 39.2% of respondents were aware of other ego depletion researchers who had applied QRP’s and 37.7% affirmed that they had previously applied QRP’s. Compared to the findings by Héroux et al. [<xref ref-type="bibr" rid="pone.0199554.ref028">28</xref>], who investigated questionable research practices regarding the application of TMS, our numbers are substantially lower. Compared to other studies on QRP’s in psychology, albeit assessing larger number of different QRP’s, our numbers are descriptively lower too [<xref ref-type="bibr" rid="pone.0199554.ref035">35</xref>]. In addition, although respondents were aware of more QRP’s among others than among themselves, this difference is comparatively small. Taken together, our self-report data do not reveal an unusually high engagement with the assessed QRP’s among ego depletion researchers. If anything, the QRP frequencies and the discrepancy between the self-other evaluations regarding QRP engagement we observed are comparatively minor [<xref ref-type="bibr" rid="pone.0199554.ref028">28</xref>].</p>
+</sec>
+<sec id="sec007">
+<title>Limitations</title>
+<p>Finally, some limitations of this study should be addressed. First, even though the response rate was high in comparison to similar online surveys [<xref ref-type="bibr" rid="pone.0199554.ref028">28</xref>,<xref ref-type="bibr" rid="pone.0199554.ref036">36</xref>], selection bias cannot be ruled out [<xref ref-type="bibr" rid="pone.0199554.ref037">37</xref>]. For instance, it might be possible that only researchers who question the propositions of the strength model completed the survey. On the other hand, it is also reasonable that those researchers who took part in the survey were those who truly believe in the ego depletion effect and want to defend the strength model. In addition, engaging in QRP’s is a socially sensitive topic [<xref ref-type="bibr" rid="pone.0199554.ref038">38</xref>] and it is possible that researchers who have engaged in QRP’s were less likely to take part in the survey. Taken together, selection bias cannot be ruled out, which is why we cannot infer that our findings represent the opinions and research approaches of the entire ego depletion community. However, this applies to all research that relies on self-selected samples. We believe that in order to advance our understanding of self-control, it is crucial to survey and report the personal experiences and practices of those who are willing to contribute.</p>
+<p>Second, although it has been used in previous research [<xref ref-type="bibr" rid="pone.0199554.ref028">28</xref>] the questionnaire used in this study is not without limitations. Most importantly, we did not survey an exhaustive list of possible QRP’s, but only a limited subset [<xref ref-type="bibr" rid="pone.0199554.ref028">28</xref>]. Still, there are multiple reasons why we chose to emulate the approach by Héroux et al. [<xref ref-type="bibr" rid="pone.0199554.ref028">28</xref>]. Both researches aimed at surveying a small and specified population (i.e., ‘ego depletion’ or ‘TMS’ researchers as opposed to ‘all members of the German society for psychology’ [<xref ref-type="bibr" rid="pone.0199554.ref026">26</xref>], which is why it was paramount to lose as few respondents as possible. As longer questionnaires tend to yield lower response rates [<xref ref-type="bibr" rid="pone.0199554.ref039">39</xref>], we decided to assess a lower number of QRPs in order to increase the number of respondents. Furthermore, research on QRP’s has burgeoned in recent years but a gold standard QRP-questionnaire has yet to be established. In order to allow for comparisons between studies, we decided to use a questionnaire that had already been used in two highly published studies. Third, the fields surveyed by Héroux et al.–like ego depletion research–are very popular but are also controversially debated. This might make it even harder to convince researchers to participate, compared to surveys that are distributed among a broader population of researchers. As Héroux et al. were able to achieve sufficient sample sizes with their approach and provide valuable findings, we decided to mirror it as it has proven successful under these conditions. Still, these limitations should not be ignored and going forward, an important next step is to standardize research on QRP’s in order to increase the usefulness of such findings and to facilitate comparisons between studies.</p>
+<p>Third, several researchers responded via email with reasons why they did not want to participate in the survey. For instance, some researchers had the impression that the study was merely a witch-hunt, while others stated that is more important to develop and adjust the strength model than conduct further studies on its validity. However, it is important to repeat that this study does not take a position in favor or against the strength model. The aim is to present common research practices and experiences in the field of ego depletion research, without giving any recommendations or drawing any conclusion regarding the effects’ validity. Up until now, such a survey among ego depletion researchers has never been conducted, as previous studies have been more interested in testing the ego depletion effect at an empirical level [<xref ref-type="bibr" rid="pone.0199554.ref014">14</xref>]. That is why this study provides a novel, valuable insight into the current state of ego depletion research.</p>
+</sec>
+<sec id="sec008" sec-type="conclusions">
+<title>Conclusion</title>
+<p>The results of this survey suggest, that it seems highly necessary to critically reflect on the current research practices. For example, when applying the sequential two-task paradigm [<xref ref-type="bibr" rid="pone.0199554.ref003">3</xref>] there needs to be a common standard for how long the primary self-control task should last. In some studies, participants had to work on fewer than 50 Stroop trials [<xref ref-type="bibr" rid="pone.0199554.ref040">40</xref>], while in other studies participants were asked to perform more than 250 trials [<xref ref-type="bibr" rid="pone.0199554.ref041">41</xref>]. Considering these drastic methodological differences, the inconsistent findings on ego depletion are not surprising. It should also be noted that it is not clear how long it takes until supposedly depleted self-control strength is fully recovered. This is a major problem as it determines the necessary timeframe between completing a primary task and starting the secondary task. In some studies, there is a break of several minutes between the two tasks [<xref ref-type="bibr" rid="pone.0199554.ref042">42</xref>], while in others there is no break at all [<xref ref-type="bibr" rid="pone.0199554.ref003">3</xref>]. Again, to reliably compare different ego depletion studies, there needs to be a general agreement regarding the research approach [<xref ref-type="bibr" rid="pone.0199554.ref043">43</xref>].</p>
+<p>Furthermore, most studies analyze self-control performance by comparing the mean values of the depletion and the control condition (e.g., number of correctly answered Stroop trials) [<xref ref-type="bibr" rid="pone.0199554.ref030">30</xref>]. However, recent studies using multilevel modeling indicate that ego depletion might indeed lead to progressive performance decreases over time. This could indicate that the ego depletion effect is stronger towards the end of a self-control task [<xref ref-type="bibr" rid="pone.0199554.ref044">44</xref>]. Based on these findings, future studies should consider to analyze ego depletion effects over time instead of simply comparing mean values.</p>
+</sec>
+<sec id="sec009">
+<title>Supporting information</title>
+<supplementary-material id="pone.0199554.s001" mimetype="image/png" position="float" xlink:href="info:doi/10.1371/journal.pone.0199554.s001" xlink:type="simple">
+<label>S1 File</label>
+<caption>
+<title>Flow chart of the search strategy.</title>
+<p>(PNG)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0199554.s002" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0199554.s002" xlink:type="simple">
+<label>S2 File</label>
+<caption>
+<title>Study protocol.</title>
+<p><ext-link ext-link-type="uri" xlink:href="https://www.protocols.io/view/s2-file-full-protocol-mf9c3r6" xlink:type="simple">https://www.protocols.io/view/s2-file-full-protocol-mf9c3r6</ext-link>.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0199554.s003" mimetype="application/x-spss-sav" position="float" xlink:href="info:doi/10.1371/journal.pone.0199554.s003" xlink:type="simple">
+<label>S3 File</label>
+<caption>
+<title>Full data set.</title>
+<p><ext-link ext-link-type="uri" xlink:href="https://figshare.com/articles/Survey_sav/5759520" xlink:type="simple">https://figshare.com/articles/Survey_sav/5759520</ext-link>.</p>
+<p>(SAV)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0199554.s004" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0199554.s004" xlink:type="simple">
+<label>S4 File</label>
+<caption>
+<title>Occupations.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pone.0199554.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Baumeister</surname> <given-names>RF</given-names></name>. <article-title>Ego Depletion and Self-Control Failure: An Energy Model of the Self’s Executive Function</article-title>. <source>Self Identity</source> [Internet]. <year>2002</year>;<volume>1</volume>(<issue>2</issue>):<fpage>129</fpage>–<lpage>36</lpage>. Available from: <ext-link ext-link-type="uri" xlink:href="http://www.tandfonline.com/doi/abs/10.1080/152988602317319302" xlink:type="simple">http://www.tandfonline.com/doi/abs/10.1080/152988602317319302</ext-link></mixed-citation></ref>
+<ref id="pone.0199554.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vohs</surname> <given-names>KD</given-names></name>, <name name-style="western"><surname>Heatherton</surname> <given-names>TF</given-names></name>. <article-title>Self-Regulatory Failure: A Resource-Depletion Approach</article-title>. <source>Psychol Sci</source>. <year>2000</year>;<volume>11</volume>(<issue>3</issue>):<fpage>249</fpage>–<lpage>54</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/1467-9280.00250" xlink:type="simple">10.1111/1467-9280.00250</ext-link></comment> <object-id pub-id-type="pmid">11273412</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Baumeister</surname> <given-names>RF</given-names></name>, <name name-style="western"><surname>Bratslavsky</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Muraven</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Tice</surname> <given-names>DM</given-names></name>. <article-title>Ego depletion: Is the active self a limited resource?</article-title> <source>J Pers Soc Psychol</source> [Internet]. <year>1998</year>;<volume>74</volume>(<issue>5</issue>):<fpage>1252</fpage>–<lpage>65</lpage>. Available from: <ext-link ext-link-type="uri" xlink:href="http://doi.apa.org/getdoi.cfm?doi=10.1037/0022-3514.74.5.1252" xlink:type="simple">http://doi.apa.org/getdoi.cfm?doi=10.1037/0022-3514.74.5.1252</ext-link> <object-id pub-id-type="pmid">9599441</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Muraven</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Baumeister</surname> <given-names>RF</given-names></name>. <article-title>Self-Regulation and Depletion of Limited Resources: Does Self-Control Resemble a Muscle ?</article-title> <source>Psychol Bull</source>. <year>2000</year>;<volume>126</volume>(<issue>2</issue>):<fpage>247</fpage>–<lpage>59</lpage>. <object-id pub-id-type="pmid">10748642</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stroop</surname> <given-names>JR</given-names></name>. <article-title>Stroop color word test</article-title>. <source>J Exp Physiol</source>. <year>1935</year>;(<issue>18</issue>):<fpage>643</fpage>–<lpage>62</lpage>.</mixed-citation></ref>
+<ref id="pone.0199554.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hagger</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Wood</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Stiff</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Chatzisarantis</surname> <given-names>NLD</given-names></name>. <article-title>Ego depletion and the strength model of self-control: a meta-analysis</article-title>. <source>Psychol Bull</source>. <year>2010</year>;<volume>136</volume>(<issue>4</issue>):<fpage>495</fpage>–<lpage>525</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1037/a0019486" xlink:type="simple">10.1037/a0019486</ext-link></comment> <object-id pub-id-type="pmid">20565167</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dang</surname> <given-names>J</given-names></name>. <article-title>An updated meta-analysis of the ego depletion effect</article-title>. <source>Psychological Research</source>. <year>2017</year>;<fpage>1</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s00426-015-0726-1" xlink:type="simple">10.1007/s00426-015-0726-1</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0199554.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Xu</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Demos</surname> <given-names>KE</given-names></name>, <name name-style="western"><surname>Leahey</surname> <given-names>TM</given-names></name>, <name name-style="western"><surname>Hart</surname> <given-names>CN</given-names></name>, <name name-style="western"><surname>Trautvetter</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Coward</surname> <given-names>P</given-names></name>, <etal>et al</etal>. <article-title>Failure to replicate depletion of self-control</article-title>. <source>PLoS One</source>. <year>2014</year>;<volume>9</volume>(<issue>10</issue>):<fpage>1</fpage>–<lpage>5</lpage>.</mixed-citation></ref>
+<ref id="pone.0199554.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lurquin</surname> <given-names>JH</given-names></name>, <name name-style="western"><surname>Michaelson</surname> <given-names>LE</given-names></name>, <name name-style="western"><surname>Barker</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Gustavson</surname> <given-names>DE</given-names></name>, <name name-style="western"><surname>Von Bastian</surname> <given-names>CC</given-names></name>, <name name-style="western"><surname>Carruth</surname> <given-names>NP</given-names></name>, <etal>et al</etal>. <article-title>No evidence of the ego-depletion effect across task characteristics and individual differences: A pre-registered study</article-title>. <source>PLoS One</source>. <year>2016</year>;<volume>11</volume>(<issue>2</issue>).</mixed-citation></ref>
+<ref id="pone.0199554.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Carter</surname> <given-names>EC</given-names></name>, <name name-style="western"><surname>McCullough</surname> <given-names>ME</given-names></name>. <article-title>Is ego depletion too incredible Evidence for the overestimation of the depletion effect</article-title>. Vol. <volume>36</volume>, <source>Behavioral and Brain Sciences</source>. <year>2013</year>. p. <fpage>683</fpage>–<lpage>4</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1017/S0140525X13000952" xlink:type="simple">10.1017/S0140525X13000952</ext-link></comment> <object-id pub-id-type="pmid">24304780</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ferguson</surname> <given-names>CJ</given-names></name>, <name name-style="western"><surname>Brannick</surname> <given-names>MT</given-names></name>. <article-title>Publication bias in psychological science: Prevalence, methods for identifying and controlling, and implications for the use of meta-analyses</article-title>. <source>Psychol Methods</source>. <year>2012</year>;<volume>17</volume>(<issue>1</issue>):<fpage>120</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1037/a0024445" xlink:type="simple">10.1037/a0024445</ext-link></comment> <object-id pub-id-type="pmid">21787082</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Carter</surname> <given-names>EC</given-names></name>, <name name-style="western"><surname>McCullough</surname> <given-names>ME</given-names></name>. <article-title>Publication bias and the limited strength model of self-control: has the evidence for ego depletion been overestimated?</article-title> <source>Front Psychol</source> [Internet]. <year>2014</year>;<volume>5</volume>(<issue>July</issue>):<fpage>1</fpage>–<lpage>11</lpage>. Available from: <ext-link ext-link-type="uri" xlink:href="http://www.frontiersin.org/Personality_and_Social_Psychology/10.3389/fpsyg.2014.00823/abstract" xlink:type="simple">http://www.frontiersin.org/Personality_and_Social_Psychology/10.3389/fpsyg.2014.00823/abstract</ext-link></mixed-citation></ref>
+<ref id="pone.0199554.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lilienfeld</surname> <given-names>SO</given-names></name>. <article-title>Psychology’s Replication Crisis and the Grant Culture: Righting the Ship</article-title>. <source>Perspect Psychol Sci</source> [Internet]. <year>2017</year>;<volume>12</volume>(<issue>4</issue>):<fpage>660</fpage>–<lpage>4</lpage>. Available from: <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/1745691616687745" xlink:type="simple">10.1177/1745691616687745</ext-link></comment> <object-id pub-id-type="pmid">28727961</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hagger</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Chatzisarantis</surname> <given-names>NLD</given-names></name>, <name name-style="western"><surname>Alberts</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Anggono</surname> <given-names>CO</given-names></name>, <name name-style="western"><surname>Batailler</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Birt</surname> <given-names>AR</given-names></name>, <etal>et al</etal>. <article-title>A Multilab Preregistered Replication of the Ego-Depletion Effect</article-title>. <source>Perspect Psychol Sci</source>. <year>2016</year>;<volume>11</volume>(<issue>4</issue>):<fpage>546</fpage>–<lpage>73</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/1745691616652873" xlink:type="simple">10.1177/1745691616652873</ext-link></comment> <object-id pub-id-type="pmid">27474142</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sripada</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Kessler</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Jonides</surname> <given-names>J</given-names></name>. <article-title>Methylphenidate Blocks Effort-Induced Depletion of Regulatory Control in Healthy Volunteers</article-title>. <source>Psychol Sci</source> [Internet]. <year>2014</year>;<volume>25</volume>(<issue>April</issue>):<fpage>1227</fpage>–<lpage>34</lpage>. Available from: <ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/pubmed/24756766" xlink:type="simple">http://www.ncbi.nlm.nih.gov/pubmed/24756766</ext-link></mixed-citation></ref>
+<ref id="pone.0199554.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bush</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Shin</surname> <given-names>LM</given-names></name>, <name name-style="western"><surname>Holmes</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Rosen</surname> <given-names>BR</given-names></name>, <name name-style="western"><surname>Vogt</surname> <given-names>BA</given-names></name>. <article-title>The multi-source interference task: Validation study with fMRI in individual subjects</article-title>. <source>Mol Psychiatry</source>. <year>2003</year>;<volume>8</volume>(<issue>1</issue>):<fpage>60</fpage>–<lpage>70</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/sj.mp.4001217" xlink:type="simple">10.1038/sj.mp.4001217</ext-link></comment> <object-id pub-id-type="pmid">12556909</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cunningham</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Baumeister</surname> <given-names>RF</given-names></name>. <article-title>How to make nothing out of something: Analyses of the impact of study sampling and statistical interpretation in misleading meta-analytic conclusions</article-title>. <source>Front Psychol</source>. <year>2016</year>;<volume>7</volume>(<issue>OCT</issue>):<fpage>1</fpage>–<lpage>9</lpage>.</mixed-citation></ref>
+<ref id="pone.0199554.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Baumeister</surname> <given-names>RF</given-names></name>, <name name-style="western"><surname>Vohs</surname> <given-names>KD</given-names></name>. <article-title>Misguided Effort With Elusive Implications</article-title>. Vol. <volume>11</volume>, <source>Perspectives on Psychological Science</source>. <year>2016</year>. p. <fpage>574</fpage>–<lpage>5</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/1745691616652878" xlink:type="simple">10.1177/1745691616652878</ext-link></comment> <object-id pub-id-type="pmid">27474143</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hagger</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Chatzisarantis</surname> <given-names>NLD</given-names></name>. <article-title>Commentary: Misguided effort with elusive implications, and sifting signal from noise with replication science</article-title>. Vol. <volume>7</volume>, <source>Frontiers in Psychology</source>. <year>2016</year>.</mixed-citation></ref>
+<ref id="pone.0199554.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Witte</surname> <given-names>EH</given-names></name>, <name name-style="western"><surname>Zenker</surname> <given-names>F</given-names></name>. <article-title>Extending a Multilab Preregistered Replication of the Ego-Depletion Effect to a Research Program</article-title>. <source>Basic Appl Soc Psych</source>. <year>2017</year>;<volume>39</volume>(<issue>1</issue>):<fpage>74</fpage>–<lpage>80</lpage>.</mixed-citation></ref>
+<ref id="pone.0199554.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sripada</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Kessler</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Jonides</surname> <given-names>J</given-names></name>. <article-title>Sifting Signal From Noise With Replication Science</article-title>. Vol. <volume>11</volume>, <source>Perspectives on Psychological Science</source>. <year>2016</year>. p. <fpage>576</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/1745691616652875" xlink:type="simple">10.1177/1745691616652875</ext-link></comment> <object-id pub-id-type="pmid">27474144</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Blázquez</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Botella</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Suero</surname> <given-names>M</given-names></name>. <article-title>The debate on the ego-depletion effect: Evidence from meta-analysis with the p-uniform method</article-title>. Vol. <volume>8</volume>, <source>Frontiers in Psychology</source>. <year>2017</year>.</mixed-citation></ref>
+<ref id="pone.0199554.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nelson</surname> <given-names>LD</given-names></name>, <name name-style="western"><surname>Simmons</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Simonsohn</surname> <given-names>U</given-names></name>. <article-title>Psychology ‘ s Renaissance</article-title>. <source>Annu Rev Psycholgy</source>. <year>2018</year>;<volume>69</volume>(<issue>September</issue> 2017):<fpage>17.1</fpage>–<lpage>17.24</lpage>.</mixed-citation></ref>
+<ref id="pone.0199554.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Carter</surname> <given-names>EC</given-names></name>, <name name-style="western"><surname>McCullough</surname> <given-names>ME</given-names></name>. <article-title>Publication bias and the limited strength model of self-control: has the evidence for ego depletion been overestimated?</article-title> <source>Front Psychol</source>. <year>2014</year>;<volume>5</volume>.</mixed-citation></ref>
+<ref id="pone.0199554.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Banks</surname> <given-names>GC</given-names></name>, <name name-style="western"><surname>Rogelberg</surname> <given-names>SG</given-names></name>, <name name-style="western"><surname>Woznyj</surname> <given-names>HM</given-names></name>, <name name-style="western"><surname>Landis</surname> <given-names>RS</given-names></name>, <name name-style="western"><surname>Rupp</surname> <given-names>DE</given-names></name>. <article-title>Editorial: Evidence on Questionable Research Practices: The Good, the Bad, and the Ugly</article-title>. <source>Journal of Business and Psychology</source>. <year>2016</year>;<volume>31</volume>(<issue>3</issue>):<fpage>323</fpage>–<lpage>38</lpage>.</mixed-citation></ref>
+<ref id="pone.0199554.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fiedler</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Schwarz</surname> <given-names>N</given-names></name>. <article-title>Questionable Research Practices Revisited</article-title>. <source>Soc Psychol Personal Sci</source>. <year>2016</year>;<volume>7</volume>(<issue>1</issue>):<fpage>45</fpage>–<lpage>52</lpage>.</mixed-citation></ref>
+<ref id="pone.0199554.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>John</surname> <given-names>LK</given-names></name>, <name name-style="western"><surname>Loewenstein</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Prelec</surname> <given-names>D</given-names></name>. <article-title>Measuring the Prevalence of Questionable Research Practices With Incentives for Truth Telling</article-title>. <source>Psychol Sci</source>. <year>2012</year>;<volume>23</volume>(<issue>5</issue>):<fpage>524</fpage>–<lpage>32</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/0956797611430953" xlink:type="simple">10.1177/0956797611430953</ext-link></comment> <object-id pub-id-type="pmid">22508865</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Héroux</surname> <given-names>ME</given-names></name>, <name name-style="western"><surname>Taylor</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Gandevia</surname> <given-names>SC</given-names></name>. <article-title>The use and abuse of transcranial magnetic stimulation to modulate corticospinal excitability in humans</article-title>. <source>PLoS One</source>. <year>2015</year>;<volume>10</volume>(<issue>12</issue>).</mixed-citation></ref>
+<ref id="pone.0199554.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Héroux</surname> <given-names>ME</given-names></name>, <name name-style="western"><surname>Loo</surname> <given-names>CK</given-names></name>, <name name-style="western"><surname>Taylor</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Gandevia</surname> <given-names>SC</given-names></name>. <article-title>Questionable science and reproducibility in electrical brain stimulation research</article-title>. <source>PLoS One</source>. <year>2017</year>;<volume>12</volume>(<issue>4</issue>).</mixed-citation></ref>
+<ref id="pone.0199554.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Webb</surname> <given-names>TL</given-names></name>, <name name-style="western"><surname>Sheeran</surname> <given-names>P</given-names></name>. <article-title>Can implementation intentions help to overcome ego-depletion?</article-title> <source>J Exp Soc Psychol</source>. <year>2003</year>;<volume>39</volume>(<issue>3</issue>):<fpage>279</fpage>–<lpage>86</lpage>.</mixed-citation></ref>
+<ref id="pone.0199554.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schmeichel</surname> <given-names>B-J</given-names></name>, <name name-style="western"><surname>Vohs</surname> <given-names>K-D</given-names></name>, <name name-style="western"><surname>Baumeister</surname> <given-names>R-F</given-names></name>. <article-title>Intellectual performance and ego depletion: Role of the self in logical reasoning and other information processing</article-title>. <source>Journal-of-Personality-and-Social-Psychology</source> [Internet]. <year>2003</year>;Vol <volume>85</volume>(<issue>1</issue>)(1):<fpage>33</fpage>–<lpage>46</lpage>. Available from: E-mail-author (em); digital-object-identifier (doi); url; url-journal (urlj); url-publisher (urlp); reference-doi <object-id pub-id-type="pmid">12872883</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bertrams</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Englert</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Dickhäuser</surname> <given-names>O</given-names></name>. <article-title>Self-control strength in the relation between trait test anxiety and state anxiety</article-title>. <source>J Res Pers</source>. <year>2010</year>;<volume>44</volume>(<issue>6</issue>):<fpage>738</fpage>–<lpage>41</lpage>.</mixed-citation></ref>
+<ref id="pone.0199554.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Muraven</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Tice</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Baumeister</surname> <given-names>RF</given-names></name>. <article-title>Self-control as limited resource: regulatory depletion patterns</article-title>. <source>J Pers Soc Psychol</source>. <year>1998</year>;<volume>74</volume>(<issue>3</issue>):<fpage>774</fpage>–<lpage>89</lpage>. <object-id pub-id-type="pmid">9523419</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McAuley</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Ba’Pham</surname></name>, <name name-style="western"><surname>Tugwell</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Moher</surname> <given-names>D</given-names></name>. <article-title>Does the inclusion of grey literature influence estimates of intervention effectiveness reported in meta-analyses?</article-title> <source>Lancet</source>. <year>2000</year>;<volume>356</volume>(<issue>9237</issue>):<fpage>1228</fpage>–<lpage>31</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S0140-6736(00)02786-0" xlink:type="simple">10.1016/S0140-6736(00)02786-0</ext-link></comment> <object-id pub-id-type="pmid">11072941</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Agnoli</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Wicherts</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Veldkamp</surname> <given-names>CLS</given-names></name>, <name name-style="western"><surname>Albiero</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Cubelli</surname> <given-names>R</given-names></name>. <article-title>Questionable research practices among Italian research psychologists</article-title>. <source>PLoS One</source>. <year>2017</year>;<volume>12</volume>(<issue>3</issue>).</mixed-citation></ref>
+<ref id="pone.0199554.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cunningham</surname> <given-names>CT</given-names></name>, <name name-style="western"><surname>Quan</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Hemmelgarn</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Noseworthy</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Beck</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Dixon</surname> <given-names>E</given-names></name>, <etal>et al</etal>. <article-title>Exploring physician specialist response rates to web-based surveys</article-title>. <source>BMC Med Res Methodol</source>. <year>2015</year>;<volume>15</volume>(<issue>1</issue>).</mixed-citation></ref>
+<ref id="pone.0199554.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bethlehem</surname> <given-names>J</given-names></name>. <article-title>Selection bias in web surveys</article-title>. <source>Int Stat Rev</source>. <year>2010</year>;<volume>78</volume>(<issue>2</issue>):<fpage>161</fpage>–<lpage>88</lpage>.</mixed-citation></ref>
+<ref id="pone.0199554.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fanelli</surname> <given-names>D</given-names></name>. <article-title>How many scientists fabricate and falsify research? A systematic review and meta-analysis of survey data</article-title>. Vol. <volume>4</volume>, <source>PLoS ONE</source>. <year>2009</year>.</mixed-citation></ref>
+<ref id="pone.0199554.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rolstad</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Adler</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Rydén</surname> <given-names>A</given-names></name>. <article-title>Response burden and questionnaire length: Is shorter better? A review and meta-analysis</article-title>. <source>Value Heal</source>. <year>2011</year>;<volume>14</volume>(<issue>8</issue>):<fpage>1101</fpage>–<lpage>8</lpage>.</mixed-citation></ref>
+<ref id="pone.0199554.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Job</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Dweck</surname> <given-names>CS</given-names></name>, <name name-style="western"><surname>Walton</surname> <given-names>GM</given-names></name>. <article-title>Regulation Ego Depletion- Is It A Implicit Theories Ab Self-Regulation</article-title>. <source>Psychol Sci</source>. <year>2010</year>;<volume>21</volume>(<issue>11</issue>):<fpage>1686</fpage>–<lpage>93</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/0956797610384745" xlink:type="simple">10.1177/0956797610384745</ext-link></comment> <object-id pub-id-type="pmid">20876879</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Govorun</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Payne</surname> <given-names>BK</given-names></name>. <article-title>Ego—Depletion and Prejudice: Separating Automatic and Controlled Components</article-title>. <source>Soc Cogn</source>. <year>2006</year>;<volume>24</volume>(<issue>2</issue>):<fpage>111</fpage>–<lpage>36</lpage>.</mixed-citation></ref>
+<ref id="pone.0199554.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Graham</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Bray</surname> <given-names>SR</given-names></name>. <article-title>Self-Control Strength Depletion Reduces Self-Efficacy and Impairs Exercise Performance</article-title>. <source>J Sport Exerc Psychol</source>. <year>2015</year>;<volume>37</volume>(<issue>5</issue>):<fpage>477</fpage>–<lpage>88</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1123/jsep.2015-0064" xlink:type="simple">10.1123/jsep.2015-0064</ext-link></comment> <object-id pub-id-type="pmid">26524094</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Levenson</surname> <given-names>RW</given-names></name>. <article-title>Do You Believe the Field of Psychological Science Is Headed in the Right Direction?</article-title> <source>Perspect Psychol Sci</source>. <year>2017</year>;<volume>12</volume>(<issue>4</issue>):<fpage>675</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/1745691617706507" xlink:type="simple">10.1177/1745691617706507</ext-link></comment> <object-id pub-id-type="pmid">28727968</object-id></mixed-citation></ref>
+<ref id="pone.0199554.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lindner</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Nagy</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Arhuis</surname> <given-names>WAR</given-names></name>, <name name-style="western"><surname>Retelsdorf</surname> <given-names>J</given-names></name>. <article-title>A new perspective on the interplay between self-control and cognitive performance: Modeling progressive depletion patterns</article-title>. <source>PLoS One</source>. <year>2017</year>;<volume>12</volume>(<issue>6</issue>).</mixed-citation></ref>
+</ref-list>
+</back>
+</article>

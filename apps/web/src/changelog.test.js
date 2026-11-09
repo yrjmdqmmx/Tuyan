@@ -2,15 +2,34 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { readFileSync } from 'node:fs'
 import { appRelativePath } from './appPaths.js'
-import { compareVersions, groupPublishedUpdates, isChangelogPath, publishedVersions, publicEvents, resolveChangelogAnchor, validateChangelog, versionLabel } from './changelog.js'
+import { compareVersions, groupChangesByTopic, groupPublishedUpdates, isChangelogPath, publishedVersions, publicEvents, resolveChangelogAnchor, validateChangelog, versionLabel } from './changelog.js'
+import { benchmarkText } from './components/benchmarkLocale.js'
 const data = JSON.parse(readFileSync(new URL('./data/changelog.json', import.meta.url), 'utf8'))
+test('topic grouping preserves every original update and its evidence exactly once', () => {
+  const entry = data.entries[0], before = structuredClone(entry)
+  const groups = groupChangesByTopic(entry)
+  const changes = groups.flatMap(group => group.changes)
+  assert.equal(groups.length, 12)
+  assert.equal(changes.length, entry.changes.length)
+  assert.equal(new Set(changes).size, entry.changes.length)
+  for (const change of entry.changes) assert.ok(changes.includes(change))
+  assert.deepEqual(entry, before)
+  for (const group of groups) {
+    assert.doesNotMatch(benchmarkText('en', group.title), /[\u4e00-\u9fff]/)
+    assert.doesNotMatch(benchmarkText('en', group.summary), /[\u4e00-\u9fff]/)
+  }
+  assert.deepEqual(groupChangesByTopic(data.entries[1]), [])
+  const extended = structuredClone(entry)
+  extended.changes.push({ ...entry.changes[0], topic: 'unassigned', text: 'Future update' })
+  assert.equal(groupChangesByTopic(extended).at(-1).changes[0].text, 'Future update')
+})
 test('independent product lines contain only published versions with their own numbering', () => {
   assert.deepEqual(validateChangelog(data), [])
-  assert.equal(publishedVersions(data, 'tuyan').length, 14)
+  assert.equal(publishedVersions(data, 'tuyan').length, 15)
   assert.equal(publishedVersions(data, 'benchmark').length, 5)
   assert.equal(publishedVersions(data, 'openacad').length, 4)
   assert.equal(publicEvents(data).length, 4)
-  assert.equal(versionLabel(data.entries[0]), 'Tuyan v3.8.1')
+  assert.equal(versionLabel(data.entries[0]), 'Tuyan v4.0.0')
   assert.equal(versionLabel(publishedVersions(data, 'benchmark')[0]), 'Tuyan Benchmark v2.5')
   assert.equal(versionLabel(publishedVersions(data, 'openacad')[0]), 'OpenAcad v1.1.0')
   assert.ok(compareVersions('2.10', '2.9') > 0)
@@ -58,6 +77,11 @@ test('published Pareto and bilingual improvements belong to Benchmark v2.5 only'
   assert.equal(pending.benchmark, null)
 })
 for (const [name, mutate, expected] of [
+  ['duplicate topic', copy => { copy.entries[0].topics.push(copy.entries[0].topics[0]) }, /duplicate topic/],
+  ['missing topic', copy => { delete copy.entries[0].changes[0].topic }, /existing topic/],
+  ['unknown topic', copy => { copy.entries[0].changes[0].topic = 'unknown' }, /existing topic/],
+  ['empty topic', copy => { copy.entries[0].topics.push({ id: 'empty', title: 'Empty', summary: 'Empty' }) }, /empty topic/],
+  ['private topic field', copy => { copy.entries[0].topics[0].privateNotes = 'hidden' }, /unsupported field/],
   ['draft version', copy => { copy.entries.find(e => e.id === 'v3-7-1').release.status = 'unreleased' }, /only released versions/],
   ['local change', copy => { copy.entries[0].changes[0].state = 'local-verified' }, /unreleased changes/],
   ['invalid date', copy => { copy.entries[0].release.date = '2026-02-30' }, /calendar date/],
@@ -86,7 +110,7 @@ test('runtime selection and anchors never expose a pending version or event', ()
   const copy = structuredClone(data)
   copy.entries.find(e => e.id === 'v3-7-1').release.status = 'unreleased'
   copy.events[0].status = 'pending'
-  assert.equal(publishedVersions(copy, 'tuyan').length, 13)
+  assert.equal(publishedVersions(copy, 'tuyan').length, 14)
   assert.equal(publicEvents(copy).length, 3)
   assert.equal(resolveChangelogAnchor(copy, 'watcha-login'), undefined)
   assert.equal(resolveChangelogAnchor(data, 'watcha-login'), 'v3-7-1')
@@ -96,7 +120,7 @@ test('runtime selection and anchors never expose a pending version or event', ()
 })
 test('drafts and independent drawing module stay outside the public archive', () => {
   assert.doesNotMatch(JSON.stringify(data), /figure-studio|论文画布|历史微信公告整理稿/)
-  assert.doesNotMatch(JSON.stringify(publishedVersions(data, 'tuyan')), /Benchmark v|MCP|微信小程序/)
+  assert.doesNotMatch(JSON.stringify(publishedVersions(data, 'tuyan')), /Benchmark v|微信小程序/)
   assert.ok(publishedVersions(data, 'tuyan').some(e => e.changes.some(c => c.text.includes('精修'))))
   assert.ok(publishedVersions(data, 'openacad').some(e => e.changes.some(c => c.text.includes('AB1'))))
 })
@@ -108,10 +132,10 @@ test('direct, trailing-slash, static and base-path routes remain valid', () => {
 test('overview merges every public entry once and groups confirmed dates in descending order', () => {
   const before = structuredClone(data)
   const groups = groupPublishedUpdates(data)
-  assert.equal(groups[0].date, '2026-09-28')
+  assert.equal(groups[0].date, '2026-10-21')
   assert.deepEqual(groups.map(group => group.date), [...new Set(groups.map(group => group.date))].sort().reverse())
   const ids = groups.flatMap(group => group.items.map(item => item.entry.id))
-  assert.equal(new Set(ids).size, 27)
+  assert.equal(new Set(ids).size, 28)
   assert.deepEqual([...ids].sort(), [...data.entries, ...data.events].map(entry => entry.id).sort())
   assert.deepEqual(groups.find(group => group.date === '2026-09-07').items.map(item => item.entry.id), ['v3-5-0', 'openacad-v1-1-0', 'openacad-v1-0-2', 'openacad-v1-0-1', 'openacad-v1-0-0'])
   assert.equal(groups.find(group => group.date === '2026-09-04').items.length, 2)
@@ -120,7 +144,7 @@ test('overview merges every public entry once and groups confirmed dates in desc
 })
 test('new source records automatically appear in both views without dates or publication being inferred', () => {
   const copy = structuredClone(data)
-  const next = { ...structuredClone(copy.entries[0]), id: 'next-release', version: '3.8.2', release: { status: 'released', date: '2026-09-28', surfaces: ['Web'] } }
+  const next = { ...structuredClone(copy.entries[0]), id: 'next-release', version: '4.0.1', release: { status: 'released', date: '2026-10-21', surfaces: ['Web'] } }
   copy.entries.unshift(next)
   assert.equal(groupPublishedUpdates(copy)[0].items[0].entry, next)
   assert.equal(publishedVersions(copy, 'tuyan')[0], next)

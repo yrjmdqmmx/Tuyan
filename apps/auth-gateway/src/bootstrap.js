@@ -20,6 +20,7 @@ export async function startGateway({
   const auth = await createAuthRuntimeImpl(config);
   let server;
   let accountDeletion;
+  let plusReconciler;
   try {
     const backend = createBackendClientImpl({
       ...config.backend,
@@ -29,9 +30,12 @@ export async function startGateway({
     const isMaintenance = createMaintenanceCheckImpl(config.maintenance);
     if (auth.deletionStore) accountDeletion = createAccountDeletionService({ auth, backend, store: auth.deletionStore, isMaintenance, logger });
     const app = createAppImpl({ config, auth, backend, isMaintenance, logger, accountDeletion });
+    plusReconciler=app.locals?.plusReconciler;
     server = await listenImpl(app, config.port, config.listenHost);
+    plusReconciler?.start();
     accountDeletion?.start();
   } catch (error) {
+    await plusReconciler?.stop();
     await auth.close().catch(() => {});
     throw error;
   }
@@ -57,6 +61,7 @@ export async function startGateway({
         shutdownError = error;
       }
       try {
+        await plusReconciler?.stop();
         await accountDeletion?.stop();
         await auth.close();
       } catch (error) {

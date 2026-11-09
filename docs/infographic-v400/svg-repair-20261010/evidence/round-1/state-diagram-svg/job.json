@@ -1,0 +1,1396 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": null,
+  "referenceSelection": {
+    "proposedCount": 1,
+    "selectedCount": 1,
+    "requestedTypeId": "state_transition",
+    "exactCount": 1,
+    "compatibleCount": 0,
+    "manualUnmatchedCount": 0,
+    "matchStatus": "matched",
+    "skippedCount": 0,
+    "imageCount": 1,
+    "mode": "images",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "none",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "succeeded",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "issues_found",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "d12fe58107b953a9ab5c9e05524ea48c2cfc96176a473401f976a75233dc3989",
+            "pngHash": "958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865",
+            "status": "issues_found",
+            "submittedImageHash": "2f265f4a189734a84a768d5fc261e870ac9df104adbbc4b414931f92e66e70fc",
+            "assessment": "{\"decision\":{\"version\":1,\"svgHash\":\"d12fe58107b953a9ab5c9e05524ea48c2cfc96176a473401f976a75233dc3989\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Layout direction contradicts visual intent and standard conventions\",\"location\":\"Global layout / Topology definition\",\"evidence\":\"The `completePlan` explicitly specifies a 'logical flow from left to right' with Idle on the far left. However, the generated SVG renders a vertical top-to-bottom layout (Paused at top, Idle at bottom). The `topology.layout.direction` is set to 'RIGHT', but the actual coordinates reflect a 'DOWN' flow.\",\"suggestion\":\"Regenerate the diagram using a strict Left-to-Right layout as specified in the plan. Place 'Idle' on the left, 'Running' in the center, and 'Completed' on the right to match the requested lifecycle visualization.\"},{\"issue\":\"Node fill color violates style constraints\",\"location\":\"State nodes (Idle, Running, Paused, Completed)\",\"evidence\":\"The `completePlan` requires 'no color fills other than white'. The generated SVG uses a light green/teal fill (`#e5efeb`) for all state rectangles. Additionally, the stroke and text colors are a dark teal (`#355c53`) rather than the requested black.\",\"suggestion\":\"Change node fill to pure white (`#ffffff`) and stroke/text colors to black (`#000000`) or dark gray to strictly adhere to the minimalist high-contrast style defined in the plan.\"},{\"issue\":\"Feedback loop routing creates visual clutter\",\"location\":\"Edge: Paused -> Idle (cancel)\",\"evidence\":\"In the current vertical layout, the 'cancel' arrow routes all the way to the right side of the canvas (x=662) to bypass the central column, creating a large empty space and an unbalanced composition. In a Left-to-Right layout, this feedback loop would naturally route underneath the main flow, resulting in a more compact and readable diagram.\",\"suggestion\":\"Adopting the LTR layout will naturally resolve this routing issue, allowing the 'cancel' and 'reset' loops to be placed below the primary state sequence without excessive detours.\"}]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"Generate a Left-to-Right State Transition Diagram on a white background.\\n\\n**Nodes:**\\n1.  **Initial Dot:** Solid black circle on the far left.\\n2.  **Idle:** Rounded rectangle, white fill, black border. Positioned to the right of the initial dot.\\n3.  **Running:** Rounded rectangle, white fill, black border. Positioned to the right of Idle.\\n4.  **Paused:** Rounded rectangle, white fill, black border. Positioned directly BELOW Running.\\n5.  **Completed:** Rounded rectangle, white fill, black border. Positioned to the right of Running.\\n\\n**Edges & Labels:**\\n-   **Init -> Idle:** Straight horizontal arrow. No label.\\n-   **Idle -> Running:** Straight horizontal arrow. Label \\\"start\\\" above.\\n-   **Running -> Paused:** Straight vertical arrow downwards. Label \\\"pause\\\" to the right.\\n-   **Paused -> Running:** Straight vertical arrow upwards (parallel to pause). Label \\\"resume\\\" to the left.\\n-   **Running -> Completed:** Straight horizontal arrow. Label \\\"finish\\\" above.\\n-   **Paused -> Idle:** Curved arrow starting from left/bottom of Paused, sweeping DOWN and LEFT to enter the bottom of Idle. Label \\\"cancel\\\" below the curve.\\n-   **Completed -> Idle:** Long curved arrow starting from top/right of Completed, arcing OVER the top of Running and Idle, entering the top of Idle. Label \\\"reset\\\" at the apex of the arc.\\n\\n**Style:**\\n-   All lines and text must be black (#000000).\\n-   Node interiors must be white (#FFFFFF).\\n-   Font: Noto Sans, bold for states, regular for labels.\\n-   Ensure no overlapping lines; use distinct curves for feedback loops.\",\"topologyAudit\":{\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"originalRequiredRelations\":[{\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\"},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\"},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\"},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\"},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\"},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\"},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\"}],\"missingRelations\":[],\"extraRelations\":[],\"wrongRelations\":[],\"nodeIssues\":[]},\"layoutRepair\":{\"direction\":\"RIGHT\"}},\"topologyAudit\":{\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"originalRequiredRelations\":[{\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\"},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\"},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\"},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\"},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\"},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\"},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\"}],\"missingRelations\":[],\"extraRelations\":[],\"wrongRelations\":[],\"nodeIssues\":[]},\"localGeometryCheck\":{\"schemaVersion\":1,\"svgHash\":\"d12fe58107b953a9ab5c9e05524ea48c2cfc96176a473401f976a75233dc3989\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":411.517,\"y\":434.183,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":404.548,\"y\":484.272,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":405.623,\"y\":190.272,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":417.572,\"y\":43.272,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":477.94,\"y\":337.272,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":420.228,\"y\":451.605},\"end\":{\"x\":425.455,\"y\":484.272},\"points\":[{\"x\":420.228,\"y\":451.605},{\"x\":420.228,\"y\":462.494},{\"x\":425.455,\"y\":462.494},{\"x\":425.455,\"y\":484.272}]},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":446.362,\"y\":484.272},\"end\":{\"x\":446.362,\"y\":238.728},\"points\":[{\"x\":446.362,\"y\":484.272},{\"x\":446.362,\"y\":238.728}]},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":446.362,\"y\":190.272},\"end\":{\"x\":446.362,\"y\":91.728},\"points\":[{\"x\":446.362,\"y\":190.272},{\"x\":446.362,\"y\":91.728}]},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":475.152,\"y\":91.728},\"end\":{\"x\":487.101,\"y\":190.272},\"points\":[{\"x\":475.152,\"y\":91.728},{\"x\":475.152,\"y\":168.494},{\"x\":487.101,\"y\":168.494},{\"x\":487.101,\"y\":190.272}]},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":487.101,\"y\":238.728},\"end\":{\"x\":553.16,\"y\":337.272},\"points\":[{\"x\":487.101,\"y\":238.728},{\"x\":487.101,\"y\":249.617},{\"x\":553.16,\"y\":249.617},{\"x\":553.16,\"y\":337.272}]},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":503.942,\"y\":91.728},\"end\":{\"x\":488.175,\"y\":484.272},\"points\":[{\"x\":503.942,\"y\":91.728},{\"x\":503.942,\"y\":102.617},{\"x\":662.354,\"y\":102.617},{\"x\":662.354,\"y\":473.383},{\"x\":488.175,\"y\":473.383},{\"x\":488.175,\"y\":484.272}]},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":553.16,\"y\":385.728},\"end\":{\"x\":467.268,\"y\":484.272},\"points\":[{\"x\":553.16,\"y\":385.728},{\"x\":553.16,\"y\":462.494},{\"x\":467.268,\"y\":462.494},{\"x\":467.268,\"y\":484.272}]}],\"labelAssociations\":[{\"edgeId\":\"edge_idle_running\",\"bounds\":{\"x\":367.09000000000003,\"y\":347.072,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":80.03300000000002},{\"edgeId\":\"edge_running_paused\",\"bounds\":{\"x\":367.09000000000003,\"y\":126.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":37.50199999999995},{\"edgeId\":\"edge_paused_running\",\"bounds\":{\"x\":484.952,\"y\":126.572,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.800000000000011,\"nearestCompetingRouteDistance\":23.955},{\"edgeId\":\"edge_running_completed\",\"bounds\":{\"x\":473.889,\"y\":273.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987},{\"edgeId\":\"edge_paused_idle\",\"bounds\":{\"x\":576.026,\"y\":273.572,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.712000000000089,\"nearestCompetingRouteDistance\":22.865999999999985},{\"edgeId\":\"edge_completed_idle\",\"bounds\":{\"x\":473.889,\"y\":420.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]}}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8",
+            "pngHash": "65f9bcd7f66e1fba40819e3a3ada44c33c3ee26e288d2c0d8f47400ab88831cf",
+            "status": "issues_found",
+            "submittedImageHash": "343f0ab072e524f3ed171e12903fd5865d494a29647792ebc8b33679a81451eb",
+            "assessment": "{\"decision\":{\"version\":2,\"svgHash\":\"08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Semantic Layout Reversal (Critical)\",\"location\":\"Global Node Placement\",\"evidence\":\"The methodology specifies 'Idle→Running: start' and the plan defines a Left-to-Right flow. In the generated SVG, Idle is at x=887 and Running is at x=310. The 'start' arrow points from right to left (x=887 → x=432). This reverses the standard temporal flow of state machines where 'start' implies moving forward.\",\"suggestion\":\"Reorder nodes horizontally to follow the primary execution path: Initial Dot → Idle → Running → Completed. Place Paused below Running.\"},{\"issue\":\"Feedback Loop Geometry Conflict\",\"location\":\"Edges: cancel, reset\",\"evidence\":\"Due to the reversed node order, the 'cancel' loop (Paused→Idle) must traverse rightward across the entire diagram width (x=146 → x=887), passing under Running and Completed. The 'reset' loop (Completed→Idle) is compressed into a short segment on the far right. This creates visual clutter and imbalance.\",\"suggestion\":\"With corrected L-R ordering, 'cancel' becomes a short local loop under Running/Idle, and 'reset' becomes a long clear arc over the top, matching the plan's intent.\"},{\"issue\":\"Color Fidelity\",\"location\":\"Node fills, Stroke color\",\"evidence\":\"Plan requires white (#FFFFFF) fill and black (#000000) stroke/text. SVG uses light greenish-grey fill (#e5efeb) and dark teal stroke (#355c53).\",\"suggestion\":\"Update all fills to #FFFFFF and strokes/text to #000000 to strictly match the specification.\"}]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"Generate a strict Left-to-Right State Transition Diagram with corrected node ordering.\\n\\n**Nodes (Left-to-Right Order):**\\n1.  **Initial Dot:** Solid black circle at far left (x≈50).\\n2.  **Idle:** Rounded rect (white fill, black border) to right of Initial Dot (x≈150).\\n3.  **Running:** Rounded rect to right of Idle (x≈350).\\n4.  **Completed:** Rounded rect to right of Running (x≈550).\\n5.  **Paused:** Rounded rect positioned directly BELOW Running (x≈350, y≈350).\\n\\n**Edges & Labels:**\\n-   **Init -> Idle:** Horizontal arrow right. No label.\\n-   **Idle -> Running:** Horizontal arrow right. Label \\\"start\\\" above.\\n-   **Running -> Completed:** Horizontal arrow right. Label \\\"finish\\\" above.\\n-   **Running -> Paused:** Vertical arrow down. Label \\\"pause\\\" to right.\\n-   **Paused -> Running:** Vertical arrow up (parallel). Label \\\"resume\\\" to left.\\n-   **Paused -> Idle:** Orthogonal route: Down from Paused → Left under Running → Up into bottom of Idle. Label \\\"cancel\\\" below the horizontal segment.\\n-   **Completed -> Idle:** Long orthogonal arc: Up from Completed → Left over top of Running/Idle → Down into top of Idle. Label \\\"reset\\\" at the top apex.\\n\\n**Style:**\\n-   Strict Black (#000000) for all lines, text, and initial dot.\\n-   White (#FFFFFF) fill for all state nodes.\\n-   Font: Noto Sans, bold for states, regular for labels.\\n-   Ensure distinct separation between the lower 'cancel' loop and upper 'reset' loop.\",\"topologyAudit\":{\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"originalRequiredRelations\":[{\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\"},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\"},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\"},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\"},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\"},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\"},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\"}],\"missingRelations\":[],\"extraRelations\":[],\"wrongRelations\":[],\"nodeIssues\":[\"Layout direction contradicts semantic flow: 'start' transition flows Right-to-Left (Idle@887 → Running@310), violating standard L-R state machine conventions and the explicit plan.\"]},\"layoutRepair\":{\"direction\":\"RIGHT\"}},\"topologyAudit\":{\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"originalRequiredRelations\":[{\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\"},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\"},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\"},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\"},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\"},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\"},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\"}],\"missingRelations\":[],\"extraRelations\":[],\"wrongRelations\":[],\"nodeIssues\":[\"Layout direction contradicts semantic flow: 'start' transition flows Right-to-Left (Idle@887 → Running@310), violating standard L-R state machine conventions and the explicit plan.\"]},\"localGeometryCheck\":{\"schemaVersion\":1,\"svgHash\":\"08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":837.578,\"y\":197.214,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":887.667,\"y\":212.676,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":310.033,\"y\":215.906,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":31.8,\"y\":219.944,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":588.266,\"y\":263.636,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":855,\"y\":205.925},\"end\":{\"x\":887.667,\"y\":222.367},\"points\":[{\"x\":855,\"y\":205.925},{\"x\":865.889,\"y\":205.925},{\"x\":865.889,\"y\":222.367},{\"x\":887.667,\"y\":222.367}]},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":887.667,\"y\":232.058},\"end\":{\"x\":432.25,\"y\":232.058},\"points\":[{\"x\":887.667,\"y\":232.058},{\"x\":432.25,\"y\":232.058}]},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":310.033,\"y\":232.058},\"end\":{\"x\":146.961,\"y\":232.058},\"points\":[{\"x\":310.033,\"y\":232.058},{\"x\":146.961,\"y\":232.058}]},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":146.961,\"y\":244.172},\"end\":{\"x\":310.033,\"y\":248.21},\"points\":[{\"x\":146.961,\"y\":244.172},{\"x\":157.85,\"y\":244.172},{\"x\":157.85,\"y\":248.392},{\"x\":288.255,\"y\":248.392},{\"x\":288.255,\"y\":248.21},{\"x\":310.033,\"y\":248.21}]},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":432.25,\"y\":248.21},\"end\":{\"x\":588.266,\"y\":287.864},\"points\":[{\"x\":432.25,\"y\":248.21},{\"x\":443.139,\"y\":248.21},{\"x\":443.139,\"y\":287.864},{\"x\":588.266,\"y\":287.864}]},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":146.961,\"y\":256.286},\"end\":{\"x\":887.667,\"y\":251.441},\"points\":[{\"x\":146.961,\"y\":256.286},{\"x\":157.85,\"y\":256.286},{\"x\":157.85,\"y\":342.853},{\"x\":876.778,\"y\":342.853},{\"x\":876.778,\"y\":251.441},{\"x\":887.667,\"y\":251.441}]},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":738.707,\"y\":287.864},\"end\":{\"x\":887.667,\"y\":241.749},\"points\":[{\"x\":738.707,\"y\":287.864},{\"x\":865.889,\"y\":287.864},{\"x\":865.889,\"y\":241.749},{\"x\":887.667,\"y\":241.749}]}],\"labelAssociations\":[{\"edgeId\":\"edge_idle_running\",\"bounds\":{\"x\":628.206,\"y\":197.75900000000001,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.798999999999978,\"nearestCompetingRouteDistance\":76.80637750213194},{\"edgeId\":\"edge_running_paused\",\"bounds\":{\"x\":193.217,\"y\":197.75900000000001,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.798999999999978,\"nearestCompetingRouteDistance\":26.13299999999998},{\"edgeId\":\"edge_paused_running\",\"bounds\":{\"x\":186.161,\"y\":253.83599999999998,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.443999999999988,\"nearestCompetingRouteDistance\":21.77799999999999},{\"edgeId\":\"edge_running_completed\",\"bounds\":{\"x\":474.977,\"y\":293.30899999999997,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.444999999999993,\"nearestCompetingRouteDistance\":25.04400000000004},{\"edgeId\":\"edge_paused_idle\",\"bounds\":{\"x\":471.449,\"y\":348.29699999999997,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.44399999999996,\"nearestCompetingRouteDistance\":60.43299999999999},{\"edgeId\":\"edge_completed_idle\",\"bounds\":{\"x\":777.9060000000001,\"y\":293.30899999999997,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.444999999999993,\"nearestCompetingRouteDistance\":25.04400000000004}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]}}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8",
+        "deliveredPngHash": "65f9bcd7f66e1fba40819e3a3ada44c33c3ee26e288d2c0d8f47400ab88831cf",
+        "topology": {
+          "version": 2,
+          "svgHash": "08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8",
+          "pngHash": "65f9bcd7f66e1fba40819e3a3ada44c33c3ee26e288d2c0d8f47400ab88831cf",
+          "topologyHash": "7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643",
+          "topology": {
+            "schemaVersion": 1,
+            "nodes": [
+              {
+                "id": "initial_dot",
+                "label": "",
+                "shape": "initial",
+                "role": "initial"
+              },
+              {
+                "id": "idle",
+                "label": "Idle",
+                "shape": "process",
+                "role": "normal"
+              },
+              {
+                "id": "running",
+                "label": "Running",
+                "shape": "process",
+                "role": "normal"
+              },
+              {
+                "id": "paused",
+                "label": "Paused",
+                "shape": "process",
+                "role": "normal"
+              },
+              {
+                "id": "completed",
+                "label": "Completed",
+                "shape": "process",
+                "role": "normal"
+              }
+            ],
+            "edges": [
+              {
+                "id": "edge_init_idle",
+                "source": "initial_dot",
+                "target": "idle",
+                "label": "",
+                "sourceQuote": "Initial dot enters Idle"
+              },
+              {
+                "id": "edge_idle_running",
+                "source": "idle",
+                "target": "running",
+                "label": "start",
+                "sourceQuote": "Idle→Running: start"
+              },
+              {
+                "id": "edge_running_paused",
+                "source": "running",
+                "target": "paused",
+                "label": "pause",
+                "sourceQuote": "Running→Paused: pause"
+              },
+              {
+                "id": "edge_paused_running",
+                "source": "paused",
+                "target": "running",
+                "label": "resume",
+                "sourceQuote": "Paused→Running: resume"
+              },
+              {
+                "id": "edge_running_completed",
+                "source": "running",
+                "target": "completed",
+                "label": "finish",
+                "sourceQuote": "Running→Completed: finish"
+              },
+              {
+                "id": "edge_paused_idle",
+                "source": "paused",
+                "target": "idle",
+                "label": "cancel",
+                "sourceQuote": "Paused→Idle: cancel"
+              },
+              {
+                "id": "edge_completed_idle",
+                "source": "completed",
+                "target": "idle",
+                "label": "reset",
+                "sourceQuote": "Completed→Idle: reset"
+              }
+            ],
+            "uncertainties": [],
+            "layout": {
+              "direction": "RIGHT"
+            }
+          },
+          "geometry": {
+            "schemaVersion": 1,
+            "svgHash": "08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8",
+            "topologyHash": "7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643",
+            "passed": true,
+            "issues": [],
+            "nodes": {
+              "initial_dot": {
+                "x": 837.578,
+                "y": 197.214,
+                "width": 17.422,
+                "height": 17.422,
+                "shape": "initial",
+                "radius": 0,
+                "strokeWidth": 0
+              },
+              "idle": {
+                "x": 887.667,
+                "y": 212.676,
+                "width": 104.533,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              },
+              "running": {
+                "x": 310.033,
+                "y": 215.906,
+                "width": 122.217,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              },
+              "paused": {
+                "x": 31.8,
+                "y": 219.944,
+                "width": 115.161,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              },
+              "completed": {
+                "x": 588.266,
+                "y": 263.636,
+                "width": 150.441,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              }
+            },
+            "observedRelations": [
+              {
+                "edgeId": "edge_init_idle",
+                "source": "initial_dot",
+                "target": "idle",
+                "label": "",
+                "start": {
+                  "x": 855,
+                  "y": 205.925
+                },
+                "end": {
+                  "x": 887.667,
+                  "y": 222.367
+                },
+                "points": [
+                  {
+                    "x": 855,
+                    "y": 205.925
+                  },
+                  {
+                    "x": 865.889,
+                    "y": 205.925
+                  },
+                  {
+                    "x": 865.889,
+                    "y": 222.367
+                  },
+                  {
+                    "x": 887.667,
+                    "y": 222.367
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_idle_running",
+                "source": "idle",
+                "target": "running",
+                "label": "start",
+                "start": {
+                  "x": 887.667,
+                  "y": 232.058
+                },
+                "end": {
+                  "x": 432.25,
+                  "y": 232.058
+                },
+                "points": [
+                  {
+                    "x": 887.667,
+                    "y": 232.058
+                  },
+                  {
+                    "x": 432.25,
+                    "y": 232.058
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_running_paused",
+                "source": "running",
+                "target": "paused",
+                "label": "pause",
+                "start": {
+                  "x": 310.033,
+                  "y": 232.058
+                },
+                "end": {
+                  "x": 146.961,
+                  "y": 232.058
+                },
+                "points": [
+                  {
+                    "x": 310.033,
+                    "y": 232.058
+                  },
+                  {
+                    "x": 146.961,
+                    "y": 232.058
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_paused_running",
+                "source": "paused",
+                "target": "running",
+                "label": "resume",
+                "start": {
+                  "x": 146.961,
+                  "y": 244.172
+                },
+                "end": {
+                  "x": 310.033,
+                  "y": 248.21
+                },
+                "points": [
+                  {
+                    "x": 146.961,
+                    "y": 244.172
+                  },
+                  {
+                    "x": 157.85,
+                    "y": 244.172
+                  },
+                  {
+                    "x": 157.85,
+                    "y": 248.392
+                  },
+                  {
+                    "x": 288.255,
+                    "y": 248.392
+                  },
+                  {
+                    "x": 288.255,
+                    "y": 248.21
+                  },
+                  {
+                    "x": 310.033,
+                    "y": 248.21
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_running_completed",
+                "source": "running",
+                "target": "completed",
+                "label": "finish",
+                "start": {
+                  "x": 432.25,
+                  "y": 248.21
+                },
+                "end": {
+                  "x": 588.266,
+                  "y": 287.864
+                },
+                "points": [
+                  {
+                    "x": 432.25,
+                    "y": 248.21
+                  },
+                  {
+                    "x": 443.139,
+                    "y": 248.21
+                  },
+                  {
+                    "x": 443.139,
+                    "y": 287.864
+                  },
+                  {
+                    "x": 588.266,
+                    "y": 287.864
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_paused_idle",
+                "source": "paused",
+                "target": "idle",
+                "label": "cancel",
+                "start": {
+                  "x": 146.961,
+                  "y": 256.286
+                },
+                "end": {
+                  "x": 887.667,
+                  "y": 251.441
+                },
+                "points": [
+                  {
+                    "x": 146.961,
+                    "y": 256.286
+                  },
+                  {
+                    "x": 157.85,
+                    "y": 256.286
+                  },
+                  {
+                    "x": 157.85,
+                    "y": 342.853
+                  },
+                  {
+                    "x": 876.778,
+                    "y": 342.853
+                  },
+                  {
+                    "x": 876.778,
+                    "y": 251.441
+                  },
+                  {
+                    "x": 887.667,
+                    "y": 251.441
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_completed_idle",
+                "source": "completed",
+                "target": "idle",
+                "label": "reset",
+                "start": {
+                  "x": 738.707,
+                  "y": 287.864
+                },
+                "end": {
+                  "x": 887.667,
+                  "y": 241.749
+                },
+                "points": [
+                  {
+                    "x": 738.707,
+                    "y": 287.864
+                  },
+                  {
+                    "x": 865.889,
+                    "y": 287.864
+                  },
+                  {
+                    "x": 865.889,
+                    "y": 241.749
+                  },
+                  {
+                    "x": 887.667,
+                    "y": 241.749
+                  }
+                ]
+              }
+            ],
+            "labelAssociations": [
+              {
+                "edgeId": "edge_idle_running",
+                "bounds": {
+                  "x": 628.206,
+                  "y": 197.75900000000001,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 9.798999999999978,
+                "nearestCompetingRouteDistance": 76.80637750213194
+              },
+              {
+                "edgeId": "edge_running_paused",
+                "bounds": {
+                  "x": 193.217,
+                  "y": 197.75900000000001,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 9.798999999999978,
+                "nearestCompetingRouteDistance": 26.13299999999998
+              },
+              {
+                "edgeId": "edge_paused_running",
+                "bounds": {
+                  "x": 186.161,
+                  "y": 253.83599999999998,
+                  "width": 84.672,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 5.443999999999988,
+                "nearestCompetingRouteDistance": 21.77799999999999
+              },
+              {
+                "edgeId": "edge_running_completed",
+                "bounds": {
+                  "x": 474.977,
+                  "y": 293.30899999999997,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 5.444999999999993,
+                "nearestCompetingRouteDistance": 25.04400000000004
+              },
+              {
+                "edgeId": "edge_paused_idle",
+                "bounds": {
+                  "x": 471.449,
+                  "y": 348.29699999999997,
+                  "width": 77.616,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 5.44399999999996,
+                "nearestCompetingRouteDistance": 60.43299999999999
+              },
+              {
+                "edgeId": "edge_completed_idle",
+                "bounds": {
+                  "x": 777.9060000000001,
+                  "y": 293.30899999999997,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 5.444999999999993,
+                "nearestCompetingRouteDistance": 25.04400000000004
+              }
+            ],
+            "minFontPx": 14,
+            "limitations": [
+              "Source geometry checks do not certify prose-to-graph semantic inference.",
+              "Text widths are conservative Noto Sans bounds; actual raster must still be inspected.",
+              "Edge crossings can remain and require visual review."
+            ]
+          },
+          "layout": {
+            "direction": "RIGHT",
+            "viewport": {
+              "width": 1024,
+              "height": 576,
+              "minFontPx": 14
+            },
+            "fontPx": 19.6,
+            "compiler": "elkjs-0.12.0-topology-v1"
+          }
+        },
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8",
+        "reviewedPngHash": "65f9bcd7f66e1fba40819e3a3ada44c33c3ee26e288d2c0d8f47400ab88831cf",
+        "note": "原始需求与推断关系存在缺失、多余、方向、事件或节点问题；布局修订不能改变语义，保留当前版本和具体关系核查。"
+      }
+    }
+  ],
+  "id": "1791626502086-s5tz6ygr",
+  "status": "succeeded",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "Synthetic teaching example of an instrument state machine. States: Idle, Running, Paused, Completed. Initial dot enters Idle. Transitions: Idle→Running: start; Running→Paused: pause; Paused→Running: resume; Running→Completed: finish; Paused→Idle: cancel; Completed→Idle: reset. Each named state appears once. Arrows are labelled events, not process activities. Completed is not a terminal state because reset returns to Idle. English text. Reference is for structural design only.",
+  "negativePrompt": "No invented numbers, statistical significance, or scientific conclusions. Preserve all supplied labels and relations.",
+  "caption": "Explicit synthetic teaching example",
+  "infographicCategory": "状态转移图",
+  "figureTypeId": "state_transition",
+  "figureSpecVersion": "2026-10-10.v1",
+  "figureInputValidation": {
+    "status": "content_review_required",
+    "checks": [
+      "核对：节点是状态不是动作",
+      "核对：边标注事件",
+      "核对：自循环与不可达态显式检查",
+      "逐项核对必要输入；记录证据缺口，不把模型的自信作为事实依据。"
+    ]
+  },
+  "outputFormat": "svg",
+  "mainModelName": "qwen3.7-plus",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "main_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "planner_critic",
+  "retrievalSetting": "manual",
+  "manualReferenceIds": [
+    "journal_pcbi.1009702.g001"
+  ],
+  "retrievedReferenceIds": [
+    "journal_pcbi.1009702.g001"
+  ],
+  "retrievedReferences": [
+    {
+      "id": "journal_pcbi.1009702.g001",
+      "source": "journal-curated",
+      "corpusVersion": "journal-2026-10-10.v2",
+      "figureTypeId": "multipanel",
+      "panelTypes": [
+        {
+          "panel": "A",
+          "typeId": "network"
+        },
+        {
+          "panel": "B",
+          "typeId": "state_transition"
+        },
+        {
+          "panel": "C",
+          "typeId": "mechanism"
+        }
+      ],
+      "title": "Identification of periodic attractors in Boolean networks using a priori information",
+      "titleZh": "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。",
+      "summary": "Example of a BN.\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].",
+      "originalCaption": "Example of a BN.\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].",
+      "shortIntroZh": "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。",
+      "detailZh": "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。 A节点是变量，B节点是整组布尔状态，C含反应节点，不能互相混用。D是表格，不能为了填补覆盖而标成二值矩阵图。",
+      "paper": {
+        "title": "Identification of periodic attractors in Boolean networks using a priori information",
+        "authors": [
+          "Ulrike Münzner",
+          "Tomoya Mori",
+          "Marcus Krantz",
+          "Edda Klipp",
+          "Tatsuya Akutsu"
+        ],
+        "journal": "PLOS Computational Biology",
+        "year": "2022",
+        "doi": "10.1371/journal.pcbi.1009702",
+        "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009702"
+      },
+      "figureNumber": "Fig 1",
+      "researchDomain": "系统生物学与布尔网络",
+      "layout": "grid",
+      "density": "high",
+      "tags": [
+        "multipanel",
+        "系统生物学与布尔网络",
+        "grid"
+      ],
+      "designLessons": [
+        "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。"
+      ],
+      "doNotTransfer": [
+        "A节点是变量，B节点是整组布尔状态，C含反应节点，不能互相混用。D是表格，不能为了填补覆盖而标成二值矩阵图。",
+        "原论文的实体名称、样本、数值、显著性、模型性能与科学结论。"
+      ],
+      "imageUrl": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1009702.g001",
+      "localPreviewUrl": "/reference-library/pcbi.1009702.g001.png",
+      "assets": {
+        "large": {
+          "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1009702.g001",
+          "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009702.g001.png",
+          "bytes": 367246,
+          "sha256": "1626940dd34b4372305aa26c217199da6895a7252701f5aeb838a5b0707e0a63"
+        },
+        "original": {
+          "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1009702.g001",
+          "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009702.g001.tif",
+          "bytes": 432340,
+          "sha256": "f2680160c6cc4ed9419bf90d4edf5b09b7cf3bfcbcedaefbfa245ce28a0be1bc"
+        }
+      },
+      "modifications": [],
+      "license": {
+        "id": "CC-BY-4.0",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "status": "verified",
+        "attributionRequired": true,
+        "verifiedAt": "2026-10-10",
+        "basis": "2022\nMünzner et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+        "evidenceFile": "docs/infographic-v400/evidence/papers/pcbi.1009702.xml",
+        "captionEvidence": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009702.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009702.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Example of a BN.</title>\n<p>(A) Network structure <italic>G</italic>(<italic>V</italic>, <italic>E</italic>) for a BN consisting of <italic>n</italic> = 3 nodes <italic>x</italic><sub>1</sub>, <italic>x</italic><sub>2</sub>, and <italic>x</italic><sub>3</sub>. The Boolean functions are represented by the edges. (B) State transition diagram of all 2<sup>3</sup> = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component <italic>x</italic><sub>1</sub> are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) <italic>x</italic><sub>1</sub> undergoes phosphorylation by consuming its elemental state <italic>x</italic><sub>1</sub>-{0} to produce its modified state <italic>x</italic><sub>1</sub>-{P} by reaction <italic>r</italic><sub>1</sub> (phosphorylation). The modified <italic>x</italic><sub>1</sub>-{P} undergoes consumption thereby producing the neutral state <italic>x</italic><sub>1</sub>-{0} via reaction <italic>r</italic><sub>2</sub> (dephosphorylation) (details in [<xref ref-type=\"bibr\" rid=\"pcbi.1009702.ref029\">29</xref>]). (D) Relationship between initial states of both elemental states <italic>x</italic><sub>1</sub>-{0} and <italic>x</italic><sub>1</sub>-{P} of component <italic>x</italic><sub>1</sub> and the attractors. When at least either of the two elemental states <italic>x</italic><sub>1</sub>-{0} or <italic>x</italic><sub>1</sub>-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes <italic>r</italic><sub>1</sub> and <italic>r</italic><sub>2</sub> are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [<xref ref-type=\"bibr\" rid=\"pcbi.1009702.ref029\">29</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009702.g001\" ns0:type=\"simple\" />\n</fig>\n",
+        "reviewEvidence": null,
+        "thirdPartyReview": "已检查出版方XML、全文素材声明、图注和图像；未发现该图另行限制或第三方署名例外。",
+        "permissions": {
+          "storage": true,
+          "display": true,
+          "modelInput": true,
+          "adaptation": true
+        },
+        "conditions": [
+          "保留论文、作者、图号、来源及许可链接（CC0为学术溯源要求，非额外许可义务）",
+          "如修改，明确说明修改并保留原图",
+          "不暗示原作者认可新作品",
+          "仅基于许可的复制与改编权判断模型输入；不额外授予训练、商标、隐私等权利"
+        ],
+        "attribution": "Ulrike Münzner, Tomoya Mori, Marcus Krantz, Edda Klipp, Tatsuya Akutsu. Identification of periodic attractors in Boolean networks using a priori information. PLOS Computational Biology (2022), Fig 1. 10.1371/journal.pcbi.1009702. CC-BY-4.0."
+      },
+      "quality": {
+        "status": "reviewed",
+        "inspection": "publisher-caption-and-image",
+        "reason": "结构与科学编码可作为所标注类型的参考；局限写在 doNotTransfer 中。"
+      },
+      "attribution": "Ulrike Münzner, Tomoya Mori, Marcus Krantz, Edda Klipp, Tatsuya Akutsu. Identification of periodic attractors in Boolean networks using a priori information. PLOS Computational Biology (2022), Fig 1. 10.1371/journal.pcbi.1009702. CC-BY-4.0.",
+      "taskName": "diagram",
+      "visualCategory": "multipanel",
+      "visualCategoryLabel": "组合表达 / 多面板组合图",
+      "keywords": [
+        "多面板组合图",
+        "multipanel",
+        "系统生物学与布尔网络",
+        "grid"
+      ],
+      "match": {
+        "level": "exact",
+        "score": 1010,
+        "requestedTypeId": "state_transition",
+        "preferences": {},
+        "reason": "图型或明确标注的子图精确匹配"
+      }
+    }
+  ],
+  "stages": [
+    {
+      "id": "stage-dd687521-9377-4ecf-9c11-72d53f0dbc2e",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "Based on the methodology and the visual style of the reference image (specifically Panel B), here is a detailed description for the illustrative figure.\n\n**Figure Description:**\n\n**Overall Layout & Style:**\nThe image is a schematic state transition diagram presented on a pure white background. The style is minimalist and high-contrast, utilizing black lines and text with no color fills other than white. The layout follows a logical flow from left to right, representing the lifecycle of an instrument, but includes a feedback loop to demonstrate the non-terminal nature of the \"Completed\" state.\n\n**Nodes (States):**\nThere are four distinct state nodes, represented as rectangles with rounded corners (pill-shaped or similar to the reference). Each node has a thick black outline (approx. 2pt) and a white interior. Inside each node, the state name is centered in a bold, sans-serif font (e.g., Arial or Helvetica), sized roughly 14-16pt.\n1.  **Idle:** Located on the far left, vertically centered. This is the starting point.\n2.  **Running:** Located to the right of \"Idle\", slightly higher than the vertical center.\n3.  **Paused:** Located directly below \"Running\", creating a vertical column for the active states.\n4.  **Completed:** Located to the right of \"Running\", aligned horizontally with it.\n\n**Initial State Indicator:**\nA solid black circle (dot), approximately 1/3 the height of the state nodes, is positioned to the immediate left of the \"Idle\" node. A short, straight horizontal arrow connects this dot to the left edge of the \"Idle\" node, indicating the entry point into the system.\n\n**Transitions (Edges & Labels):**\nConnections between states are depicted as solid black lines with filled triangular arrowheads indicating direction. Each transition line is labeled with the triggering event in a smaller, regular-weight sans-serif font (approx. 10-12pt), placed near the midpoint of the line.\n\n*   **Idle $\\rightarrow$ Running:** A straight horizontal arrow pointing right from \"Idle\" to \"Running\". Label: **\"start\"** (placed above the arrow).\n*   **Running $\\rightarrow$ Paused:** A straight vertical arrow pointing down from \"Running\" to \"Paused\". Label: **\"pause\"** (placed to the right of the arrow).\n*   **Paused $\\rightarrow$ Running:** A straight vertical arrow pointing up from \"Paused\" to \"Running\", running parallel to the \"pause\" arrow. Label: **\"resume\"** (placed to the left of the arrow).\n*   **Running $\\rightarrow$ Completed:** A straight horizontal arrow pointing right from \"Running\" to \"Completed\". Label: **\"finish\"** (placed above the arrow).\n*   **Paused $\\rightarrow$ Idle:** A long, curved arrow originating from the left side of the \"Paused\" node. It sweeps downwards and then curves upwards and leftwards to point into the bottom of the \"Idle\" node. Label: **\"cancel\"** (placed below the curve).\n*   **Completed $\\rightarrow$ Idle:** A long, curved arrow originating from the top or right side of the \"Completed\" node. It arcs significantly over the top of the \"Running\" node (to avoid overlap) and points down into the top of the \"Idle\" node. This visualizes the reset mechanism. Label: **\"reset\"** (placed above the highest point of the arc).\n\n**Visual Consistency Notes:**\n*   Ensure all arrowheads are uniform in size and shape.\n*   Ensure the curvature of the \"cancel\" and \"reset\" arrows is smooth and distinct, clearly separating them from the central linear flow.\n*   Text alignment should be precise; labels should not touch the arrow lines.\n*   The diagram contains no title or caption text within the image boundaries.",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T10:01:42.281Z",
+      "completedAt": "2026-10-10T10:01:59.575Z",
+      "durationMs": 17294,
+      "error": ""
+    },
+    {
+      "id": "stage-fd530dc4-d761-47bb-b402-b594e93853ec",
+      "candidateId": 0,
+      "type": "svg_source",
+      "title": "SVG v1 文件",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"d12fe58107b953a9ab5c9e05524ea48c2cfc96176a473401f976a75233dc3989\",\"pngHash\":\"958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"topology\":{\"schemaVersion\":1,\"nodes\":[{\"id\":\"initial_dot\",\"label\":\"\",\"shape\":\"initial\",\"role\":\"initial\"},{\"id\":\"idle\",\"label\":\"Idle\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"running\",\"label\":\"Running\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"paused\",\"label\":\"Paused\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"completed\",\"label\":\"Completed\",\"shape\":\"process\",\"role\":\"normal\"}],\"edges\":[{\"id\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"id\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"id\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"id\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"id\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"id\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"id\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"uncertainties\":[],\"layout\":{\"direction\":\"RIGHT\"}},\"geometry\":{\"schemaVersion\":1,\"svgHash\":\"d12fe58107b953a9ab5c9e05524ea48c2cfc96176a473401f976a75233dc3989\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":411.517,\"y\":434.183,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":404.548,\"y\":484.272,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":405.623,\"y\":190.272,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":417.572,\"y\":43.272,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":477.94,\"y\":337.272,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":420.228,\"y\":451.605},\"end\":{\"x\":425.455,\"y\":484.272},\"points\":[{\"x\":420.228,\"y\":451.605},{\"x\":420.228,\"y\":462.494},{\"x\":425.455,\"y\":462.494},{\"x\":425.455,\"y\":484.272}]},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":446.362,\"y\":484.272},\"end\":{\"x\":446.362,\"y\":238.728},\"points\":[{\"x\":446.362,\"y\":484.272},{\"x\":446.362,\"y\":238.728}]},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":446.362,\"y\":190.272},\"end\":{\"x\":446.362,\"y\":91.728},\"points\":[{\"x\":446.362,\"y\":190.272},{\"x\":446.362,\"y\":91.728}]},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":475.152,\"y\":91.728},\"end\":{\"x\":487.101,\"y\":190.272},\"points\":[{\"x\":475.152,\"y\":91.728},{\"x\":475.152,\"y\":168.494},{\"x\":487.101,\"y\":168.494},{\"x\":487.101,\"y\":190.272}]},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":487.101,\"y\":238.728},\"end\":{\"x\":553.16,\"y\":337.272},\"points\":[{\"x\":487.101,\"y\":238.728},{\"x\":487.101,\"y\":249.617},{\"x\":553.16,\"y\":249.617},{\"x\":553.16,\"y\":337.272}]},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":503.942,\"y\":91.728},\"end\":{\"x\":488.175,\"y\":484.272},\"points\":[{\"x\":503.942,\"y\":91.728},{\"x\":503.942,\"y\":102.617},{\"x\":662.354,\"y\":102.617},{\"x\":662.354,\"y\":473.383},{\"x\":488.175,\"y\":473.383},{\"x\":488.175,\"y\":484.272}]},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":553.16,\"y\":385.728},\"end\":{\"x\":467.268,\"y\":484.272},\"points\":[{\"x\":553.16,\"y\":385.728},{\"x\":553.16,\"y\":462.494},{\"x\":467.268,\"y\":462.494},{\"x\":467.268,\"y\":484.272}]}],\"labelAssociations\":[{\"edgeId\":\"edge_idle_running\",\"bounds\":{\"x\":367.09000000000003,\"y\":347.072,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":80.03300000000002},{\"edgeId\":\"edge_running_paused\",\"bounds\":{\"x\":367.09000000000003,\"y\":126.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":37.50199999999995},{\"edgeId\":\"edge_paused_running\",\"bounds\":{\"x\":484.952,\"y\":126.572,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.800000000000011,\"nearestCompetingRouteDistance\":23.955},{\"edgeId\":\"edge_running_completed\",\"bounds\":{\"x\":473.889,\"y\":273.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987},{\"edgeId\":\"edge_paused_idle\",\"bounds\":{\"x\":576.026,\"y\":273.572,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.712000000000089,\"nearestCompetingRouteDistance\":22.865999999999985},{\"edgeId\":\"edge_completed_idle\",\"bounds\":{\"x\":473.889,\"y\":420.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]},\"layout\":{\"direction\":\"DOWN\",\"viewport\":{\"width\":1024,\"height\":576,\"minFontPx\":14},\"fontPx\":19.6,\"compiler\":\"elkjs-0.12.0-topology-v1\"}}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791626502086-s5tz6ygr/candidate-0-svg-v1.svg",
+        "url": "http://127.0.0.1:51862/objects/1791626502086-s5tz6ygr/candidate-0-svg-v1.svg",
+        "mimeType": "image/svg+xml",
+        "objectKey": "1791626502086-s5tz6ygr/candidate-0-svg-v1.svg"
+      },
+      "startedAt": "2026-10-10T10:02:11.742Z",
+      "completedAt": "2026-10-10T10:02:11.742Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-e302bf39-92f0-44d1-bc87-7e90579223dd",
+      "candidateId": 0,
+      "type": "render",
+      "title": "SVG v1 实际渲染",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"d12fe58107b953a9ab5c9e05524ea48c2cfc96176a473401f976a75233dc3989\",\"pngHash\":\"958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"topology\":{\"schemaVersion\":1,\"nodes\":[{\"id\":\"initial_dot\",\"label\":\"\",\"shape\":\"initial\",\"role\":\"initial\"},{\"id\":\"idle\",\"label\":\"Idle\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"running\",\"label\":\"Running\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"paused\",\"label\":\"Paused\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"completed\",\"label\":\"Completed\",\"shape\":\"process\",\"role\":\"normal\"}],\"edges\":[{\"id\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"id\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"id\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"id\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"id\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"id\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"id\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"uncertainties\":[],\"layout\":{\"direction\":\"RIGHT\"}},\"geometry\":{\"schemaVersion\":1,\"svgHash\":\"d12fe58107b953a9ab5c9e05524ea48c2cfc96176a473401f976a75233dc3989\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":411.517,\"y\":434.183,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":404.548,\"y\":484.272,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":405.623,\"y\":190.272,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":417.572,\"y\":43.272,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":477.94,\"y\":337.272,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":420.228,\"y\":451.605},\"end\":{\"x\":425.455,\"y\":484.272},\"points\":[{\"x\":420.228,\"y\":451.605},{\"x\":420.228,\"y\":462.494},{\"x\":425.455,\"y\":462.494},{\"x\":425.455,\"y\":484.272}]},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":446.362,\"y\":484.272},\"end\":{\"x\":446.362,\"y\":238.728},\"points\":[{\"x\":446.362,\"y\":484.272},{\"x\":446.362,\"y\":238.728}]},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":446.362,\"y\":190.272},\"end\":{\"x\":446.362,\"y\":91.728},\"points\":[{\"x\":446.362,\"y\":190.272},{\"x\":446.362,\"y\":91.728}]},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":475.152,\"y\":91.728},\"end\":{\"x\":487.101,\"y\":190.272},\"points\":[{\"x\":475.152,\"y\":91.728},{\"x\":475.152,\"y\":168.494},{\"x\":487.101,\"y\":168.494},{\"x\":487.101,\"y\":190.272}]},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":487.101,\"y\":238.728},\"end\":{\"x\":553.16,\"y\":337.272},\"points\":[{\"x\":487.101,\"y\":238.728},{\"x\":487.101,\"y\":249.617},{\"x\":553.16,\"y\":249.617},{\"x\":553.16,\"y\":337.272}]},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":503.942,\"y\":91.728},\"end\":{\"x\":488.175,\"y\":484.272},\"points\":[{\"x\":503.942,\"y\":91.728},{\"x\":503.942,\"y\":102.617},{\"x\":662.354,\"y\":102.617},{\"x\":662.354,\"y\":473.383},{\"x\":488.175,\"y\":473.383},{\"x\":488.175,\"y\":484.272}]},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":553.16,\"y\":385.728},\"end\":{\"x\":467.268,\"y\":484.272},\"points\":[{\"x\":553.16,\"y\":385.728},{\"x\":553.16,\"y\":462.494},{\"x\":467.268,\"y\":462.494},{\"x\":467.268,\"y\":484.272}]}],\"labelAssociations\":[{\"edgeId\":\"edge_idle_running\",\"bounds\":{\"x\":367.09000000000003,\"y\":347.072,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":80.03300000000002},{\"edgeId\":\"edge_running_paused\",\"bounds\":{\"x\":367.09000000000003,\"y\":126.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":37.50199999999995},{\"edgeId\":\"edge_paused_running\",\"bounds\":{\"x\":484.952,\"y\":126.572,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.800000000000011,\"nearestCompetingRouteDistance\":23.955},{\"edgeId\":\"edge_running_completed\",\"bounds\":{\"x\":473.889,\"y\":273.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987},{\"edgeId\":\"edge_paused_idle\",\"bounds\":{\"x\":576.026,\"y\":273.572,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.712000000000089,\"nearestCompetingRouteDistance\":22.865999999999985},{\"edgeId\":\"edge_completed_idle\",\"bounds\":{\"x\":473.889,\"y\":420.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]},\"layout\":{\"direction\":\"DOWN\",\"viewport\":{\"width\":1024,\"height\":576,\"minFontPx\":14},\"fontPx\":19.6,\"compiler\":\"elkjs-0.12.0-topology-v1\"}}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791626502086-s5tz6ygr/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:51862/objects/1791626502086-s5tz6ygr/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791626502086-s5tz6ygr/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T10:02:11.743Z",
+      "completedAt": "2026-10-10T10:02:11.743Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-87759d02-5118-4206-9633-67574402b8f0",
+      "candidateId": 0,
+      "type": "critic",
+      "title": "SVG v1 画面、代码与原始关系评审（第1轮）",
+      "round": 1,
+      "text": "{\"version\":1,\"svgHash\":\"d12fe58107b953a9ab5c9e05524ea48c2cfc96176a473401f976a75233dc3989\",\"pngHash\":\"958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865\",\"submittedImageHash\":\"2f265f4a189734a84a768d5fc261e870ac9df104adbbc4b414931f92e66e70fc\",\"round\":1,\"referenceAnalysis\":\"\",\"retrievalContext\":\"[{\\\"id\\\":\\\"journal_pcbi.1009702.g001\\\",\\\"title\\\":\\\"Identification of periodic attractors in Boolean networks using a priori information\\\",\\\"originalCaption\\\":\\\"Example of a BN.\\\\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].\\\",\\\"figureTypeId\\\":\\\"multipanel\\\",\\\"panels\\\":[{\\\"panel\\\":\\\"A\\\",\\\"typeId\\\":\\\"network\\\"},{\\\"panel\\\":\\\"B\\\",\\\"typeId\\\":\\\"state_transition\\\"},{\\\"panel\\\":\\\"C\\\",\\\"typeId\\\":\\\"mechanism\\\"}],\\\"match\\\":{\\\"level\\\":\\\"exact\\\",\\\"score\\\":1010,\\\"requestedTypeId\\\":\\\"state_transition\\\",\\\"preferences\\\":{},\\\"reason\\\":\\\"图型或明确标注的子图精确匹配\\\"},\\\"layout\\\":\\\"grid\\\",\\\"density\\\":\\\"high\\\",\\\"designLessons\\\":[\\\"同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。\\\"],\\\"doNotTransfer\\\":[\\\"A节点是变量，B节点是整组布尔状态，C含反应节点，不能互相混用。D是表格，不能为了填补覆盖而标成二值矩阵图。\\\",\\\"原论文的实体名称、样本、数值、显著性、模型性能与科学结论。\\\"],\\\"attribution\\\":\\\"Ulrike Münzner, Tomoya Mori, Marcus Krantz, Edda Klipp, Tatsuya Akutsu. Identification of periodic attractors in Boolean networks using a priori information. PLOS Computational Biology (2022), Fig 1. 10.1371/journal.pcbi.1009702. CC-BY-4.0.\\\",\\\"license\\\":\\\"CC-BY-4.0\\\"}]\",\"topology\":{\"schemaVersion\":1,\"nodes\":[{\"id\":\"initial_dot\",\"label\":\"\",\"shape\":\"initial\",\"role\":\"initial\"},{\"id\":\"idle\",\"label\":\"Idle\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"running\",\"label\":\"Running\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"paused\",\"label\":\"Paused\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"completed\",\"label\":\"Completed\",\"shape\":\"process\",\"role\":\"normal\"}],\"edges\":[{\"id\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"id\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"id\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"id\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"id\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"id\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"id\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"uncertainties\":[],\"layout\":{\"direction\":\"RIGHT\"}},\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"localGeometryCheck\":{\"schemaVersion\":1,\"svgHash\":\"d12fe58107b953a9ab5c9e05524ea48c2cfc96176a473401f976a75233dc3989\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":411.517,\"y\":434.183,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":404.548,\"y\":484.272,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":405.623,\"y\":190.272,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":417.572,\"y\":43.272,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":477.94,\"y\":337.272,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":420.228,\"y\":451.605},\"end\":{\"x\":425.455,\"y\":484.272},\"points\":[{\"x\":420.228,\"y\":451.605},{\"x\":420.228,\"y\":462.494},{\"x\":425.455,\"y\":462.494},{\"x\":425.455,\"y\":484.272}]},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":446.362,\"y\":484.272},\"end\":{\"x\":446.362,\"y\":238.728},\"points\":[{\"x\":446.362,\"y\":484.272},{\"x\":446.362,\"y\":238.728}]},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":446.362,\"y\":190.272},\"end\":{\"x\":446.362,\"y\":91.728},\"points\":[{\"x\":446.362,\"y\":190.272},{\"x\":446.362,\"y\":91.728}]},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":475.152,\"y\":91.728},\"end\":{\"x\":487.101,\"y\":190.272},\"points\":[{\"x\":475.152,\"y\":91.728},{\"x\":475.152,\"y\":168.494},{\"x\":487.101,\"y\":168.494},{\"x\":487.101,\"y\":190.272}]},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":487.101,\"y\":238.728},\"end\":{\"x\":553.16,\"y\":337.272},\"points\":[{\"x\":487.101,\"y\":238.728},{\"x\":487.101,\"y\":249.617},{\"x\":553.16,\"y\":249.617},{\"x\":553.16,\"y\":337.272}]},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":503.942,\"y\":91.728},\"end\":{\"x\":488.175,\"y\":484.272},\"points\":[{\"x\":503.942,\"y\":91.728},{\"x\":503.942,\"y\":102.617},{\"x\":662.354,\"y\":102.617},{\"x\":662.354,\"y\":473.383},{\"x\":488.175,\"y\":473.383},{\"x\":488.175,\"y\":484.272}]},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":553.16,\"y\":385.728},\"end\":{\"x\":467.268,\"y\":484.272},\"points\":[{\"x\":553.16,\"y\":385.728},{\"x\":553.16,\"y\":462.494},{\"x\":467.268,\"y\":462.494},{\"x\":467.268,\"y\":484.272}]}],\"labelAssociations\":[{\"edgeId\":\"edge_idle_running\",\"bounds\":{\"x\":367.09000000000003,\"y\":347.072,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":80.03300000000002},{\"edgeId\":\"edge_running_paused\",\"bounds\":{\"x\":367.09000000000003,\"y\":126.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":37.50199999999995},{\"edgeId\":\"edge_paused_running\",\"bounds\":{\"x\":484.952,\"y\":126.572,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.800000000000011,\"nearestCompetingRouteDistance\":23.955},{\"edgeId\":\"edge_running_completed\",\"bounds\":{\"x\":473.889,\"y\":273.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987},{\"edgeId\":\"edge_paused_idle\",\"bounds\":{\"x\":576.026,\"y\":273.572,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.712000000000089,\"nearestCompetingRouteDistance\":22.865999999999985},{\"edgeId\":\"edge_completed_idle\",\"bounds\":{\"x\":473.889,\"y\":420.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]},\"layout\":{\"direction\":\"DOWN\",\"viewport\":{\"width\":1024,\"height\":576,\"minFontPx\":14},\"fontPx\":19.6,\"compiler\":\"elkjs-0.12.0-topology-v1\"},\"assessment\":\"{\\\"decision\\\":{\\\"version\\\":1,\\\"svgHash\\\":\\\"d12fe58107b953a9ab5c9e05524ea48c2cfc96176a473401f976a75233dc3989\\\",\\\"visual\\\":{\\\"status\\\":\\\"issues_found\\\",\\\"findings\\\":[{\\\"issue\\\":\\\"Layout direction contradicts visual intent and standard conventions\\\",\\\"location\\\":\\\"Global layout / Topology definition\\\",\\\"evidence\\\":\\\"The `completePlan` explicitly specifies a 'logical flow from left to right' with Idle on the far left. However, the generated SVG renders a vertical top-to-bottom layout (Paused at top, Idle at bottom). The `topology.layout.direction` is set to 'RIGHT', but the actual coordinates reflect a 'DOWN' flow.\\\",\\\"suggestion\\\":\\\"Regenerate the diagram using a strict Left-to-Right layout as specified in the plan. Place 'Idle' on the left, 'Running' in the center, and 'Completed' on the right to match the requested lifecycle visualization.\\\"},{\\\"issue\\\":\\\"Node fill color violates style constraints\\\",\\\"location\\\":\\\"State nodes (Idle, Running, Paused, Completed)\\\",\\\"evidence\\\":\\\"The `completePlan` requires 'no color fills other than white'. The generated SVG uses a light green/teal fill (`#e5efeb`) for all state rectangles. Additionally, the stroke and text colors are a dark teal (`#355c53`) rather than the requested black.\\\",\\\"suggestion\\\":\\\"Change node fill to pure white (`#ffffff`) and stroke/text colors to black (`#000000`) or dark gray to strictly adhere to the minimalist high-contrast style defined in the plan.\\\"},{\\\"issue\\\":\\\"Feedback loop routing creates visual clutter\\\",\\\"location\\\":\\\"Edge: Paused -> Idle (cancel)\\\",\\\"evidence\\\":\\\"In the current vertical layout, the 'cancel' arrow routes all the way to the right side of the canvas (x=662) to bypass the central column, creating a large empty space and an unbalanced composition. In a Left-to-Right layout, this feedback loop would naturally route underneath the main flow, resulting in a more compact and readable diagram.\\\",\\\"suggestion\\\":\\\"Adopting the LTR layout will naturally resolve this routing issue, allowing the 'cancel' and 'reset' loops to be placed below the primary state sequence without excessive detours.\\\"}]},\\\"code\\\":{\\\"status\\\":\\\"passed\\\",\\\"findings\\\":[]},\\\"uncertainties\\\":[],\\\"revised_description\\\":\\\"Generate a Left-to-Right State Transition Diagram on a white background.\\\\n\\\\n**Nodes:**\\\\n1.  **Initial Dot:** Solid black circle on the far left.\\\\n2.  **Idle:** Rounded rectangle, white fill, black border. Positioned to the right of the initial dot.\\\\n3.  **Running:** Rounded rectangle, white fill, black border. Positioned to the right of Idle.\\\\n4.  **Paused:** Rounded rectangle, white fill, black border. Positioned directly BELOW Running.\\\\n5.  **Completed:** Rounded rectangle, white fill, black border. Positioned to the right of Running.\\\\n\\\\n**Edges & Labels:**\\\\n-   **Init -> Idle:** Straight horizontal arrow. No label.\\\\n-   **Idle -> Running:** Straight horizontal arrow. Label \\\\\\\"start\\\\\\\" above.\\\\n-   **Running -> Paused:** Straight vertical arrow downwards. Label \\\\\\\"pause\\\\\\\" to the right.\\\\n-   **Paused -> Running:** Straight vertical arrow upwards (parallel to pause). Label \\\\\\\"resume\\\\\\\" to the left.\\\\n-   **Running -> Completed:** Straight horizontal arrow. Label \\\\\\\"finish\\\\\\\" above.\\\\n-   **Paused -> Idle:** Curved arrow starting from left/bottom of Paused, sweeping DOWN and LEFT to enter the bottom of Idle. Label \\\\\\\"cancel\\\\\\\" below the curve.\\\\n-   **Completed -> Idle:** Long curved arrow starting from top/right of Completed, arcing OVER the top of Running and Idle, entering the top of Idle. Label \\\\\\\"reset\\\\\\\" at the apex ",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791626502086-s5tz6ygr/candidate-0-svg-v1-review-1.png",
+        "url": "http://127.0.0.1:51862/objects/1791626502086-s5tz6ygr/candidate-0-svg-v1-review-1.png",
+        "mimeType": "image/png",
+        "objectKey": "1791626502086-s5tz6ygr/candidate-0-svg-v1-review-1.png"
+      },
+      "startedAt": "2026-10-10T10:02:42.038Z",
+      "completedAt": "2026-10-10T10:02:42.038Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-d8dc0436-eb9b-46ce-98b9-f77fe17b5f34",
+      "candidateId": 0,
+      "type": "svg_source",
+      "title": "SVG v2 文件",
+      "round": 1,
+      "text": "{\"version\":2,\"svgHash\":\"08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8\",\"pngHash\":\"65f9bcd7f66e1fba40819e3a3ada44c33c3ee26e288d2c0d8f47400ab88831cf\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"topology\":{\"schemaVersion\":1,\"nodes\":[{\"id\":\"initial_dot\",\"label\":\"\",\"shape\":\"initial\",\"role\":\"initial\"},{\"id\":\"idle\",\"label\":\"Idle\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"running\",\"label\":\"Running\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"paused\",\"label\":\"Paused\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"completed\",\"label\":\"Completed\",\"shape\":\"process\",\"role\":\"normal\"}],\"edges\":[{\"id\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"id\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"id\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"id\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"id\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"id\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"id\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"uncertainties\":[],\"layout\":{\"direction\":\"RIGHT\"}},\"geometry\":{\"schemaVersion\":1,\"svgHash\":\"08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":837.578,\"y\":197.214,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":887.667,\"y\":212.676,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":310.033,\"y\":215.906,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":31.8,\"y\":219.944,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":588.266,\"y\":263.636,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":855,\"y\":205.925},\"end\":{\"x\":887.667,\"y\":222.367},\"points\":[{\"x\":855,\"y\":205.925},{\"x\":865.889,\"y\":205.925},{\"x\":865.889,\"y\":222.367},{\"x\":887.667,\"y\":222.367}]},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":887.667,\"y\":232.058},\"end\":{\"x\":432.25,\"y\":232.058},\"points\":[{\"x\":887.667,\"y\":232.058},{\"x\":432.25,\"y\":232.058}]},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":310.033,\"y\":232.058},\"end\":{\"x\":146.961,\"y\":232.058},\"points\":[{\"x\":310.033,\"y\":232.058},{\"x\":146.961,\"y\":232.058}]},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":146.961,\"y\":244.172},\"end\":{\"x\":310.033,\"y\":248.21},\"points\":[{\"x\":146.961,\"y\":244.172},{\"x\":157.85,\"y\":244.172},{\"x\":157.85,\"y\":248.392},{\"x\":288.255,\"y\":248.392},{\"x\":288.255,\"y\":248.21},{\"x\":310.033,\"y\":248.21}]},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":432.25,\"y\":248.21},\"end\":{\"x\":588.266,\"y\":287.864},\"points\":[{\"x\":432.25,\"y\":248.21},{\"x\":443.139,\"y\":248.21},{\"x\":443.139,\"y\":287.864},{\"x\":588.266,\"y\":287.864}]},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":146.961,\"y\":256.286},\"end\":{\"x\":887.667,\"y\":251.441},\"points\":[{\"x\":146.961,\"y\":256.286},{\"x\":157.85,\"y\":256.286},{\"x\":157.85,\"y\":342.853},{\"x\":876.778,\"y\":342.853},{\"x\":876.778,\"y\":251.441},{\"x\":887.667,\"y\":251.441}]},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":738.707,\"y\":287.864},\"end\":{\"x\":887.667,\"y\":241.749},\"points\":[{\"x\":738.707,\"y\":287.864},{\"x\":865.889,\"y\":287.864},{\"x\":865.889,\"y\":241.749},{\"x\":887.667,\"y\":241.749}]}],\"labelAssociations\":[{\"edgeId\":\"edge_idle_running\",\"bounds\":{\"x\":628.206,\"y\":197.75900000000001,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.798999999999978,\"nearestCompetingRouteDistance\":76.80637750213194},{\"edgeId\":\"edge_running_paused\",\"bounds\":{\"x\":193.217,\"y\":197.75900000000001,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.798999999999978,\"nearestCompetingRouteDistance\":26.13299999999998},{\"edgeId\":\"edge_paused_running\",\"bounds\":{\"x\":186.161,\"y\":253.83599999999998,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.443999999999988,\"nearestCompetingRouteDistance\":21.77799999999999},{\"edgeId\":\"edge_running_completed\",\"bounds\":{\"x\":474.977,\"y\":293.30899999999997,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.444999999999993,\"nearestCompetingRouteDistance\":25.04400000000004},{\"edgeId\":\"edge_paused_idle\",\"bounds\":{\"x\":471.449,\"y\":348.29699999999997,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.44399999999996,\"nearestCompetingRouteDistance\":60.43299999999999},{\"edgeId\":\"edge_completed_idle\",\"bounds\":{\"x\":777.9060000000001,\"y\":293.30899999999997,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.444999999999993,\"nearestCompetingRouteDistance\":25.04400000000004}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]},\"layout\":{\"direction\":\"RIGHT\",\"viewport\":{\"width\":1024,\"height\":576,\"minFontPx\":14},\"fontPx\":19.6,\"compiler\":\"elkjs-0.12.0-topology-v1\"}}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791626502086-s5tz6ygr/candidate-0-svg-v2.svg",
+        "url": "http://127.0.0.1:51862/objects/1791626502086-s5tz6ygr/candidate-0-svg-v2.svg",
+        "mimeType": "image/svg+xml",
+        "objectKey": "1791626502086-s5tz6ygr/candidate-0-svg-v2.svg"
+      },
+      "startedAt": "2026-10-10T10:02:42.208Z",
+      "completedAt": "2026-10-10T10:02:42.208Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-427c506a-f4f6-4160-b03f-82785e2be228",
+      "candidateId": 0,
+      "type": "render",
+      "title": "SVG v2 实际渲染",
+      "round": 1,
+      "text": "{\"version\":2,\"svgHash\":\"08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8\",\"pngHash\":\"65f9bcd7f66e1fba40819e3a3ada44c33c3ee26e288d2c0d8f47400ab88831cf\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"topology\":{\"schemaVersion\":1,\"nodes\":[{\"id\":\"initial_dot\",\"label\":\"\",\"shape\":\"initial\",\"role\":\"initial\"},{\"id\":\"idle\",\"label\":\"Idle\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"running\",\"label\":\"Running\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"paused\",\"label\":\"Paused\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"completed\",\"label\":\"Completed\",\"shape\":\"process\",\"role\":\"normal\"}],\"edges\":[{\"id\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"id\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"id\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"id\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"id\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"id\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"id\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"uncertainties\":[],\"layout\":{\"direction\":\"RIGHT\"}},\"geometry\":{\"schemaVersion\":1,\"svgHash\":\"08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":837.578,\"y\":197.214,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":887.667,\"y\":212.676,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":310.033,\"y\":215.906,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":31.8,\"y\":219.944,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":588.266,\"y\":263.636,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":855,\"y\":205.925},\"end\":{\"x\":887.667,\"y\":222.367},\"points\":[{\"x\":855,\"y\":205.925},{\"x\":865.889,\"y\":205.925},{\"x\":865.889,\"y\":222.367},{\"x\":887.667,\"y\":222.367}]},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":887.667,\"y\":232.058},\"end\":{\"x\":432.25,\"y\":232.058},\"points\":[{\"x\":887.667,\"y\":232.058},{\"x\":432.25,\"y\":232.058}]},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":310.033,\"y\":232.058},\"end\":{\"x\":146.961,\"y\":232.058},\"points\":[{\"x\":310.033,\"y\":232.058},{\"x\":146.961,\"y\":232.058}]},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":146.961,\"y\":244.172},\"end\":{\"x\":310.033,\"y\":248.21},\"points\":[{\"x\":146.961,\"y\":244.172},{\"x\":157.85,\"y\":244.172},{\"x\":157.85,\"y\":248.392},{\"x\":288.255,\"y\":248.392},{\"x\":288.255,\"y\":248.21},{\"x\":310.033,\"y\":248.21}]},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":432.25,\"y\":248.21},\"end\":{\"x\":588.266,\"y\":287.864},\"points\":[{\"x\":432.25,\"y\":248.21},{\"x\":443.139,\"y\":248.21},{\"x\":443.139,\"y\":287.864},{\"x\":588.266,\"y\":287.864}]},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":146.961,\"y\":256.286},\"end\":{\"x\":887.667,\"y\":251.441},\"points\":[{\"x\":146.961,\"y\":256.286},{\"x\":157.85,\"y\":256.286},{\"x\":157.85,\"y\":342.853},{\"x\":876.778,\"y\":342.853},{\"x\":876.778,\"y\":251.441},{\"x\":887.667,\"y\":251.441}]},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":738.707,\"y\":287.864},\"end\":{\"x\":887.667,\"y\":241.749},\"points\":[{\"x\":738.707,\"y\":287.864},{\"x\":865.889,\"y\":287.864},{\"x\":865.889,\"y\":241.749},{\"x\":887.667,\"y\":241.749}]}],\"labelAssociations\":[{\"edgeId\":\"edge_idle_running\",\"bounds\":{\"x\":628.206,\"y\":197.75900000000001,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.798999999999978,\"nearestCompetingRouteDistance\":76.80637750213194},{\"edgeId\":\"edge_running_paused\",\"bounds\":{\"x\":193.217,\"y\":197.75900000000001,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.798999999999978,\"nearestCompetingRouteDistance\":26.13299999999998},{\"edgeId\":\"edge_paused_running\",\"bounds\":{\"x\":186.161,\"y\":253.83599999999998,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.443999999999988,\"nearestCompetingRouteDistance\":21.77799999999999},{\"edgeId\":\"edge_running_completed\",\"bounds\":{\"x\":474.977,\"y\":293.30899999999997,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.444999999999993,\"nearestCompetingRouteDistance\":25.04400000000004},{\"edgeId\":\"edge_paused_idle\",\"bounds\":{\"x\":471.449,\"y\":348.29699999999997,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.44399999999996,\"nearestCompetingRouteDistance\":60.43299999999999},{\"edgeId\":\"edge_completed_idle\",\"bounds\":{\"x\":777.9060000000001,\"y\":293.30899999999997,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.444999999999993,\"nearestCompetingRouteDistance\":25.04400000000004}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]},\"layout\":{\"direction\":\"RIGHT\",\"viewport\":{\"width\":1024,\"height\":576,\"minFontPx\":14},\"fontPx\":19.6,\"compiler\":\"elkjs-0.12.0-topology-v1\"}}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791626502086-s5tz6ygr/candidate-0-svg-v2-render.png",
+        "url": "http://127.0.0.1:51862/objects/1791626502086-s5tz6ygr/candidate-0-svg-v2-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791626502086-s5tz6ygr/candidate-0-svg-v2-render.png"
+      },
+      "startedAt": "2026-10-10T10:02:42.209Z",
+      "completedAt": "2026-10-10T10:02:42.209Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-216c91b6-1a61-4051-a54d-a986bfb6638e",
+      "candidateId": 0,
+      "type": "critic",
+      "title": "SVG v2 画面、代码与原始关系评审（第2轮）",
+      "round": 2,
+      "text": "{\"version\":2,\"svgHash\":\"08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8\",\"pngHash\":\"65f9bcd7f66e1fba40819e3a3ada44c33c3ee26e288d2c0d8f47400ab88831cf\",\"submittedImageHash\":\"343f0ab072e524f3ed171e12903fd5865d494a29647792ebc8b33679a81451eb\",\"round\":2,\"referenceAnalysis\":\"\",\"retrievalContext\":\"[{\\\"id\\\":\\\"journal_pcbi.1009702.g001\\\",\\\"title\\\":\\\"Identification of periodic attractors in Boolean networks using a priori information\\\",\\\"originalCaption\\\":\\\"Example of a BN.\\\\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].\\\",\\\"figureTypeId\\\":\\\"multipanel\\\",\\\"panels\\\":[{\\\"panel\\\":\\\"A\\\",\\\"typeId\\\":\\\"network\\\"},{\\\"panel\\\":\\\"B\\\",\\\"typeId\\\":\\\"state_transition\\\"},{\\\"panel\\\":\\\"C\\\",\\\"typeId\\\":\\\"mechanism\\\"}],\\\"match\\\":{\\\"level\\\":\\\"exact\\\",\\\"score\\\":1010,\\\"requestedTypeId\\\":\\\"state_transition\\\",\\\"preferences\\\":{},\\\"reason\\\":\\\"图型或明确标注的子图精确匹配\\\"},\\\"layout\\\":\\\"grid\\\",\\\"density\\\":\\\"high\\\",\\\"designLessons\\\":[\\\"同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。\\\"],\\\"doNotTransfer\\\":[\\\"A节点是变量，B节点是整组布尔状态，C含反应节点，不能互相混用。D是表格，不能为了填补覆盖而标成二值矩阵图。\\\",\\\"原论文的实体名称、样本、数值、显著性、模型性能与科学结论。\\\"],\\\"attribution\\\":\\\"Ulrike Münzner, Tomoya Mori, Marcus Krantz, Edda Klipp, Tatsuya Akutsu. Identification of periodic attractors in Boolean networks using a priori information. PLOS Computational Biology (2022), Fig 1. 10.1371/journal.pcbi.1009702. CC-BY-4.0.\\\",\\\"license\\\":\\\"CC-BY-4.0\\\"}]\",\"topology\":{\"schemaVersion\":1,\"nodes\":[{\"id\":\"initial_dot\",\"label\":\"\",\"shape\":\"initial\",\"role\":\"initial\"},{\"id\":\"idle\",\"label\":\"Idle\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"running\",\"label\":\"Running\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"paused\",\"label\":\"Paused\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"completed\",\"label\":\"Completed\",\"shape\":\"process\",\"role\":\"normal\"}],\"edges\":[{\"id\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"id\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"id\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"id\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"id\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"id\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"id\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"uncertainties\":[],\"layout\":{\"direction\":\"RIGHT\"}},\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"localGeometryCheck\":{\"schemaVersion\":1,\"svgHash\":\"08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":837.578,\"y\":197.214,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":887.667,\"y\":212.676,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":310.033,\"y\":215.906,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":31.8,\"y\":219.944,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":588.266,\"y\":263.636,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":855,\"y\":205.925},\"end\":{\"x\":887.667,\"y\":222.367},\"points\":[{\"x\":855,\"y\":205.925},{\"x\":865.889,\"y\":205.925},{\"x\":865.889,\"y\":222.367},{\"x\":887.667,\"y\":222.367}]},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":887.667,\"y\":232.058},\"end\":{\"x\":432.25,\"y\":232.058},\"points\":[{\"x\":887.667,\"y\":232.058},{\"x\":432.25,\"y\":232.058}]},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":310.033,\"y\":232.058},\"end\":{\"x\":146.961,\"y\":232.058},\"points\":[{\"x\":310.033,\"y\":232.058},{\"x\":146.961,\"y\":232.058}]},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":146.961,\"y\":244.172},\"end\":{\"x\":310.033,\"y\":248.21},\"points\":[{\"x\":146.961,\"y\":244.172},{\"x\":157.85,\"y\":244.172},{\"x\":157.85,\"y\":248.392},{\"x\":288.255,\"y\":248.392},{\"x\":288.255,\"y\":248.21},{\"x\":310.033,\"y\":248.21}]},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":432.25,\"y\":248.21},\"end\":{\"x\":588.266,\"y\":287.864},\"points\":[{\"x\":432.25,\"y\":248.21},{\"x\":443.139,\"y\":248.21},{\"x\":443.139,\"y\":287.864},{\"x\":588.266,\"y\":287.864}]},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":146.961,\"y\":256.286},\"end\":{\"x\":887.667,\"y\":251.441},\"points\":[{\"x\":146.961,\"y\":256.286},{\"x\":157.85,\"y\":256.286},{\"x\":157.85,\"y\":342.853},{\"x\":876.778,\"y\":342.853},{\"x\":876.778,\"y\":251.441},{\"x\":887.667,\"y\":251.441}]},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":738.707,\"y\":287.864},\"end\":{\"x\":887.667,\"y\":241.749},\"points\":[{\"x\":738.707,\"y\":287.864},{\"x\":865.889,\"y\":287.864},{\"x\":865.889,\"y\":241.749},{\"x\":887.667,\"y\":241.749}]}],\"labelAssociations\":[{\"edgeId\":\"edge_idle_running\",\"bounds\":{\"x\":628.206,\"y\":197.75900000000001,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.798999999999978,\"nearestCompetingRouteDistance\":76.80637750213194},{\"edgeId\":\"edge_running_paused\",\"bounds\":{\"x\":193.217,\"y\":197.75900000000001,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.798999999999978,\"nearestCompetingRouteDistance\":26.13299999999998},{\"edgeId\":\"edge_paused_running\",\"bounds\":{\"x\":186.161,\"y\":253.83599999999998,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.443999999999988,\"nearestCompetingRouteDistance\":21.77799999999999},{\"edgeId\":\"edge_running_completed\",\"bounds\":{\"x\":474.977,\"y\":293.30899999999997,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.444999999999993,\"nearestCompetingRouteDistance\":25.04400000000004},{\"edgeId\":\"edge_paused_idle\",\"bounds\":{\"x\":471.449,\"y\":348.29699999999997,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.44399999999996,\"nearestCompetingRouteDistance\":60.43299999999999},{\"edgeId\":\"edge_completed_idle\",\"bounds\":{\"x\":777.9060000000001,\"y\":293.30899999999997,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.444999999999993,\"nearestCompetingRouteDistance\":25.04400000000004}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]},\"layout\":{\"direction\":\"RIGHT\",\"viewport\":{\"width\":1024,\"height\":576,\"minFontPx\":14},\"fontPx\":19.6,\"compiler\":\"elkjs-0.12.0-topology-v1\"},\"assessment\":\"{\\\"decision\\\":{\\\"version\\\":2,\\\"svgHash\\\":\\\"08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8\\\",\\\"visual\\\":{\\\"status\\\":\\\"issues_found\\\",\\\"findings\\\":[{\\\"issue\\\":\\\"Semantic Layout Reversal (Critical)\\\",\\\"location\\\":\\\"Global Node Placement\\\",\\\"evidence\\\":\\\"The methodology specifies 'Idle→Running: start' and the plan defines a Left-to-Right flow. In the generated SVG, Idle is at x=887 and Running is at x=310. The 'start' arrow points from right to left (x=887 → x=432). This reverses the standard temporal flow of state machines where 'start' implies moving forward.\\\",\\\"suggestion\\\":\\\"Reorder nodes horizontally to follow the primary execution path: Initial Dot → Idle → Running → Completed. Place Paused below Running.\\\"},{\\\"issue\\\":\\\"Feedback Loop Geometry Conflict\\\",\\\"location\\\":\\\"Edges: cancel, reset\\\",\\\"evidence\\\":\\\"Due to the reversed node order, the 'cancel' loop (Paused→Idle) must traverse rightward across the entire diagram width (x=146 → x=887), passing under Running and Completed. The 'reset' loop (Completed→Idle) is compressed into a short segment on the far right. This creates visual clutter and imbalance.\\\",\\\"suggestion\\\":\\\"With corrected L-R ordering, 'cancel' becomes a short local loop under Running/Idle, and 'reset' becomes a long clear arc over the top, matching the plan's intent.\\\"},{\\\"issue\\\":\\\"Color Fidelity\\\",\\\"location\\\":\\\"Node fills, Stroke color\\\",\\\"evidence\\\":\\\"Plan requires white (#FFFFFF) fill and black (#000000) stroke/text. SVG uses light greenish-grey fill (#e5efeb) and dark teal stroke (#355c53).\\\",\\\"suggestion\\\":\\\"Update all fills to #FFFFFF and strokes/text to #000000 to strictly match the specification.\\\"}]},\\\"code\\\":{\\\"status\\\":\\\"passed\\\",\\\"findings\\\":[]},\\\"uncertainties\\\":[],\\\"revised_description\\\":\\\"Generate a strict Left-to-Right State Transition Diagram with corrected node ordering.\\\\n\\\\n**Nodes (Left-to-Right Order):**\\\\n1.  **Initial Dot:** Solid black circle at far left (x≈50).\\\\n2.  **Idle:** Rounded rect (white fill, black border) to right of Initial Dot (x≈150).\\\\n3.  **Running:** Rounded rect to right of Idle (x≈350).\\\\n4.  **Completed:** Rounded rect to right of Running (x≈550).\\\\n5.  **Paused:** Rounded rect positioned directly BELOW Running (x≈350, y≈350).\\\\n\\\\n**Edges & Labels:**\\\\n-   **Init -> Idle:** Horizontal arrow right. No label.\\\\n-   **Idle -> Running:** Horizontal arrow right. Label \\\\\\\"start\\\\\\\" above.\\\\n-   **Running -> Completed:** Horizontal arrow right. Label \\\\\\\"finish\\\\\\\" above.\\\\n-   **Running -> Paused:** Vertical arrow down. Label \\\\\\\"pause\\\\\\\" to right.\\\\n-   **Paused -> Running:** Vertical arrow up (parallel). Label \\\\\\\"resume\\\\\\\" to left.\\\\n-   **Paused -> Idle:** Orthogonal route: Down from Paused → Left under Running → Up into bottom of Idle. Label \\\\\\\"cancel\\\\\\\" below the horizontal segment.\\\\n-   **Completed -> Idle:** Long orthogonal arc: Up from Completed → Left over top of Running/Idle → Down into top of Idle. Label \\\\\\\"reset\\\\\\\" at the top apex.\\\\n\\\\n**Style:**\\\\n-   Strict Black (#000000) for all lines, text, and initial dot.\\\\n-   White (#FFFFFF) fill for all state nodes.\\\\n-   Font: Noto Sans, bold for states, regular for labels.\\\\n-   Ensure distinct separation between the lower 'cancel' loop and upper 'reset' loop.\\\",\\\"topologyAudit\\\":{\\\"topologyHash\\\":\\\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\\\",\\\"originalRequiredRelations\\\":[{\\\"source\\\":\\\"initial_dot\\\",\\\"target\\\":\\\"idle\\\",\\\"label\\\":\\\"\\\",\\\"sou",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791626502086-s5tz6ygr/candidate-0-svg-v2-review-2.png",
+        "url": "http://127.0.0.1:51862/objects/1791626502086-s5tz6ygr/candidate-0-svg-v2-review-2.png",
+        "mimeType": "image/png",
+        "objectKey": "1791626502086-s5tz6ygr/candidate-0-svg-v2-review-2.png"
+      },
+      "startedAt": "2026-10-10T10:03:09.896Z",
+      "completedAt": "2026-10-10T10:03:09.896Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-5cbf9a02-6fc2-4aa3-804f-3b23457298b8",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "SVG v2 交付状态",
+      "round": 0,
+      "text": "原始需求与推断关系存在缺失、多余、方向、事件或节点问题；布局修订不能改变语义，保留当前版本和具体关系核查。",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791626502086-s5tz6ygr/candidate-0-svg-v2-render.png",
+        "url": "http://127.0.0.1:51862/objects/1791626502086-s5tz6ygr/candidate-0-svg-v2-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791626502086-s5tz6ygr/candidate-0-svg-v2-render.png"
+      },
+      "startedAt": "2026-10-10T10:03:09.897Z",
+      "completedAt": "2026-10-10T10:03:09.897Z",
+      "durationMs": 0,
+      "error": ""
+    }
+  ],
+  "criticMode": "visual_code",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 2,
+  "promptCharCount": 632,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [
+    {
+      "candidateId": 0,
+      "filename": "1791626502086-s5tz6ygr/candidate-0.svg",
+      "objectKey": "1791626502086-s5tz6ygr/candidate-0.svg",
+      "url": "http://127.0.0.1:51862/objects/1791626502086-s5tz6ygr/candidate-0.svg",
+      "storage": "bucket",
+      "mimeType": "image/svg+xml",
+      "description": "Generate a Left-to-Right State Transition Diagram on a white background.\n\n**Nodes:**\n1.  **Initial Dot:** Solid black circle on the far left.\n2.  **Idle:** Rounded rectangle, white fill, black border. Positioned to the right of the initial dot.\n3.  **Running:** Rounded rectangle, white fill, black border. Positioned to the right of Idle.\n4.  **Paused:** Rounded rectangle, white fill, black border. Positioned directly BELOW Running.\n5.  **Completed:** Rounded rectangle, white fill, black border. Positioned to the right of Running.\n\n**Edges & Labels:**\n-   **Init -> Idle:** Straight horizontal arrow. No label.\n-   **Idle -> Running:** Straight horizontal arrow. Label \"start\" above.\n-   **Running -> Paused:** Straight vertical arrow downwards. Label \"pause\" to the right.\n-   **Paused -> Running:** Straight vertical arrow upwards (parallel to pause). Label \"resume\" to the left.\n-   **Running -> Completed:** Straight horizontal arrow. Label \"finish\" above.\n-   **Paused -> Idle:** Curved arrow starting from left/bottom of Paused, sweeping DOWN and LEFT to enter the bottom of Idle. Label \"cancel\" below the curve.\n-   **Completed -> Idle:** Long curved arrow starting from top/right of Completed, arcing OVER the top of Running and Idle, entering the top of Idle. Label \"reset\" at the apex of the arc.\n\n**Style:**\n-   All lines and text must be black (#000000).\n-   Node interiors must be white (#FFFFFF).\n-   Font: Noto Sans, bold for states, regular for labels.\n-   Ensure no overlapping lines; use distinct curves for feedback loops.",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "issues_found",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "d12fe58107b953a9ab5c9e05524ea48c2cfc96176a473401f976a75233dc3989",
+            "pngHash": "958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865",
+            "status": "issues_found",
+            "submittedImageHash": "2f265f4a189734a84a768d5fc261e870ac9df104adbbc4b414931f92e66e70fc",
+            "assessment": "{\"decision\":{\"version\":1,\"svgHash\":\"d12fe58107b953a9ab5c9e05524ea48c2cfc96176a473401f976a75233dc3989\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Layout direction contradicts visual intent and standard conventions\",\"location\":\"Global layout / Topology definition\",\"evidence\":\"The `completePlan` explicitly specifies a 'logical flow from left to right' with Idle on the far left. However, the generated SVG renders a vertical top-to-bottom layout (Paused at top, Idle at bottom). The `topology.layout.direction` is set to 'RIGHT', but the actual coordinates reflect a 'DOWN' flow.\",\"suggestion\":\"Regenerate the diagram using a strict Left-to-Right layout as specified in the plan. Place 'Idle' on the left, 'Running' in the center, and 'Completed' on the right to match the requested lifecycle visualization.\"},{\"issue\":\"Node fill color violates style constraints\",\"location\":\"State nodes (Idle, Running, Paused, Completed)\",\"evidence\":\"The `completePlan` requires 'no color fills other than white'. The generated SVG uses a light green/teal fill (`#e5efeb`) for all state rectangles. Additionally, the stroke and text colors are a dark teal (`#355c53`) rather than the requested black.\",\"suggestion\":\"Change node fill to pure white (`#ffffff`) and stroke/text colors to black (`#000000`) or dark gray to strictly adhere to the minimalist high-contrast style defined in the plan.\"},{\"issue\":\"Feedback loop routing creates visual clutter\",\"location\":\"Edge: Paused -> Idle (cancel)\",\"evidence\":\"In the current vertical layout, the 'cancel' arrow routes all the way to the right side of the canvas (x=662) to bypass the central column, creating a large empty space and an unbalanced composition. In a Left-to-Right layout, this feedback loop would naturally route underneath the main flow, resulting in a more compact and readable diagram.\",\"suggestion\":\"Adopting the LTR layout will naturally resolve this routing issue, allowing the 'cancel' and 'reset' loops to be placed below the primary state sequence without excessive detours.\"}]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"Generate a Left-to-Right State Transition Diagram on a white background.\\n\\n**Nodes:**\\n1.  **Initial Dot:** Solid black circle on the far left.\\n2.  **Idle:** Rounded rectangle, white fill, black border. Positioned to the right of the initial dot.\\n3.  **Running:** Rounded rectangle, white fill, black border. Positioned to the right of Idle.\\n4.  **Paused:** Rounded rectangle, white fill, black border. Positioned directly BELOW Running.\\n5.  **Completed:** Rounded rectangle, white fill, black border. Positioned to the right of Running.\\n\\n**Edges & Labels:**\\n-   **Init -> Idle:** Straight horizontal arrow. No label.\\n-   **Idle -> Running:** Straight horizontal arrow. Label \\\"start\\\" above.\\n-   **Running -> Paused:** Straight vertical arrow downwards. Label \\\"pause\\\" to the right.\\n-   **Paused -> Running:** Straight vertical arrow upwards (parallel to pause). Label \\\"resume\\\" to the left.\\n-   **Running -> Completed:** Straight horizontal arrow. Label \\\"finish\\\" above.\\n-   **Paused -> Idle:** Curved arrow starting from left/bottom of Paused, sweeping DOWN and LEFT to enter the bottom of Idle. Label \\\"cancel\\\" below the curve.\\n-   **Completed -> Idle:** Long curved arrow starting from top/right of Completed, arcing OVER the top of Running and Idle, entering the top of Idle. Label \\\"reset\\\" at the apex of the arc.\\n\\n**Style:**\\n-   All lines and text must be black (#000000).\\n-   Node interiors must be white (#FFFFFF).\\n-   Font: Noto Sans, bold for states, regular for labels.\\n-   Ensure no overlapping lines; use distinct curves for feedback loops.\",\"topologyAudit\":{\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"originalRequiredRelations\":[{\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\"},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\"},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\"},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\"},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\"},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\"},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\"}],\"missingRelations\":[],\"extraRelations\":[],\"wrongRelations\":[],\"nodeIssues\":[]},\"layoutRepair\":{\"direction\":\"RIGHT\"}},\"topologyAudit\":{\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"originalRequiredRelations\":[{\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\"},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\"},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\"},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\"},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\"},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\"},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\"}],\"missingRelations\":[],\"extraRelations\":[],\"wrongRelations\":[],\"nodeIssues\":[]},\"localGeometryCheck\":{\"schemaVersion\":1,\"svgHash\":\"d12fe58107b953a9ab5c9e05524ea48c2cfc96176a473401f976a75233dc3989\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":411.517,\"y\":434.183,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":404.548,\"y\":484.272,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":405.623,\"y\":190.272,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":417.572,\"y\":43.272,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":477.94,\"y\":337.272,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":420.228,\"y\":451.605},\"end\":{\"x\":425.455,\"y\":484.272},\"points\":[{\"x\":420.228,\"y\":451.605},{\"x\":420.228,\"y\":462.494},{\"x\":425.455,\"y\":462.494},{\"x\":425.455,\"y\":484.272}]},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":446.362,\"y\":484.272},\"end\":{\"x\":446.362,\"y\":238.728},\"points\":[{\"x\":446.362,\"y\":484.272},{\"x\":446.362,\"y\":238.728}]},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":446.362,\"y\":190.272},\"end\":{\"x\":446.362,\"y\":91.728},\"points\":[{\"x\":446.362,\"y\":190.272},{\"x\":446.362,\"y\":91.728}]},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":475.152,\"y\":91.728},\"end\":{\"x\":487.101,\"y\":190.272},\"points\":[{\"x\":475.152,\"y\":91.728},{\"x\":475.152,\"y\":168.494},{\"x\":487.101,\"y\":168.494},{\"x\":487.101,\"y\":190.272}]},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":487.101,\"y\":238.728},\"end\":{\"x\":553.16,\"y\":337.272},\"points\":[{\"x\":487.101,\"y\":238.728},{\"x\":487.101,\"y\":249.617},{\"x\":553.16,\"y\":249.617},{\"x\":553.16,\"y\":337.272}]},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":503.942,\"y\":91.728},\"end\":{\"x\":488.175,\"y\":484.272},\"points\":[{\"x\":503.942,\"y\":91.728},{\"x\":503.942,\"y\":102.617},{\"x\":662.354,\"y\":102.617},{\"x\":662.354,\"y\":473.383},{\"x\":488.175,\"y\":473.383},{\"x\":488.175,\"y\":484.272}]},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":553.16,\"y\":385.728},\"end\":{\"x\":467.268,\"y\":484.272},\"points\":[{\"x\":553.16,\"y\":385.728},{\"x\":553.16,\"y\":462.494},{\"x\":467.268,\"y\":462.494},{\"x\":467.268,\"y\":484.272}]}],\"labelAssociations\":[{\"edgeId\":\"edge_idle_running\",\"bounds\":{\"x\":367.09000000000003,\"y\":347.072,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":80.03300000000002},{\"edgeId\":\"edge_running_paused\",\"bounds\":{\"x\":367.09000000000003,\"y\":126.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":37.50199999999995},{\"edgeId\":\"edge_paused_running\",\"bounds\":{\"x\":484.952,\"y\":126.572,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.800000000000011,\"nearestCompetingRouteDistance\":23.955},{\"edgeId\":\"edge_running_completed\",\"bounds\":{\"x\":473.889,\"y\":273.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987},{\"edgeId\":\"edge_paused_idle\",\"bounds\":{\"x\":576.026,\"y\":273.572,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.712000000000089,\"nearestCompetingRouteDistance\":22.865999999999985},{\"edgeId\":\"edge_completed_idle\",\"bounds\":{\"x\":473.889,\"y\":420.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]}}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8",
+            "pngHash": "65f9bcd7f66e1fba40819e3a3ada44c33c3ee26e288d2c0d8f47400ab88831cf",
+            "status": "issues_found",
+            "submittedImageHash": "343f0ab072e524f3ed171e12903fd5865d494a29647792ebc8b33679a81451eb",
+            "assessment": "{\"decision\":{\"version\":2,\"svgHash\":\"08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Semantic Layout Reversal (Critical)\",\"location\":\"Global Node Placement\",\"evidence\":\"The methodology specifies 'Idle→Running: start' and the plan defines a Left-to-Right flow. In the generated SVG, Idle is at x=887 and Running is at x=310. The 'start' arrow points from right to left (x=887 → x=432). This reverses the standard temporal flow of state machines where 'start' implies moving forward.\",\"suggestion\":\"Reorder nodes horizontally to follow the primary execution path: Initial Dot → Idle → Running → Completed. Place Paused below Running.\"},{\"issue\":\"Feedback Loop Geometry Conflict\",\"location\":\"Edges: cancel, reset\",\"evidence\":\"Due to the reversed node order, the 'cancel' loop (Paused→Idle) must traverse rightward across the entire diagram width (x=146 → x=887), passing under Running and Completed. The 'reset' loop (Completed→Idle) is compressed into a short segment on the far right. This creates visual clutter and imbalance.\",\"suggestion\":\"With corrected L-R ordering, 'cancel' becomes a short local loop under Running/Idle, and 'reset' becomes a long clear arc over the top, matching the plan's intent.\"},{\"issue\":\"Color Fidelity\",\"location\":\"Node fills, Stroke color\",\"evidence\":\"Plan requires white (#FFFFFF) fill and black (#000000) stroke/text. SVG uses light greenish-grey fill (#e5efeb) and dark teal stroke (#355c53).\",\"suggestion\":\"Update all fills to #FFFFFF and strokes/text to #000000 to strictly match the specification.\"}]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"Generate a strict Left-to-Right State Transition Diagram with corrected node ordering.\\n\\n**Nodes (Left-to-Right Order):**\\n1.  **Initial Dot:** Solid black circle at far left (x≈50).\\n2.  **Idle:** Rounded rect (white fill, black border) to right of Initial Dot (x≈150).\\n3.  **Running:** Rounded rect to right of Idle (x≈350).\\n4.  **Completed:** Rounded rect to right of Running (x≈550).\\n5.  **Paused:** Rounded rect positioned directly BELOW Running (x≈350, y≈350).\\n\\n**Edges & Labels:**\\n-   **Init -> Idle:** Horizontal arrow right. No label.\\n-   **Idle -> Running:** Horizontal arrow right. Label \\\"start\\\" above.\\n-   **Running -> Completed:** Horizontal arrow right. Label \\\"finish\\\" above.\\n-   **Running -> Paused:** Vertical arrow down. Label \\\"pause\\\" to right.\\n-   **Paused -> Running:** Vertical arrow up (parallel). Label \\\"resume\\\" to left.\\n-   **Paused -> Idle:** Orthogonal route: Down from Paused → Left under Running → Up into bottom of Idle. Label \\\"cancel\\\" below the horizontal segment.\\n-   **Completed -> Idle:** Long orthogonal arc: Up from Completed → Left over top of Running/Idle → Down into top of Idle. Label \\\"reset\\\" at the top apex.\\n\\n**Style:**\\n-   Strict Black (#000000) for all lines, text, and initial dot.\\n-   White (#FFFFFF) fill for all state nodes.\\n-   Font: Noto Sans, bold for states, regular for labels.\\n-   Ensure distinct separation between the lower 'cancel' loop and upper 'reset' loop.\",\"topologyAudit\":{\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"originalRequiredRelations\":[{\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\"},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\"},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\"},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\"},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\"},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\"},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\"}],\"missingRelations\":[],\"extraRelations\":[],\"wrongRelations\":[],\"nodeIssues\":[\"Layout direction contradicts semantic flow: 'start' transition flows Right-to-Left (Idle@887 → Running@310), violating standard L-R state machine conventions and the explicit plan.\"]},\"layoutRepair\":{\"direction\":\"RIGHT\"}},\"topologyAudit\":{\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"originalRequiredRelations\":[{\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle\"},{\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\"},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\"},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\"},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\"},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\"},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\"},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\"}],\"missingRelations\":[],\"extraRelations\":[],\"wrongRelations\":[],\"nodeIssues\":[\"Layout direction contradicts semantic flow: 'start' transition flows Right-to-Left (Idle@887 → Running@310), violating standard L-R state machine conventions and the explicit plan.\"]},\"localGeometryCheck\":{\"schemaVersion\":1,\"svgHash\":\"08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8\",\"topologyHash\":\"7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":837.578,\"y\":197.214,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":887.667,\"y\":212.676,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":310.033,\"y\":215.906,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":31.8,\"y\":219.944,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":588.266,\"y\":263.636,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_init_idle\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":855,\"y\":205.925},\"end\":{\"x\":887.667,\"y\":222.367},\"points\":[{\"x\":855,\"y\":205.925},{\"x\":865.889,\"y\":205.925},{\"x\":865.889,\"y\":222.367},{\"x\":887.667,\"y\":222.367}]},{\"edgeId\":\"edge_idle_running\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":887.667,\"y\":232.058},\"end\":{\"x\":432.25,\"y\":232.058},\"points\":[{\"x\":887.667,\"y\":232.058},{\"x\":432.25,\"y\":232.058}]},{\"edgeId\":\"edge_running_paused\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":310.033,\"y\":232.058},\"end\":{\"x\":146.961,\"y\":232.058},\"points\":[{\"x\":310.033,\"y\":232.058},{\"x\":146.961,\"y\":232.058}]},{\"edgeId\":\"edge_paused_running\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":146.961,\"y\":244.172},\"end\":{\"x\":310.033,\"y\":248.21},\"points\":[{\"x\":146.961,\"y\":244.172},{\"x\":157.85,\"y\":244.172},{\"x\":157.85,\"y\":248.392},{\"x\":288.255,\"y\":248.392},{\"x\":288.255,\"y\":248.21},{\"x\":310.033,\"y\":248.21}]},{\"edgeId\":\"edge_running_completed\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":432.25,\"y\":248.21},\"end\":{\"x\":588.266,\"y\":287.864},\"points\":[{\"x\":432.25,\"y\":248.21},{\"x\":443.139,\"y\":248.21},{\"x\":443.139,\"y\":287.864},{\"x\":588.266,\"y\":287.864}]},{\"edgeId\":\"edge_paused_idle\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":146.961,\"y\":256.286},\"end\":{\"x\":887.667,\"y\":251.441},\"points\":[{\"x\":146.961,\"y\":256.286},{\"x\":157.85,\"y\":256.286},{\"x\":157.85,\"y\":342.853},{\"x\":876.778,\"y\":342.853},{\"x\":876.778,\"y\":251.441},{\"x\":887.667,\"y\":251.441}]},{\"edgeId\":\"edge_completed_idle\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":738.707,\"y\":287.864},\"end\":{\"x\":887.667,\"y\":241.749},\"points\":[{\"x\":738.707,\"y\":287.864},{\"x\":865.889,\"y\":287.864},{\"x\":865.889,\"y\":241.749},{\"x\":887.667,\"y\":241.749}]}],\"labelAssociations\":[{\"edgeId\":\"edge_idle_running\",\"bounds\":{\"x\":628.206,\"y\":197.75900000000001,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.798999999999978,\"nearestCompetingRouteDistance\":76.80637750213194},{\"edgeId\":\"edge_running_paused\",\"bounds\":{\"x\":193.217,\"y\":197.75900000000001,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.798999999999978,\"nearestCompetingRouteDistance\":26.13299999999998},{\"edgeId\":\"edge_paused_running\",\"bounds\":{\"x\":186.161,\"y\":253.83599999999998,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.443999999999988,\"nearestCompetingRouteDistance\":21.77799999999999},{\"edgeId\":\"edge_running_completed\",\"bounds\":{\"x\":474.977,\"y\":293.30899999999997,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.444999999999993,\"nearestCompetingRouteDistance\":25.04400000000004},{\"edgeId\":\"edge_paused_idle\",\"bounds\":{\"x\":471.449,\"y\":348.29699999999997,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.44399999999996,\"nearestCompetingRouteDistance\":60.43299999999999},{\"edgeId\":\"edge_completed_idle\",\"bounds\":{\"x\":777.9060000000001,\"y\":293.30899999999997,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":5.444999999999993,\"nearestCompetingRouteDistance\":25.04400000000004}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]}}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8",
+        "deliveredPngHash": "65f9bcd7f66e1fba40819e3a3ada44c33c3ee26e288d2c0d8f47400ab88831cf",
+        "topology": {
+          "version": 2,
+          "svgHash": "08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8",
+          "pngHash": "65f9bcd7f66e1fba40819e3a3ada44c33c3ee26e288d2c0d8f47400ab88831cf",
+          "topologyHash": "7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643",
+          "topology": {
+            "schemaVersion": 1,
+            "nodes": [
+              {
+                "id": "initial_dot",
+                "label": "",
+                "shape": "initial",
+                "role": "initial"
+              },
+              {
+                "id": "idle",
+                "label": "Idle",
+                "shape": "process",
+                "role": "normal"
+              },
+              {
+                "id": "running",
+                "label": "Running",
+                "shape": "process",
+                "role": "normal"
+              },
+              {
+                "id": "paused",
+                "label": "Paused",
+                "shape": "process",
+                "role": "normal"
+              },
+              {
+                "id": "completed",
+                "label": "Completed",
+                "shape": "process",
+                "role": "normal"
+              }
+            ],
+            "edges": [
+              {
+                "id": "edge_init_idle",
+                "source": "initial_dot",
+                "target": "idle",
+                "label": "",
+                "sourceQuote": "Initial dot enters Idle"
+              },
+              {
+                "id": "edge_idle_running",
+                "source": "idle",
+                "target": "running",
+                "label": "start",
+                "sourceQuote": "Idle→Running: start"
+              },
+              {
+                "id": "edge_running_paused",
+                "source": "running",
+                "target": "paused",
+                "label": "pause",
+                "sourceQuote": "Running→Paused: pause"
+              },
+              {
+                "id": "edge_paused_running",
+                "source": "paused",
+                "target": "running",
+                "label": "resume",
+                "sourceQuote": "Paused→Running: resume"
+              },
+              {
+                "id": "edge_running_completed",
+                "source": "running",
+                "target": "completed",
+                "label": "finish",
+                "sourceQuote": "Running→Completed: finish"
+              },
+              {
+                "id": "edge_paused_idle",
+                "source": "paused",
+                "target": "idle",
+                "label": "cancel",
+                "sourceQuote": "Paused→Idle: cancel"
+              },
+              {
+                "id": "edge_completed_idle",
+                "source": "completed",
+                "target": "idle",
+                "label": "reset",
+                "sourceQuote": "Completed→Idle: reset"
+              }
+            ],
+            "uncertainties": [],
+            "layout": {
+              "direction": "RIGHT"
+            }
+          },
+          "geometry": {
+            "schemaVersion": 1,
+            "svgHash": "08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8",
+            "topologyHash": "7a4dc2fdfcf8318de8cb0fc1b7467491842ff873d527ceec61a0b08acf82e643",
+            "passed": true,
+            "issues": [],
+            "nodes": {
+              "initial_dot": {
+                "x": 837.578,
+                "y": 197.214,
+                "width": 17.422,
+                "height": 17.422,
+                "shape": "initial",
+                "radius": 0,
+                "strokeWidth": 0
+              },
+              "idle": {
+                "x": 887.667,
+                "y": 212.676,
+                "width": 104.533,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              },
+              "running": {
+                "x": 310.033,
+                "y": 215.906,
+                "width": 122.217,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              },
+              "paused": {
+                "x": 31.8,
+                "y": 219.944,
+                "width": 115.161,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              },
+              "completed": {
+                "x": 588.266,
+                "y": 263.636,
+                "width": 150.441,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              }
+            },
+            "observedRelations": [
+              {
+                "edgeId": "edge_init_idle",
+                "source": "initial_dot",
+                "target": "idle",
+                "label": "",
+                "start": {
+                  "x": 855,
+                  "y": 205.925
+                },
+                "end": {
+                  "x": 887.667,
+                  "y": 222.367
+                },
+                "points": [
+                  {
+                    "x": 855,
+                    "y": 205.925
+                  },
+                  {
+                    "x": 865.889,
+                    "y": 205.925
+                  },
+                  {
+                    "x": 865.889,
+                    "y": 222.367
+                  },
+                  {
+                    "x": 887.667,
+                    "y": 222.367
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_idle_running",
+                "source": "idle",
+                "target": "running",
+                "label": "start",
+                "start": {
+                  "x": 887.667,
+                  "y": 232.058
+                },
+                "end": {
+                  "x": 432.25,
+                  "y": 232.058
+                },
+                "points": [
+                  {
+                    "x": 887.667,
+                    "y": 232.058
+                  },
+                  {
+                    "x": 432.25,
+                    "y": 232.058
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_running_paused",
+                "source": "running",
+                "target": "paused",
+                "label": "pause",
+                "start": {
+                  "x": 310.033,
+                  "y": 232.058
+                },
+                "end": {
+                  "x": 146.961,
+                  "y": 232.058
+                },
+                "points": [
+                  {
+                    "x": 310.033,
+                    "y": 232.058
+                  },
+                  {
+                    "x": 146.961,
+                    "y": 232.058
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_paused_running",
+                "source": "paused",
+                "target": "running",
+                "label": "resume",
+                "start": {
+                  "x": 146.961,
+                  "y": 244.172
+                },
+                "end": {
+                  "x": 310.033,
+                  "y": 248.21
+                },
+                "points": [
+                  {
+                    "x": 146.961,
+                    "y": 244.172
+                  },
+                  {
+                    "x": 157.85,
+                    "y": 244.172
+                  },
+                  {
+                    "x": 157.85,
+                    "y": 248.392
+                  },
+                  {
+                    "x": 288.255,
+                    "y": 248.392
+                  },
+                  {
+                    "x": 288.255,
+                    "y": 248.21
+                  },
+                  {
+                    "x": 310.033,
+                    "y": 248.21
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_running_completed",
+                "source": "running",
+                "target": "completed",
+                "label": "finish",
+                "start": {
+                  "x": 432.25,
+                  "y": 248.21
+                },
+                "end": {
+                  "x": 588.266,
+                  "y": 287.864
+                },
+                "points": [
+                  {
+                    "x": 432.25,
+                    "y": 248.21
+                  },
+                  {
+                    "x": 443.139,
+                    "y": 248.21
+                  },
+                  {
+                    "x": 443.139,
+                    "y": 287.864
+                  },
+                  {
+                    "x": 588.266,
+                    "y": 287.864
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_paused_idle",
+                "source": "paused",
+                "target": "idle",
+                "label": "cancel",
+                "start": {
+                  "x": 146.961,
+                  "y": 256.286
+                },
+                "end": {
+                  "x": 887.667,
+                  "y": 251.441
+                },
+                "points": [
+                  {
+                    "x": 146.961,
+                    "y": 256.286
+                  },
+                  {
+                    "x": 157.85,
+                    "y": 256.286
+                  },
+                  {
+                    "x": 157.85,
+                    "y": 342.853
+                  },
+                  {
+                    "x": 876.778,
+                    "y": 342.853
+                  },
+                  {
+                    "x": 876.778,
+                    "y": 251.441
+                  },
+                  {
+                    "x": 887.667,
+                    "y": 251.441
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_completed_idle",
+                "source": "completed",
+                "target": "idle",
+                "label": "reset",
+                "start": {
+                  "x": 738.707,
+                  "y": 287.864
+                },
+                "end": {
+                  "x": 887.667,
+                  "y": 241.749
+                },
+                "points": [
+                  {
+                    "x": 738.707,
+                    "y": 287.864
+                  },
+                  {
+                    "x": 865.889,
+                    "y": 287.864
+                  },
+                  {
+                    "x": 865.889,
+                    "y": 241.749
+                  },
+                  {
+                    "x": 887.667,
+                    "y": 241.749
+                  }
+                ]
+              }
+            ],
+            "labelAssociations": [
+              {
+                "edgeId": "edge_idle_running",
+                "bounds": {
+                  "x": 628.206,
+                  "y": 197.75900000000001,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 9.798999999999978,
+                "nearestCompetingRouteDistance": 76.80637750213194
+              },
+              {
+                "edgeId": "edge_running_paused",
+                "bounds": {
+                  "x": 193.217,
+                  "y": 197.75900000000001,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 9.798999999999978,
+                "nearestCompetingRouteDistance": 26.13299999999998
+              },
+              {
+                "edgeId": "edge_paused_running",
+                "bounds": {
+                  "x": 186.161,
+                  "y": 253.83599999999998,
+                  "width": 84.672,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 5.443999999999988,
+                "nearestCompetingRouteDistance": 21.77799999999999
+              },
+              {
+                "edgeId": "edge_running_completed",
+                "bounds": {
+                  "x": 474.977,
+                  "y": 293.30899999999997,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 5.444999999999993,
+                "nearestCompetingRouteDistance": 25.04400000000004
+              },
+              {
+                "edgeId": "edge_paused_idle",
+                "bounds": {
+                  "x": 471.449,
+                  "y": 348.29699999999997,
+                  "width": 77.616,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 5.44399999999996,
+                "nearestCompetingRouteDistance": 60.43299999999999
+              },
+              {
+                "edgeId": "edge_completed_idle",
+                "bounds": {
+                  "x": 777.9060000000001,
+                  "y": 293.30899999999997,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 5.444999999999993,
+                "nearestCompetingRouteDistance": 25.04400000000004
+              }
+            ],
+            "minFontPx": 14,
+            "limitations": [
+              "Source geometry checks do not certify prose-to-graph semantic inference.",
+              "Text widths are conservative Noto Sans bounds; actual raster must still be inspected.",
+              "Edge crossings can remain and require visual review."
+            ]
+          },
+          "layout": {
+            "direction": "RIGHT",
+            "viewport": {
+              "width": 1024,
+              "height": 576,
+              "minFontPx": 14
+            },
+            "fontPx": 19.6,
+            "compiler": "elkjs-0.12.0-topology-v1"
+          }
+        },
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "08104b35ec7f683e9b2a9dad381e4541e3ee181524ad1c13e90781314bc3c8b8",
+        "reviewedPngHash": "65f9bcd7f66e1fba40819e3a3ada44c33c3ee26e288d2c0d8f47400ab88831cf",
+        "note": "原始需求与推断关系存在缺失、多余、方向、事件或节点问题；布局修订不能改变语义，保留当前版本和具体关系核查。"
+      }
+    }
+  ],
+  "logs": [
+    "2026-10-10T10:01:42.280Z 参考图选择：采用 1 张，排除重复 0 张、无法使用 0 张、超出预算 0 张；主模型规划请求合计 1 张图片，上限 8 张。"
+  ],
+  "error": "",
+  "createdAt": "2026-10-10T10:01:42.086Z",
+  "updatedAt": "2026-10-10T10:03:09.899Z",
+  "startedAt": "2026-10-10T10:01:42.087Z",
+  "completedAt": "2026-10-10T10:03:09.899Z"
+}

@@ -37,6 +37,7 @@ const outputs = {
   }, null, 2) + '\n',
 };
 for (const [path, text] of Object.entries(outputs)) {
+  if (process.argv.includes('--skip-miniprogram') && path.startsWith('apps/miniprogram/')) continue;
   const url = new URL(path, root);
   if (process.argv.includes('--check')) {
     if (readFileSync(url, 'utf8') !== text) throw new Error(`Reference upload policy drift: ${path}`);

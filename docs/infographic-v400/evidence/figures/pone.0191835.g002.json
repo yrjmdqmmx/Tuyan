@@ -1,0 +1,48 @@
+{
+  "id": "pone.0191835.g002",
+  "paper": "pone.0191835",
+  "figure": {
+    "id": "pone.0191835.g002",
+    "label": "Fig 2",
+    "caption": "Contour plots of flux balance results obtained with the two sub-objective functions for weighted average maximum growth rates (isolines, units d-1) in function of pairs of glycogen and PHB storage fluxes at experimentally observed glucose—panels a and b: 14.2 g-COD/(g-COD-Biomass·d)—and acetate uptake rates -panels c and d: 4.9 g-COD/(g-COD-Biomass·d). TAG fluxes were adjusted to experimentally observed values—panels a and b: 1.1 g-COD/(g-COD-Biomass·d), and panels c and d: 0.3 g-COD/(g-COD-Biomass·d).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191835.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191835.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title />\n<p><bold>Contour plots of flux balance results obtained with the two sub-objective functions for weighted average maximum growth rates (isolines, units d-1) in function of pairs of glycogen and PHB storage fluxes at experimentally observed glucose—panels a and b: 14.2 g-COD/(g-COD-Biomass·d)—and acetate uptake rates -panels c and d: 4.9 g-COD/(g-COD-Biomass·d).</bold> TAG fluxes were adjusted to experimentally observed values—panels a and b: 1.1 g-COD/(g-COD-Biomass·d), and panels c and d: 0.3 g-COD/(g-COD-Biomass·d).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191835.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191835.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0191835",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0191835",
+    "title": "Predicting the accumulation of storage compounds by Rhodococcus jostii RHA1 in the feast-famine growth cycles using genome-scale flux balance analysis",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Mohammad Tajparast",
+      "Dominic Frigon"
+    ],
+    "year": "2018",
+    "license": "2018\nTajparast, Frigon\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0191835.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0191835.g002.png",
+      "bytes": 336318,
+      "sha256": "e5350732ad30e115bd0ae3285bb3dc16ffb01b78c296d0bda374f691db2a8fb1"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0191835.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0191835.g002.tif",
+      "bytes": 1502060,
+      "sha256": "591a4a540ccb210dba710209c6a07d04352100de965c9449df508e28d2678931"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "filename": "mixed-research.pdf",
+  "format": "pdf",
+  "operation": {
+    "op": "render",
+    "pages": [
+      1
+    ]
+  },
+  "status": "read",
+  "warnings": [],
+  "chunks": [
+    {
+      "page": 1,
+      "text": "Ordinary text: Alpha 35; Beta 12. Units: samples.\nNo significance or additional conclusions are supplied. ",
+      "warning": "文字顺序和表格结构以整页画面核对；坐标为 PDF 原始坐标。"
+    }
+  ],
+  "images": [
+    {
+      "page": 1,
+      "mimeType": "image/png",
+      "sha256": "7d7cf53263312df3ccf2732536d507f2dec19f9a38848233a5f06a5315257046",
+      "renderer": "PDFium 2.1.13, whole page",
+      "width": 1224,
+      "height": 1584
+    }
+  ]
+}

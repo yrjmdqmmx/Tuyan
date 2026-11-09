@@ -1,3 +1,4 @@
+import MenuSelect from './MenuSelect.jsx';
 import { useEffect, useState } from 'react'
 import { Download, Pause, Play, RefreshCcw, Upload } from 'lucide-react'
 import { adminBenchmarkRequest } from '@paperbanana/api'
@@ -80,7 +81,7 @@ export default function BenchmarkAdminPanel({ apiBase, health, disabled = false 
     <section className="benchmark-admin" aria-label="模型横评站长控制">
       <div className="benchmark-admin-grid">
         <fieldset><legend>候选与预算审批</legend>
-          <div className="benchmark-admin-row"><select disabled={disabled} value={candidateId} onChange={(event) => setCandidateId(event.target.value)}><option value="">选择 detected 候选</option>{candidates.map((item) => <option key={item.candidateId} value={item.candidateId}>{item.provider} · {item.modelId} · {item.state}</option>)}</select><button type="button" disabled={disabled} onClick={load}><RefreshCcw size={14} />刷新</button></div>
+          <div className="benchmark-admin-row"><MenuSelect disabled={disabled} value={candidateId} onChange={(event) => setCandidateId(event.target.value)}><option value="">选择 detected 候选</option>{candidates.map((item) => <option key={item.candidateId} value={item.candidateId}>{item.provider} · {item.modelId} · {item.state}</option>)}</MenuSelect><button type="button" disabled={disabled} onClick={load}><RefreshCcw size={14} />刷新</button></div>
           <div className="benchmark-admin-row"><label>单图估算 USD<input disabled={disabled} value={price} onChange={(event) => setPrice(event.target.value)} inputMode="decimal" /></label><label>自动 Judge USD<input disabled value={judgePrice} /></label><label>总预算 USD<input disabled={disabled} value={maxEstimatedUsd} onChange={(event) => setMaxEstimatedUsd(event.target.value)} inputMode="decimal" /></label></div>
           <label>公开价格来源 HTTPS<input disabled={disabled} value={priceSource} onChange={(event) => setPriceSource(event.target.value)} inputMode="url" placeholder="https://…" /></label>
           <p>最多生成：4　最多逻辑 Judgment：0　最多 Judge dispatch：0</p>

@@ -20,6 +20,7 @@ assert.match(source, /referenceLibraryPositiveInteger\(body\.pageSize \?\? body\
 assert.match(source, /Number\.isInteger\(number\) \|\| number <= 0/)
 assert.match(source, /clamp\(Number\(options\.limit \|\| 24\), 1, 306\)/)
 assert.match(source, /resolveManualRetrievedReferences/)
-assert.match(source, /id: \{ \$in: ids \}/)
+// Manual selection uses the license-verified curated index instead of a legacy DB lookup.
+assert.match(source, /selectFigureReferences\(ids\)/)
 
 console.log('reference localization backend policy ok')

@@ -1,0 +1,49 @@
+{
+  "id": "pcbi.1011436.g004",
+  "paper": "pcbi.1011436",
+  "figure": {
+    "id": "pcbi.1011436.g004",
+    "label": "Fig 4",
+    "caption": "Optimization of resources and feed rate to maximize product.\n(a.) A schematic of the fed-batch bioreactor to be optimized, where the rate of a feed stream and the presence of resources in the feed (depicted as yellow and pink shapes) can both be adjusted in order to maximize production. Species (green shapes) that produce a valuable metabolite (orange star) compete for resources with species that do not produce the metabolite. (b.) A diagram that shows the inputs to the MiRNN model including species abundances, metabolite concentration, resource concentrations, and feed rate at time point t − 1. The model predicts species abundances and metabolite concentration at the next time step, t. Predicted species abundances and metabolite concentration are used as inputs to predict the next time step. (c.) A comparison of prediction performance (Pearson correlation coefficient) of end-point metabolite concentration between the proposed experimental design strategy that combines exploration and exploitation (blue) to pure exploitation (green), pure exploration (orange), and random sampling (purple). Solid lines show the median of the best recorded production (y-axis) up to each DTL cycle (x-axis) and uncertainty regions show the interquartile range computed over 30 trials each with random initial experimental designs. (d.) A comparison of metabolite maximization (showing median and interquartile range over 30 trials) between proposed exploration and exploitation (blue) to pure exploitation (green), pure exploration (orange), and random sampling (purple).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011436.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Optimization of resources and feed rate to maximize product.</title>\n<p>(a.) A schematic of the fed-batch bioreactor to be optimized, where the rate of a feed stream and the presence of resources in the feed (depicted as yellow and pink shapes) can both be adjusted in order to maximize production. Species (green shapes) that produce a valuable metabolite (orange star) compete for resources with species that do not produce the metabolite. (b.) A diagram that shows the inputs to the MiRNN model including species abundances, metabolite concentration, resource concentrations, and feed rate at time point <italic>t</italic> − 1. The model predicts species abundances and metabolite concentration at the next time step, <italic>t</italic>. Predicted species abundances and metabolite concentration are used as inputs to predict the next time step. (c.) A comparison of prediction performance (Pearson correlation coefficient) of end-point metabolite concentration between the proposed experimental design strategy that combines exploration and exploitation (blue) to pure exploitation (green), pure exploration (orange), and random sampling (purple). Solid lines show the median of the best recorded production (y-axis) up to each DTL cycle (x-axis) and uncertainty regions show the interquartile range computed over 30 trials each with random initial experimental designs. (d.) A comparison of metabolite maximization (showing median and interquartile range over 30 trials) between proposed exploration and exploitation (blue) to pure exploitation (green), pure exploration (orange), and random sampling (purple).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g004\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1011436",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011436",
+    "title": "Integrating a tailored recurrent neural network with Bayesian experimental design to optimize microbial community functions",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Jaron C. Thompson",
+      "Victor M. Zavala",
+      "Ophelia S. Venturelli"
+    ],
+    "year": "2023",
+    "license": "2023\nThompson et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1011436.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011436.g004.png",
+      "bytes": 731270,
+      "sha256": "08b65e9cdaeba3eb539c5ca9f8587798b375becb8c47830bf69ee37e64cc891e"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1011436.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011436.g004.tif",
+      "bytes": 864464,
+      "sha256": "e210cfa19936933247f7955c6d2106b94b3250a40fdd20718295f2636eaa6774"
+    }
+  }
+}

@@ -1,0 +1,1265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0251385</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-20-36704</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Cell biology</subject><subj-group><subject>Cellular types</subject><subj-group><subject>Animal cells</subject><subj-group><subject>Blood cells</subject><subj-group><subject>White blood cells</subject><subj-group><subject>Macrophages</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Cell biology</subject><subj-group><subject>Cellular types</subject><subj-group><subject>Animal cells</subject><subj-group><subject>Immune cells</subject><subj-group><subject>White blood cells</subject><subj-group><subject>Macrophages</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Immunology</subject><subj-group><subject>Immune cells</subject><subj-group><subject>White blood cells</subject><subj-group><subject>Macrophages</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Immunology</subject><subj-group><subject>Immune cells</subject><subj-group><subject>White blood cells</subject><subj-group><subject>Macrophages</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Histology</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Histology</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Surgical and invasive medical procedures</subject><subj-group><subject>Biopsy</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Developmental biology</subject><subj-group><subject>Fibrosis</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Lipids</subject><subj-group><subject>Cholesterol</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Materials science</subject><subj-group><subject>Materials</subject><subj-group><subject>Crystals</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Cell biology</subject><subj-group><subject>Cellular types</subject><subj-group><subject>Animal cells</subject><subj-group><subject>Giant cells</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Musculoskeletal system</subject><subj-group><subject>Muscles</subject><subj-group><subject>Smooth muscles</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Musculoskeletal system</subject><subj-group><subject>Muscles</subject><subj-group><subject>Smooth muscles</subject></subj-group></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Improving the diagnostic recognition of thoracic endometriosis: Spotlight on a new histo-morphological indicator</article-title>
+<alt-title alt-title-type="running-head">Recognition of thoracic endometriosis</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0003-4098-6540</contrib-id>
+<name name-style="western">
+<surname>Okafor</surname>
+<given-names>Okechukwu Charles</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Conceptualization</role>
+<role content-type="https://casrai.org/credit/">Data curation</role>
+<role content-type="https://casrai.org/credit/">Formal analysis</role>
+<role content-type="https://casrai.org/credit/">Funding acquisition</role>
+<role content-type="https://casrai.org/credit/">Investigation</role>
+<role content-type="https://casrai.org/credit/">Methodology</role>
+<role content-type="https://casrai.org/credit/">Project administration</role>
+<role content-type="https://casrai.org/credit/">Resources</role>
+<role content-type="https://casrai.org/credit/">Software</role>
+<role content-type="https://casrai.org/credit/">Supervision</role>
+<role content-type="https://casrai.org/credit/">Validation</role>
+<role content-type="https://casrai.org/credit/">Visualization</role>
+<role content-type="https://casrai.org/credit/">Writing – original draft</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Ezemba</surname>
+<given-names>Ndubueze</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Conceptualization</role>
+<role content-type="https://casrai.org/credit/">Data curation</role>
+<role content-type="https://casrai.org/credit/">Funding acquisition</role>
+<role content-type="https://casrai.org/credit/">Investigation</role>
+<role content-type="https://casrai.org/credit/">Methodology</role>
+<role content-type="https://casrai.org/credit/">Supervision</role>
+<role content-type="https://casrai.org/credit/">Visualization</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Onyishi</surname>
+<given-names>Nnaemeka Thaddeus</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Formal analysis</role>
+<role content-type="https://casrai.org/credit/">Funding acquisition</role>
+<role content-type="https://casrai.org/credit/">Investigation</role>
+<role content-type="https://casrai.org/credit/">Methodology</role>
+<role content-type="https://casrai.org/credit/">Project administration</role>
+<role content-type="https://casrai.org/credit/">Resources</role>
+<role content-type="https://casrai.org/credit/">Visualization</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Ezike</surname>
+<given-names>Kevin Nwabueze</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Formal analysis</role>
+<role content-type="https://casrai.org/credit/">Funding acquisition</role>
+<role content-type="https://casrai.org/credit/">Investigation</role>
+<role content-type="https://casrai.org/credit/">Project administration</role>
+<role content-type="https://casrai.org/credit/">Resources</role>
+<role content-type="https://casrai.org/credit/">Supervision</role>
+<role content-type="https://casrai.org/credit/">Validation</role>
+<role content-type="https://casrai.org/credit/">Visualization</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Department of Morbid Anatomy, University of Nigeria Teaching Hospital, Ituku/Ozalla, Enugu State, Nigeria</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Division of Cardiothoracic Surgery, National Cardiothoracic Centre, University of Nigeria Teaching Hospital, Ituku/Ozalla, Enugu State, Nigeria</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Histopathology Department, Enugu State University College of Medicine, Enugu, Enugu State, Nigeria</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Department of Anatomic Pathology and Forensic Medicine, College of Health Sciences, Nile University of Nigeria, Abuja, Nigeria</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Viganò</surname>
+<given-names>Paola</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Fondazione IRCCS Ca’ Granda Ospedale Maggiore Policlinico, ITALY</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">okechukwu.okafor@gmail.com</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>13</day>
+<month>5</month>
+<year>2021</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2021</year>
+</pub-date>
+<volume>16</volume>
+<issue>5</issue>
+<elocation-id>e0251385</elocation-id>
+<history>
+<date date-type="received">
+<day>21</day>
+<month>11</month>
+<year>2020</year>
+</date>
+<date date-type="accepted">
+<day>24</day>
+<month>4</month>
+<year>2021</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2021</copyright-year>
+<copyright-holder>Okafor et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0251385"/>
+<abstract>
+<p>The diagnosis of thoracic endometriosis (TE) is challenging, hence resulting in under-diagnosis as well as long delays before arriving at a correct definitive diagnosis. Our aim is to review the histopathological findings in TE, summarise the diagnostic features, identify any major histo-morphological indicator(s) hitherto unrecognised as such, suggest diagnostic criteria; all with the aim of improving the diagnostic capacity and reducing observer error even where the clinical suspicion is low. A case-control study in which a search in the pathology archives of a referral hospital over a 10-year period was conducted. Twenty-six cases of TE were identified, reviewed, and compared with a control population of 48 cases taken from common benign thoracic diseases. Nine notable histological features were identified in varying permutations in the test group, namely: endometrioid glands, lymphoid clusters, ceroid macrophages, siderophages, cholesterol crystals, capillary congestion, multinucleated giant cells, smooth muscle bundles and fibrosis. The first 6 features were frequent; each being present in over 13 (13/26; 50%) test cases. The first 8 features showed significant association with TE by the Chi-squared test (<italic>P</italic>&lt;0.05). In this group, the strength of association is high for the first 4 features (Cramér’s V≥0.5). The presence of ceroid macrophages is shown to be a novel key feature, previously unrecognised as such, for the identification of TE. The presence of any three of four features including endometrioid glands, lymphoid clusters, ceroid macrophages and siderophages is a suggested criterion for the definitive diagnosis of TE.</p>
+</abstract>
+<funding-group>
+<funding-statement>The authors received no specific funding for this work.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="5"/>
+<table-count count="4"/>
+<page-count count="15"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the manuscript and its <xref ref-type="sec" rid="sec005">Supporting Information</xref> files which are available from the figshare database (DOI number(s) doi:<ext-link ext-link-type="uri" xlink:href="https://doi.org/10.6084/m9.figshare.14067221.v1" xlink:type="simple">10.6084/m9.figshare.14067221.v1</ext-link>, doi:<ext-link ext-link-type="uri" xlink:href="https://doi.org/10.6084/m9.figshare.14102849.v1" xlink:type="simple">10.6084/m9.figshare.14102849.v1</ext-link>).</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Thoracic endometriosis (TE) is defined as the presence of endometrioid tissue within the thoracic cavity. The aetiological mechanisms of this syndrome are not well understood [<xref ref-type="bibr" rid="pone.0251385.ref001">1</xref>, <xref ref-type="bibr" rid="pone.0251385.ref002">2</xref>]. It presents with four well-recognised clinical entities namely, catamenial pneumothorax, catamenial haemothorax, catamenial haemoptysis, and lung nodules; but less frequent presentations have been reported. The diagnosis of TE is always a challenge and for this reason it is believed to be underdiagnosed. Also diagnosis is often delayed until the symptoms’ temporal relationship with menses is recognised [<xref ref-type="bibr" rid="pone.0251385.ref003">3</xref>]. Some authors even consider it to be a diagnosis of exclusion [<xref ref-type="bibr" rid="pone.0251385.ref004">4</xref>, <xref ref-type="bibr" rid="pone.0251385.ref005">5</xref>]. The most consistent, albeit retrospective, series on TE included 110 patients and showed that the mean age at presentation was about 35 years, with a range from 15 to 54 years [<xref ref-type="bibr" rid="pone.0251385.ref006">6</xref>]. The reported interval between the onset of symptoms and establishment of a definitive diagnosis of TE ranges between 8 and 16 months [<xref ref-type="bibr" rid="pone.0251385.ref004">4</xref>, <xref ref-type="bibr" rid="pone.0251385.ref006">6</xref>, <xref ref-type="bibr" rid="pone.0251385.ref007">7</xref>].</p>
+<p>Thoracic endometriosis is generally thought to be extremely rare, but specific figures are scanty and come almost completely from case reports and small retrospective series. Is this rarity the true scenario or is it a manifestation of under-diagnosis both on the part of the clinicians and the pathologists? In order to resolve this dilemma, the finding, on one hand, of long duration prior to diagnosis in spite of hospital presentation (possibly to different clinicians) will point to the clinicians as the cause of under-diagnosis. On the other hand, the correct and definitive diagnosis coming only after clinico-pathological reviews necessitated by non-resolution of symptoms, insistence of the clinicians or requests for second opinion will point to the histopathologist as the cause of the underdiagnosis and apparent rarity of the disease. The scenario is further compounded by a finding that less than 50% of laparoscopic biopsies of lesions visually diagnosed as endometriosis were confirmed to be endometriosis on histological study [<xref ref-type="bibr" rid="pone.0251385.ref008">8</xref>]. Literature suggests that both factors are involved and several studies have attempted to investigate this diagnostic entity [<xref ref-type="bibr" rid="pone.0251385.ref006">6</xref>, <xref ref-type="bibr" rid="pone.0251385.ref009">9</xref>–<xref ref-type="bibr" rid="pone.0251385.ref012">12</xref>].</p>
+<p>The histopathological features of endometriosis are the presence of endometrioid glands and stroma [<xref ref-type="bibr" rid="pone.0251385.ref013">13</xref>]. However, in contrast to the more common pelvic endometriosis, in TE the endometrioid glands are not always present in biopsy material. In problematic cases immunohistochemical analysis using oestrogen, progesterone, and CD10 may confirm the endometrioid glands and stroma [<xref ref-type="bibr" rid="pone.0251385.ref009">9</xref>, <xref ref-type="bibr" rid="pone.0251385.ref014">14</xref>]. This approach holds good in research situations and when there is a high clinical suspicion of TE following suggestive symptoms; but the challenge remains as to how, in the absence of this clinical suspicion, the pathologist will be able to raise the possibility of and arrive at a definite diagnosis of TE in thoracic biopsies from women without long delays and several reviews and opinions being sought on the biopsies.</p>
+<p>We undertook a thorough histopathological study of confirmed cases of TE, identified the constituent histo-morphological features and assessed the occurrence of these features in a control group of benign thoracic biopsy aiming to delineate novel histo-morphological indicator(s) for TE and suggest diagnostic criteria, which will improve diagnostic recognition of TE even in the absence of clinical suspicion.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Materials and methods</title>
+<p>This is a descriptive case-control study of thoracic biopsies seen at the University of Nigeria Teaching Hospital, Ituku-Ozalla, during a 10-year period between January 1, 2011 and August 31, 2020. The study was approved by the Health Research Ethics Committee of the University of Nigeria Teaching Hospital, Ituku-Ozalla (certificate number: NHREC/05/01/200BB-FWA00002458-1RB00002323). A search of the departmental archives was undertaken and the cases, consisting of biopsies previously diagnosed and confirmed as TE, were identified. Data, including gender, age, and clinical presentation were extracted from the histopathology reports. All identifying information in the data, including names, initials, and hospital numbers, were removed before access and inclusion into this study. A meticulous histomorphological analysis of the corresponding H&amp; E slides of the cases was done and this yielded a complete histological portrait of the TE cases (<xref ref-type="supplementary-material" rid="pone.0251385.s001">S1 Table</xref>). Following this, a control group of diverse thoracic biopsies, consisting of biopsies from the thoracic wall, diaphragm, lung and mediastinum was similarly selected and was assessed for the presence of the same histomorphological features earlier identified in the TE group.</p>
+<p>The Chi-squared test of independence and Cramér’s V test were done to determine association and strength of association respectively between TE, and the identified histological features when compared with other thoracic biopsies. P-value of 0.05 or less was considered statistically significant. Cramér’s V coefficient was classified as high association (V ≥ 0.5), medium association (0.5 &gt; V ≥ 0.3) or low association (0.3 &gt; V ≥ 0.2).</p>
+<p>For each test or control case, a component score of 1 or 0 was given accordingly for the presence or absence each histological feature (<xref ref-type="supplementary-material" rid="pone.0251385.s002">S2 Table</xref>). Similarly, for each case three different group scores were calculated: the first from the sum of the scores of all the histological features assessed, the second from sum of the scores of those histological features that show association to TE based on the Chi-squared statistics, and the third from the sum of the scores of those histological features that have a high association based on Cramér’s V coefficient (columns GpOmnibus, GpB and GpC respectively of <xref ref-type="supplementary-material" rid="pone.0251385.s002">S2 Table</xref>).</p>
+<p>The area under curve of the receiver operating characteristics curve (AUC-ROC) was calculated for each of the 3 group scores in order to compare their overall usefulness in the diagnosis of TE; 1 being the best possible AUC-ROC statistic and 0.5 being the worst possible for any diagnostic criterion.</p>
+<p>The data were analysed using R statistical software including ggplot2, pROC, vcd, and DT packages [<xref ref-type="bibr" rid="pone.0251385.ref015">15</xref>–<xref ref-type="bibr" rid="pone.0251385.ref019">19</xref>]. Results were presented in tables and charts.</p>
+</sec>
+<sec id="sec003" sec-type="results">
+<title>Results</title>
+<p>Twenty-six histologically confirmed cases of TE were included in the test group. The women aged between 20 and 50 years (mean = 32.7; standard deviation [SD] = 6.6). Twenty-five of the lesions were located in the pleura, 1 with lung involvement and 1 in the pericardium alone. The mean interval between the onset of symptoms and definitive histopathological diagnosis was 49 weeks (range = 1 week to 300 weeks). Forty-eight negative controls were obtained from the same time interval of consideration from other thoracic specimens in 40 males and 8 females, aged between 2 and 75 years (mean = 40.4; SD = 17.7), with a diagnosis other than endometriosis as shown in <xref ref-type="table" rid="pone.0251385.t001">Table 1</xref>. Only non-neoplastic lesions were included as control cases for the study.</p>
+<table-wrap id="pone.0251385.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0251385.t001</object-id>
+<label>Table 1</label> <caption><title>Demographic information on all the subjects used in the study.</title></caption>
+<alternatives>
+<graphic id="pone.0251385.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0251385.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center">Disease entity</th>
+<th align="center">Status</th>
+<th align="center">Count</th>
+<th align="center">Male</th>
+<th align="center">Female</th>
+<th align="center">Age range (years)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Endometriosis</td>
+<td align="left">Test</td>
+<td align="left">26</td>
+<td align="left">0</td>
+<td align="left">26</td>
+<td align="left">20–50</td>
+</tr>
+<tr>
+<td align="left">Tuberculous pericarditis</td>
+<td align="left">Control</td>
+<td align="left">4</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">24–72</td>
+</tr>
+<tr>
+<td align="left">Nonspecific pericarditis</td>
+<td align="left">Control</td>
+<td align="left">16</td>
+<td align="left">14</td>
+<td align="left">2</td>
+<td align="left">16–62</td>
+</tr>
+<tr>
+<td align="left">Tuberculous pleuritis</td>
+<td align="left">Control</td>
+<td align="left">6</td>
+<td align="left">6</td>
+<td align="left">0</td>
+<td align="left">25–52</td>
+</tr>
+<tr>
+<td align="left">Nonspecific pleuritis</td>
+<td align="left">Control</td>
+<td align="left">7</td>
+<td align="left">4</td>
+<td align="left">3</td>
+<td align="left">55–63</td>
+</tr>
+<tr>
+<td align="left">Pulmonary tuberculosis</td>
+<td align="left">Control</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">58</td>
+</tr>
+<tr>
+<td align="left">Empyema thoracis</td>
+<td align="left">Control</td>
+<td align="left">9</td>
+<td align="left">9</td>
+<td align="left">0</td>
+<td align="left">2–67</td>
+</tr>
+<tr>
+<td align="left">Histoplasmosis (pleural and pulmonary)</td>
+<td align="left">Control</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">50</td>
+</tr>
+<tr>
+<td align="left">Hypersensitivity pneumonitis</td>
+<td align="left">Control</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">75</td>
+</tr>
+<tr>
+<td align="left">Necrotizing pneumonia</td>
+<td align="left">Control</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">Organizing haematoma (pleural and pulmonary)</td>
+<td align="left">Control</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">35</td>
+</tr>
+<tr>
+<td align="left">Aspergillosis (pleural and pulmonary)</td>
+<td align="left">Control</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">36</td>
+</tr>
+<tr>
+<td align="left"><bold>TOTALS</bold></td>
+<td align="left"/>
+<td align="left"><bold>74</bold></td>
+<td align="left"><bold>40</bold></td>
+<td align="left"><bold>34</bold></td>
+<td align="left"/>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>The thoracic presenting symptoms in the test subjects are summarised in <xref ref-type="table" rid="pone.0251385.t002">Table 2</xref>. Furthermore, some of the test patients also presented with extra-thoracic signs and symptoms like massive ascites, cyclical abdominal swelling/fullness, umbilical mass, infertility and weight loss. The treatment applied to the test population was multimodal and included hormonal therapy, tube thoracostomy, pleurodesis using 2g of tetracycline, repair surgery and pleurectomy. The treatment combination given was based on the presenting symptoms and patient response to initial therapy. The patients were followed up for a period ranging from 6 months to 5 years in both the thoracic and gynaecological outpatient clinics. Over this period only 3 patients had recurrent symptoms of TE beyond 6 months of initial intervention and all were symptom-free by 4 years. Some patients with extra-thoracic signs and symptoms like massive ascites and infertility continued to have recurrence of these extra-thoracic features beyond the follow-up period.</p>
+<table-wrap id="pone.0251385.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0251385.t002</object-id>
+<label>Table 2</label> <caption><title>Summary of the clinical signs and symptoms in the test population.</title></caption>
+<alternatives>
+<graphic id="pone.0251385.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0251385.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Thoracic signs and symptoms</th>
+<th align="center">n/N (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Massive haemothorax</td>
+<td align="center">18/26 (69.2)</td>
+</tr>
+<tr>
+<td align="left">Catamenial chest pain/cough</td>
+<td align="center">10/26 (38.5)</td>
+</tr>
+<tr>
+<td align="left">Catamenial pneumothorax</td>
+<td align="center">6/26 (23.1)</td>
+</tr>
+<tr>
+<td align="left">Catamenial breathlessness</td>
+<td align="center">3/26 (11.5)</td>
+</tr>
+<tr>
+<td align="left">Hydropneumothorax</td>
+<td align="center">2/26 (7.7)</td>
+</tr>
+<tr>
+<td align="left">Catamenial haemoptysis</td>
+<td align="center">1/26 (3.8)</td>
+</tr>
+<tr>
+<td align="left">Catamenial haematemesis</td>
+<td align="center">1/26 (3.8)</td>
+</tr>
+<tr>
+<td align="left">Atypical chest pain</td>
+<td align="center">1/26 (3.8)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>Grossly, cystic lesions measuring between 2mm and 10mm were seen in 4 confirmed TE specimens; the rest of the test cases had nondescript gross appearances. Nine notable histological features were identified in varying proportions in the test (TE) population, namely endometrioid glands, lymphoid clusters, ceroid macrophages, siderophages (haemosiderin-laden macrophages), cholesterol crystals, smooth muscle bundles, capillary congestion, multinucleated giant cells and fibrosis (<xref ref-type="supplementary-material" rid="pone.0251385.s001">S1 Table</xref>; <xref ref-type="fig" rid="pone.0251385.g001">Fig 1A–1I</xref>).</p>
+<fig id="pone.0251385.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0251385.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title/>
+<p>A: Typical thoracic endometriosis simulating native proliferative endometrium. H&amp;E staining, original magnification X300. B: Dilated endometrioid gland with intraluminal pseudoxanthoma cells; the surrounding stroma is inconspicuous. H&amp;E staining, original magnification X150. C: Lymphocytic aggregate and dilated and congested blood vessels in oedematous nonspecific stroma; a distorted endometrioid gland is also present. H&amp;E staining, original magnification X100. D: Oedematous hyalinised stroma with congested capillaries and siderophages with golden-brown pigments. H&amp;E staining, original magnification X300. E: Ceroid macrophages with brownish finely granular cytoplasm. H&amp;E staining, original magnification X300. F: Foamy macrophages in the stroma. H&amp;E staining, original magnification X150. G: Cholesterol crystals and multinucleated foreign body-type giant cells. H&amp;E staining, original magnification X300. H: Bundles of smooth muscle cells. H&amp;E staining, original magnification X150. I: Pleural fibrosis. H&amp;E staining, original magnification X150.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0251385.g001" xlink:type="simple"/>
+</fig>
+<p>Twenty-four cases (24/26; 92%) showed endometrioid glands but this was sometimes very focal and required the examination of several sections before they could be identified (<xref ref-type="fig" rid="pone.0251385.g002">Fig 2</xref>). The glands were either inactive or slightly proliferative; no secretory gland was seen. Occasionally, they appeared atrophic and were lined by a single layer of cuboidal or attenuated epithelial cells. Hobnail and clear cells were the metaplastic changes frequently seen. Two cases (2/26; 8%) (Lines 13 and 17 of <xref ref-type="supplementary-material" rid="pone.0251385.s001">S1 Table</xref>) lacking endometrioid glands were classified as stromal endometriosis with siderophages, ceroid macrophages, cholesterol crystals, lymphoid clusters, capillary congestion and fibrosis. In addition, these 2 patients had presented with catamenial chesty symptoms suggestive of TE. Bundles of smooth muscle, distinct from the wall of blood vessels, were seen in 4 cases (4/26; 15%).</p>
+<fig id="pone.0251385.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0251385.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Barplot showing the frequency distribution of the various histological features in the test (thoracic endometriosis) population.</title>
+<p>The stripped red line marks the point of separation between the frequent or Group A features (darker bars) affecting more than 13 (&gt;13/26; 50%) patients from the features (lighter bars) affecting less than 13 (&lt;13/26; 50%) patients.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0251385.g002" xlink:type="simple"/>
+</fig>
+<p>Three histological features, namely lymphoid clusters, fibrosis and capillary congestion, were present in all the 26 test cases (26/26; 100%) (<xref ref-type="fig" rid="pone.0251385.g002">Fig 2</xref>). Overall, there are 6 frequent features, adding siderophages, endometrioid glands and ceroid macrophages to the earlier 3, which, individually are present in the majority of the cases (&gt;13/26; 50%); all 6 together are present in 16 cases (16/26; 62%); and in different permutations are present in all 26 cases (26/26; 100%). These 6 frequent features will be referred to as Group A.</p>
+<p>The percentage frequency distribution of all 9 histological features in the test and control populations were respectively compared and shown in <xref ref-type="table" rid="pone.0251385.t003">Table 3</xref>. Not being exclusively present in the test population, these features were respectively analysed in both populations using Chi-squared statistical test for independence. A statistical difference (<italic>P</italic>&lt;0.05) was observed in 8 histological features (endometrioid glands, lymphoid clusters, ceroid macrophages, siderophages, cholesterol crystals, smooth muscle bundles, capillary congestion and multinucleated giant cells) suggesting that these features could be associated with the TE. These will henceforth be referred to as Group B. Fibrosis alone, with <italic>P</italic> value of 0.088, did not show any statistical difference between the test and control groups and this suggests that it is not reliably associated with the TE.</p>
+<table-wrap id="pone.0251385.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0251385.t003</object-id>
+<label>Table 3</label> <caption><title>Comparison of percentage frequency distribution of histological features in the test and control populations, along with the corresponding Chi-squared test statistic of independence, its <italic>P</italic>-value and the Cramér’s V coefficient for strength of association.</title></caption>
+<alternatives>
+<graphic id="pone.0251385.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0251385.t003" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Histological feature</th>
+<th align="left">Percentage</th>
+<th align="left">X<sup>2</sup><xref ref-type="table-fn" rid="t003fn001"><sup>a</sup></xref></th>
+<th align="left"><italic>P</italic>-value<xref ref-type="table-fn" rid="t003fn002"><sup>b</sup></xref></th>
+<th align="left">V<xref ref-type="table-fn" rid="t003fn003"><sup>c</sup></xref></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Endometrioid glands</td>
+<td align="left"/>
+<td align="left">65.5</td>
+<td align="left">&lt;0.001</td>
+<td align="left">0.94</td>
+</tr>
+<tr>
+<td align="left">    Test</td>
+<td align="left">92.3</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">    Control</td>
+<td align="left">0.0</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Lymphoid clusters</td>
+<td align="left"/>
+<td align="left">47.2</td>
+<td align="left">&lt;0.001</td>
+<td align="left">0.80</td>
+</tr>
+<tr>
+<td align="left">    Test</td>
+<td align="left">100</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">    Control</td>
+<td align="left">16.7</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Ceroid macrophages</td>
+<td align="left"/>
+<td align="left">43.9</td>
+<td align="left">&lt;0.001</td>
+<td align="left">0.77</td>
+</tr>
+<tr>
+<td align="left">    Test</td>
+<td align="left">69.2</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">    Control</td>
+<td align="left">0.0</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Siderophages</td>
+<td align="left"/>
+<td align="left">34.7</td>
+<td align="left">&lt;0.001</td>
+<td align="left">0.69</td>
+</tr>
+<tr>
+<td align="left">    Test</td>
+<td align="left">92.3</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">    Control</td>
+<td align="left">20.8</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Cholesterol crystals</td>
+<td align="left"/>
+<td align="left">14.3</td>
+<td align="left">&lt;0.001</td>
+<td align="left">0.44</td>
+</tr>
+<tr>
+<td align="left">    Test</td>
+<td align="left">26.9</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">    Control</td>
+<td align="left">0.0</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Smooth muscle bundles</td>
+<td align="left"/>
+<td align="left">7.8</td>
+<td align="left">0.005</td>
+<td align="left">0.32</td>
+</tr>
+<tr>
+<td align="left">    Test</td>
+<td align="left">15.4</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">    Control</td>
+<td align="left">0.0</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Capillary congestion</td>
+<td align="left"/>
+<td align="left">7.0</td>
+<td align="left">0.008</td>
+<td align="left">0.31</td>
+</tr>
+<tr>
+<td align="left">    Test</td>
+<td align="left">100</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">    Control</td>
+<td align="left">77</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">MGC <xref ref-type="table-fn" rid="t003fn004"><sup>d</sup></xref></td>
+<td align="left"/>
+<td align="left">4.0</td>
+<td align="left">0.045</td>
+<td align="left">0.23</td>
+</tr>
+<tr>
+<td align="left">    Test</td>
+<td align="left">34.6</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">    Control</td>
+<td align="left">14.6</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Fibrosis</td>
+<td align="left"/>
+<td align="left">2.9</td>
+<td align="left">0.088</td>
+<td align="left">0.20</td>
+</tr>
+<tr>
+<td align="left">    Test</td>
+<td align="left">100</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">    Control</td>
+<td align="left">89.6</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t003fn001"><p><sup>a</sup> Chi-squared statistic for independence.</p></fn>
+<fn id="t003fn002"><p><sup>b</sup> <italic>P</italic>-value of the Chi-squared statistic.</p></fn>
+<fn id="t003fn003"><p><sup>c</sup> Cramér’s V coefficient for strength of association.</p></fn>
+<fn id="t003fn004"><p><sup>d</sup> Multinucleated giant cells.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>The result of the Chi-squared test of independence was further tested with the Cramér’s V statistical method to measure the strength of association in those 8 features (Group B) that were significantly associated with the TE (<xref ref-type="fig" rid="pone.0251385.g003">Fig 3</xref>). Four features, notably endometrioid glands, lymphoid clusters, ceroid macrophages and siderophages, demonstrate a high degree of association with TE, and will henceforth be referred to as Group C. Three features, notably cholesterol crystals, smooth muscle and capillary congestion, show medium association. The presence of multinucleated giant cells has a low association with endometriosis.</p>
+<fig id="pone.0251385.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0251385.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Lollipop plot showing the strength of association with disease of the various histological features using the Cramér’s V coefficient.</title>
+<p>The dashed lines divide the histological features into those of high association (brick red), medium association (coral) and low association (blanched almond).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0251385.g003" xlink:type="simple"/>
+</fig>
+<p>To summarise the histological findings, each patient was given total scores based on these 3 groups of histological features, namely: (i) Group Omnibus: the sum of all 9 features (GpOmnibus column of <xref ref-type="supplementary-material" rid="pone.0251385.s002">S2 Table</xref>); (ii) Group B: the sum of the 8 features with significant association to TE based on the Chi-squared statistics obtained in this study (GpB column of <xref ref-type="supplementary-material" rid="pone.0251385.s002">S2 Table</xref>); and (iii) Group C: the sum of the 4 features with high association with TE based on Cramér’s V coefficient obtained in this study (GpC column of <xref ref-type="supplementary-material" rid="pone.0251385.s002">S2 Table</xref>). <xref ref-type="fig" rid="pone.0251385.g004">Fig 4</xref> shows a boxplot of the distribution of the scores based on these groups.</p>
+<fig id="pone.0251385.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0251385.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Boxplot of distribution of scores based on 3 groups of features: all features (Group Omnibus), those with association to disease by Chi-squared test (Group B) and those with high strength of association by Cramér’s V coefficient (Group C).</title>
+<p>The tips of the whiskers in these boxplots represent the minimum and maximum scores of the various groups.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0251385.g004" xlink:type="simple"/>
+</fig>
+<p>The usefulness of the three group scores for the diagnosis of TE were found to be nearly identical (AUC-ROC of 0.995, 0.994 and 0.996 for Groups Omnibus, B, and C respectively) as well as to be very good indices for disease diagnosis [<xref ref-type="bibr" rid="pone.0251385.ref018">18</xref>]. It is notable that the AUC-ROC of Group C is marginally superior to that of the other 2 groups. For each group the best cutoff point was determined as the next score above the highest score of the control group i.e., that score at which there is no false positive case (specificity = 1) (<xref ref-type="supplementary-material" rid="pone.0251385.s002">S2 Table</xref>). This cutoff score was 5, 4 and 3 for Groups Omnibus, B and C respectively. At these respective scores there were 2 false negatives in each of the 3 groups, hence the sensitivity was 0.923 for all three groups.</p>
+<p>Twenty-four of the 26 test cases had endometrioid glands and 2 did not. Both of these latter 2 presented with the other 3 Group C features namely ceroid macrophages, siderophages, and lymphoid clusters. No control case contained these 3 features together, thus confirming that even in the absence of endometrioid glands, the other 3 Group C features together could be used to diagnose TE. A similar statement can also be made of the Group B features where, even in the absence of endometrioid glands, any 4 of the other features could be diagnostic of TE and no control case had 4 of these Group B features together.</p>
+</sec>
+<sec id="sec004" sec-type="conclusions">
+<title>Discussion</title>
+<p>The histological diagnosis of endometriosis is typically based on the presence of endometrioid glands with or without endometrioid stroma [<xref ref-type="bibr" rid="pone.0251385.ref014">14</xref>] (<xref ref-type="fig" rid="pone.0251385.g001">Fig 1A–1C</xref>). The glands show typical endometrioid features, usually of proliferative or inactive type. Sometimes they are cystically dilated and are grossly visible as vesicles (<xref ref-type="fig" rid="pone.0251385.g001">Fig 1B</xref>). The appearance of the endometriotic tissue varies with the duration of the process as well as relative to its response to the normal hormonal fluctuations of the menstrual cycle. It is only in 44% to 80% of cases that the corresponding cyclical changes are seen in the endometriotic tissue when compared to native endometrium in reproductive women [<xref ref-type="bibr" rid="pone.0251385.ref020">20</xref>, <xref ref-type="bibr" rid="pone.0251385.ref021">21</xref>]. The lining cells have various appearances including columnar, cuboidal, flattened and even mildly dysplastic cells with hyperchromatic nuclei. All these changes further increase the difficulty in identification of endometriosis as such.</p>
+<p>Small congested arterioles and capillaries (referred to as capillary congestion) are present, and provide a helpful initial clue to the identification of the endometriotic nature of the lesion. For diagnostic purposes it is important to insist that these vessels be numerous, so much so that they draw attention to the lesion at scanning magnification (<xref ref-type="fig" rid="pone.0251385.g001">Fig 1C and 1D</xref>).</p>
+<p>With menstruation, haemorrhage may occur within the stroma and glandular lumina of endometriotic foci, as well as a secondary inflammatory response consisting predominantly of a diffuse infiltration of pigmented macrophages. These macrophages fragment and engulf the breakdown products, and can be classified into ceroid macrophages (or ceroid-laden macrophages) and siderophages (haemosiderin-laden macrophages) based on their cytoplasmic phagocytic contents. Ceroid and related foamy lipids are lipochrome pigments and their outstanding feature is their pale foamy to eosinophilic to greyish-brown colour, sudanophilia and fine granularity (<xref ref-type="fig" rid="pone.0251385.g001">Fig 1E and 1F</xref>). Ceroid macrophages with pale foamy cytoplasm are also referred to as foamy macrophages. Haemosiderin is a form of storage iron derived chiefly from the breakdown of erythrocytes. Haemosiderin appears as a coarse, golden brown, refractile pigment with haematoxylin-eosin stain and as blue granules with Perls’ Prussian blue. Some of these macrophages fuse to form multinucleated giant cells of the foreign body type (<xref ref-type="fig" rid="pone.0251385.g001">Fig 1G</xref>).</p>
+<p>Variable numbers of lymphocytes and smaller numbers of other inflammatory cells are usually present; the former are seen as lymphoid clusters and constitute an important clue to diagnosis in difficult cases (<xref ref-type="fig" rid="pone.0251385.g001">Fig 1C</xref>). On rare occasions some of these lymphoid clusters were seen to have a germinal centre, thus confirming their reactive nature. Typically, endometriosis is associated with reactive fibrosis and, if prominent and of significant duration, can result in conspicuous adhesions (<xref ref-type="fig" rid="pone.0251385.g001">Fig 1I</xref>).</p>
+<p>With chronicity and progression of the lesion this classical picture is further modified by necrotic and metaplastic processes, thus producing varied components such as cholesterol crystals (<xref ref-type="fig" rid="pone.0251385.g001">Fig 1G</xref>) and smooth muscle bundles [<xref ref-type="bibr" rid="pone.0251385.ref022">22</xref>] (<xref ref-type="fig" rid="pone.0251385.g001">Fig 1H</xref>). These features, on entering the mix, serve to render the diagnosis of endometriosis even more difficult and enigmatic, especially in small biopsies.</p>
+<p>In some cases stroma only is found in biopsies despite exhaustive sampling of the specimens, and the preferred terminology is stromal endometriosis. This rare variant of endometriosis has also been described in the peritoneum, cervix, ovary and omentum [<xref ref-type="bibr" rid="pone.0251385.ref022">22</xref>, <xref ref-type="bibr" rid="pone.0251385.ref023">23</xref>–<xref ref-type="bibr" rid="pone.0251385.ref025">25</xref>].</p>
+<p>A high index of suspicion by the clinician as well as the experience of the pathologist are necessary for a correct diagnosis to avoid such erroneous classifications as nonspecific pleuritis, fibrinous pleuritis and similar [<xref ref-type="bibr" rid="pone.0251385.ref026">26</xref>]. In our series, three cases had to be re-examined by the pathologist at the request of the surgeons after the initial diagnosis of nonspecific pleuritis. In the cases of complete diaphragmatic rupture with no obvious evidence of endometriotic tissue as well as in those with multiple diaphragmatic fenestrations, it is advisable to biopsy the edges of the diaphragm in the former, and do <italic>en-bloc</italic> resection of the fenestrations in the latter. The defect can always be repaired using GORE-TEX patch. This approach ensures tension-free repair/reconstruction of the diaphragm in addition to providing tissue for histological examination. Similarly, when the diaphragm is intact with no endometriotic nodule, parietal pleurectomy as done in the majority of our patients, even when there are no obvious macroscopic deposits, will yield tissue for histological examination.</p>
+<p>This particular study is ‘the other side of the coin’ and complementary to other studies that have attempted to correlate histological diagnosis of endometriosis with grossly visualised lesions. In earlier studies, the proportion of grossly visible lesions confirmed by histology ranged between 3.1% and 100% [<xref ref-type="bibr" rid="pone.0251385.ref027">27</xref>–<xref ref-type="bibr" rid="pone.0251385.ref031">31</xref>]. Unfortunately, differing and limited patient populations, small size of specimens, and inconsistencies in biopsy techniques have marred all of these studies. However, a detailed and prospective correlational study carried out on 44 patients with peritoneal biopsies found a positive predictive value (PPV) (percentage of positive histological findings of endometriosis among the positive visual [endoscopic] findings) of 45% and negative predictive value (percentage of normal histological findings among the negative visual findings) of 99% [<xref ref-type="bibr" rid="pone.0251385.ref008">8</xref>]. This study went ahead to conclude that a diagnosis of endometriosis should be established only after histological confirmation. The PPVs varied considerably among their 9 biopsy sites: highest in the cul-de-sac (65%) and lowest in the right psoas muscle (14%). It considered even the highest PPV still insufficient to justify visual diagnosis alone. Our study builds on this conclusion with the intent of improving the diagnostic capacity of the histopathological evaluation.</p>
+<p>For bench diagnosis of TE we propose 2 new criteria as alternatives, as shown in <xref ref-type="table" rid="pone.0251385.t004">Table 4</xref>, especially when the hitherto traditional criterion (of finding endometrial glands) is not applicable. The first, and recommended, alternative criterion, based on Group C of our study, consists of the presence of ceroid macrophages and siderophages and lymphoid clusters (total of 3 features). In addition, the identification of any one of the Group C features in a thoracic biopsy should serve as an alarm bell to the pathologist so as to further consider the possibility of TE in that case. The second and less favoured proposed criterion, based on the Group B features, consists of the presence of ceroid macrophages plus any other 3 of the other 6 histological features of Group B (total of 4 features), excluding endometrioid glands which already is a stand-alone/traditional criterion. This second alternative criterion is inferior to the first since it includes some histological features that have only a medium strength of association with TE. It must include the presence of ceroid macrophages. We do not recommend Group Omnibus as a diagnostic criterion for two reasons. Firstly, it contains a feature (fibrosis) which we prove not show any association to TE. Secondly, it consists of too many histological features for assessment and this could prove cumbersome in bench work.</p>
+<table-wrap id="pone.0251385.t004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0251385.t004</object-id>
+<label>Table 4</label> <caption><title>The traditional criterion and two new suggested alternative criteria for the diagnosis of thoracic endometriosis.</title> <p>These new alternative criteria are based on the features of Groups C and B.</p></caption>
+<alternatives>
+<graphic id="pone.0251385.t004g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0251385.t004" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Traditional criterion<break/>(1 feature only)</th>
+<th align="left">First alternative criterion (3 features) (based on Group C)</th>
+<th align="left">Second alternative criterion (4 features) (based on Group B)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="7">Endometrioid gland <bold>only</bold></td>
+<td align="left">Ceroid macrophages <bold>AND</bold></td>
+<td align="left"><bold>Ceroid macrophages AND</bold> any other 3 of the following:</td>
+</tr>
+<tr>
+<td align="left">Siderophages <bold>AND</bold></td>
+<td align="left">(i) Siderophages</td>
+</tr>
+<tr>
+<td align="left" rowspan="5">Lymphoid clusters</td>
+<td align="left">(ii) Lymphoid clusters</td>
+</tr>
+<tr>
+<td align="left">(iii) Cholesterol crystals</td>
+</tr>
+<tr>
+<td align="left">(iv) Capillary clusters</td>
+</tr>
+<tr>
+<td align="left">(v) Multinucleated giant cells</td>
+</tr>
+<tr>
+<td align="left">(vi) Smooth muscle bundles</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>Summarising the results of this study in a Venn plot (<xref ref-type="fig" rid="pone.0251385.g005">Fig 5</xref>) we can see the overlap of Groups A (frequent features), B (Chi-squared-associated features) and C (strongly-associated by Cramér’s V). It is notable that the innermost overlapping segment in the 3 circles contains all the features of Group C.</p>
+<fig id="pone.0251385.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0251385.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Venn plot showing the overlap of the 6 frequent features (Group A), the 8 features with significant association to disease by Chi-squared test (Group B), and the 4 features with high strength of association to disease by the Cramér’s V coefficient (Group C).</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0251385.g005" xlink:type="simple"/>
+</fig>
+<p>An interesting finding in this study is the emergence of the importance of macrophages, especially ceroid macrophages, in the diagnosis of endometriosis, something that had not come to light before now. Articles published recently have thrown the spotlight on the key pathogenetical role of macrophages for establishment of successful and viable colonies by endometrial fragments that accidentally reach the peritoneal cavity and other foreign sites during the fertile years [<xref ref-type="bibr" rid="pone.0251385.ref032">32</xref>, <xref ref-type="bibr" rid="pone.0251385.ref033">33</xref>]. Macrophages are known to sense cues (e.g. hypoxia, cell death, foreign entities, etc.) in body lesions and react by delivering signals to restore the local homeostasis. Endometriosis may be due to a misperception by macrophages about ectopic endometrial tissue, which they perceive as a wound and subsequently activate programmes leading to ectopic cell survival. This has radical implications for the development of novel medical treatments of endometriosis. That said, this study opens yet another vista and suggests a key diagnostic role for these macrophages in endometriosis. The ceroid macrophages and siderophages were frequent in this study (Group A) and showed high statistical association with TE (Group C, <xref ref-type="fig" rid="pone.0251385.g001">Fig 1D–1F</xref>). One or both types of macrophages were present in 24 cases (92%). It is notable, however, that the presence of multinucleated giant cells showed only a low association with the disease and therefore does not feature among the favoured diagnostic criteria.</p>
+<p>Traditionally the presence of siderophages has been emphasised in endometriosis of all sites; ceroid macrophages have received no special recognition [<xref ref-type="bibr" rid="pone.0251385.ref034">34</xref>]. Without doubt, in endometriosis, the cyclical changes of cell growth, haemorrhage and necrosis seem likely to provide generous amounts of suitable substrates for the formation of ceroid. Why then are ceroid macrophages not more commonly recognised? One possible contributing reason is that observers do not take the pains of differentiating between the refractile, golden brown, coarse, Perl-staining granules of siderophages (haemosiderin) from the pale foamy to eosinophilic to greyish-brown, finely granular, sudanophilic content of ceroid macrophages [<xref ref-type="bibr" rid="pone.0251385.ref022">22</xref>]. As a result of this, less extensive collections of ceroid macrophages in endometriosis have been overlooked in bench practice and under-reported in literature. Contrary to the general trend, this study shows that, compared with siderophages, ceroid macrophages show a higher degree of association with TE by the Cramér’s V statistical analysis of association (0.77 versus 0.69); no control case showed any ceroid macrophages while 10 out of 48 (21%) control cases showed siderophages. We therefore emphasise ceroid macrophages over siderophages in the diagnosis of endometriosis.</p>
+<p>The importance of having a high index of suspicion for TE in women of reproductive age who have experienced catamenial symptoms and possible recurrence of these symptoms after interventions, and also the requirement of a multidisciplinary (pulmonologist, thoracic surgeon, pathologist and radiologist) approach to diagnosis has been advocated by most authors on the subject [<xref ref-type="bibr" rid="pone.0251385.ref035">35</xref>, <xref ref-type="bibr" rid="pone.0251385.ref036">36</xref>]. Without denying this aforementioned importance but building upon it, the findings of this study should serve as an important extra tool in the armamentarium of the pathologist in order to play yet a bigger role in the management of these TE patients i.e., both to raise a suspicion when there is none and to provide a definitive diagnosis, even in difficult cases. The earlier and more readily TE is diagnosed, the better the prognosis. The intent here is that TE should no longer be a diagnosis of exclusion.</p>
+<p>We consider as potential limitations to this study the following: the non-identity of the gender of the test and control populations, the inequality of the size of the 2 populations, and the fact that the suggested diagnostic criteria were not evaluated in a different cohort. The total exclusion of neoplastic lesions in the thorax is a possible confounding factor given the varied inflammatory and reactive changes that accompany such lesions.</p>
+</sec>
+<sec id="sec005" sec-type="supplementary-material">
+<title>Supporting information</title>
+<supplementary-material id="pone.0251385.s001" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pone.0251385.s001" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>Table of distribution of histological features and clinical information of test and control individuals.</title>
+<p>The columns for the histological features are named as follows: Gland = endometrioid glands; SideroP = siderophages; CeroidM = ceroid macrophages; Choleste = cholesterol crystals; SM = smooth muscle bundles; MGC = multinucleated giant cell histiocytes; LymphClus = lymphoid clusters; CappCong = capillary congestion; Fibrosis = fibrosis.</p>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0251385.s002" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pone.0251385.s002" xlink:type="simple">
+<label>S2 Table</label>
+<caption>
+<title>Table of distribution of scores for histological features and the grouping of scores by three different criteria.</title>
+<p>The “yes” and “no” entries for the histological features of <xref ref-type="supplementary-material" rid="pone.0251385.s001">S1 Table</xref> have been converted into “1” and “0” respectively and columns for the grouping of scores have been added and named as follows: GpOmnibus = Group Omnibus; GpB = Group B; GpC = Group C.</p>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pone.0251385.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vassilopoulou</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Matalliotakis</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Zervou</surname> <given-names>MI</given-names></name>, <name name-style="western"><surname>Matalliotaki</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Spandidos</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Matalliotakis</surname> <given-names>I</given-names></name>, <etal>et al</etal>. <article-title>Endometriosis and in vitro fertilisation</article-title>. <source>Exp Ther Med</source>. <year>2018</year>;<volume>16</volume>: <fpage>1043</fpage>–<lpage>1051</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3892/etm.2018.6307" xlink:type="simple">10.3892/etm.2018.6307</ext-link></comment> <object-id pub-id-type="pmid">30116357</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kesieme</surname> <given-names>EB</given-names></name>, <name name-style="western"><surname>Prisadov</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Welcker</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Abubakar</surname> <given-names>U</given-names></name>. <article-title>Thoracic endometriosis syndrome: current concept in pathophysiology and management.</article-title> <source>Orient J Med</source>. <year>2016</year>;<volume>28</volume>: <fpage>1</fpage>–<lpage>10</lpage>.</mixed-citation></ref>
+<ref id="pone.0251385.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rousset-Jablonski</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Alifano</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Plu-Bureau</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Camilleri-Broet</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Rousset</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Regnard</surname> <given-names>J-F</given-names></name>, <etal>et al</etal>. <article-title>Catamenial pneumothorax and endometriosis-related pneumothorax: Clinical features and risk factors</article-title>. <source>Hum Reprod</source>. <year>2011</year>;<volume>26</volume>: <fpage>2322</fpage>–<lpage>2329</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/humrep/der189" xlink:type="simple">10.1093/humrep/der189</ext-link></comment> <object-id pub-id-type="pmid">21685141</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nair</surname> <given-names>SS</given-names></name>, <name name-style="western"><surname>Nayar</surname> <given-names>J</given-names></name>. <article-title>Thoracic Endometriosis Syndrome: A Veritable Pandora’s Box</article-title>. <source>J Clin Diagn Res</source>. <year>2016</year>;<volume>10</volume>: <fpage>QR04</fpage>–<lpage>QR08</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.7860/JCDR/2016/17668.7700" xlink:type="simple">10.7860/JCDR/2016/17668.7700</ext-link></comment> <object-id pub-id-type="pmid">27190904</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Foster</surname> <given-names>DC</given-names></name>, <name name-style="western"><surname>Stern</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Buscema</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Rock</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Woodruff</surname> <given-names>JD</given-names></name>. <article-title>Pleural and parenchymal pulmonary endometriosis</article-title>. <source>Obstet Gynecol</source>. <year>1981</year>;<volume>58</volume>: <fpage>552</fpage>–<lpage>556</lpage>. <object-id pub-id-type="pmid">7301229</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Joseph</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Sahn</surname> <given-names>SA</given-names></name>. <article-title>Thoracic endometriosis syndrome: New observations from an analysis of 110 cases</article-title>. <source>Am J Med</source>. <year>1996</year>;<volume>100</volume>: <fpage>164</fpage>–<lpage>170</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s0002-9343%2897%2989454-5" xlink:type="simple">10.1016/s0002-9343(97)89454-5</ext-link></comment> <object-id pub-id-type="pmid">8629650</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Duyos</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>López-Carrasco</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Hernández</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Zapardiel</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>de Santiago</surname> <given-names>J</given-names></name>. <article-title>Management of thoracic endometriosis: Single institution experience</article-title>. <source>Eur J Obstet Gynecol Reprod Biol</source>. <year>2014</year>;<volume>178</volume>: <fpage>56</fpage>–<lpage>59</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ejogrb.2014.03.026" xlink:type="simple">10.1016/j.ejogrb.2014.03.026</ext-link></comment> <object-id pub-id-type="pmid">24809986</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Walter</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Hentz</surname> <given-names>JG</given-names></name>, <name name-style="western"><surname>Magtibay</surname> <given-names>PM</given-names></name>, <name name-style="western"><surname>Cornella</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Magrina</surname> <given-names>JF</given-names></name>. <article-title>Endometriosis: Correlation between histologic and visual findings at laparoscopy.</article-title> <source>Am J Obstet Gynecol</source>. <year>2001</year>;<volume>184</volume>: <fpage>1407</fpage>–<lpage>1411</lpage>; discussion 1411–1413. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1067/mob.2001.115747" xlink:type="simple">10.1067/mob.2001.115747</ext-link></comment> <object-id pub-id-type="pmid">11408860</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Alifano</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Jablonski</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Kadiri</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Falcoz</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Gompel</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Camilleri-Broet</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>Catamenial and noncatamenial, endometriosis-related or nonendometriosis-related pneumothorax referred for surgery</article-title>. <source>Am J Respir Crit Care Med</source>. <year>2007</year>;<volume>176</volume>: <fpage>1048</fpage>–<lpage>1053</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1164/rccm.200704-587OC" xlink:type="simple">10.1164/rccm.200704-587OC</ext-link></comment> <object-id pub-id-type="pmid">17626909</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Alifano</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Trisolini</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Cancellieri</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Regnard</surname> <given-names>JF</given-names></name>. <article-title>Thoracic Endometriosis: Current Knowledge</article-title>. <source>Ann Thorac Surg</source>. <year>2006</year>;<volume>81</volume>: <fpage>761</fpage>–<lpage>769</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.athoracsur.2005.07.044" xlink:type="simple">10.1016/j.athoracsur.2005.07.044</ext-link></comment> <object-id pub-id-type="pmid">16427904</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bagan</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Le Pimpec Barthes</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Assouad</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Souilamas</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Riquet</surname> <given-names>M</given-names></name>. <article-title>Catamenial pneumothorax: Retrospective study of surgical treatment</article-title>. <source>Ann Thorac Surg</source>. <year>2003</year>;<volume>75</volume>: <fpage>378</fpage>–<lpage>381</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s0003-4975%2802%2904320-5" xlink:type="simple">10.1016/s0003-4975(02)04320-5</ext-link></comment> <object-id pub-id-type="pmid">12607643</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kronauer</surname> <given-names>CM</given-names></name>. <article-title>Catamenial Pneumothorax</article-title>. <source>New Engl J Med</source>. <year>2006</year>;<volume>355</volume>: <fpage>e9</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1056/NEJMicm050598" xlink:type="simple">10.1056/NEJMicm050598</ext-link></comment> <object-id pub-id-type="pmid">16957142</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Flieder</surname> <given-names>DB</given-names></name>, <name name-style="western"><surname>Moran</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Travis</surname> <given-names>WD</given-names></name>, <name name-style="western"><surname>Koss</surname> <given-names>MN</given-names></name>, <name name-style="western"><surname>Mark</surname> <given-names>EJ</given-names></name>. <article-title>Pleuro-pulmonary endometriosis and pulmonary ectopic deciduosis: A clinicopathologic and immunohistochemical study of 10 cases with emphasis on diagnostic pitfalls</article-title>. <source>Hum Pathol</source>. <year>1998</year>;<volume>29</volume>: <fpage>1495</fpage>–<lpage>1503</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s0046-8177%2898%2990021-1" xlink:type="simple">10.1016/s0046-8177(98)90021-1</ext-link></comment> <object-id pub-id-type="pmid">9865838</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kawaguchi</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Hanaoka</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Ohshio</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Igarashi</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Okamoto</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Kaku</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>Diagnosis of thoracic endometriosis with immunohistochemistry</article-title>. <source>J Thorac Dis</source>. <year>2018</year>;<volume>10</volume>: <fpage>3468</fpage>–<lpage>3472</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.21037/jtd.2018.05.121" xlink:type="simple">10.21037/jtd.2018.05.121</ext-link></comment> <object-id pub-id-type="pmid">30069342</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref015"><label>15</label><mixed-citation publication-type="book" xlink:type="simple"><collab>R Core Team (2020)</collab>. <source>R: A language and environment for statistical computing</source>. <publisher-name>R Foundation for Statistical Computing</publisher-name>, <publisher-loc>Vienna, Austria</publisher-loc>. <year>2020</year>. Available from: <ext-link ext-link-type="uri" xlink:href="https://www.R-project.org/" xlink:type="simple">https://www.R-project.org/</ext-link></mixed-citation></ref>
+<ref id="pone.0251385.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Meyer</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Zeileis</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Hornik</surname> <given-names>K</given-names></name>. <source>vcd: Visualizing Categorical Data. R package version 1.4–8 [software]</source>. <year>2020</year></mixed-citation></ref>
+<ref id="pone.0251385.ref017"><label>17</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Wickham</surname> <given-names>H.</given-names></name> <source>ggplot2: Elegant Graphics for Data Analysis</source>. <publisher-name>Springer-Verlag</publisher-name> <publisher-loc>New York</publisher-loc>; <year>2016</year>.</mixed-citation></ref>
+<ref id="pone.0251385.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Robin</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Turck</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Hainard</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Tiberti</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Lisacek</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Sanchez</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>pROC: an open-source package for R and S+ to analyze and compare ROC curves</article-title>. <source>BMC Bioinformatics</source>. <year>2011</year>;<volume>12</volume>: <fpage>77</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/1471-2105-12-77" xlink:type="simple">10.1186/1471-2105-12-77</ext-link></comment> <object-id pub-id-type="pmid">21414208</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Xie</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Cheng</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Tan</surname> <given-names>X</given-names></name>. <article-title>DT: A Wrapper of the JavaScript Library ’DataTables’.</article-title> <source>R package version 0.17</source> [software]. <year>2021</year>. Available from: <ext-link ext-link-type="uri" xlink:href="https://CRAN.R-project.org/package=DT" xlink:type="simple">https://CRAN.R-project.org/package=DT</ext-link></mixed-citation></ref>
+<ref id="pone.0251385.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Metzger</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Olive</surname> <given-names>DL</given-names></name>, <name name-style="western"><surname>Haney</surname> <given-names>AF</given-names></name>. <article-title>Limited hormonal responsiveness of ectopic endometrium: Histologic correlation with intrauterine endometrium</article-title>. <source>Hum Pathol</source>. <year>1988</year>;<volume>19</volume>: <fpage>1417</fpage>–<lpage>1424</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s0046-8177%2888%2980234-x" xlink:type="simple">10.1016/s0046-8177(88)80234-x</ext-link></comment> <object-id pub-id-type="pmid">3192206</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Young</surname> <given-names>RH</given-names></name>, <name name-style="western"><surname>Clement</surname> <given-names>PB</given-names></name>. <article-title>Müllerianosis of the urinary bladder</article-title>. <source>Mod Pathol.</source> <year>1996</year>;<volume>9</volume>: <fpage>731</fpage>–<lpage>737</lpage>. <object-id pub-id-type="pmid">8832555</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Clement</surname> <given-names>PB</given-names></name>. <article-title>The Pathology of Endometriosis: A Survey of the Many Faces of a Common Disease Emphasizing Diagnostic Pitfalls and Unusual and Newly Appreciated Aspects</article-title>. <source>Adv Anat Pathol</source>. <year>2007</year>;<volume>14</volume>: <fpage>241</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1097/PAP.0b013e3180ca7d7b" xlink:type="simple">10.1097/PAP.0b013e3180ca7d7b</ext-link></comment> <object-id pub-id-type="pmid">17592255</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Boyle</surname> <given-names>DP</given-names></name>, <name name-style="western"><surname>McCluggage</surname> <given-names>WG</given-names></name>. <article-title>Peritoneal stromal endometriosis: A detailed morphological analysis of a large series of cases of a common and under-recognised form of endometriosis</article-title>. <source>J Clin Pathol</source>. <year>2009</year>;<volume>62</volume>: <fpage>530</fpage>–<lpage>533</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1136/jcp.2008.064261" xlink:type="simple">10.1136/jcp.2008.064261</ext-link></comment> <object-id pub-id-type="pmid">19155237</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Clement</surname> <given-names>PB</given-names></name>, <name name-style="western"><surname>Young</surname> <given-names>RH</given-names></name>, <name name-style="western"><surname>Scully</surname> <given-names>RE</given-names></name>. <article-title>Stromal endometriosis of the uterine cervix. A variant of endometriosis that may simulate a sarcoma</article-title>. <source>Am J Surg Pathol</source>. <year>1990</year>;<volume>14</volume>: <fpage>449</fpage>–<lpage>455</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1097/00000478-199005000-00004" xlink:type="simple">10.1097/00000478-199005000-00004</ext-link></comment> <object-id pub-id-type="pmid">2327550</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Clement</surname> <given-names>PB</given-names></name>, <name name-style="western"><surname>Young</surname> <given-names>RH</given-names></name>. <article-title>Two Previously Unemphasized Features of Endometriosis: Micronodular Stromal Endometriosis and Endometriosis with Stromal Elastosis</article-title>. <source>Int J Surg Pathol</source>. <year>2000</year>;<volume>8</volume>: <fpage>223</fpage>–<lpage>227</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/106689690000800310" xlink:type="simple">10.1177/106689690000800310</ext-link></comment> <object-id pub-id-type="pmid">11493993</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Azizad-Pinto</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Clarke</surname> <given-names>D</given-names></name>. <article-title>Thoracic Endometriosis Syndrome: Case Report and Review of the Literature</article-title>. <source>Perm J</source>. <year>2014</year>;<volume>18</volume>: <fpage>61</fpage>–<lpage>65</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.7812/TPP/13-154" xlink:type="simple">10.7812/TPP/13-154</ext-link></comment> <object-id pub-id-type="pmid">25102519</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Balasch</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Creus</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Fabregues</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Carmona</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Ordi</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Martinez-Roman</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>Visible and non-visible endometriosis at laparoscopy in fertile and infertile women and in patients with chronic pelvic pain: a prospective study</article-title>. <source>Hum Reprod</source>. <year>1996</year>;<volume>11</volume>: <fpage>387</fpage>–<lpage>391</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/humrep/11.2.387" xlink:type="simple">10.1093/humrep/11.2.387</ext-link></comment> <object-id pub-id-type="pmid">8671229</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chatman</surname> <given-names>DL</given-names></name>, <name name-style="western"><surname>Zbella</surname> <given-names>EA</given-names></name>. <article-title>Biopsy in laparoscopically diagnosed endometriosis</article-title>. <source>J Reprod Med</source>. <year>1987</year>;<volume>32</volume>: <fpage>855</fpage>–<lpage>857</lpage>. <object-id pub-id-type="pmid">2963124</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ueki</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Saeki</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Tsurunaga</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Ueda</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Ushiroyama</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Sugimoto</surname> <given-names>O</given-names></name>. <article-title>Visual findings and histologic diagnosis of pelvic endometriosis under laparoscopy and laparotomy</article-title>. <source>Int J Fertil Menopausal Stud</source>. <year>1995</year>;<volume>40</volume>: <fpage>248</fpage>–<lpage>253</lpage>. <object-id pub-id-type="pmid">8556029</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jansen</surname> <given-names>RP</given-names></name>, <name name-style="western"><surname>Russell</surname> <given-names>P</given-names></name>. <article-title>Nonpigmented endometriosis: clinical, laparoscopic, and pathologic definition</article-title>. <source>Am J Obstet Gynecol</source>. <year>1986</year>;<volume>155</volume>: <fpage>1154</fpage>–<lpage>1159</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/0002-9378%2886%2990136-5" xlink:type="simple">10.1016/0002-9378(86)90136-5</ext-link></comment> <object-id pub-id-type="pmid">2947467</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Martin</surname> <given-names>DC</given-names></name>, <name name-style="western"><surname>Hubert</surname> <given-names>GD</given-names></name>, <name name-style="western"><surname>Vander Zwaag</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>el-Zeky</surname> <given-names>FA</given-names></name>. <article-title>Laparoscopic appearances of peritoneal endometriosis</article-title>. <source>Fertil Steril</source>. <year>1989</year>;<volume>51</volume>: <fpage>63</fpage>–<lpage>67</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s0015-0282%2816%2960429-6" xlink:type="simple">10.1016/s0015-0282(16)60429-6</ext-link></comment> <object-id pub-id-type="pmid">2521327</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hogg</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Horne</surname> <given-names>AW</given-names></name>, <name name-style="western"><surname>Greaves</surname> <given-names>E</given-names></name>. <article-title>Endometriosis-Associated Macrophages: Origin, Phenotype, and Function</article-title>. <source>Front Endocrinol.</source> <year>2020</year>;<volume>11</volume>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3389/fendo.2020.00007" xlink:type="simple">10.3389/fendo.2020.00007</ext-link></comment> <object-id pub-id-type="pmid">32038499</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Capobianco</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Rovere-Querini</surname> <given-names>P</given-names></name>. <article-title>Endometriosis, a disease of the macrophage</article-title>. <source>Front Immunol</source>. <year>2013</year>;<volume>4</volume>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3389/fimmu.2013.00009" xlink:type="simple">10.3389/fimmu.2013.00009</ext-link></comment> <object-id pub-id-type="pmid">23372570</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ooi</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Riley</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Billson</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Ostor</surname> <given-names>AG</given-names></name>. <article-title>Ceroid granulomas in the female genital system</article-title>. <source>J Clin Pathol</source>. <year>1995</year>;<volume>48</volume>: <fpage>1057</fpage>–<lpage>1059</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1136/jcp.48.11.1057" xlink:type="simple">10.1136/jcp.48.11.1057</ext-link></comment> <object-id pub-id-type="pmid">8543632</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Maniglio</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Ricciardi</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Meli</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Vitale</surname> <given-names>SG</given-names></name>, <name name-style="western"><surname>Noventa</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Vitagliano</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>Catamenial pneumothorax caused by thoracic endometriosis</article-title>. <source>Radiology Case</source>. <year>2018</year>;<volume>13</volume>: <fpage>81</fpage>–<lpage>85</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.radcr.2017.09.003" xlink:type="simple">10.1016/j.radcr.2017.09.003</ext-link></comment> <object-id pub-id-type="pmid">29552245</object-id></mixed-citation></ref>
+<ref id="pone.0251385.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Aissa</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Benzarti</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Alimi</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Gargouri</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Salem</surname> <given-names>HB</given-names></name>, <name name-style="western"><surname>Aissa</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>Catamenial pneumothorax revealing diaphragmatic endometriosis: A case report and revue of literature</article-title>. <source>Pan Afr Med J</source>. <year>2017</year>;<volume>27</volume>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.11604/pamj.2017.27.112.8007" xlink:type="simple">10.11604/pamj.2017.27.112.8007</ext-link></comment> <object-id pub-id-type="pmid">28819533</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+<sub-article article-type="aggregated-review-documents" id="pone.0251385.r001" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0251385.r001</article-id>
+<title-group>
+<article-title>Decision Letter 0</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Viganò</surname>
+<given-names>Paola</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2021</copyright-year>
+<copyright-holder>Paola Viganò</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0251385" document-id-type="doi" document-type="article" id="rel-obj001" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>0</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">18 Jan 2021</named-content>
+</p>
+<p>PONE-D-20-36704</p>
+<p>Improving the diagnostic recognition of thoracic endometriosis: Spotlight on a new histo-morphological indicator</p>
+<p>PLOS ONE</p>
+<p>Dear Dr. Okafor,</p>
+<p>Thank you for submitting your manuscript to PLOS ONE. After careful consideration, we feel that it has merit but does not fully meet PLOS ONE’s publication criteria as it currently stands. Therefore, we invite you to submit a revised version of the manuscript that addresses the points raised during the review process.</p>
+<p><!-- <span style="color: rgb(51, 51, 51); font-family: sans-serif, Arial, Verdana, "Trebuchet MS"; font-size: 13px; background-color: rgb(255, 255, 255);"> -->This study addressing novel histological features in thoracic endometriosis has been revised by three reviewers. Although they have recognized the interest of the paper, they have raised some concerns that need to be addressed. The Authors should consider all the issues raised, particularly those from Reviewer #3. The paper has too many figures. The Authors should follow suggestions from Reviewer #3 in this regard and consider to list figures as Fig 1, A,B,C ect. More importantly, the statistical analysis has to be better described in Materials and Methods. The Authors have to explain how they mentioned specificity and sensitivity of the various patterns without having calculated them based on ROC curves and AUC analysis. Words related to the statistical analysis need to be more precise.<!-- </span> --></p>
+<p>Please submit your revised manuscript by Mar 04 2021 11:59PM. If you will need more time than this to complete your revisions, please reply to this message or contact the journal office at <email xlink:type="simple">plosone@plos.org</email>. When you're ready to submit your revision, log on to <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pone/" xlink:type="simple">https://www.editorialmanager.com/pone/</ext-link> and select the 'Submissions Needing Revision' folder to locate your manuscript file.</p>
+<p>Please include the following items when submitting your revised manuscript:</p>
+<p><list list-type="bullet"><list-item><p>A rebuttal letter that responds to each point raised by the academic editor and reviewer(s). You should upload this letter as a separate file labeled 'Response to Reviewers'.</p></list-item><list-item><p>A marked-up copy of your manuscript that highlights changes made to the original version. You should upload this as a separate file labeled 'Revised Manuscript with Track Changes'.</p></list-item><list-item><p>An unmarked version of your revised paper without tracked changes. You should upload this as a separate file labeled 'Manuscript'.</p></list-item></list></p>
+<p>If you would like to make changes to your financial disclosure, please include your updated statement in your cover letter. Guidelines for resubmitting your figure files are available below the reviewer comments at the end of this letter.</p>
+<p>If applicable, we recommend that you deposit your laboratory protocols in protocols.io to enhance the reproducibility of your results. Protocols.io assigns your protocol its own identifier (DOI) so that it can be cited independently in the future. For instructions see: <ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols" xlink:type="simple">http://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols</ext-link></p>
+<p>We look forward to receiving your revised manuscript.</p>
+<p>Kind regards,</p>
+<p>Paola Viganò</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Journal requirements:</p>
+<p>When submitting your revision, we need you to address these additional requirements.</p>
+<p>1. Please ensure that your manuscript meets PLOS ONE's style requirements, including those for file naming. The PLOS ONE style templates can be found at</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf" xlink:type="simple">https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf</ext-link> and</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf" xlink:type="simple">https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf</ext-link></p>
+<p>2. Thank you for including your ethics statement: "This study was approved by the institutional review board at the institution of study."  </p>
+<p>a. Please amend your current ethics statement to include the full name of the ethics committee/institutional review board(s) that approved your specific study.</p>
+<p>b. Once you have amended this/these statement(s) in the Methods section of the manuscript, please add the same text to the “Ethics Statement” field of the submission form (via “Edit Submission”).</p>
+<p>For additional information about PLOS ONE ethical requirements for human subjects research, please refer to <ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosone/s/submission-guidelines#loc-human-subjects-research" xlink:type="simple">http://journals.plos.org/plosone/s/submission-guidelines#loc-human-subjects-research</ext-link>.</p>
+<p>3. In your ethics statement in the manuscript and in the online submission form, please ensure that you have discussed whether all data/samples were fully anonymized before you accessed them and/or whether the IRB or ethics committee waived the requirement for informed consent. If patients provided informed written consent to have data/samples from their medical records used in research, please include this information.</p>
+<p>4. In the ethics statement in the manuscript and in the online submission form, please provide additional information about the patient records/samples used in your retrospective study, including: a) the date range (month and year) during which patients' medical records/samples were accessed.</p>
+<p>5. In your Methods section, please provide additional information about the medical data/samples collected and the demographic details of the human subjects. Please ensure you have provided sufficient details to replicated the analyses such as a table of relevant demographic details.</p>
+<p>6. In your Methods section, please provide a description of the outcomes assessed in your study.</p>
+<p>7. Please ensure you have discussed any potential limitations of your study in the Discussion, including study design, sample size and/or potential confounders.</p>
+<p>8. To comply with PLOS ONE submission guidelines, in your Methods section, please provide additional information regarding your statistical analyses. For more information on PLOS ONE's expectations for statistical reporting, please see <ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/submission-guidelines.#loc-statistical-reporting" xlink:type="simple">https://journals.plos.org/plosone/s/submission-guidelines.#loc-statistical-reporting</ext-link>.</p>
+<p>9. Please include captions for your Supporting Information files at the end of your manuscript, and update any in-text citations to match accordingly. Please see our Supporting Information guidelines for more information: <ext-link ext-link-type="uri" xlink:href="about:blank" xlink:type="simple">http://journals.plos.org/plosone/s/supporting-information</ext-link>.</p>
+<p>[Note: HTML markup is below. Please do not edit.]</p>
+<p>Reviewers' comments:</p>
+<p>Reviewer's Responses to Questions</p>
+<p><!-- <font color="black"> --><bold>Comments to the Author</bold></p>
+<p>1. Is the manuscript technically sound, and do the data support the conclusions?</p>
+<p>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions. Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes. The conclusions must be drawn appropriately based on the data presented. <!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: Partly</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->2. Has the statistical analysis been performed appropriately and rigorously? <!-- </font> --></p>
+<p>Reviewer #1: I Don't Know</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: I Don't Know</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->3. Have the authors made all data underlying the findings in their manuscript fully available?</p>
+<p>The <ext-link ext-link-type="uri" xlink:href="http://www.plosone.org/static/policies.action#sharing" xlink:type="simple">PLOS Data policy</ext-link> requires authors to make all data underlying the findings described in their manuscript fully available without restriction, with rare exception (please refer to the Data Availability Statement in the manuscript PDF file). The data should be provided as part of the manuscript or its supporting information, or deposited to a public repository. For example, in addition to summary statistics, the data points behind means, medians and variance measures should be available. If there are restrictions on publicly sharing data—e.g. participant privacy or use of data from a third party—those must be specified.<!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->4. Is the manuscript presented in an intelligible fashion and written in standard English?</p>
+<p>PLOS ONE does not copyedit accepted manuscripts, so the language in submitted articles must be clear, correct, and unambiguous. Any typographical or grammatical errors should be corrected at revision, so please note any specific errors here.<!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->5. Review Comments to the Author</p>
+<p>Please use the space provided to explain your answers to the questions above. You may also include additional comments for the author, including concerns about dual publication, research ethics, or publication ethics. (Please upload your review as an attachment if it exceeds 20,000 characters)<!-- </font> --></p>
+<p>Reviewer #1: I congratulate the Authors for this interesting paper. Histological diagnosis of thoracic endometriosis in not as common as the clinical diagnosis. I would suggest to the Authors to report in the Discussion section a brief view of the literature about the discrepancy between the clinical and histological diagnosis reported by different centers.</p>
+<p>Reviewer #2: The authors reported an interesting study regarding the pathological features of thoracic endometriosis. The paper il well written and interesting. I have some minor points that should be reviewed:</p>
+<p>- Introduction, line 46, 47: please, cite some possible theory regarding etiology of TE</p>
+<p>- Introduction should be shorten</p>
+<p>- Material and methods, from line 106 to 114: this part should be moved in the results part</p>
+<p>- Discussion: I would suggest discussing also when TE is impossible to be proved by histology (e.g.: diaphragmatic hernias). For instance, recently it has been reported (Viti A, et al. Endometriosis Involving the Diaphragm: A Patient-Tailored Minimally Invasive Surgical Treatment. World J Surg. 2020 Apr;44(4):1099-1104.) that up to 45% of patient with diaphragmatic endometriosis had no histological diagnosis. Please discuss on this.</p>
+<p>Reviewer #3: The article needs some work. And I would like to give you some suggestions.</p>
+<p>First of all in endometriosis there are endometrioid glands and endometrioid stroma (not endometrial).</p>
+<p>1) periods lines 63-68 are confusing; be concise.</p>
+<p>2) lines 68-70</p>
+<p>To support this, one study [8] found that less than 50% of laparoscopic biopsies suspicious for endometriosis were really endometriosis.</p>
+<p>3) delete lines 76-83</p>
+<p>Insert the following:</p>
+<p>Histopathologic features of endometriosis include the presence of endometrioid glands, stroma and stroma; hemosiderin-laden macrophages are also commonly present (Flieder 14). However, in contrast to the more common pelvic endometriosis, in thoracic endometriosis the endometrial glands are not always present in biopsy material. In problematic cases immunohistochemical analysis using ER, PR, and CD10 may confirm the endometrioid glands and stroma.</p>
+<p>4) Matherial and methods</p>
+<p>insert from results:</p>
+<p>The interval between the onset of symptoms 239 and definitive histopathological</p>
+<p>diagnosis was 49 weeks (range = 1 week to 300 weeks).</p>
+<p>5) Figures</p>
+<p>There are too many figures.Delete figures 2, 4, and 11. Change the order of the rest:</p>
+<p>Fig 1: Typicaltoracic endometriosis simulating eutopic proliferative endometrium.H&amp;E staining, original magnification X300.</p>
+<p>Fig 2 (ex Fig 10): Dilated endometrioidgland with intraluminal pseudoxanthoma cells; the surroundinginconspicousendometrioid stroma merges imperceptively into non specificedematous stroma. H&amp;E staining, original magnification X150.</p>
+<p>Fig 3 (ex 5): Lymphocytic aggregate and dilated and congested blood vessels in edematous non specificstroma; a distorted endometrioidgland is also present. H&amp;E staining,original magnification X100.</p>
+<p>Fig 4 (ex 3): Edematous hyalinized stroma with congested capillaries and</p>
+<p>siderophages with golden-brown pigments. H&amp;E staining, original magnification</p>
+<p>X150 &amp; X300.</p>
+<p>Fig 5 (ex 6): Macrophages with brownishfinely granular cytoplasm (pseudoxantoma cells). H&amp;E staining, original magnification X300.</p>
+<p>Fig 6 (ex 7): Foamyhistiocytes in the stroma. H&amp;E staining,original magnification X150.</p>
+<p>Fig 7 (ex 8): Crystals andmultinucleated foreign body-type giant cells. H&amp;E staining, original magnification X300.</p>
+<p>Fig 8 (ex 9): Bundles of smooth muscle cells.H&amp;E staining, original magnification X150.</p>
+<p>Fig 9 (ex12): Pleural fibrosis. H&amp;E staining, originalmagnification X150.</p>
+<p>6) Results</p>
+<p>Change the order:</p>
+<p>Nine notable histological features were identified in varying proportions in the test</p>
+<p>(TE) population, namely endometrial glandsand or stroma, lymphoid clusters, ceroid macrophages,siderophages, cholesterol crystals, smooth muscle bundles, capillary congestion,multinucleated giant cells and fibrosis (Figs 1 - 12).</p>
+<p>Twenty-four cases (92%) showed endometrial glands but the finding was sometimes</p>
+<p>focal and required the examination of several sections to be identified. The glands were either inactive or slightly proliferative; no secretory gland was seen. Occasionally, they appeared atrophic and were lined by a single layer of cuboidal or flat epithelial cells. Hobnail and clear cell metaplasia were the metaplastic changes occasionally seen. Two cases (8%) lacking endometrioid grands were classified as stromal endometriosis. with siderophages, ceroid macrophages, foreign body-type multinucleated macrophages, cholesterol crystals, capillary congestion and fibrosis. In addition these 2 patients complained of catamenial chesty symptoms suggestive of thoracic endometriosis. Bundles of smooth muscle, distinc from the wall of blood vessels, were seen i 4 cases (15%).</p>
+<p>Three histological features, namely lymphoid clusters, fibrosis and capillary</p>
+<p>congestion, were present in all the 26 test cases (100%) (Fig 13). Overall, there are</p>
+<p>6 prevalent features, adding siderophages, endometrioidglands and or stroma and ceroid</p>
+<p>macrophages to the earlier 3, which, individually are present in the majority of the</p>
+<p>cases (13 or more cases or 50%); all 6 together are present in 16 cases (62%); and</p>
+<p>in different permutations are present in all 26 cases (100%). These 6 features, being</p>
+<p>prevalent, constitute the backbone for diagnosis of TE and will be referred to as</p>
+<p>Group A.</p>
+<p>The rest may be ok.</p>
+<p>7) Discussion</p>
+<p>The histologic diagnosis ofendometriosis is based onthe typical presence of both endometriotic glands and stroma. The glands almost always show typical endometrioid features, usually of proliferative or inactive type; the stroma may be typical with the spiral arteries, which may be engorged with erythrocytes, and provide a helpful initial clue to the identification of the endometriotic nature of the lesion. However, in many cases the stroma may be very subtle, confined to a thin or poorly defined often discontinuous periglandular zone; it can undergo smooth muscle metaplasia or replaced by histiocytes of “foamy type”. Small congested arterioles and capillaries (referred to as capillary congestion) may draw attention to the lesion at scanning magnification. In some cases stroma only is found in biopsies and the preferred terminology is stromal endometriosis (17, 18-20).</p>
+<p>Similarly with abdominal or pelvic endometriosis, glandular and stroma breakdown may occur favoringe haemorrhage. Clusters of pigmented histiocytes become common, including ceroid-laden macrophages and haemosiderin-laden macrophages or siderophages. In older lesions fibrosis, lymphoplasmacellular infiltrate, with follicle formation, and foreign body reaction with cholesterol crystals are common (18-20).</p>
+<p>A high index of suspicion by the clinician as well as the experience of the pathologist are necessary for a correct diagnosis to avoid [21] erroneous classification as nonspecific pleuritis, fibrinous, pleuritis and similar. In our series, three cases had to be re-examined by the pathologist at the request of the surgeons after the initial diagnosi of nonspecific pleuritis</p>
+<p>Summarizing the results of this study in a Venn plot (Fig 16) we can see the overlap</p>
+<p>of Groups A, B and C. It is notable that the innermost overlapping segment in the 3</p>
+<p>circles contains all the features of Group C. Furthermore, at least 2 Group C features</p>
+<p>are present in all TE cases. Given the high sensitivity and specificity to the diagnosis of TE, we recommend that Group C be used as criteria for diagnosis of thoracic endometriosis, as shown in the first column of Table 3, of which any 2 features are diagnostic of the disease. In addition, the identification of any of these 4 Group C features in any thoracic biopsy in a feature should serve as an alarm bell for considering the possibility of TE.</p>
+<p>8) Finally I hope that another reviewer will check on statistical analisis.</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->6. PLOS authors have the option to publish the peer review history of their article (<ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link>). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link>.<!-- </font> --></p>
+<p>Reviewer #1: <bold>Yes: </bold>Paola Ciriaco</p>
+<p>Reviewer #2: <bold>Yes: </bold>Pietro Bertoglio</p>
+<p>Reviewer #3: No</p>
+<p>[NOTE: If reviewer comments were submitted as an attachment file, they will be attached to this email and accessible via the submission site. Please log into your account, locate the manuscript record, and check for the action link "View Attachments". If this link does not appear, there are no attachment files.]</p>
+<p>While revising your submission, please upload your figure files to the Preflight Analysis and Conversion Engine (PACE) digital diagnostic tool, <ext-link ext-link-type="uri" xlink:href="https://pacev2.apexcovantage.com/" xlink:type="simple">https://pacev2.apexcovantage.com/</ext-link>. PACE helps ensure that figures meet PLOS requirements. To use PACE, you must first register as a user. Registration is free. Then, login and navigate to the UPLOAD tab, where you will find detailed instructions on how to use the tool. If you encounter any issues or have any questions when using PACE, please email PLOS at <email xlink:type="simple">figures@plos.org</email>. Please note that Supporting Information files do not need this step.</p>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pone.0251385.r002">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0251385.r002</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 0</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pone.0251385" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj002" link-type="rebutted-decision-letter" object-id="10.1371/journal.pone.0251385.r001" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="author-response-date">26 Feb 2021</named-content>
+</p>
+<p>ACADEMIC EDITOR#1: “consider to list figures as Fig 1, A,B,C etc”</p>
+<p>OUR REPLY: We have reduced the number of figures and modified the numbering to match the above format.</p>
+<p>ACADEMIC EDITOR#2: “the statistical analysis has to be better described in Materials and Methods”</p>
+<p>OUR REPLY: The statistical methods used were briefly described in Materials and Methods and the purpose for applying them stated. Lines 101-138.</p>
+<p>ACADEMIC EDITOR#3: “explain how they mentioned specificity and sensitivity of the various patterns without having calculated them based on ROC curves and AUC analysis”</p>
+<p>OUR REPLY: We corrected our use of the terms “specificity” and “sensitivity” and calculated and applied them as appropriate. We also introduced the AUC analysis of the ROC curve to compare the various models. Lines 115-136.</p>
+<p>ACADEMIC EDITORS#4: “we recommend that you deposit your laboratory protocols”</p>
+<p>OUR REPLY: We have deposited both of them in figshare.com and they have DOI:</p>
+<p>1. Okafor O, Ezemba N, Onyishi N, Ezike K. S1_Table.csv. February 2021. doi:10.6084/m9.figshare.14067221.v1 </p>
+<p>2. Okafor O, Ezemba N, Onyishi N, Ezike K. S1_R_code. February 2021. doi:10.6084/m9.figshare.14068715.v1</p>
+<p>ACADEMIC EDITOR#5: “Please amend your current ethics statement to include the full name of the ethics committee/institutional review board(s) that approved your specific study.”</p>
+<p>OUR REPLY: We have done this in the Materials and Methods. Lines 88-93.</p>
+<p>ACADEMIC EDITOR#6: “ensure that you have discussed whether all data/samples were fully anonymized before you accessed them”</p>
+<p>OUR REPLY: We have included this detail in the Materials and Methods and in the online submission form. Lines 97-100.</p>
+<p>ACADEMIC EDITOR#7: “In the ethics statement in the manuscript and in the online submission form, please provide additional information about the patient records/samples used in your retrospective study, including: a) the date range (month and year) during which patients' medical records/samples were accessed.”</p>
+<p>OUR REPLY: We have included this information both in the manuscript and in the online submission form. Lines 88-90.</p>
+<p>ACADEMIC EDITOR#8: “In your Methods section, please provide additional information about the medical data/samples collected and the demographic details of the human subjects. Please ensure you have provided sufficient details to replicated the analyses such as a table of relevant demographic details.”</p>
+<p>OUR REPLY: A new table describing the demographic details of all the human subjects employed in the study has been inserted in the manuscript. Tables 1 and 2 in Results section.</p>
+<p>ACADEMIC EDITOR#9: “In your Methods section, please provide a description of the outcomes assessed in your study.”</p>
+<p>OUR REPLY: A detailed description of the clinical outcomes of the test patients has been provided in the manuscript. Lines 151-163.</p>
+<p>ACADEMIC EDITOR#10: “Please ensure you have discussed any potential limitations of your study in the Discussion, including study design, sample size and/or potential confounders.”</p>
+<p>OUR REPLY: We have included this in the Discussion section. Lines 441-445.</p>
+<p>ACADEMIC EDITOR#11: “please provide additional information regarding your statistical analyses.”</p>
+<p>OUR REPLY: All the statistical methods used were briefly described in the Materials and Methods. Lines 101-138. S1 R_code, our R working script, was deposited online at figshare.com (Available online at: doi:10.6084/m9.figshare.14102849.v1)</p>
+<p>ACADEMIC EDITOR#12: “Please include captions for your Supporting Information files at the end of your manuscript, and update any in-text citations to match accordingly.”</p>
+<p>OUR REPLY: This has been written out at the end of the manuscript; in-text citations have also been placed. Lines 550-559.</p>
+<p>REVIEWER-1#1: “I would suggest to the Authors to report in the Discussion section a brief view of the literature about the discrepancy between the clinical and histological diagnosis reported by different centers”</p>
+<p>OUR COMMENT: In the Discussion we have cited 5 earlier studies on this discrepancy and then extensively discussed the outcome and conclusions of one them (Walter AJ et al., Am J Obstet Gynecol. 2001), which indirectly influences our present study. Lines 345-361.</p>
+<p>REVIEWER-2#1: “Introduction, line 46, 47: please, cite some possible theory regarding etiology of TE”</p>
+<p>OUR COMMENT: We have cited 2 articles on this. Line 44.</p>
+<p>REVIEWER-2#2: “Introduction should be shorter”</p>
+<p>OUR COMMENT: The Introduction has been shortened from 638 words to 548 words.</p>
+<p>REVIEWER-2#3: “Material and methods, from line 106 to 114: this part should be moved in the results part”</p>
+<p>OUR COMMENT: These lines relating to the human subjects’ demographics and other related data have been moved to the Results section. Lines 140-164.</p>
+<p>REVIEWER-2#4: “Discussion: I would suggest discussing also when TE is impossible to be proved by histology (e.g.: diaphragmatic hernias). For instance, recently it has been reported (Viti A, et al. Endometriosis Involving the Diaphragm: A Patient-Tailored Minimally Invasive Surgical Treatment. World J Surg. 2020 Apr;44(4):1099-1104.) that up to 45% of patient with diaphragmatic endometriosis had no histological diagnosis. Please discuss on this.”</p>
+<p>OUR COMMENT: The emphasis of that study was on the surgical treatment of 21 cases of diaphragmatic endometriosis. In their study only 12 cases had samples analysed histologically, of which 10 were classified as endometriosis and 2 as "stromal-only" endometriosis. The other 9 cases were cases of diaphragmatic perforations in the absence of nodules and sample were not taken for histology i.e. not a case of incapacity to histologically detect endometriosis in samples sent. In those 9 cases the diagnosis of endometriosis therefore was based on symptomatology and/or prior history of confirmed abdominal/pelvic endometriosis. Our own study is based entirely on the histological diagnosis of endometriosis; and the surgical approach carried out in our hospital emphasises on thoroughly exploring the thoracic cavity and striving to obtain samples for histological analysis. As a consequence of this thoroughness there was no case of failure to establish a histological diagnosis in all the cases that had diaphragmatic lesions of any form. Thank you for giving me the opportunity to discuss this. We have not included this discussion in the manuscript because, as said earlier, our emphasis here is on making and improving the histological diagnostic yield on samples sent for analysis.</p>
+<p>REVIEWER-3#1: “First of all in endometriosis there are endometrioid glands and endometrioid stroma (not endometrial)”</p>
+<p>OUR COMMENT: We have made these changes.</p>
+<p>REVIEWER-3#2: “periods lines 63-68 are confusing; be concise; lines 68-70”</p>
+<p>OUR COMMENT: Thank you for pointing this ambiguity and imprecision out. We have attempted to clearly point out the divergent lines of thought that derive from an initial consideration, thus: “In order to resolve this dilemma, the finding, on one hand, of long duration prior to diagnosis in spite of hospital presentation (possibly to different clinicians) will point to the clinicians as the cause of under-diagnosis. On the other hand, the correct and definitive diagnosis coming only after clinico-pathological reviews necessitated by non-resolution of symptoms, insistence of the clinicians or requests for second opinion will point to the histopathologist as the cause of the underdiagnosis and apparent rarity of the disease. The scenario is further compounded by a finding that less than 50% of laparoscopic biopsies of lesions visually diagnosed as endometriosis were confirmed to be endometriosis on histological study [8].” Lines 58-67.</p>
+<p>REVIEWER-3#3: “delete lines 76-83; Insert the following:”</p>
+<p>OUR COMMENT: The deletions and insertions have been done. Lines 69-78.</p>
+<p>REVIEWER-3#4: “Material and methods: insert from results: The interval between the onset of symptoms 239 and definitive histopathological</p>
+<p>diagnosis was 49 weeks (range = 1 week to 300 weeks).”</p>
+<p>OUR COMMENT: At the instance of the 2nd Reviewer (REVIEWER-2#3:) we moved this phrase and other demographic aspects of the human subjects to Results section. Lines 144-164.</p>
+<p>REVIEWER-3#5: “There are too many figures. Delete figures 2, 4, and 11. Change the order of the rest:”</p>
+<p>OUR COMMENT: We deleted the 3 figures and changed the ordering and labels of the rest in accord with this comment. Thank you for the detailed commenting.</p>
+<p>REVIEWER-3#6: “Results: Change the order: Nine notable histological features ... Twenty-four cases (92%)... Three histological features ...”</p>
+<p>OUR REPLY: We have reordered the paragraphs in accord with this comment. Lines 165-209.</p>
+<p>REVIEWER-3#7: Structural modification of 4 paragraphs.</p>
+<p>OUR COMMENT: We have implemented all the essential changes of this structural reconstruction into the Discussion.</p>
+<supplementary-material id="pone.0251385.s003" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0251385.s003" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Response to Reviewers.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="aggregated-review-documents" id="pone.0251385.r003" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0251385.r003</article-id>
+<title-group>
+<article-title>Decision Letter 1</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Viganò</surname>
+<given-names>Paola</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2021</copyright-year>
+<copyright-holder>Paola Viganò</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0251385" document-id-type="doi" document-type="article" id="rel-obj003" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">16 Mar 2021</named-content>
+</p>
+<p>PONE-D-20-36704R1</p>
+<p>Improving the diagnostic recognition of thoracic endometriosis: Spotlight on a new histo-morphological indicator</p>
+<p>PLOS ONE</p>
+<p>Dear Dr. Okafor,</p>
+<p>Thank you for submitting your manuscript to PLOS ONE. After careful consideration, we feel that it has merit but does not fully meet PLOS ONE’s publication criteria as it currently stands. Therefore, we invite you to submit a revised version of the manuscript that addresses the points raised during the review process.</p>
+<p>==============================</p>
+<p>ACADEMIC EDITOR:</p>
+<p><!-- <span style="color: rgb(0, 0, 51); font-family: verdana, geneva, arial, helvetica, sans-serif; font-size: 11.2px; white-space: pre-wrap; background-color: rgb(244, 244, 244);"> -->-The Materials and Methods section is still insufficent. The lab protocol needs to be better detailed. How were the various histopathological features identified? <!-- </span> --></p>
+<p><!-- <span style="color: rgb(0, 0, 51); font-family: verdana, geneva, arial, helvetica, sans-serif; font-size: 11.2px; white-space: pre-wrap; background-color: rgb(244, 244, 244);"> -->- For the statistical analysis, it is not necessary to explain the tests. The authors have to explain HOW they performed the tests. Results from the paper should be confirmed by other scientists. If others are not able to confirm the results, the study has no value. <!-- </span> --></p>
+<p><!-- <span style="color: rgb(0, 0, 51); font-family: verdana, geneva, arial, helvetica, sans-serif; font-size: 11.2px; white-space: pre-wrap; background-color: rgb(244, 244, 244);"> -->- A R script cannot be presented as supplementary table. Again, data need to be understood by everyone. Please transform the R script in something that is understandable. Moreover, correct S1 R code all over the text. - It is unclear how the cut offs for sensitivity and specificity were established. These explanations should be in the statistical analysis section. <!-- </span> --></p>
+<p><!-- <span style="color: rgb(0, 0, 51); font-family: verdana, geneva, arial, helvetica, sans-serif; font-size: 11.2px; white-space: pre-wrap; background-color: rgb(244, 244, 244);"> -->- A great limit of the paper is that the reliability of the new diagnostic test should be evaluated in a different cohort. Although collecting a new cohort might be difficult, the Authors should declare this limit of the study in the Discussion section.<!-- </span> --></p>
+<p><!-- <span style="color: rgb(0, 0, 51); font-family: verdana, geneva, arial, helvetica, sans-serif; font-size: 11.2px; white-space: pre-wrap; background-color: rgb(244, 244, 244);"> -->This novel approach with new histopathologic findings is interesting but the paper still needs substantial ameliorations<!-- </span> -->.</p>
+<p>Please submit your revised manuscript by Apr 30 2021 11:59PM. If you will need more time than this to complete your revisions, please reply to this message or contact the journal office at <email xlink:type="simple">plosone@plos.org</email>. When you're ready to submit your revision, log on to <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pone/" xlink:type="simple">https://www.editorialmanager.com/pone/</ext-link> and select the 'Submissions Needing Revision' folder to locate your manuscript file.</p>
+<p>Please include the following items when submitting your revised manuscript:</p>
+<p><list list-type="bullet"><list-item><p>A rebuttal letter that responds to each point raised by the academic editor and reviewer(s). You should upload this letter as a separate file labeled 'Response to Reviewers'.</p></list-item><list-item><p>A marked-up copy of your manuscript that highlights changes made to the original version. You should upload this as a separate file labeled 'Revised Manuscript with Track Changes'.</p></list-item><list-item><p>An unmarked version of your revised paper without tracked changes. You should upload this as a separate file labeled 'Manuscript'.</p></list-item></list></p>
+<p>If you would like to make changes to your financial disclosure, please include your updated statement in your cover letter. Guidelines for resubmitting your figure files are available below the reviewer comments at the end of this letter.</p>
+<p>If applicable, we recommend that you deposit your laboratory protocols in protocols.io to enhance the reproducibility of your results. Protocols.io assigns your protocol its own identifier (DOI) so that it can be cited independently in the future. For instructions see: <ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols" xlink:type="simple">http://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols</ext-link></p>
+<p>We look forward to receiving your revised manuscript.</p>
+<p>Kind regards,</p>
+<p>Paola Viganò</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Additional Editor Comments (if provided):</p>
+<p>The materials and methods section is still insufficent. The lab protocol needs to be better detailed. How were the various histopathological features identified? For the statistical analysis, it is not necessary to explain the tests. The authors have to explain how they performed the tests. Results from the paper should be confirmed by other scientists. If others are not able to confirm the results, the study has no value.</p>
+<p>A R script cannot be presented as supplementary table. Again, data need to be understood by everyone. Please transform the R script in something that is understandable. Moreover, correct S1 R code all over the text.</p>
+<p>It is unclear how the cut offs for sensitivity and specificity were established. These explanations should be in the statistical analysis section.</p>
+<p>A great limit of the paper is that the reliability of the new diagnostic test should be evaluated in a different cohort. Although collecting a new cohort might be difficult, the Authors should declare this limit of the study in the Discussion section</p>
+<p>This novel aaproach with new histopathologic findings is interesting but the paper still needs substantial ameliorations</p>
+<p>[Note: HTML markup is below. Please do not edit.]</p>
+<p>Reviewers' comments:</p>
+<p>Reviewer's Responses to Questions</p>
+<p><!-- <font color="black"> --><bold>Comments to the Author</bold></p>
+<p>1. If the authors have adequately addressed your comments raised in a previous round of review and you feel that this manuscript is now acceptable for publication, you may indicate that here to bypass the “Comments to the Author” section, enter your conflict of interest statement in the “Confidential to Editor” section, and submit your "Accept" recommendation.<!-- </font> --></p>
+<p>Reviewer #1: All comments have been addressed</p>
+<p>Reviewer #2: All comments have been addressed</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->2. Is the manuscript technically sound, and do the data support the conclusions?</p>
+<p>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions. Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes. The conclusions must be drawn appropriately based on the data presented. <!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->3. Has the statistical analysis been performed appropriately and rigorously? <!-- </font> --></p>
+<p>Reviewer #1: N/A</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->4. Have the authors made all data underlying the findings in their manuscript fully available?</p>
+<p>The <ext-link ext-link-type="uri" xlink:href="http://www.plosone.org/static/policies.action#sharing" xlink:type="simple">PLOS Data policy</ext-link> requires authors to make all data underlying the findings described in their manuscript fully available without restriction, with rare exception (please refer to the Data Availability Statement in the manuscript PDF file). The data should be provided as part of the manuscript or its supporting information, or deposited to a public repository. For example, in addition to summary statistics, the data points behind means, medians and variance measures should be available. If there are restrictions on publicly sharing data—e.g. participant privacy or use of data from a third party—those must be specified.<!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->5. Is the manuscript presented in an intelligible fashion and written in standard English?</p>
+<p>PLOS ONE does not copyedit accepted manuscripts, so the language in submitted articles must be clear, correct, and unambiguous. Any typographical or grammatical errors should be corrected at revision, so please note any specific errors here.<!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->6. Review Comments to the Author</p>
+<p>Please use the space provided to explain your answers to the questions above. You may also include additional comments for the author, including concerns about dual publication, research ethics, or publication ethics. (Please upload your review as an attachment if it exceeds 20,000 characters)<!-- </font> --></p>
+<p>Reviewer #1: (No Response)</p>
+<p>Reviewer #2: The authors significantly improved their paper after revisions and they should be commended.</p>
+<p>I appreciate their reply to my last comment and I do agree that their paper is about histological features of thoracic endometriosis, but I think it may be worth to briefly discuss that histological proof of endometriosis is not always possible; as a matter of fact, in some cases diagnosis is made on macroscopic details (e.g. diagphragmatic hernias) and patients’ medical history. As suggested by dr. Triponez and colleagues (Triponez F, Alifano M, Bobbio A et al (2010) Endometriosis related spontaneous diaphragmatic rupture. Interact Cardiovasc Thorac Surg 11(4):485–487) diaphragmatic rupture might be the result of the involution of endometriosis tissue. What should the authors suggest to biopsy in these cases of no evidence of macroscopic endometriosis tissue? How did the authors manage similar cases? Maybe authors should also briefly describe in the results the macroscopical features of endometriosic lesions they resected.</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->7. PLOS authors have the option to publish the peer review history of their article (<ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link>). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link>.<!-- </font> --></p>
+<p>Reviewer #1: <bold>Yes: </bold>Paola Ciriaco</p>
+<p>Reviewer #2: <bold>Yes: </bold>Pietro Bertoglio</p>
+<p>[NOTE: If reviewer comments were submitted as an attachment file, they will be attached to this email and accessible via the submission site. Please log into your account, locate the manuscript record, and check for the action link "View Attachments". If this link does not appear, there are no attachment files.]</p>
+<p>While revising your submission, please upload your figure files to the Preflight Analysis and Conversion Engine (PACE) digital diagnostic tool, <ext-link ext-link-type="uri" xlink:href="https://pacev2.apexcovantage.com/" xlink:type="simple">https://pacev2.apexcovantage.com/</ext-link>. PACE helps ensure that figures meet PLOS requirements. To use PACE, you must first register as a user. Registration is free. Then, login and navigate to the UPLOAD tab, where you will find detailed instructions on how to use the tool. If you encounter any issues or have any questions when using PACE, please email PLOS at <email xlink:type="simple">figures@plos.org</email>. Please note that Supporting Information files do not need this step.</p>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pone.0251385.r004">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0251385.r004</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 1</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pone.0251385" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj004" link-type="rebutted-decision-letter" object-id="10.1371/journal.pone.0251385.r003" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>2</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="author-response-date">19 Apr 2021</named-content>
+</p>
+<p>ACADEMIC EDITOR#1: “How were the various histopathological features identified?”</p>
+<p>OUR REPLY: We have described our methodology in a detailed manner in Lines 95-101 and referenced the supplementary table (S1 Table) that contains the results.</p>
+<p>ACADEMIC EDITOR#2: “For the statistical analysis, it is not necessary to explain the tests. The authors have to explain HOW they performed the tests.”</p>
+<p>OUR REPLY: The explanation of the statistical methods have been removed. In Lines 102-119 of Material and methods we fully described how the statistical analysis was performed and referenced the supplementary table (S2 Table) that contains the results.</p>
+<p>ACADEMIC EDITOR#3: “A R script cannot be presented as supplementary table. Again, data need to be understood by everyone. Please transform the R script in something that is understandable. Moreover, correct S1 R code all over the text.”</p>
+<p>OUR REPLY: We removed the R script as supplementary data and erased all reference to it in the article text.</p>
+<p>ACADEMIC EDITORS#4: “It is unclear how the cut offs for sensitivity and specificity were established. These explanations should be in the statistical analysis section.”</p>
+<p>OUR REPLY: We omitted the use of R code to obtain the best cutoff points but did it manually from the supplementary tables provided; we then described in detail how this was done in Lines 257-262 of the Results section.</p>
+<p>ACADEMIC EDITOR#5: “A great limit of the paper is that the reliability of the new diagnostic test should be evaluated in a different cohort. Although collecting a new cohort might be difficult, the Authors should declare this limit of the study in the Discussion section.”</p>
+<p>OUR REPLY: We have included this limitation in Lines 430-431 of Discussion section.</p>
+<p>REVIEWER-2: “diaphragmatic rupture might be the result of the involution of endometriosis tissue. What should the authors suggest to biopsy in these cases of no evidence of macroscopic endometriosis tissue? How did the authors manage similar cases? Maybe authors should also briefly describe in the results the macroscopical features of endometriosic lesions they resected.”</p>
+<p>OUR REPLY: We have briefly described the macroscopic features in Lines 149-151 of the Results section and have suggested what to biopsy in cases of no evidence of macroscopic endometriosis tissue in Lines 323-331 of Discussion section.</p>
+<supplementary-material id="pone.0251385.s004" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0251385.s004" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Response to Reviewers.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pone.0251385.r005" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0251385.r005</article-id>
+<title-group>
+<article-title>Decision Letter 2</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Viganò</surname>
+<given-names>Paola</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2021</copyright-year>
+<copyright-holder>Paola Viganò</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0251385" document-id-type="doi" document-type="article" id="rel-obj005" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>2</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">26 Apr 2021</named-content>
+</p>
+<p>Improving the diagnostic recognition of thoracic endometriosis: Spotlight on a new histo-morphological indicator</p>
+<p>PONE-D-20-36704R2</p>
+<p>Dear Dr. Okafor,</p>
+<p>We’re pleased to inform you that your manuscript has been judged scientifically suitable for publication and will be formally accepted for publication once it meets all outstanding technical requirements.</p>
+<p>Within one week, you’ll receive an e-mail detailing the required amendments. When these have been addressed, you’ll receive a formal acceptance letter and your manuscript will be scheduled for publication.</p>
+<p>An invoice for payment will follow shortly after the formal acceptance. To ensure an efficient process, please log into Editorial Manager at <ext-link ext-link-type="uri" xlink:href="http://www.editorialmanager.com/pone/" xlink:type="simple">http://www.editorialmanager.com/pone/</ext-link>, click the 'Update My Information' link at the top of the page, and double check that your user information is up-to-date. If you have any billing related questions, please contact our Author Billing department directly at <email xlink:type="simple">authorbilling@plos.org</email>.</p>
+<p>If your institution or institutions have a press office, please notify them about your upcoming paper to help maximize its impact. If they’ll be preparing press materials, please inform our press team as soon as possible -- no later than 48 hours after receiving the formal acceptance. Your manuscript will remain under strict press embargo until 2 pm Eastern Time on the date of publication. For more information, please contact <email xlink:type="simple">onepress@plos.org</email>.</p>
+<p>Kind regards,</p>
+<p>Paola Viganò</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Additional Editor Comments (optional):</p>
+<p>The Authors have addressed the issues raised</p>
+<p>Reviewers' comments:</p>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pone.0251385.r006" specific-use="acceptance-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0251385.r006</article-id>
+<title-group>
+<article-title>Acceptance letter</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Viganò</surname>
+<given-names>Paola</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2021</copyright-year>
+<copyright-holder>Paola Viganò</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0251385" document-id-type="doi" document-type="article" id="rel-obj006" link-type="peer-reviewed-article"/>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">3 May 2021</named-content>
+</p>
+<p>PONE-D-20-36704R2 </p>
+<p>Improving the diagnostic recognition of thoracic endometriosis: Spotlight on a new histo-morphological indicator. </p>
+<p>Dear Dr. Okafor:</p>
+<p>I'm pleased to inform you that your manuscript has been deemed suitable for publication in PLOS ONE. Congratulations! Your manuscript is now with our production department. </p>
+<p>If your institution or institutions have a press office, please let them know about your upcoming paper now to help maximize its impact. If they'll be preparing press materials, please inform our press team within the next 48 hours. Your manuscript will remain under strict press embargo until 2 pm Eastern Time on the date of publication. For more information please contact <email xlink:type="simple">onepress@plos.org</email>.</p>
+<p>If we can help with anything else, please email us at <email xlink:type="simple">plosone@plos.org</email>. </p>
+<p>Thank you for submitting your work to PLOS ONE and supporting open access. </p>
+<p>Kind regards, </p>
+<p>PLOS ONE Editorial Office Staff</p>
+<p>on behalf of</p>
+<p>Dr. Paola Viganò  </p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+</body>
+</sub-article>
+</article>

@@ -1,0 +1,165 @@
+{
+  "doi": "10.1371/journal.pone.0191423",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0191423",
+  "title": "An AKAP-Lbc-RhoA interaction inhibitor promotes the translocation of aquaporin-2 to the plasma membrane of renal collecting duct principal cells",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Katharina Schrade",
+    "Jessica Tröger",
+    "Adeeb Eldahshan",
+    "Kerstin Zühlke",
+    "Kamal R. Abdul Azeez",
+    "Jonathan M. Elkins",
+    "Martin Neuenschwander",
+    "Andreas Oder",
+    "Mohamed Elkewedi",
+    "Sarah Jaksch",
+    "Karsten Andrae",
+    "Jinliang Li",
+    "Joao Fernandes",
+    "Paul Markus Müller",
+    "Stephan Grunwald",
+    "Stephen F. Marino",
+    "Tanja Vukićević",
+    "Jenny Eichhorst",
+    "Burkhard Wiesner",
+    "Marcus Weber",
+    "Michael Kapiloff",
+    "Oliver Rocks",
+    "Oliver Daumke",
+    "Thomas Wieland",
+    "Stefan Knapp",
+    "Jens Peter von Kries",
+    "Enno Klussmann"
+  ],
+  "year": "2018",
+  "license": "This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0191423.g001",
+      "label": "Fig 1",
+      "caption": "Identification of a small molecule inhibitor of the AKAP-Lbc-mediated activation of RhoA.\n(A) Principle of the nucleotide exchange assay for the screening. The DHPH domain of the RhoA-specific guanine nucleotide exchange factor (GEF) AKAP-Lbc and RhoA were generated as recombinant proteins. The DHPH domain-catalyzed exchange of GDP for the fluorescent mant-GTP was monitored at the emission wavelength of RhoA-bound mant-GTP at 440 nm. (B) The fluorescence signal intensity changes were determined for all samples including positive and negative controls and percent inhibitions calculated based on the controls. The screening data quality was evaluated as distribution of percent inhibition of all tested compounds and by calculating the Z’-factors for each plate, which were found to be 0.51 on average. (C) Using the GEF assay from (A), 18,431 small molecules were screened for inhibitors of the nucleotide exchange; 100 hits were identified of which 26 candidates were validated. The most promising hit was the compound Scaff10 (structure indicated). (D) Nucleotide exchange assay with Scaff10 and two further hits (for details see S1 Table). IC_{50} values for the inhibition are indicated.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191423.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191423.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Identification of a small molecule inhibitor of the AKAP-Lbc-mediated activation of RhoA.</title>\n<p>(A) Principle of the nucleotide exchange assay for the screening. The DHPH domain of the RhoA-specific guanine nucleotide exchange factor (GEF) AKAP-Lbc and RhoA were generated as recombinant proteins. The DHPH domain-catalyzed exchange of GDP for the fluorescent mant-GTP was monitored at the emission wavelength of RhoA-bound mant-GTP at 440 nm. (B) The fluorescence signal intensity changes were determined for all samples including positive and negative controls and percent inhibitions calculated based on the controls. The screening data quality was evaluated as distribution of percent inhibition of all tested compounds and by calculating the Z’-factors for each plate, which were found to be 0.51 on average. (C) Using the GEF assay from (A), 18,431 small molecules were screened for inhibitors of the nucleotide exchange; 100 hits were identified of which 26 candidates were validated. The most promising hit was the compound Scaff10 (structure indicated). (D) Nucleotide exchange assay with Scaff10 and two further hits (for details see S1 Table). IC<sub>50</sub> values for the inhibition are indicated.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191423.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191423.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0191423.g002",
+      "label": "Fig 2",
+      "caption": "The small molecule Scaff10-8 inhibits the interaction of the DH domain of AKAP-Lbc and RhoA.\n(A). Principle of homogenous time-resolved fluorescence (HTRF) assay. Recombinant His-AKAP-Lbc/DHPH and GST-RhoA were generated. The tags are recognized by specific antibodies coupled to fluorescent dyes. When the two proteins interact, donor and acceptor dyes of the antibodies are in close proximity, energy transfer occurs upon excitation at 320 nm and a FRET signal is detected (665 nm). If a compound disrupts the interaction of the DHPH domain and RhoA, the proximity of the fluorescent moieties remains insufficient for a FRET signal to occur. (B) In the HTRF from (A), Scaff10-8 inhibited the interaction of AKAP-Lbc/DHPH and RhoA with an IC_{50} = 34.1 μM whereas Scaff10-59 did not (example of a negative Scaff10 derivative). As expected, excess untagged Rho decreases the binding between GST-RhoA and His-AKAP-Lbc/DHPH in a dose-dependent manner (lower left panel). Scaff10-8 does not interact with a His-GST fusion protein, excluding any interference of the tags or antibodies used in this assay with Scaff10-8. n = 3–15 independent experiments in duplicate; IC_{50} values are indicated. (C) The influence of Scaff10-8 on the interaction of RhoA with the recombinant DH domain of AKAP-Lbc in the absence of the PH domain was determined by Alpha screen. Scaff10-7/59 was included as negative controls as they did not interfere with interaction of the DHPH domain and RhoA in the HTRF shown in Fig 2. n = 3–15 independent experiments in duplicate. The IC_{50} value is indicated.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191423.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191423.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>The small molecule Scaff10-8 inhibits the interaction of the DH domain of AKAP-Lbc and RhoA.</title>\n<p>(A). Principle of homogenous time-resolved fluorescence (HTRF) assay. Recombinant His-AKAP-Lbc/DHPH and GST-RhoA were generated. The tags are recognized by specific antibodies coupled to fluorescent dyes. When the two proteins interact, donor and acceptor dyes of the antibodies are in close proximity, energy transfer occurs upon excitation at 320 nm and a FRET signal is detected (665 nm). If a compound disrupts the interaction of the DHPH domain and RhoA, the proximity of the fluorescent moieties remains insufficient for a FRET signal to occur. (B) In the HTRF from (A), Scaff10-8 inhibited the interaction of AKAP-Lbc/DHPH and RhoA with an IC<sub>50</sub> = 34.1 μM whereas Scaff10-59 did not (example of a negative Scaff10 derivative). As expected, excess untagged Rho decreases the binding between GST-RhoA and His-AKAP-Lbc/DHPH in a dose-dependent manner (lower left panel). Scaff10-8 does not interact with a His-GST fusion protein, excluding any interference of the tags or antibodies used in this assay with Scaff10-8. n = 3–15 independent experiments in duplicate; IC<sub>50</sub> values are indicated. (C) The influence of Scaff10-8 on the interaction of RhoA with the recombinant DH domain of AKAP-Lbc in the absence of the PH domain was determined by Alpha screen. Scaff10-7/59 was included as negative controls as they did not interfere with interaction of the DHPH domain and RhoA in the HTRF shown in Fig 2. n = 3–15 independent experiments in duplicate. The IC<sub>50</sub> value is indicated.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191423.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191423.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0191423.g003",
+      "label": "Fig 3",
+      "caption": "Scaff10 derivatives.\n(A) Overview of the synthesis of Scaff10 derivatives. By addition of iodine in methanol (a), acetophenone derivatives (1) reacted with the corresponding α-iodoketones (2a), removal of excessive iodine by addition of Na_{2}SO_{3}-solution (b). Resorcinol (3) and diethyl-2-acetylglutarat (4) were transformed into the 7-hydroxycoumarin derivative ethyl 3-(7-hydroxy-4-methyl-2-oxo-chromen-3-yl)propanoate (5a) in ethanolic HCl (c). In the presence of excess potash, 5 reacted with α-haloketone derivatives (2) in a Williamson ether synthesis at 55°C in acetone (d) to 6. Saponification to 7 was carried out in 1 M NaOH at 55–95°C and from 0.3–16 h (e). Final cyclization of ketones to furocoumarin derivatives (8) was carried out upon further heating in NaOH solution (60–110°C) for various times (0.75–10 h) (f). R is indicated in Table 1 and (C). (B) Compounds of the generalized structures 6–8 from (A) were allocated into classes 6–8, respectively. (C) Structures of Scaff10 derivatives, which inhibit the AKAP-Lbc/DHPH-RhoA interaction in the homogenous time-resolved fluorescence (HTRF) assay depicted in Fig 3A and B. IC_{50} values (μM ± SEM) were obtained from n = 3–15 independent HTRF experiments carried out in duplicate (S3 Table). Structural differences compared to Scaff10-8 are shown in grey. R^{2} indicates the coefficient of determination.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191423.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191423.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Scaff10 derivatives.</title>\n<p>(A) Overview of the synthesis of Scaff10 derivatives. By addition of iodine in methanol (a), acetophenone derivatives (1) reacted with the corresponding α-iodoketones (2a), removal of excessive iodine by addition of Na<sub>2</sub>SO<sub>3</sub>-solution (b). Resorcinol (3) and diethyl-2-acetylglutarat (4) were transformed into the 7-hydroxycoumarin derivative ethyl 3-(7-hydroxy-4-methyl-2-oxo-chromen-3-yl)propanoate (5a) in ethanolic HCl (c). In the presence of excess potash, 5 reacted with α-haloketone derivatives (2) in a Williamson ether synthesis at 55°C in acetone (d) to 6. Saponification to 7 was carried out in 1 M NaOH at 55–95°C and from 0.3–16 h (e). Final cyclization of ketones to furocoumarin derivatives (8) was carried out upon further heating in NaOH solution (60–110°C) for various times (0.75–10 h) (f). R is indicated in <xref ref-type=\"table\" rid=\"pone.0191423.t001\">Table 1</xref> and (C). (B) Compounds of the generalized structures 6–8 from (A) were allocated into classes 6–8, respectively. (C) Structures of Scaff10 derivatives, which inhibit the AKAP-Lbc/DHPH-RhoA interaction in the homogenous time-resolved fluorescence (HTRF) assay depicted in Fig 3A and B. IC<sub>50</sub> values (μM ± SEM) were obtained from n = 3–15 independent HTRF experiments carried out in duplicate (S3 Table). Structural differences compared to Scaff10-8 are shown in grey. R<sup>2</sup> indicates the coefficient of determination.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191423.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191423.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0191423.g004",
+      "label": "Fig 4",
+      "caption": "The Scaff10 derivative Scaff10-8 binds to RhoA but not to the DHPH domain of AKAP-Lbc.\n(A-D) Microscale thermophoresis (MST) takes advantage of the phenomenon of directed movement of particles in a temperature gradient. Binding events lead to changes in the hydration shell of biomolecules and a relative change of movement of the molecular complex along a temperature gradient. Using such changes, binding affinities can be determined [47]. MST assays were carried out with (A) the recombinant DHPH domain of AKAP-Lbc fused with GFP and RhoA as a ligand and (B) fluorescent 647-RhoA and the His-tagged AKAP-Lbc/DHPH domain as a ligand. (C) MST assays for the analysis of the binding of Scaff10-8 to 647-RhoA. Upper panels: The concentration of fluorescent 647-RhoA remained constant and Scaff10-8 (left) and Scaff10-7 as a negative control (right) were titrated in increasing concentrations. Lower panels: Values of fluorescence corresponding to upper panels. (D) MST assay showing no binding of Scaff10-8 or Scaff10-7 to GFP-DHPH. Upper panels: The concentration of fluorescent GFP-AKAP-Lbc/DHPH remained constant and Scaff10-8 (left) and Scaff10-7 (right) were titrated in increasing concentrations. Lower panels: Values of fluorescence corresponding to upper panels. The K_{D} value for the binding of Scaff10-8 to 647-RhoA is 20 ± 11 μM. F norm = normalized fluorescence (fluorescence steady state/fluorescence initial state) indicated in ‰. n = 3–5. Mean ± SEM.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191423.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191423.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>The Scaff10 derivative Scaff10-8 binds to RhoA but not to the DHPH domain of AKAP-Lbc.</title>\n<p>(A-D) Microscale thermophoresis (MST) takes advantage of the phenomenon of directed movement of particles in a temperature gradient. Binding events lead to changes in the hydration shell of biomolecules and a relative change of movement of the molecular complex along a temperature gradient. Using such changes, binding affinities can be determined [<xref ref-type=\"bibr\" rid=\"pone.0191423.ref047\">47</xref>]. MST assays were carried out with (A) the recombinant DHPH domain of AKAP-Lbc fused with GFP and RhoA as a ligand and (B) fluorescent 647-RhoA and the His-tagged AKAP-Lbc/DHPH domain as a ligand. (C) MST assays for the analysis of the binding of Scaff10-8 to 647-RhoA. Upper panels: The concentration of fluorescent 647-RhoA remained constant and Scaff10-8 (left) and Scaff10-7 as a negative control (right) were titrated in increasing concentrations. Lower panels: Values of fluorescence corresponding to upper panels. (D) MST assay showing no binding of Scaff10-8 or Scaff10-7 to GFP-DHPH. Upper panels: The concentration of fluorescent GFP-AKAP-Lbc/DHPH remained constant and Scaff10-8 (left) and Scaff10-7 (right) were titrated in increasing concentrations. Lower panels: Values of fluorescence corresponding to upper panels. The K<sub>D</sub> value for the binding of Scaff10-8 to 647-RhoA is 20 ± 11 μM. F norm = normalized fluorescence (fluorescence steady state/fluorescence initial state) indicated in ‰. n = 3–5. Mean ± SEM.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191423.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191423.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0191423.g005",
+      "label": "Fig 5",
+      "caption": "Scaff10-8 binds to GDP- and GTP-bound RhoA.\nIsothermal titration calorimetry (ITC) measurements using recombinant GST-tagged RhoA in its (A) GDP- and (B) GTP-bound form and Scaff10-8 were performed (GDP and GTPγS, 2 mM each). K_{D} values are indicated. (C) As a control, the measurements were carried out with GST alone.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191423.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191423.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Scaff10-8 binds to GDP- and GTP-bound RhoA.</title>\n<p>Isothermal titration calorimetry (ITC) measurements using recombinant GST-tagged RhoA in its (A) GDP- and (B) GTP-bound form and Scaff10-8 were performed (GDP and GTPγS, 2 mM each). K<sub>D</sub> values are indicated. (C) As a control, the measurements were carried out with GST alone.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191423.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191423.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0191423.g006",
+      "label": "Fig 6",
+      "caption": "Scaff10-8 is not cytotoxic.\n(A) Western blot showing protein expression of AKAP-Lbc and RhoA in five different cell lines and in primary rat inner medullary collecting duct (IMCD) cells: All cells express full-length AKAP-Lbc (308 kDa) and shorter splice variants. RhoA (22 kDa) is also expressed in all cells. MW = molecular weight. (B) Cytotoxicity was assessed after 24–72 h of incubation with Scaff10-8 (3, 30, 100 μM). Staurosporine as inducer of apoptosis was used as a positive control. Absorption was determined at 450 nm and was related to medium absorption (blank). DMSO was used as a control. Normalised to untreated cells after 24 h, three independent experiments with four data points each are shown. n = 3. Statistically significant differences were determined applying one-way ANOVA with posthoc Bonferroni. Mean ± SEM is plotted.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191423.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191423.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Scaff10-8 is not cytotoxic.</title>\n<p>(A) Western blot showing protein expression of AKAP-Lbc and RhoA in five different cell lines and in primary rat inner medullary collecting duct (IMCD) cells: All cells express full-length AKAP-Lbc (308 kDa) and shorter splice variants. RhoA (22 kDa) is also expressed in all cells. MW = molecular weight. (B) Cytotoxicity was assessed after 24–72 h of incubation with Scaff10-8 (3, 30, 100 μM). Staurosporine as inducer of apoptosis was used as a positive control. Absorption was determined at 450 nm and was related to medium absorption (blank). DMSO was used as a control. Normalised to untreated cells after 24 h, three independent experiments with four data points each are shown. n = 3. Statistically significant differences were determined applying one-way ANOVA with posthoc Bonferroni. Mean ± SEM is plotted.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191423.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191423.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0191423.g007",
+      "label": "Fig 7",
+      "caption": "Scaff10-8 inhibits the AKAP-Lbc-mediated activation of RhoA in cells.\nIn HEK293 cells, full length AKAP-Lbc was transiently expressed alone or in combination with the constitutively active version, Gα12QL, of the G protein α subunit Gα12. Gα12 selectively activates the GEF activity of AKAP-Lbc [28]. Where indicated, the RhoGEFs LARG and PDZ-RhoGEF were expressed. The cells were left untreated or incubated with Scaff10-8 in concentrations of 30 or 100 μM. The lower panels show detection of the indicated proteins by Western blotting. n = 3. Statistically significant differences were determined applying one-way ANOVA with posthoc Bonferroni. Mean ± SEM is plotted.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191423.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191423.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Scaff10-8 inhibits the AKAP-Lbc-mediated activation of RhoA in cells.</title>\n<p>In HEK293 cells, full length AKAP-Lbc was transiently expressed alone or in combination with the constitutively active version, Gα12QL, of the G protein α subunit Gα12. Gα12 selectively activates the GEF activity of AKAP-Lbc [<xref ref-type=\"bibr\" rid=\"pone.0191423.ref028\">28</xref>]. Where indicated, the RhoGEFs LARG and PDZ-RhoGEF were expressed. The cells were left untreated or incubated with Scaff10-8 in concentrations of 30 or 100 μM. The lower panels show detection of the indicated proteins by Western blotting. n = 3. Statistically significant differences were determined applying one-way ANOVA with posthoc Bonferroni. Mean ± SEM is plotted.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191423.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191423.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0191423.g008",
+      "label": "Fig 8",
+      "caption": "Scaff10-8 promotes the redistribution of AQP2 to the plasma membrane of primary IMCD cells, which is independent of cAMP elevation and associated with depolymerization of F-actin.\n(A) Upper panel. IMCD cells were treated with DMSO (1%; control), the solvent of Scaff10-8, or forskolin (10 μM, 30 min) to stimulate cAMP synthesis. Lower panels: The cells were treated for 1 hour with Scaff10-8 (30 μM) alone (control) or with Scaff10-8 and forskolin. Forskolin (10 μM) was added for the final 30 min of Scaff10-8 incubation. AQP2 (green) was detected with specific primary and Cy3-coupled secondary antibodies, F-actin (red) with Alexa Fluor 647-Phalloidin and nuclei with DAPI (blue). Signals were visualized using a laser scanning microscope. Representative images are shown. n = 3. The magnified views were derived from the indicated boxes. (B) The signal intensities arising from intracellular and plasma membrane AQP2 were recorded, related to nuclear signal intensities, and the ratios of plasma membrane to intracellular fluorescence signal intensities were calculated (n = 30 cells per condition). Ratios > 1 indicate a predominant localization of AQP2 at the plasma membrane. Statistically significant differences were calculated using one-way ANOVA with posthoc Bonferroni. Mean ± SEM; *, p ≤ 0.05; *** p ≤ 0.001.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191423.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191423.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Scaff10-8 promotes the redistribution of AQP2 to the plasma membrane of primary IMCD cells, which is independent of cAMP elevation and associated with depolymerization of F-actin.</title>\n<p>(A) Upper panel. IMCD cells were treated with DMSO (1%; control), the solvent of Scaff10-8, or forskolin (10 μM, 30 min) to stimulate cAMP synthesis. Lower panels: The cells were treated for 1 hour with Scaff10-8 (30 μM) alone (control) or with Scaff10-8 and forskolin. Forskolin (10 μM) was added for the final 30 min of Scaff10-8 incubation. AQP2 (green) was detected with specific primary and Cy3-coupled secondary antibodies, F-actin (red) with Alexa Fluor 647-Phalloidin and nuclei with DAPI (blue). Signals were visualized using a laser scanning microscope. Representative images are shown. n = 3. The magnified views were derived from the indicated boxes. (B) The signal intensities arising from intracellular and plasma membrane AQP2 were recorded, related to nuclear signal intensities, and the ratios of plasma membrane to intracellular fluorescence signal intensities were calculated (n = 30 cells per condition). Ratios &gt; 1 indicate a predominant localization of AQP2 at the plasma membrane. Statistically significant differences were calculated using one-way ANOVA with posthoc Bonferroni. Mean ± SEM; *, p ≤ 0.05; *** p ≤ 0.001.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191423.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191423.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0191423.g009",
+      "label": "Fig 9",
+      "caption": "Scaff10-8 does not promote the insertion of AQP2 into the plasma membrane of IMCD cerlls.\n(A) IMCD cells were treated with either compound (30 μM) or DMSO for 1 or 24 h. Membrane proteins were biotinylated followed by precipitation with streptavidin agarose beads. Pulldown (PD) and supernatant fractions were separated by 12% SDS-PAGE. Pan-Cadherin was used as a loading control for the PD fraction, Hsp90 for the supernatants. A representative Western blot is shown. (B) Signals from A were quantified by densitometric analysis. The amount of AQP2 in the PD fractions were related to Pan-Cadherin. MW = molecular weight. M = molecular weight standard. cg = complex glycosylated; hm = high mannose glycosylated; ng = non-glycosylated. 10–8 = Scaff10-8. n = 3. Mean ± SEM is plotted.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191423.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191423.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Scaff10-8 does not promote the insertion of AQP2 into the plasma membrane of IMCD cerlls.</title>\n<p>(A) IMCD cells were treated with either compound (30 μM) or DMSO for 1 or 24 h. Membrane proteins were biotinylated followed by precipitation with streptavidin agarose beads. Pulldown (PD) and supernatant fractions were separated by 12% SDS-PAGE. Pan-Cadherin was used as a loading control for the PD fraction, Hsp90 for the supernatants. A representative Western blot is shown. (B) Signals from A were quantified by densitometric analysis. The amount of AQP2 in the PD fractions were related to Pan-Cadherin. MW = molecular weight. M = molecular weight standard. cg = complex glycosylated; hm = high mannose glycosylated; ng = non-glycosylated. 10–8 = Scaff10-8. n = 3. Mean ± SEM is plotted.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191423.g009\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191423.g009",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0191423.g010",
+      "label": "Fig 10",
+      "caption": "Scaff10-8 inhibits activation of RhoA in primary IMCD cells.\nIMCD cells were incubated with Scaff10-8 (30 μM, 1 h). DMSO (1%), the solvent of Scaff10-8, served as a control. The cells were lysed, (A) active RhoA was precipitated with the RhoA binding domain of Rhotekin coupled to sepharose beads, (B) active Cdc42 and Rac1 were precipitated with with GST fused to the (p21) binding domain (PBD) of p21 activated kinase 1 protein (PAK-1) coupled to sepharose beads. Inputs and pulldown fractions were separated by SDS-PAGE. Hsp90 or GAPDH were used as loading controls. Representative Western blots from 3–5 independent experiments are shown. Signals were semiquantitatively analyzed by densitometry. The amount of active RhoA was related to normalized RhoA (total RhoA to Hsp90 (Input)). Accordingly, active Cdc42 and Rac1 were related to normalized Cdc42 and Rac1, respectively (total RhoA to GAPDH (Input)). PD, Pulldown. n = 3–5. Statistically significant differences were determined using one-way ANOVA with posthoc Bonferroni. Mean ± SEM is plotted. *, p ≤ 0.05; **, p ≤ 0.01; *** p ≤ 0.001.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191423.g010\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191423.g010</object-id>\n<label>Fig 10</label>\n<caption>\n<title>Scaff10-8 inhibits activation of RhoA in primary IMCD cells.</title>\n<p>IMCD cells were incubated with Scaff10-8 (30 μM, 1 h). DMSO (1%), the solvent of Scaff10-8, served as a control. The cells were lysed, (A) active RhoA was precipitated with the RhoA binding domain of Rhotekin coupled to sepharose beads, (B) active Cdc42 and Rac1 were precipitated with with GST fused to the (p21) binding domain (PBD) of p21 activated kinase 1 protein (PAK-1) coupled to sepharose beads. Inputs and pulldown fractions were separated by SDS-PAGE. Hsp90 or GAPDH were used as loading controls. Representative Western blots from 3–5 independent experiments are shown. Signals were semiquantitatively analyzed by densitometry. The amount of active RhoA was related to normalized RhoA (total RhoA to Hsp90 (Input)). Accordingly, active Cdc42 and Rac1 were related to normalized Cdc42 and Rac1, respectively (total RhoA to GAPDH (Input)). PD, Pulldown. n = 3–5. Statistically significant differences were determined using one-way ANOVA with posthoc Bonferroni. Mean ± SEM is plotted. *, p ≤ 0.05; **, p ≤ 0.01; *** p ≤ 0.001.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191423.g010\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191423.g010",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

@@ -1,0 +1,463 @@
+{
+  "date": "2026-10-12",
+  "realProvider": true,
+  "localInfrastructure": true,
+  "overallQuality": "not_passed",
+  "requestCount": 89,
+  "byModel": {
+    "qwen3.7-plus": {
+      "requests": 85,
+      "successfulHttp": 85,
+      "promptTokens": 459670,
+      "completionTokens": 93357,
+      "totalTokens": 553027,
+      "imageCount": 0
+    },
+    "wan2.7-image-pro": {
+      "requests": 4,
+      "successfulHttp": 4,
+      "promptTokens": 13113,
+      "completionTokens": 8,
+      "totalTokens": 13121,
+      "imageCount": 4
+    }
+  },
+  "fileReuse": {
+    "mixed-research.pdf": {
+      "hashes": [
+        "29cd502af62024084f881064a68489266f5a6cde1a804f5b915633184f7ea7ab",
+        "29cd502af62024084f881064a68489266f5a6cde1a804f5b915633184f7ea7ab",
+        "29cd502af62024084f881064a68489266f5a6cde1a804f5b915633184f7ea7ab",
+        "29cd502af62024084f881064a68489266f5a6cde1a804f5b915633184f7ea7ab"
+      ],
+      "browserIds": [
+        "5dc2ef70-15db-46e2-bd0d-d73bed0acffa",
+        "5dc2ef70-15db-46e2-bd0d-d73bed0acffa",
+        "5dc2ef70-15db-46e2-bd0d-d73bed0acffa",
+        "5dc2ef70-15db-46e2-bd0d-d73bed0acffa"
+      ],
+      "temporaryIds": [
+        "8038c2dd-0d52-4d60-b6c4-c2220bb7e52b",
+        "58eb2e7b-b1ad-494f-b587-d7a0b2a949c2",
+        "ccc94191-7a42-4fda-9b21-6ce55ac70447",
+        "98ae5387-72e9-4387-b46c-f4378d6c656a"
+      ],
+      "taskCount": 4,
+      "originalHashPreserved": true,
+      "browserOriginalReused": true,
+      "newServerCopyPerTask": true
+    },
+    "research-slides.pptx": {
+      "hashes": [
+        "dacf49f5b4671a6e38029becd216d5ba720422f9536e5aefee4f48e202b379c8",
+        "dacf49f5b4671a6e38029becd216d5ba720422f9536e5aefee4f48e202b379c8",
+        "dacf49f5b4671a6e38029becd216d5ba720422f9536e5aefee4f48e202b379c8",
+        "dacf49f5b4671a6e38029becd216d5ba720422f9536e5aefee4f48e202b379c8"
+      ],
+      "browserIds": [
+        "4c83278b-cd5f-4c90-b143-1d611076a6a9",
+        "4c83278b-cd5f-4c90-b143-1d611076a6a9",
+        "4c83278b-cd5f-4c90-b143-1d611076a6a9",
+        "4c83278b-cd5f-4c90-b143-1d611076a6a9"
+      ],
+      "temporaryIds": [
+        "26a181ea-7c0c-4861-b3c7-fdcf5eb57188",
+        "a1bb696f-520d-4163-997f-560600288604",
+        "e79bdd9a-6562-4c54-837c-29b266c1a9a5",
+        "efddc946-7ab1-4227-a8de-0cf9ccf0bf0e"
+      ],
+      "taskCount": 4,
+      "originalHashPreserved": true,
+      "browserOriginalReused": true,
+      "newServerCopyPerTask": true
+    }
+  },
+  "browserErrors": [],
+  "runs": [
+    {
+      "scenario": "generate-png",
+      "status": "failed",
+      "error": "任务执行失败：图片或文字输入不符合当前渠道、模型的要求。 请减少图片、裁剪过大的图片或缩短文字，也可更换支持该输入的模型。",
+      "review": null,
+      "realCalls": 3,
+      "cleanup": {
+        "status": "cleared",
+        "at": "2026-10-12T08:42:50.843Z"
+      },
+      "files": [
+        {
+          "filename": "mixed-research.pdf",
+          "temporaryId": "24d5c875-644a-438c-aacf-027dc7d506d6",
+          "clientFileId": "5dc2ef70-15db-46e2-bd0d-d73bed0acffa",
+          "sha256": "29cd502af62024084f881064a68489266f5a6cde1a804f5b915633184f7ea7ab",
+          "browserMatches": true
+        },
+        {
+          "filename": "research-slides.pptx",
+          "temporaryId": "12c3ccaf-ce01-4aaa-b1a0-ead6b7244253",
+          "clientFileId": "4c83278b-cd5f-4c90-b143-1d611076a6a9",
+          "sha256": "dacf49f5b4671a6e38029becd216d5ba720422f9536e5aefee4f48e202b379c8",
+          "browserMatches": true
+        }
+      ],
+      "artifacts": []
+    },
+    {
+      "scenario": "generate-png-2",
+      "status": "succeeded",
+      "error": null,
+      "review": {
+        "limit": 2,
+        "roundsUsed": 1,
+        "mode": "visual",
+        "status": "review_failed",
+        "displayBackground": "#ffffff",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "c35302a2cfa8c8cb6f57005ff22d9f3e33307a932a16244ab4a1acce45c7e23e",
+            "status": "review_failed",
+            "error": "材料工具请求超出当前任务授权范围。"
+          }
+        ],
+        "deliveredVersion": 1,
+        "deliveredPngHash": "c35302a2cfa8c8cb6f57005ff22d9f3e33307a932a16244ab4a1acce45c7e23e",
+        "note": "PNG v1 检查未完成；保留最近成功版本，未认定通过，未追加评审。"
+      },
+      "realCalls": 11,
+      "cleanup": {
+        "status": "cleared",
+        "at": "2026-10-12T08:50:23.053Z"
+      },
+      "files": [
+        {
+          "filename": "mixed-research.pdf",
+          "temporaryId": "0233a258-524e-483c-b1ff-28a2f18de75b",
+          "clientFileId": "5dc2ef70-15db-46e2-bd0d-d73bed0acffa",
+          "sha256": "29cd502af62024084f881064a68489266f5a6cde1a804f5b915633184f7ea7ab",
+          "browserMatches": true
+        },
+        {
+          "filename": "research-slides.pptx",
+          "temporaryId": "b8260924-088b-457c-a043-81c1c8a5d269",
+          "clientFileId": "4c83278b-cd5f-4c90-b143-1d611076a6a9",
+          "sha256": "dacf49f5b4671a6e38029becd216d5ba720422f9536e5aefee4f48e202b379c8",
+          "browserMatches": true
+        }
+      ],
+      "artifacts": [
+        {
+          "filename": "generate-png-2-candidate-0.png",
+          "mimeType": "image/png",
+          "sha256": "c35302a2cfa8c8cb6f57005ff22d9f3e33307a932a16244ab4a1acce45c7e23e"
+        }
+      ]
+    },
+    {
+      "scenario": "generate-png-3",
+      "status": "succeeded",
+      "error": null,
+      "review": {
+        "limit": 2,
+        "roundsUsed": 1,
+        "mode": "visual",
+        "status": "review_failed",
+        "displayBackground": "#ffffff",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "481b95baa7361f17cd7c22c7793781c95c0e36b75695994e494faded6a2bbbed",
+            "status": "review_failed",
+            "error": "材料读取引用未对应本阶段实际结果。"
+          }
+        ],
+        "deliveredVersion": 1,
+        "deliveredPngHash": "481b95baa7361f17cd7c22c7793781c95c0e36b75695994e494faded6a2bbbed",
+        "note": "PNG v1 检查未完成；保留最近成功版本，未认定通过，未追加评审。"
+      },
+      "realCalls": 15,
+      "cleanup": {
+        "status": "cleared",
+        "at": "2026-10-12T09:01:02.772Z"
+      },
+      "files": [
+        {
+          "filename": "mixed-research.pdf",
+          "temporaryId": "969efcfd-f88b-4db9-af27-3fce1be5c031",
+          "clientFileId": "5dc2ef70-15db-46e2-bd0d-d73bed0acffa",
+          "sha256": "29cd502af62024084f881064a68489266f5a6cde1a804f5b915633184f7ea7ab",
+          "browserMatches": true
+        },
+        {
+          "filename": "research-slides.pptx",
+          "temporaryId": "c056f23d-7169-4f8d-84cd-db61d4869a44",
+          "clientFileId": "4c83278b-cd5f-4c90-b143-1d611076a6a9",
+          "sha256": "dacf49f5b4671a6e38029becd216d5ba720422f9536e5aefee4f48e202b379c8",
+          "browserMatches": true
+        }
+      ],
+      "artifacts": [
+        {
+          "filename": "generate-png-3-candidate-0.png",
+          "mimeType": "image/png",
+          "sha256": "481b95baa7361f17cd7c22c7793781c95c0e36b75695994e494faded6a2bbbed"
+        }
+      ]
+    },
+    {
+      "scenario": "generate-svg-1",
+      "status": "succeeded",
+      "error": null,
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "review_failed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "757ff0a920110760f825dc92790e00f71b7d8db7137c258410dbec4402df8600",
+            "pngHash": "f7290b4c0e51889ed91be402999d3decf512b6541eea4614e7c753733e91d0bc",
+            "status": "issues_found",
+            "submittedImageHash": "f268fbf6afe51ec592704646a6f910538530f6e0d5ba1d0ab6cb213b035ce7ea",
+            "assessment": "{\"version\":1,\"svgHash\":\"757ff0a920110760f825dc92790e00f71b7d8db7137c258410dbec4402df8600\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Arrow endpoints do not reach rectangle borders\",\"location\":\"All three arrows (Panel A: Input→Check, Check→Output; Panel B: Alpha→Beta)\",\"evidence\":\"In Panel A, arrow 1 ends at x=700 but Check rect starts at x=710 (10px gap, ~8px after arrowhead tip). Arrow 2 ends at x=1080 but Output rect starts at x=1090. In Panel B, arrow ends at x=940 but Beta rect starts at x=950. Visible gaps between arrow tips and rectangle borders in the rendered image.\",\"suggestion\":\"Extend arrow line endpoints to match rectangle left edges (e.g., x2=710, 1090, 950) so arrowheads touch or slightly overlap the rectangle borders.\"},{\"issue\":\"<defs> element placed mid-document\",\"location\":\"After first rectangle in Panel A (around line 18)\",\"evidence\":\"The <defs> block containing arrow markers appears after the Input rectangle and text, not at the SVG root level.\",\"suggestion\":\"Move <defs> to immediately after the opening <svg> tag for proper SVG structure.\"}]},\"code\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Arrow line endpoints misaligned with target rectangle bounds\",\"location\":\"Lines at x1=510→x2=700, x1=890→x2=1080, x1=650→x2=940\",\"evidence\":\"Target rectangles start at x=710, x=1090, x=950 respectively. Each arrow falls 10px short. With marker refX=10 and markerWidth=12, the tip extends only ~2px beyond endpoint, leaving ~8px visual gap.\",\"suggestion\":\"Set x2 values to 710, 1090, and 950 respectively so arrowheads meet rectangle borders.\"},{\"issue\":\"Bold/italic font styling may not render as intended\",\"location\":\"Title (bold), Synthetic example tag (italic), panel labels (bold), Alpha/Beta labels (bold)\",\"evidence\":\"localCodeIssues note: 'Only regular Noto font faces are bundled; verify requested bold/italic styling in the raster.' The rendered image shows these styles appear to work, but this is a known limitation.\",\"suggestion\":\"Acceptable as-is since the rendered output shows the styling is applied; no action needed unless font rendering fails in target environment.\"}]},\"uncertainties\":[],\"revised_description\":\"Fix arrow endpoint alignment: extend all three arrow lines so x2 matches the left edge of the target rectangle (x2=710 for Check, x2=1090 for Output, x2=950 for Beta). Move <defs> block to immediately after the opening <svg> tag. All other content, labels, data values, layout, and styling are correct and match the original requirements.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "c144dc55c6dfc2c7bc2319f8b82f3ae9de65217e01c377416f6594436af02b26",
+            "pngHash": "3fdd1f584e0ef3d66b54f5faf252656245785a48bb08fea65013f7e8a4fe566a",
+            "status": "review_failed",
+            "error": "材料读取未满足绘图要求：[\"SVG file not available in files list for direct reading; cannot verify arrow endpoint coordinates (x2=710/1090/950) or <defs> placement were actually applied in v2. Previous assessment identified 10px gaps between arrow tips and rectangle borders, and <defs> block misplaced after first rectangle instead of after <svg> opening tag. Plan specifies exact fixes but verification requires SVG file access.\"]"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "c144dc55c6dfc2c7bc2319f8b82f3ae9de65217e01c377416f6594436af02b26",
+        "reviewedVersion": 1,
+        "reviewedSvgHash": "757ff0a920110760f825dc92790e00f71b7d8db7137c258410dbec4402df8600",
+        "note": "当前 SVG 评审失败，未认定为通过。"
+      },
+      "realCalls": 21,
+      "cleanup": {
+        "status": "cleared",
+        "at": "2026-10-12T09:17:06.492Z"
+      },
+      "files": [
+        {
+          "filename": "mixed-research.pdf",
+          "temporaryId": "8038c2dd-0d52-4d60-b6c4-c2220bb7e52b",
+          "clientFileId": "5dc2ef70-15db-46e2-bd0d-d73bed0acffa",
+          "sha256": "29cd502af62024084f881064a68489266f5a6cde1a804f5b915633184f7ea7ab",
+          "browserMatches": true
+        },
+        {
+          "filename": "research-slides.pptx",
+          "temporaryId": "26a181ea-7c0c-4861-b3c7-fdcf5eb57188",
+          "clientFileId": "4c83278b-cd5f-4c90-b143-1d611076a6a9",
+          "sha256": "dacf49f5b4671a6e38029becd216d5ba720422f9536e5aefee4f48e202b379c8",
+          "browserMatches": true
+        }
+      ],
+      "artifacts": [
+        {
+          "filename": "generate-svg-1-candidate-0.svg",
+          "mimeType": "image/svg+xml",
+          "sha256": "c144dc55c6dfc2c7bc2319f8b82f3ae9de65217e01c377416f6594436af02b26"
+        }
+      ]
+    },
+    {
+      "scenario": "restored-png-1",
+      "status": "succeeded",
+      "error": null,
+      "review": {
+        "limit": 2,
+        "roundsUsed": 1,
+        "mode": "visual",
+        "status": "review_failed",
+        "displayBackground": "#ffffff",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "fa44727664a65fd569246f2031eddc861fb4b95b1a190f94c0f8c749863a934a",
+            "status": "review_failed",
+            "error": "材料读取响应未遵守单条 JSON 协议；一次格式纠正后仍失败，未继续绘制。"
+          }
+        ],
+        "deliveredVersion": 1,
+        "deliveredPngHash": "fa44727664a65fd569246f2031eddc861fb4b95b1a190f94c0f8c749863a934a",
+        "note": "PNG v1 检查未完成；保留最近成功版本，未认定通过，未追加评审。"
+      },
+      "realCalls": 15,
+      "cleanup": {
+        "status": "cleared",
+        "at": "2026-10-12T09:23:54.164Z"
+      },
+      "files": [
+        {
+          "filename": "mixed-research.pdf",
+          "temporaryId": "58eb2e7b-b1ad-494f-b587-d7a0b2a949c2",
+          "clientFileId": "5dc2ef70-15db-46e2-bd0d-d73bed0acffa",
+          "sha256": "29cd502af62024084f881064a68489266f5a6cde1a804f5b915633184f7ea7ab",
+          "browserMatches": true
+        },
+        {
+          "filename": "research-slides.pptx",
+          "temporaryId": "a1bb696f-520d-4163-997f-560600288604",
+          "clientFileId": "4c83278b-cd5f-4c90-b143-1d611076a6a9",
+          "sha256": "dacf49f5b4671a6e38029becd216d5ba720422f9536e5aefee4f48e202b379c8",
+          "browserMatches": true
+        }
+      ],
+      "artifacts": [
+        {
+          "filename": "restored-png-1-candidate-0.png",
+          "mimeType": "image/png",
+          "sha256": "fa44727664a65fd569246f2031eddc861fb4b95b1a190f94c0f8c749863a934a"
+        }
+      ]
+    },
+    {
+      "scenario": "refine-png-1",
+      "status": "failed",
+      "error": "图像生成失败：万相参考图片不能包含实际透明像素；请使用不透明图片，未自动合成背景或移除透明度。 请减少图片、裁剪过大的图片或缩短文字，也可更换支持该输入的模型。",
+      "review": null,
+      "realCalls": 9,
+      "cleanup": {
+        "status": "cleared",
+        "at": "2026-10-12T09:27:09.816Z"
+      },
+      "files": [
+        {
+          "filename": "mixed-research.pdf",
+          "temporaryId": "ccc94191-7a42-4fda-9b21-6ce55ac70447",
+          "clientFileId": "5dc2ef70-15db-46e2-bd0d-d73bed0acffa",
+          "sha256": "29cd502af62024084f881064a68489266f5a6cde1a804f5b915633184f7ea7ab",
+          "browserMatches": true
+        },
+        {
+          "filename": "research-slides.pptx",
+          "temporaryId": "e79bdd9a-6562-4c54-837c-29b266c1a9a5",
+          "clientFileId": "4c83278b-cd5f-4c90-b143-1d611076a6a9",
+          "sha256": "dacf49f5b4671a6e38029becd216d5ba720422f9536e5aefee4f48e202b379c8",
+          "browserMatches": true
+        }
+      ],
+      "artifacts": []
+    },
+    {
+      "scenario": "refine-fixed-1",
+      "status": null,
+      "error": "locator.click: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '精修结果图 1', exact: true })\u001b[22m\n",
+      "review": null,
+      "realCalls": 0,
+      "cleanup": null,
+      "files": [],
+      "artifacts": []
+    },
+    {
+      "scenario": "refine-fixed-2",
+      "status": "succeeded",
+      "error": null,
+      "review": {
+        "limit": 1,
+        "roundsUsed": 1,
+        "mode": "visual",
+        "status": "issues_found",
+        "note": "精修后的实际图片已评审，仍有问题；请查看评审意见。",
+        "displayBackground": "#ffffff",
+        "deliveredVersion": 1,
+        "deliveredPngHash": "078b9183ffc06f2ccf5906ba2b2cacf1c776f1a141f3155bc23a39bfcf2066c3",
+        "reviewedVersion": 1,
+        "reviewedPngHash": "078b9183ffc06f2ccf5906ba2b2cacf1c776f1a141f3155bc23a39bfcf2066c3",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "078b9183ffc06f2ccf5906ba2b2cacf1c776f1a141f3155bc23a39bfcf2066c3",
+            "status": "issues_found",
+            "assessment": "{\"version\":1,\"pngHash\":\"078b9183ffc06f2ccf5906ba2b2cacf1c776f1a141f3155bc23a39bfcf2066c3\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Table in Panel B was not deleted as required by the plan\",\"location\":\"Panel B left side\",\"evidence\":\"The image shows a table with columns 'Name' and 'Original Value' containing rows Alpha=35 and Beta=12. The completePlan explicitly states '删除内容: 左侧表格（Name / Original Value / Alpha 35 / Beta 12）'.\",\"suggestion\":\"Remove the entire table from Panel B. Panel B should contain only the bar chart, occupying the full width of the panel.\"},{\"issue\":\"Legend box 'Unit: samples' was not deleted as required by the plan\",\"location\":\"Panel B bar chart top-right corner\",\"evidence\":\"The image shows a legend box with two blue squares labeled 'Unit: samples'. The completePlan explicitly states '删除内容: 柱状图右上角 Unit: samples 图例框（重复信息）'.\",\"suggestion\":\"Remove the legend box from the bar chart. The unit information is already in the Y-axis label.\"},{\"issue\":\"Y-axis label contains a typo\",\"location\":\"Panel B bar chart Y-axis label\",\"evidence\":\"The Y-axis label reads 'Observdpples (unit: samples)' instead of 'Observed samples (unit: samples)'. The text is garbled/misspelled.\",\"suggestion\":\"Correct the Y-axis label to 'Observed samples (unit: samples)' as specified in the plan.\"},{\"issue\":\"Panel B layout is split between table and chart instead of full-width chart\",\"location\":\"Panel B\",\"evidence\":\"Panel B is divided vertically with a table on the left half and bar chart on the right half. The plan requires only the bar chart in Panel B, which should use the full panel width for better readability.\",\"suggestion\":\"After removing the table, expand the bar chart to fill the full width of Panel B for better visual balance and readability.\"}]},\"uncertainties\":[],\"revised_description\":\"# 双面板学术图修改规划（修订版）\\n\\n## 整体布局\\n- **尺寸**：16:9，2K 分辨率\\n- **标题**：顶部居中 \\\"Synthetic example\\\"（英文，粗体）\\n- **结构**：上下两个面板（A、B），各占约 50% 高度，扩大面板间留白\\n\\n## Panel A — Original Workflow（上方面板）\\n- **节点形状**：圆角矩形（rounded rectangle）\\n- **节点填充**：蓝色渐变（深蓝色 #2E5A88 → 浅蓝色 #5B8DB8，自上而下）\\n- **节点文字**：白色，仅放名称 \\\"Input\\\"、\\\"Check\\\"、\\\"Output\\\"，不附加任何数据\\n- **箭头**：蓝色实心右向箭头，连接三节点（Input → Check → Output）\\n- **面板标签**：左上角 \\\"A) Original Workflow\\\"\\n- 流程整体位置上移，Panel A 内部垂直居中偏上\\n\\n## Panel B — Data Comparison（下方面板）\\n- **仅保留柱状图**，删除左侧表格和右上角图例框\\n- **柱状图占满 Panel B 全宽**\\n- **Y 轴标签**：\\\"Observed samples (unit: samples)\\\"（注意拼写正确）\\n- **X 轴标签**：\\\"Observed samples\\\"\\n- **Y 轴范围**：0 起始，最大值 40，刻度等距：0、10、20、30、40\\n- **柱子**：两根蓝色渐变柱（与 Panel A 同色系）\\n  - Alpha：柱高精确对应 35（位于 30-40 之间，距 40 为 1/4 刻度间距）\\n  - Beta：柱高精确对应 12（位于 10-20 之间，距 10 为 1/5 刻度间距）\\n- **柱顶数值标签**：Alpha 上方标 \\\"35\\\"，Beta 上方标 \\\"12\\\"\\n- **无误差线、无显著性标记、无图例框**\\n- **面板标签**：左上角 \\\"B) Data Comparison\\\"\\n\\n## 执行要点\\n1. 两面板间留白扩大至约 8% 图高\\n2. 所有文字英文，数值保留原始值 35 和 12\\n3. 不新增任何研究结论、组间连接箭头或显著性标注\\n4. Y 轴标签拼写必须正确：\\\"Observed samples\\\"，不得出现 \\\"Observdpples\\\" 等乱码\"}"
+          }
+        ]
+      },
+      "realCalls": 15,
+      "cleanup": {
+        "status": "cleared",
+        "at": "2026-10-12T09:37:53.208Z"
+      },
+      "files": [
+        {
+          "filename": "mixed-research.pdf",
+          "temporaryId": "98ae5387-72e9-4387-b46c-f4378d6c656a",
+          "clientFileId": "5dc2ef70-15db-46e2-bd0d-d73bed0acffa",
+          "sha256": "29cd502af62024084f881064a68489266f5a6cde1a804f5b915633184f7ea7ab",
+          "browserMatches": true
+        },
+        {
+          "filename": "research-slides.pptx",
+          "temporaryId": "efddc946-7ab1-4227-a8de-0cf9ccf0bf0e",
+          "clientFileId": "4c83278b-cd5f-4c90-b143-1d611076a6a9",
+          "sha256": "dacf49f5b4671a6e38029becd216d5ba720422f9536e5aefee4f48e202b379c8",
+          "browserMatches": true
+        }
+      ],
+      "artifacts": [
+        {
+          "filename": "refine-fixed-2-candidate-0.png",
+          "mimeType": "image/png",
+          "sha256": "078b9183ffc06f2ccf5906ba2b2cacf1c776f1a141f3155bc23a39bfcf2066c3"
+        }
+      ]
+    }
+  ],
+  "humanAudit": {
+    "image": "refine-fixed-2-candidate-0.png",
+    "sha256": "078b9183ffc06f2ccf5906ba2b2cacf1c776f1a141f3155bc23a39bfcf2066c3",
+    "size": [
+      2720,
+      1530
+    ],
+    "method": "Two interior bar columns, blue pixel threshold b-r>25,b-g>5,b>70; task-specific diagnostic, not a general chart validator",
+    "bars": [
+      {
+        "x": 1778,
+        "top": 939,
+        "bottom": 1379,
+        "height": 441
+      },
+      {
+        "x": 2143,
+        "top": 1210,
+        "bottom": 1379,
+        "height": 170
+      }
+    ],
+    "expectedRatio": 2.9166666666666665,
+    "observedHeightRatio": 2.5941176470588236,
+    "sourceValues": [
+      35,
+      12
+    ],
+    "verdict": "issues_found",
+    "otherFindings": [
+      "Requested table removal not applied",
+      "Redundant legend retained",
+      "Y-axis label malformed"
+    ],
+    "modelReview": "issues_found",
+    "relativeRatioError": 0.11058823529411754,
+    "originalSourcePreserved": true
+  },
+  "evidenceDirectory": "/Users/a1-6/.codex/visualizations/2026/10/12/01a12e7b-3a96-76f3-a717-3f85b95c73aa/material-live",
+  "productionVerified": false,
+  "tests": {
+    "scoped": 17,
+    "passed": 17,
+    "typecheck": "passed",
+    "coreBuild": "passed"
+  }
+}

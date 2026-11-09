@@ -1,0 +1,80 @@
+/* Focus is a site-wide contract, including lazy-loaded dialogs. Layered important
+   rules outrank the older component rings without changing their idle styling. */
+@layer control-focus {
+  :root {
+    --control-focus: #82918b;
+    --control-focus-keyboard: #526b62;
+  }
+
+  /* Filled controls need a light inner edge to remain visible on dark paint. */
+  :where(.primary-button, .admin-controls button, .danger-button,
+    .tw-dialog .tw-primary, .tw-editor-actions .tw-primary,
+    .account-button-primary, .agent-copy-button, .login-required-card button,
+    .reference-pagination button[aria-current="page"], .reference-mode-switch button.active,
+    .aspect-ratio-options button.active, .featured-carousel-controls > button,
+    .featured-carousel-dots button, .tuyan-guide-header button, .ops-header button,
+    .bench-method-prompt-block button, .bench-method-state button,
+    .bench-evidence-lightbox > button, .bench-evidence-sentinel button,
+    .bench-prompt-form > button, .bench-prompt-login a) {
+    --control-focus-keyboard: #c6d2cb;
+  }
+
+  :where(input[type="radio"]) { border-radius: 50%; }
+
+  :where(button, a[href], input, textarea, select, summary, [tabindex], [contenteditable="true"]):focus:where(:not(svg, svg *)) {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  :where(input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="hidden"]), textarea, select, [contenteditable="true"]):focus {
+    border-color: var(--control-focus) !important;
+    outline: 1px solid var(--control-focus) !important;
+    outline-offset: -1px !important;
+  }
+
+  :where(button, a[href], input, textarea, select, summary, [tabindex], [contenteditable="true"]):focus-visible:where(:not(svg, svg *)) {
+    border-color: var(--control-focus-keyboard) !important;
+    outline: 1px solid var(--control-focus-keyboard) !important;
+    outline-offset: -1px !important;
+  }
+
+  /* Composite fields own the focus edge. Only their input transfers focus;
+     a clear/reveal/submit button keeps its own keyboard indicator. */
+  :where(.tw-catalog-search, .tw-template-search, .model-picker-search,
+    .journal-search, .reference-gallery-search, .figure-picker-search,
+    .pareto-search, .bench-search > span, .key-input, .universal-search,
+    .tw-composer, .workflow-choice, .material-upload-button, .material-replace):focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  :where(.tw-catalog-search, .tw-template-search, .model-picker-search,
+    .journal-search, .reference-gallery-search, .figure-picker-search,
+    .pareto-search, .bench-search > span, .key-input, .universal-search,
+    .tw-composer):has(> :is(input, textarea):focus) {
+    border-color: var(--control-focus) !important;
+    outline: 1px solid var(--control-focus) !important;
+    outline-offset: -1px !important;
+  }
+
+  :where(.tw-catalog-search, .tw-template-search, .model-picker-search,
+    .journal-search, .reference-gallery-search, .figure-picker-search,
+    .pareto-search, .bench-search > span, .key-input, .universal-search,
+    .tw-composer, .workflow-choice, .material-upload-button, .material-replace):has(> :is(input, textarea):focus-visible) {
+    border-color: var(--control-focus-keyboard) !important;
+    outline: 1px solid var(--control-focus-keyboard) !important;
+    outline-offset: -1px !important;
+  }
+
+  :where(.tw-catalog-search, .tw-template-search, .model-picker-search,
+    .journal-search, .reference-gallery-search, .figure-picker-search,
+    .pareto-search, .bench-search > span, .key-input, .universal-search,
+    .tw-composer, .workflow-choice, .material-upload-button, .material-replace) > :is(input, textarea):focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  @media (forced-colors: active) {
+    * { --control-focus: Highlight; --control-focus-keyboard: Highlight; }
+  }
+}

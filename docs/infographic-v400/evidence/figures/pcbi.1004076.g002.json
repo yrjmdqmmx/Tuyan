@@ -1,0 +1,52 @@
+{
+  "id": "pcbi.1004076.g002",
+  "paper": "pcbi.1004076",
+  "figure": {
+    "id": "pcbi.1004076.g002",
+    "label": "Fig 2",
+    "caption": "Computational workflow of MBTFM.\n(A) Actin and paxillin images are segmented and converted into a whole cell model, with an individual tension value assigned to each stress fiber and one global tension value assigned to the actin networks of the cell. (B) Each set of model parameters leads to an error estimate which is then minimized to estimate the best fit to the experimentally measured displacement field. In contrast to standard traction force microscopy, no regularization scheme is required for MBTFM.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1004076.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1004076.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Computational workflow of MBTFM.</title>\n<p>(A) Actin and paxillin images are segmented and converted into a whole cell model, with an individual tension value assigned to each stress fiber and one global tension value assigned to the actin networks of the cell. (B) Each set of model parameters leads to an error estimate which is then minimized to estimate the best fit to the experimentally measured displacement field. In contrast to standard traction force microscopy, no regularization scheme is required for MBTFM.</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pcbi.1004076.g002\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1004076.g002",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1004076",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004076",
+    "title": "Model-based Traction Force Microscopy Reveals Differential Tension in Cellular Actin Bundles",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Jérôme R. D. Soiné",
+      "Christoph A. Brand",
+      "Jonathan Stricker",
+      "Patrick W. Oakes",
+      "Margaret L. Gardel",
+      "Ulrich S. Schwarz"
+    ],
+    "year": "2015",
+    "license": "2015\nSoiné et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1004076.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1004076.g002.png",
+      "bytes": 1014792,
+      "sha256": "6e1f32224189290f60cc443e439017d96645ff60b02a0bf727c028636922b922"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1004076.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1004076.g002.tif",
+      "bytes": 1484660,
+      "sha256": "b3d98ac474287f2c9a1c5db2cc6b0521dc943cbf3f306ee03672278644d1937c"
+    }
+  }
+}

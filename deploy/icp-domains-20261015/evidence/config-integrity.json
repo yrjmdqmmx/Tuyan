@@ -1,0 +1,26 @@
+{
+  "tuyan-hangzhou.conf": {
+    "host": "116.62.146.226",
+    "path": "/etc/nginx/sites-available/tuyan-cn",
+    "sha256": "4639fca57c1edc113fee2c150a7d503fd2bede3936f9ea843cd8b22f855acae4",
+    "matchesSource": true
+  },
+  "openacad-hangzhou.conf": {
+    "host": "116.62.146.226",
+    "path": "/etc/nginx/sites-available/openacad",
+    "sha256": "82d0bd63712eb4f49b95e35a463d93fbf87e33611494127b4795e12f69f9bf03",
+    "matchesSource": true
+  },
+  "tuyan-hongkong.conf": {
+    "host": "47.243.4.247",
+    "path": "/etc/nginx/sites-available/tuyan-cn-origin",
+    "sha256": "8c209be5459eef6b96bd0f86faf5671c3cda127cc8a7748b6c36a1cc68a23d1b",
+    "matchesSource": true
+  },
+  "compose.gateway.yaml": {
+    "host": "47.243.4.247",
+    "path": "/opt/paperbanana/ops-releases/icp-domains-20261015/compose.yaml",
+    "sha256": "1484dc129c5760239004a512ade78ba7fd25b2fbdebe40c3a6e9cae725789d70",
+    "matchesSource": true
+  }
+}

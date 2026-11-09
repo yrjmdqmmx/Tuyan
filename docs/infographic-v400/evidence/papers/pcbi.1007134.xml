@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1007134</article-id>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-19-00828</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Computational biology</subject><subj-group><subject>Genome analysis</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Genetics</subject><subj-group><subject>Genomics</subject><subj-group><subject>Genome analysis</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Computing methods</subject><subj-group><subject>Cloud computing</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Computational biology</subject><subj-group><subject>Comparative genomics</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Genetics</subject><subj-group><subject>Genomics</subject><subj-group><subject>Comparative genomics</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Computational biology</subject><subj-group><subject>Genome analysis</subject><subj-group><subject>Genomic libraries</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Genetics</subject><subj-group><subject>Genomics</subject><subj-group><subject>Genome analysis</subject><subj-group><subject>Genomic libraries</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Microbiology</subject><subj-group><subject>Medical microbiology</subject><subj-group><subject>Microbial pathogens</subject><subj-group><subject>Bacterial pathogens</subject><subj-group><subject>Listeria monocytogenes</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Pathology and laboratory medicine</subject><subj-group><subject>Pathogens</subject><subj-group><subject>Microbial pathogens</subject><subj-group><subject>Bacterial pathogens</subject><subj-group><subject>Listeria monocytogenes</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Database and informatics methods</subject><subj-group><subject>Biological databases</subject><subj-group><subject>Genomic databases</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Computational biology</subject><subj-group><subject>Genome analysis</subject><subj-group><subject>Genomic databases</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Genetics</subject><subj-group><subject>Genomics</subject><subj-group><subject>Genome analysis</subject><subj-group><subject>Genomic databases</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Computational biology</subject><subj-group><subject>Genome analysis</subject><subj-group><subject>Genome annotation</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Genetics</subject><subj-group><subject>Genomics</subject><subj-group><subject>Genome analysis</subject><subj-group><subject>Genome annotation</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Software tools</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Engineering and technology</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Software tools</subject></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>ASA<sup>3</sup>P: An automatic and scalable pipeline for the assembly, annotation and higher-level analysis of closely related bacterial isolates</article-title>
+<alt-title alt-title-type="running-head">ASA<sup>3</sup>P: An automatic and scalable analysis pipeline for bacteria</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-4216-2721</contrib-id>
+<name name-style="western">
+<surname>Schwengers</surname>
+<given-names>Oliver</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Formal analysis</role>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Software</role>
+<role content-type="http://credit.casrai.org/">Visualization</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Hoek</surname>
+<given-names>Andreas</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Software</role>
+<role content-type="http://credit.casrai.org/">Visualization</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Fritzenwanker</surname>
+<given-names>Moritz</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-4706-8507</contrib-id>
+<name name-style="western">
+<surname>Falgenhauer</surname>
+<given-names>Linda</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Hain</surname>
+<given-names>Torsten</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Funding acquisition</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Resources</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Chakraborty</surname>
+<given-names>Trinad</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Funding acquisition</role>
+<role content-type="http://credit.casrai.org/">Resources</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Goesmann</surname>
+<given-names>Alexander</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Funding acquisition</role>
+<role content-type="http://credit.casrai.org/">Resources</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Bioinformatics and Systems Biology, Justus Liebig University Giessen, Giessen, Germany</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Institute of Medical Microbiology, Justus Liebig University Giessen, Giessen, Germany</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>German Center for Infection Research (DZIF), partner site Giessen-Marburg-Langen, Giessen, Germany</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Pertea</surname>
+<given-names>Mihaela</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Johns Hopkins University, UNITED STATES</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">oliver.schwengers@computational.bio.uni-giessen.de</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>5</day>
+<month>3</month>
+<year>2020</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>3</month>
+<year>2020</year>
+</pub-date>
+<volume>16</volume>
+<issue>3</issue>
+<elocation-id>e1007134</elocation-id>
+<history>
+<date date-type="received">
+<day>24</day>
+<month>5</month>
+<year>2019</year>
+</date>
+<date date-type="accepted">
+<day>3</day>
+<month>12</month>
+<year>2019</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2020</copyright-year>
+<copyright-holder>Schwengers et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1007134"/>
+<abstract>
+<p>Whole genome sequencing of bacteria has become daily routine in many fields. Advances in DNA sequencing technologies and continuously dropping costs have resulted in a tremendous increase in the amounts of available sequence data. However, comprehensive in-depth analysis of the resulting data remains an arduous and time-consuming task. In order to keep pace with these promising but challenging developments and to transform raw data into valuable information, standardized analyses and scalable software tools are needed. Here, we introduce ASA<sup>3</sup>P, a fully automatic, locally executable and scalable assembly, annotation and analysis pipeline for bacterial genomes. The pipeline automatically executes necessary data processing steps, <italic>i</italic>.<italic>e</italic>. quality clipping and assembly of raw sequencing reads, scaffolding of contigs and annotation of the resulting genome sequences. Furthermore, ASA<sup>3</sup>P conducts comprehensive genome characterizations and analyses, <italic>e</italic>.<italic>g</italic>. taxonomic classification, detection of antibiotic resistance genes and identification of virulence factors. All results are presented via an HTML5 user interface providing aggregated information, interactive visualizations and access to intermediate results in standard bioinformatics file formats. We distribute ASA<sup>3</sup>P in two versions: a locally executable Docker container for small-to-medium-scale projects and an OpenStack based cloud computing version able to automatically create and manage self-scaling compute clusters. Thus, automatic and standardized analysis of hundreds of bacterial genomes becomes feasible within hours. The software and further information is available at: <ext-link ext-link-type="uri" xlink:href="http://asap.computational.bio" xlink:type="simple">asap.computational.bio</ext-link>.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution>German Center for Infection Research (DZIF)</institution>
+</funding-source>
+<award-id>8000 701–3 (HZI)</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Chakraborty</surname>
+<given-names>Trinad</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution>German Center for Infection Research (DZIF)</institution>
+</funding-source>
+<award-id>TI06.001</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Chakraborty</surname>
+<given-names>Trinad</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award003">
+<funding-source>
+<institution>German Center of Infection Research (DZIF)</institution>
+</funding-source>
+<award-id>8032808811</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Chakraborty</surname>
+<given-names>Trinad</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award004">
+<funding-source>
+<institution>German Network for Bioinformatics Infrastructure (de.NBI)</institution>
+</funding-source>
+<award-id>FKZ 031A533B</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Goesmann</surname>
+<given-names>Alexander</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award005">
+<funding-source>
+<institution>German Research Foundation (DFG)</institution>
+</funding-source>
+<award-id>SFB-TR84 project A04 (TRR84/3 2018)</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Chakraborty</surname>
+<given-names>Trinad</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award006">
+<funding-source>
+<institution>German Research Foundation (DFG)</institution>
+</funding-source>
+<award-id>KFO309 Z1 (GO 2037/5-1)</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Goesmann</surname>
+<given-names>Alexander</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award007">
+<funding-source>
+<institution>German Research Foundation (DFG)</institution>
+</funding-source>
+<award-id>SFB-TR84 project B08 (TRR84/3 2018)</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Hain</surname>
+<given-names>Torsten</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award008">
+<funding-source>
+<institution>German Research Foundation (DFG)</institution>
+</funding-source>
+<award-id>SFB1021 Z02 (SFB 1021/2 2017)</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Hain</surname>
+<given-names>Torsten</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award009">
+<funding-source>
+<institution>German Research Foundation (DFG)</institution>
+</funding-source>
+<award-id>KFO309 Z1 (HA 5225/1-1)</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Hain</surname>
+<given-names>Torsten</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>This work was supported by the German Center of Infection Research (DZIF) (DZIF grant 8000 701–3 [HZI], TI06.001, 8032808811, and 8032808820 to TC); the German Network for Bioinformatics Infrastructure (de.NBI) (BMBF grant FKZ 031A533B to AG); and the German Research Foundation (DFG) (SFB-TR84 project A04 [TRR84/3 2018] to TC, KFO309 Z1 [GO 2037/5-1] to AG, SFB-TR84 project B08 [TRR84/3 2018] to TH, SFB1021 Z02 [SFB 1021/2 2017] to TH, KFO309 Z1 [HA 5225/1-1] to TH). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="2"/>
+<table-count count="2"/>
+<page-count count="15"/>
+</counts>
+<custom-meta-group>
+<custom-meta>
+<meta-name>PLOS Publication Stage</meta-name>
+<meta-value>vor-update-to-uncorrected-proof</meta-value>
+</custom-meta>
+<custom-meta>
+<meta-name>Publication Update</meta-name>
+<meta-value>2020-03-17</meta-value>
+</custom-meta>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All source code is accessible at GitHub (<ext-link ext-link-type="uri" xlink:href="https://github.com/oschwengers/asap" xlink:type="simple">https://github.com/oschwengers/asap</ext-link>). The software bundle, manual, exemplary data sets, etc. are accessible via Download at <ext-link ext-link-type="uri" xlink:href="http://Zenodo.org" xlink:type="simple">Zenodo.org</ext-link>. DOIs and download URLs are provided in the GitHub repository readme as well as our institutional software page (<ext-link ext-link-type="uri" xlink:href="https://www.uni-giessen.de/fbz/fb08/Inst/bioinformatik/software/asap" xlink:type="simple">https://www.uni-giessen.de/fbz/fb08/Inst/bioinformatik/software/asap</ext-link>). Genomes from the exemplary data sets are publicly stored in the SRA database; accession IDs are provided in the supporting information.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<disp-quote>
+<p>This is a <italic>PLOS Computational Biology</italic> Software paper.</p>
+</disp-quote>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>In 1977 DNA sequencing was introduced to the scientific community by Frederick Sanger [<xref ref-type="bibr" rid="pcbi.1007134.ref001">1</xref>]. Since then, DNA sequencing has come a long way from dideoxy chain termination over high throughput sequencing of millions of short DNA fragments and finally to real-time sequencing of single DNA molecules [<xref ref-type="bibr" rid="pcbi.1007134.ref002">2</xref>,<xref ref-type="bibr" rid="pcbi.1007134.ref003">3</xref>]. Latter technologies of so-called next generation sequencing (NGS) and third generation sequencing have caused a massive reduction of time and costs, and thus, led to an explosion of publicly available genomes. In 1995, the first bacterial genomes of <italic>M</italic>. <italic>genitalium</italic> and <italic>H</italic>. <italic>influenzae</italic> were published [<xref ref-type="bibr" rid="pcbi.1007134.ref004">4</xref>,<xref ref-type="bibr" rid="pcbi.1007134.ref005">5</xref>]. Today, the NCBI RefSeq database release 93 alone contains 54,854 genomes of distinct bacterial organisms [<xref ref-type="bibr" rid="pcbi.1007134.ref006">6</xref>]. Due to the maturation of NGS technologies, the laborious task of bacterial whole genome sequencing (WGS) has transformed into plain routine [<xref ref-type="bibr" rid="pcbi.1007134.ref007">7</xref>] and nowadays, has become feasible within hours [<xref ref-type="bibr" rid="pcbi.1007134.ref008">8</xref>].</p>
+<p>As the sequencing process is not a limiting factor anymore, focus has shifted towards deeper analyses of single genomes and also large cohorts of <italic>e</italic>.<italic>g</italic>. clinical isolates in a comparative way to unravel the plethora of genetic mechanisms driving diversity and genetic landscape of bacterial populations [<xref ref-type="bibr" rid="pcbi.1007134.ref009">9</xref>]. Comprehensively characterizing bacterial organisms has become a desirable and necessary task in many fields of application including environmental- and medical microbiology [<xref ref-type="bibr" rid="pcbi.1007134.ref010">10</xref>]. The recent worldwide surge of multi-resistant microorganisms has led to the realization, that without the implementation of adequate measures in 2050 up to 10 million people could die each year due to infections with antimicrobial resistant bacteria alone [<xref ref-type="bibr" rid="pcbi.1007134.ref011">11</xref>]. Thus, sequencing and timely characterization of large numbers of bacterial genomes is a key element for successful outbreak detection, proper surveillance of emerging pathogens and monitoring the spread of antibiotic resistance genes [<xref ref-type="bibr" rid="pcbi.1007134.ref012">12</xref>]. Comparative analysis could lead to the identification of novel therapeutic drug targets to prevent the spread of pathogenic and antibiotic-resistant bacteria [<xref ref-type="bibr" rid="pcbi.1007134.ref013">13</xref>–<xref ref-type="bibr" rid="pcbi.1007134.ref016">16</xref>].</p>
+<p>Another very promising and important field of application for microbial genome sequencing is modern biotechnology. Due to deeper knowledge of the underlying genomic mechanisms, genetic engineering of genes and entire bacterial genomes has become an indispensable tool to transform them into living chemical factories with vast applications, as for instance, production of complex chemicals [<xref ref-type="bibr" rid="pcbi.1007134.ref017">17</xref>], synthesis of valuable drugs [<xref ref-type="bibr" rid="pcbi.1007134.ref018">18</xref>–<xref ref-type="bibr" rid="pcbi.1007134.ref020">20</xref>] and biofuels [<xref ref-type="bibr" rid="pcbi.1007134.ref021">21</xref>], decontamination and degradation of toxins and wastes [<xref ref-type="bibr" rid="pcbi.1007134.ref022">22</xref>,<xref ref-type="bibr" rid="pcbi.1007134.ref023">23</xref>] as well as corrosion protection [<xref ref-type="bibr" rid="pcbi.1007134.ref024">24</xref>].</p>
+<p>Now, that the technological barriers of WGS have fallen, genomics finally transformed into Big Data science [<xref ref-type="bibr" rid="pcbi.1007134.ref025">25</xref>] inducing new issues and challenges [<xref ref-type="bibr" rid="pcbi.1007134.ref026">26</xref>]. To keep pace with these developments, we believe that continued efforts are required in terms of the following issues:</p>
+<p>a) Automation: Repeated manual analyses are time consuming and error prone. Following the well-known “don’t repeat yourself” mantra and the pareto principle, scientists should be able to concentrate on interesting and promising aspects of data analysis instead of ever repeating data processing tasks.</p>
+<p>b) Standard operating procedures (SOPs): In a world of high-throughput data creation and complex combinations of bioinformatic tools SOPs are indispensable to increase and maintain both reproducibility and comparability [<xref ref-type="bibr" rid="pcbi.1007134.ref027">27</xref>].</p>
+<p>c) Scalability: To keep pace with the available data, bioinformatics software needs to take advantage of modern computing technologies, <italic>e</italic>.<italic>g</italic>. multi-threading and cloud computing.</p>
+<p>Addressing these issues, several major platforms for the automatic annotation and analysis of prokaryotic genomes have evolved in recent years as for example the NCBI Prokaryotic Genome Annotation Pipeline [<xref ref-type="bibr" rid="pcbi.1007134.ref006">6</xref>], RAST [<xref ref-type="bibr" rid="pcbi.1007134.ref028">28</xref>] and PATRIC [<xref ref-type="bibr" rid="pcbi.1007134.ref029">29</xref>]. All three provide sophisticated genome analysis and annotation pipelines and pose a de-facto community standard in terms of annotation quality. In addition, several offline tools, <italic>e</italic>.<italic>g</italic>. Prokka [<xref ref-type="bibr" rid="pcbi.1007134.ref030">30</xref>], have been published in order to address major drawbacks of the aforementioned online tools, <italic>i</italic>.<italic>e</italic>. they are not executable on local computers or in on-premises cloud computing environments. However, comprehensive analysis of bacterial WGS data is not limited to the process of annotation alone but also requires sequencing technology-dependent pre-processing of raw data as well as subsequent characterization steps. As analysis of bacterial isolates and cohorts will be a standard method in many fields of application in the near future, demand for sophisticated local assembly, annotation and higher-level analysis pipelines will rise constantly. Furthermore, we believe that the utilization of portable devices for DNA sequencing will shift analysis from central software installations to either decentral offline tools or scalable cloud solutions. To the authors’ best knowledge, there is currently no published bioinformatics software tool successfully addressing all aforementioned issues. In order to overcome this bottleneck, we introduce ASA<sup>3</sup>P, an automatic and scalable software pipeline for the assembly, annotation and higher-level analysis of closely related bacterial isolates.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Design and implementation</title>
+<p>ASA<sup>3</sup>P is implemented as a modular command line tool in Groovy (<ext-link ext-link-type="uri" xlink:href="http://groovy-lang.org/" xlink:type="simple">http://groovy-lang.org</ext-link>), a dynamic scripting language for the Java virtual machine. In order to achieve acceptable to best possible results over a broad range of bacterial genera, sequencing technologies and sequencing depths, ASA<sup>3</sup>P incorporates and takes advantage of published and well performing bioinformatics tools wherever available and applicable in terms of lean and scalable implementation. As the pipeline is also intended to be used as a preprocessing tool for more specialized analyses, it provides no user-adjustable parameters by design and thus facilitates the implementation of robust SOPs. Hence, each utilized tool is parameterized according to community best practices and knowledge (<bold><xref ref-type="supplementary-material" rid="pcbi.1007134.s001">S1 Table</xref></bold>).</p>
+<sec id="sec003">
+<title>Workflow, tools and databases</title>
+<p>Depending on the sequencing technology used to generate the data, ASA<sup>3</sup>P automatically chooses appropriate tools and parameters. An explanation on which tool was chosen for each task is given in <bold><xref ref-type="supplementary-material" rid="pcbi.1007134.s002">S2 Table</xref></bold>. Semantically, the pipeline’s workflow is divided into four stages (<bold><xref ref-type="fig" rid="pcbi.1007134.g001">Fig 1</xref></bold>). In the first mandatory stage A (<bold><xref ref-type="fig" rid="pcbi.1007134.g001">Fig 1A</xref></bold>), provided input data are processed, resulting in annotated genomes. Therefore, raw sequencing reads are quality controlled and clipped via FastQC (<ext-link ext-link-type="uri" xlink:href="https://github.com/s-andrews/FastQC" xlink:type="simple">https://github.com/s-andrews/FastQC</ext-link>), FastQ Screen (<ext-link ext-link-type="uri" xlink:href="https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen" xlink:type="simple">https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen</ext-link>), Trimmomatic [<xref ref-type="bibr" rid="pcbi.1007134.ref031">31</xref>] and Filtlong (<ext-link ext-link-type="uri" xlink:href="https://github.com/rrwick/Filtlong" xlink:type="simple">https://github.com/rrwick/Filtlong</ext-link>). Filtered reads are then assembled via SPAdes [<xref ref-type="bibr" rid="pcbi.1007134.ref032">32</xref>] for Illumina reads, HGAP 4 [<xref ref-type="bibr" rid="pcbi.1007134.ref033">33</xref>] for Pacific Bioscience (PacBio) reads and Unicycler [<xref ref-type="bibr" rid="pcbi.1007134.ref034">34</xref>] for Oxford Nanopore Technology (ONT) reads, respectively. Hybrid assemblies of Illumina and ONT reads are conducted via Unicycler, as well. Before annotating assembled genomes with Prokka [<xref ref-type="bibr" rid="pcbi.1007134.ref030">30</xref>], contigs are rearranged and ordered via the multi-reference scaffolder MeDuSa [<xref ref-type="bibr" rid="pcbi.1007134.ref035">35</xref>]. For the annotation of subsequent pseudogenomes ASA<sup>3</sup>P uses custom genus-specific databases based on binned RefSeq genomes [<xref ref-type="bibr" rid="pcbi.1007134.ref006">6</xref>] as well as specialized protein databases, <italic>i</italic>.<italic>e</italic>. CARD [<xref ref-type="bibr" rid="pcbi.1007134.ref036">36</xref>] and VFDB [<xref ref-type="bibr" rid="pcbi.1007134.ref037">37</xref>]. In order to integrate public or externally analyzed genomes, ASA<sup>3</sup>P is able to incorporate different types of pre-processed data, <italic>e</italic>.<italic>g</italic>. contigs, scaffolds and annotated genomes.</p>
+<fig id="pcbi.1007134.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1007134.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>The ASA<sup>3</sup>P workflow and incorporated third party software tools and databases.</title>
+<p>The ASA<sup>3</sup>P workflow is organized in four stages (large white boxes, A-D) comprising per-isolate processing and characterization, comparative analysis and reporting steps (orange boxes). The processing stage A is mandatory whereas stage B and C are optional and can be skipped by the user. Each step takes advantage of selected third-party software tools (blue boxes) and/or databases (green ovals) depending on the type of provided input data at hand.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1007134.g001" xlink:type="simple"/>
+</fig>
+<p>In an optional second stage B (<bold><xref ref-type="fig" rid="pcbi.1007134.g001">Fig 1B</xref></bold>), all assembled and annotated genomes are extensively characterized. A taxonomic classification is conducted comprising three distinct methods, <italic>i</italic>.<italic>e</italic>. a kmer profile search, a 16S sequence homology search and a computation of an average nucleotide identity (ANI) [<xref ref-type="bibr" rid="pcbi.1007134.ref038">38</xref>] against user provided reference genomes. For the kmer profile search, the software takes advantage of the Kraken package [<xref ref-type="bibr" rid="pcbi.1007134.ref039">39</xref>] and a custom reference genome database based on RefSeq [<xref ref-type="bibr" rid="pcbi.1007134.ref006">6</xref>]. The 16S based classification is implemented using BLAST+ [<xref ref-type="bibr" rid="pcbi.1007134.ref040">40</xref>] and the SILVA [<xref ref-type="bibr" rid="pcbi.1007134.ref041">41</xref>] database. Calculation of ANI values is implemented in Groovy using nucmer within the MUMmer package [<xref ref-type="bibr" rid="pcbi.1007134.ref042">42</xref>]. A subspecies level multi locus sequence typing (MLST) analysis is implemented in Groovy using BLAST+ [<xref ref-type="bibr" rid="pcbi.1007134.ref040">40</xref>] and the PubMLST.org [<xref ref-type="bibr" rid="pcbi.1007134.ref043">43</xref>] database. Detection of antibiotic resistances (ABRs) is conducted via RGI and the CARD [<xref ref-type="bibr" rid="pcbi.1007134.ref036">36</xref>] database. A detection of virulence factors (VFs) is implemented via BLAST+ [<xref ref-type="bibr" rid="pcbi.1007134.ref040">40</xref>] and VFDB [<xref ref-type="bibr" rid="pcbi.1007134.ref037">37</xref>]. Quality clipped reads get mapped onto user provided reference genomes via Bowtie2 [<xref ref-type="bibr" rid="pcbi.1007134.ref044">44</xref>] for Illumina, pbalign (<ext-link ext-link-type="uri" xlink:href="https://github.com/PacificBiosciences/pbalign" xlink:type="simple">https://github.com/PacificBiosciences/pbalign</ext-link>) for PacBio and Minimap2 [<xref ref-type="bibr" rid="pcbi.1007134.ref045">45</xref>] for ONT sequence reads, respectively. Based on these read mappings, the pipeline calls, filters and annotates SNPs via SAMtools [<xref ref-type="bibr" rid="pcbi.1007134.ref046">46</xref>] and SnpEff [<xref ref-type="bibr" rid="pcbi.1007134.ref047">47</xref>] and finally computes consensus sequences for each isolate. In order to maximize parallel execution and thus reducing overall runtime, stage A and B are technically implemented as a single step.</p>
+<p>A third optional comparative stage C (<bold><xref ref-type="fig" rid="pcbi.1007134.g001">Fig 1C</xref></bold>) is triggered as soon as stages A and B are completed, <italic>i</italic>.<italic>e</italic>. all genomes are processed and characterized. Utilizing aforementioned consensus sequences, ASA<sup>3</sup>P computes a phylogenetic approximately maximum-likelihood tree via FastTreeMP [<xref ref-type="bibr" rid="pcbi.1007134.ref048">48</xref>]. This is complemented by the calculation of a core, accessory and pan-genome as well as the detection of isolate genes conducted via Roary [<xref ref-type="bibr" rid="pcbi.1007134.ref049">49</xref>].</p>
+<p>In a final stage (<bold><xref ref-type="fig" rid="pcbi.1007134.g001">Fig 1D</xref></bold>), the pipeline aggregates analysis results and data files and finally provides a graphical user interface (GUI), <italic>i</italic>.<italic>e</italic>. responsive HTML5 documents comprising detailed information via interactive widgets and visualizations. Therefore, ASA<sup>3</sup>P takes advantage of modern web frameworks, <italic>e</italic>.<italic>g</italic>. Bootstrap (<ext-link ext-link-type="uri" xlink:href="https://getbootstrap.com/" xlink:type="simple">https://getbootstrap.com</ext-link>) and jQuery (<ext-link ext-link-type="uri" xlink:href="https://jquery.com/" xlink:type="simple">https://jquery.com</ext-link>) as well as adequate JavaScript visualization libraries, <italic>e</italic>.<italic>g</italic>. Google Charts (<ext-link ext-link-type="uri" xlink:href="https://developers.google.com/chart" xlink:type="simple">https://developers.google.com/chart</ext-link>), D3 (<ext-link ext-link-type="uri" xlink:href="https://d3js.org/" xlink:type="simple">https://d3js.org</ext-link>) and C3 (<ext-link ext-link-type="uri" xlink:href="http://c3js.org/" xlink:type="simple">http://c3js.org</ext-link>).</p>
+</sec>
+<sec id="sec004">
+<title>User input and output</title>
+<p>Each set of bacterial isolates to be analyzed within a single execution is considered as a self-contained analysis of bacterial cohorts and is subsequently referred to as an ASA<sup>3</sup>P project. As ASA<sup>3</sup>P was developed in order to analyze cohorts of closely related isolates, <italic>e</italic>.<italic>g</italic>. a clonal outbreak, the pipeline expects all genomes within a project to belong to at least the same genus, although a common species is most favourable. For each project, the pipeline expects a distinct directory comprising a configuration spreadsheet containing necessary project information and a subdirectory containing all input data files. Such a directory is subsequently referred to as project directory. In order to ease provisioning of necessary information, we provide a configuration spreadsheet template comprising two sheets (<bold><xref ref-type="supplementary-material" rid="pcbi.1007134.s005">S1</xref> and <xref ref-type="supplementary-material" rid="pcbi.1007134.s006">S2</xref> Figs</bold>). The first sheet contains project meta information such as project names and descriptions as well as contact information on project maintainers and provided reference genomes. The second sheet stores information on each isolate comprising a unique identifier as well as data input type and related files. ASA<sup>3</sup>P is currently able to process input data in the following standard file formats: Illumina paired-end and single-end reads as compressed FastQ files, PacBio RSII and Sequel reads provided either as single unmapped bam files or via triples of bax.h5 files, demultiplexed ONT reads as compressed FastQ files, pre-assembled contigs or pseudogenomes as Fasta files and pre-annotated genomes as Genbank, EMBL or GFF files. In the latter case, corresponding genome sequences can either be included in the GFF file or provided via separate Fasta files.</p>
+<p>As ASA<sup>3</sup>P is also intended to be used as an automatic preprocessing tool providing as much reliable information as possible, the results are stored in a standardized manner within project directories comprising quality clipped reads, assemblies, ordered and scaffolded contigs, annotated genomes, mapped reads, detected SNPs as well as ABRs and VFs. In detail, all result files are stored in distinct subdirectories for each analysis by the pipeline and for certain analyses further subdirectories are created therein for each genome (<bold><xref ref-type="supplementary-material" rid="pcbi.1007134.s007">S3 Fig</xref></bold>). Aggregated information is stored in a standardized but flexible document structure as JSON files. Text and binary result files are stored in standard bioinformatics file formats, <italic>i</italic>.<italic>e</italic>. FastQ, Fasta, BAM, VCF and Newick. Providing results in such a machine-readable manner, ASA<sup>3</sup>P outputs can be further exploited by manual or automatic downstream analyses since customized scripts with a more targeted focus can easily access necessary data. In addition, ASA<sup>3</sup>P creates user-friendly HTML5 reports providing both prepared summaries as well as detailed information via sophisticated interactive visualizations.</p>
+</sec>
+<sec id="sec005">
+<title>Implementation and software distributions</title>
+<p>ASA<sup>3</sup>P is designed as a modular and expandable application with high scalability in mind. It consists of three distinct tiers, <italic>i</italic>.<italic>e</italic>. a command line interface, an application programming interface (API) and analysis specific cluster distributable worker scripts. A common software-wide API is implemented in Java, whereas the core application and worker scripts are implemented in Groovy. In order to overcome common error scenarios on distributed high-performance computing (HPC) clusters and cloud infrastructures and thereby delivering robust runtime behavior, the pipeline takes advantage of a well-designed shared file system-oriented data organization, following a convention over configuration approach. Thus, loosely coupled software parts run both concurrently and independently without interfering with each other. In addition, future enhancements and externally customized scripts reliably find intermediate files at reproducible locations within the file system.</p>
+<p>As ASA<sup>3</sup>P requires many third-party dependencies such as software libraries, bioinformatics tools and databases, both distribution and installation is a non-trivial task. In order to reduce the technical complexity as much as possible and to overcome this bottleneck for non-computer-experts, we provide two distinct distributions addressing different use cases and project sizes, <italic>i</italic>.<italic>e</italic>. a locally executable containerized version based on Docker (DV) (<ext-link ext-link-type="uri" xlink:href="https://www.docker.com/" xlink:type="simple">https://www.docker.com</ext-link>) as well as an OpenStack (OS) (<ext-link ext-link-type="uri" xlink:href="https://www.openstack.org/" xlink:type="simple">https://www.openstack.org</ext-link>) based cloud computing version (OSCV). Details and appropriate use cases of both are described in the following sections.</p>
+</sec>
+<sec id="sec006">
+<title>Docker</title>
+<p>For small to medium projects and utmost simplicity we provide a Docker container image encapsulating all technical dependencies such as software libraries and system-wide executables. As the DV offers only vertical scalability, it addresses small projects of less than ca. 200 genomes. The necessary container image is publicly available from our Docker repository (<ext-link ext-link-type="uri" xlink:href="https://hub.docker.com/r/oschwengers/asap" xlink:type="simple">https://hub.docker.com/r/oschwengers/asap</ext-link>) and can be started without any prior installation, except of the Docker software itself. For the sake of lightweight container images and to comply with Docker best practices, all required bioinformatics tools and databases are provided via an additional tarball, subsequently referred to as ASA<sup>3</sup>P volume which users merely need to download and extract, once. For non-Docker savvy users, a shell script hiding all Docker related aspects is also provided. By this, executing the entire pipeline comes down to a single command:</p>
+<p>&lt;asap_dir&gt;/asap-docker.sh -p &lt;project_path&gt;.</p>
+</sec>
+<sec id="sec007">
+<title>Cloud computing</title>
+<p>For medium to very large projects, we provide an OS based version in order to utilize horizontal scaling capabilities of modern cloud computing infrastructures. Since creation and configuration of such complex setups require advanced technical knowledge, we provide a shell script taking care of all cloud specific aspects and to orchestrate and execute the underlying workflow logic. Necessary cloud specific properties such as available hardware quotas, virtual machine (VM) flavours and OS identifiers are specified and stored in a custom property file, once. In order to address contemporary demands for high scalability, the OSCV is able to horizontally scale out and distribute workloads on an internally managed Sun Grid Engine (SGE) based compute cluster. A therefore indispensable shared file system is provided by an internal network file system (NFS) server sharing distinct storage volumes for both project data and a necessary ASA<sup>3</sup>P volume. In order to create and orchestrate both software and hardware infrastructures in a fully automatic manner, the pipeline takes advantage of the BiBiGrid (<ext-link ext-link-type="uri" xlink:href="https://github.com/BiBiServ/bibigrid/" xlink:type="simple">https://github.com/BiBiServ/bibigrid/</ext-link>) framework. Hereby, ASA<sup>3</sup>P is able to adjust the compute cluster size fitting the number of isolates within a project as well as available hardware quotas. Except of an initial VM acting as a gateway into an OS cloud project, the entire compute cluster infrastructure is automatically created, setup, managed and finally shut down by the software. Thus, ASA<sup>3</sup>P can exploit vast hardware capacities and is portable to any OS compatible cloud. For further guidance, all prerequisite installation steps are covered in a detailed user manual.</p>
+</sec>
+</sec>
+<sec id="sec008" sec-type="results">
+<title>Results</title>
+<sec id="sec009">
+<title>Analysis features</title>
+<p>ASA<sup>3</sup>P conducts a comprehensive set of pre-processing tasks and genome analyses. In order to delineate currently implemented analysis features, we created and analyzed a benchmark data set comprising 32 Illumina sequenced <italic>Listeria monocytogenes</italic> isolates randomly selected from SRA as well as four <italic>Listeria monocytogenes</italic> reference genomes from Genbank (<bold><xref ref-type="supplementary-material" rid="pcbi.1007134.s003">S3 Table</xref></bold>). All isolates were successfully assembled, annotated, deeply characterized and finally included in comparative analyses. <bold><xref ref-type="table" rid="pcbi.1007134.t001">Table 1</xref></bold> provides genome wise minimum and maximum values for key metrics covering results from workflow stages A and B. After conducting a quality control and adapter removal for all raw sequencing reads, a minimum of 393,300 and a maximum of 6,315,924 reads remained, respectively. Genome wise minimum and maximum mean phred scores were 34.7 and 37.2. Assembled genome sizes ranged between 2,818 kbp and 3,201 kbp with a minimum of 12 and a maximum of 108 contigs. Hereby, a maximum N50 of 1,568 kbp was achieved. After rearranging and ordering contigs to aforementioned reference genomes, assemblies were reduced to 2 to 10 scaffolds and 0 to 42 contigs per genome, thus increasing the minimum and maximum N50 to 658 kbp and 3,034 kbp, respectively. Pseudolinked genomes were subsequently annotated resulting in between 2,735 and 3,200 coding genes and between 95 and 144 non-coding genes.</p>
+<table-wrap id="pcbi.1007134.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1007134.t001</object-id>
+<label>Table 1</label> <caption><title>Common genome analysis key metrics for processing and characterization steps analyzing a benchmark dataset comprising 32 <italic>Listeria monocytogenes</italic> isolates.</title> <p>Minimum and maximum values for selected common genome analysis key metrics resulting from an automatic analysis conducted with ASA<sup>3</sup>P of an exemplary benchmark dataset comprising 32 <italic>Listeria monocytogenes</italic> isolates. Metrics are given for quality control (QC), assembly, scaffolding and annotation processing steps as well as detection of antibiotic resistances and virulence factors characterization steps on a per-isolate level.</p></caption>
+<alternatives>
+<graphic id="pcbi.1007134.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1007134.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" style="border-bottom:thick">Analysis</th>
+<th align="center" style="border-bottom:thick">Metric</th>
+<th align="center" style="border-bottom:thick">Minimum</th>
+<th align="center" style="border-bottom:thick">Maximum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">QC</td>
+<td align="center">reads</td>
+<td align="center">393,300</td>
+<td align="center">6,315,924</td>
+</tr>
+<tr>
+<td align="center">QC</td>
+<td align="center">Mean read length</td>
+<td align="center">125.7 nt</td>
+<td align="center">228.5 nt</td>
+</tr>
+<tr>
+<td align="center">QC</td>
+<td align="center">mean Phred score</td>
+<td align="center">34.7</td>
+<td align="center">37.2</td>
+</tr>
+<tr>
+<td align="center">assembly</td>
+<td align="center">Genome size</td>
+<td align="center">2,817,892 bp</td>
+<td align="center">3,201,054 bp</td>
+</tr>
+<tr>
+<td align="center">assembly</td>
+<td align="center">contigs</td>
+<td align="center">12</td>
+<td align="center">108</td>
+</tr>
+<tr>
+<td align="center">assembly</td>
+<td align="center">N50</td>
+<td align="center">56,125 bp</td>
+<td align="center">1,568,056 bp</td>
+</tr>
+<tr>
+<td align="center">assembly</td>
+<td align="center">GC content</td>
+<td align="center">37%</td>
+<td align="center">38%</td>
+</tr>
+<tr>
+<td align="center">scaffolding</td>
+<td align="center">scaffolds</td>
+<td align="center">1</td>
+<td align="center">10</td>
+</tr>
+<tr>
+<td align="center">scaffolding</td>
+<td align="center">contigs</td>
+<td align="center">0</td>
+<td align="center">42</td>
+</tr>
+<tr>
+<td align="center">scaffolding</td>
+<td align="center">N50</td>
+<td align="center">657,549 bp</td>
+<td align="center">3,034,489 bp</td>
+</tr>
+<tr>
+<td align="center">annotation</td>
+<td align="center">coding genes</td>
+<td align="center">2,735</td>
+<td align="center">3,200</td>
+</tr>
+<tr>
+<td align="center">annotation</td>
+<td align="center">non-coding genes</td>
+<td align="center">95</td>
+<td align="center">144</td>
+</tr>
+<tr>
+<td align="center">antibiotic resistance</td>
+<td align="center">ABR genes</td>
+<td align="center">0</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center" style="border-bottom:thick">virulence factors</td>
+<td align="center" style="border-bottom:thick">VF genes</td>
+<td align="center" style="border-bottom:thick">16</td>
+<td align="center" style="border-bottom:thick">35</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>After pre-processing, assembling and annotating all isolates, ASA<sup>3</sup>P successfully conducted deep characterizations of all isolates, which were consistently classified to the species level via kmer-lookups as well as 16S ribosomal RNA database searches as <italic>Listeria monocytogenes</italic>, except of a single isolate classified as <italic>Listeria innocua</italic>. In line with these results all isolates shared an ANI value above 95% and a conserved DNA of at least 80% with at least one of the reference genomes, except for the <italic>L</italic>. <italic>innocua</italic> isolate which shared a maximum ANI of 90.7% and a conserved DNA of only 37.3%. Furthermore, the pipeline successfully subtyped all but one of the isolates via MLST, by automatically detecting and applying the “lmonocytogenes” schema. Noteworthy, the <italic>L</italic>. <italic>innocua</italic> isolate constitutes a distinct MLST lineage, <italic>i</italic>.<italic>e</italic>. <italic>L</italic>. <italic>innocua</italic>. ASA<sup>3</sup>P detected between 0 and 2 antibiotic resistance genes and between 16 and 35 virulence factor genes. A comprehensive list of all key metrics for each genome is provided in a separate spreadsheet (<bold><xref ref-type="supplementary-material" rid="pcbi.1007134.s009">S1 File</xref>)</bold>.</p>
+<p>Finally, core and pan-genomes were computed resulting in 1,485 core genes and a pan-genome comprising 7,242 genes. Excluding the <italic>L</italic>. <italic>innocua</italic> strain and re-analyzing the dataset reduced the pan-genome to 6,197 genes and increased the amount of core genes to 2,004 additionally endorsing its taxonomic difference.</p>
+</sec>
+<sec id="sec010">
+<title>Data visualization</title>
+<p>Analysis results as well as aggregated information get collected, transformed and finally presented by the pipeline via user friendly and detailed reports. These comprise local and responsive HTML5 documents containing interactive JavaScript visualizations facilitating the easy comprehension of the results. <xref ref-type="fig" rid="pcbi.1007134.g002">Fig 2</xref> shows an exemplary collection of embedded data visualizations. Where appropriate, specialized widgets were implemented, as for instance circular genome annotation plots presenting genome features, GC content and GC skew on separate tracks (<bold><xref ref-type="fig" rid="pcbi.1007134.g002">Fig 2A</xref></bold>). These plots can be zoomed, panned and downloaded in SVG format for subsequent re-utilization. Another example is the interactive and dynamic visualization of SNP based phylogenetic trees (<bold><xref ref-type="fig" rid="pcbi.1007134.g002">Fig 2E</xref></bold>) via the Phylocanvas library (<ext-link ext-link-type="uri" xlink:href="http://phylocanvas.org/" xlink:type="simple">http://phylocanvas.org</ext-link>) enabling customizations by the user, as for instance changing tree types as well as collapsing and rotating subtrees. In order to provide users with an expeditious but conclusive overview on bacterial cohorts, key genome characteristics are visualized via an interactive parallel coordinates plot (<bold><xref ref-type="fig" rid="pcbi.1007134.g002">Fig 2F</xref></bold>) allowing for the combined selection of value ranges in different dimensions. Thus, clusters of isolates sharing high-level genome characteristics can be explored and identified straightforward. In order to rapidly compare different ABR capabilities of individual isolates, a specialized widget was designed and implemented (<bold><xref ref-type="fig" rid="pcbi.1007134.g002">Fig 2D</xref></bold>). For each isolate an ABR profile based on detected ABR genes grouped to 34 distinct target drug classes is computed, visualized and stacked for the easy perception of dissimilarities between genomes. Throughout the reports wherever appropriate, numeric results are interactively visualized as, for instance, the distribution of detected MLST sequence types (<bold><xref ref-type="fig" rid="pcbi.1007134.g002">Fig 2B</xref></bold>) and per-isolate analysis results summarized via key metrics presented within sortable and filterable data tables (<bold><xref ref-type="fig" rid="pcbi.1007134.g002">Fig 2C</xref></bold>).</p>
+<fig id="pcbi.1007134.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1007134.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Selection of interactive GUI widgets embedded in generated HTML5 reports.</title>
+<p><bold>(A)</bold> Circular genome plot for a <italic>Listeria monocytogenes</italic> pseudogenome. The zoomable and scalable SVG based circular genome plot provides comprehensive information on genome features on mouseover events. Reference-guided rearranged contigs are linked to pseudogenomes for the sake of better readability. From the outermost inward: genes on the forward and reverse strand, respectively, GC content and GC skew. <bold>(B)</bold> Donut chart of MLST sequence type (ST) distribution. The MLST ST distribution of all isolates analyzed within a project is shown by and interactive donut chart. Single STs can be selected or deselected. <bold>(C)</bold> Visual representation of normalized assembly key statistics. Per-isolate assembly key statistics are normalized to minimum and maximum values within a project column-wise and visualized within an interactive data table allowing for column-based sorting and filtering for the rapid comparison of isolates and detection of outliers. <bold>(D)</bold> Antibiotic resistance profile overview widget. An antibiotic resistance profile comprising 34 distinct target drug classes is computed based on CARD annotations for each isolate and transformed into an overview widget allowing a rapid resistome comparison of all analyzed isolates. Black rectangle: a mouseover triggered tooltip describing detected antibiotic target drug resistance. <bold>(E)</bold> SNP-based approximately-maximum-likelihood phylogenetic tree. An approximately-maximum-likelihood phylogenetic tree is computed based on SNPs detected via read-mapping against a reference genome and stored in standard newick file format. The resulting tree is visualized via the interactive Phylocanvas JavaScript library providing comprehensive user interaction features, <italic>e</italic>.<italic>g</italic>. collapsing, expanding and rotating subtrees and tree type selection. <bold>(F)</bold> Parallel coordinates plot providing a multi-dimensional cohort overview of per-isolate genome metrics and characteristics. A selection of seven genome key metrics and characteristics is visualized in a parallel coordinates plot providing a multi-dimensional cohort overview enabling the rapid detection of clustered isolates and outliers. Vertical bars: key metrics or characteristic as plot dimensions; coloured horizontal lines: isolates and related values providing table-synchronized highlighting upon mouseovers.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1007134.g002" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec011">
+<title>Scalability and hardware requirements</title>
+<p>When analyzing projects with growing numbers of isolates, local execution can quickly become infeasible. In order to address varying amounts of data, we provide two distinct ASA<sup>3</sup>P distributions based on Docker and cloud computing environments. Each features individual scalability properties and implies different levels of technical complexity in terms of distribution and installation requirements. In order to benchmark the pipeline’s scalability, we measured wall clock runtimes analyzing two projects comprising 32 and 1,024 <italic>L</italic>. <italic>monocytogenes</italic> isolates, respectively (<bold><xref ref-type="supplementary-material" rid="pcbi.1007134.s003">S3 Table</xref></bold>). Accession numbers for the large data set will be provided upon request. In addition to both public distributions, we also tested a custom installation on an inhouse SGE-based HPC cluster. The DV was executed on a VM providing 32 vCPUs and 64 GB memory. The quotas of the OS cloud project allowed for a total amount of 560 vCPUs and 1,280 GB memory. The HPC cluster comprised 20 machines with 40 cores and 256 GB memory, each. All machines hosted an Ubuntu 16.04 operating system. <xref ref-type="table" rid="pcbi.1007134.t002">Table 2</xref> shows the best-of-three runtimes for each version and benchmark data set combination. The pipeline successfully finished all benchmark analyses, except of the 1,024 dataset analyzed by the DV, due to lacking memory capacities required for the calculation of a phylogenetic tree comprising this large amount of genomes. Analyzing the 32 <italic>L</italic>. <italic>monocytogenes</italic> data set on larger compute infrastructures, <italic>i</italic>.<italic>e</italic>. the OS cloud (5:02:24 h) and HPC cluster (4:49:24 h), shows significantly reduced runtimes by approximately 50%, compared to the Docker-based executions (10:59:34 h). Not surprisingly, runtimes of the OSCV are slightly longer than HPC runtimes, due to the inherent overhead of automatic infrastructure setup and management procedures. Excluding these overheads reduces runtimes by approximately half an hour, leading to slightly shorter periods compared to the HPC version. We attribute this to a saturated workload distribution combined with faster CPUs in the cloud as stated in <xref ref-type="supplementary-material" rid="pcbi.1007134.s004"><bold>S4</bold> Table</xref>. Comparing measured runtimes for both data sets exhibit a ~5.8- and ~6.9-fold increase for the HPC cluster (27:56:37 h) and OSCV (34:47:45 h) version, respectively, although the amount of isolates was increased 32-fold.</p>
+<table-wrap id="pcbi.1007134.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1007134.t002</object-id>
+<label>Table 2</label> <caption><title>Wall clock runtimes for each ASA<sup>3</sup>P version utilizing different hardware infrastructures and benchmark dataset sizes.</title> <p>Provided are best-of-three wall clock runtimes for complete ASA<sup>3</sup>P executions analyzing <italic>Listeria monocytogenes</italic> benchmark datasets comprising 32 and 1,024 isolates given in hh:mm:ss format. Docker: a single virtual machine with 32 vCPUs and 64 GB memory was used. Analysis of the 1,024 isolate dataset was not feasible due to memory limitations; HPC: ASA<sup>3</sup>P automatically distributed the workload to an SGE-based high-performance computing cluster comprising 20 nodes providing 40 cores and 256 GB memory each; Cloud: ASA<sup>3</sup>P was executed in an OpenStack based cloud computing project comprising 560 vCPUs and 1,280 GB memory in total. Runtimes in parenthesis exclude build times for automatic infrastructure setups, <italic>i</italic>.<italic>e</italic>. the pure ASA<sup>3</sup>P wall clock runtimes.</p></caption>
+<alternatives>
+<graphic id="pcbi.1007134.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1007134.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" style="border-bottom:thick"/>
+<th align="center" style="border-bottom:thick">Docker</th>
+<th align="center" style="border-bottom:thick">Cloud</th>
+<th align="center" style="border-bottom:thick">HPC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">32 <italic>L</italic>. <italic>monocytogenes</italic></td>
+<td align="center">10:59:34</td>
+<td align="center">5:02:24<break/>(4:31:59)</td>
+<td align="center">4:49:24</td>
+</tr>
+<tr>
+<td align="center" style="border-bottom:thick">1024 <italic>L</italic>. <italic>monocytogenes</italic></td>
+<td align="center" style="border-bottom:thick">-</td>
+<td align="center" style="border-bottom:thick">34:47:45<break/>(33:25:26)</td>
+<td align="center" style="border-bottom:thick">27:56:37</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>We furthermore investigated internal pipeline scaling properties for combinations of fixed and varying HPC cluster and project sizes (<bold><xref ref-type="supplementary-material" rid="pcbi.1007134.s008">S4 Fig</xref></bold>). In a first setup, growing numbers of <italic>L</italic>. <italic>monocytogenes</italic> isolates were analyzed utilizing a fixed-size HPC cluster of 4 compute nodes providing 32 vCPUs and 64 GB RAM each. Iteratively doubling the amount of isolates from 32 to 1,024 led to runtimes approximately increasing by a factor of 2, in line with our expectations. Nevertheless, we observed an overproportional increase in runtime of the internal comparative steps within stage C compared to the per-isolate steps of stage A and B. We attribute this to the implementations and inherent algorithms of internally used third party executables. As this might become a bottleneck for the analysis of even larger projects, this will be subject to future developments.</p>
+<p>In addition, we repetitively analyzed a fixed number of 128 <italic>L</italic>. <italic>monocytogenes</italic> isolates while increasing underlying hardware capacities, <italic>i</italic>.<italic>e</italic>. available HPC compute nodes. In this second setup, we could measure significant runtime reductions for up to 8 compute nodes. Further hardware capacity expansions led to saturated workload distributions and contributed negligible runtime benefits. To summarize all conducted runtime benchmarks, we conclude that ASA<sup>3</sup>P is able to horizontally scale-out to larger infrastructures and thus, conducting expeditious analysis of large projects within favourable periods of time.</p>
+<p>To test the reliable distribution and robustness of the pipeline, we executed the DV on an Apple iMac running MacOS 10.14.2 providing 4 cores and 8 GB of memory. ASA<sup>3</sup>P successfully analyzed a downsampled dataset comprising 4 <italic>L</italic>. <italic>monocytogenes</italic> isolates within a measured wall clock runtime of 8:43:12 hours. In order to assess minimal hardware requirements, the downsampled data set was analyzed iteratively reducing provided memory capacities of an OS VM. Hereby, we could determine a minimal memory requirement of 8 GB and thus draw the conclusion that ASA<sup>3</sup>P allows the execution of a sophisticated workflow for the analysis of bacterial WGS data cohorts on ordinary consumer hardware. However, since larger amounts of isolates, more complex genomes or deeper sequencing coverages might result in higher hardware requirements, we nevertheless recommend at least 16 GB of memory.</p>
+</sec>
+</sec>
+<sec id="sec012" sec-type="conclusions">
+<title>Conclusion</title>
+<p>We described ASA<sup>3</sup>P, a new software tool for the local, automatic and highly scalable analysis of bacterial WGS data. The pipeline integrates many common analyses in a standardized and community best practices manner and is available for download either as a local command line tool encapsulated and distributed via Docker or a self-orchestrating OS cloud version. To the authors’ best knowledge it is currently the only publicly available tool for the automatic high-throughput analysis of bacterial cohorts WGS data supporting all major contemporary sequencing platforms, offering SOPs, robust scalability as well as a user friendly and interactive graphical user interface whilst still being locally executable and thus offering on-premises analysis for sensitive or even confidential data. So far, ASA<sup>3</sup>P has been used to analyze thousands of bacterial isolates covering a broad range of different taxa.</p>
+<sec id="sec013">
+<title>Availability and future directions</title>
+<p>The source code is available on GitHub under GPL3 license at <ext-link ext-link-type="uri" xlink:href="https://github.com/oschwengers/asap" xlink:type="simple">https://github.com/oschwengers/asap</ext-link>. The Docker container image is accessible at Docker Hub: <ext-link ext-link-type="uri" xlink:href="https://hub.docker.com/r/oschwengers/asap" xlink:type="simple">https://hub.docker.com/r/oschwengers/asap</ext-link>. The ASA<sup>3</sup>P software volume containing third-party executables and databases, OpenStack cloud scripts, a comprehensive manual and configuration templates are hosted at Zenodo: <ext-link ext-link-type="uri" xlink:href="http://doi.org/10.5281/zenodo.3606300" xlink:type="simple">http://doi.org/10.5281/zenodo.3606300</ext-link>. Benchmark and exemplary data projects are hosted sepatately at Zenodo: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.5281/zenodo.3606761" xlink:type="simple">https://doi.org/10.5281/zenodo.3606761</ext-link>. Questions and issues can be sent to “<email xlink:type="simple">asap@computational.bio</email>”, bug reports can be filed as GitHub issues.</p>
+<p>Albeit ASA<sup>3</sup>P itself is published and distributed under a GPL3 license, some of its dependencies bundled within the ASA<sup>3</sup>P volume are published under different license models, <italic>e</italic>.<italic>g</italic>. CARD and PubMLST. Comprehensive license information on each dependency and database is provided as a DEPENDENCY_LICENSE file within the ASA<sup>3</sup>P directory.</p>
+<p>Future directions comprise the development and integration of further analyses, <italic>e</italic>.<italic>g</italic>. detection and characterization of plasmids, phages and CRISPR cassettes as well as further enhancements in terms of scalability and usability.</p>
+</sec>
+</sec>
+<sec id="sec014">
+<title>Supporting information</title>
+<supplementary-material id="pcbi.1007134.s001" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1007134.s001" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>Third party executable parameters and options.</title>
+<p>Parameters and options without scientific impact are excluded, <italic>e</italic>.<italic>g</italic>. input/output directories or number of threads.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1007134.s002" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1007134.s002" xlink:type="simple">
+<label>S2 Table</label>
+<caption>
+<title>Selection of task-specific third party bioinformatics software tools.</title>
+<p>Third party bioinformatics software tools selected for each task within ASA<sup>3</sup>P along with a short argumentative reasoning for why they were selected.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1007134.s003" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1007134.s003" xlink:type="simple">
+<label>S3 Table</label>
+<caption>
+<title>Accession numbers of 32 <italic>Listeria monocytogenes</italic> isolates and reference genomes of the ASA<sup>3</sup>P benchmark project.</title>
+<p>This exemplary project comprises 32 isolates from SRR Bioproject PRJNA215355 as well as two <italic>Listeria monocytogenes</italic> reference genomes from RefSeq. The project is provided as a GNU zipped tarball at <ext-link ext-link-type="uri" xlink:href="https://doi.org/http://doi.org/10.5281/zenodo.3606761" xlink:type="simple">http://doi.org/10.5281/zenodo.3606761</ext-link></p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1007134.s004" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1007134.s004" xlink:type="simple">
+<label>S4 Table</label>
+<caption>
+<title>Host CPU information used for wall clock runtime benchmarks.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1007134.s005" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1007134.s005" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Exemplary screenshot of configuration template sheet 1.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1007134.s006" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1007134.s006" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>Exemplary screenshot of configuration template sheet 2.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1007134.s007" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1007134.s007" xlink:type="simple">
+<label>S3 Fig</label>
+<caption>
+<title>Exemplary project directory structure.</title>
+<p>Each project analyzed by ASA<sup>3</sup>P strictly follows a conventional directory organization and thus forestalls the burden of unnecessary configurations. Shown is an exemplary project structure representing input and output files and directories of the <italic>Listeria monocytogenes</italic> example project. For the sake of readability repeated blocks are collapsed represented by a triple dot ‘ …’</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1007134.s008" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1007134.s008" xlink:type="simple">
+<label>S4 Fig</label>
+<caption>
+<title>Wall clock runtimes for varying compute node and isolate numbers.</title>
+<p>Runtimes given in hours and separated between comparative and per-isolate internal pipeline stages due to different scalability metrics. Each compute node provides 32 vCPUs and 64 GB memory. <italic>L</italic>. <italic>monocytogenes</italic> strains were randomly chosen from SRA Bioproject PRJNA215355. (<bold>A)</bold> Runtimes of a fixed-size compute cluster comprising 4 compute nodes analyzing varying isolate numbers. (<bold>B)</bold> Runtimes of compute clusters with varying numbers of compute nodes analyzing a fixed amount of 128 isolates.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1007134.s009" mimetype="application/vnd.ms-excel" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1007134.s009" xlink:type="simple">
+<label>S1 File</label>
+<caption>
+<title>Comprehensive list of all per-genome key metrics.</title>
+<p>(XLS)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>The authors thank the BiBiServ team from Bielefeld University for supply of the BiBiGrid framework and especially Jan Krüger for his comprehensive support. Furthermore, we thank Can Imirzalioglu, Jane Falgenhauer, Yancheng Yao and Swapnil Doijad at the Institute of Medical Microbiology of Justus-Liebig University Giessen for their ideas, bug reports and fruitful feedback on various aspects regarding implemented analyses and the graphical user interface.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1007134.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sanger</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Nicklen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Coulson</surname> <given-names>AR</given-names></name>. <article-title>DNA sequencing with chain-terminating inhibitors</article-title>. <source>Proc Natl Acad Sci U S A</source>. <year>1977</year>;<volume>74</volume>: <fpage>5463</fpage>–<lpage>5467</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1073/pnas.74.12.5463" xlink:type="simple">10.1073/pnas.74.12.5463</ext-link></comment> <object-id pub-id-type="pmid">271968</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>van Dijk</surname> <given-names>EL</given-names></name>, <name name-style="western"><surname>Auger</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Jaszczyszyn</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Thermes</surname> <given-names>C</given-names></name>. <article-title>Ten years of next-generation sequencing technology</article-title>. <source>Trends Genet</source>. <year>2014</year>;<volume>30</volume>: <fpage>418</fpage>–<lpage>426</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.tig.2014.07.001" xlink:type="simple">10.1016/j.tig.2014.07.001</ext-link></comment> <object-id pub-id-type="pmid">25108476</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Goodwin</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>McPherson</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>McCombie</surname> <given-names>WR</given-names></name>. <article-title>Coming of age: ten years of next-generation sequencing technologies</article-title>. <source>Nat Rev Genet</source>. <year>2016</year>;<volume>17</volume>: <fpage>333</fpage>–<lpage>351</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nrg.2016.49" xlink:type="simple">10.1038/nrg.2016.49</ext-link></comment> <object-id pub-id-type="pmid">27184599</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fraser</surname> <given-names>CM</given-names></name>, <name name-style="western"><surname>Gocayne</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>White</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Adams</surname> <given-names>MD</given-names></name>, <name name-style="western"><surname>Clayton</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Fleischmann</surname> <given-names>RD</given-names></name>, <etal>et al</etal>. <article-title>The minimal gene complement of <italic>Mycoplasma genitalium</italic></article-title>. <source>Science</source>. <year>1995</year>;<volume>270</volume>: <fpage>397</fpage>–<lpage>403</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/science.270.5235.397" xlink:type="simple">10.1126/science.270.5235.397</ext-link></comment> <object-id pub-id-type="pmid">7569993</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fleischmann</surname> <given-names>RD</given-names></name>, <name name-style="western"><surname>Adams</surname> <given-names>MD</given-names></name>, <name name-style="western"><surname>White</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Clayton</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Kirkness</surname> <given-names>EF</given-names></name>, <name name-style="western"><surname>Kerlavage</surname> <given-names>AR</given-names></name>, <etal>et al</etal>. <article-title>Whole-genome random sequencing and assembly of <italic>Haemophilus influenzae</italic> Rd</article-title>. <source>Science</source>. <year>1995</year>;<volume>269</volume>: <fpage>496</fpage>–<lpage>512</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/science.7542800" xlink:type="simple">10.1126/science.7542800</ext-link></comment> <object-id pub-id-type="pmid">7542800</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Haft</surname> <given-names>DH</given-names></name>, <name name-style="western"><surname>DiCuccio</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Badretdin</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Brover</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Chetvernin</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>O’Neill</surname> <given-names>K</given-names></name>, <etal>et al</etal>. <article-title>RefSeq: an update on prokaryotic genome annotation and curation</article-title>. <source>Nucleic Acids Res</source>. <year>2018</year>;<volume>46</volume>: <fpage>D851</fpage>–<lpage>D860</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/nar/gkx1068" xlink:type="simple">10.1093/nar/gkx1068</ext-link></comment> <object-id pub-id-type="pmid">29112715</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Long</surname> <given-names>SW</given-names></name>, <name name-style="western"><surname>Williams</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Valson</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Cantu</surname> <given-names>CC</given-names></name>, <name name-style="western"><surname>Cernoch</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Musser</surname> <given-names>JM</given-names></name>, <etal>et al</etal>. <article-title>A genomic day in the life of a clinical microbiology laboratory</article-title>. <source>J Clin Microbiol</source>. <year>2013</year>;<volume>51</volume>: <fpage>1272</fpage>–<lpage>1277</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1128/JCM.03237-12" xlink:type="simple">10.1128/JCM.03237-12</ext-link></comment> <object-id pub-id-type="pmid">23345298</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Bowden</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Peto</surname> <given-names>TEA</given-names></name>, <name name-style="western"><surname>Crook</surname> <given-names>DW</given-names></name>. <article-title>Transforming clinical microbiology with bacterial genome sequencing</article-title>. <source>Nat Rev Genet</source>. <year>2012</year>;<volume>13</volume>: <fpage>601</fpage>–<lpage>612</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nrg3226" xlink:type="simple">10.1038/nrg3226</ext-link></comment> <object-id pub-id-type="pmid">22868263</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tettelin</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Masignani</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Cieslewicz</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Donati</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Medini</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Ward</surname> <given-names>NL</given-names></name>, <etal>et al</etal>. <article-title>Genome analysis of multiple pathogenic isolates of <italic>Streptococcus agalactiae</italic>: Implications for the microbial “pan-genome</article-title>.” <source>Proceedings of the National Academy of Sciences</source>. <year>2005</year>;<volume>102</volume>: <fpage>13950</fpage>–<lpage>13955</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1007134.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Deurenberg</surname> <given-names>RH</given-names></name>, <name name-style="western"><surname>Bathoorn</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Chlebowicz</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Couto</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Ferdous</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>García-Cobos</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>Application of next generation sequencing in clinical microbiology and infection prevention</article-title>. <source>J Biotechnol</source>. Elsevier; <year>2017</year>;<volume>243</volume>: <fpage>16</fpage>–<lpage>24</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.jbiotec.2016.12.022" xlink:type="simple">10.1016/j.jbiotec.2016.12.022</ext-link></comment> <object-id pub-id-type="pmid">28042011</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref011"><label>11</label><mixed-citation publication-type="other" xlink:type="simple">Review on Antimicrobial Resistance. Tackling Drug-Resistant Infections Globally: final report and recommendations [Internet]. Wellcome Trust; 2016 May. Available: <ext-link ext-link-type="uri" xlink:href="https://amr-review.org/sites/default/files/160525_Final%20paper_with%20cover.pdf" xlink:type="simple">https://amr-review.org/sites/default/files/160525_Final%20paper_with%20cover.pdf</ext-link></mixed-citation></ref>
+<ref id="pcbi.1007134.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Revez</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Espinosa</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Albiger</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Leitmeyer</surname> <given-names>KC</given-names></name>, <name name-style="western"><surname>Struelens</surname> <given-names>MJ</given-names></name>, <article-title>ECDC National Microbiology Focal Points and Experts Group ENMFPAE. Survey on the Use of Whole-Genome Sequencing for Infectious Diseases Surveillance: Rapid Expansion of European National Capacities, 2015–2016</article-title>. <source>Frontiers in public health</source>. Frontiers Media SA; <year>2017</year>;<volume>5</volume>: <fpage>347</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3389/fpubh.2017.00347" xlink:type="simple">10.3389/fpubh.2017.00347</ext-link></comment> <object-id pub-id-type="pmid">29326921</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Glaser</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Martins-Simões</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Villain</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Barbier</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Tristan</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Bouchier</surname> <given-names>C</given-names></name>, <etal>et al</etal>. <article-title>Demography and Intercontinental Spread of the USA300 Community-Acquired Methicillin-Resistant <italic>Staphylococcus aureus</italic> Lineage</article-title>. <source>MBio</source>. <year>2016</year>;<volume>7</volume>: <fpage>e02183</fpage>–<lpage>15</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1128/mBio.02183-15" xlink:type="simple">10.1128/mBio.02183-15</ext-link></comment> <object-id pub-id-type="pmid">26884428</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Holden</surname> <given-names>MTG</given-names></name>, <name name-style="western"><surname>Hsu</surname> <given-names>L-Y</given-names></name>, <name name-style="western"><surname>Kurt</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Weinert</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Mather</surname> <given-names>AE</given-names></name>, <name name-style="western"><surname>Harris</surname> <given-names>SR</given-names></name>, <etal>et al</etal>. <article-title>A genomic portrait of the emergence, evolution, and global spread of a methicillin-resistant <italic>Staphylococcus aureus</italic> pandemic</article-title>. <source>Genome Res</source>. <year>2013</year>;<volume>23</volume>: <fpage>653</fpage>–<lpage>664</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1101/gr.147710.112" xlink:type="simple">10.1101/gr.147710.112</ext-link></comment> <object-id pub-id-type="pmid">23299977</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nübel</surname> <given-names>U</given-names></name>. <article-title>Emergence and Spread of Antimicrobial Resistance: Recent Insights from Bacterial Population Genomics</article-title>. <source>Curr Top Microbiol Immunol</source>. <volume>398</volume>: <fpage>35</fpage>–<lpage>53</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/82_2016_505" xlink:type="simple">10.1007/82_2016_505</ext-link></comment> <object-id pub-id-type="pmid">27738914</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Baur</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Gladstone</surname> <given-names>BP</given-names></name>, <name name-style="western"><surname>Burkert</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Carrara</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Foschi</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Döbele</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>Effect of antibiotic stewardship on the incidence of infection and colonisation with antibiotic-resistant bacteria and <italic>Clostridium difficile</italic> infection: a systematic review and meta-analysis</article-title>. <source>Lancet Infect Dis</source>. <year>2017</year>;<volume>17</volume>: <fpage>990</fpage>–<lpage>1001</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S1473-3099(17)30325-0" xlink:type="simple">10.1016/S1473-3099(17)30325-0</ext-link></comment> <object-id pub-id-type="pmid">28629876</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schempp</surname> <given-names>FM</given-names></name>, <name name-style="western"><surname>Drummond</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Buchhaupt</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Schrader</surname> <given-names>J</given-names></name>. <article-title>Microbial Cell Factories for the Production of Terpenoid Flavor and Fragrance Compounds</article-title>. <source>J Agric Food Chem</source>. <year>2018</year>;<volume>66</volume>: <fpage>2247</fpage>–<lpage>2258</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/acs.jafc.7b00473" xlink:type="simple">10.1021/acs.jafc.7b00473</ext-link></comment> <object-id pub-id-type="pmid">28418659</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Corchero</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Gasser</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Resina</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Smith</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Parrilli</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Vázquez</surname> <given-names>F</given-names></name>, <etal>et al</etal>. <article-title>Unconventional microbial systems for the cost-efficient production of high-quality protein therapeutics</article-title>. <source>Biotechnol Adv</source>. <volume>31</volume>: <fpage>140</fpage>–<lpage>153</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.biotechadv.2012.09.001" xlink:type="simple">10.1016/j.biotechadv.2012.09.001</ext-link></comment> <object-id pub-id-type="pmid">22985698</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Huang</surname> <given-names>C-J</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>X</given-names></name>. <article-title>Industrial production of recombinant therapeutics in <italic>Escherichia coli</italic> and its recent advancements</article-title>. <source>J Ind Microbiol Biotechnol</source>. <year>2012</year>;<volume>39</volume>: <fpage>383</fpage>–<lpage>399</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s10295-011-1082-9" xlink:type="simple">10.1007/s10295-011-1082-9</ext-link></comment> <object-id pub-id-type="pmid">22252444</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Baeshen</surname> <given-names>MN</given-names></name>, <name name-style="western"><surname>Al-Hejin</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Bora</surname> <given-names>RS</given-names></name>, <name name-style="western"><surname>Ahmed</surname> <given-names>MMM</given-names></name>, <name name-style="western"><surname>Ramadan</surname> <given-names>HAI</given-names></name>, <name name-style="western"><surname>Saini</surname> <given-names>KS</given-names></name>, <etal>et al</etal>. <article-title>Production of Biopharmaceuticals in E. coli: Current Scenario and Future Perspectives</article-title>. <source>J Microbiol Biotechnol</source>. <year>2015</year>;<volume>25</volume>: <fpage>953</fpage>–<lpage>962</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.4014/jmb.1412.12079" xlink:type="simple">10.4014/jmb.1412.12079</ext-link></comment> <object-id pub-id-type="pmid">25737124</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wackett</surname> <given-names>LP</given-names></name>. <article-title>Microbial-based motor fuels: science and technology</article-title>. <source>Microb Biotechnol</source>. <year>2008</year>;<volume>1</volume>: <fpage>211</fpage>–<lpage>225</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/j.1751-7915.2007.00020.x" xlink:type="simple">10.1111/j.1751-7915.2007.00020.x</ext-link></comment> <object-id pub-id-type="pmid">21261841</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Yin</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>L</given-names></name>. <article-title>Bacteria-mediated bisphenol A degradation</article-title>. <source>Appl Microbiol Biotechnol</source>. <year>2013</year>;<volume>97</volume>: <fpage>5681</fpage>–<lpage>5689</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s00253-013-4949-z" xlink:type="simple">10.1007/s00253-013-4949-z</ext-link></comment> <object-id pub-id-type="pmid">23681588</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Singh</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Kaur</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Singh</surname> <given-names>K</given-names></name>. <article-title>Microbial remediation of explosive waste</article-title>. <source>Crit Rev Microbiol</source>. <year>2012</year>;<volume>38</volume>: <fpage>152</fpage>–<lpage>167</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3109/1040841X.2011.640979" xlink:type="simple">10.3109/1040841X.2011.640979</ext-link></comment> <object-id pub-id-type="pmid">22497284</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kip</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>van Veen</surname> <given-names>JA</given-names></name>. <article-title>The dual role of microbes in corrosion</article-title>. <source>ISME J</source>. <year>2015</year>;<volume>9</volume>: <fpage>542</fpage>–<lpage>551</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/ismej.2014.169" xlink:type="simple">10.1038/ismej.2014.169</ext-link></comment> <object-id pub-id-type="pmid">25259571</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stephens</surname> <given-names>ZD</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>SY</given-names></name>, <name name-style="western"><surname>Faghri</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Campbell</surname> <given-names>RH</given-names></name>, <name name-style="western"><surname>Zhai</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Efron</surname> <given-names>MJ</given-names></name>, <etal>et al</etal>. <article-title>Big Data: Astronomical or Genomical?</article-title> <source>PLoS Biol</source>. <year>2015</year>;<volume>13</volume>: <fpage>e1002195</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pbio.1002195" xlink:type="simple">10.1371/journal.pbio.1002195</ext-link></comment> <object-id pub-id-type="pmid">26151137</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Muir</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Lou</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Spakowicz</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Salichos</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>The real cost of sequencing: Scaling computation to keep pace with data generation. Genome Biol</article-title>. <source>Genome Biology</source>; <year>2016</year>;<volume>17</volume>: <fpage>1</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/s13059-015-0866-z" xlink:type="simple">10.1186/s13059-015-0866-z</ext-link></comment></mixed-citation></ref>
+<ref id="pcbi.1007134.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gargis</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Kalman</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Lubin</surname> <given-names>IM</given-names></name>. <article-title>Assuring the Quality of Next-Generation Sequencing in Clinical Microbiology and Public Health Laboratories</article-title>. <source>J Clin Microbiol</source>. <year>2016</year>;<volume>54</volume>: <fpage>2857</fpage>–<lpage>2865</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1128/JCM.00949-16" xlink:type="simple">10.1128/JCM.00949-16</ext-link></comment> <object-id pub-id-type="pmid">27510831</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Aziz</surname> <given-names>RK</given-names></name>, <name name-style="western"><surname>Bartels</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Best</surname> <given-names>AA</given-names></name>, <name name-style="western"><surname>DeJongh</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Disz</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Edwards</surname> <given-names>RA</given-names></name>, <etal>et al</etal>. <article-title>The RAST Server: Rapid Annotations using Subsystems Technology</article-title>. <source>BMC Genomics</source>. <year>2008</year>;<volume>9</volume>: <fpage>75</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/1471-2164-9-75" xlink:type="simple">10.1186/1471-2164-9-75</ext-link></comment> <object-id pub-id-type="pmid">18261238</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wattam</surname> <given-names>AR</given-names></name>, <name name-style="western"><surname>Davis</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Assaf</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Boisvert</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Brettin</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Bun</surname> <given-names>C</given-names></name>, <etal>et al</etal>. <article-title>Improvements to PATRIC, the all-bacterial Bioinformatics Database and Analysis Resource Center</article-title>. <source>Nucleic Acids Res</source>. <year>2017</year>;<volume>45</volume>: <fpage>D535</fpage>–<lpage>D542</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/nar/gkw1017" xlink:type="simple">10.1093/nar/gkw1017</ext-link></comment> <object-id pub-id-type="pmid">27899627</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Seemann</surname> <given-names>T</given-names></name>. <article-title>Prokka: Rapid prokaryotic genome annotation</article-title>. <source>Bioinformatics</source>. <year>2014</year>;<volume>30</volume>: <fpage>2068</fpage>–<lpage>2069</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/bioinformatics/btu153" xlink:type="simple">10.1093/bioinformatics/btu153</ext-link></comment> <object-id pub-id-type="pmid">24642063</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bolger</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Lohse</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Usadel</surname> <given-names>B</given-names></name>. <article-title>Trimmomatic: A flexible trimmer for Illumina sequence data</article-title>. <source>Bioinformatics</source>. <year>2014</year>;<volume>30</volume>: <fpage>2114</fpage>–<lpage>2120</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/bioinformatics/btu170" xlink:type="simple">10.1093/bioinformatics/btu170</ext-link></comment> <object-id pub-id-type="pmid">24695404</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bankevich</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Nurk</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Antipov</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Gurevich</surname> <given-names>AA</given-names></name>, <name name-style="western"><surname>Dvorkin</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Kulikov</surname> <given-names>AS</given-names></name>, <etal>et al</etal>. <article-title>SPAdes: A New Genome Assembly Algorithm and Its Applications to Single-Cell Sequencing</article-title>. <source>J Comput Biol</source>. <year>2012</year>;<volume>19</volume>: <fpage>455</fpage>–<lpage>477</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1089/cmb.2012.0021" xlink:type="simple">10.1089/cmb.2012.0021</ext-link></comment> <object-id pub-id-type="pmid">22506599</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chin</surname> <given-names>C-S</given-names></name>, <name name-style="western"><surname>Alexander</surname> <given-names>DH</given-names></name>, <name name-style="western"><surname>Marks</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Klammer</surname> <given-names>AA</given-names></name>, <name name-style="western"><surname>Drake</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Heiner</surname> <given-names>C</given-names></name>, <etal>et al</etal>. <article-title>Nonhybrid, finished microbial genome assemblies from long-read SMRT sequencing data</article-title>. <source>Nat Methods</source>. Nature Publishing Group, a division of Macmillan Publishers Limited. All Rights Reserved.; <year>2013</year>;<volume>10</volume>: <fpage>563</fpage>–<lpage>569</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nmeth.2474" xlink:type="simple">10.1038/nmeth.2474</ext-link></comment> <object-id pub-id-type="pmid">23644548</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wick</surname> <given-names>RR</given-names></name>, <name name-style="western"><surname>Judd</surname> <given-names>LM</given-names></name>, <name name-style="western"><surname>Gorrie</surname> <given-names>CL</given-names></name>, <name name-style="western"><surname>Holt</surname> <given-names>KE</given-names></name>. <article-title>Unicycler: Resolving bacterial genome assemblies from short and long sequencing reads. Phillippy AM, editor</article-title>. <source>PLoS Comput Biol</source>. Public Library of Science; <year>2017</year>;<volume>13</volume>: <fpage>e1005595</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pcbi.1005595" xlink:type="simple">10.1371/journal.pcbi.1005595</ext-link></comment> <object-id pub-id-type="pmid">28594827</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bosi</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Donati</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Galardini</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Brunetti</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Sagot</surname> <given-names>MF</given-names></name>, <name name-style="western"><surname>Lió</surname> <given-names>P</given-names></name>, <etal>et al</etal>. <article-title>MeDuSa: A multi-draft based scaffolder</article-title>. <source>Bioinformatics</source>. <year>2015</year>;<volume>31</volume>: <fpage>2443</fpage>–<lpage>2451</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/bioinformatics/btv171" xlink:type="simple">10.1093/bioinformatics/btv171</ext-link></comment> <object-id pub-id-type="pmid">25810435</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jia</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Raphenya</surname> <given-names>AR</given-names></name>, <name name-style="western"><surname>Alcock</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Waglechner</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Guo</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Tsang</surname> <given-names>KK</given-names></name>, <etal>et al</etal>. <article-title>CARD 2017: Expansion and model-centric curation of the comprehensive antibiotic resistance database</article-title>. <source>Nucleic Acids Res</source>. <year>2017</year>;<volume>45</volume>: <fpage>D566</fpage>–<lpage>D573</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/nar/gkw1004" xlink:type="simple">10.1093/nar/gkw1004</ext-link></comment> <object-id pub-id-type="pmid">27789705</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chen</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Zheng</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Jin</surname> <given-names>Q</given-names></name>. <article-title>VFDB 2016: Hierarchical and refined dataset for big data analysis—10 years on</article-title>. <source>Nucleic Acids Res</source>. <year>2016</year>;<volume>44</volume>: <fpage>D694</fpage>–<lpage>D697</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/nar/gkv1239" xlink:type="simple">10.1093/nar/gkv1239</ext-link></comment> <object-id pub-id-type="pmid">26578559</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Goris</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Konstantinidis</surname> <given-names>KT</given-names></name>, <name name-style="western"><surname>Klappenbach</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Coenye</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Vandamme</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Tiedje</surname> <given-names>JM</given-names></name>. <article-title>DNA-DNA hybridization values and their relationship to whole-genome sequence similarities</article-title>. <source>Int J Syst Evol Microbiol</source>. <year>2007</year>;<volume>57</volume>: <fpage>81</fpage>–<lpage>91</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1099/ijs.0.64483-0" xlink:type="simple">10.1099/ijs.0.64483-0</ext-link></comment> <object-id pub-id-type="pmid">17220447</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wood</surname> <given-names>DE</given-names></name>, <name name-style="western"><surname>Salzberg</surname> <given-names>SL</given-names></name>. <article-title>Kraken: ultrafast metagenomic sequence classification using exact alignments</article-title>. <source>Genome Biol</source>. <year>2014</year>;<volume>15</volume>: <fpage>R46</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/gb-2014-15-3-r46" xlink:type="simple">10.1186/gb-2014-15-3-r46</ext-link></comment> <object-id pub-id-type="pmid">24580807</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Camacho</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Coulouris</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Avagyan</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Ma</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Papadopoulos</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Bealer</surname> <given-names>K</given-names></name>, <etal>et al</etal>. <article-title>BLAST+: architecture and applications</article-title>. <source>BMC Bioinformatics</source>. <year>2009</year>;<volume>10</volume>: <fpage>421</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/1471-2105-10-421" xlink:type="simple">10.1186/1471-2105-10-421</ext-link></comment> <object-id pub-id-type="pmid">20003500</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Quast</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Pruesse</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Yilmaz</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Gerken</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Schweer</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Yarza</surname> <given-names>P</given-names></name>, <etal>et al</etal>. <article-title>The SILVA ribosomal RNA gene database project: improved data processing and web-based tools</article-title>. <source>Nucleic Acids Res</source>. <year>2013</year>;<volume>41</volume>: <fpage>D590</fpage>–<lpage>6</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/nar/gks1219" xlink:type="simple">10.1093/nar/gks1219</ext-link></comment> <object-id pub-id-type="pmid">23193283</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kurtz</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Phillippy</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Delcher</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Smoot</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Shumway</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Antonescu</surname> <given-names>C</given-names></name>, <etal>et al</etal>. <article-title>Versatile and open software for comparing large genomes</article-title>. <source>Genome Biol</source>. <year>2004</year>;<volume>5</volume>: <fpage>R12</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/gb-2004-5-2-r12" xlink:type="simple">10.1186/gb-2004-5-2-r12</ext-link></comment> <object-id pub-id-type="pmid">14759262</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jolley</surname> <given-names>KA</given-names></name>, <name name-style="western"><surname>Bray</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Maiden</surname> <given-names>MCJ</given-names></name>. <article-title>A RESTful application programming interface for the PubMLST molecular typing and genome databases</article-title>. <source>Database</source>. <year>2017</year>;<fpage>2017</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/database/bax060" xlink:type="simple">10.1093/database/bax060</ext-link></comment> <object-id pub-id-type="pmid">29220452</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Langmead</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Salzberg</surname> <given-names>SL</given-names></name>. <article-title>Fast gapped-read alignment with Bowtie 2</article-title>. <source>Nat Methods</source>. <year>2012</year>;<volume>9</volume>: <fpage>357</fpage>–<lpage>359</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nmeth.1923" xlink:type="simple">10.1038/nmeth.1923</ext-link></comment> <object-id pub-id-type="pmid">22388286</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>H</given-names></name>. <article-title>Minimap2: pairwise alignment for nucleotide sequences</article-title>. <source>Bioinformatics</source>. <year>2018</year>;<volume>34</volume>: <fpage>3094</fpage>–<lpage>3100</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/bioinformatics/bty191" xlink:type="simple">10.1093/bioinformatics/bty191</ext-link></comment> <object-id pub-id-type="pmid">29750242</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Handsaker</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Wysoker</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Fennell</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Ruan</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Homer</surname> <given-names>N</given-names></name>, <etal>et al</etal>. <article-title>The Sequence Alignment/Map format and SAMtools</article-title>. <source>Bioinformatics</source>. <year>2009</year>;<volume>25</volume>: <fpage>2078</fpage>–<lpage>2079</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/bioinformatics/btp352" xlink:type="simple">10.1093/bioinformatics/btp352</ext-link></comment> <object-id pub-id-type="pmid">19505943</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cingolani</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Platts</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>LL</given-names></name>, <name name-style="western"><surname>Coon</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Nguyen</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>A program for annotating and predicting the effects of single nucleotide polymorphisms, SnpEff</article-title>. <source>Fly</source>. <year>2012</year>;<volume>6</volume>: <fpage>80</fpage>–<lpage>92</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.4161/fly.19695" xlink:type="simple">10.4161/fly.19695</ext-link></comment> <object-id pub-id-type="pmid">22728672</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Price</surname> <given-names>MN</given-names></name>, <name name-style="western"><surname>Dehal</surname> <given-names>PS</given-names></name>, <name name-style="western"><surname>Arkin</surname> <given-names>AP</given-names></name>. <article-title>FastTree 2—approximately maximum-likelihood trees for large alignments</article-title>. <source>PLoS One</source>. <year>2010</year>;<volume>5</volume>: <fpage>e9490</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pone.0009490" xlink:type="simple">10.1371/journal.pone.0009490</ext-link></comment> <object-id pub-id-type="pmid">20224823</object-id></mixed-citation></ref>
+<ref id="pcbi.1007134.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Page</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Cummins</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Hunt</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Wong</surname> <given-names>VK</given-names></name>, <name name-style="western"><surname>Reuter</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Holden</surname> <given-names>MTG</given-names></name>, <etal>et al</etal>. <article-title>Roary: Rapid large-scale prokaryote pan genome analysis</article-title>. <source>Bioinformatics</source>. <year>2015</year>;<volume>31</volume>: <fpage>3691</fpage>–<lpage>3693</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/bioinformatics/btv421" xlink:type="simple">10.1093/bioinformatics/btv421</ext-link></comment> <object-id pub-id-type="pmid">26198102</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-16-01992</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1005562</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Database and informatics methods</subject><subj-group><subject>Biological databases</subject><subj-group><subject>Proteomic databases</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Proteomics</subject><subj-group><subject>Proteomic databases</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Mathematical and statistical techniques</subject><subj-group><subject>Statistical methods</subject><subj-group><subject>Test statistics</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Statistics (mathematics)</subject><subj-group><subject>Statistical methods</subject><subj-group><subject>Test statistics</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Genetics</subject><subj-group><subject>Gene expression</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Research assessment</subject><subj-group><subject>Reproducibility</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Information technology</subject><subj-group><subject>Data reduction</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Molecular biology</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>Sequencing techniques</subject><subj-group><subject>RNA sequencing</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>Sequencing techniques</subject><subj-group><subject>RNA sequencing</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Mathematical and statistical techniques</subject><subj-group><subject>Statistical methods</subject><subj-group><subject>Multivariate analysis</subject><subj-group><subject>Principal component analysis</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Statistics (mathematics)</subject><subj-group><subject>Statistical methods</subject><subj-group><subject>Multivariate analysis</subject><subj-group><subject>Principal component analysis</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Bioassays and physiological analysis</subject><subj-group><subject>Microarrays</subject></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>ROTS: An R package for reproducibility-optimized statistical testing</article-title>
+<alt-title alt-title-type="running-head">Reproducibility-Optimized Statistical Testing</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-3639-979X</contrib-id>
+<name name-style="western">
+<surname>Suomi</surname> <given-names>Tomi</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id contrib-id-type="orcid">http://orcid.org/0000-0002-1530-1389</contrib-id>
+<name name-style="western">
+<surname>Seyednasrollah</surname> <given-names>Fatemeh</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Jaakkola</surname> <given-names>Maria K.</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-3878-3368</contrib-id>
+<name name-style="western">
+<surname>Faux</surname> <given-names>Thomas</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Elo</surname> <given-names>Laura L.</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001">
+<label>1</label>
+<addr-line>Turku Centre for Biotechnology, University of Turku and Åbo Akademi University, Turku, Finland</addr-line>
+</aff>
+<aff id="aff002">
+<label>2</label>
+<addr-line>Department of Future Technologies, University of Turku, Turku, Finland</addr-line>
+</aff>
+<aff id="aff003">
+<label>3</label>
+<addr-line>Department of Mathematics and Statistics, University of Turku, Turku, Finland</addr-line>
+</aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Poisot</surname> <given-names>Timothée</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1">
+<addr-line>Universite de Montreal, CANADA</addr-line>
+</aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con">
+<p>
+<list list-type="simple">
+<list-item>
+<p><bold>Conceptualization:</bold> LLE.</p>
+</list-item>
+<list-item>
+<p><bold>Formal analysis:</bold> TS FS MKJ TF.</p>
+</list-item>
+<list-item>
+<p><bold>Funding acquisition:</bold> LLE.</p>
+</list-item>
+<list-item>
+<p><bold>Investigation:</bold> TS FS MKJ TF LLE.</p>
+</list-item>
+<list-item>
+<p><bold>Methodology:</bold> TS FS LLE.</p>
+</list-item>
+<list-item>
+<p><bold>Project administration:</bold> LLE.</p>
+</list-item>
+<list-item>
+<p><bold>Software:</bold> TS FS LLE.</p>
+</list-item>
+<list-item>
+<p><bold>Supervision:</bold> LLE.</p>
+</list-item>
+<list-item>
+<p><bold>Visualization:</bold> TS FS MKJ TF.</p>
+</list-item>
+<list-item>
+<p><bold>Writing – original draft:</bold> TS.</p>
+</list-item>
+<list-item>
+<p><bold>Writing – review &amp; editing:</bold> TS FS MKJ TF LLE.</p>
+</list-item>
+</list>
+</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">tomi.suomi@utu.fi</email> (TS); <email xlink:type="simple">laura.elo@utu.fi</email> (LLE)</corresp>
+</author-notes>
+<pub-date pub-type="collection">
+<month>5</month>
+<year>2017</year>
+</pub-date>
+<pub-date pub-type="epub">
+<day>25</day>
+<month>5</month>
+<year>2017</year>
+</pub-date>
+<volume>13</volume>
+<issue>5</issue>
+<elocation-id>e1005562</elocation-id>
+<history>
+<date date-type="received">
+<day>7</day>
+<month>12</month>
+<year>2016</year>
+</date>
+<date date-type="accepted">
+<day>10</day>
+<month>5</month>
+<year>2017</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2017</copyright-year>
+<copyright-holder>Suomi et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1005562"/>
+<abstract>
+<p>Differential expression analysis is one of the most common types of analyses performed on various biological data (e.g. RNA-seq or mass spectrometry proteomics). It is the process that detects features, such as genes or proteins, showing statistically significant differences between the sample groups under comparison. A major challenge in the analysis is the choice of an appropriate test statistic, as different statistics have been shown to perform well in different datasets. To this end, the reproducibility-optimized test statistic (ROTS) adjusts a modified <italic>t</italic>-statistic according to the inherent properties of the data and provides a ranking of the features based on their statistical evidence for differential expression between two groups. ROTS has already been successfully applied in a range of different studies from transcriptomics to proteomics, showing competitive performance against other state-of-the-art methods. To promote its widespread use, we introduce here a Bioconductor R package for performing ROTS analysis conveniently on different types of omics data. To illustrate the benefits of ROTS in various applications, we present three case studies, involving proteomics and RNA-seq data from public repositories, including both bulk and single cell data. The package is freely available from Bioconductor (<ext-link ext-link-type="uri" xlink:href="https://www.bioconductor.org/packages/ROTS" xlink:type="simple">https://www.bioconductor.org/packages/ROTS</ext-link>).</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100008871</institution-id>
+<institution>JDRF</institution>
+</institution-wrap>
+</funding-source>
+<award-id>2-2013-32</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Elo</surname> <given-names>Laura L.</given-names></name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100006306</institution-id>
+<institution>Sigrid Juséliuksen Säätiö</institution>
+</institution-wrap>
+</funding-source>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Elo</surname> <given-names>Laura L.</given-names></name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award003">
+<funding-source>
+<institution>University of Turku Graduate School (UTUGS)</institution>
+</funding-source>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Jaakkola</surname> <given-names>Maria K.</given-names></name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award004">
+<funding-source>
+<institution>University of Turku Graduate School (UTUGS)</institution>
+</funding-source>
+<principal-award-recipient>
+<contrib-id contrib-id-type="orcid">http://orcid.org/0000-0002-1530-1389</contrib-id>
+<name name-style="western">
+<surname>Seyednasrollah</surname> <given-names>Fatemeh</given-names></name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award005">
+<funding-source>
+<institution>European Union’s Horizon 2020 research and innovation programme</institution>
+</funding-source>
+<award-id>Marie Skłodowska-Curie grant number 675395</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Elo</surname> <given-names>Laura L.</given-names></name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>LLE reports grants from the European Research Council (ERC) (677943), European Union’s Horizon 2020 research and innovation programme (675395), Academy of Finland (296801 and 304995), Juvenile Diabetes Research Foundation JDRF (2-2013-32), Tekes – the Finnish Funding Agency for Innovation (1877/31/2016), and Sigrid Juselius Foundation, during the conduct of the study. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="4"/>
+<table-count count="1"/>
+<page-count count="10"/>
+</counts>
+<custom-meta-group>
+<custom-meta>
+<meta-name>PLOS Publication Stage</meta-name>
+<meta-value>vor-update-to-uncorrected-proof</meta-value>
+</custom-meta>
+<custom-meta>
+<meta-name>Publication Update</meta-name>
+<meta-value>2017-06-14</meta-value>
+</custom-meta>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>The ROTS R-package is available from <ext-link ext-link-type="uri" xlink:href="https://www.bioconductor.org/packages/ROTS" xlink:type="simple">https://www.bioconductor.org/packages/ROTS</ext-link>, the CPTAC technology assessment data from <ext-link ext-link-type="uri" xlink:href="https://cptac-data-portal.georgetown.edu/cptac/study/list?scope=Phase+I" xlink:type="simple">https://cptac-data-portal.georgetown.edu/cptac/study/list?scope=Phase+I</ext-link>, the data of the SEQC project from <ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE47774" xlink:type="simple">http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE47774</ext-link> and the single-cell data from <ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE59114" xlink:type="simple">http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE59114</ext-link>.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<disp-quote>
+<p>“This is a <italic>PLOS Computational Biology</italic> Software paper.”</p>
+</disp-quote>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Differential expression analysis between two groups of samples is perhaps the most common type of analysis that is performed on various types of omics data. The aim of differential expression analysis is to detect features (e.g. genes or proteins) showing statistically significant changes between the groups. A commonly used approach has been the Student’s <italic>t</italic>-test, which has been later shown not to be the most optimal solution in many cases [<xref ref-type="bibr" rid="pcbi.1005562.ref001">1</xref>, <xref ref-type="bibr" rid="pcbi.1005562.ref002">2</xref>]. Although a number of alternative test statistics have therefore been introduced [<xref ref-type="bibr" rid="pcbi.1005562.ref003">3</xref>–<xref ref-type="bibr" rid="pcbi.1005562.ref005">5</xref>], a major practical challenge remains that the different statistics perform well in different datasets [<xref ref-type="bibr" rid="pcbi.1005562.ref006">6</xref>–<xref ref-type="bibr" rid="pcbi.1005562.ref009">9</xref>] and there is no general agreement on how to make an appropriate choice of the statistic <italic>a priori</italic>.</p>
+<p>To address this need, we have introduced a reproducibility-optimized test statistic (ROTS) that optimizes the choice of the statistic directly from the data instead of using a fixed predefined statistic [<xref ref-type="bibr" rid="pcbi.1005562.ref010">10</xref>]. This is done by maximizing the overlap of top-ranked features in group-preserving bootstrap datasets among a family of <italic>t-type</italic> statistics. In particular, ROTS optimizes the ranks of the features because usually the final ranking determines if the differentially expressed features are selected for further validation studies.</p>
+<p>The ROTS method has already been used in various applications, such as microarrays [<xref ref-type="bibr" rid="pcbi.1005562.ref010">10</xref>], mass spectrometry proteomics [<xref ref-type="bibr" rid="pcbi.1005562.ref011">11</xref>] as well as bulk and single-cell RNA-seq [<xref ref-type="bibr" rid="pcbi.1005562.ref009">9</xref>, <xref ref-type="bibr" rid="pcbi.1005562.ref012">12</xref>], and its competitive performance has been shown against other tools for differential expression analysis. Here we introduce a Bioconductor R package ROTS for performing differential expression analysis using the ROTS method and demonstrate the applicability of the method in three diverse case studies. The R package together with detailed documentation is freely available from Bioconductor.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Design and implementation</title>
+<sec id="sec003">
+<title>Algorithm</title>
+<p>ROTS optimizes the reproducibility of top-ranked features in group-preserving bootstrap datasets among a family of modified <italic>t</italic>-statistics:
+<disp-formula id="pcbi.1005562.e001"><alternatives><graphic id="pcbi.1005562.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005562.e001" xlink:type="simple"/><mml:math display="block" id="M1"><mml:mrow><mml:msub><mml:mi>d</mml:mi> <mml:mi>α</mml:mi></mml:msub> <mml:mo>=</mml:mo> <mml:mfrac><mml:mfenced close="|" open="|" separators=""><mml:mover accent="true"><mml:msub><mml:mi>x</mml:mi> <mml:mn>1</mml:mn></mml:msub> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>-</mml:mo> <mml:mover accent="true"><mml:msub><mml:mi>x</mml:mi> <mml:mn>2</mml:mn></mml:msub> <mml:mo>¯</mml:mo></mml:mover></mml:mfenced> <mml:mrow><mml:msub><mml:mi>α</mml:mi> <mml:mn>1</mml:mn></mml:msub> <mml:mo>+</mml:mo> <mml:msub><mml:mi>α</mml:mi> <mml:mn>2</mml:mn></mml:msub> <mml:mi>s</mml:mi></mml:mrow></mml:mfrac></mml:mrow></mml:math></alternatives> <label>(1)</label></disp-formula>
+where <inline-formula id="pcbi.1005562.e002"><alternatives><graphic id="pcbi.1005562.e002g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005562.e002" xlink:type="simple"/><mml:math display="inline" id="M2"><mml:mrow><mml:mo form="prefix" stretchy="true">|</mml:mo> <mml:mover><mml:msub><mml:mi>x</mml:mi> <mml:mn>1</mml:mn></mml:msub> <mml:mo accent="true">‾</mml:mo></mml:mover> <mml:mo>−</mml:mo> <mml:mover><mml:msub><mml:mi>x</mml:mi> <mml:mn>2</mml:mn></mml:msub> <mml:mo accent="true">‾</mml:mo></mml:mover> <mml:mo form="postfix" stretchy="true">|</mml:mo></mml:mrow></mml:math></alternatives></inline-formula> is the absolute difference between the group averages, <italic>α</italic><sub>1</sub> and <italic>α</italic><sub>2</sub> are non-negative parameters to be optimized, and <italic>s</italic> is the pooled standard error [<xref ref-type="bibr" rid="pcbi.1005562.ref010">10</xref>]. Special cases of ROTS are the ordinary <italic>t</italic>-statistic (<italic>α</italic><sub>1</sub> = 0, <italic>α</italic><sub>2</sub> = 1) and the signal log-ratio (<italic>α</italic><sub>1</sub> = 1, <italic>α</italic><sub>2</sub> = 0). The optimal statistic is determined by maximizing the reproducibility Z-score:
+<disp-formula id="pcbi.1005562.e003"><alternatives><graphic id="pcbi.1005562.e003g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005562.e003" xlink:type="simple"/><mml:math display="block" id="M3"><mml:mrow><mml:msub><mml:mi>Z</mml:mi> <mml:mi>k</mml:mi></mml:msub> <mml:mtext> </mml:mtext> <mml:mfenced close=")" open="(" separators=""><mml:msub><mml:mi>d</mml:mi> <mml:mi>α</mml:mi></mml:msub></mml:mfenced> <mml:mo>=</mml:mo> <mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi> <mml:mi>k</mml:mi></mml:msub> <mml:mtext> </mml:mtext> <mml:mfenced close=")" open="(" separators=""><mml:msub><mml:mi>d</mml:mi> <mml:mi>α</mml:mi></mml:msub></mml:mfenced> <mml:mo>-</mml:mo> <mml:msubsup><mml:mi>R</mml:mi> <mml:mi>k</mml:mi> <mml:mn>0</mml:mn></mml:msubsup> <mml:mtext> </mml:mtext> <mml:mfenced close=")" open="(" separators=""><mml:msub><mml:mi>d</mml:mi> <mml:mi>α</mml:mi></mml:msub></mml:mfenced></mml:mrow> <mml:mrow><mml:msub><mml:mi>s</mml:mi> <mml:mi>k</mml:mi></mml:msub> <mml:mtext> </mml:mtext> <mml:mfenced close=")" open="(" separators=""><mml:msub><mml:mi>d</mml:mi> <mml:mi>α</mml:mi></mml:msub></mml:mfenced></mml:mrow></mml:mfrac></mml:mrow></mml:math></alternatives> <label>(2)</label></disp-formula>
+over a lattice <italic>α</italic><sub>1</sub> ∈ {0, 0.01, …, 5}, <italic>α</italic><sub>2</sub> ∈ {0, 1}, <italic>k</italic> ∈ {1, 2, …, <italic>G</italic>}. Here, <italic>R</italic><sub><italic>k</italic></sub> (<italic>d</italic><sub><italic>α</italic></sub>) is the observed reproducibility of statistic <italic>d</italic><sub><italic>α</italic></sub> at top list size <italic>k</italic> in bootstrap datasets, <inline-formula id="pcbi.1005562.e004"><alternatives><graphic id="pcbi.1005562.e004g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005562.e004" xlink:type="simple"/><mml:math display="inline" id="M4"><mml:mrow><mml:msubsup><mml:mi>R</mml:mi> <mml:mi>k</mml:mi> <mml:mn>0</mml:mn></mml:msubsup> <mml:mtext> </mml:mtext> <mml:mrow><mml:mo form="prefix" stretchy="true">(</mml:mo> <mml:msub><mml:mi>d</mml:mi> <mml:mi>α</mml:mi></mml:msub> <mml:mo form="postfix" stretchy="true">)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula> is the corresponding null reproducibility in randomized datasets permuted over samples, <italic>s</italic><sub><italic>k</italic></sub> (<italic>d</italic><sub><italic>α</italic></sub>) is the standard deviation of the bootstrap distribution, and <italic>G</italic> is the total number of features in the data. Reproducibility is defined as the average overlap of <italic>k</italic> top-ranked features over pairs of bootstrapped datasets.</p>
+<p>The final ROTS output is calculated from the original data using the optimized parameters <italic>α</italic><sub>1</sub> and <italic>α</italic><sub>2</sub> giving the highest reproducibility Z-score. The false discovery rate (FDR) is estimated by randomly permuting the sample labels.</p>
+</sec>
+<sec id="sec004">
+<title>Software features</title>
+<p>The ROTS package is freely available from Bioconductor (<ext-link ext-link-type="uri" xlink:href="https://www.bioconductor.org/packages/ROTS" xlink:type="simple">https://www.bioconductor.org/packages/ROTS</ext-link>) and runs in R environment. Both the package and the R environment can be used on Windows, MacOS or UNIX platforms. After installing the package, the differential expression analysis can be performed within R. A preprocessed and appropriately normalized data matrix is required for input with columns representing different samples and rows representing the features. It can be various types of omics data, such as gene expression microarray data, RNA-seq data or mass spectrometry based proteomics data. As an example, an excerpt from a typical expression matrix of a label-free proteomics study is shown in <xref ref-type="table" rid="pcbi.1005562.t001">Table 1</xref>, containing log scaled protein abundances of three replicates from two sample groups of the shotgun ‘profiling standard sample set’ [<xref ref-type="bibr" rid="pcbi.1005562.ref013">13</xref>].</p>
+<table-wrap id="pcbi.1005562.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005562.t001</object-id>
+<label>Table 1</label>
+<caption>
+<title>Example layout of expression data to be used as input for ROTS, where columns represent different samples and rows represent the features.</title>
+</caption>
+<alternatives>
+<graphic id="pcbi.1005562.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005562.t001" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" style="border-bottom:thick">Feature</th>
+<th align="right" style="border-bottom:thick">A1</th>
+<th align="right" style="border-bottom:thick">A2</th>
+<th align="right" style="border-bottom:thick">A3</th>
+<th align="right" style="border-bottom:thick">B1</th>
+<th align="right" style="border-bottom:thick">B2</th>
+<th align="right" style="border-bottom:thick">B3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">1</td>
+<td align="char" char=".">19.263</td>
+<td align="char" char=".">19.213</td>
+<td align="char" char=".">19.151</td>
+<td align="char" char=".">19.138</td>
+<td align="char" char=".">19.168</td>
+<td align="char" char=".">19.328</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="char" char=".">25.950</td>
+<td align="char" char=".">25.935</td>
+<td align="char" char=".">25.950</td>
+<td align="char" char=".">24.040</td>
+<td align="char" char=".">24.058</td>
+<td align="char" char=".">24.078</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="char" char=".">21.077</td>
+<td align="char" char=".">20.982</td>
+<td align="char" char=".">21.101</td>
+<td align="char" char=".">21.255</td>
+<td align="char" char=".">21.263</td>
+<td align="char" char=".">21.328</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="char" char=".">20.691</td>
+<td align="char" char=".">20.531</td>
+<td align="char" char=".">20.470</td>
+<td align="char" char=".">20.921</td>
+<td align="char" char=".">20.902</td>
+<td align="char" char=".">20.911</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>To perform differential expression analysis on an expression matrix (here <monospace>data</monospace>), only one line of code is required after loading the package:</p>
+<p><monospace>library(ROTS)</monospace></p>
+<p><monospace>rots.out &lt;- ROTS(data, groups = c(0,0,0,1,1,1), B = 1000, K = 500)</monospace></p>
+<p>Here the vector <monospace>groups</monospace> defines the columns of the data matrix belonging to the two different sample groups under comparison, <monospace>B</monospace> denotes the number of bootstraps to perform, and <monospace>K</monospace> is the maximum top list size to consider in reproducibility optimization. Setting this number to a smaller value may improve the running time drastically. However, we recommend that the value should always be considerably higher than the number of features expected to be differentially expressed.</p>
+<p>The generated ROTS object (here <monospace>rots.out</monospace>) contains the test statistics and additional details for all the features in the input data, including the optimized parameters <monospace>a1</monospace> and <monospace>a2</monospace>. If the reported top list size <italic>k</italic> (<monospace>rots.out$k</monospace>) is close to the given parameter <monospace>K</monospace>, it suggests that the maximum top list size to be tested might have been too small, and increasing it should be considered. The reproducibility value (<monospace>rots.out$R</monospace>) and the reproducibility Z-score (<monospace>rots.out$Z</monospace>) are also included. All the results including <italic>p</italic>-values (<monospace>rots.out$pvalue</monospace>), false discovery rates (<monospace>rots.out$FDR</monospace>) or fold changes (<monospace>rots.out$logfc</monospace>) can be exported by the user and used for further external analysis, such as gene-set or pathway enrichment analysis.</p>
+<p>The ROTS package includes also versatile built-in options for visualization that can be accessed using the standard R <monospace>plot</monospace> function. The type of plot can be selected using the <monospace>type</monospace> parameter of the function. <xref ref-type="fig" rid="pcbi.1005562.g001">Fig 1A</xref> shows an example of a volcano plot (<monospace>type=‘volcano’</monospace>), which visualizes the relationship between fold changes and <italic>p</italic>-values (<italic>i.e.</italic> magnitude of change and statistical significance). It can be used to select the most promising candidate features for further validation studies. <xref ref-type="fig" rid="pcbi.1005562.g001">Fig 1B</xref> shows an example of an MA plot (<monospace>type=‘ma’</monospace>), which shows the relationship between the average intensities (A) and intensity ratios (M) calculated across and between the sample groups for each feature, respectively. It can be used, for instance, to assess the quality of normalization used in preprocessing the data. <xref ref-type="fig" rid="pcbi.1005562.g001">Fig 1C</xref> illustrates the ROTS reproducibility Z-score as a function of top list size <italic>k</italic> (<monospace>type=‘reproducibility’</monospace>). It can be used to look for possible alternative peaks of Z-score, which could suggest, for example, subgroups of differentially expressed features or artifacts from data normalization. <xref ref-type="fig" rid="pcbi.1005562.g001">Fig 1D</xref> illustrates a histogram of <italic>p</italic>-values (<monospace>type=‘pvalue’</monospace>), which enables assessing the overall performance of the hypothesis testing. Under the null hypothesis, <italic>p</italic>-values are uniformly distributed, but if there is a large number of differentially expressed features present, the distribution of <italic>p</italic>-values is likely skewed towards smaller values. <xref ref-type="fig" rid="pcbi.1005562.g001">Fig 1E</xref> shows an example of a principal component analysis (PCA) of the differentially expressed features defined based on a user-specified FDR cutoff (<monospace>type=‘pca’</monospace>). It is a transformation, where the data is projected into a new coordinate system of principal components retaining the highest variance. It can be used as a tool to evaluate similarities between samples or groups. By setting the FDR parameter to 1, the principal components are calculated using all the features. <xref ref-type="fig" rid="pcbi.1005562.g001">Fig 1F</xref> illustrates a heatmap with hierarchical clustering of samples and features to visualize the expression levels of differentially expressed features as colours (<monospace>type=‘heatmap’</monospace>).</p>
+<fig id="pcbi.1005562.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005562.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Visualizations provided by ROTS.</title>
+<p>(A) Volcano plot of the features, where the differentially expressed features are coloured red. (B) MA plot of the features, where the differentially expressed features are coloured red. (C) ROTS reproducibility Z-score as function of top list size. The highest score is marked with red dot together with its value. (D) Histogram of <italic>p</italic>-values. (E) Principal component analysis (PCA) plot of the differentially expressed features. (F) Heatmap and hierarchical clustering of the samples (columns) and the differentially expressed features (rows) using euclidean distance and the complete-linkage agglomerative clustering method.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005562.g001" xlink:type="simple"/>
+</fig>
+<p>For additional details and examples of using the ROTS package, the reader is referred to the package manual and the three case studies discussed below.</p>
+</sec>
+</sec>
+<sec id="sec005" sec-type="results">
+<title>Results</title>
+<p>The benefits of ROTS over other state-of-the-art tools have already been shown in various applications [<xref ref-type="bibr" rid="pcbi.1005562.ref009">9</xref>–<xref ref-type="bibr" rid="pcbi.1005562.ref012">12</xref>]. Here, we used three new case studies to further demonstrate the performance of the ROTS method in different study settings, including label-free quantitative proteomics and both bulk and single-cell RNA-seq studies.</p>
+<sec id="sec006">
+<title>Case study 1: Quantitative label-free proteomics</title>
+<p>The ROTS method has previously been benchmarked in label-free shotgun proteomics using spike-in mixtures and complex mouse liver samples, where it has shown competitive performance against other state-of-the-art methods [<xref ref-type="bibr" rid="pcbi.1005562.ref011">11</xref>]. Here, the performance of ROTS with quantitative mass spectrometry based proteomics data is illustrated in another published benchmark spike-in study, where the truly differentially expressed proteins are known.</p>
+<p>The data are from an inter-laboratory spike-in study of the Clinical Proteomic Tumor Analysis Consortium (CPTAC technology assessment study 6) [<xref ref-type="bibr" rid="pcbi.1005562.ref014">14</xref>–<xref ref-type="bibr" rid="pcbi.1005562.ref016">16</xref>]. It contains a mixture of 48 human proteins (Sigma UPS1) spiked into a yeast proteome (<italic>S. cerevisiae</italic>) background at different concentration levels ranging from 0.25 to 20 fmol/<italic>μ</italic>L to create five distinct sample groups each with three technical replicates. From the different datasets available, we processed Orbitrap raw files produced at site 86, from which a total of 736 proteins were quantified using the Progenesis software with peptide identifications from the Mascot search algorithm in Proteome Discoverer software. Threshold for peptide identifications was set to FDR &lt; 0.01 and relative protein quantitation was done using non-conflicting peptides, followed by median normalization. Progenesis was unable to align one of the three replicates in one of the sample groups (sample group E). Only the sample groups with all three replicates (sample groups from A to D) were used here for performance benchmarking.</p>
+<p>
+<xref ref-type="fig" rid="pcbi.1005562.g002">Fig 2</xref> shows the performance of ROTS on the CPTAC data together with other popular methods for differential expression analysis, including significance analysis of microarrays (SAM) [<xref ref-type="bibr" rid="pcbi.1005562.ref003">3</xref>], Limma [<xref ref-type="bibr" rid="pcbi.1005562.ref005">5</xref>] and the Student’s <italic>t</italic>-test. Performance was measured using receiver operating characteristic (ROC) curves, which were created by merging the results from the six possible individual pairwise comparisons involving sample groups from A to D. Overall, ROTS produced a significantly better ROC-curve compared to all other tested methods (DeLong’s test <italic>p</italic> &lt; 0.001 for each method), which supports the applicability of ROTS in proteomics studies to distinguish differentially expressed proteins.</p>
+<fig id="pcbi.1005562.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005562.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Performance of ROTS and current state-of-the-art methods for proteomics in the spike-in proteomics data from the Clinical Proteomic Tumor Analysis Consortium (CPTAC technology assessment study 6).</title>
+<p>Performance was evaluated using receiver operating characteristic (ROC) curves and the areas under the curves (AUC).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005562.g002" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec007">
+<title>Case study 2: Bulk RNA-seq</title>
+<p>Similarly as with proteomics data, the ROTS method has been extensively benchmarked against other software packages in bulk RNA-seq data [<xref ref-type="bibr" rid="pcbi.1005562.ref012">12</xref>]. Besides systematically outperforming other methods in spike-in data, ROTS has also been used to successfully identify prognostic markers for clear cell renal cell carcinoma, which confirms the clinical relevance of estimating differential gene expression accurately with ROTS [<xref ref-type="bibr" rid="pcbi.1005562.ref012">12</xref>]. Here, the performance of ROTS in bulk RNA-seq data is illustrated using a published benchmark spike-in study.</p>
+<p>The data are from the sequencing quality control (SEQC) project [<xref ref-type="bibr" rid="pcbi.1005562.ref017">17</xref>], which includes four distinct sample groups (A, B, C and D) each with five technical replicates sequenced using Illumina HiSeq 2000 platform. For groups A and B, 92 synthetic polyadenylated transcripts provided by the External RNA Control Consortium (ERCC) [<xref ref-type="bibr" rid="pcbi.1005562.ref018">18</xref>] have been spiked into the Universal Human Reference RNA (UHRR) and Human Brain Reference RNA (HBRR) respectively, so that their concentrations were controlled to have different fold changes of 0.5, 0.67, 1 or 4 between the groups A and B. Samples C and D were then obtained by mixing samples A and B using different ratios: 75% of sample A and 25% of sample B for sample C and vice versa for sample D. For performance benchmarking, we downloaded the count table from GEO with accession number GSE47774. The trimmed mean of M-values (TMM) normalization [<xref ref-type="bibr" rid="pcbi.1005562.ref020">20</xref>] with voom transformation [<xref ref-type="bibr" rid="pcbi.1005562.ref019">19</xref>] was applied before differential expression analysis. In total, four comparisons were considered: A vs B, A vs D, B vs C, and C vs D.</p>
+<p>
+<xref ref-type="fig" rid="pcbi.1005562.g003">Fig 3</xref> shows the performance of ROTS in the bulk RNA-seq data together with other state-of-the-art methods, including edgeR [<xref ref-type="bibr" rid="pcbi.1005562.ref021">21</xref>, <xref ref-type="bibr" rid="pcbi.1005562.ref022">22</xref>], Differential Expression analysis for Sequence count data (DESeq) [<xref ref-type="bibr" rid="pcbi.1005562.ref023">23</xref>] and Limma [<xref ref-type="bibr" rid="pcbi.1005562.ref005">5</xref>]. Similarly as with proteomics, the performance was measured using ROC-curves, which were created by merging the results from the individual pairwise comparisons. Again, ROTS showed improved performance over the other tested methods (DeLong’s test <italic>p</italic> &lt; 0.001 for each method), confirming the applicability of ROTS in bulk RNA-seq studies to detect differentially expressed genes.</p>
+<fig id="pcbi.1005562.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005562.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Performance of ROTS and current state-of-the-art methods for bulk RNA-seq in the spike-in data from the SEQC project.</title>
+<p>Performance was evaluated using receiver operating characteristic (ROC) curves and the areas under the curves (AUC).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005562.g003" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec008">
+<title>Case study 3: Single-cell RNA-seq</title>
+<p>Recently, performance of the ROTS method in comparison to other state-of-the-art methods has also been tested in single-cell RNA-seq data. ROTS showed good performance without requiring any single-cell-specific modifications, whereas no systematic benefits of the recent single-cell-specific methods were found [<xref ref-type="bibr" rid="pcbi.1005562.ref009">9</xref>]. Here, we further demonstrate the utility of the ROTS method also in the increasingly popular single-cell RNA-seq data.</p>
+<p>The data are from a previously published single-cell study on innate lymphoid cells (ILC), containing single cell samples sequenced using Illumina HiSeq 2000 platform [<xref ref-type="bibr" rid="pcbi.1005562.ref024">24</xref>]. Similarly as in our recent study [<xref ref-type="bibr" rid="pcbi.1005562.ref009">9</xref>], we compared different cell populations. The count table was downloaded from GEO with accession number GSE70580. However, unlike in our previous study, where we compared ILC1 and ILC2 cells against ILC3 cells, the comparison here was performed between ILC1 and ILC2 cells. After excluding cells with total expression &lt; 10000, the data contained 127 ILC1 cells and 139 ILC2 cells. With ROTS we performed TMM normalization and with the other tested methods the guidelines of their respective manuals were followed.</p>
+<p>
+<xref ref-type="fig" rid="pcbi.1005562.g004">Fig 4</xref> shows the performance of ROTS in the single-cell RNA-seq data together with other state-of-the art tools, including Single Cell Differential Expression (SCDE) [<xref ref-type="bibr" rid="pcbi.1005562.ref025">25</xref>], Model-based Analysis of Single-cell Transcriptomics (MAST) [<xref ref-type="bibr" rid="pcbi.1005562.ref026">26</xref>] and Limma [<xref ref-type="bibr" rid="pcbi.1005562.ref005">5</xref>]. First, we investigated the precision and recall of the findings when the number of cells was reduced to 90, 70, 50 or 30 cells in both groups. Ten subsets of each size were generated. Overall, ROTS showed the highest precision in finding the genes detected in the full data as differentially expressed (FDR &lt; 0.05) also in the reduced datasets (<xref ref-type="fig" rid="pcbi.1005562.g004">Fig 4A</xref>). Notably, it also had the highest recall, indicating that the findings from the reduced data covered the findings from the full data better than with the other tested methods (<xref ref-type="fig" rid="pcbi.1005562.g004">Fig 4B</xref>). Finally, to investigate whether the methods tended to find a large number of false positives, we generated artificial mock datasets by randomly dividing the 139 ILC2 cells into two groups of similar size ten times. These artificial sets should not differ from one another since all the cells are from the same population. Also the investigation of the mock comparisons ranked ROTS as the top performing method (<xref ref-type="fig" rid="pcbi.1005562.g004">Fig 4C</xref>). These results further confirm the applicability of ROTS for single-cell RNA-seq studies.</p>
+<fig id="pcbi.1005562.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005562.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Precision, recall, and false positive ratios of ROTS and current state-of-the-art methods for single-cell RNA-seq in the innate lymphoid cell data.</title>
+<p>(A) Precision of the findings in reduced data. Precision was defined as the ratio between the number of common detections in the reduced and full data, and the total number of detections in the reduced data. Median values over ten randomly generated subsets are indicated by lines across the different numbers of cells per group. (B) Recall of the findings in reduced data. Recall was defined as the ratio between the number of common detections in the reduced and full data, and the total number of detections in the full data. Median values over ten randomly generated subsets are indicated by lines across the different numbers of cells per group. (C) False positive ratios of the findings in ten randomly generated mock datasets. The false positive ratio was defined as the ratio between the number of differentially expressed genes in the mock comparison and the average number of differentially expressed genes in the actual comparison. Limma was visualized separately because of the different scale compared to the other methods and jittering was used to separate overlapping points.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005562.g004" xlink:type="simple"/>
+</fig>
+</sec>
+</sec>
+<sec id="sec009">
+<title>Availability and future directions</title>
+<p>ROTS has been successfully applied in multiple studies in a diversity of applications and the results on different types of omics data have shown its overall robustness. A major benefit of ROTS is its ability to automatically select an appropriate test statistic for a specific data under study by maximizing the reproducibility of the differentially expressed features. Therefore, it would be beneficial to integrate ROTS into various existing workflows to perform the differential expression analysis. Besides being able to select a test statistic, ROTS could possibly aid also in selecting, for instance, an appropriate normalization method based on the data. While ROTS is based on a modified <italic>t</italic>-statistic, it is possible to further extend the method by allowing multiple sample groups by using, for example, a modified <italic>F</italic>-statistic. Finally, to enhance the running time of the algorithm, parallelization within the package or improved heuristics could be implemented for optimizing the parameters.</p>
+<p>The R package ROTS is freely available from Bioconductor (<ext-link ext-link-type="uri" xlink:href="https://www.bioconductor.org/packages/ROTS" xlink:type="simple">https://www.bioconductor.org/packages/ROTS</ext-link>) and it conveniently allows to perform statistical testing and result visualization using simple commands. A complete reference manual for the package and a vignette with examples are also available from Bioconductor.</p>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1005562.ref001">
+<label>1</label>
+<mixed-citation publication-type="other" xlink:type="simple">Mukherjee S, Roberts SJ. A theoretical analysis of gene selection. Proceedings / IEEE Computational Systems Bioinformatics Conference, CSB IEEE Computational Systems Bioinformatics Conference. 2004; p. 131–41.</mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref002">
+<label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Qin</surname> <given-names>LX</given-names></name>, <name name-style="western"><surname>Kerr</surname> <given-names>KF</given-names></name>, <collab>Contributing Members of the Toxicogenomics Research Consortium</collab>. <article-title>Empirical evaluation of data transformations and ranking statistics for microarray analysis</article-title>. <source>Nucleic acids research</source>. <year>2004</year>;<volume>32</volume>(<issue>18</issue>):<fpage>5471</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkh866" xlink:type="simple">10.1093/nar/gkh866</ext-link></comment> <object-id pub-id-type="pmid">15479783</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref003">
+<label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Tusher</surname> <given-names>VG</given-names></name>, <name name-style="western"><surname>Tibshirani</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Chu</surname> <given-names>G</given-names></name>. <article-title>Significance analysis of microarrays applied to the ionizing radiation response</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source>. <year>2001</year>;<volume>98</volume>(<issue>9</issue>):<fpage>5116</fpage>–<lpage>21</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.091062498" xlink:type="simple">10.1073/pnas.091062498</ext-link></comment> <object-id pub-id-type="pmid">11309499</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref004">
+<label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Breitling</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Armengaud</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Amtmann</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Herzyk</surname> <given-names>P</given-names></name>. <article-title>Rank products: a simple, yet powerful, new method to detect differentially regulated genes in replicated microarray experiments</article-title>. <source>FEBS letters</source>. <year>2004</year>;<volume>573</volume>(<issue>1–3</issue>):<fpage>83</fpage>–<lpage>92</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.febslet.2004.07.055" xlink:type="simple">10.1016/j.febslet.2004.07.055</ext-link></comment> <object-id pub-id-type="pmid">15327980</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref005">
+<label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Smyth</surname> <given-names>GK</given-names></name>. <article-title>Linear models and empirical bayes methods for assessing differential expression in microarray experiments</article-title>. <source>Statistical Applications in Genetics and Molecular Biology</source>. <year>2005</year>;<volume>3</volume>(<issue>1</issue>):<fpage>1</fpage>–<lpage>25</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.2202/1544-6115.1027" xlink:type="simple">10.2202/1544-6115.1027</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref006">
+<label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Soneson</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Delorenzi</surname> <given-names>M</given-names></name>. <article-title>A comparison of methods for differential expression analysis of RNA-seq data</article-title>. <source>BMC Bioinformatics</source>. <year>2013</year>;<volume>14</volume>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-14-91" xlink:type="simple">10.1186/1471-2105-14-91</ext-link></comment> <object-id pub-id-type="pmid">23497356</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref007">
+<label>7</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Rapaport</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Khanin</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Liang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Pirun</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Krek</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Zumbo</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Mason</surname> <given-names>CE</given-names></name>, <name name-style="western"><surname>Socci</surname> <given-names>ND</given-names></name>, <name name-style="western"><surname>Betel</surname> <given-names>D</given-names></name>. <article-title>Comprehensive evaluation of differential gene expression analysis methods for RNA-seq data</article-title>. <source>Genome Biology</source>. <year>2013</year>;<volume>14</volume>(<issue>9</issue>). <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/gb-2013-14-9-r95" xlink:type="simple">10.1186/gb-2013-14-9-r95</ext-link></comment> <object-id pub-id-type="pmid">24020486</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref008">
+<label>8</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Seyednasrollah</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Laiho</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Elo</surname> <given-names>LL</given-names></name>. <article-title>Comparison of software packages for detecting differential expression in RNA-seq studies</article-title>. <source>Briefings in Bioinformatics</source>. <year>2015</year>;<volume>16</volume>(<issue>1</issue>):<fpage>59</fpage>–<lpage>70</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bib/bbt086" xlink:type="simple">10.1093/bib/bbt086</ext-link></comment> <object-id pub-id-type="pmid">24300110</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref009">
+<label>9</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Jaakkola</surname> <given-names>MK</given-names></name>, <name name-style="western"><surname>Seyednasrollah</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Mehmood</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Elo</surname> <given-names>LL</given-names></name>. <article-title>Comparison of methods to detect differentially expressed genes between single-cell populations</article-title>. <source>Briefings in Bioinformatics</source>. <year>2016</year>;(<month>February</month>):bbw057. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bib/bbw057" xlink:type="simple">10.1093/bib/bbw057</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref010">
+<label>10</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Elo</surname> <given-names>LL</given-names></name>, <name name-style="western"><surname>Filén</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Lahesmaa</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Aittokallio</surname> <given-names>T</given-names></name>. <article-title>Reproducibility-optimized test statistic for ranking genes in microarray studies</article-title>. <source>IEEE/ACM transactions on computational biology and bioinformatics / IEEE, ACM</source>. <year>2008</year>;<volume>5</volume>(<issue>3</issue>):<fpage>423</fpage>–<lpage>31</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/tcbb.2007.1078" xlink:type="simple">10.1109/tcbb.2007.1078</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref011">
+<label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Pursiheimo</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Vehmas</surname> <given-names>AP</given-names></name>, <name name-style="western"><surname>Afzal</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Suomi</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Chand</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Strauss</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>Optimization of Statistical Methods Impact on Quantitative Proteomics Data</article-title>. <source>Journal of Proteome Research</source>. <year>2015</year>;<volume>14</volume>(<issue>10</issue>):<fpage>4118</fpage>–<lpage>4126</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/acs.jproteome.5b00183" xlink:type="simple">10.1021/acs.jproteome.5b00183</ext-link></comment> <object-id pub-id-type="pmid">26321463</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref012">
+<label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Seyednasrollah</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Rantanen</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Jaakkola</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Elo</surname> <given-names>LL</given-names></name>. <article-title>ROTS: reproducible RNA-seq biomarker detector-prognostic markers for clear cell renal cell cancer</article-title>. <source>Nucleic acids research</source>. <year>2016</year>;<volume>44</volume>(<issue>1</issue>):<fpage>e1</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkv806" xlink:type="simple">10.1093/nar/gkv806</ext-link></comment> <object-id pub-id-type="pmid">26264667</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref013">
+<label>13</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Bruderer</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Bernhardt</surname> <given-names>OM</given-names></name>, <name name-style="western"><surname>Gandhi</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Miladinović</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Cheng</surname> <given-names>LY</given-names></name>, <name name-style="western"><surname>Messner</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>Extending the Limits of Quantitative Proteome Profiling with Data-Independent Acquisition and Application to Acetaminophen-Treated Three-Dimensional Liver Microtissues</article-title>. <source>Mol. Cell. Proteomics</source>. <year>2015</year>;<volume>14</volume>:<fpage>1400</fpage>–<lpage>1410</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1074/mcp.M114.044305" xlink:type="simple">10.1074/mcp.M114.044305</ext-link></comment> <object-id pub-id-type="pmid">25724911</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref014">
+<label>14</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Tabb</surname> <given-names>DL</given-names></name>, <name name-style="western"><surname>Vega-Montoto</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Rudnick</surname> <given-names>Pa</given-names></name>, <name name-style="western"><surname>Variyath</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Ham</surname> <given-names>AJL</given-names></name>, <name name-style="western"><surname>Bunk</surname> <given-names>DM</given-names></name>, <etal>et al</etal>. <article-title>Repeatability and reproducibility in proteomic identifications by liquid chromatography-tandem mass spectrometry</article-title>. <source>Journal of proteome research</source>. <year>2010</year>;<volume>9</volume>(<issue>2</issue>):<fpage>761</fpage>–<lpage>76</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/pr9006365" xlink:type="simple">10.1021/pr9006365</ext-link></comment> <object-id pub-id-type="pmid">19921851</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref015">
+<label>15</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Rudnick</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Clauser</surname> <given-names>KR</given-names></name>, <name name-style="western"><surname>Kilpatrick</surname> <given-names>LE</given-names></name>, <name name-style="western"><surname>Tchekhovskoi</surname> <given-names>DV</given-names></name>, <name name-style="western"><surname>Neta</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Blonder</surname> <given-names>N</given-names></name>, <etal>et al</etal>. <article-title>Performance Metrics for Liquid Chromatography-Tandem Mass Spectrometry Systems in Proteomics Analyses</article-title>. <source>Molecular &amp; Cellular Proteomics</source>. <year>2010</year>;<volume>9</volume>(<issue>2</issue>):<fpage>225</fpage>–<lpage>241</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1074/mcp.M900223-MCP200" xlink:type="simple">10.1074/mcp.M900223-MCP200</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref016">
+<label>16</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Paulovich</surname> <given-names>AG</given-names></name>, <name name-style="western"><surname>Billheimer</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Ham</surname> <given-names>AJL</given-names></name>, <name name-style="western"><surname>Vega-Montoto</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Rudnick</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Tabb</surname> <given-names>DL</given-names></name>, <etal>et al</etal>. <article-title>Interlaboratory study characterizing a yeast performance standard for benchmarking LC-MS platform performance</article-title>. <source>Molecular &amp; cellular proteomics: MCP</source>. <year>2010</year>;<volume>9</volume>(<issue>2</issue>):<fpage>242</fpage>–<lpage>54</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1074/mcp.M900222-MCP200" xlink:type="simple">10.1074/mcp.M900222-MCP200</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref017">
+<label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<collab>SEQC/MAQC-III Consortium</collab>. <article-title>A comprehensive assessment of RNA-seq accuracy, reproducibility and information content by the Sequencing Quality Control Consortium</article-title>. <source>Nature biotechnology</source>. <year>2014</year>;<volume>32</volume>(<issue>9</issue>):<fpage>903</fpage>–<lpage>14</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nbt.2957" xlink:type="simple">10.1038/nbt.2957</ext-link></comment> <object-id pub-id-type="pmid">25150838</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref018">
+<label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Jiang</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Schlesinger</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Davis</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Salit</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>Synthetic spike-in standards for RNA-seq experiments</article-title>. <source>Genome research</source>. <year>2011</year>;<volume>21</volume>(<issue>9</issue>):<fpage>1543</fpage>–<lpage>51</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1101/gr.121095.111" xlink:type="simple">10.1101/gr.121095.111</ext-link></comment> <object-id pub-id-type="pmid">21816910</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref019">
+<label>19</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Law</surname> <given-names>CW</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Shi</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Smyth</surname> <given-names>GK</given-names></name>. <article-title>voom: Precision weights unlock linear model analysis tools for RNA-seq read counts</article-title>. <source>Genome biology</source>. <year>2014</year>;<volume>15</volume>(<issue>2</issue>):<fpage>R29</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/gb-2014-15-2-r29" xlink:type="simple">10.1186/gb-2014-15-2-r29</ext-link></comment> <object-id pub-id-type="pmid">24485249</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref020">
+<label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Robinson</surname> <given-names>MD</given-names></name>, <name name-style="western"><surname>Oshlack</surname> <given-names>A</given-names></name>. <article-title>A scaling normalization method for differential expression analysis of RNA-seq data</article-title>. <source>Genome biology</source>. <year>2010</year>;<volume>11</volume>(<issue>3</issue>):<fpage>R25</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/gb-2010-11-3-r25" xlink:type="simple">10.1186/gb-2010-11-3-r25</ext-link></comment> <object-id pub-id-type="pmid">20196867</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref021">
+<label>21</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Robinson</surname> <given-names>MD</given-names></name>, <name name-style="western"><surname>McCarthy</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Smyth</surname> <given-names>GK</given-names></name>. <article-title>edgeR: a Bioconductor package for differential expression analysis of digital gene expression data</article-title>. <source>Bioinformatics (Oxford, England)</source>. <year>2010</year>;<volume>26</volume>(<issue>1</issue>):<fpage>139</fpage>–<lpage>40</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btp616" xlink:type="simple">10.1093/bioinformatics/btp616</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref022">
+<label>22</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>McCarthy</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Smyth</surname> <given-names>GK</given-names></name>. <article-title>Differential expression analysis of multifactor RNA-Seq experiments with respect to biological variation</article-title>. <source>Nucleic acids research</source>. <year>2012</year>;<volume>40</volume>(<issue>10</issue>):<fpage>4288</fpage>–<lpage>97</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gks042" xlink:type="simple">10.1093/nar/gks042</ext-link></comment> <object-id pub-id-type="pmid">22287627</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref023">
+<label>23</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Anders</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Huber</surname> <given-names>W</given-names></name>. <article-title>Differential expression analysis for sequence count data</article-title>. <source>Genome biology</source>. <year>2010</year>;<volume>11</volume>(<issue>10</issue>):<fpage>R106</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/gb-2010-11-10-r106" xlink:type="simple">10.1186/gb-2010-11-10-r106</ext-link></comment> <object-id pub-id-type="pmid">20979621</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref024">
+<label>24</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Björklund</surname> <given-names>ÅK</given-names></name>, <name name-style="western"><surname>Forkel</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Picelli</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Konya</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Theorell</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Friberg</surname> <given-names>D</given-names></name>, <etal>et al</etal>. <article-title>The heterogeneity of human CD127+ innate lymphoid cells revealed by single-cell RNA sequencing</article-title>. <source>Nature immunology</source>. <year>2016</year>;<volume>17</volume>(<issue>4</issue>):<fpage>451</fpage>–<lpage>460</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/ni.3368" xlink:type="simple">10.1038/ni.3368</ext-link></comment> <object-id pub-id-type="pmid">26878113</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref025">
+<label>25</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Kharchenko</surname> <given-names>PV</given-names></name>, <name name-style="western"><surname>Silberstein</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Scadden</surname> <given-names>DT</given-names></name>. <article-title>Bayesian approach to single-cell differential expression analysis</article-title>. <source>Nature methods</source>. <year>2014</year>;<volume>11</volume>(<issue>7</issue>):<fpage>740</fpage>–<lpage>2</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nmeth.2967" xlink:type="simple">10.1038/nmeth.2967</ext-link></comment> <object-id pub-id-type="pmid">24836921</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005562.ref026">
+<label>26</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Finak</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>McDavid</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Yajima</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Deng</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Gersuk</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Shalek</surname> <given-names>AK</given-names></name>, <etal>et al</etal>. <article-title>MAST: a flexible statistical framework for assessing transcriptional changes and characterizing heterogeneity in single-cell RNA sequencing data</article-title>. <source>Genome biology</source>. <year>2015</year>;<volume>16</volume>(<issue>1</issue>):<fpage>278</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/s13059-015-0844-5" xlink:type="simple">10.1186/s13059-015-0844-5</ext-link></comment> <object-id pub-id-type="pmid">26653891</object-id></mixed-citation>
+</ref>
+</ref-list>
+</back>
+</article>

@@ -1,0 +1,187 @@
+{
+  "doi": "10.1371/journal.pone.0292318",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0292318",
+  "title": "Stratigraphic architecture of the Belly River Group (Campanian, Cretaceous) in the plains of southern Alberta: Revisions and updates to an existing model and implications for correlating dinosaur-rich strata",
+  "journal": "PLOS ONE",
+  "authors": [
+    "David A. Eberth"
+  ],
+  "year": "2024",
+  "license": "2024\nDavid A. Eberth\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0292318.g001",
+      "label": "Fig 1",
+      "caption": "Location map.\nLight green indicates Belly River Group exposures in southern Alberta and southwest Saskatchewan. Inset shows field area in western Canada. Township and range numbers along margins. Cross-sections (A–A’, B–B’, C–C’) indicated by solid lines. Well logs indicated by dots and numbers. Reference logs indicated by yellow dots and bold numbers. Outcrop locations indicated by red stars. Comrey sandstone zone study area and well log locations indicated southeast of Medicine Hat. Depositional edge of Dinosaur Park Fm indicated by dashed line southeast of Lethbridge. Abbreviations: DC, Devil’s Coulee; DPP, Dinosaur Provincial Park; H/RH, Hays/Rolling Hills; OF, Onefour; MB, Manyberries; ML, Muddy Lake; NF, Nesmo Farm; RN, Rapid Narrows; RC, Redcliff; SF, Suffield Pumping Station; ss, sandstone.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Location map.</title>\n<p>Light green indicates Belly River Group exposures in southern Alberta and southwest Saskatchewan. Inset shows field area in western Canada. Township and range numbers along margins. Cross-sections (A–A’, B–B’, C–C’) indicated by solid lines. Well logs indicated by dots and numbers. Reference logs indicated by yellow dots and bold numbers. Outcrop locations indicated by red stars. Comrey sandstone zone study area and well log locations indicated southeast of Medicine Hat. Depositional edge of Dinosaur Park Fm indicated by dashed line southeast of Lethbridge. Abbreviations: DC, Devil’s Coulee; DPP, Dinosaur Provincial Park; H/RH, Hays/Rolling Hills; OF, Onefour; MB, Manyberries; ML, Muddy Lake; NF, Nesmo Farm; RN, Rapid Narrows; RC, Redcliff; SF, Suffield Pumping Station; ss, sandstone.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292318.g002",
+      "label": "Fig 2",
+      "caption": "Stratigraphy and stratigraphic model of the Belly River Group.\nA, Stratigraphic chart for the Belly River Group. Note the complex geometries of the Foremost, Oldman, and Dinosaur Park formations, and the step-like nature of the Dinosaur Park-Oldman formational contact in southeastern Alberta. B, Stratigraphic model for the Belly River Group showing shifting sediment supply directions and intensities through time. Abbreviations: Ma, Mega-annum; nw, northwest; se, southeast.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Stratigraphy and stratigraphic model of the Belly River Group.</title>\n<p>A, Stratigraphic chart for the Belly River Group. Note the complex geometries of the Foremost, Oldman, and Dinosaur Park formations, and the step-like nature of the Dinosaur Park-Oldman formational contact in southeastern Alberta. B, Stratigraphic model for the Belly River Group showing shifting sediment supply directions and intensities through time. Abbreviations: Ma, Mega-annum; nw, northwest; se, southeast.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292318.g003",
+      "label": "Fig 3",
+      "caption": "Annotated reference well log #53 (08-34-21-20W4) from center of the field area (between Bassano and Gleichen) for comparison with Hamblin [4, his Fig 3].\nInset shows location (red dot) in southern Alberta relative to other reference logs (circles). Gamma (red) and neutron-porosity log patterns are typical of the Belly River Group north of Twp 19 in southern Alberta. Note relative thinness of the Oldman Formation compared to more southerly logs (Figs 4 and 5). Abbreviations: LCZ, Lethbridge coal zone; HSS, Herronton sandstone zone; CZ, coal zone; TCZ, Taber coal zone; MRS, Milk River shoulder. Formational abbreviations as in text. Abbreviations in inset indicate locations of Calgary, Lethbridge, Medicine Hat, and Red Deer.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Annotated reference well log #53 (08-34-21-20W4) from center of the field area (between Bassano and Gleichen) for comparison with Hamblin [<xref ref-type=\"bibr\" rid=\"pone.0292318.ref004\">4</xref>, his Fig 3].</title>\n<p>Inset shows location (red dot) in southern Alberta relative to other reference logs (circles). Gamma (red) and neutron-porosity log patterns are typical of the Belly River Group north of Twp 19 in southern Alberta. Note relative thinness of the Oldman Formation compared to more southerly logs (Figs <xref ref-type=\"fig\" rid=\"pone.0292318.g004\">4</xref> and <xref ref-type=\"fig\" rid=\"pone.0292318.g005\">5</xref>). Abbreviations: LCZ, Lethbridge coal zone; HSS, Herronton sandstone zone; CZ, coal zone; TCZ, Taber coal zone; MRS, Milk River shoulder. Formational abbreviations as in text. Abbreviations in inset indicate locations of Calgary, Lethbridge, Medicine Hat, and Red Deer.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292318.g004",
+      "label": "Fig 4",
+      "caption": "Annotated reference logs #65 (01-11-03-23W4) and #68 (16-18-06-26W4) from southwestern corner of field area.\nNote extreme thickness of the Oldman Fm in this area. Also note the measured section of fossiliferous strata from Devil’s Coulee, west of Warner (see Fig 1). Measured section was stratigraphically correlated to well log #68 using field observations of DAE. Abbreviations: B, datable bentonite; c, claystone; cs, coarse sandstone; fs, fine sandstone; masl, meters above sea level; ms, medium sandstone; PFm, Pakowki Formation; si, siltstone.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Annotated reference logs #65 (01-11-03-23W4) and #68 (16-18-06-26W4) from southwestern corner of field area.</title>\n<p>Note extreme thickness of the Oldman Fm in this area. Also note the measured section of fossiliferous strata from Devil’s Coulee, west of Warner (see <xref ref-type=\"fig\" rid=\"pone.0292318.g001\">Fig 1</xref>). Measured section was stratigraphically correlated to well log #68 using field observations of DAE. Abbreviations: B, datable bentonite; c, claystone; cs, coarse sandstone; fs, fine sandstone; masl, meters above sea level; ms, medium sandstone; PFm, Pakowki Formation; si, siltstone.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292318.g005",
+      "label": "Fig 5",
+      "caption": "Annotated reference logs #02 (14-14-02-30W3), #03 (08-36-03-30W3), and #04 (11-25-04-01W4) from southeast Alberta.\nNote the thickness of the Oldman Fm. Also included are measured sections of fossiliferous strata from Onefour, Nesmo Farm, and South Manyberries Creek (southeast of Manyberries). All sections are stratigraphically correlated to one another and well logs using local marker beds and formational contacts observed by DAE. Abbreviations: CSS, Comrey Sandstone; LCZ, Lethbridge coal zone; MCZ, McKay coal zone; NT, Nesmo tuff.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Annotated reference logs #02 (14-14-02-30W3), #03 (08-36-03-30W3), and #04 (11-25-04-01W4) from southeast Alberta.</title>\n<p>Note the thickness of the Oldman Fm. Also included are measured sections of fossiliferous strata from Onefour, Nesmo Farm, and South Manyberries Creek (southeast of Manyberries). All sections are stratigraphically correlated to one another and well logs using local marker beds and formational contacts observed by DAE. Abbreviations: CSS, Comrey Sandstone; LCZ, Lethbridge coal zone; MCZ, McKay coal zone; NT, Nesmo tuff.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292318.g006",
+      "label": "Fig 6",
+      "caption": "Annotated reference logs #13 (14-06-13-03W4) and #17 (16-15-17-02W4) from Medicine Hat area of southeast Alberta.\nAlso included are measured sections of fossiliferous strata from the Bow and South Saskatchewan rivers near Medicine Hat. All sections are correlated to one another and well logs using local marker beds, formational contacts, and formation thicknesses observed by DAE as well as Hamblin [4]. Note the Herronton sandstone at the base of the Oldman in the measured sections.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Annotated reference logs #13 (14-06-13-03W4) and #17 (16-15-17-02W4) from Medicine Hat area of southeast Alberta.</title>\n<p>Also included are measured sections of fossiliferous strata from the Bow and South Saskatchewan rivers near Medicine Hat. All sections are correlated to one another and well logs using local marker beds, formational contacts, and formation thicknesses observed by DAE as well as Hamblin [<xref ref-type=\"bibr\" rid=\"pone.0292318.ref004\">4</xref>]. Note the Herronton sandstone at the base of the Oldman in the measured sections.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292318.g007",
+      "label": "Fig 7",
+      "caption": "Annotated reference logs #21 (06-12-21-01W4), #36 (07-28-21-02W4), and #44 (04-02-21-10W4) from Dinosaur Provincial Park and areas east.\nAlso included is a measured section of fossiliferous strata from the Red Deer River at Dinosaur Provincial Park. All sections are correlated to one another and well logs using local marker beds, formational contacts, and formation thicknesses [1, 7, 11, 12]. The five U-Pb radiometric ages from the Oldman, Dinosaur Park and Bearpaw formations at Dinosaur Provincial Park are from Ramezani et al. [11] and Eberth et al. [12]. Also note the sandy lower one-half and muddy upper one-half of the Dinosaur Park Fm.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Annotated reference logs #21 (06-12-21-01W4), #36 (07-28-21-02W4), and #44 (04-02-21-10W4) from Dinosaur Provincial Park and areas east.</title>\n<p>Also included is a measured section of fossiliferous strata from the Red Deer River at Dinosaur Provincial Park. All sections are correlated to one another and well logs using local marker beds, formational contacts, and formation thicknesses [<xref ref-type=\"bibr\" rid=\"pone.0292318.ref001\">1</xref>, <xref ref-type=\"bibr\" rid=\"pone.0292318.ref007\">7</xref>, <xref ref-type=\"bibr\" rid=\"pone.0292318.ref011\">11</xref>, <xref ref-type=\"bibr\" rid=\"pone.0292318.ref012\">12</xref>]. The five U-Pb radiometric ages from the Oldman, Dinosaur Park and Bearpaw formations at Dinosaur Provincial Park are from Ramezani et al. [<xref ref-type=\"bibr\" rid=\"pone.0292318.ref011\">11</xref>] and Eberth et al. [<xref ref-type=\"bibr\" rid=\"pone.0292318.ref012\">12</xref>]. Also note the sandy lower one-half and muddy upper one-half of the Dinosaur Park Fm.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292318.g008",
+      "label": "Fig 8",
+      "caption": "Annotated reference logs #32 (13-13-34-01W4), #34 (03-27-38-02W4), and #83 (15-15-25-20W4) from the northern part of the field area.\nAlso included is a measured section from Muddy Lake, Saskatchewan [20]. Note the westward stratigraphic thickening of the Foremost and Dinosaur Park formations relative to the Oldman Fm.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Annotated reference logs #32 (13-13-34-01W4), #34 (03-27-38-02W4), and #83 (15-15-25-20W4) from the northern part of the field area.</title>\n<p>Also included is a measured section from Muddy Lake, Saskatchewan [<xref ref-type=\"bibr\" rid=\"pone.0292318.ref020\">20</xref>]. Note the westward stratigraphic thickening of the Foremost and Dinosaur Park formations relative to the Oldman Fm.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292318.g009",
+      "label": "Fig 9",
+      "caption": "Stratigraphic cross-section A–A’.\nCross-section A-A’ is based on data from 35 wells logs (Fig 1, Table 1, S1 Fig). Logs are not illustrated in the cross-section due to image-size constraints. Instead, the cross-section exhibits color-coded formational thicknesses within and between adjacent wells. Numbers relate to well locations shown in Fig 1. Numbers in red indicate reference logs shown in detail in Figs 5–8. Note the southward thickening (mostly up-section) of the Oldman Formation and the commensurate thinning of the Dinosaur Park Fm in southeastern-most, as originally hypothesized by Eberth and Hamblin [1]. The Foremost-Oldman formational contact rises slightly to the north due to stratigraphic thinning of the Oldman Fm. Also note the occurrence of a well-developed two-fold stratigraphic division of the Oldman Fm in the southern-most corner of the field area (Twp 01–05). This pattern of a lower sandstone dominated interval overlain by a mudstone dominated interval compares closely to that described by Rogers et al. [9, 14] for the Judith River Formation. The contact between the two intervals in southeast Alberta thus likely marks the mid-Judith discontinuity (MJD) described by those authors.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Stratigraphic cross-section A–A’.</title>\n<p>Cross-section A-A’ is based on data from 35 wells logs (<xref ref-type=\"fig\" rid=\"pone.0292318.g001\">Fig 1</xref>, <xref ref-type=\"table\" rid=\"pone.0292318.t001\">Table 1</xref>, <xref ref-type=\"supplementary-material\" rid=\"pone.0292318.s001\">S1 Fig</xref>). Logs are not illustrated in the cross-section due to image-size constraints. Instead, the cross-section exhibits color-coded formational thicknesses within and between adjacent wells. Numbers relate to well locations shown in <xref ref-type=\"fig\" rid=\"pone.0292318.g001\">Fig 1</xref>. Numbers in red indicate reference logs shown in detail in Figs <xref ref-type=\"fig\" rid=\"pone.0292318.g005\">5</xref>–<xref ref-type=\"fig\" rid=\"pone.0292318.g008\">8</xref>. Note the southward thickening (mostly up-section) of the Oldman Formation and the commensurate thinning of the Dinosaur Park Fm in southeastern-most, as originally hypothesized by Eberth and Hamblin [<xref ref-type=\"bibr\" rid=\"pone.0292318.ref001\">1</xref>]. The Foremost-Oldman formational contact rises slightly to the north due to stratigraphic thinning of the Oldman Fm. Also note the occurrence of a well-developed two-fold stratigraphic division of the Oldman Fm in the southern-most corner of the field area (Twp 01–05). This pattern of a lower sandstone dominated interval overlain by a mudstone dominated interval compares closely to that described by Rogers et al. [<xref ref-type=\"bibr\" rid=\"pone.0292318.ref009\">9</xref>, <xref ref-type=\"bibr\" rid=\"pone.0292318.ref014\">14</xref>] for the Judith River Formation. The contact between the two intervals in southeast Alberta thus likely marks the mid-Judith discontinuity (MJD) described by those authors.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g009\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g009",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292318.g010",
+      "label": "Fig 10",
+      "caption": "Stratigraphic cross-section B–B’.\nCross-section B-B’ is based on data from 28 well logs (Fig 1, Table 1, S2 Fig) and shows the mostly tabular geometry of the Oldman Fm that is maintained W–E (proximal-distal) at Twp 21. In contrast, both the Foremost and Dinosaur Park formations exhibit stratigraphic thickening to the west (toward source). Thus, the mostly tabular W-E geometry of the Oldman Fm confirms its separate and more southwesterly source area. Note also that west of Rg 28 (Calgary) the Bearpaw Fm pinches out and the Belly River Group is equivalent to the lower portion of the much thicker non-marine Brazeau Group.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g010\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g010</object-id>\n<label>Fig 10</label>\n<caption>\n<title>Stratigraphic cross-section B–B’.</title>\n<p>Cross-section B-B’ is based on data from 28 well logs (<xref ref-type=\"fig\" rid=\"pone.0292318.g001\">Fig 1</xref>, <xref ref-type=\"table\" rid=\"pone.0292318.t001\">Table 1</xref>, <xref ref-type=\"supplementary-material\" rid=\"pone.0292318.s002\">S2 Fig</xref>) and shows the mostly tabular geometry of the Oldman Fm that is maintained W–E (proximal-distal) at Twp 21. In contrast, both the Foremost and Dinosaur Park formations exhibit stratigraphic thickening to the west (toward source). Thus, the mostly tabular W-E geometry of the Oldman Fm confirms its separate and more southwesterly source area. Note also that west of Rg 28 (Calgary) the Bearpaw Fm pinches out and the Belly River Group is equivalent to the lower portion of the much thicker non-marine Brazeau Group.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g010\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g010",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292318.g011",
+      "label": "Fig 11",
+      "caption": "Stratigraphic cross-section C–C’.\nCross-section C-C’ is based on 24 well logs (Fig 1, Table 1, S3 Fig) and shows the extreme thickening of the Oldman Fm to the southwest, which underscores the presence of its unique, southwesterly source area. Note the southward termination (depositional edge) of the Dinosaur Park Fm near Lethbridge (Fig 1). Southward across the international border in this region, the Belly River Group correlates with the Two Medicine Formation.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g011\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g011</object-id>\n<label>Fig 11</label>\n<caption>\n<title>Stratigraphic cross-section C–C’.</title>\n<p>Cross-section C-C’ is based on 24 well logs (<xref ref-type=\"fig\" rid=\"pone.0292318.g001\">Fig 1</xref>, <xref ref-type=\"table\" rid=\"pone.0292318.t001\">Table 1</xref>, <xref ref-type=\"supplementary-material\" rid=\"pone.0292318.s003\">S3 Fig</xref>) and shows the extreme thickening of the Oldman Fm to the southwest, which underscores the presence of its unique, southwesterly source area. Note the southward termination (depositional edge) of the Dinosaur Park Fm near Lethbridge (<xref ref-type=\"fig\" rid=\"pone.0292318.g001\">Fig 1</xref>). Southward across the international border in this region, the Belly River Group correlates with the Two Medicine Formation.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g011\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g011",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292318.g012",
+      "label": "Fig 12",
+      "caption": "High resolution east-west stratigraphic cross-section at Twp 10 in southeast Alberta.\nBased on logs from 10 wells (Fig 1, Table 1, S4 Fig), the cross-section documents the presence of numerous alluvial sandstone bodies (red bars in well logs) throughout the Oldman Fm. Maximum e–w distance of ss-body correlation in this area is ~16 km (red lines), making regional correlation of the Comrey Sandstone or a “Comrey sandstone zone” unlikely.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g012\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g012</object-id>\n<label>Fig 12</label>\n<caption>\n<title>High resolution east-west stratigraphic cross-section at Twp 10 in southeast Alberta.</title>\n<p>Based on logs from 10 wells (<xref ref-type=\"fig\" rid=\"pone.0292318.g001\">Fig 1</xref>, <xref ref-type=\"table\" rid=\"pone.0292318.t001\">Table 1</xref>, <xref ref-type=\"supplementary-material\" rid=\"pone.0292318.s004\">S4 Fig</xref>), the cross-section documents the presence of numerous alluvial sandstone bodies (red bars in well logs) throughout the Oldman Fm. Maximum e–w distance of ss-body correlation in this area is ~16 km (red lines), making regional correlation of the Comrey Sandstone or a “Comrey sandstone zone” unlikely.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g012\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g012",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292318.g013",
+      "label": "Fig 13",
+      "caption": "High resolution north-south stratigraphic cross-section at Rg 04 in southeast Alberta.\nBased on logs from 12 wells (Fig 1, Table 1, S4 Fig), this cross-section documents numerous alluvial sandstone bodies (red bars in well logs) throughout the Oldman Fm. Similar to the pattern shown in Fig 12, sandstone bodies show a maximum lateral extent of ~10 km, making regional correlation of the Comrey Sandstone or identification of a “Comrey sandstone zone” unlikely.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g013\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g013</object-id>\n<label>Fig 13</label>\n<caption>\n<title>High resolution north-south stratigraphic cross-section at Rg 04 in southeast Alberta.</title>\n<p>Based on logs from 12 wells (<xref ref-type=\"fig\" rid=\"pone.0292318.g001\">Fig 1</xref>, <xref ref-type=\"table\" rid=\"pone.0292318.t001\">Table 1</xref>, <xref ref-type=\"supplementary-material\" rid=\"pone.0292318.s004\">S4 Fig</xref>), this cross-section documents numerous alluvial sandstone bodies (red bars in well logs) throughout the Oldman Fm. Similar to the pattern shown in <xref ref-type=\"fig\" rid=\"pone.0292318.g012\">Fig 12</xref>, sandstone bodies show a maximum lateral extent of ~10 km, making regional correlation of the Comrey Sandstone or identification of a “Comrey sandstone zone” unlikely.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g013\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g013",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292318.g014",
+      "label": "Fig 14",
+      "caption": "Stratigraphic model depicting the relationship between the Oldman-Dinosaur Park discontinuity (ODPD) and the mid-Judith discontinuity (MJD).\nThe model is based on data and correlations presented here from cross-section A–A’ (Fig 1, Table 1, S1 Fig) and differs from that of Rogers et al. [9] in that the ODPD and MJD are litho- and chronostratigraphically separate in southeastern-most Alberta due to up-section thickening of the Oldman Formation and thinning of the Dinosaur Park Fm. More specifically, in southeastern-most Alberta, the ODPD is positioned 320 or more meters above the MRs, whereas the MJD is positioned ~270 m above the MRs. North of Twp 12 in southeastern Alberta, however, the ODPD maintains a consistent position at about 240–260 above the MRs, thereby allowing the recognition of the combined Judith River-Belly River discontinuity (JRBRD) as originally proposed by Rogers et al. [9]. Well log numbers relate to positions shown in Fig 1.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292318.g014\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292318.g014</object-id>\n<label>Fig 14</label>\n<caption>\n<title>Stratigraphic model depicting the relationship between the Oldman-Dinosaur Park discontinuity (ODPD) and the mid-Judith discontinuity (MJD).</title>\n<p>The model is based on data and correlations presented here from cross-section A–A’ (<xref ref-type=\"fig\" rid=\"pone.0292318.g001\">Fig 1</xref>, <xref ref-type=\"table\" rid=\"pone.0292318.t001\">Table 1</xref>, <xref ref-type=\"supplementary-material\" rid=\"pone.0292318.s001\">S1 Fig</xref>) and differs from that of Rogers et al. [<xref ref-type=\"bibr\" rid=\"pone.0292318.ref009\">9</xref>] in that the ODPD and MJD are litho- and chronostratigraphically separate in southeastern-most Alberta due to up-section thickening of the Oldman Formation and thinning of the Dinosaur Park Fm. More specifically, in southeastern-most Alberta, the ODPD is positioned 320 or more meters above the MRs, whereas the MJD is positioned ~270 m above the MRs. North of Twp 12 in southeastern Alberta, however, the ODPD maintains a consistent position at about 240–260 above the MRs, thereby allowing the recognition of the combined Judith River-Belly River discontinuity (JRBRD) as originally proposed by Rogers et al. [<xref ref-type=\"bibr\" rid=\"pone.0292318.ref009\">9</xref>]. Well log numbers relate to positions shown in <xref ref-type=\"fig\" rid=\"pone.0292318.g001\">Fig 1</xref>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292318.g014\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292318.g014",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

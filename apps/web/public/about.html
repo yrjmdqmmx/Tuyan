@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="图研 Tuyan 科研绘图工作台：根据研究文字、参考图和数据创作科研图像与可编辑矢量图，保存任务和草稿并继续修改。">
+  <title>图研 Tuyan · 科研绘图工作台</title>
+  <link rel="icon" href="/logo.svg" type="image/svg+xml">
+  <style>
+    * { box-sizing: border-box; }
+    :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; color: #202721; background: #f5f6f3; }
+    body { margin: 0; min-height: 100svh; display: flex; flex-direction: column; }
+    main { width: min(100% - 40px, 720px); margin: auto; padding: 72px 0 56px; }
+    .brand { display: flex; align-items: center; gap: 18px; margin-bottom: 42px; }
+    .brand img { width: 76px; height: 76px; border-radius: 18px; }
+    h1 { margin: 0; font-size: clamp(30px, 5vw, 42px); letter-spacing: -.03em; }
+    h2 { margin: 0 0 18px; font-size: clamp(24px, 4vw, 32px); font-weight: 600; }
+    p { max-width: 620px; margin: 0 0 20px; font-size: 18px; line-height: 1.9; color: #526158; }
+    .english { font-size: 15px; line-height: 1.8; }
+    .enter { display: inline-flex; align-items: center; gap: 24px; margin-top: 18px; padding: 14px 22px; background: #315e4d; color: #fff; border-radius: 12px; font-size: 17px; font-weight: 600; text-decoration: none; }
+    .enter:hover { background: #234c3c; }
+    a:focus-visible { outline: 3px solid #648b79; outline-offset: 5px; }
+    footer { width: min(100% - 40px, 720px); margin: 0 auto; padding: 24px 0; border-top: 1px solid #dce2dc; display: flex; flex-wrap: wrap; gap: 14px 24px; font-size: 13px; }
+    footer a { color: #526158; text-underline-offset: 4px; }
+    @media (max-width: 480px) { main { padding-top: 42px; } .brand { gap: 12px; margin-bottom: 32px; } .brand img { width: 58px; height: 58px; border-radius: 14px; } p { font-size: 16px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand"><img src="/logo.svg" alt="" width="76" height="76"><h1>图研 Tuyan</h1></div>
+    <h2>科研绘图工作台</h2>
+    <p>根据研究文字、参考图和数据，创作科研示意图、方法流程图与可编辑矢量图。支持多模型创作、结果修改，以及任务和草稿保存。</p>
+    <p class="english" lang="en">Tuyan is a scientific figure workspace. Create research illustrations, workflow diagrams and editable vector figures from text, reference images and data, then save and refine your work.</p>
+    <a class="enter" href="/">进入工作台 <span aria-hidden="true">→</span></a>
+  </main>
+  <footer aria-label="网站信息">
+    <a href="https://tuyansci.cn/privacy-policy.html">隐私政策 / Privacy Policy</a>
+    <a href="https://tuyansci.cn/terms-of-service.html">服务条款 / Terms</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">浙ICP备2026071869号-3</a>
+  </footer>
+</body>
+</html>

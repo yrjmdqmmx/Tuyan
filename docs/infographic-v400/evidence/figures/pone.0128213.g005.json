@@ -1,0 +1,51 @@
+{
+  "id": "pone.0128213.g005",
+  "paper": "pone.0128213",
+  "figure": {
+    "id": "pone.0128213.g005",
+    "label": "Fig 5",
+    "caption": "Bubble plot of fitted regression line.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0128213.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0128213.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Bubble plot of fitted regression line.</title>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pone.0128213.g005\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0128213.g005",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0128213",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0128213",
+    "title": "Systematic Review and Meta-Analysis of the Impact of Carer Stress on Subsequent Institutionalisation of Community-Dwelling Older People",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Nora-Ann Donnelly",
+      "Anne Hickey",
+      "Annette Burns",
+      "Paul Murphy",
+      "Frank Doyle"
+    ],
+    "year": "2015",
+    "license": "2015\nDonnelly et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0128213.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0128213.g005.png",
+      "bytes": 118789,
+      "sha256": "7a9b0f7573de7e55db8ee86a68268bfdeb4eaf1e447eea73db76fa70ab4da7fe"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0128213.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0128213.g005.tif",
+      "bytes": 211162,
+      "sha256": "9790fe37d608e708ecf920f9f9838c4d5cbf53983696d10a2db9dcb1d9365acc"
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "action": "createJob",
+  "configurationMode": "advanced",
+  "provider": "bailian",
+  "apiKeys": {
+    "bailian": "[REDACTED]"
+  },
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    }
+  },
+  "methodContent": "Synthetic teaching example, not a research result. Draw exactly Start → Receive sample → Quality check (diamond). Label yes branch → Normalize → Output → End. Label no branch → Reject sample → End. Use English text. Distinguish operations from decisions and start/end. No numeric or scientific claims. Reference image is for design structure only; do not transfer its paper data or conclusions.",
+  "caption": "Explicit synthetic teaching example",
+  "negativePrompt": "No invented numbers, statistical significance, or scientific conclusions. Preserve all supplied labels and relations.",
+  "taskName": "diagram",
+  "figureTypeId": "multipanel",
+  "figureSpecVersion": "2026-10-10.v1",
+  "outputFormat": "svg",
+  "visionMode": "none",
+  "pipelineMode": "planner_critic",
+  "retrievalSetting": "manual",
+  "manualReferenceIds": [
+    "journal_pbio.2003779.g001"
+  ],
+  "numCandidates": 1,
+  "maxCriticRounds": 2,
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "figurePanels": [
+    {
+      "label": "A",
+      "figureTypeId": "workflow",
+      "methodContent": "Synthetic teaching example, not a research result. Draw exactly Start → Receive sample → Quality check (diamond). Label yes branch → Normalize → Output → End. Label no branch → Reject sample → End. Use English text. Distinguish operations from decisions and start/end. No numeric or scientific claims. Reference image is for design structure only; do not transfer its paper data or conclusions.",
+      "caption": "Synthetic sample process"
+    },
+    {
+      "label": "B",
+      "figureTypeId": "bar",
+      "figureData": {
+        "source": "Synthetic QA only, explicitly not measured research data.",
+        "rows": [
+          {
+            "label": "Alpha",
+            "value": 2
+          },
+          {
+            "label": "Beta",
+            "value": 5
+          },
+          {
+            "label": "Gamma",
+            "value": 3
+          }
+        ],
+        "units": {
+          "value": "dimensionless"
+        }
+      },
+      "methodContent": "Draw the exact supplied synthetic values Alpha 2, Beta 5, Gamma 3. No uncertainty or significance.",
+      "caption": "Synthetic values"
+    }
+  ]
+}

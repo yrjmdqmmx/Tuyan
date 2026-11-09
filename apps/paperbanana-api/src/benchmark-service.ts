@@ -283,6 +283,37 @@ async function publicEvidenceItems(input: {
   return output
 }
 
+// Request-local verification keeps the full byte/hash and metadata checks. A
+// shared twelve-read limit avoids serial cross-region latency and unbounded OSS
+// fan-out; duplicate edit-source variants are checked once within this response.
+function boundedEvidenceVerifier(verify: (key: string, hash: string) => Promise<void>) {
+  let active = 0
+  let failed = false
+  let failure: unknown
+  const waiting: Array<() => void> = []
+  const reads = new Map<string, Promise<void>>()
+  return (key: string, hash: string): Promise<void> => {
+    const identity = JSON.stringify([key, hash])
+    const existing = reads.get(identity)
+    if (existing) return existing
+    const pending = (async () => {
+      if (active >= 12) await new Promise<void>(resolve => waiting.push(resolve))
+      else active++
+      try {
+        if (failed) throw failure
+        await verify(key, hash)
+      } catch (error) { failed = true; failure = error; throw error }
+      finally {
+        const next = waiting.shift()
+        if (next) next()
+        else active--
+      }
+    })()
+    reads.set(identity, pending)
+    return pending
+  }
+}
+
 async function publicScientificEvidenceItems(input: {
   rawItems: AnyRecord[]
   releaseHash: string
@@ -290,14 +321,14 @@ async function publicScientificEvidenceItems(input: {
   signEvidence: (key: string) => Promise<string>
   verifyEvidence: (key: string, hash: string) => Promise<void>
 }) {
-  const output: AnyRecord[] = []
-  for (const item of input.rawItems) {
+  const verify = boundedEvidenceVerifier(input.verifyEvidence)
+  const output = await Promise.all(input.rawItems.map(async (item): Promise<AnyRecord | null> => {
     const profileId = String(item.profileId || '')
     const scientificCase = PB_SCIENTIFIC_FIGURE_V2.cases.find((candidate) => candidate.id === item.caseId)
     const attemptSummary = publicScientificAttemptSummary(item.attemptSummary, item.status, item.failureReason)
     if (!scientificCase || item.sourceReleaseHash !== input.releaseHash || !input.eligibleProfiles.has(profileId)
       || !['succeeded', 'failed', 'unsupported'].includes(item.status)
-      || !attemptSummary) continue
+      || !attemptSummary) return null
     const base: AnyRecord = {
       profileId,
       canonicalModelId: String(item.canonicalModelId || ''),
@@ -314,39 +345,39 @@ async function publicScientificEvidenceItems(input: {
         || (item.status === 'failed' && !['1K', '2K', 'provider-default'].includes(String(item.requestedResolution || '')))
         || (item.status === 'unsupported' && item.requestedResolution !== null)
         || (item.status === 'unsupported' && scientificCase.kind === 'generation' && item.failureReason !== 'capability_unsupported')
-        || (item.status === 'unsupported' && scientificCase.kind === 'edit' && item.failureReason !== 'direct_edit_route_unavailable')) continue
-      output.push({ ...base, failureReason: String(item.failureReason || '') })
-      continue
+        || (item.status === 'unsupported' && scientificCase.kind === 'edit' && item.failureReason !== 'direct_edit_route_unavailable')) return null
+      return { ...base, failureReason: String(item.failureReason || '') }
     }
     const actualOutputPixels = publicPixelFacts(item.actualOutputPixels)
     if (!['1K', '2K', 'provider-default'].includes(String(item.requestedResolution || ''))
       || !actualOutputPixels || !evidenceHashPattern.test(String(item.imageHash || '')) || !Array.isArray(item.variants) || !item.variants.length
-      || !exactScientificPublicScores(item.scores, scientificCase.applicableAxes)) continue
+      || !exactScientificPublicScores(item.scores, scientificCase.applicableAxes)) return null
     const signVariants = async (rawVariants: AnyRecord[], sourceHash: string) => {
-      const variants: AnyRecord[] = []
       for (const variant of rawVariants) {
         const objectKey = String(variant.objectKey || '')
         if (!evidenceKinds.has(String(variant.kind || '')) || variant.mimeType !== 'image/webp'
           || !objectKey.startsWith(`bench/scientific-v2/public/${sourceHash}/`) || objectKey.includes('..') || !objectKey.endsWith('.webp')
           || !evidenceHashPattern.test(String(variant.imageHash || ''))
           || ![variant.width, variant.height, variant.fileSizeBytes].every(Number.isFinite)) return []
-        await input.verifyEvidence(objectKey, variant.imageHash)
-        variants.push({
+      }
+      return Promise.all(rawVariants.map(async (variant) => {
+        const objectKey = String(variant.objectKey)
+        await verify(objectKey, variant.imageHash)
+        return {
           kind: variant.kind, imageHash: variant.imageHash, width: variant.width, height: variant.height,
           fileSizeBytes: variant.fileSizeBytes, mimeType: 'image/webp', url: await input.signEvidence(objectKey),
-        })
-      }
-      return variants
+        }
+      }))
     }
     const variants = await signVariants(item.variants, item.imageHash)
-    if (!variants.length) continue
+    if (!variants.length) return null
     let beforeVariants: AnyRecord[] | undefined
     if (scientificCase.kind === 'edit') {
-      if (item.sourceHash !== scientificCase.sourceHash || item.editedHash !== item.imageHash || !Array.isArray(item.beforeVariants)) continue
+      if (item.sourceHash !== scientificCase.sourceHash || item.editedHash !== item.imageHash || !Array.isArray(item.beforeVariants)) return null
       beforeVariants = await signVariants(item.beforeVariants, scientificCase.sourceHash)
-      if (!beforeVariants.length) continue
+      if (!beforeVariants.length) return null
     }
-    output.push({
+    return {
       ...base,
       imageHash: item.imageHash,
       actualOutputPixels,
@@ -361,9 +392,9 @@ async function publicScientificEvidenceItems(input: {
         region: scientificCase.region,
         beforeVariants,
       } : {}),
-    })
-  }
-  return output
+    }
+  }))
+  return output.filter((item): item is AnyRecord => item !== null)
 }
 
 function publicScientificAttemptSummary(value: unknown, status: unknown, failureReason: unknown): { count: number; responseClasses: string[]; maxAttempts?: number } | null {

@@ -21,7 +21,7 @@ for(const role of ['main','vision','image'])test(`restored custom ${role} preser
  assert.deepEqual(Object.keys(JSON.parse(keys.custom)),['custom_'+role]);assert.equal(keys.openai,undefined)
  assert.doesNotMatch(window.localStorage.getItem('tuyan.model-routing.v1'),/fixture|baseUrl|apiKey/)
 })
-test('legacy restoration, two modes, per-role channel changes, draft/key retention and explicit save survive remount',async()=>{
+test('legacy restoration, two modes, per-role channel changes, draft/key retention and automatic save survive remount',async()=>{
  saveUniversalDrafts(drafts());const requests=[]
  globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;requests.push(b);return Response.json(!b?{code:0,runtime:'gateway'}:b.action==='modelRegistry'?{code:0,routeContractVersion:1,universalApiContractVersion:1,thinkingContractVersion:1,providers:STATIC_MODEL_REGISTRY}:{code:0,jobs:[],references:[]})}
  render(React.createElement(App));await waitFor(()=>assert.ok(requests.some(x=>x?.action==='modelRegistry')))
@@ -35,26 +35,59 @@ test('legacy restoration, two modes, per-role channel changes, draft/key retenti
   fireEvent.click(screen.getByRole('button',{name:role,exact:true}));fireEvent.click(screen.getByRole('button',{name:channel,exact:true}));fireEvent.click(screen.getByRole('button',{name:model,exact:true}))
  }
  assert.equal(document.querySelectorAll('.universal-role').length,0)
- assert.equal(screen.getAllByRole('button',{name:'保存到此浏览器（不含密钥）'}).length,1)
+ assert.equal(screen.queryByRole('button',{name:'保存到此浏览器（不含密钥）'}),null)
  fireEvent.click(screen.getByRole('button',{name:/普通模式/}));fireEvent.click(screen.getByRole('button',{name:/专业模式/}))
  fireEvent.click(screen.getByRole('button',{name:'主模型',exact:true}))
  assert.equal(screen.getByLabelText('主模型 API Key').value,'fixture-retained')
  fireEvent.click(screen.getByRole('button',{name:'返回生成设置'}))
  assert.match(document.querySelector('[data-model-role="vision"]').textContent,/蚂蚁百灵/)
- fireEvent.click(screen.getByRole('button',{name:'保存到此浏览器（不含密钥）'}))
- assert.ok(screen.getByText(/已保存到此浏览器；Key 与验证结果不保存/))
+ assert.equal(JSON.parse(window.localStorage.getItem('tuyan.model-routing.v1')).roles.image.modelId,'gpt-image-2')
  assert.doesNotMatch([...Array(window.localStorage.length)].map((_,i)=>window.localStorage.getItem(window.localStorage.key(i))).join(''),/fixture-retained/)
  cleanup();render(React.createElement(App));await waitFor(()=>assert.equal(requests.filter(x=>x?.action==='modelRegistry').length,2));fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}))
  fireEvent.click(screen.getByRole('button',{name:'主模型',exact:true}))
- assert.ok(screen.getAllByText(/已保存到此浏览器；Key 与验证结果不保存/).length)
- fireEvent.change(screen.getByLabelText('主模型 模型 ID'),{target:{value:'Unsaved/Replacement'}})
- assert.ok(screen.getAllByText(/未保存到浏览器/).length)
+ assert.ok(screen.getAllByText(/配置已自动保存；Key 与验证结果不保存/).length)
+ fireEvent.change(screen.getByLabelText('主模型 模型 ID'),{target:{value:'Autosaved/Replacement'}})
+ assert.equal(JSON.parse(window.localStorage.getItem('tuyan.universal-api.v1')).roles.main.modelId,'Autosaved/Replacement')
+ cleanup();render(React.createElement(App));await waitFor(()=>assert.equal(requests.filter(x=>x?.action==='modelRegistry').length,3));fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));fireEvent.click(screen.getByRole('button',{name:'主模型',exact:true}))
+ assert.equal(screen.getByLabelText('主模型 模型 ID').value,'Autosaved/Replacement')
  fireEvent.change(screen.getByLabelText('主模型 模型 ID'),{target:{value:'Exact/main'}})
  assert.equal(screen.getByLabelText('主模型 模型 ID').value,'Exact/main');assert.equal(screen.getByLabelText('主模型 API Key').value,'')
  assert.match(document.querySelector('[data-model-role="image"]').textContent,/GPT Image 2/)
  assert.match(document.querySelector('[data-model-role="vision"]').textContent,/蚂蚁百灵/)
  assert.equal(requests.some(x=>/createJob|refineImage|universalApiCheck/.test(x?.action)),false)
 })
+test('automatic save reports storage failure, retains edits and recovers on the next change',async(t)=>{
+ saveUniversalDrafts(drafts())
+ globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;return Response.json(!b?{code:0,runtime:'gateway'}:b.action==='modelRegistry'?{code:0,routeContractVersion:1,universalApiContractVersion:1,providers:STATIC_MODEL_REGISTRY}:{code:0,jobs:[],references:[]})}
+ const originalSetItem=window.Storage.prototype.setItem
+ const failingSave=t.mock.method(window.Storage.prototype,'setItem',function(key,value){
+  if(key==='tuyan.universal-api.v1')throw new Error('Quota exceeded')
+  return originalSetItem.call(this,key,value)
+ })
+ render(React.createElement(App));fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}))
+ assert.ok(screen.getByText('配置自动保存失败，当前页面配置仍保留。'))
+ fireEvent.click(screen.getByRole('button',{name:'主模型',exact:true}))
+ fireEvent.change(screen.getByLabelText('主模型 模型 ID'),{target:{value:'Retained/WhileBlocked'}})
+ assert.equal(screen.getByLabelText('主模型 模型 ID').value,'Retained/WhileBlocked')
+ assert.equal(JSON.parse(window.localStorage.getItem('tuyan.universal-api.v1')).roles.main.modelId,'Exact/main')
+ failingSave.mock.restore()
+ fireEvent.change(screen.getByLabelText('主模型 模型 ID'),{target:{value:'Saved/AfterRecovery'}})
+ assert.equal(screen.queryByText('配置自动保存失败，当前页面配置仍保留。'),null)
+ assert.equal(JSON.parse(window.localStorage.getItem('tuyan.universal-api.v1')).roles.main.modelId,'Saved/AfterRecovery')
+})
+
+test('unused professional defaults are not saved until the user enters professional mode',async()=>{
+ globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;return Response.json(!b?{code:0,runtime:'gateway'}:b.action==='modelRegistry'?{code:0,routeContractVersion:1,universalApiContractVersion:1,providers:STATIC_MODEL_REGISTRY}:{code:0,jobs:[],references:[]})}
+ render(React.createElement(App));fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}))
+ assert.equal(window.localStorage.getItem('tuyan.model-routing.v1'),null)
+ fireEvent.click(screen.getByRole('button',{name:/专业模式/}))
+ assert.equal(JSON.parse(window.localStorage.getItem('tuyan.model-routing.v1')).mode,'advanced')
+ fireEvent.click(screen.getByRole('button',{name:/普通模式/}))
+ assert.equal(JSON.parse(window.localStorage.getItem('tuyan.model-routing.v1')).mode,'simple')
+ cleanup();render(React.createElement(App));fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}))
+ assert.equal(screen.getByRole('button',{name:/普通模式/}).getAttribute('aria-pressed'),'true')
+})
+
 test('input optimization validates the custom main key and sends only its bound credential',async()=>{
  saveUniversalDrafts(drafts());const requests=[]
  globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;requests.push(b);return Response.json(!b?{code:0,runtime:'gateway'}:b.action==='modelRegistry'?{code:0,routeContractVersion:1,universalApiContractVersion:1,inputOptimizationContractVersion:1,providers:STATIC_MODEL_REGISTRY}:b.action==='optimizeInputs'?{code:0,target:b.target,optimizedText:'优化后的科学描述'}:{code:0,jobs:[],references:[]})}
@@ -74,26 +107,29 @@ test('input optimization validates the custom main key and sends only its bound 
  assert.deepEqual(Object.keys(JSON.parse(body.apiKey)),['custom_main']);assert.doesNotMatch(JSON.stringify(body),/fixture-image-must-not-send/)
 })
 
-for(const missingTokenDance of [false,true])test(`custom sorts first without changing fresh TokenDance defaults (missing=${missingTokenDance})`,async()=>{
+for(const missingTokenDance of [false,true])test(`vision defaults to none above custom while other roles retain TokenDance (missing=${missingTokenDance})`,async()=>{
  const registry={...STATIC_MODEL_REGISTRY};if(missingTokenDance)delete registry.tokendance
  globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;return Response.json(!b?{code:0,runtime:'gateway'}:b.action==='modelRegistry'?{code:0,routeContractVersion:1,universalApiContractVersion:1,providers:registry}:{code:0,jobs:[],references:[]})}
  render(React.createElement(App))
  fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));fireEvent.click(screen.getByRole('button',{name:/专业模式/}))
  await waitFor(()=>assert.equal(Boolean(document.querySelector('.route-contract-warning, .route-contract-status')),false))
  for(const label of ['主模型','视觉模型','图像生成模型']){
-  const trigger=screen.getByRole('button',{name:label,exact:true});assert.match(trigger.textContent,/观猹 TokenDance/)
+  const isVision=label==='视觉模型'
+  const trigger=screen.getByRole('button',{name:label,exact:true});assert.match(trigger.textContent,isVision?/无/:/观猹 TokenDance/)
   fireEvent.click(trigger)
   const rail=within(screen.getByRole('group',{name:'API 接入渠道'}))
   await waitFor(()=>assert.ok(rail.getByRole('button',{name:'通用 API'})))
-  assert.equal(rail.getAllByRole('button')[0].getAttribute('aria-label'),'通用 API')
-  assert.equal(rail.getByRole('button',{name:'观猹 TokenDance'}).getAttribute('aria-pressed'),'true')
+  assert.deepEqual(rail.getAllByRole('button').slice(0,isVision?2:1).map(button=>button.getAttribute('aria-label')),isVision?['无','通用 API']:['通用 API'])
+  if(missingTokenDance)assert.equal(rail.queryByRole('button',{name:'观猹 TokenDance'}),null)
+  else assert.equal(rail.getByRole('button',{name:'观猹 TokenDance'}).getAttribute('aria-pressed'),isVision?'false':'true')
+  if(isVision)assert.equal(rail.getByRole('button',{name:'无',exact:true}).getAttribute('aria-pressed'),'true')
   assert.equal(rail.getByRole('button',{name:'通用 API'}).getAttribute('aria-pressed'),'false')
   fireEvent.click(screen.getByRole('button',{name:'关闭模型选择'}))
-  assert.match(trigger.textContent,/观猹 TokenDance/)
+  assert.match(trigger.textContent,isVision?/无/:/观猹 TokenDance/)
  }
 })
 
-test('three modal drafts remain isolated across provider switches, close/reopen and explicit non-secret save',async()=>{
+test('three modal drafts remain isolated across provider switches, close/reopen and automatic non-secret save',async()=>{
  globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;return Response.json(!b?{code:0,runtime:'gateway'}:b.action==='modelRegistry'?{code:0,routeContractVersion:1,universalApiContractVersion:1,providers:STATIC_MODEL_REGISTRY}:{code:0,jobs:[],references:[]})}
  render(React.createElement(App));fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));fireEvent.click(screen.getByRole('button',{name:/专业模式/}))
  await waitFor(()=>assert.equal(Boolean(document.querySelector('.route-contract-warning, .route-contract-status')),false))
@@ -128,7 +164,6 @@ test('three modal drafts remain isolated across provider switches, close/reopen 
   assert.equal(screen.getByLabelText(label+' API Key').value,'fixture-'+role+'-secret')
   fireEvent.click(screen.getByRole('button',{name:'返回生成设置'}))
  }
- fireEvent.click(screen.getByRole('button',{name:'保存到此浏览器（不含密钥）'}))
  const stored=Object.keys(window.localStorage).map(k=>window.localStorage.getItem(k)).join('')
  assert.doesNotMatch(stored,/fixture-.*-secret/)
  assert.match(stored,/Manual\/vision/)

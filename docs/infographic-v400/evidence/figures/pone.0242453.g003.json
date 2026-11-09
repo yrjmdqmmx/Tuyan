@@ -1,0 +1,62 @@
+{
+  "id": "pone.0242453.g003",
+  "paper": "pone.0242453",
+  "figure": {
+    "id": "pone.0242453.g003",
+    "label": "Fig 3",
+    "caption": "Five software pipelines (in gray) for NESS experiments.\nThe five pipelines are itemized and described in Table 1. In this human-in-the-analysis loop, experiments (upper left in figure) are performed. Any experiment whose data can be cast in terms of the data model specification can be analyzed with this system. These pipelines are the focus of this work. The pipeline composition shown here, for abductive looping, is one of several possibilities. See Table 1 for descriptions of the pipelines in this figure. The first, second, and fifth pipelines can be used with a purely experimental approach (omitting modeling). An earlier version of the pipeline system is provided in [34], Fig 1.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Five software pipelines (in gray) for NESS experiments.</title>\n<p>The five pipelines are itemized and described in <xref ref-type=\"table\" rid=\"pone.0242453.t001\">Table 1</xref>. In this human-in-the-analysis loop, experiments (upper left in figure) are performed. Any experiment whose data can be cast in terms of the data model specification can be analyzed with this system. These pipelines are the focus of this work. The pipeline composition shown here, for abductive looping, is one of several possibilities. See <xref ref-type=\"table\" rid=\"pone.0242453.t001\">Table 1</xref> for descriptions of the pipelines in this figure. The first, second, and fifth pipelines can be used with a purely experimental approach (omitting modeling). An earlier version of the pipeline system is provided in [<xref ref-type=\"bibr\" rid=\"pone.0242453.ref034\">34</xref>], <xref ref-type=\"fig\" rid=\"pone.0242453.g001\">Fig 1</xref>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0242453",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0242453",
+    "title": "Data analysis and modeling pipelines for controlled networked social science experiments",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Vanessa Cedeno-Mieles",
+      "Zhihao Hu",
+      "Yihui Ren",
+      "Xinwei Deng",
+      "Noshir Contractor",
+      "Saliya Ekanayake",
+      "Joshua M. Epstein",
+      "Brian J. Goode",
+      "Gizem Korkmaz",
+      "Chris J. Kuhlman",
+      "Dustin Machi",
+      "Michael Macy",
+      "Madhav V. Marathe",
+      "Naren Ramakrishnan",
+      "Parang Saraf",
+      "Nathan Self"
+    ],
+    "year": "2020",
+    "license": "2020\nCedeno-Mieles et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0242453.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0242453.g003.png",
+      "bytes": 635031,
+      "sha256": "ef9bf8af10f121f025acb8e07da5b73e5b961b8297d9bd550dd77cb7203ed9a1"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0242453.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0242453.g003.tif",
+      "bytes": 1047812,
+      "sha256": "98e0f21ca71ecadcc2867af337837bd21b279e35b4b68f93f00041e5d8481623"
+    }
+  }
+}

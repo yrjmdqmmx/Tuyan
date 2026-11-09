@@ -1,0 +1,4 @@
+
+> @paperbanana/paperbanana-api@0.1.0 check /Users/a1-6/.config/superpowers/worktrees/paperbanana-tuyan/tuyan-v400-workflow-20261009/apps/paperbanana-api
+> tsc --noEmit
+

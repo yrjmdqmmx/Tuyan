@@ -1,0 +1,14 @@
+{
+  "changed_at": "2026-10-18T04:09:31.904187+00:00",
+  "code_sha": "e3c2a9d8e0ee207ac1ad313142007eaf964433e3",
+  "previous_image": "sha256:8d3caecae31bccd41923e68660e179f1aee52fbd569e984e7cc10f6619055b81",
+  "image": "sha256:ebd72e8cc1dfd48bc53969ac24448c72ce67bcadd909e3be777c67ed5a899678",
+  "direct_hosts": [
+    "tokendance.space",
+    "ark.cn-beijing.volces.com"
+  ],
+  "overseas_proxy": "http://10.77.0.2:3128",
+  "status": "healthy",
+  "active_jobs_before": 0,
+  "model_calls": 0
+}

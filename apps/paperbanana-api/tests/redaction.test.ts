@@ -60,3 +60,8 @@ test('structured logger applies redaction before writing fields', () => {
   assert.doesNotMatch(lines[0], /body-secret|auth-secret|url-secret/)
   assert.match(lines[0], /\[REDACTED\]/)
 })
+
+test('directory management keys never reach structured logs',()=>{
+ const result=JSON.stringify(redactLogValue({catalogCredentials:{accessKeyId:'EXAMPLE_AK',secretAccessKey:'EXAMPLE_SK'},secretAccessKey:'EXAMPLE_SECRET',sessionToken:'EXAMPLE_TOKEN'}))
+ assert.doesNotMatch(result,/EXAMPLE_/)
+})

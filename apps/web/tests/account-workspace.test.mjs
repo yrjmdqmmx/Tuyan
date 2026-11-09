@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import React from 'react';
@@ -19,55 +20,68 @@ test('access mode switches retain the complete ordinary preset and allow incompl
     await waitFor(()=>assert.ok(actions.includes('modelRegistry')));
     fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));
     fireEvent.click(screen.getByRole('button',{name:'Google',exact:true}));
-    fireEvent.change(screen.getByLabelText('视觉识别思考强度'),{target:{value:'"high"'}});
+    changeControl(screen.getByLabelText('主模型 / 规划思考强度'),{target:{value:'"low"'}});
     fireEvent.click(screen.getByRole('button',{name:/专业模式/}));
+    assert.match(screen.getByRole('button',{name:'视觉模型',exact:true}).textContent,/无/);
+    fireEvent.click(screen.getByRole('button',{name:'视觉模型',exact:true}));
+    fireEvent.click(within(document.querySelector('.model-provider-rail')).getByRole('button',{name:'Google',exact:true}));
+    fireEvent.click(screen.getByRole('button',{name:'选择 Gemini 3.7 Flash',exact:true}));
+    changeControl(screen.getByLabelText('视觉识别思考强度'),{target:{value:'"high"'}});
     fireEvent.click(screen.getByRole('button',{name:'主模型',exact:true}));
     fireEvent.click(within(document.querySelector('.model-provider-rail')).getByRole('button',{name:'Kimi',exact:true}));
     fireEvent.click(screen.getByRole('button',{name:'选择 Kimi K2.6',exact:true}));
     fireEvent.click(screen.getByRole('button',{name:/普通模式/}));
     assert.equal(screen.getByRole('button',{name:'Google',exact:true}).getAttribute('aria-pressed'),'true');
-    assert.equal(screen.getByLabelText('视觉识别思考强度').value,'"high"');
-    assert.equal(document.querySelectorAll('[data-model-role]').length,3);
+    assert.equal(screen.getByLabelText('主模型 / 规划思考强度').value,'"low"');
+    assert.equal(screen.queryByLabelText('视觉识别思考强度'),null);
+    assert.equal(document.querySelectorAll('[data-model-role]').length,2);
     fireEvent.click(screen.getByRole('button',{name:/专业模式/}));
+    assert.equal(screen.getByLabelText('视觉识别思考强度').value,'"high"');
     fireEvent.click(screen.getByRole('button',{name:'主模型',exact:true}));
     fireEvent.click(within(document.querySelector('.model-provider-rail')).getByRole('button',{name:'通用 API',exact:true}));
     assert.equal(document.querySelectorAll('.universal-role').length,1);
     assert.equal(document.querySelector('.mode-switch').children.length,2);
     const customModel=document.querySelector('.universal-role input[placeholder="从目录选择，或粘贴服务提供的准确 ID"]');
-    fireEvent.change(customModel,{target:{value:'draft-model'}});
+    changeControl(customModel,{target:{value:'draft-model'}});
     assert.equal(customModel.value,'draft-model');
     fireEvent.click(screen.getByRole('button',{name:/普通模式/}));
     assert.equal(screen.getByRole('button',{name:'Google',exact:true}).getAttribute('aria-pressed'),'true');
-    assert.equal(screen.getByLabelText('视觉识别思考强度').value,'"high"');
+    assert.equal(screen.queryByLabelText('视觉识别思考强度'),null);
+    assert.equal(screen.getByLabelText('主模型 / 规划思考强度').value,'"low"');
     assert.equal(actions.some(action=>/createJob|refineImage|resume/i.test(action)),false);
   } finally {cleanup();globalThis.fetch=original;window.localStorage.clear();}
 });
 
-test('generation waits for selected image dimensions instead of submitting the old reference list', async () => {
-  const original = {fetch:globalThis.fetch,Image:globalThis.Image,create:URL.createObjectURL,revoke:URL.revokeObjectURL};
-  const actions = [], pending = [];
-  URL.createObjectURL = () => 'blob:pending-reference';
-  URL.revokeObjectURL = () => {};
-  globalThis.Image = class {naturalWidth=1024;naturalHeight=768;set src(value) {if(value.startsWith('blob:')) pending.push(this);else queueMicrotask(()=>this.onload?.());}};
-  globalThis.fetch = async (_url, init = {}) => {
-    if (!init.body) return Response.json({code:0,runtime:'gateway'});
-    const body = JSON.parse(init.body);actions.push(body.action);
-    if (body.action==='modelRegistry') return Response.json({code:0,routeContractVersion:1,providers:STATIC_MODEL_REGISTRY});
+test('generation waits for a selected original to finish durable browser storage', async () => {
+  const original = {fetch:globalThis.fetch,indexedDB:globalThis.indexedDB};
+  const {IDBFactory}=await import('fake-indexeddb');
+  globalThis.indexedDB=new IDBFactory();
+  const actions=[];let release;
+  const bytes=new TextEncoder().encode('local selected material');
+  const file=new File([bytes],'selected.txt',{type:'text/plain'});
+  file.arrayBuffer=()=>new Promise(resolve=>{release=()=>resolve(bytes.buffer)});
+  globalThis.fetch=async(_url,init={})=>{
+    if(!init.body)return Response.json({code:0,runtime:'gateway'});
+    const body=JSON.parse(init.body);actions.push(body.action);
+    if(body.action==='modelRegistry')return Response.json({code:0,routeContractVersion:1,providers:STATIC_MODEL_REGISTRY});
     return Response.json({code:0,jobs:[],references:[]});
   };
   try {
     render(React.createElement(App));
-    await waitFor(()=>assert.ok(actions.includes('modelRegistry')));
-    fireEvent.change(document.querySelector('input[type="file"]'),{target:{files:[new File(['fixture'],'selected.png',{type:'image/png'})]}});
-    assert.equal(pending.length,1);
-    assert.equal(screen.getByRole('button',{name:'检查参考图',exact:true}).disabled,true);
+    const input=screen.getByLabelText('上传文件');
+    await waitFor(()=>assert.equal(input.disabled,false));
+    changeControl(input,{target:{files:[file]}});
+    await waitFor(()=>assert.equal(typeof release,'function'));
+    assert.equal(document.querySelector('.generation-form button[type="submit"]').disabled,true);
     fireEvent.submit(document.querySelector('.generation-form'));
-    assert.ok(screen.getByText('正在检查参考图尺寸，请完成后再生成。'));
+    assert.ok(screen.getByText('请等待文件保存完成。'));
     assert.equal(actions.includes('createJob'),false);
-    await act(async()=>pending[0].onload());
-    await waitFor(()=>assert.equal(document.querySelectorAll('.reference-preview-card').length,1));
+    assert.equal(actions.includes('prepareMaterialUpload'),false);
+    await act(async()=>release());
+    await waitFor(()=>assert.ok(screen.getByText('已保存到浏览器 · 待读取')));
+    assert.ok(screen.getByText('selected.txt'));
     assert.equal(document.querySelector('.generation-form button[type="submit"]').disabled,false);
-  } finally {cleanup();globalThis.fetch=original.fetch;globalThis.Image=original.Image;URL.createObjectURL=original.create;URL.revokeObjectURL=original.revoke;}
+  } finally {cleanup();globalThis.fetch=original.fetch;globalThis.indexedDB=original.indexedDB;window.localStorage.clear();}
 });
 
 test('account entry keeps the actual generation/refine subtree and selected models; history restores the task', async () => {
@@ -86,14 +100,14 @@ test('account entry keeps the actual generation/refine subtree and selected mode
     const nav = within(screen.getByRole('navigation', { name: '主导航' }));
     assert.deepEqual(nav.getAllByRole('button').map(button => button.textContent), ['生成候选图', '任务记录', '精修图片', '账户', '使用教程']);
     const method = screen.getByRole('textbox', { name: '论文方法内容', exact: true });
-    fireEvent.change(method, { target: { value: '保留研究方法和模型选择。' } });
+    changeControl(method, { target: { value: '保留研究方法和模型选择。' } });
     fireEvent.click(screen.getByRole('button', { name: '打开完整设置' }));
     const channels = screen.getByRole('group', { name: 'API 接入渠道', exact: true });
     assert.equal(channels.querySelector('button').textContent.trim(), '观猹 TokenDance');
     assert.equal(channels.querySelector('[aria-pressed="true"]').textContent.trim(), '观猹 TokenDance');
     fireEvent.click(screen.getByRole('button', { name: /专业模式/ }));
     fireEvent.click(screen.getByRole('button', { name: '图像生成模型', exact: true }));
-    assert.equal(document.querySelector('.model-option.active code')?.textContent, 'seedream-5.0-pro');
+    assert.equal(document.querySelector('.model-option.active .model-option-select')?.getAttribute('aria-label'), '选择 Seedream 5.0 Pro');
     fireEvent.click(screen.getByRole('button', { name: '关闭模型选择' }));
     fireEvent.click(screen.getByRole('button', { name: /普通模式/ }));
     fireEvent.click(screen.getByRole('button', { name: '阿里云百炼', exact: true }));
@@ -114,7 +128,7 @@ test('account entry keeps the actual generation/refine subtree and selected mode
     assert.equal(document.querySelector('.td-recharge'), null, 'wallet only exists on account page');
     fireEvent.click(screen.getByRole('button', { name: '精修图片', exact: true }));
     const instruction = await screen.findByRole('textbox', { name: '精修指令', exact: true });
-    fireEvent.change(instruction, { target: { value: '仅放大标签，保留结构。' } });
+    changeControl(instruction, { target: { value: '仅放大标签，保留结构。' } });
     const refineImageInput = document.querySelector('input[type="file"]');
     fireEvent.click(nav.getByRole('button', { name: '账户', exact: true }));
     assert.ok(screen.getByRole('button', { name: '返回精修图片' }));
@@ -134,10 +148,11 @@ test('catalog refresh preserves a valid channel, preserves a removed channel unt
   const original = globalThis.fetch, scroll = window.scrollTo;
   let providers = structuredClone(STATIC_MODEL_REGISTRY), registryReads = 0;
   let refresh;
-  const interval = globalThis.setInterval;
-  t.mock.method(globalThis, 'setInterval', (callback, delay, ...args) => {
-    if (delay === 60_000) refresh = () => callback(...args);
-    return interval(callback, delay, ...args);
+  const timeout = globalThis.setTimeout;
+  t.mock.method(globalThis, 'setTimeout', (callback, delay, ...args) => {
+    const timer = timeout(callback, delay, ...args);
+    if (delay === 60_000) refresh = () => { clearTimeout(timer); return callback(...args); };
+    return timer;
   });
   window.scrollTo = () => {};
   globalThis.fetch = async (_url, init = {}) => {
@@ -170,7 +185,7 @@ test('catalog refresh preserves a valid channel, preserves a removed channel unt
     fireEvent.click(screen.getByRole('button', { name: '观猹 TokenDance', exact: true }));
     fireEvent.click(screen.getByRole('button', { name: /专业模式/ }));
     fireEvent.click(screen.getByRole('button', { name: '图像生成模型', exact: true }));
-    assert.equal(document.querySelector('.model-option.active code').textContent, 'seedream-5.0-pro');
+    assert.equal(document.querySelector('.model-option.active .model-option-select')?.getAttribute('aria-label'), '选择 Seedream 5.0 Pro');
     fireEvent.click(screen.getByRole('button', { name: '选择 Seedream 5.0 lite', exact: true }));
     fireEvent.click(screen.getByRole('button', { name: '关闭生成设置' }));
     const before = document.querySelector('.generation-settings-facts').textContent;
@@ -181,7 +196,7 @@ test('catalog refresh preserves a valid channel, preserves a removed channel unt
     assert.equal(document.querySelector('.generation-settings-facts').textContent, before);
     fireEvent.click(screen.getByRole('button', { name: '打开完整设置' }));
     fireEvent.click(screen.getByRole('button', { name: '图像生成模型', exact: true }));
-    assert.equal(document.querySelector('.model-option.active code').textContent, 'seedream-5.0-lite');
+    assert.equal(document.querySelector('.model-option.active .model-option-select')?.getAttribute('aria-label'), '选择 Seedream 5.0 lite');
   } finally { cleanup(); globalThis.fetch = original; window.scrollTo = scroll; }
 });
 

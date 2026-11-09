@@ -1,0 +1,51 @@
+✔ typed PNG compaction preserves every executable rule and structural reference lesson (6.187959ms)
+✔ Wan 2.7 sends exact validated PNG bytes inline and does not upload a signed URL (4259.643459ms)
+✔ PNG final prompt preserves task context and reserves bounded complete-plan capacity without truncation (0.332208ms)
+✔ Wan plan budget bounds the final revision wire, including quotes and line breaks (0.230084ms)
+✔ local programming failures are not mislabeled as model-channel failures (0.178709ms)
+{"event":"tokendance_catalog_health","level":"info","state":"ready","cause":null,"alert":"none","consecutiveAnomalies":0,"anomalySince":null,"checkedAt":1791776474650,"stale":false,"total":102,"valid":102,"compatibleCount":71,"issueCount":0,"issues":[]}
+{"event":"tokendance_catalog_health","level":"info","state":"ready","cause":null,"alert":"none","consecutiveAnomalies":0,"anomalySince":null,"checkedAt":1791776478160,"stale":false,"total":102,"valid":102,"compatibleCount":71,"issueCount":0,"issues":[]}
+{"event":"tokendance_catalog_health","level":"info","state":"ready","cause":null,"alert":"none","consecutiveAnomalies":0,"anomalySince":null,"checkedAt":1791776481450,"stale":false,"total":102,"valid":102,"compatibleCount":71,"issueCount":0,"issues":[]}
+{"event":"tokendance_catalog_health","level":"info","state":"ready","cause":null,"alert":"none","consecutiveAnomalies":0,"anomalySince":null,"checkedAt":1791776484948,"stale":false,"total":102,"valid":102,"compatibleCount":71,"issueCount":0,"issues":[]}
+✔ production regression: 10 auto results fit the actual main or observer budget, then reach generation (13861.45375ms)
+{"event":"tokendance_catalog_health","level":"info","state":"ready","cause":null,"alert":"none","consecutiveAnomalies":0,"anomalySince":null,"checkedAt":1791776488276,"stale":false,"total":102,"valid":102,"compatibleCount":71,"issueCount":0,"issues":[]}
+{"event":"tokendance_catalog_health","level":"info","state":"ready","cause":null,"alert":"none","consecutiveAnomalies":0,"anomalySince":null,"checkedAt":1791776491575,"stale":false,"total":102,"valid":102,"compatibleCount":71,"issueCount":0,"issues":[]}
+✔ no useful references or fewer references than budget never causes quota filling (6656.867917ms)
+✔ relevance, visual intent, duplicate source and contribution filtering; malformed output fails closed (1.047209ms)
+✔ uploaded and retrieved images share the actual planner budget; corrupted, duplicate bytes and overlarge refs are skipped (3299.634042ms)
+✔ Chinese errors retain stage, category and advice without exposing upstream secrets (0.497ms)
+✔ local validation keeps completed checkpoints, records no new request, and does not permit blind replay (0.806833ms)
+✔ text-only main cannot consume gallery metadata alone; basic and assist both read images (3302.604333ms)
+✔ explicit provider rejection and dispatched-but-unknown calls remain distinct across workflow recovery (1.280416ms)
+✔ historical 10-vs-8 task gets a read-only Chinese explanation without rewriting uncertain charges (3275.077125ms)
+✔ upgrading request descriptors never silently replays a previously paid v1 checkpoint (0.308416ms)
+✔ transport disconnects and timeouts use different Chinese categories and never resend a paid request (0.23825ms)
+{"event":"tokendance_catalog_health","level":"info","state":"ready","cause":null,"alert":"none","consecutiveAnomalies":0,"anomalySince":null,"checkedAt":1791776504973,"stale":false,"total":102,"valid":102,"compatibleCount":71,"issueCount":0,"issues":[]}
+✔ reference selection, prepared bytes and completed planner survive balance recovery without repeated calls (4508.863416ms)
+✔ plot rendering and optional enhancement success or fallback remain separate visible stages (7306.865416ms)
+✔ SVG generation failure reports rendering after a successful saved plan (3529.323ms)
+✔ incompatible queued or expired running jobs become visibly failed while live leases stay active (0.348416ms)
+✔ Bailian recognition sends actual image bytes without a public storage URL dependency (3518.094916ms)
+✔ one SVG round inspects v1 pixels and full code then generates v2, never secretly re-reviews (3474.964542ms)
+✔ two SVG rounds with assistant inspect corresponding revisions; main makes code and final decision (3371.153375ms)
+✔ zero/basic reviews and five full SVG rounds obey exact generation and inspection budgets (3895.98225ms)
+✔ stale, incomplete and failed SVG checks never pass; failed revisions retain inspected problem version (3574.062ms)
+✔ SVG and basic gallery tasks block without vision; basic references contain title, description and real pixels (3453.837042ms)
+✔ an unrenderable generated SVG reports a local render failure with no hidden paid repair (3298.167208ms)
+✔ Recraft receives full context, actual style refs, then the exact previous raster on revision (3995.315333ms)
+✔ fixed compiler contract never leaks into general SVG or an explicitly native typed Recraft route (3405.339625ms)
+✔ Recraft rejects incomplete capability, excessive context/count/dimensions before its request (3641.742291ms)
+✔ contradictory decision and missing evidence fail closed (0.3615ms)
+✔ unknown revision submission preserves the inspected SVG in results and stops all later calls (3410.53425ms)
+✔ empty auxiliary observations cannot certify SVG quality (3386.205208ms)
+✔ safe internal xlink references survive generation and actual rendering unchanged (3537.803584ms)
+✔ portrait SVG planning requests a bounded canvas preserving 1:4 ratio (3308.042875ms)
+✔ basic direct image understanding ignores inactive custom/TokenDance vision drafts without bypassing real observer auth (3356.197625ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 53093.052

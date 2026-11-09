@@ -1,0 +1,54 @@
+{
+  "id": "pcbi.1011795.g002",
+  "paper": "pcbi.1011795",
+  "figure": {
+    "id": "pcbi.1011795.g002",
+    "label": "Fig 2",
+    "caption": "Association of SARS-CoV-2 infection rates and predictor variables globally.\nA. Pearson’s correlation matrix of infection rate and predictor variables. Positive correlations are denoted in orange and negative correlations in blue and colour intensity is directly proportional to coefficient value. B. Model fitting using multiple linear regression. Black solid lines show a 14-day rolling average of adjusted SARS-CoV-2 cases. Pink solid lines show fitted mean response values of infection rates with predictor values as input.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011795.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011795.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Association of SARS-CoV-2 infection rates and predictor variables globally.</title>\n<p><bold>A</bold>. Pearson’s correlation matrix of infection rate and predictor variables. Positive correlations are denoted in orange and negative correlations in blue and colour intensity is directly proportional to coefficient value. <bold>B</bold>. Model fitting using multiple linear regression. Black solid lines show a 14-day rolling average of adjusted SARS-CoV-2 cases. Pink solid lines show fitted mean response values of infection rates with predictor values as input.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011795.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011795.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1011795",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011795",
+    "title": "Mutational signature dynamics indicate SARS-CoV-2’s evolutionary capacity is driven by host antiviral molecules",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Kieran D. Lamb",
+      "Martha M. Luka",
+      "Megan Saathoff",
+      "Richard J. Orton",
+      "My V. T. Phan",
+      "Matthew Cotten",
+      "Ke Yuan",
+      "David L. Robertson"
+    ],
+    "year": "2024",
+    "license": "2024\nLamb et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1011795.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011795.g002.png",
+      "bytes": 675807,
+      "sha256": "03d78a0841a307e04fc4eead4d679f09159cdded158ec4c2957dcf9844929d4e"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1011795.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011795.g002.tif",
+      "bytes": 901432,
+      "sha256": "26abfaf9f72227036ffe55c83cb451a0d64f39001337e211c3a2d560252bab49"
+    }
+  }
+}

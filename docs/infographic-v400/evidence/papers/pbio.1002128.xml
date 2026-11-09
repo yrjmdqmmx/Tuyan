@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="other" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosbiol</journal-id>
+<journal-title-group>
+<journal-title>PLOS Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1544-9173</issn>
+<issn pub-type="epub">1545-7885</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pbio.1002128</article-id>
+<article-id pub-id-type="publisher-id">PBIOLOGY-D-14-04428</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Perspective</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>Beyond Bar and Line Graphs: Time for a New Data Presentation Paradigm</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Weissgerber</surname>
+<given-names>Tracey L.</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="cor001" ref-type="corresp">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Milic</surname>
+<given-names>Natasa M.</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="aff002" ref-type="aff"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Winham</surname>
+<given-names>Stacey J.</given-names>
+</name>
+<xref rid="aff003" ref-type="aff"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Garovic</surname>
+<given-names>Vesna D.</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Division of Nephrology &amp; Hypertension, Mayo Clinic, Rochester, Minnesota, United States of America</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Department of Biostatistics, Medical Faculty, University of Belgrade, Belgrade, Serbia</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Division of Biomedical Statistic and Informatics, Mayo Clinic, Rochester, Minnesota, United States of America</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">weissgerber.tracey@mayo.edu</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>22</day>
+<month>4</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>4</month>
+<year>2015</year>
+</pub-date>
+<volume>13</volume>
+<issue>4</issue>
+<elocation-id>e1002128</elocation-id>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Weissgerber et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pbio.1002128" xlink:type="simple"/>
+<abstract>
+<p>Figures in scientific publications are critically important because they often show the data supporting key findings. Our systematic review of research articles published in top physiology journals (<italic>n</italic> = 703) suggests that, as scientists, we urgently need to change our practices for presenting continuous data in small sample size studies. Papers rarely included scatterplots, box plots, and histograms that allow readers to critically evaluate continuous data. Most papers presented continuous data in bar and line graphs. This is problematic, as many different data distributions can lead to the same bar or line graph. The full data may suggest different conclusions from the summary statistics. We recommend training investigators in data presentation, encouraging a more complete presentation of data, and changing journal editorial policies. Investigators can quickly make univariate scatterplots for small sample size studies using our Excel templates.</p>
+</abstract>
+<abstract abstract-type="toc">
+<p>A systematic review of research articles reveals widespread poor practice in the presentation of continuous data. The authors recommend training for investigators and supply templates for easy use.</p>
+</abstract>
+<funding-group>
+<funding-statement>This project was supported by Award Number P-50 AG44170 (Project 1, VDG) from the National Institute on Aging (<ext-link ext-link-type="uri" xlink:href="http://www.nia.nih.gov/" xlink:type="simple">http://www.nia.nih.gov/</ext-link>). TLW and SJW were supported by the Office of Research on Women's Health (Building Interdisciplinary Careers in Women’s Health award K12HD065987; <ext-link ext-link-type="uri" xlink:href="http://orwh.od.nih.gov/" xlink:type="simple">http://orwh.od.nih.gov/</ext-link>). This publication was made possible by CTSA Grant Number UL1 TR000135 from the National Center for Advancing Translational Sciences (NCATS; <ext-link ext-link-type="uri" xlink:href="http://www.ncats.nih.gov/" xlink:type="simple">http://www.ncats.nih.gov/</ext-link>), a component of the National Institutes of Health (NIH; <ext-link ext-link-type="uri" xlink:href="http://www.nih.gov/" xlink:type="simple">http://www.nih.gov/</ext-link>). Its contents are solely the responsibility of the authors and do not necessarily represent the official view of NIH. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="3"/>
+<table-count count="0"/>
+<page-count count="10"/>
+</counts>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Data presentation is the foundation of our collective scientific knowledge, as readers’ understanding of a dataset is generally limited to what the authors present in their publications. Figures are critically important because they often show the data that support key findings. However, studies of the Journal of the American Medical Association [<xref rid="pbio.1002128.ref001" ref-type="bibr">1</xref>] and the British Medical Journal [<xref rid="pbio.1002128.ref002" ref-type="bibr">2</xref>] provide compelling evidence that fundamental changes in the types of figures that scientists use are needed. Authors generally use figures to present summary statistics, instead of providing detailed information about the distribution of the data or showing the full data [<xref rid="pbio.1002128.ref001" ref-type="bibr">1</xref>,<xref rid="pbio.1002128.ref002" ref-type="bibr">2</xref>].</p>
+<p>Bar graphs are designed for categorical variables; yet they are commonly used to present continuous data in laboratory research, animal studies, and human studies with small sample sizes. Bar and line graphs of continuous data are “visual tables” that typically show the mean and standard error (SE) or standard deviation (SD). This is problematic for three reasons. First, many different data distributions can lead to the same bar or line graph (<xref rid="pbio.1002128.g001" ref-type="fig">Fig 1</xref> and <xref rid="pbio.1002128.g002" ref-type="fig">Fig 2</xref>). The full data may suggest different conclusions from the summary statistics (<xref rid="pbio.1002128.g001" ref-type="fig">Fig 1</xref> and <xref rid="pbio.1002128.g002" ref-type="fig">Fig 2</xref>). Second, additional problems arise when bar graphs are used to show paired or nonindependent data (<xref rid="pbio.1002128.g002" ref-type="fig">Fig 2</xref>). Figures should ideally convey the design of the study. Bar graphs of paired data erroneously suggest that the groups being compared are independent and provide no information about whether changes are consistent across individuals (Panel A in <xref rid="pbio.1002128.g002" ref-type="fig">Fig 2</xref>). Third, summarizing the data as mean and SE or SD often causes readers to wrongly infer that the data are normally distributed with no outliers. These statistics can distort data for small sample size studies, in which outliers are common and there is not enough data to assess the sample distribution.</p>
+<fig id="pbio.1002128.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.1002128.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Many different datasets can lead to the same bar graph.</title>
+<p>The full data may suggest different conclusions from the summary statistics. The means and SEs for the four example datasets shown in Panels B–E are all within 0.5 units of the means and SEs shown in the bar graph (Panel A). <italic>p</italic>-values were calculated in R (version 3.0.3) using an unpaired t-test, an unpaired t-test with Welch’s correction for unequal variances, or a Wilcoxon rank sum test. In Panel B, the distribution in both groups appears symmetric. Although the data suggest a small difference between groups, there is substantial overlap between groups. In Panel C, the apparent difference between groups is driven by an outlier. Panel D suggests a possible bimodal distribution. Additional data are needed to confirm that the distribution is bimodal and to determine whether this effect is explained by a covariate. In Panel E, the smaller range of values in group two may simply be due to the fact that there are only three observations. Additional data for group two would be needed to determine whether the groups are actually different.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pbio.1002128.g001" position="float" xlink:type="simple"/>
+</fig>
+<fig id="pbio.1002128.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.1002128.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Additional problems with using bar graphs to show paired data.</title>
+<p>The bar graph (mean ± SE) suggests that the groups are independent and provides no information about whether changes are consistent across individuals (Panel A). The scatterplots shown in the Panels B–D clearly demonstrate that the data are paired. Each scatterplot reveals very different patterns of change, even though the means and SEs differ by less than 0.3 units. The lower scatterplots showing the differences between measurements allow readers to quickly assess the direction, magnitude, and distribution of the changes. The solid lines show the median difference. In Panel B, values for every subject are higher in the second condition. In Panel C, there are no consistent differences between the two conditions. Panel D suggests that there may be distinct subgroups of “responders” and “nonresponders.”</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pbio.1002128.g002" position="float" xlink:type="simple"/>
+</fig>
+<p>In contrast, univariate scatterplots, box plots, and histograms allow readers to examine the data distribution. This approach enhances readers’ understanding of published data, while allowing readers to detect gross violations of any statistical assumptions. The increased flexibility of univariate scatterplots also allows authors to convey study design information. In small sample size studies, scatterplots can easily be modified to differentiate between datasets that include independent groups (<xref rid="pbio.1002128.g001" ref-type="fig">Fig 1</xref>) and those that include paired or matched data (<xref rid="pbio.1002128.g002" ref-type="fig">Fig 2</xref>).</p>
+<p>We conducted a systematic review of standard practices for data presentation in scientific papers, contrasting the use of bar graphs versus figures that provide detailed information about the distribution of the data (scatterplots, box plots, and histograms). We focused on physiology because physiologists perform a wide range of studies, including human studies, animal studies, and in vitro laboratory experiments. We systematically reviewed all full-length, original research articles published in the top 25% of physiology journals between January 1 and March 31, 2014 (<italic>n</italic> = 703) to assess the types of figures that were used to present continuous outcome data (<xref rid="pbio.1002128.s007" ref-type="supplementary-material">S1 Fig</xref> and Table A in <xref rid="pbio.1002128.s001" ref-type="supplementary-material">S1 Text</xref>). We also abstracted information on sample size and statistical analysis procedures, as these factors may influence figure selection. Detailed methods and results are presented in the data supplement. Based on our findings, we recommend major changes to standard practices for presenting continuous data in small sample size studies. We hope that these recommendations will promote scientific discourse by giving readers the information needed to fully examine published data.</p>
+</sec>
+<sec id="sec002">
+<title>Are Your Figures Worth a Thousand Words?</title>
+<p>In addition to showing data for key findings, figures are important because they give authors the opportunity to display a large amount of data very quickly. However, most figures provided little more information than a table (Panel A in <xref rid="pbio.1002128.s008" ref-type="supplementary-material">S2 Fig</xref> and <xref rid="pbio.1002128.s001" ref-type="supplementary-material">S1 Text</xref>). Bar graphs were the most commonly used figures for presenting continuous data. 85.6% of papers included at least one bar graph. Most of these papers used bar graphs that showed mean ± SE (77.6%, Panel B in <xref rid="pbio.1002128.s008" ref-type="supplementary-material">S2 Fig</xref>), rather than mean ± SD (15.3%). Line graphs and point and error bar plots were also common (61.3% of articles, Panel A in <xref rid="pbio.1002128.s008" ref-type="supplementary-material">S2 Fig</xref>), and most showed mean ± SE. Figures that provide detailed information about the distribution of the data were seldom used. 13.4% of articles included at least one univariate scatterplot, 5.3% included at least one box plot, and 8.0% included at least one histogram. The journals that we examined publish research conducted by investigators in many fields; therefore, it is likely that investigators in other disciplines follow similar practices. The overuse of bar graphs and other figures that do not provide information about the distribution of the data has also been documented in psychology [<xref rid="pbio.1002128.ref003" ref-type="bibr">3</xref>] and medicine [<xref rid="pbio.1002128.ref001" ref-type="bibr">1</xref>,<xref rid="pbio.1002128.ref004" ref-type="bibr">4</xref>].</p>
+<p>Our data show that most bar and line graphs present mean ± SE. <xref rid="pbio.1002128.g003" ref-type="fig">Fig 3</xref> illustrates that presenting the same data as mean ± SE, mean ± SD, or in a univariate scatterplot can leave the reader with very different impressions. While the scatterplot prompts the reader to critically evaluate the authors’ analysis and interpretation of the data, the bar graphs discourage the reader from thinking about these issues by masking distributional information. The question of whether investigators should report the SE or the SD has been extensively debated by biomedical scientists and statisticians [<xref rid="pbio.1002128.ref005" ref-type="bibr">5</xref>,<xref rid="pbio.1002128.ref006" ref-type="bibr">6</xref>]. We argue that figures for small sample size studies should show the full distribution of the data, rather than mean ± SE or mean ± SD. However, given that figures showing these summary statistics are ubiquitous in the biomedical literature, researchers should understand why the SE and SD can give such different visual impressions. The SD measures the variation in the sample, whereas the SE measures the accuracy of the mean. The SE is strongly dependent on sample size (SE = SD / √<italic>n</italic>)—as sample size increases, the uncertainty surrounding the value of the mean decreases. If two samples have the same SE, the one with the larger sample size will have the larger SD. Showing the SE rather than the SD magnifies the apparent visual differences between groups. This effect is exacerbated when the groups being compared have different sample sizes, which is common in physiology and in other disciplines.</p>
+<fig id="pbio.1002128.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.1002128.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Bar graphs and scatterplots convey very different information.</title>
+<p>While scatterplots prompt the reader to critically evaluate the statistical tests and the authors’ interpretation of the data, bar graphs discourage the reader from thinking about these issues. Placental endothelin 1 (<italic>EDN1</italic>) mRNA data for four different groups of participants is presented in bar graphs showing mean ± SE (Panel A), or mean ± SD (Panel B), and in a univariate scatterplot (Panel C). Panel A (mean ± SE) suggests that the second group has higher values than the remaining groups; however, Panel B (mean ± SD) reveals that there is considerable overlap between groups. Showing SE rather than SD magnifies the apparent visual differences between groups, and this is exacerbated by the fact that SE obscures any effect of unequal sample size. The scatterplot (Panel C) clearly shows that the sample sizes are small, group one has a much larger variance than the other groups, and there is an outlier in group three. These problems are not apparent in the bar graphs shown in Panels A and B.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pbio.1002128.g003" position="float" xlink:type="simple"/>
+</fig>
+<p>The infrequent use of univariate scatterplots, boxplots, and histograms is a missed opportunity. The ability to independently evaluate the work of other scientists is a pillar of the scientific method. These figures facilitate this process by immediately conveying key information needed to understand the authors’ statistical analyses and interpretation of the data. This promotes critical thinking and discussion, enhances the readers’ understanding of the data, and makes the reader an active partner in the scientific process. In contrast, bar and line graphs are “visual tables” that transform the reader from an active participant into a passive consumer of statistical information. Without the opportunity for independent appraisal, the reader must rely on the authors’ statistical analyses and interpretation of the data.</p>
+</sec>
+<sec id="sec003">
+<title>Summary Statistics Are Only Meaningful When There Are Enough Data to Summarize</title>
+<p>Sample size is an important consideration when designing figures and selecting statistical analysis procedures (<xref ref-type="boxed-text" rid="pbio.1002128.box001">Box 1</xref>) for continuous data. Our analysis shows that most studies had very small sample sizes (Panel C in <xref rid="pbio.1002128.s008" ref-type="supplementary-material">S2 Fig</xref>). The minimum sample size for any group shown in a figure was four (median number of independent observations), with an interquartile range of three independent observations (25th percentile: <italic>n</italic> = 3, 75th percentile: <italic>n</italic> = 6). The maximum sample size for any group shown in a figure was ten, with an interquartile range of nine (25th percentile: <italic>n</italic> = 6, 75th percentile: <italic>n</italic> = 15). Univariate scatterplots would be the best choice for many of these small studies. The summary statistics shown in bar graphs, line graphs, and box plots are only meaningful when there are enough data to summarize. Histograms are difficult to interpret when there aren’t enough observations to clearly show the distribution of the data.</p>
+<boxed-text id="pbio.1002128.box001" position="float">
+<sec id="sec004">
+<title>Box 1. Data Analysis</title>
+<list list-type="bullet">
+<list-item><p>The distribution of the data and the sample size are critical considerations when selecting statistical tests. Univariate scatterplots immediately convey this important information.</p></list-item>
+<list-item><p>T-tests and analysis of variance (ANOVA) are examples of parametric tests. These tests compare means and assume that the data are normally distributed with no outliers. In small samples, these tests are prone to errors if the data contain outliers or are not normally distributed.</p></list-item>
+<list-item><p>The Wilcoxon rank sum test is an example of a nonparametric test. Nonparametric tests don’t make assumptions about the distribution of the variables that are being assessed. These tests often compare the ranks of the observations or the medians across groups. Nonparametric statistics are often preferred to parametric tests when the sample size is small and the data are skewed or contain outliers.</p></list-item>
+<list-item><p>Some statisticians recommend nonparametric tests for small sample size studies. Others argue that these tests are underpowered, especially if the data distribution appears symmetric.</p></list-item>
+<list-item><p>Our data suggest that most authors assume that their data are normally distributed, use parametric statistical analysis techniques, and select figures that show parametric summary statistics (Table B in <xref rid="pbio.1002128.s001" ref-type="supplementary-material">S1 Text</xref>). 78.1% of studies performed only parametric analyses. 13.6% of studies used both parametric and nonparametric analyses, whereas 3.8% included only nonparametric analyses.</p></list-item>
+<list-item><p>More than half of the authors who performed non-parametric analyses showed means when presenting their data. Investigators should show medians whenever they use nonparametric statistical tests. Medians are often used in situations where the mean is misleading due to outliers or a skewed distribution.</p></list-item>
+<list-item><p>Investigators who use nonparametric statistics for paired or matched data should report the median difference instead of the median values for each condition (<xref rid="pbio.1002128.g002" ref-type="fig">Fig 2</xref>). Unlike means, medians are not additive. The median difference is not the same as the difference between the medians for each condition.</p></list-item>
+<list-item><p>Scientists and statisticians continue to debate many statistical practices that are commonly used in basic science research. These include whether to test the assumptions underlying parametric analyses [<xref rid="pbio.1002128.ref007" ref-type="bibr">7</xref>], when to use parametric versus nonparametric tests [<xref rid="pbio.1002128.ref008" ref-type="bibr">8</xref>,<xref rid="pbio.1002128.ref009" ref-type="bibr">9</xref>,<xref rid="pbio.1002128.ref010" ref-type="bibr">10</xref>], whether to report SD versus SE for normally distributed data [<xref rid="pbio.1002128.ref005" ref-type="bibr">5</xref>,<xref rid="pbio.1002128.ref006" ref-type="bibr">6</xref>,<xref rid="pbio.1002128.ref008" ref-type="bibr">8</xref>], and how to use <italic>p</italic>-values [<xref rid="pbio.1002128.ref011" ref-type="bibr">11</xref>]. The data presentation practices that we recommend will benefit scientists and statisticians on all sides of these debates by allowing others to examine the potential impact of using different statistical techniques.</p></list-item>
+</list>
+</sec>
+</boxed-text>
+</sec>
+<sec id="sec005">
+<title>Recommendations for a New Data Presentation Paradigm</title>
+<p>These results suggest that, as scientists, we urgently need to change our standard practices for presenting and analyzing continuous data in small sample size studies. We recommend three changes to resolve the problems identified in this systematic review.</p>
+<list list-type="order">
+<list-item><p><bold>Encourage a more complete presentation of data</bold>. We encourage investigators to consider the characteristics of their datasets, rather than relying on standard practices in the field, whenever they present data. The best option for small datasets is to show the full data, as summary statistics are only meaningful if there are enough data to summarize. In 75% of the papers that we reviewed, the minimum sample size for any group shown in a figure was between two and six. Univariate scatterplots are the best choice for showing the distribution of the data in these small samples, as boxplots and histograms would be difficult to interpret. By displaying the full dataset, scatterplots allow readers to detect gross violations of statistical assumptions and to determine whether the results would have been different using alternative statistical analysis techniques. This is especially important for investigators who use parametric analyses to compare groups in small studies.</p>
+<p>While Microsoft Excel allows scientists to quickly and efficiently create bar graphs, univariate scatterplots are more challenging. We created free Excel templates that are available in the supplemental files for the manuscript (<xref rid="pbio.1002128.s002" ref-type="supplementary-material">S2 Text</xref> and <xref rid="pbio.1002128.s003" ref-type="supplementary-material">S3 Text</xref>). The templates can also be downloaded from CTSpedia (<ext-link ext-link-type="uri" xlink:href="https://www.ctspedia.org/do/view/CTSpedia/TemplateTesting" xlink:type="simple">https://www.ctspedia.org/do/view/CTSpedia/TemplateTesting</ext-link>), where we will post updated versions. Researchers can quickly enter data to make univariate scatterplots for paired data, independent data, and independent data with points jittered so that points with similar values do not overlap. The supplemental files also include detailed instructions for investigators who wish to make univariate scatterplots for paired or independent data using Graph Pad PRISM (<xref rid="pbio.1002128.s004" ref-type="supplementary-material">S4 Text</xref>, <xref rid="pbio.1002128.s005" ref-type="supplementary-material">S5 Text</xref> and <xref rid="pbio.1002128.s006" ref-type="supplementary-material">S6 Text</xref>).</p></list-item>
+<list-item><p><bold>Change journal policies</bold>. We strongly recommend that journals change their editorial policies and peer review practices to discourage the use of bar graphs and encourage the use of univariate scatterplots, boxplots, and histograms to present continuous data. Journal policies should provide specific guidance about what types of figures are preferred. Nonspecific policies stating that figures are preferred to tables whenever possible do not effectively promote the use of figures that show the distribution of continuous data (Table C in <xref rid="pbio.1002128.s001" ref-type="supplementary-material">S1 Text</xref>, Table D in <xref rid="pbio.1002128.s001" ref-type="supplementary-material">S1 Text</xref>, and <xref rid="pbio.1002128.s001" ref-type="supplementary-material">S1 Text</xref>). Journals play a crucial role in redefining standard practices in scientific research [<xref rid="pbio.1002128.ref012" ref-type="bibr">12</xref>]. However, editorial policies are only effective if they are implemented. There were few improvements in scientific reporting among animal studies two years after the Animal Research: Reporting of In Vivo Experiments (ARRIVE) guidelines were published, despite endorsement by top journals and funding agencies [<xref rid="pbio.1002128.ref013" ref-type="bibr">13</xref>]. These guidelines were designed to encourage reporting of key methodological details in animal studies. Journals seeking to implement the policy changes recommended in this paper will need to work with editors and reviewers [<xref rid="pbio.1002128.ref014" ref-type="bibr">14</xref>] to accomplish this goal.</p></list-item>
+<list-item><p><bold>Train investigators in data presentation</bold>. This systematic review demonstrates that scientists need better training in how to select the appropriate type of figure for their data. A visually appealing figure is of little value if it is not suitable for the type of data being presented. Investigators should consider the type of outcome variable (categorical versus continuous), the sample size and the study design (independent versus nonindependent data, etc.) when designing figures.</p>
+<p>Presenting data in scientific publications is a critical skill for scientists [<xref rid="pbio.1002128.ref015" ref-type="bibr">15</xref>], although this information is not universally included in statistics courses. This systematic review demonstrates that most scientists who publish in top physiology journals work with very small datasets. However, in the authors’ experience, statistics courses in many basic science departments are taught by statisticians, epidemiologists, or other researchers who perform complex analyses in very large datasets. Effective statistics instruction cannot follow a “one size fits all” approach [<xref rid="pbio.1002128.ref015" ref-type="bibr">15</xref>]. Statistics instructors need to consider the types of data that their students will be working with and the standard practices in their students’ fields when designing courses. Basic science departments should work with instructors to develop course materials that will address the needs of their students and faculty. Data presentation training should include techniques for small sample size studies and address the problems with the standard practices identified in this review.</p></list-item>
+</list>
+</sec>
+<sec id="sec006">
+<title>Conclusions</title>
+<p>Our systematic review identified several critical problems with the presentation of continuous data in small sample size studies. A coordinated effort among investigators, medical journals, and statistics instructors is recommended to address these problems. We created free Excel templates (<xref rid="pbio.1002128.s002" ref-type="supplementary-material">S2 Text</xref> and <xref rid="pbio.1002128.s003" ref-type="supplementary-material">S3 Text</xref>, <ext-link ext-link-type="uri" xlink:href="https://www.ctspedia.org/do/view/CTSpedia/TemplateTesting" xlink:type="simple">https://www.ctspedia.org/do/view/CTSpedia/TemplateTesting</ext-link>) that will allow researchers to quickly make univariate scatterplots for independent data (with or without overlapping points) and nonindependent data. We hope that improved data presentation practices will enhance authors’, reviewers’, and readers’ understanding of published data by ensuring that publications include the information needed to critically evaluate continuous data in small sample size studies.</p>
+</sec>
+<sec id="sec007">
+<title>Supporting Information</title>
+<supplementary-material id="pbio.1002128.s001" xlink:href="info:doi/10.1371/journal.pbio.1002128.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Supplemental methods and results.</title>
+<p>This file contains the methods and results for the systematic review, including Table A in S1 Text, Table B in S1 Text, Table C in S1 Text and Table D in S1 Text. Table A in S1 Text: The number of articles examined by journal. Values are n, or n (% of articles reviewed that were eligible and included in the analysis). Journals are organized by 2012 impact factor. Articles that were not full length original research articles were excluded after screening (i.e. reviews, editorials, perspectives, commentaries, letters to the editor, short communications, etc.). Abbreviations: AJP, American Journal of Physiology; APS, American Physiological Society. *APS Journal. Table B in S1 Text: Most studies performed parametric analyses. Values are n (%). *n (%) of 493 articles which performed parametric analyses. The remaining articles did not specifically state whether these assumptions were tested. Table C in S1 Text: Relationship between journal affiliation and the use of bar graphs and univariate scatterplots. Abbreviations: APS, American Physiological Society. Seven of the top 20 physiology journals are published by the American Physiological Society (APS), which specifies that outcome data should be presented in figures rather than in tables whenever possible. Nonhuman studies did not include human participants, tissues, cells or cell lines. Human studies included human participants, tissues, cells or cell lines. Table D in S1 Text: Relationship between journal affiliation and the use of histograms and line graphs/point and error bars plots. Abbreviations: APS, American Physiological Society. Seven of the top 20 physiology journals are published by the American Physiological Society (APS), which specifies that outcome data should be presented in figures rather than in tables whenever possible.</p>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.1002128.s002" xlink:href="info:doi/10.1371/journal.pbio.1002128.s002" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S2 Text</label>
+<caption>
+<title>Excel templates for creating univariate scatterplots for independent data.</title>
+<p>Use this template to create scatterplots for independent data in two to five groups. Independent data means that the variable of interest is measured one time in each subject, and subjects are not related to each other. If your data do not meet these criteria, see the spreadsheet for paired or nonindependent data.</p>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.1002128.s003" xlink:href="info:doi/10.1371/journal.pbio.1002128.s003" mimetype="application/vnd.ms-excel" position="float" xlink:type="simple">
+<label>S3 Text</label>
+<caption>
+<title>Excel templates for creating univariate scatterplots for paired or matched data.</title>
+<p>Use this template to create scatterplots for paired or matched data. Paired data are when you measure the variable of interest more than one time in each participant. Matched data are when participants in groups one and two are matched for important characteristics. If your data are independent, please see the template for independent data. The template will allow you to create scatterplots for one group with two conditions, or two groups with two conditions.</p>
+<p>(XLS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.1002128.s004" xlink:href="info:doi/10.1371/journal.pbio.1002128.s004" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S4 Text</label>
+<caption>
+<title>Instructions for creating univariate scatterplots for independent data in GraphPad PRISM.</title>
+<p>Use these instructions to create univariate scatterplots for independent data in one or more groups of subject using GraphPad PRISM 6.0. Independent data means that the variable of interest is measured one time in each participant or specimen and participants or specimens are not related to each other. If your data are paired or matched, please see the instructions for paired or matched data.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.1002128.s005" xlink:href="info:doi/10.1371/journal.pbio.1002128.s005" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S5 Text</label>
+<caption>
+<title>Instructions for creating univariate scatterplots for paired or matched data in GraphPad PRISM (one group, two conditions).</title>
+<p>Use these instructions to create univariate scatterplots for paired or matched data (two or more conditions) in one group of participants or specimens using GraphPad PRISM 6.0. Paired data are when you measure the variable of interest more than one time in each participant. Matched data are when participants in group one and group two are matched for important characteristics. If your data are independent, please see the instructions for independent data.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.1002128.s006" xlink:href="info:doi/10.1371/journal.pbio.1002128.s006" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S6 Text</label>
+<caption>
+<title>Instructions for creating univariate scatterplots for paired or matched data in GraphPad PRISM (two groups, two conditions).</title>
+<p>Use these instructions to create scatterplots for paired data (two conditions) in two groups of participants or specimens using GraphPad PRISM 6.0. Paired data are when you measure the variable of interest more than one time in each participant. If your data are independent, please see the instructions for Independent data.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.1002128.s007" xlink:href="info:doi/10.1371/journal.pbio.1002128.s007" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Study flow chart.</title>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.1002128.s008" xlink:href="info:doi/10.1371/journal.pbio.1002128.s008" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>Figure types, sample sizes, and statistical analysis.</title>
+<p>Panel a: Bar graphs and other figures that typically show mean and SE or mean and SD were strongly preferred to figures that provide detailed information about the distribution of the data (scatterplots, box plots, and histograms). Panel b: Most bar graphs show mean ± SE. Panel c: Box plots show the minimum and maximum sample sizes for any group presented in a figure. The box shows the median and interquartile range. Whiskers show the furthest point that is within 1.5 times the interquartile range. Note that a few very high outliers are not shown (<italic>n</italic> = 8 for minimum sample size; <italic>n</italic> = 7 for maximum sample size). The maximum values for minimum and maximum sample size per group were 593 and 2,192, respectively. Showing these outliers would make the box plots impossible to see. Seventeen studies were excluded from this analysis as sample size was not reported (<italic>n</italic> = 614). Panel d: The types of figures that are selected depend on the type of statistical analysis that is performed. We performed ordinal logistic regression, with analysis type and figure type both classified as ordinal variables. The distribution of figure types differed significantly between studies that performed only parametric analyses and studies that performed both parametric and nonparametric analyses (<italic>p</italic> &lt; 0.001), and between studies that performed both types of analyses and studies that performed only nonparametric analyses (<italic>p</italic> &lt; 0.001).</p>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<glossary>
+<title>Abbreviations</title>
+<def-list>
+<def-item><term>ANOVA</term>
+<def><p>analysis of variance</p></def>
+</def-item>
+<def-item><term>ARRIVE</term>
+<def><p>Animal Research: Reporting of In Vivo Experiments</p></def>
+</def-item>
+<def-item><term>SD</term>
+<def><p>standard deviation</p></def>
+</def-item>
+<def-item><term>SE</term>
+<def><p>standard error</p></def>
+</def-item>
+</def-list>
+</glossary>
+<ref-list>
+<title>References</title>
+<ref id="pbio.1002128.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cooper</surname> <given-names>RJ</given-names></name>, <name name-style="western"><surname>Schriger</surname> <given-names>DL</given-names></name>, <name name-style="western"><surname>Close</surname> <given-names>RJ</given-names></name> <article-title>Graphical literacy: the quality of graphs in a large-circulation journal</article-title>. <source>Annals of emergency medicine</source>. <year>2002</year>;<volume>40</volume>: <fpage>317</fpage>–<lpage>322</lpage>. <object-id pub-id-type="pmid">12192357</object-id></mixed-citation></ref>
+<ref id="pbio.1002128.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schriger</surname> <given-names>DL</given-names></name>, <name name-style="western"><surname>Sinha</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Schroter</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>PY</given-names></name>, <name name-style="western"><surname>Altman</surname> <given-names>DG</given-names></name> <article-title>From submission to publication: a retrospective review of the tables and figures in a cohort of randomized controlled trials submitted to the British Medical Journal</article-title>. <source>Annals of emergency medicine</source>. <year>2006</year>;<volume>48</volume>: <fpage>750</fpage>–<lpage>756</lpage>, 756 e751-721. <object-id pub-id-type="pmid">16978740</object-id></mixed-citation></ref>
+<ref id="pbio.1002128.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lane</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Sandor</surname> <given-names>A</given-names></name> <article-title>Designing better graphs by including distributional information and integrating words, numbers, and images</article-title>. <source>Psychological methods</source>. <year>2009</year>;<volume>14</volume>: <fpage>239</fpage>–<lpage>257</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1037/a0016620" xlink:type="simple">10.1037/a0016620</ext-link></comment> <object-id pub-id-type="pmid">19719360</object-id></mixed-citation></ref>
+<ref id="pbio.1002128.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schriger</surname> <given-names>DL</given-names></name>, <name name-style="western"><surname>Arora</surname> <given-names>S</given-names></name>, <article-title>Altman DG The content of medical journal Instructions for authors</article-title>. <source>Annals of emergency medicine</source>. <year>2006</year>;<volume>48</volume>: <fpage>743</fpage>–<lpage>749</lpage>, 749 e741-744. <object-id pub-id-type="pmid">17112938</object-id></mixed-citation></ref>
+<ref id="pbio.1002128.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Davies</surname> <given-names>HT</given-names></name> <article-title>Describing and estimating: use and abuse of standard deviations and standard errors</article-title>. <source>Hospital medicine</source>. <year>1998</year>;<volume>59</volume>: <fpage>327</fpage>–<lpage>328</lpage>. <object-id pub-id-type="pmid">9722376</object-id></mixed-citation></ref>
+<ref id="pbio.1002128.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Curran-Everett</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Benos</surname> <given-names>DJ</given-names></name> <article-title>Guidelines for reporting statistics in journals published by the American Physiological Society</article-title>. <source>Physiological genomics</source>. <year>2004</year>;<volume>18</volume>: <fpage>249</fpage>–<lpage>251</lpage>. <object-id pub-id-type="pmid">15306690</object-id></mixed-citation></ref>
+<ref id="pbio.1002128.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rochon</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Gondan</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Kieser</surname> <given-names>M</given-names></name> <article-title>To test or not to test: Preliminary assessment of normality when comparing two independent samples</article-title>. <source>BMC Med Res Methodol</source>. <year>2012</year>;<volume>12</volume>: <fpage>81</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2288-12-81" xlink:type="simple">10.1186/1471-2288-12-81</ext-link></comment> <object-id pub-id-type="pmid">22712852</object-id></mixed-citation></ref>
+<ref id="pbio.1002128.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kuzon</surname> <given-names>WM</given-names> <suffix>Jr.</suffix></name>, <name name-style="western"><surname>Urbanchek</surname> <given-names>MG</given-names></name>, <name name-style="western"><surname>McCabe</surname> <given-names>S</given-names></name> <article-title>The seven deadly sins of statistical analysis</article-title>. <source>Annals of plastic surgery</source>. <year>1996</year>;<volume>37</volume>: <fpage>265</fpage>–<lpage>272</lpage>. <object-id pub-id-type="pmid">8883724</object-id></mixed-citation></ref>
+<ref id="pbio.1002128.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bridge</surname> <given-names>PD</given-names></name>, <name name-style="western"><surname>Sawilowsky</surname> <given-names>SS</given-names></name> <article-title>Increasing physicians' awareness of the impact of statistics on research outcomes: comparative power of the t-test and and Wilcoxon Rank-Sum test in small samples applied research</article-title>. <source>Journal of clinical epidemiology</source>. <year>1999</year>;<volume>52</volume>: <fpage>229</fpage>–<lpage>235</lpage>. <object-id pub-id-type="pmid">10210240</object-id></mixed-citation></ref>
+<ref id="pbio.1002128.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Micceri</surname> <given-names>T</given-names></name> <article-title>The unicorn, the normal curve, and other improbable creatures</article-title>. <source>Psychological Bulletin</source>. <year>1989</year>;<volume>105</volume>: <fpage>156</fpage>–<lpage>166</lpage>.</mixed-citation></ref>
+<ref id="pbio.1002128.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nuzzo</surname> <given-names>R</given-names></name> <article-title>Scientific method: statistical errors</article-title>. <source>Nature</source>. <year>2014</year>;<volume>506</volume>: <fpage>150</fpage>–<lpage>152</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/506150a" xlink:type="simple">10.1038/506150a</ext-link></comment> <object-id pub-id-type="pmid">24522584</object-id></mixed-citation></ref>
+<ref id="pbio.1002128.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Erb</surname> <given-names>HN</given-names></name> <article-title>Changing expectations: Do journals drive methodological changes? Should they?</article-title> <source>Preventive veterinary medicine</source>. <year>2010</year>;<volume>97</volume>: <fpage>165</fpage>–<lpage>174</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.prevetmed.2010.09.011" xlink:type="simple">10.1016/j.prevetmed.2010.09.011</ext-link></comment> <object-id pub-id-type="pmid">20951447</object-id></mixed-citation></ref>
+<ref id="pbio.1002128.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Baker</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Lidster</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Sottomayor</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Amor</surname> <given-names>S</given-names></name> <article-title>Two years later: journals are not yet enforcing the ARRIVE guidelines on reporting standards for pre-clinical animal studies</article-title>. <source>PLoS Biol</source>. <year>2014</year>;<volume>12</volume>: <fpage>e1001756</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pbio.1001756" xlink:type="simple">10.1371/journal.pbio.1001756</ext-link></comment> <object-id pub-id-type="pmid">24409096</object-id></mixed-citation></ref>
+<ref id="pbio.1002128.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Eisen</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Ganley</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>MacCallum</surname> <given-names>CJ</given-names></name> <article-title>Open science and reporting animal studies: who's accountable?</article-title> <source>PLoS Biol</source>. <year>2014</year>;<volume>12</volume>: <fpage>e1001757</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pbio.1001757" xlink:type="simple">10.1371/journal.pbio.1001757</ext-link></comment> <object-id pub-id-type="pmid">24409097</object-id></mixed-citation></ref>
+<ref id="pbio.1002128.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Oster</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Lindsell</surname> <given-names>CJ</given-names></name>, <name name-style="western"><surname>Welty</surname> <given-names>LJ</given-names></name>, <name name-style="western"><surname>Mazumdar</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Thurston</surname> <given-names>SW</given-names></name>, <name name-style="western"><surname>Rahbar</surname> <given-names>MH</given-names></name>, <etal>et al</etal>. <article-title>Assessing Statistical Competencies in Clinical and Translational Science Education: One Size Does Not Fit All</article-title>. <source>Clinical and translational science</source>. <year>2014</year>;<volume>8</volume>: <fpage>32</fpage>–<lpage>42</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1111/cts.12204" xlink:type="simple">10.1111/cts.12204</ext-link></comment> <object-id pub-id-type="pmid">25212569</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

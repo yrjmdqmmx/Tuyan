@@ -1,0 +1,22 @@
+{
+  "figureTypeId": "bar",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic QA only; not a research result",
+    "units": {
+      "value": "质量（毫克）"
+    },
+    "rows": [
+      {
+        "label": "实验组",
+        "value": 2
+      },
+      {
+        "label": "对照组",
+        "value": 7
+      }
+    ]
+  },
+  "imageSize": "4K",
+  "aspectRatio": "16:9"
+}

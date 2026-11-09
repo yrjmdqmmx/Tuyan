@@ -69,9 +69,9 @@ test('vision restrictions and whole encoded request size reject before a provide
  assert.throws(()=>buildAuditedTextBody({...input('LongCat-2.5-Preview'),user:'中'.repeat(6666667)}),(e:any)=>e.requestState==='not_sent')
 })
 test('thinking uses model-specific fields and only documented values',()=>{
- for(const [provider,modelId,options,wire] of [['antling','Ling-3.0-flash',{mode:'disabled'},{thinking:{type:'disabled'}}],['antling','Ring-2.6-1T',{effort:'xhigh'},{reasoning:{effort:'xhigh'}}],['longcat','LongCat-2.5-Preview',{mode:'enabled'},{thinking:{type:'enabled'}}]] as any[]){
+ for(const [provider,modelId,options,wire] of [['antling','Ling-3.0-flash',{mode:'disabled'},{thinking:{type:'disabled'}}],['antling','Ling-3.0-flash-VL',{mode:'disabled'},{thinking:{type:'disabled'}}],['antling','Ring-2.6-1T',{effort:'xhigh'},{reasoning_effort:'xhigh'}],['longcat','LongCat-2.5-Preview',{mode:'enabled'},{thinking:{type:'enabled'}}]] as any[]){
   assert.deepEqual(compileThinkingSelection({provider,modelId,protocol:'openai-chat-completions',options},'main').wire,wire)
   assert.deepEqual(compileThinkingSelection({provider,modelId,protocol:'openai-chat-completions',options:{}},'main').wire,{})
  }
- for(const [modelId,options] of [['Ring-2.6-1T',{effort:'low'}],['Ling-3.0-flash-VL',{mode:'disabled'}]])assert.throws(()=>compileThinkingSelection({provider:'antling',modelId,protocol:'openai-chat-completions',options} as any,'main'))
+ for(const [modelId,options] of [['Ring-2.6-1T',{effort:'low'}],['Ling-3.0-flash-VL',{mode:false}]])assert.throws(()=>compileThinkingSelection({provider:'antling',modelId,protocol:'openai-chat-completions',options} as any,'main'))
 })

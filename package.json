@@ -12,6 +12,7 @@
     "clean": "pnpm -r exec rm -rf node_modules dist build"
   },
   "devDependencies": {
-    "ajv": "8.17.1"
+    "ajv": "8.17.1",
+    "esbuild": "0.25.12"
   }
 }

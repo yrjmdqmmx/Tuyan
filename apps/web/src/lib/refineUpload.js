@@ -12,7 +12,7 @@ export function refineUploadLimits(limits, route, workflow = 'refine') {
 export function validateRefineFile(file, limits) {
   if (!limits?.mimeTypes?.length) throw new Error('后端尚未提供精修上传能力，请稍后重试。');
   if (!file || !limits.mimeTypes.includes(file.type)) throw new Error('请选择 PNG、JPG 或 WebP 图片。');
-  if (!file.size || file.size > limits.maxBytes) throw new Error(`图片不能为空，且不能超过 ${(limits.maxBytes / 1024 / 1024).toFixed(1)} MiB。`);
+  if (!file.size || file.size > limits.maxBytes) throw new Error(`图片不能为空，且不能超过 ${(limits.maxBytes / 1000000).toFixed(0)} MB。`);
 }
 
 export function validateRefineDimensions({ width, height }, limits) {

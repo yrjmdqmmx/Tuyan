@@ -1,0 +1,14 @@
+{
+  "id": "storage-cutover-20261018",
+  "status": "healthy",
+  "time": "2026-10-18T05:40:29.405847+00:00",
+  "services": [
+    "benchmark",
+    "cn-gateway",
+    "core",
+    "gateway"
+  ],
+  "backup": "/var/backups/hangzhou-storage-cutover-20261018",
+  "model_calls": 0,
+  "maintenance_held": true
+}

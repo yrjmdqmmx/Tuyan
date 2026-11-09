@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333333"/>
+    </marker>
+  </defs>
+
+  
+  <rect width="1600" height="900" fill="#FFFFFF"/>
+
+  
+  <line x1="50" y1="420" x2="1550" y2="420" stroke="#E0E0E0" stroke-width="2"/>
+
+  
+  <text x="800" y="50" font-family="Noto Sans, sans-serif" font-size="28" fill="#333333" text-anchor="middle" font-weight="bold">Synthetic material reading acceptance</text>
+
+  
+  <g id="panel-top">
+    <text x="800" y="100" font-family="Noto Sans, sans-serif" font-size="20" fill="#555555" text-anchor="middle">Process Workflow (PPTX Style)</text>
+    
+    
+    <rect x="250" y="150" width="180" height="80" rx="15" ry="15" fill="#4472C4" stroke="none"/>
+    <text x="340" y="195" font-family="Noto Sans, sans-serif" font-size="20" fill="#FFFFFF" text-anchor="middle">Input</text>
+
+    
+    <line x1="430" y1="190" x2="535" y2="190" stroke="#333333" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+    
+    <rect x="520" y="150" width="180" height="80" rx="15" ry="15" fill="#4472C4" stroke="none"/>
+    <text x="610" y="195" font-family="Noto Sans, sans-serif" font-size="20" fill="#FFFFFF" text-anchor="middle">Check</text>
+
+    
+    <line x1="700" y1="190" x2="805" y2="190" stroke="#333333" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+    
+    <rect x="790" y="150" width="180" height="80" rx="15" ry="15" fill="#4472C4" stroke="none"/>
+    <text x="880" y="195" font-family="Noto Sans, sans-serif" font-size="20" fill="#FFFFFF" text-anchor="middle">Output</text>
+  </g>
+
+  
+  <g id="panel-bottom">
+    <text x="800" y="470" font-family="Noto Sans, sans-serif" font-size="20" fill="#555555" text-anchor="middle">Observed Samples (Alpha vs Beta)</text>
+
+    
+    
+    
+    
+    <line x1="300" y1="550" x2="300" y2="800" stroke="#333333" stroke-width="2"/>
+    <line x1="300" y1="800" x2="1300" y2="800" stroke="#333333" stroke-width="2"/>
+
+    
+    
+    <line x1="290" y1="800" x2="300" y2="800" stroke="#333333" stroke-width="2"/>
+    <text x="280" y="805" font-family="Noto Sans, sans-serif" font-size="16" fill="#333333" text-anchor="end">0</text>
+    
+    
+    <line x1="290" y1="737.5" x2="300" y2="737.5" stroke="#333333" stroke-width="2"/>
+    <text x="280" y="742.5" font-family="Noto Sans, sans-serif" font-size="16" fill="#333333" text-anchor="end">10</text>
+
+    
+    <line x1="290" y1="675" x2="300" y2="675" stroke="#333333" stroke-width="2"/>
+    <text x="280" y="680" font-family="Noto Sans, sans-serif" font-size="16" fill="#333333" text-anchor="end">20</text>
+
+    
+    <line x1="290" y1="612.5" x2="300" y2="612.5" stroke="#333333" stroke-width="2"/>
+    <text x="280" y="617.5" font-family="Noto Sans, sans-serif" font-size="16" fill="#333333" text-anchor="end">30</text>
+
+    
+    <line x1="290" y1="550" x2="300" y2="550" stroke="#333333" stroke-width="2"/>
+    <text x="280" y="555" font-family="Noto Sans, sans-serif" font-size="16" fill="#333333" text-anchor="end">40</text>
+
+    
+    <text x="240" y="675" font-family="Noto Sans, sans-serif" font-size="18" fill="#333333" text-anchor="middle" transform="rotate(-90, 240, 675)">Observed samples</text>
+
+    
+    <line x1="300" y1="737.5" x2="1300" y2="737.5" stroke="#F0F0F0" stroke-width="1"/>
+    <line x1="300" y1="675" x2="1300" y2="675" stroke="#F0F0F0" stroke-width="1"/>
+    <line x1="300" y1="612.5" x2="1300" y2="612.5" stroke="#F0F0F0" stroke-width="1"/>
+    <line x1="300" y1="550" x2="1300" y2="550" stroke="#F0F0F0" stroke-width="1"/>
+
+    
+    
+    
+    <rect x="450" y="581.25" width="150" height="218.75" fill="#4472C4" stroke="none"/>
+    <text x="525" y="570" font-family="Noto Sans, sans-serif" font-size="18" fill="#333333" text-anchor="middle">35</text>
+    <text x="525" y="830" font-family="Noto Sans, sans-serif" font-size="18" fill="#333333" text-anchor="middle">Alpha</text>
+
+    
+    
+    
+    <rect x="750" y="725" width="150" height="75" fill="#4472C4" stroke="none"/>
+    <text x="825" y="715" font-family="Noto Sans, sans-serif" font-size="18" fill="#333333" text-anchor="middle">12</text>
+    <text x="825" y="830" font-family="Noto Sans, sans-serif" font-size="18" fill="#333333" text-anchor="middle">Beta</text>
+
+    
+    <text x="1550" y="880" font-family="Noto Sans, sans-serif" font-size="14" fill="#666666" text-anchor="end">Synthetic example</text>
+  </g>
+</svg>

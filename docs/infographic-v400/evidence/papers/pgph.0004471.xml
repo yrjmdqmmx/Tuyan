@@ -1,0 +1,1197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "http://jats.nlm.nih.gov/publishing/1.3/JATS-journalpublishing1-3.dtd">
+<article article-type="research-article" dtd-version="1.3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<processing-meta>
+<custom-meta-group content-type="composition">
+<custom-meta specific-use="newgen" xlink:href="https://www.newgen.co/">
+<meta-name>Composition Vendor</meta-name>
+<meta-value>Newgen KnowledgeWorks (P) Ltd.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</processing-meta>
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLOS Glob Public Health</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosgph</journal-id>
+<journal-title-group>
+<journal-title>PLOS Global Public Health</journal-title>
+</journal-title-group>
+<issn pub-type="epub">2767-3375</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pgph.0004471</article-id>
+<article-id pub-id-type="publisher-id">PGPH-D-24-00966</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Organisms</subject><subj-group><subject>Viruses</subject><subj-group><subject>RNA viruses</subject><subj-group><subject>Coronaviruses</subject><subj-group><subject>SARS coronavirus</subject><subj-group><subject>SARS CoV 2</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Microbiology</subject><subj-group><subject>Medical microbiology</subject><subj-group><subject>Microbial pathogens</subject><subj-group><subject>Viral pathogens</subject><subj-group><subject>Coronaviruses</subject><subj-group><subject>SARS coronavirus</subject><subj-group><subject>SARS CoV 2</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Pathology and laboratory medicine</subject><subj-group><subject>Pathogens</subject><subj-group><subject>Microbial pathogens</subject><subj-group><subject>Viral pathogens</subject><subj-group><subject>Coronaviruses</subject><subj-group><subject>SARS coronavirus</subject><subj-group><subject>SARS CoV 2</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Organisms</subject><subj-group><subject>Viruses</subject><subj-group><subject>Viral pathogens</subject><subj-group><subject>Coronaviruses</subject><subj-group><subject>SARS coronavirus</subject><subj-group><subject>SARS CoV 2</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Infectious diseases</subject><subj-group><subject>Bacterial diseases</subject><subj-group><subject>Tuberculosis</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Tropical diseases</subject><subj-group><subject>Tuberculosis</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Pathology and laboratory medicine</subject><subj-group><subject>Serology</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Infectious diseases</subject><subj-group><subject>Viral diseases</subject><subj-group><subject>COVID 19</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Diagnostic medicine</subject><subj-group><subject>Virus testing</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Clinical medicine</subject><subj-group><subject>Signs and symptoms</subject><subj-group><subject>HIV clinical manifestations</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Infectious diseases</subject><subj-group><subject>Infectious disease control</subject><subj-group><subject>Vaccines</subject><subj-group><subject>Viral vaccines</subject><subj-group><subject>HIV vaccines</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Microbiology</subject><subj-group><subject>Virology</subject><subj-group><subject>Viral vaccines</subject><subj-group><subject>HIV vaccines</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Diagnostic medicine</subject><subj-group><subject>Tuberculosis diagnosis and management</subject></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>COVID-19, tuberculosis, and HIV triad: a prospective observational study in ambulatory patients in Kenya, Uganda, and South Africa</article-title>
+<alt-title alt-title-type="running-head">COVID-19, tuberculosis, and HIV triad</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0003-0302-9063</contrib-id>
+<name name-style="western">
+<surname>Huerga</surname>
+<given-names>Helena</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/funding-acquisition/">Funding acquisition</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/project-administration/">Project administration</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Gouillou</surname>
+<given-names>Maelenn</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Ohler</surname>
+<given-names>Liesbet</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-1048-1405</contrib-id>
+<name name-style="western">
+<surname>Taremwa</surname>
+<given-names>Ivan M.</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-9442-7667</contrib-id>
+<name name-style="western">
+<surname>Akinyi</surname>
+<given-names>Milcah</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Lubega</surname>
+<given-names>Alex</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-6694-2645</contrib-id>
+<name name-style="western">
+<surname>Muyindike</surname>
+<given-names>Winnie R.</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/funding-acquisition/">Funding acquisition</role>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Bastard</surname>
+<given-names>Mathieu</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-4911-7926</contrib-id>
+<name name-style="western">
+<surname>Bossard</surname>
+<given-names>Claire</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Atieno</surname>
+<given-names>May</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Muhindo</surname>
+<given-names>Rose</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff006"><sup>6</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Casas</surname>
+<given-names>Esther C.</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff007"><sup>7</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Nakiyingi</surname>
+<given-names>Lydia</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff008"><sup>8</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Casenghi</surname>
+<given-names>Martina</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff009"><sup>9</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Gupta-Wright</surname>
+<given-names>Ankur</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff010"><sup>10</sup></xref>
+</contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Bonnet</surname>
+<given-names>Maryline</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff011"><sup>11</sup></xref>
+</contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Ndlovu</surname>
+<given-names>Zibusiso</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff012"><sup>12</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Epicentre, Paris, France,</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Médecins Sans Frontières, Eshowe, South Africa,</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Epicentre, Mbarara, Uganda,</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Médecins Sans Frontières, Homa Bay, Kenya,</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>Mbarara Regional Referral Hospital, Mbarara University of Science and Technology, Mbarara, Uganda,</addr-line></aff>
+<aff id="aff006"><label>6</label> <addr-line>Mbarara University of Science and Technology, Mbarara, Uganda,</addr-line></aff>
+<aff id="aff007"><label>7</label> <addr-line>Médecins Sans Frontières, Southern Africa Medical Unit, Cape Town, South Africa,</addr-line></aff>
+<aff id="aff008"><label>8</label> <addr-line>Makerere University College of Health Sciences, Kampala, Uganda,</addr-line></aff>
+<aff id="aff009"><label>9</label> <addr-line>Elizabeth Glaser Pediatric AIDS Foundation, Geneva, Switzerland,</addr-line></aff>
+<aff id="aff010"><label>10</label> <addr-line>Imperial College, North Bristol NHS Trust, London, UK,</addr-line></aff>
+<aff id="aff011"><label>11</label> <addr-line>Institut de Recherche pour le Développement, University of Montpellier, Montpellier, France,</addr-line></aff>
+<aff id="aff012"><label>12</label> <addr-line>Médecins Sans Frontières, Southern Africa Medical Unit, Cape Town, South Africa; Division of Epidemiology and Biostatistics, Department of Global Health, Faculty of Medicine and Health Sciences, Stellenbosch University, Cape Town, South Africa</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Coffee</surname>
+<given-names>Megan</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>New York University Grossman School of Medicine, UNITED STATES OF AMERICA</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">helena.huerga@epicentre.msf.org</email></corresp>
+</author-notes>
+<pub-date pub-type="epub"><day>23</day><month>4</month><year>2025</year></pub-date>
+<pub-date pub-type="collection"><year>2025</year></pub-date>
+<volume>5</volume>
+<issue>4</issue>
+<elocation-id>e0004471</elocation-id>
+<history>
+<date date-type="received"><day>17</day><month>5</month><year>2024</year></date>
+<date date-type="accepted"><day>13</day><month>3</month><year>2025</year></date>
+</history>
+<permissions>
+<copyright-year>2025</copyright-year>
+<copyright-holder>Huerga et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pgph.0004471">
+</self-uri>
+<abstract>
+<p>People living with HIV (PLHIV) have an increased risk of tuberculosis (TB) and severe COVID-19. TB and COVID-19 present with overlapping symptoms and co-infection can lead to poor outcomes. We assessed the frequency of SARS-CoV-2 positive serology and SARS-CoV-2 infection and the risk of mortality at 6 months in PLHIV with TB disease and SARS-CoV-2 infection. This multi-country, prospective, observational study, conducted between 7<sup>th</sup> September 2020 and 7<sup>th</sup> April 2022, included ambulatory adult PLHIV investigated for TB (with symptoms of TB or advanced HIV disease) in Kenya, Uganda, and South Africa. Testing included CD4 cell count, Xpert MTB/RIF Ultra assay (sputum), Determine TB LAM Ag assay (urine), chest X-ray, blood SARS-CoV-2 serology test and SARS-CoV-2 PCR (only if TB or COVID-19 symptoms). Individuals were followed for 6 months. Among 1254 participants, 1204 participants had SARS-CoV-2 serology (54% women, median CD4 344 cells/µL [IQR 132–673]), and 487 had SARS-CoV-2 PCR. SARS-CoV-2 serology positivity was 27.0% (325/1204), lower in PLHIV with CD4 counts &lt;200 cells/µL (19.9%, 99/497) than in those with CD4 counts ≥200 cells/µL (31.6%, 222/703), p&lt;0.001. SARS-CoV-2 PCR positivity was 8.6% (42/487) and 27.7% (135/487) had probable or confirmed SARS-CoV-2 infection. Among PLHIV with symptoms of TB or of COVID-19, 6.6% (32/487) had SARS-CoV-2 infection and TB disease. In multivariable analyses, the risk of death was higher in PLHIV with both SARS-CoV-2 infection and TB compared to those with only SARS-CoV-2 infection (adjusted hazard ratio [aHR] 8.90, 95%CI 1.47-53.96, p=0.017), with only TB (aHR 3.70, 95%CI 1.00-13.72, p=0.050) or with none of them (aHR 6.83, 95%CI 1.75-26.72, p=0.006). These findings support SARS-CoV-2 testing in PLHIV with symptoms of TB, and SARS-CoV-2 vaccination, especially for those with severe immunosuppression. PLHIV with COVID-19 and TB have an increased risk of mortality and would benefit from comprehensive management and close monitoring.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100008196</institution-id>
+<institution>Médecins Sans Frontières</institution>
+</institution-wrap>
+</funding-source></award-group>
+<award-group id="award002">
+<funding-source><institution>ANRS</institution>
+</funding-source><award-id>ECTZ144526</award-id>
+<principal-award-recipient><contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0003-0302-9063</contrib-id><name name-style="western">
+<surname>Huerga</surname><given-names>Helena</given-names></name></principal-award-recipient></award-group>
+<funding-statement>This study was supported by Médecins Sans Frontières and the ANRS (ECTZ144526 to HH and WRM). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="4"/>
+<table-count count="4"/>
+<page-count count="16"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>Individual pseudonymised participant data that underlie the results reported in this article (text, tables, figures, and appendices, with data dictionary) will be made available to others upon submission of a proposal. Requests will be reviewed and sharing of the data will follow the conditions required by all applicable laws and the possible prior signature of any necessary agreement, in accordance with the legal framework set forth by Médecins Sans Frontières (MSF) data sharing policy, which ensures that all security, legal, and ethical concerns are addressed. (<ext-link ext-link-type="uri" xlink:href="https://www.msf.org/sites/msf.org/files/msf_data_sharing_policycontact_infoannexes_final.pdf" xlink:type="simple">https://www.msf.org/sites/msf.org/files/msf_data_sharing_policycontact_infoannexes_final.pdf</ext-link>). For data access and additional related documents such as the study protocol readers may contact Robert Nsaibirni, Data Protection and Compliance Officer (<email>robert.nsaibirni@epicentre.msf.org</email>).</meta-value>
+</custom-meta>
+<custom-meta id="outbreaks">
+<meta-name>Outbreaks</meta-name>
+<meta-value>COVID-19</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Background</title>
+<p>More than half of the 39.9 million people living with HIV (PLHIV) and 25% of new global TB cases are in Africa [<xref ref-type="bibr" rid="pgph.0004471.ref001">1</xref>]. Collectively, HIV/AIDS and TB are the deadliest infectious diseases. Since its emergence in 2019 until 2023, SARS-CoV-2 has infected over 12 million people in Africa with over 250,000 deaths [<xref ref-type="bibr" rid="pgph.0004471.ref002">2</xref>]. The COVID-19 pandemic devastated health systems and had a huge knock-on effect on HIV, TB, malaria and other communicable and non-communicable diseases [<xref ref-type="bibr" rid="pgph.0004471.ref003">3</xref>]. The combined challenges posed by COVID-19, TB, and HIV represent a significant and ongoing global health crisis.</p>
+<p>COVID-19 can have unique implications for certain populations and PLHIV have an increased risk of severe or critical COVID-19 disease and mortality compared with HIV-negative individuals [<xref ref-type="bibr" rid="pgph.0004471.ref004">4</xref>,<xref ref-type="bibr" rid="pgph.0004471.ref005">5</xref>]. Vulnerability to COVID-19 and immune-response to the disease can differ according to the level of immunosuppression in PLHIV [<xref ref-type="bibr" rid="pgph.0004471.ref006">6</xref>]. In addition, TB and COVID-19 can both present with lung involvement and overlapping symptoms which may make differential diagnosis difficult [<xref ref-type="bibr" rid="pgph.0004471.ref007">7</xref>]. Several studies have shown that co-infection with TB and COVID-19 lead to poorer outcomes than each of them alone [<xref ref-type="bibr" rid="pgph.0004471.ref005">5</xref>,<xref ref-type="bibr" rid="pgph.0004471.ref008">8</xref>–<xref ref-type="bibr" rid="pgph.0004471.ref013">13</xref>]. In 2024, SARS-CoV-2 vaccine coverage rates in Africa were around 50% [<xref ref-type="bibr" rid="pgph.0004471.ref014">14</xref>]. Some SARS-CoV-2 strains are associated with substantial ability to evade immunity from prior infection and vaccines [<xref ref-type="bibr" rid="pgph.0004471.ref015">15</xref>]. These findings underscore that SARS-CoV-2 has propensity to resurge in the future. Also, up to 30% of the people infected by SARS-CoV-2 may go on to develop symptoms that can be diagnosed as long COVID-19 [<xref ref-type="bibr" rid="pgph.0004471.ref016">16</xref>,<xref ref-type="bibr" rid="pgph.0004471.ref017">17</xref>] Consequently, there is a need for further research to enhance understanding about COVID-19, especially in the context of individuals living with HIV and or TB to support future public health planning. This study assessed the frequencies of SARS-CoV-2 positive serology and SARS-CoV-2 infection, and the variation by CD4 cell count, in PLHIV investigated for TB in Kenya, Uganda, and South Africa. In addition, mortality at 6 months in PLHIV with/without TB or COVID-19 was investigated.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Methods</title>
+<sec id="sec003">
+<title>Study design and population</title>
+<p>This multi-country, prospective, observational study was conducted between 7<sup>th</sup> September 2020 and 7<sup>th</sup> April 2022. The study consecutively included ambulatory adult PLHIV (aged ≥15 years) investigated for TB, with either signs or symptoms of TB or no symptoms of TB but advanced HIV disease (CD4 count &lt;200 cells/μL, or WHO HIV clinical stage 3 or 4), who provided written informed consent (or assent for minors aged 15–17 years), and had SARS-CoV-2 testing with either serology, PCR, or both. Signs and symptoms of TB were cough, fever, weight loss, night sweats, or symptoms of extrapulmonary TB of any duration. Patients previously diagnosed with TB and receiving TB treatment were excluded. The study was nested into a multi-country study of TB diagnostics among PLHIV [<xref ref-type="bibr" rid="pgph.0004471.ref018">18</xref>].</p>
+</sec>
+<sec id="sec004">
+<title>Study sites</title>
+<p>Participants were recruited in four sites in Kenya, Uganda, and South Africa. In Kenya, participants were recruited at the HIV and TB clinics attached to Homa Bay County Hospital in Western Kenya, a referral facility managed by the Kenyan Ministry of Health. Homa Bay subcounty has an estimated population of 117,000 people [<xref ref-type="bibr" rid="pgph.0004471.ref019">19</xref>]. In Uganda, participants were recruited at the HIV clinic attached to Mbarara Regional Referral Hospital in Western Uganda, a public and teaching hospital managed by the Ugandan Ministry of Health. Mbarara District has an estimated population of 472,000 people [<xref ref-type="bibr" rid="pgph.0004471.ref020">20</xref>]. In South Africa, participants were recruited at the HIV and TB clinic attached to Eshowe District Referral Hospital and at the Eshowe Gateway Clinic, a Primary Health Care Clinic in Eshowe, uMlalazi, KwaZulu-Natal. Both are managed by the South African Department of Health. uMlalazi municipality has around 215,000 people [<xref ref-type="bibr" rid="pgph.0004471.ref021">21</xref>]. The first SARS-CoV-2 vaccines were available in South Africa, Kenya and Uganda between February and March 2021 [<xref ref-type="bibr" rid="pgph.0004471.ref022">22</xref>]. Vaccination was offered to the general population though in some countries health workers and vulnerable populations were initially targeted or prioritized [<xref ref-type="bibr" rid="pgph.0004471.ref023">23</xref>].</p>
+</sec>
+<sec id="sec005">
+<title>Study procedures</title>
+<p>Eligible individuals were asked for written informed consent prior to inclusion in the study. At the initial visit, all patients received a clinical examination with particular focus on SARS-CoV-2, TB-related signs and symptoms, and signs of severity. SARS-CoV-2 vaccine information (type of vaccine and vaccination date) was self-reported or collected using vaccine cards. Participants had a CD4 count performed using Pima Analyser (Abbott, USA) or FacsCalibur (Becton Dickinson, USA). All participants were offered SARS-CoV-2 serological testing of venous blood samples using SARS-CoV-2 Abbot IgG ELISA assay (the test used did not differentiate between vaccination and past infection). SARS-CoV-2 PCR testing in a nasopharyngeal sample using conventional (ABI Quant Studio 5 PCR and ABI 7500 Fast Real-Time PCR) or point-of-care (GeneXpert SARS-CoV-2) PCR was offered to all participants with symptoms of TB and to patients without symptoms of TB but with COVID-19 related symptoms (runny nose, sore throat, loss of smell, loss of taste, headache, fatigue, difficulty to breath). All individuals (whether with symptoms of TB or asymptomatic) were investigated for TB through systematic Xpert MTB/RIF Ultra assay (Xpert Ultra; Cepheid, Sunnyvale, USA) on sputum, Determine TB LAM Ag assay (AlereTB-LAM; Abbott, USA) on urine, and chest X-ray. Xpert Ultra (or culture in South Africa) was performed on urine for those unable to produce sputum, and on other non-respiratory samples for patients with signs of extrapulmonary TB. Additionally, in Uganda, sputum was systematically cultured using the Mycobacterial Growth Indicator Tube (MGIT) liquid culture (Becton Dickinson, USA) and Lowenstein-Jensen medium solid culture. In South Africa, MGIT liquid culture was used.</p>
+<p>All participants were followed up for 6 months. Individuals who had not started TB treatment at the initial visit had a follow-up consultation at 1 week. At this visit, they had a clinical exam and repeated TB investigations if needed. All participants had follow-up visits at 3 and 6 months, which included a clinical examination. At the 6-months visit, all participants were systematically offered SARS-CoV-2 serological testing.</p>
+<p>Individuals diagnosed with SARS-CoV-2 infection were referred to the local Ministry of Health COVID-19 facilities for management. The Ministry of Health COVID-19 treatment units in the study sites were responsible for patient care and provided COVID-19 care following the national guidelines in each country.</p>
+</sec>
+<sec id="sec006">
+<title>Definitions</title>
+<p>Patients diagnosed with TB included those with probable or confirmed TB. Confirmed TB was defined as having a positive Xpert MTB/RIF or MTB culture result in any body sample either at the initial consultation or during follow-up. Probable TB encompassed patients who did not meet the criteria for confirmed TB but were initiated on TB treatment either at the initial consultation or during follow-up based on clinical or radiological findings.</p>
+<p>Patients diagnosed with SARS-CoV-2 infection included those with probable or confirmed SARS-CoV-2 infection. Confirmed SARS-CoV-2 infection was defined as having a positive Nucleic Acid Amplification Test (positive SARS-CoV-2 PCR). As per WHO definition [<xref ref-type="bibr" rid="pgph.0004471.ref024">24</xref>], probable SARS-CoV-2 infection included individuals with acute onset of fever and cough or acute onset of any three or more of the following signs or symptoms: fever, cough, general weakness/fatigue, headache, myalgia, sore throat, coryza, dyspnoea, nausea/diarrhoea/anorexia (signs separated with slash were counted as one sign) or patients with severe acute respiratory illness. Acute onset was defined as onset within the last 10 days.</p>
+<p>Positive SARS-CoV-2 IgG serology test was defined as a positive SARS-CoV-2 Abbott serological test at the initial consultation or during follow-up.</p>
+<p>Patients seriously ill were those with temperature of &gt;39°C, a respiratory rate of &gt;30 respirations per min, a cardiac rate of &gt;120 beats per minute, or inability to walk without help.</p>
+</sec>
+<sec id="sec007">
+<title>Outcomes</title>
+<p>The primary outcomes of the study were the frequencies of positive SARS-CoV-2 serological testing and of SARS-CoV-2 infection (confirmed and probable) throughout the study period (outcome 1). Secondary outcomes were the frequency of positive SARS-CoV-2 serological testing over time (during the study period), and the frequency of positive SARS-CoV-2 serological testing and of SARS-CoV-2 infection by CD4 count level (&lt;200 and ≥200 cells/mm<sup>3</sup>) and by TB diagnosis (confirmed and probable) (outcome 2). Lastly, the study sought to determine the risk of all-cause mortality over 6 months among PLHIV diagnosed with either TB, SARS-CoV-2 infection, or both, compared to PLHIV with neither co-infection in a subset of individuals with symptoms of TB or of COVID-19 (outcome 3).</p>
+</sec>
+<sec id="sec008">
+<title>Sample size</title>
+<p>To estimate a frequency of positive SARS-CoV-2 serology among PLHIV of 3% with a precision of 1%, an alpha error of 0.05 and a power of 80%, at least 1120 individuals were needed. To estimate a frequency of SARS-CoV-2 infection among PLHIV with symptoms of TB or of COVID-19, of 10% with a precision of 3%, an alpha error of 0.05 and a power of 80% using a Wilson score formula with continuity correction, at least 420 individuals were needed.</p>
+</sec>
+<sec id="sec009">
+<title>Statistical analyses</title>
+<p>Study participants with at least one test result for SARS-CoV-2 serology or PCR were included in the analyses. Individuals’ characteristics for participants with SARS-CoV-2 serology results and for those with SARS-CoV-2 PCR results were described as presented at the initial consultation. Continuous variables were summarized as median and interquartile range (IQR) and categorical variables as absolute numbers and percentages. Positivity of SARS-CoV-2 serological testing, positivity of SARS-CoV-2 PCR and SARS-CoV-2 infection were calculated overall, and according to CD4 count level and to TB diagnosis. As positivity of SARS-CoV-2 serological testing varied over time, this indicator was also calculated per month and per periods of 4 months: September to December 2020, January to April 2021, May to August 2021, September to December 2021, and January to April 2022. Chi-Square or Fisher’s exact tests, as appropriate, were used to compare independent proportions.</p>
+<p>Participants with signs and symptoms of TB or of COVID-19 were included in the mortality analyses. PLHIV were classified as having only SARS-CoV-2 infection, only TB disease, or both SARS-CoV-2 infection and TB. Crude mortality rates were calculated in each group. Mortality over the 6-month follow-up was described using Kaplan-Meier curves and log-rank tests. For all patients, person time was accrued from date of enrollment into the study until the earliest of mortality, loss to follow-up (LTFU), or end of follow-up study period. Patients LTFU were censored at their last health facility visit date. In addition, a Cox proportional hazards model was used to explore the risk of 6-month mortality for PLHIV with SARS-CoV-2 infection, TB and both SARS-CoV-2 and TB, using ‘only HIV infected’ as reference. Causal diagrams were used to identify potential confounders. Age, sex, BMI, HIV viral load, CD4 cell count, diabetes, and country, were identified as potential confounders (<xref ref-type="supplementary-material" rid="pgph.0004471.s002">S1 Fig</xref>). When two variables showed collinearity, only the most appropriate in relation with mortality and considering also completeness and reliability was selected. The model included age, sex, BMI, CD4 cell count, and country. Missing data were included in the model using specific categories. Adjusted hazard ratios and 95% confidence intervals of mortality were estimated. Proportional hazards (PH) assumption was checked by testing the Schoenfeld residuals, and model goodness of fit was tested using Cox-Snell residual. P-values &lt;0.05 were considered statistically significant.</p>
+<p>Analyses were performed using Stata 18 software (Stata Corporation, College Station, Texas, USA).</p>
+</sec>
+<sec id="sec010">
+<title>Ethical considerations</title>
+<p>The study protocol was approved by the local Ethics Committees in Kenya, Uganda and South Africa as well as by Médecins Sans Frontières Ethics Review Board. Written informed consent (or assent for minors aged 15–17 years) was obtained from all study adult participants and from parents or guardians for minors.</p>
+</sec>
+<sec id="sec011">
+<title>Inclusivity in global research</title>
+<p>Additional information regarding the ethical, cultural, and scientific considerations specific to inclusivity in global research is included in the Supporting Information (<xref ref-type="supplementary-material" rid="pgph.0004471.s001">S1 Text</xref>).</p>
+</sec>
+</sec>
+<sec id="sec012" sec-type="results">
+<title>Results</title>
+<sec id="sec013">
+<title>Participants’ characteristics</title>
+<p>In total, 1254 (85.5%) of 1466 PLHIV investigated for TB provided consent and were included in the study (<xref ref-type="fig" rid="pgph.0004471.g001">Fig 1</xref>). All participants were eligible for SARS-CoV-2 serology and were tested. Of them, 1204 (97.5%) had a result. Of the 829 participants eligible for SARS-CoV-2 PCR testing (individuals with symptoms of TB), 483 (58%) accepted the test and all had a result. In addition, 4 individuals without symptoms of TB but with COVID-19 symptoms were also tested. The clinical-demographical characteristics of the individuals who accepted and refused SARS-CoV-2 PCR testing were similar, except for being seriously ill (among refusals, lower proportion) and country (among refusals, higher proportion of participants from Kenya and lower from South Africa), <xref ref-type="supplementary-material" rid="pgph.0004471.s003">S1 Table</xref>. Overall, 1235 individuals were included in the analyses, 1204 had at least one SARS-CoV-2 serology result and 487 had a SARS-CoV-2 PCR result.</p>
+<fig id="pgph.0004471.g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pgph.0004471.g001</object-id><label>Fig 1</label><caption><title>Patients’ flow.</title></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pgph.0004471.g001" xlink:type="simple"/></fig>
+<p>The characteristics of the participants are presented in <xref ref-type="table" rid="pgph.0004471.t001">Table 1</xref>. Among the 1204 patients with serology results, 645 (54%) were female. Median age was 41 years (IQR 33–50) and median CD4 was 344 cells/µL (IQR 132–673). Few patients were vaccinated against SARS-CoV-2, 32 (2.7%) at the first visit, and 83 (6.9%) at any point during follow-up. Half of them (56%) were vaccinated between November 2021 and February 2022. Among the 487 patients with SARS-CoV-2 PCR results, 299 (61%) were women. Median CD4 was 555 cells/µL (IQR 313–784).</p>
+<table-wrap id="pgph.0004471.t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pgph.0004471.t001</object-id><label>Table 1</label><caption><title>Participants’ characteristics at the first visit for people living with HIV tested with SARS-CoV-2 serology and with SARS-CoV-2 PCR.</title></caption>
+<alternatives><graphic id="pgph.0004471.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pgph.0004471.t001" xlink:type="simple"/><table><colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left"/>
+<th align="left" colspan="2">Tested with SARS-CoV-2 serology<xref ref-type="table-fn" rid="t001fn001"><sup>*</sup></xref><break/>(N=1204)</th>
+<th align="left" colspan="2">Tested with SARS-CoV-2 PCR<xref ref-type="table-fn" rid="t001fn001"><sup>*</sup></xref><break/>(N=487)</th>
+</tr>
+<tr>
+<th align="left"/>
+<th align="left">n</th>
+<th align="left">% or IQR<sup>†</sup></th>
+<th align="left">n</th>
+<th align="left">% or IQR<sup>†</sup></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><bold>Demographics</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Women</td>
+<td align="left">645</td>
+<td align="left">53.6%</td>
+<td align="left">299</td>
+<td align="left">61.4%</td>
+</tr>
+<tr>
+<td align="left">Men</td>
+<td align="left">559</td>
+<td align="left">46.4%</td>
+<td align="left">188</td>
+<td align="left">38.6%</td>
+</tr>
+<tr>
+<td align="left">Age, median [IQR]</td>
+<td align="left">41</td>
+<td align="left">33–50</td>
+<td align="left">42</td>
+<td align="left">34–52</td>
+</tr>
+<tr>
+<td align="left"><bold>CD4 count</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Median, cells/µL [IQR]</td>
+<td align="left">344</td>
+<td align="left">132–673</td>
+<td align="left">555</td>
+<td align="left">313–784</td>
+</tr>
+<tr>
+<td align="left">&lt;200 cells/µL</td>
+<td align="left">497</td>
+<td align="left">41.3%</td>
+<td align="left">81</td>
+<td align="left">16.6%</td>
+</tr>
+<tr>
+<td align="left">≥200 cells/µL</td>
+<td align="left">703</td>
+<td align="left">58.4%</td>
+<td align="left">405</td>
+<td align="left">83.2%</td>
+</tr>
+<tr>
+<td align="left">Missing</td>
+<td align="left">4</td>
+<td align="left">0.3%</td>
+<td align="left">1</td>
+<td align="left">0.2%</td>
+</tr>
+<tr>
+<td align="left"><bold>Viral load</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">≤1000 copies/mL</td>
+<td align="left">630</td>
+<td align="left">52.3%</td>
+<td align="left">327</td>
+<td align="left">67.1%</td>
+</tr>
+<tr>
+<td align="left">&gt;1000 copies/mL</td>
+<td align="left">107</td>
+<td align="left">8.9%</td>
+<td align="left">21</td>
+<td align="left">4.3%</td>
+</tr>
+<tr>
+<td align="left">Missing</td>
+<td align="left">467</td>
+<td align="left">38.8%</td>
+<td align="left">139</td>
+<td align="left">28.5%</td>
+</tr>
+<tr>
+<td align="left"><bold>Antiretroviral therapy initiated</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Yes</td>
+<td align="left">1092</td>
+<td align="left">90.7%</td>
+<td align="left">442</td>
+<td align="left">90.8%</td>
+</tr>
+<tr>
+<td align="left">No</td>
+<td align="left">106</td>
+<td align="left">8.8%</td>
+<td align="left">39</td>
+<td align="left">8.0%</td>
+</tr>
+<tr>
+<td align="left">Missing</td>
+<td align="left">6</td>
+<td align="left">0.5%</td>
+<td align="left">6</td>
+<td align="left">1.2%</td>
+</tr>
+<tr>
+<td align="left"><bold>Reason for tuberculosis (TB) investigation</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Symptoms of TB</td>
+<td align="left">782</td>
+<td align="left">65.0%</td>
+<td align="left">483</td>
+<td align="left">99.2%</td>
+</tr>
+<tr>
+<td align="left">No symptoms of TB but advanced HIV disease</td>
+<td align="left">422</td>
+<td align="left">35.0%</td>
+<td align="left">4</td>
+<td align="left">0.8%</td>
+</tr>
+<tr>
+<td align="left"><bold>Comorbidities</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Cardiovascular disease</td>
+<td align="left">3</td>
+<td align="left">0.3%</td>
+<td align="left">2</td>
+<td align="left">0.4%</td>
+</tr>
+<tr>
+<td align="left">Hypertension</td>
+<td align="left">32</td>
+<td align="left">2.7%</td>
+<td align="left">26</td>
+<td align="left">5.3%</td>
+</tr>
+<tr>
+<td align="left">Diabetes</td>
+<td align="left">14</td>
+<td align="left">1.2%</td>
+<td align="left">12</td>
+<td align="left">2.5%</td>
+</tr>
+<tr>
+<td align="left">Chronic lung disease</td>
+<td align="left">4</td>
+<td align="left">0.3%</td>
+<td align="left">3</td>
+<td align="left">0.6%</td>
+</tr>
+<tr>
+<td align="left">Asthma</td>
+<td align="left">12</td>
+<td align="left">1.0%</td>
+<td align="left">6</td>
+<td align="left">1.2%</td>
+</tr>
+<tr>
+<td align="left">Current smoker</td>
+<td align="left">70</td>
+<td align="left">5.8%</td>
+<td align="left">43</td>
+<td align="left">8.8%</td>
+</tr>
+<tr>
+<td align="left">Liver chronic disease</td>
+<td align="left">2</td>
+<td align="left">0.2%</td>
+<td align="left">1</td>
+<td align="left">0.2%</td>
+</tr>
+<tr>
+<td align="left"><bold>Body-Mass Index</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">&lt;17 kg/m²</td>
+<td align="left">121</td>
+<td align="left">10.1%</td>
+<td align="left">42</td>
+<td align="left">8.6%</td>
+</tr>
+<tr>
+<td align="left">17–18.4 kg/m²</td>
+<td align="left">123</td>
+<td align="left">10.2%</td>
+<td align="left">37</td>
+<td align="left">7.6%</td>
+</tr>
+<tr>
+<td align="left">18.5–24.9 kg/m²</td>
+<td align="left">662</td>
+<td align="left">55.0%</td>
+<td align="left">259</td>
+<td align="left">53.2%</td>
+</tr>
+<tr>
+<td align="left">25.0–29.9 kg/m²</td>
+<td align="left">186</td>
+<td align="left">15.5%</td>
+<td align="left">74</td>
+<td align="left">15.2%</td>
+</tr>
+<tr>
+<td align="left">≥30 kg/m²</td>
+<td align="left">106</td>
+<td align="left">8.8%</td>
+<td align="left">68</td>
+<td align="left">14.0%</td>
+</tr>
+<tr>
+<td align="left">Missing</td>
+<td align="left">6</td>
+<td align="left">0.5%</td>
+<td align="left">7</td>
+<td align="left">1.4%</td>
+</tr>
+<tr>
+<td align="left"><bold>Clinical examination</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Temperature ≥38°C</td>
+<td align="left">24</td>
+<td align="left">2.0%</td>
+<td align="left">16</td>
+<td align="left">3.3%</td>
+</tr>
+<tr>
+<td align="left">Heart rate &gt;100 beats per min</td>
+<td align="left">168</td>
+<td align="left">14.0%</td>
+<td align="left">85</td>
+<td align="left">17.5%</td>
+</tr>
+<tr>
+<td align="left">Respiratory rate &gt;20 breaths per min</td>
+<td align="left">396</td>
+<td align="left">32.9%</td>
+<td align="left">148</td>
+<td align="left">30.4%</td>
+</tr>
+<tr>
+<td align="left">Systolic blood pressure &lt;90 mmHg</td>
+<td align="left">23</td>
+<td align="left">1.9%</td>
+<td align="left">11</td>
+<td align="left">2.3%</td>
+</tr>
+<tr>
+<td align="left">Seriously ill</td>
+<td align="left">42</td>
+<td align="left">3.5%</td>
+<td align="left">34</td>
+<td align="left">7.0%</td>
+</tr>
+<tr>
+<td align="left"><bold>Vaccinated against SARS-COV-2</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Yes</td>
+<td align="left">32</td>
+<td align="left">2.7%</td>
+<td align="left">9</td>
+<td align="left">1.9%</td>
+</tr>
+<tr>
+<td align="left">No</td>
+<td align="left">925</td>
+<td align="left">76.8%</td>
+<td align="left">435</td>
+<td align="left">89.3%</td>
+</tr>
+<tr>
+<td align="left">Missing</td>
+<td align="left">247</td>
+<td align="left">20.5%</td>
+<td align="left">43</td>
+<td align="left">8.8%</td>
+</tr>
+<tr>
+<td align="left"><bold>Country</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Uganda</td>
+<td align="left">686</td>
+<td align="left">57.0%</td>
+<td align="left">273</td>
+<td align="left">56.1%</td>
+</tr>
+<tr>
+<td align="left">Kenya</td>
+<td align="left">379</td>
+<td align="left">31.5%</td>
+<td align="left">79</td>
+<td align="left">16.2%</td>
+</tr>
+<tr>
+<td align="left">South Africa</td>
+<td align="left">139</td>
+<td align="left">11.5%</td>
+<td align="left">135</td>
+<td align="left">27.7%</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot>
+<fn id="t001fn001"><label>*</label><p>456 patients had both SARS-CoV-2 serology and PCR, 748 only serology and 31 only PCR (N=1235 total patients).</p></fn>
+<fn id="t001fn002"><label>†</label><p>Interquartile Range (IQR).</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec014">
+<title>Proportion of SARS-CoV-2 positive serology and SARS-CoV-2 infection</title>
+<p>Overall, 27.0% (325/1204) of participants had at least one positive SARS-CoV-2 serology result. The SARS-CoV-2 serology positivity rate increased over time and was 56.6% in Uganda, 40.0% in Kenya, and 71.1% in South Africa, by the last study period (January–April 2022) (<xref ref-type="fig" rid="pgph.0004471.g002">Fig 2</xref> and <xref ref-type="supplementary-material" rid="pgph.0004471.s004">S2 Table</xref>). Of the individuals with initial positive serology, 44.4% (52/117) remained positive at 6-month testing. Among individuals with initial negative serology, 20.3% (168/826) had a positive test at 6-month testing. Positivity at 6-month among initially negative was 43.3% (26/60) among vaccinated and 18.6% (142/763) among non-vaccinated (p&lt;0.001).</p>
+<fig id="pgph.0004471.g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pgph.0004471.g002</object-id><label>Fig 2</label><caption><title>SARS-CoV-2 serological tests performed and positivity rate from September 2020 to April 2022 in people living with HIV investigated for TB.</title></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pgph.0004471.g002" xlink:type="simple"/></fig>
+<p>Among participants with symptoms of TB or COVID-19, tested with SARS-CoV-2 PCR, 8.6% (42/487) were positive. Among patients with symptoms of TB, 8.3% (40/483) had a positive SARS-CoV-2 PCR, 8.9% (24/269) in Uganda, 7.6% (6/79) in Kenya, and 7.4% (10/135) in South Africa, and among the four patients without symptoms of TB but with COVID-19-related symptoms, two were positive. In addition, 445 individuals with negative PCR, 93 (20.9%) met the WHO definition of probable SARS-CoV-2 infection. In total, 135/487 (27.7%) had SARS-CoV-2 infection (probable or confirmed).</p>
+</sec>
+<sec id="sec015">
+<title>SARS-CoV-2 positive serology and SARS-CoV-2 infection by CD4 count</title>
+<p>SARS-CoV-2 serology positivity rates were lower in patients with CD4 counts &lt;200 cells/µL (19.9%, [99/497]) than in those with CD4 counts ≥200 cells/µL (31.6% [222/703]; p&lt;0.001; <xref ref-type="table" rid="pgph.0004471.t002">Table 2</xref>). Among patients with an initial negative serological test, patients with CD4 counts &lt;200 cells/µL had lower serological positivity rates at 6 months than those with CD4 counts ≥200 (16.4% [59/359] vs 23.0% [107/465], p=0.020). Among those with a positive serology test at baseline, serological positivity rates at 6 months by CD4 count level were 41.9% (13/31) for PLHIV with CD4 counts &lt;200 cells/µL and 45.3% (39/86) for those with CD4 counts ≥200 cells/µL (p=0.743).</p>
+<table-wrap id="pgph.0004471.t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pgph.0004471.t002</object-id><label>Table 2</label><caption><title>SARS-CoV-2 serology and SARS-CoV-2 PCR positivity and SARS-CoV-2 infection by CD4 count in people living with HIV.</title></caption>
+<alternatives><graphic id="pgph.0004471.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pgph.0004471.t002" xlink:type="simple"/><table><colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left"/>
+<th align="left">All<xref ref-type="table-fn" rid="t002fn001"><sup>*</sup></xref></th>
+<th align="left"/>
+<th align="left" colspan="2">CD4 &lt;200 cells/µL</th>
+<th align="left" colspan="2">CD4≥200 cells/µL</th>
+<th align="left">p-value</th>
+</tr>
+<tr>
+<th align="left"/>
+<th align="left">n/N</th>
+<th align="left">% [95% CI]</th>
+<th align="left">n/N</th>
+<th align="left">% [95% CI]</th>
+<th align="left">n/N</th>
+<th align="left">% [95% CI]</th>
+<th align="left"/>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Positive SARS-CoV-2 serology</td>
+<td align="left">325/1204</td>
+<td align="left">27.0% [24.5; 29.5]</td>
+<td align="left">99/497</td>
+<td align="left">19.9% [16.4; 23.4]</td>
+<td align="left">222/703</td>
+<td align="left">31.6% [28.1; 35.0]</td>
+<td align="left">&lt;0.001</td>
+</tr>
+<tr>
+<td align="left">Positive SARS-CoV-2 serology 6 months after negative result</td>
+<td align="left">168/826</td>
+<td align="left">20.3% [17.6; 23.1]</td>
+<td align="left">59/359</td>
+<td align="left">16.4% [12.6; 20.3]</td>
+<td align="left">107/465</td>
+<td align="left">23.0% [19.2; 26.8]</td>
+<td align="left">0.020</td>
+</tr>
+<tr>
+<td align="left">Positive SARS-CoV-2 serology 6 months after positive result</td>
+<td align="left">52/117</td>
+<td align="left">44.4% [35.4; 53.4]</td>
+<td align="left">13/31</td>
+<td align="left">41.9% [24.6; 59.3]</td>
+<td align="left">39/86</td>
+<td align="left">45.3% [34.8; 55.9]</td>
+<td align="left">0.743</td>
+</tr>
+<tr>
+<td align="left">Positive SARS-CoV-2 PCR<xref ref-type="table-fn" rid="t002fn002"><sup>†</sup></xref></td>
+<td align="left">40/483</td>
+<td align="left">8.3% [5.8; 10.7]</td>
+<td align="left">8/77</td>
+<td align="left">10.4% [3.6; 17.2]</td>
+<td align="left">32/405</td>
+<td align="left">7.9% [5.3; 10.5]</td>
+<td align="left">0.468</td>
+</tr>
+<tr>
+<td align="left">SARS-CoV-2 infection (probable or confirmed) <xref ref-type="table-fn" rid="t002fn003"><sup>‡</sup></xref></td>
+<td align="left">135/487</td>
+<td align="left">27.7% [23.7; 31.7]</td>
+<td align="left">23/81</td>
+<td align="left">28.4% [18.6; 38.2]</td>
+<td align="left">112/405</td>
+<td align="left">27.7% [23.3; 32.0]</td>
+<td align="left">0.892</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot>
+<fn id="t002fn001"><label>*</label><p>In four patients CD4 was not available.</p></fn>
+<fn id="t002fn002"><label>†</label><p>Among patients with symptoms of TB.</p></fn>
+<fn id="t002fn003"><label>‡</label><p>Among patients with symptoms of TB or COVID-19 related symptoms.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>SARS-CoV-2 PCR positivity rates were 10.4% (8/77) in PLHIV with CD4 counts &lt;200 cells/µL and 7.9% (32/405) in those with CD4 counts ≥200 cells/µL (p=0.468). SARS-CoV-2 infection rates were similar between patients with CD4 counts &lt;200 cells/µL (28.4% [23/81]) and those with CD4 counts ≥200 cells/µL (27.7% [112/405]; p=0.892.</p>
+<p>Vaccination rates by CD4 count level were: 5.9% (29/490) in patients with CD4 &lt;200 cells/µL vs 7.7% (54/701) in those with CD4 counts ≥200 cells/µL (p=0.234).</p>
+</sec>
+<sec id="sec016">
+<title>SARS-CoV-2 infection and TB disease among individuals with symptoms of TB or of COVID-19</title>
+<p>Among the subset of 487 individuals with symptoms of TB or symptoms of COVID-19, 27.7% (135/487) were diagnosed with SARS-CoV-2 infection and 23.8% (116/487) were diagnosed with TB. The rates of SARS-CoV-2 infection were similar between patients diagnosed with TB (27.6% 32/116) and those without TB (27.8%, 103/371), p=0.970 (<xref ref-type="table" rid="pgph.0004471.t003">Table 3</xref>). SARS-CoV-2 PCR positivity was 12.9% (15/116) among patients diagnosed with TB and 7.3% (27/371) among those without TB (p=0.058).</p>
+<table-wrap id="pgph.0004471.t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pgph.0004471.t003</object-id><label>Table 3</label><caption><title>SARS-CoV-2 positive PCR and SARS-CoV-2 infection by tuberculosis (TB) diagnosis in the subset of individuals living with HIV presenting with symptoms of TB or of COVID-19.</title></caption>
+<alternatives><graphic id="pgph.0004471.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pgph.0004471.t003" xlink:type="simple"/><table><colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left"/>
+<th align="left" colspan="2">Not TB</th>
+<th align="left" colspan="2">TB<xref ref-type="table-fn" rid="t003fn001"><sup>*</sup></xref></th>
+<th align="left" colspan="2">Confirmed TB</th>
+<th align="left" colspan="2">Probable TB</th>
+<th align="left">p-value<xref ref-type="table-fn" rid="t003fn002"><sup>†</sup></xref></th>
+</tr>
+<tr>
+<th align="left"/>
+<th align="left">n</th>
+<th align="left">% [95% CI]</th>
+<th align="left">n</th>
+<th align="left">% [95% CI]</th>
+<th align="left">n</th>
+<th align="left">% [95% CI]</th>
+<th align="left">n</th>
+<th align="left">% [95% CI]</th>
+<th align="left"/>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Positive SARS-CoV-2 PCR</td>
+<td align="left">27/371</td>
+<td align="left">7.3% [4.6; 9.9]</td>
+<td align="left">15/116</td>
+<td align="left">12.9% [6.8; 19.0]</td>
+<td align="left">5/39</td>
+<td align="left">12.8% [2.3; 23.3]</td>
+<td align="left">10/77</td>
+<td align="left">13.0% [5.5; 20.5]</td>
+<td align="left">0.058</td>
+</tr>
+<tr>
+<td align="left">SARS-CoV-2 infection (probable or confirmed)</td>
+<td align="left">103/371</td>
+<td align="left">27.8% [23.2; 32.3]</td>
+<td align="left">32/116</td>
+<td align="left">27.6% [19.4; 35.7]</td>
+<td align="left">9/39</td>
+<td align="left">23.1% [9.9; 36.3]</td>
+<td align="left">23/77</td>
+<td align="left">29.9% [19.6; 40.1]</td>
+<td align="left">0.970</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot>
+<fn id="t003fn001"><label>*</label><p>TB diagnosis includes probable and confirmed TB.</p></fn>
+<fn id="t003fn002"><label>†</label><p>P-value comparing proportions of Not TB and TB.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>In total, 55.0% (268/487) had only HIV, 21.1% (103/487) had HIV and SARS-CoV-2 infection, 17.2% (84/487) had HIV and TB disease, and 6.6% (32/487) had HIV and both SARS-CoV-2 infection and TB (<xref ref-type="fig" rid="pgph.0004471.g003">Fig 3</xref>).</p>
+<fig id="pgph.0004471.g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pgph.0004471.g003</object-id><label>Fig 3</label><caption><title>Euler diagram of people living with HIV presenting with symptoms of TB or of COVID-19 and with tuberculosis or SARS-CoV-2 infection.</title></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pgph.0004471.g003" xlink:type="simple"/></fig>
+</sec>
+<sec id="sec017">
+<title>Mortality at 6 months according to SARS-CoV-2 infection and TB disease among individuals with symptoms of TB or of COVID-19</title>
+<p>Mortality over the 6-month follow-up period was 4.1% (n=20) in the subset of 487 participants with symptoms of TB or of COVID-19 investigated for SARS-CoV-2 infection and TB disease. Median follow-up was 5.6 months (IQR: 5.5-6.4). Twelve patients were lost-to-follow-up after the initial visit. A description of the deceased patients is shown in the Supporting information file, <xref ref-type="supplementary-material" rid="pgph.0004471.s005">S3 Table</xref>).</p>
+<p>Mortality was higher in PLHIV with both SARS-CoV-2 infection and TB (18.8%, 6/32) than in those with only SARS-CoV-2 infection (2.0%, 2/103, p&lt;0.001), those with only HIV (2.2%, 6/268, p&lt;0.001) and with only TB (7.1%, 6/84, p=0.067) (<xref ref-type="fig" rid="pgph.0004471.g004">Fig 4</xref>). Median time to death from the first visit was 0.5 months (IQR 0.1-1.5) in PLHIV with both SARS-CoV-2 infection and TB, 1.2 months (IQR 0.9-1.6) in those with HIV and SARS-CoV-2 infection, 0.9 months in those with HIV and TB (IQR 0.3-3.2) and 3.2 (IQR 2.4-4.4) in those with only HIV.</p>
+<fig id="pgph.0004471.g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pgph.0004471.g004</object-id><label>Fig 4</label><caption><title>Mortality over 6 months according to SARS-CoV-2 infection and TB disease in people living with HIV presenting with symptoms of TB or of COVID-19 (log-rank test p&lt;0.001).</title></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pgph.0004471.g004" xlink:type="simple"/></fig>
+<p>In multivariable analyses, PLHIV with symptoms of TB or of COVID-19, and both SARS-CoV-2 infection and TB had an increased risk of death over 6 months compared with those with only HIV (adjusted hazard ratio [aHR] 6.83, 95% CI 1.75-26.72, p=0.006; <xref ref-type="table" rid="pgph.0004471.t004">Table 4</xref>). In separate multivariable models, PLHIV with both SARS-CoV-2 infection and TB disease had an increased risk of death compared to patients with only SARS-CoV-2 infection (aHR 8.90, 95% CI 1.47-53.96, p=0.017), and to those with only TB disease (aHR 3.70, 95% CI 1.00-13.72, p=0.050).</p>
+<table-wrap id="pgph.0004471.t004" position="float"><object-id pub-id-type="doi">10.1371/journal.pgph.0004471.t004</object-id><label>Table 4</label><caption><title>Mortality and adjusted risk of mortality at 6 months in people living with HIV presenting with symptoms of TB or of COVID-19 by diagnosis of TB disease and SARS-CoV-2 infection (N=475).</title></caption>
+<alternatives><graphic id="pgph.0004471.t004g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pgph.0004471.t004" xlink:type="simple"/><table><colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left"/>
+<th align="left">n/N</th>
+<th align="left">%</th>
+<th align="left">aHR<xref ref-type="table-fn" rid="t004fn001"><sup>†</sup></xref></th>
+<th align="left">95% CI</th>
+<th align="left">p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><bold>TB disease/SARS-CoV-2 infection</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">No TB disease and no SARS-CoV-2 infection</td>
+<td align="left">6/268</td>
+<td align="left">2.23</td>
+<td align="left">Ref</td>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Only TB disease</td>
+<td align="left">6/84</td>
+<td align="left">7.14</td>
+<td align="left">1.84</td>
+<td align="left">0.53–6.44</td>
+<td align="left">0.339</td>
+</tr>
+<tr>
+<td align="left">Only SARS-CoV-2 infection</td>
+<td align="left">2/103</td>
+<td align="left">1.94</td>
+<td align="left">0.77</td>
+<td align="left">0.15–3.93</td>
+<td align="left">0.750</td>
+</tr>
+<tr>
+<td align="left">Both SARS-CoV-2 infection and TB disease</td>
+<td align="left">6/32</td>
+<td align="left">18.75</td>
+<td align="left">6.83</td>
+<td align="left">1.75–26.72</td>
+<td align="left">0.006</td>
+</tr>
+<tr>
+<td align="left"><bold>Sex</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Women</td>
+<td align="left">5/299</td>
+<td align="left">1.67</td>
+<td align="left">Ref</td>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Men</td>
+<td align="left">15/188</td>
+<td align="left">7.98</td>
+<td align="left">2.98</td>
+<td align="left">0.97–9.16</td>
+<td align="left">0.057</td>
+</tr>
+<tr>
+<td align="left"><bold>Age (per 1 year increase)</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left">1.02</td>
+<td align="left">0.98-1.06</td>
+<td align="left">0.284</td>
+</tr>
+<tr>
+<td align="left"><bold>CD4 count</bold><xref ref-type="table-fn" rid="t004fn002"><sup>*</sup></xref></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">≥200 cells/µL</td>
+<td align="left">9/405</td>
+<td align="left">2.22</td>
+<td align="left">Ref</td>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">&lt;200 cells/µL</td>
+<td align="left">11/81</td>
+<td align="left">13.58</td>
+<td align="left">3.30</td>
+<td align="left">1.12–9.72</td>
+<td align="left">0.031</td>
+</tr>
+<tr>
+<td align="left"><bold>BMI</bold><xref ref-type="table-fn" rid="t004fn002"><sup>*</sup></xref></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">&lt;17</td>
+<td align="left">3/42</td>
+<td align="left">7.14</td>
+<td align="left">Ref</td>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">≥17</td>
+<td align="left">13/438</td>
+<td align="left">2.97</td>
+<td align="left">0.73</td>
+<td align="left">0.18-2.91</td>
+<td align="left">0.654</td>
+</tr>
+<tr>
+<td align="left"><bold>Diabetes</bold><xref ref-type="table-fn" rid="t004fn002"><sup>*</sup></xref></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">No</td>
+<td align="left">19/464</td>
+<td align="left">4.09</td>
+<td align="left">Ref</td>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left">Yes</td>
+<td align="left">1/12</td>
+<td align="left">8.33</td>
+<td align="left">3.56</td>
+<td align="left">0.38-33.16</td>
+<td align="left">0.264</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot>
+<fn id="t004fn001"><label>†</label><p>adjusted hazard ratio;</p></fn>
+<fn id="t004fn002"><label>*</label><p>Missing data for diabetes (n=11), BMI (n=7), CD4 count (n=1) were included in the model using specific categories (data not shown).</p></fn>
+<fn id="t004fn003"><p>Schoenfield residuals test: p=0.480.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+</sec>
+<sec id="sec018" sec-type="conclusions">
+<title>Discussion</title>
+<p>This prospective observational study found high proportions of positive SARS-CoV-2 IgG serology and SARS-CoV-2 infection among PLHIV with signs and symptoms of TB or advanced HIV in Uganda, Kenya, and South Africa. PLHIV with signs and symptoms of TB or of COVID-19, and with both SARS-CoV-2 infection and TB had higher mortality than PLHIV with only SARS-CoV-2 infection, only TB, or none of them. To date, there is limited evidence about the risk of mortality from triple co-infected patients and these results reveal or confirm several key findings with potential implications for clinical practice and public health policy.</p>
+<p>Our findings revealed high positive SARS-CoV-2 IgG seroprevalence by the end of the study period (January-April 2022) and two years of pandemic, with substantial variations among the three countries studied. South Africa showed the highest seroprevalence (71%), while Uganda and Kenya rates were of 57% and 40%, respectively. These numbers reflect the epidemic situation in these countries. The first COVID-19 cases in Kenya, Uganda, and South Africa were confirmed in March 2020 [<xref ref-type="bibr" rid="pgph.0004471.ref025">25</xref>–<xref ref-type="bibr" rid="pgph.0004471.ref027">27</xref>]. Seroprevalences of SARS-CoV-2 in the general population have been reported to be 9.1% in Kenya [<xref ref-type="bibr" rid="pgph.0004471.ref028">28</xref>], 15.6% in Uganda [<xref ref-type="bibr" rid="pgph.0004471.ref029">29</xref>] and 27% in South Africa [<xref ref-type="bibr" rid="pgph.0004471.ref030">30</xref>] by September, November and December 2020 respectively, after the first waves, and up to 70% in urban communities of South Africa, by November 2021, after the third wave [<xref ref-type="bibr" rid="pgph.0004471.ref031">31</xref>]. A meta-analysis of standardized seroprevalence studies in Africa found that SARS-CoV-2 seroprevalence had increased from 3% in April–June 2020 to 65% in July–September 2021 [<xref ref-type="bibr" rid="pgph.0004471.ref032">32</xref>]. More than half of participants who had an initial positive serology test and who repeated the test at the end of the study had a negative serology result at 6 months, which may indicate that the real proportion of people exposed to SARS-CoV-2 is higher than the proportion observed. Although test accuracy may vary with time since infection and severity of infection [<xref ref-type="bibr" rid="pgph.0004471.ref033">33</xref>], and negative serologies may be due to early serology after symptoms onset, this finding along with the low proportion of vaccinated participants with initial negative SARS-CoV-2 and positive result after 6 months, may also indicate that a relevant proportion of PLHIV may not be protected from new SARS-CoV-2 infection, 6 months after previous infection or vaccination, and that viral transmission may persist.</p>
+<p>Moreover, immunosuppression appeared to affect SARS-CoV-2 seropositivity rates. Patients with severe immunosuppression (&lt;200 cells per μL) exhibited lower seropositivity rates than those with higher CD4 cell counts. This finding suggests that immunosuppressed individuals may have a weaker immune response to infection or vaccination, emphasizing the need for tailored vaccination strategies such as additional doses or more frequent vaccinations for this population [<xref ref-type="bibr" rid="pgph.0004471.ref011">11</xref>,<xref ref-type="bibr" rid="pgph.0004471.ref034">34</xref>–<xref ref-type="bibr" rid="pgph.0004471.ref036">36</xref>].</p>
+<p>Vaccination rates were very low in the studied population. Three quarters of the study visits (and serological testing) were done before August 2021 when vaccination against COVID-19 was very limited or not accessible to the general population in the three countries. Additionally, vaccination hesitancy may have also contributed [<xref ref-type="bibr" rid="pgph.0004471.ref037">37</xref>].</p>
+<p>SARS-CoV-2 infection and TB disease among PLHIV with symptoms of TB or COVID-19 was high, with 27.5% of the patients having SARS-CoV-2 infection (probable or confirmed), and 23.8% diagnosed with TB. This highlights the significant overlap of the clinical syndromes and symptoms among these two diseases and the difficulties to diagnose using only clinical symptoms. This underscores the importance of COVID-19 testing and TB investigations in individuals presenting with symptoms that can be attributed to any of these diseases.</p>
+<p>PLHIV with symptoms of TB or of COVID-19, who were co-infected with both TB and SARS-CoV-2 exhibited higher mortality rates compared to those with SARS-CoV-2 infection, or only HIV. This increased risk mortality risk persisted after adjusting for age, sex, BMI, CD4 count, and country. However, COVID-19 vaccination rates were very low at the time of the study and mortality may be lower in populations with higher immunization coverage. These findings are consistent with previous research highlighting the increased mortality of patients with both TB and SARS-CoV-2 infection [<xref ref-type="bibr" rid="pgph.0004471.ref004">4</xref>,<xref ref-type="bibr" rid="pgph.0004471.ref005">5</xref>,<xref ref-type="bibr" rid="pgph.0004471.ref008">8</xref>–<xref ref-type="bibr" rid="pgph.0004471.ref013">13</xref>], underscoring the importance of active testing for both TB and SARS-CoV-2 in PLHIV [<xref ref-type="bibr" rid="pgph.0004471.ref038">38</xref>] and comprehensive care for patients with concurrent HIV, TB, and SARS-CoV-2 infections [<xref ref-type="bibr" rid="pgph.0004471.ref039">39</xref>].</p>
+<p>Strengths of the study include multi-country study setting and the prospective design. The study population reflects the situation in the general ambulatory HIV population in the countries studied where the proportion of people living with HIV who were on ART in 2022 was 94% in Kenya, 84% in Uganda and 75% in South Africa [<xref ref-type="bibr" rid="pgph.0004471.ref040">40</xref>]. A limitation of the study is that part of the individuals eligible for SARS-CoV-2 PCR test, declined the test, which resulted in loss of information and potential selection bias, though the characteristics of the participants who accepted and refused the test were similar. Seriously ill individuals were more represented among those tested, which may have potentially led to a higher overall mortality. PCR test refusal was mainly due to the strict restrictive measures applied in some countries for people diagnosed with COVID-19 (p.e. hospitalization). In addition, though PCR testing certainly missed some patients with SARS-CoV-2 infection, the definition of probable SARS-CoV-2 infection may have also classified as infected, patients without SARS-CoV-2 infection. Finally, the study was not powered to detect statistical differences by CD4 count or TB diagnosis. Lack of statistical association does not necessarily mean that the association does not exist.</p>
+<p>In conclusion, these findings underscore the importance of targeted routine SARS-CoV-2 testing in PLHIV with symptoms of TB, and SARS-CoV-2 vaccination, especially for those with severe immunosuppression. PLHIV with COVID-19 and TB have an increased risk of mortality and would benefit from a comprehensive management approach and close monitoring. As there are increased reports of complications post-COVID-19, and SARS-CoV-2 has propensity to resurge, further research is needed to better characterize the triple infections, understand the dynamics of SARS-CoV-2 infection in HIV-positive individuals with TB, and to explore the potential benefits of tailored vaccination approaches.</p>
+</sec>
+<sec id="sec019" sec-type="supplementary-material">
+<title>Supporting information</title>
+<supplementary-material id="pgph.0004471.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pgph.0004471.s001" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Inclusivity in global research checklist.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pgph.0004471.s002" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pgph.0004471.s002" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Causal diagram to identify potential confounders of the association between mortality and SARS-CoV-2 infection and TB in people living with HIV.</title>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pgph.0004471.s003" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pgph.0004471.s003" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>Clinical-demographical characteristics at initial visit of participants who accepted and who refused SARS-CoV-2 PCR testing.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pgph.0004471.s004" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pgph.0004471.s004" xlink:type="simple">
+<label>S2 Table</label>
+<caption>
+<title>Positivity of SARS-CoV-2 serology during the study period in people living with HIV.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pgph.0004471.s005" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pgph.0004471.s005" xlink:type="simple">
+<label>S3 Table</label>
+<caption>
+<title>Description of the 20 deceased participants among people living with HIV with symptoms of TB or of COVID-19.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We thank the study participants and the Ministry of Health, Médecins Sans Frontières and Epicentre teams in Kenya, Uganda, South Africa. Thanks to Médecins Sans Frontières and Epicentre teams in France and Belgium. Thanks to Andrés Arias Rogriguez for preparing part of the visual material and to Olaya Astudillo for editing the initial draft.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pgph.0004471.ref001"><label>1</label><mixed-citation publication-type="book" xlink:type="simple"><collab>UNAIDS</collab>. The urgency of now: AIDS at a crossroads. <publisher-name>Geneva</publisher-name>; <year>2024</year>. Available from: <ext-link ext-link-type="uri" xlink:href="http://www.wipo.int/" xlink:type="simple">http://www.wipo.int/</ext-link></mixed-citation></ref>
+<ref id="pgph.0004471.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><collab>Africa CDC</collab>. COVID-19 Surveillance Dashboard. [cited <comment>23 Sep 2024</comment>]. Available from: <ext-link ext-link-type="uri" xlink:href="https://au.int/en/covid19" xlink:type="simple">https://au.int/en/covid19</ext-link></mixed-citation></ref>
+<ref id="pgph.0004471.ref003"><label>3</label><mixed-citation publication-type="book" xlink:type="simple"><collab>World Health Organization</collab>. <source>Global tuberculosis report 2023</source>. <publisher-name>Geneva</publisher-name>; <year>2023</year>.</mixed-citation></ref>
+<ref id="pgph.0004471.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bertagnolio</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Thwin</surname> <given-names>SS</given-names></name>, <name name-style="western"><surname>Silva</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Nagarajan</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Jassat</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Fowler</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>Clinical features of, and risk factors for, severe or fatal COVID-19 among people living with HIV admitted to hospital: analysis of data from the WHO Global Clinical Platform of COVID-19</article-title>. <source>Lancet HIV</source>. <year>2022</year>;<volume>9</volume>(<issue>7</issue>):<fpage>e486</fpage>–<lpage>95</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S2352-3018(22)00097-2" xlink:type="simple">10.1016/S2352-3018(22)00097-2</ext-link></comment> <object-id pub-id-type="pmid">35561704</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Boulle</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Davies</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Hussey</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Ismail</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Morden</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Vundle</surname> <given-names>Z</given-names></name>, <etal>et al</etal>. <article-title>Risk Factors for Coronavirus Disease 2019 (COVID-19) Death in a Population Cohort Study from the Western Cape Province, South Africa</article-title>. <source>Clin Infect Dis</source>. <year>2021</year>;<volume>73</volume>(<issue>7</issue>):<fpage>e2005</fpage>–<lpage>15</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/cid/ciaa1198" xlink:type="simple">10.1093/cid/ciaa1198</ext-link></comment> <object-id pub-id-type="pmid">32860699</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ngalamika</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Lidenge</surname> <given-names>SJ</given-names></name>, <name name-style="western"><surname>Mukasine</surname> <given-names>MC</given-names></name>, <name name-style="western"><surname>Kawimbe</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Kamanzi</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Ngowi</surname> <given-names>JR</given-names></name>, <etal>et al</etal>. <article-title>SARS-CoV-2-specific T cell and humoral immunity in individuals with and without HIV in an African population: a prospective cohort study</article-title>. <source>Int J Infect Dis</source>. <year>2023</year>;<volume>127</volume>:<fpage>106</fpage>–<lpage>15</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijid.2022.12.009" xlink:type="simple">10.1016/j.ijid.2022.12.009</ext-link></comment> <object-id pub-id-type="pmid">36516914</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zimmer</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Klinton</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Oga-Omenka</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Heitkamp</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Nawina Nyirenda</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Furin</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>Tuberculosis in times of COVID-19</article-title>. <source>J Epidemiol Community Health</source>. <year>2022</year>;<volume>76</volume>(<issue>3</issue>):<fpage>310</fpage>–<lpage>6</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1136/jech-2021-217529" xlink:type="simple">10.1136/jech-2021-217529</ext-link></comment> <object-id pub-id-type="pmid">34535539</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Casco</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Jorge</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Palmero</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Alffenaar</surname> <given-names>J-W</given-names></name>, <name name-style="western"><surname>Fox</surname> <given-names>GJ</given-names></name>, <etal>et al</etal>. <article-title>Long-term outcomes of the global tuberculosis and COVID-19 co-infection cohort</article-title>. <source>Eur Respir J</source>. <year>2023</year>;<volume>62</volume>(<issue>5</issue>):<fpage>2300925</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1183/13993003.00925-2023" xlink:type="simple">10.1183/13993003.00925-2023</ext-link></comment> <object-id pub-id-type="pmid">37827576</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Migliori</surname> <given-names>GB</given-names></name>, <name name-style="western"><surname>Casco</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Jorge</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Palmero</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Alffenaar</surname> <given-names>JW</given-names></name>, <name name-style="western"><surname>Denholm</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>Tuberculosis and COVID-19 co-infection: description of the global cohort</article-title>. <source>Eur Respir J</source>. <year>2022</year>;<volume>59</volume>(<issue>3</issue>):<fpage>2102538</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1183/13993003.02538-2021" xlink:type="simple">10.1183/13993003.02538-2021</ext-link></comment> <object-id pub-id-type="pmid">34764184</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sy</surname> <given-names>KTL</given-names></name>, <name name-style="western"><surname>Haw</surname> <given-names>NJL</given-names></name>, <name name-style="western"><surname>Uy</surname> <given-names>J</given-names></name>. <article-title>Previous and active tuberculosis increases risk of death and prolongs recovery in patients with COVID-19</article-title>. <source>Infect Dis (Lond)</source>. <year>2020</year>;<volume>52</volume>(<issue>12</issue>):<fpage>902</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1080/23744235.2020.1806353" xlink:type="simple">10.1080/23744235.2020.1806353</ext-link></comment> <object-id pub-id-type="pmid">32808838</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>du Bruyn</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Stek</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Daroowala</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Said-Hartley</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Hsiao</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Schafer</surname> <given-names>G</given-names></name>, <etal>et al</etal>. <article-title>Effects of tuberculosis and/or HIV-1 infection on COVID-19 presentation and immune response in Africa</article-title>. <source>Nat Commun</source>. <year>2023</year>;<volume>14</volume>(<issue>1</issue>):<fpage>188</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41467-022-35689-1" xlink:type="simple">10.1038/s41467-022-35689-1</ext-link></comment> <object-id pub-id-type="pmid">36635274</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Easton</surname> <given-names>AV</given-names></name>, <name name-style="western"><surname>Salerno</surname> <given-names>MM</given-names></name>, <name name-style="western"><surname>Trieu</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Humphrey</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Kaba</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Macaraig</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>Cohort study of the mortality among patients in New York City with tuberculosis and COVID-19, March 2020 to June 2022</article-title>. <source>PLOS Glob Public Health</source>. <year>2023</year>;<volume>3</volume>(<issue>4</issue>):<fpage>e0001758</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pgph.0001758" xlink:type="simple">10.1371/journal.pgph.0001758</ext-link></comment> <object-id pub-id-type="pmid">37186110</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jassat</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Cohen</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Tempia</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Masha</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Goldstein</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Kufa</surname> <given-names>T</given-names></name>, <etal>et al</etal>. <article-title>Risk factors for COVID-19-related in-hospital mortality in a high HIV and tuberculosis prevalence setting in South Africa: a cohort study</article-title>. <source>Lancet HIV</source>. <year>2021</year>;<volume>8</volume>(<issue>9</issue>):<fpage>e554</fpage>–<lpage>67</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S2352-3018(21)00151-X" xlink:type="simple">10.1016/S2352-3018(21)00151-X</ext-link></comment> <object-id pub-id-type="pmid">34363789</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><collab>Africa CDC</collab>. COVID-19 Vaccine Dashboard. [cited <comment>23 Sep 2024</comment>]. Available from: <ext-link ext-link-type="uri" xlink:href="https://africacdc.org/covid-19/covid-19-vaccination/" xlink:type="simple">https://africacdc.org/covid-19/covid-19-vaccination/</ext-link></mixed-citation></ref>
+<ref id="pgph.0004471.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pulliam</surname> <given-names>JRC</given-names></name>, <name name-style="western"><surname>van Schalkwyk</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Govender</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>von Gottberg</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Cohen</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Groome</surname> <given-names>MJ</given-names></name>, <etal>et al</etal>. <article-title>Increased risk of SARS-CoV-2 reinfection associated with emergence of Omicron in South Africa</article-title>. <source>Science</source>. <year>2022</year>;<volume>376</volume>(<issue>6593</issue>):<fpage>eabn4947</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/science.abn4947" xlink:type="simple">10.1126/science.abn4947</ext-link></comment> <object-id pub-id-type="pmid">35289632</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref016"><label>16</label><mixed-citation publication-type="book" xlink:type="simple"><collab>World Health Organization</collab>. World Health Organization. (2021). A clinical case definition of post COVID-19 condition by a Delphi consensus, 6 October 2021. <publisher-name>Geneva</publisher-name>; <year>2021</year>. Available from: <ext-link ext-link-type="uri" xlink:href="https://iris.who.int/handle/10665/345824" xlink:type="simple">https://iris.who.int/handle/10665/345824</ext-link></mixed-citation></ref>
+<ref id="pgph.0004471.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chen</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Haupert</surname> <given-names>SR</given-names></name>, <name name-style="western"><surname>Zimmermann</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Shi</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Fritsche</surname> <given-names>LG</given-names></name>, <name name-style="western"><surname>Mukherjee</surname> <given-names>B</given-names></name>. <article-title>Global Prevalence of Post-Coronavirus Disease 2019 (COVID-19) Condition or Long COVID: A Meta-Analysis and Systematic Review</article-title>. <source>J Infect Dis</source>. <year>2022</year>;<volume>226</volume>(<issue>9</issue>):<fpage>1593</fpage>–<lpage>607</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/infdis/jiac136" xlink:type="simple">10.1093/infdis/jiac136</ext-link></comment> <object-id pub-id-type="pmid">35429399</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Huerga</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Bastard</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Lubega</surname> <given-names>AV</given-names></name>, <name name-style="western"><surname>Akinyi</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Antabak</surname> <given-names>NT</given-names></name>, <name name-style="western"><surname>Ohler</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>Novel FujiLAM assay to detect tuberculosis in HIV-positive ambulatory patients in four African countries: a diagnostic accuracy study</article-title>. <source>Lancet Glob Health</source>. <year>2023</year>;<volume>11</volume>(<issue>1</issue>):<fpage>e126</fpage>–<lpage>35</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S2214-109X(22)00463-6" xlink:type="simple">10.1016/S2214-109X(22)00463-6</ext-link></comment> <object-id pub-id-type="pmid">36521944</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><collab>Goverment of Kenya</collab>. Homa Bay, who we are. [cited <comment>23 Sep 2024</comment>]. Available: <ext-link ext-link-type="uri" xlink:href="https://www.homabay.go.ke/who-we-are" xlink:type="simple">https://www.homabay.go.ke/who-we-are</ext-link></mixed-citation></ref>
+<ref id="pgph.0004471.ref020"><label>20</label><mixed-citation publication-type="book" xlink:type="simple"><collab>Uganda Bureau of Statistics</collab>. <source>The National Population and Housing Census 2014 – Area Specific Profile Series</source>. <publisher-name>Kampala</publisher-name>; <year>2017</year>.</mixed-citation></ref>
+<ref id="pgph.0004471.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><collab>Goverment of South Africa</collab>. Umlalazi Population Size. [cited <comment>23 Sep 2024</comment>]. Available from: <ext-link ext-link-type="uri" xlink:href="https://www.statssa.gov.za/?page_id=993&amp;id=umlalazi-municipality" xlink:type="simple">https://www.statssa.gov.za/?page_id=993&amp;id=umlalazi-municipality</ext-link></mixed-citation></ref>
+<ref id="pgph.0004471.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Masresha</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Ruiz</surname> <given-names>MAS</given-names></name>, <name name-style="western"><surname>Atuhebwe</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Mihigo</surname> <given-names>R</given-names></name>. <article-title>The first year of COVID-19 vaccine roll-out in Africa: challenges and lessons learned</article-title>. <source>Pan Afr Med J</source>. <year>2022</year>;<volume>41</volume>(<issue>Suppl 2</issue>):<fpage>2</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.11604/pamj.supp.2022.41.2.33686" xlink:type="simple">10.11604/pamj.supp.2022.41.2.33686</ext-link></comment> <object-id pub-id-type="pmid">36159028</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple">Government Communication and Information System. COVID-19 vaccination messaging guideline. <year>2021</year> [cited <comment>24 Jan 2025</comment>]. Available from: <ext-link ext-link-type="uri" xlink:href="https://www.gcis.gov.za/vaccine-guideline" xlink:type="simple">https://www.gcis.gov.za/vaccine-guideline</ext-link></mixed-citation></ref>
+<ref id="pgph.0004471.ref024"><label>24</label><mixed-citation publication-type="book" xlink:type="simple"><collab>World Health Organization</collab>. WHO COVID-19: case definitions. <publisher-name>Geneva</publisher-name>; (accessed <comment>Dec 8, 2023</comment>) Available from: <ext-link ext-link-type="uri" xlink:href="https://iris.who.int/bitstream/handle/10665/360579/WHO-2019-nCoV-Surveillance-Case-Definition-2022.1-eng.pdf?sequence=1" xlink:type="simple">https://iris.who.int/bitstream/handle/10665/360579/WHO-2019-nCoV-Surveillance-Case-Definition-2022.1-eng.pdf?sequence=1</ext-link></mixed-citation></ref>
+<ref id="pgph.0004471.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Abdool Karim</surname> <given-names>SS</given-names></name>. <article-title>The South African Response to the Pandemic</article-title>. <source>N Engl J Med</source>. <year>2020</year>;<volume>382</volume>(<issue>24</issue>):<fpage>e95</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1056/NEJMc2014960" xlink:type="simple">10.1056/NEJMc2014960</ext-link></comment> <object-id pub-id-type="pmid">32469479</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Olum</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Bongomin</surname> <given-names>F</given-names></name>. <article-title>Uganda’s first 100 COVID-19 cases: Trends and lessons</article-title>. <source>Int J Infect Dis</source>. <year>2020</year>;<volume>96</volume>:<fpage>517</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijid.2020.05.073" xlink:type="simple">10.1016/j.ijid.2020.05.073</ext-link></comment> <object-id pub-id-type="pmid">32464272</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Crowell</surname> <given-names>TA</given-names></name>, <name name-style="western"><surname>Daud</surname> <given-names>II</given-names></name>, <name name-style="western"><surname>Maswai</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Owuoth</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Sing’oei</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Imbach</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>Severe acute respiratory syndrome coronavirus-2 antibody prevalence in people with and without HIV in rural Western Kenya, January to March 2020</article-title>. <source>AIDS</source>. <year>2021</year>;<volume>35</volume>(<issue>14</issue>):<fpage>2401</fpage>–<lpage>4</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1097/QAD.0000000000003054" xlink:type="simple">10.1097/QAD.0000000000003054</ext-link></comment> <object-id pub-id-type="pmid">34482354</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Adetifa</surname> <given-names>IMO</given-names></name>, <name name-style="western"><surname>Uyoga</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Gitonga</surname> <given-names>JN</given-names></name>, <name name-style="western"><surname>Mugo</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Otiende</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Nyagwange</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>Temporal trends of SARS-CoV-2 seroprevalence during the first wave of the COVID-19 epidemic in Kenya</article-title>. <source>Nat Commun</source>. <year>2021</year>;<volume>12</volume>(<issue>1</issue>):<fpage>3966</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41467-021-24062-3" xlink:type="simple">10.1038/s41467-021-24062-3</ext-link></comment> <object-id pub-id-type="pmid">34172732</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ssuuna</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Galiwango</surname> <given-names>RM</given-names></name>, <name name-style="western"><surname>Kankaka</surname> <given-names>EN</given-names></name>, <name name-style="western"><surname>Kagaayi</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Ndyanabo</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Kigozi</surname> <given-names>G</given-names></name>, <etal>et al</etal>. <article-title>Severe Acute Respiratory Syndrome Coronavirus-2 seroprevalence in South-Central Uganda, during 2019-2021</article-title>. <source>BMC Infect Dis</source>. <year>2022</year>;<volume>22</volume>(<issue>1</issue>):<fpage>174</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/s12879-022-07161-4" xlink:type="simple">10.1186/s12879-022-07161-4</ext-link></comment> <object-id pub-id-type="pmid">35189840</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kleynhans</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Tempia</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Wolter</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>von Gottberg</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Bhiman</surname> <given-names>JN</given-names></name>, <name name-style="western"><surname>Buys</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>SARS-CoV-2 Seroprevalence in a Rural and Urban Household Cohort during First and Second Waves of Infections, South Africa, July 2020-March 2021</article-title>. <source>Emerg Infect Dis</source>. <year>2021</year>;<volume>27</volume>(<issue>12</issue>):<fpage>3020</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3201/eid2712.211465" xlink:type="simple">10.3201/eid2712.211465</ext-link></comment> <object-id pub-id-type="pmid">34477548</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kleynhans</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Tempia</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Wolter</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>von Gottberg</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Bhiman</surname> <given-names>JN</given-names></name>, <name name-style="western"><surname>Buys</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>SARS-CoV-2 Seroprevalence after Third Wave of Infections, South Africa</article-title>. <source>Emerg Infect Dis</source>. <year>2022</year>;<volume>28</volume>(<issue>5</issue>):<fpage>1055</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3201/eid2805.220278" xlink:type="simple">10.3201/eid2805.220278</ext-link></comment> <object-id pub-id-type="pmid">35320701</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lewis</surname> <given-names>HC</given-names></name>, <name name-style="western"><surname>Ware</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Whelan</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Subissi</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Ma</surname> <given-names>X</given-names></name>, <etal>et al</etal>. <article-title>SARS-CoV-2 infection in Africa: a systematic review and meta-analysis of standardised seroprevalence studies, from January 2020 to December 2021</article-title>. <source>BMJ Glob Health</source>. <year>2022</year>;<volume>7</volume>(<issue>8</issue>):<fpage>e008793</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1136/bmjgh-2022-008793" xlink:type="simple">10.1136/bmjgh-2022-008793</ext-link></comment> <object-id pub-id-type="pmid">35998978</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Torres Ortiz</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Fenn Torrente</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Twigg</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Hatcher</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Saso</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Lam</surname> <given-names>T</given-names></name>, <etal>et al</etal>. <article-title>The influence of time on the sensitivity of SARS-CoV-2 serological testing</article-title>. <source>Sci Rep</source>. <year>2022</year>;<volume>12</volume>(<issue>1</issue>):<fpage>10517</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41598-022-14351-2" xlink:type="simple">10.1038/s41598-022-14351-2</ext-link></comment> <object-id pub-id-type="pmid">35732870</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Spinelli</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Jones</surname> <given-names>BLH</given-names></name>, <name name-style="western"><surname>Gandhi</surname> <given-names>M</given-names></name>. <article-title>COVID-19 Outcomes and Risk Factors Among People Living with HIV</article-title>. <source>Curr HIV/AIDS Rep</source>. <year>2022</year>;<volume>19</volume>(<issue>5</issue>):<fpage>425</fpage>–<lpage>32</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11904-022-00618-w" xlink:type="simple">10.1007/s11904-022-00618-w</ext-link></comment> <object-id pub-id-type="pmid">35930187</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fowokan</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Samji</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Puyat</surname> <given-names>JH</given-names></name>, <name name-style="western"><surname>Janjua</surname> <given-names>NZ</given-names></name>, <name name-style="western"><surname>Wilton</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Wong</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>Effectiveness of COVID-19 vaccines in people living with HIV in British Columbia and comparisons with a matched HIV-negative cohort: a test-negative design</article-title>. <source>Int J Infect Dis</source>. <year>2023</year>;<volume>127</volume>:<fpage>162</fpage>–<lpage>70</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijid.2022.11.035" xlink:type="simple">10.1016/j.ijid.2022.11.035</ext-link></comment> <object-id pub-id-type="pmid">36462571</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yin</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>X</given-names></name>. <article-title>Immunogenicity and efficacy of COVID-19 vaccines in people living with HIV: a systematic review and meta-analysis</article-title>. <source>Int J Infect Dis</source>. <year>2022</year>;<volume>124</volume>:<fpage>212</fpage>–<lpage>23</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijid.2022.10.005" xlink:type="simple">10.1016/j.ijid.2022.10.005</ext-link></comment> <object-id pub-id-type="pmid">36241168</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Orangi</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Mbuthia</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Chondo</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Ngunu</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Kabia</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Ojal</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>A qualitative inquiry on drivers of COVID-19 vaccine hesitancy among adults in Kenya</article-title>. <source>PLOS Glob Public Health</source>. <year>2024</year>;<volume>4</volume>(<issue>3</issue>):<fpage>e0002986</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pgph.0002986" xlink:type="simple">10.1371/journal.pgph.0002986</ext-link></comment> <object-id pub-id-type="pmid">38547132</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dheda</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Perumal</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Moultrie</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Perumal</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Esmail</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Scott</surname> <given-names>AJ</given-names></name>, <etal>et al</etal>. <article-title>The intersecting pandemics of tuberculosis and COVID-19: population-level and patient-level impact, clinical presentation, and corrective interventions</article-title>. <source>Lancet Respir Med</source>. <year>2022</year>;<volume>10</volume>(<issue>6</issue>):<fpage>603</fpage>–<lpage>22</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S2213-2600(22)00092-3" xlink:type="simple">10.1016/S2213-2600(22)00092-3</ext-link></comment> <object-id pub-id-type="pmid">35338841</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Udoakang</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Djomkam Zune</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Tapela</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Nganyewo</surname> <given-names>NN</given-names></name>, <name name-style="western"><surname>Olisaka</surname> <given-names>FN</given-names></name>, <name name-style="western"><surname>Anyigba</surname> <given-names>CA</given-names></name>, <etal>et al</etal>. <article-title>The COVID-19, tuberculosis and HIV/AIDS: Ménage à Trois</article-title>. <source>Front Immunol</source>. <year>2023</year>;<volume>14</volume>:<fpage>1104828</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3389/fimmu.2023.1104828" xlink:type="simple">10.3389/fimmu.2023.1104828</ext-link></comment> <object-id pub-id-type="pmid">36776887</object-id></mixed-citation></ref>
+<ref id="pgph.0004471.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><collab>UNAIDS</collab>. Country factsheet. [Cited <comment>Dec 8, 2023</comment>]. Available from: <ext-link ext-link-type="uri" xlink:href="https://www.unaids.org/en/regionscountries/countries" xlink:type="simple">https://www.unaids.org/en/regionscountries/countries</ext-link></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

@@ -1,0 +1,51 @@
+{
+  "id": "pcbi.1008009.g002",
+  "paper": "pcbi.1008009",
+  "figure": {
+    "id": "pcbi.1008009.g002",
+    "label": "Fig 2",
+    "caption": "Transmission kernels.\nThe parameter h_{0} has been rescaled such that R_{0}, for an homogenous configuration, is the same for all the three kernels. Specifically, R_{0} is 1.9 for all three kernels; α = 1.5 and h_{0} = 0.001 for the fat-tailed kernel; α = 2,1 and h_{0} = 0.005 for the default kernel; α = 4 and h_{0} = 0.026 for the default kernel. Parameter values are based on estimates by Boender et al. [5] for the Dutch epidemic of avian influenza in 2003, but with rescaling to account for the decrease in number of farms (from 5,360 to 2,157) and concomitant increase in size of farms since 2003.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1008009.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1008009.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Transmission kernels.</title>\n<p>The parameter <italic>h</italic><sub><italic>0</italic></sub> has been rescaled such that <italic>R</italic><sub><italic>0</italic></sub>, for an homogenous configuration, is the same for all the three kernels. Specifically, <italic>R</italic><sub><italic>0</italic></sub> is 1.9 for all three kernels; <italic>α</italic> = 1.5 and <italic>h</italic><sub><italic>0</italic></sub> = 0.001 for the fat-tailed kernel; <italic>α</italic> = 2,1 and <italic>h</italic><sub><italic>0</italic></sub> = 0.005 for the default kernel; <italic>α</italic> = 4 and <italic>h</italic><sub><italic>0</italic></sub> = 0.026 for the default kernel. Parameter values are based on estimates by Boender et al. [<xref ref-type=\"bibr\" rid=\"pcbi.1008009.ref005\">5</xref>] for the Dutch epidemic of avian influenza in 2003, but with rescaling to account for the decrease in number of farms (from 5,360 to 2,157) and concomitant increase in size of farms since 2003.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1008009.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1008009.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1008009",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1008009",
+    "title": "Trade-off between local transmission and long-range dispersal drives infectious disease outbreak size in spatially structured populations",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Elisa Benincà",
+      "Thomas Hagenaars",
+      "Gert Jan Boender",
+      "Jan van de Kassteele",
+      "Michiel van Boven"
+    ],
+    "year": "2020",
+    "license": "2020\nBenincà et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1008009.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1008009.g002.png",
+      "bytes": 130319,
+      "sha256": "b0b79ff5acd700239752b2cf1e626056a57d9449aed5fe968ad7cd1efced42db"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1008009.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1008009.g002.tif",
+      "bytes": 219020,
+      "sha256": "adebdaf6b2da8738b267e47a168512ccba382185f6fcaa92de5a7ff4d4b21b54"
+    }
+  }
+}

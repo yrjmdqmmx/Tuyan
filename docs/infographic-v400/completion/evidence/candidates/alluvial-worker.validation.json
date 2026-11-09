@@ -1,0 +1,106 @@
+{
+  "vector": true,
+  "editableText": true,
+  "sameScene": true,
+  "figureCount": 1,
+  "codeHash": "30b679eb79775eece5b26052b8b3fd1c139f665a35cbd7475ace622b1be2224c",
+  "pngHash": "6993ce626d165601ea92c3d7976ba01558062bb576902752062a726aa3c71501",
+  "svgHash": "eddda30ef6acc67703c0d5be5dddea0395df678b73c54d4cbef67834a1dc709f",
+  "numeric": {
+    "typeId": "alluvial",
+    "computations": {
+      "stageTotals": {
+        "Before": {
+          "A": 5,
+          "B": 4
+        },
+        "During": {
+          "C": 3,
+          "D": 6
+        },
+        "After": {
+          "E": 7,
+          "F": 2
+        }
+      },
+      "cohortTotal": 9,
+      "pathValues": {
+        "p1": 3,
+        "p2": 2,
+        "p3": 4
+      }
+    },
+    "checks": {
+      "Before_mass": {
+        "actual": 9.0,
+        "expected": 9.0,
+        "absoluteError": 0.0
+      },
+      "During_mass": {
+        "actual": 9.0,
+        "expected": 9.0,
+        "absoluteError": 0.0
+      },
+      "After_mass": {
+        "actual": 9.0,
+        "expected": 9.0,
+        "absoluteError": 0.0
+      },
+      "ribbon_7_width": {
+        "actual": 3.0,
+        "expected": 3.0,
+        "absoluteError": 0.0
+      },
+      "ribbon_8_width": {
+        "actual": 3.0,
+        "expected": 3.0,
+        "absoluteError": 0.0
+      },
+      "ribbon_9_width": {
+        "actual": 2.0,
+        "expected": 2.0,
+        "absoluteError": 0.0
+      },
+      "ribbon_10_width": {
+        "actual": 1.9999999999999991,
+        "expected": 2.0,
+        "absoluteError": 8.881784197001252e-16
+      },
+      "ribbon_11_width": {
+        "actual": 3.999999999999999,
+        "expected": 4.0,
+        "absoluteError": 8.881784197001252e-16
+      },
+      "ribbon_12_width": {
+        "actual": 4.0,
+        "expected": 4.0,
+        "absoluteError": 0.0
+      },
+      "source_row_count": {
+        "actual": 9.0,
+        "expected": 9.0,
+        "absoluteError": 0.0
+      }
+    },
+    "analysis": {
+      "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+    },
+    "suppliedFields": {
+      "rowFields": [
+        "id",
+        "stage",
+        "category",
+        "value"
+      ],
+      "options": {
+        "stages": [
+          "Before",
+          "During",
+          "After"
+        ],
+        "cohortSemantics": "One fixed cohort; no loss to follow-up"
+      }
+    },
+    "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+  }
+}

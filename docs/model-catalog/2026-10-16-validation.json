@@ -1,0 +1,113 @@
+{
+  "checkedAt": "2026-10-16",
+  "root": "/Users/a1-6/.config/superpowers/worktrees/paperbanana-tuyan/tuyan-v400-workflow-20261009",
+  "branch": "codex/tuyan-v400-workflow-20261009",
+  "head": "5e6989f59416e44d9f22fd26703d3830ed861ea7",
+  "registryVersion": "2026-10-16.v32",
+  "staticBefore": 1079,
+  "staticAfter": 1099,
+  "newChannelIdentities": 20,
+  "channelsWithAdditions": 10,
+  "publicEvidenceIndex": "2026-10-16-evidence.json",
+  "checks": {
+    "test-core-final.log": {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-model-catalog-20261016/test-core-final.log",
+      "sha256": "8d6d06d3fbba30388c2dd6fe975252185e0f27d2f4cbf4da14f17b0c0f812453",
+      "tests": 317,
+      "pass": 317,
+      "fail": 0
+    },
+    "test-web-final.log": {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-model-catalog-20261016/test-web-final.log",
+      "sha256": "51dbcaac928dc9e803f0b8e152ffbd55d2e17818b52338fa66ae476c70502b07",
+      "tests": 38,
+      "pass": 38,
+      "fail": 0
+    },
+    "typecheck-final.log": {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-model-catalog-20261016/typecheck-final.log",
+      "sha256": "6572c49e35a000561ad5739d51dcad9f143b1624720b91f1f834d362084d5cc6"
+    },
+    "build-web-final.log": {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-model-catalog-20261016/build-web-final.log",
+      "sha256": "a84e17d9bf434e1e3edceaf5f1e82be8e7da24bb5834965d1ba3af0d0bfbbfc4"
+    },
+    "build-core-final.log": {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-model-catalog-20261016/build-core-final.log",
+      "sha256": "f644e02eb0018eb835f75da4d0fb93a52f2786fe8b9ed2c897074ed0844a3c67"
+    }
+  },
+  "generatorChecks": {
+    "thinking": "1220 profiles; no drift",
+    "catalog": "1099 models; no drift; --skip-miniprogram"
+  },
+  "preservation": {
+    "baselineNonIgnoredFiles": 4355,
+    "changedBaselineFiles": [
+      "SYNC.md",
+      "apps/paperbanana-api/runtime/handler.ts",
+      "apps/paperbanana-api/tests/model-picker-contract.test.ts",
+      "apps/paperbanana-api/tests/text-channel-adapters.test.ts",
+      "apps/paperbanana-api/tests/thinking-transport.test.ts",
+      "apps/web/src/lib/modelPresentation.js",
+      "apps/web/src/lib/refineControls.js",
+      "apps/web/src/lib/staticModelCatalog.js",
+      "apps/web/src/lib/thinking.js",
+      "config/image-channel-routes.json",
+      "config/image-size-contracts.json",
+      "config/model-catalog-updates.json",
+      "config/model-channel-schemas.json",
+      "config/model-presentation.json",
+      "config/model-specifications.json",
+      "config/thinking-audit/domestic.json",
+      "config/thinking-audit/global.json",
+      "config/tokendance/drift-review.json",
+      "docs/thinking/2026-09-22/support.csv",
+      "packages/api/src/audited-channel-data.ts",
+      "packages/api/src/audited-refine-data.ts",
+      "packages/api/src/image-channel-routes.ts",
+      "packages/api/src/reference-upload.ts",
+      "packages/api/src/thinking-data.ts",
+      "packages/types/src/model-presentation-data.ts",
+      "scripts/sync-model-catalog.mjs"
+    ],
+    "unchangedBaselineCount": 4329,
+    "missingBaselineFiles": [],
+    "newFiles": [
+      "apps/paperbanana-api/tests/catalog-20261016.test.ts",
+      "apps/paperbanana-api/tests/fixtures/catalog-20261016/added.json",
+      "apps/paperbanana-api/tests/fixtures/catalog-20261016/baseline-defaults.json",
+      "apps/paperbanana-api/tests/fixtures/catalog-20261016/bfl-klein-input.json",
+      "apps/paperbanana-api/tests/fixtures/catalog-20261016/openrouter.json",
+      "apps/paperbanana-api/tests/fixtures/catalog-20261016/tokendance-live.json",
+      "config/channel-audit/catalog-20261016-contracts.json",
+      "config/channel-audit/catalog-20261016-refine-controls.json",
+      "docs/model-catalog/2026-10-16-additions.csv",
+      "docs/model-catalog/2026-10-16-evidence.json",
+      "docs/model-catalog/2026-10-16-update.md",
+      "docs/model-catalog/2026-10-16-validation.json"
+    ],
+    "miniProgramFilesUnchanged": 224,
+    "indexEmpty": true,
+    "preexistingDirtyStatusLines": 356,
+    "taskOnlyDiff": "/Users/a1-6/.codex/artifacts/tuyan-model-catalog-20261016/task-only.diff"
+  },
+  "providerState": {
+    "realInferenceCalls": 0,
+    "paidModelCalls": 0,
+    "tokenDance": "review: absences acknowledged but runtime-blocked; protocol/metadata differences not auto-applied",
+    "openRouterNewImages": "pending explicit output format evidence"
+  },
+  "boundaries": {
+    "upstreamSync": false,
+    "commit": false,
+    "push": false,
+    "deploy": false,
+    "miniProgramModifiedOrBuiltOrTested": false
+  },
+  "limitations": [
+    "Public catalog and mock transport do not validate account entitlement, real output quality or production.",
+    "Web build retains existing chunk-size warnings.",
+    "TokenDance missing records are not official retirement declarations."
+  ]
+}

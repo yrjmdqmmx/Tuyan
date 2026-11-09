@@ -1,0 +1,81 @@
+{
+  "doi": "10.1371/journal.pmed.1002254",
+  "sourceUrl": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1002254",
+  "title": "APOE-related risk of mild cognitive impairment and dementia for prevention trials: An analysis of four cohorts",
+  "journal": "PLOS Medicine",
+  "authors": [
+    "Jing Qian",
+    "Frank J. Wolters",
+    "Alexa Beiser",
+    "Mary Haan",
+    "M. Arfan Ikram",
+    "Jason Karlawish",
+    "Jessica B. Langbaum",
+    "John M. Neuhaus",
+    "Eric M. Reiman",
+    "J. Scott Roberts",
+    "Sudha Seshadri",
+    "Pierre N. Tariot",
+    "Beth McCarty Woods",
+    "Rebecca A. Betensky",
+    "Deborah Blacker"
+  ],
+  "year": "2017",
+  "license": "2017\nQian et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pmed.1002254.g001",
+      "label": "Fig 1",
+      "caption": "Cumulative incidence curves, adjusting for competing risk of mortality, for mild cognitive impairment or dementia by baseline age and APOE-e4 dose.\nNote that the strata shown are not independent for the Rotterdam and Framingham cohorts (see text). MCI, mild cognitive impairment; NACC, National Alzheimer’s Coordinating Center; RS, Rotterdam Study; SALSA, Sacramento Area Latino Study on Aging.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pmed.1002254.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pmed.1002254.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Cumulative incidence curves, adjusting for competing risk of mortality, for mild cognitive impairment or dementia by baseline age and <italic>APOE</italic>-e4 dose.</title>\n<p>Note that the strata shown are not independent for the Rotterdam and Framingham cohorts (see text). MCI, mild cognitive impairment; NACC, National Alzheimer’s Coordinating Center; RS, Rotterdam Study; SALSA, Sacramento Area Latino Study on Aging.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pmed.1002254.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pmed.1002254.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pmed.1002254.g002",
+      "label": "Fig 2",
+      "caption": "Cumulative incidence curves, adjusting for competing risk of mortality, for dementia by baseline age and APOE-e4 dose.\nNote that the strata shown are not independent for the Rotterdam and Framingham cohorts (see text). NACC, National Alzheimer’s Coordinating Center; RS, Rotterdam Study; SALSA, Sacramento Area Latino Study on Aging.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pmed.1002254.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pmed.1002254.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Cumulative incidence curves, adjusting for competing risk of mortality, for dementia by baseline age and <italic>APOE</italic>-e4 dose.</title>\n<p>Note that the strata shown are not independent for the Rotterdam and Framingham cohorts (see text). NACC, National Alzheimer’s Coordinating Center; RS, Rotterdam Study; SALSA, Sacramento Area Latino Study on Aging.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pmed.1002254.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pmed.1002254.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pmed.1002254.g003",
+      "label": "Fig 3",
+      "caption": "Lifetime (to age 80–85 y) cumulative incidence curves, adjusting for competing risk of mortality, for mild cognitive impairment or dementia by baseline age and APOE-e4 dose.\nNote that the strata shown are not independent (see text). MCI, mild cognitive impairment.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pmed.1002254.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pmed.1002254.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Lifetime (to age 80–85 y) cumulative incidence curves, adjusting for competing risk of mortality, for mild cognitive impairment or dementia by baseline age and <italic>APOE</italic>-e4 dose.</title>\n<p>Note that the strata shown are not independent (see text). MCI, mild cognitive impairment.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pmed.1002254.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pmed.1002254.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pmed.1002254.g004",
+      "label": "Fig 4",
+      "caption": "Lifetime (to age 80–85 y) cumulative incidence curves, adjusting for competing risk of mortality, for dementia by baseline age and APOE-e4 dose.\nNote that the strata shown are not independent (see text).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pmed.1002254.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pmed.1002254.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Lifetime (to age 80–85 y) cumulative incidence curves, adjusting for competing risk of mortality, for dementia by baseline age and <italic>APOE</italic>-e4 dose.</title>\n<p>Note that the strata shown are not independent (see text).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pmed.1002254.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pmed.1002254.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

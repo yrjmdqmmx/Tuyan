@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "measured_on": "2026-10-18",
+  "basis": "Unauthenticated metadata HTTP latency and transport reliability; no inference quality benchmark",
+  "origin": "hangzhou",
+  "automatic_retry_or_route_failover": false,
+  "rules": [
+    {
+      "channel": "tokendance",
+      "models": "*",
+      "api_host": "tokendance.space",
+      "selected_route": "hangzhou-direct",
+      "model_quality": "not_tested"
+    },
+    {
+      "channel": "bailian",
+      "models": "*",
+      "api_host": "dashscope.aliyuncs.com",
+      "selected_route": "hangzhou-direct",
+      "scope": "China mainland endpoint only; do not substitute international keys or endpoints",
+      "model_quality": "not_tested"
+    },
+    {
+      "channel": "ark",
+      "models": "*",
+      "api_host": "ark.cn-beijing.volces.com",
+      "selected_route": "hangzhou-direct",
+      "model_quality": "not_tested"
+    },
+    {
+      "channel": "openrouter",
+      "models": "*",
+      "api_host": "openrouter.ai",
+      "selected_route": "hangzhou-via-singapore",
+      "faster_candidate": "hangzhou-via-hongkong",
+      "candidate_gate": "Validate exact model, upstream, account and region eligibility before applying; no budgeted inference in this run",
+      "model_quality": "not_tested"
+    }
+  ]
+}

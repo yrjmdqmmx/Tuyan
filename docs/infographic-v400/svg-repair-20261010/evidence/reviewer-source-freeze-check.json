@@ -1,0 +1,14 @@
+{
+  "manifest": "c8f7a745e88ee8c0989af9805b2eb37941e89e301cb580bed453443fd57b8e9f",
+  "frozen_files": 29,
+  "mismatches": [],
+  "protected": 237,
+  "protected_mismatches": [],
+  "hashes": {
+    "apps/paperbanana-api/src/source-provenance.ts": "3c19342ec025cdda84c2e3b9fae38df1ca98a1f2da7f9079adea4b2a9a2f92b5",
+    "apps/paperbanana-api/src/provider-workflow.ts": "e6caf97d7c5a90f09b83e189bde0d4bd050af8b3fe3f995f543909dbce2c99d4",
+    "apps/paperbanana-api/runtime/handler.ts": "f8788a765c3b94f48a307b9b68cac1051230fe7fe49b11326afe6601d9ab9535",
+    "docs/infographic-v400/svg-repair-20261010/runner.mjs": "65cc9190c207938951f32cde69b1cc2644d95bc6b6cc4cdf62d1f057c11aed04",
+    "docs/infographic-v400/svg-repair-20261010/final-review.mjs": "e82ff92796ef67124dcd5861ac1d37ad62839bd92a482bfc08f862f41e4ed38c"
+  }
+}

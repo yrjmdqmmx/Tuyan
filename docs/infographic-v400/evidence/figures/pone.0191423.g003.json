@@ -1,0 +1,73 @@
+{
+  "id": "pone.0191423.g003",
+  "paper": "pone.0191423",
+  "figure": {
+    "id": "pone.0191423.g003",
+    "label": "Fig 3",
+    "caption": "Scaff10 derivatives.\n(A) Overview of the synthesis of Scaff10 derivatives. By addition of iodine in methanol (a), acetophenone derivatives (1) reacted with the corresponding α-iodoketones (2a), removal of excessive iodine by addition of Na_{2}SO_{3}-solution (b). Resorcinol (3) and diethyl-2-acetylglutarat (4) were transformed into the 7-hydroxycoumarin derivative ethyl 3-(7-hydroxy-4-methyl-2-oxo-chromen-3-yl)propanoate (5a) in ethanolic HCl (c). In the presence of excess potash, 5 reacted with α-haloketone derivatives (2) in a Williamson ether synthesis at 55°C in acetone (d) to 6. Saponification to 7 was carried out in 1 M NaOH at 55–95°C and from 0.3–16 h (e). Final cyclization of ketones to furocoumarin derivatives (8) was carried out upon further heating in NaOH solution (60–110°C) for various times (0.75–10 h) (f). R is indicated in Table 1 and (C). (B) Compounds of the generalized structures 6–8 from (A) were allocated into classes 6–8, respectively. (C) Structures of Scaff10 derivatives, which inhibit the AKAP-Lbc/DHPH-RhoA interaction in the homogenous time-resolved fluorescence (HTRF) assay depicted in Fig 3A and B. IC_{50} values (μM ± SEM) were obtained from n = 3–15 independent HTRF experiments carried out in duplicate (S3 Table). Structural differences compared to Scaff10-8 are shown in grey. R^{2} indicates the coefficient of determination.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0191423.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0191423.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Scaff10 derivatives.</title>\n<p>(A) Overview of the synthesis of Scaff10 derivatives. By addition of iodine in methanol (a), acetophenone derivatives (1) reacted with the corresponding α-iodoketones (2a), removal of excessive iodine by addition of Na<sub>2</sub>SO<sub>3</sub>-solution (b). Resorcinol (3) and diethyl-2-acetylglutarat (4) were transformed into the 7-hydroxycoumarin derivative ethyl 3-(7-hydroxy-4-methyl-2-oxo-chromen-3-yl)propanoate (5a) in ethanolic HCl (c). In the presence of excess potash, 5 reacted with α-haloketone derivatives (2) in a Williamson ether synthesis at 55°C in acetone (d) to 6. Saponification to 7 was carried out in 1 M NaOH at 55–95°C and from 0.3–16 h (e). Final cyclization of ketones to furocoumarin derivatives (8) was carried out upon further heating in NaOH solution (60–110°C) for various times (0.75–10 h) (f). R is indicated in <xref ref-type=\"table\" rid=\"pone.0191423.t001\">Table 1</xref> and (C). (B) Compounds of the generalized structures 6–8 from (A) were allocated into classes 6–8, respectively. (C) Structures of Scaff10 derivatives, which inhibit the AKAP-Lbc/DHPH-RhoA interaction in the homogenous time-resolved fluorescence (HTRF) assay depicted in Fig 3A and B. IC<sub>50</sub> values (μM ± SEM) were obtained from n = 3–15 independent HTRF experiments carried out in duplicate (S3 Table). Structural differences compared to Scaff10-8 are shown in grey. R<sup>2</sup> indicates the coefficient of determination.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0191423.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0191423.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0191423",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0191423",
+    "title": "An AKAP-Lbc-RhoA interaction inhibitor promotes the translocation of aquaporin-2 to the plasma membrane of renal collecting duct principal cells",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Katharina Schrade",
+      "Jessica Tröger",
+      "Adeeb Eldahshan",
+      "Kerstin Zühlke",
+      "Kamal R. Abdul Azeez",
+      "Jonathan M. Elkins",
+      "Martin Neuenschwander",
+      "Andreas Oder",
+      "Mohamed Elkewedi",
+      "Sarah Jaksch",
+      "Karsten Andrae",
+      "Jinliang Li",
+      "Joao Fernandes",
+      "Paul Markus Müller",
+      "Stephan Grunwald",
+      "Stephen F. Marino",
+      "Tanja Vukićević",
+      "Jenny Eichhorst",
+      "Burkhard Wiesner",
+      "Marcus Weber",
+      "Michael Kapiloff",
+      "Oliver Rocks",
+      "Oliver Daumke",
+      "Thomas Wieland",
+      "Stefan Knapp",
+      "Jens Peter von Kries",
+      "Enno Klussmann"
+    ],
+    "year": "2018",
+    "license": "This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0191423.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0191423.g003.png",
+      "bytes": 324379,
+      "sha256": "8437a2035fa16b3d9d6d176f6d3b43390011ddb8d960213496beb23be603ba24"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0191423.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0191423.g003.tif",
+      "bytes": 588608,
+      "sha256": "1ddb816d0aa8b2fe9ec8270993c30952fc8f55ce90e2d9edf20874a5d09823ab"
+    }
+  }
+}

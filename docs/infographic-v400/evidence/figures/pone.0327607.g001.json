@@ -1,0 +1,51 @@
+{
+  "id": "pone.0327607.g001",
+  "paper": "pone.0327607",
+  "figure": {
+    "id": "pone.0327607.g001",
+    "label": "Fig 1",
+    "caption": "Excerpt from a provenance graph depicting the refinement process of a simulation model (SM1) during a simulation study.This includes the incorporation of references (R) in the refinement, followed by testing the model’s ability to reproduce wet-lab data (WD) through a simulation experiment (E) in which the resulting simulation data (SD) is then analyzed using a Python script (S) to obtain the validation result (VR).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0327607.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0327607.g001</object-id><label>Fig 1</label><caption><title>Excerpt from a provenance graph depicting the refinement process of a simulation model (SM1) during a simulation study.</title><p>This includes the incorporation of references (R) in the refinement, followed by testing the model’s ability to reproduce wet-lab data (WD) through a simulation experiment (E) in which the resulting simulation data (SD) is then analyzed using a Python script (S) to obtain the validation result (VR).</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0327607.g001\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0327607.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0327607",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0327607",
+    "title": "SIMPROV: Provenance capturing for simulation studies",
+    "journal": "PLOS One",
+    "authors": [
+      "Andreas Ruscheinski",
+      "Anja Wolpers",
+      "Philipp Henning",
+      "Pia Wilsdorf",
+      "Adelinde M. Uhrmacher"
+    ],
+    "year": "2025",
+    "license": "2025\nRuscheinski et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0327607.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0327607.g001.png",
+      "bytes": 144732,
+      "sha256": "0c63634a7fd7c22eff33a5cde6e3b444d2fa21df94756e154ff84ba092e8ca25"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0327607.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0327607.g001.tif",
+      "bytes": 505584,
+      "sha256": "f0337591027ae6ab7ab1d6973ead4de57b0fc3d528bf5d03c99557b7fbd5c904"
+    }
+  }
+}

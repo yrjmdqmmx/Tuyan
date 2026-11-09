@@ -1,3 +1,4 @@
+import { changeControl } from '../../tests/menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import test, { afterEach } from 'node:test'
 import fs from 'node:fs'
@@ -38,7 +39,7 @@ test('default Chinese, persisted English, storage failure and language changes p
   assert.ok(screen.getByRole('button', { name: '按综合排序' }))
   fireEvent.change(rankingFilters().getByLabelText('模型搜索'), { target: { value: 'Krea' } })
   fireEvent.click(rankingFilters().getByRole('button', { name: '筛选', exact: true }))
-  fireEvent.change(rankingFilters().getByLabelText('模型研发厂商'), { target: { value: 'krea' } })
+  changeControl(rankingFilters().getByLabelText('模型研发厂商'), { target: { value: 'krea' } })
   fireEvent.click(screen.getByRole('button', { name: '按结构拓扑排序' }))
   assert.match(matrixRows()[0].textContent, /krea-2-large/)
   en()
@@ -68,7 +69,7 @@ test('developer and search jointly filter Top10 and matrix without renumbering; 
   const many = Array.from({ length: 12 }, (_, index) => model(`krea/test-${index}`, index + 10, 'Krea'))
   const { container } = render(React.createElement(App, { data: { ...release, models: [...many, models[2]] } }))
   fireEvent.click(rankingFilters().getByRole('button', { name: '筛选', exact: true }))
-  fireEvent.change(rankingFilters().getByLabelText('模型研发厂商'), { target: { value: 'krea' } })
+  changeControl(rankingFilters().getByLabelText('模型研发厂商'), { target: { value: 'krea' } })
   assert.equal(matrixRows().length, 12)
   for (const card of container.querySelectorAll('.bench-dimension-card')) {
     assert.equal(card.querySelectorAll('.bench-mini-row').length, 10)
@@ -91,7 +92,7 @@ test('ranking and Pareto share developer/query; costs remain Pareto-only and cha
   render(React.createElement(App))
   fireEvent.change(rankingFilters().getByLabelText('模型搜索'), { target: { value: 'Krea' } })
   fireEvent.click(rankingFilters().getByRole('button', { name: '筛选', exact: true }))
-  fireEvent.change(rankingFilters().getByLabelText('模型研发厂商'), { target: { value: 'krea' } })
+  changeControl(rankingFilters().getByLabelText('模型研发厂商'), { target: { value: 'krea' } })
   fireEvent.click(screen.getByRole('button', { name: '帕累托', exact: true }))
   const pareto = within(screen.getByRole('region', { name: '帕累托视图' }))
   assert.equal(pareto.getByLabelText('模型搜索').value, 'Krea')

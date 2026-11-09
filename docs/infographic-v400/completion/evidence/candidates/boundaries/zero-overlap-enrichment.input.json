@@ -1,0 +1,34 @@
+{
+  "figureTypeId": "enrichment",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "term": "Term A",
+        "count": 0,
+        "background": 20,
+        "p": 1
+      },
+      {
+        "term": "Term B",
+        "count": 3,
+        "background": 30,
+        "p": 0.08
+      }
+    ],
+    "units": {
+      "count": "genes",
+      "background": "genes",
+      "p": "dimensionless"
+    },
+    "options": {
+      "inputSize": 10,
+      "backgroundSize": 100
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic supplied hypergeometric results, BH adjusted externally",
+    "pKind": "adjusted_p"
+  }
+}

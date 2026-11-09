@@ -1,0 +1,61 @@
+{
+  "typeId": "gene_track",
+  "computations": {
+    "intervals": [
+      {
+        "label": "Gene A",
+        "start": 100,
+        "end": 400,
+        "strand": "+",
+        "headCoordinate": 400
+      },
+      {
+        "label": "Gene B",
+        "start": 550,
+        "end": 800,
+        "strand": "-",
+        "headCoordinate": 550
+      }
+    ]
+  },
+  "checks": {
+    "interval_0_length": {
+      "actual": 300.0,
+      "expected": 300.0,
+      "absoluteError": 0.0
+    },
+    "interval_1_length": {
+      "actual": 250.0,
+      "expected": 250.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "label",
+      "chrom",
+      "start",
+      "end",
+      "strand"
+    ],
+    "options": {
+      "sequences": [
+        {
+          "id": "chr1",
+          "length": 1000
+        }
+      ],
+      "assembly": "Synthetic v1",
+      "coordinateSystem": "zero_based_half_open"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

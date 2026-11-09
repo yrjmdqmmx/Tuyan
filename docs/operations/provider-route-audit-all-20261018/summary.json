@@ -1,0 +1,2370 @@
+[
+  {
+    "id": "anthropic",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "403": 5
+    },
+    "median_ms": 624.1,
+    "max_ms": 1115.3,
+    "min_ms": 524.9,
+    "tls_median_ms": 381.7,
+    "bytes": 450
+  },
+  {
+    "id": "anthropic",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 542.9,
+    "max_ms": 558.0,
+    "min_ms": 530.9,
+    "tls_median_ms": 225.1,
+    "bytes": 697
+  },
+  {
+    "id": "anthropic",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "403": 5
+    },
+    "median_ms": 44.4,
+    "max_ms": 55.0,
+    "min_ms": 40.7,
+    "tls_median_ms": 36.0,
+    "bytes": 450
+  },
+  {
+    "id": "anthropic",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 268.2,
+    "max_ms": 282.9,
+    "min_ms": 262.9,
+    "tls_median_ms": 25.0,
+    "bytes": 697
+  },
+  {
+    "id": "antling",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 75.1,
+    "max_ms": 121.1,
+    "min_ms": 70.4,
+    "tls_median_ms": 53.1,
+    "bytes": 703
+  },
+  {
+    "id": "antling",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 119.5,
+    "max_ms": 417.6,
+    "min_ms": 115.3,
+    "tls_median_ms": 34.2,
+    "bytes": 706
+  },
+  {
+    "id": "antling",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 145.6,
+    "max_ms": 1609.6,
+    "min_ms": 106.0,
+    "tls_median_ms": 25.9,
+    "bytes": 706
+  },
+  {
+    "id": "ark",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 69.4,
+    "max_ms": 97.0,
+    "min_ms": 64.4,
+    "tls_median_ms": 51.7,
+    "bytes": 1050
+  },
+  {
+    "id": "ark",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 166.3,
+    "max_ms": 1424.8,
+    "min_ms": 142.3,
+    "tls_median_ms": 111.8,
+    "bytes": 1050
+  },
+  {
+    "id": "ark",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 668.7,
+    "max_ms": 770.1,
+    "min_ms": 602.0,
+    "tls_median_ms": 467.8,
+    "bytes": 1050
+  },
+  {
+    "id": "bailian",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 133.7,
+    "max_ms": 171.1,
+    "min_ms": 127.2,
+    "tls_median_ms": 87.8,
+    "bytes": 1142
+  },
+  {
+    "id": "bailian",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 179.0,
+    "max_ms": 185.9,
+    "min_ms": 157.8,
+    "tls_median_ms": 119.3,
+    "bytes": 1146
+  },
+  {
+    "id": "bailian",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 385.1,
+    "max_ms": 391.6,
+    "min_ms": 341.9,
+    "tls_median_ms": 297.0,
+    "bytes": 1142
+  },
+  {
+    "id": "bedrock-us-east-1",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 726.2,
+    "max_ms": 935.4,
+    "min_ms": 636.1,
+    "tls_median_ms": 499.5,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-east-1",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 820.2,
+    "max_ms": 940.3,
+    "min_ms": 766.1,
+    "tls_median_ms": 545.9,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-east-1",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 979.9,
+    "max_ms": 999.6,
+    "min_ms": 975.0,
+    "tls_median_ms": 678.4,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-east-1",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 618.6,
+    "max_ms": 655.1,
+    "min_ms": 584.3,
+    "tls_median_ms": 415.0,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-east-1",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 687.8,
+    "max_ms": 717.4,
+    "min_ms": 686.6,
+    "tls_median_ms": 459.7,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-east-2",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 833.5,
+    "max_ms": 4434.1,
+    "min_ms": 715.8,
+    "tls_median_ms": 586.8,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-east-2",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 853.7,
+    "max_ms": 937.5,
+    "min_ms": 787.5,
+    "tls_median_ms": 564.9,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-east-2",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 1015.7,
+    "max_ms": 1036.7,
+    "min_ms": 987.7,
+    "tls_median_ms": 702.6,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-east-2",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 616.4,
+    "max_ms": 663.1,
+    "min_ms": 606.8,
+    "tls_median_ms": 411.7,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-east-2",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 722.8,
+    "max_ms": 812.2,
+    "min_ms": 695.9,
+    "tls_median_ms": 482.9,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-west-2",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 618.9,
+    "max_ms": 672.1,
+    "min_ms": 612.9,
+    "tls_median_ms": 430.2,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-west-2",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 731.3,
+    "max_ms": 744.3,
+    "min_ms": 701.4,
+    "tls_median_ms": 452.7,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-west-2",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 1039.0,
+    "max_ms": 1052.5,
+    "min_ms": 1029.5,
+    "tls_median_ms": 720.0,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-west-2",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 507.7,
+    "max_ms": 532.5,
+    "min_ms": 471.9,
+    "tls_median_ms": 341.8,
+    "bytes": 145
+  },
+  {
+    "id": "bedrock-us-west-2",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 755.5,
+    "max_ms": 824.8,
+    "min_ms": 745.6,
+    "tls_median_ms": 505.1,
+    "bytes": 145
+  },
+  {
+    "id": "bfl",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 1214.9,
+    "max_ms": 1264.7,
+    "min_ms": 1127.0,
+    "tls_median_ms": 452.3,
+    "bytes": 155
+  },
+  {
+    "id": "bfl",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 931.3,
+    "max_ms": 1097.5,
+    "min_ms": 814.2,
+    "tls_median_ms": 255.7,
+    "bytes": 155
+  },
+  {
+    "id": "bfl",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 1111.3,
+    "max_ms": 1207.4,
+    "min_ms": 977.4,
+    "tls_median_ms": 301.7,
+    "bytes": 155
+  },
+  {
+    "id": "bfl",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 585.7,
+    "max_ms": 833.3,
+    "min_ms": 560.8,
+    "tls_median_ms": 47.1,
+    "bytes": 155
+  },
+  {
+    "id": "bfl",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 636.4,
+    "max_ms": 655.7,
+    "min_ms": 563.3,
+    "tls_median_ms": 31.3,
+    "bytes": 155
+  },
+  {
+    "id": "bfl-eu",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 1244.9,
+    "max_ms": 1423.5,
+    "min_ms": 739.1,
+    "tls_median_ms": 441.4,
+    "bytes": 155
+  },
+  {
+    "id": "bfl-eu",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 945.9,
+    "max_ms": 990.0,
+    "min_ms": 934.2,
+    "tls_median_ms": 227.2,
+    "bytes": 155
+  },
+  {
+    "id": "bfl-eu",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 964.7,
+    "max_ms": 1116.2,
+    "min_ms": 909.9,
+    "tls_median_ms": 316.0,
+    "bytes": 155
+  },
+  {
+    "id": "bfl-eu",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 706.4,
+    "max_ms": 725.3,
+    "min_ms": 662.0,
+    "tls_median_ms": 48.1,
+    "bytes": 155
+  },
+  {
+    "id": "bfl-eu",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 598.1,
+    "max_ms": 867.3,
+    "min_ms": 565.4,
+    "tls_median_ms": 32.5,
+    "bytes": 155
+  },
+  {
+    "id": "bfl-us",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 1133.7,
+    "max_ms": 1303.9,
+    "min_ms": 1020.1,
+    "tls_median_ms": 456.0,
+    "bytes": 155
+  },
+  {
+    "id": "bfl-us",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 850.8,
+    "max_ms": 922.1,
+    "min_ms": 751.7,
+    "tls_median_ms": 271.0,
+    "bytes": 155
+  },
+  {
+    "id": "bfl-us",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 988.7,
+    "max_ms": 1092.3,
+    "min_ms": 981.0,
+    "tls_median_ms": 309.5,
+    "bytes": 155
+  },
+  {
+    "id": "bfl-us",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 590.8,
+    "max_ms": 651.6,
+    "min_ms": 567.3,
+    "tls_median_ms": 51.5,
+    "bytes": 155
+  },
+  {
+    "id": "bfl-us",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 679.8,
+    "max_ms": 720.4,
+    "min_ms": 622.2,
+    "tls_median_ms": 42.2,
+    "bytes": 155
+  },
+  {
+    "id": "deepseek",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 124.6,
+    "max_ms": 131.2,
+    "min_ms": 111.7,
+    "tls_median_ms": 46.6,
+    "bytes": 155
+  },
+  {
+    "id": "deepseek",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 172.3,
+    "max_ms": 186.5,
+    "min_ms": 155.6,
+    "tls_median_ms": 37.0,
+    "bytes": 155
+  },
+  {
+    "id": "deepseek",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 131.7,
+    "max_ms": 183.4,
+    "min_ms": 113.6,
+    "tls_median_ms": 27.6,
+    "bytes": 155
+  },
+  {
+    "id": "fal",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "200": 5
+    },
+    "median_ms": 985.1,
+    "max_ms": 1089.6,
+    "min_ms": 701.2,
+    "tls_median_ms": 213.3,
+    "bytes": 79704
+  },
+  {
+    "id": "fal",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "200": 3,
+      "429": 2
+    },
+    "median_ms": 910.5,
+    "max_ms": 1197.5,
+    "min_ms": 541.1,
+    "tls_median_ms": 221.9,
+    "bytes": 47918
+  },
+  {
+    "id": "fal",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "200": 5
+    },
+    "median_ms": 540.0,
+    "max_ms": 712.3,
+    "min_ms": 421.1,
+    "tls_median_ms": 35.6,
+    "bytes": 79844
+  },
+  {
+    "id": "fal",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "200": 3,
+      "429": 2
+    },
+    "median_ms": 502.3,
+    "max_ms": 665.3,
+    "min_ms": 378.9,
+    "tls_median_ms": 25.9,
+    "bytes": 47989
+  },
+  {
+    "id": "fal-queue",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 850.7,
+    "max_ms": 866.6,
+    "min_ms": 661.2,
+    "tls_median_ms": 624.6,
+    "bytes": 0
+  },
+  {
+    "id": "fal-queue",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 762.8,
+    "max_ms": 805.9,
+    "min_ms": 717.2,
+    "tls_median_ms": 496.0,
+    "bytes": 0
+  },
+  {
+    "id": "fal-queue",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 978.3,
+    "max_ms": 1050.5,
+    "min_ms": 962.2,
+    "tls_median_ms": 677.9,
+    "bytes": 0
+  },
+  {
+    "id": "fal-queue",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 597.7,
+    "max_ms": 630.1,
+    "min_ms": 577.7,
+    "tls_median_ms": 399.5,
+    "bytes": 0
+  },
+  {
+    "id": "fal-queue",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 712.7,
+    "max_ms": 728.3,
+    "min_ms": 697.7,
+    "tls_median_ms": 476.4,
+    "bytes": 0
+  },
+  {
+    "id": "fireworks",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 216.7,
+    "max_ms": 282.5,
+    "min_ms": 212.3,
+    "tls_median_ms": 168.9,
+    "bytes": 1240
+  },
+  {
+    "id": "fireworks",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 710.4,
+    "max_ms": 772.5,
+    "min_ms": 612.0,
+    "tls_median_ms": 436.1,
+    "bytes": 1240
+  },
+  {
+    "id": "fireworks",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 1024.6,
+    "max_ms": 1045.7,
+    "min_ms": 1004.1,
+    "tls_median_ms": 707.7,
+    "bytes": 1240
+  },
+  {
+    "id": "fireworks",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 730.7,
+    "max_ms": 760.4,
+    "min_ms": 692.6,
+    "tls_median_ms": 488.3,
+    "bytes": 1240
+  },
+  {
+    "id": "fireworks",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 34.1,
+    "max_ms": 61.1,
+    "min_ms": 26.9,
+    "tls_median_ms": 30.4,
+    "bytes": 1240
+  },
+  {
+    "id": "fireworks-inference",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 153.0,
+    "max_ms": 221.5,
+    "min_ms": 143.8,
+    "tls_median_ms": 103.4,
+    "bytes": 945
+  },
+  {
+    "id": "fireworks-inference",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 841.9,
+    "max_ms": 878.0,
+    "min_ms": 830.2,
+    "tls_median_ms": 586.3,
+    "bytes": 945
+  },
+  {
+    "id": "fireworks-inference",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 460.6,
+    "max_ms": 475.5,
+    "min_ms": 451.7,
+    "tls_median_ms": 307.8,
+    "bytes": 945
+  },
+  {
+    "id": "fireworks-inference",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 26.8,
+    "max_ms": 42.1,
+    "min_ms": 25.9,
+    "tls_median_ms": 23.5,
+    "bytes": 945
+  },
+  {
+    "id": "gemini",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 0,
+    "http": {
+      "0": 5
+    },
+    "median_ms": null,
+    "max_ms": null,
+    "min_ms": null,
+    "tls_median_ms": null,
+    "bytes": 0
+  },
+  {
+    "id": "gemini",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "403": 5
+    },
+    "median_ms": 301.4,
+    "max_ms": 308.9,
+    "min_ms": 296.2,
+    "tls_median_ms": 220.7,
+    "bytes": 1010
+  },
+  {
+    "id": "gemini",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "403": 5
+    },
+    "median_ms": 62.8,
+    "max_ms": 69.1,
+    "min_ms": 60.7,
+    "tls_median_ms": 36.3,
+    "bytes": 1010
+  },
+  {
+    "id": "gemini",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "403": 5
+    },
+    "median_ms": 35.2,
+    "max_ms": 924.1,
+    "min_ms": 32.3,
+    "tls_median_ms": 24.7,
+    "bytes": 1010
+  },
+  {
+    "id": "ideogram",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 0,
+    "http": {
+      "0": 5
+    },
+    "median_ms": null,
+    "max_ms": null,
+    "min_ms": null,
+    "tls_median_ms": null,
+    "bytes": 0
+  },
+  {
+    "id": "ideogram",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 409.7,
+    "max_ms": 456.9,
+    "min_ms": 360.2,
+    "tls_median_ms": 154.3,
+    "bytes": 590
+  },
+  {
+    "id": "ideogram",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 528.6,
+    "max_ms": 561.1,
+    "min_ms": 516.9,
+    "tls_median_ms": 228.8,
+    "bytes": 590
+  },
+  {
+    "id": "ideogram",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 250.8,
+    "max_ms": 254.2,
+    "min_ms": 246.8,
+    "tls_median_ms": 35.0,
+    "bytes": 590
+  },
+  {
+    "id": "ideogram",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 255.0,
+    "max_ms": 299.0,
+    "min_ms": 229.2,
+    "tls_median_ms": 24.5,
+    "bytes": 590
+  },
+  {
+    "id": "iflytek",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 115.2,
+    "max_ms": 174.8,
+    "min_ms": 100.4,
+    "tls_median_ms": 81.2,
+    "bytes": 130
+  },
+  {
+    "id": "iflytek",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 158.2,
+    "max_ms": 174.2,
+    "min_ms": 145.1,
+    "tls_median_ms": 107.0,
+    "bytes": 130
+  },
+  {
+    "id": "iflytek",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 286.3,
+    "max_ms": 2370.2,
+    "min_ms": 252.7,
+    "tls_median_ms": 192.6,
+    "bytes": 130
+  },
+  {
+    "id": "kimi",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 244.8,
+    "max_ms": 283.0,
+    "min_ms": 218.1,
+    "tls_median_ms": 143.9,
+    "bytes": 415
+  },
+  {
+    "id": "kimi",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 290.1,
+    "max_ms": 413.9,
+    "min_ms": 262.5,
+    "tls_median_ms": 177.0,
+    "bytes": 415
+  },
+  {
+    "id": "kimi",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 526.0,
+    "max_ms": 816.3,
+    "min_ms": 463.1,
+    "tls_median_ms": 362.7,
+    "bytes": 415
+  },
+  {
+    "id": "longcat",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 174.1,
+    "max_ms": 200.5,
+    "min_ms": 158.9,
+    "tls_median_ms": 122.2,
+    "bytes": 470
+  },
+  {
+    "id": "longcat",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 118.4,
+    "max_ms": 948.5,
+    "min_ms": 115.1,
+    "tls_median_ms": 35.6,
+    "bytes": 470
+  },
+  {
+    "id": "longcat",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 226.6,
+    "max_ms": 343.2,
+    "min_ms": 135.5,
+    "tls_median_ms": 24.8,
+    "bytes": 470
+  },
+  {
+    "id": "minimax",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 552.7,
+    "max_ms": 693.6,
+    "min_ms": 428.1,
+    "tls_median_ms": 190.1,
+    "bytes": 1160
+  },
+  {
+    "id": "minimax",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 841.7,
+    "max_ms": 985.2,
+    "min_ms": 414.2,
+    "tls_median_ms": 157.7,
+    "bytes": 1160
+  },
+  {
+    "id": "minimax",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 587.7,
+    "max_ms": 1334.0,
+    "min_ms": 545.7,
+    "tls_median_ms": 223.4,
+    "bytes": 1160
+  },
+  {
+    "id": "minimax",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 660.8,
+    "max_ms": 724.7,
+    "min_ms": 254.2,
+    "tls_median_ms": 38.3,
+    "bytes": 1160
+  },
+  {
+    "id": "minimax",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 728.3,
+    "max_ms": 1077.5,
+    "min_ms": 268.3,
+    "tls_median_ms": 28.6,
+    "bytes": 1160
+  },
+  {
+    "id": "minimax-cn",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 159.9,
+    "max_ms": 188.8,
+    "min_ms": 153.6,
+    "tls_median_ms": 69.0,
+    "bytes": 1160
+  },
+  {
+    "id": "minimax-cn",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 232.7,
+    "max_ms": 260.4,
+    "min_ms": 214.8,
+    "tls_median_ms": 126.1,
+    "bytes": 1160
+  },
+  {
+    "id": "minimax-cn",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 367.5,
+    "max_ms": 544.0,
+    "min_ms": 337.3,
+    "tls_median_ms": 230.5,
+    "bytes": 1160
+  },
+  {
+    "id": "mistral",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 0,
+    "http": {
+      "0": 5
+    },
+    "median_ms": null,
+    "max_ms": null,
+    "min_ms": null,
+    "tls_median_ms": null,
+    "bytes": 0
+  },
+  {
+    "id": "mistral",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 436.1,
+    "max_ms": 467.3,
+    "min_ms": 425.5,
+    "tls_median_ms": 156.8,
+    "bytes": 145
+  },
+  {
+    "id": "mistral",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 510.8,
+    "max_ms": 531.3,
+    "min_ms": 499.0,
+    "tls_median_ms": 231.4,
+    "bytes": 145
+  },
+  {
+    "id": "mistral",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 284.1,
+    "max_ms": 300.3,
+    "min_ms": 249.6,
+    "tls_median_ms": 36.7,
+    "bytes": 145
+  },
+  {
+    "id": "mistral",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 244.5,
+    "max_ms": 282.6,
+    "min_ms": 229.8,
+    "tls_median_ms": 24.5,
+    "bytes": 145
+  },
+  {
+    "id": "novita",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "200": 5
+    },
+    "median_ms": 1085.9,
+    "max_ms": 1288.5,
+    "min_ms": 860.4,
+    "tls_median_ms": 728.9,
+    "bytes": 624740
+  },
+  {
+    "id": "novita",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "200": 5
+    },
+    "median_ms": 362.9,
+    "max_ms": 398.2,
+    "min_ms": 346.2,
+    "tls_median_ms": 157.2,
+    "bytes": 103433
+  },
+  {
+    "id": "novita",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "200": 5
+    },
+    "median_ms": 485.6,
+    "max_ms": 522.5,
+    "min_ms": 476.9,
+    "tls_median_ms": 225.5,
+    "bytes": 103173
+  },
+  {
+    "id": "novita",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "200": 5
+    },
+    "median_ms": 198.4,
+    "max_ms": 210.9,
+    "min_ms": 190.1,
+    "tls_median_ms": 37.4,
+    "bytes": 103051
+  },
+  {
+    "id": "novita",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "200": 5
+    },
+    "median_ms": 221.4,
+    "max_ms": 309.1,
+    "min_ms": 209.3,
+    "tls_median_ms": 25.3,
+    "bytes": 102954
+  },
+  {
+    "id": "openai",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 0,
+    "http": {
+      "0": 5
+    },
+    "median_ms": null,
+    "max_ms": null,
+    "min_ms": null,
+    "tls_median_ms": null,
+    "bytes": 0
+  },
+  {
+    "id": "openai",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 567.9,
+    "max_ms": 739.0,
+    "min_ms": 486.9,
+    "tls_median_ms": 224.7,
+    "bytes": 755
+  },
+  {
+    "id": "openai",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "403": 5
+    },
+    "median_ms": 45.2,
+    "max_ms": 49.2,
+    "min_ms": 41.6,
+    "tls_median_ms": 39.7,
+    "bytes": 525
+  },
+  {
+    "id": "openai",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 420.6,
+    "max_ms": 428.9,
+    "min_ms": 231.3,
+    "tls_median_ms": 24.9,
+    "bytes": 755
+  },
+  {
+    "id": "openrouter",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 650.6,
+    "max_ms": 1741.7,
+    "min_ms": 518.8,
+    "tls_median_ms": 414.5,
+    "bytes": 335
+  },
+  {
+    "id": "openrouter",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 173.1,
+    "max_ms": 241.2,
+    "min_ms": 163.1,
+    "tls_median_ms": 120.1,
+    "bytes": 335
+  },
+  {
+    "id": "openrouter",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 317.0,
+    "max_ms": 321.0,
+    "min_ms": 301.6,
+    "tls_median_ms": 226.0,
+    "bytes": 335
+  },
+  {
+    "id": "openrouter",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 48.3,
+    "max_ms": 152.5,
+    "min_ms": 45.1,
+    "tls_median_ms": 37.2,
+    "bytes": 335
+  },
+  {
+    "id": "openrouter",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 49.0,
+    "max_ms": 67.3,
+    "min_ms": 39.1,
+    "tls_median_ms": 24.7,
+    "bytes": 335
+  },
+  {
+    "id": "qianfan",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "403": 5
+    },
+    "median_ms": 139.8,
+    "max_ms": 161.3,
+    "min_ms": 125.2,
+    "tls_median_ms": 70.6,
+    "bytes": 505
+  },
+  {
+    "id": "qianfan",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "403": 5
+    },
+    "median_ms": 125.6,
+    "max_ms": 130.5,
+    "min_ms": 118.7,
+    "tls_median_ms": 36.6,
+    "bytes": 505
+  },
+  {
+    "id": "qianfan",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "403": 5
+    },
+    "median_ms": 253.1,
+    "max_ms": 547.0,
+    "min_ms": 247.1,
+    "tls_median_ms": 128.2,
+    "bytes": 505
+  },
+  {
+    "id": "recraft",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 834.6,
+    "max_ms": 1008.5,
+    "min_ms": 741.9,
+    "tls_median_ms": 585.3,
+    "bytes": 0
+  },
+  {
+    "id": "recraft",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 831.7,
+    "max_ms": 847.6,
+    "min_ms": 745.9,
+    "tls_median_ms": 510.4,
+    "bytes": 0
+  },
+  {
+    "id": "recraft",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 967.4,
+    "max_ms": 1013.0,
+    "min_ms": 961.0,
+    "tls_median_ms": 666.4,
+    "bytes": 0
+  },
+  {
+    "id": "recraft",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 610.8,
+    "max_ms": 640.5,
+    "min_ms": 604.4,
+    "tls_median_ms": 407.7,
+    "bytes": 0
+  },
+  {
+    "id": "recraft",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 681.0,
+    "max_ms": 697.9,
+    "min_ms": 671.2,
+    "tls_median_ms": 456.5,
+    "bytes": 0
+  },
+  {
+    "id": "replicate",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 776.0,
+    "max_ms": 1598.3,
+    "min_ms": 729.3,
+    "tls_median_ms": 495.1,
+    "bytes": 465
+  },
+  {
+    "id": "replicate",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 819.8,
+    "max_ms": 948.3,
+    "min_ms": 640.0,
+    "tls_median_ms": 150.1,
+    "bytes": 465
+  },
+  {
+    "id": "replicate",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 504.7,
+    "max_ms": 576.6,
+    "min_ms": 497.4,
+    "tls_median_ms": 233.6,
+    "bytes": 465
+  },
+  {
+    "id": "replicate",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 229.8,
+    "max_ms": 809.9,
+    "min_ms": 211.0,
+    "tls_median_ms": 36.1,
+    "bytes": 465
+  },
+  {
+    "id": "replicate",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 229.9,
+    "max_ms": 460.1,
+    "min_ms": 224.7,
+    "tls_median_ms": 25.1,
+    "bytes": 465
+  },
+  {
+    "id": "runware",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "400": 5
+    },
+    "median_ms": 974.0,
+    "max_ms": 1165.4,
+    "min_ms": 697.4,
+    "tls_median_ms": 565.8,
+    "bytes": 870
+  },
+  {
+    "id": "runware",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "400": 5
+    },
+    "median_ms": 410.8,
+    "max_ms": 516.0,
+    "min_ms": 362.1,
+    "tls_median_ms": 151.6,
+    "bytes": 870
+  },
+  {
+    "id": "runware",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "400": 5
+    },
+    "median_ms": 499.8,
+    "max_ms": 569.7,
+    "min_ms": 489.7,
+    "tls_median_ms": 228.9,
+    "bytes": 870
+  },
+  {
+    "id": "runware",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "400": 5
+    },
+    "median_ms": 256.3,
+    "max_ms": 266.8,
+    "min_ms": 245.8,
+    "tls_median_ms": 38.0,
+    "bytes": 870
+  },
+  {
+    "id": "runware",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "400": 5
+    },
+    "median_ms": 226.9,
+    "max_ms": 241.3,
+    "min_ms": 217.5,
+    "tls_median_ms": 28.9,
+    "bytes": 870
+  },
+  {
+    "id": "sensenova",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 81.6,
+    "max_ms": 129.1,
+    "min_ms": 77.4,
+    "tls_median_ms": 63.5,
+    "bytes": 300
+  },
+  {
+    "id": "sensenova",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 216.2,
+    "max_ms": 1148.2,
+    "min_ms": 118.1,
+    "tls_median_ms": 106.9,
+    "bytes": 300
+  },
+  {
+    "id": "sensenova",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 743.2,
+    "max_ms": 1427.1,
+    "min_ms": 652.8,
+    "tls_median_ms": 449.8,
+    "bytes": 300
+  },
+  {
+    "id": "sensenova-inference",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 75.8,
+    "max_ms": 95.0,
+    "min_ms": 71.7,
+    "tls_median_ms": 55.8,
+    "bytes": 295
+  },
+  {
+    "id": "sensenova-inference",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 202.4,
+    "max_ms": 375.8,
+    "min_ms": 115.3,
+    "tls_median_ms": 94.8,
+    "bytes": 295
+  },
+  {
+    "id": "sensenova-inference",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "404": 5
+    },
+    "median_ms": 666.6,
+    "max_ms": 1514.7,
+    "min_ms": 606.5,
+    "tls_median_ms": 466.9,
+    "bytes": 295
+  },
+  {
+    "id": "siliconflow",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 72.7,
+    "max_ms": 115.6,
+    "min_ms": 63.2,
+    "tls_median_ms": 56.7,
+    "bytes": 280
+  },
+  {
+    "id": "siliconflow",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 111.8,
+    "max_ms": 136.3,
+    "min_ms": 103.3,
+    "tls_median_ms": 76.5,
+    "bytes": 280
+  },
+  {
+    "id": "siliconflow",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 321.7,
+    "max_ms": 419.4,
+    "min_ms": 217.0,
+    "tls_median_ms": 254.2,
+    "bytes": 280
+  },
+  {
+    "id": "stability",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 530.5,
+    "max_ms": 782.8,
+    "min_ms": 500.0,
+    "tls_median_ms": 241.5,
+    "bytes": 525
+  },
+  {
+    "id": "stability",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 371.7,
+    "max_ms": 672.8,
+    "min_ms": 356.0,
+    "tls_median_ms": 159.0,
+    "bytes": 525
+  },
+  {
+    "id": "stability",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 865.6,
+    "max_ms": 933.2,
+    "min_ms": 492.9,
+    "tls_median_ms": 227.9,
+    "bytes": 525
+  },
+  {
+    "id": "stability",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 205.3,
+    "max_ms": 232.4,
+    "min_ms": 200.4,
+    "tls_median_ms": 38.3,
+    "bytes": 525
+  },
+  {
+    "id": "stability",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 253.2,
+    "max_ms": 727.0,
+    "min_ms": 213.4,
+    "tls_median_ms": 26.6,
+    "bytes": 525
+  },
+  {
+    "id": "stepfun",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 94.5,
+    "max_ms": 133.1,
+    "min_ms": 85.1,
+    "tls_median_ms": 75.8,
+    "bytes": 375
+  },
+  {
+    "id": "stepfun",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 618.9,
+    "max_ms": 1160.7,
+    "min_ms": 108.8,
+    "tls_median_ms": 572.8,
+    "bytes": 375
+  },
+  {
+    "id": "stepfun",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 628.9,
+    "max_ms": 2103.8,
+    "min_ms": 603.1,
+    "tls_median_ms": 417.8,
+    "bytes": 375
+  },
+  {
+    "id": "together",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "403": 5
+    },
+    "median_ms": 340.2,
+    "max_ms": 1949.6,
+    "min_ms": 257.7,
+    "tls_median_ms": 251.1,
+    "bytes": 8731
+  },
+  {
+    "id": "together",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 369.5,
+    "max_ms": 383.0,
+    "min_ms": 355.0,
+    "tls_median_ms": 147.5,
+    "bytes": 75
+  },
+  {
+    "id": "together",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 513.0,
+    "max_ms": 557.3,
+    "min_ms": 479.3,
+    "tls_median_ms": 225.8,
+    "bytes": 75
+  },
+  {
+    "id": "together",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 220.7,
+    "max_ms": 278.9,
+    "min_ms": 201.9,
+    "tls_median_ms": 35.2,
+    "bytes": 75
+  },
+  {
+    "id": "together",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 244.0,
+    "max_ms": 311.6,
+    "min_ms": 213.3,
+    "tls_median_ms": 24.2,
+    "bytes": 75
+  },
+  {
+    "id": "tokendance",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "200": 5
+    },
+    "median_ms": 139.5,
+    "max_ms": 159.6,
+    "min_ms": 56.3,
+    "tls_median_ms": 128.1,
+    "bytes": 296975
+  },
+  {
+    "id": "tokendance",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "200": 5
+    },
+    "median_ms": 139.4,
+    "max_ms": 152.1,
+    "min_ms": 137.9,
+    "tls_median_ms": 93.9,
+    "bytes": 296975
+  },
+  {
+    "id": "tokendance",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "200": 5
+    },
+    "median_ms": 283.6,
+    "max_ms": 293.2,
+    "min_ms": 220.7,
+    "tls_median_ms": 211.5,
+    "bytes": 296975
+  },
+  {
+    "id": "tokenhub",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 106.3,
+    "max_ms": 120.2,
+    "min_ms": 96.7,
+    "tls_median_ms": 77.9,
+    "bytes": 1900
+  },
+  {
+    "id": "tokenhub",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 99.0,
+    "max_ms": 356.0,
+    "min_ms": 97.2,
+    "tls_median_ms": 34.8,
+    "bytes": 1900
+  },
+  {
+    "id": "tokenhub",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 190.7,
+    "max_ms": 962.7,
+    "min_ms": 147.9,
+    "tls_median_ms": 91.9,
+    "bytes": 1900
+  },
+  {
+    "id": "tokenhub-inference",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 93.7,
+    "max_ms": 149.6,
+    "min_ms": 73.1,
+    "tls_median_ms": 53.2,
+    "bytes": 95
+  },
+  {
+    "id": "tokenhub-inference",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 76.6,
+    "max_ms": 386.1,
+    "min_ms": 68.3,
+    "tls_median_ms": 47.7,
+    "bytes": 95
+  },
+  {
+    "id": "tokenhub-inference",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "405": 5
+    },
+    "median_ms": 154.5,
+    "max_ms": 668.0,
+    "min_ms": 104.6,
+    "tls_median_ms": 25.8,
+    "bytes": 95
+  },
+  {
+    "id": "xai",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 0,
+    "http": {
+      "0": 5
+    },
+    "median_ms": null,
+    "max_ms": null,
+    "min_ms": null,
+    "tls_median_ms": null,
+    "bytes": 0
+  },
+  {
+    "id": "xai",
+    "node": "hangzhou-via-hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 360.9,
+    "max_ms": 440.2,
+    "min_ms": 311.3,
+    "tls_median_ms": 153.7,
+    "bytes": 385
+  },
+  {
+    "id": "xai",
+    "node": "hangzhou-via-singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 487.1,
+    "max_ms": 585.2,
+    "min_ms": 471.8,
+    "tls_median_ms": 221.1,
+    "bytes": 385
+  },
+  {
+    "id": "xai",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 202.6,
+    "max_ms": 257.3,
+    "min_ms": 194.4,
+    "tls_median_ms": 35.7,
+    "bytes": 385
+  },
+  {
+    "id": "xai",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 217.1,
+    "max_ms": 229.2,
+    "min_ms": 210.7,
+    "tls_median_ms": 25.1,
+    "bytes": 385
+  },
+  {
+    "id": "xiaomi",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 135.0,
+    "max_ms": 139.9,
+    "min_ms": 117.5,
+    "tls_median_ms": 92.7,
+    "bytes": 825
+  },
+  {
+    "id": "xiaomi",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 131.4,
+    "max_ms": 143.4,
+    "min_ms": 106.0,
+    "tls_median_ms": 86.9,
+    "bytes": 825
+  },
+  {
+    "id": "xiaomi",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 94.1,
+    "max_ms": 156.4,
+    "min_ms": 31.3,
+    "tls_median_ms": 86.9,
+    "bytes": 825
+  },
+  {
+    "id": "zhipu",
+    "node": "hangzhou",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 98.4,
+    "max_ms": 105.3,
+    "min_ms": 89.2,
+    "tls_median_ms": 45.6,
+    "bytes": 525
+  },
+  {
+    "id": "zhipu",
+    "node": "hongkong",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 93.4,
+    "max_ms": 116.3,
+    "min_ms": 88.4,
+    "tls_median_ms": 37.7,
+    "bytes": 525
+  },
+  {
+    "id": "zhipu",
+    "node": "singapore",
+    "n": 5,
+    "transport_ok": 5,
+    "http": {
+      "401": 5
+    },
+    "median_ms": 210.6,
+    "max_ms": 250.9,
+    "min_ms": 179.3,
+    "tls_median_ms": 88.3,
+    "bytes": 525
+  }
+]

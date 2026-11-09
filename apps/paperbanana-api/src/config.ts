@@ -1,3 +1,6 @@
+import { REFERENCE_UPLOAD_PLATFORM } from '../../../packages/api/src/reference-upload.js'
+import { DIRECT_ELIGIBLE_HOSTS, HONG_KONG_ELIGIBLE_HOSTS } from './provider-route-policy.js'
+
 export type ServiceConfig = {
   host: string
   port: number
@@ -17,9 +20,10 @@ export type ServiceConfig = {
   referenceImageMaxCount: number
   referenceImageMaxTotalBytes: number
   providerImageMaxBytes: number
-  providerEgress:
+  providerEgress: (
     | { mode: 'disabled' }
     | { mode: 'sg-required'; proxyUrl: string }
+  ) & { directHosts?: string[]; hongkong?: { proxyUrl: string; hosts: string[] } }
   mongodb: {
     uri: string
     database: string
@@ -84,11 +88,30 @@ function ossEndpoint(env: Environment, name: string, expectedHostname: string): 
 }
 
 function providerEgressConfig(env: Environment): ServiceConfig['providerEgress'] {
+  const rawDirectHosts = env.PAPERBANANA_PROVIDER_DIRECT_HOSTS
+  const directHosts = rawDirectHosts === undefined ? undefined : rawDirectHosts.split(',')
+  if (directHosts && (new Set(directHosts).size !== directHosts.length || directHosts.some(
+    host => !DIRECT_ELIGIBLE_HOSTS.includes(host),
+  ))) {
+    throw new Error('PAPERBANANA_PROVIDER_DIRECT_HOSTS accepts only distinct reviewed direct API hosts')
+  }
+  const routes = directHosts ? { directHosts } : {}
   const mode = env.PAPERBANANA_PROVIDER_EGRESS_MODE
   if (mode !== 'disabled' && mode !== 'sg-required') {
     throw new Error('PAPERBANANA_PROVIDER_EGRESS_MODE must be exactly disabled or sg-required')
   }
-  if (mode === 'disabled') return { mode }
+  let hongkong: ServiceConfig['providerEgress']['hongkong']
+  if (env.PAPERBANANA_HK_PROXY_URL !== undefined || env.PAPERBANANA_PROVIDER_HK_HOSTS !== undefined) {
+    const hosts = (env.PAPERBANANA_PROVIDER_HK_HOSTS || '').split(',')
+    if (mode !== 'sg-required'
+      || !/^http:\/\/10\.78\.0\.1:3128\/?$/.test(env.PAPERBANANA_HK_PROXY_URL || '')
+      || new Set(hosts).size !== hosts.length
+      || hosts.some(host => !HONG_KONG_ELIGIBLE_HOSTS.includes(host) || directHosts?.includes(host))) {
+      throw new Error('PAPERBANANA_PROVIDER_HK_HOSTS requires distinct reviewed hosts, sg-required and the approved PAPERBANANA_HK_PROXY_URL')
+    }
+    hongkong = { proxyUrl: 'http://10.78.0.1:3128', hosts }
+  }
+  if (mode === 'disabled') return { mode, ...routes }
 
   const proxyUrl = env.PAPERBANANA_SG_PROXY_URL || ''
   let parsed: URL
@@ -108,7 +131,7 @@ function providerEgressConfig(env: Environment): ServiceConfig['providerEgress']
   ) {
     throw new Error('PAPERBANANA_SG_PROXY_URL must be the approved Singapore proxy origin')
   }
-  return { mode, proxyUrl: parsed.origin }
+  return { mode, proxyUrl: parsed.origin, ...routes, ...(hongkong ? { hongkong } : {}) }
 }
 
 export function loadConfig(env: Environment = process.env, buildCodeSha?: string): ServiceConfig {
@@ -128,6 +151,10 @@ export function loadConfig(env: Environment = process.env, buildCodeSha?: string
   const internalEndpoint = ossEndpoint(env, 'OSS_INTERNAL_ENDPOINT', `${region}-internal.aliyuncs.com`)
   const publicEndpoint = ossEndpoint(env, 'OSS_PUBLIC_ENDPOINT', `${region}.aliyuncs.com`)
   if (internalEndpoint === publicEndpoint) throw new Error('OSS_INTERNAL_ENDPOINT and OSS_PUBLIC_ENDPOINT must be distinct')
+  const ossServerEndpointMode = env.PAPERBANANA_OSS_SERVER_ENDPOINT_MODE ?? 'internal'
+  if (ossServerEndpointMode !== 'internal' && ossServerEndpointMode !== 'public') {
+    throw new Error('PAPERBANANA_OSS_SERVER_ENDPOINT_MODE must be exactly internal or public')
+  }
   const benchmarkFlag = env.PAPERBANANA_BENCH_API_ENABLED?.trim() || 'false'
   if (benchmarkFlag !== 'true' && benchmarkFlag !== 'false') throw new Error('PAPERBANANA_BENCH_API_ENABLED must be exactly true or false')
   const benchmarkOssServerEndpointMode = env.PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE === undefined
@@ -176,12 +203,12 @@ export function loadConfig(env: Environment = process.env, buildCodeSha?: string
       maxActive: boundedInteger(env, 'PAPERBANANA_MAX_ACTIVE_JOBS', 1, 1, 8),
       maxPending: boundedInteger(env, 'PAPERBANANA_MAX_PENDING_JOBS', 2, 0, 32),
       maxPerOwner: boundedInteger(env, 'PAPERBANANA_MAX_JOBS_PER_OWNER', 1, 1, 8),
-      maxPerIp: boundedInteger(env, 'PAPERBANANA_MAX_JOBS_PER_IP', 1, 1, 8),
+      maxPerIp: boundedInteger(env, 'PAPERBANANA_MAX_JOBS_PER_IP', 1, 1, 40),
     },
     readinessProbeTimeoutMs: boundedInteger(env, 'PAPERBANANA_READINESS_PROBE_TIMEOUT_MS', 2000, 100, 10_000),
-    referenceImageMaxBytes: boundedInteger(env, 'PAPERBANANA_MAX_REFERENCE_BYTES', 20 * 1024 * 1024, 1, 20 * 1024 * 1024),
-    referenceImageMaxCount: boundedInteger(env, 'PAPERBANANA_MAX_REFERENCE_IMAGES', 8, 1, 8),
-    referenceImageMaxTotalBytes: boundedInteger(env, 'PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', 80 * 1024 * 1024, 1, 80 * 1024 * 1024),
+    referenceImageMaxBytes: boundedInteger(env, 'PAPERBANANA_MAX_REFERENCE_BYTES', REFERENCE_UPLOAD_PLATFORM.maxBytes, 1, REFERENCE_UPLOAD_PLATFORM.maxBytes),
+    referenceImageMaxCount: boundedInteger(env, 'PAPERBANANA_MAX_REFERENCE_IMAGES', REFERENCE_UPLOAD_PLATFORM.maxCount, 1, REFERENCE_UPLOAD_PLATFORM.maxCount),
+    referenceImageMaxTotalBytes: boundedInteger(env, 'PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', REFERENCE_UPLOAD_PLATFORM.maxTotalBytes, 1, REFERENCE_UPLOAD_PLATFORM.maxTotalBytes),
     providerImageMaxBytes: boundedInteger(env, 'PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES', 20 * 1024 * 1024, 5 * 1024 * 1024, 50 * 1024 * 1024),
     providerEgress: providerEgressConfig(env),
     mongodb: {
@@ -195,6 +222,7 @@ export function loadConfig(env: Environment = process.env, buildCodeSha?: string
       bucket: required(env, 'PAPERBANANA_BUCKET'),
       internalEndpoint,
       publicEndpoint,
+      serverEndpointMode: ossServerEndpointMode,
       secure: true,
       pathStyle: false,
     },

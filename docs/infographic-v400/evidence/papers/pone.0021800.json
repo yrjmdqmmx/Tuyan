@@ -1,0 +1,103 @@
+{
+  "doi": "10.1371/journal.pone.0021800",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0021800",
+  "title": "REVIGO Summarizes and Visualizes Long Lists of Gene Ontology Terms",
+  "journal": "PLoS ONE",
+  "authors": [
+    "Fran Supek",
+    "Matko Bošnjak",
+    "Nives Škunca",
+    "Tomislav Šmuc"
+  ],
+  "year": "2011",
+  "license": "2011Supek et alThis is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {}
+  ],
+  "figures": [
+    {
+      "id": "pone-0021800-g001",
+      "label": "Figure 1",
+      "caption": "A flowchart describing the REVIGO algorithm to remove redundant GO terms from the provided GO term list.\n            * In a special case when the parent term in question is composed almost exclusively of the child term (>75%), the parent term is rejected instead.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone-0021800-g001\" position=\"float\">\n          <object-id pub-id-type=\"doi\">10.1371/journal.pone.0021800.g001</object-id>\n          <label>Figure 1</label>\n          <caption>\n            <title>A flowchart describing the REVIGO algorithm to remove redundant GO terms from the provided GO term list.</title>\n            <p><bold>*</bold> In a special case when the parent term in question is composed almost exclusively of the child term (&gt;75%), the parent term is rejected instead.</p>\n          </caption>\n          <graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0021800.g001\" ns0:type=\"simple\" />\n        </fig>\n        ",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0021800.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone-0021800-g002",
+      "label": "Figure 2",
+      "caption": "The “Scatterplot & Table” view of REVIGO.\n            The scatterplot shows the cluster representatives (i.e. terms remaining after the redundancy reduction) in a two dimensional space derived by applying multidimensional scaling to a matrix of the GO terms' semantic similarities. The table view in the lower part of the figure is truncated; cluster representatives are given in black and other cluster members in gray letters. Bubble color indicates the user-provided p-value (legend in upper right-hand corner); size indicates the frequency of the GO term in the underlying GOA database (bubbles of more general terms are larger).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone-0021800-g002\" position=\"float\">\n          <object-id pub-id-type=\"doi\">10.1371/journal.pone.0021800.g002</object-id>\n          <label>Figure 2</label>\n          <caption>\n            <title>The “Scatterplot &amp; Table” view of REVIGO.</title>\n            <p>The scatterplot shows the cluster representatives (i.e. terms remaining after the redundancy reduction) in a two dimensional space derived by applying multidimensional scaling to a matrix of the GO terms' semantic similarities. The table view in the lower part of the figure is truncated; cluster representatives are given in black and other cluster members in gray letters. Bubble color indicates the user-provided p-value (legend in upper right-hand corner); size indicates the frequency of the GO term in the underlying GOA database (bubbles of more general terms are larger).</p>\n          </caption>\n          <graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0021800.g002\" ns0:type=\"simple\" />\n        </fig>\n        ",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0021800.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone-0021800-g003",
+      "label": "Figure 3",
+      "caption": "The “Interactive graph” view of REVIGO.\n            Bubble color indicates the user-provided p-value; bubble size indicates the frequency of the GO term in the underlying GOA database. Highly similar GO terms are linked by edges in the graph, where the line width indicates the degree of similarity. The initial placement of the nodes is determined by a ‘force-directed’ layout algorithm that aims to keep the more similar nodes closer together, but the placement may later be adjusted by the user.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone-0021800-g003\" position=\"float\">\n          <object-id pub-id-type=\"doi\">10.1371/journal.pone.0021800.g003</object-id>\n          <label>Figure 3</label>\n          <caption>\n            <title>The “Interactive graph” view of REVIGO.</title>\n            <p>Bubble color indicates the user-provided <italic>p</italic>-value; bubble size indicates the frequency of the GO term in the underlying GOA database. Highly similar GO terms are linked by edges in the graph, where the line width indicates the degree of similarity. The initial placement of the nodes is determined by a ‘force-directed’ layout algorithm that aims to keep the more similar nodes closer together, but the placement may later be adjusted by the user.</p>\n          </caption>\n          <graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0021800.g003\" ns0:type=\"simple\" />\n        </fig>\n        ",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0021800.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone-0021800-g004",
+      "label": "Figure 4",
+      "caption": "The “TreeMap” view of REVIGO.\n            Each rectangle is a single cluster representative. The representatives are joined into ‘superclusters’ of loosely related terms, visualized with different colors. Size of the rectangles may be adjusted to reflect either the p-value, or the frequency of the GO term in the underlying GOA database.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone-0021800-g004\" position=\"float\">\n          <object-id pub-id-type=\"doi\">10.1371/journal.pone.0021800.g004</object-id>\n          <label>Figure 4</label>\n          <caption>\n            <title>The “TreeMap” view of REVIGO.</title>\n            <p>Each rectangle is a single cluster representative. The representatives are joined into ‘superclusters’ of loosely related terms, visualized with different colors. Size of the rectangles may be adjusted to reflect either the <italic>p</italic>-value, or the frequency of the GO term in the underlying GOA database.</p>\n          </caption>\n          <graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0021800.g004\" ns0:type=\"simple\" />\n        </fig>\n        ",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0021800.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone-0021800-g005",
+      "label": "Figure 5",
+      "caption": "The “Tag Cloud” view of REVIGO.\n            All displayed words are overrepresented in the descriptions of the GO terms in the user-supplied list, with larger and darker letters signifying stronger overrepresentation. Underrepresented keywords are not displayed in the Tag Cloud.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone-0021800-g005\" position=\"float\">\n          <object-id pub-id-type=\"doi\">10.1371/journal.pone.0021800.g005</object-id>\n          <label>Figure 5</label>\n          <caption>\n            <title>The “Tag Cloud” view of REVIGO.</title>\n            <p>All displayed words are overrepresented in the descriptions of the GO terms in the user-supplied list, with larger and darker letters signifying stronger overrepresentation. Underrepresented keywords are not displayed in the Tag Cloud.</p>\n          </caption>\n          <graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0021800.g005\" ns0:type=\"simple\" />\n        </fig>\n      ",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0021800.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone-0021800-g006",
+      "label": "Figure 6",
+      "caption": "REVIGO's “Table” view of seven gene functional categories co-expressed with the human transcription factor ZNF417; data from [14].\n            “Frequency” is the percentage of human proteins in UniProt which were annotated with a GO term in the GOA database, i.e. a higher frequency denotes a more general term. Cluster representatives are given in black letters and other cluster members are in gray italics and indented. The seven terms are subdivided into four clusters, two of which contain a single term. The ‘pin’ column can be used to manually override the choice of cluster representative.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone-0021800-g006\" position=\"float\">\n          <object-id pub-id-type=\"doi\">10.1371/journal.pone.0021800.g006</object-id>\n          <label>Figure 6</label>\n          <caption>\n            <title>REVIGO's “Table” view of seven gene functional categories co-expressed with the human transcription factor ZNF417; data from <xref ref-type=\"bibr\" rid=\"pone.0021800-Nowick1\">[<bold>14</bold>]</xref>.</title>\n            <p>“Frequency” is the percentage of human proteins in UniProt which were annotated with a GO term in the GOA database, i.e. a higher frequency denotes a more general term. Cluster representatives are given in black letters and other cluster members are in gray italics and indented. The seven terms are subdivided into four clusters, two of which contain a single term. The ‘pin’ column can be used to manually override the choice of cluster representative.</p>\n          </caption>\n          <graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0021800.g006\" ns0:type=\"simple\" />\n        </fig>\n        ",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0021800.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone-0021800-g007",
+      "label": "Figure 7",
+      "caption": "REVIGO's “Scatterplot view” of seven gene functional categories co-expressed with the human transcription factor ZNF417; data from [14], also given in Fig. 6.\n            Blue and green bubbles are GO terms with more significant p-values than the orange and red bubbles. The bubbles' x and y coordinates were derived by applying multidimensional scaling to a matrix of the GO terms' semantic similarities; consequently, their closeness on the plot should closely reflect their closeness in the GO graph structure i.e. the semantic similarity. The cluster representatives (see legend of Fig. 6) have their description printed on a dark background, while the other cluster members' descriptions have white backgrounds.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone-0021800-g007\" position=\"float\">\n          <object-id pub-id-type=\"doi\">10.1371/journal.pone.0021800.g007</object-id>\n          <label>Figure 7</label>\n          <caption>\n            <title>REVIGO's “Scatterplot view” of seven gene functional categories co-expressed with the human transcription factor ZNF417; data from <xref ref-type=\"bibr\" rid=\"pone.0021800-Nowick1\">[<bold>14</bold>]</xref>, also given in <xref ref-type=\"fig\" rid=\"pone-0021800-g006\"><bold>Fig. 6</bold></xref>.</title>\n            <p>Blue and green bubbles are GO terms with more significant <italic>p</italic>-values than the orange and red bubbles. The bubbles' <italic>x</italic> and <italic>y</italic> coordinates were derived by applying multidimensional scaling to a matrix of the GO terms' semantic similarities; consequently, their closeness on the plot should closely reflect their closeness in the GO graph structure i.e. the semantic similarity. The cluster representatives (see legend of <xref ref-type=\"fig\" rid=\"pone-0021800-g006\">Fig. 6</xref>) have their description printed on a dark background, while the other cluster members' descriptions have white backgrounds.</p>\n          </caption>\n          <graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0021800.g007\" ns0:type=\"simple\" />\n        </fig>\n        ",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0021800.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

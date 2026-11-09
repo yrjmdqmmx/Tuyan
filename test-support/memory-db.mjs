@@ -8,6 +8,7 @@ export function matches(row, query = {}) {
     if (expected && typeof expected === 'object' && !(expected instanceof Date)) {
       return Object.entries(expected).every(([op, value]) => {
         if (op === '$in') return value.some((v) => v == null ? actual == null : String(v) === String(actual));
+        if (op === '$nin') return !value.some((v) => v == null ? actual == null : String(v) === String(actual));
         if (op === '$exists') return value === (actual !== undefined);
         if (op === '$lte') return actual <= value;
         if (op === '$lt') return actual < value;
@@ -39,7 +40,8 @@ export function memoryDb(seed = {}) {
         find(query = {}) {
           let selected = rows.filter((row) => matches(row, query));
           return {
-            sort(order) { const [key, direction] = Object.entries(order)[0]; selected.sort((a, b) => (a[key] > b[key] ? 1 : a[key] < b[key] ? -1 : 0) * direction); return this; },
+            sort(order) { selected.sort((a, b) => { for (const [key, direction] of Object.entries(order)) { const comparison = (a[key] > b[key] ? 1 : a[key] < b[key] ? -1 : 0) * direction; if (comparison) return comparison; } return 0; }); return this; },
+            skip(count) { selected = selected.slice(count); return this; },
             limit(count) { selected = selected.slice(0, count); return this; },
             async toArray() { return structuredClone(selected); },
           };

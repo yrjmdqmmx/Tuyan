@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0191835</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-17-26608</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Metabolism</subject><subj-group><subject>Carbohydrate metabolism</subject><subj-group><subject>Glucose metabolism</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Glycobiology</subject><subj-group><subject>Glycogens</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Chemical compounds</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Carbohydrates</subject><subj-group><subject>Monosaccharides</subject><subj-group><subject>Glucose</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Organic chemistry</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Carbohydrates</subject><subj-group><subject>Monosaccharides</subject><subj-group><subject>Glucose</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Metabolism</subject><subj-group><subject>Metabolic pathways</subject><subj-group><subject>Xenobiotic metabolism</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Molecular biology</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>Molecular biology assays and analysis techniques</subject><subj-group><subject>Amino acid analysis</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>Molecular biology assays and analysis techniques</subject><subj-group><subject>Amino acid analysis</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Lipids</subject><subj-group><subject>Fatty acids</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Network analysis</subject><subj-group><subject>Metabolic networks</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Molecular biology</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>Cell labeling</subject><subj-group><subject>Metabolic labeling</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>Cell labeling</subject><subj-group><subject>Metabolic labeling</subject></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Predicting the accumulation of storage compounds by <italic>Rhodococcus jostii</italic> RHA1 in the feast-famine growth cycles using genome-scale flux balance analysis</article-title>
+<alt-title alt-title-type="running-head">Accumulation of storage in the feast-famine cycles using flux balance analysis</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Tajparast</surname>
+<given-names>Mohammad</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Data curation</role>
+<role content-type="http://credit.casrai.org/">Formal analysis</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"/>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-1587-8943</contrib-id>
+<name name-style="western">
+<surname>Frigon</surname>
+<given-names>Dominic</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Funding acquisition</role>
+<role content-type="http://credit.casrai.org/">Project administration</role>
+<role content-type="http://credit.casrai.org/">Resources</role>
+<role content-type="http://credit.casrai.org/">Supervision</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="corresp" rid="cor001">*</xref>
+<xref ref-type="aff" rid="aff001"/>
+</contrib>
+</contrib-group>
+<aff id="aff001"><addr-line>Microbial Community Engineering Laboratory, Department of Civil Engineering and Applied Mechanics, McGill University, Montreal, Quebec, Canada</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Virolle</surname>
+<given-names>Marie-Joelle</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Universite Paris-Sud, FRANCE</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">dominic.frigon@mcgill.ca</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>1</day>
+<month>3</month>
+<year>2018</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2018</year>
+</pub-date>
+<volume>13</volume>
+<issue>3</issue>
+<elocation-id>e0191835</elocation-id>
+<history>
+<date date-type="received">
+<day>15</day>
+<month>7</month>
+<year>2017</year>
+</date>
+<date date-type="accepted">
+<day>11</day>
+<month>1</month>
+<year>2018</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2018</copyright-year>
+<copyright-holder>Tajparast, Frigon</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0191835"/>
+<abstract>
+<p>Feast-famine cycles in biological wastewater resource recovery systems select for bacterial species that accumulate intracellular storage compounds such as poly-β-hydroxybutyrate (PHB), glycogen, and triacylglycerols (TAG). These species survive better the famine phase and resume rapid substrate uptake at the beginning of the feast phase faster than microorganisms unable to accumulate storage. However, ecophysiological conditions favouring the accumulation of either storage compounds remain to be clarified, and predictive capabilities need to be developed to eventually rationally design reactors producing these compounds. Using a genome-scale metabolic modelling approach, the storage metabolism of <italic>Rhodococcus jostii</italic> RHA1 was investigated for steady-state feast-famine cycles on glucose and acetate as the sole carbon sources. <italic>R</italic>. <italic>jostii</italic> RHA1 is capable of accumulating the three storage compounds (PHB, TAG, and glycogen) simultaneously. According to the experimental observations, when glucose was the substrate, feast phase chemical oxygen demand (COD) accumulation was similar for the three storage compounds; when acetate was the substrate, however, PHB accumulation was 3 times higher than TAG accumulation and essentially no glycogen was accumulated. These results were simulated using the genome-scale metabolic model of <italic>R</italic>. <italic>jostii</italic> RHA1 (<italic>i</italic>MT1174) by means of flux balance analysis (FBA) to determine the objective functions capable of predicting these behaviours. Maximization of the growth rate was set as the main objective function, while minimization of total reaction fluxes and minimization of metabolic adjustment (<italic>environmental</italic> MOMA) were considered as the sub-objective functions. The <italic>environmental</italic> MOMA sub-objective performed better than the minimization of total reaction fluxes sub-objective function at predicting the mixture of storage compounds accumulated. Additional experiments with <sup>13</sup>C-labelled bicarbonate (HCO<sub>3</sub><sup>−</sup>) found that the fluxes through the central metabolism reactions during the feast phases were similar to the ones during the famine phases on acetate due to similarity in the carbon sources in the feast and famine phases (i.e., acetate and poly-β-hydroxybutyrate, respectively); this suggests that the <italic>environmental</italic> MOMA sub-objective function could be used to analyze successive environmental conditions such as the feast and famine cycles while the metabolically similar carbon sources are taken up by microorganisms.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100000038</institution-id>
+<institution>Natural Sciences and Engineering Research Council of Canada</institution>
+</institution-wrap>
+</funding-source>
+<award-id>RGPIN 341393-11</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-1587-8943</contrib-id>
+<name name-style="western">
+<surname>Frigon</surname>
+<given-names>Dominic</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100008583</institution-id>
+<institution>Faculty of Engineering, McGill University</institution>
+</institution-wrap>
+</funding-source>
+<award-id>MEDA award</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Tajparast</surname>
+<given-names>Mohammad</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>This work was supported by the Natural Sciences and Engineering Research Council of Canada (NSERC) Discovery Grant awarded to DF (RGPIN 341393-11). MT is grateful to the McGill Engineering Doctoral Award (MEDA) for the financial support of his Ph.D. study. Labelled amino acid measurements were performed at the Rosalind and Morris Goodman Cancer Research Centre Metabolomics Core Facility supported by the Canada Foundation of Innovation, The Dr. John R. and Clara M. Fraser Memorial Trust, the Terry Fox Foundation (TFF Oncometabolism Team Grant 116128), and McGill University. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="5"/>
+<table-count count="2"/>
+<page-count count="18"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Biological wastewater resource recovery systems are often highly dynamic with regard to availability of external electron donors [<xref ref-type="bibr" rid="pone.0191835.ref001">1</xref>]. Thus, the biomass is subjected to cycles of feast and famine, with the feast phase being the period when external electron donors (i.e., carbon and energy source in the case of heterotrophic growth) is available, and the famine phase being the starvation period when growth and maintenance energy is from the oxidation of internal storage compounds or of functional macromolecules [<xref ref-type="bibr" rid="pone.0191835.ref001">1</xref>]. Such cycles profoundly affect the microbial ecology and the metabolism of bacterial species present in these environments. One of the main metabolisms found under this cycling is the accumulation (during feast) and consumption (during famine) of storage compounds such as poly-β-hydroxybutyrate (PHB), glycogen, and triacylglycerols (TAG) [<xref ref-type="bibr" rid="pone.0191835.ref002">2</xref>]. Note that nutrient availability does not limit biomass formation during feast phase, but the anabolic machinery (especially the protein synthesis system) is not fully induced, which cause the biomass formation to be lower than what could be possible by the near maximum specific substrate uptake; the substrate taken-up above the rate of biomass formation is directed to the formation of storage compounds [<xref ref-type="bibr" rid="pone.0191835.ref003">3</xref>]. In addition, bacterial species accumulating storage compounds during the feast phase outperform the species lacking this ability probably by maintaining the capacity to rapidly respond to substrate arrival such that the metabolic cost of storage in terms of biomass yield is lower than the cost of maintaining metabolic functions to rapidly gain access to the substrate and win ecological competition [<xref ref-type="bibr" rid="pone.0191835.ref003">3</xref>]. Therefore, understanding and properly modeling the metabolism of the storage compounds is central to predict the population dynamics in environments such as activated sludge wastewater resource recovery systems. Once developed, these predictive capabilities will facilitate optimization of reactors designed to produce value-added by-products from wastewater.</p>
+<p>Genome-scale metabolic models are mathematical representations of the stoichiometry of the biochemical networks based on genomic information. It is one of the tools to make the metabolic predictions on the behaviour of microorganisms in different environmental conditions. Predicting the composition mixture under various growth conditions can be accomplished by solving the genome-scale metabolic model at steady-state using flux balance analysis (FBA). This approach typically yields a set of underdetermined mass balance equations. The solution space of this equation system can be investigated by finding solutions optimally satisfying biologically relevant linear objective functions implemented in a linear-programming approach [<xref ref-type="bibr" rid="pone.0191835.ref004">4</xref>, <xref ref-type="bibr" rid="pone.0191835.ref005">5</xref>]. Defining relevant objective functions for metabolic predictions in the environmental conditions remains at its infancy; for instance, few biologically-appropriate constraints have been imposed on optimal metabolic fluxes predicted by FBA in order to better simulate phenotypic behaviours of microorganisms at different environmental and physiological conditions such as intracellular crowding [<xref ref-type="bibr" rid="pone.0191835.ref006">6</xref>], constrained allocation flux balance analysis [<xref ref-type="bibr" rid="pone.0191835.ref007">7</xref>]. A wide-scope review on different constraint-based reconstruction and analysis (COBRA) methods on metabolic genotype-phenotype relationship was published elsewhere [<xref ref-type="bibr" rid="pone.0191835.ref008">8</xref>]. Therefore, the goal of the current work is to evaluate the performance of some of the objective functions available in the literature for their capacity at predicting the mixture of storage compounds accumulated by <italic>Rhodococcus jostii</italic> RHA1 under feast-famine cycles.</p>
+<p><italic>R</italic>. <italic>jostii</italic> RHA1 was isolated from lindane contaminated soil [<xref ref-type="bibr" rid="pone.0191835.ref009">9</xref>] and is best known for its superior ability to degrade a wide variety of organic compounds such as polychlorinated biphenyls (PCBs). The genome of <italic>R</italic>. <italic>jostii</italic> RHA1 has already been sequenced and annotated [<xref ref-type="bibr" rid="pone.0191835.ref010">10</xref>]. Its genome comprises of 9.7 Mbp arranged in four linear replicons: one chromosome and three plasmids [<xref ref-type="bibr" rid="pone.0191835.ref010">10</xref>]. Its genome encodes a surprisingly large number of oxidoreductases, enzymes that are often involved in the hydroxylation and cleavage of aromatic compounds. This is in line with the degradation capability of a wide range of xenobiotic compounds, sterols and steroids of <italic>R</italic>. <italic>jostii</italic> RHA1 [<xref ref-type="bibr" rid="pone.0191835.ref011">11</xref>, <xref ref-type="bibr" rid="pone.0191835.ref012">12</xref>].</p>
+<p>Two sub-objective functions to predict the fluxes of three storage compounds through <italic>R</italic>. <italic>jostii</italic> RHA1’s metabolism under feast-famine cycles were evaluated in the current study. First, following evolutionary principles, the maximal cellular growth rate/yield (both definitions are the same because carbon excretion was not allowed) was used as the principal objective function as this would likely represent the winning phenotype in a given niche [<xref ref-type="bibr" rid="pone.0191835.ref013">13</xref>]. Then, the two different sub-objective functions were coupled with the principal objective function to represent other metabolic/environmental constraints. Defining a first sub-objective function, it is possible that organisms pursue a global optimal use of their metabolic network independently in each growth phase (i.e., independently during the feast and famine phases) by minimizing the total metabolic fluxes (i.e., maximizing cellular efficiency) [<xref ref-type="bibr" rid="pone.0191835.ref014">14</xref>]. Another possible sub-objective function could be to minimize the flux differences between feast and famine growth, which would minimize the metabolic cost and time of cellular rearrangements between growth phases. In other words, although the metabolic network (e.g., minimum of total fluxes) could vary with electron donor used in the feast and famine phases (e.g., glucose and PHA, respectively), it was hypothesized that breaking down protein-enzymes and expressing new ones to reach the two optima require a high energetic investment, and lead to a significant time lag between phases. Instead, the enzymatic make-up of the cell would reach an average of the expression in both phases, and ultimately lead to similar metabolic fluxes. This sub-objective function was first developed for the analysis of gene mutations under the name minimization of metabolic adjustment (MOMA) [<xref ref-type="bibr" rid="pone.0191835.ref015">15</xref>]. Thus, we called it <italic>environmental</italic> MOMA [<xref ref-type="bibr" rid="pone.0191835.ref016">16</xref>].</p>
+<p>In the current study, the storage metabolism of <italic>Rhodococcus jostii</italic> RHA1 during the feast-famine growth cycle was studied and modeled by FBA using its recently published genome-scale metabolic model: <italic>i</italic>MT1174. The genus <italic>Rhodococcus</italic> is important for both environmental and biotechnological applications because of its extraordinary capacity for metabolizing recalcitrant organic compounds [<xref ref-type="bibr" rid="pone.0191835.ref012">12</xref>]. Several representatives of this genus have been isolated from soil, marine environment and activated sludge wastewater resource recovery systems [<xref ref-type="bibr" rid="pone.0191835.ref017">17</xref>], making it an interesting model heterotroph to study. Like other microorganisms in environments where transient nutrient-limitation is common, <italic>Rhodococcus</italic> spp. can accumulate storage compounds for subsequent utilization by cells as endogenous carbon sources and electron donors during periods of nutritional scarcity [<xref ref-type="bibr" rid="pone.0191835.ref018">18</xref>]. Of special interest for this work, <italic>R</italic>. <italic>jostii</italic> RHA1 is able to simultaneously accumulate a variety of carbon storage compounds: poly-β-hydroxybutyrate (PHB), poly(3-hydroxyvalerate) (PHV), triacylglycerols (TAG), and glycogen [<xref ref-type="bibr" rid="pone.0191835.ref016">16</xref>, <xref ref-type="bibr" rid="pone.0191835.ref018">18</xref>]. However, the composition of the storage compounds mixture quantitatively changes with substrates, providing an interesting case to evaluate modeling approaches.</p>
+<p>The experiments consisted in growing <italic>R</italic>. <italic>jostii</italic> RHA1 in semi-batch conditions leading to feast-famine cycles in mineral salt medium containing either glucose or acetate as the sole carbon source. The fluxes through the glycogen, PHB, and TAG storage compounds were determined, and the genome-scale metabolic model <italic>i</italic>MT1174 [<xref ref-type="bibr" rid="pone.0191835.ref016">16</xref>] was solved with the objective functions to predict the measured storage fluxes. As we propose a new application of the MOMA principle, the fluxes of the central metabolic reactions of <italic>R</italic>. <italic>jostii</italic> RHA1 were determined during the feast and famine cycle by labelling amino acids with <sup>13</sup>C-bicarbonate added at the beginning of either the feast or the famine phases. The labelling patterns were then simulated using <sup>13</sup>C-metabolic flux analysis (<sup>13</sup>C-MFA).</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Materials and methods</title>
+<sec id="sec003">
+<title>Bacterial strain and growth medium</title>
+<p>For all reactor experiments, <italic>R</italic>. <italic>jostii</italic> strain RHA1 was grown on a mineral salt medium (MSM) containing NH<sub>4</sub>Cl (84.00 mg-N/L), KH<sub>2</sub>PO<sub>4</sub> (224.54 mg/L), MgSO<sub>4</sub>.7H<sub>2</sub>O (273.59 mg/L), KCl (111.83 mg/L), and trace element solution (1 mL/L) [<xref ref-type="bibr" rid="pone.0191835.ref019">19</xref>, <xref ref-type="bibr" rid="pone.0191835.ref020">20</xref>].The trace element solution contained: ethylenediamine tetra-acetic acid (EDTA: C<sub>10</sub>H<sub>16</sub>N<sub>2</sub>O<sub>8</sub>) (50.00 g/L), ZnSO<sub>4</sub>.7H<sub>2</sub>O (22.00 g/L), CaCl<sub>2</sub> (5.54 g/L), MnCl<sub>2</sub>.4H<sub>2</sub>O (5.06 g/L), FeSO<sub>4</sub>.7H<sub>2</sub>O (4.99 g/L), (NH<sub>4</sub>)<sub>6</sub>Mo<sub>7</sub>O<sub>24</sub>.4H<sub>2</sub>O (1.10 g/L), CuSO<sub>4</sub>.5H<sub>2</sub>O (1.57 g/L), CoCl<sub>2</sub>.6H<sub>2</sub>O (1.61 g/L) dissolved in 1000 mL dilution water; adjusted to pH 6.0 with KOH [<xref ref-type="bibr" rid="pone.0191835.ref020">20</xref>]. Glucose or acetate was added to the medium as the sole carbon and energy source to final concentrations of 1.89 and 1.86 g/L, respectively. These concentrations are equivalent to 504 mg-COD/L [<xref ref-type="bibr" rid="pone.0191835.ref019">19</xref>]. It should be noted that C/N ratio was 9.0 and 8.8 g-C/g-N on glucose and acetate, respectively, in order not to limit microbial growth.</p>
+<p>The purity of the <italic>R</italic>. <italic>jostii</italic> RHA1 culture during reactor cultivation was ascertain by serial dilution plating on Nutrient Agar (Fisher Scientific, Ottawa, Canada); and the identity and genetic stability of the culture was determined by plating them on MSM agar (1.5% w/v) plate supplemented with biphenyl (few crystals on the lid of the Petri dishes) [<xref ref-type="bibr" rid="pone.0191835.ref021">21</xref>]. All plate incubations were at 28°C.</p>
+</sec>
+<sec id="sec004">
+<title>Reactor condition</title>
+<p>A 2-L (working volume) sequencing batch reactor (SBR, Labfors reactor, INFORS HT, Switzerland) without settling was employed to grow <italic>R</italic>. <italic>jostii</italic> RHA1 in dynamic conditions leading to feast and famine cycles. The hydraulic residence time (HRT) and the solids residence time (SRT) were both 24 h. Continuous operation of the SBR was based on a 6-h cycle comprising 5 phases: (1) 11-min aeration and mixing start period, (2) 2-min addition of dilution water (464 mL), (3) 4-min addition of 14× stock MSM (36 mL), (4) 338-min reaction phase, and (5) 5-min effluent withdrawal (500 mL). The cycle length was set to a length similar to an activated sludge wastewater treatment systems. A few drops of anti-foam (anti-foam 204, Sigma-Aldrich, St. Louis, MO) were also added to the reactor at each cycle to prevent foaming. The inlet air flow rate was controlled with a mass flow controller to 1.5 L/min, and stirrer speed was maintained at 300 rpm. The pH was controlled at 7.0 by automatically titrating 1 M KOH or 1 M HCl solutions. The temperature was fixed at 28°C using a water jacket.</p>
+<p>The steady-state operation of the SBR was achieved when for a few days the length of the feast periods and the dissolved oxygen (DO) time profiles throughout the cycles remained the same for each reaction cycle. Once at steady state, the SBR was sampled several times during a cycle (e.g., 10–11 90-mL samples) to determine dynamics of the concentrations of glucose or acetate, chemical oxygen demand (COD), NH<sub>4</sub><sup>+</sup>, glycogen, PHB, TAG, total suspended solids (TSS), volatile suspended solids (VSS), and non-volatile suspended solids. The runs on acetate and glucose were replicated twice and three times, respectively.</p>
+</sec>
+<sec id="sec005">
+<title>Analytical procedures</title>
+<p>The samples obtained to monitor changes in the chemical composition of the culture throughout a cycle were processed as follows. Three subsamples of 5 mL were rapidly filtered through a 0.22-μm filter in order to measure TSS (filter dried for 24 h at 105°C) and VSS (dry filter in an oven for 2 h at 550°C). The filtrates were then stored at −20°C until further analyses. Finally, a few drops of formaldehyde were added to the remaining volume of sample to stop biological activities, and subsamples of the biomass were centrifuged for analysis of glycogen (10 mL), PHB (20 mL), and TAG (20 mL). Biomass centrifuged pellets were stored at −80°C until analysis.</p>
+<p>The composition of the filtrate was analysed as follows. COD was measured according to the standard method 5220D [<xref ref-type="bibr" rid="pone.0191835.ref022">22</xref>].Colorimetric measurement of NH<sub>4</sub><sup>+</sup> was performed using the Berthelot reaction [<xref ref-type="bibr" rid="pone.0191835.ref023">23</xref>]; acetate and glucose concentrations were determined enzymatically using the K-ACETRM kit (Megazyme International Ireland Ltd., Bray, Ireland) and hexokinase enzymatic colorimetric kit (Sigma-Aldrich, St. Louis, MO), respectively, according to the manufacturer’s instructions. All spectrophotometric measurements were performed using a model SpectraMax5 microplate reader (model; Molecular Devices, LLC, USA).</p>
+<p>Biomass pellets were analysed for levels of glycogen, PHB, and fatty acids. Glycogen levels were measured according to Maurer et al. (1997) [<xref ref-type="bibr" rid="pone.0191835.ref024">24</xref>]. Briefly, biomass subsamples were resuspended in sterile deionized water and split into 3 technical replicates. The mixtures were hydrolyzed in 0.6 M HCl at 95°C for 2 h, and then neutralized with KOH and phosphate buffer. Glucose concentrations released from glycogen hydrolysis were measured using the hexokinase enzymatic colorimetric kit (Sigma-Aldrich, St. Louis, MO) [<xref ref-type="bibr" rid="pone.0191835.ref024">24</xref>].</p>
+<p>PHB levels were determined as described previously [<xref ref-type="bibr" rid="pone.0191835.ref025">25</xref>] [<xref ref-type="bibr" rid="pone.0191835.ref026">26</xref>]. Briefly, the biomass subsamples were resuspended in sterile deionized water and split to perform 3 technical replicates. The mixtures were hydrolyzed in 0.67 M HCl at 65°C for 2 h, then centrifuged, and the pellet was finally extracted with chloroform at 29°C. The chloroform extracts were dried at room temperature overnight in fresh glass vials, and then sulfuric acid was added to the vials and they were further incubated at 95°C for 20 min. After cooling to room temperature, the amount of PHB was determined with the microplate spectrophotometer at 235 nm. DL-3-Hydroxybutiric acid (Sigma-Aldrich, St Louis, MO) was used as standard.</p>
+<p>For fatty acid determination, biomass pellets were lyophilised overnight, and 5–8 mg of lyophilized biomass were methanolysed at 100°C for 2.5 h in 600 μL of chloroform and 600 μL of methanol-15% (v/v) H<sub>2</sub>SO<sub>4</sub>. Trinonadecanoin (Nu-Check Prep Inc., Elysian, MN) was used as quantitative internal standard [<xref ref-type="bibr" rid="pone.0191835.ref027">27</xref>]. The organic phase containing fatty acid methyl esters (FAMEs) was analyzed by using an Agilent 6890N GC system equipped with an Agilent HP-88 column (60 m by 0.25 mm, 0.2 μm thick film, 2 mL/min of helium as carrier gas) and a flame ionization detector at 280°C (Agilent, Mississauga, Canada). A 1-μL sample of organic phase was injected with a 50:1 split ratio (inlet temperature: 250°C). The oven program was: 175°C for 15 min, heat to 220°C at 3°C/min, and then 220°C for 5min. The fatty acids were identified and quantified by comparison to standard FAMEs (F.A.M.E. Mix C14-C22, Supelco, Bellefonte, PA, USA). Finally, the reported TAG concentration was calculated from the measured fatty acid concentrations corrected for the amount of fatty acids estimated to be associated with the cell membrane.</p>
+</sec>
+<sec id="sec006">
+<title>Analysis of labelled amino acids</title>
+<p><italic>R</italic>. <italic>jostii</italic> RHA1 cultures were labelled with <sup>13</sup>C by incubating 3.65-mL subsamples of the 2-L SBR steady-state cultures in a vessel of a μ-24 bioreactor (Applikon Biotechnology, The Netherlands), and 1.25 mL of fresh MSM with unlabelled carbon source (either glucose or acetate) was added at the beginning of the test. Depending on the labelling condition, 100 μL of 5.36 g/L <sup>13</sup>C-bicarbonate was added to the vessel at the beginning of either the feast or famine phases. The dissolved oxygen concentration and temperature of the reactors were controlled at 80–100% and 28°C, respectively, while pH was simply monitored throughout the test and remained at 7.0±0.5. Several samples at the end of the feast and famine phases were harvested by addition of 400 μL of concentrated HCl and centrifugation; solids were washed with deionized water and stored at −80°C until amino acid analysis.</p>
+<p>Proteinogenic amino acids of the biomass were analyzed using GC-MS technique according to Nanchen et al. (2007) [<xref ref-type="bibr" rid="pone.0191835.ref028">28</xref>]. Briefly, biomass pellets were washed twice with 0.9% NaCl solution, and then hydrolyzed in 6 M HCl for 24 h at 110°C. Hydrolyzates were dried at 70°C overnight, then dissolved in anhydrous pyridine with 10 mg/mL of methoxyamine hydrochloride, and finally derivatized by adding 70 μL of N-tert-butyldimethylsilyl-N-methyltrifluoroacetamide (TBDMS) and incubating at 70°C for 1 h. Deutrated myristic acid (D<sub>27</sub>-myristic acid) was used as internal standard. GC-MS analyses were performed with an Agilent 5975C mass selective detector coupled to a 7890A gas chromatograph (Agilent Technologies, Santa Clara, CA, USA) fitted with a 7693 auto-sampler and a DB-5MS+DG capillary column (30 m plus 10 m Duraguard<sup>®</sup> diameter 0.25 mm, film thickness 0.25 mm) (Agilent J &amp; W, Santa Clara, CA, USA). The GC temperature program was: 1 min at 60°C, then 10°C/min ramp to 300°C, and finally 320°C for 10 min. The helium carrier flow rate was held constant at 1.5 mL/min (or a flow rate such that the TBDMS derivative of the D<sub>27</sub>-myristic acid has a retention time of 18 min). The injector and interface to the MS were held at 285°C. When operated in full scan mode, the scan range was 50–700 Da. Mass isotopomer distribution data of the labelled amino acids were produced using the <italic>iMS2Flux</italic> software [<xref ref-type="bibr" rid="pone.0191835.ref029">29</xref>].</p>
+</sec>
+<sec id="sec007">
+<title>Statistical analyses</title>
+<p>Elemental mass balances on the measured conversions was performed to check the consistency of the data and reconcile mass balances [<xref ref-type="bibr" rid="pone.0191835.ref030">30</xref>]. The elemental composition matrices are defined in supplementary material Table A in <xref ref-type="supplementary-material" rid="pone.0191835.s001">S1 File</xref>. As there were more conversions measured than needed to define all elemental balances, a χ<sup>2</sup> test at 99% confidence level (corresponding to α level of 0.01) was used to evaluate the accuracy of reconciled conversion rates and determine the presence of gross-measurement errors [<xref ref-type="bibr" rid="pone.0191835.ref030">30</xref>].The software Macrobal developed by Hellinga et al. (1992) [<xref ref-type="bibr" rid="pone.0191835.ref030">30</xref>] was used for the calculations.</p>
+<p>Using a Bayesian-based objective function discrimination method [<xref ref-type="bibr" rid="pone.0191835.ref031">31</xref>], all the experimentally observed and simulated storage fluxes were combined to evaluate the relative probability of each objective function for the prediction of the mixture of storage compounds in the feast-famine growth (i.e., by comparing the corresponding posterior probability shares).</p>
+</sec>
+<sec id="sec008">
+<title>Flux balance analysis (FBA)</title>
+<p>The recently published <italic>in silico</italic> genome-scale metabolic network of <italic>R</italic>. <italic>jostii</italic> RHA1 (<italic>i</italic>MT1174) was used throughout the study [<xref ref-type="bibr" rid="pone.0191835.ref016">16</xref>]. This model was studied quantitatively by setting up a series of mass balances around each metabolite that can be expressed in matrix notation as: <inline-formula id="pone.0191835.e001"><alternatives><graphic id="pone.0191835.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0191835.e001" xlink:type="simple"/><mml:math display="inline" id="M1"><mml:mfrac><mml:mrow><mml:mi>d</mml:mi><mml:mi mathvariant="bold">X</mml:mi></mml:mrow><mml:mrow><mml:mi>d</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:mfrac><mml:mo>=</mml:mo><mml:mi mathvariant="bold">S</mml:mi><mml:mo>.</mml:mo><mml:mi mathvariant="bold">v</mml:mi></mml:math></alternatives></inline-formula>; where <bold>x</bold> is the (m×1) vector of the concentrations of the balanced metabolites (i.e., intracellular and macromolecular compounds), <bold>v</bold> denotes the (n×1) vector of the entire metabolic fluxes, and <bold>S</bold> stands for the m×n stoichiometric matrix. The model was then solved by assuming that the cellular network is at steady-state, which simplifies the previous equation to <bold>S.v</bold> = <bold>0</bold>. Because the number of fluxes exceeded the number of metabolites (n &gt; m), the problem is said to be underdetermined. In this case, there is a solution space for the fluxes that can be studied by optimizing proper objective functions subject to defined constraints (the mass balance equations as the physicochemical constraints and the inequalities as the enzymatic capacity of the biochemical reactions) [<xref ref-type="bibr" rid="pone.0191835.ref032">32</xref>].</p>
+<p>Objective functions (optimization criteria) need to be defined in order to simulate metabolic behaviour using the underdetermined stoichiometric network. Although various objective functions exist [<xref ref-type="bibr" rid="pone.0191835.ref033">33</xref>], the maximization of the growth rate was reported to be successful at predicting experimental observations for bacteria [<xref ref-type="bibr" rid="pone.0191835.ref015">15</xref>, <xref ref-type="bibr" rid="pone.0191835.ref034">34</xref>, <xref ref-type="bibr" rid="pone.0191835.ref035">35</xref>]. It was hypothesized that in typical environmental conditions, biomass formation is typically priorities by the microbial cells; therefore, maximizing the cellular growth rate was defined as the main objective function. In addition, we developed a nested optimization algorithm to consider sub-objective functions. Two sub-objective functions were evaluated: (1) minimization of the sum of absolute values (i.e., the Manhattan norm) of all fluxes [<xref ref-type="bibr" rid="pone.0191835.ref014">14</xref>] (further referred to as minimization of metabolic fluxes), and (2) minimization of metabolic adjustment (further referred to as <italic>environmental</italic> MOMA) defined as minimizing the Manhattan norm of flux differences between feast and famine phases (i.e., |<bold>v</bold><sub><bold>Feast</bold></sub> <bold>− v</bold><sub><bold>Famine</bold></sub>|<sub>1</sub>) [<xref ref-type="bibr" rid="pone.0191835.ref015">15</xref>].</p>
+<p>Simulating the dynamic metabolic behaviour during the feast-famine cycles, a simplified scenario need to be conceptualized. Consequently, each growth phase (i.e., feast or famine) was simulated with a single distribution of average reaction fluxes. According to our experimental observations, we assumed that the feast phase lasted 38% or 40% of the cycle time when glucose or acetate, respectively, were the substrates. Finally, the mass balances on the storage compounds were constrained by equating the total storage synthesis in the feast phase and the consumption in the famine phase.</p>
+<p>Using this scenario, we proceeded to map the flux solutions in the space described by the coordinates of substrate uptake rates and storage metabolic fluxes. To simulate the <italic>R</italic>. <italic>jostii</italic> RHA1 growth condition, the substrate uptake rates were fixed to experimentally observed values, and a wide range of storage compound flux combinations simulated. From the simulation results, cycle growth rates were calculated as the time length-weighted averages of the two phases.</p>
+</sec>
+<sec id="sec009">
+<title><sup>13</sup>C-Metabolic flux analysis</title>
+<p>To estimate the reactions involved in central metabolism using <sup>13</sup>C-MFA, a model represents the central metabolism was set-up, which included glycolysis and gluconeogenesis, Entner–Doudoroff pathway, tricarboxylic acid (TCA) cycle, pentose phosphate pathway, anaplerotic carboxylation and decarboxylation, storage metabolic reactions, amino acid biosynthetic reactions, and anabolic routes into biomass (Fig A in <xref ref-type="supplementary-material" rid="pone.0191835.s001">S1 File</xref>). The openFLUX software application under MATLAB environment (Mathworks Inc, Massachusetts) was used to solve for the fluxes [<xref ref-type="bibr" rid="pone.0191835.ref036">36</xref>]. The following inputs were used for model simulations: cellular composition data of <italic>R</italic>. <italic>jostii</italic> RHA1 defined in <italic>i</italic>MT1174 [<xref ref-type="bibr" rid="pone.0191835.ref016">16</xref>], observed rates of substrate uptake, growth, and storage formation, and mass isotopomer distribution data of the labelled amino acids.</p>
+</sec>
+</sec>
+<sec id="sec010" sec-type="conclusions">
+<title>Results and discussion</title>
+<sec id="sec011">
+<title>Metabolite pools’ dynamics during feast and famine phases</title>
+<p>The analysis of the metabolite pools’ dynamics was performed when the reactors were at steady-state, which was defined as a recurrent DO profile in each cycle. The cultures generally reached it five days after inoculation. The DO profiles during the SBR cycles were characterized by a rapid decrease in DO when the carbon substrate was added and a rapid increase when the substrate was completely consumed (<xref ref-type="fig" rid="pone.0191835.g001">Fig 1</xref>); thus, this dynamic DO period corresponded to the feast phase. The DO remained relatively high throughout the famine phase. Due to differences in biomass concentrations and specific uptake rates, the feast phase lasted 136.7±6.4 and 145.7±0.0 min on glucose and acetate, respectively, which represented about 38% and 40% of the total cycle.</p>
+<fig id="pone.0191835.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191835.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title/>
+<p><bold>Dynamics in concentrations of metabolite pools for cultures of <italic>R</italic>. <italic>jostii</italic> RHA1 during 6-hour cycle of SBRs fed glucose (a) or acetate (b) once steady-state was achieved.</bold> SRT was 1 day. Except for DO which are representative profiles, the data points are average of triplicate or duplicate runs for glucose (a) or acetate (b), respectively. Error bars are standard errors. The COD background due to EDTA was measured to be 501.7±12.4 and 576.5±14.1 mg-COD/L for glucose (a) and acetate (b), respectively.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191835.g001" xlink:type="simple"/>
+</fig>
+<p>During the feast phase, linear decreases in glucose or acetate concentrations were observed, indicating a zero-order rate for substrate uptake (<xref ref-type="fig" rid="pone.0191835.g001">Fig 1</xref>). At the same time, the concentrations of glycogen, PHB, and TAG increased; however, the accumulation profile was dependent on the carbon substrate. While the three storage compounds were accumulated in similar fashions when glucose was the substrate (<xref ref-type="fig" rid="pone.0191835.g001">Fig 1A</xref>), almost no glycogen accumulation was observed on acetate (<xref ref-type="fig" rid="pone.0191835.g001">Fig 1B</xref>). As depicted in <xref ref-type="fig" rid="pone.0191835.g001">Fig 1A and 1B</xref>, ammonium levels were fairly high at the end of the famine phase indicating unlimited growth conditions on both substrates. This also confirmed that the presence of ammonium during the feast phase did not affect the maximum storage accumulation, as it was observed for activated sludge microbial communities [<xref ref-type="bibr" rid="pone.0191835.ref037">37</xref>].</p>
+<p>The fatty acid contents of <italic>R</italic>. <italic>jostii</italic> RHA1 were essentially the same between growth on glucose and acetate (Table B in <xref ref-type="supplementary-material" rid="pone.0191835.s001">S1 File</xref>). On both substrates, hexadecanoic acid (Palmitic acid, C16:0) was the predominant fatty acid present in TAG followed by cis-octadecenoic acid (C<sub>18:1</sub>); which is consistent with data available for other members of the genus <italic>Rhodococcus</italic> [<xref ref-type="bibr" rid="pone.0191835.ref038">38</xref>, <xref ref-type="bibr" rid="pone.0191835.ref039">39</xref>].</p>
+<p>Given the amount of information obtained on the cultures (substrate [glucose or acetate], biomass, glycogen, PHB, TAG, NH<sub>4</sub><sup>+</sup>, CO<sub>2</sub>, and DO), it was possible to do elemental mass balances on the measured conversions to check the consistency of the data (Tables C and D in <xref ref-type="supplementary-material" rid="pone.0191835.s001">S1 File</xref>). In addition to data consistency, the biomass production during the feast and famine phases could be calculated; these data could not be estimated directly from VSS and storage or NH<sub>4</sub><sup>+</sup> concentrations because of the small changes in concentrations compared to the background. For both glucose and acetate, it was estimated that approximately 60% of the biomass was synthesized during the feast phase and that 40% was synthesized in the famine phase (Tables C and D in <xref ref-type="supplementary-material" rid="pone.0191835.s001">S1 File</xref>).</p>
+<p>The specific glucose uptake rate on a COD basis was almost 3 times the acetate uptake rate (<xref ref-type="table" rid="pone.0191835.t001">Table 1</xref>), while the overall average biomass yields of <italic>R</italic>. <italic>jostii</italic> RHA1 during the feast-famine cycle on glucose and acetate were 0.25±0.04 and 0.45±0.08 g-COD/g-COD-Substrate, respectively (<xref ref-type="table" rid="pone.0191835.t001">Table 1</xref>). The average rates of glycogen, PHB, and TAG production were similar when glucose was the substrate; however, when acetate was the substrate, the average PHB production rate was 3 times higher than the one of TAG, while glycogen was virtually not accumulated (<xref ref-type="table" rid="pone.0191835.t001">Table 1</xref>).</p>
+<table-wrap id="pone.0191835.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191835.t001</object-id>
+<label>Table 1</label> <caption><title>Reconciled<xref ref-type="table-fn" rid="t001fn001"><sup>a</sup></xref> specific conversion rates and storage and biomass yields of <italic>R</italic>. <italic>jostii</italic> RHA1 during the feast-famine growth cycle.</title></caption>
+<alternatives>
+<graphic id="pone.0191835.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191835.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify">Conversion</th>
+<th align="center">Units</th>
+<th align="center">Glucose</th>
+<th align="center">Acetate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><bold>Feast</bold></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left"><bold>Substrate uptake rate</bold></td>
+<td align="left">g-COD/(g-COD-Biomass·d)</td>
+<td align="center">14.2±2.3<xref ref-type="table-fn" rid="t001fn004"><sup>e</sup></xref></td>
+<td align="center">4.9±0.7</td>
+</tr>
+<tr>
+<td align="left"><bold>Growth rate</bold></td>
+<td align="left">d<sup>−1</sup></td>
+<td align="center">2.1±0.9</td>
+<td align="center">1.4±0.5</td>
+</tr>
+<tr>
+<td align="left"><bold>Glycogen synthesis rate</bold></td>
+<td align="left">g-COD/(g-COD-Biomass·d)</td>
+<td align="center">1.3±0.3</td>
+<td align="center">0.03±0.01</td>
+</tr>
+<tr>
+<td align="left"><bold>PHB synthesis rate</bold><xref ref-type="table-fn" rid="t001fn002"><sup><bold>b</bold></sup></xref></td>
+<td align="left">g-COD/(g-COD-Biomass·d)</td>
+<td align="center">1.6±0.4</td>
+<td align="center">0.90±0.57</td>
+</tr>
+<tr>
+<td align="left"><bold>TAG synthesis rate</bold><xref ref-type="table-fn" rid="t001fn003"><sup><bold>c</bold></sup></xref></td>
+<td align="left">g-COD/(g-COD-Biomass·d)</td>
+<td align="center">1.1±0.6</td>
+<td align="center">0.32±0.21</td>
+</tr>
+<tr>
+<td align="left"><bold>Biomass yield</bold></td>
+<td align="left">g-COD/g-COD-Substrate</td>
+<td align="center">0.15±0.06</td>
+<td align="center">0.28±0.10</td>
+</tr>
+<tr>
+<td align="left"><bold>Glycogen yield</bold></td>
+<td align="left">g-COD/g-COD-Substrate</td>
+<td align="center">0.09±0.02</td>
+<td align="center">0.01±0.00</td>
+</tr>
+<tr>
+<td align="left"><bold>PHB yield</bold></td>
+<td align="left">g-COD/g-COD-Substrate</td>
+<td align="center">0.11±0.02</td>
+<td align="center">0.18±0.11</td>
+</tr>
+<tr>
+<td align="left"><bold>TAG yield</bold></td>
+<td align="left">g-COD/g-COD-Substrate</td>
+<td align="center">0.08±0.04</td>
+<td align="center">0.07±0.04</td>
+</tr>
+<tr>
+<td align="left"><bold>Famine</bold><xref ref-type="table-fn" rid="t001fn004"><sup><bold>d</bold></sup></xref></td>
+<td align="left"/>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left"><bold>Growth rate</bold></td>
+<td align="left">d<sup>−1</sup></td>
+<td align="center">0.74±0.48</td>
+<td align="center">0.52±0.35</td>
+</tr>
+<tr>
+<td align="left"><bold>Biomass yield</bold></td>
+<td align="left">g-COD/g-COD-Storage</td>
+<td align="center">0.35±0.23</td>
+<td align="center">0.68±0.54</td>
+</tr>
+<tr>
+<td align="left"><bold>Overall</bold></td>
+<td align="left"/>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left"><bold>Overall growth rate</bold></td>
+<td align="left">d<sup>−1</sup></td>
+<td align="center">1.2±0.6</td>
+<td align="center">0.87±0.44</td>
+</tr>
+<tr>
+<td align="left"><bold>Overall Biomass yield</bold></td>
+<td align="left">g-COD/g-COD-Substrate</td>
+<td align="center">0.25±0.04</td>
+<td align="center">0.45±0.08</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p><sup>a</sup> The reconciled conversion rates and yields were derived using the reconciled converted masses reported in Tables C and D in <xref ref-type="supplementary-material" rid="pone.0191835.s001">S1 File</xref>.</p></fn>
+<fn id="t001fn002"><p><sup>b</sup> Poly-β-hydroxybutyrate.</p></fn>
+<fn id="t001fn003"><p><sup>c</sup> Triacylglycerol.</p></fn>
+<fn id="t001fn004"><p><sup>d</sup> The storage accumulation rates estimated for the feast phase are the same as their degradation rates in the famine phase.</p></fn>
+<fn id="t001fn005"><p><sup>e</sup> ± Reconciled standard error.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>These data are in line with previous observations suggesting that the composition of storage compound mixtures accumulated by <italic>R</italic>. <italic>jostii</italic> RHA1 depends on the substrate utilized [<xref ref-type="bibr" rid="pone.0191835.ref018">18</xref>]. However, it is possible that the reactor conditions such as the cycle length and the solids residence time may also play a role; although, it was beyond the scope of the current study to evaluate this possibility. Indeed, work by other groups on activated sludge communities fed glycogen as the sole carbon and energy source found that polyhydroxyalkanoates (PHA) was the main storage compound accumulated at long cycle length (24 h), while glycogen was the main storage at short cycle length (6 h), even though the same microbial populations dominated the communities in both cases [<xref ref-type="bibr" rid="pone.0191835.ref037">37</xref>]. Further studies should address this remaining question.</p>
+</sec>
+<sec id="sec012">
+<title>FBA to predict storage metabolic fluxes during feast-famine cycles</title>
+<p>The capability of FBA to predict storage metabolic fluxes during feast-famine cycles was investigated. Using the experimental data obtained for comparison purposes, the fluxes for the synthesis (feast) and consumption (famine) of glycogen, PHB, and TAG, were simulated using the maximization of the growth rate objective function as the main objective function in conjunction with 2 sub-objective functions: (1) minimizing the Manhattan norm (sum of absolute) of all reaction fluxes (i.e., |<bold>v</bold>|<sub>1</sub>, minimization of fluxes, or minFluxes) [<xref ref-type="bibr" rid="pone.0191835.ref014">14</xref>], (2) minimization of metabolic adjustment between the feast and famine periods (<italic>environmental</italic> MOMA) [<xref ref-type="bibr" rid="pone.0191835.ref015">15</xref>].</p>
+<p>For a given substrate uptake rate (here the one experimentally observed), the storage fluxes were highly sensitive to the growth- and non-growth-associated maintenance energy parameters (GAM and NGAM, respectively) and to the sub-objective functions used (Fig B in <xref ref-type="supplementary-material" rid="pone.0191835.s001">S1 File</xref>). Therefore, the GAMs and NGAMs were adjusted with the aim that the total storage fluxes in g-COD/(g-COD-Biomass·d) corresponded to the experimental ones for a given total growth rate (i.e., SRT). However, it was not possible to fit exactly the total fluxes, and the GAM and NGAM values producing the closest total storage flux simulations were used. The GAM and NGAM values used for each set of simulations are reported in <xref ref-type="table" rid="pone.0191835.t002">Table 2</xref>.</p>
+<table-wrap id="pone.0191835.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191835.t002</object-id>
+<label>Table 2</label> <caption><title>Comparison of the experimentally observed and simulated storage fluxes (in g-COD/(g-COD-Biomass·d)) at the optimum levels of the two sub-objective functions examined in the feast-famine growth of <italic>R</italic>. <italic>jostii</italic> RHA1 on glucose and acetate as the sole carbon sources.</title></caption>
+<alternatives>
+<graphic id="pone.0191835.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191835.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify">Substrate</th>
+<th align="justify">Parameters</th>
+<th align="right">Experimental<xref ref-type="table-fn" rid="t002fn002"><sup>b</sup></xref></th>
+<th align="right">maxYield<xref ref-type="table-fn" rid="t002fn003"><sup>c</sup></xref></th>
+<th align="right">minFluxes<xref ref-type="table-fn" rid="t002fn004"><sup>d</sup></xref></th>
+<th align="right">MOMA<xref ref-type="table-fn" rid="t002fn005"><sup>e</sup></xref></th>
+</tr>
+<tr>
+<th align="justify"/>
+<th align="justify"/>
+<th align="center" colspan="4">g-COD/(g-COD-Biomass·d)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="4"><bold>Glucose</bold></td>
+<td align="left"><bold>Substrate</bold><xref ref-type="table-fn" rid="t002fn001"><sup><bold>a</bold></sup></xref></td>
+<td align="right">14.2±2.3<xref ref-type="table-fn" rid="t002fn006"><sup>f</sup></xref></td>
+<td align="right"/>
+<td align="right"/>
+<td align="right"/>
+</tr>
+<tr>
+<td align="left"><bold>Glycogen</bold></td>
+<td align="right">1.3±0.3</td>
+<td align="right">0–5.3</td>
+<td align="right">1.6<xref ref-type="table-fn" rid="t002fn007"><sup>g</sup></xref></td>
+<td align="right">1.3<xref ref-type="table-fn" rid="t002fn008"><sup>h</sup></xref></td>
+</tr>
+<tr>
+<td align="left"><bold>PHB</bold></td>
+<td align="right">1.6±0.4</td>
+<td align="right">0–9.7</td>
+<td align="right">2.0<xref ref-type="table-fn" rid="t002fn007"><sup>g</sup></xref></td>
+<td align="right">1.6<xref ref-type="table-fn" rid="t002fn008"><sup>h</sup></xref></td>
+</tr>
+<tr>
+<td align="left"><bold>TAG</bold></td>
+<td align="right">1.1±0.6</td>
+<td align="right">0–8.5</td>
+<td align="right">0.6<xref ref-type="table-fn" rid="t002fn007"><sup>g</sup></xref></td>
+<td align="right">1.4<xref ref-type="table-fn" rid="t002fn008"><sup>h</sup></xref></td>
+</tr>
+<tr>
+<td align="left" rowspan="4"><bold>Acetate</bold></td>
+<td align="left"><bold>Substrate</bold><xref ref-type="table-fn" rid="t002fn001"><sup><bold>a</bold></sup></xref></td>
+<td align="right">4.9±0.7</td>
+<td align="right"/>
+<td align="right"/>
+<td align="right"/>
+</tr>
+<tr>
+<td align="left"><bold>Glycogen</bold></td>
+<td align="right">0.03±0.01</td>
+<td align="right">0–1.0</td>
+<td align="right">0.0<xref ref-type="table-fn" rid="t002fn009"><sup>i</sup></xref></td>
+<td align="right">0.0<xref ref-type="table-fn" rid="t002fn009"><sup>j</sup></xref></td>
+</tr>
+<tr>
+<td align="left"><bold>PHB</bold></td>
+<td align="right">0.90±0.57</td>
+<td align="right">0–2.9</td>
+<td align="right">0.0<xref ref-type="table-fn" rid="t002fn009"><sup>i</sup></xref></td>
+<td align="right">1.1<xref ref-type="table-fn" rid="t002fn009"><sup>j</sup></xref></td>
+</tr>
+<tr>
+<td align="left"><bold>TAG</bold></td>
+<td align="right">0.32±0.21</td>
+<td align="right">0–2.5</td>
+<td align="right">1.5<xref ref-type="table-fn" rid="t002fn009"><sup>i</sup></xref></td>
+<td align="right">0.3<xref ref-type="table-fn" rid="t002fn009"><sup>j</sup></xref></td>
+</tr>
+<tr>
+<td align="left" colspan="2"><bold>Posterior Probability Share (%)</bold></td>
+<td align="right"/>
+<td align="right"/>
+<td align="right">1.405×10<sup>−3</sup></td>
+<td align="right">99.999</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t002fn001"><p><sup>a</sup> Substrate uptake rates are in g-COD/(g-COD-Biomass·d).</p></fn>
+<fn id="t002fn002"><p><sup>b</sup> Experimentally observed biosynthetic fluxes of the storage compounds (in g-COD/(g-COD-Biomass·d)).</p></fn>
+<fn id="t002fn003"><p><sup>c</sup> The values under the maxYield objective function are its optimal range (minimum value—maximum value in Cmol/Cmol).</p></fn>
+<fn id="t002fn004"><p><sup>d</sup> Minimizing the Manhattan norm of the flux vectors while maximizing the growth rate (in mmol/(g-DW·h)).</p></fn>
+<fn id="t002fn005"><p><sup>e</sup> Minimizing the Manhattan norm of the difference between the fluxes over the feast-famine cycle while maximizing their growth rates (in mmol/(g-DW·h)) (note that minimizing both the Manhattan norm of the flux vectors and their difference over the feast-famine cycle while maximizing their growth rates showed identical results as compared to <italic>environmental</italic> MOMA).</p></fn>
+<fn id="t002fn006"><p><sup>f</sup> ± Reconciled standard error.</p></fn>
+<fn id="t002fn007"><p><sup>g</sup> For the minimization of metabolic fluxes sub-objective function on glucose, GAM and NGMA values were set to 410.0 mmol-ATP/g-DW and 10.0 mmol/(g-DW·h), respectively.</p></fn>
+<fn id="t002fn008"><p><sup>h</sup> For the <italic>environmental</italic> MOMA sub-objective function on glucose, GAM and NGMA values were set to 475.0 mmol-ATP/g-DW and 7.0 mmol/(g-DW·h), respectively.</p></fn>
+<fn id="t002fn009"><p><sup>i</sup> For the minimization of metabolic fluxes sub-objective function on acetate, GAM and NGMA values were set to 0.1 mmol-ATP/g-DW and 1.0 mmol/(g-DW·h), respectively.</p></fn>
+<fn id="t002fn010"><p><sup>j</sup> For the <italic>environmental</italic> MOMA sub-objective function on acetate, GAM and NGMA values were set to 1.5 mmol-ATP/g-DW and 2.3 mmol/(g-DW·h), respectively.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>The first objective function investigated to assess the metabolic value of the storage compounds was the maximization of the growth rate alone. This is equivalent to yield maximization at low growth rates when organic carbon is not secreted. However, this objective function alone predicted that a range of flux combinations through the storage pools would be optimal, which was not satisfactory for our investigation. Thus, the two sub-objective functions were added. <xref ref-type="fig" rid="pone.0191835.g002">Fig 2</xref> and Figs C and D in <xref ref-type="supplementary-material" rid="pone.0191835.s001">S1 File</xref> show the contour plots of the total maximum growth rate of <italic>R</italic>. <italic>jostii</italic> RHA1 as a function of set storage fluxes for three different storage fluxes (glycogen, PHB, and TAG) with glucose and acetate as substrate. It can be seen that the total maximum growth rate decreases with increasing storage fluxes (<xref ref-type="fig" rid="pone.0191835.g002">Fig 2</xref>), which is due to the metabolic cost of storage transformations.</p>
+<fig id="pone.0191835.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191835.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title/>
+<p><bold>Contour plots of flux balance results obtained with the two sub-objective functions for weighted average maximum growth rates (isolines, units d-1) in function of pairs of glycogen and PHB storage fluxes at experimentally observed glucose—panels a and b: 14.2 g-COD/(g-COD-Biomass·d)—and acetate uptake rates -panels c and d: 4.9 g-COD/(g-COD-Biomass·d).</bold> TAG fluxes were adjusted to experimentally observed values—panels a and b: 1.1 g-COD/(g-COD-Biomass·d), and panels c and d: 0.3 g-COD/(g-COD-Biomass·d).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191835.g002" xlink:type="simple"/>
+</fig>
+<p>Based on the flux balance simulations and the optimality of the specific sub-objective functions, the fluxes through each of the storage pools were predicted for the appropriate growth rate (<xref ref-type="table" rid="pone.0191835.t002">Table 2</xref>). The fluxes through all the storage pools were better by the <italic>environmental</italic> MOMA sub-objective function predicted than by the minimization of fluxes sub-objective. For growth on glucose, the trends in fluxes through the storage pools were similarly predicted by the two sub-objective functions, but the absolute difference with the measured date were lower for the <italic>environmental</italic> MOMA. For growth on acetate, minimization of fluxes sub-objective function predicted that only the TAG pool would exhibit significant fluxes, which departed from the observations, while the <italic>environmental</italic> MOMA correctly predicted the flux trends (<xref ref-type="table" rid="pone.0191835.t002">Table 2</xref>). To quantitatively address these relative value of the predictions from simulations with both sub-objective functions, the posterior probability shares of each function were calculated using a Bayesian-based objective function discrimination method [<xref ref-type="bibr" rid="pone.0191835.ref031">31</xref>]. The posterior probability share of <italic>environmental</italic> MOMA sub-objective function was found to be near 1, while one for the minimization of metabolic fluxes was near 0 (<xref ref-type="table" rid="pone.0191835.t002">Table 2</xref>).</p>
+<p>The simulation results showed that the <italic>environmental</italic> MOMA sub-objective function predicted the storage fluxes better than the minimization of fluxes sub-objective function on both substrates. Therefore, it would follow that the microorganism optimizes the use of its network such that the reaction fluxes in the famine phase would be similar to the ones in the feast phase. This was further tested by comparing the fluxes of the central metabolic network of RHA1 in the feast and famine phase estimated by the <sup>13</sup>C-MFA (next section).</p>
+</sec>
+<sec id="sec013">
+<title>Central metabolism reaction fluxes during feast-famine cycles</title>
+<p>The fluxes through the central metabolism reactions were characterized using <sup>13</sup>C-MFA with addition of <sup>13</sup>C-bicarbonate as the labelled carbon source. <italic>R</italic>. <italic>jostii</italic> RHA1 was fed with unlabelled glucose or acetate, and <sup>13</sup>C-bicarobnate was added to the medium at the beginning of either the feast or famine phase. The <sup>13</sup>C-MFA solution of the models was obtained by adjusting the metabolic fluxes that were experimentally determined to their measured values. Additionally, the effective <sup>13</sup>C-bicarbonate uptake rate was unknown. Thus, <sup>13</sup>C-bicarbonate uptake rate was adjusted by minimizing the sum of absolute differences between the calculated and experimentally observed mass isotopomer distribution (i.e., the error) vectors in all cases. The optimal value of <sup>13</sup>C-bicarbonate uptake rate was found to be 0.05 mmol/(g-DW·h) by this method. The average fluxes determined from 100 simulations yielding the closest fit to the observed mass isotopomer distributions are presented in Figs <xref ref-type="fig" rid="pone.0191835.g003">3</xref> and <xref ref-type="fig" rid="pone.0191835.g004">4</xref>. They show the flux distributions through the central metabolism were similar in the feast and the famine phases.</p>
+<fig id="pone.0191835.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191835.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title/>
+<p><bold>Fluxes of the central metabolic reactions of <italic>R</italic>. <italic>jostii</italic> RHA1 in the feast phase (left panel) or the famine for growth on glucose.</bold> Unlabelled glucose was added at the beginning of the feast phase, and <sup>13</sup>C-bicarbonate was added either at the beginning of the feast or the famine phase. Reported fluxes are the average of 100 solutions ± the corresponding standard deviations.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191835.g003" xlink:type="simple"/>
+</fig>
+<fig id="pone.0191835.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191835.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title/>
+<p><bold>Fluxes of the central metabolic reactions of <italic>R</italic>. <italic>jostii</italic> RHA1 in the feast phase (left panel) or the famine for growth on acetate.</bold> Unlabelled acetate was added at the beginning of the feast phase, and <sup>13</sup>C-bicarbonate was added either at the beginning of the feast or the famine phase. Reported fluxes are the average of 100 solutions ± the corresponding standard deviations.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191835.g004" xlink:type="simple"/>
+</fig>
+<p>To help with the visualization, the estimated fluxes of the 19 central metabolism reactions in the feast were plotted vs. the one obtained for the famine phase (<xref ref-type="fig" rid="pone.0191835.g005">Fig 5</xref>). On glucose (<xref ref-type="fig" rid="pone.0191835.g005">Fig 5A</xref>), it can be seen that some reactions are virtually not used during the famine phase (high fluxes in the feast phase, but near zero during the famine phase). These reaction corresponds to R5(R6) (KEGG ID:R01786, ATP:α-D-glucose 6-phosphotransferase), R7(R8) (KEGG ID: R02740, α-D-Glucose 6-phosphate ketol-isomerase), and R11(R12) (KEGG ID: R01070, β-D-fructose-1,6-bisphosphate D-glyceraldehyde-3-phosphate-lyase). To the exception of these reactions, the fluxes through central metabolic reactions during the famine phase a generally linearly related to the ones for the same reactions observed during the feast phase when both glucose and acetate are the substrate. This result supports the hypothesis behind the <italic>environmental</italic> MOMA sub-objective function stating that the organism minimizes the difference in fluxes between the feast and famine phases.</p>
+<fig id="pone.0191835.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191835.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title/>
+<p>Correlation plots of the 19 central metabolism reactions of <italic>R</italic>. <italic>jostii</italic> RHA1 in the feast and famine phases estimated using <sup>13</sup>C-MFA on glucose (a) and acetate (b).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191835.g005" xlink:type="simple"/>
+</fig>
+</sec>
+</sec>
+<sec id="sec014" sec-type="conclusions">
+<title>Conclusions</title>
+<p>In this study, the storage metabolism of <italic>R</italic>. <italic>jostii</italic> RHA1 was investigated during steady-state feast-famine cycles on glucose and acetate as the sole carbon sources by means of its genome-scale metabolic model and the FBA approach, and it was experimentally validated. <italic>R</italic>. <italic>jostii</italic> RHA1 is able to simultaneously accumulate three storage compounds (PHB, TAG, and glycogen). It was experimentally observed that when glucose was the substrate, the three storage compounds exhibited similar COD accumulation; however, when acetate was the substrate, PHB accumulation turned out to be 3 times greater than that of TAG, while glycogen was essentially not accumulated. The genome-scale metabolic model of <italic>R</italic>. <italic>jostii</italic> RHA1 (<italic>i</italic>MT1174) and FBA were employed in order to define a suitable objective function capable of predicting these phenotypic behaviours. To this end, maximization of the growth rate was set as the main objective function, while minimization of total reaction fluxes and <italic>environmental</italic> MOMA were implemented as the sub-objective functions because the maximization of the growth rate alone did not precisely constrained the storage fluxes. The <italic>environmental</italic> MOMA sub-objective function better predicted the mixture of storage compounds accumulated as compared to the minimization of total reaction fluxes sub-objective function. In addition, analyses of <sup>13</sup>C-labelling experiments with <sup>13</sup>C-MFA found results in line with the fundamental <italic>environmental</italic> MOMA hypothesis that the fluxes through the central metabolic network of <italic>R</italic>. <italic>jostii</italic> RHA1 during the feast phases were similar to the ones during the famine phases. Together, these results support the <italic>environmental</italic> MOMA sub-objective function could predict cellular metabolism in cyclical environmental conditions such as the feast and famine conditions.</p>
+</sec>
+<sec id="sec015">
+<title>Supporting information</title>
+<supplementary-material id="pone.0191835.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0191835.s001" xlink:type="simple">
+<label>S1 File</label>
+<caption>
+<title>Supporting information.</title>
+<p>Including: <bold>Table A</bold>. Elemental composition matrix for flux data reconciliation. <bold>Table B</bold>. Fatty acid content of <italic>R</italic>. <italic>jostii</italic> RHA1 at the beginning and end of the feast phase on glucose and acetate. <bold>Table C</bold>. Comparison between measured and reconciled converted masses on glucose in a steady-state feast-famine cycle. <bold>Table D</bold>. Comparison between measured and reconciled converted masses on acetate in a steady-state feast-famine. <bold>Fig A</bold> The central metabolic pathways of <italic>R</italic>. <italic>jostii</italic> RHA1, along with the amino acid, storage, and biomass biosynthetic reactions. <bold>Fig B.</bold> Contours of the total storage flux [g-COD/(g-COD-Biomass·d)] as a function of the growth- and non-growth- associated maintenance energy (GAM and NGAM, respectively) for the simulated feast growth with glucose (a, b, and c) or acetate (d, e, and f) as carbon substrates. <bold>Fig C.</bold> Contour plots of flux balance results obtained with the minimization of metabolic fluxes sub-objective function in conjunction with the maximization of growth rate for weighted average maximum growth rates (isolines, units d<sup>-1</sup>) in function of pairs of glycogen and PHB (a and d), PHB and TAG (b and e), and TAG and glycogen (c and f) storage fluxes at experimentally observed glucose—panels a, b, and c: 14.2 g-COD/(g-COD-Biomass·d)—and acetate uptake rates—panels d, e, and f: 4.9 g-COD/(g-COD-Biomass·d). <bold>Fig D.</bold> Contour plots of flux balance results obtained with the <italic>environmental</italic> MOMA sub-objective function in conjunction with the maximization of growth rate for weighted average maximum growth rates (isolines, units d<sup>-1</sup>) in function of pairs of glycogen and PHB (a and d), PHB and TAG (b and e), and TAG and glycogen (c and f) storage fluxes at experimentally observed glucose—panels a, b, and c: 14.2 g-COD/(g-COD-Biomass·d)—and acetate uptake rates—panels d, e, and f: 4.9 g-COD/(g-COD-Biomass·d).</p>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>Labelled amino acid measurements were performed at the Rosalind and Morris Goodman Cancer Research Centre Metabolomics Core Facility at McGill University. Thanks to Dr. Ranjan Srivastava (University of Connecticut, Storrs, CT, USA) for the MoDisc software to calculate posterior probability shares. We are grateful to anonymous reviewers for critical revision of an initial draft of the manuscript.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pone.0191835.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Van Loosdrecht</surname> <given-names>MCM</given-names></name>, <name name-style="western"><surname>Pot</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Heijnen</surname> <given-names>JJ</given-names></name>. <article-title>Importance of bacterial storage polymers in bioprocesses</article-title>. <source>Water Science and Technology</source><year>1997</year>. p. <fpage>41</fpage>–<lpage>7</lpage>.</mixed-citation></ref>
+<ref id="pone.0191835.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dawes</surname> <given-names>EA</given-names></name>, <name name-style="western"><surname>Senior</surname> <given-names>PJ</given-names></name>. <article-title>The role and regulation of energy reserve polymers in micro-oranisms</article-title>. <source>Advances in Microbial Physiology</source>. <year>1973</year>;<volume>10</volume>:<fpage>135</fpage>–<lpage>266</lpage>. <object-id pub-id-type="pmid">4594739</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Frigon</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Muyzer</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>van Loosdrecht</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Raskin</surname> <given-names>L</given-names></name>. <article-title>rRNA and poly-β-hydroxybutyrate dynamics in bioreactors subjected to feast and famine cycles</article-title>. <source>Applied and Environmental Microbiology</source>. <year>2006</year>;<volume>72</volume>(<issue>4</issue>):<fpage>2322</fpage>–<lpage>30</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1128/AEM.72.4.2322-2330.2006" xlink:type="simple">10.1128/AEM.72.4.2322-2330.2006</ext-link></comment> <object-id pub-id-type="pmid">16597926</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kauffman</surname> <given-names>KJ</given-names></name>, <name name-style="western"><surname>Prakash</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Edwards</surname> <given-names>JS</given-names></name>. <article-title>Advances in flux balance analysis</article-title>. <source>Current Opinion in Biotechnology</source>. <year>2003</year>;<volume>14</volume>(<issue>5</issue>):<fpage>491</fpage>–<lpage>6</lpage>. <object-id pub-id-type="pmid">14580578</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reed</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Thirteen years of building constraint-based <italic>in silico</italic> models of <italic>Escherichia coli</italic></article-title>. <source>Journal of Bacteriology</source>. <year>2003</year>;<volume>185</volume>(<issue>9</issue>):<fpage>2692</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1128/JB.185.9.2692-2699.2003" xlink:type="simple">10.1128/JB.185.9.2692-2699.2003</ext-link></comment> <object-id pub-id-type="pmid">12700248</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Beg</surname> <given-names>QK</given-names></name>, <name name-style="western"><surname>Vazquez</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Ernst</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>de Menezes</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Bar-Joseph</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Barabási</surname> <given-names>AL</given-names></name>, <etal>et al</etal>. <article-title>Intracellular crowding defines the mode and sequence of substrate uptake by <italic>Escherichia coli</italic> and constrains its metabolic activity</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source>. <year>2007</year>;<volume>104</volume>(<issue>31</issue>):<fpage>12663</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1073/pnas.0609845104" xlink:type="simple">10.1073/pnas.0609845104</ext-link></comment> PMC1937523. <object-id pub-id-type="pmid">17652176</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mori</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Hwa</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Martin</surname> <given-names>OC</given-names></name>, <name name-style="western"><surname>De Martino</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Marinari</surname> <given-names>E</given-names></name>. <article-title>Constrained allocation flux balance analysis</article-title>. <source>PLOS Computational Biology</source>. <year>2016</year>;<volume>12</volume>(<issue>6</issue>):<fpage>e1004913</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pcbi.1004913" xlink:type="simple">10.1371/journal.pcbi.1004913</ext-link></comment> <object-id pub-id-type="pmid">27355325</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lewis</surname> <given-names>NE</given-names></name>, <name name-style="western"><surname>Nagarajan</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Constraining the metabolic genotype-phenotype relationship using a phylogeny of <italic>in silico</italic> methods</article-title>. <source>Nature Reviews Microbiology</source>. <year>2012</year>;<volume>10</volume>(<issue>4</issue>):<fpage>291</fpage>–<lpage>305</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nrmicro2737" xlink:type="simple">10.1038/nrmicro2737</ext-link></comment> PMC3536058. <object-id pub-id-type="pmid">22367118</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Seto</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Kimbara</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Shimura</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Hatta</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Fukuda</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Yano</surname> <given-names>K</given-names></name>. <article-title>A novel transformation of polychlorinated biphenyls by <italic>Rhodococcus</italic> sp. strain RHA1</article-title>. <source>Applied and Environmental Microbiology</source>. <year>1995</year>;<volume>61</volume>(<issue>9</issue>):<fpage>3353</fpage>–<lpage>8</lpage>. <object-id pub-id-type="pmid">16535122</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McLeod</surname> <given-names>MP</given-names></name>, <name name-style="western"><surname>Warren</surname> <given-names>RL</given-names></name>, <name name-style="western"><surname>Hsiao</surname> <given-names>WWL</given-names></name>, <name name-style="western"><surname>Araki</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Myhre</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Fernandes</surname> <given-names>C</given-names></name>, <etal>et al</etal>. <article-title>The complete genome of <italic>Rhodococcus</italic> sp. RHA1 provides insights into a catabolic powerhouse</article-title>. <source>Proceedings of the National Academy of Sciences</source>. <year>2006</year>;<volume>103</volume>(<issue>42</issue>):<fpage>15582</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1073/pnas.0607048103" xlink:type="simple">10.1073/pnas.0607048103</ext-link></comment> <object-id pub-id-type="pmid">17030794</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Van Oosterwijk</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Knol</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Dijkhuizen</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Van Der Geize</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Dijkstra</surname> <given-names>BW</given-names></name>. <article-title>Cloning, overexpression, purification, crystallization and preliminary X-ray analysis of 3—Ketosteroid 4-(5)-dehydrogenase from <italic>Rhodococcus jostii</italic> RHA1</article-title>. <source>Acta Crystallographica Section F: Structural Biology and Crystallization Communications</source>. <year>2011</year>;<volume>67</volume>(<issue>10</issue>):<fpage>1269</fpage>–<lpage>73</lpage>.</mixed-citation></ref>
+<ref id="pone.0191835.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Larkin</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Kulakov</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Allen</surname> <given-names>CCR</given-names></name>. <article-title>Biodegradation and <italic>Rhodococcus—</italic>Masters of catabolic versatility</article-title>. <source>Current Opinion in Biotechnology</source>. <year>2005</year>;<volume>16</volume>(<issue>3</issue>):<fpage>282</fpage>–<lpage>90</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.copbio.2005.04.007" xlink:type="simple">10.1016/j.copbio.2005.04.007</ext-link></comment> <object-id pub-id-type="pmid">15961029</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Feist</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>The biomass objective function</article-title>. <source>Current Opinion in Microbiology</source>. <year>2010</year>;<volume>13</volume>(<issue>3</issue>):<fpage>344</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.mib.2010.03.003" xlink:type="simple">10.1016/j.mib.2010.03.003</ext-link></comment> <object-id pub-id-type="pmid">20430689</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Holzhutter</surname> <given-names>HG</given-names></name>. <article-title>The principle of flux minimization and its application to estimate stationary fluxes in metabolic networks</article-title>. <source>European Journal of Biochemistry</source>. <year>2004</year>;<volume>271</volume>(<issue>14</issue>):<fpage>2905</fpage>–<lpage>22</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/j.1432-1033.2004.04213.x" xlink:type="simple">10.1111/j.1432-1033.2004.04213.x</ext-link></comment> <object-id pub-id-type="pmid">15233787</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Segre</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Vitkup</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Church</surname> <given-names>GM</given-names></name>. <article-title>Analysis of optimality in natural and perturbed metabolic networks</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source>. <year>2002</year>;<volume>99</volume>(<issue>23</issue>):<fpage>15112</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1073/pnas.232349399" xlink:type="simple">10.1073/pnas.232349399</ext-link></comment> <object-id pub-id-type="pmid">12415116</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tajparast</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Frigon</surname> <given-names>D</given-names></name>. <article-title>Genome-scale metabolic model of <italic>Rhodococcus jostii</italic> RHA1 (<italic>i</italic>MT1174) to study the accumulation of storage compounds during nitrogen-limited condition</article-title>. <source>BMC Systems Biology</source>. <year>2015</year>;<volume>9</volume>:<fpage>43</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/s12918-015-0190-y" xlink:type="simple">10.1186/s12918-015-0190-y</ext-link></comment> PMC4528721. <object-id pub-id-type="pmid">26248853</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Goodfellow</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Alderson</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Chun</surname> <given-names>J</given-names></name>. <article-title>Rhodococcal systematics: problems and developments</article-title>. <source>Antonie van Leeuwenhoek</source>. <year>1998</year>;<volume>74</volume>(<issue>1</issue>):<fpage>3</fpage>–<lpage>20</lpage>.</mixed-citation></ref>
+<ref id="pone.0191835.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hernandez</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Mohn</surname> <given-names>WW</given-names></name>, <name name-style="western"><surname>Martinez</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Rost</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Alvarez</surname> <given-names>AF</given-names></name>, <name name-style="western"><surname>Alvarez</surname> <given-names>HM</given-names></name>. <article-title>Biosynthesis of storage compounds by <italic>Rhodococcus jostii</italic> RHA1 and global identification of genes involved in their metabolism</article-title>. <source>BMC Genomics</source>. <year>2008</year>;<volume>9</volume>(<issue>600</issue>):<fpage>1</fpage>–<lpage>13</lpage>.</mixed-citation></ref>
+<ref id="pone.0191835.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Beun</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Paletta</surname> <given-names>F</given-names></name>, <article-title>Loosdrecht MCMV, Heijnen JJ. Stoichiometry and kinetics of poly-β-hydroxybutyrate metabolism in aerobic, slow growing, activated sludge cultures</article-title>. <source>Biotechnology and Bioengineering</source>. <year>2000</year>;<volume>67</volume>(<issue>4</issue>):<fpage>379</fpage>–<lpage>89</lpage>. <object-id pub-id-type="pmid">10620753</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vishniac</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Santer</surname> <given-names>M</given-names></name>. <article-title>The thiobacilli</article-title>. <source>Bacteriological Reviews</source>. <year>1957</year>;<volume>21</volume>(<issue>3</issue>):<fpage>195</fpage>–<lpage>213</lpage>. <object-id pub-id-type="pmid">13471458</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref021"><label>21</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Atlas</surname> <given-names>RM</given-names></name>, <name name-style="western"><surname>Bartha</surname> <given-names>R</given-names></name>. <chapter-title>Microbial ecology: fundamentals and applications</chapter-title>. <publisher-loc>Menlo Park, California</publisher-loc>: <publisher-name>Harlow: Benjamin/Cummings</publisher-name>; <year>1998</year>.</mixed-citation></ref>
+<ref id="pone.0191835.ref022"><label>22</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Clesceri</surname> <given-names>LS</given-names></name>, <name name-style="western"><surname>Greenberg</surname> <given-names>AE</given-names></name>, <name name-style="western"><surname>Eaton</surname> <given-names>AD</given-names></name>. <chapter-title>Standard methods for the examination of water and wastewater</chapter-title>. <publisher-loc>Washington DC</publisher-loc>: <publisher-name>American Public Health Association</publisher-name>; <year>1998</year>.</mixed-citation></ref>
+<ref id="pone.0191835.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rhine</surname> <given-names>ED</given-names></name>, <name name-style="western"><surname>Sims</surname> <given-names>GK</given-names></name>, <name name-style="western"><surname>Mulvaney</surname> <given-names>RL</given-names></name>, <name name-style="western"><surname>Pratt</surname> <given-names>EJ</given-names></name>. <article-title>Improving the Berthelot reaction for determining ammonium in soil extracts and water</article-title>. <source>Soil Science Society of America Journal</source>. <year>1998</year>;<volume>62</volume>(<issue>2</issue>):<fpage>473</fpage>–<lpage>80</lpage>.</mixed-citation></ref>
+<ref id="pone.0191835.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Maurer</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Gujer</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Hany</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Bachmann</surname> <given-names>S</given-names></name>. <article-title>Intracellular carbon flow in phosphorus accumulating organisms from activated sludge systems</article-title>. <source>Water Research</source>. <year>1997</year>;<volume>31</volume>(<issue>4</issue>):<fpage>907</fpage>–<lpage>17</lpage>.</mixed-citation></ref>
+<ref id="pone.0191835.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Paganelli</surname> <given-names>FL</given-names></name>, <name name-style="western"><surname>de Lemos</surname> <given-names>EGM</given-names></name>, <name name-style="western"><surname>Alves</surname> <given-names>LMC</given-names></name>. <article-title>Polyhydroxybutyrate in <italic>Rhizobium</italic> and <italic>Bradyrhizobium</italic>: Quantification and phbC gene expression</article-title>. <source>World Journal of Microbiology and Biotechnology</source>. <year>2011</year>;<volume>27</volume>(<issue>4</issue>):<fpage>773</fpage>–<lpage>8</lpage>.</mixed-citation></ref>
+<ref id="pone.0191835.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Law</surname> <given-names>JH</given-names></name>, <name name-style="western"><surname>Slepecky</surname> <given-names>RA</given-names></name>. <article-title>Assay of poly-β-hydroxybutyric acid</article-title>. <source>Journal of Bacteriology</source>. <year>1961</year>;<volume>82</volume>(<issue>1</issue>):<fpage>33</fpage>–<lpage>6</lpage>. PMC279110.</mixed-citation></ref>
+<ref id="pone.0191835.ref027"><label>27</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Frigon</surname> <given-names>D</given-names></name>. <chapter-title>Proposed mechanism explaining seasonal biological foaming in activated sludge systems; foam-causing bacteria specialize in consuming lipids</chapter-title>. <publisher-loc>Urbana, IL</publisher-loc>: <publisher-name>University of Illinois at Urbana-Champaign</publisher-name>; <year>2005</year>.</mixed-citation></ref>
+<ref id="pone.0191835.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nanchen</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Fuhrer</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Sauer</surname> <given-names>U</given-names></name>. <article-title>Determination of metabolic flux ratios from <sup>13</sup>C-experiments and gas chromatography-mass spectrometry data: protocol and principles</article-title>. <source>Methods in molecular biology (Clifton, NJ)</source>. <year>2007</year>;<volume>358</volume>:<fpage>177</fpage>–<lpage>97</lpage>.</mixed-citation></ref>
+<ref id="pone.0191835.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Poskar</surname> <given-names>CH</given-names></name>, <name name-style="western"><surname>Huege</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Krach</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Franke</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Shachar-Hill</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Junker</surname> <given-names>BH</given-names></name>. <article-title>IMS2Flux—a high-throughput processing tool for stable isotope labeled mass spectrometric data used for metabolic flux analysis</article-title>. <source>BMC Bioinformatics</source>. <year>2012</year>;<volume>13</volume>(<issue>1</issue>).</mixed-citation></ref>
+<ref id="pone.0191835.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Van Der Heijen</surname> <given-names>RTJM</given-names></name>, <name name-style="western"><surname>Romein</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Heijnen</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Hellinga</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Luyben</surname> <given-names>KCAM</given-names></name>. <article-title>Linear constraint relations in biochemical reaction systems: II. Diagnosis and estimation of gross errors</article-title>. <source>Biotechnology and Bioengineering</source>. <year>1994</year>;<volume>43</volume>(<issue>1</issue>):<fpage>11</fpage>–<lpage>20</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/bit.260430104" xlink:type="simple">10.1002/bit.260430104</ext-link></comment> <object-id pub-id-type="pmid">18613306</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Knorr</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Jain</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Srivastava</surname> <given-names>R</given-names></name>. <article-title>Bayesian-based selection of metabolic objective functions</article-title>. <source>Bioinformatics</source>. <year>2007</year>;<volume>23</volume>(<issue>3</issue>):<fpage>351</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/bioinformatics/btl619" xlink:type="simple">10.1093/bioinformatics/btl619</ext-link></comment> <object-id pub-id-type="pmid">17150997</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Becker</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Feist</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Mo</surname> <given-names>ML</given-names></name>, <name name-style="western"><surname>Hannum</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>, <name name-style="western"><surname>Herrgard</surname> <given-names>MJ</given-names></name>. <article-title>Quantitative prediction of cellular metabolism with constraint-based models: the COBRA Toolbox</article-title>. <source>Nature Protocols</source>. <year>2007</year>;<volume>2</volume>(<issue>3</issue>):<fpage>727</fpage>–<lpage>38</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nprot.2007.99" xlink:type="simple">10.1038/nprot.2007.99</ext-link></comment> <object-id pub-id-type="pmid">17406635</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref033"><label>33</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <chapter-title>Systems biology: properties of reconstructed networks</chapter-title>. <publisher-loc>Cambridge; New York</publisher-loc>: <publisher-name>Cambridge University Press</publisher-name>; <year>2006</year>.</mixed-citation></ref>
+<ref id="pone.0191835.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Edwards</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Ibarra</surname> <given-names>RU</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title><italic>In silico</italic> predictions of <italic>Escherichia coli</italic> metabolic capabilities are consistent with experimental data</article-title>. <source>Nature Biotechnology</source>. <year>2001</year>;<volume>19</volume>(<issue>2</issue>):<fpage>125</fpage>–<lpage>30</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/84379" xlink:type="simple">10.1038/84379</ext-link></comment> <object-id pub-id-type="pmid">11175725</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ibarra</surname> <given-names>RU</given-names></name>, <name name-style="western"><surname>Edwards</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title><italic>Escherichia coli</italic> K-12 undergoes adaptive evolution to achieve <italic>in silico</italic> predicted optimal growth</article-title>. <source>Nature</source>. <year>2002</year>;<volume>420</volume>(<issue>6912</issue>):<fpage>186</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nature01149" xlink:type="simple">10.1038/nature01149</ext-link></comment> <object-id pub-id-type="pmid">12432395</object-id></mixed-citation></ref>
+<ref id="pone.0191835.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Quek</surname> <given-names>LE</given-names></name>, <name name-style="western"><surname>Wittmann</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Nielsen</surname> <given-names>LK</given-names></name>, <name name-style="western"><surname>Kromer</surname> <given-names>JO</given-names></name>. <article-title>OpenFLUX: Efficient modelling software for <sup>13</sup>C-based metabolic flux analysis</article-title>. <source>Microbial Cell Factories</source>. <year>2009</year>;<volume>8</volume>.</mixed-citation></ref>
+<ref id="pone.0191835.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Moralejo-Garate</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Palmeiro-Sanchez</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Kleerebezem</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Mosquera-Corral</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Campos</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>van Loosdrecht</surname> <given-names>MC</given-names></name>. <article-title>Influence of the cycle length on the production of PHA and polyglucose from glycerol by bacterial enrichments in sequencing batch reactors</article-title>. <source>Biotechnol Bioeng</source>. <year>2013</year>;<volume>110</volume>(<issue>12</issue>):<fpage>3148</fpage>–<lpage>55</lpage>. Epub 2013/07/10. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/bit.24991" xlink:type="simple">10.1002/bit.24991</ext-link></comment> <object-id pub-id-type="pmid">23835920</object-id>.</mixed-citation></ref>
+<ref id="pone.0191835.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Alvarez</surname> <given-names>HM</given-names></name>, <name name-style="western"><surname>Kalscheuer</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Steinbuchel</surname> <given-names>A</given-names></name>. <article-title>Accumulation of storage lipids in species of <italic>Rhodococcus</italic> and <italic>Nocardia</italic> and effect of inhibitors and polyethylene glycol</article-title>. <source>Fett/Lipid</source>. <year>1997</year>;<volume>99</volume>:<fpage>239</fpage>–<lpage>46</lpage>.</mixed-citation></ref>
+<ref id="pone.0191835.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Alvarez</surname> <given-names>HM</given-names></name>, <name name-style="western"><surname>Kalscheuer</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Steinbuchel</surname> <given-names>A</given-names></name>. <article-title>Accumulation and mobilization of storage lipids by <italic>Rhodococcus opacus</italic> PD630 and <italic>Rhodococcus ruber</italic> NCIMB 40126</article-title>. <source>Applied Microbiology and Biotechnology</source>. <year>2000</year>;<volume>54</volume>(<issue>2</issue>):<fpage>218</fpage>–<lpage>23</lpage>. <object-id pub-id-type="pmid">10968636</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>
