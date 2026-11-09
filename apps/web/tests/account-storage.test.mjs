@@ -144,3 +144,21 @@ test('language is separate; top account actions retain logout and deletion confi
  assert.equal(screen.getByRole('button',{name:'English',exact:true}).getAttribute('aria-pressed'),'true');
  await userEvent.click(screen.getByRole('button',{name:'简体中文',exact:true}));
 });
+test('account page lists identity bindings as rows under the login email in order phone, GitHub, Google, Watcha, before subscription',async()=>{
+  globalThis.fetch=async url=>new Response(JSON.stringify(String(url).includes('/phone/status')?{available:true,linked:false}:String(url).endsWith('/activity')?activity:{maxBytes:100000000,usedBytes:0,images:[]}));
+  const provider=name=>({status:{available:true,linked:name==='github'},busy:false,error:'',start(){},complete(){},cancel(){}});
+  const watcha={status:{available:true,linked:true,hasPassword:true,emailVerified:true},busy:false,refresh(){},requestCode(){},unlink(){}};
+  render(React.createElement(WorkspaceAccountPage,{...props,account:{...props.account,github:provider('github'),google:provider('google'),watcha},section:'account',onSectionChange(){}}));
+  const bindings=await screen.findByTestId('identity-bindings');
+  await waitFor(()=>assert.ok(bindings.querySelector('[data-binding="手机号"]')));
+  assert.deepEqual([...bindings.querySelectorAll('[data-binding]')].map(e=>e.dataset.binding),['手机号','GitHub','Google','观猹']);
+  assert.ok(screen.getByText('登录邮箱').compareDocumentPosition(bindings)&Node.DOCUMENT_POSITION_FOLLOWING);
+  assert.equal(bindings.querySelectorAll('.social-identity-account,.watcha-identity').length,0,'no card boxes');
+  assert.equal(screen.queryByText('刷新登录状态'),null);
+  const row=n=>bindings.querySelector(`[data-binding="${n}"]`);
+  assert.equal(row('手机号').querySelector('[role=status]').textContent,'未绑定');
+  assert.equal(row('GitHub').querySelector('[role=status]').textContent,'已绑定');
+  assert.equal(row('观猹').querySelector('button').textContent,'解绑');
+  await userEvent.setup().click(row('手机号').querySelector('button'));
+  assert.ok(row('手机号').querySelector('.tw-account-row-detail'));
+});

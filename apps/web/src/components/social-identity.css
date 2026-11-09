@@ -84,3 +84,7 @@
 @media (max-width: 480px) {
   .social-identity-account { padding: 16px; gap: 12px; }
 }
+
+.social-identity-account .social-identity-icon { flex: none; width: 28px; height: 28px; color: #293c31; }
+.social-identity-account .social-identity-detail { color: #69736d; font-size: 14px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.social-identity-account > .social-identity-form { flex-basis: 100%; min-width: 0; }
