@@ -5,6 +5,7 @@ export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
 export type ModelRole = 'main' | 'image' | 'vision'
 
 export interface RegistryModel {
+  catalogPresence?: {status: 'listed' | 'absent' | 'unverified'; cause?: string; checkedAt: string | null; sourceUrl?: string}
   auditChannel?: string
   id: string
   version?: ModelVersion
@@ -157,6 +158,7 @@ function normalizeModel(input: unknown): RegistryModel {
   const roleReasonsSource = asRecord(source.roleReasons)
   return {
     id,
+    catalogPresence: source.catalogPresence as RegistryModel['catalogPresence'],
     version: normalizeModelVersion(source.version),
     apiIdentifier: stringValue(source.apiIdentifier),
     label: stringValue(source.label) || id,
@@ -231,7 +233,7 @@ export function partitionRegistryModels(
   const query = stringValue(options.query).toLocaleLowerCase('zh-CN')
   const annotated = models
     .filter(model => !removedModel(model.auditChannel || '', model.id))
-    .filter((model) => model.selectable !== false && !(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`)))
+    .filter((model) => model.catalogPresence?.status !== 'absent' && (model.selectable !== false || model.catalogPresence?.status === 'unverified') && !(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`)))
     .filter((model) => model.roles.includes(options.role) || Boolean(model.roleReasons[options.role]))
     .filter((model) => !options.recommendedOnly || (model.recommended && model.lifecycle === 'stable'))
     .filter((model) => !query || modelSearchValues(model).some((value) => value.toLocaleLowerCase('zh-CN').includes(query)))

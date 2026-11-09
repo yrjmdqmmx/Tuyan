@@ -1200,7 +1200,7 @@
     "channel": "replicate",
     "modelId": "google/imagen-3",
     "oldUrl": "https://replicate.com/google/imagen-3/api/schema",
-    "finalUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate",
+    "finalUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002",
     "status": 200,
     "contentType": "text/html",
     "checkedAt": "2026-11-09",

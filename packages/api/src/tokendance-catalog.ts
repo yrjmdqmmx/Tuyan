@@ -6,14 +6,17 @@ export type TokenDanceCatalogSnapshot = {
   state: 'ready' | 'partial' | 'unavailable'; cause: string | null; checkedAt: number | null;
   expiresAt: number | null; stale: boolean; failureCount: number; alert: 'none' | 'warning' | 'critical';
 }
-export type TokenDanceCatalogPresence = { status: 'listed' | 'absent'; checkedAt: string; sourceUrl: string }
-// Only a complete, successfully parsed directory establishes absence. A cached
-// successful snapshot remains evidence; a failed/empty/malformed read does not.
-export function tokenDanceCatalogPresence(snapshot: TokenDanceCatalogSnapshot, id: string, previous?: TokenDanceCatalogPresence): TokenDanceCatalogPresence | undefined {
-  if (snapshot.checkedAt === null || !snapshot.models.length || snapshot.issues.some(issue => issue.index >= 0)) return previous
+export type TokenDanceCatalogPresence = { status: 'listed' | 'absent' | 'unverified'; cause?: string; checkedAt: string | null; sourceUrl: string }
+// A failed read supersedes historical absence for display, never for calling.
+// Only a fresh, non-empty, completely parsed directory establishes absence.
+export function tokenDanceCatalogPresence(snapshot: TokenDanceCatalogSnapshot, id: string): TokenDanceCatalogPresence {
+  const cause = snapshot.cause || (snapshot.stale ? 'stale' : snapshot.state === 'unavailable' || snapshot.checkedAt === null ? 'unavailable' : !snapshot.models.length ? 'empty' : null)
+  const listed = snapshot.models.some(model => model.id === id)
+  const unverified = cause || (!listed && snapshot.issues.some(issue => issue.index >= 0) ? 'partial' : null)
   return {
-    status: snapshot.models.some(model => model.id === id) ? 'listed' : 'absent',
-    checkedAt: new Date(snapshot.checkedAt).toISOString(),
+    status: unverified ? 'unverified' : listed ? 'listed' : 'absent',
+    ...(unverified ? { cause: unverified } : {}),
+    checkedAt: snapshot.checkedAt === null ? null : new Date(snapshot.checkedAt).toISOString(),
     sourceUrl: 'https://tokendance.space/gateway/v1/models',
   }
 }
@@ -55,9 +58,12 @@ export function parseTokenDanceCatalog(value: unknown): Pick<TokenDanceCatalogSn
 }
 
 export function tokenDanceCatalogModelReason(snapshot: TokenDanceCatalogSnapshot, id: string, expectedProtocol: string): string | null {
-  if (snapshot.stale || snapshot.cause && !['empty', 'all_invalid'].includes(snapshot.cause)) return '当前目录未能核实，已暂停调用；请稍后刷新目录。'
+  const presence = tokenDanceCatalogPresence(snapshot, id)
+  const unverified = '当前目录暂时无法确认该模型，已暂停调用；请稍后刷新目录。'
+  if (presence.status === 'unverified' && presence.cause !== 'partial') return unverified
   const issue = snapshot.issues.find(issue => issue.id === id)
   if (issue) return tokenDanceCatalogIssueMessage(issue.reason) + '，已暂停调用；请等待供应商修复或主动选择其他模型。'
+  if (presence.status === 'unverified') return unverified
   const model = snapshot.models.find(model => model.id === id)
   if (!model) return '当前目录未列出该模型，已暂停调用；请刷新目录或主动选择其他模型。'
   if (!model.supported_protocols.includes(expectedProtocol)) return '当前调用协议与图研已审核的协议不一致，已暂停调用；请等待适配核验或主动选择其他模型。'
@@ -70,7 +76,7 @@ export function tokenDanceCatalogMessage(snapshot: TokenDanceCatalogSnapshot): s
     rejected: '目录接口拒绝访问', rate_limit: '目录接口限流', provider: '目录服务发生供应商异常',
     empty: '供应商返回空目录', all_invalid: '目录中的全部模型记录均异常',
   }
-  if (snapshot.state === 'unavailable') return `观猹 TokenDance：${causeMessages[snapshot.cause || ''] || '目录暂不可用'}，暂不能确认模型可用性。${snapshot.stale ? '上次目录仅供查看，不能用于调用。' : ''}已保留原选择，请稍后重试目录或主动选择其他模型。`
+  if (snapshot.state === 'unavailable') return `观猹 TokenDance：${causeMessages[snapshot.cause || ''] || '目录暂不可用'}，暂时无法确认模型可用性。${snapshot.stale ? '上次目录仅供查看，不能用于调用。' : ''}已保留原选择，请稍后重试目录或主动选择其他模型。`
   if (snapshot.state === 'partial') {
     const affected = [...new Set(snapshot.issues.map(issue => `${issue.id || '第 ' + (issue.index + 1) + ' 条记录'}（${tokenDanceCatalogIssueMessage(issue.reason)}）`))]
     return `观猹 TokenDance：已隔离 ${snapshot.issues.length} 条异常记录：${affected.slice(0, 5).join('、')}${affected.length > 5 ? '等' : ''}。其他 ${snapshot.models.length} 条记录可继续核验使用；已接入的正常模型不受此异常影响。请稍后刷新，或主动选择其他可用模型。`
@@ -124,7 +130,7 @@ export function createTokenDanceCatalogCache(options: {
       for (const expected of options.expectedModels || []) {
         if (!parsed.models.length || parsed.issues.some(issue => issue.id === expected.id)) continue
         const live = parsed.models.find(model => model.id === expected.id)
-        if (!live || !live.supported_protocols.includes(expected.protocol)) parsed.issues.push({ id: expected.id, index: -1, reason: live ? 'protocol_changed' : 'missing_live' })
+        if ((!live && !parsed.issues.some(issue => issue.index >= 0)) || (live && !live.supported_protocols.includes(expected.protocol))) parsed.issues.push({ id: expected.id, index: -1, reason: live ? 'protocol_changed' : 'missing_live' })
       }
       const snapshot: TokenDanceCatalogSnapshot = { ...parsed, state: !parsed.models.length ? 'unavailable' : parsed.issues.length ? 'partial' : 'ready',
         cause: !parsed.total ? 'empty' : !parsed.models.length ? 'all_invalid' : null,

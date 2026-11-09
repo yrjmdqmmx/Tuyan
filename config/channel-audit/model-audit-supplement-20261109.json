@@ -922,7 +922,7 @@
     ],
     "replicate/google/imagen-3": [
       {
-        "url": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate",
+        "url": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002",
         "scope": "vendor",
         "kind": "model-page",
         "checkedAt": "2026-11-09"
@@ -1018,14 +1018,6 @@
       "checkedAt": "2026-11-09",
       "evidence": ".audit-input/r12/tokendance-all-rendered.json"
     },
-    "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate": {
-      "status": 200,
-      "contentType": "text/html",
-      "checkedAt": "2026-11-09",
-      "method": "Operator GET with browser User-Agent, follow redirects (~19:05 UTC+8)",
-      "evidence": ".audit-input/r13/CODEX_TASK_R13.md",
-      "note": "Imagen 3；含 imagen-3.0-generate-001/-002。"
-    },
     "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001": {
       "status": 200,
       "contentType": "text/html",
@@ -1080,6 +1072,14 @@
       "checkedAt": "2026-11-09",
       "finalUrl": "https://api-docs.deepseek.com/news/news250325/",
       "title": "V3-0324 Release | DeepSeek API Docs"
+    },
+    "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002": {
+      "status": 200,
+      "contentType": "text/html",
+      "checkedAt": "2026-11-09",
+      "method": "Operator verified HTTP 200 on the same page and exact section ID on 2026-11-09",
+      "evidence": ".audit-input/r14/CODEX_TASK_R14.md",
+      "note": "Later GA Imagen 3 generate model (002); Replicate exact version is unconfirmed because its own page returns 404."
     }
   }
 }

@@ -2,19 +2,28 @@
 
 此片段只用于独立的本地预览 origin，不进入生产代码路径、不含密钥、不发送模型请求。模型库 13 条，其中 3 条已移除、10 张卡片；另有两份普通预设任务草稿。请使用无其他业务草稿的浏览器配置文件。不要点击生成或优化。
 
-## 启动
+## R14 启动与 TokenDance 模式
 
-在普通终端运行两个进程；受限沙箱无法监听端口时须在沙箱外由审阅人启动：
-
-```sh
-pnpm --filter @paperbanana/paperbanana-api exec node --import tsx --input-type=module -e 'import {createRefineRuntime} from "../../test-support/refine-runtime.mjs"; const r = await createRefineRuntime({port:8791}); console.log(r.baseUrl)'
-```
+仓库根目录运行。后端三选一；省略环境变量时默认为 `snapshot`：
 
 ```sh
-VITE_AUTH_BASE= VITE_AUTH_REQUIRED=false VITE_AUTH_ENABLED=false VITE_API_BASE=http://127.0.0.1:8791 pnpm --filter @paperbanana/web dev --host 127.0.0.1 --port 5173 --strictPort
+# 119 条公开目录快照；65 张可见且可选的 TokenDance 卡
+TUYAN_PREVIEW_TOKENDANCE_CATALOG=snapshot pnpm --dir apps/paperbanana-api exec node --import tsx ../../test-support/refine-runtime.mjs
+# 空目录：72 张非到期卡保留、置灰，显示“暂时无法确认”，禁止选择
+TUYAN_PREVIEW_TOKENDANCE_CATALOG=empty pnpm --dir apps/paperbanana-api exec node --import tsx ../../test-support/refine-runtime.mjs
+# 目录超时：与空目录相同，不把历史缺席状态当成本次确认
+TUYAN_PREVIEW_TOKENDANCE_CATALOG=timeout pnpm --dir apps/paperbanana-api exec node --import tsx ../../test-support/refine-runtime.mjs
 ```
 
-后端为现有内存数据库 / 模拟提供商；无需登录、无需 API Key。模拟目录中 TokenDance 返回空列表，OpenRouter/fal/Runware/Novita 等远程读取失败，均不访问真实网络。
+另开终端启动 Web，然后打开 `http://127.0.0.1:5173/?view=models` → 模型目录 → 观猹 TokenDance：
+
+```sh
+node test-support/model-card-preview-web.mjs
+```
+
+此 Web 启动器固定本地 API `http://127.0.0.1:8791`、关闭登录，使用 Vite `envFile:false`，不读 `.env`。后端为内存数据库和模拟提供商，不读取真实凭据，不访问真实模型。模式开关仅在 `test-support` 中；切换后端模式后刷新目录即可，已有连接、模型及角色选择不自动删除或替换。`snapshot` 和计数脚本共用 `config/channel-audit/tokendance-catalog-snapshot-20261109.json`：操作方于 2026-11-09 约 19:43 UTC+8 无认证 GET 公共目录，119 条；只保留 id/name/created/context_length/supported_protocols。两张有独立到期证据的 MiMo 2.5 卡继续按原生命周期隐藏。
+
+2026-11-09 本沙箱实测两个启动命令分别在 `127.0.0.1:8791` / `127.0.0.1:5173` 报 `listen EPERM`。Browser 插件缺失、`pnpm --dir apps/web exec playwright --version` 报 command not found；1280/390 实屏截图仍需在可监听的本地终端运行。自动化已验证真实 Core 结果驱动 Web DOM、编译小程序状态、灰色样式和禁止选择，不能替代浏览器或微信原生验收。
 
 ## 精确夹具
 
@@ -69,7 +78,7 @@ location.href = '/?view=models';
 | R4 C · Ling 视频来源 | 我的模型 → 蚂蚁百灵 → 搜索 `Ling-3.0-flash-VL`：文本/图像/视频已知，音频为灰色问号；输出未列模态也为灰色问号。来源详情含 Chat API、型号页及 image_url / video_url 说明。 |
 | R4 A · 既有规格回退 | 模型目录 → 月之暗面 Kimi → `kimi-k3`：文本/图像、1M tokens；来源详情明确“图研既有核实”和既有日期。 |
 | R4 I · 多连接区分 | 在模型管理创建两个同名、同渠道的本地连接并各加入同一型号；我的模型显示“连接名 · 连接 ID”，选择器显示连接说明及已核实的思考状态。 |
-| 3 · 262K / 最大输出 | **模型目录** → 蚂蚁百灵 → 搜索 `Ling-3.0-flash`：原生窗口 `≈ 262K tokens`、精确值 `262,144 tokens`；模型目录 → 观猹 TokenDance → `deepseek-v4-pro`（离线夹具目录为空时不可见，可在定向 DOM 用例查看）：最大输出 `≈ 393K tokens`、精确值 `393,216 tokens`。K/M 为生产十进制规则，不改为二进制 384K。 |
+| 3 · 262K / 最大输出 | **模型目录** → 蚂蚁百灵 → 搜索 `Ling-3.0-flash`：原生窗口 `≈ 262K tokens`、精确值 `262,144 tokens`；模型目录 → 观猹 TokenDance → `deepseek-v4-pro`（snapshot 可选，empty/timeout 可见但置灰）：最大输出 `≈ 393K tokens`、精确值 `393,216 tokens`。K/M 为生产十进制规则，不改为二进制 384K。 |
 | 将下线确认 | 草稿 → **R4：将下线确认** → 模型配置 → 主模型下方“切换到 qwen3.8-flash”：取消与确认按钮保留；确认后原型号在我的模型仍保持原启用状态，其他预设不变。 |
 | 1 · StepFun 空默认 | 模型管理 → 添加一个无需填写密钥的阶跃连接 → 返回普通预设配置 → 选择该连接 → “应用此连接的默认组合”：绘图槽显示“此连接暂无默认绘图模型”。此动作无需调用模型。 |
 

@@ -7,6 +7,7 @@ const provider_regions_1 = require("../../utils/provider-regions");
 const model_registry_1 = require("../../utils/model-registry");
 const PROVIDER_LABELS = model_presentation_1.MODEL_CHANNEL_LABELS;
 const MODEL_PAGE_SIZE = 30;
+const visibleModels = (partition) => partition.compatible.concat(partition.incompatible.filter(m => { var _a; return ((_a = m.catalogPresence) === null || _a === void 0 ? void 0 : _a.status) === 'unverified'; }));
 Component({
     options: { styleIsolation: 'apply-shared' },
     properties: {
@@ -50,9 +51,9 @@ Component({
         getRegistry() { return (0, provider_regions_1.registryForRegions)((0, model_registry_store_1.getModelRegistryState)().registry, this.properties.providerRegions == null ? undefined : this.properties.providerRegions); },
         compatibleModels(providerId) {
             var _a, _b, _c;
-            return (0, model_registry_1.partitionRegistryModels)(((_c = (_b = (_a = this.getRegistry()) === null || _a === void 0 ? void 0 : _a.providers) === null || _b === void 0 ? void 0 : _b[providerId]) === null || _c === void 0 ? void 0 : _c.models) || [], {
+            return visibleModels((0, model_registry_1.partitionRegistryModels)(((_c = (_b = (_a = this.getRegistry()) === null || _a === void 0 ? void 0 : _a.providers) === null || _b === void 0 ? void 0 : _b[providerId]) === null || _c === void 0 ? void 0 : _c.models) || [], {
                 role: normalizeRole(this.properties.role), outputFormat: String(this.properties.outputFormat || ''),
-            }).compatible;
+            })).filter(m => m.roles.includes(normalizeRole(this.properties.role)));
         },
         vendorsFor(providerId) {
             return (0, model_registry_1.groupRegistryModels)(this.compatibleModels(providerId)).map(group => ({ vendor: group.vendor, count: group.models.length }));
@@ -71,10 +72,10 @@ Component({
                     id, label: PROVIDER_LABELS[id], kindText: ((_a = registry === null || registry === void 0 ? void 0 : registry.providers[id]) === null || _a === void 0 ? void 0 : _a.accessKind) === 'aggregator' ? '聚合渠道' : '官方直连',
                     count: this.compatibleModels(id).length,
                 });
-            }).filter(item => item.count > 0);
+            }).filter(item => { var _a; return item.count > 0 || item.id === 'tokendance' && ((_a = registry === null || registry === void 0 ? void 0 : registry.providers.tokendance) === null || _a === void 0 ? void 0 : _a.models.some(m => m.catalogPresence)); });
             const lifecycle = (0, model_audit_1.auditedModelLifecycle)(String(this.properties.selectedProvider), String(this.properties.selectedModel));
             const removed = (0, model_audit_1.removedModel)(String(this.properties.selectedProvider), String(this.properties.selectedModel));
-            const replacement = this.compatibleModels(String(this.properties.selectedProvider)).find(model => model.id === ((removed === null || removed === void 0 ? void 0 : removed.replacementApiId) || (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.replacement)));
+            const replacement = this.compatibleModels(String(this.properties.selectedProvider)).find(model => !model.selectionDisabled && model.id === ((removed === null || removed === void 0 ? void 0 : removed.replacementApiId) || (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.replacement)));
             this.setData({ removedHint: (0, model_audit_1.removedModelHint)(String(this.properties.selectedProvider), String(this.properties.selectedModel)), savedLifecycle: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.message) || '', savedReplacement: (replacement === null || replacement === void 0 ? void 0 : replacement.id) || '', replacementLabel: (replacement === null || replacement === void 0 ? void 0 : replacement.label) || '' });
             const selectedProvider = String(this.properties.selectedProvider || '');
             const activeProvider = providerCards.some(item => item.id === selectedProvider) ? selectedProvider : '';
@@ -93,8 +94,6 @@ Component({
             if (!this.data.providerCards.some(item => item.id === providerId))
                 return;
             const vendorCards = this.vendorsFor(providerId);
-            if (!vendorCards.length)
-                return;
             const activeVendor = providerId === this.data.activeProvider && vendorCards.some(item => item.vendor === this.data.activeVendor) ? this.data.activeVendor : '';
             this.setData({
                 activeProvider: providerId, activeProviderLabel: PROVIDER_LABELS[providerId] || providerId,
@@ -143,7 +142,7 @@ Component({
                 partition = (0, model_registry_1.partitionRegistryModels)(provider.models, { ...options, recommendedOnly: false });
                 this.setData({ catalogMode: 'all' });
             }
-            const compatibleModels = partition.compatible.filter(inVendor).map(model => presentModel(model, this.properties.selectedProvider, this.properties.selectedModel, providerId));
+            const compatibleModels = visibleModels(partition).filter(m => m.roles.includes(options.role)).filter(inVendor).map(model => presentModel(model, this.properties.selectedProvider, this.properties.selectedModel, providerId));
             const visibleLimit = Math.max(MODEL_PAGE_SIZE, Number(this.data.visibleLimit) || MODEL_PAGE_SIZE);
             this.setData({ compatibleCount: compatibleModels.length, visibleCompatibleModels: compatibleModels.slice(0, visibleLimit), hasMore: visibleLimit < compatibleModels.length });
         },
@@ -160,16 +159,16 @@ Component({
             if (this.data.step !== 'models' || !this.data.activeVendor || event.currentTarget.dataset.disabled)
                 return;
             const modelId = String(event.currentTarget.dataset.model || '');
-            if (!this.compatibleModels(this.data.activeProvider).some(model => model.id === modelId && (0, model_presentation_1.modelDeveloper)(this.data.activeProvider, model).label === this.data.activeVendor))
+            if (!this.compatibleModels(this.data.activeProvider).some(model => !model.selectionDisabled && model.id === modelId && (0, model_presentation_1.modelDeveloper)(this.data.activeProvider, model).label === this.data.activeVendor))
                 return;
             this.triggerEvent('select', { provider: this.data.activeProvider, modelId });
         },
         confirmReplacement() {
             const replacement = this.data.savedReplacement;
-            if (!replacement || !this.compatibleModels(String(this.properties.selectedProvider)).some(model => model.id === replacement))
+            if (!replacement || !this.compatibleModels(String(this.properties.selectedProvider)).some(model => !model.selectionDisabled && model.id === replacement))
                 return;
             wx.showModal({ title: '确认切换模型', content: `${(0, model_audit_1.modelDisplayName)(String(this.properties.selectedProvider), String(this.properties.selectedModel))} → ${(0, model_audit_1.modelDisplayName)(String(this.properties.selectedProvider), replacement)}。只修改当前选择，其他预设与历史记录保持不变。`, success: result => {
-                    if (result.confirm && this.compatibleModels(String(this.properties.selectedProvider)).some(model => model.id === replacement))
+                    if (result.confirm && this.compatibleModels(String(this.properties.selectedProvider)).some(model => !model.selectionDisabled && model.id === replacement))
                         this.triggerEvent('select', { provider: this.properties.selectedProvider, modelId: replacement });
                 } });
         },
@@ -190,6 +189,7 @@ function presentModel(model, selectedProvider, selectedModel, providerId) {
     const origin = (fact) => fact.provenance === 'catalog' ? '图研既有核实' : fact.provenance === 'product' ? '图研输入要求' : '';
     const image = model.roles.includes('image') && !(audit.fields.outputModalities.value || []).includes('text') && !['totalContextTokens', 'maxOutputTokens'].some(k => audit.fields[k].state === 'known');
     return {
+        disabled: model.selectionDisabled, disabledReason: model.selectionDisabledReason,
         scheduled: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.state) === 'scheduled',
         vendorLabel: (0, model_presentation_1.modelDeveloper)(providerId, model).label, channelLabel: PROVIDER_LABELS[providerId],
         specRows: [['inputModalities', '输入'], ['outputModalities', '输出'], ['totalContextTokens', '上下文窗口'], ['maxOutputTokens', '最大输出']].map(([key, label]) => ({ label, value: image && key.endsWith('Tokens') && audit.fields[key].state === 'unknown' ? '不适用' : key.endsWith('Modalities') && audit.fields[key].state === 'unknown' ? '模态未知' : display(audit.fields[key]), origin: origin(audit.fields[key]), unknown: audit.fields[key].state === 'unknown', unknownText: (key.endsWith('Modalities') && audit.fields[key].state === 'known' && Array.isArray(audit.fields[key].value) ? ['text', 'image', 'audio', 'video'].filter(x => { var _a; return !audit.fields[key].value.includes(x) && !((_a = audit.fields[key].unsupportedModalities) === null || _a === void 0 ? void 0 : _a.includes(x)); }) : []).map(x => names[x]).join('、'), unsupportedText: (audit.fields[key].unsupportedModalities || []).map(x => names[x]).join('、') })),

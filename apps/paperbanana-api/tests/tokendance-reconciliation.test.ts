@@ -30,7 +30,7 @@ test('current 112-row directory yields six DeepSeek model cards and excludes too
   t.mock.method(Date, 'now', () => Date.parse('2026-10-26T08:00:00Z'))
   assert.equal(live.data.length, 112)
   assert.equal(live.data.filter((m: any) => m.id.startsWith('deepseek-')).length, 8)
-  const runtime: any = await createRefineRuntime({ tokenDance: true })
+  const runtime: any = await createRefineRuntime({ startServer: false })
   const requests: string[] = []
   try {
     runtime.legacy.configureRuntimeFetch(async (input: any, init: any = {}) => {
@@ -54,20 +54,20 @@ test('current 112-row directory yields six DeepSeek model cards and excludes too
     assert.ok(deepseek(recovered).includes('deepseek-v3.2'))
     runtime.legacy.configureRuntimeFetch(async () => { throw new Error('offline fixture') })
     const failed = await runtime.invoke({ action: 'modelRegistry', provider: 'tokendance', refreshCatalog: true })
-    assert.deepEqual(deepseek(failed), deepseekIds)
+    assert.ok(deepseek(failed).includes('deepseek-v3.2'), 'failed refresh retains historical cards as unverified')
+    assert.ok(failed.providers.tokendance.models.every((m: any) => m.catalogPresence.status === 'unverified'))
     assert.ok(visible(failed).every((m: any) => m.selectable === false))
   } finally { await runtime.close() }
 })
 
-test('presence evidence ignores empty, malformed and failed reads, accepts clean complete snapshots and can recover', () => {
-  const previous = { status: 'absent' as const, checkedAt: '2026-10-26', sourceUrl: source }
+test('presence marks failed, empty, malformed and stale reads unverified; only complete live data establishes absence', () => {
   const base = { models: [], issues: [], total: 0, state: 'unavailable' as const, cause: 'network', checkedAt: null, expiresAt: null, stale: false, failureCount: 1, alert: 'critical' as const }
-  assert.equal(tokenDanceCatalogPresence(base, 'id', previous), previous)
-  assert.equal(tokenDanceCatalogPresence({ ...base, cause: 'empty', checkedAt: 1 }, 'id', previous), previous)
+  assert.equal(tokenDanceCatalogPresence(base, 'id').status, 'unverified')
+  assert.equal(tokenDanceCatalogPresence({ ...base, cause: 'empty', checkedAt: 1 }, 'id').status, 'unverified')
   const parsed = parseTokenDanceCatalog({ data: [{ id: 'other', supported_protocols: ['openai:chat-completions'] }, null] })
-  assert.equal(tokenDanceCatalogPresence({ ...base, ...parsed, checkedAt: 1 }, 'id', previous), previous)
-  const clean = { ...base, ...parseTokenDanceCatalog({ data: [{ id: 'id', supported_protocols: ['openai:chat-completions'] }] }), cause: null, checkedAt: 1 }
-  assert.equal(tokenDanceCatalogPresence(clean, 'id', previous)?.status, 'listed')
-  assert.equal(tokenDanceCatalogPresence(clean, 'missing')?.status, 'absent')
-  assert.equal(tokenDanceCatalogPresence({ ...clean, stale: true, cause: 'network' }, 'id', previous)?.status, 'listed', 'last successfully parsed snapshot remains evidence')
+  assert.equal(tokenDanceCatalogPresence({ ...base, ...parsed, state: 'partial', cause: null, checkedAt: 1 }, 'id').status, 'unverified')
+  const clean = { ...base, ...parseTokenDanceCatalog({ data: [{ id: 'id', supported_protocols: ['openai:chat-completions'] }] }), state: 'ready' as const, cause: null, checkedAt: 1 }
+  assert.equal(tokenDanceCatalogPresence(clean, 'id').status, 'listed')
+  assert.equal(tokenDanceCatalogPresence(clean, 'missing').status, 'absent')
+  for (const id of ['id', 'missing']) assert.equal(tokenDanceCatalogPresence({ ...clean, stale: true, cause: 'network' }, id).status, 'unverified')
 })

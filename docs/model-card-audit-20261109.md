@@ -1,4 +1,79 @@
-# 模型卡审计验收 · 2026-11-09 R13B
+# 模型卡审计验收 · 2026-11-09 R14
+
+
+## R14：TokenDance 空目录与结构化在列状态（当前验收）
+
+按 `.audit-input/r14/CODEX_TASK_R14.md` 完成。仅工作树修改，无 Git 写入命令、真实/付费模型请求、生产或服务器配置变更；未读取密钥或私密目录，未访问 `../Tuyan-wt-baseline`。本节覆盖此前空目录夹具的显示计数；旧轮次保留作历史记录。
+
+| 读取结果 | `catalogPresence.status` / cause | 卡片及调用行为 |
+| --- | --- | --- |
+| `data: []` | `unverified` / `empty` | 保留模型和渠道，置灰，提示“当前目录暂时无法确认该模型，已暂停调用”；不认定缺席 |
+| 超时或网络失败 | `unverified` / `timeout`、`network` 等 | 同上；缓存和静态历史的 absent 不冒充本次核验，已保存选择保持 |
+| 成功、非空、完整有效目录中缺少精确 ID | `absent` | 显示“当前目录未列出该模型”，从当前可选卡片中隐藏；wire 身份和用户配置保留，TokenDance 渠道仍可见 |
+
+`all_invalid` 同样不是缺席证据，按 `unverified / all_invalid` 处理。部分坏行时只确认解析成功的在列记录；缺少的 ID 暂不认定 absent，不生成 `missing_live`。协议改变继续隔离，不能推断为下线。独立生命周期证据不变：TokenDance 的 `mimo-v2.5` / `mimo-v2.5-pro` 仍按 2026-10-21 到期处理，因此失败场景保留 **72 张**非到期卡，原始响应仍有 **74** 个身份。
+
+Core 给每个 TokenDance 模型返回 `{status, cause?, checkedAt, sourceUrl}`；`checkedAt` 是当前保留快照的检查时间，无快照时为 null，失败不能因时间戳存在而视为已核实。Gateway 原样转发该结构。Web 缺席判定仅依赖结构化 absent、`missing_live` 或健康目录中的渠道/型号缺失，已删除对中文 `disabledReason` 的匹配；小程序保留该字段并据此过滤/暂停，所有选择和替代确认仍检查禁用状态。fal/Runware/Novita 原有已确认缺席也由 Core 补出结构字段，避免移除文案匹配后漏掉这些条目。
+
+### R14 计数：同一公开快照、两侧各自完整对象与卡片代码
+
+计数快照为操作方在 **2026-11-09 约 19:43 UTC+8** 无认证获取的 [TokenDance 公共目录](https://tokendance.space/gateway/v1/models)，共 **119** 条；本轮未联网重抓。仓库 fixture 只保留任务允许的五个字段，来源/时间随文件记录。`scripts/count-model-catalog.mjs` 与本地预览共用此 fixture，默认不再返回空数组。
+
+沿用本次审计的固定历史 main **c7b6a2fc**，不是本地当前 main 分支。通过只读 `git show` 将该提交的跟踪源码导出到 `/tmp` 后执行计数；两侧使用各自 Core 和 Web 卡片代码、同一份 119 条目录。完整数值、逐渠道计数、fixture SHA-256 见 [R14 JSON](model-card-audit-20261109-r14-counts.json)。
+
+| 范围 | main：原空夹具 → 新快照 | head：原空夹具 → 新快照 |
+| --- | ---: | ---: |
+| 静态模型 | 1125 → 1125 | 1064 → 1064 |
+| 完整 mock registry | 1122 → 1122 | 1061 → 1061 |
+| 可见卡片 | 923 → **988** | 919 → **984** |
+| 可选模型 | 884 → **949** | 878 → **943** |
+| TokenDance 可见 / 可选 | 0 / 0 → **65 / 65** | 0 / 0 → **65 / 65** |
+
+两侧各增 65 张可见/可选卡；119 条中 67 条匹配已适配身份，另 52 条不自动提升为模型卡；74 个原身份中 7 个精确缺席，67 个在列中的 2 个已有到期证据，所以可见/可选 65。原始/静态模型列表与已保存数据没有删改。
+
+完整对象四项“已知”计数（与 R11 相同；不适用纳入非未知，总窗口/最大输出分别列数值与不适用）：
+
+| 口径 | main c7b6a2fc | head R14 |
+| --- | ---: | ---: |
+| 完整对象总数 | 1122 | 1061 |
+| 已知输入 | 983 | 997 |
+| 已知输出 | 968 | 967 |
+| 已知上下文 | 534（数值 534 / 不适用 0） | 926（数值 519 / 不适用 407） |
+| 已知最大输出 | 0（旧卡片未呈现此行） | 616（数值 209 / 不适用 407） |
+
+### R14 可选修复、文件与验证
+
+紧凑卡来源域名允许换行，不再省略截断，保留普通/紧凑 DOM 与 CSS 检查。`replicate/google/imagen-3` 首链接现为 `https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002`，R12 链接检查 fixture 和两份表已同步；操作方确认同页 200 且有该章节 ID。002 是较晚的 GA generate 型号；Replicate 自身页面 404，**其实际对应版本仍未确认**，此锚点不证明渠道版本或可用性。最终链接范围仍为 **397 卡 / 374 URL / 全部记录为 200**。
+
+主要文件：`packages/api/src/tokendance-catalog.ts`、Core `runtime/handler.ts`；Web `modelRegistry.js`、`ModelPicker.jsx`、`WorkspaceModelCatalog.jsx` / CSS；小程序 `model-registry.ts`、`model-picker.ts/wxml/wxss` 及编译 JS；计数脚本、两个 `test-support` 目录/预览助手和 runtime；日期快照、来源 supplement、各端生成物、四包回归测试及本验收文档。Gateway 运行时透传路径未改，新增实际 HTTP 中间件回归证明结构/提示完整保留。
+
+- Core / shared API 受影响 **66/66**、Gateway **10/10**、Web 受影响 **170/170**、小程序全套 **147/147**、scripts 全套 **39/39**；均 0 失败 / 0 跳过。覆盖空、超时、非空缺席、all_invalid、旧 listed/absent 缓存失效、恢复、渠道保留、禁选、保存数据不变与来源域名 DOM/CSS。Core 两个旧目录测试使用无监听内存 runtime，原断言仍执行；Gateway 使用真实中间件内存 HTTP，不伪称 socket 验收。
+- 审计/目录/参考上传生成器与对应检查通过，两个 `sync --check` 通过；R10/R11（`--frozen-main`）/R12 报告检查通过。Web build、小程序 build、Core/小程序类型检查通过。Web 使用仓库 Vite 配置并设置 `envFile:false`，随后运行原 agent-skills 发布脚本，避免读取 `.env`；既有大 chunk 提示仍在。
+- 小程序最终源码 **1,569,427 bytes**、runtime **1,145,225 bytes**、媒体 **189,978 bytes**；相对 R13B 源码 **+2,085 bytes**，原上限 **1,572,864** 不变，余 **3,437 bytes**。没有删减预算测试或改阈值。
+- Browser 插件缺失，Playwright 命令不存在；本轮实际启动前后端分别遇到 5173/8791 `listen EPERM`。DOM/编译组件验收通过，1280/390 浏览器截图、微信原生扫描仍未完成，小程序仍暂停发布。启动命令与三模式截图路径见 [预览说明](model-card-audit-20261109-preview.md#r14-启动与-tokendance-模式)。
+
+复现命令（仓库根目录；Web glob 命令在 `apps/web` 下执行）：
+
+```sh
+pnpm --dir apps/paperbanana-api exec node --import tsx --test tests/tokendance-catalog.test.ts tests/tokendance-reconciliation.test.ts tests/tokendance-r14.test.ts tests/model-audit.test.ts tests/model-audit-r13.test.ts tests/model-audit-http.test.ts tests/provider-catalog.test.ts
+node --test apps/auth-gateway/tests/model-audit.test.js apps/auth-gateway/tests/tokendance-catalog.test.js
+pnpm --dir apps/miniprogram test
+node --test scripts/*.test.mjs
+node scripts/generate-model-audit.mjs --check
+node scripts/sync-model-catalog.mjs --check
+node scripts/sync-reference-upload.mjs --check
+node scripts/report-model-card-r10.mjs --check
+node scripts/report-model-card-r11.mjs --frozen-main --check
+node scripts/report-model-card-r12.mjs --check
+node scripts/count-model-catalog.mjs
+pnpm --dir apps/paperbanana-api check
+pnpm --dir apps/miniprogram build
+pnpm --dir apps/miniprogram check
+pnpm --dir apps/web exec node --input-type=module -e 'import {build} from "vite"; await build({envFile:false});'
+pnpm --dir apps/web exec node scripts/publish-agent-skills.mjs
+# 在 apps/web 下运行：
+pnpm test tests/model-audit*.test.mjs tests/tokendance-catalog-r14.test.mjs tests/model-specifications.test.mjs tests/provider-catalogs.test.mjs tests/model-visibility-entrances.test.mjs tests/model-registry-ui-contract.test.mjs tests/workspace-model-catalog.test.mjs tests/workspace-model-picker.test.mjs tests/workspace-models.test.mjs src/lib/modelRegistry.test.js
+```
 
 ## R13B：公告标签与 DeepSeek V3-0324 来源（当前验收）
 
@@ -93,7 +168,7 @@ node --import tsx --test tests/model-audit.test.ts tests/model-audit-r13.test.ts
 
 | channel | model id | new URL | status | old URL | old status | previous visible URL | previous status |
 | --- | --- | --- | ---: | --- | ---: | --- | ---: |
-| replicate | `google/imagen-3` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate | 200 | https://replicate.com/google/imagen-3/api/schema | 404 | https://replicate.com/google/imagen-3 | 404 |
+| replicate | `google/imagen-3` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002 | 200 | https://replicate.com/google/imagen-3/api/schema | 404 | https://replicate.com/google/imagen-3 | 404 |
 | replicate | `google/imagen-3-fast` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001 | 200 | https://replicate.com/google/imagen-3-fast/api/schema | 404 | https://replicate.com/google/imagen-3-fast | 404 |
 | replicate | `google/imagen-4` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001 | 200 | https://replicate.com/google/imagen-4/api/schema | 404 | https://replicate.com/google/imagen-4 | 404 |
 | replicate | `google/imagen-4-fast` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001 | 200 | https://replicate.com/google/imagen-4-fast/api/schema | 404 | https://replicate.com/google/imagen-4-fast | 404 |
@@ -240,7 +315,7 @@ new URL 为当前完整对象首链接，old URL 为相同对象在 R8 的首链
 | replicate | `fofr/sdxl-emoji` | https://replicate.com/fofr/sdxl-emoji | 200 | https://replicate.com/fofr/sdxl-emoji/api/schema |
 | replicate | `fofr/sticker-maker` | https://replicate.com/fofr/sticker-maker | 200 | https://replicate.com/fofr/sticker-maker/api/schema |
 | replicate | `google/gemini-3-flash` | https://replicate.com/google/gemini-3-flash | 200 | https://replicate.com/google/gemini-3-flash/api/schema |
-| replicate | `google/imagen-3` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate | 200 | https://replicate.com/google/imagen-3/api/schema |
+| replicate | `google/imagen-3` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002 | 200 | https://replicate.com/google/imagen-3/api/schema |
 | replicate | `google/imagen-3-fast` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001 | 200 | https://replicate.com/google/imagen-3-fast/api/schema |
 | replicate | `google/imagen-4` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001 | 200 | https://replicate.com/google/imagen-4/api/schema |
 | replicate | `google/imagen-4-fast` | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001 | 200 | https://replicate.com/google/imagen-4-fast/api/schema |

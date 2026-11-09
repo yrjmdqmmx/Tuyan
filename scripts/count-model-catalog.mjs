@@ -8,10 +8,13 @@ import { createRequire } from 'node:module'
 import { execFileSync } from 'node:child_process'
 import { build } from 'esbuild'
 import { loadCard, displayValues, isKnown, countCards, readRegistry } from './lib/model-card-audit.mjs'
+import { tokenDanceCatalogResponse } from '../test-support/tokendance-catalog.mjs'
+import tokenDanceSnapshot from '../config/channel-audit/tokendance-catalog-snapshot-20261109.json' with { type: 'json' }
 const scriptRoot = fileURLToPath(new URL('../', import.meta.url))
 const root = path.resolve(process.argv[2]?.startsWith('--') ? scriptRoot : process.argv[2] || scriptRoot)
 const registryArg = process.argv.indexOf('--registry')
 const registryFile = registryArg < 0 ? null : process.argv[registryArg + 1]
+const commitArg = process.argv.indexOf('--source-commit')
 if (registryArg >= 0 && (!registryFile || registryFile.startsWith('--'))) throw new Error('--registry requires a JSON path')
 const require = createRequire(path.join(scriptRoot, 'apps/web/package.json'))
 const { register } = await import(pathToFileURL(path.join(scriptRoot, 'apps/paperbanana-api/node_modules/tsx/dist/esm/api/index.mjs')))
@@ -50,9 +53,9 @@ try {
     new Function('module','exports','require',coreBundle.outputFiles[0].text)(coreModule,coreModule.exports,createRequire(path.join(scriptRoot,'apps/paperbanana-api/package.json')))
     coreModule.exports.configureRuntimeFetch(async url => {
       catalogRequests.push(String(url))
-      // Match the local preview fixture: no TokenDance account/catalog rows;
+      // Public unauthenticated TokenDance snapshot, 2026-11-09 (119 rows).
       // public OpenRouter/fal/Runware/Novita catalogs are unavailable offline.
-      return String(url)==='https://tokendance.space/gateway/v1/models' ? Response.json({data:[]}) : Response.json({error:'Offline catalog fixture'},{status:503})
+      return String(url)==='https://tokendance.space/gateway/v1/models' ? tokenDanceCatalogResponse() : Response.json({error:'Offline catalog fixture'},{status:503})
     })
     mock=await coreModule.exports.modelRegistry({})
   }
@@ -98,7 +101,8 @@ try {
     conflicts.set(identity,{channel:row.provider,id:row.model.id,...conflict,sources:[...new Set([...(prior?.sources || []),...conflict.sources])]})
   }
   const output = {
-    root:path.relative(scriptRoot,root) || '.',commit:execFileSync('git',['-C',root,'rev-parse','--short','HEAD'],{encoding:'utf8'}).trim(),asOf:'2026-11-09',
+    root:path.relative(scriptRoot,root) || '.',commit:commitArg < 0 ? execFileSync('git',['-C',root,'rev-parse','--short','HEAD'],{encoding:'utf8'}).trim() : process.argv[commitArg + 1],asOf:'2026-11-09',
+    tokenDanceCatalogFixture: registryFile ? null : { sourceUrl: tokenDanceSnapshot.sourceUrl, checkedAt: tokenDanceSnapshot.checkedAt, models: tokenDanceSnapshot.data.length },
     modelObjectBasis: registryFile ? 'Captured Core modelRegistry JSON; full model objects. Static-only identities use full STATIC_MODEL_REGISTRY plus Core exactModelDetails.' : 'Offline Core modelRegistry with mocked catalogs; full static entries plus Core exactModelDetails, audit, lifecycle and reference capability enrichment. Static-only identities use full static plus exactModelDetails.',
     knownRule: 'Rendered value is not unknown; main legacy missing labels normalize to unknown; N/A included. Each root uses its own card code; hidden metadata is not counted.',
     fullObject: countCards(mockRows.map(row => ({ channel: row.provider, model: row.model })), card),

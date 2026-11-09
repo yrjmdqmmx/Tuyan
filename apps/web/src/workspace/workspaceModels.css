@@ -122,10 +122,10 @@
 .tw-catalog-card .model-modality-icons { gap:7px; }
 .tw-catalog-card .model-modality-icon svg { width:18px; height:18px; }
 .tw-catalog-card .model-spec-footer { display:flex; align-items:center; gap:8px; min-width:0; }
-.tw-catalog-card .model-spec-sources.is-compact { display:flex; flex:1; min-width:0; flex-wrap:nowrap; align-items:center; gap:4px; height:24px; margin:0; padding:2px 0; overflow-x:auto; scrollbar-width:thin; }
+.tw-catalog-card .model-spec-sources.is-compact { display:flex; flex:1; min-width:0; flex-wrap:nowrap; align-items:center; gap:4px; min-height:24px; margin:0; padding:2px 0; }
 .tw-catalog-card .model-spec-sources.is-compact a { flex:none; white-space:nowrap; font-size:10px; min-width:18px; min-height:20px; justify-content:center; }
-.tw-catalog-card .model-spec-sources.is-compact a:first-child { flex:0 1 auto; min-width:60px; justify-content:flex-start; }
-.tw-catalog-card .model-spec-sources.is-compact a:first-child span { overflow:hidden; text-overflow:ellipsis; }
+.tw-catalog-card .model-spec-sources.is-compact a:first-child { flex:0 1 auto; min-width:0; justify-content:flex-start; white-space:normal; }
+.tw-catalog-card .model-spec-sources.is-compact a:first-child span { overflow:visible; overflow-wrap:anywhere; }
 .tw-catalog-card .model-spec-sources.is-compact svg { flex-shrink:0; }
 .tw-catalog-card-actions { display:flex; flex:none; align-items:center; gap:6px; min-width:0; }
 .tw-catalog-card-actions > button { margin-left:auto; }
@@ -217,3 +217,5 @@
 .model-picker-empty > .tw-secondary { margin-inline-start:8px; }
 .tw-dialog.tw-model-reselect-dialog { min-height:0; height:auto; }
 .tw-model-reselect-dialog > .tw-dialog-body > p { font-size:14px; line-height:1.6; }
+
+.tw-catalog-card.is-paused { opacity: .6; }

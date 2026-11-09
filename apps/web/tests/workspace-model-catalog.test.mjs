@@ -242,7 +242,7 @@ test('unreviewed tools and unsupported modality discoveries never inflate cards 
   {id:'fetch',roles:[],catalogDiscovered:true},
   {id:'embedding',roles:['embedding']},
   {id:'audio',roles:['audio']},
-  {id:'absent',roles:['image'],selectable:false,disabledReason:'当前渠道的完整公开目录已不再提供此精确型号，已暂停选择与调用；原配置保留，请选择其他型号。'},
+  {id:'absent',roles:['image'],catalogPresence:{status:'absent'},selectable:false,disabledReason:'当前渠道的完整公开目录已不再提供此精确型号，已暂停选择与调用；原配置保留，请选择其他型号。'},
  ]}}};
  assert.deepEqual(catalogRows(r).map(row=>row.model.id),['image']);
  assert.equal(r.providers.fal.models.length,5);

@@ -32,7 +32,7 @@ test('aggregator vendor boundaries, backtracking and channel switching clear sta
 test('every role and region uses exact compatible channel-vendor-model membership, including format filters',()=>{
  for(const role of ['main','image','vision'])for(const region of ['global','cn'])for(const format of ['png','svg']){
   const {instance:p,events}=picker(role);p.properties.providerRegions={minimax:region};p.properties.outputFormat=format;p.resetFlow();const scoped=registryForRegions(registry,p.properties.providerRegions);
-  const expected=Object.entries(scoped.providers).filter(([,e])=>partitionRegistryModels(e.models,{role,outputFormat:format}).compatible.length).map(([id])=>id).sort();assert.deepEqual(p.data.providerCards.map(c=>c.id).sort(),expected);
+  const expected=Object.entries(scoped.providers).filter(([id,e])=>partitionRegistryModels(e.models,{role,outputFormat:format}).compatible.length || id==='tokendance' && e.models.some(m=>m.catalogPresence)).map(([id])=>id).sort();assert.deepEqual(p.data.providerCards.map(c=>c.id).sort(),expected);
   for(const card of p.data.providerCards){p.selectProvider(tap('provider',card.id));assert.equal(p.data.step,'vendors');const groups=groupRegistryModels(partitionRegistryModels(scoped.providers[card.id].models,{role,outputFormat:format}).compatible);assert.deepEqual(p.data.vendorCards.map(v=>[v.vendor,v.count]),groups.map(g=>[g.vendor,g.models.length]));
    for(const group of groups){p.selectVendor(tap('vendor',group.vendor));while(p.data.hasMore)p.loadMore();assert.deepEqual(p.data.visibleCompatibleModels.map(m=>m.id),group.models.map(m=>m.id));p.backStep();}
   }assert.equal(events.length,0);

@@ -14,7 +14,7 @@ import noticeCards from './fixtures/r13b-notice-cards.json' with { type: 'json' 
 
 const base = 'https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/'
 const expected = [
-  ['replicate', 'google/imagen-3', base + '3-0-generate', '原厂规格'],
+  ['replicate', 'google/imagen-3', base + '3-0-generate#3.0-generate-002', '原厂规格'],
   ['replicate', 'google/imagen-3-fast', base + '3-0-generate#3.0-fast-generate-001', '原厂规格'],
   ['replicate', 'google/imagen-4', base + '4-0-generate#4.0-generate-001', '原厂规格'],
   ['replicate', 'google/imagen-4-fast', base + '4-0-generate#4.0-fast-generate-001', '原厂规格'],

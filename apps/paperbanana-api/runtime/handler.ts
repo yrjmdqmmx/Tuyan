@@ -4776,7 +4776,9 @@ function applyPublicCatalogAvailability(provider:string, registry:ProviderModelR
   const complete=catalog.state==='ready'?catalog:catalog.previousModels?.length?{...catalog,state:'ready' as const,continuation:undefined,models:catalog.previousModels,confirmedAbsentIds:catalog.previousAbsentIds}:catalog
   return {...registry,models:registry.models.map(model=>{
     const reason=catalogAbsenceReason(provider,model,complete)
-    return reason && model.selectable ? {...model,selectable:false,recommended:false,disabledReason:reason} : model
+    const catalogPresence: TokenDanceCatalogPresence | undefined = reason && catalog.state === 'ready' && catalog.models.length
+      ? { status: 'absent', checkedAt: catalog.fetchedAt, sourceUrl: PROVIDER_CATALOGS[provider].url! } : undefined
+    return { ...model, ...(catalogPresence ? { catalogPresence } : {}), ...(reason && model.selectable ? {selectable:false,recommended:false,disabledReason:reason} : {}) }
   })}
 }
 
@@ -4818,8 +4820,8 @@ export async function modelRegistry(body: ModelRegistryBody) {
         const models = registry.models.map(model => {
           const expected = model.protocol === 'ark-images' ? 'ark:image-generations' : model.protocol === 'openai-chat-completions' ? 'openai:chat-completions' : ''
           const reason = tokenDanceCatalogModelReason(snapshot, model.id, expected)
-          const catalogPresence = tokenDanceCatalogPresence(snapshot, model.id, model.catalogPresence)
-          return { ...model, ...(catalogPresence ? { catalogPresence } : {}), ...(reason ? { selectable: false, disabledReason: reason } : {}) }
+          const catalogPresence = tokenDanceCatalogPresence(snapshot, model.id)
+          return { ...model, catalogPresence, ...(reason ? { selectable: false, disabledReason: reason } : {}) }
         })
         // The public directory also contains tools, OCR, audio/video and new
         // unaudited protocols. Discovery never promotes these into model cards.

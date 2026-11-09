@@ -124,7 +124,7 @@
 | replicate | `fofr/sdxl-emoji` | https://replicate.com/fofr/sdxl-emoji/api/schema | https://replicate.com/fofr/sdxl-emoji |
 | replicate | `fofr/sticker-maker` | https://replicate.com/fofr/sticker-maker/api/schema | https://replicate.com/fofr/sticker-maker |
 | replicate | `google/gemini-3-flash` | https://replicate.com/google/gemini-3-flash/api/schema | https://replicate.com/google/gemini-3-flash |
-| replicate | `google/imagen-3` | https://replicate.com/google/imagen-3/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate |
+| replicate | `google/imagen-3` | https://replicate.com/google/imagen-3/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002 |
 | replicate | `google/imagen-3-fast` | https://replicate.com/google/imagen-3-fast/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001 |
 | replicate | `google/imagen-4` | https://replicate.com/google/imagen-4/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001 |
 | replicate | `google/imagen-4-fast` | https://replicate.com/google/imagen-4-fast/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001 |
@@ -536,7 +536,7 @@
 | replicate | `fofr/sdxl-emoji` | https://replicate.com/fofr/sdxl-emoji/api/schema | https://replicate.com/fofr/sdxl-emoji |
 | replicate | `fofr/sticker-maker` | https://replicate.com/fofr/sticker-maker/api/schema | https://replicate.com/fofr/sticker-maker |
 | replicate | `google/gemini-3-flash` | https://replicate.com/google/gemini-3-flash/api/schema | https://replicate.com/google/gemini-3-flash |
-| replicate | `google/imagen-3` | https://replicate.com/google/imagen-3/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate |
+| replicate | `google/imagen-3` | https://replicate.com/google/imagen-3/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002 |
 | replicate | `google/imagen-3-fast` | https://replicate.com/google/imagen-3-fast/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001 |
 | replicate | `google/imagen-4` | https://replicate.com/google/imagen-4/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001 |
 | replicate | `google/imagen-4-fast` | https://replicate.com/google/imagen-4-fast/api/schema | https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001 |

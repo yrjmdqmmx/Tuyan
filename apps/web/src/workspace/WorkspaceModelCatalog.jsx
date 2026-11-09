@@ -65,7 +65,7 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
   // Catalog facets share the selected role; saved-library behavior stays unchanged.
   const roleRows = useMemo(() => saved || !role ? allRows : allRows.filter(row => row.model.roles?.includes(role)), [allRows, saved, role]);
   const facetRows = [...roleRows, ...removedRows];
-  const providers = orderModelChannels([...new Set(facetRows.map(row => row.provider))]);
+  const providers = orderModelChannels([...new Set([...facetRows.map(row => row.provider), ...(!saved && registry?.catalogHealth?.tokendance ? ['tokendance'] : [])])]);
   const channelCounts = useMemo(() => roleRows.reduce((counts, row) => {
     counts[row.provider] = (counts[row.provider] || 0) + 1;
     return counts;
@@ -132,7 +132,7 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
           const added = library.models.filter(m => m.modelId === model.id && library.connections.some(c => c.id === m.connectionId && c.provider === id)).length;
           const unavailable = modelUnavailableForSelection(model);
           const developer = modelDeveloper(id, model);
-          return <article className="tw-catalog-card" key={entry?.id || `${id}:${model.id}`}>
+          return <article className={`tw-catalog-card${model.catalogPresence?.status === 'unverified' ? ' is-paused' : ''}`} key={entry?.id || `${id}:${model.id}`}>
             <div className="tw-catalog-card-head"><span className="tw-catalog-logo"><ModelBrandLogo brand={developer.id}/></span><div><div className="tw-catalog-title"><h3 title={modelCardName(id, model)}>{modelCardName(id, model)}</h3><ModelLifecycleBadge provider={id} lifecycle={model.auditLifecycle}/></div><p title={`${developer.label || model.vendor || channelName(id, registry)} / ${channelName(id, registry)}${savedConnection ? ` · ${savedConnection.label} · ${savedConnection.id}` : ''}`}>{developer.label || model.vendor || channelName(id, registry)}<span> / </span>{channelName(id, registry)}{savedConnection ? ` · ${savedConnection.label}` : ''}</p></div></div>
             <div className="tw-catalog-card-meta">
               <code title={model.id}>{model.id}</code>
@@ -140,7 +140,7 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
             </div>
             <ModelSpecifications provider={id} model={model} compactSources footerActions={<div className="tw-catalog-card-actions">
               {saved && entry.custom && <button onClick={() => onEditCustom(entry)}>配置能力</button>}
-              {saved ? <><span className={entry.disabled || unavailable || savedConnection?.disabled || !savedConnection ? 'tw-catalog-unavailable' : 'tw-catalog-added'} title={model.disabledReason || '已添加不代表调用已验证；停用保留任务记录'}>{entry.disabled ? '已停用' : !savedConnection ? '连接不存在' : savedConnection.disabled ? '连接已停用' : unavailable ? '暂不可用' : '已添加'}</span><button disabled={!ready || busy} aria-label={`${entry.disabled ? '启用' : '停用'} ${model.label || model.id} · ${savedConnection?.label || entry.connectionId}`} onClick={() => models.save({ ...library, models: library.models.map(item => item.id === entry.id ? { ...item, disabled: !item.disabled } : item) })}>{entry.disabled ? '启用' : '停用'}</button></> : <>{unavailable ? <span className="tw-catalog-unavailable" title={model.disabledReason || '当前不可选'}>暂不可用</span> : added > 0 && <span className="tw-catalog-added"><Check size={12}/>已添加</span>}
+              {saved ? <><span className={entry.disabled || unavailable || savedConnection?.disabled || !savedConnection ? 'tw-catalog-unavailable' : 'tw-catalog-added'} title={model.disabledReason || '已添加不代表调用已验证；停用保留任务记录'}>{entry.disabled ? '已停用' : !savedConnection ? '连接不存在' : savedConnection.disabled ? '连接已停用' : unavailable ? model.catalogPresence?.status === 'unverified' ? '暂时无法确认' : '暂不可用' : '已添加'}</span><button disabled={!ready || busy} aria-label={`${entry.disabled ? '启用' : '停用'} ${model.label || model.id} · ${savedConnection?.label || entry.connectionId}`} onClick={() => models.save({ ...library, models: library.models.map(item => item.id === entry.id ? { ...item, disabled: !item.disabled } : item) })}>{entry.disabled ? '启用' : '停用'}</button></> : <>{unavailable ? <span className="tw-catalog-unavailable" title={model.disabledReason || '当前不可选'}>{model.catalogPresence?.status === 'unverified' ? '暂时无法确认' : '暂不可用'}</span> : added > 0 && <span className="tw-catalog-added"><Check size={12}/>已添加</span>}
               <button disabled={!ready || busy || registryStatus !== 'ready' || unavailable} aria-label={`添加 ${model.label || model.id} · ${channelName(id, registry)}`} onClick={() => openAdd({ provider: id, model })}><Plus size={15}/><span>添加</span></button></>}
             </div>}/>
           </article>;

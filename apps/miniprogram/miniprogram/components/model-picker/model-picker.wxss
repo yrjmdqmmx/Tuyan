@@ -18,3 +18,5 @@
 .model-audit-specs { padding: 12rpx 20rpx; font-size: 24rpx; }
 .model-audit-specs > view { display:flex; justify-content:space-between; gap:12rpx; padding:4rpx 0; }
 .model-audit-specs text { overflow-wrap:anywhere; min-width:0; }
+
+.model-row.is-paused { opacity: .55; }

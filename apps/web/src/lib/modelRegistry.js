@@ -10,12 +10,13 @@ export function modelMissingFromCatalog(registry, provider, modelOrId) {
   const channel = registry?.providers?.[provider]
   const unavailable = Boolean(registry?.unavailableProviders?.[provider])
   const model = typeof modelOrId === 'object' ? modelOrId : channel?.models?.find(entry => entry.id === id)
-  return Boolean(registry?.catalogHealth?.[provider]?.issues?.some(issue => issue.id === id && issue.reason === 'missing_live')
-    || model?.catalogPresence?.status === 'absent'
-    || model?.disabledReason?.startsWith('当前目录未列出该模型')
-    || model?.disabledReason?.startsWith('当前渠道的完整公开目录已不再提供此精确型号')
-    || (!unavailable && registry?.providers && !channel)
-    || (!unavailable && Array.isArray(channel?.models) && !channel.models.some(entry => entry.id === id)))
+  const health = registry?.catalogHealth?.[provider]
+  if (model?.catalogPresence?.status === 'unverified' || health?.stale || health?.cause || ['unavailable', 'error'].includes(health?.state)) return false
+  if (model?.catalogPresence?.status === 'absent') return true
+  const healthy = health?.state === 'ready'
+  return Boolean(health?.issues?.some(issue => issue.id === id && issue.reason === 'missing_live')
+    || (!unavailable && healthy && registry?.providers && !channel)
+    || (!unavailable && healthy && Array.isArray(channel?.models) && !channel.models.some(entry => entry.id === id)))
 }
 // Browsing hides confirmed retirements, not temporary failures or adapter gaps.
 // Historical identities remain in the registry and saved task configuration.
