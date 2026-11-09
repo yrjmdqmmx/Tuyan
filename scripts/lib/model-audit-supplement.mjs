@@ -17,6 +17,12 @@ export function supplementModelAudit(snapshot, supplement, removed, addendum = {
     data.rows[key] = [...data.fields.map(field => intern(data.facts, [model[field], model[field] === null ? 'unknown' : 'known', 'channel', intern(data.sources, model.fieldSources[field])])), 0, intern(data.sources, model.sourceUrls[0])]
     data.details[key] = { unknownInputModalities: model.unknownInputModalities, sourceUrls: model.sourceUrls, note: model.note }
   }
+  for (const [key, override] of Object.entries(supplement.fieldOverrides || {})) {
+    for (const field of data.fields.filter(field => Object.hasOwn(override, field))) {
+      data.rows[key][data.fields.indexOf(field)] = intern(data.facts, [override[field], override[field] === null ? 'unknown' : 'known', 'channel', intern(data.sources, override.sourceUrl)])
+      data.details[key] = { ...data.details[key], note: override.note, suppressFallback: [field] }
+    }
+  }
   // Drop unused facts/sources as well as removed rows, keeping regeneration stable.
   const facts = [], sources = []
   for (const row of Object.values(data.rows)) {

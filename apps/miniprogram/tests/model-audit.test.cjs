@@ -8,7 +8,7 @@ test('mini program shares exact channel lifecycle and independently sourced outp
   assert.equal(auditedModelLifecycle('bailian','qwen3.5-plus',Date.parse('2027-01-18')).state,'scheduled');
   assert.equal(removedModel('bailian','qwen3.5-plus',Date.parse('2027-01-19')).replacementApiId,'qwen3.8-flash');
   const spec=auditedModelSpecs('tokendance','deepseek-v4-pro');
-  assert.ok(spec.fields.totalContextTokens.value>0);assert.equal(spec.fields.maxOutputTokens.provenance,null);
+  assert.ok(spec.fields.totalContextTokens.value>0);assert.equal(spec.fields.maxOutputTokens.provenance,'vendor');
   assert.equal(auditedModelSpecs('antling','Ling-3.2-flash').fields.totalContextTokens.value,1048576);
   assert.equal(auditedModelSpecs('custom','deepseek-v4-pro').fields.maxOutputTokens.value,null);
 });
@@ -20,6 +20,23 @@ test('mini Ling deadlines use the UTC+8 boundary and production compact tokens',
     assert.equal(auditedModelLifecycle('antling',id,Date.parse('2026-11-14T15:59:59.999Z')).state,'scheduled');
     assert.equal(removedModel('antling',id,Date.parse('2026-11-14T16:00:00Z')).replacementApiId,'Ling-3.1-flash');
   }
+});
+
+test('mini cards keep unlisted modalities neutral and preserve availability notes',()=>{
+  const {loadComponent}=require('./helpers/component.cjs');
+  const {STATIC_MODEL_REGISTRY}=require('../miniprogram/utils/static-model-catalog.js');
+  const {modelDeveloper}=require('../miniprogram/utils/model-presentation.js');
+  const fixture=loadComponent('components/model-picker/model-picker.js');
+  const picker=fixture.instance;picker.getRegistry=()=>({providers:STATIC_MODEL_REGISTRY});
+  Object.assign(picker.properties,{role:'main',outputFormat:'svg'});
+  const model=STATIC_MODEL_REGISTRY.antling.models.find(m=>m.id==='Ling-3.0-flash-VL');
+  Object.assign(picker.data,{activeProvider:'antling',activeVendor:modelDeveloper('antling',model).label});
+  picker.refreshModelLists();
+  const card=picker.data.visibleCompatibleModels.find(m=>m.id===model.id);
+  assert.equal(card.specRows[0].unknownText,'音频?');
+  assert.equal(card.specRows[1].unknownText,'图像?、音频?、视频?');
+  assert.doesNotMatch(JSON.stringify(card.specRows),/不支持/);
+  assert.ok(card.availabilityNotes.includes(model.availabilityNotes));
 });
 
 test('mini removed picker offers explicit confirmation only for a compatible replacement',()=>{

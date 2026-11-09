@@ -44,7 +44,7 @@ export function createModelLibraryStore({ db, secret, assertActive = async () =>
       await assertActive(user);
       const _id = owner(user), previous = await collection.findOne({ _id });
       if ((previous?.revision || 0) !== input.revision) throw fail(409, '模型库已在其他页面更新，请刷新后重试。');
-      try { assertModelLibraryAdditions(data, previous); }
+      try { assertModelLibraryAdditions(data, previous, Date.now(), input.intent); }
       catch (error) { throw Object.assign(error, {status:400, publicMessage:true}); }
       const sealed = Object.fromEntries(data.connections.filter(c => c.scope === 'account' && previous?.connections.some(old => old.id === c.id && old.provider === c.provider && old.region === c.region && old.scope === c.scope && JSON.stringify(old.custom) === JSON.stringify(c.custom) && JSON.stringify(old.bailian) === JSON.stringify(c.bailian)) && previous?.sealed?.[c.id]).map(c => [c.id, previous.sealed[c.id]]));
       for (const [connectionId, value] of Object.entries(input.credentials || {})) {

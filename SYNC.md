@@ -1,3 +1,31 @@
+## 2026-11-09 · 模型卡 R5：全量 Core 新增 19 项回归修复（未发布）
+
+R4 定向测试结论不代表全量 Core；操作方提供的沙箱外对比为 main `c7b6a2fc` 1580/13/1、R5 前 head 1567/32/1（通过/失败/跳过）。本轮按日志实际文件定位并修复 19 个新增失败，保留全部既有未提交修改，未运行 Git 写命令。
+
+- [x] Shared / Core / Web：`config/thinking-audit/{domestic,global}.json` 为七个新增精确身份补齐 unconfirmed / 空 controls disposition；`thinking-contracts.test.ts` 保留全目录每角色/协议唯一登记断言，并验证默认空 wire、非法思考控制拒绝和 OpenAI 2.6 两图像型号继续因尺寸合同缺失而禁用。已生成 Core/Web thinking 数据与 support.csv；无 API、价格、计费或权限变更。
+- [x] 历史快照：`helpers/catalog-retirements.ts` 固定枚举 68 个移除身份及 stopDate/source；`catalog-20261016/19/26.test.ts` 保留存续型号/默认的原断言，精确核对 1125 − 68 + 7 = 1064，只将已移除的 StepFun image 默认改为空。10/26 生命周期测试从移除证据读取小米日期并验证动态目录缺席、零传输拒绝。
+- [x] v24 合同：`official-catalog-v24.test.ts` 的 StepFun 集合与角色总数逐项减去两条移除记录；退役日期/北京时间零点转查原审计及移除表；LongCat-2.5 由后续精确身份测试覆盖。`official-image-size-v24.test.ts` 核对 Step 缺席与日期来源，保留存续型号全部 504 个尺寸组合及原覆盖门槛；`model-channel-contracts.test.ts` 的百炼 qwen-image-edit 改为缺席和退役证据断言。
+- [x] 当前/历史集合：`official-text-channels.test.ts` 保留原 MaaS 清单并独立核对 LongCat-2.5 合同；`channels-v381.test.ts` 增列 Ling-3.1/3.2 与 LongCat-2.5，保留旧默认、角色与 Preview 断言；`frontier-refresh.test.ts` 仅对齐 v43，五同步/五 Batch 边界不变。
+- [x] 适配器夹具：`thinking-bailian-console-54.test.ts` 使用当前 Qwen3.5 Omni，原 SSE/双角色/省略未知字段断言保留；旧快照的布尔序列化断言仍在，当前不支持的开关明确拒绝。`thinking-other-110.test.ts` 用在库 Kimi K3 及其已审核 effort 替代 muse；两文件都验证旧 ID 在传输、工作流和计费记录前报 MODEL_UNAVAILABLE。
+- [x] 恢复：`refine-controls.test.ts` 两个 StepFun fixture 换用共用同步官方图像 adapter/checkpoint/计费路径的 SenseNova Fast；lost-submit 不可重投、download 可恢复、一次提交/计费、同 jobId 和规划复用断言全部保留。使用有效所属原图补测 Step 旧 ID 拒绝且零提供商调用/执行记录。
+- [x] 本地验证：13 文件逐个执行原命令，141 通过 / 32 个 listen EPERM / 0 跳过；五个受阻文件再用临时内存 HTTP shim 执行原服务器中间件和全部断言，42/42，加上八个无需监听文件 131/131，共 173/173，覆盖全部 19 项。Web 模型测试 180/180，Core check、目录/参考上传/thinking/审计生成器 --check 通过；根目录 head 56/3、main 49/3，同名三项旧快照失败，精确差异见报告。
+- [x] 小程序：全套 127/127、build 和预算复验通过；源码 1,571,089、runtime 1,148,153、媒体 189,978 bytes，原 1,572,864 源码上限未提高，余 1,775 bytes；暂停发布不变。本轮无额外客户端契约接入待办。
+- [ ] 外部全量复核：临时内存 HTTP 验证不代表真实 socket 或沙箱外全量已通过；操作方仍需重跑完整 Core。详见 [R5 逐测试修复与验证](docs/model-card-audit-20261109.md#r5修复全量-core-新增的-19-项回归)。没有真实/付费模型请求或部署。
+
+## 2026-11-09 · 模型卡 R4：既有规格回退、保存兼容与离线生成（main c7b6a2fc，未发布）
+
+第三轮 1–6 已在 `00d04cee`，main 已于 `fe5a764d` 合入；本轮仅保留未提交修改，未运行 Git 写命令。下方旧轮次测试数字为历史记录，当前验收以本条为准。
+
+- [x] Shared / Core：规格缺项逐字段回退到已核实目录/精确型号配置，标记 `catalog` / 图研既有核实；审计优先，85 项差异逐值保留来源。未知模态不等于不支持，qwen3.8-max 恢复文本/图像/视频；Ling 视频来源补入数据；百炼 Kimi 可疑最大输出为 null，并阻止回退。适配器、请求额度、价格与权限不变。
+- [x] Core：顶层/优化请求与自定义 API / TokenDance 预检统一返回 MODEL_UNAVAILABLE、400、中文替代提示和 not_sent；提供商调用前停止。新增审计/HTTP 预检 7/7，HTTP 新测试无监听地执行真实 Express 中间件。
+- [x] Gateway / Web 模型库：PUT `/api/model-library` 增加可选 `intent`（save / import / add）。无服务端存档的首次同步及显式 import 保留历史身份；用户添加使用 add 并拒绝移除 ID；普通更新继续核对新身份。调用时仍独立检查可用性。Gateway 和 Web hook 覆盖首次同步、导入、拒绝新增及原样往返。
+- [x] Web：恢复选择器思考状态与连接说明，我的模型展示连接名 · ID；确认替换只改当前角色，原库条目状态不变。第三轮空默认、日期边界、K/M 精确详情、具名筛选提示、移除槽和标题徽标全部复验。静态/可见目录四项已知数均不下降；完整 mock registry 的输入/输出/上下文净减 7/1/15 均来自明确删除的旧型号，逐 ID 已列明，无存续型号规格退化。
+- [x] 小程序：保留 availabilityNotes、来源标签和同义未知模态；保留 main 所有角色可空默认规则。127/127、build/check 通过，源码 1,571,089 bytes（main 1,570,043，原上限 1,572,864）；运行产物 1,148,153，媒体 189,978 bytes。暂停发布状态不变。
+- [x] 生成器 / 包体：默认从 `config/channel-audit/input-20261109.json` 离线生成，无需私有输入目录；目录/参考上传/生成器 --check 全通过，生成器+codec+Gateway audit 17/17。Web modelAudit raw/gzip 86,295/13,408 → 57,528/8,445 bytes，构建块 5,480,897/796,857 → 5,459,168/794,198 bytes。
+- [x] 基线 / 测试：静态 1125→1064、mock 1122→1061、目录 923→919、可选 884→878，将下线 7。可见卡片已知输入/输出/上下文/最大输出 834/819/411/45 → 847/838/412/159。Web 1334/1346，12 个失败均在 main 复现（main 1310/1324，另有 2 个只读基线构建输出受限）；定向 82/82；Core 主回归两端同为 193/194，xAI 到期样本失败相同；根目录两端 33/36，3 个旧快照失败相同。当前沙箱 Gateway head 190/87/1、main 185/87/1（通过/失败/跳过），87 项都是相同监听限制；不能与任务提供的此前沙箱外 275/0/1 混写。上述定向范围未发现新增失败；后续全量发现的 19 项回归见顶部 R5。
+- [x] 证据 / 地区：百炼 57 个删除 ID 在 main 均只配置 cn-beijing，全部保留删除，无国际恢复/待确认项。详见 [R4 验收](docs/model-card-audit-20261109.md)、[差异](docs/model-card-audit-20261109-conflicts.md)、[地区](docs/model-card-audit-20261109-regions.md)、[计数](docs/model-card-audit-20261109-count-r3.json)。
+- [ ] 外部实屏与微信原生扫描：1280 / 390 实屏未在本沙箱完成；[13 条本地夹具与截图路径](docs/model-card-audit-20261109-preview.md)覆盖 4/5/6、Ling 视频卡、规格回退与多连接。无部署，无真实/付费提供商请求；生产授权另行处理。
+
 ## 2026-11-09 · 模型卡第三轮：空默认、Ant Ling 下线与移除引用提示（本地 v43，未发布）
 
 - [x] Core / shared / 目录：版本化 `config/channel-audit/deprecations-addendum-20261109.json` 纳入普通同步；antling 的 Ling-2.6-1T / Ling-2.6-flash / Ring-2.6-1T 保留至 2026-11-15 00:00 (UTC+8)，精确替代 Ling-3.1-flash；scheduled 4 → 7，总目录 1064 不变。到期前/后边界沿用 MODEL_UNAVAILABLE / not_sent，无新 action、请求字段、价格或权限变更。四个更早退役 Ling 型号均不在目录。
@@ -9,14 +37,14 @@
 
 ## 2026-11-09 · 模型卡第二轮：物理删除旧型号、紧凑卡片与离线计数（本地 v43，未发布）
 
-本条覆盖下方第一轮的“隐藏退休型号 / 渠道不可用 / 自动替换入口”方案；PR #245 的 base 仍为 `codex/hangzhou-production`。
+本条为第二轮历史记录，覆盖下方第一轮方案；当前 PR 基线已统一为 main `c7b6a2fc`，以顶部 R4 双根比较为准。
 
 - [x] Core / shared / 目录：从源配置和旧静态声明删除 61 个已下线 + 7 个 Fireworks serverless 型号，生成目录 1064 项；账号目录合并也不能重新引入。`config/removed-models.json` 仅留精确身份与消息证据，调用前统一返回 `MODEL_UNAVAILABLE`、中文替代提示与 `requestState=not_sent`。4 个将下线型号保留，其他渠道同名模型不变。
 - [x] Gateway：禁止新增已移除身份；已有模型库、预设、任务不迁移/删改。7 条预览库记录原样往返仍为 7，相关审计测试 3/3。
 - [x] Web：目录、我的模型及选择器复用紧凑卡片，规格只有输入/输出/上下文/最大输出四行；一个命名来源承载 date/provenance/unknown/lifecycle 的可访问 tooltip，触屏用既有对话框。已移除引用仅显示空槽提示，无卡片、旧状态或切换动作；将下线确认保留取消按钮。
 - [x] 规格 / 生成器：Ling 五项严格采用 `config/channel-audit/model-audit-supplement-20261109.json` 的已知/未知模态和原生窗口，最大输出未知，不推断共享窗口；普通同步不依赖 `.audit-input/`。Fireworks 建议须同时满足通告、Serverless Supported、精确可选 ID。
 - [x] 小程序：同步删除和空槽行为，只打包显示必需审计字段及现有选择/执行约束；恢复 1.5 MiB 原预算，123/123 测试及类型/构建通过。仍暂停发布。
-- [x] 验证 / 文档：只读 `scripts/count-model-catalog.mjs` 在 head/base 都运行，静态 1125 → 1064，目录 923 → 919（57 项原已隐藏）；完整删除明细、每渠道计数、所有测试结果与精确本地夹具见 [第二轮验收](docs/model-card-audit-20261109.md) / [截图路径](docs/model-card-audit-20261109-preview.md)。Web 12 个基线失败、Core 1 个既有到期失败、Gateway 87 个沙箱监听失败明确保留；未进行真实或付费调用。
+- [x] 验证 / 文档：只读 `scripts/count-model-catalog.mjs` 在 head/base 都运行，静态 1125 → 1064，目录 923 → 919（57 项原已隐藏）；完整删除明细、每渠道计数、所有测试结果与精确本地夹具见 [第二轮验收](docs/model-card-audit-20261109.md) / [截图路径](docs/model-card-audit-20261109-preview.md)。此前 Web 12 个基线失败、Core 1 个到期失败；Gateway 旧沙箱为 188 通过 / 87 个 listen EPERM / 1 跳过，任务提供的沙箱外真实运行为 275 通过 / 0 失败 / 1 跳过。当前 main 对照与 R4 结果见顶部；未进行真实或付费模型调用。
 - [x] Owner 决策（第三轮完成）：StepFun 绘图默认继续留空并显示角色 helper；Ant Ling 3 个在库型号纳入 2026-11-15 00:00 UTC+8 将下线规则，替代 Ling-3.1-flash，见顶部第三轮记录。
 - [ ] 外部验收：沙箱 `listen EPERM` / Chrome 退出 134，尚无桌面 1280 / 移动 390 实屏及微信原生包扫描。生产 1408 缺同一时点 registry 快照，不能逐 ID 分摊与本地 919 的 489 差额。本轮没有 commit、push、merge、部署。
 

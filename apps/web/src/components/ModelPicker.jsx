@@ -1,3 +1,5 @@
+import ThinkingStatus from './ThinkingStatus.jsx'
+import { thinkingProfile } from '../lib/thinking.js'
 import { removedModel, removedModelHint, withModelAudit } from '../lib/modelAudit.js'
 import { createPortal } from 'react-dom'
 import { useDialogLayer } from './AccessibleDialog.jsx'
@@ -371,9 +373,11 @@ export default function ModelPicker({
               if (!event.target.closest('a, button, input, select, textarea, summary, [role=button]')) chooseModel(model)
             }} className={`model-option tw-catalog-card ${visionMode !== 'none' && isSelected(model) && effectiveRoute.accessProvider === selectedProvider ? 'active' : ''}`}>
               <div className="model-option-heading"><button type="button" className="model-option-select" data-model-index={rowIndex} disabled={Boolean(model.selectionDisabled || model.savedChoice?.disabledReason)} aria-label={t("选择 {v0}", {v0: [model.label || model.id, model.savedChoice?.description].filter(Boolean).join(" · ")})} onClick={() => chooseModel(model)}>
-                <span className="model-option-main model-brand-heading"><span className="tw-catalog-logo"><ModelBrandLogo brand={model.vendorId} /></span><span className="model-brand-caption"><strong>{model.label || model.id}</strong><small>{model.vendor} / {providerDisplayName(selectedProvider, providerConfigs)}{model.savedChoice?.description ? ` · ${model.savedChoice.description}` : ''}</small></span></span>
+                <span className="model-option-main model-brand-heading"><span className="tw-catalog-logo"><ModelBrandLogo brand={model.vendorId} /></span><span className="model-brand-caption"><strong>{model.label || model.id}</strong><small>{model.vendor} / {providerDisplayName(selectedProvider, providerConfigs)}</small></span></span>
                 {visionMode !== 'none' && isSelected(model) && effectiveRoute.accessProvider === selectedProvider ? <Check size={18} /> : null}
               </button><ModelLifecycleBadge lifecycle={model.auditLifecycle}/></div>
+              <ThinkingStatus compact profile={thinkingProfile(selectedProvider, model.id, role, model.roleProtocols?.[role] || model.protocol)} role={role} operation={operation} />
+              {model.savedChoice?.description ? <p className="model-option-note">{model.savedChoice.description}</p> : null}
               <div className="tw-catalog-card-meta"><code title={model.id}>{model.id}</code><div className="tw-catalog-tags">{model.roles?.map(r => <span key={r}>{t({main:'主模型',image:'绘图模型',vision:'视觉理解'}[r] || r)}</span>)}</div></div>
               <ModelSpecifications provider={selectedProvider} model={model} compactSources footerActions={<div className="tw-catalog-card-actions"><span className={model.savedChoice?.disabledReason ? 'tw-catalog-unavailable' : 'tw-catalog-added'} title={model.savedChoice?.disabledReason}>{savedOnly ? t(model.savedChoice?.disabledReason ? '暂不可用' : '已添加') : ''}</span><button type="button" tabIndex={-1} title={model.savedChoice?.disabledReason} disabled={Boolean(model.selectionDisabled || model.savedChoice?.disabledReason)} onClick={() => chooseModel(model)}>{t(isSelected(model) ? '已选' : '选择')}</button></div>} />
             </article>

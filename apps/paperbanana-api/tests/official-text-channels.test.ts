@@ -42,8 +42,13 @@ test('official text selection contains every ordinary MaaS HTTP SKU and only cur
   assert.equal(selected.filter((m:any) => m.provider === 'iflytek' && m.protocol === 'openai-chat').length, 24)
   assert.equal(selected.filter((m:any) => m.provider === 'iflytek' && m.protocol === 'anthropic-messages').length, 8)
   assert.deepEqual(selected.filter((m:any) => m.provider === 'longcat').map((m:any) => m.id), ['LongCat-2.0'])
+  const later = auditedChannelContract('longcat', 'LongCat-2.5')
+  assert.ok(later)
+  assert.deepEqual(later.roles, ['main'])
+  assert.equal(later.textProtocol, 'openai-chat')
+  assert.equal(later.textEndpoint, 'https://api.longcat.chat/openai/v1/chat/completions')
   for (const provider of ['iflytek', 'longcat']) {
-    const actual = Object.keys(AUDITED_CHANNEL_CONTRACTS).filter(key => key.startsWith(provider + '/') && !['longcat/LongCat-2.5-Preview', 'iflytek/spark-x2.6', 'iflytek/spark-x2.6-4b'].includes(key)).sort()
+    const actual = Object.keys(AUDITED_CHANNEL_CONTRACTS).filter(key => key.startsWith(provider + '/') && !['longcat/LongCat-2.5', 'longcat/LongCat-2.5-Preview', 'iflytek/spark-x2.6', 'iflytek/spark-x2.6-4b'].includes(key)).sort()
     const expected = selected.filter((m:any) => m.provider === provider).map((m:any) => provider + '/' + m.id).sort()
     assert.deepEqual(actual, expected, `${provider}: separate Spark credentials, subscriptions, WS and held services must not enter ordinary MaaS`)
   }

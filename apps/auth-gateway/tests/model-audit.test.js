@@ -13,6 +13,18 @@ function memoryDb() {
 }
 import {cleanModelLibrary,createModelLibraryStore} from '../src/model-library.js';
 
+test('first sync and explicit import preserve removed entries without a server archive',async()=>{
+  const store=createModelLibraryStore({db:memoryDb(),secret:'isolated-test-only'});
+  const input={revision:0,connections:[{id:'c',provider:'xiaomi',scope:'browser',label:'Imported'}],models:[{id:'old',connectionId:'c',modelId:'mimo-v2.5'}]};
+  const first=await store.put('owner',input);
+  assert.deepEqual(first.models,cleanModelLibrary(input).models);
+  const imported=await store.put('owner',{...first,intent:'import',models:[...first.models,{id:'imported',connectionId:'c',modelId:'mimo-v2.5-pro'}]});
+  assert.equal(imported.models.length,2);
+  assert.equal(imported.models[0].modelId,'mimo-v2.5');assert.equal(imported.models[0].disabled,false);
+  await assert.rejects(store.put('owner',{...imported,intent:'add',models:[...imported.models,{id:'new',connectionId:'c',modelId:'mimo-v2.5'}]}),e=>e.businessCode==='MODEL_UNAVAILABLE');
+  await assert.rejects(store.put('new-owner',{...input,intent:'add'}),e=>e.businessCode==='MODEL_UNAVAILABLE');
+});
+
 test('model library rejects new retired bindings while allowing existing saved identities to round-trip',async t=>{
   const db=memoryDb(),store=createModelLibraryStore({db,secret:'isolated-test-only'});
   const originalInput=cleanModelLibrary({connections:[{id:'c',provider:'xiaomi',scope:'browser',label:'Local'}],models:[{id:'old',connectionId:'c',modelId:'mimo-v2.5'}]});
@@ -30,21 +42,21 @@ test('model library rejects new retired bindings while allowing existing saved i
 test('serverless removal is exact-channel scoped and scheduled models remain addable',async t=>{
   t.mock.method(Date,'now',()=>Date.parse('2026-11-09'));
   const store=createModelLibraryStore({db:memoryDb(),secret:'isolated-test-only'});
-  const input={revision:0,connections:[{id:'c',provider:'fireworks',scope:'browser',label:'Local'}],models:[{id:'old',connectionId:'c',modelId:'accounts/fireworks/models/glm-5p2'}]};
+  const input={revision:0,intent:'add',connections:[{id:'c',provider:'fireworks',scope:'browser',label:'Local'}],models:[{id:'old',connectionId:'c',modelId:'accounts/fireworks/models/glm-5p2'}]};
   await assert.rejects(store.put('owner',input),e=>e.businessCode==='MODEL_UNAVAILABLE');
   assert.equal((await store.get('owner')).revision,0);
   const row=await store.put('owner',{...input,connections:[{...input.connections[0],provider:'bailian'}],models:[{...input.models[0],modelId:'qwen3.5-plus'}]});
   assert.equal(row.models[0].modelId,'qwen3.5-plus');
 });
 
-test('the twelve-entry preview library round-trips unchanged, including all three removed IDs',async()=>{
+test('the thirteen-entry preview library round-trips unchanged, including all three removed IDs',async()=>{
   const db=memoryDb(),store=createModelLibraryStore({db,secret:'isolated-fixture-only'});
   const channels=['xiaomi','fireworks','bailian','antling','openai'];
   const connections=channels.map(provider=>({id:provider,provider,label:provider,scope:'browser'}));
   const pairs=JSON.parse(fs.readFileSync(new URL('../../web/tests/fixtures/model-card-preview.json',import.meta.url),'utf8'));
   await db.collection().insertOne({_id:createHash('sha256').update('owner').digest('hex'),revision:1,...cleanModelLibrary({connections,models:pairs.map(([connectionId,modelId],index)=>({id:'m'+index,connectionId,modelId}))})});
   const before=await store.get('owner'),after=await store.put('owner',before);
-  assert.equal(before.models.length,12);assert.equal(after.models.length,12);
+  assert.equal(before.models.length,13);assert.equal(after.models.length,13);
   assert.deepEqual(after.models,before.models);assert.deepEqual(after.connections,before.connections);
 });
 

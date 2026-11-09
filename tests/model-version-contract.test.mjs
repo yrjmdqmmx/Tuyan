@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import { createHash } from 'node:crypto'
 import { createRequire } from 'node:module'
 import { STATIC_MODEL_REGISTRY as registry } from '../apps/web/src/lib/staticModelCatalog.js'
+import { removedModel } from '../apps/web/src/lib/modelAudit.js'
 import { modelVersionDetail, openRouterModelVersion, presentRegistryModel } from '../apps/web/src/lib/modelPresentation.js'
 const require = createRequire(import.meta.url)
 const mini = require('../apps/miniprogram/miniprogram/utils/model-registry.js')
@@ -72,7 +73,9 @@ test('DeepSeek direct and hosted IDs have distinct versions without alias substi
   assert.match(get('bailian','deepseek-v4-pro').label,/待确认/)
   assert.equal(get('bailian','deepseek-v4-pro').releasedAt,null)
   assert.equal(get('bailian','vanchin/deepseek-v4-pro').releasedAt,null)
-  assert.equal(get('bailian','deepseek-v4-flash').releasedAt,null)
+  assert.equal(get('bailian','deepseek-v4-flash'),undefined)
+  assert.equal(removedModel('bailian','deepseek-v4-flash').stopDate,'2026-10-10')
+  assert.ok(get('deepseek','deepseek-v4-flash'))
   assert.equal(get('bailian','deepseek-v4-pro-0813').version.kind,'fixed')
   assert.match(get('tokendance','deepseek-v4-pro').label,/Preview/)
   const or = audit.models.find(m=>m.channel==='openrouter' && m.apiModelId==='deepseek/deepseek-v4-pro')

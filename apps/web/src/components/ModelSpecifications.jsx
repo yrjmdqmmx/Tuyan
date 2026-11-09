@@ -32,8 +32,10 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
   const sourceName = url => url === data.lifecycle?.sourceUrl ? '下线公告'
     : data.vendorSources.includes(url) ? '原厂规格' : '官方文档'
   const provenance = [['输入', data.inputScope], ['输出', data.outputScope], ['上下文窗口', data.contextScope], ['最大输出', data.maxOutputScope]]
-    .filter(([, scope]) => scope).map(([label, scope]) => `${t(label)}：${t(scope === '原厂' ? '源自原厂' : '渠道公布')}`)
-  const details = [data.checkedAt && `${t('核实日期')} ${data.checkedAt}`, ...provenance,
+    .filter(([, scope]) => scope).map(([label, scope]) => `${t(label)}：${t(scope === '原厂' ? '源自原厂' : scope === '图研既有核实' ? scope : '渠道公布')}`)
+  const catalogDates = Object.entries(data.fields).filter(([, fact]) => fact.provenance === 'catalog' && fact.verifiedAt)
+    .map(([field, fact]) => `${t({inputModalities:'输入',outputModalities:'输出',totalContextTokens:'上下文窗口',maxOutputTokens:'最大输出'}[field])}：${t('图研既有核实')} ${fact.verifiedAt}`)
+  const details = [data.checkedAt && `${t('核实日期')} ${data.checkedAt}`, ...provenance, ...catalogDates,
     (data.unverified || model.catalogReview?.status === 'pending') && t('未核实'), model.catalogReview?.reason, model.savedChoice?.disabledReason, data.lifecycle?.message, data.note,
     ...data.sources.map(url => `${t(sourceName(url))} · ${url}`)].filter(Boolean).join('\n')
   const url = data.sources[0]

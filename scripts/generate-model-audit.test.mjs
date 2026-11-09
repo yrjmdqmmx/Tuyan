@@ -13,6 +13,13 @@ const fixture = () => ({
     { officialApiIdsObserved:['hy4'] }, {status:'official_GA_checked',pageMentions:{'LongCat-2.5':true}},
   ], channels:{antling:{catalogUrls:[sourceUrl]},longcat:{catalogUrls:[sourceUrl,sourceUrl]}},
 })
+test('Web identity projection restores every card fact and lifecycle without the generator inventory', async () => {
+  const {MODEL_AUDIT_DATA} = await import('../apps/web/src/lib/modelAudit.js')
+  const archive = JSON.parse(fs.readFileSync(new URL('../config/model-audit.generated.json',import.meta.url),'utf8'))
+  const {additions, ...cardData} = archive
+  assert.equal(additions.length,7)
+  assert.deepEqual(MODEL_AUDIT_DATA,cardData)
+})
 test('inheritance requires exact mapping and matching canonical value, never a similar name', () => {
   const input = fixture()
   input.pairs = [{channel:'host',apiModelId:'exact',totalContextTokens:123456,fieldProvenance:{totalContextTokens:{kind:'inherited-from-vendor',canonicalId:'native',sourceUrl}}}]
@@ -31,7 +38,9 @@ test('null, unsupported and N/A stay distinct; invalid numbers and request defau
   input.pairs = [0,Infinity,-1,undefined].map((value,i) => ({channel:'host',apiModelId:String(i),totalContextTokens:value,fieldProvenance:{totalContextTokens:{kind:'channel-published',sourceUrl}}}))
   input.pairs.push({channel:'tokendance',apiModelId:'exact',maxOutputTokens:8192,fieldProvenance:{maxOutputTokens:{kind:'channel-published',sourceUrl}}})
   input.pairs.push({channel:'host',apiModelId:'unsupported',inputModalities:false,fieldProvenance:{inputModalities:{kind:'channel-published',sourceUrl}}})
+  input.pairs.push({channel:'host',apiModelId:'unlisted',inputModalities:[],fieldProvenance:{inputModalities:{kind:'channel-published',sourceUrl}}})
   const data = generateModelAudit(input)
+  assert.deepEqual(data.facts[data.rows['host/unlisted'][0]].slice(0,2),[null,'unknown'])
   for (let i=0;i<4;i++) assert.deepEqual(data.facts[data.rows[`host/${i}`][2]].slice(0,2),[null,'unknown'])
   assert.deepEqual(data.facts[data.rows['tokendance/exact'][3]].slice(0,2),[null,'unknown'])
   assert.deepEqual(data.facts[data.rows['host/unsupported'][0]].slice(0,2),[null,'unsupported'])

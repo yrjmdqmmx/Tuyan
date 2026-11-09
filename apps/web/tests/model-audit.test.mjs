@@ -40,6 +40,7 @@ test('retired saved selection remains on trigger but cannot be chosen for new ta
 });
 test('replacement requires confirmation, retains original, and only switches the explicitly selected preset',async()=>{
   const models=setup();models.library.connections[0].provider='bailian';models.library.models[0].modelId='qwen3.5-plus';
+  models.library.models.push({id:'disabled-target',connectionId:'c',modelId:'qwen3.8-flash',disabled:true});
   const before=structuredClone(models.library);let writes=0,saved,selected;
   models.save=async value=>{writes++;saved=value;return true;};
   const view=render(React.createElement(ModelReplacement,{provider:'bailian',modelId:'qwen3.5-plus',models,entry:models.library.models[0],onReplace:value=>{selected=value;}}));
@@ -49,7 +50,9 @@ test('replacement requires confirmation, retains original, and only switches the
   fireEvent.click(screen.getByRole('button',{name:'确认切换'}));
   await waitFor(()=>assert.equal(writes,1));
   assert.equal(saved.models.find(item=>item.id==='old').modelId,'qwen3.5-plus');
-  assert.equal(saved.models.find(item=>item.id==='old').disabled,true);
+  assert.deepEqual(saved.models.find(item=>item.id==='old'),before.models[0]);
+  assert.deepEqual(saved.models.find(item=>item.id==='disabled-target'),before.models[1]);
+  assert.notEqual(selected.libraryModelId,'disabled-target');
   assert.equal(selected.modelId,'qwen3.8-flash');assert.equal(selected.connectionId,'c');
   assert.deepEqual(models.library,before);view.unmount();
 });
@@ -80,7 +83,8 @@ test('unknown and explicitly unsupported modalities differ, with no invented tok
   const model=STATIC_MODEL_REGISTRY.openai.models.find(m=>m.id==='gpt-image-2.6-flare');
   const {container}=render(React.createElement(ModelSpecifications,{provider:'openai',model}));
   assert.equal(screen.getAllByText('不适用').length,2);assert.match(screen.getByRole('link').title,/未核实/);
-  assert.equal(container.querySelectorAll('.is-unsupported').length,5);
+  assert.equal(container.querySelectorAll('.is-unsupported').length,0);
+  assert.equal(container.querySelectorAll('.is-unknown').length,5);
   assert.doesNotMatch([...container.querySelectorAll('dd')].map(n=>n.textContent).join(' '),/tokens|∞|unlimited|\b0\b/);
 });
 test('unverified account catalogs preserve availability and provenance never crosses channel',()=>{
@@ -99,7 +103,7 @@ test('Ling evidence preserves partial uncertainty and compact sources expose pro
   const model=STATIC_MODEL_REGISTRY.antling.models.find(m=>m.id==='Ling-3.1-flash');
   const view=render(React.createElement(ModelSpecifications,{provider:'antling',model,compactSources:true}));
   assert.equal(view.container.querySelectorAll('dl > div').length,4);
-  assert.equal(view.container.querySelectorAll('.is-unknown sup').length,3);
+  assert.equal(view.container.querySelectorAll('.is-unknown sup').length,6);
   assert.equal(screen.queryByText('核实日期'),null);assert.equal(screen.queryByText('未核实'),null);
   assert.equal(screen.getAllByRole('link').length,1);assert.match(screen.getByRole('link').getAttribute('aria-label'),/2026-11-09/);
   view.unmount();

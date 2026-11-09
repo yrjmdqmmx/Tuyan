@@ -68,6 +68,19 @@ test('account catalog refresh cannot resurrect a removed Fireworks identity', as
   } finally { await runtime.close() }
 })
 
+test('optimization returns the removed-model 400 and hint before registry or provider transport', async () => {
+  const runtime:any = await createRefineRuntime({startServer:false}); let calls = 0
+  try {
+    runtime.legacy.configureRuntimeFetch(async () => { calls++; throw Error('No provider transport') })
+    const result = await runtime.invoke({action:'optimizeInputs',target:'methodContent',inputs:{methodContent:'Draw input, process and output',caption:'',negativePrompt:''},mainRoute:{accessProvider:'xiaomi',modelId:'mimo-v2.5'},apiKey:'fixture'})
+    assert.equal(result.code,400)
+    assert.equal(result.businessCode,'MODEL_UNAVAILABLE')
+    assert.equal(result.requestState,'not_sent')
+    assert.match(result.message || result.error,/mimo-v2.6-flash/)
+    assert.equal(calls,0)
+  } finally { await runtime.close() }
+})
+
 test('all Ant Ling notices stop at UTC+8 midnight before transport and leave other channels unaffected', async t => {
   const runtime:any = await createRefineRuntime({startServer:false}); let calls = 0
   t.mock.method(Date, 'now', () => Date.parse('2026-11-14T15:59:59.999Z'))

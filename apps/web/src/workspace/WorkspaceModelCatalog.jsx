@@ -108,7 +108,7 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
   }
   async function add() {
     if (!connection || !available || duplicate || modelUnavailableForSelection(available) || !ready || busy || registryStatus !== 'ready') return;
-    const saved = await models.save({ ...library, models: [...library.models, { id: crypto.randomUUID(), connectionId: connection.id, modelId: available.id, disabled: false }] });
+    const saved = await models.save({ ...library, models: [...library.models, { id: crypto.randomUUID(), connectionId: connection.id, modelId: available.id, disabled: false }] }, undefined, { intent: 'add' });
     if (saved) setAdding(null); else setSaveError('添加未完成，请检查连接状态后重试。');
   }
   return <section className="tw-catalog" aria-label={saved ? '我的模型' : '模型目录'}>
@@ -135,7 +135,7 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
           const unavailable = modelUnavailableForSelection(model);
           const developer = modelDeveloper(id, model);
           return <article className="tw-catalog-card" key={entry?.id || `${id}:${model.id}`}>
-            <div className="tw-catalog-card-head"><span className="tw-catalog-logo"><ModelBrandLogo brand={developer.id}/></span><div><div className="tw-catalog-title"><h3 title={model.label || model.id}>{model.label || model.id}</h3><ModelLifecycleBadge lifecycle={model.auditLifecycle}/></div><p title={`${developer.label || model.vendor || channelName(id, registry)} / ${channelName(id, registry)}`}>{developer.label || model.vendor || channelName(id, registry)}<span> / </span>{channelName(id, registry)}{savedConnection ? ` · ${savedConnection.label}` : ''}</p></div></div>
+            <div className="tw-catalog-card-head"><span className="tw-catalog-logo"><ModelBrandLogo brand={developer.id}/></span><div><div className="tw-catalog-title"><h3 title={model.label || model.id}>{model.label || model.id}</h3><ModelLifecycleBadge lifecycle={model.auditLifecycle}/></div><p title={`${developer.label || model.vendor || channelName(id, registry)} / ${channelName(id, registry)}`}>{developer.label || model.vendor || channelName(id, registry)}<span> / </span>{channelName(id, registry)}{savedConnection ? ` · ${savedConnection.label} · ${savedConnection.id}` : ''}</p></div></div>
             <div className="tw-catalog-card-meta">
               <code title={model.id}>{model.id}</code>
               <div className="tw-catalog-tags">{(model.roles || []).filter(r => ROLE_NAMES[r]).map(r => <span key={r}>{ROLE_NAMES[r]}</span>)}{!model.roles?.length && <span>角色待确认</span>}</div>

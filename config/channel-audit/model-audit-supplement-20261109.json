@@ -84,7 +84,7 @@
         "totalContextTokens": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
         "maxOutputTokens": "https://developer.ant-ling.com/zh-CN/docs/models/ling/"
       },
-      "note": ""
+      "note": "官方接入文档明确支持文本、图片和视频；图片使用 image_url，视频使用 video_url。"
     },
     "antling/Ling-3.0-flash": {
       "inputModalities": [
@@ -194,6 +194,13 @@
       ],
       "serverlessSupported": true,
       "verifiedAt": "2026-11-09"
+    }
+  },
+  "fieldOverrides": {
+    "bailian/kimi/kimi-k2.7-code-highspeed": {
+      "maxOutputTokens": null,
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "note": "待核实：官方页面需浏览器渲染核对"
     }
   }
 }

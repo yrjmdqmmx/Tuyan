@@ -2,6 +2,7 @@ import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
 import React from 'react'
 import { render, screen, cleanup } from '@testing-library/react'
+import { formatContextLimit } from '../src/lib/modelPresentation.js'
 import { modelSpecificationSummary } from '../src/lib/modelSpecifications.js'
 import { modelCardName, modelCardSpecifications, safeOfficialSources } from '../src/lib/modelCardSpecifications.js'
 import { ModelSpecifications } from '../src/components/ModelSpecifications.jsx'
@@ -22,14 +23,14 @@ test('Novita shows confirmed text-to-image facts offline and after conflicting c
   }]) {
     const model = { ...historical, specifications }, before = structuredClone(model)
     const card = modelCardSpecifications('novita', model)
-    assert.equal(card.input, '未知')
-    assert.equal(card.output, '未知')
+    assert.match(card.input, /^文本/)
+    assert.match(card.output, /^图像/)
     assert.equal(card.context, '不适用')
-    assert.deepEqual(modalityIconStates(card.input).map(x => x.state), ['unknown', 'unknown', 'unknown', 'unknown'])
-    assert.deepEqual(modalityIconStates(card.output).map(x => x.state), ['unknown', 'unknown', 'unknown', 'unknown'])
+    assert.deepEqual(modalityIconStates(card.input,card.inputFact).map(x => x.state), ['supported', 'unknown', 'unknown', 'unknown'])
+    assert.deepEqual(modalityIconStates(card.output,card.outputFact).map(x => x.state), ['unknown', 'supported', 'unknown', 'unknown'])
     assert.ok(card.sources.includes('https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img'))
     const view = render(React.createElement(ModelSpecifications, { provider: 'novita', model }))
-    assert.equal(screen.getAllByText('模态未知').length, 2)
+    assert.equal(view.container.querySelectorAll('.is-unknown').length,6)
     assert.match(screen.getByRole('link').title, /未核实/)
     assert.deepEqual(model, before, 'display correction never expands runtime capabilities or changes history')
     view.unmount()
@@ -46,7 +47,7 @@ test('documented specifications never change adapted capabilities or request lim
   assert.equal(summary.contextWindowTokens,undefined)
   assert.equal(summary.maxInputTokens,131072)
   const card=modelCardSpecifications('gemini',model)
-  assert.equal(card.input,'未知')
+  assert.match(card.input,/视频/)
   assert.equal(card.context,'不适用')
   render(React.createElement(ModelSpecifications,{provider:'gemini',model}))
   assert.ok(screen.getByText('上下文窗口'));assert.ok(screen.getByText('最大输出'))
@@ -69,14 +70,14 @@ test('official cards separate context and output with verification and source li
 })
 
 test('exact dates preserve different Seed 2.1 Pro context windows',()=>{
-  assert.equal(modelCardSpecifications('ark',{id:'doubao-seed-2-1-pro-260628'}).context,'未知')
-  assert.equal(modelCardSpecifications('ark',{id:'doubao-seed-2-1-pro-260915'}).context,'未知')
+  assert.equal(modelCardSpecifications('ark',{id:'doubao-seed-2-1-pro-260628'}).context,'256K tokens')
+  assert.equal(modelCardSpecifications('ark',{id:'doubao-seed-2-1-pro-260915'}).context,'≈ 1M tokens')
   assert.equal(modelCardSpecifications('tokendance',{id:'seed-2.1-pro'}).context,'256K tokens')
 })
 
 test('missing native window can use this exact channel with distinct provenance',()=>{
   const data=modelCardSpecifications('tokendance',{id:'seed-2.1-pro',specifications:{version:1,contextWindowTokens:262144,sourceUrls:['https://tokendance.space/models/seed-2.1-pro']}})
-  assert.equal(data.inputScope,'');assert.equal(data.context,'256K tokens');assert.equal(data.contextScope,'渠道')
+  assert.equal(data.inputScope,'图研既有核实');assert.match(data.input,/文本/);assert.equal(data.context,'256K tokens');assert.equal(data.contextScope,'渠道')
   assert.ok(data.sources.includes('https://tokendance.space/gateway/v1/models'))
 })
 
@@ -120,11 +121,11 @@ test('service-specific quantization and Prime specs do not leak to unrelated pro
 test('channel-only windows keep native modality provenance and do not cross providers',()=>{
   const model={id:'deepseek-ocr'}
   const qianfan=modelCardSpecifications('qianfan',model)
-  assert.equal(qianfan.inputScope,'');assert.equal(qianfan.contextScope,'')
-  assert.equal(qianfan.context,'未知')
+  assert.equal(qianfan.inputScope,'图研既有核实');assert.equal(qianfan.contextScope,'图研既有核实')
+  assert.equal(qianfan.context,'8K tokens')
   assert.ok(qianfan.sources.includes('https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5'))
   assert.equal(modelCardSpecifications('custom',model).context,'未知')
-  assert.equal(modelCardSpecifications('bailian',{id:'qwen3-omni-flash'}).context,'未知')
+  assert.equal(modelCardSpecifications('bailian',{id:'qwen3-omni-flash'}).context,'≈ 66K tokens')
   assert.equal(modelCardSpecifications('bailian',{id:'qwen3-omni-flash-2025-09-15'}).context,'未知')
 })
 
@@ -164,11 +165,11 @@ test('modality icons distinguish known, missing and conditional published capabi
 })
 
 test('new official specifications remain bound to exact IDs and channels',()=>{
-  assert.equal(modelCardSpecifications('zhipu',{id:'glm-4v-flash'}).context,'未知')
-  assert.equal(modelCardSpecifications('zhipu',{id:'glm-4.1v-thinking-flash'}).context,'未知')
-  assert.equal(modelCardSpecifications('siliconflow',{id:'XingChenAGI/Xing4.0-29B'}).context,'未知')
-  assert.equal(modelCardSpecifications('runware',{id:'google:gemini@3.1-pro'}).context,'未知')
-  assert.equal(modelCardSpecifications('runware',{id:'google:gemini@3.1-pro'}).contextScope,'')
+  assert.equal(modelCardSpecifications('zhipu',{id:'glm-4v-flash'}).context,'16K tokens')
+  assert.equal(modelCardSpecifications('zhipu',{id:'glm-4.1v-thinking-flash'}).context,'64K tokens')
+  assert.equal(modelCardSpecifications('siliconflow',{id:'XingChenAGI/Xing4.0-29B'}).context,'256K tokens')
+  assert.equal(modelCardSpecifications('runware',{id:'google:gemini@3.1-pro'}).context,'1M tokens')
+  assert.equal(modelCardSpecifications('runware',{id:'google:gemini@3.1-pro'}).contextScope,'图研既有核实')
   assert.equal(modelCardSpecifications('custom',{id:'google:gemini@3.1-pro'}).context,'未知')
   assert.equal(modelCardName('deepseek',{id:'deepseek-v4-pro'}),'DeepSeek V4 Pro')
   assert.equal(modelCardName('tokendance',{id:'deepseek-v4-pro',label:'Preview'}),'Preview')
@@ -200,19 +201,20 @@ test('image prompt limits remain in evidence without substituting for token wind
   assert.doesNotMatch(container.textContent,/128,000|4096|tokens/);assert.deepEqual(model,before)
 })
 
-test('prompt examples, unreviewed numeric fields and similar names cannot supply audit facts',()=>{
+test('verified catalog limits retain exact integers; similar names do not supply facts',()=>{
   for(const max of [1,800,1000,4096,262144,999999,1000000,1000001,1048576,1500000,10000000]) {
     const model={id:'decimal-text',specifications:{version:1,contextWindowTokens:max,maxOutputTokens:max,sourceUrls:['https://example.com/model']}}
     const before=structuredClone(model), data=modelCardSpecifications('custom',model)
-    assert.equal(data.context,'未知');assert.equal(data.maxOutput,'未知');assert.deepEqual(model,before)
+    assert.equal(data.context,`${formatContextLimit(max)} tokens`);assert.equal(data.maxOutput,`${formatContextLimit(max)} tokens`);assert.equal(data.fields.totalContextTokens.value,max);assert.equal(data.fields.maxOutputTokens.value,max);assert.equal(data.contextScope,'图研既有核实');assert.deepEqual(model,before)
   }
-  for(const id of ['xqwen14bchat','THUDM/GLM-4-9B-0414','xsparkx2']) assert.equal(modelCardSpecifications('custom',{id}).context,'未知')
+  for(const [id,expected] of [['xqwen14bchat','≈ 131K（需 YaRN） tokens'],['THUDM/GLM-4-9B-0414','128K（需 YaRN；原生 32K） tokens'],['xsparkx2','192K tokens']]) assert.equal(modelCardSpecifications('custom',{id}).context,expected)
+  assert.equal(modelCardSpecifications('custom',{id:'unlisted-similar-GLM-4'}).context,'未知')
 })
 
-test('specific channel pages cannot replace the verified snapshot or import native modalities implicitly',()=>{
+test('specific catalog pages supply modalities and served context when audit is missing',()=>{
   const model={id:'exact-model',specificModelSpecifications:{officialInputModalities:['text','image'],contextWindowTokens:512000,sourceUrls:['https://provider.example/model/exact-model']},specifications:{version:1,contextWindowTokens:1048576,sourceUrls:['https://provider.example/catalog']}}
   const card=modelCardSpecifications('fireworks',model)
-  assert.equal(card.context,'未知');assert.equal(card.input,'未知');assert.equal(card.output,'未知')
+  assert.equal(card.context,'≈ 1M tokens');assert.equal(card.input,'文本、图像');assert.equal(card.output,'未知');assert.equal(card.contextScope,'图研既有核实')
   assert.ok(card.sources.includes('https://provider.example/model/exact-model'))
 })
 

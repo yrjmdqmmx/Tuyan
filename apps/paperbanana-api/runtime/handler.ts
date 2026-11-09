@@ -4548,7 +4548,7 @@ export default async function (ctx: CoreContext) {
     }
     return fail(`Unknown action: ${action}`, 400)
   } catch (error: any) {
-    if (['MODEL_RETIRED', 'MODEL_CHANNEL_UNAVAILABLE'].includes(error?.businessCode)) return {...fail(error.message,400),businessCode:error.businessCode,replacement:error.replacement,requestState:'not_sent'}
+    if (error?.businessCode === 'MODEL_UNAVAILABLE') return {...fail(error.message,400),businessCode:error.businessCode,replacement:error.replacement,requestState:'not_sent'}
     if (String(action).startsWith('imageLibrary') && error?.status) return fail(error.message,error.status)
     if(error?.name==='MaterialError')return {...fail(error.message,error.statusCode||400),businessCode:error.businessCode||'MATERIAL_READ_ERROR'}
     if (error?.name === 'UniversalApiError') return {...fail(error.message, error.status || 400), failure: publicExecutionFailure(error), requestState: error.requestState}
@@ -5061,7 +5061,7 @@ async function optimizeInputs(body: OptimizeInputsBody) {
       return invalidInputOptimizationRoute()
     }
   } catch (error: any) {
-    if (['MODEL_RETIRED', 'MODEL_CHANNEL_UNAVAILABLE'].includes(error?.businessCode)) return {...fail(error.message,400),businessCode:error.businessCode,replacement:error.replacement,requestState:'not_sent'}
+    if (error?.businessCode === 'MODEL_UNAVAILABLE') return {...fail(error.message,400),businessCode:error.businessCode,replacement:error.replacement,requestState:'not_sent'}
     return invalidInputOptimizationRoute()
   }
 

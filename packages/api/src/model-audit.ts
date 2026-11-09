@@ -3,10 +3,11 @@ import { MODEL_AUDIT_DATA } from './model-audit-data.js'
 export interface AuditFact {
   value: string[] | number | null
   state: 'known' | 'unknown' | 'unsupported' | 'not-applicable'
-  provenance: 'channel' | 'vendor' | null
+  provenance: 'channel' | 'vendor' | 'catalog' | null
   sourceUrl: string | null
   verifiedAt: string | null
   unknownModalities?: string[]
+  suppressFallback?: boolean
 }
 export function auditedModelSpecs(channel: string, id: string) {
   const row = MODEL_AUDIT_DATA.rows[channel + '/' + id]
@@ -17,6 +18,7 @@ export function auditedModelSpecs(channel: string, id: string) {
   })
   const details = MODEL_AUDIT_DATA.details?.[channel + '/' + id]
   if (details?.unknownInputModalities) result.inputModalities.unknownModalities = details.unknownInputModalities
+  for (const field of details?.suppressFallback || []) result[field].suppressFallback = true
   return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: details?.sourceUrls || [], note: details?.note || '' }
 }
 
@@ -62,7 +64,10 @@ export function withModelAudit<T extends { id: string }>(channel: string, model:
     ...(removedModel(channel, model.id, now) ? { selectable: false, disabledReason: removedModelHint(channel, model.id, now) } : {}) }
 }
 
-export function assertModelLibraryAdditions(next: any, previous: any, now = Date.now()) {
+export function assertModelLibraryAdditions(next: any, previous: any, now = Date.now(), intent = 'save') {
+  // A first sync or explicit import restores historical identities. Availability
+  // is still enforced at selection/execution and at explicit user additions.
+  if (intent === 'import' || !previous && intent !== 'add') return
   for (const model of next.models || []) {
     const channel = next.connections?.find((item: any) => item.id === model.connectionId)?.provider
     const retained = previous?.models?.some((old: any) => old.id === model.id && old.connectionId === model.connectionId && old.modelId === model.modelId

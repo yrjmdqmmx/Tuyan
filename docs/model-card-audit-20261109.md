@@ -1,238 +1,68 @@
-# 模型卡第三轮审计（2026-11-09，目录 v43）
+# 模型卡审计验收 · 2026-11-09 R4 / R5
 
-在 `codex/model-card-specs` / `abc09b00` 工作树继续 PR #245；本轮修改未 commit、push、merge 或部署。没有改价格、计费、许可、权限、服务器或密钥，没有真实/付费提供商调用。以下第三轮记录覆盖第二轮的待决项与旧交互说明；第二轮完整证据保留在后面。
+本报告取代旧轮次的基线、计数和测试汇总。PR 基线为 **main `c7b6a2fc`**；第三轮 1–6 已在 `00d04cee`，main 已于 `fe5a764d` 合入。R4 修改留在工作区，未运行任何 Git 写命令、部署或真实/付费提供商调用；不更改价格、计费、许可、权限、凭据或服务器配置。
 
-## 第三轮 1–6 验收
+## A–P 逐项记录
 
-1. **StepFun 空默认**：继续保持 `stepfun.defaults.image = ''`，本地 5 个阶跃型号均无 image 角色。`WorkspaceModelPanels.jsx` 根据已应用连接的默认值给空角色显示“此连接暂无默认绘图模型”（其他空角色同理）；显式应用和重新打开均有回归，不偷偷补选其他型号。依据为任务提供的 2026-11-09 官方模型列表摘录，未发起网络复核。
-2. **Ant Ling 三个未来下线项**：新增版本化源文件 [`config/channel-audit/deprecations-addendum-20261109.json`](../config/channel-audit/deprecations-addendum-20261109.json)，保留原 URL、记录时间、StepFun 决策和已退休名单。`supplementModelAudit` 由生成器与普通同步共同调用；不依赖 `.audit-input/`。`Ling-2.6-1T`、`Ling-2.6-flash`、`Ring-2.6-1T` 在 antling 保留，停用时间均为 **2026-11-15 00:00 (UTC+8)**，替代 `Ling-3.1-flash`。停用前一毫秒仍可选，等价 UTC **2026-11-14T16:00:00Z** 开始沿用不可用规则；Core 在传输前拒绝，Gateway 仍允许已有绑定原样往返，禁止新增。`Ling-1T`、`Ring-1T`、`Ling-2.5-1T`、`Ring-2.5-1T` 均不在静态目录，未修改。
-3. **生产数字格式**：从生产基线 `f3b8f91d:apps/web/src/lib/modelCardSpecifications.js` 原样恢复 **`formatContextLimit(value, approximate = false)`** 到 `packages/types/src/model-presentation.ts`，通过已有同步生成 Web / 小程序 helper。不是另一个保留三位小数的 `formatModelTokens`。上下文与最大输出使用同一函数：十进制 K/M，百万级保留最多一位小数、千级取整；原生产函数会为舍入值加 `≈`，因此 1,000,000 → `1M tokens`，1,048,576 → `≈ 1M tokens`，262,144 → `≈ 262K tokens`，384,000 → `384K tokens`，393,216 → `≈ 393K tokens`。没有把 393,216 偷换成二进制 384K。Web 数值 `title` 保留精确整数，来源 tooltip 保留完整 URL；小程序点击来源显示精确整数和 URL。输入、输出、上下文、最大输出仍仅四行。
-4. **我的模型提示**：`WorkspaceModelCatalog.jsx` 按当前渠道和厂商过滤已移除记录；只有旧记录的渠道/厂商仍保留筛选入口，不生成旧卡片。文案包含渠道 + 旧 API ID；替代名称用短且渠道内唯一的目录展示名（本目录为 `GLM 5.3`、`MiMo-V2.6-Flash`），不满足条件则回退精确 API ID。多条合并为一个原生 details / summary 通知，复用 `tw-info`。百炼无外来提示，小米两项合并，Fireworks 厂商切换隔离均有交互回归。
-5. **已移除角色槽**：`ModelPicker.jsx` / `WorkspaceModelPicker.jsx` 的粗体值为“请选择”，helper 只有“原型号 X 已不可用，可改选 Y”或“原型号 X 已不可用，请重新选择”；去掉此情形的重复不可用行。同渠道、当前角色/格式可选且连接存在时才显示“改选”，复用 `ModelReplacement.jsx` 的显式确认；取消、打开和刷新不写数据，确认仅改当前角色引用，原库项按既有流程保留并停用。小程序 settings sheet 与 picker 同样处理；确认前重新检查替代项，不把刷新当作替换操作。
-6. **下线徽标与 API ID**：目录、我的模型与选择器共用 `ModelLifecycleBadge`，徽标移到标题旁，复用 `is-unavailable` 的浅色警示色 `#9a6642 / #fbf4eb`。悬停显示日期/替代项，点击或键盘激活打开既有对话框；点击徽标与详情不会选择模型。API ID 与角色仍用原有 meta 区域，移除该行下线徽标；空间不足时角色允许换行，典型 ID 不再为徽标让位截断。`qwen3.5-plus-2026-04-20`、`Ling-2.6-flash` 完整 DOM 和位置已验证；1280 三列 / 390 单列 CSS 规则保留，真实像素验证仍受沙箱限制。
-
-## 第三轮验证结果
-
-| 检查 | 实际命令 / 结果 |
-| --- | --- |
-| 同步 | `node scripts/sync-model-catalog.mjs --check`：1064 static models；no drift |
-| 原始证据复现 | `node scripts/generate-model-audit.mjs .audit-input --check`：1106 evidence pairs、7 notices、7 additions；普通同步独立于此输入 |
-| 生成器 / codec / Gateway 审计 | `node --test scripts/generate-model-audit.test.mjs scripts/pack-model-catalog.test.mjs apps/auth-gateway/tests/model-audit.test.js`：**13/13**（5 + 4 + 4） |
-| Core 定向 | `pnpm --filter @paperbanana/paperbanana-api exec node --import tsx --test tests/core-composition.test.ts tests/model-audit.test.ts tests/model-registry-drift.test.ts`：**205 项，204 通过、1 个既有失败**；模型审计 5/5 |
-| Core 类型 | `pnpm --filter @paperbanana/paperbanana-api check`：通过 |
-| 小程序全套 | `pnpm --filter @paperbanana/miniprogram test`：**126/126**；`check` / `build` 均通过 |
-| 小程序原预算 | 全部源码 **1,565,894** bytes；运行源文件 **1,143,500**；媒体 **189,978**；1.5 MiB 限额 **1,572,864**，源码剩余 **6,970** bytes；未调高预算 |
-| Web 全套 | `pnpm --filter @paperbanana/web test`：**1341 项，1329 通过、12 个已记录基线失败** |
-| Web 受影响交互 | `model-audit-r3`、`model-picker-unavailable`、`provider-catalogs`：**32/32**（其中 R3 新增 8 项）；包括普通卡体仍能选择、徽标/详情不触发选择、过滤、空默认、取消与单槽替换 |
-| Web 构建 | `pnpm --filter @paperbanana/web build`：通过；保留既有大 chunk 提示 |
-| 预览夹具 | 实际执行预览文档 JS，mock localStorage + fake IndexedDB：12 库记录、2 草稿，`mimo-v2.5` / `qwen3.5-plus` 原引用保留 |
-| 计数 | `node scripts/count-model-catalog.mjs .`：成功；完整输出见 [第三轮计数 JSON](model-card-audit-20261109-count-r3.json) |
-
-Core 的 1 项失败仍是到期的 `grok-imagine-image-quality` 导致 xAI WebP 用例提前拒绝。Web 12 项仍集中于第二轮已基线复现的 `inactive-route-ui`、`professional-custom-v381`、`workflow-v400-ui`、`workspace-migration`；无本轮新增失败。未改这些基线失败用例或真实到期规则。
-
-计数摘要（asOf 固定为 2026-11-09；commit 字段是尚未提交修改所在 HEAD）：
-
-```json
-{
-  "staticRegistry": 1064,
-  "mockRegistry": 1061,
-  "catalogVisible": 919,
-  "pickerSelectable": 878,
-  "hiddenDeprecated": 70,
-  "channelUnavailable": 0,
-  "scheduled": 7,
-  "scheduledUiState": 7,
-  "unverified": 667,
-  "additions": 7,
-  "unselectableAdditions": 2,
-  "removedLookup": 68,
-  "removedStillInStatic": [],
-  "previewLibrary": { "storedBefore": 12, "storedAfter": 12, "cards": 9, "removedCardsOmitted": 3 }
-}
-```
-
-源配置只增加三个 notice；静态目录总数与各渠道数均保持第二轮结果，没有删除 Ling。`apps/web/tests/fixtures/model-card-preview.json` 为预览、计数脚本和 Gateway 往返测试的公共夹具；增加小米 pro、百炼长 ID 以及三个 Ant Ling 下线卡。截图路径、精确启动步骤与 fixture 脚本见 [第三轮预览](model-card-audit-20261109-preview.md)。
-
-**环境边界**：本轮再次启动本机 Chrome，退出码 134；本地 127.0.0.1:5173 监听返回 EPERM。已验证 DOM、交互和响应式 CSS，但没有真实桌面/移动截图，也没有微信原生包扫描。不得把这些限制记作通过；生产仍未发布。日志与本地验证脚本保留在忽略目录 `.audit-input/r3/work/`。
-
----
-
-## 第二轮验收历史（以下行为与计数以当轮为准）
-
-工作树 `Tuyan-wt-model-cards`，分支 `codex/model-card-specs`，PR #245 基线仍为 `codex/hangzhou-production`（本地只读基线 `f3b8f91d`）。本轮覆盖第一轮的隐藏旧型号方案。未 commit、push、merge、部署，未更改价格、计费、权限、密钥或服务器，未执行真实/付费提供商请求。
-
-## A. 紧凑卡片
-
-沿用现有白色卡片、图标、徽标、字体和间距：名称、厂商/渠道、API ID/角色、分隔线、输入、输出、上下文窗口、最大输出、底部来源及操作。删除独立核实日期、未核实、重复生命周期及连接信息行；同一型号多连接的区别保留在厂商/渠道同行及按钮可访问名称中。规格保持四行，只比生产参考多“最大输出”一行。
-
-仅显示一个有名称的来源（官方文档 / 下线公告 / 原厂规格），其余来源、逐字段 provenance、核实日期、未核实、生命周期及 Ling 扩展窗口说明进入 `title` 和 `aria-label`；触屏点击通过既有对话框查看。全未知模态为灰色“模态未知”；部分未知仅对应图标有灰色问号，无棕色/虚线。上下文/最大输出未知为既有中性灰。
-
-将下线徽标复用角色徽标；卡片的替代建议放 tooltip，不占新行。任务/预设字段的紧凑按钮使用精确 API ID，打开既有确认弹框，含“取消”和“确认切换”，复用连接弹框 footer 的桌面右对齐及移动并排样式。仅确认后写入当前角色。桌面 ≥1280 三列、390 单列；本沙箱仍不能完成真实浏览器/微信开发者工具截图验收，不能把 DOM/CSS 检查说成实屏像素验收。
-
-## B. 从源目录删除，保留已存身份
-
-源配置 `config/model-catalog-updates.json` 删除 67 项；百炼 `deepseek-v4-flash` 还从旧 Core 静态声明删除。同步清理对应版本/规格/尺寸/渠道契约，运行 `node scripts/sync-model-catalog.mjs` 生成 Core、Web、Gateway 与小程序数据，静态目录 **1132 → 1064**。61 项正式退役（百炼 57、小米 2、阶跃 2）及 7 项 Fireworks serverless 条目全部物理删除，无隐藏目录记录。其他渠道同一底模保留。
-
-`config/removed-models.json` 只保留精确渠道/ID → `{stopDate,replacementApiId,sourceUrl}`。运行时用于不可用错误、拒绝新增和旧配置空槽提示，不转为模型条目；账号目录刷新也不能重新加入这些 ID。预设、任务及模型库存储不迁移、不删除：渲染旧引用显示“原型号已不可用，请重新选择”，有精确替代项再加“，可改选 <API ID>”。小程序选择器和设置字段同样处理。
-
-Core 的路由校验及文本/视觉/图像传输入口，在任何提供商调用之前抛出 `MODEL_UNAVAILABLE`，含中文建议和 `requestState=not_sent`；无需保留旧错误码别名。Gateway 拒绝新增旧身份，但已有精确连接/型号可原样往返保存。预览 7 条库记录存储前后均为 7，展示 5 张卡片，2 条显示空槽提示。
-
-**发现一个需 Owner 决策的默认值**：`stepfun.defaults.image = step-2x-large`。已将该默认项留空，不自动选择另一型号；没有改变用户已保存选择。请另行确定 StepFun 默认绘图型号，或继续留空。其余出厂默认值没有命中这 68 个精确渠道/ID；其他渠道的相同 ID 保留。推荐项随目录条目删除，旧用例保留为拒绝/历史身份测试。
-
-百炼四项 `qwen3.5-plus` 家族仍在目录，2027-01-19 UTC 零点前为“将下线”，精确替代 `qwen3.8-flash`；到期后由相同不可用校验/空槽提示阻止新请求，不改存储。
-
-### Fireworks 逐项结果
-
-Tuyan 使用 `https://api.fireworks.ai/inference/v1/chat/completions` 和 `accounts/fireworks/models/...`，未使用 dedicated deployment。全部通告仅停用 serverless，自 2026-09-25 起；原底模其他渠道不变。以下候选都在通告中、官方 replacement 页面标记 Serverless Supported，且本地 Fireworks 精确 ID 存在并可选。生成器加入三条件校验，后续若目录漂移会报错而不是保留不成立的建议。已移除型号只有提示，没有一键切换/确认流程。
-
-| 删除的 API ID（均带 `accounts/fireworks/models/` 前缀） | 显示的替代提示（同前缀） | 依据 / 备选 |
+| 项 | 处理结果 | 文件与验证 |
 | --- | --- | --- |
-| `deepseek-v4-flash-0731` | `deepseek-v4p1-flash` | [官方通告](https://fireworks.ai/models/deepseek-ai/deepseek-v4-flash-0731)；通告 + Serverless Supported + 本地精确 ID 可选。 |
-| `deepseek-v4-flash-vision-exp` | `deepseek-v4p1-flash` | [官方通告](https://fireworks.ai/models/deepseek-ai/deepseek-v4-flash-vision-exp)；通告 + Serverless Supported + 本地精确 ID 可选。 |
-| `deepseek-v4-pro-0813` | `deepseek-v4p1-flash` | [官方通告](https://fireworks.ai/models/deepseek-ai/deepseek-v4-pro-0813)；通告 + Serverless Supported + 本地精确 ID 可选。 |
-| `glm-5p2` | `glm-5p3` | [官方通告](https://fireworks.ai/models/fireworks/glm-5p2)；通告 + Serverless Supported + 本地精确 ID 可选。 |
-| `kimi-k2p6` | `glm-5p3` | [官方通告](https://fireworks.ai/models/fireworks/kimi-k2p6)；通告另列 `kimi-k3`，也满足三个条件；采用通告中第一个可选项 `glm-5p3`。 |
-| `kimi-k2p7-code` | `glm-5p3` | [官方通告](https://fireworks.ai/models/fireworks/kimi-k2p7-code)；通告另列 `kimi-k3`，也满足三个条件；采用通告中第一个可选项 `glm-5p3`。 |
-| `muse-glimmer-30b` | `nemotron-lightning-3p5-30b-a3b` | [官方通告](https://fireworks.ai/models/fireworks/muse-glimmer-30b)；通告 + Serverless Supported + 本地精确 ID 可选。 |
+| A | 卡片按字段回退到既有已核实数据，标记 catalog / 图研既有核实，保留来源、日期和限定语；审计优先并记录冲突。 | apps/web/src/lib/catalogCardFacts.js、modelCardSpecifications.js；model-audit-r4 / model-specifications 测试及双根计数。 |
+| B | 未列出的模态显示中性问号；空模态数组也为未知，只有带官方来源的明确 false / unsupported 才是不支持。Web、小程序同义。 | modelModalityIcons.js、model-picker.ts、generate-model-audit.mjs；生成器、Web 及小程序模态回归。 |
+| C | 恢复既有输入/窗口断言；qwen3.8-max 的 text-only 缺明确证据，移除该审计字段以回退文本/图像/视频；Ling-3.0-flash-VL 的视频来源和 image_url / video_url 说明写入补充数据。main 的小程序默认断言保持原强度。 | provider-catalogs、bailian-multimodal、model-registry 测试；config/channel-audit/model-audit-supplement-20261109.json。 |
+| D | Core 顶层和 optimizeInputs 捕获 MODEL_UNAVAILABLE，返回 400、替代提示、not_sent。 | runtime/handler.ts；model-audit.test.ts，提供商全 mock。 |
+| E | 自定义 API / TokenDance 凭据预检返回相同 400；在读取凭据或调用处理器前停止。 | src/server.ts；model-audit-http.test.ts 通过内存 HTTP 走真实 Express 中间件。 |
+| F | 首次同步无服务端存档及显式 import 保留历史条目；用户添加传 intent=add，继续拒绝移除 ID。已有存档普通保存仍按精确身份验证新条目。调用前可用性检查仍独立生效。 | packages/api/src/model-audit.ts、model-library.js、useWorkspaceModels.js；Gateway 首次同步/导入与 Web hook 往返测试。 |
+| G | 保留生产 formatContextLimit 十进制 K/M 规则及原有 ≈；精确整数放悬停或点击详情。 | modelCardSpecifications.js、小程序 model-picker.ts；R3 格式回归。 |
+| H | 保留 availabilityNotes；保留 main 对所有角色允许空默认的规则及移除默认的跳过逻辑，StepFun 默认绘图仍为空。 | scripts/lib/mini-model-catalog.mjs；model-registry / package-budget / R3 空槽测试。 |
+| I | 恢复选择器思考状态、连接说明；我的模型显示连接名 · 完整连接 ID，同渠道同名连接可区分。 | ModelPicker.jsx、WorkspaceModelCatalog.jsx；model-audit-r4.test.mjs。 |
+| J | 确认替换只更新当前角色；原库条目的启用/停用状态保持原样，所有其他预设继续保留原绑定。 | ModelReplacement.jsx；确认、取消、库对象不变的 DOM 回归。 |
+| K | 57 个百炼删除型号在 main 均只配置 cn-beijing，全部保留删除，国际恢复和待国际公告确认均为 0。 | 逐 ID 地区表见 model-card-audit-20261109-regions.md。 |
+| L | 生成器默认读取版本化最小输入快照，--check 无需私有审计目录、网络或基线工作树。 | config/channel-audit/input-20261109.json（478430 bytes）；generate-model-audit.mjs / --check。 |
+| M | 报告和计数只用仓库相对路径；扫描相对 main 的全部新增差异，不含绝对本机路径。 | 本系列文档、计数脚本与 JSON；git diff 只读检查。 |
+| N | 百炼 kimi/kimi-k2.7-code-highspeed 最大输出设为 null，阻止旧值回退，并注明“待核实：官方页面需浏览器渲染核对”。 | 补充数据 fieldOverrides / suppressFallback；Web、生成器回归。 |
+| O | 历史沙箱失败与任务提供的沙箱外结果分别记录；本轮 head/base 的沙箱结果单独列出。 | 本文及 SYNC.md。 |
+| P | Web 按静态目录顺序引用身份，保留动态目录额外行，去掉生成器 additions 清单；小程序仅带卡片/选择字段，移除不用的服务端验证函数。 | sync-model-catalog.mjs、mini-model-catalog.mjs；codec、完整小程序测试及构建。 |
 
-`deepseek-v4-flash-vision-exp` 和 `deepseek-v4-pro-0813` 已按第二轮证据补上 DeepSeek V4.1 Flash 建议。此处没有因服务端超时换线或探测账户权益。
+## 第三轮 1–6 合并后复验
 
-### 全部 68 项删除明细
+| 项 | 仍成立的行为 | 验证入口 |
+| --- | --- | --- |
+| 1 | StepFun 绘图默认为空，“应用此连接的默认组合”显示此连接暂无默认绘图模型；其他角色空默认也沿用 main 规则。 | model-audit-r3.test.mjs / 小程序 model-registry |
+| 2 | Ling-2.6-1T、Ling-2.6-flash、Ring-2.6-1T 保留至 2026-11-15 00:00 UTC+8，替代 Ling-3.1-flash；将下线总数 7。四个更早退役型号仍不在目录。 | deprecations-addendum-20261109.json；生成器/Core/Gateway 边界测试 |
+| 3 | 生产 formatContextLimit(1048576) 为 ≈ 1M，262144 为 ≈ 262K，393216 为 ≈ 393K；精确整数和完整 URL 在详情。 | Web R3 / 小程序 model-audit |
+| 4 | 移除提示按当前渠道和厂商过滤；多个提示合为一个可展开通知，替代名优先短且无歧义展示名。 | Web R3；13 条公共预览夹具 |
+| 5 | 移除槽为请选择 + 单句 helper + 改选确认，不在打开/刷新时自动改写；只改当前角色。 | Web R3 / 小程序移除角色回归 |
+| 6 | 将下线徽标在标题旁；API ID 保持完整 DOM 和换行布局，点击徽标可读日期及替代型号。 | Web R3；1280/390 实屏仍需外部环境 |
 
-“—”表示无精确替代 API ID；四项公告仅给 Qwen3.6/3.7 系列建议，不把系列名冒充 API ID。核实日期为 2026-11-09。
+## main 与 head 计数
 
-| 渠道 | 删除 API ID | 停用日期 | 替代 API ID | 证据 URL / 依据 |
-| --- | --- | --- | --- | --- |
-| bailian | `MiniMax-M2.1` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `MiniMax/MiniMax-M2.1` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `Moonshot-Kimi-K2-Instruct` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `deepseek-r1` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `deepseek-r1-0528` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `deepseek-r1-distill-qwen-14b` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `deepseek-r1-distill-qwen-32b` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `deepseek-r1-distill-qwen-7b` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `deepseek-v3` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `deepseek-v3.1` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `deepseek-v3.2` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `deepseek-v3.2-exp` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `deepseek-v4-flash` | 2026-10-10 | `deepseek-v4-flash-0731` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `glm-4.5` | 2026-10-10 | `glm-5.2` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `glm-4.5-air` | 2026-10-10 | `glm-5.2` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `glm-4.7` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `kimi-k2-thinking` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qvq-max` | 2026-10-10 | —（仅系列建议） | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qvq-plus` | 2026-10-10 | —（仅系列建议） | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-image-edit` | 2026-10-10 | `qwen-image-3.0` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-image-edit-max` | 2026-10-10 | `qwen-image-3.0` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-image-edit-max-2026-01-16` | 2026-10-10 | `qwen-image-3.0` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-image-edit-plus` | 2026-10-10 | `qwen-image-3.0` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-image-edit-plus-2025-10-30` | 2026-10-10 | `qwen-image-3.0` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-image-edit-plus-2025-12-15` | 2026-10-10 | `qwen-image-3.0` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-image-max` | 2026-10-10 | `qwen-image-3.0` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-image-max-2025-12-30` | 2026-10-10 | `qwen-image-3.0` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-image-plus` | 2026-10-10 | `qwen-image-3.0` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-image-plus-2026-01-09` | 2026-10-10 | `qwen-image-3.0` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-long-2025-01-25` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-long-latest` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-omni-turbo` | 2026-10-10 | `qwen3.5-omni-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-vl-max` | 2026-10-10 | —（仅系列建议） | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen-vl-plus` | 2026-10-10 | —（仅系列建议） | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen2.5-omni-7b` | 2026-10-10 | `qwen3.5-omni-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-14b` | 2026-10-10 | `qwen3.6-flash` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-235b-a22b` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-235b-a22b-instruct-2507` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-235b-a22b-thinking-2507` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-30b-a3b` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-30b-a3b-instruct-2507` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-30b-a3b-thinking-2507` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-32b` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-8b` | 2026-10-10 | `qwen3.6-flash` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-coder-30b-a3b-instruct` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-coder-480b-a35b-instruct` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-coder-plus` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-coder-plus-2025-07-22` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-coder-plus-2025-09-23` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-next-80b-a3b-instruct` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-next-80b-a3b-thinking` | 2026-10-10 | `qwen3.7-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-omni-flash` | 2026-10-10 | `qwen3.5-omni-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-omni-flash-2025-09-15` | 2026-10-10 | `qwen3.5-omni-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-omni-flash-2025-12-01` | 2026-10-10 | `qwen3.5-omni-plus` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3-vl-flash` | 2026-10-10 | `qwen3.6-flash` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwen3.6-max-preview` | 2026-10-10 | `qwen3.7-max` | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| bailian | `qwq-plus` | 2026-10-10 | —（仅系列建议） | [official retirement notice](https://help.aliyun.com/zh/model-studio/model-depreciation) |
-| fireworks | `accounts/fireworks/models/deepseek-v4-flash-0731` | 2026-09-25 | `accounts/fireworks/models/deepseek-v4p1-flash` | [Fireworks serverless deprecation notice](https://fireworks.ai/models/deepseek-ai/deepseek-v4-flash-0731) |
-| fireworks | `accounts/fireworks/models/deepseek-v4-flash-vision-exp` | 2026-09-25 | `accounts/fireworks/models/deepseek-v4p1-flash` | [Fireworks serverless deprecation notice](https://fireworks.ai/models/deepseek-ai/deepseek-v4-flash-vision-exp) |
-| fireworks | `accounts/fireworks/models/deepseek-v4-pro-0813` | 2026-09-25 | `accounts/fireworks/models/deepseek-v4p1-flash` | [Fireworks serverless deprecation notice](https://fireworks.ai/models/deepseek-ai/deepseek-v4-pro-0813) |
-| fireworks | `accounts/fireworks/models/glm-5p2` | 2026-09-25 | `accounts/fireworks/models/glm-5p3` | [Fireworks serverless deprecation notice](https://fireworks.ai/models/fireworks/glm-5p2) |
-| fireworks | `accounts/fireworks/models/kimi-k2p6` | 2026-09-25 | `accounts/fireworks/models/glm-5p3` | [Fireworks serverless deprecation notice](https://fireworks.ai/models/fireworks/kimi-k2p6) |
-| fireworks | `accounts/fireworks/models/kimi-k2p7-code` | 2026-09-25 | `accounts/fireworks/models/glm-5p3` | [Fireworks serverless deprecation notice](https://fireworks.ai/models/fireworks/kimi-k2p7-code) |
-| fireworks | `accounts/fireworks/models/muse-glimmer-30b` | 2026-09-25 | `accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b` | [Fireworks serverless deprecation notice](https://fireworks.ai/models/fireworks/muse-glimmer-30b) |
-| stepfun | `step-2x-large` | 2026-10-10 | — | [official retirement notice](https://platform.stepfun.com/docs/zh/guides/models/deprecations) |
-| stepfun | `step-image-edit-2` | 2026-10-10 | — | [official retirement notice](https://platform.stepfun.com/docs/zh/announcements/image-model-retirement) |
-| xiaomi | `mimo-v2.5` | 2026-10-21T10:00:00+08:00 | `mimo-v2.6-flash` | [official retirement notice](https://mimo.mi.com/docs/zh-CN/updates/deprecate) |
-| xiaomi | `mimo-v2.5-pro` | 2026-10-21T10:00:00+08:00 | `mimo-v2.6-pro` | [official retirement notice](https://mimo.mi.com/docs/zh-CN/updates/deprecate) |
-
-## C. Ant Ling 补充证据
-
-补充证据纳入版本化源文件 `config/channel-audit/model-audit-supplement-20261109.json`；生成器及普通同步都会读取，完全不依赖 `.audit-input/`。源证据：[模型指南](https://developer.ant-ling.com/zh-CN/docs/models/ling/)、[Chat API](https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/)、[多模态教程](https://developer.ant-ling.com/zh-CN/docs/tutorials/multimodal-understanding/)、[API 概览](https://developer.ant-ling.com/zh-CN/docs/api-reference/)。逐字段来源和核实日期 **2026-11-09** 保留在完整快照。
-
-| 精确 API ID | 已知输入 | 仍未知的输入 | 输出 | 上下文 tokens | 最大输出 |
-| --- | --- | --- | --- | ---: | --- |
-| Ling-3.2-flash | 文本、图像、视频 | 音频 | 文本 | 1,048,576 | 未知 |
-| Ling-3.1-flash | 文本 | 图像、音频、视频 | 文本 | 1,048,576 | 未知 |
-| Ling-3.0-flash-VL | 文本、图像、视频 | 音频 | 文本 | 262,144 | 未知 |
-| Ling-3.0-flash | 文本 | 图像、音频、视频 | 文本 | 262,144 | 未知 |
-| Ling-3.0-tiny | 文本 | 图像、音频、视频 | 文本 | 未知 | 未知 |
-
-采用现有审计快照中的二进制 token 单位惯例：1M = 1,048,576，256K = 262,144。Ling-3.0-flash 的“最高可扩展至 1M”只进 tooltip，数值仍为原生 256K；文档未明确输入输出共享窗口，**不标注共享**。未列支持不等于明确不支持，因此部分模态保持 unknown。只修正规格/元数据，没有凭规格快照扩展调用适配、价格或权限。
-
-[Ant Ling 下线页](https://developer.ant-ling.com/zh-CN/docs/models/deprecation/)所列型号中，本目录含 `Ling-2.6-1T`、`Ring-2.6-1T`、`Ling-2.6-flash` 三项（公告 2026-11-15 UTC+8 下线）；不含 `Ling-1T`、`Ring-1T`、`Ling-2.5-1T`、`Ring-2.5-1T`。按本轮要求仅报告，没有变更其生命周期，待 PM 决策。
-
-## D. 小程序包预算
-
-恢复源码和运行文件两项阈值为原始 **1.5 × 1024 × 1024 = 1,572,864 bytes**；媒体维持 200 KiB。测试实际检查整个 `miniprogram/` 的文件，包括 `.ts`，不是仅微信运行文件。第一轮超标的是含 TS 的源目录，超出 **128,658 bytes**；运行文件未超标。
-
-| 测量 | 第一轮 before | 第二轮 after | 限额 |
-| --- | ---: | ---: | ---: |
-| 全部文件（含 TS） | 1,701,522 | 1,559,326 | 1,572,864 |
-| 运行源文件（排除 TS） | 1,283,180 | 1,139,605 | 1,572,864 |
-| 图片/音视频 | 189,978 | 189,978 | 204,800 |
-
-源码减少 142,196 bytes，距预算余 13,538 bytes。未删 TS 或放宽测试。`scripts/lib/mini-model-catalog.mjs` 投影去掉完整来源档案、旧规格对象和未使用的协议详情，保留全部实际选择、角色、尺寸及编辑约束；新的审计数据仅包含模态/未知项、上下文、最大输出、生命周期日期/替代项及一条 URL。复用静态目录索引，不再第二次打包全部 ID。来源档案仍完整保存在 Web/Core 和 config。投影/codec 测试仍校验每个保留字段、独立对象和原预算。未执行微信原生包扫描，未恢复小程序发布。
-
-## E. 只读计数证明
+运行同一只读脚本：
 
 ```sh
-node scripts/count-model-catalog.mjs .
-node scripts/count-model-catalog.mjs /Users/apple/agent-tools/tuyan-dev/Tuyan-wt-baseline
-# 如需逐 ID 校验，可追加 --keys
+node scripts/count-model-catalog.mjs ../Tuyan-wt-baseline --keys
+node scripts/count-model-catalog.mjs . --keys
 ```
 
-脚本在内存 bundle 指定 checkout 的真实 `catalogRows` / `libraryRows` / `partitionRegistryModels`；Core `modelRegistry` 使用内存服务和模拟 metadata 传输。没有复制一套 UI 计数条件，没有监听端口或网络请求，不写目标 checkout。日期固定为 2026-11-09，两份工作树均成功执行，基线工作树仍干净。
+计数日期固定 2026-11-09，所有外部目录请求均 mock。TokenDance 空账号目录，其他动态目录离线失败。四项已知计数使用当前同一个 `modelCardSpecifications`，分别注入两根的静态目录/既有规格/审计数据；main 无审计层，输入为空审计。数字不适用行不算已知窗口。
 
-| scope | base f3b8f91d | head | 精确差分 |
-| --- | ---: | ---: | --- |
-| static registry | 1125 | 1064 | 1125 − 68 + 7 |
-| local mock registry endpoint | 1122 | 1061 | 1122 − 68 + 7 |
-| 模型目录（catalogRows） | 923 | 919 | 923 − 11 + 7 |
-| 新任务角色可选并集（main/vision/image；生成） | 884 | 878 | 884 − 11 + 5 |
-| 既有日期等规则隐藏的 deprecated | 127 | 70 | 127 − 57 |
-| 目录中 channel-unavailable 审计状态 | 0 | 0 | 7 条 Fireworks 已物理删除，记在 68 条 lookup 中 |
-| 根据本轮公告匹配的 scheduled | 4 | 4 | 基线没有新审计徽标，脚本另报 scheduledUiState 0 → 4 |
-| unverified（静态审计分母） | 无该审计字段 | 667 | 不把基线的缺字段猜成已核实 |
-| 新增 / 其中不可选 | 0 / 0 | 7 / 2 | OpenAI 两个 2.6 图像型号仍缺尺寸契约、不可选 |
-| 预览模型库存储 | 7 | 7 | head 5 卡片 + 2 空槽，数据不变 |
+| 范围 | main c7b6a2fc | head |
+| --- | --- | --- |
+| staticRegistry | 1125 | 1064 |
+| mockRegistry | 1122 | 1061 |
+| catalogVisible | 923 | 919 |
+| pickerSelectable | 884 | 878 |
 
-目录口径只减 11：57 项已经因基线到期字段隐藏；本次真正从可见/可选集合退出的 11 项为百炼 `MiniMax/MiniMax-M2.1`、`qwen3-omni-flash`、`qwen3-omni-flash-2025-09-15`、`qwen3-omni-flash-2025-12-01`，以及七个 Fireworks 项。新增 7 项全部进目录，其中 2 项不进入新任务可选集合。
+| 已知字段 | main | head | 差值 |
+| --- | --- | --- | --- |
+| inputModalities | 326 | 512 | 186 |
+| outputModalities | 327 | 496 | 169 |
+| totalContextTokens | 224 | 359 | 135 |
+| maxOutputTokens | 50 | 186 | 136 |
 
-本地静态与 endpoint 差 3 来自 Core 既有公开目录过滤（非本轮删除）：`fal/imagineart/imagineart-2.0-preview/text-to-image`、`replicate/alibaba/wan-3`、`stability/sd3.5-flash`，base/head 相同；模型目录再应用角色、缺失/到期规则。模拟 TokenDance 返回空目录，将 66 项标为缺失；若改成 503 失败而非空列表，既有保守回退会保留这些项，得到 985，不能拿这个数冒充原本的本地预览。
+静态目录和可见卡片的四项总数均未下降。完整 mock registry 包括已删除历史型号，其减少另见下表逐项说明。静态净变化为删除 68、增加 7；目录净变化为移除 11 个原可见项、增加 7；可选集合增加的 7 项中 OpenAI 两个图像型号仍缺尺寸合同、保持不可选。已删除 ID 没有重新进入目录；将下线为 7；未核实为 667。既有模型库夹具 13 条原样保存，显示 10 张卡、3 条移除引用提示。生产 1408 不具备同一时点可重放快照，不作逐 ID 差额推断。
 
-**919 与生产截图 1408**：本轮物理删除后仍为 919，因为第一轮已隐藏这 68 项。UI tab 计数取 `catalogRows(registry,{role:catalogRole}).length`，registry 来自后端、不是静态数组长度。后端会合并 OpenRouter 公共模型/图像目录、fal/Runware/Novita 公共目录及 TokenDance 当前目录；显式账号目录另经 `readAccountModelCatalog` 合并，本地 mock 不加载真实账号目录。生产截图比当前本地多 489，比同条件基线本地多 485。没有提供生产 JSON 快照，本轮不请求生产/真实提供商，**无法逐 ID 证明这 489 项各自属于哪个实时目录**；已证明本 PR 的实际可见差分是 −4，而非 −61。精确生产归因需 Owner 提供同一时点/角色筛选的只读 modelRegistry 响应，再离线比较。
-
-### 每渠道计数（base → head）
-
-| 渠道 | static | mock endpoint | catalog-visible | picker-selectable |
-| --- | ---: | ---: | ---: | ---: |
+| 渠道 | 静态 base → head | mock base → head | 目录 base → head | 可选 base → head |
+| --- | --- | --- | --- | --- |
 | anthropic | 14 → 14 | 14 → 14 | 14 → 14 | 14 → 14 |
 | antling | 6 → 8 | 6 → 8 | 6 → 8 | 6 → 8 |
 | ark | 36 → 36 | 36 → 36 | 22 → 22 | 22 → 22 |
@@ -265,33 +95,132 @@ node scripts/count-model-catalog.mjs /Users/apple/agent-tools/tuyan-dev/Tuyan-wt
 | xiaomi | 5 → 3 | 5 → 3 | 3 → 3 | 3 → 3 |
 | zhipu | 28 → 28 | 28 → 28 | 28 → 28 | 28 → 28 |
 
-## F. 移动标签截断
+| mockRegistry 已知字段 | main | head | 差值 |
+| --- | --- | --- | --- |
+| inputModalities | 983 | 976 | -7 |
+| outputModalities | 968 | 967 | -1 |
+| totalContextTokens | 534 | 519 | -15 |
+| maxOutputTokens | 50 | 186 | 136 |
 
-比对只读基线和当前 `WorkspaceModelPanels.jsx` 的 tabs markup 及 `workspaceModels.css` 中所有 `.tw-model-tabs` / `.tw-model-custom-link` 规则：此 PR 未改这些代码；移动 `flex-wrap:nowrap; overflow-x:auto` 已在基线。按要求不修复这项既有截断/横向滚动表现，避免混入 UI 变更。
+| catalogVisible 已知字段 | main | head | 差值 |
+| --- | --- | --- | --- |
+| inputModalities | 834 | 847 | 13 |
+| outputModalities | 819 | 838 | 19 |
+| totalContextTokens | 411 | 412 | 1 |
+| maxOutputTokens | 45 | 159 | 114 |
 
-## G. 本地预览与截图夹具
+完整 mock 的已知数量减少仅由明确删除的历史型号造成；每个失去的已知字段都在[逐项表](model-card-audit-20261109-field-losses.md)列出，存续型号没有规格回退。
 
-完整启动命令、**精确 localStorage 片段**、IndexedDB 缓存接入原因、所有渠道/厂商/搜索路径、已有预设字段和将下线确认对话框入口，见 [第二轮预览夹具](model-card-audit-20261109-preview.md)。片段已在离线 fake IndexedDB 环境实际运行：7 条模型记录、两份草稿分别保留 `mimo-v2.5` 和 `qwen3.5-plus`；它不属于任何生产导入路径。
+完整机器计数：[count-r3.json](model-card-audit-20261109-count-r3.json)（沿用文件名，内容已更新为 main/R4 双根比较）。85 项规格差异见[冲突表](model-card-audit-20261109-conflicts.md)，百炼逐 ID 地区见[地区表](model-card-audit-20261109-regions.md)。
 
-## 验证
+## 离线证据与打包
 
-| 检查 | 命令 / 范围 | 结果 |
+`input-20261109.json` 仅包含生成器读取的精确 ID、字段值、来源/映射、公告和七项新增的必要证据。`model-audit-supplement-20261109.json` 保存 Ling 视频来源、已知/未知边界及 Kimi 待核实覆盖；`deprecations-addendum-20261109.json` 保存三项 Ling 时间边界。无密钥、本机路径或账户数据。CI 顺序：
+
+```sh
+node scripts/generate-model-audit.mjs --check
+node scripts/sync-model-catalog.mjs --check
+node scripts/sync-reference-upload.mjs --check
+node --test scripts/pack-model-catalog.test.mjs scripts/generate-model-audit.test.mjs
+```
+
+普通同步与默认生成器均可独立复现；比较脚本才需要只读基线。Ling-3.0-flash-VL 的视频证据来自[Chat API](https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/)及[型号页](https://developer.ant-ling.com/zh-CN/docs/models/ling/)，任务提供的说明明确图片使用 image_url、视频使用 video_url，本轮未重新访问网页。
+
+| Web 产物 | 修改前 raw / gzip bytes | 修改后 raw / gzip bytes |
 | --- | --- | --- |
-| 生成器、codec、Gateway 审计 | `node --test scripts/generate-model-audit.test.mjs scripts/pack-model-catalog.test.mjs apps/auth-gateway/tests/model-audit.test.js` | 11/11（生成器 4、codec/投影 4、Gateway 3） |
-| 原证据再生成 | `node scripts/generate-model-audit.mjs .audit-input --check` | 通过：1106 个证据 pair、4 条 scheduled、7 个 additions；删除条目不在 rows |
-| 无原输入的同步 | `node scripts/sync-model-catalog.mjs --check` | 通过：1064 个静态型号、无漂移 |
-| Gateway 全套 | `pnpm --filter @paperbanana/auth-gateway test` | 276 项：188 通过、87 失败、1 跳过；87 项全部为沙箱 `listen EPERM`，非业务断言失败；无监听的审计 3/3 通过 |
-| Gateway 语法 | `pnpm --filter @paperbanana/auth-gateway check` | 通过 |
-| Core 定向 | `pnpm --filter @paperbanana/paperbanana-api exec node --import tsx --test tests/core-composition.test.ts tests/model-audit.test.ts tests/model-registry-drift.test.ts` | 204 项：203 通过、1 既有失败；本轮审计 4/4 通过 |
-| Core 类型 | `pnpm --filter @paperbanana/paperbanana-api check` | 通过 |
-| 小程序全套、类型、构建 | `pnpm --filter @paperbanana/miniprogram test` / `check` / `build` | 123/123；1.5 MiB 原预算通过；类型与构建通过 |
-| Web 全套 | `pnpm --filter @paperbanana/web test` | 1333 项：1321 通过、12 既有失败 |
-| Web 相关定向 | `model-audit`、`model-specifications`、`rendered-interactions`、`workspace-model-catalog`、`workspace-model-picker`、`workspace-catalog-v35` | 87/87 通过；旧禁用原因断言改查可访问 tooltip，确认不增加卡片行 |
-| Web 构建 | `pnpm --filter @paperbanana/web build` | 通过；既有大 chunk 提示保留 |
-| 计数 | 上述只读脚本分别运行 head / base | 均成功；详见 E；基线没有写入 |
+| modelAudit.js | 86295 / 13408 | 57528 / 8445 |
+| 包含它的 WorkspaceRoot chunk | 5480897 / 796857 | 5459168 / 794198 |
 
-Web 的 12 项失败集中在 `inactive-route-ui`、`professional-custom-v381`、`workflow-v400-ui`、`workspace-migration`；在只读基线用相同四个文件重新运行 32 项，20 通过、同样 12 项失败。Core 唯一失败为 `xAI normalizes WebP references to supported PNG for planning, vision and image editing`：原测试选择的 `grok-imagine-image-quality` 已于 2026-11-02 到期，先被既有到期校验拒绝；第一轮已在基线复现，本轮未更改该测试或该型号。
+构建前 chunk 为 `WorkspaceRoot-lM_XlHeN.js`，构建后为 `WorkspaceRoot-Bhzx-oTm.js`；gzip 使用 Node zlib 默认参数。
 
-真实浏览器启动在本沙箱退出 134，本地监听报 `EPERM`；因此尚无桌面/移动实屏截图，未进行微信原生包扫描。提供可由审阅人直接运行的离线预览步骤，不将这些环境限制包装成通过。
+| 小程序预算测量（bytes） | main | R4 修改前 | R4 head | 上限 |
+| --- | --- | --- | --- | --- |
+| source | 1570043 | 1527613 | 1571089 | 1572864 |
+| runtime | 1157620 | 1104307 | 1148153 | 1572864 |
+| media | 189978 | 189978 | 189978 | 204800 |
 
-所有提供商传输均为 mock；静态/测试数据不是账户权限、真实质量或生产服务验收。沙箱不能监听端口或启动 Chrome，不把缺少的 HTTP / 实屏验收标为通过。
+源码包相对 main 增加 1046 bytes，距原 1.5 MiB 上限尚余 1775 bytes；相对修改前增加主要来自恢复 availabilityNotes 和既有规格/来源。预算未提高。源码测量含 TS，运行产物测量排除 TS；这不是微信原生包扫描。
+
+## 验证与失败归类
+
+| 范围 | head | 同环境 main |
+| --- | --- | --- |
+| 同步目录、参考上传、生成器 --check | 全部通过 | 基线只读，未重新生成 |
+| 生成器 + codec + Gateway audit | 17 通过 / 0 失败 / 0 跳过（17 项） | 新增审计行为，定向 fixture 全 mock |
+| Core 新增审计/预检 | 7 / 7 通过 | main 尚无审计层 |
+| Core 主回归 core-composition | 193 通过 / 1 失败 / 0 跳过（194 项） | 193 通过 / 1 失败 / 0 跳过（194 项） |
+| Core HTTP / 地区 / 目录定向（head 含上述 7 项） | 15 通过 / 31 失败 / 0 跳过（46 项） | 8 通过 / 31 失败 / 0 跳过（39 项） |
+| Core TypeScript check | 通过 | 未改基线 |
+| Gateway 全套（当前沙箱） | 190 通过 / 87 失败 / 1 跳过（278 项） | 185 通过 / 87 失败 / 1 跳过（273 项） |
+| Web 全套 | 1334 通过 / 12 失败 / 0 跳过（1346 项） | 1310 通过 / 14 失败 / 0 跳过（1324 项） |
+| Web 审计/模型管理定向 | 82 通过 / 0 失败 / 0 跳过（82 项） | 新增断言与恢复既有规格断言 |
+| 小程序全套 | 127 通过 / 0 失败 / 0 跳过（127 项） | 121 通过 / 0 失败 / 0 跳过（121 项） |
+| 根目录 + client-platform | 33 通过 / 3 失败 / 0 跳过（36 项） | 33 通过 / 3 失败 / 0 跳过（36 项） |
+| 构建 | Web build、小程序 build/check 通过 | 基线只读，不构建 |
+
+R4 上表已执行的定向范围未发现新增失败；随后操作方的全量 Core 对比发现 19 项新增失败，修复与最新验证见下方 R5。逐测试名的双根归类见[失败比较 JSON](model-card-audit-20261109-test-comparison.json)。Web 的 12 个失败均在 main 复现；main 另外两项 Vite 构建用例无法向只读基线输出文件，未修改基线以绕过。Core 主回归唯一失败是 xAI 样本已于 2026-11-02 过期；HTTP/地区定向的 31 个失败在 main 同样复现，属于本沙箱监听/本地 HTTP 限制。根目录 3 项均为 main 已有历史目录/版本快照断言。
+
+**Gateway 两次环境结果不可混写**：任务提供的此前沙箱外完整执行为 **275 通过 / 0 失败 / 1 跳过**（276 项）；旧沙箱执行为 188 / 87 / 1。上表本轮沙箱 head 已增加审计测试，为 190 / 87 / 1；main 为 185 / 87 / 1。87 个监听失败是当前运行环境结果，不能冒充真实环境业务失败，也不能当作本轮沙箱外已重跑通过。
+
+任务注明 main 的 account-lifecycle.mjs:146 历史失败及完整 Core 并发 1578/2/1，本轮未重跑这些额外集成/全并发范围，不把它们作为本轮新增证据。未跳过测试或降低预算；仅将与新规格/投影不相容的断言换为精确值、来源、完整投影与历史条目不变的断言。
+
+## 预览边界
+
+[截图夹具与 UI 路径](model-card-audit-20261109-preview.md)已更新到 13 条，新增 Ling-3.0-flash-VL。1–6 的 DOM/交互及保留字段回归通过；当前没有可用监听/浏览器环境，1280/390 实屏和微信原生扫描仍待外部验收。小程序继续暂停，生产未发布。
+
+
+## R5：修复全量 Core 新增的 19 项回归
+
+操作方提供的沙箱外全量结果为 main `c7b6a2fc` 1580 通过 / 13 失败 / 1 跳过，R5 前 head 1567 / 32 / 1。本节按失败日志中的实际测试名与文件定位；任务摘要中部分文件名错位。`core-composition`、`material-files`、`task-material-lifecycle`、`original-material-workflow` 对应的是已给出的基线失败，本轮未改这些文件。
+
+保留 61 个退役型号和 7 个 Fireworks serverless 型号的物理删除，未改 `MODEL_UNAVAILABLE` 守卫。新增测试辅助 `tests/helpers/catalog-retirements.ts` 冻结枚举全部 68 个移除身份，逐一检查静态目录/源目录/可执行合同缺席及 `config/removed-models.json` 的精确 stopDate、sourceUrl；七项新增也逐项核对角色、未实测状态和 OpenAI 禁用原因。总量使用 **1125 − 枚举的 68 + 枚举的 7 = 1064**，不以当前目录反推预期数。历史默认仅 StepFun 已移除的 image 默认变为空，其余全部保留原断言。
+
+以下路径均相对 `apps/paperbanana-api/tests/`；同文件的存续身份、请求内容、计费/恢复断言均保留，没有删测试或新增跳过。
+
+| # | 文件 / 原失败测试 | 修复 |
+| --- | --- | --- |
+| 1 | `official-catalog-v24.test.ts` · September 29 and October 10 retirement gates | Step 两个移除 ID 改查退役证据和原审计的中国零点产品策略；即使回放历史时间也禁止调用。千帆原时间边界断言保留。 |
+| 2 | `official-image-size-v24.test.ts` · all advertised SenseNova/StepFun selections | 原四型号集合减去明确枚举的两个 Step ID，并逐个断言删除证据；其余全部 504 个操作/档位/画幅组合继续检查，原 >250 覆盖门槛保留。 |
+| 3 | `official-image-size-v24.test.ts` · Step image lifecycle cutoff | 从移除表读取同一 ID、日期和来源；对照历史公告及 `Asia/Shanghai` 产品零点，保留官方仅有日期、无具体时刻的边界。 |
+| 4 | `thinking-bailian-console-54.test.ts` · actual Omni text and vision adapters | 使用在库 `qwen3.5-omni-plus`，保留真实适配器的双角色文本 SSE、模型 ID、端点、字段省略断言；旧 ID 在传输/工作流/计费记录前报 MODEL_UNAVAILABLE。 |
+| 5 | `model-channel-contracts.test.ts` · catalog lifecycle and regional corrections | 百炼 qwen-image-edit 的存在断言改为明确缺席与精确退役证据；其他生命周期、地区、角色断言保留。 |
+| 6 | `official-catalog-v24.test.ts` · v24 coverage totals | 从原清单 84 减去明确移除的两项，得到 82；main/vision/image 同样逐角色相减，为 73/26/5。 |
+| 7 | `official-catalog-v24.test.ts` · v24 longcat exact identity/role | 原 v24 集合继续精确相等，LongCat-2.5 归入后续新增，并由当前目录/文本合同测试独立检查。 |
+| 8 | `official-catalog-v24.test.ts` · v24 stepfun exact identity/role | 两个移除项逐一验证缺席、日期、来源与原身份；所有存续 ID 的角色、协议、未实测边界不变。 |
+| 9 | `thinking-contracts.test.ts` · every full static catalog runtime disposition | 在 domestic/global 审计源补全七项精确 disposition，生成 Core/Web/support.csv；每个角色/协议仍恰好一项，并验证空 wire、拒绝未审核控制、两款 OpenAI 图像继续禁用。 |
+| 10 | `catalog-20261026.test.ts` · new retirement metadata | 小米 mimo-v2.5/pro 改查缺席与精确 `2026-10-21T10:00:00+08:00` 证据；动态目录也缺席，调用报 MODEL_UNAVAILABLE 且零传输；其他日期级证据断言保留。 |
+| 11 | `official-text-channels.test.ts` · official text selection | 保留历史 MaaS/LongCat 精确集合；单独检查后来新增 LongCat-2.5 的 main 角色、openai-chat 与官方端点。 |
+| 12 | `thinking-other-110.test.ts` · real Fireworks adapter functions | muse-glimmer fixture 换为在库 kimi-k3，按其已审核 effort 枚举走同一 Chat Completions 文本/视觉路径，所有 wire 断言保留；旧 ID 零传输、零工作流/计费记录拒绝。 |
+| 13 | `refine-controls.test.ts` · stepfun lost-submit recovery | 换用在库 SenseNova Fast，共用 callOfficialImageChannel 的同步 checkpoint/计费路径；保留一次提交、不可恢复、不重复规划/计费等全部断言，另验证 Step 旧 ID 调用前拒绝。 |
+| 14 | `refine-controls.test.ts` · stepfun download recovery | 同一当前 fixture，保留下载可恢复、同 jobId、一次计费提交及规划复用等全部断言；Step 拒绝检查使用有效所属原图且零提供商调用/执行记录。 |
+| 15 | `frontier-refresh.test.ts` · real dynamic catalog five routes | 注册表版本对齐 v43；五个同步路由、五个 Batch 排除及不授予图像输出的断言不变。 |
+| 16 | `channels-v381.test.ts` · v3.8.1 exact identities | 精确集合增加 Ling-3.1/3.2 和 LongCat-2.5；所有既有 ID、角色、默认、Preview 与证据边界断言保留。 |
+| 17 | `catalog-20261016.test.ts` · v32 preserves defaults / 20 identities | 版本对齐 v43；20 项身份原断言保留；默认逐项保留或验证退役缺席，并检查完整枚举差额。 |
+| 18 | `catalog-20261026.test.ts` · weekly 19 identities | 版本与总量改为 v43 和显式增减清单；原新增身份、角色、默认和不支持协议检查保留。 |
+| 19 | `catalog-20261019.test.ts` · weekly additions preserve defaults | 同上；原未实测状态、思考边界与未适配发现的关闭断言保留。 |
+
+Omni 当前在库型号的既有审核明确不支持 thinking 开关，不能把旧快照的 true/false 权限继承给 3.5。旧快照的布尔序列化、默认省略、错误枚举测试原样保留；当前适配器检查未提供配置和空配置两个场景，并额外拒绝 true/false。Fireworks 也沿用替换 fixture 自己的已审核枚举，没有把 muse 的 xhigh 推给 Kimi。七项新增 disposition 全部为 `unconfirmed` / 空 controls，OpenAI 两款的说明明确待尺寸合同；未修改任何价格、计费实现、模型权限或可选状态。
+
+逐文件执行指定命令 `pnpm --filter @paperbanana/paperbanana-api exec node --import tsx --test tests/<file>`，结果如下（通过 / 失败）：
+
+| 文件 | 原生沙箱命令 | 补充内存 HTTP 验证 |
+| --- | --- | --- |
+| official-catalog-v24 | 56 / 0 | 无需 |
+| official-image-size-v24 | 2 / 0 | 无需 |
+| official-text-channels | 42 / 0 | 无需 |
+| model-channel-contracts | 2 / 0 | 无需 |
+| thinking-bailian-console-54 | 3 / 0 | 无需 |
+| thinking-other-110 | 4 / 0 | 无需 |
+| thinking-contracts | 10 / 0 | 无需 |
+| channels-v381 | 12 / 0 | 无需 |
+| catalog-20261016 | 2 / 6（listen EPERM） | 8 / 0 |
+| catalog-20261019 | 3 / 2（listen EPERM） | 5 / 0 |
+| catalog-20261026 | 3 / 2（listen EPERM） | 5 / 0 |
+| frontier-refresh | 1 / 3（listen EPERM） | 4 / 0 |
+| refine-controls | 1 / 19（listen EPERM） | 20 / 0 |
+
+五个受阻文件补充内存 HTTP 验证合计 **42/42**，加上无需监听的八文件 **131/131**，13 个受影响文件的全部断言共 **173/173**，包含上述 19 个原失败测试。原生沙箱命令仍为 141 通过 / 32 个监听失败 / 0 跳过；32 个均在请求断言前因绑定 loopback 失败，不能当作通过。补充验证使用临时、不提交的 Node HTTP shim，把 loopback 请求交给原服务器 request listener；测试代码、Gateway/Core 中间件与所有断言照常执行，提供商仍全部 mock。它不代表沙箱外真实监听或全量 Core 已复跑；操作方仍需按原命令复核全量。
+
+其他回归：Web 模型/目录/思考测试 **180/180**；小程序 **127/127** 及 build 通过；Core `check` 通过。根目录 `node --test scripts/*.test.mjs tests/*.test.mjs` 为 head **56 通过 / 3 失败**，同环境只读 main 为 **49 / 3**，失败名相同：旧审计行 siliconflow/ERNIE、760 历史数量快照、DeepSeek-V4.1-Flash 版本元数据；数量快照实际值 head 761 / main 822，均属原有快照过时，非声称错误值完全相同。目录、参考上传两项 `--check`，以及 thinking 同步和审计生成器 `--check` 均通过。
+
+小程序 build 后源码 **1,571,089**、runtime **1,148,153**、媒体 **189,978 bytes**；源码距未提高的 **1,572,864** 上限仍余 **1,775 bytes**。本轮没有 Git 写命令、网络提供商请求、付费调用或生产发布，既有未提交修改保留。

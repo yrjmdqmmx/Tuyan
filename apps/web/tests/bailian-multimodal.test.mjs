@@ -12,10 +12,13 @@ import {modelOption} from '../src/workspace/workspaceModels.js';
 import {buildModelSubmission} from '../src/lib/modelRouting.js';
 const ids=['deepseek-v4.1-flash-1017','MiniMax/MiniMax-M3.1-Flash','xiaomi/mimo-v2.6-pro-ultraspeed'];
 afterEach(cleanup);
-test('cards keep missing audit fields unknown without changing detailed adapter limits',()=>{
+test('cards retain verified service facts when audit fields are missing without changing adapter limits',()=>{
  for(const id of ids){
   const model=STATIC_MODEL_REGISTRY.bailian.models.find(m=>m.id===id),before=structuredClone(model);
-  const data=modelCardSpecifications('bailian',model);assert.equal(data.input,'未知');assert.equal(data.context,'未知');assert.equal(data.maxOutput,'未知');
+  const data=modelCardSpecifications('bailian',model);assert.equal(data.inputScope,'图研既有核实');assert.match(data.input,/图像/);assert.notEqual(data.context,'未知');assert.match(data.productInput,/图像/);
+  if(id===ids[0]){assert.equal(data.fields.maxOutputTokens.value,393216);assert.match(data.context,/≈/)}
+  if(id===ids[1])assert.ok(data.serviceDetails.some(row=>/未单列最大输入、最大输出/.test(row.value)));
+  if(id===ids[2]){assert.equal(data.fields.maxOutputTokens.value,131072);assert.match(data.input,/音频/);assert.doesNotMatch(data.productInput,/音频|视频/)}
   const {container}=render(React.createElement(ModelSpecifications,{provider:'bailian',model}));
   assert.deepEqual([...container.querySelectorAll('dt')].map(node=>node.textContent),['输入','输出','上下文窗口','最大输出']);
   assert.ok(screen.getAllByRole('link').length);assert.deepEqual(model,before);cleanup();

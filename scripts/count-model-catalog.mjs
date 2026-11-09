@@ -27,6 +27,16 @@ try {
   const module = { exports: {} }
   new Function('module','exports','require',bundle.outputFiles[0].text)(module,module.exports,require)
   const ui = module.exports
+  // Use exactly the same card resolver for both roots. Only its data imports
+  // differ; main predates the audit so its audit layer is explicitly empty.
+  const cardBundle = await build({entryPoints:[path.join(scriptRoot,'apps/web/src/lib/modelCardSpecifications.js')],bundle:true,format:'cjs',platform:'node',write:false,logLevel:'silent',plugins:[{name:'root-card-data',setup(builder){
+    builder.onResolve({filter:/model-card-specifications\.json$/},()=>({path:path.join(uiDir,'data/model-card-specifications.json')}))
+    builder.onResolve({filter:/specific-model-page-overrides\.json$/},()=>({path:path.join(root,'config/channel-audit/specific-model-page-overrides.json')}))
+    builder.onResolve({filter:/modelAudit\.js$/},()=>fs.existsSync(auditFile)?{path:auditFile}:{path:'empty-audit',namespace:'base-audit'})
+    builder.onLoad({filter:/.*/,namespace:'base-audit'},()=>({loader:'js',contents:`export const auditedModelLifecycle=()=>null; export const auditedModelSpecs=()=>({fields:Object.fromEntries(['inputModalities','outputModalities','totalContextTokens','maxOutputTokens'].map(f=>[f,{value:null,state:'unknown',provenance:null}])),sourceUrls:[]});`}))
+  }}]})
+  const cardModule={exports:{}}
+  new Function('module','exports','require',cardBundle.outputFiles[0].text)(cardModule,cardModule.exports,require)
   const {memoryDb} = await import(pathToFileURL(path.join(scriptRoot,'test-support/memory-db.mjs')))
   globalThis.__catalogCountDb = memoryDb()
   globalThis.__catalogCountSharp = createRequire(path.join(scriptRoot,'apps/paperbanana-api/package.json'))('sharp')
@@ -51,7 +61,16 @@ try {
   const registryRows = registry => Object.entries(registry.providers).flatMap(([provider, value]) => value.models.map(model => ({provider,model})))
   const staticRegistry = {providers:ui.STATIC_MODEL_REGISTRY}
   const staticRows = registryRows(staticRegistry), mockRows = registryRows(mock)
+  const specifications = staticRows.map(row=>({...row,card:cardModule.exports.modelCardSpecifications(row.provider,row.model)}))
+  const allSpecifications = [...specifications, ...mockRows.map(row=>({...row,card:cardModule.exports.modelCardSpecifications(row.provider,row.model)}))]
+  const fieldNames = ['inputModalities','outputModalities','totalContextTokens','maxOutputTokens']
+  const knownFieldKeys = Object.fromEntries(fieldNames.map(field=>[field,specifications.filter(row=>row.card.fields[field].state==='known' && (!field.endsWith('Tokens') || row.card[field==='totalContextTokens'?'context':'maxOutput']!=='不适用')).map(key)]))
   const visible = ui.catalogRows(mock)
+  const knownKeysFor = rows => {
+    const cards = rows.map(row => ({...row,card:cardModule.exports.modelCardSpecifications(row.provider,row.model)}))
+    return Object.fromEntries(fieldNames.map(field=>[field,cards.filter(({card})=>card.fields[field].state==='known' && (!field.endsWith('Tokens') || card[field==='totalContextTokens'?'context':'maxOutput']!=='不适用')).map(key)]))
+  }
+  const knownFieldScopeKeys = {mockRegistry:knownKeysFor(mockRows),catalogVisible:knownKeysFor(visible)}
   const pick = registry => {
     const keys = new Set()
     for (const [provider, value] of Object.entries(registry.providers)) for (const [role, outputFormat] of [['main','svg'],['vision','svg'],['image','png']])
@@ -69,8 +88,20 @@ try {
   const stored = JSON.stringify(library), cards = ui.libraryRows(library,mock)
   if (JSON.stringify(library)!==stored) throw Error('UI changed the stored library')
   const scopes = {staticRegistry:staticRows.map(key),mockRegistry:mockRows.map(key),catalogVisible:visible.map(key),pickerSelectable:[...selectable]}
+  const conflicts = new Map()
+  const comparable = value => Array.isArray(value) ? [...value].sort() : value
+  for (const row of allSpecifications) for (const conflict of row.card.conflicts) {
+    const identity = JSON.stringify([row.provider,row.model.id,conflict.field,conflict.auditState,comparable(conflict.auditValue),comparable(conflict.existingValue)])
+    const prior = conflicts.get(identity)
+    conflicts.set(identity,{channel:row.provider,id:row.model.id,...conflict,sources:[...new Set([...(prior?.sources || []),...conflict.sources])]})
+  }
   const output = {
-    root,commit:execFileSync('git',['-C',root,'rev-parse','--short','HEAD'],{encoding:'utf8'}).trim(),asOf:'2026-11-09',
+    root:path.relative(scriptRoot,root) || '.',commit:execFileSync('git',['-C',root,'rev-parse','--short','HEAD'],{encoding:'utf8'}).trim(),asOf:'2026-11-09',
+    knownFields:Object.fromEntries(fieldNames.map(field=>[field,knownFieldKeys[field].length])),
+    knownFieldScopes:Object.fromEntries(Object.entries(knownFieldScopeKeys).map(([scope,fields])=>[scope,Object.fromEntries(Object.entries(fields).map(([field,keys])=>[field,keys.length]))])),
+    knownFieldScopeKeys,
+    knownFieldKeys,
+    conflicts:[...conflicts.values()],
     counts:Object.fromEntries(Object.entries(scopes).map(([scope,keys])=>[scope,keys.length])),
     perChannel:Object.fromEntries(Object.keys(mock.providers).sort().map(provider=>[provider,{static:staticRows.filter(r=>r.provider===provider).length,mock:mock.providers[provider].models.length,catalog:visible.filter(r=>r.provider===provider).length,picker:[...selectable].filter(k=>k.startsWith(provider+'/')).length}])),
     hiddenDeprecated:mockRows.filter(row=>!visible.some(v=>key(v)===key(row))&&ui.modelRetiredFromCatalog(row.model)).length,

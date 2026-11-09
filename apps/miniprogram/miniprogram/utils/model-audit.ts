@@ -1,13 +1,14 @@
-// Generated from packages/api/src/model-audit.ts
+// Generated card helpers from packages/api/src/model-audit.ts
 const MODEL_AUDIT_DATA = require('./model-audit-data.js')
 
 export interface AuditFact {
   value: string[] | number | null
   state: 'known' | 'unknown' | 'unsupported' | 'not-applicable'
-  provenance: 'channel' | 'vendor' | null
+  provenance: 'channel' | 'vendor' | 'catalog' | null
   sourceUrl: string | null
   verifiedAt: string | null
   unknownModalities?: string[]
+  suppressFallback?: boolean
 }
 export function auditedModelSpecs(channel: string, id: string) {
   const row = MODEL_AUDIT_DATA.rows[channel + '/' + id]
@@ -18,6 +19,7 @@ export function auditedModelSpecs(channel: string, id: string) {
   })
   const details = MODEL_AUDIT_DATA.details?.[channel + '/' + id]
   if (details?.unknownInputModalities) result.inputModalities.unknownModalities = details.unknownInputModalities
+  for (const field of details?.suppressFallback || []) result[field].suppressFallback = true
   return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: details?.sourceUrls || [], note: details?.note || '' }
 }
 
@@ -48,26 +50,8 @@ export function auditedModelLifecycle(channel: string, id: string, now = Date.no
   return { ...notice, replacement, state: 'scheduled', label: '将下线', blocked: false, message: `将于${stopLabel}下线${replacement ? `；可改选 ${replacement}` : ''}` }
 }
 
-export function assertAuditedModelAvailable(channel: string, id: string, now = Date.now()) {
-  const removed = removedModel(channel, id, now)
-  if (removed) throw Object.assign(new Error(`模型 ${id}：${removedModelHint(channel, id, now)}。`), {
-    businessCode: 'MODEL_UNAVAILABLE', code: 'MODEL_UNAVAILABLE',
-    statusCode: 400, replacement: removed.replacementApiId, sourceUrl: removed.sourceUrl,
-    requestState: 'not_sent', localInputFailure: true, retryable: false,
-  })
-}
-
 export function withModelAudit<T extends { id: string }>(channel: string, model: T, now = Date.now()) {
   const lifecycle = auditedModelLifecycle(channel, model.id, now)
   return { ...model, auditChannel: channel, auditSpecifications: auditedModelSpecs(channel, model.id), auditLifecycle: lifecycle,
     ...(removedModel(channel, model.id, now) ? { selectable: false, disabledReason: removedModelHint(channel, model.id, now) } : {}) }
-}
-
-export function assertModelLibraryAdditions(next: any, previous: any, now = Date.now()) {
-  for (const model of next.models || []) {
-    const channel = next.connections?.find((item: any) => item.id === model.connectionId)?.provider
-    const retained = previous?.models?.some((old: any) => old.id === model.id && old.connectionId === model.connectionId && old.modelId === model.modelId
-      && previous.connections?.find((item: any) => item.id === old.connectionId)?.provider === channel)
-    if (!retained) assertAuditedModelAvailable(channel, model.modelId, now)
-  }
 }
