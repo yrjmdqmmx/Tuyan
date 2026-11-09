@@ -1,0 +1,2437 @@
+{
+  "date": "2026-11-09",
+  "scope": "Current static catalog (1064 cards), exact channel/ID references to captured official input/output modality tables. R6 captures plus R10 public-document checks of the 25 uncached Bailian source URLs. Excludes prose/headings, inherited vendor pages and unverified pages; this review records no new exclusions.",
+  "fullObject": "STATIC_MODEL_REGISTRY model entries; minimal object is {id}. Differences compare the first visible source URL and all four input/output icon states, not undisplayed secondary URLs.",
+  "totals": {
+    "cards": 1064,
+    "tableUnknown": 20,
+    "sourceDiff": 89,
+    "modalityDiff": 388,
+    "eitherDiff": 389
+  },
+  "counts": {
+    "deepseek": {
+      "cards": 4,
+      "tableUnknown": 0,
+      "sourceDiff": 0,
+      "modalityDiff": 0,
+      "eitherDiff": 0
+    },
+    "kimi": {
+      "cards": 6,
+      "tableUnknown": 0,
+      "sourceDiff": 2,
+      "modalityDiff": 5,
+      "eitherDiff": 5
+    },
+    "zhipu": {
+      "cards": 28,
+      "tableUnknown": 0,
+      "sourceDiff": 0,
+      "modalityDiff": 5,
+      "eitherDiff": 5
+    },
+    "siliconflow": {
+      "cards": 68,
+      "tableUnknown": 0,
+      "sourceDiff": 2,
+      "modalityDiff": 21,
+      "eitherDiff": 21
+    },
+    "anthropic": {
+      "cards": 14,
+      "tableUnknown": 0,
+      "sourceDiff": 2,
+      "modalityDiff": 12,
+      "eitherDiff": 12
+    },
+    "recraft": {
+      "cards": 17,
+      "tableUnknown": 0,
+      "sourceDiff": 1,
+      "modalityDiff": 15,
+      "eitherDiff": 15
+    },
+    "xai": {
+      "cards": 12,
+      "tableUnknown": 0,
+      "sourceDiff": 1,
+      "modalityDiff": 3,
+      "eitherDiff": 3
+    },
+    "gemini": {
+      "cards": 17,
+      "tableUnknown": 0,
+      "sourceDiff": 12,
+      "modalityDiff": 12,
+      "eitherDiff": 12
+    },
+    "bailian": {
+      "cards": 126,
+      "tableUnknown": 20,
+      "sourceDiff": 5,
+      "modalityDiff": 14,
+      "eitherDiff": 15
+    },
+    "openai": {
+      "cards": 71,
+      "tableUnknown": 0,
+      "sourceDiff": 1,
+      "modalityDiff": 21,
+      "eitherDiff": 21
+    },
+    "ark": {
+      "cards": 36,
+      "tableUnknown": 0,
+      "sourceDiff": 3,
+      "modalityDiff": 7,
+      "eitherDiff": 7
+    },
+    "bfl": {
+      "cards": 14,
+      "tableUnknown": 0,
+      "sourceDiff": 2,
+      "modalityDiff": 12,
+      "eitherDiff": 12
+    },
+    "stability": {
+      "cards": 6,
+      "tableUnknown": 0,
+      "sourceDiff": 0,
+      "modalityDiff": 5,
+      "eitherDiff": 5
+    },
+    "ideogram": {
+      "cards": 14,
+      "tableUnknown": 0,
+      "sourceDiff": 1,
+      "modalityDiff": 4,
+      "eitherDiff": 4
+    },
+    "minimax": {
+      "cards": 11,
+      "tableUnknown": 0,
+      "sourceDiff": 1,
+      "modalityDiff": 2,
+      "eitherDiff": 2
+    },
+    "mistral": {
+      "cards": 18,
+      "tableUnknown": 0,
+      "sourceDiff": 1,
+      "modalityDiff": 12,
+      "eitherDiff": 12
+    },
+    "together": {
+      "cards": 53,
+      "tableUnknown": 0,
+      "sourceDiff": 5,
+      "modalityDiff": 13,
+      "eitherDiff": 13
+    },
+    "fireworks": {
+      "cards": 20,
+      "tableUnknown": 0,
+      "sourceDiff": 3,
+      "modalityDiff": 3,
+      "eitherDiff": 3
+    },
+    "fal": {
+      "cards": 49,
+      "tableUnknown": 0,
+      "sourceDiff": 6,
+      "modalityDiff": 7,
+      "eitherDiff": 7
+    },
+    "replicate": {
+      "cards": 109,
+      "tableUnknown": 0,
+      "sourceDiff": 12,
+      "modalityDiff": 57,
+      "eitherDiff": 57
+    },
+    "tokendance": {
+      "cards": 74,
+      "tableUnknown": 0,
+      "sourceDiff": 9,
+      "modalityDiff": 18,
+      "eitherDiff": 18
+    },
+    "runware": {
+      "cards": 148,
+      "tableUnknown": 0,
+      "sourceDiff": 8,
+      "modalityDiff": 101,
+      "eitherDiff": 101
+    },
+    "tokenhub": {
+      "cards": 50,
+      "tableUnknown": 0,
+      "sourceDiff": 8,
+      "modalityDiff": 21,
+      "eitherDiff": 21
+    },
+    "xiaomi": {
+      "cards": 3,
+      "tableUnknown": 0,
+      "sourceDiff": 0,
+      "modalityDiff": 0,
+      "eitherDiff": 0
+    },
+    "sensenova": {
+      "cards": 8,
+      "tableUnknown": 0,
+      "sourceDiff": 1,
+      "modalityDiff": 4,
+      "eitherDiff": 4
+    },
+    "stepfun": {
+      "cards": 5,
+      "tableUnknown": 0,
+      "sourceDiff": 0,
+      "modalityDiff": 0,
+      "eitherDiff": 0
+    },
+    "qianfan": {
+      "cards": 37,
+      "tableUnknown": 0,
+      "sourceDiff": 1,
+      "modalityDiff": 6,
+      "eitherDiff": 6
+    },
+    "iflytek": {
+      "cards": 34,
+      "tableUnknown": 0,
+      "sourceDiff": 2,
+      "modalityDiff": 8,
+      "eitherDiff": 8
+    },
+    "longcat": {
+      "cards": 3,
+      "tableUnknown": 0,
+      "sourceDiff": 0,
+      "modalityDiff": 0,
+      "eitherDiff": 0
+    },
+    "antling": {
+      "cards": 8,
+      "tableUnknown": 0,
+      "sourceDiff": 0,
+      "modalityDiff": 0,
+      "eitherDiff": 0
+    },
+    "novita": {
+      "cards": 1,
+      "tableUnknown": 0,
+      "sourceDiff": 0,
+      "modalityDiff": 0,
+      "eitherDiff": 0
+    }
+  },
+  "tableUnknown": [
+    {
+      "key": "bailian/deepseek-v4.1-flash",
+      "unknown": [
+        "inputModalities/text",
+        "inputModalities/audio",
+        "inputModalities/video",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash"
+      ]
+    },
+    {
+      "key": "bailian/qwen3.8-27b",
+      "unknown": [
+        "inputModalities/audio",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-8-27b"
+      ]
+    },
+    {
+      "key": "bailian/qwen3.8-2.4t-a95b",
+      "unknown": [
+        "inputModalities/image",
+        "inputModalities/audio",
+        "inputModalities/video",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b"
+      ]
+    },
+    {
+      "key": "bailian/qwen3.8-max",
+      "unknown": [
+        "inputModalities/audio",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-8-max"
+      ]
+    },
+    {
+      "key": "bailian/glm-5.2",
+      "unknown": [
+        "inputModalities/image",
+        "inputModalities/audio",
+        "inputModalities/video",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/glm-5-2"
+      ]
+    },
+    {
+      "key": "bailian/glm-5.1",
+      "unknown": [
+        "inputModalities/image",
+        "inputModalities/audio",
+        "inputModalities/video",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/glm-5-1"
+      ]
+    },
+    {
+      "key": "bailian/kimi-k2.7-code",
+      "unknown": [
+        "inputModalities/audio",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code"
+      ]
+    },
+    {
+      "key": "bailian/kimi-k2.6",
+      "unknown": [
+        "inputModalities/audio",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/kimi-k2-6"
+      ]
+    },
+    {
+      "key": "bailian/kimi-k2.5",
+      "unknown": [
+        "inputModalities/audio",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/kimi-k2-5"
+      ]
+    },
+    {
+      "key": "bailian/qwen-image-2.0",
+      "unknown": [
+        "inputModalities/audio",
+        "inputModalities/video",
+        "outputModalities/text",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/qwen-image-2-0"
+      ]
+    },
+    {
+      "key": "bailian/qwen-image-2.0-pro",
+      "unknown": [
+        "inputModalities/audio",
+        "inputModalities/video",
+        "outputModalities/text",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+      ]
+    },
+    {
+      "key": "bailian/qwen3.7-max-2026-06-08",
+      "unknown": [
+        "inputModalities/audio",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+      ]
+    },
+    {
+      "key": "bailian/qwen3.7-plus",
+      "unknown": [
+        "inputModalities/audio",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-plus"
+      ]
+    },
+    {
+      "key": "bailian/wan2.6-image",
+      "unknown": [
+        "inputModalities/audio",
+        "inputModalities/video",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/wan2-6-image"
+      ]
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M3.1-Flash",
+      "unknown": [
+        "inputModalities/audio",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash"
+      ]
+    },
+    {
+      "key": "bailian/qwen-plus-2025-01-25",
+      "unknown": [
+        "inputModalities/image",
+        "inputModalities/audio",
+        "inputModalities/video",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/qwen-plus"
+      ]
+    },
+    {
+      "key": "bailian/qwen-plus-2025-04-28",
+      "unknown": [
+        "inputModalities/image",
+        "inputModalities/audio",
+        "inputModalities/video",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/qwen-plus"
+      ]
+    },
+    {
+      "key": "bailian/qwen-plus-2025-07-14",
+      "unknown": [
+        "inputModalities/image",
+        "inputModalities/audio",
+        "inputModalities/video",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/qwen-plus"
+      ]
+    },
+    {
+      "key": "bailian/unisound/unisound-u2",
+      "unknown": [
+        "inputModalities/image",
+        "inputModalities/audio",
+        "inputModalities/video",
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound"
+      ]
+    },
+    {
+      "key": "bailian/xiaomi/mimo-v2.6-pro-ultraspeed",
+      "unknown": [
+        "outputModalities/image",
+        "outputModalities/audio",
+        "outputModalities/video"
+      ],
+      "pages": [
+        "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed"
+      ]
+    }
+  ],
+  "differences": [
+    {
+      "key": "kimi/kimi-k3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "kimi/kimi-k2.7-code",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "kimi/kimi-k2.6",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "kimi/kimi-k3.1-pro",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "kimi/kimi-k3.1-pro-highspeed",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "zhipu/glm-5.3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "zhipu/glm-5.3-flash",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "zhipu/glm-5.2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "zhipu/glm-5v-turbo",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "zhipu/glm-4.6v",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen-Image-Edit-2509",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen-Image-Edit",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.6-27B",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.6-35B-A3B",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-397B-A17B",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-4B",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-9B",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/deepseek-ai/DeepSeek-V4.1-Flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/moonshotai/Kimi-K2.7-Code",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Pro/moonshotai/Kimi-K2.6",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/zai-org/GLM-5.3-Flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/zai-org/GLM-4.5V",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Kwai-Kolors/Kolors",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3-Omni-30B-A3B-Instruct",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3-Omni-30B-A3B-Thinking",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3-VL-30B-A3B-Instruct",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3-VL-30B-A3B-Thinking",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3-VL-32B-Instruct",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3-VL-32B-Thinking",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3-VL-8B-Instruct",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3-VL-8B-Thinking",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "anthropic/claude-haiku-5-5",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "anthropic/claude-sonnet-5-5",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "anthropic/claude-opus-5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "anthropic/claude-sonnet-5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "anthropic/claude-fable-5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "anthropic/claude-opus-4-8",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "anthropic/claude-opus-4-7",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "anthropic/claude-sonnet-4-6",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "anthropic/claude-opus-4-6",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "anthropic/claude-opus-4-5-20251101",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "anthropic/claude-sonnet-4-5-20250929",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "anthropic/claude-haiku-4-5-20251001",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv4_1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv4_1_flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv4_1_pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv4_1_pro_vector",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv4_1_utility",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv4_1_utility_pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv4_1_utility_pro_vector",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv4_1_utility_vector",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv4_1_vector",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv4",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv4_pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv4_pro_vector",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv4_vector",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "recraft/recraftv3_vector",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "xai/grok-imagine-image-2.0",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "xai/grok-imagine-image",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "xai/grok-imagine-image-quality",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "gemini/gemini-4-argon",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "gemini/gemini-3.8-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "gemini/gemini-3.7-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "gemini/gemini-3.6-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "gemini/gemini-3.5-flash-lite",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "gemini/gemini-3.5-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "gemini/gemini-3.1-flash-lite",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "gemini/gemini-3.1-pro-preview",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "gemini/gemini-3-flash-preview",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "gemini/gemini-2.5-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "gemini/gemini-2.5-flash-lite",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "gemini/gemini-2.5-pro",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/deepseek-v4.1-flash",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/ZHIPU/GLM-5.3-Flash",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/deepseek-v4.1-flash-1017",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/kimi/kimi-k2.5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/qwen-image-2.1-pro",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/qwen-image-2.1-turbo",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/qwen-image-2.0-pro-2026-06-22",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/qwen-image-2.0-2026-03-03",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/qwen-image-2.0-pro-2026-03-03",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/qwen-image-2.0-pro-2026-04-22",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/qwen3.6-27b",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/qwen3.6-35b-a3b",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/qwen3.5-397b-a17b",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M3.1-Flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "bailian/xiaomi/mimo-v2.6-pro-ultraspeed",
+      "sourceDiff": true,
+      "modalityDiff": false
+    },
+    {
+      "key": "openai/gpt-6.1-sol",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-image-2.5-flare-2026-09-08",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-image-2.5-sunburst-2026-09-08",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-5.2-2025-12-11",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-5.1-2025-11-13",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-5-2025-08-07",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-5-mini-2025-08-07",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-5-nano-2025-08-07",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-4.1-2025-04-14",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-4.1-mini-2025-04-14",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-4.1-nano-2025-04-14",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-4o-2024-05-13",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-4o-2024-08-06",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-4o-2024-11-20",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-4o-mini-2024-07-18",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-4-turbo-2024-04-09",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/o1-2024-12-17",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/o1-pro-2025-03-19",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/o3-2025-04-16",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/o3-pro-2025-06-10",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/o4-mini-2025-04-16",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "ark/deepseek-v4-1-flash-260910",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "ark/deepseek-v4-1-flash-261017",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "ark/deepseek-v4-1-flash-economy-261017",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "ark/doubao-seedream-4-5-251128",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "ark/doubao-seedream-4-0-250828",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "ark/glm-5-3-flash-260828",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "ark/kimi-k3-1-pro-261024",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "bfl/flux-2-flex",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bfl/flux-2-klein-4b",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bfl/flux-2-klein-9b",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bfl/flux-2-klein-9b-preview",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bfl/flux-2-max",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bfl/flux-2-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bfl/flux-2-pro-preview",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bfl/flux-kontext-max",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bfl/flux-kontext-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "bfl/flux-3-image",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "bfl/flux-3-image-klein",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "bfl/flux-pro-1.1-ultra",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "stability/sd3.5-flash",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "stability/sd3.5-large",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "stability/sd3.5-large-turbo",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "stability/sd3.5-medium",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "stability/stable-image-ultra",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "ideogram/ideogram-v4",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "ideogram/ideogram-v3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "ideogram/ideogram-4-5",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "ideogram/ideogram-edit",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "minimax/MiniMax-M3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "minimax/MiniMax-M3.1-Flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "mistral/mistral-medium-3-5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "mistral/mistral-medium-3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "mistral/zai-glm-5-3-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "mistral/ministral-14b-2512",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "mistral/ministral-14b-latest",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "mistral/ministral-3b-2512",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "mistral/ministral-3b-latest",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "mistral/ministral-8b-2512",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "mistral/ministral-8b-latest",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "mistral/mistral-large-2512",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "mistral/mistral-medium-latest",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "mistral/mistral-small-2603",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "together/MiniMaxAI/MiniMax-M3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "together/Qwen/Qwen3.5-9B",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "together/black-forest-labs/FLUX.2-dev",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "together/black-forest-labs/FLUX.2-flex",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "together/black-forest-labs/FLUX.2-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "together/deepseek-ai/DeepSeek-V4.1-Flash-1017",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "together/moonshotai/Kimi-K3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "together/MiniMaxAI/MiniMax-M3.1-Flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "together/black-forest-labs/FLUX.1-kontext-max",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "together/black-forest-labs/FLUX.1-kontext-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "together/meta-models/Muse-Spark-Open-816B-A42B",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "together/nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "together/reflection/Beam-1.0-501B-A23B",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/deepseek-v4p1-flash-1017",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/minimax-m3p1-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/muse-spark-open",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "fal/bytedance/seedream/v5/flash/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "fal/fal-ai/bytedance/seedream/v5/lite/edit",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/klein/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "fal/ideogram/v4.5",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "fal/krea/v3/text-to-image",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/google/gemini-3.5-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/deepseek-ai/deepseek-v3.1",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/alibaba/qwen-image-3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/alibaba/qwen-image-3-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/alibaba/wan-3",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/anthropic/claude-opus-5.5",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/black-forest-labs/flux-2-flex",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/black-forest-labs/flux-2-klein-4b",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/black-forest-labs/flux-2-max",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/black-forest-labs/flux-2-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/black-forest-labs/flux-kontext-dev",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/black-forest-labs/flux-kontext-max",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/black-forest-labs/flux-kontext-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/bytedance/seedream-5-lite",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/bytedance/seedream-4.5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/bytedance/seedream-4",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/google/gemini-3-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/google/gemini-2.5-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/moonshotai/kimi-k2-thinking",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/openai/gpt-image-2.5-flare",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/openai/gpt-image-2.5-sunburst",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/openai/gpt-image-2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/openai/gpt-image-1.5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/prunaai/flux-kontext-fast",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/black-forest-labs/flux-3-image",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/black-forest-labs/flux-dev",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/black-forest-labs/flux-dev-lora",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/qwen/qwen-image",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/qwen/qwen-image-edit",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/qwen/qwen-image-edit-plus",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/qwen/qwen3-235b-a22b-instruct-2507",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/qwen/qwen3-7-plus",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/stability-ai/stable-diffusion-3.5-large",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/stability-ai/stable-diffusion-3.5-large-turbo",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/stability-ai/stable-diffusion-3.5-medium",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/stability-ai/sdxl",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/wan-video/wan-2.7-image",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/wan-video/wan-2.7-image-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/xai/grok-imagine-image",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/xai/grok-imagine-image-2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/adirik/realvisxl-v3.0-turbo",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/bria/fibo",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/bria/fibo-edit",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/bytedance/bagel",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/datacte/proteus-v0.2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/datacte/proteus-v0.3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/fofr/latent-consistency-model",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/fofr/sdxl-emoji",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/ideogram-ai/ideogram-4-5",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/ideogram-ai/ideogram-4-5-precise-edit",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/lucataco/omnigen2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/lucataco/open-dalle-v1.1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/lucataco/ssd-1b",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/playgroundai/playground-v2.5-1024px-aesthetic",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/prunaai/p-image-edit",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/sourceful/riverflow-2.0-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "replicate/zsxkib/step1x-edit",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/deepseek-v4.1-flash-1017",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/glm-5.3-flash",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/glm-5v-turbo",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/glm-4.6v",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/kimi-k3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/kimi-k2.7-code",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/kimi-k2.6",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/kimi-k2.5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/minimax-m3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/seed-2.0-code",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/cogevol-base",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/cogevol-interactive-0828",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/cogevol-slide-0828",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/kimi-k3.1-pro",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/ling-3.1-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/mimo-v2.6-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/mimo-v2.6-pro",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokendance/minimax-m3.1-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bfl:flux@3-image-klein",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bfl:flux@3-image-klein-base",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/alibaba:qwen-image@2.1-turbo",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bfl:flux@3-image",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/ideogram:4.5@0",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/ideogram:4.5@precise-edit",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/recraft:v4.1@flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/alibaba:qwen-image@2.1-pro",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/openai:gpt-image@2.5-flare",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/openai:gpt-image@2.5-sunburst",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/xai:grok-imagine@image-2.0",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/alibaba:qwen-image@3.0",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/alibaba:qwen-image@3.0-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/meta:muse@image",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/rundiffusion:300@100",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/anthropic:claude@fable-5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/sourceful:riverflow-2.5@fast",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/sourceful:riverflow-2.5@pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/ideogram:4@remix",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/minimax:m3@0",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/anthropic:claude@opus-4.8",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/google:gemini@3.5-flash",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/xai:grok-imagine@image-quality",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/luma:uni@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/luma:uni@1-max",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/xai:grok@4.3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/rundiffusion:200@100",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/openai:gpt@5.5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/openai:gpt-image@2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/anthropic:claude@opus-4.7",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/imagineart:2.0@0",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/google:gemma@4-31b",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/alibaba:wan@2.7-image",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/alibaba:wan@2.7-image-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:400@6",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/openai:gpt@5.4-mini",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/openai:gpt@5.4-nano",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/openai:gpt@5.4",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/openai:gpt@5.4-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/google:gemini@3.1-flash-lite",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/anthropic:claude@sonnet-4.6",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/alibaba:qwen-image@2.0",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/alibaba:qwen-image@2.0-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/klingai:kling-image@3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/klingai:kling-image@o3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/sourceful:riverflow-2.0@fast",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/sourceful:riverflow-2.0@pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/xai:grok-imagine@image",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:z-image@0",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:400@2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bria:21@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:400@3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:400@4",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:400@5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bria:20@3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/alibaba:qwen-image@2512",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/alibaba:wan@2.6-image",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bfl:7@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/openai:4@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bytedance:seedream@4.5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/klingai:kling-image@o1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bfl:5@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:kandinsky-5.0-image-lite@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:z-image@turbo",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/alibaba:qwen-image-edit@2511",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bfl:6@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:400@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/prunaai:2@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bria:20@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/anthropic:claude@haiku-4.5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:108@22",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bria:11@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:111@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bytedance:5@0",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:108@20",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runway:4@2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/openai:gpt@5-mini",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/openai:gpt@5-nano",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:108@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:107@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bfl:3@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bfl:4@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:106@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:5@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runway:4@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/ideogram:4@3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/ideogram:4@2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/openai:1@2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/vidu:q1@image",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/ideogram:4@5",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/openai:1@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/rundiffusion:110@101",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/rundiffusion:120@100",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/rundiffusion:130@100",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/ideogram:2@2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:102@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/bfl:1@2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/ideogram:3@2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:100@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/runware:101@1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "runware/civitai:101055@128078",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/deepseek-v4.1-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/deepseek-v4.1-flash-1017",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/glm-5.3-flash",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/glm-5v-turbo",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/kimi-k3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/kimi-k2.7-code",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/kimi-k2.6",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/minimax-m3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/step-5-preview",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/deepseek/deepseek-flash",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/hy-image-v3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/hy-image-v3.5-preview",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/kimi-k3.1-pro",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/kimi-k3.1-pro-highspeed",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/mimo-v2.6-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/mimo-v2.6-pro",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/minimax-m3.1-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/vidu-image-q2",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/wand-vega-image-flash",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/wand-vega-image-lite",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "tokenhub/wand-vega-image-pro",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "sensenova/kimi-k3",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "sensenova/deepseek-flash",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "sensenova/sensenova-u1.5-fast",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "sensenova/sensenova-u1.5-lite",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "qianfan/deepseek-v4.1-flash",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "qianfan/deepseek-v4.1-flash-1017",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "qianfan/glm-5.3-flash",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "qianfan/qwen-image-edit",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "qianfan/qwen3.5-397b-a17b",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "qianfan/ernie-5.0-thinking-preview",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "iflytek/xop3qwen32bvl",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "iflytek/xopqwen35397b",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "iflytek/xopqwen36v35b",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "iflytek/spark-x2.6",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "iflytek/spark-x2.6-4b",
+      "sourceDiff": true,
+      "modalityDiff": true
+    },
+    {
+      "key": "iflytek/xopkimik25",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "iflytek/xopkimik26",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "iflytek/xopkimik27code",
+      "sourceDiff": false,
+      "modalityDiff": true
+    }
+  ]
+}

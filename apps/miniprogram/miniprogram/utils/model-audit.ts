@@ -1,4 +1,5 @@
 // Generated card helpers from packages/api/src/model-audit.ts
+import { STATIC_MODEL_REGISTRY } from './static-model-catalog'
 const MODEL_AUDIT_DATA = require('./model-audit-data.js')
 
 export interface AuditFact {
@@ -9,6 +10,7 @@ export interface AuditFact {
   verifiedAt: string | null
   suffix?: string
   unknownModalities?: string[]
+  unsupportedModalities?: string[]
   suppressFallback?: boolean
 }
 export function auditedModelSpecs(channel: string, id: string) {
@@ -21,6 +23,7 @@ export function auditedModelSpecs(channel: string, id: string) {
   const details = MODEL_AUDIT_DATA.details?.[channel + '/' + id]
   result.totalContextTokens.suffix = details?.suffix
   if (details?.unknownInputModalities) result.inputModalities.unknownModalities = details.unknownInputModalities
+  for (const [field, values] of Object.entries(details?.unsupportedModalities || {})) result[field].unsupportedModalities = values as string[]
   for (const field of details?.suppressFallback || []) result[field].suppressFallback = true
   return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: details?.sourceUrls || [], note: details?.note || '' }
 }
@@ -36,12 +39,9 @@ export function removedModel(channel: string, id: string, now = Date.now()) {
 }
 
 export function modelDisplayName(channel: string, id: string): string {
-  const key = channel + '/' + id
-  const row = MODEL_AUDIT_DATA.removed?.[key] || MODEL_AUDIT_DATA.notices[key]
-  if (row?.displayName) return row.displayName
-  const replacement: any = Object.entries({ ...MODEL_AUDIT_DATA.removed, ...MODEL_AUDIT_DATA.notices })
-    .find(([key, row]: [string, any]) => key.startsWith(channel + '/') && (row.replacementApiId || row.replacement) === id)?.[1]
-  return replacement?.replacementDisplayName || id
+  return removedModel(channel, id)?.displayName
+    || STATIC_MODEL_REGISTRY[channel]?.models.find((model: { id: string }) => model.id === id)?.label
+    || id.replace(/^accounts\/[^/]+\/models\//, '')
 }
 
 export function removedModelHint(channel: string, id: string, now = Date.now()) {

@@ -60,8 +60,11 @@ export function mergeCardFacts(audit, existing, model = {}) {
   const comparable = value => JSON.stringify(Array.isArray(value) ? [...value].sort() : value)
   for (const field of cardFields) {
     const fact = audit.fields[field], prior = existing[field]
+    const excluded = fact.provenance === 'channel' ? fact.unsupportedModalities || [] : []
     fields[field] = fact.state === 'unknown' && !fact.suppressFallback && prior ? prior : fact
-    if (field.endsWith('Modalities') && prior?.state === 'known') {
+    if (field.endsWith('Modalities') && excluded.length) {
+      fields[field] = { ...fact, value: supportedModalities(fact.value, prior?.value).filter(value => !excluded.includes(value)), displayValue: undefined }
+    } else if (field.endsWith('Modalities') && prior?.state === 'known') {
       const values = supportedModalities(fact.value, prior.value)
       if (values.some(value => !fact.value?.includes?.(value))) fields[field] = {
         ...prior, value: values,
@@ -71,7 +74,7 @@ export function mergeCardFacts(audit, existing, model = {}) {
     if (fact.state !== 'unknown' && prior && (fact.state !== prior.state || comparable(fact.value) !== comparable(prior.value)))
       conflicts.push({ field, auditValue: fact.value, auditState: fact.state, existingValue: prior.value, sources: safeSources([fact.sourceUrl, ...prior.sourceUrls]) })
   }
-  if (needsImageInput(model) && !fields.inputModalities.value?.includes?.('image')) {
+  if (needsImageInput(model) && !fields.inputModalities.unsupportedModalities?.includes('image') && !fields.inputModalities.value?.includes?.('image')) {
     const prior = fields.inputModalities
     fields.inputModalities = { ...prior, value: supportedModalities(prior.value, [], true), state: 'known', provenance: 'product', sourceUrl: null, sourceUrls: [], displayValue: undefined }
   }

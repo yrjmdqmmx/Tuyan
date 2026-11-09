@@ -5,6 +5,26 @@ import { generateModelAudit } from './generate-model-audit.mjs'
 import { supplementModelAudit } from './lib/model-audit-supplement.mjs'
 
 const sourceUrl = 'https://vendor.example/models/exact'
+test('R10 only Bailian Kimi has reviewed modality exclusions; missing or conflicting evidence fails generation', () => {
+  const read = name => JSON.parse(fs.readFileSync(new URL('../config/' + name, import.meta.url), 'utf8'))
+  const snapshot = read('model-audit.generated.json'), supplement = read('channel-audit/model-audit-supplement-20261109.json'), removed = read('removed-models.json')
+  const key = 'bailian/kimi-k3'
+  assert.deepEqual(Object.keys(supplement.modalityExclusions), [key])
+  for (const [field, values] of [['inputModalities', ['audio', 'video']], ['outputModalities', ['image', 'audio', 'video']]]) {
+    const evidence = supplement.modalityExclusions[key][field]
+    assert.deepEqual(evidence.values, values)
+    assert.equal(evidence.quote, '| 输入模态 | Text Image | 输出模态 | Text |')
+    assert.equal(evidence.sourceUrl, 'https://help.aliyun.com/zh/model-studio/kimi-k3')
+    assert.equal(evidence.verifiedAt, '2026-11-09')
+    assert.deepEqual(snapshot.details[key].unsupportedModalities[field], values)
+  }
+  for (const patch of [{ quote: '' }, { sourceUrl }, { verifiedAt: '2026-10-16' }, { values: ['text'] }, { values: [] }]) {
+    const invalid = structuredClone(supplement)
+    Object.assign(invalid.modalityExclusions[key].inputModalities, patch)
+    assert.throws(() => supplementModelAudit(snapshot, invalid, removed), /Invalid modality exclusion/)
+  }
+  assert.deepEqual(supplementModelAudit(snapshot, supplement, removed), snapshot)
+})
 test('R8 removed names match frozen main labels with one documented R9 override; missing names fail generation', () => {
   const read = path => JSON.parse(fs.readFileSync(new URL(path, import.meta.url), 'utf8'))
   const removed = read('../config/removed-models.json')

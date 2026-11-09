@@ -26,6 +26,20 @@ export function supplementModelAudit(snapshot, supplement, removed, addendum = {
       data.details[key] = { ...data.details[key], note: override.note, suppressFallback: [field] }
     }
   }
+  // Only reviewed, verbatim channel evidence can exclude individual modalities.
+  for (const [key, exclusions] of Object.entries(supplement.modalityExclusions || {})) {
+    for (const [field, evidence] of Object.entries(exclusions)) {
+      const fact = data.facts[data.rows[key]?.[data.fields.indexOf(field)]]
+      if (!['inputModalities', 'outputModalities'].includes(field) || !fact || fact[1] !== 'known' || fact[2] !== 'channel'
+        || data.sources[fact[3]] !== evidence.sourceUrl || !evidence.quote?.trim() || evidence.verifiedAt !== data.verifiedAt
+        || !Array.isArray(evidence.values) || !evidence.values.length
+        || evidence.values.some(value => !['text', 'image', 'audio', 'video'].includes(value) || fact[0].includes(value)))
+        throw new Error(`Invalid modality exclusion: ${key}/${field}`)
+      data.details[key] ||= {}
+      data.details[key].unsupportedModalities ||= {}
+      data.details[key].unsupportedModalities[field] = evidence.values
+    }
+  }
   // Drop unused facts/sources as well as removed rows, keeping regeneration stable.
   const facts = [], sources = []
   for (const row of Object.values(data.rows)) {

@@ -58,7 +58,8 @@ export function modelCardSpecifications(provider, model) {
     contextScope: scope(fields.totalContextTokens), maxOutputScope: scope(fields.maxOutputTokens),
     contextExact: fields.totalContextTokens.state === 'known' ? `${fields.totalContextTokens.value.toLocaleString('en-US')} tokens` : '',
     maxOutputExact: fields.maxOutputTokens.state === 'known' ? `${fields.maxOutputTokens.value.toLocaleString('en-US')} tokens` : '',
-    note: [audit.note, conflicts.length && '审计与既有规格有差异；保留已知模态，未核实值回退'].filter(Boolean).join('；'),
+    note: [audit.note, conflicts.length && (Object.values(fields).some(fact => fact.unsupportedModalities?.length)
+      ? '审计与既有规格有差异；以渠道官方明确排除项为准' : '审计与既有规格有差异；保留已知模态，未核实值回退')].filter(Boolean).join('；'),
     serviceDetails: model.specifications?.serviceDetails,
     productInput: model.capabilities?.referenceImages ? '文本、图像' : '文本',
     channelSources,

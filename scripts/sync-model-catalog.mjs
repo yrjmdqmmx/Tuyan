@@ -37,10 +37,17 @@ write(path.join(root, 'apps/auth-gateway/src/model-audit.js'), '// Generated fro
 // All runtimes share the same display names and unavailable wording.
 const clientAuditSource = modelAuditSource
 const miniAuditSource = clientAuditSource
+  .replace(/export function modelDisplayName[\s\S]*?(?=export function removedModelHint)/, `export function modelDisplayName(channel: string, id: string): string {
+  return removedModel(channel, id)?.displayName
+    || STATIC_MODEL_REGISTRY[channel]?.models.find((model: { id: string }) => model.id === id)?.label
+    || id.replace(/^accounts\\/[^/]+\\/models\\//, '')
+}
+
+`)
   .replace('  unknownModalities?: string[]', '  suffix?: string\n  unknownModalities?: string[]')
   .replace('  if (details?.unknownInputModalities)', '  result.totalContextTokens.suffix = details?.suffix\n  if (details?.unknownInputModalities)')
   .replace(/export function assertAuditedModelAvailable[\s\S]*?(?=export function withModelAudit)/, '').replace(/export function assertModelLibraryAdditions[\s\S]*$/, '')
-write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-audit.ts'), '// Generated card helpers from packages/api/src/model-audit.ts\nconst MODEL_AUDIT_DATA = require(\'./model-audit-data.js\')\n' + miniAuditSource.trimEnd())
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-audit.ts'), '// Generated card helpers from packages/api/src/model-audit.ts\nimport { STATIC_MODEL_REGISTRY } from \'./static-model-catalog\'\nconst MODEL_AUDIT_DATA = require(\'./model-audit-data.js\')\n' + miniAuditSource.trimEnd())
 const presentation = JSON.parse(fs.readFileSync(path.join(root, 'config/model-presentation.json'), 'utf8'))
 const presentationData = `export const MODEL_PRESENTATION: {
   channels: Record<string, string>;
@@ -336,8 +343,9 @@ data.rows = Object.fromEntries(models.map(([key, model], index) => {
     if (i >= 2) { row[i] = data.facts.push(fact) - 1; continue }
     const value = fact[0] === 0 ? model[field] : fact[0]
     const prior = fact[4] === 0 ? model[field] : fact[4]
-    const image = i === 0 && needsImageInput(model)
-    const values = supportedModalities(value, prior, image)
+    const excluded = data.details[key]?.unsupportedModalities?.[field] || []
+    const image = i === 0 && needsImageInput(model) && !excluded.includes('image')
+    const values = supportedModalities(value, prior, image).filter(value => !excluded.includes(value))
     const product = image && !supportedModalities(value, prior).includes('image')
     row[i] = data.facts.push([values.length ? values : null, values.length ? 'known' : fact[1], product ? 'product' : fact[2], product ? null : fact[3]]) - 1
   }

@@ -1,6 +1,74 @@
-# 模型卡审计验收 · 2026-11-09 R9
+# 模型卡审计验收 · 2026-11-09 R10
 
-## R9：显示名清理与渠道来源优先（当前验收）
+## R10：渠道明确排除、完整 registry 回归与改选正文（当前验收）
+
+保留工作区现状继续完成任务；未运行 Git 写命令，无真实/付费模型调用、提交、推送或部署。小米原名仍为 `MiMo-v2.5` / `MiMo-v2.5-pro`，源码预算及既有测试断言均未放宽。
+
+### A / D：百炼 kimi-k3
+
+官方页最大输出与上下文均标注 1048576。
+
+仅为 `bailian/kimi-k3` 登记输入 audio/video、输出 image/audio/video 的明确不支持，官方原文为 `| 输入模态 | Text Image | 输出模态 | Text |`，来源 [百炼 Kimi K3](https://help.aliyun.com/zh/model-studio/kimi-k3)，核实日期 `2026-11-09`。原文、URL、日期保存在 `config/channel-audit/model-audit-supplement-20261109.json`，生成时缺引文、来源或日期不符、支持与排除冲突均报错。
+
+根因是完整 registry 对象携带旧 `specificModelSpecifications`，R6 的模态并集把 video 加回并使 catalog 事实占据输入来源；只传 `{id}` 无法复现。现在有官方证据的渠道排除项先从并集中移除，并保留渠道审计事实及来源，产品图像下限也不能覆盖明确排除。操作方完整对象已原样复制到 `apps/web/tests/fixtures/kimi-k3-live-registry-model.json`；普通/紧凑卡片 DOM 断言输入仅文本、图像，音频/视频不支持，输出图像/音频/视频不支持，可见来源为上面的阿里云精确页，title 日期为 `2026-11-09`。小程序编译产物同样保留排除元数据并显示“不支持”。
+
+变更前后对 1064 张卡分别以最小对象和完整静态对象逐卡对照，**只有百炼 kimi-k3 变化**；其余 1063 张卡的事实、来源和展示未改。其他型号仍沿用原模态并集、未知语义与产品输入下限。
+
+**同类官方表格发现：百炼 20 张，其他 30 渠道各 0 张（已登记证据口径，排除 kimi-k3）。** 使用完整目录对象，统计其来源中已有官方渠道页面、包含明确 `输入模态 | …` / `输出模态 | …` 表格且仍有至少一个未知图标的卡片；同一页对应多个精确 ID 时按卡计数。复核 R6 已留存来源，并在 R10 只读补查百炼 25 个未缓存的已登记 URL（百炼合计 36 个 URL）。四列并排表和两列逐行表均计入；原厂继承页、说明文字/标题形式和未核实页面不计入，0 表示该口径无已核实命中，不表示全网不存在页面。页面逐字短引文及 URL 见 `config/channel-audit/modality-table-review-r10-20261109.json`；例如 [Qwen-Image 2.0](https://help.aliyun.com/zh/model-studio/qwen-image-2-0) 和 [MiniMax M3.1 Flash](https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash)。**其余卡片未作修改，待 PM 决定是否扩大明确排除规则。**
+
+**最小对象与完整对象差异：389 / 1064 张**；可见来源不同 89 张，模态不同 388 张，两者交集 88 张。完整对象使用 `STATIC_MODEL_REGISTRY` 的整个 model 条目（含 roles/capabilities/specifications 等已有字段），最小对象只传 `{id}`；来源比较实际展示的第一条链接，模态比较输入/输出四种图标状态。此统计与操作方实时 Core 夹具回归分开，不能把静态目录对象统计称为逐个实时 Core 响应核查。逐渠道如下，两项差异可以重叠：
+
+| 渠道 | 其他同表格且仍未知卡 | 可见来源差异 | 模态差异 | 任一差异 |
+| --- | ---: | ---: | ---: | ---: |
+| deepseek | 0 | 0 | 0 | 0 |
+| kimi | 0 | 2 | 5 | 5 |
+| zhipu | 0 | 0 | 5 | 5 |
+| siliconflow | 0 | 2 | 21 | 21 |
+| anthropic | 0 | 2 | 12 | 12 |
+| recraft | 0 | 1 | 15 | 15 |
+| xai | 0 | 1 | 3 | 3 |
+| gemini | 0 | 12 | 12 | 12 |
+| bailian | 20 | 5 | 14 | 15 |
+| openai | 0 | 1 | 21 | 21 |
+| ark | 0 | 3 | 7 | 7 |
+| bfl | 0 | 2 | 12 | 12 |
+| stability | 0 | 0 | 5 | 5 |
+| ideogram | 0 | 1 | 4 | 4 |
+| minimax | 0 | 1 | 2 | 2 |
+| mistral | 0 | 1 | 12 | 12 |
+| together | 0 | 5 | 13 | 13 |
+| fireworks | 0 | 3 | 3 | 3 |
+| fal | 0 | 6 | 7 | 7 |
+| replicate | 0 | 12 | 57 | 57 |
+| tokendance | 0 | 9 | 18 | 18 |
+| runware | 0 | 8 | 101 | 101 |
+| tokenhub | 0 | 8 | 21 | 21 |
+| xiaomi | 0 | 0 | 0 | 0 |
+| sensenova | 0 | 1 | 4 | 4 |
+| stepfun | 0 | 0 | 0 | 0 |
+| qianfan | 0 | 1 | 6 | 6 |
+| iflytek | 0 | 2 | 8 | 8 |
+| longcat | 0 | 0 | 0 | 0 |
+| antling | 0 | 0 | 0 | 0 |
+| novita | 0 | 0 | 0 | 0 |
+| **合计** | **20** | **89** | **388** | **389** |
+
+逐 ID 清单和完整分母见 [R10 计数](model-card-audit-20261109-r10-counts.json)，可用 `node scripts/report-model-card-r10.mjs --check` 离线复核。报告和表格证据仅供审计，不参与运行时生成规则。
+
+### B / C：显示名与确认弹窗
+
+- 小程序非移除型号恢复静态目录 label 查询；未命中时移除 `accounts/…/models/` 前缀。移除型号优先使用 removed-models 的 displayName。修改落在生成源，重新同步后仍保留；新增目录 label、前缀回退、移除 displayName 三类测试。
+- Web 改选确认框的 `.tw-dialog-body > p` 明确使用 **14px**，桌面与移动端均高于 12px。DOM 测试检查全部正文段落的计算字号，另递归核对相关 CSS 声明（含媒体规则）；jsdom 不执行真实视口媒体布局，因此这是 DOM/CSS 验收，不冒称实屏截图。
+
+### 验证与包体
+
+- Web 受影响测试：**131/131**，含 R3–R10 模型审计、规格、改选、模型库/选择器/设置；新增 R10 **3/3**。
+- 小程序全套：**138/138**；`build` / `check` 通过。目录 label、前缀、移除名称及明确排除新增 **4/4**。
+- 生成器、目录 codec、registry 测试：**22/22**；Core 审计 **7/7**、类型检查通过；Gateway 审计 **6/6**。
+- Web `build` 通过；保留已有大 chunk 提示。审计生成、目录同步已运行；审计生成 `--check`、目录/参考上传两个 `sync --check`、thinking `--check` 与 R10 计数 `--check` 均通过。
+- 小程序精确源码 **1,568,676 bytes**，runtime **1,145,277 bytes**，媒体 **189,978 bytes**。比 R9 的 1,567,915 增加 **761 bytes**，距原 **1,572,864** 上限还余 **4,188 bytes**；预算和预算测试未修改，生成 `.js` 与 `.ts` 已同步。
+
+## R9：显示名清理与渠道来源优先（历史验收）
 
 基线为 `785b99df`。全程未运行 Git 写命令；无真实/付费模型调用、提交、推送或部署。
 

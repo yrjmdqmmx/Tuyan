@@ -7,6 +7,7 @@ exports.removedModelHint = removedModelHint;
 exports.auditedModelLifecycle = auditedModelLifecycle;
 exports.withModelAudit = withModelAudit;
 // Generated card helpers from packages/api/src/model-audit.ts
+const static_model_catalog_1 = require("./static-model-catalog");
 const MODEL_AUDIT_DATA = require('./model-audit-data.js');
 function auditedModelSpecs(channel, id) {
     var _a;
@@ -20,6 +21,8 @@ function auditedModelSpecs(channel, id) {
     result.totalContextTokens.suffix = details === null || details === void 0 ? void 0 : details.suffix;
     if (details === null || details === void 0 ? void 0 : details.unknownInputModalities)
         result.inputModalities.unknownModalities = details.unknownInputModalities;
+    for (const [field, values] of Object.entries((details === null || details === void 0 ? void 0 : details.unsupportedModalities) || {}))
+        result[field].unsupportedModalities = values;
     for (const field of (details === null || details === void 0 ? void 0 : details.suppressFallback) || [])
         result[field].suppressFallback = true;
     return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: (details === null || details === void 0 ? void 0 : details.sourceUrls) || [], note: (details === null || details === void 0 ? void 0 : details.note) || '' };
@@ -36,14 +39,10 @@ function removedModel(channel, id, now = Date.now()) {
         ? { ...notice, replacementApiId: notice.replacement } : null;
 }
 function modelDisplayName(channel, id) {
-    var _a, _b;
-    const key = channel + '/' + id;
-    const row = ((_a = MODEL_AUDIT_DATA.removed) === null || _a === void 0 ? void 0 : _a[key]) || MODEL_AUDIT_DATA.notices[key];
-    if (row === null || row === void 0 ? void 0 : row.displayName)
-        return row.displayName;
-    const replacement = (_b = Object.entries({ ...MODEL_AUDIT_DATA.removed, ...MODEL_AUDIT_DATA.notices })
-        .find(([key, row]) => key.startsWith(channel + '/') && (row.replacementApiId || row.replacement) === id)) === null || _b === void 0 ? void 0 : _b[1];
-    return (replacement === null || replacement === void 0 ? void 0 : replacement.replacementDisplayName) || id;
+    var _a, _b, _c;
+    return ((_a = removedModel(channel, id)) === null || _a === void 0 ? void 0 : _a.displayName)
+        || ((_c = (_b = static_model_catalog_1.STATIC_MODEL_REGISTRY[channel]) === null || _b === void 0 ? void 0 : _b.models.find((model) => model.id === id)) === null || _c === void 0 ? void 0 : _c.label)
+        || id.replace(/^accounts\/[^/]+\/models\//, '');
 }
 function removedModelHint(channel, id, now = Date.now()) {
     const removed = removedModel(channel, id, now);

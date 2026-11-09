@@ -216,3 +216,4 @@
 .tw-secondary { font-size:14px; text-decoration:none; }
 .model-picker-empty > .tw-secondary { margin-inline-start:8px; }
 .tw-dialog.tw-model-reselect-dialog { min-height:0; height:auto; }
+.tw-model-reselect-dialog > .tw-dialog-body > p { font-size:14px; line-height:1.6; }

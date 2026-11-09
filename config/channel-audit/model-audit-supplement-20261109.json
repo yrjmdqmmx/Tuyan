@@ -202,5 +202,28 @@
       "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
       "note": "待核实：官方页面需浏览器渲染核对"
     }
+  },
+  "modalityExclusions": {
+    "bailian/kimi-k3": {
+      "inputModalities": {
+        "values": [
+          "audio",
+          "video"
+        ],
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+        "verifiedAt": "2026-11-09",
+        "quote": "| 输入模态 | Text Image | 输出模态 | Text |"
+      },
+      "outputModalities": {
+        "values": [
+          "image",
+          "audio",
+          "video"
+        ],
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+        "verifiedAt": "2026-11-09",
+        "quote": "| 输入模态 | Text Image | 输出模态 | Text |"
+      }
+    }
   }
 }
