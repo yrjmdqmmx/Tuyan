@@ -1,6 +1,7 @@
+import { gitText as archivedAuditText, requireHistory } from './lib/git-history.mjs'
+requireHistory(fileURLToPath(new URL('../', import.meta.url)), ['c76e9c2a'])
 // Offline full-object execution and DOM verification; all transport is denied.
 // Historical R21 report stays reproducible at Phase A; current R22B is audited separately.
-import { archivedAuditText } from './lib/model-card-audit.mjs';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {fileURLToPath} from 'node:url';

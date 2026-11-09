@@ -1,9 +1,14 @@
-import { productBundle } from '../test-support/execution-capability.mjs'
+import { gitText as archivedAuditText, requireHistory } from './lib/git-history.mjs'
+import { loadCard as loadCardFrom } from './lib/model-card-audit.mjs'
+const loadCard = (root, commit) => loadCardFrom(root, commit, archivedAuditText)
+const productBundle = (source, commit) => bundleFrom(source, commit, archivedAuditText)
+if (process.argv.includes('--frozen-head')) requireHistory(fileURLToPath(new URL('../', import.meta.url)), ['8c456709'])
+import { productBundle as bundleFrom } from '../test-support/execution-capability.mjs'
 // Read-only baseline import; reports/fixtures are always under this checkout.
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { loadCard, archivedAuditText, readRegistry, readPackedRegistry, rowsOf, countCards, fields, isKnown, writeOrCheck } from './lib/model-card-audit.mjs'
+import { readRegistry, readPackedRegistry, rowsOf, countCards, fields, isKnown, writeOrCheck } from './lib/model-card-audit.mjs'
 import { readModalityEvidence, modalityDisagreements } from './lib/model-card-modality-evidence.mjs'
 import { modalityIconStates as currentIcons } from '../apps/web/src/lib/modelModalityIcons.js'
 const modalityIconStates = process.argv.includes('--frozen-head') ? (await productBundle("export { modalityIconStates } from './apps/web/src/lib/modelModalityIcons.js'", '8c456709')).modalityIconStates : currentIcons

@@ -1,11 +1,16 @@
-import { productBundle } from '../test-support/execution-capability.mjs'
+import { gitText as archivedAuditText, requireHistory } from './lib/git-history.mjs'
+import { loadCard as loadCardFrom } from './lib/model-card-audit.mjs'
+const loadCard = (root, commit) => loadCardFrom(root, commit, archivedAuditText)
+const productBundle = (source, commit) => bundleFrom(source, commit, archivedAuditText)
+if (process.argv.includes('--frozen-head')) requireHistory(fileURLToPath(new URL('../', import.meta.url)), ['8c456709'])
+import { productBundle as bundleFrom } from '../test-support/execution-capability.mjs'
 // Offline review only: exact catalog identities and captured official table evidence.
 // Run after generators. --check verifies the committed report without writes.
 import fs from 'node:fs'
 import { modalityIconStates as currentIcons } from '../apps/web/src/lib/modelModalityIcons.js'
 const icons = process.argv.includes('--frozen-head') ? (await productBundle("export { modalityIconStates } from './apps/web/src/lib/modelModalityIcons.js'", '8c456709')).modalityIconStates : currentIcons
 import { fileURLToPath } from 'node:url'
-import { loadCard, readRegistry, readPackedRegistry } from './lib/model-card-audit.mjs'
+import { readRegistry, readPackedRegistry } from './lib/model-card-audit.mjs'
 const root = fileURLToPath(new URL('../', import.meta.url))
 const read = name => JSON.parse(fs.readFileSync(root + name, 'utf8'))
 const card = await loadCard(root, process.argv.includes('--frozen-head') ? '8c456709' : null)

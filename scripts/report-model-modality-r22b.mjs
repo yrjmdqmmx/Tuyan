@@ -1,14 +1,19 @@
+import { gitText as archivedAuditText, requireHistory } from './lib/git-history.mjs'
+import { loadCard as loadCardFrom } from './lib/model-card-audit.mjs'
+const loadCard = (root, commit) => loadCardFrom(root, commit, archivedAuditText)
+const productBundle = (source, commit) => bundleFrom(source, commit, archivedAuditText)
+requireHistory(fileURLToPath(new URL('../', import.meta.url)), ['c76e9c2a'])
 // Current Phase B evidence, separate from the frozen R21/Phase 2 reports.
 import fs from 'node:fs'
 import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
-import { loadCard, writeOrCheck } from './lib/model-card-audit.mjs'
+import { writeOrCheck } from './lib/model-card-audit.mjs'
 import { phase2Registry } from '../test-support/phase2-modality.mjs'
 import { assertReviewedLinks, evidence, historical } from '../test-support/card-review-r22.mjs'
 import { STATIC_MODEL_REGISTRY } from '../apps/web/src/lib/staticModelCatalog.js'
 import { modelSourceRows } from '../packages/api/src/model-card-sources.mjs'
 import { sourceIdentity } from '../packages/api/src/card-presentation.mjs'
-import { productBundle } from '../test-support/execution-capability.mjs'
+import { productBundle as bundleFrom } from '../test-support/execution-capability.mjs'
 const root=fileURLToPath(new URL('../',import.meta.url))
 Date.now=()=>Date.parse('2026-11-09T12:00:00Z')
 const card=await loadCard(root), before=await loadCard(root,'c76e9c2a'), registry=await phase2Registry()

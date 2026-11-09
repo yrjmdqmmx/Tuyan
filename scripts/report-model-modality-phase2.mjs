@@ -1,12 +1,17 @@
+import { gitText as archivedAuditText, requireHistory } from './lib/git-history.mjs'
+import { loadCard as loadCardFrom } from './lib/model-card-audit.mjs'
+const loadCard = (root, commit) => loadCardFrom(root, commit, archivedAuditText)
+const productBundle = (source, commit) => bundleFrom(source, commit, archivedAuditText)
+requireHistory(fileURLToPath(new URL('../', import.meta.url)), ['c76e9c2a'])
 // Historical Phase 2 report uses Phase A sources; current R22B has its own report.
-import { productBundle } from '../test-support/execution-capability.mjs'
+import { productBundle as bundleFrom } from '../test-support/execution-capability.mjs'
 import snapshot from '../config/channel-audit/tokendance-catalog-snapshot-20261109b.json' with {type:'json'}
 // Offline full Core -> Web/Mini projection audit. No provider transport is used.
 import fs from 'node:fs'
 import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
 import { phase2Registry, assertPhase2Facts, evidence } from '../test-support/phase2-modality.mjs'
-import { loadCard, writeOrCheck } from './lib/model-card-audit.mjs'
+import { writeOrCheck } from './lib/model-card-audit.mjs'
 const { modalityIconStates } = await productBundle("export { modalityIconStates } from './apps/web/src/lib/modelModalityIcons.js'", 'c76e9c2a')
 import before from '../config/channel-audit/model-modality-phase2-before-20261109.json' with {type:'json'}
 import { STATIC_MODEL_REGISTRY } from '../apps/web/src/lib/staticModelCatalog.js'

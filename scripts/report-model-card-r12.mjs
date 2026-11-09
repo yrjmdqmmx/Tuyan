@@ -1,9 +1,13 @@
+import { gitText as archivedAuditText, requireHistory } from './lib/git-history.mjs'
+import { loadCard as loadCardFrom } from './lib/model-card-audit.mjs'
+const loadCard = (root, commit) => loadCardFrom(root, commit, archivedAuditText)
+if (process.argv.includes('--frozen-head')) requireHistory(fileURLToPath(new URL('../', import.meta.url)), ['8c456709'])
 // Offline final-link manifest, reconciled with the operator's recorded HTTP checks.
 import fs from 'node:fs'
 import path from 'node:path'
 import vm from 'node:vm'
 import { fileURLToPath } from 'node:url'
-import { loadCard, archivedAuditText, readPackedRegistry, rowsOf, writeOrCheck } from './lib/model-card-audit.mjs'
+import { readPackedRegistry, rowsOf, writeOrCheck } from './lib/model-card-audit.mjs'
 import { STATIC_MODEL_REGISTRY } from '../apps/web/src/lib/staticModelCatalog.js'
 import { isApiSource, sourceSpecificity, isDeadSource } from '../apps/web/src/lib/modelCardSources.js'
 const root = fileURLToPath(new URL('../', import.meta.url)), check = process.argv.includes('--check')

@@ -1,9 +1,9 @@
-// R22 offline oracle. Historical product code is read with git show, never checked out.
+// R22 offline oracle. Tests read committed inputs/expectations, never Git history.
 import fs from 'node:fs'
 import path from 'node:path'
 import vm from 'node:vm'
 import assert from 'node:assert/strict'
-import { execFileSync } from 'node:child_process'
+import { archivedText } from './frozen-sources.mjs'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import { build } from 'esbuild'
@@ -18,11 +18,12 @@ class FrozenDate extends Date {
   constructor(...args) { super(...(args.length ? args : [frozenTime])) }
   static now() { return Date.parse(frozenTime) }
 }
-export const readSource = (file, commit) => commit
-  ? execFileSync('git', ['show', `${commit}:${file}`], { cwd: root, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 })
+export const inputPath = path.join(root, 'test-support/fixtures/execution-inputs-8c456709.json')
+export const readSource = (file, commit, readHistorical = archivedText) => commit
+  ? readHistorical(root, commit, file)
   : fs.readFileSync(path.join(root, file), 'utf8')
 
-export async function productBundle(contents, commit) {
+export async function productBundle(contents, commit, readHistorical) {
   const result = await build({
     stdin: { contents, resolveDir: root, loader: 'js' }, bundle: true, format: 'cjs', platform: 'node', write: false,
     logLevel: 'silent', define: { 'import.meta.url': JSON.stringify('data:text/javascript,r22-offline'), 'import.meta.env': '{}' },
@@ -34,7 +35,7 @@ export async function productBundle(contents, commit) {
         : 'export const database = {collection: () => ({})}; export const objectStorage = {bucket: () => {throw Error("R22: storage forbidden")}}' }))
       if (commit) b.onLoad({ filter: /\.(?:[cm]?js|ts|json)$/ }, a => {
         if (!a.path.startsWith(root) || a.path.includes('/node_modules/')) return
-        return { contents: readSource(path.relative(root, a.path), commit), loader: a.path.endsWith('.json') ? 'json' : a.path.endsWith('.ts') ? 'ts' : 'js' }
+        return { contents: readSource(path.relative(root, a.path), commit, readHistorical), loader: a.path.endsWith('.json') ? 'json' : a.path.endsWith('.ts') ? 'ts' : 'js' }
       })
     } }],
   })
@@ -56,13 +57,13 @@ export function executionRegistry(registry) {
 }
 export const modelRows = registry => Object.entries(registry.providers || registry).flatMap(([provider, entry]) => entry.models.map(model => ({ provider, model, key: provider + '/' + model.id })))
 
-export async function webProducts(commit) {
+export async function webProducts(commit, readHistorical) {
   return productBundle(`
     export { STATIC_MODEL_REGISTRY } from './apps/web/src/lib/staticModelCatalog.js';
     export { mainModelCanReadImages, PROVIDERS } from './apps/web/src/constants.js';
     export { workflowModelVisionStatus, workflowVisionError } from './apps/web/src/lib/workflow.js';
     export { modelRefinePresentation } from './apps/web/src/lib/modelRegistry.js';
-  `, commit)
+  `, commit, readHistorical)
 }
 export function webDecisions(web, registry) {
   return Object.fromEntries(modelRows(registry).map(({ provider, model, key }) => [key, {
@@ -73,16 +74,22 @@ export function webDecisions(web, registry) {
   }]))
 }
 
-export async function coreProducts(commit) {
+// Only the maintenance generator supplies a Git reader to reconstruct these inputs.
+export async function executionInputs(readHistorical) {
+  const snapshot = JSON.parse(readSource('config/channel-audit/tokendance-catalog-snapshot-20261109.json', baselineCommit, readHistorical))
+  const web = await webProducts(baselineCommit, readHistorical)
+  const defaults = Object.fromEntries(['mainModel', 'imageModel', 'visionModel'].map(role => [role, web.PROVIDERS.openrouter[role]]))
+  return { commit: baselineCommit, snapshot, defaults }
+}
+
+export async function coreProducts(commit, readHistorical) {
   const core = await productBundle(`
     export { modelRegistry, configureRuntimeFetch, resolveReferenceImageMode } from './apps/paperbanana-api/runtime/handler.ts';
     export { normalizeCatalogModel, PROVIDER_CATALOGS } from './packages/api/src/provider-catalog.ts';
-  `, commit)
+  `, commit, readHistorical)
   // Identical inputs on both sides; the main snapshot is the pre-existing public
   // evidence. Synthetic OpenRouter metadata covers its three configured defaults.
-  const snapshot = JSON.parse(readSource('config/channel-audit/tokendance-catalog-snapshot-20261109.json', baselineCommit))
-  const baseWeb = await webProducts(baselineCommit)
-  const defaults = baseWeb.PROVIDERS.openrouter
+  const { snapshot, defaults } = commit ? await executionInputs(readHistorical) : JSON.parse(fs.readFileSync(inputPath, 'utf8'))
   const openrouter = ['mainModel', 'imageModel', 'visionModel'].map(role => ({ id: defaults[role], name: defaults[role],
     architecture: { input_modalities: ['text', 'image'], output_modalities: [role === 'imageModel' ? 'image' : 'text'] },
     supported_parameters: role === 'imageModel' ? { output_format: { values: ['png'] }, input_references: { max: 1 } } : [],
@@ -124,7 +131,7 @@ export function catalogDecisions(core, registry) {
 
 // Evaluate the shipped Mini CommonJS, including the real component/page methods.
 // Only session, transport, uploads and the final payload boundary are stubbed.
-export function miniProducts(commit) {
+export function miniProducts(commit, readHistorical) {
   const base = 'apps/miniprogram/miniprogram/'
   const cache = new Map(), definitions = {}, state = { registry: null }, captured = []
   const overrides = {
@@ -139,7 +146,7 @@ export function miniProducts(commit) {
     if (overrides[relative]) return overrides[relative]
     if (cache.has(relative)) return cache.get(relative).exports
     const module = { exports: {} }; cache.set(relative, module)
-    vm.runInNewContext(readSource(base + relative, commit), {
+    vm.runInNewContext(readSource(base + relative, commit, readHistorical), {
       module, exports: module.exports, Date: FrozenDate, console,
       Component(value) { definitions[relative] = value },
       require(name) { assert.ok(name.startsWith('.'), name); return load(path.posix.normalize(path.posix.join(path.posix.dirname(relative), name))) },

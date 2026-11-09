@@ -3,11 +3,14 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import assert from 'node:assert/strict'
-import { baselineCommit, frozenTime, fixturePath, coreProducts, coreDecisions, catalogDecisions,
+import { gitText, requireHistory } from './lib/git-history.mjs'
+import { root, baselineCommit, frozenTime, fixturePath, inputPath, executionInputs, coreProducts, coreDecisions, catalogDecisions,
   executionRegistry, webProducts, webDecisions, miniProducts, miniDecisions, staticMiniRegistry, modelRows } from '../test-support/execution-capability.mjs'
 
-const { core, registry } = await coreProducts(baselineCommit)
-const web = await webProducts(baselineCommit), mini = miniProducts(baselineCommit)
+requireHistory(root, [baselineCommit])
+const inputs = await executionInputs(gitText)
+const { core, registry } = await coreProducts(baselineCommit, gitText)
+const web = await webProducts(baselineCommit, gitText), mini = miniProducts(baselineCommit, gitText)
 const staticMini = staticMiniRegistry(mini, registry.providers.openrouter)
 const fixture = {
   commit: baselineCommit, frozenTime,
@@ -21,12 +24,10 @@ const fixture = {
   miniNormalizedLive: executionRegistry(mini.normalize(registry)), miniInputPolicy: mini.inputPolicy,
   miniStaticDecisions: await miniDecisions(mini, staticMini), miniLiveDecisions: await miniDecisions(mini, registry),
 }
-// Compact each section entry without duplicating thousands of formatting lines
-// for nested capabilities and the eight reference-mode scenarios per model.
-const text = '{\n' + Object.entries(fixture).map(([key, value]) => '  ' + JSON.stringify(key) + ': ' +
-  (value && typeof value === 'object' && !Array.isArray(value)
-    ? '{\n' + Object.entries(value).map(([k, v]) => '    ' + JSON.stringify(k) + ': ' + JSON.stringify(v)).join(',\n') + '\n  }'
-    : JSON.stringify(value))).join(',\n') + '\n}\n'
-if (process.argv.includes('--check')) assert.ok(fs.readFileSync(fixturePath, 'utf8') === text, 'Frozen main execution fixture drift')
-else { fs.mkdirSync(path.dirname(fixturePath), { recursive: true }); fs.writeFileSync(fixturePath, text) }
+// Minification is lossless; --check still regenerates every field and decision.
+for (const [file, value] of [[inputPath, inputs], [fixturePath, fixture]]) {
+  const text = JSON.stringify(value) + '\n'
+  if (process.argv.includes('--check')) assert.equal(fs.readFileSync(file, 'utf8'), text, 'Frozen main execution fixture drift: ' + file)
+  else { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, text) }
+}
 console.log(JSON.stringify({ ...fixture.counts, check: process.argv.includes('--check'), fixture: path.relative(process.cwd(), fixturePath) }))

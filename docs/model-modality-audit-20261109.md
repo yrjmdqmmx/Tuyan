@@ -809,3 +809,132 @@ Final full-suite validation includes the revised expectations and keyboard trave
 The offline Playwright CLI was launched with the update notifier disabled and an offline browser context. Chrome exited with **SIGABRT / kill EPERM** before opening the review page, reproducing the previous environment restriction. Consequently, no real-browser 1280/390 screenshots or native WeChat screenshots are claimed. DOM/CSS, interaction and numerical contrast checks are evidence for structure and behavior, not a substitute for native visual acceptance.
 
 The prior broader Core/Gateway socket failures and unrelated `sync-workflow` drift remain recorded in Phases A/B; those files and expectations are untouched. No production deployment, paid/inference request, image build, other-worktree operation, or git write command is part of Phase C. Mini deployment remains paused.
+
+
+## R22 Phase D
+
+CI's `actions/checkout@v4` keeps its default depth of one. Tests now work without
+historical Git objects or even a `.git` directory. This phase starts from
+`89f548a0` on `codex/model-modality-audit` in this checkout.
+
+### Frozen artifacts and unchanged assertions
+
+`test-support/execution-capability.mjs` executes current product code using
+committed `execution-inputs-8c456709.json`: the original public TokenDance
+snapshot and the three original OpenRouter defaults. It reads no historical
+source when invoked by tests. All four endpoint execution locks still compare
+the complete **1,064-model** execution output and reference-image decisions
+against `execution-capability-8c456709.json`. That fixture is now minified:
+**13,579,648 → 13,538,408 bytes**. A deep comparison against its starting-HEAD
+version confirmed no semantic change; the full-history generator independently
+recomputed and verified every value.
+
+Older card tests still execute their original resolvers and static catalog
+objects. `test-support/archive/model-card-sources.json.gz` stores exactly their
+**18 commit/path source entries** for `8c456709` and `d1fe6ff6`, losslessly
+compressed to **334,238 bytes**. The readable manifest records each original
+byte length and SHA-256. `scripts/freeze-audit-sources.mjs --check` discovers the
+dependency graphs again and compares every decompressed source byte with
+`git show`; no archived Core runtime or extra historical worktree is needed.
+
+No existing test assertion, test input expectation, picker name, verified link,
+icon, product code or package budget was changed. The changed-test Markdown/JSON
+remain byte-identical. Their checker uses a new **7,796-byte** frozen inventory
+to validate file membership, file content hashes, diff hashes recorded in the
+review, review rows/counts, evidence paths and Markdown even without history.
+With history, it additionally recomputes the original complete changed-file
+inventory and all Git diff hashes. Discovering newly changed pre-existing files
+outside that frozen inventory still requires the full-history check.
+
+### Maintenance and missing-history behavior
+
+`git show` is confined to the maintenance reader in
+`scripts/lib/git-history.mjs`, explicitly supplied to generators/reports.
+Before historical work, each command probes `git cat-file -e <commit>^{commit}`.
+An unavailable commit in `--check` mode prints an explicit `SKIP` and exits zero;
+normal generation fails rather than silently emitting incomplete artifacts.
+The changed-test command skips only Git-dependent verification and still runs
+all frozen checks. When commits exist, no historical verification is skipped.
+
+This covers execution freezing, source archiving, changed-test review, frozen
+R10/R11/R12 reports, R21, Phase 2, R22B and the older R12 link-fixture generator.
+The last command now has a real read-only `--check`; it also freezes its static
+catalog input to `8c456709`, so today's richer display objects cannot rewrite
+the older fixture. Its existing output remains unchanged.
+
+Four new regression tests validate archive integrity, execute the Core/card
+loaders with a Git command that always fails (and assert it was never invoked),
+exercise every maintenance skip, and reject a tampered ledger hash without
+history. The existing missing-ledger-entry negative test also remains active.
+
+### Validation method
+
+The CI simulation copied the **current working-tree bytes**, including all new
+files, into `/tmp/r22d-ci`. A read-only `git ls-files` inventory selected tracked
+and non-ignored new files for `rsync`; no Git metadata, ignored credentials,
+dependencies or build caches were copied. Root and installed workspace
+`node_modules` directories were symlinked from this checkout as requested.
+`git cat-file -e 8c456709^{commit}` failed there before testing.
+
+To obey **NO git write commands**, the simulation deliberately used no
+`git init`, commit, clone, checkout or other Git mutation. The copy had no `.git`
+at all, a stricter history-availability condition than depth one. It is an
+offline dependency-sharing simulation, not a fresh dependency installation or
+a claim of a real GitHub Actions run. All seven requested full-suite commands
+were run both here and in the copy; the results and socket-failure names are
+recorded below and in [Phase D validation](model-modality-r22d-validation.json).
+
+### Full-suite results and retained failures
+
+| Requested suite | This checkout: pass / fail / skip | History-free copy: pass / fail / skip |
+| --- | ---: | ---: |
+| Gateway | 203 / 87 / 1 | 203 / 87 / 1 |
+| Core (`pnpm test`) | 1,347 / 270 / 1 | 1,346 / 271 / 1 |
+| Web (required command, concurrency 2) | **1,477 / 0 / 0** | **1,477 / 0 / 0** |
+| Mini | **166 / 0 / 0** | **166 / 0 / 0** |
+| Scripts | **54 / 0 / 0** | **54 / 0 / 0** |
+| Shared API | **33 / 0 / 0** | **33 / 0 / 0** |
+| Root contracts | 27 / 5 / 0 | 27 / 5 / 0 |
+
+**Zero missing-history failures. All four R22 execution locks passed in both
+runs.** The 1,064 picker names, original archived-card counts, verified links and
+icon assertions also passed. All ten maintenance checks passed with history;
+without history they printed explicit skips, with the changed-test frozen checks
+still passing. `git diff --check` passes.
+
+Every failure is listed by exact test name, source location and error in the
+validation JSON's `failureCatalog`; each run references its complete list by
+`failureIds`. The 270 Core failures present in both runs consist of **266 localhost
+`listen EPERM` failures**, **three missing-LibreOffice conversion failures**, and
+**one xAI fixture using a service whose recorded end date is 2026-11-02**. All
+**87 Gateway failures** are localhost `listen EPERM`. These are retained failures,
+not passes or newly introduced skips.
+
+The copy's one additional Core failure was the Docker COPY dependency-path
+assertion: the requested dependency-directory symlink resolved
+`@paperbanana/benchmark-core` back outside the copy. A temporary dependency
+overlay redirected that workspace link into the copied package. The complete
+`model-modality-phase2.test.ts` file then passed **2/2**, including the COPY check.
+No image was built and no source/assertion changed. The table retains the initial
+full-run result rather than combining it with the targeted rerun.
+
+The five root contract failures are identical in both runs and are unrelated to
+history loading. Their source/config/product dependencies were not changed:
+
+- `every original audit row has an explicit implementation or exclusion decision`:
+  `siliconflow/baidu/ERNIE-Image-Turbo` has no matching decision.
+- `760 historical identities and capabilities remain unchanged except the explicitly added refine controls`:
+  the count is 761 versus the retained expectation of 760.
+- `every static ID carries reviewed version metadata through Web, Mini normalization, and repeated presentation`:
+  missing reviewed version metadata for `siliconflow/deepseek-ai/DeepSeek-V4.1-Flash`.
+- `DeepSeek direct and hosted IDs have distinct versions without alias substitution`:
+  the retained test expects the pending-confirmation label, while the current name is `DeepSeek-V4-Pro`.
+- `rolling pointers use documented defaults, not the newest snapshot or a date heuristic`:
+  the retained test expects `具体版本待确认`, while the current label says `具体版本未知`.
+
+No pre-existing expectation was weakened to make these suites green. The full
+commands, counts, log hashes, failure inventory and dependency-overlay follow-up
+are in the validation JSON. `/tmp/r22d-ci` was deleted after validation, including
+its temporary dependency links. The starting branch/HEAD and all prior product
+work are preserved; no Git write command, network lookup, paid request,
+production action, other-worktree operation or image build was performed.

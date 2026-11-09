@@ -1,3 +1,11 @@
+## 2026-11-09 · R22 Phase D: history-independent CI tests (not deployed)
+
+- [x] Shared test infrastructure / Core / Gateway: execution tests use committed baseline metadata/defaults and the unchanged 1,064-model execution oracle. The oracle is losslessly minified; no runtime execution, API/action/env, registry identity or reference-image decision changes.
+- [x] Web / Mini: historical card tests read a 334,238-byte lossless archive of 18 exact commit/path sources. Current card, picker-name, verified-link, icon and all four execution assertions remain intact.
+- [x] Maintenance / review: generators and historical reports probe commit availability and explicitly skip their history-dependent `--check` work when unavailable; full history still verifies every original byte/output/diff. The changed-test ledger remains unchanged and its frozen inventory/content/review checks still run without history.
+- [x] Validation: both runs pass Web 1,477/1,477, Mini 166/166, scripts 54/54, shared API 33/33 and all four execution locks; zero Git-history failures. Full-history maintenance checks pass, unavailable-history skips are explicit, and the temporary copy was deleted. Core/Gateway retain socket, missing-LibreOffice and expired-date failures; five unchanged root assertions also fail. Every failure and the simulation-only dependency-link follow-up are listed in [R22 Phase D](docs/model-modality-audit-20261109.md#r22-phase-d) and its validation JSON.
+- [ ] Existing environment boundary: localhost binding remains restricted in this sandbox; affected integration tests require an environment that permits it. Earlier browser/native WeChat acceptance remains outstanding. No Git writes, external network, secrets, paid calls, deployment, image builds or other-worktree work; Mini deployment remains paused.
+
 ## 2026-11-09 · R22 Phase C: distinct modality states and evidence (not deployed)
 
 - [x] Shared display / Web / Mini: one presentation helper now distinguishes supported, excluded and unknown modalities without colour. Channel-derived exclusions say 渠道未开放; explicit model/vendor exclusions retain 不支持. Unknown stays unknown. Web uses existing Lucide glyphs and site colour tokens; Mini embeds the same four Lucide glyphs in WXSS. Both use a strike for exclusion and a question mark plus dashed treatment for uncertainty, with no legend row.
