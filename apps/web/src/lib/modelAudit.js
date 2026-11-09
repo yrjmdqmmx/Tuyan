@@ -28,9 +28,9 @@ export function removedModel(channel, id, now = Date.now()) {
     return notice && now >= Date.parse(notice.stopDate)
         ? { stopDate: notice.stopDate, replacementApiId: notice.replacement, sourceUrl: notice.sourceUrl } : null;
 }
-export function removedModelHint(channel, id, now = Date.now()) {
+export function removedModelHint(channel, id, now = Date.now(), displayName = (id) => modelDisplayName(channel, id)) {
     const removed = removedModel(channel, id, now);
-    return removed ? `原型号 ${id} 已不可用${removed.replacementApiId ? `，可改选 ${removed.replacementApiId}` : '，请重新选择'}` : '';
+    return removed ? `${displayName(id)}：原型号已不可用，请重新选择。${removed.replacementApiId ? `推荐：${displayName(removed.replacementApiId)}` : ''}` : '';
 }
 // Date-only notices take effect at the start of the stated UTC calendar day.
 // Serverless notices apply only to the Fireworks adapter used by this product.
@@ -48,7 +48,7 @@ export function auditedModelLifecycle(channel, id, now = Date.now()) {
 export function assertAuditedModelAvailable(channel, id, now = Date.now()) {
     const removed = removedModel(channel, id, now);
     if (removed)
-        throw Object.assign(new Error(`模型 ${id}：${removedModelHint(channel, id, now)}。`), {
+        throw Object.assign(new Error(`模型 ${id}：原型号 ${id} 已不可用${removed.replacementApiId ? `，可改选 ${removed.replacementApiId}` : '，请重新选择'}。`), {
             businessCode: 'MODEL_UNAVAILABLE', code: 'MODEL_UNAVAILABLE',
             statusCode: 400, replacement: removed.replacementApiId, sourceUrl: removed.sourceUrl,
             requestState: 'not_sent', localInputFailure: true, retryable: false,
@@ -71,4 +71,7 @@ export function assertModelLibraryAdditions(next, previous, now = Date.now(), in
         if (!retained)
             assertAuditedModelAvailable(channel, model.modelId, now);
     }
+}
+export function modelDisplayName(channel, id) {
+    return STATIC_MODEL_REGISTRY[channel]?.models.find((m) => m.id === id)?.label || id.replace(/^accounts\/[^/]+\/models\//, '');
 }

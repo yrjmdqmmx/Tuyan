@@ -37,7 +37,7 @@ function removedModel(channel, id, now = Date.now()) {
 }
 function removedModelHint(channel, id, now = Date.now()) {
     const removed = removedModel(channel, id, now);
-    return removed ? `原型号已不可用，请重新选择${removed.replacementApiId ? `。推荐：${modelDisplayName(channel, removed.replacementApiId)}` : ''}` : '';
+    return removed ? `${modelDisplayName(channel, id)}：原型号已不可用，请重新选择。${removed.replacementApiId ? `推荐：${modelDisplayName(channel, removed.replacementApiId)}` : ''}` : '';
 }
 // Date-only notices take effect at the start of the stated UTC calendar day.
 // Serverless notices apply only to the Fireworks adapter used by this product.
@@ -59,5 +59,5 @@ function withModelAudit(channel, model, now = Date.now()) {
 }
 function modelDisplayName(channel, id) {
     var _a, _b;
-    return ((_b = (_a = require('./static-model-catalog.js').STATIC_MODEL_REGISTRY[channel]) === null || _a === void 0 ? void 0 : _a.models.find((m) => m.id === id)) === null || _b === void 0 ? void 0 : _b.label) || id;
+    return ((_b = (_a = require('./static-model-catalog.js').STATIC_MODEL_REGISTRY[channel]) === null || _a === void 0 ? void 0 : _a.models.find((m) => m.id === id)) === null || _b === void 0 ? void 0 : _b.label) || id.replace(/^accounts\/[^/]+\/models\//, '');
 }

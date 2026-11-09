@@ -37,7 +37,7 @@ export function removedModel(channel: string, id: string, now = Date.now()) {
 
 export function removedModelHint(channel: string, id: string, now = Date.now()) {
   const removed = removedModel(channel, id, now)
-  return removed ? `原型号已不可用，请重新选择${removed.replacementApiId ? `。推荐：${modelDisplayName(channel, removed.replacementApiId)}` : ''}` : ''
+  return removed ? `${modelDisplayName(channel, id)}：原型号已不可用，请重新选择。${removed.replacementApiId ? `推荐：${modelDisplayName(channel, removed.replacementApiId)}` : ''}` : ''
 }
 
 // Date-only notices take effect at the start of the stated UTC calendar day.
@@ -58,5 +58,5 @@ export function withModelAudit<T extends { id: string }>(channel: string, model:
     ...(removedModel(channel, model.id, now) ? { selectable: false, disabledReason: removedModelHint(channel, model.id, now) } : {}) }
 }
 export function modelDisplayName(channel: string, id: string): string {
-  return require('./static-model-catalog.js').STATIC_MODEL_REGISTRY[channel]?.models.find((m: {id: string}) => m.id === id)?.label || id
+  return require('./static-model-catalog.js').STATIC_MODEL_REGISTRY[channel]?.models.find((m: {id: string}) => m.id === id)?.label || id.replace(/^accounts\/[^/]+\/models\//, '')
 }

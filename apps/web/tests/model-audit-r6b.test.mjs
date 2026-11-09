@@ -52,7 +52,7 @@ test('R6B 7/8: one or multiple removed notices suppress empty states and use sho
     const {container,unmount}=render(React.createElement(WorkspaceModelCatalog,{models,mode:'library'}))
     const notice=container.querySelector('.tw-info')
     if(ids.length>1) { assert.equal(notice.querySelector('summary').textContent,'2 个已保存型号已不可用'); fireEvent.click(notice.querySelector('summary')); notice.open=true }
-    assert.match(notice.textContent,/原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash/)
+    assert.deepEqual([...notice.querySelectorAll(ids.length > 1 ? 'p' : ':scope > span')].map(p=>p.textContent), ['mimo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash','mimo-v2.5-pro：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Pro'].slice(0,ids.length))
     assert.equal(container.querySelector('.tw-catalog-empty'),null)
     assert.equal(screen.queryByText('清除筛选'),null)
     fireEvent.change(screen.getByRole('textbox',{name:'搜索已添加模型'}),{target:{value:'no-match'}})
@@ -72,7 +72,7 @@ test('R6B 7/8: one or multiple removed notices suppress empty states and use sho
 test('R6B 8: picker helper and confirmation use the same short name without exposing the replacement API path', () => {
   const models=fixture('fireworks',['accounts/fireworks/models/glm-5p2'])
   render(React.createElement(WorkspaceModelPicker,{models,role:'main',path:'svg',current:{libraryModelId:'m0',connectionId:'connection-123456789',accessProvider:'fireworks',modelId:'accounts/fireworks/models/glm-5p2'}}))
-  assert.match(screen.getByRole('status').textContent,/原型号已不可用，请重新选择。推荐：GLM 5.3/)
+  assert.equal(screen.getByRole('status').firstChild.textContent,'glm-5p2：原型号已不可用，请重新选择。推荐：GLM 5.3')
   fireEvent.click(screen.getByRole('button',{name:'改选'}))
   assert.match(screen.getByRole('dialog').textContent,/GLM 5.3/)
   assert.doesNotMatch(screen.getByRole('dialog').textContent,/accounts\/fireworks\/models\/glm-5p3/)

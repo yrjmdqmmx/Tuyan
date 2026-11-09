@@ -30,10 +30,10 @@ test('all 61 retired and seven serverless identities are hidden from catalog, re
 });
 test('retired saved selection remains on trigger but cannot be chosen for new tasks or presets',()=>{
   const models=setup(),before=structuredClone(models.library),entry=models.library.models[0];
-  assert.match(modelOption(entry,models.library,registry,'main','svg',false).reason,/原型号 .* 已不可用/);
+  assert.equal(modelOption(entry,models.library,registry,'main','svg',false).reason,'mimo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
   render(React.createElement(WorkspaceModelPicker,{models,role:'main',path:'svg',current:{libraryModelId:'old',modelId:entry.modelId,accessProvider:'xiaomi'},onChange:()=>assert.fail('No automatic switch')}));
   assert.equal(screen.getByRole('button',{name:'主模型'}).textContent,'请选择');
-  assert.match(screen.getByRole('status').textContent,/原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash/);
+  assert.equal(screen.getByRole('status').firstChild.textContent,'mimo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
   fireEvent.click(screen.getByRole('button',{name:'主模型'}));
   assert.equal(screen.queryByRole('button',{name:/选择.*mimo-v2.5/}),null);
   assert.deepEqual(models.library,before);

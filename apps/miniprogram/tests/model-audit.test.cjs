@@ -4,13 +4,48 @@ const {removedModel,removedModelHint,auditedModelLifecycle,auditedModelSpecs,wit
 test('mini program shares exact channel lifecycle and independently sourced output limits',()=>{
   const old={id:'mimo-v2.5',selectable:true},before={...old};
   assert.equal(withModelAudit('xiaomi',old).selectable,false);
-  assert.match(removedModelHint('xiaomi',old.id),/原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash/);assert.deepEqual(old,before);
+  assert.equal(removedModelHint('xiaomi',old.id),'mimo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');assert.deepEqual(old,before);
   assert.equal(auditedModelLifecycle('bailian','qwen3.5-plus',Date.parse('2027-01-18')).state,'scheduled');
   assert.equal(removedModel('bailian','qwen3.5-plus',Date.parse('2027-01-19')).replacementApiId,'qwen3.8-flash');
   const spec=auditedModelSpecs('tokendance','deepseek-v4-pro');
   assert.ok(spec.fields.totalContextTokens.value>0);assert.equal(spec.fields.maxOutputTokens.provenance,'vendor');
   assert.equal(auditedModelSpecs('antling','Ling-3.2-flash').fields.totalContextTokens.value,'1M');
   assert.equal(auditedModelSpecs('custom','deepseek-v4-pro').fields.maxOutputTokens.value,null);
+});
+
+test('R7 mini notices use exact original names with catalog and API ID fallbacks',()=>{
+  for(const [provider,id,expected] of [
+    ['xiaomi','mimo-v2.5','mimo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash'],
+    ['fireworks','accounts/fireworks/models/glm-5p2','glm-5p2：原型号已不可用，请重新选择。推荐：GLM 5.3'],
+    ['stepfun','step-2x-large','step-2x-large：原型号已不可用，请重新选择。'],
+    ['antling','Ling-2.6-flash','Ling 2.6-flash：原型号已不可用，请重新选择。推荐：Ling-3.1-flash'],
+  ]) {
+    assert.equal(removedModelHint(provider,id,Date.parse('2026-11-16')),expected);
+    assert.equal(withModelAudit(provider,{id},Date.parse('2026-11-16')).disabledReason,expected);
+  }
+  assert.equal(removedModelHint('xiaomi','mimo-v2.6-flash'),'');
+});
+
+test('R7 a single removed model without replacement names the original in picker and role helper',()=>{
+  const {loadComponent}=require('./helpers/component.cjs');
+  const {STATIC_MODEL_REGISTRY}=require('../miniprogram/utils/static-model-catalog.js');
+  const {getModelRegistryState}=require('../miniprogram/utils/model-registry-store.js');
+  const registry={providers:STATIC_MODEL_REGISTRY};
+  getModelRegistryState().registry=registry;
+  const f=loadComponent('components/model-picker/model-picker.js');
+  const p=f.instance;p.getRegistry=()=>registry;
+  Object.assign(p.properties,{selectedProvider:'stepfun',selectedModel:'step-2x-large',role:'main',outputFormat:'svg'});
+  p.resetFlow();
+  assert.equal(p.data.removedHint,'step-2x-large：原型号已不可用，请重新选择。');
+  assert.equal(p.data.savedReplacement,'');assert.equal(f.events.length,0);
+  const sheet=loadComponent('components/generation-settings-sheet/generation-settings-sheet.js');
+  const initial={configurationMode:'advanced',simpleProvider:'stepfun',modelRoutes:{main:{accessProvider:'stepfun',modelId:'step-2x-large'},image:{accessProvider:'bailian',modelId:'wan2.7-image-pro'},vision:{accessProvider:'',modelId:''}},outputFormat:'svg',imageSize:'2K',aspectRatio:'1:1',providerRegions:{}};
+  const before=structuredClone(initial);
+  Object.assign(sheet.instance.properties,{settings:initial,purpose:'create',executionRoles:[],apiKeys:{},manualReferenceIds:[]});
+  sheet.instance.resetDraft();
+  assert.equal(sheet.instance.data.routeRows[0].removedHint,'step-2x-large：原型号已不可用，请重新选择。');
+  assert.equal(sheet.instance.data.routeRows[0].modelLabel,'请选择');
+  assert.deepEqual(initial,before);assert.equal(sheet.events.length,0);
 });
 
 test('mini Ling deadlines use the UTC+8 boundary and production compact tokens',()=>{
@@ -68,7 +103,7 @@ test('mini removed picker offers explicit confirmation only for a compatible rep
   const p=f.instance;p.getRegistry=()=>({providers:STATIC_MODEL_REGISTRY});
   Object.assign(p.properties,{selectedProvider:'xiaomi',selectedModel:'mimo-v2.5',role:'main',outputFormat:'svg'});
   p.resetFlow();assert.equal(f.events.length,0);
-  assert.equal(p.data.removedHint,'原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
+  assert.equal(p.data.removedHint,'mimo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
   assert.equal(p.data.savedReplacement,'mimo-v2.6-flash');
   p.confirmReplacement();modal.success({confirm:false});assert.equal(f.events.length,0);
   p.confirmReplacement();modal.success({confirm:true});assert.equal(f.events[0].detail.modelId,'mimo-v2.6-flash');
@@ -87,7 +122,7 @@ test('mini removed role uses a placeholder and changes only that role after conf
   Object.assign(p.properties,{settings:initial,purpose:'create',executionRoles:[],apiKeys:{},manualReferenceIds:[]});
   p.resetDraft();const before=JSON.stringify(p.data.draft.modelRoutes);
   assert.equal(p.data.routeRows[0].modelLabel,'请选择');
-  assert.equal(p.data.routeRows[0].removedHint,'原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
+  assert.equal(p.data.routeRows[0].removedHint,'mimo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
   p.replaceRemoved({currentTarget:{dataset:{role:'main'}}});modal.success({confirm:false});assert.equal(JSON.stringify(p.data.draft.modelRoutes),before);
   p.replaceRemoved({currentTarget:{dataset:{role:'main'}}});
   getModelRegistryState().registry={providers:{xiaomi:{models:[]}}};modal.success({confirm:true});
@@ -127,7 +162,7 @@ test('R6B native replacement confirmation uses short labels and source modal use
   const p=loadComponent('components/model-picker/model-picker.js',{}, {wx:{showModal:options=>{modal=options;},setClipboardData:options=>{copy=options.data;}}}).instance;
   p.getRegistry=()=>({providers:STATIC_MODEL_REGISTRY});
   Object.assign(p.properties,{selectedProvider:'fireworks',selectedModel:'accounts/fireworks/models/glm-5p2',role:'main',outputFormat:'svg'});
-  p.resetFlow();assert.match(p.data.removedHint,/推荐：GLM 5.3$/);
+  p.resetFlow();assert.equal(p.data.removedHint,'glm-5p2：原型号已不可用，请重新选择。推荐：GLM 5.3');
   p.confirmReplacement();assert.match(modal.content,/→ GLM 5.3/);assert.doesNotMatch(modal.content,/accounts\/fireworks\/models\/glm-5p3/);
   const url='https://example.com/long/deprecation/path';
   p.copySource({currentTarget:{dataset:{url,source:'下线公告 · example.com',notice:'将于明日下线'}}});
