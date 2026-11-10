@@ -14,7 +14,7 @@ test('R24 I4 Web renders exact vendor max output, inheritance/date and separate 
  assertQwenEvidence(card);assert.equal(card.maxOutputExact,'65,536 tokens');assert.equal(isApiSource(retirementUrl),false)
  assert.deepEqual(modelSourceRows(card).slice(1),[{url:specUrl,label:specLabel},{url:retirementUrl,label:retirementLabel}]);assert.ok(!card.sources.includes(rejectedUrl))
  render(React.createElement(ModelSpecifications,{provider,model}));fireEvent.click(screen.getByRole('button',{name:/^输入模态/}))
- const dialog=screen.getByRole('dialog');assert.ok(dialog.textContent.includes(inheritanceNote));assert.match(dialog.textContent,/最大输出核实日期：2026-11-10/);assert.match(dialog.textContent,/65,536 tokens/)
+ const dialog=screen.getByRole('dialog');assert.ok(dialog.textContent.includes(inheritanceNote));assert.match(dialog.textContent,/最大输出：源自原厂（核实日期：2026-11-10）/);assert.match(dialog.textContent,/65,536 tokens/)
  for(const[url,label]of[[specUrl,specLabel],[retirementUrl,retirementLabel]])assert.equal(within(dialog).getByRole('link',{name:label}).getAttribute('href'),url)
  assert.ok(!dialog.innerHTML.includes(rejectedUrl))
 })

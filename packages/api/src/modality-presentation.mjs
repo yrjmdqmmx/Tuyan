@@ -29,7 +29,7 @@ export function modalityIconStates(value, fact, provider, modelId, missingIds = 
     const group = channel && evidence.find(([prefix, date]) => fact.sourceUrl?.startsWith(prefix) && date === fact.verifiedAt)
     const subject = group && fact.sourceUrl.slice(group[0].length) + (provider === 'bailian' ? '#' + modelId : '')
     const quote = group && group[2].find(([, ids]) => ids.split('|').includes(subject))?.[0]
-    const date = fact?.verifiedAt
+    const date = ['unknown', 'unlisted'].includes(item.state) ? null : fact?.verifiedAt
     const source = { channel: '渠道资料', vendor: '原厂资料', catalog: '图研既有核实', product: '图研输入要求' }[fact?.provenance]
     const attribution = source ? `${source}${fact.sourceUrl ? ` · ${sourceTitle(fact.sourceUrl)}` : ''}${date ? `（${date}）` : ''}` : '暂无官方资料'
     const tooltip = ['unknown', 'unlisted'].includes(item.state)

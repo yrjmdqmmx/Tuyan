@@ -1,3 +1,4 @@
+import evidenceI6 from '../../../test-support/fixtures/source-evidence-i6-r26.json' with {type:'json'}
 import evidenceI4 from '../../../test-support/fixtures/source-evidence-i4-r24.json' with {type:'json'}
 import {expectedHumanUrl} from '../../../test-support/source-links-i3-r24.mjs'
 import { expectedTokenDanceSources } from '../../../test-support/card-review-r22.mjs'
@@ -25,7 +26,7 @@ const model = (channel, id) => registry.providers[channel].models.find(m => m.id
 const models = new Map(rowsOf(STATIC_MODEL_REGISTRY).map(row => [row.channel + '/' + row.model.id, row.model]))
 for (const row of rows) models.set(row.channel + '/' + row.model.id, row.model)
 const linkIdentity = ({ channel, modelId, oldUrl, finalUrl }) => ({ channel, modelId, oldUrl, finalUrl })
-const r21Url = row => evidenceI4.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || (row.channel === 'tokendance' ? expectedTokenDanceSources(row.modelId)[0] : phase2.sourceChanges.find(change => change.key === row.channel + '/' + row.modelId)?.after
+const r21Url = row => evidenceI6.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || evidenceI4.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || (row.channel === 'tokendance' ? expectedTokenDanceSources(row.modelId)[0] : phase2.sourceChanges.find(change => change.key === row.channel + '/' + row.modelId)?.after
   || (row.channel === 'tokendance' ? 'https://tokendance.space/models/' + row.modelId : row.finalUrl))
 const expectedR21Changes = before.rows.map(({ channel, modelId, oldUrl }) => {
   const archived = final.find(row => row.channel === channel && row.modelId === modelId)

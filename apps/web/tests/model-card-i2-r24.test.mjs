@@ -1,3 +1,5 @@
+import conflictCards from '../../../test-support/fixtures/conflict-cards-r26.json' with {type:'json'}
+import {assertDialogDates,assertUnknownIconDates} from '../../../test-support/dialog-dates-r26.mjs'
 import {expectedHumanRows} from '../../../test-support/source-links-i3-r24.mjs'
 import test,{afterEach} from 'node:test'
 import assert from 'node:assert/strict'
@@ -28,6 +30,10 @@ test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable style
    fireEvent.click(screen.getByRole('button',{name:/^输入模态/}))
    const dialog=screen.getByRole('dialog'),links=within(dialog).queryAllByRole('link')
    assert.deepEqual(dialogIssues(dialog.querySelector('.tw-preserve-text').textContent),[],card)
+   const specifications=modelCardSpecifications(provider,model)
+   assert.equal(dialog.textContent.includes('该渠道页面与图研之前记录的信息不一致，这里只保留已经核实过的内容，没核实的显示为「未知」。'),conflictCards.includes(card),card)
+   assertDialogDates(dialog.querySelector('.tw-preserve-text').textContent,specifications.fields,specifications.checkedAt,card)
+   for(const direction of ['input','output'])assertUnknownIconDates(modalityIconStates(specifications[direction],specifications[direction+'Fact'],provider,model.id),card)
    assert.deepEqual(links.map(a=>a.getAttribute('href')),expectedHumanRows(old.rows,card,'web').map(r=>r.url),card)
    assert.equal(new Set(links.map(a=>a.textContent)).size,links.length,card)
    for(const link of links) {
@@ -61,6 +67,6 @@ test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable style
 
 test('R24 I2 unknown modality keeps available source; absence stays unknown with no source claim',()=>{
  const states=modalityIconStates('',{state:'known',value:['text'],provenance:'vendor',sourceUrl:'https://api-docs.deepseek.com/news/news260424',verifiedAt:'2026-11-09'})
- assert.equal(states[1].state,'unknown');assert.equal(states[1].tooltip,'原厂资料 · DeepSeek · 更新日志 2026-04-24（2026-11-09）')
+ assert.equal(states[1].state,'unknown');assert.equal(states[1].tooltip,'原厂资料 · DeepSeek · 更新日志 2026-04-24')
  assert.equal(modalityIconStates('',{state:'unknown',provenance:null})[1].tooltip,'暂无官方资料')
 })

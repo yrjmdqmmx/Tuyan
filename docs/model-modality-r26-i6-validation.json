@@ -1,0 +1,389 @@
+{
+  "phase": "R26 Phase I6",
+  "head": "6864824a1272c3465d0df8202972d964b5d350eb",
+  "finishedAt": "2026-11-10T00:40:25.563714+00:00",
+  "network": "Only public unauthenticated documentation GETs and the public data script referenced by notice 118728. No provider/inference calls.",
+  "gitWrites": false,
+  "runs": [
+    {
+      "id": "api-full",
+      "cwd": ".",
+      "command": "node --test packages/api/src/*.test.js",
+      "startedAt": "2026-11-10T00:33:11.891084+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/api-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:33:12.117273+00:00",
+      "tests": {
+        "tests": 33,
+        "pass": 33,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "auth-gateway-check",
+      "cwd": "apps/auth-gateway",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T00:37:01.088593+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/auth-gateway-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:01.495448+00:00"
+    },
+    {
+      "id": "benchmark-core-check",
+      "cwd": "packages/benchmark-core",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T00:37:01.089187+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/benchmark-core-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:07.489075+00:00"
+    },
+    {
+      "id": "benchmark-worker-check",
+      "cwd": "apps/benchmark-worker",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T00:37:01.091317+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/benchmark-worker-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:13.282505+00:00"
+    },
+    {
+      "id": "check-docker-bundles",
+      "cwd": ".",
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "startedAt": "2026-11-10T00:37:01.496487+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/check-docker-bundles.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:11.005828+00:00"
+    },
+    {
+      "id": "core-build",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T00:35:01.213127+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/core-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:35:01.819949+00:00"
+    },
+    {
+      "id": "core-targeted",
+      "cwd": "apps/paperbanana-api",
+      "command": "node --import tsx --test tests/model-modality-r21.test.ts tests/execution-capability-r22.test.ts tests/model-card-r22b.test.ts tests/model-modality-phase2.test.ts tests/model-evidence-i4-r24.test.mjs tests/model-evidence-i5-r25.test.mjs tests/model-evidence-i6-r26.test.mjs",
+      "startedAt": "2026-11-10T00:37:01.080794+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/core-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:22.401451+00:00",
+      "tests": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "core-tsc-explicit",
+      "cwd": "apps/paperbanana-api",
+      "command": "npx tsc --noEmit",
+      "startedAt": "2026-11-10T00:37:07.490543+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/core-tsc-explicit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:22.320405+00:00"
+    },
+    {
+      "id": "freeze-audit-sources",
+      "cwd": ".",
+      "command": "node scripts/freeze-audit-sources.mjs --check",
+      "startedAt": "2026-11-10T00:37:11.007138+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/freeze-audit-sources.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:12.098322+00:00"
+    },
+    {
+      "id": "freeze-execution-capability",
+      "cwd": ".",
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "startedAt": "2026-11-10T00:37:12.099152+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/freeze-execution-capability.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:20.825417+00:00"
+    },
+    {
+      "id": "gateway-targeted",
+      "cwd": "apps/auth-gateway",
+      "command": "node --test tests/model-modality-r21.test.js tests/execution-capability-r22.test.js tests/model-modality-phase2.test.js tests/model-evidence-i4-r24.test.js tests/model-evidence-i5-r25.test.js tests/model-evidence-i6-r26.test.js",
+      "startedAt": "2026-11-10T00:33:11.892694+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/gateway-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:33:29.290974+00:00",
+      "tests": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "generate-model-audit",
+      "cwd": ".",
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "startedAt": "2026-11-10T00:37:13.283580+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/generate-model-audit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:13.708771+00:00"
+    },
+    {
+      "id": "mini-build",
+      "cwd": "apps/miniprogram",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T00:34:56.466301+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/mini-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:34:57.607139+00:00"
+    },
+    {
+      "id": "mini-full",
+      "cwd": "apps/miniprogram",
+      "command": "npm test",
+      "startedAt": "2026-11-10T00:37:01.079890+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/mini-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:34.038079+00:00",
+      "tests": {
+        "tests": 180,
+        "pass": 180,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "miniprogram-check",
+      "cwd": "apps/miniprogram",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T00:37:13.709448+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/miniprogram-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:15.463240+00:00"
+    },
+    {
+      "id": "name-image-invariants",
+      "cwd": ".",
+      "command": "node --test .audit-input/r24/i6-invariants.test.mjs",
+      "startedAt": "2026-11-10T00:33:29.219713+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/name-image-invariants.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:33:39.366473+00:00",
+      "tests": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "paperbanana-api-check",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T00:37:15.463863+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/paperbanana-api-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:24.483276+00:00"
+    },
+    {
+      "id": "report-changed-tests",
+      "cwd": ".",
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "startedAt": "2026-11-10T00:37:20.826486+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/report-changed-tests.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:23.046262+00:00"
+    },
+    {
+      "id": "report-model-modality-phase2",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "startedAt": "2026-11-10T00:37:22.321099+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/report-model-modality-phase2.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:25.811389+00:00"
+    },
+    {
+      "id": "report-model-modality-r21",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "startedAt": "2026-11-10T00:37:23.046684+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/report-model-modality-r21.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:31.592252+00:00"
+    },
+    {
+      "id": "report-model-modality-r22b",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "startedAt": "2026-11-10T00:37:24.483621+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/report-model-modality-r22b.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:31.282760+00:00"
+    },
+    {
+      "id": "report-source-titles-r23",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r23.mjs --check",
+      "startedAt": "2026-11-10T00:37:25.811816+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/report-source-titles-r23.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:26.628186+00:00"
+    },
+    {
+      "id": "report-source-titles-r24",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r24.mjs --check",
+      "startedAt": "2026-11-10T00:37:26.628798+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/report-source-titles-r24.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:30.246125+00:00"
+    },
+    {
+      "id": "scripts-full",
+      "cwd": ".",
+      "command": "node --test scripts/*.test.mjs",
+      "startedAt": "2026-11-10T00:37:01.082214+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/scripts-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:21.301767+00:00",
+      "tests": {
+        "tests": 75,
+        "pass": 75,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "spec-values-invariants",
+      "cwd": ".",
+      "command": "node --test .audit-input/r24/i6-preserved-specs.test.mjs",
+      "startedAt": "2026-11-10T00:37:01.081297+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/spec-values-invariants.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:09.226026+00:00",
+      "tests": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "sync-card-display",
+      "cwd": ".",
+      "command": "node scripts/sync-card-display.mjs --check",
+      "startedAt": "2026-11-10T00:37:30.247006+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/sync-card-display.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:30.716246+00:00"
+    },
+    {
+      "id": "sync-model-catalog",
+      "cwd": ".",
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "startedAt": "2026-11-10T00:37:30.717076+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/sync-model-catalog.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:33.530296+00:00"
+    },
+    {
+      "id": "tuyan-knowledge-check",
+      "cwd": "packages/tuyan-knowledge",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T00:37:31.283483+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/tuyan-knowledge-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:37:31.474201+00:00"
+    },
+    {
+      "id": "web-build",
+      "cwd": "apps/web",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T00:34:57.607632+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/web-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:35:01.212675+00:00"
+    },
+    {
+      "id": "web-full",
+      "cwd": "apps/web",
+      "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+      "startedAt": "2026-11-10T00:36:59.932416+00:00",
+      "log": ".audit-input/r24/i6-validation-logs/web-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T00:39:54.938907+00:00",
+      "tests": {
+        "tests": 1496,
+        "pass": 1496,
+        "fail": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "totals": {
+    "tests": 1810,
+    "pass": 1810,
+    "fail": 0,
+    "skipped": 0
+  },
+  "mini": {
+    "bytes": 1562992,
+    "limit": 1572864,
+    "headroom": 9872,
+    "priorBytes": 1568100,
+    "savedBytes": 5108,
+    "stricterUnchangedGuard": 1569427
+  },
+  "cards": {
+    "web": 1064,
+    "mini": 1064,
+    "additionalLiveCoreFixture": 1061,
+    "specificationFactsUnchangedFromStartingHead": true,
+    "namesMatchMain": true,
+    "imageInputDecisionRowsUnchanged": 15
+  },
+  "retirement": {
+    "badgesPerClient": 7,
+    "retiredBadges": 0,
+    "replacedSources": [
+      "bailian/qwen3.5-397b-a17b"
+    ],
+    "retained": 6,
+    "removed": 0,
+    "exceptions": 0,
+    "review": "config/channel-audit/review-r26-20261110.json"
+  },
+  "titles": {
+    "webRows": 2452,
+    "miniRows": 1105,
+    "promotionalTitlesCorrected": 1,
+    "remainingFindings": 0
+  },
+  "dialogs": {
+    "web": 1064,
+    "mini": 1064,
+    "conflictCardsPerClient": 66,
+    "standaloneFieldDates": 0,
+    "unknownVerificationDates": 0
+  },
+  "screenshots": {
+    "status": "prepared-syntax-checked-not-run",
+    "script": ".audit-input/r24/shots-m6.mjs",
+    "manifest": ".audit-input/r24/shots-m6.manifest.json",
+    "widths": [
+      1280,
+      390
+    ],
+    "shots": 4
+  },
+  "preliminaryFailuresResolved": [
+    "R12 independent first-link oracle now includes only the literal I6 correction.",
+    "Legacy date expectations now require one top date and inline known-field dates; unknown hints retain attribution without dates.",
+    "Ledger regenerated after expectation edits; final hash/abbrev checks pass.",
+    "Mini live projection verification date is accurately typed; Core live-fixture count remains its pre-existing 1061."
+  ]
+}

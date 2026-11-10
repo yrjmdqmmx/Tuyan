@@ -6,7 +6,7 @@ vm.runInNewContext(fs.readFileSync(filename,'utf8')+'\nthis.present=presentModel
 test('R24 I4 compiled Mini shows vendor 65536, the same inheritance note/date, and the dated retirement citation',async()=>{
  const e=await import('../../../test-support/evidence-i4-r24.mjs'),model=STATIC_MODEL_REGISTRY.tokendance.models.find(m=>m.id==='qwen3.5-plus'),audit=auditedModelSpecs('tokendance',model.id),card=context.present(model,'','','tokendance')
  e.assertQwenEvidence(audit);assert.deepEqual(structuredClone(card.specSources.slice(1)),[{url:e.specUrl,label:e.specLabel},{url:e.retirementUrl,label:e.retirementLabel}])
- assert.ok(card.auditMessage.includes(e.inheritanceNote));assert.match(card.auditMessage,/最大输出核实日期：2026-11-10/);assert.match(card.auditMessage,/最大输出：65536 tokens/)
+ assert.ok(card.auditMessage.includes(e.inheritanceNote));assert.match(card.auditMessage,/最大输出：源自原厂（核实日期：2026-11-10）/);assert.match(card.auditMessage,/最大输出：65536 tokens/)
  for(const row of card.specSources){definition.methods.copySource({currentTarget:{dataset:{url:row.url,source:row.label,notice:card.auditMessage}}});assert.ok(modal.content.includes(e.inheritanceNote));assert.ok(modal.content.includes(row.label));assert.ok(!modal.content.includes(e.rejectedUrl))}
 })
 test('R24 I4 Mini scans all 1064 cards and clears both unsupported image token-limit fields',async t=>{

@@ -17,6 +17,7 @@ test('R24 I2 Mini source rows reuse the accent class and show a wrapping copy hi
 test('R24 I2 all 1064 compiled Mini cards, copy dialogs and modality dialogs pass strict scans',async t=>{
  const {titleIssues,dialogIssues,reviewBaseline}=await import('../../../test-support/source-titles-r24.mjs')
  const {expectedHumanRows}=await import('../../../test-support/source-links-i3-r24.mjs')
+ const {assertDialogDates,assertUnknownIconDates}=await import('../../../test-support/dialog-dates-r26.mjs')
  const shared=await import('../../../packages/api/src/card-presentation.mjs')
  let cards=0,rows=0,icons=0
  for(const [provider,entry]of Object.entries(STATIC_MODEL_REGISTRY))for(const model of entry.models) {
@@ -24,6 +25,10 @@ test('R24 I2 all 1064 compiled Mini cards, copy dialogs and modality dialogs pas
   assert.equal(card.label,old.name);assert.equal(JSON.stringify(card.specSources.map(s=>s.url)),JSON.stringify(expectedHumanRows(old.rows,key,'mini').map(s=>s.url)))
   assert.equal(new Set(card.specSources.map(s=>s.label)).size,card.specSources.length)
   assert.deepEqual(dialogIssues(card.auditMessage),[],key)
+  const audit=require('../miniprogram/utils/model-audit.js').auditedModelSpecs(provider,model.id)
+  assert.equal(card.auditMessage.includes('该渠道页面与图研之前记录的信息不一致，这里只保留已经核实过的内容，没核实的显示为「未知」。'),require('../../../test-support/fixtures/conflict-cards-r26.json').includes(key),key)
+  assertDialogDates(card.auditMessage,audit.fields,audit.verifiedAt,key)
+  assertUnknownIconDates(card.specRows.flatMap(row=>row.icons),key)
   for(const row of card.specSources) {
    assert.deepEqual(titleIssues(row,old.name,model.id),[],key)
    assert.equal(row.label,shared.titleSourceRows(structuredClone(card.specSources).map(s=>({...s,label:s.label.split(' · ')[0]})),model).find(s=>s.url===row.url).label)

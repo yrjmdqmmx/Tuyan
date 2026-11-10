@@ -26,7 +26,7 @@ test('R22C all three states have accessible names and non-colour marks in a fixe
     assert.equal(!!icon.querySelector('.model-modality-question'), state === 'unknown')
     for (const mark of icon.querySelectorAll('.model-modality-strike, .model-modality-question')) assert.equal(mark.getAttribute('aria-hidden'), 'true')
   }
-  assert.match(inputs.getByRole('img', {name:'视频：未知'}).title, /^渠道未标注此模态（核实日期：2026-11-09）$/)
+  assert.match(inputs.getByRole('img', {name:'视频：未知'}).title, /^渠道未标注此模态$/)
   assert.equal(container.querySelectorAll('dt').length, 4, 'no legend or extra specification row')
   const css = fs.readFileSync(new URL('../src/components/ModelSpecifications.css', import.meta.url), 'utf8')
   assert.match(css, /\.model-modality-icon \{[^}]*width: 20px; height: 20px; flex: 0 0 20px/)
@@ -54,7 +54,7 @@ test('R22C vendor exclusions retain 不支持; vendor silence stays unknown and 
   const inputs = within(screen.getByRole('group', {name:'输入模态'}))
   assert.equal(inputs.getByRole('img', {name:'图像：不支持'}).dataset.state, 'unsupported')
   assert.match(inputs.getByRole('img', {name:'文本：支持'}).title, /^原厂资料.*2026-11-09/)
-  assert.equal(inputs.getByRole('img', {name:'视频：未知'}).title, '原厂资料 · Example · Spec（2026-11-09）')
+  assert.equal(inputs.getByRole('img', {name:'视频：未知'}).title, '原厂资料 · Example · Spec')
   for (const [key, row] of Object.entries(phase2.tables)) {
     cleanup()
     render(React.createElement(ModelSpecifications, {provider:'bailian',model:{id:key.slice(key.indexOf('/') + 1)}}))
@@ -69,7 +69,8 @@ test('R22C desktop 1280, mobile 390 and compact cards expose evidence through th
     window.innerWidth = width
     render(React.createElement(ModelSpecifications, {...qwen, compactSources}))
     fireEvent.click(screen.getByRole('button',{name:/^输入模态 · 官方文档规格/}))
-    assert.match(screen.getByRole('dialog').textContent, /渠道标注：文本→文本（2026-11-09）/)
+    assert.match(screen.getByRole('dialog').textContent, /渠道标注：文本→文本\n/)
+    assert.equal(screen.getByRole('dialog').textContent.match(/核实日期：2026-11-09/g).length, 1)
     assert.match(screen.getByRole('dialog').textContent, /图像：渠道未开放/)
     assert.doesNotMatch(screen.getByRole('dialog').textContent, /不支持/)
     cleanup()

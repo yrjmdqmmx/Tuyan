@@ -10,8 +10,8 @@
     {
       "file": "apps/miniprogram/tests/model-audit-r12.test.cjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "197d75d52149dd52bc6b052a7a950f466937cdc10958f450315e084b6cfba8d4",
-      "diffSha256": "34fbd7c6f8f403f2f0b8d2231b985671254ba09f3c694e330388165d6a7e215f"
+      "contentSha256": "5bdadca23e29d3121d3a76eeb41fcf1273afdab0eb46e8dcf5fca0041675c13c",
+      "diffSha256": "6fb29621358b7031ea4c3b0ba6c081f7a0c637d1a6f750cab1e8a7f32d124443"
     },
     {
       "file": "apps/miniprogram/tests/model-audit.test.cjs",
@@ -46,8 +46,8 @@
     {
       "file": "apps/web/tests/model-audit-r12.test.mjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "bd99a34d90599a8b44beb28e1d8fbea61774b1ca9083216a9435fc3af2f65336",
-      "diffSha256": "3a7ddb7455d0489eab3e9669a9d3ac02625dd50b515302b159796c4fd95f0b46"
+      "contentSha256": "5925df9994aec2c813d047110cef51f4f807d7b173bd5f2c99fbf579c55bcd87",
+      "diffSha256": "1df6bfd4c380434ebcd03297cefaab88f8780f0f16b66033709afd667009fb2a"
     },
     {
       "file": "apps/web/tests/model-audit-r13.test.mjs",
@@ -150,8 +150,8 @@
     {
       "file": "config/model-audit.generated.json",
       "comparisonBase": "8c456709",
-      "contentSha256": "d9c52ccc68ca62c1ed0aa97569d00f56ac3c4d1f5439ce5a9ff0515352bedebb",
-      "diffSha256": "d32de10677a39702aa20957bac9d4d6c62df609053a8622c57ac5cdc1f5d00f5"
+      "contentSha256": "da90d0337436034d96a2bd486c230237064b9060a0f11a7e15935e39fdf9b845",
+      "diffSha256": "70f0a8084424a87c87d266c75a1096507c01ee6e3aadd0ed4e32bac95c52f6cf"
     }
   ],
   "followupChanges": [
@@ -188,20 +188,20 @@
     {
       "file": "apps/miniprogram/tests/model-modality-r22c.test.cjs",
       "comparisonBase": "1dcd8b13",
-      "contentSha256": "040ced008c844d5f896842aa8bd67b1cf28c44922f5e54a985737ed2d4e71fc3",
-      "diffSha256": "aab00199b084e246b6b5f4ff04ac84c19bf756e6a1940337d17ee595b3384a81"
+      "contentSha256": "aa1fe9012b09aaf686d1a1a9b284da5b1d96643b90456cf531085515e5742faf",
+      "diffSha256": "947f8346796a8ce590da471190f61353245b627463ef3057e6dcccc9781998e7"
     },
     {
       "file": "apps/web/tests/model-card-source-titles-r23.test.mjs",
       "comparisonBase": "fd29cf36",
-      "contentSha256": "700a37d3853bdc57ce15b414b7d8df1092dacb9d324210d0a9742dbe4db52589",
-      "diffSha256": "9329d9f79c1958e266a8dd2f76265aa835e17365b91a8d7b26a77e7f44c52030"
+      "contentSha256": "b1129f33c8102dfe052e83df66997c9abe6190cbabe5c0c2928d2460eaeb8af4",
+      "diffSha256": "4d7e5b8b792c1a24f1462d28e98172ba6b5563f577bb0bf913456fc4b2e77bc4"
     },
     {
       "file": "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs",
       "comparisonBase": "fd29cf36",
-      "contentSha256": "9773a81b2bc39276ab5c781807198f7184541c71f5c48391954aeff11c6cdb6d",
-      "diffSha256": "3157490537faed5f155fce413138630b7e6512f064748bd41dd0bd11278185eb"
+      "contentSha256": "f06df65d460d5ed6456033b39b3a54604627279336944a8c04b5a2f7485cfd86",
+      "diffSha256": "207dec62aaceb0f982d1d98f628fb2246f77aef0c629ff4f57126605b4616d67"
     },
     {
       "file": "test-support/source-titles-r23.mjs",
@@ -236,8 +236,8 @@
     {
       "file": "apps/web/tests/model-modality-r22c.test.mjs",
       "comparisonBase": "cd72eace",
-      "contentSha256": "568ab6504c55fb04ed1d85a52dcd32985ba48d1e11f371f6ce83ce79e26896d9",
-      "diffSha256": "f17416088d2f3c82391c23a283cd8f9f0921fed9c1b125c2b120d6083f82e0bd"
+      "contentSha256": "f50c2540c7009967600719b1ed229ab7c850782adb0bf7cad3fa508d296e4577",
+      "diffSha256": "83bd62cf95d1d5cd41a2c14abd08a285938a21547b27e75a68c6a841dfbb7a5c"
     },
     {
       "file": "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
@@ -254,14 +254,14 @@
     {
       "file": "apps/web/tests/model-card-i2-r24.test.mjs",
       "comparisonBase": "9a7128d6",
-      "contentSha256": "2d84a6d45d40a58a3546997e6e32122c4509c0b2eeb3f312af5e76bbaa5dc224",
-      "diffSha256": "98308086bcd864328eee8b736d0442e7c1f57e506f987d54748e2571cd58b218"
+      "contentSha256": "c9054be3b762e4fd31be43d58e4e77cb11877df552dcb1a5840cab32e1d449f5",
+      "diffSha256": "6c6456ab69cd1e96bb742bf412ab364f67af15f9075a2f4d3cacde99b68c9563"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
       "comparisonBase": "9a7128d6",
-      "contentSha256": "a1d30078099fc94a857b15bd692f2d7abfe006406b3ffd21ccba3804cab3e88f",
-      "diffSha256": "03e2187c18e393b65d539c4f65be85715a46bdc23cbcb51a81bf4ef563602477"
+      "contentSha256": "1d7ded52feb3f7fd06ee9f758ad26fe4f8be69c212216d993fb19b8ac0bc10d3",
+      "diffSha256": "9974b21536a0f1d0d0e53e07499bda38fbc282a145ec9d143905e2cf35d10a01"
     },
     {
       "file": "scripts/source-titles-r24.test.mjs",
@@ -272,8 +272,8 @@
     {
       "file": "test-support/source-titles-r24.mjs",
       "comparisonBase": "9a7128d6",
-      "contentSha256": "55842c871f75e8ea0f7c1b78a1ca0377dc05eea5fb7f734dcbda02f5e8e222be",
-      "diffSha256": "2cc543ff223d26676638141a1b8caa1bf584130e2a6741d9f16321629fcc0c19"
+      "contentSha256": "039bee442f2524435f6e1c2e18bd729b1e376e85c523e63297ebbcc870b72f2f",
+      "diffSha256": "147ea0f84bb55b6d1c613136fd09068ca3b0f1119de4a54e9d40be0e45ad9a8c"
     },
     {
       "file": "apps/miniprogram/tests/model-card-r24.test.cjs",
@@ -296,8 +296,8 @@
     {
       "file": "test-support/source-links-i3-r24.mjs",
       "comparisonBase": "f8ff7648",
-      "contentSha256": "3fc25669680dd53e0019c3994c6988a6a274282e87399432c31547935fa4f6bb",
-      "diffSha256": "89952cf3fcea9516d38430463eeed6021baa8c72961f91a786543d5b377c44f0"
+      "contentSha256": "3dec81548b23a73ead8ff76414110a6e30de5a33e6fe3e7a01e064d042b7a59a",
+      "diffSha256": "aca2471cc43653becca29280c32fda31fbb048e48128547b91373d0b3169b314"
     },
     {
       "file": "test-support/source-review-r24.mjs",
@@ -308,14 +308,32 @@
     {
       "file": "apps/miniprogram/tests/model-card-i4-r24.test.cjs",
       "comparisonBase": "d29097c0",
-      "contentSha256": "0f625159747645813f903cf14416a6c67f4bdd59a889702d984a3e8170897f72",
-      "diffSha256": "578224502118ab4342d360b8897c95678ab37014beb349a083e5a74d3f681f24"
+      "contentSha256": "339e29bcc2d7329ee061efed5e14f158dafa5fee75fce4108bc92d77e6353359",
+      "diffSha256": "370220b69ef79d5c3beccf30ae66c62ea325abba9919e007751c66663d4a6dcc"
     },
     {
       "file": "apps/web/tests/model-card-i4-r24.test.mjs",
       "comparisonBase": "d29097c0",
-      "contentSha256": "623f8cc8e345ec0168f70604a61d63058c632746dbece431199465ba82548115",
-      "diffSha256": "98023b5560670c647f577e6f097b361d722ef7fd4543177927a1e40122bf5aff"
+      "contentSha256": "62d48b3d32c4eedbe878a91ed4fda710eba851bb1199efd0179ee7b4e1b356f6",
+      "diffSha256": "e863ad3116349c0aafe476bdbc3170b45e4ba6b12f0b8bcbab9b4a6f509b2795"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-card-i5-r25.test.cjs",
+      "comparisonBase": "6864824a",
+      "contentSha256": "25b7f2dbb4582afea68733eb79eca880922a86a85f3867e958835300b91ee0e6",
+      "diffSha256": "8364752adc0cc718fce3270d7e973f4213bfb4e835fa563ce3695501fb84f1d9"
+    },
+    {
+      "file": "apps/web/tests/model-card-i5-r25.test.mjs",
+      "comparisonBase": "6864824a",
+      "contentSha256": "0d1093abbe74dd8a6adb15c21b5f4f3fa4697d0600fa6c9bf22eca2504cdd9fa",
+      "diffSha256": "746cdbb3544202f725e4f5c6a26a9eb55be45fdb7f10825ab077ef4f54595500"
+    },
+    {
+      "file": "scripts/model-evidence-i5-r25.test.mjs",
+      "comparisonBase": "6864824a",
+      "contentSha256": "e1ba9c1d25fafa8cea8905feb471c4da02f158b9517847306b37d6aa1735dc77",
+      "diffSha256": "2b4498eaf9f1f8964488a67f9347e3b8a721081f52e1c0ac556f26e46f30d611"
     }
   ]
 }

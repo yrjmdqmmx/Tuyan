@@ -5,14 +5,15 @@ const context={Component(v){definition=v},exports:{},require:createRequire(filen
 vm.runInNewContext(fs.readFileSync(filename,'utf8')+'\nthis.present=presentModel',context,{filename})
 const notice='https://www.aliyun.com/notice/118728',spec='https://help.aliyun.com/zh/model-studio/qwen3-5-plus'
 const ids=['qwen3.5-plus','qwen3.5-plus-2026-02-15','qwen3.5-plus-2026-04-20']
-test('R25 I5 all 1064 compiled Mini cards: every retirement badge copies its own non-excluded notice URL',()=>{
+test('R25 I5 all 1064 compiled Mini cards: every retirement badge copies its own non-excluded notice URL',async()=>{
+ const {verifiedRetirement}=await import('../../../scripts/lib/model-evidence-r26.mjs')
  let cards=0,badges=0
  for(const[p,e]of Object.entries(STATIC_MODEL_REGISTRY))for(const m of e.models){
   cards++;const audit=auditedModelSpecs(p,m.id),card=context.present(m,'','',p)
   assert.doesNotMatch(card.auditMessage,/日期\s+\d{4}-\d{2}-\d{2}/)
   for(const row of card.specRows)for(const icon of row.icons)assert.doesNotMatch(icon.tooltip,/日期\s+\d{4}-\d{2}-\d{2}/)
   if(!card.scheduled)continue
-  badges++;const source=card.retirementSource;assert.match(source.url,/^https:\/\//);assert.ok(!audit.excludedSources.includes(source.url));assert.ok(card.specSources.some(r=>r.url===source.url))
+  badges++;const source=card.retirementSource;verifiedRetirement(p+'/'+m.id,source.url,require('../miniprogram/utils/model-audit.js').auditedModelLifecycle(p,m.id).stopDate);assert.match(source.url,/^https:\/\//);assert.ok(!audit.excludedSources.includes(source.url));assert.ok(card.specSources.some(r=>r.url===source.url))
   clipboard=null;definition.methods.copySource({currentTarget:{dataset:{url:source.url,source:source.label,notice:card.auditMessage}}});modal.success({confirm:true});assert.equal(clipboard,source.url)
   if(p==='bailian'&&ids.includes(m.id)){
    assert.equal(source.url,notice);assert.match(modal.content,/2027-01-19/);assert.equal(source.label,'下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知')

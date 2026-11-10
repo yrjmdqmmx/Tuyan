@@ -24,6 +24,6 @@ test('R25 I5 captured readable titles and the exact unfetchable allow-list are a
  for(const r of titles.captures)assert.ok(!/ · 文档 \d+$/.test(sourceTitle(r.url)),r.url)
  for(const r of titles.unfetchable){assert.ok(r.reason);assert.deepEqual(titleIssues({url:r.url,label:'官方文档 · 站点 · 文档 123456'}),[])}
  for(const label of ['官方文档 · 腾讯云 · 文档 130051','官方文档 · 腾讯云 · 模型文档 130051','官方文档 · Example · 123456','官方文档 · Example · A1b2c3d4','官方文档 · 百炼 · Kimi K3 (Bailian hosted)','官方文档 · Example · Page（overview）'])assert.ok(titleIssues({url:'https://example.test/unlisted',label}).length,label)
- for(const label of ['核实日期','上下文窗口核实日期','最大输出核实日期']){assert.ok(dialogIssues(label+' 2026-11-10').includes('date label missing colon'));assert.deepEqual(dialogIssues(label+'：2026-11-10'),[])}
+ for(const label of ['核实日期','上下文窗口核实日期','最大输出核实日期']){assert.ok(dialogIssues(label+' 2026-11-10').includes('date label missing colon'));assert.deepEqual(dialogIssues(label+'：2026-11-10'),label==='核实日期'?[]:['separate or repeated verification date'])}
  assert.equal(sourceTitle('https://help.aliyun.com/zh/model-studio/kimi-k3',{id:'kimi-k3',label:'Kimi K3 (Bailian hosted)'}),'百炼 · Kimi K3（百炼托管）')
 })

@@ -26,6 +26,16 @@ export function uniqueSources(values) {
 }
 // Model subjects take the existing card name; general pages retain captured titles.
 // Keep this URL-parser-free implementation usable in the native Mini runtime.
+export const conflictNote = '该渠道页面与图研之前记录的信息不一致，这里只保留已经核实过的内容，没核实的显示为「未知」。'
+export function fieldSourceLines(fields, checkedAt, t = value => value) {
+  const labels = {inputModalities:'输入',outputModalities:'输出',totalContextTokens:'上下文窗口',maxOutputTokens:'最大输出'}
+  const origins = {vendor:'源自原厂',channel:'渠道公布',catalog:'图研既有核实',product:'图研输入要求'}
+  return Object.entries(fields).flatMap(([key, fact]) => {
+    const origin = origins[fact.provenance]
+    const date = fact.state !== 'unknown' && fact.verifiedAt && fact.verifiedAt !== checkedAt ? fact.verifiedAt : ''
+    return origin ? [`${t(labels[key])}：${t(origin)}${date ? `（${t('核实日期')}：${date}）` : ''}`] : []
+  })
+}
 export function cardLifecycle(lifecycle, audit = {}) {
   const sourceUrl = audit.lifecycleSourceUrl || lifecycle?.sourceUrl
   return lifecycle && /^https:\/\//.test(sourceUrl || '') && !(audit.excludedSources || []).includes(sourceUrl)

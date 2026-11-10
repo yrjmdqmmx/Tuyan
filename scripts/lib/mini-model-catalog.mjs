@@ -1,6 +1,6 @@
 import { mergeCardFacts } from '../../apps/web/src/lib/catalogCardFacts.js'
 import { modelCardSources, modelSourceName } from '../../apps/web/src/lib/modelCardSources.js'
-import { humanSourceUrl } from '../../packages/api/src/card-presentation.mjs'
+import { humanSourceUrl, conflictNote } from '../../packages/api/src/card-presentation.mjs'
 // The Mini Program consumes display/selection fields, not the full evidence archive.
 // Execution capabilities, eligibility, exact IDs and ordering stay unchanged.
 export function miniModelCatalog(catalog) {
@@ -28,7 +28,7 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
       return [field, { value: fact[0], state: fact[1], provenance: fact[2], sourceUrl: data.sources[fact[3]] || null, suppressFallback: data.details[key]?.suppressFallback?.includes(field), unsupportedModalities: data.details[key]?.unsupportedModalities?.[field], modalityMasks: data.details[key]?.modalityMasks?.[field] }]
     })) }
     // Roles are already in the registry: apply their image floor at runtime.
-    const merged = mergeCardFacts(audit, existing).fields
+    const {fields: merged, conflicts} = mergeCardFacts(audit, existing)
     const source = data.rows[key] ? row[5] ?? row.slice(0, 4).map(i => data.facts[i][3]).find(i => i !== null) : null
     const notice = data.notices[key]
     const links = modelCardSources({ channel, model, fields: merged,
@@ -58,7 +58,7 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
       ? -2 : sourceUrl ? intern(sources, sourceUrl) : null]
     const label = sourceUrl && modelSourceName(links, sourceUrl)
     if (label && label !== '官方文档') rows[key].push(label === '下线公告' ? 1 : 2)
-    const note = data.details[key]?.note, suffix = merged.totalContextTokens?.suffix
+    const note = [data.details[key]?.note, conflicts.length && !Object.values(merged).some(f => f.unsupportedModalities?.length) && conflictNote].filter(Boolean).join('；'), suffix = merged.totalContextTokens?.suffix
     if (note || suffix) details[key] = { ...(note ? { note } : {}), ...(suffix ? { suffix } : {}) }
     if (data.details[key]?.unsupportedModalities) details[key] = { ...details[key], unsupportedModalities: data.details[key].unsupportedModalities }
     if (data.details[key]?.suppressFallback) details[key] = { ...details[key], suppressFallback: data.details[key].suppressFallback }

@@ -1,4 +1,4 @@
-import { cardLifecycle, displayModalities, displayModalityText } from '../../../../packages/api/src/card-presentation.mjs'
+import { cardLifecycle, displayModalities, displayModalityText, conflictNote } from '../../../../packages/api/src/card-presentation.mjs'
 import { auditedModelSpecs, auditedModelLifecycle, removedModel, MODEL_AUDIT_DATA } from './modelAudit.js'
 import { modelCardSources } from './modelCardSources.js'
 import { catalogCardFacts, mergeCardFacts } from './catalogCardFacts.js'
@@ -77,7 +77,7 @@ export function modelCardSpecifications(provider, model, registry) {
     contextExact: fields.totalContextTokens.state === 'known' ? `${fields.totalContextTokens.value.toLocaleString('en-US')} tokens` : '',
     maxOutputExact: fields.maxOutputTokens.state === 'known' ? `${fields.maxOutputTokens.value.toLocaleString('en-US')} tokens` : '',
     note: [audit.note, conflicts.length && (Object.values(fields).some(fact => fact.unsupportedModalities?.length)
-      ? '渠道资料与此前记录不一致，以渠道明确说明的模态范围为准。' : '渠道资料与此前记录不一致，已保留确认过的模态；未确认的项显示为未知。')].filter(Boolean).join('；'),
+      ? '渠道资料与此前记录不一致，以渠道明确说明的模态范围为准。' : conflictNote)].filter(Boolean).join('；'),
     serviceDetails: model.specifications?.serviceDetails,
     productInput: model.capabilities?.referenceImages ? '文本、图像' : '文本',
     ...sources,

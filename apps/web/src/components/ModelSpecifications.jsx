@@ -1,5 +1,5 @@
 import { auditedModelSpecs } from '../lib/modelAudit.js'
-import { cardLifecycle, sourceTitle } from '../../../../packages/api/src/card-presentation.mjs'
+import { cardLifecycle, sourceTitle, fieldSourceLines } from '../../../../packages/api/src/card-presentation.mjs'
 import { modelLifecycleMessage } from '../lib/modelUnavailablePresentation.js'
 import { useState } from 'react'
 import { ArrowDownToLine, ArrowUpFromLine, ScanText, TextCursorInput, ExternalLink, Type, Image, AudioLines, Video, FileText } from 'lucide-react'
@@ -33,15 +33,12 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
   const data = modelCardSpecifications(provider, model)
   const sourceRows = modelSourceRows(data)
   const inputs = modalityIconStates(data.input, data.inputFact, provider, model.id), outputs = modalityIconStates(data.output, data.outputFact, provider, model.id)
-  const modalityDetails = [[t('输入'), inputs], [t('输出'), outputs]].map(([direction, states]) => `${direction}：${states.map(item => t(item.accessibleLabel)).join('；')}\n${[...new Set(states.map(item => t(item.tooltip)))].join('\n')}`)
+  const modalityDetails = [[t('输入'), inputs], [t('输出'), outputs]].map(([direction, states]) => `${direction}：${states.map(item => t(item.accessibleLabel)).join('；')}\n${[...new Set(states.map(item => t(item.tooltip.replace(/（(?:核实日期：)?\d{4}-\d{2}-\d{2}）/g, ''))))].join('\n')}`)
   const vendorOrigin = scope => scope === '原厂' ? <small className="model-spec-origin">{t('源自原厂')}</small> : null
-  const provenance = [['输入', data.inputScope], ['输出', data.outputScope], ['上下文窗口', data.contextScope], ['最大输出', data.maxOutputScope]]
-    .filter(([, scope]) => scope).map(([label, scope]) => `${t(label)}：${t(scope === '原厂' ? '源自原厂' : ['图研既有核实', '图研输入要求'].includes(scope) ? scope : '渠道公布')}`)
-  const catalogDates = Object.entries(data.fields).filter(([, fact]) => fact.provenance === 'catalog' && fact.verifiedAt)
-    .map(([field, fact]) => `${t({inputModalities:'输入',outputModalities:'输出',totalContextTokens:'上下文窗口',maxOutputTokens:'最大输出'}[field])}：${t('图研既有核实')} ${fact.verifiedAt}`)
-  const details = [...new Set([data.checkedAt && `${t('核实日期')}：${data.checkedAt}`, ...provenance, ...catalogDates, ...Object.entries(data.fields).filter(([, fact]) => fact.provenance !== 'catalog' && fact.verifiedAt && fact.verifiedAt !== data.checkedAt).map(([field, fact]) => `${t({inputModalities:'输入',outputModalities:'输出',totalContextTokens:'上下文窗口',maxOutputTokens:'最大输出'}[field])}${t('核实日期')}：${fact.verifiedAt}`), ...modalityDetails,
+  const provenance = fieldSourceLines(data.fields, data.checkedAt, t)
+  const details = [...new Set([data.checkedAt && `${t('核实日期')}：${data.checkedAt}`, ...provenance, ...modalityDetails,
     data.contextExact && `${t('上下文窗口')}：${data.contextExact}`, data.maxOutputExact && `${t('最大输出')}：${data.maxOutputExact}`,
-    (data.unverified || model.catalogReview?.status === 'pending') && t('未核实'), model.catalogReview?.reason, model.savedChoice?.disabledReason, modelLifecycleMessage(provider, data.lifecycle), data.note].filter(Boolean).flatMap(value => value.split('\n')).filter(line => !catalogDates.some(dated => dated.startsWith(line + ' '))))].join('\n')
+    (data.unverified || model.catalogReview?.status === 'pending') && t('未核实'), model.catalogReview?.reason, model.savedChoice?.disabledReason, modelLifecycleMessage(provider, data.lifecycle), data.note].filter(Boolean).flatMap(value => value.split('\n')))].join('\n')
   const modalityButton = (states, direction) => <button type="button" className="model-modality-trigger" aria-label={`${t(direction)} · ${t('官方文档规格')}；${states.map(item => item.accessibleLabel.split(/(：| · )/).map(part => t(part)).join('')).join('；')}`} onClick={event => { event.stopPropagation(); setShowSources(true) }}><ModalityIcons states={states} direction={direction} /></button>
   const url = data.sources[0]
   const sources = <div className={`model-spec-sources${compactSources ? ' is-compact' : ''}`} aria-label={t('官方文档')}>

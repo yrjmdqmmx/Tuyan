@@ -11,18 +11,18 @@ test('R22C Mini presentation distinguishes supported, channel exclusion, vendor 
  const icons=modalityIconStates('文本',fact)
  assert.deepEqual(icons.map(i=>i.state),['supported','unsupported','unknown','unknown'])
  assert.deepEqual(icons.map(i=>i.accessibleLabel),['文本：支持','图像：渠道未开放','视频：未知','音频：未知'])
- assert.equal(icons[2].tooltip,'渠道未标注此模态（核实日期：2026-11-09）')
+ assert.equal(icons[2].tooltip,'渠道未标注此模态')
  assert.match(icons[0].tooltip,/渠道资料.*2026-11-09/)
  const vendor=modalityIconStates('文本',{...fact,provenance:'vendor'})
  assert.equal(vendor[1].accessibleLabel,'图像：不支持');assert.equal(vendor[1].state,'unsupported')
- assert.equal(vendor[2].tooltip,'原厂资料 · Example · Spec（2026-11-09）');assert.deepEqual(fact,before)
+ assert.equal(vendor[2].tooltip,'原厂资料 · Example · Spec');assert.deepEqual(fact,before)
 })
 test('R22C compiled Mini Qwen and historical cards use the same accessible labels and captured quote as Web',()=>{
  for(const model of STATIC_MODEL_REGISTRY.tokendance.models){
   const data=context.present(model,'','','tokendance');assert.ok(data,model.id);assert.doesNotMatch(JSON.stringify(data.specRows),/不支持/,model.id)
   for(const row of data.specRows.slice(0,2))for(const icon of row.icons)if(icon.state==='unsupported')assert.match(icon.accessibleLabel,/渠道未开放/)
   if(model.id==='qwen3.6-plus')for(const row of data.specRows.slice(0,2))for(const icon of row.icons)assert.equal(icon.tooltip,'渠道标注：文本→文本（2026-11-09）')
-  if(model.id==='deepseek-v4-flash-vision-exp')for(const icon of data.specRows[0].icons){assert.equal(icon.state,'unknown');assert.match(icon.tooltip,/渠道页无此型号.*2026-11-09/)}
+  if(model.id==='deepseek-v4-flash-vision-exp')for(const icon of data.specRows[0].icons){assert.equal(icon.state,'unknown');assert.match(icon.tooltip,/^渠道页无此型号$/)}
  }
 })
 test('R22C Mini WXML binds names, data states and separate strike/question marks; tap opens exact evidence without selecting',()=>{

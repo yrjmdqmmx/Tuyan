@@ -1,3 +1,5 @@
+export const conflictNote:string
+export function fieldSourceLines(f:Record<string,{state:string;provenance:string|null;verifiedAt?:string|null}>,d?:string|null,t?:(s:string)=>string):string[]
 export function cardLifecycle<T extends{sourceUrl?:string|null}>(l:T|null|undefined,a?:{lifecycleSourceUrl?:string|null;excludedSources?:string[]}):(T&{sourceUrl:string})|null
 export function displayModalities(v:string[]):string[]
 export function displayModalityText(v:string):string

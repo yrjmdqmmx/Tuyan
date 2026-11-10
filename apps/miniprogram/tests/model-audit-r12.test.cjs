@@ -50,7 +50,7 @@ test('R12C projection keeps every rendered fact, qualifier, note and source; onl
     for (const field of Object.keys(card.fields)) for (const property of ['value', 'state', 'provenance', 'unsupportedModalities'])
       assert.deepEqual(small.fields[field][property], card.fields[field][property], key + '/' + field + '/' + property)
     assert.equal(small.fields.totalContextTokens.suffix || '', card.fields.totalContextTokens.suffix || '', key + '/qualifier')
-    assert.equal(small.note, full.details[key]?.note || '', key + '/note')
+    assert.equal(small.note, [full.details[key]?.note, require('../../../test-support/fixtures/conflict-cards-r26.json').includes(key) && '该渠道页面与图研之前记录的信息不一致，这里只保留已经核实过的内容，没核实的显示为「未知」。'].filter(Boolean).join('；'), key + '/note')
     assert.equal(small.sourceUrl, card.sources[0], key + '/source')
     assert.equal(small.sourceLabel, modelSourceName(card, card.sources[0]), key + '/label')
     assert.equal(isApiSource(small.sourceUrl, full.sourceChecks), false, key)

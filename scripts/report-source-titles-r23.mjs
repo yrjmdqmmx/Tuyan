@@ -1,4 +1,4 @@
-import i5 from '../config/channel-audit/review-r25-20261110.json' with {type:'json'}
+import i5 from '../config/channel-audit/review-r26-20261110.json' with {type:'json'}
 import {expectedHumanRows} from '../test-support/source-links-i3-r24.mjs'
 // Offline, deterministic title inventory. --check reads only; no Git history
 // needed: the pre-F rows are losslessly frozen in the small gzip fixture.
@@ -24,7 +24,7 @@ for (const [provider, entry] of Object.entries(web.STATIC_MODEL_REGISTRY)) for (
   if (data.lifecycle?.state === 'scheduled' && data.lifecycle.sourceUrl) {
     const url = data.lifecycle.sourceUrl
     const old = titleBaseline.web.find(row=>row.card===card).rows.find(row=>row.url===url)
-    assert.ok(old || i5.models[card]?.sourceUrl === url,card+' lifecycle URL in baseline or explicit I5 evidence')
+    assert.ok(old || i5.models[card]?.sourceUrl === url,card+' lifecycle URL in baseline or explicit I6 evidence')
     notices.push({client:'Web notice dialog',card,url,before:old ? '下线公告 · '+old.label.split(' · ').slice(1).join(' · ') : '无已核实来源',after:'下线公告 · '+sourceTitle(url)})
   }
 }

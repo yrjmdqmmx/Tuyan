@@ -6,10 +6,10 @@ Baseline: `1dcd8b13` (pre-F), frozen in `test-support/fixtures/source-titles-1dc
 
 | Client | Cards | Source rows | Changed titles | Changed cards | Unresolved heuristic findings |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| web | 1064 | 2452 | 2115 | 1011 | 0 |
+| web | 1064 | 2452 | 2114 | 1010 | 0 |
 | mini | 1064 | 1105 | 961 | 954 | 0 |
 
-Also scanned **7 Web lifecycle dialogs**; **6** changed titles are listed separately below. Web tests open every rendered evidence dialog, check the card link/tooltip, and compare every anchor. Mini tests invoke every copy dialog and clipboard callback. Shared-helper parity is checked on all Mini rows.
+Also scanned **7 Web lifecycle dialogs**; **7** changed titles are listed separately below. Web tests open every rendered evidence dialog, check the card link/tooltip, and compare every anchor. Mini tests invoke every copy dialog and clipboard callback. Shared-helper parity is checked on all Mini rows.
 
 Heuristics cover collapsed/split numeric versions, hyphens replacing known dotted versions (letter/version tokens such as Qwen3-8, K2-7 and V4-1), raw hosts/paths, API-prefix subjects, case/punctuation differing from the curated name, leftover slug separators, trailing ellipses and repeated words. The dotted-version oracle independently reads every catalog ID/name, plus the current card ID/name. Genuine parameter/release hyphens such as Qwen3-8B, Qwen3.8-27B and DeepSeek-R1-0528 remain valid. Zero duplicate URLs/labels; source ordering is unchanged. R24 restores 下线公告 on the three explicitly reviewed vendor notice rows per client; every other role prefix remains unchanged.
 
@@ -563,7 +563,6 @@ I5 restores three verified Bailian lifecycle links from notice 118728 and replac
 | web | bailian/qwen3.5-122b-a10b | https://huggingface.co/Qwen/Qwen3.5-122B-A10B | 官方文档 · Hugging Face · Qwen3.5 122B A10B | 官方文档 · Hugging Face · Qwen3.5-122b-a10b |
 | web | bailian/qwen3.5-27b | https://huggingface.co/Qwen/Qwen3.5-27B | 官方文档 · Hugging Face · Qwen3.5 27B | 官方文档 · Hugging Face · Qwen3.5-27b |
 | web | bailian/qwen3.5-35b-a3b | https://huggingface.co/Qwen/Qwen3.5-35B-A3B | 官方文档 · Hugging Face · Qwen3.5 35B A3B | 官方文档 · Hugging Face · Qwen3.5-35b-a3b |
-| web | bailian/qwen3.5-397b-a17b | https://huggingface.co/Qwen/Qwen3.5-397B-A17B | 官方文档 · Hugging Face · Qwen3.5 397B A17B | 官方文档 · Hugging Face · Qwen3.5-397b-a17b |
 | web | bailian/qwen3.5-omni-flash | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash | 官方文档 · 百炼 · qwen3 5 omni flash | 官方文档 · 百炼 · Qwen3.5 Omni Flash |
 | web | bailian/qwen3.5-omni-flash-2026-03-15 | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash | 官方文档 · 百炼 · qwen3 5 omni flash | 官方文档 · 百炼 · Qwen3.5 Omni Flash |
 | web | bailian/qwen3.5-omni-plus | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus | 官方文档 · 百炼 · qwen3 5 omni plus | 官方文档 · 百炼 · Qwen3.5 Omni Plus |
@@ -3128,6 +3127,7 @@ I5 restores three verified Bailian lifecycle links from notice 118728 and replac
 | mini | antling/Ling-3.2-flash | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 官方文档 · developer.ant-ling.com · openai | 官方文档 · 蚂蚁百灵 · OpenAI |
 | mini | antling/Ring-2.6-1T | https://developer.ant-ling.com/zh-CN/docs/models/deprecation/ | 下线公告 · developer.ant-ling.com · deprecation | 下线公告 · 蚂蚁百灵 · 模型下线公告 |
 | mini | novita/ming-image-0.1-design | https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img | 官方文档 · novita.ai · model apis ming image txt2img | 官方文档 · Novita · Model Apis Ming Image Txt2img |
+| Web notice dialog | bailian/qwen3.5-397b-a17b | https://www.aliyun.com/notice/118728 | 无已核实来源 | 下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知 |
 | Web notice dialog | bailian/qwen3.5-plus | https://www.aliyun.com/notice/118728 | 无已核实来源 | 下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知 |
 | Web notice dialog | bailian/qwen3.5-plus-2026-02-15 | https://www.aliyun.com/notice/118728 | 无已核实来源 | 下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知 |
 | Web notice dialog | bailian/qwen3.5-plus-2026-04-20 | https://www.aliyun.com/notice/118728 | 无已核实来源 | 下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知 |

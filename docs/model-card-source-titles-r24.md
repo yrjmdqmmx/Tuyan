@@ -1168,3 +1168,32 @@ Each changed card is listed below with its full ordered source rows, including r
 | notices | bailian/qwen3.5-plus | [] | [{"url":"https://www.aliyun.com/notice/118728","label":"下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"}] |
 | notices | bailian/qwen3.5-plus-2026-02-15 | [] | [{"url":"https://www.aliyun.com/notice/118728","label":"下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"}] |
 | notices | bailian/qwen3.5-plus-2026-04-20 | [] | [{"url":"https://www.aliyun.com/notice/118728","label":"下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"}] |
+
+## R26 I6
+
+All **1,064 cards per client** and all seven retirement dialogs were scanned. One promotional title (one Web row; absent from Mini source rows) was found. The curated capture override changes `官方文档 · 火山方舟 · 豆包编程模型发布！AI 程序员双十一大促9.9元到岗` to `官方文档 · 火山方舟 · 豆包编程模型发布公告`, preserving the role and site prefixes. The strict scanner now rejects 大促, 元到岗, 限时, 秒杀, 优惠, 爆款, 免费领, 抢, 狂欢, 折, exclamation marks, emoji and prices. Captured original titles remain evidence; generated display titles use the override. The existing 14 unfetchable numeric-page exceptions are unchanged.
+
+Bailian qwen3.5-397b-a17b now cites notice 118728 instead of the generic depreciation page. The other six badges retain verified sources; no allow-list exceptions. See [R26 retirement source audit](model-card-qwen35plus-evidence-r24.md#r26-retirement-source-audit).
+
+**Date rule:** show the card verification date once, as the first line. Known-field dates equal to it are omitted; differing dates appear only inside that field's source line, e.g. `最大输出：源自原厂（核实日期：2026-11-10）`. Unknown fields and unknown modality icons never carry a verification date. The dialog's expanded modality descriptions omit tooltip dates because field provenance is already above; standalone known-icon tooltips retain their own dated evidence. Unknown source attribution remains visible. Both clients use `该渠道页面与图研之前记录的信息不一致，这里只保留已经核实过的内容，没核实的显示为「未知」。` on the same 66 conflict cards. Historical reports and raw captures above remain frozen.
+
+| Client | Cards | Source rows | Changed title rows | Changed dialogs | Findings |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| web | 1064 | 2452 | 1 | 1007 | 0 |
+| mini | 1064 | 1105 | 0 | 1064 | 0 |
+| notices | 7 | 7 | 0 | 0 | 0 |
+
+### Captured neutral title override
+
+| URL | Before → after | SHA-256 | Fetch UTC / Asia/Shanghai |
+| --- | --- | --- | --- |
+| https://developer.volcengine.com/articles/7577301460712030258 | 豆包编程模型发布！AI 程序员双十一大促9.9元到岗 → 豆包编程模型发布公告 | `b1a6ca3c2dc5056d7a273fb73d23b82eba4ab679ca4789fffb4be606e5fc4444` | 2026-11-10T00:27:10.927773+00:00 / 2026-11-10T08:27:10.927773+08:00 |
+
+### Complete source-row changes
+
+| Client | Card | Before | After |
+| --- | --- | --- | --- |
+| web | bailian/qwen3.5-397b-a17b | [{"url":"https://help.aliyun.com/zh/model-studio/model-depreciation","label":"下线公告 · 百炼 · 模型下线公告"},{"url":"https://huggingface.co/Qwen/Qwen3.5-397B-A17B","label":"官方文档 · Hugging Face · Qwen3.5-397b-a17b"},{"url":"https://help.aliyun.com/zh/model-studio/model-pricing","label":"官方文档 · 百炼 · 模型定价"}] | [{"url":"https://www.aliyun.com/notice/118728","label":"下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"},{"url":"https://huggingface.co/Qwen/Qwen3.5-397B-A17B","label":"官方文档 · Hugging Face · Qwen3.5-397b-a17b"},{"url":"https://help.aliyun.com/zh/model-studio/model-pricing","label":"官方文档 · 百炼 · 模型定价"}] |
+| web | ark/doubao-seed-code-preview-251028 | [{"url":"https://docs.volcengine.com/docs/ark/model-release-announcement-2025?lang=en","label":"官方文档 · 火山方舟 · Model Release Announcement 2025"},{"url":"https://developer.volcengine.com/articles/7577301460712030258","label":"官方文档 · 火山方舟 · 豆包编程模型发布！AI 程序员双十一大促9.9元到岗"},{"url":"https://www.volcengine.com/docs/82379/1330310","label":"官方文档 · 火山方舟 · 模型列表（产品文档）"},{"url":"https://docs.volcengine.com/docs/82379/1330310","label":"官方文档 · 火山方舟 · 模型列表（开发者文档）"}] | [{"url":"https://docs.volcengine.com/docs/ark/model-release-announcement-2025?lang=en","label":"官方文档 · 火山方舟 · Model Release Announcement 2025"},{"url":"https://developer.volcengine.com/articles/7577301460712030258","label":"官方文档 · 火山方舟 · 豆包编程模型发布公告"},{"url":"https://www.volcengine.com/docs/82379/1330310","label":"官方文档 · 火山方舟 · 模型列表（产品文档）"},{"url":"https://docs.volcengine.com/docs/82379/1330310","label":"官方文档 · 火山方舟 · 模型列表（开发者文档）"}] |
+| mini | bailian/qwen3.5-397b-a17b | [{"url":"https://help.aliyun.com/zh/model-studio/model-depreciation","label":"下线公告 · 百炼 · 模型下线公告"}] | [{"url":"https://www.aliyun.com/notice/118728","label":"下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"}] |
+| notices | bailian/qwen3.5-397b-a17b | [{"url":"https://help.aliyun.com/zh/model-studio/model-depreciation","label":"下线公告 · 百炼 · 模型下线公告"}] | [{"url":"https://www.aliyun.com/notice/118728","label":"下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"}] |
