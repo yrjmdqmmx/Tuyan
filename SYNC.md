@@ -1,3 +1,10 @@
+## 2026-11-10 · R31 Phase I14: immutable historical report checks (not deployed)
+
+- [x] Scripts / historical reports: default R10/R12 checks verify current display projections against the independently captured `bdcc2baf` values, then apply exact hashed patches to the `52e0f161` presentation. All three report artifacts remain byte-identical to main; no historical report was regenerated.
+- [x] Regression / ledger: new scripts tests run both checks without Git and reject unreviewed sources, icon states, URL classifications, identities/order and unchanged-row drift. The local `full.sh` includes R10/R12 and the omitted standalone maintenance checks; main-failing `sync-workflow` and argument-dependent distribution sync are excluded. R11's baseline-dependent default remains unchanged; its explicit frozen check passes. [Cause, scope and validation](docs/model-modality-audit-20261109.md#r31-phase-i14).
+- [x] Validation: **95/95 scripts tests** and **24/24 listed maintenance checks** pass, including `report-changed-tests --check`; historical artifacts and starting HEAD remain unchanged. [Validation record](docs/model-modality-r31-i14-validation.json).
+- [x] Web / Mini / Core / Gateway: no product code, display data, generated catalog, execution contract, saved setting or deployment change; no client follow-up needed.
+
 ## 2026-11-10 · R31 Phase I13: narrow primary-link priority and shared specification titles (not deployed)
 
 - [x] Shared / Web / Mini / Core / Gateway: **82** I12 decisions reviewed individually: **15 kept**, **61 restored**, **6 validated Alibaba model pages**. Keep only same-channel sibling → own endpoint; vendor/list/notice links otherwise return to pre-I12 priority. No new Hugging Face primary. [Decisions and evidence](docs/model-card-primary-links-r31.md).

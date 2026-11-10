@@ -56,6 +56,8 @@ R30 Phase I12: all 1064 rendered Web dialogs and compiled Mini cards enforce pla
 
 R31 Phase I13: all 82 I12 primary changes individually reviewed (15 kept, 61 restored, 6 validated Alibaba pages); four source title casing fixes; shared 模型规格 dialog title on Web/Mini. Existing R30 own-page-for-every-card assertion is superseded by the narrow PM rule, with all Option-A checks retained. Historical I12 fixtures and reports remain unchanged via exact hashed source-only patches. Full-catalog primary parity, no new HF primaries, strict identity/value evidence, URL-wide titles and unchanged execution/picker/size invariants are tested.
 
+R31 Phase I14: no existing test expectation or historical R10/R12 artifact changes. New scripts tests run both default --check commands with Git disabled, pin all three output artifacts to independently read 52e0f161 SHA-256 values, and reject unreviewed URL, icon state, source classification, identity/order and unchanged-row drift. Exact display projections captured independently from 52e0f161 and reviewed HEAD bdcc2baf verify the live inputs before restoring historical report inputs; the compressed fixture and both complete projections are hashed. R11 default remains baseline-worktree-dependent and fails on this branch; its explicit frozen-main/frozen-head regression passes. The local full.sh list includes R10/R12 and every standalone main-passing maintenance check, excluding environment-dependent R11, argument-requiring distribution sync and main-failing sync-workflow. Product code, display data, catalog outputs, execution locks, picker names, login files and size limits are untouched.
+
 ## Assertions and test inputs
 
 | File:line | Old expectation → new expectation | Reason and evidence | Verdict |

@@ -1,0 +1,168 @@
+{
+  "phase": "R31 Phase I14",
+  "head": "bdcc2baf44e0e553a3587a10736ec9afd2f200b1",
+  "main": "52e0f161",
+  "historicalArtifacts": [
+    {
+      "file": "docs/model-card-audit-20261109-r10-counts.json",
+      "sha256": "43e0aa5618892ebd0fd8ecfdf411750b0bd2dd268e9b0b2ccdf0d8f619457dd1",
+      "byteIdenticalToMain": true
+    },
+    {
+      "file": "docs/model-card-audit-20261109-r12-links.md",
+      "sha256": "dced655fbbcce4cf71f92676d08e01bec35975e2c6bf073acfc647e2da86d492",
+      "byteIdenticalToMain": true
+    },
+    {
+      "file": "apps/web/tests/fixtures/r12-final-changed-links.json",
+      "sha256": "60e885e26e3598c48c1fc91a980afef925aeeaddbff60094c324d4a3d0fb8943",
+      "byteIdenticalToMain": true
+    }
+  ],
+  "historicalProjection": {
+    "file": "test-support/fixtures/historical-card-reports-i14.json.gz",
+    "sha256": "8fc45a044f359c583a5c81a22d4de1f5daebca1cdbc5c2f4ae67587083da1b5d"
+  },
+  "scriptsTests": {
+    "command": "node --test scripts/*.test.mjs",
+    "passed": 95,
+    "failed": 0,
+    "skipped": 0,
+    "log": ".audit-input/r24/op14/scripts.log"
+  },
+  "checks": [
+    {
+      "script": "check-docker-bundles",
+      "exitCode": 0
+    },
+    {
+      "script": "capture-tokendance-pages",
+      "exitCode": 0
+    },
+    {
+      "script": "freeze-audit-sources",
+      "exitCode": 0
+    },
+    {
+      "script": "freeze-execution-capability",
+      "exitCode": 0
+    },
+    {
+      "script": "generate-model-audit",
+      "exitCode": 0
+    },
+    {
+      "script": "prepare-model-card-r12-fixtures",
+      "exitCode": 0
+    },
+    {
+      "script": "report-changed-tests",
+      "exitCode": 0
+    },
+    {
+      "script": "report-model-card-r10",
+      "exitCode": 0
+    },
+    {
+      "script": "report-model-card-r12",
+      "exitCode": 0
+    },
+    {
+      "script": "report-model-image-input-r27",
+      "exitCode": 0
+    },
+    {
+      "script": "report-model-modality-phase2",
+      "exitCode": 0
+    },
+    {
+      "script": "report-model-modality-r21",
+      "exitCode": 0
+    },
+    {
+      "script": "report-model-modality-r22b",
+      "exitCode": 0
+    },
+    {
+      "script": "report-model-pm-r30",
+      "exitCode": 0
+    },
+    {
+      "script": "report-primary-links-r31",
+      "exitCode": 0
+    },
+    {
+      "script": "report-source-titles-r23",
+      "exitCode": 0
+    },
+    {
+      "script": "report-source-titles-r24",
+      "exitCode": 0
+    },
+    {
+      "script": "sync-card-display",
+      "exitCode": 0
+    },
+    {
+      "script": "sync-model-catalog",
+      "exitCode": 0
+    },
+    {
+      "script": "sync-agent-knowledge",
+      "exitCode": 0
+    },
+    {
+      "script": "sync-model-version-report",
+      "exitCode": 0
+    },
+    {
+      "script": "sync-primary-links-r31",
+      "exitCode": 0
+    },
+    {
+      "script": "sync-reference-upload",
+      "exitCode": 0
+    },
+    {
+      "script": "sync-thinking",
+      "exitCode": 0
+    }
+  ],
+  "checkLogs": ".audit-input/r24/op14/chk-<script>.log",
+  "r11": {
+    "defaultExitCode": 1,
+    "defaultFailure": "Audit report drift: docs/model-card-audit-20261109-r11-counts.json",
+    "frozenCommand": "node scripts/report-model-card-r11.mjs --frozen-main --frozen-head --check",
+    "frozenExitCode": 0,
+    "mainWithoutSiblingExitCode": 1,
+    "mainWithoutSiblingFailure": "Cannot resolve ../Tuyan-wt-baseline/apps/web/src/lib/modelCardSpecifications.js",
+    "mainWithExistingSiblingExitCode": 0,
+    "scriptAndArtifactsChanged": false
+  },
+  "mainStandaloneChecks": {
+    "passed": [
+      "generate-model-audit",
+      "report-model-card-r10",
+      "report-model-card-r12",
+      "sync-model-catalog",
+      "sync-model-version-report",
+      "sync-reference-upload",
+      "sync-thinking"
+    ],
+    "syncAgentKnowledge": "Sources and outputs equal main; worktree check passes. Temporary export changes esbuild dependency path comments through external node_modules symlinks.",
+    "excluded": {
+      "report-model-card-r11": "Depends on an external sibling baseline; frozen invocation remains in scripts tests.",
+      "sync-agent-distributions": "Requires kind and destination CLI arguments.",
+      "sync-workflow": "Fails on main."
+    }
+  },
+  "scope": {
+    "productDisplayAndCatalogDiffAgainstHead": false,
+    "existingTestExpectationsChanged": false,
+    "historicalArtifactsRegenerated": false,
+    "gitWrites": false,
+    "networkCalls": false,
+    "fullProductBuildsRun": false
+  },
+  "localHarness": ".audit-input/r24/op/full.sh"
+}
