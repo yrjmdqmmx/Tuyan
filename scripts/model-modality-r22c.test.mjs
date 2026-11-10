@@ -22,13 +22,13 @@ test('R22C shared and generated Mini presentation agree across all 1064 identiti
       assert.deepEqual(fields[field], before)
       const table = tables[channel + '/' + model.id]
       for (const icon of icons.filter(icon => ['supported', 'unsupported'].includes(icon.state))) {
-        if (icon.state === 'unsupported' && fields[field].provenance === 'channel') assert.match(icon.tooltip, /^此渠道未开放该模态。渠道标注：/, channel + '/' + model.id)
-        if (table) assert.equal(icon.tooltip, (icon.state === 'unsupported' ? '此渠道未开放该模态。' : '') + `渠道标注：${table.quote}（${table.verifiedAt}）`)
+        if (icon.state === 'unsupported' && fields[field].provenance === 'channel') assert.match(icon.tooltip, /^此渠道不支持(文本|图像|视频|音频)输入$/, channel + '/' + model.id)
+        if (table) assert.equal(icon.tooltip, (icon.state === 'unsupported' ? '此渠道不支持' : '支持') + icon.label + '输入')
         if (channel === 'tokendance') {
           const portal = snapshot.portal[model.id]
           assert.ok(portal)
           const quote = portal.architecture.modality.replace(/text|image|audio|video/g, value => ({text:'文本', image:'图像', audio:'音频', video:'视频'})[value]).replaceAll(',', '、')
-          assert.equal(icon.tooltip, (icon.state === 'unsupported' ? '此渠道未开放该模态。' : '') + `渠道标注：${quote}（${portal.checkedAt.slice(0, 10)}）`)
+          assert.equal(icon.tooltip, (icon.state === 'unsupported' ? '此渠道不支持' : '支持') + icon.label + '输入')
         }
       }
     }

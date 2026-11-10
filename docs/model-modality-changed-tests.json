@@ -2,10 +2,10 @@
   "base": "8c456709",
   "counts": {
     "files": 26,
-    "assertionAndFixtureInputChanges": 193,
+    "assertionAndFixtureInputChanges": 199,
     "consumedJsonFixtures": 2,
     "semanticFixtureChanges": 695,
-    "justified": 887,
+    "justified": 893,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -32,7 +32,8 @@
     "R27 Phase I7: Founder decision A 2026-11-10 restores image input on 14 fal and one Ideogram card after 15 successful public documentation quote checks. The original Phase 2 report remains historical. All-card presentation comparison requires exactly these 15 changes on Web and Mini; six old output citations remain preserved. Main picker names, execution locks, and both Mini byte guards are unchanged. The R9 literal fixture records all 15 old/new URLs and labels. Source report I6 is frozen; I7 is appended. New follow-up comparisons use d1c63994.",
     "R27 Phase I8: founder: grey is enough (R2, 2026-11-10). Revised short labels and evidence prefixes replace strike/question/dash/asterisk assertions with absence and shared-solid-glyph checks. Conditional uses short 支持 in grey, with 有条件支持 only in evidence. The I7 report guard validates exact R2 text before projecting only those strings back to its frozen wording; no state/fact/source or execution assertion is relaxed. All 1064 presentations per client and 15 decision-A image inputs have new independent regression coverage.",
     "R28 Phase I9: founder round 7. Unknown tooltip/accessibility includes the required prefix and existing explanation; conditional uses dark 支持 with its exact qualifier in hover/dialog. All 61 fal catalog fields have freshly validated human sources, and Mini preserves all fal field titles plus nine secondary human links. Literal source/date deltas and the pre-R28 snapshot validate changes before historical projection. Mini setData test doubles now implement native indexed-array patches; the unchanged 128 KiB guard loads all pages. Frozen execution tests, byte guards and identity/name expectations are unchanged.",
-    "R29 Phase I10: 353 conflicting source URLs unified across all catalog surfaces. Vendor/channel roles and endpoint names are identical in Web/Mini; explicit source namespaces replace list-context variants. Literal 997585e2-to-R29 title patches are validated before projecting historical snapshots; every non-title value stays exact. The only locale removal is the unreferenced conditional-support entry. Existing execution tests, name locks, size guards, source URLs and facts stay unchanged. New all-card render/copy/formatter/locale checks are independent of the historical expectations."
+    "R29 Phase I10: 353 conflicting source URLs unified across all catalog surfaces. Vendor/channel roles and endpoint names are identical in Web/Mini; explicit source namespaces replace list-context variants. Literal 997585e2-to-R29 title patches are validated before projecting historical snapshots; every non-title value stays exact. The only locale removal is the unreferenced conditional-support entry. Existing execution tests, name locks, size guards, source URLs and facts stay unchanged. New all-card render/copy/formatter/locale checks are independent of the historical expectations.",
+    "R29 Phase I11 supersedes R27/R28 status copy: every icon has one exact sentence for hover, accessibility and dialog status, with no source/date. Independent all-1064-card Web/Mini/script checks enforce four sentence patterns, state mapping, source-name/date exclusion and full parity. One catalog qualifier plus three fixture qualifiers have explicit concise mappings; custom unknown qualifiers use a safe generic condition. Four modalities per direction remove 12 legacy Web file icons without changing facts. Mini now retains the existing Together conditional qualifier. I10 title rules and historical reports remain frozen through a strictly validated presentation-only projection. No execution lock, login file, size ceiling, saved config or catalog name is changed."
   ],
   "files": [
     {
@@ -1031,9 +1032,25 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 31,
+          "oldLine": 31,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "      for (const label of ['文本', '图像']) input.getByRole('img', { name: `${label}：支持` })\n      for (const label of ['音频', '视频']) input.getByRole('img', { name: `${label}：暂不支持` })\n      for (const label of ['图像', '音频', '视频']) output.getByRole('img', { name: `${label}：暂不支持` })",
+          "new": "      for (const label of ['文本', '图像']) input.getByRole('img', { name: `支持${label}输入` })\n      for (const label of ['音频', '视频']) input.getByRole('img', { name: `此渠道不支持${label}输入` })\n      for (const label of ['图像', '音频', '视频']) output.getByRole('img', { name: `此渠道不支持${label}输出` })",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "0e15d40f66405943ee10863e448e682c05687caa1ad2250fea2e8ee9a165e426"
+      "diffSha256": "74be813832378f44c5d2307042ad8230e37e63d7dd52c69a4119c062a5d70ff4"
     },
     {
       "file": "apps/web/tests/model-audit-r11.test.mjs",
@@ -2292,9 +2309,25 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 42,
+          "oldLine": 42,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  assert.equal(screen.getAllByRole('img',{name:/：未标注 · 暂无官方资料$/}).length,8)",
+          "new": "  assert.equal(screen.getAllByRole('img',{name:/^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/}).length,8)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "74a7dbc0c352a74c0964adb4dc0329cc001bfa94572f53cbab42830d23c0416b"
+      "diffSha256": "a91f3c42d8471add61210859c51b882378d86da52256d9cac4a043db9846c0c9"
     },
     {
       "file": "apps/web/tests/model-audit-r8.test.mjs",
@@ -2625,9 +2658,25 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 116,
+          "oldLine": 116,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  assert.equal(screen.getAllByRole('img',{name:/：未标注 · 暂无官方资料$/}).length,8);",
+          "new": "  assert.equal(screen.getAllByRole('img',{name:/^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/}).length,8);",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "95502bbafaab3a955148a91ff8bc6a3157b7528e9a1b463f5b44107455cef466"
+      "diffSha256": "f7198faf0c3a87636d49620c670df6b7ba40e0e919e5ec06b05956d2f9c904e0"
     },
     {
       "file": "apps/web/tests/model-card-footer-r16.test.mjs",
@@ -2759,7 +2808,7 @@
     },
     {
       "file": "apps/web/tests/model-specifications.test.mjs",
-      "diffSha256": "e7706a32f66c3eeefb6e74294c4b4d17e38796f4f731034052e298e24b508430",
+      "diffSha256": "4a1336bf0dfd32c2a86a95280849f83c4a31fe4b86c97c78aac927b7589f73e7",
       "changes": [
         {
           "line": 80,
@@ -2824,6 +2873,38 @@
             "docs/model-modality-audit-20261109.md#r28-phase-i9",
             "apps/web/tests/model-founder-fixes-r28.test.mjs",
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 161,
+          "oldLine": 161,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  assert.equal(states.find(x=>x.id==='file').detail,'文件（PDF）')",
+          "new": "  assert.deepEqual(states.map(x=>x.id),['text','image','video','audio'])",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 165,
+          "oldLine": 165,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  assert.equal(screen.getAllByRole('img', {name:/：未标注 · 暂无官方资料$/}).length,8)",
+          "new": "  assert.equal(screen.getAllByRole('img', {name:/^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/}).length,8)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -2924,9 +3005,25 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 163,
+          "oldLine": 163,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  assert.equal(card.querySelectorAll('[role=img][aria-label$=\"：未标注 · 暂无官方资料\"]').length, 8)",
+          "new": "  assert.equal(card.querySelectorAll('[role=img][aria-label^=\"官方资料未说明是否支持\"]').length, 8)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "4af31aa1bdb3cf8333562b5b2fd1e6df5b1fdf8c9d9e7df31ae3aee1b89a43ed"
+      "diffSha256": "8a00379a6260b4808d9e23e69bd5e96e446bcc9fd8d175b60765313473e3f0fb"
     },
     {
       "file": "apps/web/tests/tokendance-catalog-r14.test.mjs",
@@ -21697,7 +21794,7 @@
     {
       "file": "apps/web/tests/model-modality-r21.test.mjs",
       "comparisonBase": "2550c736",
-      "diffSha256": "5549cd000cc610aeea91ca34d95dcd5d11fd3d7918312023ea92c5f062b7b612",
+      "diffSha256": "f0f26ea89edf9ce9ab8da937c6de1692b0207335bb0de9ee585e71f204053bc2",
       "changes": [
         {
           "phase": "R22 Phase C",
@@ -21743,13 +21840,29 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 32,
+          "oldLine": 32,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  for (const [id, labels] of [['qwen3.6-plus', ['图像：暂不支持', '视频：暂不支持']], ['kimi-k3.1-pro', ['图像：支持', '视频：支持']], ['minimax-m3.1-flash', ['图像：支持']], ['deepseek-v4.1-flash-1017', ['图像：支持']], ['deepseek-v4-flash-vision-exp', ['文本：未标注 · 渠道页无此型号', '图像：未标注 · 渠道页无此型号', '视频：未标注 · 渠道页无此型号']]]) {",
+          "new": "  for (const [id, labels] of [['qwen3.6-plus', ['此渠道不支持图像输入', '此渠道不支持视频输入']], ['kimi-k3.1-pro', ['支持图像输入', '支持视频输入']], ['minimax-m3.1-flash', ['支持图像输入']], ['deepseek-v4.1-flash-1017', ['支持图像输入']], ['deepseek-v4-flash-vision-exp', ['官方资料未说明是否支持文本输入', '官方资料未说明是否支持图像输入', '官方资料未说明是否支持视频输入']]]) {",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/web/tests/model-card-r22b.test.mjs",
       "comparisonBase": "2550c736",
-      "diffSha256": "c7689d93d0869fc26933ea82aa3fcc25a86351d67d8f96a92c982841f4d04f5b",
+      "diffSha256": "bf2e85e75f71fb2104079a6690ceeb9960c4c364c07b810452ce9c572d5d64e2",
       "changes": [
         {
           "phase": "R22 Phase C",
@@ -21824,6 +21937,22 @@
             "docs/model-modality-audit-20261109.md#r29-phase-i10",
             "apps/web/tests/model-source-titles-r29.test.mjs",
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 73,
+          "oldLine": 73,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  assert.deepEqual(within(screen.getByRole('group',{name:'输入模态'})).getAllByRole('img').map(node=>node.getAttribute('aria-label')),['文本：支持','图像：支持','视频：支持','音频：暂不支持'])",
+          "new": "  assert.deepEqual(within(screen.getByRole('group',{name:'输入模态'})).getAllByRole('img').map(node=>node.getAttribute('aria-label')),['支持文本输入','支持图像输入','支持视频输入','此渠道不支持音频输入'])",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -21938,9 +22067,25 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 48,
+          "oldLine": 48,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "      assert.ok(html.includes(`aria-label=\"${label}：${state === 'supported' ? '支持' : '未标注 · 渠道未标注此模态'}\"`),key+'/'+field+'/'+id)",
+          "new": "      assert.ok(html.includes(`aria-label=\"${state === 'supported' ? '支持' : '官方资料未说明是否支持'}${label}${field === 'inputModalities' ? '输入' : '输出'}\"`),key+'/'+field+'/'+id)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "29020d45ec6615fb7610d5c46dcdf4ac28f10cae900dfa15ceaff51a75b721c0"
+      "diffSha256": "c72acae646255f7a0e1ce1bc32efe5d215dcfabaf8fa84cc4af355fe08d3f9ad"
     },
     {
       "file": "apps/miniprogram/tests/model-card-r22b.test.cjs",
@@ -21983,7 +22128,7 @@
     {
       "file": "apps/miniprogram/tests/model-modality-r22c.test.cjs",
       "comparisonBase": "1dcd8b13",
-      "diffSha256": "7e97bc4d1534be3743af3f059b17d47874829793508c8c8deb1aa2b761af87e5",
+      "diffSha256": "fef0680fefd708d138351b9bcfd1d43d245d5461eca6ca12a660103e369d4af5",
       "changes": [
         {
           "line": 25,
@@ -22226,13 +22371,77 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 13,
+          "oldLine": 13,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": " assert.deepEqual(icons.map(i=>i.accessibleLabel),['文本：支持','图像：暂不支持','视频：未标注 · 渠道未标注此模态','音频：未标注 · 渠道未标注此模态'])\n assert.equal(icons[2].tooltip,'未标注 · 渠道未标注此模态')\n assert.match(icons[0].tooltip,/官方文档.*2026-11-09/)",
+          "new": " assert.deepEqual(icons.map(i=>i.accessibleLabel),['支持文本输入','此渠道不支持图像输入','官方资料未说明是否支持视频输入','官方资料未说明是否支持音频输入'])\n assert.equal(icons[2].tooltip,'官方资料未说明是否支持视频输入')\n assert.match(icons[0].tooltip,/^支持文本输入$/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 17,
+          "oldLine": 17,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": " assert.equal(vendor[1].accessibleLabel,'图像：暂不支持');assert.equal(vendor[1].state,'unsupported')\n assert.equal(vendor[2].tooltip,'未标注 · 官方文档 · Example · Spec');assert.deepEqual(fact,before)",
+          "new": " assert.equal(vendor[1].accessibleLabel,'该模型不支持图像输入');assert.equal(vendor[1].state,'unsupported')\n assert.equal(vendor[2].tooltip,'官方资料未说明是否支持视频输入');assert.deepEqual(fact,before)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 23,
+          "oldLine": 23,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  for(const row of data.specRows.slice(0,2))for(const icon of row.icons)if(icon.state==='unsupported')assert.match(icon.accessibleLabel,/暂不支持/)\n  if(model.id==='qwen3.6-plus')for(const row of data.specRows.slice(0,2))for(const icon of row.icons)assert.equal(icon.tooltip,(icon.state==='unsupported'?'此渠道未开放该模态。':'')+'渠道标注：文本→文本（2026-11-09）')\n  if(model.id==='deepseek-v4-flash-vision-exp')for(const icon of data.specRows[0].icons){assert.equal(icon.state,'unknown');assert.match(icon.tooltip,/^未标注 · 渠道页无此型号$/)}",
+          "new": "  for(const row of data.specRows.slice(0,2))for(const icon of row.icons)if(icon.state==='unsupported')assert.match(icon.accessibleLabel,/^此渠道不支持/)\n  if(model.id==='qwen3.6-plus')for(const row of data.specRows.slice(0,2))for(const icon of row.icons)assert.equal(icon.tooltip,(icon.state==='unsupported'?'此渠道不支持':'支持')+icon.label+row.label)\n  if(model.id==='deepseek-v4-flash-vision-exp')for(const icon of data.specRows[0].icons){assert.equal(icon.state,'unknown');assert.match(icon.tooltip,/^官方资料未说明是否支持(文本|图像|视频|音频)输入$/)}",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 36,
+          "oldLine": 36,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": " instance.showModality({currentTarget:{dataset:{label:'输入 · 图像：暂不支持',detail:'此渠道未开放该模态。渠道标注：文本→文本（2026-11-09）'}}})\n assert.deepEqual(JSON.parse(JSON.stringify(modal)),{title:'输入 · 图像：暂不支持',content:'此渠道未开放该模态。渠道标注：文本→文本（2026-11-09）',showCancel:false})",
+          "new": " instance.showModality({currentTarget:{dataset:{label:'输入 · 此渠道不支持图像输入',detail:'此渠道不支持图像输入'}}})\n assert.deepEqual(JSON.parse(JSON.stringify(modal)),{title:'输入 · 此渠道不支持图像输入',content:'此渠道不支持图像输入',showCancel:false})",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/web/tests/model-card-source-titles-r23.test.mjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "1fa70feb64307446e2a94f81f99267c6f247ecbfcc8508657f8f1554a0ff3eb5",
+      "diffSha256": "0c057cd01c5ceb6732d72a12c164a7f8ff0f3f94445a3772f0a39bbf76f4c578",
       "changes": [
         {
           "line": 25,
@@ -22335,13 +22544,61 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 81,
+          "oldLine": 81,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "      for (const icon of unknown) assert.equal(icon.title, '未标注 · 渠道页无此型号')",
+          "new": "      for (const icon of unknown) assert.match(icon.title, /^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 83,
+          "oldLine": 83,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "      assert.match(screen.getByRole('dialog').textContent, /渠道页无此型号/)",
+          "new": "      assert.match(screen.getByRole('dialog').textContent, /官方资料未说明是否支持图像输入/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 86,
+          "oldLine": 86,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    } else { for (const icon of unknown) assert.match(icon.title, /^未标注 · 渠道未标注此模态/); assert.doesNotMatch(container.innerHTML, /渠道页无此型号/); controls++ }",
+          "new": "    } else { for (const icon of unknown) assert.match(icon.title, /^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/); assert.doesNotMatch(container.innerHTML, /渠道页无此型号/); controls++ }",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "25d0e0bf4c812ca52bce03fdd8088dc76d7166ee8cfc5d08cfb5cb8a5e90356c",
+      "diffSha256": "9d0088449edfe1c65edf0668d66c7d2c86280365f49266fe348122e0a8d7b95b",
       "changes": [
         {
           "line": 16,
@@ -22442,6 +22699,38 @@
             "docs/model-modality-audit-20261109.md#r28-phase-i9",
             "apps/web/tests/model-founder-fixes-r28.test.mjs",
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 56,
+          "oldLine": 56,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    assert.equal(icon.tooltip,'未标注 · 渠道页无此型号')",
+          "new": "    assert.match(icon.tooltip,/^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 61,
+          "oldLine": 61,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  }else {for(const icon of unknown)assert.match(icon.tooltip,/^未标注 · 渠道未标注此模态/);assert.doesNotMatch(JSON.stringify(data.specRows),/渠道页无此型号/);controls++}",
+          "new": "  }else {for(const icon of unknown)assert.match(icon.tooltip,/^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/);assert.doesNotMatch(JSON.stringify(data.specRows),/渠道页无此型号/);controls++}",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -23054,9 +23343,137 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 19,
+          "oldLine": 19,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  for (const [name, state] of [['文本：支持', 'supported'], ['图像：暂不支持', 'unsupported'], ['视频：未标注 · 渠道未标注此模态', 'unknown']]) {",
+          "new": "  for (const [name, state] of [['支持文本输入', 'supported'], ['此渠道不支持图像输入', 'unsupported'], ['官方资料未说明是否支持视频输入', 'unknown']]) {",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 27,
+          "oldLine": 27,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  assert.match(inputs.getByRole('img', {name:/^视频：未标注 · /}).title, /^未标注 · 渠道未标注此模态$/)",
+          "new": "  assert.match(inputs.getByRole('img', {name:/^官方资料未说明是否支持视频输入$/}).title, /^官方资料未说明是否支持视频输入$/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 41,
+          "oldLine": 41,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    for (const icon of container.querySelectorAll('[data-state=\"unsupported\"]')) assert.match(icon.getAttribute('aria-label'), /暂不支持/)",
+          "new": "    for (const icon of container.querySelectorAll('[data-state=\"unsupported\"]')) assert.match(icon.getAttribute('aria-label'), /^此渠道不支持/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 44,
+          "oldLine": 44,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "      for (const icon of inputs.getAllByRole('img')) assert.equal(icon.title, (icon.dataset.state === 'unsupported' ? '此渠道未开放该模态。' : '') + '渠道标注：文本→文本（2026-11-09）')",
+          "new": "      for (const icon of inputs.getAllByRole('img')) assert.equal(icon.title, icon.getAttribute('aria-label'))",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 53,
+          "oldLine": 53,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  assert.equal(inputs.getByRole('img', {name:'图像：暂不支持'}).dataset.state, 'unsupported')\n  assert.match(inputs.getByRole('img', {name:'文本：支持'}).title, /^官方文档.*2026-11-09/)\n  assert.equal(inputs.getByRole('img', {name:/^视频：未标注 · /}).title, '未标注 · 官方文档 · Example · Spec')",
+          "new": "  assert.equal(inputs.getByRole('img', {name:'该模型不支持图像输入'}).dataset.state, 'unsupported')\n  assert.match(inputs.getByRole('img', {name:'支持文本输入'}).title, /^支持文本输入$/)\n  assert.equal(inputs.getByRole('img', {name:/^官方资料未说明是否支持视频输入$/}).title, '官方资料未说明是否支持视频输入')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 59,
+          "oldLine": 59,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    for (const icon of within(screen.getByRole('group',{name:'输入模态'})).getAllByRole('img')) assert.equal(icon.title, (icon.dataset.state === 'unsupported' ? '此渠道未开放该模态。' : '') + `渠道标注：${row.quote}（${row.verifiedAt}）`, key)",
+          "new": "    for (const icon of within(screen.getByRole('group',{name:'输入模态'})).getAllByRole('img')) assert.equal(icon.title, icon.getAttribute('aria-label'), key)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 70,
+          "oldLine": 70,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    assert.match(screen.getByRole('dialog').textContent, /渠道标注：文本→文本\\n/)",
+          "new": "    assert.match(screen.getByRole('dialog').textContent, /支持文本输入\\n/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 72,
+          "oldLine": 72,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    assert.match(screen.getByRole('dialog').textContent, /图像：暂不支持/)\n    assert.match(screen.getByRole('dialog').textContent, /此渠道未开放该模态。渠道标注：文本→文本/)",
+          "new": "    assert.match(screen.getByRole('dialog').textContent, /此渠道不支持图像输入/)\n    assert.match(screen.getByRole('dialog').textContent, /此渠道不支持视频输入/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "4d7972454c11326b6ea6eff9e541fc906860a5a2f1d6ae2917b11b80ad65a295"
+      "diffSha256": "b93967b5445bef8363a2b2d86fdb78e069811597efc940ad41f65f577e16c6eb"
     },
     {
       "file": "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
@@ -25389,9 +25806,25 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 70,
+          "oldLine": 70,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": " assert.equal(states[1].state,'unknown');assert.equal(states[1].tooltip,'未标注 · 官方文档 · DeepSeek · 更新日志 2026-04-24')\n assert.equal(modalityIconStates('',{state:'unknown',provenance:null})[1].tooltip,'未标注 · 暂无官方资料')",
+          "new": " assert.equal(states[1].state,'unknown');assert.equal(states[1].tooltip,'官方资料未说明是否支持图像输入')\n assert.equal(modalityIconStates('',{state:'unknown',provenance:null})[1].tooltip,'官方资料未说明是否支持图像输入')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ba7b5af01a5905a3deaf23bae5807af9a8ceee2e284af718a22b0d21e2be96ad"
+      "diffSha256": "f3ef4518bf87cf0e6bb903f8a7fd47f01b6dc6370e5ce77d876031f1033a4132"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
@@ -25639,9 +26072,41 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 14,
+          "oldLine": 14,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  const historical = new Set()",
+          "new": "  const historical = historicalChannelIds(pages)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 37,
+          "oldLine": 37,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    assert.equal(icon.tooltip,id==='extra-retired-model'?'未标注 · 渠道页无此型号':'未标注 · 渠道未标注此模态'); assert.equal(icon.state,'unknown')",
+          "new": "    assert.equal(icon.tooltip,'官方资料未说明是否支持'+icon.label+'输入'); assert.equal(icon.state,'unknown')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "bd45148970707aeb9fc2ecbf33c6d4e33545c5f8ad1a15f391106799d273f620"
+      "diffSha256": "6697658fd996af335bed50cfb87b340ffd1f3f365629603c76cad1d284efc404"
     },
     {
       "file": "apps/web/tests/model-card-r24.test.mjs",
@@ -25690,9 +26155,41 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 37,
+          "oldLine": 37,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  const historical = new Set()",
+          "new": "  const historical = historicalChannelIds(pages)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 56,
+          "oldLine": 56,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    assert.equal(icon.tooltip, id === 'extra-retired-model' ? '未标注 · 渠道页无此型号' : '未标注 · 渠道未标注此模态')",
+          "new": "    assert.equal(icon.tooltip, '官方资料未说明是否支持' + icon.label + '输入')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "44818eae8d44fa0a9e989647011434c78c8304eeafd71f5f2ec856ed14880614"
+      "diffSha256": "a48e6e436bde263ce6934e3c462b3925b5a69f64325baa889d60b1b3bf5fddd0"
     },
     {
       "file": "test-support/fixtures/model-card-r24.json",
@@ -27297,9 +27794,41 @@
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 25,
+          "oldLine": 25,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "        if (icon.state === 'unsupported' && fields[field].provenance === 'channel') assert.match(icon.tooltip, /^此渠道未开放该模态。渠道标注：/, channel + '/' + model.id)\n        if (table) assert.equal(icon.tooltip, (icon.state === 'unsupported' ? '此渠道未开放该模态。' : '') + `渠道标注：${table.quote}（${table.verifiedAt}）`)",
+          "new": "        if (icon.state === 'unsupported' && fields[field].provenance === 'channel') assert.match(icon.tooltip, /^此渠道不支持(文本|图像|视频|音频)输入$/, channel + '/' + model.id)\n        if (table) assert.equal(icon.tooltip, (icon.state === 'unsupported' ? '此渠道不支持' : '支持') + icon.label + '输入')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 31,
+          "oldLine": 31,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "          assert.equal(icon.tooltip, (icon.state === 'unsupported' ? '此渠道未开放该模态。' : '') + `渠道标注：${quote}（${portal.checkedAt.slice(0, 10)}）`)",
+          "new": "          assert.equal(icon.tooltip, (icon.state === 'unsupported' ? '此渠道不支持' : '支持') + icon.label + '输入')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "0d076f1a3f4d89de8e7b31715d8c3dd33895c33a2ed479903ea16dd84f35bdaf"
+      "diffSha256": "6245312c93e3a070d8fa6cfd29653e4587eb3400387e072a30dd9ba848ccb9a6"
     },
     {
       "file": "test-support/image-input-r27.mjs",
@@ -27349,9 +27878,73 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 22,
+          "oldLine": 22,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "export function assertImageInput(key, fact, icons, sources) {",
+          "new": "export function assertImageInput(key, fact, icons, sources, historical = false) {",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 32,
+          "oldLine": 32,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  assert.equal(image.accessibleLabel, '图像：支持', key)\n  assert.match(image.tooltip, /(?:渠道资料|官方文档) · .*(?:编辑接口|Edit API 文档)（\\d{4}-\\d{2}-\\d{2}）/, key)",
+          "new": "  assert.equal(image.accessibleLabel, historical ? '图像：支持' : '支持图像输入', key)\n  if (historical) assert.match(image.tooltip, /(?:渠道资料|官方文档) · .*(?:编辑接口|Edit API 文档)（\\d{4}-\\d{2}-\\d{2}）/, key)\n  if (!historical) assert.equal(image.tooltip, '支持图像输入', key)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 64,
+          "oldLine": 63,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    assertImageInput(key, row.web.data.inputFact, row.web.inputIcons, row.web.sources)\n    assertImageInput(key, row.mini.audit.fields.inputModalities, row.mini.card.specRows[0].icons, row.mini.card.specSources)",
+          "new": "    assertImageInput(key, row.web.data.inputFact, row.web.inputIcons, row.web.sources, true)\n    assertImageInput(key, row.mini.audit.fields.inputModalities, row.mini.card.specRows[0].icons, row.mini.card.specSources, true)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 104,
+          "oldLine": 103,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "        outputIcons:web.modalityIconStates(data.output, data.outputFact, channel, model.id),",
+          "new": "        outputIcons:web.modalityIconStates(data.output, data.outputFact, channel, model.id, 'output'),",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "9af833c05a4120f7df3854d29a379212d88375f300f95e03f3306055ba8dfe37"
+      "diffSha256": "b97a90a7ed65cff6cea464e2ff31df18e5b2ea355b3b31f19766aa31adfa98cb"
     },
     {
       "file": "scripts/report-changed-tests.mjs",
@@ -27446,9 +28039,41 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 62,
+          "oldLine": 62,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13', 'fd29cf36', '4e18513c', 'cd72eace', '9a7128d6', 'f8ff7648', 'd29097c0', '6864824a', 'd1c63994', '105744a9', '7858d7a4', '997585e2'].includes(file.comparisonBase))",
+          "new": "  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13', 'fd29cf36', '4e18513c', 'cd72eace', '9a7128d6', 'f8ff7648', 'd29097c0', '6864824a', 'd1c63994', '105744a9', '7858d7a4', '997585e2', '873fc7fd'].includes(file.comparisonBase))",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 83,
+          "oldLine": 83,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  '# Changed test expectations — R22, R23 Phases E/F/F3 and R24 Phases I1/I2/I3/I4 and R25 Phase I5 and R26 Phase I6 and R27 Phases I7/I8 and R28 Phase I9 and R29 Phase I10', '',",
+          "new": "  '# Changed test expectations — R22, R23 Phases E/F/F3 and R24 Phases I1/I2/I3/I4 and R25 Phase I5 and R26 Phase I6 and R27 Phases I7/I8 and R28 Phase I9 and R29 Phases I10/I11', '',",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "2a2119afdf3d6ae2a2f878b6ade029a76d0530e462e38f239b9e9d0b8b26d949"
+      "diffSha256": "30c282ca3e4192a87a15878c57d79ee276cce791d2096034c2982f2e543b9f11"
     },
     {
       "file": "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs",
@@ -27543,9 +28168,89 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 6,
+          "oldLine": 6,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": " const {expectedR29:expectedR28}=await import('../../../test-support/source-title-history-r29.mjs')",
+          "new": " const {expectedI11:expectedR28}=await import('../../../test-support/source-title-history-r29.mjs')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 23,
+          "oldLine": 23,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "   assert.match(icon.accessibleLabel,/^(文本|图像|视频|音频)：(支持|暂不支持|未标注 · .+)$/)",
+          "new": "   assert.match(icon.accessibleLabel,/^(支持|此渠道不支持|该模型不支持|官方资料未说明是否支持)(文本|图像|视频|音频)(输入|输出)(（[^（）]+）)?$/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 30,
+          "oldLine": 30,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "   assert.equal(image.state,'supported');assert.equal(image.accessibleLabel,'图像：支持');decisionA++",
+          "new": "   assert.equal(image.state,'supported');assert.equal(image.accessibleLabel,'支持图像输入');decisionA++",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 36,
+          "oldLine": 36,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": " for(const icon of vendor)assert.equal(icon.tooltip,'原厂资料标明不支持。官方文档 · Example · Spec（2026-11-09）')",
+          "new": " for(const icon of vendor)assert.equal(icon.tooltip,'该模型不支持' + icon.label + '输入')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 38,
+          "oldLine": 38,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": " assert.equal(legacy[1].accessibleLabel,'图像：未标注 · 暂无官方资料');assert.equal(legacy[3].accessibleLabel,'音频：支持')\n assert.equal(legacy[3].tooltip,'支持（条件：音频（有限支持）） · 暂无官方资料')",
+          "new": " assert.equal(legacy[1].accessibleLabel,'官方资料未说明是否支持图像输入');assert.equal(legacy[3].accessibleLabel,'支持音频输入（仅部分音频功能）')\n assert.equal(legacy[3].tooltip,'支持音频输入（仅部分音频功能）')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "e1bfe61aa615ea937c7a7f07b92f70f04aedbe66ffaa7c34552dd21c21bd3b7e"
+      "diffSha256": "4944e8b8d66c07f24927ea3c3f0848e06961fa0128fec6a3ee6fac0b6b14f5c8"
     },
     {
       "file": "apps/web/tests/model-icon-simplify-r27.test.mjs",
@@ -27730,9 +28435,137 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 10,
+          "oldLine": 10,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "import {expectedR29 as expectedR28} from '../../../test-support/source-title-history-r29.mjs'",
+          "new": "import {expectedI11 as expectedR28} from '../../../test-support/source-title-history-r29.mjs'",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 39,
+          "oldLine": 39,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "          assert.match(node.getAttribute('aria-label'), /^(文本|图像|视频|音频|文件)：(支持|暂不支持|未标注 · .+)$/)",
+          "new": "          assert.match(node.getAttribute('aria-label'), /^(支持|此渠道不支持|该模型不支持|官方资料未说明是否支持)(文本|图像|视频|音频)(输入|输出)(（[^（）]+）)?$/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 53,
+          "oldLine": 53,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "          assert.equal(image.dataset.state, 'supported'); assert.equal(image.getAttribute('aria-label'), '图像：支持')",
+          "new": "          assert.equal(image.dataset.state, 'supported'); assert.equal(image.getAttribute('aria-label'), '支持图像输入')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 71,
+          "oldLine": 71,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    assert.match(icon.accessibleLabel, /：暂不支持$/)\n    assert.equal(icon.tooltip, '原厂资料标明不支持。官方文档 · Example · Spec（2026-11-09）')",
+          "new": "    assert.match(icon.accessibleLabel, /^该模型不支持(文本|图像|视频|音频)输入$/)\n    assert.equal(icon.tooltip, '该模型不支持' + icon.label + '输入')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 78,
+          "oldLine": 78,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    assert.match(document.querySelector('.model-evidence-dialog').textContent, /原厂资料标明不支持。官方文档 · Example · Spec/)",
+          "new": "    assert.match(document.querySelector('.model-evidence-dialog').textContent, /该模型不支持图像输入/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 81,
+          "oldLine": 81,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  assert.equal(icons[1].state, 'unlisted'); assert.equal(icons[1].accessibleLabel, '图像：未标注 · 暂无官方资料')\n  assert.equal(icons[3].state, 'conditional'); assert.equal(icons[3].accessibleLabel, '音频：支持')\n  assert.equal(icons[3].tooltip, '支持（条件：音频（有限支持）） · 暂无官方资料')",
+          "new": "  assert.equal(icons[1].state, 'unlisted'); assert.equal(icons[1].accessibleLabel, '官方资料未说明是否支持图像输入')\n  assert.equal(icons[3].state, 'conditional'); assert.equal(icons[3].accessibleLabel, '支持音频输入（仅部分音频功能）')\n  assert.equal(icons[3].tooltip, '支持音频输入（仅部分音频功能）')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 89,
+          "oldLine": 89,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    assert.ok(audio); assert.equal(audio.getAttribute('aria-label'), '音频：支持'); assert.equal(getComputedStyle(audio).color, rgb(ink))",
+          "new": "    assert.ok(audio); assert.equal(audio.getAttribute('aria-label'), '支持音频输入（仅部分音频功能）'); assert.equal(getComputedStyle(audio).color, rgb(ink))",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 96,
+          "oldLine": 96,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    assert.match(document.querySelector('.model-evidence-dialog').textContent, /支持（条件：音频（有限支持））/)",
+          "new": "    assert.match(document.querySelector('.model-evidence-dialog').textContent, /支持音频输入（仅部分音频功能）/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "5caee6a531687ab23a468a3df4732e190191036534fc1c385e169d11ce2cbc41"
+      "diffSha256": "e6e374b3cde9b44d22e8db725bfddd0363d16bf7efae500ae6df60c227cf766b"
     },
     {
       "file": "test-support/icon-simplify-r27.mjs",
@@ -27819,9 +28652,25 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 18,
+          "oldLine": 18,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    assert.equal(modal.title, '图像：支持'); assert.equal(modal.content, icon.tooltip)",
+          "new": "    assert.equal(modal.title, '支持图像输入'); assert.equal(modal.content, icon.tooltip)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "d492720ec192fd0cd059cd93f68a20208b51f705a9b18fe014adf91c071ddd33"
+      "diffSha256": "77035f831effe462a976323bcc30cbe8a337025183d6574c5abc6ff8a5df6b00"
     },
     {
       "file": "apps/web/tests/model-founder-fixes-r28.test.mjs",
@@ -27841,9 +28690,105 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 9,
+          "oldLine": 9,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "test('R28 every fal catalog field shows its verified title in rendered hover and dialog; JSON attribution stays plain', () => {",
+          "new": "test('R28 every fal catalog field shows its verified title in the dialog source section; JSON attribution stays plain', () => {",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 16,
+          "oldLine": 16,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "      assert.ok([...group.children].some(icon => icon.title.includes(title)), row.identity)",
+          "new": "      assert.ok([...group.children].every(icon => icon.title === icon.getAttribute('aria-label')), row.identity)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 30,
+          "oldLine": 30,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "(absent)",
+          "new": "    assert.doesNotMatch(dialog.textContent, /暂无官方资料/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 35,
+          "oldLine": 34,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "test('R28 Kimi K3 unknown icon retains its modality and exact prefixed source explanation', () => {",
+          "new": "test('R28 Kimi K3 unknown icon uses its exact status sentence without attribution', () => {",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 41,
+          "oldLine": 40,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "      assert.match(icon.title, /^未标注 · /)\n      assert.equal(icon.getAttribute('aria-label').split('：').slice(1).join('：'), icon.title)",
+          "new": "      assert.match(icon.title, /^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/)\n      assert.equal(icon.getAttribute('aria-label'), icon.title)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 44,
+          "oldLine": 43,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    assert.ok(icons.some(icon => icon.title === '未标注 · 图研既有核实：官方文档 · Hugging Face · Kimi K3'))",
+          "new": "    assert.ok(icons.some(icon => icon.title === '官方资料未说明是否支持图像输出'))",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f91d188c712029f1a16abc15719b93127fe17735a942ec31bbe1f33bae4d12d4"
+      "diffSha256": "e508785d37f2af14416ef23fb28963405cd97055680788b05b3f2997bf1c07a7"
     },
     {
       "file": "apps/web/tests/model-image-input-r27.test.mjs",
@@ -27863,9 +28808,41 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 22,
+          "oldLine": 22,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "      assert.match(trigger.getAttribute('aria-label'), /图像：支持/)",
+          "new": "      assert.match(trigger.getAttribute('aria-label'), /支持图像输入/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 26,
+          "oldLine": 26,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "      assert.match(dialog.textContent, /图像：支持/)",
+          "new": "      assert.match(dialog.textContent, /支持图像输入/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "5ef12d161e837e75e64495454babad6fa6bd549202887994ed91f05493662651"
+      "diffSha256": "36b74da228a1c5639849c2edd2175d3064682f09bda0a13daf0fc39aeba83f6b"
     },
     {
       "file": "scripts/model-icon-simplify-r27.test.mjs",
@@ -28170,6 +29147,242 @@
         }
       ],
       "diffSha256": "26a6e8f57048831ffa3a0dc9c481ad2ebc77a57c6e5005f713ec9925f167cb8c"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs",
+      "comparisonBase": "873fc7fd",
+      "changes": [
+        {
+          "line": 26,
+          "oldLine": 26,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": " assert.equal(audio.state,'conditional');assert.equal(audio.accessibleLabel,'音频：支持')\n assert.equal(audio.tooltip,'支持（条件：音频（需开启音频模式）） · 渠道资料 · fal 模型目录')",
+          "new": " assert.equal(audio.state,'conditional');assert.equal(audio.accessibleLabel,'支持音频输入（需开启音频模式）')\n assert.equal(audio.tooltip,'支持音频输入（需开启音频模式）')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 31,
+          "oldLine": 31,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": " assert.equal(modal.title,'音频：支持');assert.equal(modal.content,audio.tooltip)",
+          "new": " assert.equal(modal.title,'支持音频输入（需开启音频模式）');assert.equal(modal.content,audio.tooltip)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "663161edfe783b8af1751303f83e4a9a208759930d837b0e1568fd4d4db2ab47"
+    },
+    {
+      "file": "scripts/model-founder-fixes-r28.test.mjs",
+      "comparisonBase": "873fc7fd",
+      "changes": [
+        {
+          "line": 45,
+          "oldLine": 45,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "    assert.ok(web.some(icon => icon.tooltip.includes(title)), row.identity)",
+          "new": "    assert.ok(card.web.sources.some(source => source.url === row.sourceUrl && source.label === title), row.identity)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 53,
+          "oldLine": 53,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "      assert.match(icon.tooltip, /^未标注 · .+/)\n      assert.equal(icon.accessibleLabel, icon.label + '：' + icon.tooltip)",
+          "new": "      assert.match(icon.tooltip, /^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/)\n      assert.equal(icon.accessibleLabel, icon.tooltip)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 56,
+          "oldLine": 56,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "      assert.equal(icon.accessibleLabel, icon.label + '：支持')\n      assert.ok(icon.tooltip.startsWith('支持（条件：' + icon.detail + '） · '))",
+          "new": "      assert.equal(icon.accessibleLabel, icon.tooltip)\n      assert.match(icon.tooltip, /^支持(文本|图像|视频|音频)(输入|输出)（[^（）]+）$/)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 61,
+          "oldLine": 61,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  assert.ok(kimi); assert.equal(kimi.accessibleLabel, kimi.label + '：' + kimi.tooltip)",
+          "new": "  assert.ok(kimi); assert.equal(kimi.accessibleLabel, kimi.tooltip)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 63,
+          "oldLine": 63,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  assert.equal(fallback[1].tooltip, '渠道资料 · fal 模型目录')",
+          "new": "  assert.equal(fallback[1].tooltip, '支持图像输入')",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "e6d2d5b47efe06597fa7710facce5e307c464f75290bad9853a57dc06c33cf50"
+    },
+    {
+      "file": "test-support/source-title-history-r29.mjs",
+      "comparisonBase": "873fc7fd",
+      "changes": [
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "(absent)",
+          "new": "import {expectedIcons} from './status-sentences-r29.mjs'",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 24,
+          "oldLine": 23,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "export const restoreR29Titles = rows => applyR29Titles(rows, true)",
+          "new": "export const restoreR29Titles = rows => applyR29Titles(restoreI11Statuses(rows), true)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 39,
+          "oldLine": 38,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "(absent)",
+          "new": "\n// I11 replaces only icon text and removes the legacy Web-only fifth file icon.\n// Assert the new wording independently before restoring frozen I10 history.\nexport function restoreI11Statuses(rows) {\n  const copy = structuredClone(rows)\n  for (const [key, row] of Object.entries(copy)) for (const [i, direction] of ['input','output'].entries()) {\n    const old = expectedR29[key]\n    const web = old.web[direction + 'Icons'], mini = old.mini.card.specRows[i].icons\n    const qualifiedMini = miniWithConditions(mini, web)\n    assert.deepEqual(row.web[direction + 'Icons'], expectedIcons(web, row.web.data[direction + 'Fact'], direction), key + ' unexpected changed card/field')\n    assert.deepEqual(row.mini.card.specRows[i].icons, expectedIcons(qualifiedMini, row.mini.audit.fields[direction + 'Modalities'], direction), key + ' unexpected changed card/field')\n    row.web[direction + 'Icons'] = structuredClone(web)\n    row.mini.card.specRows[i].icons = structuredClone(mini)\n  }\n  return copy\n}\nfunction miniWithConditions(mini, web) {\n  return mini.map(icon => web.some(i => i.state === 'conditional') ? {...icon, state:web.find(i => i.id === icon.id).state, detail:web.find(i => i.id === icon.id).detail} : icon)\n}\nexport const expectedI11 = structuredClone(expectedR29)\nfor (const row of Object.values(expectedI11)) for (const [i, direction] of ['input','output'].entries()) {\n  row.web[direction + 'Icons'] = expectedIcons(row.web[direction + 'Icons'], row.web.data[direction + 'Fact'], direction)\n  row.mini.card.specRows[i].icons = expectedIcons(miniWithConditions(row.mini.card.specRows[i].icons, row.web[direction + 'Icons']), row.mini.audit.fields[direction + 'Modalities'], direction)\n}",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "67a2d5a32897c7f0b42c0f4de790b1c5d74afe68cb2f340ac694d3b8b78bc60c"
+    },
+    {
+      "file": "test-support/source-title-report-r29.mjs",
+      "comparisonBase": "873fc7fd",
+      "changes": [
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "(absent)",
+          "new": "import {restoreI11Statuses} from './source-title-history-r29.mjs'",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 23,
+          "oldLine": 22,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "(absent)",
+          "new": "// I10 occurrence counts are historical: validate I11 then restore only its icon wording.\n// Current source titles are still scanned separately over all rendered/source-copy rows.",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 26,
+          "oldLine": 23,
+          "comparisonBase": "873fc7fd",
+          "phase": "R29 Phase I11",
+          "old": "  const rows = await currentTitlePresentations(), before = sourceSurfaces(r29Baseline.rows), after = sourceSurfaces(rows)",
+          "new": "  const rows = restoreI11Statuses(await currentTitlePresentations()), before = sourceSurfaces(r29Baseline.rows), after = sourceSurfaces(rows)",
+          "reason": "Founder decision 2026-11-10 19:33: exact modality + direction status sentences replace short labels and attribution in hover/accessibility/dialogs. Preserve source titles/dates in the source section, frozen evidence and all execution facts; project the single Mini conditional qualifier and remove the twelve legacy Web-only fifth file icons. Historical I10 reports are restored only after independent exact I11 assertions.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i11",
+            "apps/web/tests/status-sentences-r29.test.mjs",
+            "apps/miniprogram/tests/status-sentences-r29.test.cjs",
+            "scripts/status-sentences-r29.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "8d4676a78ce3f22fb9231f3dd4ccd3c5b278e2deab8e0e9b0c6ccd4cffd51390"
     }
   ]
 }

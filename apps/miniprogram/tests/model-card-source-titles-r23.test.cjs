@@ -53,12 +53,12 @@ test('R23F Mini icon taps show the missing-page hint for exactly seven historica
   if(historicalIds.includes(model.id)){
    assert.ok(unknown.length,model.id)
    for(const icon of unknown){
-    assert.equal(icon.tooltip,'未标注 · 渠道页无此型号')
+    assert.match(icon.tooltip,/^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/)
     definition.methods.showModality({currentTarget:{dataset:{label:icon.accessibleLabel,detail:icon.tooltip}}})
     assert.equal(modal.content,icon.tooltip);assert.equal(modal.showCancel,false)
    }
    changed++
-  }else {for(const icon of unknown)assert.match(icon.tooltip,/^未标注 · 渠道未标注此模态/);assert.doesNotMatch(JSON.stringify(data.specRows),/渠道页无此型号/);controls++}
+  }else {for(const icon of unknown)assert.match(icon.tooltip,/^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/);assert.doesNotMatch(JSON.stringify(data.specRows),/渠道页无此型号/);controls++}
  }
  assert.equal(changed,7);assert.equal(controls,67)
 })

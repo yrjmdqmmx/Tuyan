@@ -45,7 +45,7 @@ test('phase 2 full Core objects, saved IDs, library rows, picker options and Min
     const html = renderToStaticMarkup(React.createElement(ModelSpecifications,{provider:channel,model}))
     for (const [field, row] of Object.entries(reviews)) for (const [id, state] of Object.entries(row.decisions)) if (id !== 'file') {
       const label = {text:'文本',image:'图像',audio:'音频',video:'视频'}[id]
-      assert.ok(html.includes(`aria-label="${label}：${state === 'supported' ? '支持' : '未标注 · 渠道未标注此模态'}"`),key+'/'+field+'/'+id)
+      assert.ok(html.includes(`aria-label="${state === 'supported' ? '支持' : '官方资料未说明是否支持'}${label}${field === 'inputModalities' ? '输入' : '输出'}"`),key+'/'+field+'/'+id)
     }
   }
 })

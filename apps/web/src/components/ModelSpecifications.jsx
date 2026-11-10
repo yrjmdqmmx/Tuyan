@@ -1,22 +1,23 @@
+import { isApiSource } from '../../../../packages/api/src/model-card-sources.mjs'
 import { auditedModelSpecs } from '../lib/modelAudit.js'
 import { cardLifecycle, visibleSourceTitle, fieldSourceLines } from '../../../../packages/api/src/card-presentation.mjs'
 import { modelLifecycleMessage } from '../lib/modelUnavailablePresentation.js'
 import { useState } from 'react'
-import { ArrowDownToLine, ArrowUpFromLine, ScanText, TextCursorInput, ExternalLink, Type, Image, AudioLines, Video, FileText } from 'lucide-react'
+import { ArrowDownToLine, ArrowUpFromLine, ScanText, TextCursorInput, ExternalLink, Type, Image, AudioLines, Video } from 'lucide-react'
 import { modelCardSpecifications } from '../lib/modelCardSpecifications'
 import { modelSourceRows } from '../lib/modelCardSources.js'
 import { modalityIconStates } from '../lib/modelModalityIcons'
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import WorkspaceDialog from '../workspace/WorkspaceDialog.jsx'
 
-const icons = { text: Type, image: Image, audio: AudioLines, video: Video, file: FileText }
+const icons = { text: Type, image: Image, audio: AudioLines, video: Video }
 
 function ModalityIcons({ states, direction }) {
   const { t } = useAppLocale()
   return <span className="model-modality-icons" role="group" aria-label={t(direction)}>
     {states.map(({ id, state, accessibleLabel, tooltip }) => {
       const Icon = icons[id]
-      const description = accessibleLabel.split(/(：| · )/).map(part => t(part)).join('')
+      const description = t(accessibleLabel)
       return <span key={id} className={`model-modality-icon is-${state}`} data-state={state} role="img" aria-label={description} title={t(tooltip)}>
         <Icon size={20} strokeWidth={1.8} aria-hidden="true" />
       </span>
@@ -29,17 +30,14 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
   const [showSources, setShowSources] = useState(false)
   const data = modelCardSpecifications(provider, model)
   const sourceRows = modelSourceRows(data)
-  const inputs = modalityIconStates(data.input, data.inputFact, provider, model.id), outputs = modalityIconStates(data.output, data.outputFact, provider, model.id)
-  const modalityDetails = [[t('输入'), inputs, data.inputFact], [t('输出'), outputs, data.outputFact]].map(([direction, states, fact]) => `${direction}：${states.map(item => t(item.accessibleLabel)).join('；')}\n${[...new Set(states.map(item => {
-    const date = !['unknown','unlisted'].includes(item.state) && fact.verifiedAt && `（${fact.verifiedAt}）`
-    return t(date && item.tooltip.endsWith(date) ? item.tooltip.slice(0, -date.length) : item.tooltip)
-  }))].join('\n')}`)
+  const inputs = modalityIconStates(data.input, data.inputFact, provider, model.id), outputs = modalityIconStates(data.output, data.outputFact, provider, model.id, 'output')
+  const modalityDetails = [...inputs, ...outputs].map(item => t(item.tooltip))
   const vendorOrigin = scope => scope === '原厂' ? <small className="model-spec-origin">{t('源自原厂')}</small> : null
   const provenance = fieldSourceLines(data.fields, data.checkedAt, t)
   const details = [...new Set([data.checkedAt && `${t('核实日期')}：${data.checkedAt}`, ...provenance, ...modalityDetails,
     data.contextExact && `${t('上下文窗口')}：${data.contextExact}`, data.maxOutputExact && `${t('最大输出')}：${data.maxOutputExact}`,
     (data.unverified || model.catalogReview?.status === 'pending') && t('未核实'), model.catalogReview?.reason, model.savedChoice?.disabledReason, modelLifecycleMessage(provider, data.lifecycle), data.note].filter(Boolean).flatMap(value => value.split('\n')))].join('\n')
-  const modalityButton = (states, direction) => <button type="button" className="model-modality-trigger" aria-label={`${t(direction)} · ${t('官方文档规格')}；${states.map(item => item.accessibleLabel.split(/(：| · )/).map(part => t(part)).join('')).join('；')}`} onClick={event => { event.stopPropagation(); setShowSources(true) }}><ModalityIcons states={states} direction={direction} /></button>
+  const modalityButton = (states, direction) => <button type="button" className="model-modality-trigger" aria-label={`${t(direction)} · ${t('官方文档规格')}；${states.map(item => t(item.accessibleLabel)).join('；')}`} onClick={event => { event.stopPropagation(); setShowSources(true) }}><ModalityIcons states={states} direction={direction} /></button>
   const url = data.sources[0]
   const sources = <div className={`model-spec-sources${compactSources ? ' is-compact' : ''}`} aria-label={t('官方文档')}>
     {url ? <a href={url} title={`${details}\n${sourceRows.map(row => row.label).join('\n')}\n${data.sources.join('\n')}`} aria-label={`${sourceRows[0].label}\n${details}`} target="_blank" rel="noopener noreferrer" onClick={event => {
@@ -58,7 +56,10 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
     {footerActions ? <div className="model-spec-footer">{sources}{footerActions}</div> : sources}
     {showSources && <WorkspaceDialog className="model-evidence-dialog" title={t('官方文档规格')} onClose={() => setShowSources(false)}>
       <p className="tw-preserve-text">{details}</p>
-      {sourceRows.map(source => <p key={source.url}><a className="model-evidence-source" href={source.url} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} aria-hidden="true" /><span>{source.label}</span></a></p>)}
+      <p>{t('资料来源')}</p>
+      {!sourceRows.length && !Object.values(data.fields).some(f => f.sourceUrl) && <p>{t('暂无官方资料')}</p>}
+      {[...new Set(Object.values(data.fields).filter(f => f.sourceUrl && isApiSource(f.sourceUrl)).map(f => visibleSourceTitle(f.sourceUrl)))].map(title => <p key={title}>{title}</p>)}
+      {sourceRows.map(source => <p key={source.url}><a className="model-evidence-source" title={`${source.label}${data.checkedAt ? `（核实日期：${data.checkedAt}）` : ''}`} href={source.url} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} aria-hidden="true" /><span>{source.label}</span></a></p>)}
     </WorkspaceDialog>}
   </div>
 }

@@ -113,7 +113,7 @@ test('Ling evidence preserves partial uncertainty and compact sources expose pro
   assert.equal(screen.getAllByRole('link').length,1);assert.match(screen.getByRole('link').getAttribute('aria-label'),/2026-11-09/);
   view.unmount();
   render(React.createElement(ModelSpecifications,{provider:'custom',model:{id:'unknown'}}));
-  assert.equal(screen.getAllByRole('img',{name:/：未标注 · 暂无官方资料$/}).length,8);
+  assert.equal(screen.getAllByRole('img',{name:/^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/}).length,8);
 });
 test('removed models expose an explicit replacement action without changing the saved binding',()=>{
   const models=setup();

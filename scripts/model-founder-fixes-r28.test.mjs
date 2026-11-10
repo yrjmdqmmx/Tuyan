@@ -42,7 +42,7 @@ test('R28 all 1064 presentations: exact unknown prefix, conditions, field source
     const web = index ? card.web.outputIcons : card.web.inputIcons, mini = card.mini.card.specRows[index].icons
     assert.deepEqual(web, mini, row.identity + '/' + row.field + ' all icon attribution titles must match')
     const title = '渠道资料 · ' + sourceTitle(row.sourceUrl)
-    assert.ok(web.some(icon => icon.tooltip.includes(title)), row.identity)
+    assert.ok(card.web.sources.some(source => source.url === row.sourceUrl && source.label === title), row.identity)
     assert.ok(card.web.sources.some(source => source.url === row.sourceUrl))
     assert.ok(card.mini.card.specSources.some(source => source.url === row.sourceUrl))
     assert.equal(isApiSource(row.sourceUrl), false)
@@ -50,17 +50,17 @@ test('R28 all 1064 presentations: exact unknown prefix, conditions, field source
   for (const [key, card] of Object.entries(now)) for (const icons of [card.web.inputIcons, card.web.outputIcons, ...card.mini.card.specRows.slice(0, 2).map(spec => spec.icons)]) for (const icon of icons) {
     assert.doesNotMatch(icon.tooltip + icon.accessibleLabel, /有条件支持|渠道资料 · API · 模型列表/, key)
     if (['unknown','unlisted'].includes(icon.state)) {
-      assert.match(icon.tooltip, /^未标注 · .+/)
-      assert.equal(icon.accessibleLabel, icon.label + '：' + icon.tooltip)
+      assert.match(icon.tooltip, /^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/)
+      assert.equal(icon.accessibleLabel, icon.tooltip)
     } else if (icon.state === 'conditional') {
-      assert.equal(icon.accessibleLabel, icon.label + '：支持')
-      assert.ok(icon.tooltip.startsWith('支持（条件：' + icon.detail + '） · '))
+      assert.equal(icon.accessibleLabel, icon.tooltip)
+      assert.match(icon.tooltip, /^支持(文本|图像|视频|音频)(输入|输出)（[^（）]+）$/)
     }
   }
   const kimi = now['kimi/kimi-k3'].web.outputIcons.find(icon => icon.state === 'unknown')
-  assert.ok(kimi); assert.equal(kimi.accessibleLabel, kimi.label + '：' + kimi.tooltip)
+  assert.ok(kimi); assert.equal(kimi.accessibleLabel, kimi.tooltip)
   const fallback = modalityIconStates('', {state:'known',value:['image'],provenance:'channel',sourceUrl:review.catalogUrl})
-  assert.equal(fallback[1].tooltip, '渠道资料 · fal 模型目录')
+  assert.equal(fallback[1].tooltip, '支持图像输入')
   assert.equal(isApiSource(review.catalogUrl), true)
 })
 

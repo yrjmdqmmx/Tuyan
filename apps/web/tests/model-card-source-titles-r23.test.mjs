@@ -78,12 +78,12 @@ test('R23F only the seven missing TokenDance pages get the historical tooltip an
     const unknown = [...container.querySelectorAll('[data-state="unknown"], [data-state="unlisted"]')]
     if (historicalIds.includes(model.id)) {
       assert.ok(unknown.length, model.id)
-      for (const icon of unknown) assert.equal(icon.title, '未标注 · 渠道页无此型号')
+      for (const icon of unknown) assert.match(icon.title, /^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/)
       fireEvent.click(screen.getByRole('button',{name:/^输入模态/}))
-      assert.match(screen.getByRole('dialog').textContent, /渠道页无此型号/)
+      assert.match(screen.getByRole('dialog').textContent, /官方资料未说明是否支持图像输入/)
       assert.doesNotMatch(screen.getByRole('dialog').textContent, /渠道未标注此模态/)
       changed++
-    } else { for (const icon of unknown) assert.match(icon.title, /^未标注 · 渠道未标注此模态/); assert.doesNotMatch(container.innerHTML, /渠道页无此型号/); controls++ }
+    } else { for (const icon of unknown) assert.match(icon.title, /^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/); assert.doesNotMatch(container.innerHTML, /渠道页无此型号/); controls++ }
     cleanup()
   }
   assert.equal(changed, 7); assert.equal(controls, 67)

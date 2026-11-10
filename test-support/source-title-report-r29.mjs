@@ -1,3 +1,4 @@
+import {restoreI11Statuses} from './source-title-history-r29.mjs'
 import assert from 'node:assert/strict'
 import {imageInputPresentations} from './image-input-r27.mjs'
 import {r29Baseline, sourceSurfaces, titleMap, assertUnifiedTitles} from './source-titles-r29.mjs'
@@ -19,8 +20,10 @@ export async function currentTitlePresentations() {
   }
   return rows
 }
+// I10 occurrence counts are historical: validate I11 then restore only its icon wording.
+// Current source titles are still scanned separately over all rendered/source-copy rows.
 export async function buildR29TitleReport() {
-  const rows = await currentTitlePresentations(), before = sourceSurfaces(r29Baseline.rows), after = sourceSurfaces(rows)
+  const rows = restoreI11Statuses(await currentTitlePresentations()), before = sourceSurfaces(r29Baseline.rows), after = sourceSurfaces(rows)
   assertUnifiedTitles(after)
   for (const row of after) assert.deepEqual(titleIssues({url:row.identity,label:row.title},rows[row.card].web.name)
     .filter(issue => issue !== 'machine document link' || /footer|dialog-link/.test(row.surface)), [], row.card + ' ' + row.title)

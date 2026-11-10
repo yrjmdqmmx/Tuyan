@@ -182,7 +182,7 @@ function presentModel(model: RegistryModel, selectedProvider: unknown, selectedM
   const image = model.roles.includes('image') && !(audit.fields.outputModalities.value as string[] || []).includes('text') && !['totalContextTokens','maxOutputTokens'].some(k => audit.fields[k].state === 'known')
   const specRows = [['inputModalities','输入'],['outputModalities','输出'],['totalContextTokens','上下文窗口'],['maxOutputTokens','最大输出']].map(([key,label]) => {
     const fact = audit.fields[key], modality = key.endsWith('Modalities')
-    const icons = modality ? modalityIconStates(display(fact), fact, providerId, model.id) : []
+    const icons = modality ? modalityIconStates(display(fact), fact, providerId, model.id, key === 'outputModalities' ? 'output' : 'input') : []
     return {label, value:image && !modality && fact.state === 'unknown' && !fact.suppressFallback ? '不适用' : modality && fact.state === 'unknown' ? '模态未知' : display(fact), origin:origin(fact), unknown:fact.state === 'unknown', icons,
       unknownText:fact.state === 'known' ? icons.filter(i => i.state === 'unknown').map(i => i.label).join('、') : '',
       unsupportedText:displayModalities(fact.unsupportedModalities || []).map(id => names[id]).join('、')}

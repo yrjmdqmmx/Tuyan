@@ -1,3 +1,4 @@
+import {expectedIcons} from './status-sentences-r29.mjs'
 import fs from 'node:fs'
 import assert from 'node:assert/strict'
 import {createHash} from 'node:crypto'
@@ -20,7 +21,7 @@ export function applyR29Titles(rows, reverse = false) {
   }
   return copy
 }
-export const restoreR29Titles = rows => applyR29Titles(rows, true)
+export const restoreR29Titles = rows => applyR29Titles(restoreI11Statuses(rows), true)
 export function historicalR29Rows(rows, card, client) {
   const prefix = client === 'web' ? '/web/sources/' : '/mini/card/specSources/'
   const copy = structuredClone(rows)
@@ -35,3 +36,27 @@ const baseline = JSON.parse(gunzipSync(fs.readFileSync(new URL('./fixtures/sourc
 export const expectedR29 = applyR29Titles(baseline.rows)
 const titles = new Map(Object.values(expectedR29).flatMap(row => [...row.web.sources, ...row.mini.card.specSources]).map(row => [row.url,row.label]))
 export const r29SourceRows = rows => rows.map(row => ({...row,label:titles.get(row.url) || row.label}))
+
+// I11 replaces only icon text and removes the legacy Web-only fifth file icon.
+// Assert the new wording independently before restoring frozen I10 history.
+export function restoreI11Statuses(rows) {
+  const copy = structuredClone(rows)
+  for (const [key, row] of Object.entries(copy)) for (const [i, direction] of ['input','output'].entries()) {
+    const old = expectedR29[key]
+    const web = old.web[direction + 'Icons'], mini = old.mini.card.specRows[i].icons
+    const qualifiedMini = miniWithConditions(mini, web)
+    assert.deepEqual(row.web[direction + 'Icons'], expectedIcons(web, row.web.data[direction + 'Fact'], direction), key + ' unexpected changed card/field')
+    assert.deepEqual(row.mini.card.specRows[i].icons, expectedIcons(qualifiedMini, row.mini.audit.fields[direction + 'Modalities'], direction), key + ' unexpected changed card/field')
+    row.web[direction + 'Icons'] = structuredClone(web)
+    row.mini.card.specRows[i].icons = structuredClone(mini)
+  }
+  return copy
+}
+function miniWithConditions(mini, web) {
+  return mini.map(icon => web.some(i => i.state === 'conditional') ? {...icon, state:web.find(i => i.id === icon.id).state, detail:web.find(i => i.id === icon.id).detail} : icon)
+}
+export const expectedI11 = structuredClone(expectedR29)
+for (const row of Object.values(expectedI11)) for (const [i, direction] of ['input','output'].entries()) {
+  row.web[direction + 'Icons'] = expectedIcons(row.web[direction + 'Icons'], row.web.data[direction + 'Fact'], direction)
+  row.mini.card.specRows[i].icons = expectedIcons(miniWithConditions(row.mini.card.specRows[i].icons, row.web[direction + 'Icons']), row.mini.audit.fields[direction + 'Modalities'], direction)
+}

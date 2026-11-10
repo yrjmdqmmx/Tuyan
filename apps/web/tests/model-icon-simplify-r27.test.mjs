@@ -7,7 +7,7 @@ import {ModelSpecifications} from '../src/components/ModelSpecifications.jsx'
 import {STATIC_MODEL_REGISTRY} from '../src/lib/staticModelCatalog.js'
 import {modalityIconStates} from '../src/lib/modelModalityIcons.js'
 import {iconBaseline, expectedR2Icon} from '../../../test-support/icon-simplify-r27.mjs'
-import {expectedR29 as expectedR28} from '../../../test-support/source-title-history-r29.mjs'
+import {expectedI11 as expectedR28} from '../../../test-support/source-title-history-r29.mjs'
 import {review} from '../../../test-support/image-input-r27.mjs'
 
 const css = fs.readFileSync(new URL('../src/components/ModelSpecifications.css', import.meta.url), 'utf8')
@@ -36,7 +36,7 @@ test('R27 I8 all 1064 Web cards render identical solid grey unsupported/unknown 
           assert.equal(node.dataset.state, icon.state, key)
           assert.equal(node.className, 'model-modality-icon is-' + icon.state)
           assert.equal(node.getAttribute('aria-label'), icon.accessibleLabel, key)
-          assert.match(node.getAttribute('aria-label'), /^(文本|图像|视频|音频|文件)：(支持|暂不支持|未标注 · .+)$/)
+          assert.match(node.getAttribute('aria-label'), /^(支持|此渠道不支持|该模型不支持|官方资料未说明是否支持)(文本|图像|视频|音频)(输入|输出)(（[^（）]+）)?$/)
           assert.equal(node.title, icon.tooltip, key)
           assert.equal(node.children.length, 1)
           assert.equal(node.firstElementChild.tagName.toLowerCase(), 'svg')
@@ -50,7 +50,7 @@ test('R27 I8 all 1064 Web cards render identical solid grey unsupported/unknown 
         })
         if (review.reviews[key]) {
           const image = nodes[1]
-          assert.equal(image.dataset.state, 'supported'); assert.equal(image.getAttribute('aria-label'), '图像：支持')
+          assert.equal(image.dataset.state, 'supported'); assert.equal(image.getAttribute('aria-label'), '支持图像输入')
           assert.equal(getComputedStyle(image).color, rgb(ink)); decisionA++
         }
         fireEvent.click(ui.container.querySelector('.model-modality-trigger'))
@@ -68,31 +68,31 @@ test('R27 I8 all 1064 Web cards render identical solid grey unsupported/unknown 
 test('R27 I8 vendor, conditional and unlisted fixtures retain semantics without decoration or extra short labels', () => {
   const vendor = modalityIconStates('', {state:'unsupported', provenance:'vendor', sourceUrl:'https://example.com/spec', verifiedAt:'2026-11-09'})
   for (const icon of vendor) {
-    assert.match(icon.accessibleLabel, /：暂不支持$/)
-    assert.equal(icon.tooltip, '原厂资料标明不支持。官方文档 · Example · Spec（2026-11-09）')
+    assert.match(icon.accessibleLabel, /^该模型不支持(文本|图像|视频|音频)输入$/)
+    assert.equal(icon.tooltip, '该模型不支持' + icon.label + '输入')
   }
   const vendorModel = {id:'vendor-exclusion',specifications:{version:1,modalityFacts:{inputModalities:{state:'unsupported',provenance:'vendor',sourceUrl:'https://example.com/spec',verifiedAt:'2026-11-09'}}}}
   try {
     const ui = render(React.createElement(ModelSpecifications, {provider:'custom',model:vendorModel}))
     fireEvent.click(ui.container.querySelector('.model-modality-trigger'))
-    assert.match(document.querySelector('.model-evidence-dialog').textContent, /原厂资料标明不支持。官方文档 · Example · Spec/)
+    assert.match(document.querySelector('.model-evidence-dialog').textContent, /该模型不支持图像输入/)
   } finally {cleanup()}
   const icons = modalityIconStates('文本、音频（有限支持）')
-  assert.equal(icons[1].state, 'unlisted'); assert.equal(icons[1].accessibleLabel, '图像：未标注 · 暂无官方资料')
-  assert.equal(icons[3].state, 'conditional'); assert.equal(icons[3].accessibleLabel, '音频：支持')
-  assert.equal(icons[3].tooltip, '支持（条件：音频（有限支持）） · 暂无官方资料')
+  assert.equal(icons[1].state, 'unlisted'); assert.equal(icons[1].accessibleLabel, '官方资料未说明是否支持图像输入')
+  assert.equal(icons[3].state, 'conditional'); assert.equal(icons[3].accessibleLabel, '支持音频输入（仅部分音频功能）')
+  assert.equal(icons[3].tooltip, '支持音频输入（仅部分音频功能）')
   const model = {id:'conditional',specifications:{version:1,modalityFacts:{inputModalities:{state:'known',value:['text','audio'],displayValue:'文本、音频（有限支持）'}}}}
   const style = document.createElement('style'); style.textContent = css.replaceAll('var(--ink)', ink).replaceAll('var(--muted)', muted); document.head.append(style)
   try {
     const ui = render(React.createElement(ModelSpecifications, {provider:'custom',model}))
     const audio = ui.container.querySelector('[data-state="conditional"]')
-    assert.ok(audio); assert.equal(audio.getAttribute('aria-label'), '音频：支持'); assert.equal(getComputedStyle(audio).color, rgb(ink))
+    assert.ok(audio); assert.equal(audio.getAttribute('aria-label'), '支持音频输入（仅部分音频功能）'); assert.equal(getComputedStyle(audio).color, rgb(ink))
     for (const state of ['unsupported','unknown','unlisted']) {
       audio.className = 'model-modality-icon is-' + state
       assert.equal(getComputedStyle(audio).color, rgb(muted))
       assert.equal(audio.children.length, 1); assert.equal(audio.textContent, '')
     }
     fireEvent.click(ui.container.querySelector('.model-modality-trigger'))
-    assert.match(document.querySelector('.model-evidence-dialog').textContent, /支持（条件：音频（有限支持））/)
+    assert.match(document.querySelector('.model-evidence-dialog').textContent, /支持音频输入（仅部分音频功能）/)
   } finally {style.remove(); cleanup()}
 })

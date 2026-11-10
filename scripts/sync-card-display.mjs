@@ -6,6 +6,8 @@ import { fileURLToPath } from 'node:url'
 import { createRequire } from 'node:module'
 import assert from 'node:assert/strict'
 import { transformSync } from 'esbuild'
+import { catalogCardFacts, mergeCardFacts } from '../packages/api/src/catalog-card-facts.mjs'
+import { auditedModelSpecs } from '../apps/web/src/lib/modelAudit.js'
 import { STATIC_MODEL_REGISTRY } from '../apps/web/src/lib/staticModelCatalog.js'
 import { unifiedPageTitles } from './lib/source-titles-r29.mjs'
 const root = fileURLToPath(new URL('../', import.meta.url)), check = process.argv.includes('--check')
@@ -49,6 +51,16 @@ write('packages/api/src/card-data/tokendance-pages.json', JSON.stringify(Object.
   verified: row.verified, checkedAt: row.checkedAt, evidenceSha256: row.evidenceSha256,
   ...(!row.verified ? { fallback: historical.rows[row.id] || null } : {}),
 }]))) + '\n')
+// Keep only conditional display qualifiers, never per-card status sentences.
+const conditionalQualifiers = {}
+for (const [provider, entry] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
+  const {fields} = mergeCardFacts(auditedModelSpecs(provider, model.id), catalogCardFacts(provider, model, read('packages/api/src/card-data/reviewed-models.json'), read('packages/api/src/card-data/specific-pages.json')), model)
+  for (const direction of ['input', 'output']) {
+    const fact = fields[direction + 'Modalities']
+    if (fact.state === 'known' && /有限|需/.test(fact.displayValue || '')) conditionalQualifiers[provider + '/' + model.id + '/' + direction] = [fact.displayValue, fact.sourceUrl]
+  }
+}
+write('packages/api/src/card-data/conditional-qualifiers.json', JSON.stringify(conditionalQualifiers) + '\n')
 // Keep original captured wording separate from normalized display facts.
 const snapshot = read('config/channel-audit/tokendance-catalog-snapshot-20261109b.json')
 const phase2 = read('config/channel-audit/model-modality-phase2-20261109.json')
@@ -137,10 +149,6 @@ const tokenDancePages = Object.fromEntries(catalog.tokendance.models.map(({id}) 
 `
 // Both helpers resolve every catalog URL, even when Mini displays fewer links.
 const miniTitles = sourceTitles
-// Losslessly reference TokenDance quote subjects through the existing catalog.
-// Avoid shipping these long model IDs a second time in the Mini helper.
-const tokenDanceIds = STATIC_MODEL_REGISTRY.tokendance.models.map(model => model.id)
-const miniEvidence = compactQuotes.map(([prefix, date, rows]) => [prefix, date, rows.map(([quote, ids]) => [quote, prefix === 'https://tokendance.space/models/' ? ids.split('|').map(id => { const index = tokenDanceIds.indexOf(id); assert.ok(index >= 0); return index }) : ids])])
 // Reuse exact source strings already decoded in Mini; only unmatched keys are literal.
 const indexedMiniTitles = Object.entries(miniTitles).map(([url, title]) => {
   const index = miniAudit.sources.indexOf(url)
@@ -159,12 +167,12 @@ for (const [key, title] of indexedMiniTitles) {
   if (!titleGroups.has(shared)) titleGroups.set(shared, [])
   titleGroups.get(shared).push([typeof key === 'string' ? key.slice(shared.length) : key, title])
 }
-const combined = miniPages + `const knownModels = Object.values(catalog).flatMap(entry => entry.models.map(model => [model.id, model.label]));\nconst storedTitles = {}; for (const [prefix, rows] of ${JSON.stringify([...titleGroups])}) for (const [key, title] of rows) storedTitles[typeof key === 'number' ? audit.sources[key] : prefix + key] = title;\nconst evidence = ${JSON.stringify(miniEvidence)};\nfor (const group of evidence) for (const row of group[2]) if (Array.isArray(row[1])) row[1] = row[1].map(index => catalog.tokendance.models[index].id).join('|');\n` + mini + modality
+const combined = `const conditionalQualifiers = ${JSON.stringify(conditionalQualifiers)};\n` + miniPages + `const knownModels = Object.values(catalog).flatMap(entry => entry.models.map(model => [model.id, model.label]));\nconst storedTitles = {}; for (const [prefix, rows] of ${JSON.stringify([...titleGroups])}) for (const [key, title] of rows) storedTitles[typeof key === 'number' ? audit.sources[key] : prefix + key] = title;\n` + mini + modality
 // Explicit CommonJS exports avoid an unnecessary ESM interoperability facade
 // in this native-only helper; the same public functions remain available.
 const exports = [...combined.matchAll(/export (?:function|const) (\w+)/g)].map(match => match[1])
 const commonjs = combined.replace(/export /g, '') + '\nmodule.exports = {' + exports.join(',') + '};\n'
 write('apps/miniprogram/miniprogram/utils/card-presentation.js', '// Generated\n' + transformSync(commonjs, { minify: true, charset: 'utf8', format: 'cjs', target: 'es2019' }).code)
-write('apps/miniprogram/miniprogram/utils/card-presentation.d.ts', 'export const conflictNote:string\nexport function fieldSourceLines(f:Record<string,{state:string;provenance:string|null;verifiedAt?:string|null}>,d?:string|null,t?:(s:string)=>string):string[]\nexport function cardLifecycle<T extends {sourceUrl?:string|null}>(l:T|null|undefined,a?:{lifecycleSourceUrl?:string|null;excludedSources?:string[]}):(T&{sourceUrl:string})|null\nexport function displayModalities(values: string[]): string[]\nexport function displayModalityText(value: string): string\nexport function historicalChannelIds(pages: Record<string, {verified: boolean}>): Set<string>\nexport function sourceTitle(value: string, model?: {id?: string; label?: string; displayName?: string}): string\nexport function humanSourceUrl(value: string): string\nexport function isMachineDocument(value: string): boolean\nexport function titleSourceRows<T extends {url: string; label: string}>(rows: T[], model?: {id?: string; label?: string; displayName?: string}): T[]\nexport interface ModalityIcon { id: string; label: string; state: string; detail: string; accessibleLabel: string; tooltip: string }\nexport function modalityIconStates(value: string, fact?: object, provider?: string, modelId?: string): ModalityIcon[]\n'.replace(/[ \t]*([:;,{}<>?])[ \t]*/g, '$1').replace(/\b(values|value|model|rows|fact|provider|modelId)(?=[?:])/g, name => ({values:'v',value:'v',model:'m',rows:'r',fact:'f',provider:'p',modelId:'i'})[name]))
+write('apps/miniprogram/miniprogram/utils/card-presentation.d.ts', 'export const conflictNote:string\nexport function fieldSourceLines(f:Record<string,{state:string;provenance:string|null;verifiedAt?:string|null}>,d?:string|null,t?:(s:string)=>string):string[]\nexport function cardLifecycle<T extends {sourceUrl?:string|null}>(l:T|null|undefined,a?:{lifecycleSourceUrl?:string|null;excludedSources?:string[]}):(T&{sourceUrl:string})|null\nexport function displayModalities(values: string[]): string[]\nexport function displayModalityText(value: string): string\nexport function historicalChannelIds(pages: Record<string, {verified: boolean}>): Set<string>\nexport function sourceTitle(value: string, model?: {id?: string; label?: string; displayName?: string}): string\nexport function humanSourceUrl(value: string): string\nexport function isMachineDocument(value: string): boolean\nexport function titleSourceRows<T extends {url: string; label: string}>(rows: T[], model?: {id?: string; label?: string; displayName?: string}): T[]\nexport interface ModalityIcon { id: string; label: string; state: string; detail: string; accessibleLabel: string; tooltip: string }\nexport function modalityIconStates(value: string, fact?: object, provider?: string, modelId?: string, direction?: string): ModalityIcon[]\n'.replace(/[ \t]*([:;,{}<>?])[ \t]*/g, '$1').replace(/\b(values|value|model|rows|fact|provider|modelId)(?=[?:])/g, name => ({values:'v',value:'v',model:'m',rows:'r',fact:'f',provider:'p',modelId:'i'})[name]))
 flushMini()
 console.log(`Shared card display data: ${check ? 'no drift' : 'generated'}; ${capture.pages.filter(row => row.verified).length}/74 verified TokenDance pages`)

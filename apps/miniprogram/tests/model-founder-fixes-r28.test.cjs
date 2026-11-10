@@ -23,11 +23,11 @@ test('R28 compiled Mini custom conditional uses dark 支持 with its full condit
  const unknown={state:'unknown',value:null,provenance:null,sourceUrl:null}
  const model={id:'conditional',label:'Conditional',roles:['main'],cardSpecifications:{fields:{inputModalities:{state:'known',value:['text','audio'],displayValue:'文本、音频（需开启音频模式）',provenance:'channel',sourceUrl:'https://api.fal.ai/v1/models'},outputModalities:unknown,totalContextTokens:unknown,maxOutputTokens:unknown}}}
  const card=context.present(model,'','','custom'),audio=card.specRows[0].icons[3]
- assert.equal(audio.state,'conditional');assert.equal(audio.accessibleLabel,'音频：支持')
- assert.equal(audio.tooltip,'支持（条件：音频（需开启音频模式）） · 渠道资料 · fal 模型目录')
+ assert.equal(audio.state,'conditional');assert.equal(audio.accessibleLabel,'支持音频输入（需开启音频模式）')
+ assert.equal(audio.tooltip,'支持音频输入（需开启音频模式）')
  const css=fs.readFileSync(filename.replace(/\.js$/,'.wxss'),'utf8')
  assert.match(css,/\.modality-icon\{[^}]*color:#213b2f/);assert.doesNotMatch(css,/\.is-conditional/)
  definition.methods.showModality({currentTarget:{dataset:{label:audio.accessibleLabel,detail:audio.tooltip}}})
- assert.equal(modal.title,'音频：支持');assert.equal(modal.content,audio.tooltip)
+ assert.equal(modal.title,'支持音频输入（需开启音频模式）');assert.equal(modal.content,audio.tooltip)
  assert.ok(card.specSources.every(s=>s.url!=='https://api.fal.ai/v1/models'))
 })

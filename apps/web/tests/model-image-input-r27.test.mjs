@@ -19,11 +19,11 @@ test('R27 all 15 Web image icons and opened evidence dialogs cite the verified e
     const ui = render(React.createElement(ModelSpecifications, {provider, model}))
     try {
       const trigger = ui.container.querySelector('.model-modality-trigger')
-      assert.match(trigger.getAttribute('aria-label'), /图像：支持/)
+      assert.match(trigger.getAttribute('aria-label'), /支持图像输入/)
       fireEvent.click(trigger)
       const dialog = document.querySelector('.model-evidence-dialog')
       assert.ok(dialog, key)
-      assert.match(dialog.textContent, /图像：支持/)
+      assert.match(dialog.textContent, /支持图像输入/)
       assert.match(dialog.textContent, /编辑接口|Edit API 文档/)
       assert.ok(dialog.textContent.includes(fields.inputModalities.verifiedAt), key)
       assert.ok([...dialog.querySelectorAll('a')].some(a => a.href === humanSourceUrl(fields.inputModalities.sourceUrl)), key)

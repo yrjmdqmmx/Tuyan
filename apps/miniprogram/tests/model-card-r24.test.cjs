@@ -11,7 +11,7 @@ vm.runInNewContext(fs.readFileSync(filename,'utf8')+'\nthis.present=presentModel
 
 test('R24 Mini preserves retirement labels in all 1064 cards and the three reported copy dialogs', t => {
   let cards = 0, notices = 0, examples = 0
-  const historical = new Set()
+  const historical = historicalChannelIds(pages)
   for (const [provider, entry] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
     const card = context.present(model,'','',provider), key = provider + '/' + model.id
     if (fixture.noticeCards.includes(key)) assert.ok(!card.specSources.some(row => row.url === fixture.noticeUrl))
@@ -34,7 +34,7 @@ test('R24 Mini preserves retirement labels in all 1064 cards and the three repor
   assert.deepEqual([...historicalChannelIds(pages)].sort(),fixture.historicalIds)
   const missing = historicalChannelIds({...pages,...fixture.syntheticPages})
   for (const id of Object.keys(fixture.syntheticPages)) for (const icon of modalityIconStates('未知',{state:'unknown'},'tokendance',id,missing)) {
-    assert.equal(icon.tooltip,id==='extra-retired-model'?'未标注 · 渠道页无此型号':'未标注 · 渠道未标注此模态'); assert.equal(icon.state,'unknown')
+    assert.equal(icon.tooltip,'官方资料未说明是否支持'+icon.label+'输入'); assert.equal(icon.state,'unknown')
   }
   assert.equal(titleSourceRows([{url:fixture.noticeUrl,label:'渠道公告'}])[0].label,'下线公告 · 百炼 · 模型下线公告')
   t.diagnostic(JSON.stringify({cards,notices,historical:historical.size}))

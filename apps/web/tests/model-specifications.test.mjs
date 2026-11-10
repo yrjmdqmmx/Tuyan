@@ -158,11 +158,11 @@ test('modality icons distinguish known, missing and conditional published capabi
   assert.deepEqual(modalityIconStates('未知').map(x=>x.state),['unknown','unknown','unknown','unknown'])
   const states=modalityIconStates('文本、图像、视频、文件（PDF）；音频（有限支持）')
   assert.equal(states.find(x=>x.id==='audio').state,'conditional')
-  assert.equal(states.find(x=>x.id==='file').detail,'文件（PDF）')
+  assert.deepEqual(states.map(x=>x.id),['text','image','video','audio'])
   assert.equal(modalityIconStates('文本')[1].state,'unlisted')
   const {container}=render(React.createElement(ModelSpecifications,{provider:'custom',model:{id:'unknown'}}))
   assert.equal(container.querySelectorAll('.is-unknown').length,8)
-  assert.equal(screen.getAllByRole('img', {name:/：未标注 · 暂无官方资料$/}).length,8)
+  assert.equal(screen.getAllByRole('img', {name:/^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/}).length,8)
   assert.doesNotMatch(container.textContent,/（原厂）|（渠道）/)
 })
 

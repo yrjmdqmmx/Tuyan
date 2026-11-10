@@ -6,14 +6,14 @@ import {ModelSpecifications} from '../src/components/ModelSpecifications.jsx'
 import {sourceTitle} from '../../../packages/api/src/card-presentation.mjs'
 import review from '../../../config/channel-audit/review-r28-20261110.json' with {type:'json'}
 
-test('R28 every fal catalog field shows its verified title in rendered hover and dialog; JSON attribution stays plain', () => {
+test('R28 every fal catalog field shows its verified title in the dialog source section; JSON attribution stays plain', () => {
   for (const row of review.fields) {
     try {
       const ui = render(React.createElement(ModelSpecifications, {provider:'fal',model:{id:row.identity.slice(4)}}))
       const direction = row.field === 'inputModalities' ? '输入模态' : '输出模态'
       const title = '渠道资料 · ' + sourceTitle(row.sourceUrl)
       const group = ui.container.querySelector(`[role="group"][aria-label="${direction}"]`)
-      assert.ok([...group.children].some(icon => icon.title.includes(title)), row.identity)
+      assert.ok([...group.children].every(icon => icon.title === icon.getAttribute('aria-label')), row.identity)
       fireEvent.click(group.parentElement)
       const dialog = document.querySelector('.model-evidence-dialog')
       assert.ok(dialog.textContent.includes(title))
@@ -27,19 +27,20 @@ test('R28 every fal catalog field shows its verified title in rendered hover and
     fireEvent.click(ui.container.querySelector('.model-modality-trigger'))
     const dialog = document.querySelector('.model-evidence-dialog')
     assert.ok(dialog.textContent.includes('渠道资料 · fal 模型目录'))
+    assert.doesNotMatch(dialog.textContent, /暂无官方资料/)
     assert.equal(dialog.querySelector('a[href="https://api.fal.ai/v1/models"]'), null)
   } finally {cleanup()}
 })
 
-test('R28 Kimi K3 unknown icon retains its modality and exact prefixed source explanation', () => {
+test('R28 Kimi K3 unknown icon uses its exact status sentence without attribution', () => {
   try {
     const ui = render(React.createElement(ModelSpecifications, {provider:'kimi',model:{id:'kimi-k3'}}))
     const icons = [...ui.container.querySelectorAll('[data-state="unknown"]')]
     assert.ok(icons.length)
     for (const icon of icons) {
-      assert.match(icon.title, /^未标注 · /)
-      assert.equal(icon.getAttribute('aria-label').split('：').slice(1).join('：'), icon.title)
+      assert.match(icon.title, /^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/)
+      assert.equal(icon.getAttribute('aria-label'), icon.title)
     }
-    assert.ok(icons.some(icon => icon.title === '未标注 · 图研既有核实：官方文档 · Hugging Face · Kimi K3'))
+    assert.ok(icons.some(icon => icon.title === '官方资料未说明是否支持图像输出'))
   } finally {cleanup()}
 })

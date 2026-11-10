@@ -1298,6 +1298,8 @@ Mini source is **1,565,030 / 1,572,864 bytes**, **7,834 remaining** (delta **+2,
 
 ## R27 Phase I8
 
+**Superseded status wording:** R29 Phase I11 replaces all short labels and attribution-bearing hover/accessibility text below with full modality + direction sentences. R2 icon styling, evidence, titles and verification dates remain in force.
+
 Founder choice **R2**, 2026-11-10, updated by **R28 I9**: supported and conditional icons use the existing dark solid glyph. Unsupported, unknown and unlisted states use the same solid grey glyph for that modality on Web and Mini. No diagonal strike, question badge, dashed outline/stroke or conditional asterisk remains. Existing enum values, `data-state`, `is-*` classes, glyph paths and footprints remain unchanged.
 
 | Machine state / evidence | Glyph | Short label (image example) | Hover / dialog text |
@@ -1321,6 +1323,8 @@ Validation: **1,818/1,818 tests pass** (Web 1,504; Mini 182; scripts 79; shared 
 Mini source: **1,564,312 / 1,572,864 bytes**, **8,552 remaining**, **718 fewer** than `105744a9`. Both existing size guards remain unchanged and pass. Sync/compilation preflight kept every installed generated output within the ceiling. No Git writes, external network, deployment or screenshot execution.
 
 ## R28 Phase I9
+
+**Superseded status wording:** R29 Phase I11 replaces all short labels and attribution-bearing hover/accessibility text below with full modality + direction sentences. R2 icon styling, evidence, titles and verification dates remain in force.
 
 PR #251 round 7 founder fixes, based on `7858d7a4`, execution/picker comparison against main `f0366c1c`. No Git writes, secrets, paid calls, deployment, image builds, saved-configuration changes, other worktrees or home-agent files. Network consisted only of 36 cached public unauthenticated GETs to exact fal human API documentation pages.
 
@@ -1351,3 +1355,39 @@ New tests render all 1,064 Web evidence dialogs plus badges, invoke compiled Min
 M10 capture recipe and plan are prepared at `.audit-input/r24/shots-m10.mjs` and `.audit-input/r24/shots-m10.manifest.json`, syntax-checked, **not run**. Both 1280 and 390 use DPR 2. The six requested 111/112/113 images cover the fal card/dialog and TokenDance Qwen3.6 Plus card. The dialog checks each URL against its actual field attribution and link text, and enforces the fal API title rule; the script writes `manifest.json` in its output directory.
 
 Validation: **1,843/1,843 tests pass** (Web 1,519; Mini 186; scripts 84; shared API 33; Core 10; Gateway 8; main invariants 3). Web/Mini/Core builds, explicit Core TypeScript, six workspace checks and all **13 maintenance checks** pass, including the changed-test ledger. Mini source **1,568,548 / 1,572,864 bytes**, **4,316 remaining**; also below the unchanged older **1,569,427-byte** guard. [Commands and results](model-modality-r29-i10-validation.json). No Git writes, new public fetches, secrets, paid calls, deployment, image builds, saved-config changes, login-file changes or other-worktree operations.
+
+## R29 Phase I11
+
+Founder decision: 2026-11-10 19:33. This supersedes the R27/R28 status wording, including `未标注 · <source>`, and preserves I10 URL-wide titles and locale cleanup. The actual starting worktree was clean at `873fc7fd` (I10 already committed), not the supplied older HEAD description. No Git write commands are used. The agreed I10 main baseline is `52e0f161`, also the current local `origin/main`; the local `main` ref remains stale at `c69dd246` (2026-10-09). Execution/name invariants use `52e0f161`, with refs left untouched.
+
+The shared `modality-presentation.mjs` generates sentences at runtime from state, modality, direction and a small reviewed condition table. Hover and accessibility are identical, with no modality prefix; Web dialog status lines and Mini tap-dialog content use that exact sentence. Dark supported/conditional and the single grey unsupported/unknown/unlisted style are unchanged. State values and CSS class names are unchanged. Web now shows exactly four modality icons per direction: twelve legacy Web-only file icons are omitted; file/document facts remain untouched.
+
+| State | Sentence |
+| --- | --- |
+| supported | 支持<模态><输入/输出> |
+| conditional | 支持<模态><输入/输出>（<condition>） |
+| unsupported, channel provenance | 此渠道不支持<模态><输入/输出> |
+| unsupported, other provenance | 该模型不支持<模态><输入/输出> |
+| unknown / unlisted | 官方资料未说明是否支持<模态><输入/输出> |
+
+Every distinct catalog/fixture qualifier is mapped below. Original qualifiers remain evidence data; they are never interpolated into public status text.
+
+| Existing qualifier | Concise condition | Coverage |
+| --- | --- | --- |
+| 图像（需视觉组件） | 需启用视觉组件 | Together `Prism-ML/Ternary-Bonsai-27B` input; one catalog icon |
+| 音频（有限支持） | 仅部分音频功能 | Existing Web/Mini legacy and custom fixtures |
+| 音频（需开启音频模式） | 需开启音频模式 | Existing Mini custom fixture |
+| 图像（需编辑接口） | 仅编辑接口 | I11 direction/condition fixture |
+| Unreviewed custom qualifier | 需满足接口要求 | Safe fallback fixture containing a site name/date; raw copy cannot leak |
+
+Mini previously lost the Together display qualifier while retaining the known image fact. `sync-card-display` now projects only the reviewed conditional display value/source identity into a tiny generated lookup, so Mini renders the same conditional state/sentence as Web without changing facts or execution fields. The generator no longer bundles the unused quote corpus into Mini; canonical archived evidence remains unchanged. No per-card sentence strings are stored.
+
+For each client: **1,064 cards × 8 icons = 8,512**. Counts: supported **2,847**, conditional **1**, channel-unsupported **501**, vendor-unsupported **0**, unknown **5,163**, unlisted **0**. Synthetic tests cover vendor exclusions, unlisted states and every mapped qualifier in both directions. The independent oracle scans all source titles, site-title parts, provider/developer display names and raw channel notes, as well as ISO dates and 核实日期. Actual Web DOM and compiled Mini tap handlers must equal the same sentence exactly. Full status sentences replace abbreviated dialog lines; source links are grouped under 资料来源, and link hover retains verification dates. Card footer source links and the I10 single-title policy remain intact.
+
+Historical reports retain their original counts and evidence through an exact, independently asserted I11-to-I10 presentation projection. This permits only the sentence changes, the twelve removed Web file icons and the one Mini conditional presentation correction. All non-icon fields remain exact. Changed expectations are recorded in the changed-test ledger; no frozen execution locks or original size limits are edited.
+
+Validation: **1,847 / 1,847 required tests pass**, with Web/Mini/Core builds, explicit Core TypeScript, all six workspace checks and all **13 maintenance checks** green. [Exact commands, logs and hashes](model-modality-r29-i11-validation.json). Execution/name invariants match the agreed `origin/main` baseline `52e0f161`; all four login files and frozen execution tests/fixtures are byte-identical. Both original size guards pass unchanged. Mini is **1,565,905 / 1,572,864 bytes**, **6,959 bytes remaining**, **2,643 bytes smaller than I10**. No Git writes, secrets, external network, inference, deployment or image builds.
+
+The visible-label scan is scoped to modality status copy: the pre-existing specification note `模型页未标注最大输出` remains unchanged. Hover/aria still reject every occurrence of 未标注, source/site/provider names, raw notes and dates.
+
+After validation, `.audit-input/r24/shots-m10.mjs` and its plan were updated and syntax/identity checked **without running the browser**. Fourteen planned files: desktop/mobile 111–117 at 1280/390, DPR 2 for both. Hover shots inject an absolutely positioned, screenshot-only div next to the selected icon using its actual title, then remove it in `finally`; no product overlay component exists. Every shot records hover/aria/dialog texts for all eight icons, selected icon text/state, and source URL/title/hover data in the output-directory `manifest.json`. Dialog 112 retains the I10 URL single-title assertions, including exact base and Edit fal API page titles. TokenDance `qwen3.6-plus` has channel-unsupported image input, so no substitute is needed. FLUX 2 Pro has no conditional icon; shot 117 uses supported image input. Native Mini visual acceptance and all captures remain unperformed, as requested.

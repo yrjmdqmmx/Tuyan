@@ -19,7 +19,7 @@ export function presentationDiff(before, after, path = '') {
   if (before === null || after === null || typeof before !== 'object' || typeof after !== 'object') return [{path, before, after}]
   return [...new Set([...Object.keys(before), ...Object.keys(after)])].flatMap(key => presentationDiff(before[key], after[key], path + '/' + key))
 }
-export function assertImageInput(key, fact, icons, sources) {
+export function assertImageInput(key, fact, icons, sources, historical = false) {
   const row = decision.rows.find(row => row.identity === key), input = review.reviews[key].inputModalities
   assert.equal(input.quote, row.officialQuoteOnEditingOrReferenceImages, key + ' verbatim original quote')
   assert.equal(input.sourceUrl, row.url, key + ' configured edit documentation')
@@ -29,8 +29,9 @@ export function assertImageInput(key, fact, icons, sources) {
   assert.deepEqual(plain(fact.value), ['text','image'], key)
   const image = icons.find(icon => icon.id === 'image')
   assert.equal(image.state, 'supported', key)
-  assert.equal(image.accessibleLabel, '图像：支持', key)
-  assert.match(image.tooltip, /(?:渠道资料|官方文档) · .*(?:编辑接口|Edit API 文档)（\d{4}-\d{2}-\d{2}）/, key)
+  assert.equal(image.accessibleLabel, historical ? '图像：支持' : '支持图像输入', key)
+  if (historical) assert.match(image.tooltip, /(?:渠道资料|官方文档) · .*(?:编辑接口|Edit API 文档)（\d{4}-\d{2}-\d{2}）/, key)
+  if (!historical) assert.equal(image.tooltip, '支持图像输入', key)
   assert.ok(sources.some(source => source.url === humanSourceUrl(row.url) && /编辑接口|Edit API 文档/.test(source.label)), key + ' visible edit source')
   assert.equal(sources[0].url, humanSourceUrl(row.url), key + ' primary edit-interface source')
   assert.doesNotMatch(JSON.stringify({fact,icons,sources}), /创始人|决定 A/, key + ' internal note')
@@ -60,8 +61,8 @@ export function assertPresentationChanges(now) {
     if (!changes.length) continue
     assert.ok(review.reviews[key], key + ' unexpected changed card')
     for (const change of changes) assert.ok(allowed.some(pattern => pattern.test(change.path)), key + ' unexpected change: ' + change.path)
-    assertImageInput(key, row.web.data.inputFact, row.web.inputIcons, row.web.sources)
-    assertImageInput(key, row.mini.audit.fields.inputModalities, row.mini.card.specRows[0].icons, row.mini.card.specSources)
+    assertImageInput(key, row.web.data.inputFact, row.web.inputIcons, row.web.sources, true)
+    assertImageInput(key, row.mini.audit.fields.inputModalities, row.mini.card.specRows[0].icons, row.mini.card.specSources, true)
     const inputLine = '输入：渠道公布（核实日期：' + review.reviews[key].inputModalities.verifiedAt + '）'
     assert.equal(row.web.fieldSources[0], inputLine, key)
     assert.equal(row.mini.card.auditMessage, baseline.rows[key].mini.card.auditMessage.replace('输入：渠道公布', inputLine), key + ' only the input date line changes')
@@ -100,7 +101,7 @@ export async function imageInputPresentations() {
     return [channel + '/' + model.id, {
       web: {name:web.modelCardName(channel, model), data, sources:web.modelSourceRows(data),
         inputIcons:web.modalityIconStates(data.input, data.inputFact, channel, model.id),
-        outputIcons:web.modalityIconStates(data.output, data.outputFact, channel, model.id),
+        outputIcons:web.modalityIconStates(data.output, data.outputFact, channel, model.id, 'output'),
         fieldSources:web.fieldSourceLines(data.fields, data.checkedAt), refine:web.modelRefinePresentation(model)},
       mini: {card:context.present(miniModel, '', '', channel), audit:auditedModelSpecs(channel, model.id)},
     }]

@@ -16,7 +16,7 @@ const mixed = provenance => ({ id: 'test-states', specifications: { version: 1, 
 test('R22C all three short labels have accessible names and solid glyphs in a fixed footprint', () => {
   const { container } = render(React.createElement(ModelSpecifications, { provider: 'custom', model: mixed('channel') }))
   const inputs = within(screen.getByRole('group', { name: '输入模态' }))
-  for (const [name, state] of [['文本：支持', 'supported'], ['图像：暂不支持', 'unsupported'], ['视频：未标注 · 渠道未标注此模态', 'unknown']]) {
+  for (const [name, state] of [['支持文本输入', 'supported'], ['此渠道不支持图像输入', 'unsupported'], ['官方资料未说明是否支持视频输入', 'unknown']]) {
     const icon = inputs.getByRole('img', { name })
     assert.equal(icon.dataset.state, state)
     assert.ok(icon.classList.contains('is-' + state))
@@ -24,7 +24,7 @@ test('R22C all three short labels have accessible names and solid glyphs in a fi
     assert.equal(icon.querySelector('svg').getAttribute('height'), '20')
     assert.equal(icon.querySelectorAll('.model-modality-strike, .model-modality-question, sup').length, 0)
   }
-  assert.match(inputs.getByRole('img', {name:/^视频：未标注 · /}).title, /^未标注 · 渠道未标注此模态$/)
+  assert.match(inputs.getByRole('img', {name:/^官方资料未说明是否支持视频输入$/}).title, /^官方资料未说明是否支持视频输入$/)
   assert.equal(container.querySelectorAll('dt').length, 4, 'no legend or extra specification row')
   const css = fs.readFileSync(new URL('../src/components/ModelSpecifications.css', import.meta.url), 'utf8')
   assert.match(css, /\.model-modality-icon \{[^}]*width: 20px; height: 20px; flex: 0 0 20px/)
@@ -38,10 +38,10 @@ test('R22C all 74 TokenDance cards retain channel exclusion evidence and Qwen sh
   for (const model of STATIC_MODEL_REGISTRY.tokendance.models) {
     const { container } = render(React.createElement(ModelSpecifications, { provider: 'tokendance', model }))
     assert.doesNotMatch(container.innerHTML, /原厂资料标明不支持/, model.id)
-    for (const icon of container.querySelectorAll('[data-state="unsupported"]')) assert.match(icon.getAttribute('aria-label'), /暂不支持/)
+    for (const icon of container.querySelectorAll('[data-state="unsupported"]')) assert.match(icon.getAttribute('aria-label'), /^此渠道不支持/)
     if (model.id === qwen.model.id) {
       const inputs = within(screen.getByRole('group', { name: '输入模态' }))
-      for (const icon of inputs.getAllByRole('img')) assert.equal(icon.title, (icon.dataset.state === 'unsupported' ? '此渠道未开放该模态。' : '') + '渠道标注：文本→文本（2026-11-09）')
+      for (const icon of inputs.getAllByRole('img')) assert.equal(icon.title, icon.getAttribute('aria-label'))
     }
     cleanup()
   }
@@ -50,13 +50,13 @@ test('R22C all 74 TokenDance cards retain channel exclusion evidence and Qwen sh
 test('R22C vendor exclusions retain their attribution; vendor silence stays unknown and quotes retain original Bailian order', () => {
   render(React.createElement(ModelSpecifications, {provider:'custom', model:mixed('vendor')}))
   const inputs = within(screen.getByRole('group', {name:'输入模态'}))
-  assert.equal(inputs.getByRole('img', {name:'图像：暂不支持'}).dataset.state, 'unsupported')
-  assert.match(inputs.getByRole('img', {name:'文本：支持'}).title, /^官方文档.*2026-11-09/)
-  assert.equal(inputs.getByRole('img', {name:/^视频：未标注 · /}).title, '未标注 · 官方文档 · Example · Spec')
+  assert.equal(inputs.getByRole('img', {name:'该模型不支持图像输入'}).dataset.state, 'unsupported')
+  assert.match(inputs.getByRole('img', {name:'支持文本输入'}).title, /^支持文本输入$/)
+  assert.equal(inputs.getByRole('img', {name:/^官方资料未说明是否支持视频输入$/}).title, '官方资料未说明是否支持视频输入')
   for (const [key, row] of Object.entries(phase2.tables)) {
     cleanup()
     render(React.createElement(ModelSpecifications, {provider:'bailian',model:{id:key.slice(key.indexOf('/') + 1)}}))
-    for (const icon of within(screen.getByRole('group',{name:'输入模态'})).getAllByRole('img')) assert.equal(icon.title, (icon.dataset.state === 'unsupported' ? '此渠道未开放该模态。' : '') + `渠道标注：${row.quote}（${row.verifiedAt}）`, key)
+    for (const icon of within(screen.getByRole('group',{name:'输入模态'})).getAllByRole('img')) assert.equal(icon.title, icon.getAttribute('aria-label'), key)
   }
 })
 
@@ -67,10 +67,10 @@ test('R22C desktop 1280, mobile 390 and compact cards expose evidence through th
     window.innerWidth = width
     render(React.createElement(ModelSpecifications, {...qwen, compactSources}))
     fireEvent.click(screen.getByRole('button',{name:/^输入模态 · 官方文档规格/}))
-    assert.match(screen.getByRole('dialog').textContent, /渠道标注：文本→文本\n/)
+    assert.match(screen.getByRole('dialog').textContent, /支持文本输入\n/)
     assert.equal(screen.getByRole('dialog').textContent.match(/核实日期：2026-11-09/g).length, 1)
-    assert.match(screen.getByRole('dialog').textContent, /图像：暂不支持/)
-    assert.match(screen.getByRole('dialog').textContent, /此渠道未开放该模态。渠道标注：文本→文本/)
+    assert.match(screen.getByRole('dialog').textContent, /此渠道不支持图像输入/)
+    assert.match(screen.getByRole('dialog').textContent, /此渠道不支持视频输入/)
     cleanup()
   }
   render(React.createElement(ModelSpecifications, {provider:'custom',model:{id:'no-evidence'},compactSources:true}))
