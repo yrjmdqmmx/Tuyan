@@ -60,11 +60,13 @@ export default function WorkspaceAccount({ children, beforeSignOut, loginRequest
     ? '账号服务暂时不可用，尚未确认登录状态。任务与草稿已保留，请稍后重新检查。'
     : authStatus === 429 ? '账号检查过于频繁，请稍后重试。任务与草稿已保留。'
       : '暂时无法检查登录状态，任务与草稿已保留。请确认连接后重试。' : '');
+  const forcedLogin = requireLogin && !user;
+  async function recheck() { setError(''); await auth.refresh(); }
   return <>
-    {requireLogin && !user ? <WorkspaceLogin apiBase={apiBase} pending={auth.isPending} client={client} watcha={watcha} wechat={wechat} github={github} google={google} onAuthenticated={authenticated} /> : children({ user, watcha, wechat, github, google, onSignIn: () => login(), onSignOut: signOut, onAccountSettings: () => user ? setPanel('settings') : login('settings'), refreshAccount: auth.refresh, beforeEmailChange: beforeSignOut,
+    {forcedLogin ? <WorkspaceLogin apiBase={apiBase} pending={auth.isPending} message={message} onRecheck={recheck} signingOut={signingOut} client={client} watcha={watcha} wechat={wechat} github={github} google={google} onAuthenticated={authenticated} /> : children({ user, watcha, wechat, github, google, onSignIn: () => login(), onSignOut: signOut, onAccountSettings: () => user ? setPanel('settings') : login('settings'), refreshAccount: auth.refresh, beforeEmailChange: beforeSignOut,
       onEmailChanged: async () => { action.current++; auth.clear(); afterLogin.current=null; setError('登录邮箱已更换，请使用新邮箱重新登录。'); setPanel('login'); },
       accountPending: auth.isPending || signingOut })}
-    {message && <div className="tw-auth-message" role="alert"><span>{message}</span>{!signingOut && <button type="button" disabled={auth.isPending} onClick={async () => { setError(''); await auth.refresh(); }}>{auth.isPending ? '正在检查…' : '重新检查'}</button>}</div>}
+    {message && !forcedLogin && <div className="tw-auth-message" role="alert"><span>{message}</span>{!signingOut && <button type="button" disabled={auth.isPending} onClick={recheck}>{auth.isPending ? '正在检查…' : '重新检查'}</button>}</div>}
     {panel === 'login' && !user && !requireLogin && <AccessibleDialog open onClose={() => setPanel(null)} labelledBy="tw-login-title" backdropClassName="tw-auth-backdrop" className="tw-auth-dialog">
       <h2 className="tw-sr" id="tw-login-title">登录图研</h2>
       <button type="button" className="tw-auth-close" aria-label="关闭登录" onClick={() => setPanel(null)}><X size={20} /></button>
