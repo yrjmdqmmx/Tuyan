@@ -19,9 +19,6 @@ function ModalityIcons({ states, direction }) {
       const description = accessibleLabel.split(/(：| · )/).map(part => t(part)).join('')
       return <span key={id} className={`model-modality-icon is-${state}`} data-state={state} role="img" aria-label={description} title={t(tooltip)}>
         <Icon size={20} strokeWidth={1.8} aria-hidden="true" />
-        {state === 'unsupported' && <span className="model-modality-strike" aria-hidden="true" />}
-        {['unknown', 'unlisted'].includes(state) && <sup className="model-modality-question" aria-hidden="true">?</sup>}
-        {state === 'conditional' ? <sup aria-hidden="true">*</sup> : null}
       </span>
     })}
   </span>

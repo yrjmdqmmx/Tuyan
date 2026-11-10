@@ -1,3 +1,11 @@
+## 2026-11-10 · R27 Phase I8: R2 modality icon simplification (not deployed)
+
+- [x] Shared / Web / Mini: supported = existing solid dark glyph; unsupported, unknown, unlisted and conditional = the same solid grey glyph. Removed strikes, question badges, dashed treatment and asterisks. Short labels are `支持` / `暂不支持` / `未标注`. Conditional uses short `支持` with grey colour; `有条件支持` and its qualifier remain only in tooltip/dialog, per the I8 fallback for the silent R2 plan row.
+- [x] Evidence / execution: channel exclusions add `此渠道未开放该模态。`; vendor exclusions add `原厂资料标明不支持。`; existing attribution, quotes, sources, dates and unknown wording remain. States, `data-state`, `is-*` classes, names and execution fields stay unchanged. All 15 decision-A image inputs remain dark solid `支持`. Core / Gateway require no contract changes.
+- [x] Regression / review: new all-1,064-card tests per client cover exact label/evidence mapping, identical grey glyphs and modal contents; frozen pre-I8 presentations allow no other field changes. Existing tests and the [ledger](docs/model-modality-changed-tests.md) record `founder: grey is enough (R2, 2026-11-10)`. [Mapping and conditional decision](docs/model-modality-audit-20261109.md#r27-phase-i8).
+- [x] Validation: **1,818/1,818 tests**, Web/Mini/Core builds, explicit Core TypeScript, six workspace checks and all **13 maintenance checks** pass. Mini source **1,564,312 / 1,572,864 bytes**, **8,552 remaining** (−718); both original byte guards remain unchanged. [Commands and results](docs/model-modality-r27-i8-validation.json).
+- [x] Screenshot preparation: `.audit-input/r24/shots-m8.mjs` plus manifest prepare eight 1280/390 images; **not run**. No Git writes or deployment; native Mini acceptance/deployment retains its existing boundary.
+
 ## 2026-11-10 · R27 Phase I7: founder decision A on 15 direct-edit image inputs (not deployed)
 
 - [x] Evidence / shared: **创始人已决定 A**, decision date **2026-11-10**. All **14 fal + 1 Ideogram** edit/remix documents returned HTTP 200 with the original verbatim quotes; exact timestamps in UTC and Asia/Shanghai, body hashes and per-model status are stored in the [dated review](config/channel-audit/review-r27-20261110.json) and [decision record](docs/model-modality-image-input-decision.md). Original decision table retained; zero unverified restorations.

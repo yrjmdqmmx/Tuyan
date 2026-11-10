@@ -25,17 +25,20 @@ export function modalityIconStates(value, fact, provider, modelId, missingIds = 
   }
   return states.map(item => {
     const channel = fact?.provenance === 'channel'
-    const wording = { supported: '支持', unsupported: channel ? '渠道未开放' : '不支持', unknown: '未知', unlisted: '官方未列支持', conditional: '有条件支持' }[item.state]
+    // R2: conditional uses the short positive label; its qualification lives in evidence only.
+    const wording = { supported: '支持', unsupported: '暂不支持', unknown: '未标注', unlisted: '未标注', conditional: '支持' }[item.state]
     const group = channel && evidence.find(([prefix, date]) => fact.sourceUrl?.startsWith(prefix) && date === fact.verifiedAt)
     const subject = group && fact.sourceUrl.slice(group[0].length) + (provider === 'bailian' ? '#' + modelId : '')
     const quote = group && group[2].find(([, ids]) => ids.split('|').includes(subject))?.[0]
     const date = ['unknown', 'unlisted'].includes(item.state) ? null : fact?.verifiedAt
     const source = { channel: '渠道资料', vendor: '原厂资料', catalog: '图研既有核实', product: '图研输入要求' }[fact?.provenance]
     const attribution = source ? `${source}${fact.sourceUrl ? ` · ${sourceTitle(fact.sourceUrl)}` : ''}${date ? `（${date}）` : ''}` : '暂无官方资料'
-    const tooltip = ['unknown', 'unlisted'].includes(item.state)
+    const evidenceText = ['unknown', 'unlisted'].includes(item.state)
       ? (channel || provider === 'tokendance' || fact?.modalityMasks?.includes(item.id) ? `${provider === 'tokendance' && missingIds.has(modelId) ? '渠道页无此型号' : '渠道未标注此模态'}${date ? `（核实日期：${date}）` : ''}` : attribution)
       : quote ? `渠道标注：${quote}（${date}）`
         : attribution
-    return { ...item, accessibleLabel: `${item.label}：${wording}${item.detail && item.detail !== item.label ? ` · ${item.detail}` : ''}`, tooltip }
+    const tooltip = (item.state === 'unsupported' ? channel ? '此渠道未开放该模态。' : '原厂资料标明不支持。'
+      : item.state === 'conditional' ? `有条件支持${item.detail ? ` · ${item.detail}` : ''}。` : '') + evidenceText
+    return { ...item, accessibleLabel: `${item.label}：${wording}`, tooltip }
   })
 }

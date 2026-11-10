@@ -41,7 +41,7 @@ export function dialogIssues(text) {
   if(/审计|回退|未核实值|\b(?:provenance|catalog|channel|vendor|sourceUrl|sourceUrls|verifiedAt|inputModalities|outputModalities|totalContextTokens|maxOutputTokens|suppressFallback|modalityMasks)\b/i.test(text)) issues.push('internal jargon')
   if(new Set(lines).size!==lines.length) issues.push('duplicate line')
   // Each direction starts a new field section; a source for another field is not a contradiction.
-  for(const section of text.split(/(?=^(?:输入|输出)：.*(?:支持|未知))/m)) {
+  for(const section of text.split(/(?=^(?:输入|输出)：.*(?:支持|未知|未标注))/m)) {
     if(/^(?:原厂资料|渠道资料|图研既有核实|图研输入要求)(?: ·|（|$)/m.test(section) && /暂无官方资料/.test(section)) issues.push('source plus no-source contradiction')
   }
   return [...new Set(issues)]

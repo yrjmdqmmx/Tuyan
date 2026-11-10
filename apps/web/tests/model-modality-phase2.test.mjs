@@ -45,7 +45,7 @@ test('phase 2 full Core objects, saved IDs, library rows, picker options and Min
     const html = renderToStaticMarkup(React.createElement(ModelSpecifications,{provider:channel,model}))
     for (const [field, row] of Object.entries(reviews)) for (const [id, state] of Object.entries(row.decisions)) if (id !== 'file') {
       const label = {text:'文本',image:'图像',audio:'音频',video:'视频'}[id]
-      assert.ok(html.includes(`aria-label="${label}：${state === 'supported' ? '支持' : '未知'}"`),key+'/'+field+'/'+id)
+      assert.ok(html.includes(`aria-label="${label}：${state === 'supported' ? '支持' : '未标注'}"`),key+'/'+field+'/'+id)
     }
   }
 })

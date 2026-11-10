@@ -162,7 +162,7 @@ test('modality icons distinguish known, missing and conditional published capabi
   assert.equal(modalityIconStates('文本')[1].state,'unlisted')
   const {container}=render(React.createElement(ModelSpecifications,{provider:'custom',model:{id:'unknown'}}))
   assert.equal(container.querySelectorAll('.is-unknown').length,8)
-  assert.equal(screen.getAllByRole('img', {name:/：未知$/}).length,8)
+  assert.equal(screen.getAllByRole('img', {name:/：未标注$/}).length,8)
   assert.doesNotMatch(container.textContent,/（原厂）|（渠道）/)
 })
 

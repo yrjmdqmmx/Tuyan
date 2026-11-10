@@ -22,13 +22,13 @@ test('R22C shared and generated Mini presentation agree across all 1064 identiti
       assert.deepEqual(fields[field], before)
       const table = tables[channel + '/' + model.id]
       for (const icon of icons.filter(icon => ['supported', 'unsupported'].includes(icon.state))) {
-        if (icon.state === 'unsupported' && fields[field].provenance === 'channel') assert.match(icon.tooltip, /^渠道标注：/, channel + '/' + model.id)
-        if (table) assert.equal(icon.tooltip, `渠道标注：${table.quote}（${table.verifiedAt}）`)
+        if (icon.state === 'unsupported' && fields[field].provenance === 'channel') assert.match(icon.tooltip, /^此渠道未开放该模态。渠道标注：/, channel + '/' + model.id)
+        if (table) assert.equal(icon.tooltip, (icon.state === 'unsupported' ? '此渠道未开放该模态。' : '') + `渠道标注：${table.quote}（${table.verifiedAt}）`)
         if (channel === 'tokendance') {
           const portal = snapshot.portal[model.id]
           assert.ok(portal)
           const quote = portal.architecture.modality.replace(/text|image|audio|video/g, value => ({text:'文本', image:'图像', audio:'音频', video:'视频'})[value]).replaceAll(',', '、')
-          assert.equal(icon.tooltip, `渠道标注：${quote}（${portal.checkedAt.slice(0, 10)}）`)
+          assert.equal(icon.tooltip, (icon.state === 'unsupported' ? '此渠道未开放该模态。' : '') + `渠道标注：${quote}（${portal.checkedAt.slice(0, 10)}）`)
         }
       }
     }
@@ -37,7 +37,7 @@ test('R22C shared and generated Mini presentation agree across all 1064 identiti
   assert.equal(count, 1064)
 })
 
-test('R22C distinguishing strokes and question badges exceed 3:1 on active card/dialog backgrounds', () => {
+test('R22C solid grey glyphs exceed 3:1 on active card/dialog backgrounds', () => {
   const css = read('apps/web/src/styles.css'), miniCss = read('apps/miniprogram/miniprogram/components/model-picker/model-picker.wxss')
   const token = name => css.match(new RegExp('--' + name + ': (#[a-f0-9]{6})'))[1]
   function luminance(hex) {
@@ -56,5 +56,5 @@ test('R22C distinguishing strokes and question badges exceed 3:1 on active card/
   assert.match(read('apps/web/src/components/ModelSpecifications.css'), /is-unsupported[^}]*color: var\(--muted\)/)
   assert.match(miniCss, /is-unsupported[^}]*color:#68786d/)
   assert.equal((miniCss.match(/data:image\/svg\+xml/g) || []).length, 4, 'existing Lucide glyphs embedded without adding image files')
-  console.log('R22C minimum active-card distinguishing-mark contrast: ' + Math.min(...ratios).toFixed(2) + ':1')
+  console.log('R22C minimum active-card grey-glyph contrast: ' + Math.min(...ratios).toFixed(2) + ':1')
 })

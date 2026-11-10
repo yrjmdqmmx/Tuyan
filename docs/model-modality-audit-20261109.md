@@ -757,6 +757,8 @@ PM review of PR #251, item 3. Base remains `main 8c456709`; this phase starts fr
 
 ### State → visual → wording
 
+**R27 I8 update (2026-11-10):** the R22 visual table below is historical and superseded by [the R2 mapping](#r27-phase-i8). Machine states and source evidence remain unchanged.
+
 | Evidence state / provenance | Web and Mini visual | Accessible wording, using image as the example |
 | --- | --- | --- |
 | Supported / known positive | Existing solid Lucide glyph in the normal text colour | `图像：支持` |
@@ -1293,3 +1295,27 @@ Validation: **1808/1808 tests pass**, comprising Web 1,497, Mini 181, scripts 77
 Mini source is **1,565,030 / 1,572,864 bytes**, **7,834 remaining** (delta **+2,038** from HEAD). The stricter existing 1,569,427-byte assertion is unchanged and passes. Existing generator and staged-build guards preflight output before installing it; no oversized source package was written. Derived files were regenerated, not hand-edited.
 
 `.audit-input/r24/shots-m7.mjs` derives from M6 and is syntax-checked but **not run**. Its manifest specifies the fal FLUX-2-pro input-modality/evidence dialog with image 支持 and the edit-interface source at 1280/390: `desktop-81-modality-dialog-fal-flux-2-pro-m7.png` and `mobile-81-modality-dialog-fal-flux-2-pro-m7.png`. Native rendering and screenshots remain outside this run. No Git writes, secrets, paid/inference calls, deployment, Docker/image builds, other-worktree work or agent-knowledge/workflow synchronization. Mini deployment remains paused.
+
+## R27 Phase I8
+
+Founder choice **R2**, 2026-11-10: supported icons keep the existing dark solid glyph. Every other state uses the same solid grey glyph for that modality on Web and Mini. No diagonal strike, question badge, dashed outline/stroke or conditional asterisk remains. Existing enum values, `data-state`, `is-*` classes, glyph paths and footprints remain unchanged.
+
+| Machine state / evidence | Glyph | Short label (image example) | Hover / dialog text |
+| --- | --- | --- | --- |
+| `supported` | Solid dark | 图像：支持 | Existing attribution / captured quote and date |
+| `unsupported`, channel exclusion | Solid grey | 图像：暂不支持 | 此渠道未开放该模态。 + unchanged channel evidence and date |
+| `unsupported`, vendor exclusion | Solid grey | 图像：暂不支持 | 原厂资料标明不支持。 + unchanged attribution and date |
+| `unknown` / `unlisted` | The same solid grey | 图像：未标注 | Existing 渠道未标注此模态 / 渠道页无此型号 / attribution / 暂无官方资料; no invented date |
+| `conditional` | The same solid grey | 图像：支持 | 有条件支持 + existing qualifier and attribution; no asterisk |
+
+**Conditional choice:** the plan's R2 table does not define a separate conditional short label. Following the explicit I8 fallback, use `支持` as the short label with a grey glyph, and keep `有条件支持` and the original qualifier only in the tooltip/dialog. It is never relabeled `未标注`. The three short labels are exactly `支持`, `暂不支持`, `未标注`.
+
+The immutable pre-I8 snapshot at `105744a9` covers all 1,064 Web and compiled Mini presentations. New tests compare every field against that snapshot, permitting only the exact label/prefix transformation above; state, source, date, fact, picker name and execution-related presentation stay equal. Web tests inspect actual DOM, SVG identity, computed colours and opened evidence dialogs for every card. Mini tests check the shipped single-glyph WXML, the one shared grey CSS rule, every compiled icon and its tap modal. Vendor, conditional and legacy-unlisted fixtures cover paths absent or uncommon in the catalog. All 15 decision-A image inputs remain dark, solid `支持`.
+
+The historical I7 all-card report stays byte-for-byte unchanged: its guard first validates each exact R2 label/tooltip, then projects only those strings back to the frozen I7 wording for the original comparison. It cannot hide state, fact or source drift. The source-dialog audit scanner now recognizes `未标注` as a new modality section; its negative test still rejects a source/no-source contradiction within the same field. Changed expectations are recorded with **founder: grey is enough (R2, 2026-11-10)** in the [ledger](model-modality-changed-tests.md); frozen execution tests and byte ceilings are unchanged.
+
+Screenshot preparation: `.audit-input/r24/shots-m8.mjs` and manifest cover 1280/390 TokenDance `qwen3.6-plus` icons and evidence dialog, fal `fal-ai/flux-2/klein/9b` (six unknown icons), and fal `fal-ai/flux-2-pro` (supported image input). Eight images are planned; card captures target the card element. Script prepared and syntax-checked only, **not run**.
+
+Validation: **1,818/1,818 tests pass** (Web 1,504; Mini 182; scripts 79; shared API 33; Core 10; Gateway 8; name invariants 2). Web/Mini/Core builds, explicit Core `tsc --noEmit`, six workspace checks, and all **13 maintenance `--check` scripts** pass, including the changed-test ledger. The two validation findings were stale presentation wording checks; both were corrected and rechecked. [Commands, logs and results](model-modality-r27-i8-validation.json).
+
+Mini source: **1,564,312 / 1,572,864 bytes**, **8,552 remaining**, **718 fewer** than `105744a9`. Both existing size guards remain unchanged and pass. Sync/compilation preflight kept every installed generated output within the ceiling. No Git writes, external network, deployment or screenshot execution.

@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import {restoreI7IconWording} from './icon-simplify-r27.mjs'
 import vm from 'node:vm'
 import {createRequire} from 'node:module'
 import {productBundle} from './execution-capability.mjs'
@@ -36,6 +37,7 @@ export function assertImageInput(key, fact, icons, sources) {
 }
 
 export function assertPresentationChanges(now) {
+  now = restoreI7IconWording(now)
   assert.equal(baseline.head, 'd1c6399493f4e216cb0cc482c5312cbea8ed2f8d')
   assert.deepEqual(Object.keys(now), Object.keys(baseline.rows))
   assert.equal(Object.keys(now).length, 1064)
