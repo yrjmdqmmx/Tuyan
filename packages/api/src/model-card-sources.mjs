@@ -1,3 +1,4 @@
+import primaryPages from './card-data/primary-pages-r31.json' with { type: 'json' }
 import { sourceIdentity, uniqueSources, titleSourceRows, humanSourceUrl, isMachineDocument } from './card-presentation.mjs'
 import tokenDancePages from './card-data/tokendance-pages.json' with { type: 'json' }
 import { safeSources as rawSafeSources } from './catalog-card-facts.mjs'
@@ -67,6 +68,17 @@ export function ownModelPage(channel, model, urls) {
   return own.find(url => channelOwns(channel, url)) || own[0] || null
 }
 
+// Endpoint siblings must share the full model path, excluding operation suffixes.
+// Ideogram versions use different documentation layouts for edit and generation.
+export function siblingEndpoint(channel, previous, own) {
+  if (!previous || !own || previous === own || !channelOwns(channel, previous) || !channelOwns(channel, own)) return false
+  const a = new URL(previous), b = new URL(own)
+  if (a.origin !== b.origin || noticePage(previous) || sourceSpecificity(previous) < 2) return false
+  if (channel === 'ideogram') return /\/edit-images\/remix-v4$/.test(a.pathname) && /\/images\/generate\/ideogram-4$/.test(b.pathname)
+  const stem = path => path.replace(/\/api$/, '').replace(/\/(?:edit|edit-image|text-to-image)$/, '')
+  return /\/(?:edit|edit-image)(?:\/api)?$/.test(a.pathname) && stem(a.pathname) === stem(b.pathname)
+}
+
 export function modelCardSources({ channel, model = {}, audit, fields, lifecycle, checks = {} }) {
   const visible = url => !(audit.excludedSources || []).includes(url) && visibleSource(url)
   const notices = safeSources((audit.sourceLinks || []).filter(link => link.kind === 'retirement-notice').map(link => link.url)).filter(visible)
@@ -95,6 +107,8 @@ export function modelCardSources({ channel, model = {}, audit, fields, lifecycle
   const urls = safeSources([...links.filter(link => link.kind === 'model-page' || link.scope === 'vendor').map(link => link.url),
     ...captured.map(url => isApiSource(url, checks) ? modelPageForEndpoint(url, model, captured) : url)])
     .filter(url => visible(url) && !isApiSource(url, checks) && checks[url]?.rendersModel !== false)
+  const official = primaryPages[channel + '/' + model.id]?.url
+  if (official && visible(official) && !urls.includes(official)) urls.push(official)
   const channelHosts = new Set(channelSources.map(url => new URL(url).hostname))
   for (const url of urls) if (channelOwns(channel, url) && !channelSources.includes(url)) channelSources.push(url)
   // A tagged vendor announcement describes the source, not channel availability.
@@ -107,8 +121,12 @@ export function modelCardSources({ channel, model = {}, audit, fields, lifecycle
   const isGeneral = url => sourceSpecificity(url) < 2
   const replacement = captured[0] && isApiSource(captured[0], checks)
     ? urls.find(url => isChannel(url) && !isGeneral(url)) || urls.find(url => !isGeneral(url)) : null
-  const first = ownModelPage(channel, model, urls) || (audit.lifecycleSourceUrl && urls.includes(audit.sourceUrl) ? audit.sourceUrl : null) || lifecycleSources[0] || replacement || (urls[0] && isChannel(urls[0]) && isGeneral(urls[0]) && !/\/pricing\/?$/.test(new URL(urls[0]).pathname)
+  const previous = (audit.lifecycleSourceUrl && urls.includes(audit.sourceUrl) ? audit.sourceUrl : null) || lifecycleSources[0] || replacement || (urls[0] && isChannel(urls[0]) && isGeneral(urls[0]) && !/\/pricing\/?$/.test(new URL(urls[0]).pathname)
     ? urls.find(url => isChannel(url) && !isGeneral(url)) : null)
+  // I13: promote only an own endpoint replacing a sibling on this same channel.
+  // Vendor documents, catalogs and notices retain their pre-I12 priority.
+  const own = ownModelPage(channel, model, urls)
+  const first = official && urls.includes(official) ? official : siblingEndpoint(channel, previous || urls[0], own) ? own : previous
   const sources = first ? [first, ...urls.filter(url => url !== first)] : urls
   const unique = uniqueSources(sources)
   const keys = new Set(unique.map(sourceIdentity))

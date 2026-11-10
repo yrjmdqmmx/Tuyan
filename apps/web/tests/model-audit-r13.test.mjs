@@ -145,7 +145,7 @@ test('R13B catalog-wide notice links are labelled 下线公告 regardless of cha
       }
     }
   }
-  assert.equal(visible, 14, 'Seven full-registry and seven static notice primaries; six per projection now prioritize an existing own-model page, with notices retained')
+  assert.equal(visible, 26, 'R31 restores six notice primaries per projection: thirteen full-registry and thirteen static notice primaries')
   const ordinary = modelCardSources({ channel: 'unknown', audit: {}, fields: {}, model: { officialSourceUrl: 'https://example.test/notice/118177' } })
   assert.equal(modelSourceName(ordinary, ordinary.sources[0]), '官方文档')
 })

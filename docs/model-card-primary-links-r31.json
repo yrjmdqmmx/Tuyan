@@ -1,0 +1,1725 @@
+{
+  "phase": "R31 Phase I13",
+  "head": "702175ea",
+  "mainBaseline": "52e0f161",
+  "cardsPerClient": 1064,
+  "counts": {
+    "cards": 82,
+    "kept": 15,
+    "restored": 61,
+    "officialPages": 6
+  },
+  "countsByChannel": {
+    "siliconflow": {
+      "kept": 0,
+      "restored": 8,
+      "replaced-with-official-page": 0
+    },
+    "bailian": {
+      "kept": 0,
+      "restored": 12,
+      "replaced-with-official-page": 6
+    },
+    "ideogram": {
+      "kept": 1,
+      "restored": 0,
+      "replaced-with-official-page": 0
+    },
+    "together": {
+      "kept": 0,
+      "restored": 5,
+      "replaced-with-official-page": 0
+    },
+    "fal": {
+      "kept": 14,
+      "restored": 4,
+      "replaced-with-official-page": 0
+    },
+    "replicate": {
+      "kept": 0,
+      "restored": 14,
+      "replaced-with-official-page": 0
+    },
+    "runware": {
+      "kept": 0,
+      "restored": 2,
+      "replaced-with-official-page": 0
+    },
+    "tokenhub": {
+      "kept": 0,
+      "restored": 3,
+      "replaced-with-official-page": 0
+    },
+    "sensenova": {
+      "kept": 0,
+      "restored": 1,
+      "replaced-with-official-page": 0
+    },
+    "qianfan": {
+      "kept": 0,
+      "restored": 5,
+      "replaced-with-official-page": 0
+    },
+    "antling": {
+      "kept": 0,
+      "restored": 6,
+      "replaced-with-official-page": 0
+    },
+    "novita": {
+      "kept": 0,
+      "restored": 1,
+      "replaced-with-official-page": 0
+    }
+  },
+  "kept": [
+    {
+      "key": "ideogram/ideogram-v4",
+      "channel": "ideogram",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4 is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4",
+        "label": "官方文档 · Ideogram · Ideogram 4.0 编辑接口"
+      },
+      "afterI12": {
+        "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+        "label": "官方文档 · Ideogram · Ideogram 4"
+      },
+      "after": {
+        "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+        "label": "官方文档 · Ideogram · Ideogram 4"
+      }
+    },
+    {
+      "key": "fal/bytedance/seedream/v5/flash/text-to-image",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/bytedance/seedream/v5/flash/edit/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+        "label": "渠道资料 · fal · Seedream V5 Flash Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+        "label": "渠道资料 · fal · Seedream V5 Flash API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+        "label": "渠道资料 · fal · Seedream V5 Flash API 文档"
+      }
+    },
+    {
+      "key": "fal/bytedance/seedream/v5/pro/text-to-image",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/bytedance/seedream/v5/pro/edit/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+        "label": "渠道资料 · fal · Seedream V5 Pro Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+        "label": "渠道资料 · fal · Seedream V5 Pro API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+        "label": "渠道资料 · fal · Seedream V5 Pro API 文档"
+      }
+    },
+    {
+      "key": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+        "label": "渠道资料 · fal · Seedream V4.5 Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+        "label": "渠道资料 · fal · Seedream V4.5 API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+        "label": "渠道资料 · fal · Seedream V4.5 API 文档"
+      }
+    },
+    {
+      "key": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+        "label": "渠道资料 · fal · Seedream V4 Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+        "label": "渠道资料 · fal · Seedream V4 API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+        "label": "渠道资料 · fal · Seedream V4 API 文档"
+      }
+    },
+    {
+      "key": "fal/fal-ai/flux-2-pro",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/fal-ai/flux-2-pro/edit/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+        "label": "渠道资料 · fal · FLUX 2 Pro Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+        "label": "渠道资料 · fal · FLUX 2 Pro API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+        "label": "渠道资料 · fal · FLUX 2 Pro API 文档"
+      }
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+        "label": "渠道资料 · fal · FLUX.3 Klein Base Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+        "label": "渠道资料 · fal · FLUX.3 Klein Base API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+        "label": "渠道资料 · fal · FLUX.3 Klein Base API 文档"
+      }
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/klein/text-to-image",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+        "label": "渠道资料 · fal · FLUX.3 Klein Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+        "label": "渠道资料 · fal · FLUX.3 Klein API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+        "label": "渠道资料 · fal · FLUX.3 Klein API 文档"
+      }
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/text-to-image",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/blackforestlabs/flux-3/edit-image/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+        "label": "渠道资料 · fal · FLUX.3 Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+        "label": "渠道资料 · fal · FLUX.3 API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+        "label": "渠道资料 · fal · FLUX.3 API 文档"
+      }
+    },
+    {
+      "key": "fal/openai/gpt-image-2.5/flare/text-to-image",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+        "label": "渠道资料 · fal · GPT Image 2.5 Flare Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+        "label": "渠道资料 · fal · GPT Image 2.5 Flare API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+        "label": "渠道资料 · fal · GPT Image 2.5 Flare API 文档"
+      }
+    },
+    {
+      "key": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+        "label": "渠道资料 · fal · GPT Image 2.5 Sunburst Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+        "label": "渠道资料 · fal · GPT Image 2.5 Sunburst API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+        "label": "渠道资料 · fal · GPT Image 2.5 Sunburst API 文档"
+      }
+    },
+    {
+      "key": "fal/xai/grok-imagine-image",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/xai/grok-imagine-image/edit/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+        "label": "渠道资料 · fal · Grok Imagine Image Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/xai/grok-imagine-image/api",
+        "label": "渠道资料 · fal · Grok Imagine Image API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/xai/grok-imagine-image/api",
+        "label": "渠道资料 · fal · Grok Imagine Image API 文档"
+      }
+    },
+    {
+      "key": "fal/xai/grok-imagine-image/quality/text-to-image",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/xai/grok-imagine-image/quality/edit/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+        "label": "渠道资料 · fal · Grok Imagine Image Quality Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+        "label": "渠道资料 · fal · Grok Imagine Image Quality API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+        "label": "渠道资料 · fal · Grok Imagine Image Quality API 文档"
+      }
+    },
+    {
+      "key": "fal/krea/v3/text-to-image",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/krea/v3/edit/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/krea/v3/edit/api",
+        "label": "渠道资料 · fal · Krea 3 Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/krea/v3/text-to-image/api",
+        "label": "渠道资料 · fal · Krea 3 API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/krea/v3/text-to-image/api",
+        "label": "渠道资料 · fal · Krea 3 API 文档"
+      }
+    },
+    {
+      "key": "fal/meta/muse-image/text-to-image",
+      "channel": "fal",
+      "optionA": true,
+      "decision": "kept",
+      "reason": "Same-channel sibling https://fal.ai/models/meta/muse-image/edit/api is replaced by this card's own endpoint; the field citation remains.",
+      "beforeI12": {
+        "url": "https://fal.ai/models/meta/muse-image/edit/api",
+        "label": "渠道资料 · fal · Muse Image Edit API 文档"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+        "label": "渠道资料 · fal · Muse Image API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+        "label": "渠道资料 · fal · Muse Image API 文档"
+      }
+    }
+  ],
+  "restored": [
+    {
+      "key": "siliconflow/Qwen/Qwen3.8-27B",
+      "channel": "siliconflow",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen3.8-27B",
+        "label": "官方文档 · Hugging Face · Qwen3.8 27B"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen-Image",
+      "channel": "siliconflow",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen-Image",
+        "label": "官方文档 · Hugging Face · Qwen Image"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-122B-A10B",
+      "channel": "siliconflow",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-122b A10b"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-27B",
+      "channel": "siliconflow",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-27B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-27B"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-35B-A3B",
+      "channel": "siliconflow",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-35b A3b"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "siliconflow/deepseek-ai/DeepSeek-V4-Pro",
+      "channel": "siliconflow",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · DeepSeek · 价格与规格: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Pro"
+      },
+      "after": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      }
+    },
+    {
+      "key": "siliconflow/stepfun-ai/Step-3.5-Flash",
+      "channel": "siliconflow",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · StepFun · List: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://platform.stepfun.com/docs/zh/guides/models/list",
+        "label": "官方文档 · StepFun · List"
+      },
+      "afterI12": {
+        "url": "https://platform.stepfun.com/docs/zh/guides/models/step-3.5-flash",
+        "label": "官方文档 · StepFun · Step 3.5 Flash"
+      },
+      "after": {
+        "url": "https://platform.stepfun.com/docs/zh/guides/models/list",
+        "label": "官方文档 · StepFun · List"
+      }
+    },
+    {
+      "key": "siliconflow/Tongyi-MAI/Z-Image-Turbo",
+      "channel": "siliconflow",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Tongyi-MAI/Z-Image-Turbo",
+        "label": "官方文档 · Hugging Face · Z Image Turbo"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "bailian/ZHIPU/GLM-5.3",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore the Bailian model list: exact configured identity absent from supplier sentence; totalContextTokens does not contain the stored value.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3",
+        "label": "官方文档 · 智谱 · GLM 5.3"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1glm-5-3",
+      "validationPassed": false
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M3",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore the Bailian model list: totalContextTokens does not contain the stored value.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+        "label": "官方文档 · Hugging Face · MiniMax M3"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1minimax-m3",
+      "validationPassed": false
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M2.5",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore the Bailian model list: exact configured identity absent from supplier sentence.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/MiniMaxAI/MiniMax-M2.5",
+        "label": "官方文档 · Hugging Face · MiniMax M2.5"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1minimax-m2-5",
+      "validationPassed": false
+    },
+    {
+      "key": "bailian/ZHIPU/GLM-5.2",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore the Bailian model list: exact configured identity absent from supplier sentence; totalContextTokens does not contain the stored value.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2",
+        "label": "官方文档 · 智谱 · GLM 5.2"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1glm-5-2",
+      "validationPassed": false
+    },
+    {
+      "key": "bailian/deepseek-v4-pro",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · DeepSeek · 价格与规格: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Pro"
+      },
+      "after": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      }
+    },
+    {
+      "key": "bailian/ZHIPU/GLM-5.1",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore the Bailian model list: exact configured identity absent from supplier sentence; totalContextTokens does not contain the stored value.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1",
+        "label": "官方文档 · 智谱 · GLM 5.1"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1glm-5-1",
+      "validationPassed": false
+    },
+    {
+      "key": "bailian/kimi/kimi-k3",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore the Bailian model list: exact configured identity absent from supplier sentence; inputModalities does not contain the stored value; totalContextTokens does not contain the stored value.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/moonshotai/Kimi-K3",
+        "label": "官方文档 · Hugging Face · Kimi K3"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1kimi-k3",
+      "validationPassed": false
+    },
+    {
+      "key": "bailian/kimi/kimi-k2.7-code",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore the Bailian model list: exact configured identity absent from supplier sentence; totalContextTokens does not contain the stored value.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/moonshotai/Kimi-K2.7-Code",
+        "label": "官方文档 · Hugging Face · Kimi K2.7 Code"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1kimi-k2-7-code",
+      "validationPassed": false
+    },
+    {
+      "key": "bailian/kimi/kimi-k2.6",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore the Bailian model list: exact configured identity absent from supplier sentence; totalContextTokens does not contain the stored value.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/moonshotai/Kimi-K2.6",
+        "label": "官方文档 · Hugging Face · Kimi K2.6"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1kimi-k2-6",
+      "validationPassed": false
+    },
+    {
+      "key": "bailian/qwen3.5-397b-a17b",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://www.aliyun.com/notice/118728",
+        "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-397b A17b"
+      },
+      "after": {
+        "url": "https://www.aliyun.com/notice/118728",
+        "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+      }
+    },
+    {
+      "key": "bailian/stepfun/step-3.7-flash",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · StepFun · List: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://platform.stepfun.com/docs/zh/guides/models/list",
+        "label": "官方文档 · StepFun · List"
+      },
+      "afterI12": {
+        "url": "https://platform.stepfun.com/docs/zh/guides/models/step-3.7-flash",
+        "label": "官方文档 · StepFun · Step 3.7 Flash"
+      },
+      "after": {
+        "url": "https://platform.stepfun.com/docs/zh/guides/models/list",
+        "label": "官方文档 · StepFun · List"
+      }
+    },
+    {
+      "key": "bailian/xiaomi/mimo-v2.5-pro",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 下线公告 · MiMo · 模型下线公告: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+        "label": "下线公告 · MiMo · 模型下线公告"
+      },
+      "afterI12": {
+        "url": "https://mimo.mi.com/models/en-US/mimo-v2.5-pro",
+        "label": "官方文档 · MiMo · MiMo V2.5 Pro"
+      },
+      "after": {
+        "url": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+        "label": "下线公告 · MiMo · 模型下线公告"
+      }
+    },
+    {
+      "key": "together/Qwen/Qwen-Image",
+      "channel": "together",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen-Image",
+        "label": "官方文档 · Hugging Face · Qwen Image"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "together/Qwen/Qwen3.8-2.4T-A95B",
+      "channel": "together",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B",
+        "label": "官方文档 · Hugging Face · Qwen3.8 2.4T A95B"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "together/Qwen/Qwen3.7-Max",
+      "channel": "together",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+        "label": "官方文档 · 百炼 · Qwen3.7 Max"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "together/Qwen/Qwen3.7-Plus",
+      "channel": "together",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+        "label": "官方文档 · 百炼 · Qwen3.7 Plus"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "together/Qwen/Qwen3.6-Plus",
+      "channel": "together",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+        "label": "官方文档 · 百炼 · Qwen3.6 Plus"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "fal/fal-ai/nano-banana-2",
+      "channel": "fal",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Google · Gemini 3.1 Flash Image: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image",
+        "label": "官方文档 · Google · Gemini 3.1 Flash Image"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/fal-ai/nano-banana-2/api",
+        "label": "渠道资料 · fal · Nano Banana 2 API 文档"
+      },
+      "after": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image",
+        "label": "官方文档 · Google · Gemini 3.1 Flash Image"
+      }
+    },
+    {
+      "key": "fal/google/nano-banana-2-lite",
+      "channel": "fal",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Google · Gemini 3.1 Flash Lite Image: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image",
+        "label": "官方文档 · Google · Gemini 3.1 Flash Lite Image"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/google/nano-banana-2-lite/api",
+        "label": "渠道资料 · fal · Nano Banana 2 Lite API 文档"
+      },
+      "after": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image",
+        "label": "官方文档 · Google · Gemini 3.1 Flash Lite Image"
+      }
+    },
+    {
+      "key": "fal/fal-ai/nano-banana-pro",
+      "channel": "fal",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Google · Gemini 3 Pro Image: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        "label": "官方文档 · Google · Gemini 3 Pro Image"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/fal-ai/nano-banana-pro/api",
+        "label": "渠道资料 · fal · Nano Banana Pro API 文档"
+      },
+      "after": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        "label": "官方文档 · Google · Gemini 3 Pro Image"
+      }
+    },
+    {
+      "key": "fal/fal-ai/nano-banana",
+      "channel": "fal",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Google · Gemini 2.5 Flash Image: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+        "label": "官方文档 · Google · Gemini 2.5 Flash Image"
+      },
+      "afterI12": {
+        "url": "https://fal.ai/models/fal-ai/nano-banana/api",
+        "label": "渠道资料 · fal · Nano Banana API 文档"
+      },
+      "after": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+        "label": "官方文档 · Google · Gemini 2.5 Flash Image"
+      }
+    },
+    {
+      "key": "replicate/google/gemini-3.5-flash",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Google · Gemini 3.5 Flash: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash",
+        "label": "官方文档 · Google · Gemini 3.5 Flash"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/google/gemini-3.5-flash",
+        "label": "渠道资料 · Replicate · Gemini 3.5 Flash"
+      },
+      "after": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash",
+        "label": "官方文档 · Google · Gemini 3.5 Flash"
+      }
+    },
+    {
+      "key": "replicate/deepseek-ai/deepseek-v3.1",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Hugging Face · DeepSeek V3.1: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V3.1",
+        "label": "官方文档 · Hugging Face · DeepSeek V3.1"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/deepseek-ai/deepseek-v3.1",
+        "label": "渠道资料 · Replicate · DeepSeek V3.1"
+      },
+      "after": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V3.1",
+        "label": "官方文档 · Hugging Face · DeepSeek V3.1"
+      }
+    },
+    {
+      "key": "replicate/google/gemini-2.5-flash",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Google · Gemini 2.5 Flash: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash",
+        "label": "官方文档 · Google · Gemini 2.5 Flash"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/google/gemini-2.5-flash",
+        "label": "渠道资料 · Replicate · Gemini 2.5 Flash"
+      },
+      "after": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash",
+        "label": "官方文档 · Google · Gemini 2.5 Flash"
+      }
+    },
+    {
+      "key": "replicate/google/nano-banana-2",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Google · Gemini 3.1 Flash Image: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image",
+        "label": "官方文档 · Google · Gemini 3.1 Flash Image"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/google/nano-banana-2",
+        "label": "渠道资料 · Replicate · Nano Banana 2"
+      },
+      "after": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image",
+        "label": "官方文档 · Google · Gemini 3.1 Flash Image"
+      }
+    },
+    {
+      "key": "replicate/google/nano-banana-2-lite",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Google · Gemini 3.1 Flash Lite Image: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image",
+        "label": "官方文档 · Google · Gemini 3.1 Flash Lite Image"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/google/nano-banana-2-lite",
+        "label": "渠道资料 · Replicate · Nano Banana 2 Lite"
+      },
+      "after": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image",
+        "label": "官方文档 · Google · Gemini 3.1 Flash Lite Image"
+      }
+    },
+    {
+      "key": "replicate/google/nano-banana-pro",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Google · Gemini 3 Pro Image: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        "label": "官方文档 · Google · Gemini 3 Pro Image"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/google/nano-banana-pro",
+        "label": "渠道资料 · Replicate · Nano Banana Pro"
+      },
+      "after": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        "label": "官方文档 · Google · Gemini 3 Pro Image"
+      }
+    },
+    {
+      "key": "replicate/google/nano-banana",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Google · Gemini 2.5 Flash Image: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+        "label": "官方文档 · Google · Gemini 2.5 Flash Image"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/google/nano-banana",
+        "label": "渠道资料 · Replicate · Nano Banana"
+      },
+      "after": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+        "label": "官方文档 · Google · Gemini 2.5 Flash Image"
+      }
+    },
+    {
+      "key": "replicate/moonshotai/kimi-k2-thinking",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Hugging Face · Kimi K2 Thinking: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://huggingface.co/moonshotai/Kimi-K2-Thinking",
+        "label": "官方文档 · Hugging Face · Kimi K2 Thinking"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/moonshotai/kimi-k2-thinking",
+        "label": "渠道资料 · Replicate · Kimi K2 Thinking"
+      },
+      "after": {
+        "url": "https://huggingface.co/moonshotai/Kimi-K2-Thinking",
+        "label": "官方文档 · Hugging Face · Kimi K2 Thinking"
+      }
+    },
+    {
+      "key": "replicate/openai/gpt-image-2.5-flare",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · OpenAI · GPT Image 2.5 Flare: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        "label": "官方文档 · OpenAI · GPT Image 2.5 Flare"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/openai/gpt-image-2.5-flare",
+        "label": "渠道资料 · Replicate · GPT Image 2.5 Flare"
+      },
+      "after": {
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        "label": "官方文档 · OpenAI · GPT Image 2.5 Flare"
+      }
+    },
+    {
+      "key": "replicate/openai/gpt-image-2.5-sunburst",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · OpenAI · GPT Image 2.5 Sunburst: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+        "label": "官方文档 · OpenAI · GPT Image 2.5 Sunburst"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/openai/gpt-image-2.5-sunburst",
+        "label": "渠道资料 · Replicate · GPT Image 2.5 Sunburst"
+      },
+      "after": {
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+        "label": "官方文档 · OpenAI · GPT Image 2.5 Sunburst"
+      }
+    },
+    {
+      "key": "replicate/openai/gpt-image-2",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · OpenAI · GPT Image 2: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+        "label": "官方文档 · OpenAI · GPT Image 2"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/openai/gpt-image-2",
+        "label": "渠道资料 · Replicate · GPT Image 2"
+      },
+      "after": {
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+        "label": "官方文档 · OpenAI · GPT Image 2"
+      }
+    },
+    {
+      "key": "replicate/openai/gpt-image-1.5",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · OpenAI · GPT Image 1.5: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+        "label": "官方文档 · OpenAI · GPT Image 1.5"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/openai/gpt-image-1.5",
+        "label": "渠道资料 · Replicate · GPT Image 1.5"
+      },
+      "after": {
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+        "label": "官方文档 · OpenAI · GPT Image 1.5"
+      }
+    },
+    {
+      "key": "replicate/qwen/qwen3-235b-a22b-instruct-2507",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Hugging Face · Qwen3-235b A22b Instruct 2507: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "label": "官方文档 · Hugging Face · Qwen3-235b A22b Instruct 2507"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/qwen/qwen3-235b-a22b-instruct-2507",
+        "label": "渠道资料 · Replicate · Qwen3-235b A22b Instruct 2507"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "label": "官方文档 · Hugging Face · Qwen3-235b A22b Instruct 2507"
+      }
+    },
+    {
+      "key": "replicate/qwen/qwen3-7-plus",
+      "channel": "replicate",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · 百炼 · Qwen3.7 Plus: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+        "label": "官方文档 · 百炼 · Qwen3.7 Plus"
+      },
+      "afterI12": {
+        "url": "https://replicate.com/qwen/qwen3-7-plus",
+        "label": "渠道资料 · Replicate · Qwen3.7 Plus"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+        "label": "官方文档 · 百炼 · Qwen3.7 Plus"
+      }
+    },
+    {
+      "key": "runware/recraft:v4.1@flash",
+      "channel": "runware",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Recraft · Recraft V4.1 Flash: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash",
+        "label": "官方文档 · Recraft · Recraft V4.1 Flash"
+      },
+      "afterI12": {
+        "url": "https://runware.ai/docs/models/recraft-v4-1-flash",
+        "label": "渠道资料 · Runware · Runware"
+      },
+      "after": {
+        "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash",
+        "label": "官方文档 · Recraft · Recraft V4.1 Flash"
+      }
+    },
+    {
+      "key": "runware/deepseek:v4@flash",
+      "channel": "runware",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · Hugging Face · DeepSeek V4 Flash: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Flash"
+      },
+      "afterI12": {
+        "url": "https://runware.ai/docs/models/deepseek-v4-flash",
+        "label": "渠道资料 · Runware · DeepSeek-V4-Flash-0731"
+      },
+      "after": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Flash"
+      }
+    },
+    {
+      "key": "tokenhub/deepseek-v4-pro",
+      "channel": "tokenhub",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · DeepSeek · 价格与规格: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Pro"
+      },
+      "after": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      }
+    },
+    {
+      "key": "tokenhub/deepseek/deepseek-v4-pro",
+      "channel": "tokenhub",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · DeepSeek · 价格与规格: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Pro"
+      },
+      "after": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      }
+    },
+    {
+      "key": "tokenhub/mimo-v2.5-pro",
+      "channel": "tokenhub",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 下线公告 · MiMo · 模型下线公告: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+        "label": "下线公告 · MiMo · 模型下线公告"
+      },
+      "afterI12": {
+        "url": "https://mimo.mi.com/models/en-US/mimo-v2.5-pro",
+        "label": "官方文档 · MiMo · MiMo V2.5 Pro"
+      },
+      "after": {
+        "url": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+        "label": "下线公告 · MiMo · 模型下线公告"
+      }
+    },
+    {
+      "key": "sensenova/deepseek-v4-pro",
+      "channel": "sensenova",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · DeepSeek · 价格与规格: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Pro"
+      },
+      "after": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      }
+    },
+    {
+      "key": "qianfan/deepseek-v4-pro",
+      "channel": "qianfan",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · DeepSeek · 价格与规格: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Pro"
+      },
+      "after": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      }
+    },
+    {
+      "key": "qianfan/qwen-image",
+      "channel": "qianfan",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen-Image",
+        "label": "官方文档 · Hugging Face · Qwen Image"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "qianfan/qwen3.5-122b-a10b",
+      "channel": "qianfan",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-122b A10b"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "qianfan/qwen3.5-27b",
+      "channel": "qianfan",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-27B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-27B"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "qianfan/qwen3.5-35b-a3b",
+      "channel": "qianfan",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · 百炼 · 模型列表（中文版）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-35b A3b"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      }
+    },
+    {
+      "key": "antling/Ling-3.0-flash-VL",
+      "channel": "antling",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "label": "官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL",
+        "label": "官方文档 · Hugging Face · Ling 3.0 Flash VL"
+      },
+      "after": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "label": "官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）"
+      }
+    },
+    {
+      "key": "antling/Ling-3.0-tiny",
+      "channel": "antling",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "label": "官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/inclusionAI/Ling-3.0-tiny",
+        "label": "官方文档 · Hugging Face · Ling 3.0 Tiny"
+      },
+      "after": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "label": "官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）"
+      }
+    },
+    {
+      "key": "antling/Ling-3.0-flash",
+      "channel": "antling",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "label": "官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/inclusionAI/Ling-3.0-flash",
+        "label": "官方文档 · Hugging Face · Ling 3.0 Flash"
+      },
+      "after": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "label": "官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）"
+      }
+    },
+    {
+      "key": "antling/Ling-2.6-1T",
+      "channel": "antling",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 下线公告 · 蚂蚁百灵 · 模型下线公告: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+        "label": "下线公告 · 蚂蚁百灵 · 模型下线公告"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/inclusionAI/Ling-2.6-1T",
+        "label": "官方文档 · Hugging Face · Ling 2.6-1T"
+      },
+      "after": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+        "label": "下线公告 · 蚂蚁百灵 · 模型下线公告"
+      }
+    },
+    {
+      "key": "antling/Ling-2.6-flash",
+      "channel": "antling",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 下线公告 · 蚂蚁百灵 · 模型下线公告: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+        "label": "下线公告 · 蚂蚁百灵 · 模型下线公告"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/inclusionAI/Ling-2.6-flash",
+        "label": "官方文档 · Hugging Face · Ling 2.6 Flash"
+      },
+      "after": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+        "label": "下线公告 · 蚂蚁百灵 · 模型下线公告"
+      }
+    },
+    {
+      "key": "antling/Ring-2.6-1T",
+      "channel": "antling",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 下线公告 · 蚂蚁百灵 · 模型下线公告: Hugging Face is not the card's channel and the old primary is not a sibling endpoint.",
+      "beforeI12": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+        "label": "下线公告 · 蚂蚁百灵 · 模型下线公告"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/inclusionAI/Ring-2.6-1T",
+        "label": "官方文档 · Hugging Face · Ring 2.6-1T"
+      },
+      "after": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+        "label": "下线公告 · 蚂蚁百灵 · 模型下线公告"
+      }
+    },
+    {
+      "key": "novita/ming-image-0.1-design",
+      "channel": "novita",
+      "optionA": false,
+      "decision": "restored",
+      "reason": "Restore 渠道资料 · Novita · Model Apis Ming Image Txt2img: the old primary is a vendor document, catalog, notice or non-sibling API reference.",
+      "beforeI12": {
+        "url": "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img",
+        "label": "渠道资料 · Novita · Model Apis Ming Image Txt2img"
+      },
+      "afterI12": {
+        "url": "https://novita.ai/models/model-detail/ming-image-0.1-design",
+        "label": "渠道资料 · Novita · Ming Image 0.1 Design"
+      },
+      "after": {
+        "url": "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img",
+        "label": "渠道资料 · Novita · Model APIs Ming Image Txt2img"
+      }
+    }
+  ],
+  "bailianOfficialPages": [
+    {
+      "key": "bailian/MiniMax/MiniMax-M2.7",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "replaced-with-official-page",
+      "reason": "Exact identity and all known values verified on the model's Alibaba page; config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1minimax-m2-7.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/MiniMaxAI/MiniMax-M2.7",
+        "label": "官方文档 · Hugging Face · MiniMax M2.7"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/minimax-m2-7",
+        "label": "渠道资料 · 百炼 · MiniMax-M2.7"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1minimax-m2-7",
+      "validationPassed": true
+    },
+    {
+      "key": "bailian/MiniMax-M2.5",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "replaced-with-official-page",
+      "reason": "Exact identity and all known values verified on the model's Alibaba page; config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1minimax-m2-5.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/MiniMaxAI/MiniMax-M2.5",
+        "label": "官方文档 · Hugging Face · MiniMax M2.5"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/minimax-m2-5",
+        "label": "渠道资料 · 百炼 · MiniMax-M2.5"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1minimax-m2-5",
+      "validationPassed": true
+    },
+    {
+      "key": "bailian/qwen3.5-122b-a10b",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "replaced-with-official-page",
+      "reason": "Exact identity and all known values verified on the model's Alibaba page; config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1qwen3-5-122b-a10b.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-122b A10b"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-122b-a10b",
+        "label": "官方文档 · 百炼 · Qwen3.5-122b-a10b"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1qwen3-5-122b-a10b",
+      "validationPassed": true
+    },
+    {
+      "key": "bailian/qwen3.5-27b",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "replaced-with-official-page",
+      "reason": "Exact identity and all known values verified on the model's Alibaba page; config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1qwen3-5-27b.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-27B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-27B"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-27b",
+        "label": "官方文档 · 百炼 · Qwen3.5-27b"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1qwen3-5-27b",
+      "validationPassed": true
+    },
+    {
+      "key": "bailian/qwen3.5-35b-a3b",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "replaced-with-official-page",
+      "reason": "Exact identity and all known values verified on the model's Alibaba page; config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1qwen3-5-35b-a3b.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-35b A3b"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b",
+        "label": "官方文档 · 百炼 · Qwen3.5-35b-a3b"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1qwen3-5-35b-a3b",
+      "validationPassed": true
+    },
+    {
+      "key": "bailian/z-image-turbo",
+      "channel": "bailian",
+      "optionA": false,
+      "decision": "replaced-with-official-page",
+      "reason": "Exact identity and all known values verified on the model's Alibaba page; config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1z-image-turbo.",
+      "beforeI12": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "afterI12": {
+        "url": "https://huggingface.co/Tongyi-MAI/Z-Image-Turbo",
+        "label": "官方文档 · Hugging Face · Z Image Turbo"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/z-image-turbo",
+        "label": "渠道资料 · 百炼 · Z-Image Turbo"
+      },
+      "validationEvidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1z-image-turbo",
+      "validationPassed": true
+    }
+  ],
+  "casing": {
+    "count": 4,
+    "changes": [
+      {
+        "url": "https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf",
+        "before": "官方文档 · Hugging Face · Ternary Bonsai 27B Gguf",
+        "after": "官方文档 · Hugging Face · Ternary Bonsai 27B GGUF",
+        "occurrences": {
+          "web": 1,
+          "mini": 1
+        },
+        "cards": [
+          "together/Prism-ML/Ternary-Bonsai-27B"
+        ]
+      },
+      {
+        "url": "https://runware.ai/docs/tools/compatible-apis",
+        "before": "渠道资料 · Runware · Compatible Apis",
+        "after": "渠道资料 · Runware · Compatible APIs",
+        "occurrences": {
+          "web": 2,
+          "mini": 0
+        },
+        "cards": [
+          "runware/google:gemini@3.1-pro",
+          "runware/google:gemini@3-flash"
+        ]
+      },
+      {
+        "url": "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img",
+        "before": "渠道资料 · Novita · Model Apis Ming Image Txt2img",
+        "after": "渠道资料 · Novita · Model APIs Ming Image Txt2img",
+        "occurrences": {
+          "web": 1,
+          "mini": 0
+        },
+        "cards": [
+          "novita/ming-image-0.1-design"
+        ]
+      },
+      {
+        "url": "https://docs.novita.ai/api-reference/model-apis-llm-list-models",
+        "before": "渠道资料 · Novita · Model Apis Llm List Models",
+        "after": "渠道资料 · Novita · Model APIs LLM List Models",
+        "occurrences": {
+          "web": 1,
+          "mini": 0
+        },
+        "cards": [
+          "novita/ming-image-0.1-design"
+        ]
+      }
+    ]
+  },
+  "dialogTitle": {
+    "web": "模型规格",
+    "mini": "模型规格",
+    "scope": "Shared by channel and direct/vendor cards. Web specification heading, accessible group and open/close controls use the same title. Mini source-copy/specification modal uses the same title; individual modality tap titles remain contextual. Mini retains verification data without displaying dates."
+  }
+}

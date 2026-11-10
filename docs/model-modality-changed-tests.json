@@ -1,11 +1,11 @@
 {
   "base": "8c456709",
   "counts": {
-    "files": 29,
-    "assertionAndFixtureInputChanges": 256,
+    "files": 30,
+    "assertionAndFixtureInputChanges": 265,
     "consumedJsonFixtures": 2,
     "semanticFixtureChanges": 695,
-    "justified": 950,
+    "justified": 959,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -34,7 +34,8 @@
     "R28 Phase I9: founder round 7. Unknown tooltip/accessibility includes the required prefix and existing explanation; conditional uses dark 支持 with its exact qualifier in hover/dialog. All 61 fal catalog fields have freshly validated human sources, and Mini preserves all fal field titles plus nine secondary human links. Literal source/date deltas and the pre-R28 snapshot validate changes before historical projection. Mini setData test doubles now implement native indexed-array patches; the unchanged 128 KiB guard loads all pages. Frozen execution tests, byte guards and identity/name expectations are unchanged.",
     "R29 Phase I10: 353 conflicting source URLs unified across all catalog surfaces. Vendor/channel roles and endpoint names are identical in Web/Mini; explicit source namespaces replace list-context variants. Literal 997585e2-to-R29 title patches are validated before projecting historical snapshots; every non-title value stays exact. The only locale removal is the unreferenced conditional-support entry. Existing execution tests, name locks, size guards, source URLs and facts stay unchanged. New all-card render/copy/formatter/locale checks are independent of the historical expectations.",
     "R29 Phase I11 supersedes R27/R28 status copy: every icon has one exact sentence for hover, accessibility and dialog status, with no source/date. Independent all-1064-card Web/Mini/script checks enforce four sentence patterns, state mapping, source-name/date exclusion and full parity. One catalog qualifier plus three fixture qualifiers have explicit concise mappings; custom unknown qualifiers use a safe generic condition. Four modalities per direction remove 12 legacy Web file icons without changing facts. Mini now retains the existing Together conditional qualifier. I10 title rules and historical reports remain frozen through a strictly validated presentation-only projection. No execution lock, login file, size ceiling, saved config or catalog name is changed.",
-    "R30 Phase I12: all 1064 rendered Web dialogs and compiled Mini cards enforce plain R29 statuses and numeric 未公布 (584 each, no unsupported numeric catalog facts), no verification dates outside source-link hover, and own-model primaries (82 cards, all 15 Option-A). Raw fields, execution locks, picker names, login files and byte ceilings remain unchanged. Event dates use Chinese 年/月/日 spelling; Mini-only provenance jargon is removed. Exact hashed presentation patches preserve prior audit reports; new regression suites independently enforce the PM decisions."
+    "R30 Phase I12: all 1064 rendered Web dialogs and compiled Mini cards enforce plain R29 statuses and numeric 未公布 (584 each, no unsupported numeric catalog facts), no verification dates outside source-link hover, and own-model primaries (82 cards, all 15 Option-A). Raw fields, execution locks, picker names, login files and byte ceilings remain unchanged. Event dates use Chinese 年/月/日 spelling; Mini-only provenance jargon is removed. Exact hashed presentation patches preserve prior audit reports; new regression suites independently enforce the PM decisions.",
+    "R31 Phase I13: all 82 I12 primary changes individually reviewed (15 kept, 61 restored, 6 validated Alibaba pages); four source title casing fixes; shared 模型规格 dialog title on Web/Mini. Existing R30 own-page-for-every-card assertion is superseded by the narrow PM rule, with all Option-A checks retained. Historical I12 fixtures and reports remain unchanged via exact hashed source-only patches. Full-catalog primary parity, no new HF primaries, strict identity/value evidence, URL-wide titles and unchanged execution/picker/size invariants are tested."
   ],
   "files": [
     {
@@ -116,7 +117,7 @@
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r12.test.cjs",
-      "diffSha256": "f5ac5b239f30245eed7b4ff47fb953064d376fbf459bc28106a84e8d78164376",
+      "diffSha256": "f4a7f043643732112cc6aaefc16665faddcf68a51b0c4d8971fff2775b92e0cf",
       "changes": [
         {
           "line": 105,
@@ -754,6 +755,54 @@
             "apps/web/tests/model-pm-r30.test.mjs",
             "apps/miniprogram/tests/model-pm-r30.test.cjs",
             "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 117,
+          "oldLine": 117,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "(absent)",
+          "new": "  const {r31Patches}=await import('../../../test-support/primary-links-r31.mjs')",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 129,
+          "oldLine": 128,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "    const patches=pmReview.rows[channel+'/'+modelId]||[], expected=(path,fallback)=>patches.find(p=>p.path===path)?.after??fallback",
+          "new": "    const patches=[...(r31Patches.rows[channel+'/'+modelId]||[]),...(pmReview.rows[channel+'/'+modelId]||[])], expected=(path,fallback)=>patches.find(p=>p.path===path)?.after??fallback",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 146,
+          "oldLine": 145,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "  assert.deepEqual(appendedNotices.sort(), ['bailian/qwen3.5-plus', 'bailian/qwen3.5-plus-2026-02-15', 'bailian/qwen3.5-plus-2026-04-20', 'tokendance/qwen3.5-plus','bailian/qwen3.5-397b-a17b','bailian/xiaomi/mimo-v2.5-pro','tokenhub/mimo-v2.5-pro','antling/Ling-2.6-1T','antling/Ling-2.6-flash','antling/Ring-2.6-1T'].sort())",
+          "new": "  assert.deepEqual(appendedNotices.sort(), ['bailian/qwen3.5-plus', 'bailian/qwen3.5-plus-2026-02-15', 'bailian/qwen3.5-plus-2026-04-20', 'tokendance/qwen3.5-plus'].sort())",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -1682,7 +1731,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r13.test.mjs",
-      "diffSha256": "c10b15c600f83cad0b7d34ba05adf71a5a0a621f278cb8e814a24bc6c86e435b",
+      "diffSha256": "9a33674393096bcccdc2a870322806bf980b45bfdda3e53554badeea5106ddc8",
       "changes": [
         {
           "line": 40,
@@ -2114,6 +2163,22 @@
             "apps/web/tests/model-pm-r30.test.mjs",
             "apps/miniprogram/tests/model-pm-r30.test.cjs",
             "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 148,
+          "oldLine": 148,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "  assert.equal(visible, 14, 'Seven full-registry and seven static notice primaries; six per projection now prioritize an existing own-model page, with notices retained')",
+          "new": "  assert.equal(visible, 26, 'R31 restores six notice primaries per projection: thirteen full-registry and thirteen static notice primaries')",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -2780,7 +2845,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r9.test.mjs",
-      "diffSha256": "b1c3013c6f5902dd2e8043e52827619dd6db5321cfa5268aa8f6cf650d1f9ae6",
+      "diffSha256": "80c0e9002ccf0dfd6d371cd79469762db6d48a7b10bfb0d561dee5e95e893f9f",
       "changes": [
         {
           "line": 90,
@@ -3112,6 +3177,22 @@
             "scripts/model-pm-r30.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 114,
+          "oldLine": 114,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "  const dialog = screen.getByRole('dialog', { name: '官方文档规格' })",
+          "new": "  const dialog = screen.getByRole('dialog', { name: '模型规格' })",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -3401,9 +3482,25 @@
             "scripts/model-pm-r30.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 120,
+          "oldLine": 120,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "    ['antling', {id: 'Ling-2.6-flash'}, '官方文档'],",
+          "new": "    ['antling', {id: 'Ling-2.6-flash'}, '下线公告'],",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "40de3db1fdd9421c2c69f167ab80aa48c5f2da79828e5a1742e3f1d6038a92f0"
+      "diffSha256": "0ba548518070e8d7936835dc1539502c4bff5f106234928362adcd4db706ed93"
     },
     {
       "file": "apps/web/tests/model-picker-unavailable.test.mjs",
@@ -4017,9 +4114,41 @@
             "scripts/model-pm-r30.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 37,
+          "oldLine": 37,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "    assert.ok(screen.getByLabelText('官方文档规格'));",
+          "new": "    assert.ok(screen.getByLabelText('模型规格'));",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 60,
+          "oldLine": 60,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "  assert.ok(within(card).getByLabelText('官方文档规格'));",
+          "new": "  assert.ok(within(card).getByLabelText('模型规格'));",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "e161b2b60c16581bf4d76b229677e99289b81254f963a31c3d65b93832b1af2a"
+      "diffSha256": "08c99eff8310443ad0af70bf8e6daef8dc69e9c7a85793f0db2075248874dd72"
     },
     {
       "file": "apps/web/tests/workspace-model-catalog.test.mjs",
@@ -4089,6 +4218,28 @@
         }
       ],
       "diffSha256": "1e82d8a3ab3b089967f46c0b952852f8fbe308041705cd10174573af349babb2"
+    },
+    {
+      "file": "apps/web/tests/workspace-model-picker.test.mjs",
+      "changes": [
+        {
+          "line": 52,
+          "oldLine": 52,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": " assert.ok(screen.getAllByLabelText('官方文档规格').length);",
+          "new": " assert.ok(screen.getAllByLabelText('模型规格').length);",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "ee71990c2c6e46fc955260bee48601b8c9ded4b2e0c04e513144ee49300a4576"
     },
     {
       "file": "scripts/model-card-audit.test.mjs",
@@ -24434,9 +24585,41 @@
             "scripts/model-pm-r30.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 69,
+          "oldLine": 69,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "    fireEvent.click(screen.getByRole('button',{name:/^输入模态 · 官方文档规格/}))",
+          "new": "    fireEvent.click(screen.getByRole('button',{name:/^输入模态 · 模型规格/}))",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 77,
+          "oldLine": 77,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "  fireEvent.click(screen.getByRole('button',{name:/^输入模态 · 官方文档规格/}))",
+          "new": "  fireEvent.click(screen.getByRole('button',{name:/^输入模态 · 模型规格/}))",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "09cbfde2f3b796f061725fefa1144b7666d9420615dd8a9a191b1009c15da84d"
+      "diffSha256": "861450660517bdeacc96aca4959bcaceaf77d6b585898375f78b2799c7e90910"
     },
     {
       "file": "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
@@ -26801,9 +26984,25 @@
             "scripts/model-pm-r30.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 64,
+          "oldLine": 64,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": " assert.equal(cards,1064);assert.equal(rows,2462);assert.equal(notices,7)",
+          "new": " assert.equal(cards,1064);assert.equal(rows,2468);assert.equal(notices,7)",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "013dfd01c2867ac9f5257958c25ac574bf448f591a1878a3a95f3edd1a4dbd5e"
+      "diffSha256": "a03fbf68c806e1470fec8e999e9a4b483d3941d8977c2b0c35df49b647fe679b"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
@@ -26915,9 +27114,25 @@
             "scripts/model-pm-r30.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 45,
+          "oldLine": 45,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": " assert.equal(cards,1064);assert.equal(rows,1149);assert.ok(icons>=1064*8)",
+          "new": " assert.equal(cards,1064);assert.equal(rows,1120);assert.ok(icons>=1064*8)",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "6534b29dac9ada536354ec03e597d59c64fc79bfcd70744026c1b230d23e4465"
+      "diffSha256": "47ff18b9c044201774e9ebc475b1c1d0f01248f7ba368b3984ff2cc6661b4ccf"
     },
     {
       "file": "scripts/source-titles-r24.test.mjs",
@@ -29370,9 +29585,41 @@
             "scripts/model-pm-r30.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 62,
+          "oldLine": 62,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13', 'fd29cf36', '4e18513c', 'cd72eace', '9a7128d6', 'f8ff7648', 'd29097c0', '6864824a', 'd1c63994', '105744a9', '7858d7a4', '997585e2', '873fc7fd', '588f1d67'].includes(file.comparisonBase))",
+          "new": "  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13', 'fd29cf36', '4e18513c', 'cd72eace', '9a7128d6', 'f8ff7648', 'd29097c0', '6864824a', 'd1c63994', '105744a9', '7858d7a4', '997585e2', '873fc7fd', '588f1d67', '702175ea'].includes(file.comparisonBase))",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 83,
+          "oldLine": 83,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "  '# Changed test expectations — R22, R23 Phases E/F/F3 and R24 Phases I1/I2/I3/I4 and R25 Phase I5 and R26 Phase I6 and R27 Phases I7/I8 and R28 Phase I9 and R29 Phases I10/I11 and R30 Phase I12', '',",
+          "new": "  '# Changed test expectations — R22, R23 Phases E/F/F3 and R24 Phases I1/I2/I3/I4 and R25 Phase I5 and R26 Phase I6 and R27 Phases I7/I8 and R28 Phase I9 and R29 Phases I10/I11 and R30 Phase I12 and R31 Phase I13', '',",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "1803a190edabab83dc88658d58824736480245bda6bd3518022e4f093e859d8a"
+      "diffSha256": "04fa6010c7a590213e99905d865879282a28d37a61d2139c47e40b494ced3222"
     },
     {
       "file": "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs",
@@ -30840,6 +31087,130 @@
         }
       ],
       "diffSha256": "c20d6aaf12b292eedf550342adc0fb9ceeef5c05357f8a7e2407fe871afc92e6"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-pm-r30.test.cjs",
+      "comparisonBase": "702175ea",
+      "changes": [
+        {
+          "line": 10,
+          "oldLine": 10,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "  assert.doesNotMatch(modal.content,forbiddenBody,key);assert.ok(modal.content.endsWith(source.label),key)",
+          "new": "  assert.equal(modal.title,'模型规格',key+' R31 shared channel/direct dialog title');assert.doesNotMatch(modal.content,forbiddenBody,key);assert.ok(modal.content.endsWith(source.label),key)",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "d9f9d12982011777f3b552b12b9dae29ae389d87524d48192d9e9f1aac9a1392"
+    },
+    {
+      "file": "apps/web/tests/model-pm-r30.test.mjs",
+      "comparisonBase": "702175ea",
+      "changes": [
+        {
+          "line": 25,
+          "oldLine": 25,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "(absent)",
+          "new": "   assert.equal(ui.getByRole('dialog',{name:'模型规格'}),dialog,key+' R31 shared channel/direct dialog title')",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "3559560809c077c904722c332b3efa4ffb775d92d8e48b319da7f285f6d4a705"
+    },
+    {
+      "file": "scripts/model-pm-r30.test.mjs",
+      "comparisonBase": "702175ea",
+      "changes": [
+        {
+          "line": 10,
+          "oldLine": 10,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": " for(const[key,row]of Object.entries(rows)){\n  const slash=key.indexOf('/'),channel=key.slice(0,slash),id=key.slice(slash+1)\n  const own=ownModelPage(channel,{id},row.web.data.sources)\n  if(own)assert.equal(row.web.sources[0].url,own,key)\n }",
+          "new": " // I13 narrows primary promotion to same-channel siblings; the R31 suite checks all 82 decisions.",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "dea547fccca7b52fa71251a6ea702631adaa4c4490069356d5e975a66430912f"
+    },
+    {
+      "file": "test-support/pm-decisions-r30.mjs",
+      "comparisonBase": "702175ea",
+      "changes": [
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "(absent)",
+          "new": "import {restoreI13,restoreI13Sources,currentI13Sources,restoreI13Review,primaryI13} from './primary-links-r31.mjs'",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 15,
+          "oldLine": 14,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "export function restoreI12(rows){return Object.fromEntries(Object.entries(rows).map(([key,row])=>[key,reverse(row,pmReview.rows[key])]))}\nexport function restoreI12Sources(rows,key,client){const patch=pmReview.rows[key]?.find(p=>p.path===(client==='web'?'web/sources':'mini/card/specSources'));if(!patch)return rows;assert.deepEqual(rows,patch.after,key+' '+client+' sources');return structuredClone(patch.before)}\nexport function currentI12Sources(rows,key,client){const patch=pmReview.rows[key]?.find(p=>p.path===(client==='web'?'web/sources':'mini/card/specSources'));if(!patch)return rows;assert.deepEqual(rows,patch.before,key+' '+client+' baseline');return structuredClone(patch.after)}\nexport function restoreI12Review(review){return Object.fromEntries(Object.entries(review).map(([client,rows])=>[client,rows.map(row=>reverse(row,pmReview.sources[client+'/'+row.card]))]))}",
+          "new": "export function restoreI12(rows){return Object.fromEntries(Object.entries(restoreI13(rows)).map(([key,row])=>[key,reverse(row,pmReview.rows[key])]))}\nexport function restoreI12Sources(rows,key,client){rows=restoreI13Sources(rows,key,client);const patch=pmReview.rows[key]?.find(p=>p.path===(client==='web'?'web/sources':'mini/card/specSources'));if(!patch)return rows;assert.deepEqual(rows,patch.after,key+' '+client+' sources');return structuredClone(patch.before)}\nexport function currentI12Sources(rows,key,client){const patch=pmReview.rows[key]?.find(p=>p.path===(client==='web'?'web/sources':'mini/card/specSources'));if(patch){assert.deepEqual(rows,patch.before,key+' '+client+' baseline');rows=structuredClone(patch.after)}return currentI13Sources(rows,key,client)}\nexport function restoreI12Review(review){return Object.fromEntries(Object.entries(restoreI13Review(review)).map(([client,rows])=>[client,rows.map(row=>reverse(row,pmReview.sources[client+'/'+row.card]))]))}",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 43,
+          "oldLine": 42,
+          "comparisonBase": "702175ea",
+          "phase": "R31 Phase I13",
+          "old": "export function currentPrimary(key,fallback){return pmReview.rows[key]?.find(p=>p.path==='web/sources')?.after?.[0]?.url || fallback}\nexport function currentPrimaryRow(key,fallback){return pmReview.rows[key]?.find(p=>p.path==='web/sources')?.after?.[0] || {...fallback,label:fallback.label?.replace(/(\\d{4})-(\\d{2})-(\\d{2})/g,'$1年$2月$3日')}}",
+          "new": "export function currentPrimary(key,fallback){return primaryI13(key)?.url || pmReview.rows[key]?.find(p=>p.path==='web/sources')?.after?.[0]?.url || fallback}\nexport function currentPrimaryRow(key,fallback){return primaryI13(key) || pmReview.rows[key]?.find(p=>p.path==='web/sources')?.after?.[0] || {...fallback,label:fallback.label?.replace(/(\\d{4})-(\\d{2})-(\\d{2})/g,'$1年$2月$3日')}}",
+          "reason": "R31 PM decision: keep only the 15 same-channel sibling-to-own endpoint corrections; restore 61 primaries and use 6 strictly verified Alibaba pages; fix four acronym title URLs; shared specification dialog title is 模型规格 on Web and Mini. Exact hashed source-only patches preserve historical reports and reject unreviewed presentation drift. New all-card tests enforce current decisions and unchanged facts, dates, execution, names and byte ceilings",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r31-phase-i13",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/primary-links-r31.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "7705460f5ae55373fd1b5fc8a0078bfb8373cf30214a78f4359436dff767aa0c"
     }
   ]
 }

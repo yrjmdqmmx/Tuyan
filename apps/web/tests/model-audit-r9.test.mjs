@@ -111,7 +111,7 @@ test('R9 touch source dialog keeps the same channel link and verification date',
   const model = STATIC_MODEL_REGISTRY.bailian.models.find(model => model.id === 'kimi-k3')
   render(React.createElement(ModelSpecifications, { provider: 'bailian', model }))
   fireEvent.click(screen.getByRole('link'))
-  const dialog = screen.getByRole('dialog', { name: '官方文档规格' })
+  const dialog = screen.getByRole('dialog', { name: '模型规格' })
   assert.doesNotMatch(dialog.textContent, /核实日期|未核实/);assert.match(within(dialog).getAllByRole('link')[0].title,/核实日期：2026-11-09/)
   assert.equal(within(dialog).getAllByRole('link')[0].getAttribute('href'), 'https://help.aliyun.com/zh/model-studio/kimi-k3')
 })

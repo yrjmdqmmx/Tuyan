@@ -22,6 +22,7 @@ test('R30 all 1064 rendered dialogs omit verification/provenance rows, preserve 
    fireEvent.click(ui.container.querySelector('.model-modality-trigger'))
    const dialog=document.querySelector('.model-evidence-dialog')
    assert.doesNotMatch(dialog.textContent,forbiddenBody,key)
+   assert.equal(ui.getByRole('dialog',{name:'模型规格'}),dialog,key+' R31 shared channel/direct dialog title')
    assert.doesNotMatch(dialog.querySelector('.tw-preserve-text').textContent,/源自原厂/,key)
    assert.equal(dialog.querySelector('.tw-preserve-text').textContent,row.mini.card.auditMessage,key+' Web/Mini dialog parity')
    for(const link of dialog.querySelectorAll('a.model-evidence-source'))if(row.web.data.checkedAt)assert.ok(link.title.endsWith('（核实日期：'+row.web.data.checkedAt+'）'),key)

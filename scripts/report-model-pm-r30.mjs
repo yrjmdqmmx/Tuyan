@@ -1,11 +1,12 @@
+import {restoreI13,restoreI13Review} from '../test-support/primary-links-r31.mjs'
 import fs from 'node:fs'
 import assert from 'node:assert/strict'
 import {imageInputPresentations} from '../test-support/image-input-r27.mjs'
 import {collectSourceReview} from '../test-support/source-review-r24.mjs'
 import {assertPMDecisions,restoreI12,restoreI12Review,forbiddenBody} from '../test-support/pm-decisions-r30.mjs'
 import decisions from '../docs/model-modality-image-input-decision.json' with {type:'json'}
-const now=await imageInputPresentations(),before=restoreI12(now),review=await collectSourceReview(),oldReview=restoreI12Review(review)
-const numeric=assertPMDecisions(now),removed={}
+const actual=await imageInputPresentations(),actualReview=await collectSourceReview(),now=restoreI13(actual),before=restoreI12(actual),review=restoreI13Review(actualReview),oldReview=restoreI12Review(actualReview)
+const numeric=assertPMDecisions(actual),removed={}
 for(const client of ['web','mini']){
  const lines=oldReview[client].flatMap(row=>row.text.split('\n'))
  removed[client]={dateRows:lines.filter(s=>/^核实日期：/.test(s)).length,provenanceRows:lines.filter(s=>/^(输入|输出|上下文窗口|最大输出)：(?:渠道公布|原厂公布|源自原厂|图研既有核实|图研输入要求)/.test(s)).length,unverifiedRows:lines.filter(s=>s==='未核实').length}
@@ -43,7 +44,7 @@ ${summary}See the [full I12 validation record](model-modality-r30-i12-validation
 | Changed card | Previous primary | Own-model primary | Option A |
 | --- | --- | --- | --- |
 `+primaries.map(r=>`| ${r.key} | ${r.before.url} | ${r.after.url} | ${r.optionA?'Yes':''} |`).join('\n')+'\n'
-const target=new URL('../docs/model-modality-audit-20261109.md',import.meta.url),original=fs.readFileSync(target,'utf8'),content=original.split(title)[0]+body
+const target=new URL('../docs/model-modality-audit-20261109.md',import.meta.url),original=fs.readFileSync(target,'utf8'),content=original.split(title)[0]+body+(original.includes('\n## R31 Phase I13\n')?'\n## R31 Phase I13\n'+original.split('\n## R31 Phase I13\n')[1]:'')
 for(const [file,value]of [[new URL('../docs/model-modality-r30-i12-decisions.json',import.meta.url),JSON.stringify(report,null,2)+'\n'],[target,content]]){
  if(process.argv.includes('--check'))assert.equal(fs.readFileSync(file,'utf8'),value)
  else fs.writeFileSync(file,value)

@@ -1085,7 +1085,7 @@
   "省去风格整理，保留成图评审。视觉模型启用时先观察画面、主模型再决策；选择“无”时由支持识图的主模型直接检查。": "Skips style preparation while retaining image review. With assisted vision, the vision model observes and the main model decides; with None, an image-capable main model reviews directly.",
   "普通模式和专业模式均默认完整生成；手动选择后会保存到当前浏览器。": "Simple and advanced modes both default to Full generation. Your manual choice is saved in this browser.",
   " 轮。每轮评审一次、必要时修改一次；通过即提前结束。最后一轮修改后结束，不自动追加复审。": " rounds. Each round reviews once and revises once if needed. A pass ends the process early. The process ends after the last revision without adding a final review.",
-  "官方文档规格": "Published specifications",
+  "模型规格": "Model specifications",
   "官方文档": "Official documentation",
   "官方文档待确认": "Official documentation unconfirmed",
   "原厂": "Manufacturer",

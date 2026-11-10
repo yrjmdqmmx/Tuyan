@@ -66,7 +66,7 @@ test('R22C desktop 1280, mobile 390 and compact cards expose evidence through th
   for (const width of [1280, 390]) for (const compactSources of [false, true]) {
     window.innerWidth = width
     render(React.createElement(ModelSpecifications, {...qwen, compactSources}))
-    fireEvent.click(screen.getByRole('button',{name:/^输入模态 · 官方文档规格/}))
+    fireEvent.click(screen.getByRole('button',{name:/^输入模态 · 模型规格/}))
     assert.match(screen.getByRole('dialog').textContent, /支持文本输入\n/)
     assert.doesNotMatch(screen.getByRole('dialog').textContent,/核实日期|未核实|渠道公布/)
     assert.match(screen.getByRole('dialog').textContent, /此渠道不支持图像输入/)
@@ -74,7 +74,7 @@ test('R22C desktop 1280, mobile 390 and compact cards expose evidence through th
     cleanup()
   }
   render(React.createElement(ModelSpecifications, {provider:'custom',model:{id:'no-evidence'},compactSources:true}))
-  fireEvent.click(screen.getByRole('button',{name:/^输入模态 · 官方文档规格/}))
+  fireEvent.click(screen.getByRole('button',{name:/^输入模态 · 模型规格/}))
   assert.match(screen.getByRole('dialog').textContent, /暂无官方资料/)
   assert.equal(screen.queryByRole('link'), null)
 })

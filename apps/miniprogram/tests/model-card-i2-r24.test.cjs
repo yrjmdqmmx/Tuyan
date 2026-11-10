@@ -42,6 +42,6 @@ test('R24 I2 all 1064 compiled Mini cards, copy dialogs and modality dialogs pas
   }
   cards++
  }
- assert.equal(cards,1064);assert.equal(rows,1149);assert.ok(icons>=1064*8)
+ assert.equal(cards,1064);assert.equal(rows,1120);assert.ok(icons>=1064*8)
  t.diagnostic(JSON.stringify({cards,rows,icons,titleFindings:0,copyFindings:0}))
 })

@@ -126,6 +126,9 @@ for (const url of Object.keys(sourceTitles)) sourceTitles[url] = sourceTitles[ur
 // Array entries are URL-wide titles: they outrank per-card names and local
 // sibling disambiguation. Existing captured evidence remains unchanged.
 for (const [url, title] of Object.entries(unifiedPageTitles())) sourceTitles[url] = [title]
+for (const page of Object.values(read('packages/api/src/card-data/primary-pages-r31.json'))) sourceTitles[page.url] = [page.title]
+const bonsai = read('config/channel-audit/review-r31-20261110.json').bonsai
+sourceTitles[bonsai.url] = [bonsai.displayTitle]
 write('packages/api/src/card-data/source-titles.json', JSON.stringify(sourceTitles) + '\n')
 // Package-local names keep Core independent of the Web catalog. Mini reuses its
 // existing catalog instead of shipping a second copy of these identities.

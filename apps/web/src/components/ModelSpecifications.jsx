@@ -33,7 +33,7 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
   const inputs = modalityIconStates(data.input, data.inputFact, provider, model.id), outputs = modalityIconStates(data.output, data.outputFact, provider, model.id, 'output')
   const vendorOrigin = scope => scope === '原厂' ? <small className="model-spec-origin">{t('源自原厂')}</small> : null
   const details = evidenceStatusLines([...inputs, ...outputs], data.fields, [data.context, data.maxOutput]).split('\n').map(t).join('\n')
-  const modalityButton = (states, direction) => <button type="button" className="model-modality-trigger" aria-label={`${t(direction)} · ${t('官方文档规格')}；${states.map(item => t(item.accessibleLabel)).join('；')}`} onClick={event => { event.stopPropagation(); setShowSources(true) }}><ModalityIcons states={states} direction={direction} /></button>
+  const modalityButton = (states, direction) => <button type="button" className="model-modality-trigger" aria-label={`${t(direction)} · ${t('模型规格')}；${states.map(item => t(item.accessibleLabel)).join('；')}`} onClick={event => { event.stopPropagation(); setShowSources(true) }}><ModalityIcons states={states} direction={direction} /></button>
   const url = data.sources[0]
   const sources = <div className={`model-spec-sources${compactSources ? ' is-compact' : ''}`} aria-label={t('官方文档')}>
     {url ? <a href={url} title={`${details}\n${sourceRows.map(row => row.label).join('\n')}\n${data.sources.join('\n')}`} aria-label={`${sourceRows[0].label}\n${details}`} target="_blank" rel="noopener noreferrer" onClick={event => {
@@ -43,14 +43,14 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
       : <span title={`${details}\n${data.sources.join('\n')}`} aria-label={details}>{t('官方文档待确认')}</span>}
   </div>
   return <div className="model-card-specifications">
-    <dl className="model-specs" aria-label={t('官方文档规格')}>
+    <dl className="model-specs" aria-label={t('模型规格')}>
       <div><dt><ArrowDownToLine size={14} aria-hidden="true" />{t('输入')}</dt><dd>{modalityButton(inputs, '输入模态')}{vendorOrigin(data.inputScope)}</dd></div>
       <div><dt><ArrowUpFromLine size={14} aria-hidden="true" />{t('输出')}</dt><dd>{modalityButton(outputs, '输出模态')}{vendorOrigin(data.outputScope)}</dd></div>
       <div><dt><ScanText size={14} aria-hidden="true" />{t('上下文窗口')}</dt><dd title={data.contextExact || undefined} className={data.context === '未公布' ? 'model-spec-unknown' : undefined}>{t(data.context)}{vendorOrigin(data.contextScope)}</dd></div>
       <div><dt><TextCursorInput size={14} aria-hidden="true" />{t('最大输出')}</dt><dd title={data.maxOutputExact || undefined} className={data.maxOutput === '未公布' ? 'model-spec-unknown' : undefined}>{t(data.maxOutput)}{vendorOrigin(data.maxOutputScope)}</dd></div>
     </dl>
     {footerActions ? <div className="model-spec-footer">{sources}{footerActions}</div> : sources}
-    {showSources && <WorkspaceDialog className="model-evidence-dialog" title={t('官方文档规格')} onClose={() => setShowSources(false)}>
+    {showSources && <WorkspaceDialog className="model-evidence-dialog" title={t('模型规格')} onClose={() => setShowSources(false)}>
       <p className="tw-preserve-text">{details}</p>
       <p>{t('资料来源')}</p>
       {!sourceRows.length && !Object.values(data.fields).some(f => f.sourceUrl) && <p>{t('暂无官方资料')}</p>}

@@ -164,7 +164,7 @@ Component({
         if (result.confirm && this.compatibleModels(this.properties.selectedProvider).some(model => !model.selectionDisabled && model.id === replacement)) this.triggerEvent('select', {provider:this.properties.selectedProvider,modelId:replacement})
       }})
     },
-    copySource(event: WechatMiniprogram.TouchEvent) { wx.showModal({title:'官方文档',content:[event.currentTarget.dataset.notice,event.currentTarget.dataset.source].filter(Boolean).join('\n'),confirmText:'复制链接',confirmColor:'#28634f',success: result => {if (result.confirm) wx.setClipboardData({data:String(event.currentTarget.dataset.url || '')})}}) },
+    copySource(event: WechatMiniprogram.TouchEvent) { wx.showModal({title:'模型规格',content:[event.currentTarget.dataset.notice,event.currentTarget.dataset.source].filter(Boolean).join('\n'),confirmText:'复制链接',confirmColor:'#28634f',success: result => {if (result.confirm) wx.setClipboardData({data:String(event.currentTarget.dataset.url || '')})}}) },
     showModality(event: WechatMiniprogram.TouchEvent) { wx.showModal({title:String(event.currentTarget.dataset.label),content:String(event.currentTarget.dataset.detail),showCancel:false}) },
     copyId(event: WechatMiniprogram.TouchEvent) { wx.setClipboardData({ data: String(event.currentTarget.dataset.model || '') }) },
     toggleDetails(event: WechatMiniprogram.TouchEvent) { const id = String(event.currentTarget.dataset.model || ''); this.setData({ expandedModel: this.data.expandedModel === id ? '' : id }) },

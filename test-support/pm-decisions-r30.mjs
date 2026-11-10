@@ -1,3 +1,4 @@
+import {restoreI13,restoreI13Sources,currentI13Sources,restoreI13Review,primaryI13} from './primary-links-r31.mjs'
 import fs from 'node:fs'
 import assert from 'node:assert/strict'
 import {gunzipSync} from 'node:zlib'
@@ -11,10 +12,10 @@ const get=(row,path)=>path.split('/').reduce((r,k)=>r?.[k],row)
 function reverse(row,patches){const copy=structuredClone(row);for(const patch of patches||[]){assert.deepEqual(get(copy,patch.path),patch.after,patch.path+' R30 reviewed presentation drift');const keys=patch.path.split('/'),last=keys.pop(),parent=keys.reduce((r,k)=>r[k],copy);if(Object.hasOwn(patch,'before'))parent[last]=structuredClone(patch.before);else delete parent[last]}return copy}
 // Historical comparisons restore only exact reviewed presentation deltas. Every
 // current value is checked first; capability/value/state/name changes are forbidden.
-export function restoreI12(rows){return Object.fromEntries(Object.entries(rows).map(([key,row])=>[key,reverse(row,pmReview.rows[key])]))}
-export function restoreI12Sources(rows,key,client){const patch=pmReview.rows[key]?.find(p=>p.path===(client==='web'?'web/sources':'mini/card/specSources'));if(!patch)return rows;assert.deepEqual(rows,patch.after,key+' '+client+' sources');return structuredClone(patch.before)}
-export function currentI12Sources(rows,key,client){const patch=pmReview.rows[key]?.find(p=>p.path===(client==='web'?'web/sources':'mini/card/specSources'));if(!patch)return rows;assert.deepEqual(rows,patch.before,key+' '+client+' baseline');return structuredClone(patch.after)}
-export function restoreI12Review(review){return Object.fromEntries(Object.entries(review).map(([client,rows])=>[client,rows.map(row=>reverse(row,pmReview.sources[client+'/'+row.card]))]))}
+export function restoreI12(rows){return Object.fromEntries(Object.entries(restoreI13(rows)).map(([key,row])=>[key,reverse(row,pmReview.rows[key])]))}
+export function restoreI12Sources(rows,key,client){rows=restoreI13Sources(rows,key,client);const patch=pmReview.rows[key]?.find(p=>p.path===(client==='web'?'web/sources':'mini/card/specSources'));if(!patch)return rows;assert.deepEqual(rows,patch.after,key+' '+client+' sources');return structuredClone(patch.before)}
+export function currentI12Sources(rows,key,client){const patch=pmReview.rows[key]?.find(p=>p.path===(client==='web'?'web/sources':'mini/card/specSources'));if(patch){assert.deepEqual(rows,patch.before,key+' '+client+' baseline');rows=structuredClone(patch.after)}return currentI13Sources(rows,key,client)}
+export function restoreI12Review(review){return Object.fromEntries(Object.entries(restoreI13Review(review)).map(([client,rows])=>[client,rows.map(row=>reverse(row,pmReview.sources[client+'/'+row.card]))]))}
 export function assertPMDecisions(rows){
  assert.equal(Object.keys(rows).length,1064)
  const counts={web:0,mini:0,unsupported:0,notApplicable:0},conditional=[]
@@ -39,5 +40,5 @@ export function assertPMDecisions(rows){
  restoreI12(rows)
  return counts
 }
-export function currentPrimary(key,fallback){return pmReview.rows[key]?.find(p=>p.path==='web/sources')?.after?.[0]?.url || fallback}
-export function currentPrimaryRow(key,fallback){return pmReview.rows[key]?.find(p=>p.path==='web/sources')?.after?.[0] || {...fallback,label:fallback.label?.replace(/(\d{4})-(\d{2})-(\d{2})/g,'$1年$2月$3日')}}
+export function currentPrimary(key,fallback){return primaryI13(key)?.url || pmReview.rows[key]?.find(p=>p.path==='web/sources')?.after?.[0]?.url || fallback}
+export function currentPrimaryRow(key,fallback){return primaryI13(key) || pmReview.rows[key]?.find(p=>p.path==='web/sources')?.after?.[0] || {...fallback,label:fallback.label?.replace(/(\d{4})-(\d{2})-(\d{2})/g,'$1年$2月$3日')}}

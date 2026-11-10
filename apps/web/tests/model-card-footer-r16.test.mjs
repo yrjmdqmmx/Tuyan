@@ -117,7 +117,7 @@ test('R16 long domains only ellipsize visually and retain the complete URL for e
   for (const [provider, model, expectedLabel] of [
     ['custom', {id: 'long-domain', specifications: {version: 1, sourceUrls: [longUrl]}}, '官方文档'],
     ['replicate', {id: 'google/imagen-3'}, '官方文档'],
-    ['antling', {id: 'Ling-2.6-flash'}, '官方文档'],
+    ['antling', {id: 'Ling-2.6-flash'}, '下线公告'],
   ]) {
     const {container, unmount} = render(React.createElement('article', {className: 'tw-catalog-card', style: {width: 155}},
       React.createElement(ModelSpecifications, {provider, model, compactSources: true})))

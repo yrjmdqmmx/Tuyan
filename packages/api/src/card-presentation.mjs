@@ -90,7 +90,8 @@ export function visibleSourceTitle(value, model = {}, fallback = '官方文档')
   return role + ' · ' + readableEventDates(sourceTitle(value, model))
 }
 const compactSubject = value => value.toLowerCase().replace(/(\d)p(?=\d)/g, '$1.').replace(/[^a-z0-9\u4e00-\u9fff]/g, '')
-const brands = 'OpenAI GPT ChatGPT DeepSeek Qwen GLM Kimi MiniMax MiMo FLUX Stable Diffusion SDXL Claude Grok Gemini Recraft Ideogram Seedream Wan Hunyuan ERNIE CogView LongCat SenseNova TokenDance Fireworks Hugging Face SiliconFlow Runware Replicate Novita StepFun BFL API HTTP VL OCR LoRA'.split(' ')
+const brands = 'OpenAI GPT ChatGPT DeepSeek Qwen GLM Kimi MiniMax MiMo FLUX Stable Diffusion SDXL Claude Grok Gemini Recraft Ideogram Seedream Wan Hunyuan ERNIE CogView LongCat SenseNova TokenDance Fireworks Hugging Face SiliconFlow Runware Replicate Novita StepFun BFL API APIs LLM HTTP VL OCR LoRA GGUF AWQ GPTQ FP8 FP16 BF16 INT4 INT8 MLX ONNX MoE'.split(' ')
+export const sourceAcronyms = value => value.replace(/\b(?:gguf|awq|gptq|fp8|fp16|bf16|int4|int8|mlx|onnx|apis?|llm|vl|moe|ocr|sdxl|lora)\b/gi, word => brands.find(brand => brand.toLowerCase() === word.toLowerCase()) || word)
 function readableSubject(value) {
   return value.replace(/\bflux11\b/gi, 'FLUX.1.1').replace(/(\d)[_-](?=\d)/g, '$1~').replace(/[_-]/g, ' ').replace(/~/g, '-').replace(/\b[a-z][a-z0-9]*/gi, word => brands.find(brand => brand.toLowerCase() === word.toLowerCase()) || word[0].toUpperCase() + word.slice(1))
 }
@@ -141,7 +142,7 @@ function pageSubject(value) {
     const translated = {'bailian hosted':'百炼托管',hosted:'托管',docs:'文档',documentation:'文档',guide:'指南',overview:'概览',free:'免费'}[qualifier.toLowerCase()]
     return translated ? '（' + translated + '）' : original
   })
-  return title
+  return sourceAcronyms(title)
 }
 export function sourceTitle(value, model = {}) {
   if (value.split(/[?#]/)[0].replace(/\/+$/, '') === 'https://api.fal.ai/v1/models') return 'fal 模型目录'
@@ -158,7 +159,7 @@ export function sourceTitle(value, model = {}) {
     'minimax.io':'MiniMax','minimaxi.com':'MiniMax','kimi.com':'Kimi','github.com':'GitHub','qianwenai.com':'千问'})[siteKey]
     || readableSubject(siteKey.split('.')[0])
   const unified = storedTitles[sourceTitleKey(value)]
-  if (Array.isArray(unified)) return site + ' · ' + unified[0]
+  if (Array.isArray(unified)) return site + ' · ' + sourceAcronyms(unified[0])
   if (subject === 'schema.json') return site + ' · ' + pageSubject(modelSubject(slugs.at(-2) || '', [], '')).replace(/-(?=[a-z])/gi, ' ') + ' API 规格'
   const rawName = model.displayName || model.label || '', knownName = modelSubjects.get(compactSubject(rawName)) || ''
   // A slug-like picker label stays unchanged in the picker, but may not hide a

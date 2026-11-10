@@ -1,3 +1,4 @@
+import {sourceAcronyms} from '../../packages/api/src/card-presentation.mjs'
 // Offline title decisions, frozen before R29. No page/spec/execution data changes.
 import {r29Baseline, sourceSurfaces, titleMap} from '../../test-support/source-titles-r29.mjs'
 import {titleIssues} from '../../test-support/source-titles-r24.mjs'
@@ -35,5 +36,5 @@ export function unifiedPageTitles() {
     const page = (titles[row.identity] || r29Baseline.unscopedTitles[row.identity].split(' · ').slice(1).join(' · ')).replace(/（(?:控制台|模型库)）$/, '')
     titles[row.identity] = page + (/^https:\/\/app\./.test(row.url) ? '（控制台）' : '（模型库）')
   }
-  return titles
+  return Object.fromEntries(Object.entries(titles).map(([url,title]) => [url,sourceAcronyms(title)]))
 }
