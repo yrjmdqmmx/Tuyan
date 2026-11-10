@@ -46,8 +46,8 @@
     {
       "file": "apps/web/tests/model-audit-r12.test.mjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "5925df9994aec2c813d047110cef51f4f807d7b173bd5f2c99fbf579c55bcd87",
-      "diffSha256": "1df6bfd4c380434ebcd03297cefaab88f8780f0f16b66033709afd667009fb2a"
+      "contentSha256": "c293b9fe6ac3282ef173f58272a1f3eafb65d751eb31df8a72fdf10a4a7b8b94",
+      "diffSha256": "ed158a46dd2999defee1ae0a85f2c74ebbd020a035c0eec9d443ff202436167c"
     },
     {
       "file": "apps/web/tests/model-audit-r13.test.mjs",
@@ -64,8 +64,8 @@
     {
       "file": "apps/web/tests/model-audit-r6a.test.mjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "9624f8f978cb07918e04b76e8cc0bce2c28a65fdecbafd6a4098e970a5abab13",
-      "diffSha256": "d664a4e31cbecae0dbb6ff244a6081933af6ebb34d915dd607d241e56ed339c7"
+      "contentSha256": "20407940f0af938f5d9e2805d6f63828e467ec45186a0bd9cbb16916e1bb07bd",
+      "diffSha256": "50401231aae49ee95befc67a1168f9690009023b72f126e28317659f06cdf6fb"
     },
     {
       "file": "apps/web/tests/model-audit-r6b.test.mjs",
@@ -150,8 +150,8 @@
     {
       "file": "config/model-audit.generated.json",
       "comparisonBase": "8c456709",
-      "contentSha256": "da90d0337436034d96a2bd486c230237064b9060a0f11a7e15935e39fdf9b845",
-      "diffSha256": "70f0a8084424a87c87d266c75a1096507c01ee6e3aadd0ed4e32bac95c52f6cf"
+      "contentSha256": "34f20158eec15f91c8b2f36204e74e4042b772318f26993e6ea1aab771ded3d7",
+      "diffSha256": "ceec8c7240b868ba79a0672b286c1306884842264b29e1fdff705b5ec598946b"
     }
   ],
   "followupChanges": [
@@ -242,8 +242,8 @@
     {
       "file": "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
       "comparisonBase": "cd72eace",
-      "contentSha256": "16b576aad076d1bc86cd2d2c09e143f45aad6a612dcc4ca3d518732ed90e04d7",
-      "diffSha256": "fa907679538c00d6e14220db33743d6529c00b407683a5a05359dbdb4e32f190"
+      "contentSha256": "87ff8ee1d7d8b02ba244a15a28178d31a3161920f99d49c8a94a0067564cc447",
+      "diffSha256": "5f0e8e789f9f1bad439509cb54a510d144d674fb4b6dc8b4796a100a8d2a0ed0"
     },
     {
       "file": "scripts/card-presentation-r22b.test.mjs",
@@ -254,8 +254,8 @@
     {
       "file": "apps/web/tests/model-card-i2-r24.test.mjs",
       "comparisonBase": "9a7128d6",
-      "contentSha256": "c9054be3b762e4fd31be43d58e4e77cb11877df552dcb1a5840cab32e1d449f5",
-      "diffSha256": "6c6456ab69cd1e96bb742bf412ab364f67af15f9075a2f4d3cacde99b68c9563"
+      "contentSha256": "8d0f304a478df9a90edda79170ad00b78fc35840b5b00c5d4d919c6baaf8094b",
+      "diffSha256": "d6344f29aeee0302f572250181ff6987a158131d9ab0fa7037689cf4aaec400a"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
@@ -296,8 +296,8 @@
     {
       "file": "test-support/source-links-i3-r24.mjs",
       "comparisonBase": "f8ff7648",
-      "contentSha256": "3dec81548b23a73ead8ff76414110a6e30de5a33e6fe3e7a01e064d042b7a59a",
-      "diffSha256": "aca2471cc43653becca29280c32fda31fbb048e48128547b91373d0b3169b314"
+      "contentSha256": "296954ec9a499c837e63e9c51053d824332ac15565d1e1052776f9826c813bfb",
+      "diffSha256": "464b8124c852f7a0e9ed977775993f3831b8617013bd8c9d112cc780ddabc643"
     },
     {
       "file": "test-support/source-review-r24.mjs",
@@ -334,6 +334,24 @@
       "comparisonBase": "6864824a",
       "contentSha256": "e1ba9c1d25fafa8cea8905feb471c4da02f158b9517847306b37d6aa1735dc77",
       "diffSha256": "2b4498eaf9f1f8964488a67f9347e3b8a721081f52e1c0ac556f26e46f30d611"
+    },
+    {
+      "file": "test-support/phase2-modality.mjs",
+      "comparisonBase": "d1c63994",
+      "contentSha256": "dd5b510ee2ca227c6929537942cc96099c4501696975e3a17636500b25d3e91f",
+      "diffSha256": "c6288c8d66e8064467a7744633617728c062dd2b57fd57a90c2f02835e98d55c"
+    },
+    {
+      "file": "test-support/phase2-modality.d.mts",
+      "comparisonBase": "d1c63994",
+      "contentSha256": "741f8c81b186fdb891d4c272bb2fb25057d5e74346326f71630a47b01998c25e",
+      "diffSha256": "07df4200a8b52b749e65e0e1a6dbc46b43448e48aa2b9a18dba314b32ca51e95"
+    },
+    {
+      "file": "docs/model-modality-r22b-results.json",
+      "comparisonBase": "d1c63994",
+      "contentSha256": "8af9cb8324368726eed5bd45676716a4860fcfc0092d9e03ac06173bc5c2aacd",
+      "diffSha256": "d526e764d546c99bc4cbc7d1ac8576e9d13a5266bd4471a13e5952cc78a97482"
     }
   ]
 }

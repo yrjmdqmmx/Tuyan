@@ -91,6 +91,11 @@ for (const row of [...read('config/channel-audit/source-titles-r24-i3.json').cap
 for (const model of Object.values(read('config/channel-audit/review-r24-20261110.json').models)) {
   if (model.retirement) sourceTitles[model.retirement.sourceUrl] = model.retirement.title
 }
+for (const [url, page] of Object.entries(read('config/channel-audit/review-r27-20261110.json').pages)) {
+  assert.equal(page.status, 200); assert.match(page.sha256, /^[a-f0-9]{64}$/)
+  sourceTitles[url.replace(/\.md$/, '')] = page.displayTitle
+  sourceTitles[url] = page.displayTitle
+}
 // Compile only titles referenced by card inputs. Capture indexes also contain
 // authentication/protocol pages that no card links to; keep those in evidence,
 // not in either client. Include all fact/notice links, not just primary rows.
@@ -101,6 +106,9 @@ function collectUrls(value) {
 }
 for (const value of [STATIC_MODEL_REGISTRY, read('config/model-audit.generated.json'), read('packages/api/src/card-data/reviewed-models.json'), read('packages/api/src/card-data/specific-pages.json'), historical]) collectUrls(value)
 for (const url of Object.keys(sourceTitles)) if (!referenced.has(url)) delete sourceTitles[url]
+for (const [url, page] of Object.entries(read('config/channel-audit/review-r27-20261110.json').pages)) {
+  if (referenced.has(url)) sourceTitles[url.replace(/\.md$/, '')] = page.displayTitle
+}
 for (const url of Object.keys(sourceTitles)) sourceTitles[url] = sourceTitles[url].split(/ - | \| | – |·(?=百度|阿里|DeepSeek)/)[0].trim()
 write('packages/api/src/card-data/source-titles.json', JSON.stringify(sourceTitles) + '\n')
 // Package-local names keep Core independent of the Web catalog. Mini reuses its

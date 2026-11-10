@@ -16,7 +16,8 @@ import { modalityIconStates } from '../src/lib/modelModalityIcons.js'
 import channelSnapshot from '../../../config/channel-audit/tokendance-catalog-snapshot-20261109b.json' with { type: 'json' }
 import baseline from './fixtures/model-modalities-main-c7b6a2fc.json' with { type: 'json' }
 import schemaExpectations from './fixtures/r22-exact-schema-expectations.json' with { type: 'json' }
-import phase2 from '../../../config/channel-audit/model-modality-phase2-20261109.json' with { type: 'json' }
+import {evidence as phase2} from '../../../test-support/phase2-modality.mjs'
+import reviewI7 from '../../../config/channel-audit/review-r27-20261110.json' with { type: 'json' }
 
 const require = createRequire(import.meta.url)
 const mini = require('../../miniprogram/miniprogram/utils/model-audit.js')
@@ -94,7 +95,9 @@ test('Mini runtime projection agrees with Web for all four fields across the who
       assert.equal(small[field].provenance, web[field].provenance, provider + '/' + model.id + '/' + field)
       // R12B omits evidence URLs the picker never renders. Its retained field
       // reference must still be exact; the visible card source is tested below.
-      assert.equal(small[field].sourceUrl, reviewI4.models[provider + '/' + model.id]?.fields[field] ? reviewI4.models[provider + '/' + model.id].fields[field].sourceUrl : expectedHumanUrl(web[field].sourceUrl) === mini.auditedModelSpecs(provider, model.id).sourceUrl ? expectedHumanUrl(web[field].sourceUrl) : null, provider + '/' + model.id + '/' + field + '/source')
+      const reviewed = reviewI7.reviews[provider + '/' + model.id]?.[field]?.sourceUrl
+        || reviewI7.preservedFieldSources[provider + '/' + model.id]?.[field]
+      assert.equal(small[field].sourceUrl, reviewed || (reviewI4.models[provider + '/' + model.id]?.fields[field] ? reviewI4.models[provider + '/' + model.id].fields[field].sourceUrl : expectedHumanUrl(web[field].sourceUrl) === mini.auditedModelSpecs(provider, model.id).sourceUrl ? expectedHumanUrl(web[field].sourceUrl) : null), provider + '/' + model.id + '/' + field + '/source')
     }
     assert.equal(mini.auditedModelSpecs(provider, model.id).sourceUrl, modelCardSpecifications(provider, model).sources[0] || null, provider + '/' + model.id + '/visible-source')
   }

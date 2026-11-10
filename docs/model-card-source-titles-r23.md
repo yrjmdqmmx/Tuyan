@@ -6,8 +6,8 @@ Baseline: `1dcd8b13` (pre-F), frozen in `test-support/fixtures/source-titles-1dc
 
 | Client | Cards | Source rows | Changed titles | Changed cards | Unresolved heuristic findings |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| web | 1064 | 2452 | 2114 | 1010 | 0 |
-| mini | 1064 | 1105 | 961 | 954 | 0 |
+| web | 1064 | 2462 | 2091 | 995 | 0 |
+| mini | 1064 | 1105 | 946 | 939 | 0 |
 
 Also scanned **7 Web lifecycle dialogs**; **7** changed titles are listed separately below. Web tests open every rendered evidence dialog, check the card link/tooltip, and compare every anchor. Mini tests invoke every copy dialog and clipboard callback. Shared-helper parity is checked on all Mini rows.
 
@@ -857,10 +857,6 @@ I5 restores three verified Bailian lifecycle links from notice 118728 and replac
 | web | stability/stable-image-core | https://platform.stability.ai/docs/getting-started/models | 官方文档 · stability.ai · 模型列表 | 官方文档 · Stability · 模型列表 |
 | web | stability/stable-image-ultra | https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1ultra/post | 官方文档 · stability.ai · api reference | 官方文档 · Stability · API 文档 |
 | web | stability/stable-image-ultra | https://platform.stability.ai/docs/getting-started/models | 官方文档 · stability.ai · 模型列表 | 官方文档 · Stability · 模型列表 |
-| web | ideogram/ideogram-v4 | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4 | 官方文档 · developer.ideogram.ai · ideogram 4 | 官方文档 · Ideogram · Ideogram 4 |
-| web | ideogram/ideogram-v4 | https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4 | 官方文档 · developer.ideogram.ai · generate v4 · developer.ideogram.ai/v1/api-reference/generate-images/generate-v4 | 官方文档 · Ideogram · Generate V4（V1 接口，图像生成） |
-| web | ideogram/ideogram-v4 | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
-| web | ideogram/ideogram-v4 | https://developer.ideogram.ai/api-reference/generate-images/generate-v4 | 官方文档 · developer.ideogram.ai · generate v4 · developer.ideogram.ai/api-reference/generate-images/generate-v4 | 官方文档 · Ideogram · Generate V4（API 参考，图像生成） |
 | web | ideogram/ideogram-v4-transparent | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-transparent | 官方文档 · developer.ideogram.ai · ideogram 4 transparent | 官方文档 · Ideogram · Ideogram 4 Transparent |
 | web | ideogram/ideogram-v4-transparent | https://developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v4 | 官方文档 · developer.ideogram.ai · generate transparent v4 · developer.ideogram.ai/v1/api-reference/generate-images/generate-transparent-v4 | 官方文档 · Ideogram · Generate Transparent V4（V1 接口，图像生成） |
 | web | ideogram/ideogram-v4-transparent | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
@@ -1152,16 +1148,10 @@ I5 restores three verified Bailian lifecycle links from notice 118728 and replac
 | web | fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4 | https://fireworks.ai/models/fireworks/step-3p7-flash-nvfp4 | 官方文档 · fireworks.ai · step 3p7 flash nvfp4 | 官方文档 · Fireworks · Step 3.7 Flash（NVFP4）（模型库） |
 | web | fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4 | https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4 | 官方文档 · app.fireworks.ai · step 3p7 flash nvfp4 | 官方文档 · Fireworks · Step 3.7 Flash（NVFP4）（控制台） |
 | web | fal/alibaba/qwen-image-3/text-to-image | https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Qwen Image 3 API 文档 |
-| web | fal/bytedance/seedream/v5/flash/text-to-image | https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api | 官方文档 · fal.ai · api · fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api | 官方文档 · fal · Seedream v5 Flash API 文档 |
-| web | fal/bytedance/seedream/v5/flash/text-to-image | https://fal.ai/models/bytedance/seedream/v5/flash/edit/api | 官方文档 · fal.ai · api · fal.ai/models/bytedance/seedream/v5/flash/edit/api | 官方文档 · fal · Seedream v5 Flash Edit API 文档 |
-| web | fal/bytedance/seedream/v5/pro/text-to-image | https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Seedream（v5，pro） API 文档 |
 | web | fal/fal-ai/bytedance/seedream/v5/lite/edit | https://fal.ai/models/fal-ai/bytedance/seedream/v5/lite/edit/api | 官方文档 · fal.ai · api | 官方文档 · fal · Seedream（v5，lite，edit） API 文档 |
-| web | fal/fal-ai/bytedance/seedream/v4.5/text-to-image | https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Seedream（v4.5） API 文档 |
-| web | fal/fal-ai/bytedance/seedream/v4/text-to-image | https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Seedream（v4） API 文档 |
 | web | fal/fal-ai/fast-sdxl | https://fal.ai/models/fal-ai/fast-sdxl/api | 官方文档 · fal.ai · api | 官方文档 · fal · Fast SDXL API 文档 |
 | web | fal/fal-ai/flux-2 | https://fal.ai/models/fal-ai/flux-2/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-2 API 文档 |
 | web | fal/fal-ai/flux-2-flex | https://fal.ai/models/fal-ai/flux-2-flex/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX 2 Flex API 文档 |
-| web | fal/fal-ai/flux-2-pro | https://fal.ai/models/fal-ai/flux-2-pro/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX 2 Pro API 文档 |
 | web | fal/fal-ai/flux-2/flash | https://fal.ai/models/fal-ai/flux-2/flash/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-2（flash） API 文档 |
 | web | fal/fal-ai/flux-2/klein/9b | https://fal.ai/models/fal-ai/flux-2/klein/9b/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-2（klein，9b） API 文档 |
 | web | fal/fal-ai/flux-2/turbo | https://fal.ai/models/fal-ai/flux-2/turbo/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-2（turbo） API 文档 |
@@ -1169,12 +1159,6 @@ I5 restores three verified Bailian lifecycle links from notice 118728 and replac
 | web | fal/fal-ai/flux-pro/kontext | https://fal.ai/models/fal-ai/flux-pro/kontext/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX Pro（Kontext） API 文档 |
 | web | fal/fal-ai/flux-pro/v1.1 | https://fal.ai/models/fal-ai/flux-pro/v1.1/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX Pro（V1.1） API 文档 |
 | web | fal/fal-ai/flux-pro/v1.1-ultra | https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX Pro（V1.1 Ultra） API 文档 |
-| web | fal/blackforestlabs/flux-3/klein/base/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api | 官方文档 · fal · FLUX.3 Klein Base API 文档 |
-| web | fal/blackforestlabs/flux-3/klein/base/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api | 官方文档 · fal · FLUX.3 Klein Base Edit Image API 文档 |
-| web | fal/blackforestlabs/flux-3/klein/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api | 官方文档 · fal · FLUX.3 Klein API 文档 |
-| web | fal/blackforestlabs/flux-3/klein/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api | 官方文档 · fal · FLUX.3 Klein Edit Image API 文档 |
-| web | fal/blackforestlabs/flux-3/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/text-to-image/api | 官方文档 · fal · FLUX.3 API 文档 |
-| web | fal/blackforestlabs/flux-3/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/edit-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/edit-image/api | 官方文档 · fal · FLUX.3 Edit Image API 文档 |
 | web | fal/fal-ai/flux-1/schnell | https://fal.ai/models/fal-ai/flux-1/schnell/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-1（schnell） API 文档 |
 | web | fal/fal-ai/flux-lora | https://fal.ai/models/fal-ai/flux-lora/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX LoRA API 文档 |
 | web | fal/fal-ai/flux/dev | https://fal.ai/models/fal-ai/flux/dev/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX（dev） API 文档 |
@@ -1194,14 +1178,10 @@ I5 restores three verified Bailian lifecycle links from notice 118728 and replac
 | web | fal/google/nano-banana-2.1 | https://fal.ai/models/google/nano-banana-2.1/api | 官方文档 · fal.ai · api · fal.ai/models/google/nano-banana-2.1/api | 官方文档 · fal · Nano Banana 2.1 API 文档 |
 | web | fal/google/nano-banana-2.1 | https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1 | 官方文档 · ai.google.dev · gemini nano banana 2.1 | 官方文档 · Google · Nano Banana 2.1 |
 | web | fal/google/nano-banana-2.1 | https://fal.ai/models/google/nano-banana-2.1/edit/api | 官方文档 · fal.ai · api · fal.ai/models/google/nano-banana-2.1/edit/api | 官方文档 · fal · Nano Banana 2.1 Edit API 文档 |
-| web | fal/openai/gpt-image-2.5/flare/text-to-image | https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · GPT Image 2.5 Flare API 文档 |
-| web | fal/openai/gpt-image-2.5/sunburst/text-to-image | https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · GPT Image 2.5 Sunburst API 文档 |
 | web | fal/openai/gpt-image-2 | https://fal.ai/models/openai/gpt-image-2/api | 官方文档 · fal.ai · api | 官方文档 · fal · GPT Image 2 API 文档 |
 | web | fal/openai/gpt-image-2 | https://developers.openai.com/api/docs/models/gpt-image-2 | 官方文档 · developers.openai.com · gpt image 2 | 官方文档 · OpenAI · GPT Image 2 |
 | web | fal/fal-ai/gpt-image-1.5 | https://fal.ai/models/fal-ai/gpt-image-1.5/api | 官方文档 · fal.ai · api | 官方文档 · fal · GPT Image 1.5 API 文档 |
 | web | fal/xai/grok-imagine-image/v2.0/text-to-image | https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Grok Imagine Image（V2.0） API 文档 |
-| web | fal/xai/grok-imagine-image | https://fal.ai/models/xai/grok-imagine-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Grok Imagine Image API 文档 |
-| web | fal/xai/grok-imagine-image/quality/text-to-image | https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Grok Imagine Image（Quality） API 文档 |
 | web | fal/bria/fibo-edit-1.5/edit | https://fal.ai/models/bria/fibo-edit-1.5/edit/api | 官方文档 · fal.ai · api | 官方文档 · fal · Fibo Edit 1.5（Edit） API 文档 |
 | web | fal/bria/fibo-gen-1.5/text-to-image | https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Fibo Gen 1.5 API 文档 |
 | web | fal/fal-ai/krea-2/turbo | https://fal.ai/models/fal-ai/krea-2/turbo/api | 官方文档 · fal.ai · api | 官方文档 · fal · Krea 2（Turbo） API 文档 |
@@ -1210,9 +1190,6 @@ I5 restores three verified Bailian lifecycle links from notice 118728 and replac
 | web | fal/ideogram/v4.5 | https://fal.ai/models/ideogram/v4.5/edit/api | 官方文档 · fal.ai · api · fal.ai/models/ideogram/v4.5/edit/api | 官方文档 · fal · V4.5 Edit API 文档 |
 | web | fal/imagineart/imagineart-2.0-preview/text-to-image | https://fal.ai/models/imagineart/imagineart-2.0-preview/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Imagineart 2.0 Preview API 文档 |
 | web | fal/krea/v2/large/text-to-image | https://fal.ai/models/krea/v2/large/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Krea V2 Large API 文档 |
-| web | fal/krea/v3/text-to-image | https://fal.ai/models/krea/v3/text-to-image/api | 官方文档 · fal.ai · api · fal.ai/models/krea/v3/text-to-image/api | 官方文档 · fal · Krea 3 API 文档 |
-| web | fal/krea/v3/text-to-image | https://fal.ai/models/krea/v3/edit/api | 官方文档 · fal.ai · api · fal.ai/models/krea/v3/edit/api | 官方文档 · fal · V3 Edit API 文档 |
-| web | fal/meta/muse-image/text-to-image | https://fal.ai/models/meta/muse-image/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Muse Image API 文档 |
 | web | replicate/google/gemini-3.5-flash | https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash | 官方文档 · ai.google.dev · gemini 3.5 flash | 官方文档 · Google · Gemini 3.5 Flash |
 | web | replicate/google/gemini-3.5-flash | https://ai.google.dev/gemini-api/docs/generate-content/image-understanding | 官方文档 · ai.google.dev · image understanding | 官方文档 · Google · Image Understanding |
 | web | replicate/google/gemini-3.5-flash | https://ai.google.dev/gemini-api/docs/generate-content/thinking | 官方文档 · ai.google.dev · thinking | 官方文档 · Google · Thinking |
@@ -2512,7 +2489,6 @@ I5 restores three verified Bailian lifecycle links from notice 118728 and replac
 | mini | stability/sd3.5-medium | https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1sd3/post | 官方文档 · stability.ai · api reference | 官方文档 · Stability · API 文档 |
 | mini | stability/stable-image-core | https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1core/post | 官方文档 · stability.ai · api reference | 官方文档 · Stability · API 文档 |
 | mini | stability/stable-image-ultra | https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1ultra/post | 官方文档 · stability.ai · api reference | 官方文档 · Stability · API 文档 |
-| mini | ideogram/ideogram-v4 | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4 | 官方文档 · developer.ideogram.ai · ideogram 4 | 官方文档 · Ideogram · Ideogram 4 |
 | mini | ideogram/ideogram-v4-transparent | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-transparent | 官方文档 · developer.ideogram.ai · ideogram 4 transparent | 官方文档 · Ideogram · Ideogram 4 Transparent |
 | mini | ideogram/ideogram-v3 | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-3 | 官方文档 · developer.ideogram.ai · ideogram 3 | 官方文档 · Ideogram · Ideogram 3 |
 | mini | ideogram/ideogram-v3-transparent | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-3-transparent | 官方文档 · developer.ideogram.ai · ideogram 3 transparent | 官方文档 · Ideogram · Ideogram 3 Transparent |
@@ -2617,15 +2593,10 @@ I5 restores three verified Bailian lifecycle links from notice 118728 and replac
 | mini | fireworks/accounts/fireworks/models/qwen3-omni-30b-a3b-instruct | https://fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct | 官方文档 · fireworks.ai · qwen3 omni 30b a3b instruct | 官方文档 · Fireworks · Qwen3 Omni 30B A3B Instruct |
 | mini | fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4 | https://fireworks.ai/models/fireworks/step-3p7-flash-nvfp4 | 官方文档 · fireworks.ai · step 3p7 flash nvfp4 | 官方文档 · Fireworks · Step 3.7 Flash（NVFP4） |
 | mini | fal/alibaba/qwen-image-3/text-to-image | https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Qwen Image 3 API 文档 |
-| mini | fal/bytedance/seedream/v5/flash/text-to-image | https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Seedream v5 Flash API 文档 |
-| mini | fal/bytedance/seedream/v5/pro/text-to-image | https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Seedream（v5，pro） API 文档 |
 | mini | fal/fal-ai/bytedance/seedream/v5/lite/edit | https://fal.ai/models/fal-ai/bytedance/seedream/v5/lite/edit/api | 官方文档 · fal.ai · api | 官方文档 · fal · Seedream（v5，lite，edit） API 文档 |
-| mini | fal/fal-ai/bytedance/seedream/v4.5/text-to-image | https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Seedream（v4.5） API 文档 |
-| mini | fal/fal-ai/bytedance/seedream/v4/text-to-image | https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Seedream（v4） API 文档 |
 | mini | fal/fal-ai/fast-sdxl | https://fal.ai/models/fal-ai/fast-sdxl/api | 官方文档 · fal.ai · api | 官方文档 · fal · Fast SDXL API 文档 |
 | mini | fal/fal-ai/flux-2 | https://fal.ai/models/fal-ai/flux-2/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-2 API 文档 |
 | mini | fal/fal-ai/flux-2-flex | https://fal.ai/models/fal-ai/flux-2-flex/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX 2 Flex API 文档 |
-| mini | fal/fal-ai/flux-2-pro | https://fal.ai/models/fal-ai/flux-2-pro/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX 2 Pro API 文档 |
 | mini | fal/fal-ai/flux-2/flash | https://fal.ai/models/fal-ai/flux-2/flash/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-2（flash） API 文档 |
 | mini | fal/fal-ai/flux-2/klein/9b | https://fal.ai/models/fal-ai/flux-2/klein/9b/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-2（klein，9b） API 文档 |
 | mini | fal/fal-ai/flux-2/turbo | https://fal.ai/models/fal-ai/flux-2/turbo/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-2（turbo） API 文档 |
@@ -2633,9 +2604,6 @@ I5 restores three verified Bailian lifecycle links from notice 118728 and replac
 | mini | fal/fal-ai/flux-pro/kontext | https://fal.ai/models/fal-ai/flux-pro/kontext/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX Pro（Kontext） API 文档 |
 | mini | fal/fal-ai/flux-pro/v1.1 | https://fal.ai/models/fal-ai/flux-pro/v1.1/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX Pro（V1.1） API 文档 |
 | mini | fal/fal-ai/flux-pro/v1.1-ultra | https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX Pro（V1.1 Ultra） API 文档 |
-| mini | fal/blackforestlabs/flux-3/klein/base/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX.3 Klein Base API 文档 |
-| mini | fal/blackforestlabs/flux-3/klein/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX.3 Klein API 文档 |
-| mini | fal/blackforestlabs/flux-3/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX.3 API 文档 |
 | mini | fal/fal-ai/flux-1/schnell | https://fal.ai/models/fal-ai/flux-1/schnell/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-1（schnell） API 文档 |
 | mini | fal/fal-ai/flux-lora | https://fal.ai/models/fal-ai/flux-lora/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX LoRA API 文档 |
 | mini | fal/fal-ai/flux/dev | https://fal.ai/models/fal-ai/flux/dev/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX（dev） API 文档 |
@@ -2649,13 +2617,9 @@ I5 restores three verified Bailian lifecycle links from notice 118728 and replac
 | mini | fal/fal-ai/nano-banana-pro | https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image | 官方文档 · ai.google.dev · gemini 3 pro image | 官方文档 · Google · Gemini 3 Pro Image |
 | mini | fal/fal-ai/nano-banana | https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image | 官方文档 · ai.google.dev · gemini 2.5 flash image | 官方文档 · Google · Gemini 2.5 Flash Image |
 | mini | fal/google/nano-banana-2.1 | https://fal.ai/models/google/nano-banana-2.1/api | 官方文档 · fal.ai · api | 官方文档 · fal · Nano Banana 2.1 API 文档 |
-| mini | fal/openai/gpt-image-2.5/flare/text-to-image | https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · GPT Image 2.5 Flare API 文档 |
-| mini | fal/openai/gpt-image-2.5/sunburst/text-to-image | https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · GPT Image 2.5 Sunburst API 文档 |
 | mini | fal/openai/gpt-image-2 | https://fal.ai/models/openai/gpt-image-2/api | 官方文档 · fal.ai · api | 官方文档 · fal · GPT Image 2 API 文档 |
 | mini | fal/fal-ai/gpt-image-1.5 | https://fal.ai/models/fal-ai/gpt-image-1.5/api | 官方文档 · fal.ai · api | 官方文档 · fal · GPT Image 1.5 API 文档 |
 | mini | fal/xai/grok-imagine-image/v2.0/text-to-image | https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Grok Imagine Image（V2.0） API 文档 |
-| mini | fal/xai/grok-imagine-image | https://fal.ai/models/xai/grok-imagine-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Grok Imagine Image API 文档 |
-| mini | fal/xai/grok-imagine-image/quality/text-to-image | https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Grok Imagine Image（Quality） API 文档 |
 | mini | fal/bria/fibo-edit-1.5/edit | https://fal.ai/models/bria/fibo-edit-1.5/edit/api | 官方文档 · fal.ai · api | 官方文档 · fal · Fibo Edit 1.5（Edit） API 文档 |
 | mini | fal/bria/fibo-gen-1.5/text-to-image | https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Fibo Gen 1.5 API 文档 |
 | mini | fal/fal-ai/krea-2/turbo | https://fal.ai/models/fal-ai/krea-2/turbo/api | 官方文档 · fal.ai · api | 官方文档 · fal · Krea 2（Turbo） API 文档 |
@@ -2663,8 +2627,6 @@ I5 restores three verified Bailian lifecycle links from notice 118728 and replac
 | mini | fal/ideogram/v4.5 | https://fal.ai/models/ideogram/v4.5/api | 官方文档 · fal.ai · api | 官方文档 · fal · Ideogram 4.5 API 文档 |
 | mini | fal/imagineart/imagineart-2.0-preview/text-to-image | https://fal.ai/models/imagineart/imagineart-2.0-preview/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Imagineart 2.0 Preview API 文档 |
 | mini | fal/krea/v2/large/text-to-image | https://fal.ai/models/krea/v2/large/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Krea V2 Large API 文档 |
-| mini | fal/krea/v3/text-to-image | https://fal.ai/models/krea/v3/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Krea 3 API 文档 |
-| mini | fal/meta/muse-image/text-to-image | https://fal.ai/models/meta/muse-image/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Muse Image API 文档 |
 | mini | replicate/google/gemini-3.5-flash | https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash | 官方文档 · ai.google.dev · gemini 3.5 flash | 官方文档 · Google · Gemini 3.5 Flash |
 | mini | replicate/alibaba/qwen-image-3 | https://replicate.com/alibaba/qwen-image-3 | 官方文档 · replicate.com · qwen image 3 | 官方文档 · Replicate · Qwen Image 3 |
 | mini | replicate/alibaba/qwen-image-3-pro | https://replicate.com/alibaba/qwen-image-3-pro | 官方文档 · replicate.com · qwen image 3 pro | 官方文档 · Replicate · Qwen Image 3 Pro |

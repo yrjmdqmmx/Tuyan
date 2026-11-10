@@ -2,10 +2,10 @@
   "base": "8c456709",
   "counts": {
     "files": 23,
-    "assertionAndFixtureInputChanges": 155,
+    "assertionAndFixtureInputChanges": 157,
     "consumedJsonFixtures": 2,
-    "semanticFixtureChanges": 619,
-    "justified": 773,
+    "semanticFixtureChanges": 634,
+    "justified": 790,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -28,7 +28,8 @@
     "R24 I3 local audit harness (not Git-tracked): .audit-input/r24/i3-invariants.test.mjs retains all six Phase H checks. Two expectations change: vendor raw fact URLs and archived screenshot URLs are mapped through the independent source-links-i3-r24.json literal table before matching human anchors. The old harness remains unchanged. This preserves 166 vendor-field checks, all 1064 picker names, all 15 image-input decisions and all 15 screenshot-card identities; it does not run screenshots. The original harness file SHA-256 is 20063c9788589720baa28451f24948d96e8df3bba56195f774bf608aae15992c.",
     "R24 Phase I4: operator browser verification and eight public documentation GET captures correct 19 retirement/spec citations across eight cards. Thirteen Qwen3.5 facts retain values with the exact vendor URL, four unsupported N/A fields become unknown, and two MiMo text-input facts retain their explicit supporting quote. Independent literal source corrections cover six cards per client; new Web/Mini tests scan all 1064 cards and reject unsupported retirement/spec pairs. The local I4 invariants adapt seven lifecycle-link expectations to four supported anchors while preserving names, execution, registry and all 15 deferred image-input assertions. I2/I3 source reports remain frozen; I4 is appended. All four execution locks and both Mini byte guards are unchanged.",
     "R25 Phase I5: public notice 118728 page-entry JSON explicitly names all three Bailian Plus IDs and 2027-01-19 retirement. Display-only citations restore three badge links; no execution notice or field value changes. Six of 20 numeric page URLs receive captured titles, fourteen failed title GETs remain on an exact allow-list; title/date scans are strengthened. Hosting/free source qualifiers and date punctuation are fixed without changing picker names. Exactly two R9 literal fixture objects change. New Web/Mini tests scan all 1064 cards for sourced badges and preserve the four execution locks; both Mini byte guards are unchanged. The local I5 invariants update four-to-seven sourced lifecycle assertions, retaining names, image-input decisions and required-provider behavior. I2/I3/I4 source reports remain frozen; I5 is appended. The ledger recognizes d29097c0 for new follow-up comparisons.",
-    "R26 Phase I6: seven displayed retirement badges across 1064 cards per client are verified by exact model-ID/date quotes. Only Bailian qwen3.5-397b-a17b changes source; Qianfan does not acquire a badge. Existing all-card badge tests now require the offline review evidence. Date simplification removes unknown/historical tooltip dates and separate field date lines, retaining differing known dates inline. Both clients use the exact requested sentence on the frozen 66 conflict cards. One captured title is neutralized, with strict promotional-token tests. The source report freezes I2-I5 and appends I6. Facts, notices, names, image-input decisions and byte ceilings remain unchanged; new follow-up comparisons use 6864824a."
+    "R26 Phase I6: seven displayed retirement badges across 1064 cards per client are verified by exact model-ID/date quotes. Only Bailian qwen3.5-397b-a17b changes source; Qianfan does not acquire a badge. Existing all-card badge tests now require the offline review evidence. Date simplification removes unknown/historical tooltip dates and separate field date lines, retaining differing known dates inline. Both clients use the exact requested sentence on the frozen 66 conflict cards. One captured title is neutralized, with strict promotional-token tests. The source report freezes I2-I5 and appends I6. Facts, notices, names, image-input decisions and byte ceilings remain unchanged; new follow-up comparisons use 6864824a.",
+    "R27 Phase I7: Founder decision A 2026-11-10 restores image input on 14 fal and one Ideogram card after 15 successful public documentation quote checks. The original Phase 2 report remains historical. All-card presentation comparison requires exactly these 15 changes on Web and Mini; six old output citations remain preserved. Main picker names, execution locks, and both Mini byte guards are unchanged. The R9 literal fixture records all 15 old/new URLs and labels. Source report I6 is frozen; I7 is appended. New follow-up comparisons use d1c63994."
   ],
   "files": [
     {
@@ -839,7 +840,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r12.test.mjs",
-      "diffSha256": "1df6bfd4c380434ebcd03297cefaab88f8780f0f16b66033709afd667009fb2a",
+      "diffSha256": "ed158a46dd2999defee1ae0a85f2c74ebbd020a035c0eec9d443ff202436167c",
       "changes": [
         {
           "line": 85,
@@ -1186,6 +1187,21 @@
             "config/channel-audit/source-titles-r26-i6.json",
             "test-support/fixtures/source-evidence-i6-r26.json",
             "test-support/fixtures/conflict-cards-r26.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": "Generation API pages remain primary for the 15 direct-edit cards; fal endpoint replacements only name the generation page",
+          "new": "The 15 exact, literal edit-interface first URLs override generation pages; all source/HTTP counts and other cards remain checked",
+          "reason": "Founder decision A 2026-11-10. Retains exact URL assertions and all historical HTTP evidence while applying the re-verified configured editing route.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -1539,7 +1555,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r6a.test.mjs",
-      "diffSha256": "d664a4e31cbecae0dbb6ff244a6081933af6ebb34d915dd607d241e56ed339c7",
+      "diffSha256": "50401231aae49ee95befc67a1168f9690009023b72f126e28317659f06cdf6fb",
       "changes": [
         {
           "line": 35,
@@ -1802,6 +1818,21 @@
             "docs/model-card-qwen35plus-evidence-r24.md",
             "config/channel-audit/review-r24-20261110.json",
             "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": "Phase 2 image input unknown on 15 cards; Mini may omit non-primary output citations",
+          "new": "The 15 R27 decisions require image supported; input URL matches edit evidence and the six prior output citations remain exact",
+          "reason": "Founder decision A 2026-11-10. Keeps every card, main-supported modality floor, all four-field parity and execution nonmutation assertions.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -2650,7 +2681,7 @@
     },
     {
       "file": "config/model-audit.generated.json",
-      "diffSha256": "70f0a8084424a87c87d266c75a1096507c01ee6e3aadd0ed4e32bac95c52f6cf",
+      "diffSha256": "ceec8c7240b868ba79a0672b286c1306884842264b29e1fdff705b5ec598946b",
       "changes": [
         {
           "line": 2,
@@ -18766,6 +18797,501 @@
             "test-support/fixtures/conflict-cards-r26.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/blackforestlabs/flux-3/klein/base/text-to-image/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/blackforestlabs/flux-3/klein/text-to-image/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/blackforestlabs/flux-3/text-to-image/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/bytedance/seedream/v5/flash/text-to-image/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/bytedance/seedream/v5/pro/text-to-image/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/fal-ai/bytedance/seedream/v4.5/text-to-image/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/fal-ai/bytedance/seedream/v4/text-to-image/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/fal-ai/flux-2-pro/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/krea/v3/text-to-image/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/krea/v3/edit/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/krea/v3/text-to-image/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/meta/muse-image/edit/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/meta/muse-image/text-to-image/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/openai/gpt-image-2.5/flare/text-to-image/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/openai/gpt-image-2.5/sunburst/text-to-image/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/xai/grok-imagine-image/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/fal/xai/grok-imagine-image/quality/text-to-image/inputModalities"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text",
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder decision A 2026-11-10. Verbatim edit/remix quote re-verified; only image input and its source/date change. Output and execution facts remain frozen.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/rows/ideogram/ideogram-v4/inputModalities"
         }
       ]
     }
@@ -21112,9 +21638,339 @@
             "test-support/fixtures/source-evidence-i5-r25.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+            "label": "官方文档 · Ideogram · Ideogram 4"
+          },
+          "new": {
+            "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4",
+            "label": "官方文档 · Ideogram · Ideogram 4.0 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for ideogram/ideogram-v4 now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/ideogram/ideogram-v4"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+            "label": "官方文档 · fal · Seedream v5 Flash API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+            "label": "官方文档 · fal · Seedream v5 Flash 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/bytedance/seedream/v5/flash/text-to-image now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/bytedance/seedream/v5/flash/text-to-image"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v5，pro） API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+            "label": "官方文档 · fal · Seedream v5 pro 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/bytedance/seedream/v5/pro/text-to-image now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/bytedance/seedream/v5/pro/text-to-image"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v4.5） API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+            "label": "官方文档 · fal · Seedream v4.5 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/fal-ai/bytedance/seedream/v4.5/text-to-image now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/fal-ai/bytedance/seedream/v4.5/text-to-image"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v4） API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+            "label": "官方文档 · fal · Seedream v4 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/fal-ai/bytedance/seedream/v4/text-to-image now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/fal-ai/bytedance/seedream/v4/text-to-image"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+            "label": "官方文档 · fal · FLUX 2 Pro API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+            "label": "官方文档 · fal · FLUX 2 Pro 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/fal-ai/flux-2-pro now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/fal-ai/flux-2-pro"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein Base API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein Base 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/blackforestlabs/flux-3/klein/base/text-to-image now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/blackforestlabs/flux-3/klein/base/text-to-image"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/blackforestlabs/flux-3/klein/text-to-image now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/blackforestlabs/flux-3/klein/text-to-image"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+            "label": "官方文档 · fal · FLUX.3 API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+            "label": "官方文档 · fal · FLUX.3 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/blackforestlabs/flux-3/text-to-image now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/blackforestlabs/flux-3/text-to-image"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Flare API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Flare 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/openai/gpt-image-2.5/flare/text-to-image now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/openai/gpt-image-2.5/flare/text-to-image"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Sunburst API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Sunburst 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/openai/gpt-image-2.5/sunburst/text-to-image now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/openai/gpt-image-2.5/sunburst/text-to-image"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/api",
+            "label": "官方文档 · fal · Grok Imagine Image API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+            "label": "官方文档 · fal · Grok Imagine Image 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/xai/grok-imagine-image now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/xai/grok-imagine-image"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+            "label": "官方文档 · fal · Grok Imagine Image（Quality） API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+            "label": "官方文档 · fal · Grok Imagine Image Quality 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/xai/grok-imagine-image/quality/text-to-image now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/xai/grok-imagine-image/quality/text-to-image"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/krea/v3/text-to-image/api",
+            "label": "官方文档 · fal · Krea 3 API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/krea/v3/edit/api",
+            "label": "官方文档 · fal · Krea 3 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/krea/v3/text-to-image now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/krea/v3/text-to-image"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": {
+            "url": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+            "label": "官方文档 · fal · Muse Image API 文档"
+          },
+          "new": {
+            "url": "https://fal.ai/models/meta/muse-image/edit/api",
+            "label": "官方文档 · fal · Muse Image 编辑接口"
+          },
+          "reason": "Founder decision A 2026-11-10. Exact literal first-link/title expectation for fal/meta/muse-image/text-to-image now points to the verified edit interface; no implementation-derived assertion.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED",
+          "pointer": "/fal/meta/muse-image/text-to-image"
         }
       ],
-      "diffSha256": "fa907679538c00d6e14220db33743d6529c00b407683a5a05359dbdb4e32f190"
+      "diffSha256": "5f0e8e789f9f1bad439509cb54a510d144d674fb4b6dc8b4796a100a8d2a0ed0"
     },
     {
       "file": "scripts/card-presentation-r22b.test.mjs",
@@ -21211,9 +22067,24 @@
             "test-support/fixtures/conflict-cards-r26.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": "2452 Web source rows",
+          "new": "2462 Web source rows",
+          "reason": "Founder decision A 2026-11-10. Ten new edit-interface source rows; five edit URLs were already present. All 1064 dialogs, seven notices, URLs, copy and strict-title scans stay covered.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "6c6456ab69cd1e96bb742bf412ab364f67af15f9075a2f4d3cacde99b68c9563"
+      "diffSha256": "d6344f29aeee0302f572250181ff6987a158131d9ab0fa7037689cf4aaec400a"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
@@ -21482,9 +22353,24 @@
             "test-support/fixtures/conflict-cards-r26.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": "I3-I6 literal source-row oracle",
+          "new": "Adds the 15 Web and 15 Mini exact I7 source-row replacements",
+          "reason": "Founder decision A 2026-11-10. All other row lists remain exact; the independent frozen fixture records the reviewed source ordering and labels.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "aca2471cc43653becca29280c32fda31fbb048e48128547b91373d0b3169b314"
+      "diffSha256": "464b8124c852f7a0e9ed977775993f3831b8617013bd8c9d112cc780ddabc643"
     },
     {
       "file": "test-support/source-review-r24.mjs",
@@ -21658,6 +22544,72 @@
         }
       ],
       "diffSha256": "2b4498eaf9f1f8964488a67f9347e3b8a721081f52e1c0ac556f26e46f30d611"
+    },
+    {
+      "file": "test-support/phase2-modality.mjs",
+      "comparisonBase": "d1c63994",
+      "changes": [
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": "All 27 historical review entries are current, including 15 image unknown decisions",
+          "new": "Current assertions overlay exactly the 15 R27 image-supported decisions and require their dates; historical reports explicitly use the original evidence",
+          "reason": "Founder decision A 2026-11-10. Separates current acceptance from immutable Phase 2 reports without weakening either.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "c6288c8d66e8064467a7744633617728c062dd2b57fd57a90c2f02835e98d55c"
+    },
+    {
+      "file": "test-support/phase2-modality.d.mts",
+      "comparisonBase": "d1c63994",
+      "changes": [
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": "Only current evidence is exported and assertions accept two parameters",
+          "new": "Types expose the historical evidence and optional explicitly chosen review",
+          "reason": "Founder decision A 2026-11-10. Supports unchanged historical Phase 2 report semantics alongside current R27 assertions.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "07df4200a8b52b749e65e0e1a6dbc46b43448e48aa2b9a18dba314b32ca51e95"
+    },
+    {
+      "file": "docs/model-modality-r22b-results.json",
+      "comparisonBase": "d1c63994",
+      "changes": [
+        {
+          "phase": "R27 Phase I7",
+          "comparisonBase": "d1c63994",
+          "line": 1,
+          "old": "2452 current source rows",
+          "new": "2462 current source rows",
+          "reason": "Founder decision A 2026-11-10. The live maintenance report includes ten newly displayed edit-interface URLs; all its other counts and historical Phase 2 results are unchanged.",
+          "evidence": [
+            "config/channel-audit/review-r27-20261110.json",
+            "docs/model-modality-image-input-decision.md",
+            "docs/model-modality-r27-i7-card-diff.json",
+            "test-support/fixtures/source-evidence-i7-r27.json"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "d526e764d546c99bc4cbc7d1ac8576e9d13a5266bd4471a13e5952cc78a97482"
     }
   ]
 }

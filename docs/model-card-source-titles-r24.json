@@ -64577,5 +64577,622 @@
         }
       ]
     }
+  },
+  "I7": {
+    "phase": "R27 Phase I7",
+    "baseline": "d1c6399493f4e216cb0cc482c5312cbea8ed2f8d",
+    "counts": {
+      "web": {
+        "cards": 1064,
+        "sourceRowsBefore": 2452,
+        "sourceRows": 2462,
+        "changedCards": 15,
+        "titleFindings": 0,
+        "dialogFindings": 0
+      },
+      "mini": {
+        "cards": 1064,
+        "sourceRowsBefore": 1105,
+        "sourceRows": 1105,
+        "changedCards": 15,
+        "titleFindings": 0,
+        "dialogFindings": 0
+      },
+      "notices": {
+        "cards": 7,
+        "sourceRowsBefore": 7,
+        "sourceRows": 7,
+        "changedCards": 0,
+        "titleFindings": 0,
+        "dialogFindings": 0
+      }
+    },
+    "changes": [
+      {
+        "client": "web",
+        "card": "ideogram/ideogram-v4",
+        "before": [
+          {
+            "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+            "label": "官方文档 · Ideogram · Ideogram 4"
+          },
+          {
+            "url": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4",
+            "label": "官方文档 · Ideogram · Generate V4（V1 接口，图像生成）"
+          },
+          {
+            "url": "https://developer.ideogram.ai/",
+            "label": "官方文档 · Ideogram · 文档首页"
+          },
+          {
+            "url": "https://developer.ideogram.ai/api-reference/generate-images/generate-v4",
+            "label": "官方文档 · Ideogram · Generate V4（API 参考，图像生成）"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4",
+            "label": "官方文档 · Ideogram · Ideogram 4.0 编辑接口"
+          },
+          {
+            "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+            "label": "官方文档 · Ideogram · Ideogram 4"
+          },
+          {
+            "url": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4",
+            "label": "官方文档 · Ideogram · Generate V4（V1 接口，图像生成）"
+          },
+          {
+            "url": "https://developer.ideogram.ai/",
+            "label": "官方文档 · Ideogram · 文档首页"
+          },
+          {
+            "url": "https://developer.ideogram.ai/api-reference/generate-images/generate-v4",
+            "label": "官方文档 · Ideogram · Generate V4（API 参考，图像生成）"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/bytedance/seedream/v5/flash/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+            "label": "官方文档 · fal · Seedream v5 Flash API 文档"
+          },
+          {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+            "label": "官方文档 · fal · Seedream v5 Flash Edit API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+            "label": "官方文档 · fal · Seedream v5 Flash 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+            "label": "官方文档 · fal · Seedream v5 Flash API 文档"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/bytedance/seedream/v5/pro/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v5，pro） API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+            "label": "官方文档 · fal · Seedream v5 pro 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v5，pro） API 文档"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v4.5） API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+            "label": "官方文档 · fal · Seedream v4.5 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v4.5） API 文档"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v4） API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+            "label": "官方文档 · fal · Seedream v4 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v4） API 文档"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/fal-ai/flux-2-pro",
+        "before": [
+          {
+            "url": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+            "label": "官方文档 · fal · FLUX 2 Pro API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+            "label": "官方文档 · fal · FLUX 2 Pro 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+            "label": "官方文档 · fal · FLUX 2 Pro API 文档"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein Base API 文档"
+          },
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein Base Edit Image API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein Base 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein Base API 文档"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/blackforestlabs/flux-3/klein/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein API 文档"
+          },
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein Edit Image API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein API 文档"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/blackforestlabs/flux-3/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+            "label": "官方文档 · fal · FLUX.3 API 文档"
+          },
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+            "label": "官方文档 · fal · FLUX.3 Edit Image API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+            "label": "官方文档 · fal · FLUX.3 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+            "label": "官方文档 · fal · FLUX.3 API 文档"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/openai/gpt-image-2.5/flare/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Flare API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Flare 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Flare API 文档"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Sunburst API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Sunburst 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Sunburst API 文档"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/xai/grok-imagine-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/api",
+            "label": "官方文档 · fal · Grok Imagine Image API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+            "label": "官方文档 · fal · Grok Imagine Image 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/api",
+            "label": "官方文档 · fal · Grok Imagine Image API 文档"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/xai/grok-imagine-image/quality/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+            "label": "官方文档 · fal · Grok Imagine Image（Quality） API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+            "label": "官方文档 · fal · Grok Imagine Image Quality 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+            "label": "官方文档 · fal · Grok Imagine Image（Quality） API 文档"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/krea/v3/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/krea/v3/text-to-image/api",
+            "label": "官方文档 · fal · Krea 3 API 文档"
+          },
+          {
+            "url": "https://fal.ai/models/krea/v3/edit/api",
+            "label": "官方文档 · fal · V3 Edit API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/krea/v3/edit/api",
+            "label": "官方文档 · fal · Krea 3 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/krea/v3/text-to-image/api",
+            "label": "官方文档 · fal · Krea 3 API 文档"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "fal/meta/muse-image/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+            "label": "官方文档 · fal · Muse Image API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/meta/muse-image/edit/api",
+            "label": "官方文档 · fal · Muse Image 编辑接口"
+          },
+          {
+            "url": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+            "label": "官方文档 · fal · Muse Image API 文档"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "ideogram/ideogram-v4",
+        "before": [
+          {
+            "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+            "label": "官方文档 · Ideogram · Ideogram 4"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4",
+            "label": "官方文档 · Ideogram · Ideogram 4.0 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/bytedance/seedream/v5/flash/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+            "label": "官方文档 · fal · Seedream v5 Flash API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+            "label": "官方文档 · fal · Seedream v5 Flash 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/bytedance/seedream/v5/pro/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v5，pro） API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+            "label": "官方文档 · fal · Seedream v5 pro 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v4.5） API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+            "label": "官方文档 · fal · Seedream v4.5 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v4） API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+            "label": "官方文档 · fal · Seedream v4 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/fal-ai/flux-2-pro",
+        "before": [
+          {
+            "url": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+            "label": "官方文档 · fal · FLUX 2 Pro API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+            "label": "官方文档 · fal · FLUX 2 Pro 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein Base API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein Base 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/blackforestlabs/flux-3/klein/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+            "label": "官方文档 · fal · FLUX.3 Klein 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/blackforestlabs/flux-3/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+            "label": "官方文档 · fal · FLUX.3 API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+            "label": "官方文档 · fal · FLUX.3 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/openai/gpt-image-2.5/flare/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Flare API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Flare 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Sunburst API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Sunburst 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/xai/grok-imagine-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/api",
+            "label": "官方文档 · fal · Grok Imagine Image API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+            "label": "官方文档 · fal · Grok Imagine Image 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/xai/grok-imagine-image/quality/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+            "label": "官方文档 · fal · Grok Imagine Image（Quality） API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+            "label": "官方文档 · fal · Grok Imagine Image Quality 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/krea/v3/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/krea/v3/text-to-image/api",
+            "label": "官方文档 · fal · Krea 3 API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/krea/v3/edit/api",
+            "label": "官方文档 · fal · Krea 3 编辑接口"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "fal/meta/muse-image/text-to-image",
+        "before": [
+          {
+            "url": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+            "label": "官方文档 · fal · Muse Image API 文档"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://fal.ai/models/meta/muse-image/edit/api",
+            "label": "官方文档 · fal · Muse Image 编辑接口"
+          }
+        ]
+      }
+    ],
+    "review": "config/channel-audit/review-r27-20261110.json"
   }
 }

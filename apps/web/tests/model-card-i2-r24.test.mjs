@@ -61,7 +61,7 @@ test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable style
    }
   }
  }finally{style.remove()}
- assert.equal(cards,1064);assert.equal(rows,2452);assert.equal(notices,7)
+ assert.equal(cards,1064);assert.equal(rows,2462);assert.equal(notices,7)
  t.diagnostic(JSON.stringify({cards,rows,notices,titleFindings:0,copyFindings:0}))
 })
 

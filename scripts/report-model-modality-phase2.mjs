@@ -10,7 +10,7 @@ import snapshot from '../config/channel-audit/tokendance-catalog-snapshot-202611
 import fs from 'node:fs'
 import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
-import { phase2Registry, assertPhase2Facts, evidence } from '../test-support/phase2-modality.mjs'
+import { phase2Registry, assertPhase2Facts, historicalEvidence as evidence } from '../test-support/phase2-modality.mjs'
 import { writeOrCheck } from './lib/model-card-audit.mjs'
 const { modalityIconStates } = await productBundle("export { modalityIconStates } from './apps/web/src/lib/modelModalityIcons.js'", 'c76e9c2a')
 import before from '../config/channel-audit/model-modality-phase2-before-20261109.json' with {type:'json'}
@@ -23,7 +23,7 @@ const registry=await core.modelRegistry({}), card=await loadCard(root,'c76e9c2a'
 const all=Object.entries(registry.providers).flatMap(([channel,p])=>p.models.map(model=>({key:channel+'/'+model.id,channel,model,card:card(channel,model)})))
 const byKey=new Map(all.map(r=>[r.key,r]))
 assert.equal(all.length,1061)
-assertPhase2Facts(key=>byKey.get(key).card)
+assertPhase2Facts(key=>byKey.get(key).card, false, evidence)
 const view=c=>({source:c.sources[0],icons:['inputModalities','outputModalities'].map(f=>modalityIconStates(null,c.fields[f]).map(({id,state})=>[id,state]))})
 const differences={source:0,modalities:0,either:0,fullResolvedFields:0,coreProjection:0}
 const sourceChanges=[]

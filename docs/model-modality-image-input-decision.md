@@ -1,4 +1,34 @@
-# R23 item 7 — 「待创始人决定」(Awaiting founder decision)
+# R27 Phase I7 — 创始人已决定 A
+
+**Decision date: 2026-11-10.** Founder option A restores image input = **支持** on exactly the 15 directly editable drawing models below, on Web and Mini. This is display evidence only. The original table and fetch log follow unchanged; their “Now shows” and undecided wording describe the original R23 snapshot, not the current decision.
+
+All 15 original quotes were re-verified with public unauthenticated GETs: **15 HTTP 200 / 15 exact quote matches / zero exceptions**. One additional public GET verifies the human-readable Ideogram v1 page; the stored input fact keeps the exact F33 Markdown quote URL, while the source link opens its verified HTML counterpart. No documented API POST examples were executed.
+
+The [dated review](../config/channel-audit/review-r27-20261110.json) stores the verbatim quote, channel provenance, edit/remix URL, body hash, UTC and Asia/Shanghai completion times, and internal note `创始人决定 A（2026-11-10）`. User-facing source titles say `<Model> 编辑接口`; the internal decision note is not shipped into card facts. The input field uses the actual re-verification date. All output/limit values, output citations, names and execution locks remain unchanged.
+
+[Full 1,064-card comparison per client](model-modality-r27-i7-card-diff.json): **15 changed / 1,049 identical** on each client.
+
+| Model / exact identity | Result | Re-verified UTC | Re-verified Asia/Shanghai | Source |
+| --- | --- | --- | --- | --- |
+| FLUX.3 Klein Base<br>`fal/blackforestlabs/flux-3/klein/base/text-to-image` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:09:53.755958+00:00 | 2026-11-10T09:09:53.755958+08:00 | [F14: edit/remix API](https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api) |
+| FLUX.3 Klein<br>`fal/blackforestlabs/flux-3/klein/text-to-image` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:09:53.475512+00:00 | 2026-11-10T09:09:53.475512+08:00 | [F16: edit/remix API](https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api) |
+| FLUX.3<br>`fal/blackforestlabs/flux-3/text-to-image` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:09:53.455854+00:00 | 2026-11-10T09:09:53.455854+08:00 | [F18: edit/remix API](https://fal.ai/models/blackforestlabs/flux-3/edit-image/api) |
+| Seedream v5 Flash<br>`fal/bytedance/seedream/v5/flash/text-to-image` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:09:53.496375+00:00 | 2026-11-10T09:09:53.496375+08:00 | [F04: edit/remix API](https://fal.ai/models/bytedance/seedream/v5/flash/edit/api) |
+| Seedream · v5 · pro<br>`fal/bytedance/seedream/v5/pro/text-to-image` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:09:55.850544+00:00 | 2026-11-10T09:09:55.850544+08:00 | [F06: edit/remix API](https://fal.ai/models/bytedance/seedream/v5/pro/edit/api) |
+| Seedream · v4.5<br>`fal/fal-ai/bytedance/seedream/v4.5/text-to-image` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:09:55.881201+00:00 | 2026-11-10T09:09:55.881201+08:00 | [F08: edit/remix API](https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api) |
+| Seedream · v4<br>`fal/fal-ai/bytedance/seedream/v4/text-to-image` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:09:55.994990+00:00 | 2026-11-10T09:09:55.994990+08:00 | [F10: edit/remix API](https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api) |
+| FLUX-2-pro<br>`fal/fal-ai/flux-2-pro` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:09:55.863823+00:00 | 2026-11-10T09:09:55.863823+08:00 | [F12: edit/remix API](https://fal.ai/models/fal-ai/flux-2-pro/edit/api) |
+| Krea 3<br>`fal/krea/v3/text-to-image` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:09:58.174039+00:00 | 2026-11-10T09:09:58.174039+08:00 | [F28: edit/remix API](https://fal.ai/models/krea/v3/edit/api) |
+| muse-image<br>`fal/meta/muse-image/text-to-image` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:09:57.987905+00:00 | 2026-11-10T09:09:57.987905+08:00 | [F30: edit/remix API](https://fal.ai/models/meta/muse-image/edit/api) |
+| GPT Image 2.5 Flare<br>`fal/openai/gpt-image-2.5/flare/text-to-image` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:09:58.103925+00:00 | 2026-11-10T09:09:58.103925+08:00 | [F20: edit/remix API](https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api) |
+| GPT Image 2.5 Sunburst<br>`fal/openai/gpt-image-2.5/sunburst/text-to-image` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:09:58.131065+00:00 | 2026-11-10T09:09:58.131065+08:00 | [F22: edit/remix API](https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api) |
+| Grok-imagine-image<br>`fal/xai/grok-imagine-image` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:10:00.255718+00:00 | 2026-11-10T09:10:00.255718+08:00 | [F24: edit/remix API](https://fal.ai/models/xai/grok-imagine-image/edit/api) |
+| Grok-imagine-image · quality<br>`fal/xai/grok-imagine-image/quality/text-to-image` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:10:00.234235+00:00 | 2026-11-10T09:10:00.234235+08:00 | [F26: edit/remix API](https://fal.ai/models/xai/grok-imagine-image/quality/edit/api) |
+| Ideogram 4.0<br>`ideogram/ideogram-v4` | HTTP 200; quote verified; image 支持 | 2026-11-10T01:09:59.924633+00:00 | 2026-11-10T09:09:59.924633+08:00 | [F33: edit/remix API](https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md) |
+
+---
+
+# Original R23 decision record (historical; table retained)
 
 Exactly **15 identities** in the **274-entry direct-edit group** changed from supported image input on frozen main `8c456709` to unknown image input in the `42ee9ffd` snapshot (modality data unchanged through `6741024f`; commits after 42ee9ffd touch only sources, titles, hashes and fixtures): **14 fal, 1 Ideogram**. All 15 still return `directEdit: true` from the current refine presentation. No decision or recommendation is recorded.
 

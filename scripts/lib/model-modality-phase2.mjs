@@ -24,6 +24,7 @@ export function applyPhase2(data, review = evidence) {
       throw new Error(`Invalid phase 2 modalities: ${key}/${field}`)
     data.rows[key][data.fields.indexOf(field)] = intern(data.facts, [value, 'known', 'channel', intern(data.sources, row.sourceUrl)])
     const detail = data.details[key] ||= {}
+    if (row.verifiedAt !== data.verifiedAt) (detail.fieldVerifiedAt ||= {})[field] = row.verifiedAt
     detail.suppressFallback = [...new Set([...(detail.suppressFallback || []), field])]
     if (exhaustive) (detail.unsupportedModalities ||= {})[field] = modalities.slice(0, 4).filter(x => !value.includes(x))
   }

@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict'
-import evidence from '../config/channel-audit/model-modality-phase2-20261109.json' with { type: 'json' }
+import historicalEvidence from '../config/channel-audit/model-modality-phase2-20261109.json' with { type: 'json' }
+import imageInputR27 from '../config/channel-audit/review-r27-20261110.json' with { type: 'json' }
 import snapshot from '../config/channel-audit/tokendance-catalog-snapshot-20261109b.json' with { type: 'json' }
 import before from '../config/channel-audit/model-modality-phase2-before-20261109.json' with { type: 'json' }
 import { tokenDanceTestRuntime } from './tokendance-runtime-r17.mjs'
-export { evidence }
-export function assertPhase2Facts(get, compact = false) {
+export { historicalEvidence }
+export const evidence = {...historicalEvidence, reviews:{...historicalEvidence.reviews, ...imageInputR27.reviews}}
+export function assertPhase2Facts(get, compact = false, evidence = {...historicalEvidence, reviews:{...historicalEvidence.reviews, ...imageInputR27.reviews}}) {
   assert.equal(Object.keys(evidence.tables).length, 34)
   assert.equal(Object.keys(evidence.reviews).length, 27)
   let decisions = 0
@@ -23,6 +25,7 @@ export function assertPhase2Facts(get, compact = false) {
     assert.equal(fact.unsupportedModalities?.includes(id) || false, false, key + ' silence never becomes unsupported')
     if (row.mode === 'positive-only') {
       assert.equal(fact.provenance, 'channel', key)
+      assert.equal(fact.verifiedAt, row.verifiedAt, key)
       if (!compact) assert.equal(fact.sourceUrl, row.sourceUrl, key)
     }
     if (row.mode === 'mask') for (const previous of before.rows[key].fields[field].value || []) {

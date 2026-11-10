@@ -612,8 +612,8 @@
     "label": "官方文档 · OpenAI · O4 Mini（2025-04-16）"
   },
   "ideogram/ideogram-v4": {
-    "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
-    "label": "官方文档 · Ideogram · Ideogram 4"
+    "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4",
+    "label": "官方文档 · Ideogram · Ideogram 4.0 编辑接口"
   },
   "fireworks/accounts/fireworks/models/glm-5p3": {
     "url": "https://fireworks.ai/models/fireworks/glm-5p3",
@@ -688,20 +688,20 @@
     "label": "官方文档 · fal · Qwen Image 3"
   },
   "fal/bytedance/seedream/v5/flash/text-to-image": {
-    "url": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
-    "label": "官方文档 · fal · Seedream v5 Flash API 文档"
+    "url": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+    "label": "官方文档 · fal · Seedream v5 Flash 编辑接口"
   },
   "fal/bytedance/seedream/v5/pro/text-to-image": {
-    "url": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
-    "label": "官方文档 · fal · Seedream（v5，pro） API 文档"
+    "url": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+    "label": "官方文档 · fal · Seedream v5 pro 编辑接口"
   },
   "fal/fal-ai/bytedance/seedream/v4.5/text-to-image": {
-    "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
-    "label": "官方文档 · fal · Seedream（v4.5） API 文档"
+    "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+    "label": "官方文档 · fal · Seedream v4.5 编辑接口"
   },
   "fal/fal-ai/bytedance/seedream/v4/text-to-image": {
-    "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
-    "label": "官方文档 · fal · Seedream（v4） API 文档"
+    "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+    "label": "官方文档 · fal · Seedream v4 编辑接口"
   },
   "fal/fal-ai/fast-sdxl": {
     "url": "https://fal.ai/models/fal-ai/fast-sdxl/api",
@@ -716,8 +716,8 @@
     "label": "官方文档 · fal · FLUX 2 Flex API 文档"
   },
   "fal/fal-ai/flux-2-pro": {
-    "url": "https://fal.ai/models/fal-ai/flux-2-pro/api",
-    "label": "官方文档 · fal · FLUX 2 Pro API 文档"
+    "url": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+    "label": "官方文档 · fal · FLUX 2 Pro 编辑接口"
   },
   "fal/fal-ai/flux-2/flash": {
     "url": "https://fal.ai/models/fal-ai/flux-2/flash/api",
@@ -748,16 +748,16 @@
     "label": "官方文档 · fal · FLUX Pro（V1.1 Ultra）"
   },
   "fal/blackforestlabs/flux-3/klein/base/text-to-image": {
-    "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
-    "label": "官方文档 · fal · FLUX.3 Klein Base API 文档"
+    "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+    "label": "官方文档 · fal · FLUX.3 Klein Base 编辑接口"
   },
   "fal/blackforestlabs/flux-3/klein/text-to-image": {
-    "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
-    "label": "官方文档 · fal · FLUX.3 Klein API 文档"
+    "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+    "label": "官方文档 · fal · FLUX.3 Klein 编辑接口"
   },
   "fal/blackforestlabs/flux-3/text-to-image": {
-    "url": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
-    "label": "官方文档 · fal · FLUX.3 API 文档"
+    "url": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+    "label": "官方文档 · fal · FLUX.3 编辑接口"
   },
   "fal/fal-ai/flux-1/schnell": {
     "url": "https://fal.ai/models/fal-ai/flux-1/schnell/api",
@@ -796,12 +796,12 @@
     "label": "官方文档 · fal · Nano Banana 2.1 API 文档"
   },
   "fal/openai/gpt-image-2.5/flare/text-to-image": {
-    "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
-    "label": "官方文档 · fal · GPT Image 2.5 Flare API 文档"
+    "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+    "label": "官方文档 · fal · GPT Image 2.5 Flare 编辑接口"
   },
   "fal/openai/gpt-image-2.5/sunburst/text-to-image": {
-    "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
-    "label": "官方文档 · fal · GPT Image 2.5 Sunburst API 文档"
+    "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+    "label": "官方文档 · fal · GPT Image 2.5 Sunburst 编辑接口"
   },
   "fal/openai/gpt-image-2": {
     "url": "https://fal.ai/models/openai/gpt-image-2",
@@ -816,12 +816,12 @@
     "label": "官方文档 · fal · Grok Imagine Image（V2.0） API 文档"
   },
   "fal/xai/grok-imagine-image": {
-    "url": "https://fal.ai/models/xai/grok-imagine-image/api",
-    "label": "官方文档 · fal · Grok Imagine Image API 文档"
+    "url": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+    "label": "官方文档 · fal · Grok Imagine Image 编辑接口"
   },
   "fal/xai/grok-imagine-image/quality/text-to-image": {
-    "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
-    "label": "官方文档 · fal · Grok Imagine Image（Quality） API 文档"
+    "url": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+    "label": "官方文档 · fal · Grok Imagine Image Quality 编辑接口"
   },
   "fal/bria/fibo-edit-1.5/edit": {
     "url": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api",
@@ -844,12 +844,12 @@
     "label": "官方文档 · fal · Krea V2 Large API 文档"
   },
   "fal/krea/v3/text-to-image": {
-    "url": "https://fal.ai/models/krea/v3/text-to-image/api",
-    "label": "官方文档 · fal · Krea 3 API 文档"
+    "url": "https://fal.ai/models/krea/v3/edit/api",
+    "label": "官方文档 · fal · Krea 3 编辑接口"
   },
   "fal/meta/muse-image/text-to-image": {
-    "url": "https://fal.ai/models/meta/muse-image/text-to-image/api",
-    "label": "官方文档 · fal · Muse Image API 文档"
+    "url": "https://fal.ai/models/meta/muse-image/edit/api",
+    "label": "官方文档 · fal · Muse Image 编辑接口"
   },
   "replicate/google/nano-banana-2.1": {
     "url": "https://replicate.com/google/nano-banana-2.1",

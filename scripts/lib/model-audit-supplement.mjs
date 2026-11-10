@@ -4,6 +4,7 @@ import { isDeadSource } from '../../apps/web/src/lib/modelCardSources.js'
 import tokenDance from '../../config/channel-audit/tokendance-catalog-snapshot-20261109b.json' with { type: 'json' }
 import tokenDanceCatalog from '../../config/tokendance/catalog.json' with { type: 'json' }
 import { applyPhase2 } from './model-modality-phase2.mjs'
+import { applyEvidenceR27 } from './model-evidence-r27.mjs'
 import { applyEvidenceR24 } from './model-evidence-r24.mjs'
 import { applyEvidenceR25 } from './model-evidence-r25.mjs'
 import { applyEvidenceR26 } from './model-evidence-r26.mjs'
@@ -103,6 +104,7 @@ export function supplementModelAudit(snapshot, supplement, removed, addendum = {
   applyEvidenceR24(data)
   applyEvidenceR25(data)
   applyEvidenceR26(data)
+  applyEvidenceR27(data)
   // Drop unused facts/sources as well as removed rows, keeping regeneration stable.
   const facts = [], sources = []
   for (const row of Object.values(data.rows)) {

@@ -45,6 +45,7 @@ export function cardLifecycle(lifecycle, audit = {}) {
 // GitHub /blob/*.md is already an HTML reader, not a machine document.
 export function humanSourceUrl(value) {
   if (/^https:\/\/developers\.openai\.com\/api\/docs\//.test(value)) return value.replace(/\.md(?=[?#]|$)/, '')
+  if (/^https:\/\/developer\.ideogram\.ai\/v1\/api-reference\/edit-images\//.test(value)) return value.replace(/\.md(?=[?#]|$)/, '')
   return value
 }
 export function isMachineDocument(value) {
