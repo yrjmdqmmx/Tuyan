@@ -37,8 +37,9 @@ export function modalityIconStates(value, fact, provider, modelId, missingIds = 
       ? (channel || provider === 'tokendance' || fact?.modalityMasks?.includes(item.id) ? `${provider === 'tokendance' && missingIds.has(modelId) ? '渠道页无此型号' : '渠道未标注此模态'}${date ? `（核实日期：${date}）` : ''}` : attribution)
       : quote ? `渠道标注：${quote}（${date}）`
         : attribution
-    const tooltip = (item.state === 'unsupported' ? channel ? '此渠道未开放该模态。' : '原厂资料标明不支持。'
-      : item.state === 'conditional' ? `有条件支持${item.detail ? ` · ${item.detail}` : ''}。` : '') + evidenceText
-    return { ...item, accessibleLabel: `${item.label}：${wording}`, tooltip }
+    const unknown = ['unknown', 'unlisted'].includes(item.state)
+    const tooltip = (unknown ? '未标注 · ' : item.state === 'unsupported' ? channel ? '此渠道未开放该模态。' : '原厂资料标明不支持。'
+      : item.state === 'conditional' ? `支持（条件：${item.detail}） · ` : '') + evidenceText
+    return { ...item, accessibleLabel: `${item.label}：${unknown ? tooltip : wording}`, tooltip }
   })
 }

@@ -118,6 +118,7 @@ function pageSubject(value) {
   return title
 }
 export function sourceTitle(value, model = {}) {
+  if (value.split(/[?#]/)[0].replace(/\/+$/, '') === 'https://api.fal.ai/v1/models') return 'fal 模型目录'
   const parts = value.replace(/^https?:\/\//, '').split(/[?#]/)[0].replace(/\/+$/, '').split('/')
   const host = parts.shift(), path = decodeURIComponent(parts.join('/')).replace(/\.(html|md)$/, '')
   const slugs = path.split('/'), api = slugs.at(-1) === 'api'

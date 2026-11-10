@@ -1,3 +1,4 @@
+import {restoreR28Sources} from './founder-fixes-r28.mjs'
 import fs from 'node:fs'
 import {gunzipSync} from 'node:zlib'
 import {createHash} from 'node:crypto'
@@ -13,10 +14,11 @@ export const iconGroups = row => [
 export function expectedR2Icon(before, fact) {
   const label = {supported:'支持',unsupported:'暂不支持',unknown:'未标注',unlisted:'未标注',conditional:'支持'}[before.state]
   const prefix = before.state === 'unsupported' ? fact?.provenance === 'channel' ? '此渠道未开放该模态。' : '原厂资料标明不支持。'
-    : before.state === 'conditional' ? `有条件支持${before.detail ? ` · ${before.detail}` : ''}。` : ''
-  return {...before, accessibleLabel:before.label + '：' + label, tooltip:prefix + before.tooltip}
+    : before.state === 'conditional' ? `支持（条件：${before.detail}） · ` : ['unknown','unlisted'].includes(before.state) ? '未标注 · ' : ''
+  return {...before, accessibleLabel:before.label + '：' + (['unknown','unlisted'].includes(before.state) ? prefix + before.tooltip : label), tooltip:prefix + before.tooltip}
 }
 export function assertR2Presentations(now) {
+  now = restoreR28Sources(now)
   assert.equal(Object.keys(now).length, 1064)
   for (const [key, before] of Object.entries(iconBaseline.rows)) {
     const expected = structuredClone(before)
@@ -27,7 +29,7 @@ export function assertR2Presentations(now) {
 // Keep the historical I7 report exact without masking current evidence or state drift.
 // Only the separately asserted R2 wording is projected back to its frozen I7 text.
 export function restoreI7IconWording(now) {
-  const copy = structuredClone(now)
+  const copy = restoreR28Sources(now)
   for (const [key, row] of Object.entries(copy)) {
     const previous = iconGroups(iconBaseline.rows[key])
     iconGroups(row).forEach(([icons, fact], i) => icons.forEach((icon, j) => {

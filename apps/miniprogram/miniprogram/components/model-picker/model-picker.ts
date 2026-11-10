@@ -134,7 +134,13 @@ Component({
       }
       const compatibleModels = visibleModels(partition).filter(m => m.roles.includes(options.role)).filter(inVendor).map(model => presentModel(model, this.properties.selectedProvider, this.properties.selectedModel, providerId))
       const visibleLimit = Math.max(MODEL_PAGE_SIZE, Number(this.data.visibleLimit) || MODEL_PAGE_SIZE)
-      this.setData({ compatibleCount: compatibleModels.length, visibleCompatibleModels: compatibleModels.slice(0, visibleLimit), hasMore: visibleLimit < compatibleModels.length })
+      const visible = compatibleModels.slice(0, visibleLimit), previous = this.data.visibleCompatibleModels
+      const append = previous.length <= visible.length && previous.every((card, i) => JSON.stringify(card) === JSON.stringify(visible[i]))
+      this.setData({ compatibleCount: compatibleModels.length, ...(append ? {} : {visibleCompatibleModels: []}), hasMore: visibleLimit < compatibleModels.length })
+      // Long accessible evidence must not turn pagination into a large setData payload.
+      for (let i = append ? previous.length : 0; i < visible.length; i += 16) {
+        this.setData(Object.fromEntries(visible.slice(i, i + 16).map((card, offset) => [`visibleCompatibleModels[${i + offset}]`, card])))
+      }
     },
     onSearch(event: WechatMiniprogram.Input) {
       this.setData({ query: event.detail.value, visibleLimit: MODEL_PAGE_SIZE })
@@ -187,7 +193,7 @@ function presentModel(model: RegistryModel, selectedProvider: unknown, selectedM
     retirementSource: lifecycle ? titleSourceRows([{url:lifecycle.sourceUrl,label:'下线公告'}])[0] : null,
     vendorLabel:modelDeveloper(providerId, model).label,channelLabel:PROVIDER_LABELS[providerId],
     specRows,
-    specSources: titleSourceRows([...(audit.sourceUrl ? [{...(audit.sourceLabel === '下线公告' && Object.values(audit.fields).some(f => f.provenance === 'vendor' && f.sourceUrl === audit.sourceUrl) ? {role:'vendor'} : {}),url:audit.sourceUrl,label:audit.sourceLabel}] : []), ...(audit.vendorSources || []).filter((url: string) => url !== audit.sourceUrl).map((url: string) => ({url,label:'原厂规格'})), ...(audit.retirementSources || []).map((url: string) => ({url,label:'下线公告'}))], model),
+    specSources: titleSourceRows([...(audit.sourceUrl ? [{...(audit.sourceLabel === '下线公告' && Object.values(audit.fields).some(f => f.provenance === 'vendor' && f.sourceUrl === audit.sourceUrl) ? {role:'vendor'} : {}),url:audit.sourceUrl,label:audit.sourceLabel}] : []), ...Object.values(audit.fields).filter(f => providerId === 'fal' && f.provenance === 'channel' && /^https:\/\/fal\.ai\/models\//.test(f.sourceUrl || '')).map(f => ({url:f.sourceUrl!,label:'官方文档'})), ...(audit.vendorSources || []).filter((url: string) => url !== audit.sourceUrl).map((url: string) => ({url,label:'原厂规格'})), ...(audit.retirementSources || []).map((url: string) => ({url,label:'下线公告'}))], model),
     auditMessage:[...new Set([audit.verifiedAt && `核实日期：${audit.verifiedAt}`, ...fieldSourceLines(audit.fields, audit.verifiedAt), lifecycle?.message, audit.note, ...[['totalContextTokens','上下文窗口'],['maxOutputTokens','最大输出']].map(([key,label]) => audit.fields[key].state === 'known' ? `${label}：${audit.fields[key].value} tokens` : '')].filter(Boolean).flatMap(value => value.split('\n')))].join('\n'),
     id: model.id, label: model.label,
     availabilityNotes: [model.availabilityNotes, model.capabilities?.requiresSourceImage ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),

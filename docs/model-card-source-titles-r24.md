@@ -1240,3 +1240,73 @@ Founder decision A (2026-11-10): exactly 15 cards per client now cite the verifi
 | mini | fal/xai/grok-imagine-image/quality/text-to-image | [{"url":"https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api","label":"官方文档 · fal · Grok Imagine Image（Quality） API 文档"}] | [{"url":"https://fal.ai/models/xai/grok-imagine-image/quality/edit/api","label":"官方文档 · fal · Grok Imagine Image Quality 编辑接口"}] |
 | mini | fal/krea/v3/text-to-image | [{"url":"https://fal.ai/models/krea/v3/text-to-image/api","label":"官方文档 · fal · Krea 3 API 文档"}] | [{"url":"https://fal.ai/models/krea/v3/edit/api","label":"官方文档 · fal · Krea 3 编辑接口"}] |
 | mini | fal/meta/muse-image/text-to-image | [{"url":"https://fal.ai/models/meta/muse-image/text-to-image/api","label":"官方文档 · fal · Muse Image API 文档"}] | [{"url":"https://fal.ai/models/meta/muse-image/edit/api","label":"官方文档 · fal · Muse Image 编辑接口"}] |
+
+## R28 fal sources
+
+All **61 fields across 36 model pages moved** after public unauthenticated GET HTTP 200, exact endpoint identity and every modality value were verified in the corresponding Input/Output schema. **0 kept** the catalog source. Each URL was fetched once; [dated review](../config/channel-audit/review-r28-20261110.json) records status, UTC and Asia/Shanghai time, SHA-256, identity and verbatim schema evidence (visible page text, whitespace normalized, scripts/styles excluded). No execution facts changed.
+
+Web and Mini share sourceTitle and preserve each field source. Tooltips/tap dialogs show the same 渠道资料 · fal · 页面 title; Mini source-copy rows now include secondary field pages. isApiSource still hides https://api.fal.ai/v1/models as a link. If retained in any field/custom fact, its attribution remains plain text 渠道资料 · fal 模型目录; it is never a clickable JSON URL.
+
+| Card | Field | Decision | Visible field source title | URL |
+| --- | --- | --- | --- | --- |
+| fal/alibaba/qwen-image-3/text-to-image | inputModalities | moved | 渠道资料 · fal · Qwen Image 3 Text To Image API 文档 | https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api |
+| fal/alibaba/qwen-image-3/text-to-image | outputModalities | moved | 渠道资料 · fal · Qwen Image 3 Text To Image API 文档 | https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api |
+| fal/bytedance/seedream/v5/pro/text-to-image | outputModalities | moved | 渠道资料 · fal · Seedream（v5，pro Text To Image API 文档） | https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api |
+| fal/fal-ai/bytedance/seedream/v4.5/text-to-image | outputModalities | moved | 渠道资料 · fal · Bytedance Seedream（v4.5 Text To Image API 文档） | https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api |
+| fal/fal-ai/bytedance/seedream/v4/text-to-image | outputModalities | moved | 渠道资料 · fal · Bytedance Seedream V4 Text To Image API 文档 | https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api |
+| fal/fal-ai/fast-sdxl | inputModalities | moved | 渠道资料 · fal · Fast SDXL API 文档 | https://fal.ai/models/fal-ai/fast-sdxl/api |
+| fal/fal-ai/fast-sdxl | outputModalities | moved | 渠道资料 · fal · Fast SDXL API 文档 | https://fal.ai/models/fal-ai/fast-sdxl/api |
+| fal/fal-ai/flux-2 | inputModalities | moved | 渠道资料 · fal · FLUX.2 API 文档 | https://fal.ai/models/fal-ai/flux-2/api |
+| fal/fal-ai/flux-2 | outputModalities | moved | 渠道资料 · fal · FLUX.2 API 文档 | https://fal.ai/models/fal-ai/flux-2/api |
+| fal/fal-ai/flux-2-flex | inputModalities | moved | 渠道资料 · fal · FLUX.2 [flex] API 文档 | https://fal.ai/models/fal-ai/flux-2-flex/api |
+| fal/fal-ai/flux-2-flex | outputModalities | moved | 渠道资料 · fal · FLUX.2 [flex] API 文档 | https://fal.ai/models/fal-ai/flux-2-flex/api |
+| fal/fal-ai/flux-2-pro | outputModalities | moved | 渠道资料 · fal · FLUX.2 [pro] API 文档 | https://fal.ai/models/fal-ai/flux-2-pro/api |
+| fal/fal-ai/flux-2/flash | inputModalities | moved | 渠道资料 · fal · FLUX-2（flash API 文档） | https://fal.ai/models/fal-ai/flux-2/flash/api |
+| fal/fal-ai/flux-2/flash | outputModalities | moved | 渠道资料 · fal · FLUX-2（flash API 文档） | https://fal.ai/models/fal-ai/flux-2/flash/api |
+| fal/fal-ai/flux-2/klein/9b | inputModalities | moved | 渠道资料 · fal · FLUX.2 [klein] 9B API 文档 | https://fal.ai/models/fal-ai/flux-2/klein/9b/api |
+| fal/fal-ai/flux-2/klein/9b | outputModalities | moved | 渠道资料 · fal · FLUX.2 [klein] 9B API 文档 | https://fal.ai/models/fal-ai/flux-2/klein/9b/api |
+| fal/fal-ai/flux-2/turbo | inputModalities | moved | 渠道资料 · fal · FLUX-2（turbo API 文档） | https://fal.ai/models/fal-ai/flux-2/turbo/api |
+| fal/fal-ai/flux-2/turbo | outputModalities | moved | 渠道资料 · fal · FLUX-2（turbo API 文档） | https://fal.ai/models/fal-ai/flux-2/turbo/api |
+| fal/fal-ai/flux-kontext-lora | inputModalities | moved | 渠道资料 · fal · FLUX Kontext LoRA API 文档 | https://fal.ai/models/fal-ai/flux-kontext-lora/api |
+| fal/fal-ai/flux-kontext-lora | outputModalities | moved | 渠道资料 · fal · FLUX Kontext LoRA API 文档 | https://fal.ai/models/fal-ai/flux-kontext-lora/api |
+| fal/fal-ai/flux-pro/kontext | inputModalities | moved | 渠道资料 · fal · FLUX Pro Kontext API 文档 | https://fal.ai/models/fal-ai/flux-pro/kontext/api |
+| fal/fal-ai/flux-pro/kontext | outputModalities | moved | 渠道资料 · fal · FLUX Pro Kontext API 文档 | https://fal.ai/models/fal-ai/flux-pro/kontext/api |
+| fal/fal-ai/flux-pro/v1.1 | inputModalities | moved | 渠道资料 · fal · FLUX Pro（V1.1 API 文档） | https://fal.ai/models/fal-ai/flux-pro/v1.1/api |
+| fal/fal-ai/flux-pro/v1.1 | outputModalities | moved | 渠道资料 · fal · FLUX Pro（V1.1 API 文档） | https://fal.ai/models/fal-ai/flux-pro/v1.1/api |
+| fal/fal-ai/flux-pro/v1.1-ultra | outputModalities | moved | 渠道资料 · fal · FLUX Pro（V1.1 Ultra API 文档） | https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api |
+| fal/fal-ai/flux-1/schnell | inputModalities | moved | 渠道资料 · fal · FLUX.1 [schnell] API 文档 | https://fal.ai/models/fal-ai/flux-1/schnell/api |
+| fal/fal-ai/flux-1/schnell | outputModalities | moved | 渠道资料 · fal · FLUX.1 [schnell] API 文档 | https://fal.ai/models/fal-ai/flux-1/schnell/api |
+| fal/fal-ai/flux-lora | inputModalities | moved | 渠道资料 · fal · FLUX LoRA API 文档 | https://fal.ai/models/fal-ai/flux-lora/api |
+| fal/fal-ai/flux-lora | outputModalities | moved | 渠道资料 · fal · FLUX LoRA API 文档 | https://fal.ai/models/fal-ai/flux-lora/api |
+| fal/fal-ai/flux/dev | inputModalities | moved | 渠道资料 · fal · FLUX Dev API 文档 | https://fal.ai/models/fal-ai/flux/dev/api |
+| fal/fal-ai/flux/dev | outputModalities | moved | 渠道资料 · fal · FLUX Dev API 文档 | https://fal.ai/models/fal-ai/flux/dev/api |
+| fal/fal-ai/flux/schnell | inputModalities | moved | 渠道资料 · fal · FLUX Schnell API 文档 | https://fal.ai/models/fal-ai/flux/schnell/api |
+| fal/fal-ai/flux/schnell | outputModalities | moved | 渠道资料 · fal · FLUX Schnell API 文档 | https://fal.ai/models/fal-ai/flux/schnell/api |
+| fal/fal-ai/ideogram/v3 | inputModalities | moved | 渠道资料 · fal · Ideogram V3 API 文档 | https://fal.ai/models/fal-ai/ideogram/v3/api |
+| fal/fal-ai/ideogram/v3 | outputModalities | moved | 渠道资料 · fal · Ideogram V3 API 文档 | https://fal.ai/models/fal-ai/ideogram/v3/api |
+| fal/fal-ai/qwen-image | inputModalities | moved | 渠道资料 · fal · Qwen Image API 文档 | https://fal.ai/models/fal-ai/qwen-image/api |
+| fal/fal-ai/qwen-image | outputModalities | moved | 渠道资料 · fal · Qwen Image API 文档 | https://fal.ai/models/fal-ai/qwen-image/api |
+| fal/fal-ai/recraft/v4/pro/text-to-image | inputModalities | moved | 渠道资料 · fal · Recraft V4 Pro Text To Image API 文档 | https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api |
+| fal/fal-ai/recraft/v4/pro/text-to-image | outputModalities | moved | 渠道资料 · fal · Recraft V4 Pro Text To Image API 文档 | https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api |
+| fal/fal-ai/recraft/v3/text-to-image | inputModalities | moved | 渠道资料 · fal · Recraft V3 Text To Image API 文档 | https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api |
+| fal/fal-ai/recraft/v3/text-to-image | outputModalities | moved | 渠道资料 · fal · Recraft V3 Text To Image API 文档 | https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api |
+| fal/openai/gpt-image-2.5/flare/text-to-image | outputModalities | moved | 渠道资料 · fal · GPT Image 2.5 Flare Text To Image API 文档 | https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api |
+| fal/openai/gpt-image-2.5/sunburst/text-to-image | outputModalities | moved | 渠道资料 · fal · GPT Image 2.5 Sunburst Text To Image API 文档 | https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api |
+| fal/openai/gpt-image-2 | outputModalities | moved | 渠道资料 · fal · GPT Image 2 API 文档 | https://fal.ai/models/openai/gpt-image-2/api |
+| fal/fal-ai/gpt-image-1.5 | inputModalities | moved | 渠道资料 · fal · GPT Image 1.5 API 文档 | https://fal.ai/models/fal-ai/gpt-image-1.5/api |
+| fal/fal-ai/gpt-image-1.5 | outputModalities | moved | 渠道资料 · fal · GPT Image 1.5 API 文档 | https://fal.ai/models/fal-ai/gpt-image-1.5/api |
+| fal/xai/grok-imagine-image/v2.0/text-to-image | inputModalities | moved | 渠道资料 · fal · Grok Imagine Image（V2.0 Text To Image API 文档） | https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api |
+| fal/xai/grok-imagine-image/v2.0/text-to-image | outputModalities | moved | 渠道资料 · fal · Grok Imagine Image（V2.0 Text To Image API 文档） | https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api |
+| fal/xai/grok-imagine-image | outputModalities | moved | 渠道资料 · fal · Grok Imagine Image API 文档 | https://fal.ai/models/xai/grok-imagine-image/api |
+| fal/xai/grok-imagine-image/quality/text-to-image | outputModalities | moved | 渠道资料 · fal · Grok Imagine Image Quality Text To Image API 文档 | https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api |
+| fal/bria/fibo-edit-1.5/edit | inputModalities | moved | 渠道资料 · fal · Fibo Edit 1.5（Edit API 文档） | https://fal.ai/models/bria/fibo-edit-1.5/edit/api |
+| fal/bria/fibo-edit-1.5/edit | outputModalities | moved | 渠道资料 · fal · Fibo Edit 1.5（Edit API 文档） | https://fal.ai/models/bria/fibo-edit-1.5/edit/api |
+| fal/bria/fibo-gen-1.5/text-to-image | inputModalities | moved | 渠道资料 · fal · Fibo Gen 1.5 Text To Image API 文档 | https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api |
+| fal/bria/fibo-gen-1.5/text-to-image | outputModalities | moved | 渠道资料 · fal · Fibo Gen 1.5 Text To Image API 文档 | https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api |
+| fal/fal-ai/krea-2/turbo | inputModalities | moved | 渠道资料 · fal · Krea 2（Turbo API 文档） | https://fal.ai/models/fal-ai/krea-2/turbo/api |
+| fal/fal-ai/krea-2/turbo | outputModalities | moved | 渠道资料 · fal · Krea 2（Turbo API 文档） | https://fal.ai/models/fal-ai/krea-2/turbo/api |
+| fal/fal-ai/z-image/turbo | inputModalities | moved | 渠道资料 · fal · Z Image Turbo API 文档 | https://fal.ai/models/fal-ai/z-image/turbo/api |
+| fal/fal-ai/z-image/turbo | outputModalities | moved | 渠道资料 · fal · Z Image Turbo API 文档 | https://fal.ai/models/fal-ai/z-image/turbo/api |
+| fal/krea/v2/large/text-to-image | inputModalities | moved | 渠道资料 · fal · V2 Large Text To Image API 文档 | https://fal.ai/models/krea/v2/large/text-to-image/api |
+| fal/krea/v2/large/text-to-image | outputModalities | moved | 渠道资料 · fal · V2 Large Text To Image API 文档 | https://fal.ai/models/krea/v2/large/text-to-image/api |
+| fal/meta/muse-image/text-to-image | outputModalities | moved | 渠道资料 · fal · Muse Image Text To Image API 文档 | https://fal.ai/models/meta/muse-image/text-to-image/api |

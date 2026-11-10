@@ -1,5 +1,7 @@
+import {r28Baseline,expectedR28} from '../test-support/founder-fixes-r28.mjs'
+const expectedHumanRows=(rows,card,client)=>currentHumanRows(rows,card,client,false)
 import i5 from '../config/channel-audit/review-r26-20261110.json' with {type:'json'}
-import {expectedHumanRows} from '../test-support/source-links-i3-r24.mjs'
+import {expectedHumanRows as currentHumanRows} from '../test-support/source-links-i3-r24.mjs'
 // Offline, deterministic title inventory. --check reads only; no Git history
 // needed: the pre-F rows are losslessly frozen in the small gzip fixture.
 import fs from 'node:fs'
@@ -30,7 +32,9 @@ for (const [provider, entry] of Object.entries(web.STATIC_MODEL_REGISTRY)) for (
 }
 for (const [provider, entry] of Object.entries(mini.STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
   const data = context.present(model,'','',provider)
-  current.mini.push({card:provider+'/'+model.id,name:data.label,rows:structuredClone(data.specSources)})
+  const key=provider+'/'+model.id
+  assert.deepEqual(structuredClone(data.specSources),expectedR28[key].mini.card.specSources,key+' R28 sources')
+  current.mini.push({card:key,name:data.label,rows:structuredClone(r28Baseline[key].mini.card.specSources)})
 }
 const counts = {}, changes = [], retained = []
 for (const client of ['web','mini']) {

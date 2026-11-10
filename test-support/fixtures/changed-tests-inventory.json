@@ -2,6 +2,12 @@
   "base": "8c456709",
   "files": [
     {
+      "file": "apps/miniprogram/tests/helpers/component.cjs",
+      "comparisonBase": "8c456709",
+      "contentSha256": "7f83d123120c6ce77e95f9e202ac8bec17c512216290d58139715063017bbe65",
+      "diffSha256": "2aa037c5ec45fdf2413b724a3408c4b7c22493431b0198c0a43499d8fe92b468"
+    },
+    {
       "file": "apps/miniprogram/tests/model-audit-r10.test.cjs",
       "comparisonBase": "8c456709",
       "contentSha256": "5ae44e57dda089e97dccc5ae9e1c8326f9a8c4397e75be873a9ab7b108d15430",
@@ -18,6 +24,18 @@
       "comparisonBase": "8c456709",
       "contentSha256": "4f427e3a8e33da986f737d9e0c810faa8fdd95030186af98280d776880475934",
       "diffSha256": "bc52b96b6b984045acc9599efa18f1d1dd142decaa3a84cfb30777db603388ec"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-picker-flow.test.cjs",
+      "comparisonBase": "8c456709",
+      "contentSha256": "8b52ed69ce9ad057be7862a717f923f6d6e2f8001a3a76553cd4a41fe483dc5e",
+      "diffSha256": "93213309a92f70c148408a8f3fd250937410d2270c59531b6a1a17d38beb4f25"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-registry-view-boundary.test.cjs",
+      "comparisonBase": "8c456709",
+      "contentSha256": "a3657b35f80ec0d73e2517846e4524f5ca1265c8cd421be7b1471258ba8f59b3",
+      "diffSha256": "c85a5e8f20121f4e17bf102c9c2b31f1ea0c9601f6d57d8a27fa319a6bf4407a"
     },
     {
       "file": "apps/paperbanana-api/tests/provider-catalog.test.ts",
@@ -64,14 +82,14 @@
     {
       "file": "apps/web/tests/model-audit-r6a.test.mjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "20407940f0af938f5d9e2805d6f63828e467ec45186a0bd9cbb16916e1bb07bd",
-      "diffSha256": "50401231aae49ee95befc67a1168f9690009023b72f126e28317659f06cdf6fb"
+      "contentSha256": "92e810f4d2ac253feac787fcb587cc129f60940338883971e683039c8eb6e6ed",
+      "diffSha256": "9b5398905f52c38e4ddfa20fe644c2ed8c5dbc27d98e58b32d1c79de4c360278"
     },
     {
       "file": "apps/web/tests/model-audit-r6b.test.mjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "b41a4c8011f719d7855f2a43925dbdbdf4573d09dc888518656449b215a5bc80",
-      "diffSha256": "ebab490b4a6400cb5c601e4a050defde1c9b9bbba6e4332838b5124952732acd"
+      "contentSha256": "97a4c46611290386f491797b2a16096d949d68f013b39410df1e3cf6a53b2f40",
+      "diffSha256": "74a7dbc0c352a74c0964adb4dc0329cc001bfa94572f53cbab42830d23c0416b"
     },
     {
       "file": "apps/web/tests/model-audit-r8.test.mjs",
@@ -88,8 +106,8 @@
     {
       "file": "apps/web/tests/model-audit.test.mjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "6e1f38b09d7d00c4d8312a28477f1cd79c231cd809d4f6905c8bcf1233783b10",
-      "diffSha256": "63e441ac915e054ce51ae2b827885bca2b2783ada641b112f72baf7e5a239a8b"
+      "contentSha256": "766aa7b99400e424d2ec7f4658067110c9dff7c3a2a9d9e7afef7741f6b37496",
+      "diffSha256": "95502bbafaab3a955148a91ff8bc6a3157b7528e9a1b463f5b44107455cef466"
     },
     {
       "file": "apps/web/tests/model-card-footer-r16.test.mjs",
@@ -100,8 +118,8 @@
     {
       "file": "apps/web/tests/model-specifications.test.mjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "2fb2a4a20fdf639145745a3aa5145e2eb49579ddbc42476705a9d8933bca2b22",
-      "diffSha256": "9728b02ee4ddafcabb5c53d5e79c042847f66f5db28c42c33e0003de75d897fa"
+      "contentSha256": "82ea25b0de96c6a4af0e312ae357dbdf0f07dcb6126940d09f2b31ebad3ab4f6",
+      "diffSha256": "e7706a32f66c3eeefb6e74294c4b4d17e38796f4f731034052e298e24b508430"
     },
     {
       "file": "apps/web/tests/provider-catalogs.test.mjs",
@@ -112,8 +130,8 @@
     {
       "file": "apps/web/tests/rendered-interactions.test.mjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "e579607b0c748a95eba9bb8c1d6460e3130677b7d868a63e7a5be03dd6bab5c3",
-      "diffSha256": "e48ddff3de6058b5f0281a90d880abb42658d972ce707c1b22cbbac27bc68fc2"
+      "contentSha256": "d5923c23f464213146ac5d9fdd4011000b43d784eef851d065415c65a7570c6f",
+      "diffSha256": "4af31aa1bdb3cf8333562b5b2fd1e6df5b1fdf8c9d9e7df31ae3aee1b89a43ed"
     },
     {
       "file": "apps/web/tests/tokendance-catalog-r14.test.mjs",
@@ -150,16 +168,16 @@
     {
       "file": "config/model-audit.generated.json",
       "comparisonBase": "8c456709",
-      "contentSha256": "34f20158eec15f91c8b2f36204e74e4042b772318f26993e6ea1aab771ded3d7",
-      "diffSha256": "ceec8c7240b868ba79a0672b286c1306884842264b29e1fdff705b5ec598946b"
+      "contentSha256": "b5f68ed91ea4c6bed2793435909a5e6d4af1f3eecbbdfebbaee817da52ce0216",
+      "diffSha256": "080902421527148a0af4c560431081eeb041990d382e98347c7902aaf34928cb"
     }
   ],
   "followupChanges": [
     {
       "file": "apps/web/tests/model-modality-r21.test.mjs",
       "comparisonBase": "2550c736",
-      "contentSha256": "fb9cfc8690628bc4cc4f853e707e1b4ae83cb15946afba1eb2e27629dc39c45c",
-      "diffSha256": "7dc8ea00e55b1ceaf9d55e07567a5a50ec00223b92e16d436024455d28628ff1"
+      "contentSha256": "d9e2105ff1b32c7f8d1b292c7bfc510918baf70709373d646891b5c204f8114e",
+      "diffSha256": "5549cd000cc610aeea91ca34d95dcd5d11fd3d7918312023ea92c5f062b7b612"
     },
     {
       "file": "apps/web/tests/model-card-r22b.test.mjs",
@@ -176,8 +194,8 @@
     {
       "file": "apps/web/tests/model-modality-phase2.test.mjs",
       "comparisonBase": "42ee9ffd",
-      "contentSha256": "4b0109217c65520e31afeb846c96108388906664a44a989dc56c03007a64468e",
-      "diffSha256": "d40bb2a276e19939392a159cd299b3873fb015578a4e32f5d9b75aca2292605a"
+      "contentSha256": "ed671920fd4e5d2d5c3ba0782d3d4db8178e5583df8dd794d1324ca469d44d76",
+      "diffSha256": "29020d45ec6615fb7610d5c46dcdf4ac28f10cae900dfa15ceaff51a75b721c0"
     },
     {
       "file": "apps/miniprogram/tests/model-card-r22b.test.cjs",
@@ -188,20 +206,20 @@
     {
       "file": "apps/miniprogram/tests/model-modality-r22c.test.cjs",
       "comparisonBase": "1dcd8b13",
-      "contentSha256": "29e1656ad3e507c6472c42fe13367ae1da64006c04d980a61bc430d34f4301e9",
-      "diffSha256": "75f973bef3c55de36df6a1828e89c7e37e6df7d61ba4ac3f5c1e470e2de3ab64"
+      "contentSha256": "3a190935106ec77c16cdbd802c3b6eb310efb236f9f0a8e2b6f007ad22002f22",
+      "diffSha256": "c31c27f2cfe84bebffbce0e692bca2ba27d56b9cc381971c86a85e32892acaa1"
     },
     {
       "file": "apps/web/tests/model-card-source-titles-r23.test.mjs",
       "comparisonBase": "fd29cf36",
-      "contentSha256": "b1129f33c8102dfe052e83df66997c9abe6190cbabe5c0c2928d2460eaeb8af4",
-      "diffSha256": "4d7e5b8b792c1a24f1462d28e98172ba6b5563f577bb0bf913456fc4b2e77bc4"
+      "contentSha256": "56623a28f24525b55d8b95eda2f2569b1cd4832465e91d4c19164248376338cd",
+      "diffSha256": "1fa70feb64307446e2a94f81f99267c6f247ecbfcc8508657f8f1554a0ff3eb5"
     },
     {
       "file": "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs",
       "comparisonBase": "fd29cf36",
-      "contentSha256": "f06df65d460d5ed6456033b39b3a54604627279336944a8c04b5a2f7485cfd86",
-      "diffSha256": "207dec62aaceb0f982d1d98f628fb2246f77aef0c629ff4f57126605b4616d67"
+      "contentSha256": "136442635a655231854c3a855e11e005d8deedeb7f04c0eb530e702e6ad54f74",
+      "diffSha256": "25d0e0bf4c812ca52bce03fdd8088dc76d7166ee8cfc5d08cfb5cb8a5e90356c"
     },
     {
       "file": "test-support/source-titles-r23.mjs",
@@ -236,14 +254,14 @@
     {
       "file": "apps/web/tests/model-modality-r22c.test.mjs",
       "comparisonBase": "cd72eace",
-      "contentSha256": "c131e91fdcdcca4963c3db424af72d5d03ff25b78b65955cffdc57a9981a944b",
-      "diffSha256": "3ff16536bacd02cfc640e9db168826335b497462936d008901c12300a867510d"
+      "contentSha256": "e1c494e9154992324de543149a72d0a3ec5f5e5ea59b5988b14458e73d9dd533",
+      "diffSha256": "415e9135a07b48b58fc3f50d181aa8f54dcaaa54302740ce9fa8cce47a44bd9c"
     },
     {
       "file": "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
       "comparisonBase": "cd72eace",
-      "contentSha256": "87ff8ee1d7d8b02ba244a15a28178d31a3161920f99d49c8a94a0067564cc447",
-      "diffSha256": "5f0e8e789f9f1bad439509cb54a510d144d674fb4b6dc8b4796a100a8d2a0ed0"
+      "contentSha256": "ef8e9d5906bce398cdf20d3e357a1bb5cf493fdd9dc0236ae77226a2d6f868b3",
+      "diffSha256": "f37b07e67582983807ce95bb777cf593d7ab34915298782149ddfe3941636712"
     },
     {
       "file": "scripts/card-presentation-r22b.test.mjs",
@@ -254,14 +272,14 @@
     {
       "file": "apps/web/tests/model-card-i2-r24.test.mjs",
       "comparisonBase": "9a7128d6",
-      "contentSha256": "8d0f304a478df9a90edda79170ad00b78fc35840b5b00c5d4d919c6baaf8094b",
-      "diffSha256": "d6344f29aeee0302f572250181ff6987a158131d9ab0fa7037689cf4aaec400a"
+      "contentSha256": "22f11bf1ef2ec014ac3ce240f6d902baec2ef4e6b256daf861186b40dff1d4cc",
+      "diffSha256": "e7d1189aaf03af110dde097705c03932bd10a08f3d2a527939749474a9313966"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
       "comparisonBase": "9a7128d6",
-      "contentSha256": "1d7ded52feb3f7fd06ee9f758ad26fe4f8be69c212216d993fb19b8ac0bc10d3",
-      "diffSha256": "9974b21536a0f1d0d0e53e07499bda38fbc282a145ec9d143905e2cf35d10a01"
+      "contentSha256": "a688d33433a9db65d7f85563272bc862f99b3ebbece1d16b5f5220bdd87189ae",
+      "diffSha256": "5e33adf773df5f79274ac63260230c2bd6b2289bcdc8a1fddfe553bdcde4ead0"
     },
     {
       "file": "scripts/source-titles-r24.test.mjs",
@@ -278,14 +296,14 @@
     {
       "file": "apps/miniprogram/tests/model-card-r24.test.cjs",
       "comparisonBase": "f8ff7648",
-      "contentSha256": "21c9fbc89f2c8948138fea7fe492b3e9496ed9bc5b3c69c952f276b3ab2b6929",
-      "diffSha256": "f07286d3238fcdaf2b06cff2f5e05983acf3535dfa5fd3740a327485e52c0157"
+      "contentSha256": "856dd03fb39cb3794adad391fd9daaeb6e8b0b3ac0723fb73f383ddbd2be63e9",
+      "diffSha256": "ab974b6554a55236e060fa4f5ecacfe59c304520ab692ebfb6937c72329a578a"
     },
     {
       "file": "apps/web/tests/model-card-r24.test.mjs",
       "comparisonBase": "f8ff7648",
-      "contentSha256": "5f8c27cc228a6dbe803132d9d3a732164c0f55b01d62aa03dc223e45ecd17b27",
-      "diffSha256": "5fb34d8c58b8c147ec54b5db83e1d8ac0591f0c6fa1319a1d96a40b2f4c81812"
+      "contentSha256": "0d4527bfc9c0239d0db8cc2a5f265300fd7b55c772a8c9afc338863c86529aed",
+      "diffSha256": "ccf8b2e346873ee0e3e612e038855cf34b35a6a488d609f4119d66dd65ea4d6b"
     },
     {
       "file": "test-support/fixtures/model-card-r24.json",
@@ -296,8 +314,8 @@
     {
       "file": "test-support/source-links-i3-r24.mjs",
       "comparisonBase": "f8ff7648",
-      "contentSha256": "296954ec9a499c837e63e9c51053d824332ac15565d1e1052776f9826c813bfb",
-      "diffSha256": "464b8124c852f7a0e9ed977775993f3831b8617013bd8c9d112cc780ddabc643"
+      "contentSha256": "58daa88e6f0a2e8005258da68c6acbeb0b956b56358e60b125c42982d0bc3a45",
+      "diffSha256": "ddaceadf733e44995f562c9313e9ec4da2bdad51dc936043846b5d80d2d319a2"
     },
     {
       "file": "test-support/source-review-r24.mjs",
@@ -368,8 +386,26 @@
     {
       "file": "scripts/report-changed-tests.mjs",
       "comparisonBase": "105744a9",
-      "contentSha256": "2d934f6d71617c0c79047e59689c9e0b9344930f89216cf78f8c0c8655f38265",
-      "diffSha256": "c33988366ef9d17d2a1163bdae8294b919f69b0b10467c3639506e21a8da7bc5"
+      "contentSha256": "3eaa94267ac3d890207fdcfaaa5b0cf7020a167de7f33f0acfef3f5c4d777be0",
+      "diffSha256": "175394cec160a23d90f92079b6265f976f00d4af3182399bee4fa2d4c23f7b30"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs",
+      "comparisonBase": "7858d7a4",
+      "contentSha256": "5bf9185fe89f3f9057141876b4b470178d911d44c83f00ccff06157271342abd",
+      "diffSha256": "c8da3f35ea625b6c5a1a068de0ebbc15d3fbe537c8d0d33ebce389f48a6afc12"
+    },
+    {
+      "file": "apps/web/tests/model-icon-simplify-r27.test.mjs",
+      "comparisonBase": "7858d7a4",
+      "contentSha256": "daa7ba7b191a99db79b75110bcfd2680a4ef5a111982ec74bb5aa099d99f1573",
+      "diffSha256": "23c4030bdc42e3266a4c360796cc0bfab0e802190cb982ebe047f7f34a740a97"
+    },
+    {
+      "file": "test-support/icon-simplify-r27.mjs",
+      "comparisonBase": "7858d7a4",
+      "contentSha256": "fa1d9de0dcdaf21feb9e89558c1934d2612477f25e054c65c7f9019b46323103",
+      "diffSha256": "bfe21a3696534c6a8ee39631845859b8b02ef1552e4f5b5bbbdb753bf2c53c80"
     }
   ]
 }

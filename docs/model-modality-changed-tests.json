@@ -1,11 +1,11 @@
 {
   "base": "8c456709",
   "counts": {
-    "files": 23,
-    "assertionAndFixtureInputChanges": 165,
+    "files": 26,
+    "assertionAndFixtureInputChanges": 177,
     "consumedJsonFixtures": 2,
-    "semanticFixtureChanges": 634,
-    "justified": 798,
+    "semanticFixtureChanges": 695,
+    "justified": 871,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -30,9 +30,61 @@
     "R25 Phase I5: public notice 118728 page-entry JSON explicitly names all three Bailian Plus IDs and 2027-01-19 retirement. Display-only citations restore three badge links; no execution notice or field value changes. Six of 20 numeric page URLs receive captured titles, fourteen failed title GETs remain on an exact allow-list; title/date scans are strengthened. Hosting/free source qualifiers and date punctuation are fixed without changing picker names. Exactly two R9 literal fixture objects change. New Web/Mini tests scan all 1064 cards for sourced badges and preserve the four execution locks; both Mini byte guards are unchanged. The local I5 invariants update four-to-seven sourced lifecycle assertions, retaining names, image-input decisions and required-provider behavior. I2/I3/I4 source reports remain frozen; I5 is appended. The ledger recognizes d29097c0 for new follow-up comparisons.",
     "R26 Phase I6: seven displayed retirement badges across 1064 cards per client are verified by exact model-ID/date quotes. Only Bailian qwen3.5-397b-a17b changes source; Qianfan does not acquire a badge. Existing all-card badge tests now require the offline review evidence. Date simplification removes unknown/historical tooltip dates and separate field date lines, retaining differing known dates inline. Both clients use the exact requested sentence on the frozen 66 conflict cards. One captured title is neutralized, with strict promotional-token tests. The source report freezes I2-I5 and appends I6. Facts, notices, names, image-input decisions and byte ceilings remain unchanged; new follow-up comparisons use 6864824a.",
     "R27 Phase I7: Founder decision A 2026-11-10 restores image input on 14 fal and one Ideogram card after 15 successful public documentation quote checks. The original Phase 2 report remains historical. All-card presentation comparison requires exactly these 15 changes on Web and Mini; six old output citations remain preserved. Main picker names, execution locks, and both Mini byte guards are unchanged. The R9 literal fixture records all 15 old/new URLs and labels. Source report I6 is frozen; I7 is appended. New follow-up comparisons use d1c63994.",
-    "R27 Phase I8: founder: grey is enough (R2, 2026-11-10). Revised short labels and evidence prefixes replace strike/question/dash/asterisk assertions with absence and shared-solid-glyph checks. Conditional uses short 支持 in grey, with 有条件支持 only in evidence. The I7 report guard validates exact R2 text before projecting only those strings back to its frozen wording; no state/fact/source or execution assertion is relaxed. All 1064 presentations per client and 15 decision-A image inputs have new independent regression coverage."
+    "R27 Phase I8: founder: grey is enough (R2, 2026-11-10). Revised short labels and evidence prefixes replace strike/question/dash/asterisk assertions with absence and shared-solid-glyph checks. Conditional uses short 支持 in grey, with 有条件支持 only in evidence. The I7 report guard validates exact R2 text before projecting only those strings back to its frozen wording; no state/fact/source or execution assertion is relaxed. All 1064 presentations per client and 15 decision-A image inputs have new independent regression coverage.",
+    "R28 Phase I9: founder round 7. Unknown tooltip/accessibility includes the required prefix and existing explanation; conditional uses dark 支持 with its exact qualifier in hover/dialog. All 61 fal catalog fields have freshly validated human sources, and Mini preserves all fal field titles plus nine secondary human links. Literal source/date deltas and the pre-R28 snapshot validate changes before historical projection. Mini setData test doubles now implement native indexed-array patches; the unchanged 128 KiB guard loads all pages. Frozen execution tests, byte guards and identity/name expectations are unchanged."
   ],
   "files": [
+    {
+      "file": "apps/miniprogram/tests/helpers/component.cjs",
+      "changes": [
+        {
+          "line": 5,
+          "oldLine": 5,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "(absent)",
+          "new": "function applyData(data, patch) {\n  for (const [key, value] of Object.entries(patch)) {\n    const indexed = key.match(/^(\\w+)\\[(\\d+)\\]$/)\n    if (indexed) data[indexed[1]][Number(indexed[2])] = value\n    else data[key] = value\n  }\n}",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 25,
+          "oldLine": 18,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "    setData(patch) { patches.push(structuredClone(patch)); Object.assign(this.data, patch) },",
+          "new": "    setData(patch) { patches.push(structuredClone(patch)); applyData(this.data, structuredClone(patch)) },",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 30,
+          "oldLine": 23,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "module.exports = { loadComponent }",
+          "new": "module.exports = { loadComponent, applyData }",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "2aa037c5ec45fdf2413b724a3408c4b7c22493431b0198c0a43499d8fe92b468"
+    },
     {
       "file": "apps/miniprogram/tests/model-audit-r10.test.cjs",
       "changes": [
@@ -661,6 +713,63 @@
         }
       ],
       "diffSha256": "bc52b96b6b984045acc9599efa18f1d1dd142decaa3a84cfb30777db603388ec"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-picker-flow.test.cjs",
+      "changes": [
+        {
+          "line": 62,
+          "oldLine": 62,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "    setData(patch) { Object.assign(state, patch) },",
+          "new": "    setData(patch) { require('./helpers/component.cjs').applyData(state, patch) },",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "93213309a92f70c148408a8f3fd250937410d2270c59531b6a1a17d38beb4f25"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-registry-view-boundary.test.cjs",
+      "changes": [
+        {
+          "line": 50,
+          "oldLine": 50,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "      Object.assign(data, structuredClone(patch))",
+          "new": "      require('./helpers/component.cjs').applyData(data, structuredClone(patch))",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 136,
+          "oldLine": 136,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "(absent)",
+          "new": "while (picker.data.hasMore) picker.loadMore()\nassert.equal(picker.data.visibleCompatibleModels.length, picker.data.compatibleCount)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "c85a5e8f20121f4e17bf102c9c2b31f1ea0c9601f6d57d8a27fa319a6bf4407a"
     },
     {
       "file": "apps/paperbanana-api/tests/provider-catalog.test.ts",
@@ -1571,7 +1680,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r6a.test.mjs",
-      "diffSha256": "50401231aae49ee95befc67a1168f9690009023b72f126e28317659f06cdf6fb",
+      "diffSha256": "9b5398905f52c38e4ddfa20fe644c2ed8c5dbc27d98e58b32d1c79de4c360278",
       "changes": [
         {
           "line": 35,
@@ -1851,6 +1960,36 @@
             "test-support/fixtures/source-evidence-i7-r27.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 96,
+          "oldLine": 96,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "      // R12B omits evidence URLs the picker never renders. Its retained field",
+          "new": "      // R28 retains every fal field URL for title parity. Other R12B omitted URLs stay compact. Its retained field",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 98,
+          "oldLine": 98,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "      const reviewed = reviewI7.reviews[provider + '/' + model.id]?.[field]?.sourceUrl",
+          "new": "      const reviewed = (provider === 'fal' ? web[field].sourceUrl : null) || reviewI7.reviews[provider + '/' + model.id]?.[field]?.sourceUrl",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -1987,9 +2126,24 @@
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 42,
+          "oldLine": 42,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  assert.equal(screen.getAllByRole('img',{name:/：未标注$/}).length,8)",
+          "new": "  assert.equal(screen.getAllByRole('img',{name:/：未标注 · 暂无官方资料$/}).length,8)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ebab490b4a6400cb5c601e4a050defde1c9b9bbba6e4332838b5124952732acd"
+      "diffSha256": "74a7dbc0c352a74c0964adb4dc0329cc001bfa94572f53cbab42830d23c0416b"
     },
     {
       "file": "apps/web/tests/model-audit-r8.test.mjs",
@@ -2260,9 +2414,24 @@
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 116,
+          "oldLine": 116,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  assert.equal(screen.getAllByRole('img',{name:/：未标注$/}).length,8);",
+          "new": "  assert.equal(screen.getAllByRole('img',{name:/：未标注 · 暂无官方资料$/}).length,8);",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "63e441ac915e054ce51ae2b827885bca2b2783ada641b112f72baf7e5a239a8b"
+      "diffSha256": "95502bbafaab3a955148a91ff8bc6a3157b7528e9a1b463f5b44107455cef466"
     },
     {
       "file": "apps/web/tests/model-card-footer-r16.test.mjs",
@@ -2364,7 +2533,7 @@
     },
     {
       "file": "apps/web/tests/model-specifications.test.mjs",
-      "diffSha256": "9728b02ee4ddafcabb5c53d5e79c042847f66f5db28c42c33e0003de75d897fa",
+      "diffSha256": "e7706a32f66c3eeefb6e74294c4b4d17e38796f4f731034052e298e24b508430",
       "changes": [
         {
           "line": 80,
@@ -2414,6 +2583,21 @@
             "docs/model-modality-audit-20261109.md#r27-phase-i8",
             "apps/web/tests/model-icon-simplify-r27.test.mjs",
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 165,
+          "oldLine": 165,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  assert.equal(screen.getAllByRole('img', {name:/：未标注$/}).length,8)",
+          "new": "  assert.equal(screen.getAllByRole('img', {name:/：未标注 · 暂无官方资料$/}).length,8)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -2499,9 +2683,24 @@
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 163,
+          "oldLine": 163,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  assert.equal(card.querySelectorAll('[role=img][aria-label$=\"：未标注\"]').length, 8)",
+          "new": "  assert.equal(card.querySelectorAll('[role=img][aria-label$=\"：未标注 · 暂无官方资料\"]').length, 8)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "e48ddff3de6058b5f0281a90d880abb42658d972ce707c1b22cbbac27bc68fc2"
+      "diffSha256": "4af31aa1bdb3cf8333562b5b2fd1e6df5b1fdf8c9d9e7df31ae3aee1b89a43ed"
     },
     {
       "file": "apps/web/tests/tokendance-catalog-r14.test.mjs",
@@ -2802,7 +3001,7 @@
     },
     {
       "file": "config/model-audit.generated.json",
-      "diffSha256": "ceec8c7240b868ba79a0672b286c1306884842264b29e1fdff705b5ec598946b",
+      "diffSha256": "080902421527148a0af4c560431081eeb041990d382e98347c7902aaf34928cb",
       "changes": [
         {
           "line": 2,
@@ -19413,6 +19612,1842 @@
           ],
           "verdict": "JUSTIFIED",
           "pointer": "/rows/ideogram/ideogram-v4/inputModalities"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/alibaba/qwen-image-3/text-to-image/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/alibaba/qwen-image-3/text-to-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/bytedance/seedream/v5/pro/text-to-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/bytedance/seedream/v4/text-to-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/fast-sdxl/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/fast-sdxl/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/fast-sdxl/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/fast-sdxl/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-2/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-2/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-2-flex/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-flex/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-2-flex/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-flex/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-2-pro/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-2/flash/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/flash/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-2/flash/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/flash/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-2/klein/9b/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-2/klein/9b/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-2/turbo/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/turbo/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-2/turbo/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/turbo/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-kontext-lora/inputModalities",
+          "old": {
+            "value": [
+              "image",
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image",
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-kontext-lora/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-kontext-lora/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-kontext-lora/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-pro/kontext/inputModalities",
+          "old": {
+            "value": [
+              "image",
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image",
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-pro/kontext/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-pro/kontext/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-pro/kontext/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-pro/v1.1/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-pro/v1.1/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-pro/v1.1-ultra/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-1/schnell/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-1/schnell/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-1/schnell/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-1/schnell/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-lora/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-lora/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-lora/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux-lora/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux/dev/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux/dev/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux/dev/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux/dev/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux/schnell/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux/schnell/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux/schnell/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/flux/schnell/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/ideogram/v3/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/ideogram/v3/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/ideogram/v3/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/ideogram/v3/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/qwen-image/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/qwen-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/qwen-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/qwen-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/recraft/v4/pro/text-to-image/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/recraft/v4/pro/text-to-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/recraft/v3/text-to-image/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/recraft/v3/text-to-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/openai/gpt-image-2.5/flare/text-to-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/openai/gpt-image-2.5/sunburst/text-to-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/openai/gpt-image-2/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/openai/gpt-image-2/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/gpt-image-1.5/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/gpt-image-1.5/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/gpt-image-1.5/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/gpt-image-1.5/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/xai/grok-imagine-image/v2.0/text-to-image/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/xai/grok-imagine-image/v2.0/text-to-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/xai/grok-imagine-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/xai/grok-imagine-image/quality/text-to-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/bria/fibo-edit-1.5/edit/inputModalities",
+          "old": {
+            "value": [
+              "image",
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image",
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/bria/fibo-edit-1.5/edit/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/bria/fibo-gen-1.5/text-to-image/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/bria/fibo-gen-1.5/text-to-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/krea-2/turbo/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/krea-2/turbo/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/krea-2/turbo/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/krea-2/turbo/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/z-image/turbo/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/z-image/turbo/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/z-image/turbo/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/fal-ai/z-image/turbo/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/krea/v2/large/text-to-image/inputModalities",
+          "old": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "text"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/krea/v2/large/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/krea/v2/large/text-to-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/krea/v2/large/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/meta/muse-image/text-to-image/outputModalities",
+          "old": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://api.fal.ai/v1/models",
+            "verifiedAt": "2026-11-09"
+          },
+          "new": {
+            "value": [
+              "image"
+            ],
+            "state": "known",
+            "provenance": "channel",
+            "sourceUrl": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+            "verifiedAt": "2026-11-10"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     }
@@ -19421,7 +21456,7 @@
     {
       "file": "apps/web/tests/model-modality-r21.test.mjs",
       "comparisonBase": "2550c736",
-      "diffSha256": "7dc8ea00e55b1ceaf9d55e07567a5a50ec00223b92e16d436024455d28628ff1",
+      "diffSha256": "5549cd000cc610aeea91ca34d95dcd5d11fd3d7918312023ea92c5f062b7b612",
       "changes": [
         {
           "phase": "R22 Phase C",
@@ -19450,6 +21485,21 @@
             "docs/model-modality-audit-20261109.md#r27-phase-i8",
             "apps/web/tests/model-icon-simplify-r27.test.mjs",
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 32,
+          "oldLine": 32,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  for (const [id, labels] of [['qwen3.6-plus', ['图像：暂不支持', '视频：暂不支持']], ['kimi-k3.1-pro', ['图像：支持', '视频：支持']], ['minimax-m3.1-flash', ['图像：支持']], ['deepseek-v4.1-flash-1017', ['图像：支持']], ['deepseek-v4-flash-vision-exp', ['文本：未标注', '图像：未标注', '视频：未标注']]]) {",
+          "new": "  for (const [id, labels] of [['qwen3.6-plus', ['图像：暂不支持', '视频：暂不支持']], ['kimi-k3.1-pro', ['图像：支持', '视频：支持']], ['minimax-m3.1-flash', ['图像：支持']], ['deepseek-v4.1-flash-1017', ['图像：支持']], ['deepseek-v4-flash-vision-exp', ['文本：未标注 · 渠道页无此型号', '图像：未标注 · 渠道页无此型号', '视频：未标注 · 渠道页无此型号']]]) {",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -19602,9 +21652,24 @@
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 48,
+          "oldLine": 48,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "      assert.ok(html.includes(`aria-label=\"${label}：${state === 'supported' ? '支持' : '未标注'}\"`),key+'/'+field+'/'+id)",
+          "new": "      assert.ok(html.includes(`aria-label=\"${label}：${state === 'supported' ? '支持' : '未标注 · 渠道未标注此模态'}\"`),key+'/'+field+'/'+id)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "d40bb2a276e19939392a159cd299b3873fb015578a4e32f5d9b75aca2292605a"
+      "diffSha256": "29020d45ec6615fb7610d5c46dcdf4ac28f10cae900dfa15ceaff51a75b721c0"
     },
     {
       "file": "apps/miniprogram/tests/model-card-r22b.test.cjs",
@@ -19632,7 +21697,7 @@
     {
       "file": "apps/miniprogram/tests/model-modality-r22c.test.cjs",
       "comparisonBase": "1dcd8b13",
-      "diffSha256": "75f973bef3c55de36df6a1828e89c7e37e6df7d61ba4ac3f5c1e470e2de3ab64",
+      "diffSha256": "c31c27f2cfe84bebffbce0e692bca2ba27d56b9cc381971c86a85e32892acaa1",
       "changes": [
         {
           "line": 25,
@@ -19785,13 +21850,73 @@
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 13,
+          "oldLine": 13,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": " assert.deepEqual(icons.map(i=>i.accessibleLabel),['文本：支持','图像：暂不支持','视频：未标注','音频：未标注'])\n assert.equal(icons[2].tooltip,'渠道未标注此模态')",
+          "new": " assert.deepEqual(icons.map(i=>i.accessibleLabel),['文本：支持','图像：暂不支持','视频：未标注 · 渠道未标注此模态','音频：未标注 · 渠道未标注此模态'])\n assert.equal(icons[2].tooltip,'未标注 · 渠道未标注此模态')",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 18,
+          "oldLine": 18,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": " assert.equal(vendor[2].tooltip,'原厂资料 · Example · Spec');assert.deepEqual(fact,before)",
+          "new": " assert.equal(vendor[2].tooltip,'未标注 · 原厂资料 · Example · Spec');assert.deepEqual(fact,before)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 25,
+          "oldLine": 25,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  if(model.id==='deepseek-v4-flash-vision-exp')for(const icon of data.specRows[0].icons){assert.equal(icon.state,'unknown');assert.match(icon.tooltip,/^渠道页无此型号$/)}",
+          "new": "  if(model.id==='deepseek-v4-flash-vision-exp')for(const icon of data.specRows[0].icons){assert.equal(icon.state,'unknown');assert.match(icon.tooltip,/^未标注 · 渠道页无此型号$/)}",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 31,
+          "oldLine": 31,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": " assert.doesNotMatch(wxml+css,/modality-strike|modality-question|dashed|stroke-dasharray/);assert.match(css,/is-conditional[^}]*color:#68786d/)",
+          "new": " assert.doesNotMatch(wxml+css,/modality-strike|modality-question|dashed|stroke-dasharray/);assert.doesNotMatch(css,/is-conditional[^}]*color:#68786d/)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/web/tests/model-card-source-titles-r23.test.mjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "4d7e5b8b792c1a24f1462d28e98172ba6b5563f577bb0bf913456fc4b2e77bc4",
+      "diffSha256": "1fa70feb64307446e2a94f81f99267c6f247ecbfcc8508657f8f1554a0ff3eb5",
       "changes": [
         {
           "line": 25,
@@ -19864,13 +21989,43 @@
             "test-support/fixtures/conflict-cards-r26.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 81,
+          "oldLine": 81,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "      for (const icon of unknown) assert.equal(icon.title, '渠道页无此型号')",
+          "new": "      for (const icon of unknown) assert.equal(icon.title, '未标注 · 渠道页无此型号')",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 86,
+          "oldLine": 86,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "    } else { for (const icon of unknown) assert.match(icon.title, /^渠道未标注此模态/); assert.doesNotMatch(container.innerHTML, /渠道页无此型号/); controls++ }",
+          "new": "    } else { for (const icon of unknown) assert.match(icon.title, /^未标注 · 渠道未标注此模态/); assert.doesNotMatch(container.innerHTML, /渠道页无此型号/); controls++ }",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "207dec62aaceb0f982d1d98f628fb2246f77aef0c629ff4f57126605b4616d67",
+      "diffSha256": "25d0e0bf4c812ca52bce03fdd8088dc76d7166ee8cfc5d08cfb5cb8a5e90356c",
       "changes": [
         {
           "line": 16,
@@ -19941,6 +22096,36 @@
             "config/channel-audit/source-titles-r26-i6.json",
             "test-support/fixtures/source-evidence-i6-r26.json",
             "test-support/fixtures/conflict-cards-r26.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 56,
+          "oldLine": 56,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "    assert.equal(icon.tooltip,'渠道页无此型号')",
+          "new": "    assert.equal(icon.tooltip,'未标注 · 渠道页无此型号')",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 61,
+          "oldLine": 61,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  }else {for(const icon of unknown)assert.match(icon.tooltip,/^渠道未标注此模态/);assert.doesNotMatch(JSON.stringify(data.specRows),/渠道页无此型号/);controls++}",
+          "new": "  }else {for(const icon of unknown)assert.match(icon.tooltip,/^未标注 · 渠道未标注此模态/);assert.doesNotMatch(JSON.stringify(data.specRows),/渠道页无此型号/);controls++}",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -20388,9 +22573,69 @@
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 19,
+          "oldLine": 19,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  for (const [name, state] of [['文本：支持', 'supported'], ['图像：暂不支持', 'unsupported'], ['视频：未标注', 'unknown']]) {",
+          "new": "  for (const [name, state] of [['文本：支持', 'supported'], ['图像：暂不支持', 'unsupported'], ['视频：未标注 · 渠道未标注此模态', 'unknown']]) {",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 27,
+          "oldLine": 27,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  assert.match(inputs.getByRole('img', {name:'视频：未标注'}).title, /^渠道未标注此模态$/)",
+          "new": "  assert.match(inputs.getByRole('img', {name:/^视频：未标注 · /}).title, /^未标注 · 渠道未标注此模态$/)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 32,
+          "oldLine": 32,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  assert.match(css, /is-conditional[^}]*color: var\\(--muted\\)/)",
+          "new": "  assert.doesNotMatch(css, /is-conditional[^}]*color: var\\(--muted\\)/)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 55,
+          "oldLine": 55,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  assert.equal(inputs.getByRole('img', {name:'视频：未标注'}).title, '原厂资料 · Example · Spec')",
+          "new": "  assert.equal(inputs.getByRole('img', {name:/^视频：未标注 · /}).title, '未标注 · 原厂资料 · Example · Spec')",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "3ff16536bacd02cfc640e9db168826335b497462936d008901c12300a867510d"
+      "diffSha256": "415e9135a07b48b58fc3f50d181aa8f54dcaaa54302740ce9fa8cce47a44bd9c"
     },
     {
       "file": "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
@@ -22419,9 +24664,169 @@
           ],
           "verdict": "JUSTIFIED",
           "pointer": "/fal/meta/muse-image/text-to-image"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/alibaba/qwen-image-3/text-to-image",
+          "old": {
+            "url": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image",
+            "label": "官方文档 · fal · Qwen Image 3"
+          },
+          "new": {
+            "url": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api",
+            "label": "官方文档 · fal · Qwen Image 3 API 文档"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-pro/kontext",
+          "old": {
+            "url": "https://fal.ai/models/fal-ai/flux-pro/kontext",
+            "label": "官方文档 · fal · FLUX Pro（Kontext）"
+          },
+          "new": {
+            "url": "https://fal.ai/models/fal-ai/flux-pro/kontext/api",
+            "label": "官方文档 · fal · FLUX Pro（Kontext） API 文档"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-pro/v1.1",
+          "old": {
+            "url": "https://fal.ai/models/fal-ai/flux-pro/v1.1",
+            "label": "官方文档 · fal · FLUX Pro（V1.1）"
+          },
+          "new": {
+            "url": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api",
+            "label": "官方文档 · fal · FLUX Pro（V1.1） API 文档"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/flux-pro/v1.1-ultra",
+          "old": {
+            "url": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra",
+            "label": "官方文档 · fal · FLUX Pro（V1.1 Ultra）"
+          },
+          "new": {
+            "url": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api",
+            "label": "官方文档 · fal · FLUX Pro（V1.1 Ultra） API 文档"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/ideogram/v3",
+          "old": {
+            "url": "https://fal.ai/models/fal-ai/ideogram/v3",
+            "label": "官方文档 · fal · Ideogram V3"
+          },
+          "new": {
+            "url": "https://fal.ai/models/fal-ai/ideogram/v3/api",
+            "label": "官方文档 · fal · Ideogram V3 API 文档"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/recraft/v4/pro/text-to-image",
+          "old": {
+            "url": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image",
+            "label": "官方文档 · fal · Recraft V4 Pro"
+          },
+          "new": {
+            "url": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api",
+            "label": "官方文档 · fal · Recraft V4 Pro API 文档"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/fal-ai/recraft/v3/text-to-image",
+          "old": {
+            "url": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image",
+            "label": "官方文档 · fal · Recraft V3"
+          },
+          "new": {
+            "url": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api",
+            "label": "官方文档 · fal · Recraft V3 API 文档"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "pointer": "fal/openai/gpt-image-2",
+          "old": {
+            "url": "https://fal.ai/models/openai/gpt-image-2",
+            "label": "官方文档 · fal · GPT Image 2"
+          },
+          "new": {
+            "url": "https://fal.ai/models/openai/gpt-image-2/api",
+            "label": "官方文档 · fal · GPT Image 2 API 文档"
+          },
+          "reason": "Founder R28: exact HTTP-200 model API schema replaces the catalog citation, retaining values and execution. Literal first-link expectations retain independently verified endpoint URLs and titles.",
+          "evidence": [
+            "config/channel-audit/review-r28-20261110.json",
+            "docs/model-card-source-titles-r24.md#r28-fal-sources"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "5f0e8e789f9f1bad439509cb54a510d144d674fb4b6dc8b4796a100a8d2a0ed0"
+      "diffSha256": "f37b07e67582983807ce95bb777cf593d7ab34915298782149ddfe3941636712"
     },
     {
       "file": "scripts/card-presentation-r22b.test.mjs",
@@ -22533,9 +24938,24 @@
             "test-support/fixtures/source-evidence-i7-r27.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 70,
+          "oldLine": 70,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": " assert.equal(states[1].state,'unknown');assert.equal(states[1].tooltip,'原厂资料 · DeepSeek · 更新日志 2026-04-24')\n assert.equal(modalityIconStates('',{state:'unknown',provenance:null})[1].tooltip,'暂无官方资料')",
+          "new": " assert.equal(states[1].state,'unknown');assert.equal(states[1].tooltip,'未标注 · 原厂资料 · DeepSeek · 更新日志 2026-04-24')\n assert.equal(modalityIconStates('',{state:'unknown',provenance:null})[1].tooltip,'未标注 · 暂无官方资料')",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "d6344f29aeee0302f572250181ff6987a158131d9ab0fa7037689cf4aaec400a"
+      "diffSha256": "e7d1189aaf03af110dde097705c03932bd10a08f3d2a527939749474a9313966"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
@@ -22600,9 +25020,24 @@
             "test-support/fixtures/conflict-cards-r26.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 45,
+          "oldLine": 45,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": " assert.equal(cards,1064);assert.equal(rows,1105);assert.ok(icons>=1064*8)",
+          "new": " assert.equal(cards,1064);assert.equal(rows,1114);assert.ok(icons>=1064*8)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "9974b21536a0f1d0d0e53e07499bda38fbc282a145ec9d143905e2cf35d10a01"
+      "diffSha256": "5e33adf773df5f79274ac63260230c2bd6b2289bcdc8a1fddfe553bdcde4ead0"
     },
     {
       "file": "scripts/source-titles-r24.test.mjs",
@@ -22723,9 +25158,24 @@
             "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 37,
+          "oldLine": 37,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "    assert.equal(icon.tooltip,id==='extra-retired-model'?'渠道页无此型号':'渠道未标注此模态'); assert.equal(icon.state,'unknown')",
+          "new": "    assert.equal(icon.tooltip,id==='extra-retired-model'?'未标注 · 渠道页无此型号':'未标注 · 渠道未标注此模态'); assert.equal(icon.state,'unknown')",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f07286d3238fcdaf2b06cff2f5e05983acf3535dfa5fd3740a327485e52c0157"
+      "diffSha256": "ab974b6554a55236e060fa4f5ecacfe59c304520ab692ebfb6937c72329a578a"
     },
     {
       "file": "apps/web/tests/model-card-r24.test.mjs",
@@ -22744,9 +25194,24 @@
             "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 56,
+          "oldLine": 56,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "    assert.equal(icon.tooltip, id === 'extra-retired-model' ? '渠道页无此型号' : '渠道未标注此模态')",
+          "new": "    assert.equal(icon.tooltip, id === 'extra-retired-model' ? '未标注 · 渠道页无此型号' : '未标注 · 渠道未标注此模态')",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "5fb34d8c58b8c147ec54b5db83e1d8ac0591f0c6fa1319a1d96a40b2f4c81812"
+      "diffSha256": "ccf8b2e346873ee0e3e612e038855cf34b35a6a488d609f4119d66dd65ea4d6b"
     },
     {
       "file": "test-support/fixtures/model-card-r24.json",
@@ -22834,9 +25299,39 @@
             "test-support/fixtures/source-evidence-i7-r27.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "(absent)",
+          "new": "import {expectedR28} from './founder-fixes-r28.mjs'",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 10,
+          "oldLine": 9,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "export const expectedHumanRows=(rows,card,client='web')=>{",
+          "new": "export const expectedHumanRows=(rows,card,client='web',includeR28=true)=>{\n if(includeR28 && client==='mini' && card.startsWith('fal/'))return expectedR28[card].mini.card.specSources",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "464b8124c852f7a0e9ed977775993f3831b8617013bd8c9d112cc780ddabc643"
+      "diffSha256": "ddaceadf733e44995f562c9313e9ec4da2bdad51dc936043846b5d80d2d319a2"
     },
     {
       "file": "test-support/source-review-r24.mjs",
@@ -23214,9 +25709,315 @@
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 62,
+          "oldLine": 62,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13', 'fd29cf36', '4e18513c', 'cd72eace', '9a7128d6', 'f8ff7648', 'd29097c0', '6864824a', 'd1c63994', '105744a9'].includes(file.comparisonBase))",
+          "new": "  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13', 'fd29cf36', '4e18513c', 'cd72eace', '9a7128d6', 'f8ff7648', 'd29097c0', '6864824a', 'd1c63994', '105744a9', '7858d7a4'].includes(file.comparisonBase))",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 83,
+          "oldLine": 83,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  '# Changed test expectations — R22, R23 Phases E/F/F3 and R24 Phases I1/I2/I3/I4 and R25 Phase I5 and R26 Phase I6 and R27 Phases I7/I8', '',",
+          "new": "  '# Changed test expectations — R22, R23 Phases E/F/F3 and R24 Phases I1/I2/I3/I4 and R25 Phase I5 and R26 Phase I6 and R27 Phases I7/I8 and R28 Phase I9', '',",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "c33988366ef9d17d2a1163bdae8294b919f69b0b10467c3639506e21a8da7bc5"
+      "diffSha256": "175394cec160a23d90f92079b6265f976f00d4af3182399bee4fa2d4c23f7b30"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs",
+      "comparisonBase": "7858d7a4",
+      "changes": [
+        {
+          "line": 6,
+          "oldLine": 6,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": " const {iconBaseline,expectedR2Icon}=await import('../../../test-support/icon-simplify-r27.mjs')",
+          "new": " const {expectedR28}=await import('../../../test-support/founder-fixes-r28.mjs')",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 13,
+          "oldLine": 13,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": " assert.deepEqual(stateRules[0][1].trim().split(',').sort(),['conditional','unknown','unlisted','unsupported'].map(s=>'.modality-icon.is-'+s).sort())",
+          "new": " assert.deepEqual(stateRules[0][1].trim().split(',').sort(),['unknown','unlisted','unsupported'].map(s=>'.modality-icon.is-'+s).sort())",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 21,
+          "oldLine": 21,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "   const before=iconBaseline.rows[key].mini, fact=before.audit.fields[index?'outputModalities':'inputModalities']\n   assert.deepEqual(icon,expectedR2Icon(before.card.specRows[index].icons[j],fact),key)\n   assert.match(icon.accessibleLabel,/^(文本|图像|视频|音频)：(支持|暂不支持|未标注)$/)",
+          "new": "   const before=expectedR28[key].mini\n   assert.deepEqual(icon,before.card.specRows[index].icons[j],key)\n   assert.match(icon.accessibleLabel,/^(文本|图像|视频|音频)：(支持|暂不支持|未标注 · .+)$/)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 38,
+          "oldLine": 38,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": " assert.equal(legacy[1].accessibleLabel,'图像：未标注');assert.equal(legacy[3].accessibleLabel,'音频：支持')\n assert.equal(legacy[3].tooltip,'有条件支持 · 音频（有限支持）。暂无官方资料')",
+          "new": " assert.equal(legacy[1].accessibleLabel,'图像：未标注 · 暂无官方资料');assert.equal(legacy[3].accessibleLabel,'音频：支持')\n assert.equal(legacy[3].tooltip,'支持（条件：音频（有限支持）） · 暂无官方资料')",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "c8da3f35ea625b6c5a1a068de0ebbc15d3fbe537c8d0d33ebce389f48a6afc12"
+    },
+    {
+      "file": "apps/web/tests/model-icon-simplify-r27.test.mjs",
+      "comparisonBase": "7858d7a4",
+      "changes": [
+        {
+          "line": 10,
+          "oldLine": 10,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "(absent)",
+          "new": "import {expectedR28} from '../../../test-support/founder-fixes-r28.mjs'",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 18,
+          "oldLine": 17,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "test('R27 I8 all 1064 Web cards render identical solid grey non-supported glyphs, three short labels and exact evidence dialogs', () => {",
+          "new": "test('R27 I8 all 1064 Web cards render identical solid grey unsupported/unknown glyphs, three short labels and exact evidence dialogs', () => {",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 28,
+          "oldLine": 27,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "      const expected = [...before.inputIcons.map(i => expectedR2Icon(i, before.data.inputFact)), ...before.outputIcons.map(i => expectedR2Icon(i, before.data.outputFact))]",
+          "new": "      const expected = [...expectedR28[key].web.inputIcons, ...expectedR28[key].web.outputIcons]",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 39,
+          "oldLine": 38,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "          assert.match(node.getAttribute('aria-label'), /^(文本|图像|视频|音频|文件)：(支持|暂不支持|未标注)$/)",
+          "new": "          assert.match(node.getAttribute('aria-label'), /^(文本|图像|视频|音频|文件)：(支持|暂不支持|未标注 · .+)$/)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 48,
+          "oldLine": 47,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "          assert.equal(getComputedStyle(node).color, icon.state === 'supported' ? rgb(ink) : rgb(muted), key)",
+          "new": "          assert.equal(getComputedStyle(node).color, ['supported','conditional'].includes(icon.state) ? rgb(ink) : rgb(muted), key)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 81,
+          "oldLine": 80,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  assert.equal(icons[1].state, 'unlisted'); assert.equal(icons[1].accessibleLabel, '图像：未标注')",
+          "new": "  assert.equal(icons[1].state, 'unlisted'); assert.equal(icons[1].accessibleLabel, '图像：未标注 · 暂无官方资料')",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 83,
+          "oldLine": 82,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  assert.equal(icons[3].tooltip, '有条件支持 · 音频（有限支持）。暂无官方资料')",
+          "new": "  assert.equal(icons[3].tooltip, '支持（条件：音频（有限支持）） · 暂无官方资料')",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 89,
+          "oldLine": 88,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "    assert.ok(audio); assert.equal(audio.getAttribute('aria-label'), '音频：支持')\n    for (const state of ['unsupported','unknown','unlisted','conditional']) {",
+          "new": "    assert.ok(audio); assert.equal(audio.getAttribute('aria-label'), '音频：支持'); assert.equal(getComputedStyle(audio).color, rgb(ink))\n    for (const state of ['unsupported','unknown','unlisted']) {",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 96,
+          "oldLine": 95,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "    assert.match(document.querySelector('.model-evidence-dialog').textContent, /有条件支持 · 音频（有限支持）/)",
+          "new": "    assert.match(document.querySelector('.model-evidence-dialog').textContent, /支持（条件：音频（有限支持））/)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "23c4030bdc42e3266a4c360796cc0bfab0e802190cb982ebe047f7f34a740a97"
+    },
+    {
+      "file": "test-support/icon-simplify-r27.mjs",
+      "comparisonBase": "7858d7a4",
+      "changes": [
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "(absent)",
+          "new": "import {restoreR28Sources} from './founder-fixes-r28.mjs'",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 17,
+          "oldLine": 16,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "    : before.state === 'conditional' ? `有条件支持${before.detail ? ` · ${before.detail}` : ''}。` : ''\n  return {...before, accessibleLabel:before.label + '：' + label, tooltip:prefix + before.tooltip}",
+          "new": "    : before.state === 'conditional' ? `支持（条件：${before.detail}） · ` : ['unknown','unlisted'].includes(before.state) ? '未标注 · ' : ''\n  return {...before, accessibleLabel:before.label + '：' + (['unknown','unlisted'].includes(before.state) ? prefix + before.tooltip : label), tooltip:prefix + before.tooltip}",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 21,
+          "oldLine": 20,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "(absent)",
+          "new": "  now = restoreR28Sources(now)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 32,
+          "oldLine": 30,
+          "comparisonBase": "7858d7a4",
+          "phase": "R28 Phase I9",
+          "old": "  const copy = structuredClone(now)",
+          "new": "  const copy = restoreR28Sources(now)",
+          "reason": "founder: R28 round 7 unknown attribution prefix, fal field source parity and dark conditional support (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r28-phase-i9",
+            "apps/web/tests/model-founder-fixes-r28.test.mjs",
+            "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "bfe21a3696534c6a8ee39631845859b8b02ef1552e4f5b5bbbdb753bf2c53c80"
     }
   ]
 }

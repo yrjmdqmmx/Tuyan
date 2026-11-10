@@ -53,7 +53,7 @@ test('R24 Web scans all 1064 cards for retirement labels and the exact seven his
   assert.deepEqual([...historicalChannelIds(pages)].sort(), fixture.historicalIds)
   const missing = historicalChannelIds({...pages, ...fixture.syntheticPages})
   for (const id of Object.keys(fixture.syntheticPages)) for (const icon of modalityIconStates('未知', {state:'unknown'}, 'tokendance', id, missing)) {
-    assert.equal(icon.tooltip, id === 'extra-retired-model' ? '渠道页无此型号' : '渠道未标注此模态')
+    assert.equal(icon.tooltip, id === 'extra-retired-model' ? '未标注 · 渠道页无此型号' : '未标注 · 渠道未标注此模态')
     assert.equal(icon.state, 'unknown')
   }
   t.diagnostic(JSON.stringify({cards,notices,historical:historical.size}))

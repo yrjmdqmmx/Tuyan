@@ -1,0 +1,430 @@
+{
+  "phase": "R28 Phase I9",
+  "head": "7858d7a44f0494b4d6aa1b7a500f366a8a7abe29",
+  "mainBaseline": "f0366c1c",
+  "finishedAtUtc": "2026-11-10T11:00:28.652402+00:00",
+  "gitWrites": false,
+  "externalNetwork": {
+    "method": "Public unauthenticated GET of documentation pages only",
+    "uniqueUrls": 36,
+    "fetches": 36,
+    "cachePerUrl": true,
+    "review": "config/channel-audit/review-r28-20261110.json"
+  },
+  "runs": [
+    {
+      "id": "api-full",
+      "cwd": ".",
+      "command": "node --test packages/api/src/*.test.js",
+      "startedAt": "2026-11-10T10:52:41.405558+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/api-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:41.637064+00:00",
+      "tests": {
+        "tests": 33,
+        "pass": 33,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "842ac1a3caa9da04303d90333b9eb3d0fb86e5302162b6a56463df7a24e11784"
+    },
+    {
+      "id": "auth-gateway-check",
+      "cwd": "apps/auth-gateway",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T10:52:41.405571+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/auth-gateway-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:41.637018+00:00",
+      "logSha256": "3381247e3cc1ecf70a3ea11f99e01a819ed43240cadda685ae08d5f80a90bdb3"
+    },
+    {
+      "id": "benchmark-core-check",
+      "cwd": "packages/benchmark-core",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T10:52:41.406688+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/benchmark-core-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:45.609629+00:00",
+      "logSha256": "eea2233e8ff678c38bdca5667b83566ec1b5414b62a6cbf786d8630fcbf10c21"
+    },
+    {
+      "id": "benchmark-worker-check",
+      "cwd": "apps/benchmark-worker",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T10:52:41.407697+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/benchmark-worker-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:50.409692+00:00",
+      "logSha256": "aa86bc6ea81a42bf399a29a03dd8e84bcdf676df9d319c925d7b088338b2968a"
+    },
+    {
+      "id": "check-docker-bundles",
+      "cwd": ".",
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "startedAt": "2026-11-10T10:52:41.637524+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/check-docker-bundles.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:47.885794+00:00",
+      "logSha256": "7d41b0c301e108d92e770f6cfcc7d262686c308dc74390c70519f9b581f8457e"
+    },
+    {
+      "id": "core-build",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T10:52:23.367052+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/core-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:23.783229+00:00",
+      "logSha256": "b2aa2e3ae5daedce1a3d718ddd47deb4cc40cdd8e881e13e7cff91c11609f87a"
+    },
+    {
+      "id": "core-targeted",
+      "cwd": "apps/paperbanana-api",
+      "command": "node --import tsx --test tests/model-modality-r21.test.ts tests/execution-capability-r22.test.ts tests/model-card-r22b.test.ts tests/model-modality-phase2.test.ts tests/model-evidence-i4-r24.test.mjs tests/model-evidence-i5-r25.test.mjs tests/model-evidence-i6-r26.test.mjs",
+      "startedAt": "2026-11-10T10:52:41.405731+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/core-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:57.611283+00:00",
+      "tests": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "ac5a9d7a1310ab94a1a030a5ad82347b932f22e95ed4127db665dbdf8f82115b"
+    },
+    {
+      "id": "core-tsc-explicit",
+      "cwd": "apps/paperbanana-api",
+      "command": "npx tsc --noEmit",
+      "startedAt": "2026-11-10T10:52:45.611100+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/core-tsc-explicit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:57.258323+00:00",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "freeze-audit-sources",
+      "cwd": ".",
+      "command": "node scripts/freeze-audit-sources.mjs --check",
+      "startedAt": "2026-11-10T10:52:47.886422+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/freeze-audit-sources.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:48.917934+00:00",
+      "logSha256": "d80e602b846bfcd5222bb32faf4bcad4ce8ca896937b60227cc86ac9344c65bf"
+    },
+    {
+      "id": "freeze-execution-capability",
+      "cwd": ".",
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "startedAt": "2026-11-10T10:52:48.918674+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/freeze-execution-capability.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:56.660285+00:00",
+      "logSha256": "39b87a64e03dd9ddbdaed837dc25ed59413aa4d7cd2667b98bb03bf0fe66d524"
+    },
+    {
+      "id": "gateway-targeted",
+      "cwd": "apps/auth-gateway",
+      "command": "node --test tests/model-modality-r21.test.js tests/execution-capability-r22.test.js tests/model-modality-phase2.test.js tests/model-evidence-i4-r24.test.js tests/model-evidence-i5-r25.test.js tests/model-evidence-i6-r26.test.js",
+      "startedAt": "2026-11-10T10:52:41.405818+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/gateway-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:57.536718+00:00",
+      "tests": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "922f6011d0d69ff38e5dce552e42f95f4bd845b1ce1d345cea434ffc8d17a284"
+    },
+    {
+      "id": "generate-model-audit",
+      "cwd": ".",
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "startedAt": "2026-11-10T10:52:50.410422+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/generate-model-audit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:50.809403+00:00",
+      "logSha256": "dbbc800e3318e734ff721660de4fd635b08425652c62ec26790efaf840a2207e"
+    },
+    {
+      "id": "mini-build",
+      "cwd": "apps/miniprogram",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T10:52:19.743310+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/mini-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:20.580817+00:00",
+      "logSha256": "7a56936f8ef892571faf4745562c057431d9074f0fc84536a6530eeae3fdc994"
+    },
+    {
+      "id": "mini-full",
+      "cwd": "apps/miniprogram",
+      "command": "npm test",
+      "startedAt": "2026-11-10T10:54:02.701630+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/mini-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:54:24.764574+00:00",
+      "tests": {
+        "tests": 184,
+        "pass": 184,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "b9aeecfbb115099fced9c113a05b682c7bbd4cec3d0ab7c7d202d0ce86b47875"
+    },
+    {
+      "id": "miniprogram-check",
+      "cwd": "apps/miniprogram",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T10:52:50.810154+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/miniprogram-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:52.224673+00:00",
+      "logSha256": "38c246209d9a3bf1c4f7fdcd813aa459742b56f49ea9d1e6e0b11b70b574083c"
+    },
+    {
+      "id": "name-invariants",
+      "cwd": ".",
+      "command": "node --test .audit-input/r24/i9-invariants.test.mjs",
+      "startedAt": "2026-11-10T10:52:57.537469+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/name-invariants.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:53:09.678982+00:00",
+      "tests": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "b3c680b023737cfb4d1c8050ec603e8f24ac9cc69cee242ad91a861438b76dea"
+    },
+    {
+      "id": "paperbanana-api-check",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T10:52:52.225498+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/paperbanana-api-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:53:03.052040+00:00",
+      "logSha256": "711f8fe6b6d9b7ec11df0b7db28f6268875e7790f9a94aad807f396ebd578f3e"
+    },
+    {
+      "id": "report-changed-tests",
+      "cwd": ".",
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "startedAt": "2026-11-10T10:56:30.139669+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/report-changed-tests.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:56:32.635503+00:00",
+      "logSha256": "98c86936f426cb6fedfebb44fa0c4c01313a416d09b0a9bca652c2a11a3e46e3"
+    },
+    {
+      "id": "report-model-image-input-r27",
+      "cwd": ".",
+      "command": "node scripts/report-model-image-input-r27.mjs --check",
+      "startedAt": "2026-11-10T10:52:57.259230+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/report-model-image-input-r27.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:59.399935+00:00",
+      "logSha256": "e7872e2a0a317b698e0adadea4532851c958b7410dedc72acfa7e7fd3d12dc03"
+    },
+    {
+      "id": "report-model-modality-phase2",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "startedAt": "2026-11-10T10:52:59.242417+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/report-model-modality-phase2.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:53:03.334129+00:00",
+      "logSha256": "9ee4bdd47dfecca12bf50aaadb0a5c767e0e9c0432792d018ec229054d178aad"
+    },
+    {
+      "id": "report-model-modality-r21",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "startedAt": "2026-11-10T10:52:59.400885+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/report-model-modality-r21.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:53:08.848586+00:00",
+      "logSha256": "4d8dec325ae3aff990bacb21432685fa913be0cb671587f3e7301b6fdb661e5c"
+    },
+    {
+      "id": "report-model-modality-r22b",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "startedAt": "2026-11-10T10:53:03.052409+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/report-model-modality-r22b.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:53:10.154300+00:00",
+      "logSha256": "402625f141281bb30ad8dd702f02d88d30e80fe0317aedae44ef334f5c1af0ee"
+    },
+    {
+      "id": "report-source-titles-r23",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r23.mjs --check",
+      "startedAt": "2026-11-10T10:54:02.702011+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/report-source-titles-r23.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:54:04.578464+00:00",
+      "logSha256": "aaf6ec9eaf4ac3cb82ac72d2a1b515d1acd4cbb983b63e019ce5c335a8d44567"
+    },
+    {
+      "id": "report-source-titles-r24",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r24.mjs --check",
+      "startedAt": "2026-11-10T10:53:04.251225+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/report-source-titles-r24.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:53:08.932548+00:00",
+      "logSha256": "d101cf5c36704c8e56a66f8f138928214d64910920b00c454ea174ec64df6c41"
+    },
+    {
+      "id": "scripts-full",
+      "cwd": ".",
+      "command": "node --test scripts/*.test.mjs",
+      "startedAt": "2026-11-10T10:57:37.989575+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/scripts-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:57:46.143119+00:00",
+      "tests": {
+        "tests": 81,
+        "pass": 81,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "fc2f5f0dffed7fe53b94e714fb9e5303b21fcd91372b702d1308ea83c566bed2"
+    },
+    {
+      "id": "sync-card-display",
+      "cwd": ".",
+      "command": "node scripts/sync-card-display.mjs --check",
+      "startedAt": "2026-11-10T10:53:08.849234+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/sync-card-display.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:53:09.271463+00:00",
+      "logSha256": "3a963a935b5f55bf2239d2be03f7d40af6b588a22cd07e5dee0bb5834bca39a9"
+    },
+    {
+      "id": "sync-model-catalog",
+      "cwd": ".",
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "startedAt": "2026-11-10T10:53:08.933155+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/sync-model-catalog.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:53:11.603911+00:00",
+      "logSha256": "4b51ceb5731b82fb3b9bee1ec0f0a2af83877edf5bf6578264bfabf47cdf029e"
+    },
+    {
+      "id": "tuyan-knowledge-check",
+      "cwd": "packages/tuyan-knowledge",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T10:53:09.271871+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/tuyan-knowledge-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:53:09.431400+00:00",
+      "logSha256": "477d55b9e6f75596d0927ba1f207125b9854d31fd9d0c5184e4a08899b15efac"
+    },
+    {
+      "id": "web-build",
+      "cwd": "apps/web",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T10:52:20.581251+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/web-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:52:23.366746+00:00",
+      "logSha256": "0605cd1ae9c5bafeb5a46809d36b5a2fc544f4e986b22f1a2d2936f89dc63706"
+    },
+    {
+      "id": "web-full",
+      "cwd": "apps/web",
+      "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+      "startedAt": "2026-11-10T10:56:55.307033+00:00",
+      "log": ".audit-input/r24/i9-validation-logs/web-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T10:59:39.703649+00:00",
+      "tests": {
+        "tests": 1506,
+        "pass": 1506,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "e353bebf4d2b5f37fcb7ffe8abfc29505e30ffc08a7fb03c3f0acb0b416c4e25"
+    }
+  ],
+  "totals": {
+    "tests": 1825,
+    "pass": 1825,
+    "fail": 0,
+    "skipped": 0
+  },
+  "maintenanceChecks": [
+    "check-docker-bundles",
+    "freeze-audit-sources",
+    "freeze-execution-capability",
+    "generate-model-audit",
+    "report-changed-tests",
+    "report-model-image-input-r27",
+    "report-model-modality-phase2",
+    "report-model-modality-r21",
+    "report-model-modality-r22b",
+    "report-source-titles-r23",
+    "report-source-titles-r24",
+    "sync-card-display",
+    "sync-model-catalog"
+  ],
+  "mini": {
+    "sourceBytes": 1555658,
+    "limitBytes": 1572864,
+    "remainingBytes": 17206,
+    "deltaFromHead": -8654,
+    "compactedBeforeAddingData": true,
+    "existingSizeGuards": "Unchanged and passing",
+    "pagination": "Indexed batches of 16; unchanged 128 KiB guard; all pages tested, maximum patch 39293 bytes"
+  },
+  "invariants": {
+    "cardsPerClient": 1064,
+    "falFieldsWithSourceTitleParity": 196,
+    "falCatalogReview": {
+      "fields": 61,
+      "pages": 36,
+      "moved": 61,
+      "kept": 0
+    },
+    "unknownTooltipFormat": "未标注 · <existing source/explanation>",
+    "unknownAccessibleFormat": "<modality>：未标注 · <same source/explanation>",
+    "conditional": "Dark glyph; short 支持; 支持（条件：original qualifier） · attribution in tooltip/dialog; state remains conditional",
+    "executionRegistryEqualsMain": true,
+    "pickerNamesEqualMain": true,
+    "frozenExecutionTestsAndFixturesUnchanged": true,
+    "factValuesStatesProvenanceUnchanged": true
+  },
+  "snapshots": {
+    "test-support/fixtures/founder-fixes-r28-before.json.gz": "3865bb7260a4a987af8a7ae4bedb8fa6dd546a6fb78d2581dade0a7b588b905c",
+    "test-support/fixtures/fal-sources-r28.json": "e50779423959a6229f772bb1e7f764900716a5f342cca4992a2a4fc8780902f8"
+  },
+  "screenshots": {
+    "script": ".audit-input/r24/shots-m9.mjs",
+    "manifest": ".audit-input/r24/shots-m9.manifest.json",
+    "status": "prepared-and-syntax-checked-not-run",
+    "plannedShots": 10,
+    "widths": [
+      1280,
+      390
+    ],
+    "deviceScaleFactors": [
+      1,
+      2
+    ],
+    "nativeTitle": "Desktop card screenshot plus exact title/accessible text in manifest; mobile taps the existing evidence dialog and captures the viewport; no injected tooltip"
+  },
+  "resolvedValidationFindings": [
+    "Longer unknown accessibility text exposed a full-list Mini update larger than 128 KiB; changed pagination to indexed batches without raising the guard.",
+    "Test doubles now apply native indexed array keys and clone serialized view data; all-page pagination and all role/region selections pass.",
+    "Nine stale Web assertions covered old unknown labels and omitted fal sources; updated exact expectations, including eight literal R9 URL/title rows, with ledger entries.",
+    "Historical source reports validate R28 deltas before restoring their original comparison; current source/title scan remains strict."
+  ]
+}

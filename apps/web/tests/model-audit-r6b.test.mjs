@@ -39,7 +39,7 @@ test('R6B 4: all nine qualified windows put tokens before the qualifier, retaini
 
 test('R6B 6: unknown modalities use solid grey icons without decorative badges and output has a distinct icon', () => {
   const {container}=render(React.createElement(ModelSpecifications,{provider:'custom',model:{id:'unknown'}}))
-  assert.equal(screen.getAllByRole('img',{name:/：未标注$/}).length,8)
+  assert.equal(screen.getAllByRole('img',{name:/：未标注 · 暂无官方资料$/}).length,8)
   assert.equal(container.querySelectorAll('.model-modality-icon.is-unknown > svg').length,8)
   assert.equal(container.querySelectorAll('.is-unknown .model-modality-question[aria-hidden="true"]').length,0)
   const context=screen.getByText('上下文窗口').querySelector('svg')

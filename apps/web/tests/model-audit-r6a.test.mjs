@@ -93,9 +93,9 @@ test('Mini runtime projection agrees with Web for all four fields across the who
       assert.deepEqual(small[field].value, web[field].value, provider + '/' + model.id + '/' + field)
       assert.equal(small[field].state, web[field].state, provider + '/' + model.id + '/' + field)
       assert.equal(small[field].provenance, web[field].provenance, provider + '/' + model.id + '/' + field)
-      // R12B omits evidence URLs the picker never renders. Its retained field
+      // R28 retains every fal field URL for title parity. Other R12B omitted URLs stay compact. Its retained field
       // reference must still be exact; the visible card source is tested below.
-      const reviewed = reviewI7.reviews[provider + '/' + model.id]?.[field]?.sourceUrl
+      const reviewed = (provider === 'fal' ? web[field].sourceUrl : null) || reviewI7.reviews[provider + '/' + model.id]?.[field]?.sourceUrl
         || reviewI7.preservedFieldSources[provider + '/' + model.id]?.[field]
       assert.equal(small[field].sourceUrl, reviewed || (reviewI4.models[provider + '/' + model.id]?.fields[field] ? reviewI4.models[provider + '/' + model.id].fields[field].sourceUrl : expectedHumanUrl(web[field].sourceUrl) === mini.auditedModelSpecs(provider, model.id).sourceUrl ? expectedHumanUrl(web[field].sourceUrl) : null), provider + '/' + model.id + '/' + field + '/source')
     }

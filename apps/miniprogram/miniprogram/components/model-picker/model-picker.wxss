@@ -23,7 +23,7 @@
 .modality-icons{display:flex;justify-content:flex-end;gap:8px}
 .modality-icon{position:relative;width:20px;height:20px;flex:0 0 20px;color:#213b2f}
 .modality-glyph{width:100%;height:100%;background:currentColor;mask:var(--glyph) center/contain no-repeat;-webkit-mask:var(--glyph) center/contain no-repeat}
-.modality-icon.is-unsupported,.modality-icon.is-unknown,.modality-icon.is-unlisted,.modality-icon.is-conditional{color:#68786d}
+.modality-icon.is-unsupported,.modality-icon.is-unknown,.modality-icon.is-unlisted{color:#68786d}
 /* Lucide 0.475.0 (ISC), same paths as Web; embedded masks, no image files. */
 .glyph-text{--glyph:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpolyline points=%224 7 4 4 20 4 20 7%22/%3E%3Cline x1=%229%22 x2=%2215%22 y1=%2220%22 y2=%2220%22/%3E%3Cline x1=%2212%22 x2=%2212%22 y1=%224%22 y2=%2220%22/%3E%3C/svg%3E')}
 .glyph-image{--glyph:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect width=%2218%22 height=%2218%22 x=%223%22 y=%223%22 rx=%222%22 ry=%222%22/%3E%3Ccircle cx=%229%22 cy=%229%22 r=%222%22/%3E%3Cpath d=%22m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21%22/%3E%3C/svg%3E')}

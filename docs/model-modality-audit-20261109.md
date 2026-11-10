@@ -1298,17 +1298,17 @@ Mini source is **1,565,030 / 1,572,864 bytes**, **7,834 remaining** (delta **+2,
 
 ## R27 Phase I8
 
-Founder choice **R2**, 2026-11-10: supported icons keep the existing dark solid glyph. Every other state uses the same solid grey glyph for that modality on Web and Mini. No diagonal strike, question badge, dashed outline/stroke or conditional asterisk remains. Existing enum values, `data-state`, `is-*` classes, glyph paths and footprints remain unchanged.
+Founder choice **R2**, 2026-11-10, updated by **R28 I9**: supported and conditional icons use the existing dark solid glyph. Unsupported, unknown and unlisted states use the same solid grey glyph for that modality on Web and Mini. No diagonal strike, question badge, dashed outline/stroke or conditional asterisk remains. Existing enum values, `data-state`, `is-*` classes, glyph paths and footprints remain unchanged.
 
 | Machine state / evidence | Glyph | Short label (image example) | Hover / dialog text |
 | --- | --- | --- | --- |
 | `supported` | Solid dark | 图像：支持 | Existing attribution / captured quote and date |
 | `unsupported`, channel exclusion | Solid grey | 图像：暂不支持 | 此渠道未开放该模态。 + unchanged channel evidence and date |
 | `unsupported`, vendor exclusion | Solid grey | 图像：暂不支持 | 原厂资料标明不支持。 + unchanged attribution and date |
-| `unknown` / `unlisted` | The same solid grey | 图像：未标注 | Existing 渠道未标注此模态 / 渠道页无此型号 / attribution / 暂无官方资料; no invented date |
-| `conditional` | The same solid grey | 图像：支持 | 有条件支持 + existing qualifier and attribution; no asterisk |
+| `unknown` / `unlisted` | The same solid grey | 图像：未标注 · existing explanation | 未标注 · existing 渠道未标注此模态 / 渠道页无此型号 / attribution / 暂无官方资料; no invented date |
+| `conditional` | Solid dark (R28 I9) | 图像：支持 | 支持（条件：original qualifier） · existing attribution; no asterisk |
 
-**Conditional choice:** the plan's R2 table does not define a separate conditional short label. Following the explicit I8 fallback, use `支持` as the short label with a grey glyph, and keep `有条件支持` and the original qualifier only in the tooltip/dialog. It is never relabeled `未标注`. The three short labels are exactly `支持`, `暂不支持`, `未标注`.
+**Conditional choice (R28 supersedes I8):** `conditional` keeps its data value and class but renders exactly like supported: dark glyph and short `支持`. Its full original qualifier appears as `支持（条件：…） · attribution` in hover/dialog text. No `有条件支持` label or grey + `支持` remains. The three short labels remain `支持`, `暂不支持`, `未标注`.
 
 The immutable pre-I8 snapshot at `105744a9` covers all 1,064 Web and compiled Mini presentations. New tests compare every field against that snapshot, permitting only the exact label/prefix transformation above; state, source, date, fact, picker name and execution-related presentation stay equal. Web tests inspect actual DOM, SVG identity, computed colours and opened evidence dialogs for every card. Mini tests check the shipped single-glyph WXML, the one shared grey CSS rule, every compiled icon and its tap modal. Vendor, conditional and legacy-unlisted fixtures cover paths absent or uncommon in the catalog. All 15 decision-A image inputs remain dark, solid `支持`.
 
@@ -1319,3 +1319,19 @@ Screenshot preparation: `.audit-input/r24/shots-m8.mjs` and manifest cover 1280/
 Validation: **1,818/1,818 tests pass** (Web 1,504; Mini 182; scripts 79; shared API 33; Core 10; Gateway 8; name invariants 2). Web/Mini/Core builds, explicit Core `tsc --noEmit`, six workspace checks, and all **13 maintenance `--check` scripts** pass, including the changed-test ledger. The two validation findings were stale presentation wording checks; both were corrected and rechecked. [Commands, logs and results](model-modality-r27-i8-validation.json).
 
 Mini source: **1,564,312 / 1,572,864 bytes**, **8,552 remaining**, **718 fewer** than `105744a9`. Both existing size guards remain unchanged and pass. Sync/compilation preflight kept every installed generated output within the ceiling. No Git writes, external network, deployment or screenshot execution.
+
+## R28 Phase I9
+
+PR #251 round 7 founder fixes, based on `7858d7a4`, execution/picker comparison against main `f0366c1c`. No Git writes, secrets, paid calls, deployment, image builds, saved-configuration changes, other worktrees or home-agent files. Network consisted only of 36 cached public unauthenticated GETs to exact fal human API documentation pages.
+
+Unknown/unlisted tooltip format is **`未标注 · <existing source/explanation>`**; accessible format is **`<modality>：未标注 · <same source/explanation>`** on both clients. Example: direct Kimi `kimi/kimi-k3` has `音频：未标注 · 图研既有核实 · Hugging Face · Kimi K3`. Exact `bailian/kimi-k3` has explicit channel exclusions, so the screenshot uses the direct Kimi card with an actual unknown icon. No prefix was added to `暂不支持`. Unknown dates remain absent under the existing policy.
+
+**61 fal fields moved / 0 kept**, across **36** HTTP-200 model pages. The [dated review](../config/channel-audit/review-r28-20261110.json) stores UTC/Asia-Shanghai fetch times, final URLs, body SHA-256, exact endpoint identities and verbatim evidence from the matching Input/Output schema. Every value in a multi-modality field must be supported. Field values, states and provenance are unchanged; moved sources receive the re-verification date. [Per-field decisions and titles](model-card-source-titles-r24.md#r28-fal-sources). Mini retains all 196 fal field URLs, including two existing Google field citations previously omitted by compaction, and includes nine secondary human source-copy rows. The fallback catalog attribution is plain `渠道资料 · fal 模型目录`; `isApiSource` still prevents a clickable JSON link.
+
+Conditional state remains compatible in data while both clients render **dark + 支持**. Hover/dialog wording is **`支持（条件：<original qualifier>） · <attribution>`**. All 1,064 card presentations plus custom conditional/unlisted/vendor fixtures are checked; the catalog has one conditional Web icon. The R27 table above and SYNC now state this superseding mapping.
+
+The exact pre-R28 snapshot and literal source/date deltas independently cover every presentation field. Historical R27 reports first validate the reviewed R28 deltas, then project them back to their original source/wording baseline. All changed expectations and fixture harness changes are recorded in the ledger. Frozen execution tests and byte limits are unchanged. Longer accessible text exposed the existing Mini full-list pagination payload limit; indexed batches of 16 preserve all cards and keep each update below the unchanged 128 KiB test ceiling. The boundary test now loads every remaining page.
+
+Screenshot recipe `.audit-input/r24/shots-m9.mjs` and manifest prepare ten images at 1280 and 390, mobile DPR 2; **not run**. Native HTML titles cannot be captured as screenshot pixels, so desktop records the title and accessible text beside the hovered card capture; mobile taps the existing modality trigger and captures its visible evidence dialog containing the same text. No fabricated tooltip is injected. Native Mini uses its existing tap modal.
+
+Validation: **1,825/1,825 tests pass** (Web 1,506; Mini 184; scripts 81; shared API 33; Core 10; Gateway 8; main invariants 3). Web/Mini/Core builds, explicit Core TypeScript, six workspace checks and all **13 maintenance checks** pass, including the changed-test ledger. Mini source **1,555,658 / 1,572,864 bytes**, **17,206 remaining**, **8,654 fewer** than HEAD. Both original Mini size guards are unchanged. [Commands and results](model-modality-r28-i9-validation.json).

@@ -67,6 +67,6 @@ test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable style
 
 test('R24 I2 unknown modality keeps available source; absence stays unknown with no source claim',()=>{
  const states=modalityIconStates('',{state:'known',value:['text'],provenance:'vendor',sourceUrl:'https://api-docs.deepseek.com/news/news260424',verifiedAt:'2026-11-09'})
- assert.equal(states[1].state,'unknown');assert.equal(states[1].tooltip,'原厂资料 · DeepSeek · 更新日志 2026-04-24')
- assert.equal(modalityIconStates('',{state:'unknown',provenance:null})[1].tooltip,'暂无官方资料')
+ assert.equal(states[1].state,'unknown');assert.equal(states[1].tooltip,'未标注 · 原厂资料 · DeepSeek · 更新日志 2026-04-24')
+ assert.equal(modalityIconStates('',{state:'unknown',provenance:null})[1].tooltip,'未标注 · 暂无官方资料')
 })

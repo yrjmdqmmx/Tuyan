@@ -64578,6 +64578,445 @@
       ]
     }
   },
+  "I9": {
+    "phase": "R28 Phase I9",
+    "counts": {
+      "fields": 61,
+      "pages": 36,
+      "moved": 61,
+      "kept": 0
+    },
+    "review": "config/channel-audit/review-r28-20261110.json",
+    "fields": [
+      {
+        "identity": "fal/alibaba/qwen-image-3/text-to-image",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api",
+        "title": "渠道资料 · fal · Qwen Image 3 Text To Image API 文档"
+      },
+      {
+        "identity": "fal/alibaba/qwen-image-3/text-to-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api",
+        "title": "渠道资料 · fal · Qwen Image 3 Text To Image API 文档"
+      },
+      {
+        "identity": "fal/bytedance/seedream/v5/pro/text-to-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+        "title": "渠道资料 · fal · Seedream（v5，pro Text To Image API 文档）"
+      },
+      {
+        "identity": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+        "title": "渠道资料 · fal · Bytedance Seedream（v4.5 Text To Image API 文档）"
+      },
+      {
+        "identity": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+        "title": "渠道资料 · fal · Bytedance Seedream V4 Text To Image API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/fast-sdxl",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/fast-sdxl/api",
+        "title": "渠道资料 · fal · Fast SDXL API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/fast-sdxl",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/fast-sdxl/api",
+        "title": "渠道资料 · fal · Fast SDXL API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-2",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-2/api",
+        "title": "渠道资料 · fal · FLUX.2 API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-2",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-2/api",
+        "title": "渠道资料 · fal · FLUX.2 API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-2-flex",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-2-flex/api",
+        "title": "渠道资料 · fal · FLUX.2 [flex] API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-2-flex",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-2-flex/api",
+        "title": "渠道资料 · fal · FLUX.2 [flex] API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-2-pro",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+        "title": "渠道资料 · fal · FLUX.2 [pro] API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-2/flash",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-2/flash/api",
+        "title": "渠道资料 · fal · FLUX-2（flash API 文档）"
+      },
+      {
+        "identity": "fal/fal-ai/flux-2/flash",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-2/flash/api",
+        "title": "渠道资料 · fal · FLUX-2（flash API 文档）"
+      },
+      {
+        "identity": "fal/fal-ai/flux-2/klein/9b",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api",
+        "title": "渠道资料 · fal · FLUX.2 [klein] 9B API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-2/klein/9b",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api",
+        "title": "渠道资料 · fal · FLUX.2 [klein] 9B API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-2/turbo",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-2/turbo/api",
+        "title": "渠道资料 · fal · FLUX-2（turbo API 文档）"
+      },
+      {
+        "identity": "fal/fal-ai/flux-2/turbo",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-2/turbo/api",
+        "title": "渠道资料 · fal · FLUX-2（turbo API 文档）"
+      },
+      {
+        "identity": "fal/fal-ai/flux-kontext-lora",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-kontext-lora/api",
+        "title": "渠道资料 · fal · FLUX Kontext LoRA API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-kontext-lora",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-kontext-lora/api",
+        "title": "渠道资料 · fal · FLUX Kontext LoRA API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-pro/kontext",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-pro/kontext/api",
+        "title": "渠道资料 · fal · FLUX Pro Kontext API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-pro/kontext",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-pro/kontext/api",
+        "title": "渠道资料 · fal · FLUX Pro Kontext API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-pro/v1.1",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api",
+        "title": "渠道资料 · fal · FLUX Pro（V1.1 API 文档）"
+      },
+      {
+        "identity": "fal/fal-ai/flux-pro/v1.1",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api",
+        "title": "渠道资料 · fal · FLUX Pro（V1.1 API 文档）"
+      },
+      {
+        "identity": "fal/fal-ai/flux-pro/v1.1-ultra",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api",
+        "title": "渠道资料 · fal · FLUX Pro（V1.1 Ultra API 文档）"
+      },
+      {
+        "identity": "fal/fal-ai/flux-1/schnell",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-1/schnell/api",
+        "title": "渠道资料 · fal · FLUX.1 [schnell] API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-1/schnell",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-1/schnell/api",
+        "title": "渠道资料 · fal · FLUX.1 [schnell] API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-lora",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-lora/api",
+        "title": "渠道资料 · fal · FLUX LoRA API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux-lora",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux-lora/api",
+        "title": "渠道资料 · fal · FLUX LoRA API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux/dev",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux/dev/api",
+        "title": "渠道资料 · fal · FLUX Dev API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux/dev",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux/dev/api",
+        "title": "渠道资料 · fal · FLUX Dev API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux/schnell",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux/schnell/api",
+        "title": "渠道资料 · fal · FLUX Schnell API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/flux/schnell",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/flux/schnell/api",
+        "title": "渠道资料 · fal · FLUX Schnell API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/ideogram/v3",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/ideogram/v3/api",
+        "title": "渠道资料 · fal · Ideogram V3 API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/ideogram/v3",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/ideogram/v3/api",
+        "title": "渠道资料 · fal · Ideogram V3 API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/qwen-image",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/qwen-image/api",
+        "title": "渠道资料 · fal · Qwen Image API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/qwen-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/qwen-image/api",
+        "title": "渠道资料 · fal · Qwen Image API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/recraft/v4/pro/text-to-image",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api",
+        "title": "渠道资料 · fal · Recraft V4 Pro Text To Image API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/recraft/v4/pro/text-to-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api",
+        "title": "渠道资料 · fal · Recraft V4 Pro Text To Image API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/recraft/v3/text-to-image",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api",
+        "title": "渠道资料 · fal · Recraft V3 Text To Image API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/recraft/v3/text-to-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api",
+        "title": "渠道资料 · fal · Recraft V3 Text To Image API 文档"
+      },
+      {
+        "identity": "fal/openai/gpt-image-2.5/flare/text-to-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+        "title": "渠道资料 · fal · GPT Image 2.5 Flare Text To Image API 文档"
+      },
+      {
+        "identity": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+        "title": "渠道资料 · fal · GPT Image 2.5 Sunburst Text To Image API 文档"
+      },
+      {
+        "identity": "fal/openai/gpt-image-2",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/openai/gpt-image-2/api",
+        "title": "渠道资料 · fal · GPT Image 2 API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/gpt-image-1.5",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/gpt-image-1.5/api",
+        "title": "渠道资料 · fal · GPT Image 1.5 API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/gpt-image-1.5",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/gpt-image-1.5/api",
+        "title": "渠道资料 · fal · GPT Image 1.5 API 文档"
+      },
+      {
+        "identity": "fal/xai/grok-imagine-image/v2.0/text-to-image",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api",
+        "title": "渠道资料 · fal · Grok Imagine Image（V2.0 Text To Image API 文档）"
+      },
+      {
+        "identity": "fal/xai/grok-imagine-image/v2.0/text-to-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api",
+        "title": "渠道资料 · fal · Grok Imagine Image（V2.0 Text To Image API 文档）"
+      },
+      {
+        "identity": "fal/xai/grok-imagine-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/xai/grok-imagine-image/api",
+        "title": "渠道资料 · fal · Grok Imagine Image API 文档"
+      },
+      {
+        "identity": "fal/xai/grok-imagine-image/quality/text-to-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+        "title": "渠道资料 · fal · Grok Imagine Image Quality Text To Image API 文档"
+      },
+      {
+        "identity": "fal/bria/fibo-edit-1.5/edit",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api",
+        "title": "渠道资料 · fal · Fibo Edit 1.5（Edit API 文档）"
+      },
+      {
+        "identity": "fal/bria/fibo-edit-1.5/edit",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api",
+        "title": "渠道资料 · fal · Fibo Edit 1.5（Edit API 文档）"
+      },
+      {
+        "identity": "fal/bria/fibo-gen-1.5/text-to-image",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api",
+        "title": "渠道资料 · fal · Fibo Gen 1.5 Text To Image API 文档"
+      },
+      {
+        "identity": "fal/bria/fibo-gen-1.5/text-to-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api",
+        "title": "渠道资料 · fal · Fibo Gen 1.5 Text To Image API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/krea-2/turbo",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/krea-2/turbo/api",
+        "title": "渠道资料 · fal · Krea 2（Turbo API 文档）"
+      },
+      {
+        "identity": "fal/fal-ai/krea-2/turbo",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/krea-2/turbo/api",
+        "title": "渠道资料 · fal · Krea 2（Turbo API 文档）"
+      },
+      {
+        "identity": "fal/fal-ai/z-image/turbo",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/z-image/turbo/api",
+        "title": "渠道资料 · fal · Z Image Turbo API 文档"
+      },
+      {
+        "identity": "fal/fal-ai/z-image/turbo",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/fal-ai/z-image/turbo/api",
+        "title": "渠道资料 · fal · Z Image Turbo API 文档"
+      },
+      {
+        "identity": "fal/krea/v2/large/text-to-image",
+        "field": "inputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/krea/v2/large/text-to-image/api",
+        "title": "渠道资料 · fal · V2 Large Text To Image API 文档"
+      },
+      {
+        "identity": "fal/krea/v2/large/text-to-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/krea/v2/large/text-to-image/api",
+        "title": "渠道资料 · fal · V2 Large Text To Image API 文档"
+      },
+      {
+        "identity": "fal/meta/muse-image/text-to-image",
+        "field": "outputModalities",
+        "decision": "moved",
+        "url": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+        "title": "渠道资料 · fal · Muse Image Text To Image API 文档"
+      }
+    ]
+  },
   "I7": {
     "phase": "R27 Phase I7",
     "baseline": "d1c6399493f4e216cb0cc482c5312cbea8ed2f8d",

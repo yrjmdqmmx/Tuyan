@@ -66,6 +66,12 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
     if (vendorSources.length && Object.values(merged).some(fact => fact.provenance === 'vendor')) details[key] = { ...details[key], vendorSources }
     if (data.details[key]?.modalityMasks) details[key] = { ...details[key], modalityMasks: data.details[key].modalityMasks }
     for (const field of ['fieldVerifiedAt', 'fieldSources', 'lifecycleSourceUrl', 'excludedSources']) if (Object.hasOwn(data.details[key] || {}, field)) details[key] = { ...details[key], [field]: data.details[key][field] }
+    // fal field attribution uses the same exact URLs as Web, including secondary
+    // vendor citations; a missing primary-URL slot must not erase its title.
+    if (channel === 'fal') details[key] = { ...details[key], fieldSources: {
+      ...Object.fromEntries(Object.entries(merged).filter(([, fact]) => fact.sourceUrl).map(([field, fact]) => [field, fact.sourceUrl])),
+      ...details[key]?.fieldSources,
+    } }
     const retirementSources = links.lifecycleSources.filter(url => url !== sourceUrl)
     if (retirementSources.length) details[key] = { ...details[key], retirementSources }
   }

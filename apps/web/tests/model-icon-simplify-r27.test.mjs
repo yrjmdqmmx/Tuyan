@@ -7,6 +7,7 @@ import {ModelSpecifications} from '../src/components/ModelSpecifications.jsx'
 import {STATIC_MODEL_REGISTRY} from '../src/lib/staticModelCatalog.js'
 import {modalityIconStates} from '../src/lib/modelModalityIcons.js'
 import {iconBaseline, expectedR2Icon} from '../../../test-support/icon-simplify-r27.mjs'
+import {expectedR28} from '../../../test-support/founder-fixes-r28.mjs'
 import {review} from '../../../test-support/image-input-r27.mjs'
 
 const css = fs.readFileSync(new URL('../src/components/ModelSpecifications.css', import.meta.url), 'utf8')
@@ -14,7 +15,7 @@ const tokens = fs.readFileSync(new URL('../src/styles.css', import.meta.url), 'u
 const ink = tokens.match(/--ink: (#[a-f0-9]{6})/)[1], muted = tokens.match(/--muted: (#[a-f0-9]{6})/)[1]
 const rgb = hex => 'rgb(' + hex.slice(1).match(/../g).map(v => parseInt(v, 16)).join(', ') + ')'
 const noDate = text => text.replace(/（(?:核实日期：)?\d{4}-\d{2}-\d{2}）/g, '')
-test('R27 I8 all 1064 Web cards render identical solid grey non-supported glyphs, three short labels and exact evidence dialogs', () => {
+test('R27 I8 all 1064 Web cards render identical solid grey unsupported/unknown glyphs, three short labels and exact evidence dialogs', () => {
   const style = document.createElement('style')
   style.textContent = css.replaceAll('var(--ink)', ink).replaceAll('var(--muted)', muted)
   document.head.append(style)
@@ -24,7 +25,7 @@ test('R27 I8 all 1064 Web cards render identical solid grey non-supported glyphs
     assert.doesNotMatch(css, /modality-strike|modality-question|stroke-dasharray|dashed|\bsup\b|::(?:before|after)/)
     for (const [provider, catalog] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of catalog.models) {
       const key = provider + '/' + model.id, before = iconBaseline.rows[key].web
-      const expected = [...before.inputIcons.map(i => expectedR2Icon(i, before.data.inputFact)), ...before.outputIcons.map(i => expectedR2Icon(i, before.data.outputFact))]
+      const expected = [...expectedR28[key].web.inputIcons, ...expectedR28[key].web.outputIcons]
       const ui = render(React.createElement(ModelSpecifications, {provider, model}))
       try {
         const nodes = [...ui.container.querySelectorAll('.model-modality-icon')]
@@ -35,7 +36,7 @@ test('R27 I8 all 1064 Web cards render identical solid grey non-supported glyphs
           assert.equal(node.dataset.state, icon.state, key)
           assert.equal(node.className, 'model-modality-icon is-' + icon.state)
           assert.equal(node.getAttribute('aria-label'), icon.accessibleLabel, key)
-          assert.match(node.getAttribute('aria-label'), /^(文本|图像|视频|音频|文件)：(支持|暂不支持|未标注)$/)
+          assert.match(node.getAttribute('aria-label'), /^(文本|图像|视频|音频|文件)：(支持|暂不支持|未标注 · .+)$/)
           assert.equal(node.title, icon.tooltip, key)
           assert.equal(node.children.length, 1)
           assert.equal(node.firstElementChild.tagName.toLowerCase(), 'svg')
@@ -44,7 +45,7 @@ test('R27 I8 all 1064 Web cards render identical solid grey non-supported glyphs
           const glyph = node.innerHTML
           if (!glyphs.has(icon.id)) glyphs.set(icon.id, glyph)
           assert.equal(glyph, glyphs.get(icon.id), key + ' state must never change the modality glyph')
-          assert.equal(getComputedStyle(node).color, icon.state === 'supported' ? rgb(ink) : rgb(muted), key)
+          assert.equal(getComputedStyle(node).color, ['supported','conditional'].includes(icon.state) ? rgb(ink) : rgb(muted), key)
           assert.ok(!getComputedStyle(node.firstElementChild).strokeDasharray || getComputedStyle(node.firstElementChild).strokeDasharray === 'none')
         })
         if (review.reviews[key]) {
@@ -77,21 +78,21 @@ test('R27 I8 vendor, conditional and unlisted fixtures retain semantics without 
     assert.match(document.querySelector('.model-evidence-dialog').textContent, /原厂资料标明不支持。原厂资料 · Example · Spec/)
   } finally {cleanup()}
   const icons = modalityIconStates('文本、音频（有限支持）')
-  assert.equal(icons[1].state, 'unlisted'); assert.equal(icons[1].accessibleLabel, '图像：未标注')
+  assert.equal(icons[1].state, 'unlisted'); assert.equal(icons[1].accessibleLabel, '图像：未标注 · 暂无官方资料')
   assert.equal(icons[3].state, 'conditional'); assert.equal(icons[3].accessibleLabel, '音频：支持')
-  assert.equal(icons[3].tooltip, '有条件支持 · 音频（有限支持）。暂无官方资料')
+  assert.equal(icons[3].tooltip, '支持（条件：音频（有限支持）） · 暂无官方资料')
   const model = {id:'conditional',specifications:{version:1,modalityFacts:{inputModalities:{state:'known',value:['text','audio'],displayValue:'文本、音频（有限支持）'}}}}
   const style = document.createElement('style'); style.textContent = css.replaceAll('var(--ink)', ink).replaceAll('var(--muted)', muted); document.head.append(style)
   try {
     const ui = render(React.createElement(ModelSpecifications, {provider:'custom',model}))
     const audio = ui.container.querySelector('[data-state="conditional"]')
-    assert.ok(audio); assert.equal(audio.getAttribute('aria-label'), '音频：支持')
-    for (const state of ['unsupported','unknown','unlisted','conditional']) {
+    assert.ok(audio); assert.equal(audio.getAttribute('aria-label'), '音频：支持'); assert.equal(getComputedStyle(audio).color, rgb(ink))
+    for (const state of ['unsupported','unknown','unlisted']) {
       audio.className = 'model-modality-icon is-' + state
       assert.equal(getComputedStyle(audio).color, rgb(muted))
       assert.equal(audio.children.length, 1); assert.equal(audio.textContent, '')
     }
     fireEvent.click(ui.container.querySelector('.model-modality-trigger'))
-    assert.match(document.querySelector('.model-evidence-dialog').textContent, /有条件支持 · 音频（有限支持）/)
+    assert.match(document.querySelector('.model-evidence-dialog').textContent, /支持（条件：音频（有限支持））/)
   } finally {style.remove(); cleanup()}
 })

@@ -31,7 +31,7 @@ function flushMini() {
 const ts = createRequire(new URL('../apps/miniprogram/package.json', import.meta.url))('typescript')
 const picker = 'apps/miniprogram/miniprogram/components/model-picker/model-picker'
 const options = ts.convertCompilerOptionsFromJson(read('apps/miniprogram/tsconfig.json').compilerOptions, root).options
-for (const target of [picker, 'apps/miniprogram/miniprogram/utils/model-audit', 'apps/miniprogram/miniprogram/utils/unpack-model-catalog', 'apps/miniprogram/miniprogram/utils/model-presentation', 'apps/miniprogram/miniprogram/utils/model-registry']) {
+for (const target of [picker, 'apps/miniprogram/miniprogram/utils/model-audit', 'apps/miniprogram/miniprogram/utils/unpack-model-catalog', 'apps/miniprogram/miniprogram/utils/model-presentation', 'apps/miniprogram/miniprogram/utils/model-registry', 'apps/miniprogram/miniprogram/components/generation-settings-sheet/generation-settings-sheet']) {
   const compiled = ts.transpileModule(fs.readFileSync(path.join(root, target + '.ts'), 'utf8'), { compilerOptions: options }).outputText
   write(target + '.js', transformSync(compiled, { minifyWhitespace: true, minifySyntax: true, minifyIdentifiers: true, ...(target === picker ? {} : { format: 'cjs' }), charset: 'utf8', target: 'es2019' }).code)
 }
