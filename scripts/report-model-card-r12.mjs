@@ -1,30 +1,53 @@
+import { gitText as archivedAuditText, requireHistory } from './lib/git-history.mjs'
+import { loadCard as loadCardFrom } from './lib/model-card-audit.mjs'
+const loadCard = (root, commit) => loadCardFrom(root, commit, archivedAuditText)
+if (process.argv.includes('--frozen-head')) requireHistory(fileURLToPath(new URL('../', import.meta.url)), ['8c456709'])
 // Offline final-link manifest, reconciled with the operator's recorded HTTP checks.
 import fs from 'node:fs'
 import path from 'node:path'
+import vm from 'node:vm'
 import { fileURLToPath } from 'node:url'
-import { loadCard, readPackedRegistry, rowsOf, writeOrCheck } from './lib/model-card-audit.mjs'
+import { readPackedRegistry, writeOrCheck } from './lib/model-card-audit.mjs'
 import { STATIC_MODEL_REGISTRY } from '../apps/web/src/lib/staticModelCatalog.js'
 import { isApiSource, sourceSpecificity, isDeadSource } from '../apps/web/src/lib/modelCardSources.js'
+import { r12Models, r12Links, r12SourceUrls, r12SourcePolicy } from './lib/historical-card-projections.mjs'
+import { historicalCardRows } from './lib/historical-card-reports.mjs'
 const root = fileURLToPath(new URL('../', import.meta.url)), check = process.argv.includes('--check')
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))
 const before = read('apps/web/tests/fixtures/r12-links-before.json')
-const card = await loadCard(root)
-const models = new Map(rowsOf(STATIC_MODEL_REGISTRY).map(row => [row.channel + '/' + row.model.id, row.model]))
-for (const row of rowsOf(readPackedRegistry(path.join(root, 'apps/web/tests/fixtures/r11-registry-head.json')))) models.set(row.channel + '/' + row.model.id, row.model)
+const frozenHead = process.argv.includes('--frozen-head') ? '8c456709' : null
+const card = await loadCard(root, frozenHead)
+// Freeze the input objects as well as their renderer; current static objects
+// now include full specifications and cannot reproduce an older ID-only audit.
+const staticRegistry = frozenHead ? vm.runInNewContext(archivedAuditText(root, frozenHead, 'apps/web/src/lib/staticModelCatalog.js').replace(/export const /g, 'const ') + ';STATIC_MODEL_REGISTRY') : STATIC_MODEL_REGISTRY
+const models = r12Models(staticRegistry, readPackedRegistry(path.join(root, 'apps/web/tests/fixtures/r11-registry-head.json')))
+const project = (scope, rows) => frozenHead ? rows : historicalCardRows(scope, rows)
+const currentFull = r12Links(before.rows, card, row => models.get(row.channel + '/' + row.modelId))
+const currentStatic = r12Links(before.staticApiOnlyRows, card,
+  row => staticRegistry[row.channel].models.find(model => model.id === row.modelId))
+const fullLinks = project('r12Full', currentFull), staticLinks = project('r12Static', currentStatic)
 const checks = read('config/channel-audit/model-audit-supplement-20261109.json').sourceChecks
-const all = before.rows.map(row => {
-  const finalUrl = card(row.channel, models.get(row.channel + '/' + row.modelId)).sources[0] || null
-  if (!finalUrl || isApiSource(finalUrl, checks)) throw new Error('Missing human-readable source: ' + row.channel + '/' + row.modelId)
+// I3 deliberately hides raw Markdown links. Check that current policy, then
+// restore its historical classification for the old report's URLs/reasons.
+const policy = new Map(project('r12Policy', r12SourcePolicy(
+  r12SourceUrls(before, fullLinks, staticLinks, currentFull, currentStatic),
+  { isApiSource, isDeadSource, sourceSpecificity }, checks)).map(row => [row.key, row]))
+const apiSource = url => url ? policy.get(url).api : isApiSource(url, checks)
+const deadSource = url => url ? policy.get(url).dead : isDeadSource(url)
+const specificity = url => policy.get(url).specificity
+const all = before.rows.map((row, i) => {
+  const finalUrl = fullLinks[i].url
+  if (!finalUrl || apiSource(finalUrl)) throw new Error('Missing human-readable source: ' + row.channel + '/' + row.modelId)
   return { ...row, finalUrl }
 })
 const changed = all.filter(row => row.oldUrl !== row.finalUrl).map(({ channel, modelId, oldUrl, finalUrl }) => ({ channel, modelId, oldUrl, finalUrl }))
-const api = all.filter(row => isApiSource(row.r11Url, checks)).map(({ channel, modelId, r11Url, finalUrl }) => ({ channel, modelId, oldUrl: r11Url, finalUrl }))
+const api = all.filter(row => apiSource(row.r11Url)).map(({ channel, modelId, r11Url, finalUrl }) => ({ channel, modelId, oldUrl: r11Url, finalUrl }))
 const reasonFor = row => {
-  if (isDeadSource(row.oldUrl) || isDeadSource(row.r11Url)) return '已核实死链改用原厂具体页/公告'
+  if (deadSource(row.oldUrl) || deadSource(row.r11Url)) return '已核实死链改用原厂具体页/公告'
   if (row.finalUrl === row.r11Url) return '保留 R9–R11 渠道来源优先'
   if (row.finalUrl.includes('/model-depreciation')) return '下线公告优先'
   if (row.channel === 'tokendance' && row.finalUrl.startsWith('https://tokendance.space/models/')) return 'Chrome 核实的渠道型号页'
-  if (isApiSource(row.r11Url, checks)) return sourceSpecificity(row.finalUrl) < 2 ? 'API/JSON 无具体人可读页，按夹具回退' : 'API/JSON 替换为同型号人可读页'
+  if (apiSource(row.r11Url)) return specificity(row.finalUrl) < 2 ? 'API/JSON 无具体人可读页，按夹具回退' : 'API/JSON 替换为同型号人可读页'
   return '渠道具体型号页优先于总表'
 }
 const changedSinceR11 = all.filter(row => row.r11Url !== row.finalUrl)
@@ -34,9 +57,9 @@ const summary = channels.flatMap(channel => [...new Set(categorized.filter(row =
   channel, reason, count: categorized.filter(row => row.channel === channel && row.reason === reason).length,
 })))
 const exceptions = read('apps/web/tests/fixtures/r12-specificity-exceptions.json')
-const staticApi = before.staticApiOnlyRows.map(row => {
-  const finalUrl = card(row.channel, STATIC_MODEL_REGISTRY[row.channel].models.find(model => model.id === row.modelId)).sources[0]
-  if (!finalUrl || isApiSource(finalUrl, checks)) throw new Error('Missing static fallback: ' + row.channel + '/' + row.modelId)
+const staticApi = before.staticApiOnlyRows.map((row, i) => {
+  const finalUrl = staticLinks[i].url
+  if (!finalUrl || apiSource(finalUrl)) throw new Error('Missing static fallback: ' + row.channel + '/' + row.modelId)
   return { ...row, finalUrl }
 })
 const json = value => JSON.stringify(value, null, 2) + '\n'

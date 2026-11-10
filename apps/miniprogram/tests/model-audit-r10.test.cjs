@@ -35,5 +35,5 @@ test('R10 compiled mini Kimi card shows exclusions instead of unknown modalities
   picker.refreshModelLists()
   const rows = picker.data.visibleCompatibleModels.find(m => m.id === model.id).specRows
   assert.equal(rows[0].unknownText, ''); assert.equal(rows[1].unknownText, '')
-  assert.equal(rows[0].unsupportedText, '音频、视频'); assert.equal(rows[1].unsupportedText, '图像、音频、视频')
+  assert.equal(rows[0].unsupportedText, '视频、音频'); assert.equal(rows[1].unsupportedText, '图像、视频、音频')
 })

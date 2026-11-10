@@ -1,0 +1,4117 @@
+{
+  "phase": "R22 Phase D",
+  "date": "2026-11-09",
+  "startingHead": "89f548a0",
+  "branch": "codex/model-modality-audit",
+  "simulation": {
+    "path": "/tmp/r22d-ci",
+    "method": "Current tracked and non-ignored new working-tree bytes copied using read-only git ls-files and rsync; no .git directory; root/workspace node_modules symlinked from this checkout. No git init/commit/clone or other Git writes.",
+    "copiedFilesBeforeDocumentation": 5093,
+    "baselineCommitAvailable": false,
+    "removedAfterValidation": true
+  },
+  "artifacts": {
+    "archiveBytes": 334238,
+    "archiveCommitPathEntries": 18,
+    "executionModels": 1064,
+    "executionFixtureBeforeBytes": 13579648,
+    "executionFixtureAfterBytes": 13538408,
+    "executionFixtureSemanticallyIdenticalToStartingHead": true,
+    "executionFixtureSha256": "9766f063571be96a01bb81a120010483c219ddfd7d6ffe2cc822d62f4ff32e41",
+    "executionInputsBytes": 20017,
+    "ledgerInventoryBytes": 7796,
+    "preExistingExpectationsChanged": false,
+    "ledgerMarkdownAndJsonByteIdenticalToStartingHead": true
+  },
+  "runs": {
+    "worktree": [
+      {
+        "suite": "gateway",
+        "command": "node --test tests/*.test.js",
+        "cwd": "apps/auth-gateway",
+        "exit": 1,
+        "seconds": 25.64,
+        "counts": {
+          "tests": 291,
+          "suites": 0,
+          "pass": 203,
+          "fail": 87,
+          "cancelled": 0,
+          "skipped": 1,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/worktree/gateway.log",
+        "sha256": "6187b69bd138c3fe140331ce5767b9c759fdfdd004f4407701468f533e8e5f85",
+        "missingHistory": false,
+        "failureIds": [
+          "gateway-001",
+          "gateway-002",
+          "gateway-003",
+          "gateway-004",
+          "gateway-005",
+          "gateway-006",
+          "gateway-007",
+          "gateway-008",
+          "gateway-009",
+          "gateway-010",
+          "gateway-011",
+          "gateway-012",
+          "gateway-013",
+          "gateway-014",
+          "gateway-015",
+          "gateway-016",
+          "gateway-017",
+          "gateway-018",
+          "gateway-019",
+          "gateway-020",
+          "gateway-021",
+          "gateway-022",
+          "gateway-023",
+          "gateway-024",
+          "gateway-025",
+          "gateway-026",
+          "gateway-027",
+          "gateway-028",
+          "gateway-029",
+          "gateway-030",
+          "gateway-031",
+          "gateway-032",
+          "gateway-033",
+          "gateway-034",
+          "gateway-035",
+          "gateway-036",
+          "gateway-037",
+          "gateway-038",
+          "gateway-039",
+          "gateway-040",
+          "gateway-041",
+          "gateway-042",
+          "gateway-043",
+          "gateway-044",
+          "gateway-045",
+          "gateway-046",
+          "gateway-047",
+          "gateway-048",
+          "gateway-049",
+          "gateway-050",
+          "gateway-051",
+          "gateway-052",
+          "gateway-053",
+          "gateway-054",
+          "gateway-055",
+          "gateway-056",
+          "gateway-057",
+          "gateway-058",
+          "gateway-059",
+          "gateway-060",
+          "gateway-061",
+          "gateway-062",
+          "gateway-063",
+          "gateway-064",
+          "gateway-065",
+          "gateway-066",
+          "gateway-067",
+          "gateway-068",
+          "gateway-069",
+          "gateway-070",
+          "gateway-071",
+          "gateway-072",
+          "gateway-073",
+          "gateway-074",
+          "gateway-075",
+          "gateway-076",
+          "gateway-077",
+          "gateway-078",
+          "gateway-079",
+          "gateway-080",
+          "gateway-081",
+          "gateway-082",
+          "gateway-083",
+          "gateway-084",
+          "gateway-085",
+          "gateway-086",
+          "gateway-087"
+        ]
+      },
+      {
+        "suite": "core",
+        "command": "pnpm test",
+        "cwd": "apps/paperbanana-api",
+        "exit": 1,
+        "seconds": 549.25,
+        "counts": {
+          "tests": 1618,
+          "suites": 0,
+          "pass": 1347,
+          "fail": 270,
+          "cancelled": 0,
+          "skipped": 1,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/worktree/core.log",
+        "sha256": "006b75ee05519d41bf095c2cbe540aefce70d4d43e3998c1a85af3f123c27256",
+        "missingHistory": false,
+        "failureIds": [
+          "core-001",
+          "core-002",
+          "core-003",
+          "core-004",
+          "core-005",
+          "core-006",
+          "core-007",
+          "core-008",
+          "core-009",
+          "core-010",
+          "core-011",
+          "core-012",
+          "core-013",
+          "core-014",
+          "core-015",
+          "core-016",
+          "core-017",
+          "core-018",
+          "core-019",
+          "core-020",
+          "core-021",
+          "core-022",
+          "core-023",
+          "core-024",
+          "core-025",
+          "core-026",
+          "core-027",
+          "core-028",
+          "core-029",
+          "core-030",
+          "core-031",
+          "core-032",
+          "core-033",
+          "core-034",
+          "core-035",
+          "core-036",
+          "core-037",
+          "core-038",
+          "core-039",
+          "core-040",
+          "core-041",
+          "core-042",
+          "core-043",
+          "core-044",
+          "core-045",
+          "core-046",
+          "core-047",
+          "core-048",
+          "core-049",
+          "core-050",
+          "core-051",
+          "core-052",
+          "core-053",
+          "core-054",
+          "core-055",
+          "core-056",
+          "core-057",
+          "core-058",
+          "core-059",
+          "core-060",
+          "core-061",
+          "core-062",
+          "core-063",
+          "core-064",
+          "core-065",
+          "core-066",
+          "core-067",
+          "core-068",
+          "core-069",
+          "core-070",
+          "core-071",
+          "core-072",
+          "core-073",
+          "core-074",
+          "core-075",
+          "core-076",
+          "core-077",
+          "core-078",
+          "core-079",
+          "core-080",
+          "core-081",
+          "core-082",
+          "core-083",
+          "core-084",
+          "core-085",
+          "core-086",
+          "core-087",
+          "core-088",
+          "core-089",
+          "core-090",
+          "core-091",
+          "core-092",
+          "core-093",
+          "core-094",
+          "core-095",
+          "core-096",
+          "core-097",
+          "core-098",
+          "core-099",
+          "core-100",
+          "core-101",
+          "core-102",
+          "core-103",
+          "core-104",
+          "core-105",
+          "core-106",
+          "core-107",
+          "core-108",
+          "core-109",
+          "core-110",
+          "core-111",
+          "core-112",
+          "core-113",
+          "core-114",
+          "core-115",
+          "core-116",
+          "core-117",
+          "core-118",
+          "core-119",
+          "core-120",
+          "core-121",
+          "core-122",
+          "core-123",
+          "core-124",
+          "core-125",
+          "core-126",
+          "core-127",
+          "core-128",
+          "core-129",
+          "core-130",
+          "core-131",
+          "core-132",
+          "core-133",
+          "core-134",
+          "core-135",
+          "core-136",
+          "core-137",
+          "core-138",
+          "core-139",
+          "core-140",
+          "core-141",
+          "core-142",
+          "core-143",
+          "core-144",
+          "core-145",
+          "core-146",
+          "core-147",
+          "core-148",
+          "core-149",
+          "core-150",
+          "core-151",
+          "core-152",
+          "core-153",
+          "core-154",
+          "core-155",
+          "core-156",
+          "core-157",
+          "core-158",
+          "core-159",
+          "core-160",
+          "core-161",
+          "core-162",
+          "core-163",
+          "core-164",
+          "core-165",
+          "core-166",
+          "core-167",
+          "core-168",
+          "core-169",
+          "core-170",
+          "core-171",
+          "core-172",
+          "core-173",
+          "core-174",
+          "core-175",
+          "core-176",
+          "core-177",
+          "core-178",
+          "core-179",
+          "core-180",
+          "core-181",
+          "core-182",
+          "core-183",
+          "core-184",
+          "core-185",
+          "core-186",
+          "core-187",
+          "core-188",
+          "core-189",
+          "core-190",
+          "core-191",
+          "core-192",
+          "core-193",
+          "core-194",
+          "core-195",
+          "core-196",
+          "core-197",
+          "core-198",
+          "core-199",
+          "core-200",
+          "core-201",
+          "core-202",
+          "core-203",
+          "core-204",
+          "core-205",
+          "core-206",
+          "core-207",
+          "core-208",
+          "core-209",
+          "core-210",
+          "core-211",
+          "core-212",
+          "core-213",
+          "core-214",
+          "core-215",
+          "core-216",
+          "core-217",
+          "core-218",
+          "core-219",
+          "core-220",
+          "core-221",
+          "core-222",
+          "core-223",
+          "core-224",
+          "core-225",
+          "core-226",
+          "core-227",
+          "core-228",
+          "core-229",
+          "core-230",
+          "core-231",
+          "core-232",
+          "core-233",
+          "core-234",
+          "core-235",
+          "core-236",
+          "core-237",
+          "core-238",
+          "core-239",
+          "core-240",
+          "core-241",
+          "core-242",
+          "core-243",
+          "core-244",
+          "core-245",
+          "core-246",
+          "core-247",
+          "core-248",
+          "core-249",
+          "core-250",
+          "core-251",
+          "core-252",
+          "core-253",
+          "core-254",
+          "core-255",
+          "core-256",
+          "core-257",
+          "core-258",
+          "core-259",
+          "core-260",
+          "core-261",
+          "core-262",
+          "core-263",
+          "core-264",
+          "core-265",
+          "core-266",
+          "core-267",
+          "core-268",
+          "core-269",
+          "core-270"
+        ]
+      },
+      {
+        "suite": "web",
+        "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+        "cwd": "apps/web",
+        "exit": 0,
+        "seconds": 505.22,
+        "counts": {
+          "tests": 1477,
+          "suites": 0,
+          "pass": 1477,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/worktree/web.log",
+        "sha256": "b5706a8c183e361fb7e242caaf16970e0c67ce783790d02060e73735fe027108",
+        "missingHistory": false,
+        "failureIds": []
+      },
+      {
+        "suite": "mini",
+        "command": "node --test apps/miniprogram/tests/*.test.cjs",
+        "cwd": ".",
+        "exit": 0,
+        "seconds": 18.38,
+        "counts": {
+          "tests": 166,
+          "suites": 0,
+          "pass": 166,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/worktree/mini.log",
+        "sha256": "9e297b064ad76c1154d3ebb542a101a55e53e875a21559d7ca0f6154d857384b",
+        "missingHistory": false,
+        "failureIds": []
+      },
+      {
+        "suite": "scripts",
+        "command": "node --test scripts/*.test.mjs",
+        "cwd": ".",
+        "exit": 0,
+        "seconds": 4.84,
+        "counts": {
+          "tests": 54,
+          "suites": 0,
+          "pass": 54,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/worktree/scripts.log",
+        "sha256": "56fdbe2a8c4e32c5ffa75b889c15cdb22ea3136ebdcdf6ffc2873d2301c9cea6",
+        "missingHistory": false,
+        "failureIds": []
+      },
+      {
+        "suite": "api",
+        "command": "node --test packages/api/src/*.test.js",
+        "cwd": ".",
+        "exit": 0,
+        "seconds": 0.16,
+        "counts": {
+          "tests": 33,
+          "suites": 0,
+          "pass": 33,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/worktree/api.log",
+        "sha256": "faacccd10320a07be473ec75dd83af6265e77ad25a9f74f2e4a318018753d11f",
+        "missingHistory": false,
+        "failureIds": []
+      },
+      {
+        "suite": "root",
+        "command": "node --test tests/*.test.mjs",
+        "cwd": ".",
+        "exit": 1,
+        "seconds": 4.62,
+        "counts": {
+          "tests": 32,
+          "suites": 0,
+          "pass": 27,
+          "fail": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/worktree/root.log",
+        "sha256": "e7c8be61a6af8daf7d5c84eee8dfe4b87708db649856656b4cf837b3042677c2",
+        "missingHistory": false,
+        "failureIds": [
+          "root-001",
+          "root-002",
+          "root-003",
+          "root-004",
+          "root-005"
+        ]
+      }
+    ],
+    "history-free": [
+      {
+        "suite": "gateway",
+        "command": "node --test tests/*.test.js",
+        "cwd": "apps/auth-gateway",
+        "exit": 1,
+        "seconds": 61.51,
+        "counts": {
+          "tests": 291,
+          "suites": 0,
+          "pass": 203,
+          "fail": 87,
+          "cancelled": 0,
+          "skipped": 1,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/history-free/gateway.log",
+        "sha256": "2c99609960cc81026ca8af2dabbd421dc1a846a16690f4e7ce3b950e32326d39",
+        "missingHistory": false,
+        "failureIds": [
+          "gateway-001",
+          "gateway-002",
+          "gateway-003",
+          "gateway-004",
+          "gateway-005",
+          "gateway-006",
+          "gateway-007",
+          "gateway-008",
+          "gateway-009",
+          "gateway-010",
+          "gateway-011",
+          "gateway-012",
+          "gateway-013",
+          "gateway-014",
+          "gateway-015",
+          "gateway-016",
+          "gateway-017",
+          "gateway-018",
+          "gateway-019",
+          "gateway-020",
+          "gateway-021",
+          "gateway-022",
+          "gateway-023",
+          "gateway-024",
+          "gateway-025",
+          "gateway-026",
+          "gateway-027",
+          "gateway-028",
+          "gateway-029",
+          "gateway-030",
+          "gateway-031",
+          "gateway-032",
+          "gateway-033",
+          "gateway-034",
+          "gateway-035",
+          "gateway-036",
+          "gateway-037",
+          "gateway-038",
+          "gateway-039",
+          "gateway-040",
+          "gateway-041",
+          "gateway-042",
+          "gateway-043",
+          "gateway-044",
+          "gateway-045",
+          "gateway-046",
+          "gateway-047",
+          "gateway-048",
+          "gateway-049",
+          "gateway-050",
+          "gateway-051",
+          "gateway-052",
+          "gateway-053",
+          "gateway-054",
+          "gateway-055",
+          "gateway-056",
+          "gateway-057",
+          "gateway-058",
+          "gateway-059",
+          "gateway-060",
+          "gateway-061",
+          "gateway-062",
+          "gateway-063",
+          "gateway-064",
+          "gateway-065",
+          "gateway-066",
+          "gateway-067",
+          "gateway-068",
+          "gateway-069",
+          "gateway-070",
+          "gateway-071",
+          "gateway-072",
+          "gateway-073",
+          "gateway-074",
+          "gateway-075",
+          "gateway-076",
+          "gateway-077",
+          "gateway-078",
+          "gateway-079",
+          "gateway-080",
+          "gateway-081",
+          "gateway-082",
+          "gateway-083",
+          "gateway-084",
+          "gateway-085",
+          "gateway-086",
+          "gateway-087"
+        ]
+      },
+      {
+        "suite": "core",
+        "command": "pnpm test",
+        "cwd": "apps/paperbanana-api",
+        "exit": 1,
+        "seconds": 537.87,
+        "counts": {
+          "tests": 1618,
+          "suites": 0,
+          "pass": 1346,
+          "fail": 271,
+          "cancelled": 0,
+          "skipped": 1,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/history-free/core.log",
+        "sha256": "d4b17e3c3b3104e8640b27114f3d93502a4e08b9cf1cfc8eca37cae13925fcf1",
+        "missingHistory": false,
+        "failureIds": [
+          "core-001",
+          "core-002",
+          "core-003",
+          "core-004",
+          "core-005",
+          "core-006",
+          "core-007",
+          "core-008",
+          "core-009",
+          "core-010",
+          "core-011",
+          "core-012",
+          "core-013",
+          "core-014",
+          "core-015",
+          "core-016",
+          "core-017",
+          "core-018",
+          "core-019",
+          "core-020",
+          "core-021",
+          "core-022",
+          "core-023",
+          "core-024",
+          "core-025",
+          "core-026",
+          "core-027",
+          "core-028",
+          "core-029",
+          "core-030",
+          "core-031",
+          "core-032",
+          "core-033",
+          "core-034",
+          "core-035",
+          "core-036",
+          "core-037",
+          "core-038",
+          "core-039",
+          "core-040",
+          "core-041",
+          "core-042",
+          "core-043",
+          "core-044",
+          "core-045",
+          "core-046",
+          "core-047",
+          "core-048",
+          "core-049",
+          "core-050",
+          "core-051",
+          "core-052",
+          "core-053",
+          "core-054",
+          "core-055",
+          "core-056",
+          "core-057",
+          "core-058",
+          "core-059",
+          "core-060",
+          "core-061",
+          "core-062",
+          "core-063",
+          "core-064",
+          "core-065",
+          "core-066",
+          "core-067",
+          "core-068",
+          "core-069",
+          "core-070",
+          "core-071",
+          "core-072",
+          "core-073",
+          "core-074",
+          "core-075",
+          "core-076",
+          "core-077",
+          "core-078",
+          "core-079",
+          "core-080",
+          "core-081",
+          "core-082",
+          "core-083",
+          "core-084",
+          "core-085",
+          "core-086",
+          "core-087",
+          "core-088",
+          "core-089",
+          "core-090",
+          "core-091",
+          "core-092",
+          "core-093",
+          "core-094",
+          "core-095",
+          "core-096",
+          "core-097",
+          "core-098",
+          "core-099",
+          "core-100",
+          "core-101",
+          "core-102",
+          "core-103",
+          "core-104",
+          "core-105",
+          "core-106",
+          "core-107",
+          "core-108",
+          "core-109",
+          "core-110",
+          "core-111",
+          "core-112",
+          "core-113",
+          "core-114",
+          "core-115",
+          "core-116",
+          "core-117",
+          "core-118",
+          "core-119",
+          "core-120",
+          "core-121",
+          "core-122",
+          "core-123",
+          "core-124",
+          "core-125",
+          "core-271",
+          "core-126",
+          "core-127",
+          "core-128",
+          "core-129",
+          "core-130",
+          "core-131",
+          "core-132",
+          "core-133",
+          "core-134",
+          "core-135",
+          "core-136",
+          "core-137",
+          "core-138",
+          "core-139",
+          "core-140",
+          "core-141",
+          "core-142",
+          "core-143",
+          "core-144",
+          "core-145",
+          "core-146",
+          "core-147",
+          "core-148",
+          "core-149",
+          "core-150",
+          "core-151",
+          "core-152",
+          "core-153",
+          "core-154",
+          "core-155",
+          "core-156",
+          "core-157",
+          "core-158",
+          "core-159",
+          "core-160",
+          "core-161",
+          "core-162",
+          "core-163",
+          "core-164",
+          "core-165",
+          "core-166",
+          "core-167",
+          "core-168",
+          "core-169",
+          "core-170",
+          "core-171",
+          "core-172",
+          "core-173",
+          "core-174",
+          "core-175",
+          "core-176",
+          "core-177",
+          "core-178",
+          "core-179",
+          "core-180",
+          "core-181",
+          "core-182",
+          "core-183",
+          "core-184",
+          "core-185",
+          "core-186",
+          "core-187",
+          "core-188",
+          "core-189",
+          "core-190",
+          "core-191",
+          "core-192",
+          "core-193",
+          "core-194",
+          "core-195",
+          "core-196",
+          "core-197",
+          "core-198",
+          "core-199",
+          "core-200",
+          "core-201",
+          "core-202",
+          "core-203",
+          "core-204",
+          "core-205",
+          "core-206",
+          "core-207",
+          "core-208",
+          "core-209",
+          "core-210",
+          "core-211",
+          "core-212",
+          "core-213",
+          "core-214",
+          "core-215",
+          "core-216",
+          "core-217",
+          "core-218",
+          "core-219",
+          "core-220",
+          "core-221",
+          "core-222",
+          "core-223",
+          "core-224",
+          "core-225",
+          "core-226",
+          "core-227",
+          "core-228",
+          "core-229",
+          "core-230",
+          "core-231",
+          "core-232",
+          "core-233",
+          "core-234",
+          "core-235",
+          "core-236",
+          "core-237",
+          "core-238",
+          "core-239",
+          "core-240",
+          "core-241",
+          "core-242",
+          "core-243",
+          "core-244",
+          "core-245",
+          "core-246",
+          "core-247",
+          "core-248",
+          "core-249",
+          "core-250",
+          "core-251",
+          "core-252",
+          "core-253",
+          "core-254",
+          "core-255",
+          "core-256",
+          "core-257",
+          "core-258",
+          "core-259",
+          "core-260",
+          "core-261",
+          "core-262",
+          "core-263",
+          "core-264",
+          "core-265",
+          "core-266",
+          "core-267",
+          "core-268",
+          "core-269",
+          "core-270"
+        ]
+      },
+      {
+        "suite": "web",
+        "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+        "cwd": "apps/web",
+        "exit": 0,
+        "seconds": 455.22,
+        "counts": {
+          "tests": 1477,
+          "suites": 0,
+          "pass": 1477,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/history-free/web.log",
+        "sha256": "d7ad637fb2ae1d6c943efe42b2ba66861a808e531193e9e9cda83f06d7f30562",
+        "missingHistory": false,
+        "failureIds": []
+      },
+      {
+        "suite": "mini",
+        "command": "node --test apps/miniprogram/tests/*.test.cjs",
+        "cwd": ".",
+        "exit": 0,
+        "seconds": 17.9,
+        "counts": {
+          "tests": 166,
+          "suites": 0,
+          "pass": 166,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/history-free/mini.log",
+        "sha256": "016fb3b2a8b8f085788c25c2f9a8ab44f46b72420131d2978d66eb98a46bba7d",
+        "missingHistory": false,
+        "failureIds": []
+      },
+      {
+        "suite": "scripts",
+        "command": "node --test scripts/*.test.mjs",
+        "cwd": ".",
+        "exit": 0,
+        "seconds": 3.23,
+        "counts": {
+          "tests": 54,
+          "suites": 0,
+          "pass": 54,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/history-free/scripts.log",
+        "sha256": "c304e028cb4da789c5fcc553ff62d3f4524ec9ea404e5b94690563b4c1887613",
+        "missingHistory": false,
+        "failureIds": []
+      },
+      {
+        "suite": "api",
+        "command": "node --test packages/api/src/*.test.js",
+        "cwd": ".",
+        "exit": 0,
+        "seconds": 0.14,
+        "counts": {
+          "tests": 33,
+          "suites": 0,
+          "pass": 33,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/history-free/api.log",
+        "sha256": "5c6bc3d23614297f26e567213614349a3a6292263225eaa73278adfdc3a61ea0",
+        "missingHistory": false,
+        "failureIds": []
+      },
+      {
+        "suite": "root",
+        "command": "node --test tests/*.test.mjs",
+        "cwd": ".",
+        "exit": 1,
+        "seconds": 2.59,
+        "counts": {
+          "tests": 32,
+          "suites": 0,
+          "pass": 27,
+          "fail": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "log": "/tmp/r22d-logs/history-free/root.log",
+        "sha256": "899a7d85d4aa3f0461b789b7ce468927be6cc716e7e5872da588a833c3010555",
+        "missingHistory": false,
+        "failureIds": [
+          "root-001",
+          "root-002",
+          "root-003",
+          "root-004",
+          "root-005"
+        ]
+      }
+    ]
+  },
+  "maintenanceChecks": {
+    "worktree": [
+      {
+        "script": "freeze-audit-sources",
+        "args": [],
+        "exit": 0,
+        "skipped": false
+      },
+      {
+        "script": "freeze-execution-capability",
+        "args": [],
+        "exit": 0,
+        "skipped": false
+      },
+      {
+        "script": "report-changed-tests",
+        "args": [],
+        "exit": 0,
+        "skipped": false
+      },
+      {
+        "script": "report-model-card-r10",
+        "args": [
+          "--frozen-head"
+        ],
+        "exit": 0,
+        "skipped": false
+      },
+      {
+        "script": "report-model-card-r11",
+        "args": [
+          "--frozen-main",
+          "--frozen-head"
+        ],
+        "exit": 0,
+        "skipped": false
+      },
+      {
+        "script": "report-model-card-r12",
+        "args": [
+          "--frozen-head"
+        ],
+        "exit": 0,
+        "skipped": false
+      },
+      {
+        "script": "report-model-modality-r21",
+        "args": [
+          "/tmp/r22d-r21-worktree"
+        ],
+        "exit": 0,
+        "skipped": false
+      },
+      {
+        "script": "report-model-modality-phase2",
+        "args": [],
+        "exit": 0,
+        "skipped": false
+      },
+      {
+        "script": "report-model-modality-r22b",
+        "args": [],
+        "exit": 0,
+        "skipped": false
+      },
+      {
+        "script": "prepare-model-card-r12-fixtures",
+        "args": [],
+        "exit": 0,
+        "skipped": false,
+        "verifiedAfterFreezingStaticCatalog": true
+      }
+    ],
+    "history-free": [
+      {
+        "script": "freeze-audit-sources",
+        "args": [],
+        "exit": 0,
+        "skipped": true
+      },
+      {
+        "script": "freeze-execution-capability",
+        "args": [],
+        "exit": 0,
+        "skipped": true
+      },
+      {
+        "script": "report-changed-tests",
+        "args": [],
+        "exit": 0,
+        "skipped": true
+      },
+      {
+        "script": "report-model-card-r10",
+        "args": [
+          "--frozen-head"
+        ],
+        "exit": 0,
+        "skipped": true
+      },
+      {
+        "script": "report-model-card-r11",
+        "args": [
+          "--frozen-main",
+          "--frozen-head"
+        ],
+        "exit": 0,
+        "skipped": true
+      },
+      {
+        "script": "report-model-card-r12",
+        "args": [
+          "--frozen-head"
+        ],
+        "exit": 0,
+        "skipped": true
+      },
+      {
+        "script": "report-model-modality-r21",
+        "args": [
+          "/tmp/r22d-r21-history-free"
+        ],
+        "exit": 0,
+        "skipped": true
+      },
+      {
+        "script": "report-model-modality-phase2",
+        "args": [],
+        "exit": 0,
+        "skipped": true
+      },
+      {
+        "script": "report-model-modality-r22b",
+        "args": [],
+        "exit": 0,
+        "skipped": true
+      },
+      {
+        "script": "prepare-model-card-r12-fixtures",
+        "args": [],
+        "exit": 0,
+        "skipped": true
+      }
+    ]
+  },
+  "limits": [
+    "The no-history copy shares installed dependencies; no fresh installation or actual GitHub Actions run.",
+    "Sandbox localhost listen EPERM failures are retained, not converted to passes/skips.",
+    "No external network, secret access, paid calls, deploys, image builds or other-worktree operations."
+  ],
+  "failureCatalog": [
+    {
+      "id": "gateway-001",
+      "suite": "gateway",
+      "name": "HTTP profile requires current account, trusted write origin and JSON; activity never accepts a body identity",
+      "location": "tests/account-profile.test.js:78:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-002",
+      "suite": "gateway",
+      "name": "allows exact WeChat origins and rejects lookalike domains",
+      "location": "tests/app.test.js:155:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-003",
+      "suite": "gateway",
+      "name": "Better Auth receives bounded request bodies through the Web handler bridge",
+      "location": "tests/app.test.js:212:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-004",
+      "suite": "gateway",
+      "name": "Better Auth rejects bodies larger than 1 MiB with the stable envelope",
+      "location": "tests/app.test.js:227:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-005",
+      "suite": "gateway",
+      "name": "Better Auth counts chunked bytes instead of trusting Content-Length",
+      "location": "tests/app.test.js:241:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-006",
+      "suite": "gateway",
+      "name": "Better Auth still receives a valid chunked body below the limit",
+      "location": "tests/app.test.js:256:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-007",
+      "suite": "gateway",
+      "name": "keeps HTTP-200 business envelopes including public saturation code 429",
+      "location": "tests/app.test.js:269:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-008",
+      "suite": "gateway",
+      "name": "relays a real upstream HTTP status and envelope unchanged",
+      "location": "tests/app.test.js:278:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-009",
+      "suite": "gateway",
+      "name": "optimizeInputs relays the business envelope with an exact anonymous DTO and dedicated timeout",
+      "location": "tests/app.test.js:287:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-010",
+      "suite": "gateway",
+      "name": "maintenance blocks optimizeInputs before it reaches the backend",
+      "location": "tests/app.test.js:337:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-011",
+      "suite": "gateway",
+      "name": "modelRegistry is a public read-only backend action",
+      "location": "tests/app.test.js:347:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-012",
+      "suite": "gateway",
+      "name": "large public registries negotiate gzip and preserve every catalog field on the wire",
+      "location": "tests/app.test.js:364:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-013",
+      "suite": "gateway",
+      "name": "registry errors and other public responses are not compressed by the registry path",
+      "location": "tests/app.test.js:406:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-014",
+      "suite": "gateway",
+      "name": "benchmark public actions are anonymous read-only backend actions",
+      "location": "tests/app.test.js:420:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-015",
+      "suite": "gateway",
+      "name": "benchmark prompt submissions require an account and replace forged identity",
+      "location": "tests/app.test.js:435:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-016",
+      "suite": "gateway",
+      "name": "benchmark admin actions require immutable admin identity before forwarding",
+      "location": "tests/app.test.js:453:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-017",
+      "suite": "gateway",
+      "name": "benchmark prompt moderation actions use the existing immutable admin transport",
+      "location": "tests/app.test.js:468:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-018",
+      "suite": "gateway",
+      "name": "anonymous writes receive a stable guest owner while raw forwarding headers are not relayed",
+      "location": "tests/app.test.js:484:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-019",
+      "suite": "gateway",
+      "name": "logged-in writes use the account identity and never create a guest cookie",
+      "location": "tests/app.test.js:509:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-020",
+      "suite": "gateway",
+      "name": "create and refine preserve explicit mixed routes and legacy fields without top-provider rewrites",
+      "location": "tests/app.test.js:522:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-021",
+      "suite": "gateway",
+      "name": "providerAccountCatalog receives the same authenticated-or-guest write principal as jobs",
+      "location": "tests/app.test.js:585:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-022",
+      "suite": "gateway",
+      "name": "getJob allows a matching guest owner and rejects missing or mismatched ownership",
+      "location": "tests/app.test.js:613:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-023",
+      "suite": "gateway",
+      "name": "getJob rejects historical email-only ownership and accepts immutable-id admins",
+      "location": "tests/app.test.js:636:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-024",
+      "suite": "gateway",
+      "name": "matching an admin email or caller token never grants admin access",
+      "location": "tests/app.test.js:652:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-025",
+      "suite": "gateway",
+      "name": "getJob rotates a valid previous-key guest cookie while preserving access",
+      "location": "tests/app.test.js:681:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-026",
+      "suite": "gateway",
+      "name": "guest identity never enables myJobs, admin lists, or account deletion",
+      "location": "tests/app.test.js:715:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-027",
+      "suite": "gateway",
+      "name": "refine checks source job ownership before dispatch and prefers the object key",
+      "location": "tests/app.test.js:734:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-028",
+      "suite": "gateway",
+      "name": "refine rejects cross-owner object keys and external URLs before dispatch",
+      "location": "tests/app.test.js:760:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-029",
+      "suite": "gateway",
+      "name": "maintenance mode dynamically blocks the exact mutating set but preserves reads and auth",
+      "location": "tests/app.test.js:784:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-030",
+      "suite": "gateway",
+      "name": "health is cached liveness, ready probes dependencies, and public routes expose the Node backend",
+      "location": "tests/app.test.js:810:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-031",
+      "suite": "gateway",
+      "name": "ready returns 503 if either auth or backend is unavailable",
+      "location": "tests/app.test.js:841:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-032",
+      "suite": "gateway",
+      "name": "account deletion mutates auth only after semantic backend success",
+      "location": "tests/app.test.js:850:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-033",
+      "suite": "gateway",
+      "name": "account deletion preflights the v3 contract before any destructive backend call",
+      "location": "tests/app.test.js:875:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-034",
+      "suite": "gateway",
+      "name": "concurrent account deletion requests share one destructive operation",
+      "location": "tests/app.test.js:897:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-035",
+      "suite": "gateway",
+      "name": "account deletion succeeds after commit even when cookie clearing fails",
+      "location": "tests/app.test.js:939:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-036",
+      "suite": "gateway",
+      "name": "account deletion treats password-store failures as internal errors, not bad passwords",
+      "location": "tests/app.test.js:965:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-037",
+      "suite": "gateway",
+      "name": "unexpected internal failures return a generic 500 and log only redacted detail",
+      "location": "tests/app.test.js:984:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-038",
+      "suite": "gateway",
+      "name": "route-shaped multi-key failures keep every BYOK secret out of logs and the public 500",
+      "location": "tests/app.test.js:1016:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-039",
+      "suite": "gateway",
+      "name": "account deletion persists retry on business failure or incomplete success without deleting Auth",
+      "location": "tests/app.test.js:1044:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-040",
+      "suite": "gateway",
+      "name": "account deletion refuses a legacy cleanup response that cannot prove complete object deletion",
+      "location": "tests/app.test.js:1061:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-041",
+      "suite": "gateway",
+      "name": "maintenance blocks account deletion before password or backend calls",
+      "location": "tests/app.test.js:1076:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-042",
+      "suite": "gateway",
+      "name": "returns a stable 1 MiB JSON body error envelope",
+      "location": "tests/app.test.js:1091:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-043",
+      "suite": "gateway",
+      "name": "account status uses the session identity and internal deletion actions are not public",
+      "location": "tests/app.test.js:1104:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-044",
+      "suite": "gateway",
+      "name": "a durable deletion blocks new work even before Core first accepts the cleanup request",
+      "location": "tests/app.test.js:1117:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-045",
+      "suite": "gateway",
+      "name": "maintenance blocks Watcha mutations and OAuth callback while allowing status and email sign-in",
+      "location": "tests/app.test.js:1128:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-046",
+      "suite": "gateway",
+      "name": "account deletion confirmation replaces only password reauthentication and keeps email matching",
+      "location": "tests/app.test.js:1152:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-047",
+      "suite": "gateway",
+      "name": "metadata catalog forwards only the selected channel key and explicit directory credentials",
+      "location": "tests/app.test.js:1170:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-048",
+      "suite": "gateway",
+      "name": "production workspace execution is advertised only with all durable stores mounted",
+      "location": "tests/app.test.js:1183:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-049",
+      "suite": "gateway",
+      "name": "production requires login before any task, upload, export or paid helper can be dispatched",
+      "location": "tests/app.test.js:1197:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-050",
+      "suite": "gateway",
+      "name": "paused workspace execution cannot resume against a newly selected business space or region",
+      "location": "tests/bailian-workspace.test.js:29:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-051",
+      "suite": "gateway",
+      "name": "ecosystem requires live account and trusted origin before parsing and forwarding",
+      "location": "tests/ecosystem.test.js:20:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-052",
+      "suite": "gateway",
+      "name": "unconfigured or maintained service fails closed, never touching Core or worker",
+      "location": "tests/ecosystem.test.js:32:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-053",
+      "suite": "gateway",
+      "name": "malformed and excessive payloads never reach the worker",
+      "location": "tests/ecosystem.test.js:37:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-054",
+      "suite": "gateway",
+      "name": "gateway preserves duplicate JSON properties for strict worker rejection",
+      "location": "tests/ecosystem.test.js:45:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-055",
+      "suite": "gateway",
+      "name": "worker errors are bounded and hidden; expired sessions cannot receive results",
+      "location": "tests/ecosystem.test.js:53:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-056",
+      "suite": "gateway",
+      "name": "concurrent account renders are rejected, then released after completion",
+      "location": "tests/ecosystem.test.js:62:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-057",
+      "suite": "gateway",
+      "name": "worker timeout aborts the request and rate window bounds repeated renders",
+      "location": "tests/ecosystem.test.js:69:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-058",
+      "suite": "gateway",
+      "name": "image HTTP routes require session, origin and account; map only live tasks and never trust supplied ownership",
+      "location": "tests/image-library.test.js:7:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-059",
+      "suite": "gateway",
+      "name": "initialize advertises only tools and resources without creating state",
+      "location": "tests/mcp.test.js:98:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-060",
+      "suite": "gateway",
+      "name": "tools/list exposes one read-only closed-schema tool",
+      "location": "tests/mcp.test.js:119:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-061",
+      "suite": "gateway",
+      "name": "tool calls return the selected public workflow without forwarding arguments",
+      "location": "tests/mcp.test.js:138:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-062",
+      "suite": "gateway",
+      "name": "tool calls reject free text, extra fields, invalid versions, and invalid enums",
+      "location": "tests/mcp.test.js:160:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-063",
+      "suite": "gateway",
+      "name": "resources list in stable order and dynamic workflow resources can be read",
+      "location": "tests/mcp.test.js:185:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-064",
+      "suite": "gateway",
+      "name": "MCP has an independent 64 KiB request ceiling",
+      "location": "tests/mcp.test.js:210:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-065",
+      "suite": "gateway",
+      "name": "anonymous journal and taxonomy resources retain their wire hashes without business calls",
+      "location": "tests/mcp.test.js:221:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-066",
+      "suite": "gateway",
+      "name": "MCP limits each client IP to 60 requests per minute",
+      "location": "tests/mcp.test.js:236:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-067",
+      "suite": "gateway",
+      "name": "MCP operational logs exclude arguments and user-controlled values",
+      "location": "tests/mcp.test.js:248:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-068",
+      "suite": "gateway",
+      "name": "MCP logs normalize unknown method names instead of recording arbitrary text",
+      "location": "tests/mcp.test.js:270:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-069",
+      "suite": "gateway",
+      "name": "stateless MCP serves concurrent read requests without sessions",
+      "location": "tests/mcp.test.js:281:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-070",
+      "suite": "gateway",
+      "name": "library writes require current identity and trusted Origin; lifecycle closure cannot leave a late write",
+      "location": "tests/model-library.test.js:25:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-071",
+      "suite": "gateway",
+      "name": "malformed JSON never reflects a credential fragment in its error",
+      "location": "tests/model-library.test.js:33:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-072",
+      "suite": "gateway",
+      "name": "authentication excludes anonymous, cookie, query, expired keys and browser requests",
+      "location": "tests/ops-agent.test.js:76:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-073",
+      "suite": "gateway",
+      "name": "HTTP responses and audits use fixed projections, scopes, methods and bounded queries",
+      "location": "tests/ops-agent.test.js:89:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-074",
+      "suite": "gateway",
+      "name": "MCP initialize/discovery/parallel tool calls work statelessly with no write tools",
+      "location": "tests/ops-agent.test.js:119:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-075",
+      "suite": "gateway",
+      "name": "bounded per-credential rate limit and body limit",
+      "location": "tests/ops-agent.test.js:141:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-076",
+      "suite": "gateway",
+      "name": "actual Gateway mounts private ops before public CORS/auth and keeps public MCP separate",
+      "location": "tests/ops-agent.test.js:213:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-077",
+      "suite": "gateway",
+      "name": "every Plus route rejects ordinary or forged admin requests before payment or ledger access",
+      "location": "tests/plus-access.test.js:7:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-078",
+      "suite": "gateway",
+      "name": "admin-only router fails closed when no admin checker is wired",
+      "location": "tests/plus-access.test.js:31:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-079",
+      "suite": "gateway",
+      "name": "HTTP deletion authenticates account and origin; cleanup failure is durable and GET retries without rerunning any model",
+      "location": "tests/workspace-deletion.test.js:27:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-080",
+      "suite": "gateway",
+      "name": "HTTP envelope preserves normal downstream route; credentials are resolved only for selected roles, no replay after lost response",
+      "location": "tests/workspace-execution.test.js:17:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-081",
+      "suite": "gateway",
+      "name": "input optimization resolves only main credentials and shares the task execution lock",
+      "location": "tests/workspace-execution.test.js:44:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-082",
+      "suite": "gateway",
+      "name": "paused execution resumes only its original job and binding; duplicate resume never dispatches twice",
+      "location": "tests/workspace-execution.test.js:55:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-083",
+      "suite": "gateway",
+      "name": "a stale competing run cannot dispatch after the previous task lock is released",
+      "location": "tests/workspace-execution.test.js:65:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-084",
+      "suite": "gateway",
+      "name": "workspace is rechecked after slow routing and atomic claim before dispatch",
+      "location": "tests/workspace-execution.test.js:72:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-085",
+      "suite": "gateway",
+      "name": "history route authenticates, binds pagination to session identity and rejects foreign jobs even for administrators",
+      "location": "tests/workspace-history.test.js:6:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-086",
+      "suite": "gateway",
+      "name": "HTTP routes require live identity, matching account header and trusted write origin",
+      "location": "tests/workspace-sync.test.js:35:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "gateway-087",
+      "suite": "gateway",
+      "name": "revision-only reads work across trusted origins with the same account and preserve CAS",
+      "location": "tests/workspace-sync.test.js:72:1",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-001",
+      "suite": "core",
+      "name": "all three exact models receive identical private picture bytes via text and vision, and one failed request never falls back",
+      "location": "tests/bailian-multimodal.test.ts:1:1743",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-002",
+      "suite": "core",
+      "name": "exact image count, bytes, type and request-size limits stop locally before model POST",
+      "location": "tests/bailian-multimodal.test.ts:1:3980",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-003",
+      "suite": "core",
+      "name": "uploaded image and document optimization uses each selected workspace model with owned original materials",
+      "location": "tests/bailian-multimodal.test.ts:1:5012",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-004",
+      "suite": "core",
+      "name": "new exact IDs use one workspace request, SSE final text only, fixed sampling defaults and no fallback",
+      "location": "tests/bailian-workspace.test.ts:1:2055",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-005",
+      "suite": "core",
+      "name": "Core admission and input optimization preserve workspace identity; unconfigured legacy requests stop locally",
+      "location": "tests/bailian-workspace.test.ts:1:4516",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-006",
+      "suite": "core",
+      "name": "Gateway/Core generation carries the same workspace through planning, SVG/PNG rendering and main-model review",
+      "location": "tests/bailian-workspace.test.ts:1:6500",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-007",
+      "suite": "core",
+      "name": "new native text and image routes send exact IDs and retain request ceilings (mock transport)",
+      "location": "tests/catalog-20261009.test.ts:1:1943",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-008",
+      "suite": "core",
+      "name": "live OpenRouter specifications remain channel-specific, reject invalid limits and preserve image admission gates",
+      "location": "tests/catalog-20261009.test.ts:1:3701",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-009",
+      "suite": "core",
+      "name": "new fal selections obey the independently captured per-side, alignment and pixel-area constraints",
+      "location": "tests/catalog-20261016.test.ts:1:1072",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-010",
+      "suite": "core",
+      "name": "reviewed TokenDance absences remain blocked and newly discovered specialist models gain no roles",
+      "location": "tests/catalog-20261016.test.ts:1:2345",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-011",
+      "suite": "core",
+      "name": "new text and vision selections reach exact channel URLs and preserve output ceilings (mock transport)",
+      "location": "tests/catalog-20261016.test.ts:1:5199",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-012",
+      "suite": "core",
+      "name": "all new image routes build generation and source-edit requests and recover without a second submission",
+      "location": "tests/catalog-20261016.test.ts:1:7371",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-013",
+      "suite": "core",
+      "name": "Qwen 2.1 uses synchronous DashScope, one result and channel-specific pixel sizes",
+      "location": "tests/catalog-20261016.test.ts:1:11027",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-014",
+      "suite": "core",
+      "name": "current public OpenRouter additions are dynamic; batch and undocumented image formats stay gated",
+      "location": "tests/catalog-20261016.test.ts:1:12145",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-015",
+      "suite": "core",
+      "name": "new channel identities use existing exact endpoints, roles, response parser and one submission",
+      "location": "tests/catalog-20261019.test.ts:1:2640",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-016",
+      "suite": "core",
+      "name": "Ark official EOS disables historical IDs and honors both future UTC+8 boundaries without transport",
+      "location": "tests/catalog-20261019.test.ts:1:5616",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-017",
+      "suite": "core",
+      "name": "every added route submits one exact mocked request, preserving channel parameter differences",
+      "location": "tests/catalog-20261026.test.ts:1:2919",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-018",
+      "suite": "core",
+      "name": "new retirement metadata retains identities and date-only evidence; effective expiries block without a transport",
+      "location": "tests/catalog-20261026.test.ts:1:5060",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-019",
+      "suite": "core",
+      "name": "Together corrected identity stays available through account refresh and sends the exact ID to a mock transport",
+      "location": "tests/catalog-20261031.test.ts:1:1754",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-020",
+      "suite": "core",
+      "name": "audited fal removal survives cold failure and stale discovery, and saved routes never reach transport",
+      "location": "tests/catalog-20261031.test.ts:1:3177",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-021",
+      "suite": "core",
+      "name": "Novita narrows pending metadata without importing generic chat modalities; Stability is excluded but its historical identity remains",
+      "location": "tests/catalog-20261031.test.ts:1:5618",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-022",
+      "suite": "core",
+      "name": "Stability conflict removal excludes only Flash and blocks saved routes before transport without rewriting history",
+      "location": "tests/catalog-20261031.test.ts:1:7586",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-023",
+      "suite": "core",
+      "name": "Wan3 saved identity survives; all new image or text calls reject locally",
+      "location": "tests/catalog-adaptation-20261009.test.ts:1:5263",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-024",
+      "suite": "core",
+      "name": "Gateway/Core executes Replicate main and vision through the durable workflow with separate text results",
+      "location": "tests/catalog-adaptation-20261009.test.ts:1:11461",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-025",
+      "suite": "core",
+      "name": "homepage catalog returns while schema pagination is pending; explicit refresh shares and awaits it",
+      "location": "tests/catalog-browse-latency.test.ts:1:256",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-026",
+      "suite": "core",
+      "name": "background catalog browsing preserves retired selections and inference waits for its full guard",
+      "location": "tests/catalog-browse-latency.test.ts:1:1477",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-027",
+      "suite": "core",
+      "name": "Core resolves Ideogram operation sizes and dispatches new SenseNova text ID (mock transport)",
+      "location": "tests/catalog-followup-20261009.test.ts:1:7615",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-028",
+      "suite": "core",
+      "name": "TokenDance MiMo retirement uses the channel cutoff without replacing saved model IDs",
+      "location": "tests/catalog-followup-20261009.test.ts:1:8585",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-029",
+      "suite": "core",
+      "name": "public delisting blocks saved routes before inference, survives refresh errors and can recover",
+      "location": "tests/catalog-retirement-followup.test.ts:1:256",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-030",
+      "suite": "core",
+      "name": "OpenAI shutdown metadata is account-scoped and announced future retirements stay selectable until cutoff",
+      "location": "tests/catalog-retirement-followup.test.ts:1:1444",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-031",
+      "suite": "core",
+      "name": "xAI normalizes WebP references to supported PNG for planning, vision and image editing",
+      "location": "tests/core-composition.test.ts:83:111014",
+      "error": "Error: 官方服务已于 2026-11-02 到期",
+      "category": "expired-model-date"
+    },
+    {
+      "id": "core-032",
+      "suite": "core",
+      "name": "actual typed runtime uses plan/extraction/review with exact version evidence; generic SVG tests retain old route",
+      "location": "tests/diagram-topology-runtime.test.ts:1:7503",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-033",
+      "suite": "core",
+      "name": "one explicit extraction correction preserves both raw responses and never changes the review budget",
+      "location": "tests/diagram-topology-runtime.test.ts:1:8328",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-034",
+      "suite": "core",
+      "name": "schema-only critique retries the exact same version within budget and omits every old visual opinion",
+      "location": "tests/diagram-topology-runtime.test.ts:1:9924",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-035",
+      "suite": "core",
+      "name": "mixed substantive/schema critique, wrong-version responses and uncertain provider results do not trigger protocol retry",
+      "location": "tests/diagram-topology-runtime.test.ts:1:11526",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-036",
+      "suite": "core",
+      "name": "raw-evidence storage failure stops before extraction correction or same-version rereview",
+      "location": "tests/diagram-topology-runtime.test.ts:1:12834",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-037",
+      "suite": "core",
+      "name": "durable resume reuses accepted extraction/correction/first review and retries only a definitively rejected next review",
+      "location": "tests/diagram-topology-runtime.test.ts:1:13922",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-038",
+      "suite": "core",
+      "name": "unknown, poll-only and cancellation extraction failures cannot enter structural correction",
+      "location": "tests/diagram-topology-runtime.test.ts:1:16298",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-039",
+      "suite": "core",
+      "name": "actual oversized layout fails locally with specific copy and never requests extraction correction",
+      "location": "tests/diagram-topology-runtime.test.ts:1:17039",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-040",
+      "suite": "core",
+      "name": "auxiliary observer schema retry consumes a round; reported problems prevent it and old observation is excluded",
+      "location": "tests/diagram-topology-runtime.test.ts:1:18034",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-041",
+      "suite": "core",
+      "name": "composite overall and fixed bar schema retry stay on the same immutable code/data and existing budget",
+      "location": "tests/diagram-topology-runtime.test.ts:1:19186",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-042",
+      "suite": "core",
+      "name": "wrong semantic inference, missing audit, stale version and ambiguous topology cannot silently pass or fall back",
+      "location": "tests/diagram-topology-runtime.test.ts:1:21502",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-043",
+      "suite": "core",
+      "name": "bounded local layout repair preserves topology and new SVG is unreviewed until a separate actual round",
+      "location": "tests/diagram-topology-runtime.test.ts:1:22452",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-044",
+      "suite": "core",
+      "name": "original mixed workflow and real program bars receive final viewport before planning; final review gets originals and exact geometry at 1K/2K",
+      "location": "tests/diagram-topology-runtime.test.ts:1:23461",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-045",
+      "suite": "core",
+      "name": "model overall passed never overrides deterministic final-panel readability failure",
+      "location": "tests/diagram-topology-runtime.test.ts:1:25914",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-046",
+      "suite": "core",
+      "name": "invalid composite renderer audit retains raw critique and exact current evidence without certifying the review",
+      "location": "tests/diagram-topology-runtime.test.ts:1:26799",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-047",
+      "suite": "core",
+      "name": "failed layout-version storage retains original delivered source, topology and exact reviewed hash",
+      "location": "tests/diagram-topology-runtime.test.ts:1:29969",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-048",
+      "suite": "core",
+      "name": "topology renderer contract reaches reference planning, full stylist, observer and review; invented styling stays advisory",
+      "location": "tests/diagram-topology-runtime.test.ts:1:31064",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-049",
+      "suite": "core",
+      "name": "original unsupported or uncertain style overrides a model pass; missing renderer audit never passes",
+      "location": "tests/diagram-topology-runtime.test.ts:1:32813",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-050",
+      "suite": "core",
+      "name": "fixed bar contract precedes planning/style/review and neither advisory styling nor unsupported revisions changes immutable data",
+      "location": "tests/diagram-topology-runtime.test.ts:1:34187",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-051",
+      "suite": "core",
+      "name": "v2 name/ref runtime retains raw and resolved evidence and validates the current exact source catalogue",
+      "location": "tests/diagram-topology-runtime.test.ts:1:36564",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-052",
+      "suite": "core",
+      "name": "round-five anonymous map hierarchy gets one precisely diagnosed correction and never silently wraps invalid raw",
+      "location": "tests/diagram-topology-runtime.test.ts:1:38863",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-053",
+      "suite": "core",
+      "name": "fixed program single root contract diagnoses misplaced source headers and rereviews unchanged data within budget",
+      "location": "tests/diagram-topology-runtime.test.ts:1:41271",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-054",
+      "suite": "core",
+      "name": "v2 composite catalogues isolate actual child originals and preserve numeric output through raw/resolved program and final audits",
+      "location": "tests/diagram-topology-runtime.test.ts:1:43949",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-055",
+      "suite": "core",
+      "name": "actual durable recovery refuses missing, stale or changed source snapshots before any planner transport and preserves accepted calls",
+      "location": "tests/diagram-topology-runtime.test.ts:1:46332",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-056",
+      "suite": "core",
+      "name": "oversized original source catalogue stops admission without truncation, storage-blame copy or any model call",
+      "location": "tests/diagram-topology-runtime.test.ts:1:49553",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-057",
+      "suite": "core",
+      "name": "all 27 schematic/domain types deliver type rules and real licensed reference pixels in both mocked model routes",
+      "location": "tests/figure-completion-matrix.test.ts:1:2173",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-058",
+      "suite": "core",
+      "name": "mixed and repeated panels × PNG/SVG: actual data worker and vector assembly, per-child automatic references, admission and refine guards",
+      "location": "tests/figure-composite-runtime.test.ts:1:2486",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-059",
+      "suite": "core",
+      "name": "63 typed data routes × PNG/SVG use actual program worker; mocks only replace model planning and visual opinions",
+      "location": "tests/figure-data-matrix.test.ts:1:1289",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-060",
+      "suite": "core",
+      "name": "manual references retain user order and accurately label structural matches and unmatched choices",
+      "location": "tests/figure-manual-match.test.ts:1:248",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-061",
+      "suite": "core",
+      "name": "gateway/Core admission rejects missing data before calls; typed fields survive storage and actual PNG requests/review",
+      "location": "tests/figure-taxonomy.test.ts:1:3579",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-062",
+      "suite": "core",
+      "name": "typed plot sends immutable code to worker, retains data checks, and never sends data to image model at 4K",
+      "location": "tests/figure-taxonomy.test.ts:1:5874",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-063",
+      "suite": "core",
+      "name": "the real dynamic catalog exposes five synchronous routes and excludes five Batch variants without granting image output",
+      "location": "tests/frontier-refresh.test.ts:1:717",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-064",
+      "suite": "core",
+      "name": "all eight exact routes and both roles use audited native fields, omit defaults, and record usage without inventing charges",
+      "location": "tests/frontier-refresh.test.ts:1:2187",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-065",
+      "suite": "core",
+      "name": "refusal and truncated output retain billed usage but never trigger fallback or a second transport",
+      "location": "tests/frontier-refresh.test.ts:1:6579",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-066",
+      "suite": "core",
+      "name": "full/refine repair matrix: actual gateway/Core with synthetic provider responses",
+      "location": "tests/full-refine-flow-fixes.test.ts:1:406",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-067",
+      "suite": "core",
+      "name": "server pins compact prompts into encrypted snapshots; missing version retains old full-stage prompts",
+      "location": "tests/generation-prompt-version.test.ts:1:256",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-068",
+      "suite": "core",
+      "name": "history renews bucket URLs without rewriting selections or calling a model",
+      "location": "tests/history-storage-migration.test.ts:1:142",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-069",
+      "suite": "core",
+      "name": "review-only commands require the dedicated authenticated admin transport",
+      "location": "tests/http.test.ts:1:390",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-070",
+      "suite": "core",
+      "name": "protected API calls require the internal transport header",
+      "location": "tests/http.test.ts:1:2248",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-071",
+      "suite": "core",
+      "name": "POST strips caller tokens, injects the service token, and preserves HTTP-200 business envelopes",
+      "location": "tests/http.test.ts:1:2783",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-072",
+      "suite": "core",
+      "name": "POST exposes only the gateway-authenticated client IP and safe user agent to the legacy handler",
+      "location": "tests/http.test.ts:1:3629",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-073",
+      "suite": "core",
+      "name": "activity identity comes only from the authenticated gateway assertion",
+      "location": "tests/http.test.ts:1:4614",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-074",
+      "suite": "core",
+      "name": "POST accepts a JSON string request body before token sanitization",
+      "location": "tests/http.test.ts:1:5514",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-075",
+      "suite": "core",
+      "name": "POST rejects JSON bodies larger than 1 MiB",
+      "location": "tests/http.test.ts:1:6212",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-076",
+      "suite": "core",
+      "name": "protected scientific v2 freeze transport accepts its bounded production-sized JSON body",
+      "location": "tests/http.test.ts:1:6728",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-077",
+      "suite": "core",
+      "name": "scientific v2 freeze body allowance cannot be reused by a different admin command",
+      "location": "tests/http.test.ts:1:8420",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-078",
+      "suite": "core",
+      "name": "scientific v2 operator diagnostic reaches control with only trusted transport fields",
+      "location": "tests/http.test.ts:1:9946",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-079",
+      "suite": "core",
+      "name": "scientific v2 admin transport exposes only a bounded diagnostic code on rejected operations",
+      "location": "tests/http.test.ts:1:12314",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-080",
+      "suite": "core",
+      "name": "admin actions replace caller adminToken with the server-side admin token",
+      "location": "tests/http.test.ts:1:13908",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-081",
+      "suite": "core",
+      "name": "every benchmark admin action receives only the server-side admin token",
+      "location": "tests/http.test.ts:1:14804",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-082",
+      "suite": "core",
+      "name": "shared gateway token alone cannot authorize benchmark admin actions",
+      "location": "tests/http.test.ts:1:15808",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-083",
+      "suite": "core",
+      "name": "benchmark prompt submission errors preserve login, rate-limit, and validation response codes",
+      "location": "tests/http.test.ts:1:16846",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-084",
+      "suite": "core",
+      "name": "benchmark discovery token can read only modelRegistry",
+      "location": "tests/http.test.ts:1:17954",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-085",
+      "suite": "core",
+      "name": "GET forwards query fields through the protected legacy envelope",
+      "location": "tests/http.test.ts:1:18682",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-086",
+      "suite": "core",
+      "name": "OPTIONS preserves CORS behavior and returns 204 without transport authentication",
+      "location": "tests/http.test.ts:1:19255",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-087",
+      "suite": "core",
+      "name": "health identifies the Node service and reports dependency readiness",
+      "location": "tests/http.test.ts:1:19910",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-088",
+      "suite": "core",
+      "name": "ready returns 503 until every startup dependency is ready",
+      "location": "tests/http.test.ts:1:20331",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-089",
+      "suite": "core",
+      "name": "provider egress degradation is visible while ready remains authoritative for Mongo and OSS",
+      "location": "tests/http.test.ts:1:20822",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-090",
+      "suite": "core",
+      "name": "health remains a liveness success while reporting dependencies as not ready",
+      "location": "tests/http.test.ts:1:21512",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-091",
+      "suite": "core",
+      "name": "health is process-local and does not invoke a stalled readiness probe",
+      "location": "tests/http.test.ts:1:22098",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-092",
+      "suite": "core",
+      "name": "health remains responsive while a readiness request is actively stalled",
+      "location": "tests/http.test.ts:1:22718",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-093",
+      "suite": "core",
+      "name": "large image bodies require the authenticated internal image transport",
+      "location": "tests/http.test.ts:1:23494",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-094",
+      "suite": "core",
+      "name": "journal nature 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-095",
+      "suite": "core",
+      "name": "journal frontiers-ai 2026-10-13.v1 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-096",
+      "suite": "core",
+      "name": "journal frontiers-ai 2026-10-13.v2 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-097",
+      "suite": "core",
+      "name": "journal frontiers-ai 2026-10-13.v5 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-098",
+      "suite": "core",
+      "name": "journal frontiers-ai 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-099",
+      "suite": "core",
+      "name": "journal scientific-reports 2026-10-13.v3 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-100",
+      "suite": "core",
+      "name": "journal scientific-reports 2026-10-13.v4 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-101",
+      "suite": "core",
+      "name": "journal hssc 2026-10-14.v6 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-102",
+      "suite": "core",
+      "name": "journal sage-open 2026-10-14.v6 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-103",
+      "suite": "core",
+      "name": "journal cell-reports 2026-10-14.v6 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-104",
+      "suite": "core",
+      "name": "journal hssc 2026-10-14.v7 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-105",
+      "suite": "core",
+      "name": "journal cell-reports 2026-10-14.v7 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-106",
+      "suite": "core",
+      "name": "journal hssc 2026-10-14.v8 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-107",
+      "suite": "core",
+      "name": "journal cell-reports 2026-10-14.v8 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-108",
+      "suite": "core",
+      "name": "journal hssc 2026-10-14.v9 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-109",
+      "suite": "core",
+      "name": "journal cell-reports 2026-10-14.v9 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-110",
+      "suite": "core",
+      "name": "journal population-research 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-111",
+      "suite": "core",
+      "name": "journal acta-psychologica-sinica 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-112",
+      "suite": "core",
+      "name": "journal advances-psychological-science 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-113",
+      "suite": "core",
+      "name": "journal library-information-service 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-114",
+      "suite": "core",
+      "name": "journal ieee-access 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-115",
+      "suite": "core",
+      "name": "journal scientific-reports 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-116",
+      "suite": "core",
+      "name": "journal cell-reports 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-117",
+      "suite": "core",
+      "name": "journal jingjixuejia 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-118",
+      "suite": "core",
+      "name": "journal caijing-luncong 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-119",
+      "suite": "core",
+      "name": "journal shanxi-finance-economics 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-120",
+      "suite": "core",
+      "name": "journal social-sciences-in-china 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-121",
+      "suite": "core",
+      "name": "journal sage-open 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-122",
+      "suite": "core",
+      "name": "journal hssc 2026-10-19.v11 through actual gateway/Core, frozen job, refine, owned export and history; providers are synthetic",
+      "location": "tests/journal-integration.test.ts:1:2076",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-123",
+      "suite": "core",
+      "name": "PPTX real OOXML and whole-page conversion retain Chinese, charts, tables, notes and pixels",
+      "location": "tests/material-files.test.ts:1:2437",
+      "error": "Error [MaterialError]: Office 整页转换失败：后端未安装 LibreOffice。",
+      "category": "missing-LibreOffice"
+    },
+    {
+      "id": "core-124",
+      "suite": "core",
+      "name": "DOCX/XLSX real reads, unsupported visuals, malformed PPTX, explicit unhandled objects and bounds",
+      "location": "tests/material-files.test.ts:1:6601",
+      "error": "Error [MaterialError]: Office 整页转换失败：后端未安装 LibreOffice。",
+      "category": "missing-LibreOffice"
+    },
+    {
+      "id": "core-125",
+      "suite": "core",
+      "name": "gateway/Core: formats x retrieval x uploads; data and mixed types; revised-version review",
+      "location": "tests/model-material-workflow.test.ts:1:2247",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-126",
+      "suite": "core",
+      "name": "private endpoint requires its read-only header token, is opt-in and does not leak probe errors",
+      "location": "tests/operational-metrics.test.ts:1:1658",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-127",
+      "suite": "core",
+      "name": "Core aggregate routes require independent read credentials; never invoke legacy/admin handlers",
+      "location": "tests/operations-read.test.ts:1:1877",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-128",
+      "suite": "core",
+      "name": "real Gateway/Core reads uploaded attachment contents and images, accepts attachment-only input and enforces ownership",
+      "location": "tests/optimization-materials.test.ts:1:1635",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-129",
+      "suite": "core",
+      "name": "real original bytes → Gateway/Core → scoped JSON tools → model text/page input → format route → version review → restore",
+      "location": "tests/original-material-workflow.test.ts:1:1759",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-130",
+      "suite": "core",
+      "name": "Qwen 3.0 edit sends the exact source bytes inline and rejects bad dimensions before dispatch",
+      "location": "tests/plus-image-input.test.ts:1:167",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-131",
+      "suite": "core",
+      "name": "managed SVG and PNG traverse the real runtime with bounded transport and full receipts JSON",
+      "location": "tests/plus-runtime.test.ts:1:477",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-132",
+      "suite": "core",
+      "name": "managed SVG and PNG traverse the real runtime with bounded transport and full receipts SSE",
+      "location": "tests/plus-runtime.test.ts:1:477",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-133",
+      "suite": "core",
+      "name": "SSE captures one final usage receipt before rejecting truncated or filtered output",
+      "location": "tests/plus-runtime.test.ts:1:6673",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-134",
+      "suite": "core",
+      "name": "Wan 2.7 sends exact validated PNG bytes inline and does not upload a signed URL",
+      "location": "tests/png-bailian.test.ts:1:1893",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-135",
+      "suite": "core",
+      "name": "PNG runtime preserves image without repeating malformed review: malformed=true",
+      "location": "tests/png-review-contract.test.ts:1:3276",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-136",
+      "suite": "core",
+      "name": "PNG runtime preserves image without repeating malformed review: malformed=false",
+      "location": "tests/png-review-contract.test.ts:1:3276",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-137",
+      "suite": "core",
+      "name": "Wan automatic PNG iteration uses the same white canvas for main review and redraw while retaining RGBA versions",
+      "location": "tests/png-white-canvas.test.ts:1:1619",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-138",
+      "suite": "core",
+      "name": "Wan automatic PNG iteration uses the same white canvas for observer review and redraw while retaining RGBA versions",
+      "location": "tests/png-white-canvas.test.ts:1:1619",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-139",
+      "suite": "core",
+      "name": "explicit generation-only image thinking uses an audited text redraw instead of an invalid image-input call",
+      "location": "tests/png-white-canvas.test.ts:1:10054",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-140",
+      "suite": "core",
+      "name": "production regression: 10 auto results fit the actual main or observer budget, then reach generation",
+      "location": "tests/reference-selection.test.ts:1:2463",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-141",
+      "suite": "core",
+      "name": "no useful references or fewer references than budget never causes quota filling",
+      "location": "tests/reference-selection.test.ts:1:4863",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-142",
+      "suite": "core",
+      "name": "uploaded and retrieved images share the actual planner budget; corrupted, duplicate bytes and overlarge refs are skipped",
+      "location": "tests/reference-selection.test.ts:1:6257",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-143",
+      "suite": "core",
+      "name": "text-only main cannot consume gallery metadata alone; basic and assist both read images",
+      "location": "tests/reference-selection.test.ts:1:10170",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-144",
+      "suite": "core",
+      "name": "historical 10-vs-8 task gets a read-only Chinese explanation without rewriting uncertain charges",
+      "location": "tests/reference-selection.test.ts:1:12334",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-145",
+      "suite": "core",
+      "name": "reference selection, prepared bytes and completed planner survive balance recovery without repeated calls",
+      "location": "tests/reference-selection.test.ts:1:15387",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-146",
+      "suite": "core",
+      "name": "plot rendering and optional enhancement success or fallback remain separate visible stages",
+      "location": "tests/reference-selection.test.ts:1:16998",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-147",
+      "suite": "core",
+      "name": "SVG generation failure reports rendering after a successful saved plan",
+      "location": "tests/reference-selection.test.ts:1:19251",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-148",
+      "suite": "core",
+      "name": "8 real uploads, >5MiB originals, processing and vanilla main-model analysis reach generation",
+      "location": "tests/reference-upload-policy.test.ts:1:1403",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-149",
+      "suite": "core",
+      "name": "100 MB actual storage roundtrip; ten-file and 10 MB byte ceilings cannot be bypassed",
+      "location": "tests/reference-upload-policy.test.ts:1:4055",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-150",
+      "suite": "core",
+      "name": "decode bounds, lossless failure, actual Base64 request budget, and processing concurrency reject before providers",
+      "location": "tests/reference-upload-policy.test.ts:1:4864",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-151",
+      "suite": "core",
+      "name": "supported photographic WebP is retained before PNG expansion, and Bailian includes its VL fallback bounds",
+      "location": "tests/reference-upload-policy.test.ts:1:6580",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-152",
+      "suite": "core",
+      "name": "Bailian compatibility retry receives derivatives within the actual fallback model budget",
+      "location": "tests/reference-upload-policy.test.ts:1:7977",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-153",
+      "suite": "core",
+      "name": "owned extensionless JPEG sources keep working through Gateway and the real refine adapter",
+      "location": "tests/reference-upload-policy.test.ts:1:9612",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-154",
+      "suite": "core",
+      "name": "SVG retains vector detail at model size and refuses silent text loss; HTTP busy finalize is retryable",
+      "location": "tests/reference-upload-policy.test.ts:1:10975",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-155",
+      "suite": "core",
+      "name": "processed aggregate budget stops a real multi-image batch before a paid transport",
+      "location": "tests/reference-upload-policy.test.ts:1:12723",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-156",
+      "suite": "core",
+      "name": "TokenDance invalid reference bytes fail with actionable input errors before any paid call",
+      "location": "tests/reference-upload-policy.test.ts:1:13285",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-157",
+      "suite": "core",
+      "name": "Seedream 14px is rejected before queueing and 15px reaches the exact refine adapter",
+      "location": "tests/reference-upload-policy.test.ts:1:15269",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-158",
+      "suite": "core",
+      "name": "fal sends source and auxiliary bytes to final image model and freezes metadata",
+      "location": "tests/refine-controls.test.ts:1:2804",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-159",
+      "suite": "core",
+      "name": "replicate sends source and auxiliary bytes to final image model and freezes metadata",
+      "location": "tests/refine-controls.test.ts:1:2804",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-160",
+      "suite": "core",
+      "name": "runware sends source and auxiliary bytes to final image model and freezes metadata",
+      "location": "tests/refine-controls.test.ts:1:2804",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-161",
+      "suite": "core",
+      "name": "tokenhub sends source and auxiliary bytes to final image model and freezes metadata",
+      "location": "tests/refine-controls.test.ts:1:2804",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-162",
+      "suite": "core",
+      "name": "fal mask and structured fields are native; invalid combinations, ownership and dimensions make zero calls",
+      "location": "tests/refine-controls.test.ts:1:4726",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-163",
+      "suite": "core",
+      "name": "refining an owned historical image freezes its orientation-corrected pixels before applying a mask",
+      "location": "tests/refine-controls.test.ts:1:7146",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-164",
+      "suite": "core",
+      "name": "runware lost-submit: recovery never repeats billed submission",
+      "location": "tests/refine-controls.test.ts:1:9352",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-165",
+      "suite": "core",
+      "name": "tokenhub lost-submit: recovery never repeats billed submission",
+      "location": "tests/refine-controls.test.ts:1:9352",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-166",
+      "suite": "core",
+      "name": "fal lost-submit: recovery never repeats billed submission",
+      "location": "tests/refine-controls.test.ts:1:9352",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-167",
+      "suite": "core",
+      "name": "fal download: recovery never repeats billed submission",
+      "location": "tests/refine-controls.test.ts:1:9352",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-168",
+      "suite": "core",
+      "name": "tokenhub download: recovery never repeats billed submission",
+      "location": "tests/refine-controls.test.ts:1:9352",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-169",
+      "suite": "core",
+      "name": "sensenova lost-submit: recovery never repeats billed submission",
+      "location": "tests/refine-controls.test.ts:1:9352",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-170",
+      "suite": "core",
+      "name": "sensenova download: recovery never repeats billed submission",
+      "location": "tests/refine-controls.test.ts:1:9352",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-171",
+      "suite": "core",
+      "name": "qianfan lost-submit: recovery never repeats billed submission",
+      "location": "tests/refine-controls.test.ts:1:9352",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-172",
+      "suite": "core",
+      "name": "qianfan download: recovery never repeats billed submission",
+      "location": "tests/refine-controls.test.ts:1:9352",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-173",
+      "suite": "core",
+      "name": "sensenova/sensenova-u1.5-fast lost-submit: recovery never repeats billed submission",
+      "location": "tests/refine-controls.test.ts:1:9352",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-174",
+      "suite": "core",
+      "name": "sensenova/sensenova-u1.5-fast download: recovery never repeats billed submission",
+      "location": "tests/refine-controls.test.ts:1:9352",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-175",
+      "suite": "core",
+      "name": "refine admission saves frozen source, reference and mask paths before acknowledging; failed persistence makes no call",
+      "location": "tests/refine-controls.test.ts:1:11766",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-176",
+      "suite": "core",
+      "name": "Responses image tool follows existing refine workflow with owned source and auxiliary reference",
+      "location": "tests/refine-controls.test.ts:1:13849",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-177",
+      "suite": "core",
+      "name": "real gateway/Core upload, ownership validation, source snapshot and image editing compose end to end (original identity)",
+      "location": "tests/refine-upload.test.ts:1:376",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-178",
+      "suite": "core",
+      "name": "real gateway/Core upload, ownership validation, source snapshot and image editing compose end to end (restored-fixture-generation)",
+      "location": "tests/refine-upload.test.ts:1:376",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-179",
+      "suite": "core",
+      "name": "finalized sources reject corrupted, mismatched, oversized and animated data before provider calls",
+      "location": "tests/refine-upload.test.ts:1:4515",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-180",
+      "suite": "core",
+      "name": "refine input optimization keeps edit-only context and preservation instructions on the real main route",
+      "location": "tests/refine-upload.test.ts:1:6330",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-181",
+      "suite": "core",
+      "name": "SiliconFlow ERNIE Image retirement preserves the historical ID but prevents new paid requests",
+      "location": "tests/replicate-followup-20261009.test.ts:1:5322",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-182",
+      "suite": "core",
+      "name": "Bailian recognition sends actual image bytes without a public storage URL dependency",
+      "location": "tests/svg-workflow.test.ts:1:730",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-183",
+      "suite": "core",
+      "name": "one SVG round inspects v1 pixels and full code then generates v2, never secretly re-reviews",
+      "location": "tests/svg-workflow.test.ts:1:7513",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-184",
+      "suite": "core",
+      "name": "two SVG rounds with assistant inspect corresponding revisions; main makes code and final decision",
+      "location": "tests/svg-workflow.test.ts:1:9002",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-185",
+      "suite": "core",
+      "name": "zero/basic reviews and five full SVG rounds obey exact generation and inspection budgets",
+      "location": "tests/svg-workflow.test.ts:1:10412",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-186",
+      "suite": "core",
+      "name": "stale, incomplete and failed SVG checks never pass; failed revisions retain inspected problem version",
+      "location": "tests/svg-workflow.test.ts:1:11120",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-187",
+      "suite": "core",
+      "name": "SVG and basic gallery tasks block without vision; basic references contain title, description and real pixels",
+      "location": "tests/svg-workflow.test.ts:1:11969",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-188",
+      "suite": "core",
+      "name": "an unrenderable generated SVG reports a local render failure with no hidden paid repair",
+      "location": "tests/svg-workflow.test.ts:1:13463",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-189",
+      "suite": "core",
+      "name": "Recraft receives full context, actual style refs, then the exact previous raster on revision",
+      "location": "tests/svg-workflow.test.ts:1:14462",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-190",
+      "suite": "core",
+      "name": "fixed compiler contract never leaks into general SVG or an explicitly native typed Recraft route",
+      "location": "tests/svg-workflow.test.ts:1:16503",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-191",
+      "suite": "core",
+      "name": "Recraft rejects incomplete capability, excessive context/count/dimensions before its request",
+      "location": "tests/svg-workflow.test.ts:1:17286",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-192",
+      "suite": "core",
+      "name": "unknown revision submission preserves the inspected SVG in results and stops all later calls",
+      "location": "tests/svg-workflow.test.ts:1:19606",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-193",
+      "suite": "core",
+      "name": "empty auxiliary observations cannot certify SVG quality",
+      "location": "tests/svg-workflow.test.ts:1:20196",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-194",
+      "suite": "core",
+      "name": "safe internal xlink references survive generation and actual rendering unchanged",
+      "location": "tests/svg-workflow.test.ts:1:20607",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-195",
+      "suite": "core",
+      "name": "portrait SVG planning requests a bounded canvas preserving 1:4 ratio",
+      "location": "tests/svg-workflow.test.ts:1:21164",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-196",
+      "suite": "core",
+      "name": "basic direct image understanding ignores inactive vision drafts for signed-in users and rejects anonymous submissions",
+      "location": "tests/svg-workflow.test.ts:1:21898",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-197",
+      "suite": "core",
+      "name": "page and line scope stays partial; PPTX render preserves raw table and chart data alongside pixels",
+      "location": "tests/task-material-lifecycle.test.ts:1:6149",
+      "error": "Error [MaterialError]: Office 整页转换失败：后端未安装 LibreOffice。",
+      "category": "missing-LibreOffice"
+    },
+    {
+      "id": "core-198",
+      "suite": "core",
+      "name": "Core dispatch reaches every new main and vision adapter with exact catalog IDs",
+      "location": "tests/text-channel-adapters.test.ts:1:4984",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-199",
+      "suite": "core",
+      "name": "xiaomi: gateway generation uses separate main and vision routes, records costs and keeps image route",
+      "location": "tests/text-channel-adapters.test.ts:1:7001",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-200",
+      "suite": "core",
+      "name": "tokenhub: gateway generation uses separate main and vision routes, records costs and keeps image route",
+      "location": "tests/text-channel-adapters.test.ts:1:7001",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-201",
+      "suite": "core",
+      "name": "runware: gateway generation uses separate main and vision routes, records costs and keeps image route",
+      "location": "tests/text-channel-adapters.test.ts:1:7001",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-202",
+      "suite": "core",
+      "name": "xiaomi: lost planning reply cannot duplicate an accepted inference",
+      "location": "tests/text-channel-adapters.test.ts:1:8597",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-203",
+      "suite": "core",
+      "name": "tokenhub: lost planning reply cannot duplicate an accepted inference",
+      "location": "tests/text-channel-adapters.test.ts:1:8597",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-204",
+      "suite": "core",
+      "name": "runware: lost planning reply cannot duplicate an accepted inference",
+      "location": "tests/text-channel-adapters.test.ts:1:8597",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-205",
+      "suite": "core",
+      "name": "actual Bailian adapter emits the supplier-specific wire shape, SSE visible text, and no inferred budgets",
+      "location": "tests/thinking-bailian-qianfan-57.test.ts:1:2575",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-206",
+      "suite": "core",
+      "name": "actual Qianfan text and vision adapters keep field shapes and never expose reasoning as the answer",
+      "location": "tests/thinking-qianfan-console-23.test.ts:1:2031",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-207",
+      "suite": "core",
+      "name": "actual MaaS text and vision adapter sends exact switch on existing v2 route without adding other controls",
+      "location": "tests/thinking-remaining-143.test.ts:1:2873",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-208",
+      "suite": "core",
+      "name": "actual Bailian text and vision adapters send switches over SSE and return only visible text",
+      "location": "tests/thinking-remaining-175.test.ts:1:2484",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-209",
+      "suite": "core",
+      "name": "every supported static text/vision identity reaches its actual adapter with the audited fields",
+      "location": "tests/thinking-transport.test.ts:1:1375",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-210",
+      "suite": "core",
+      "name": "actual image builders preserve quality/size while injecting documented native image thinking fields",
+      "location": "tests/thinking-transport.test.ts:1:5323",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-211",
+      "suite": "core",
+      "name": "Gateway create and refine freeze server-compiled settings, expose metadata, and preserve old admission",
+      "location": "tests/thinking-transport.test.ts:1:9271",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-212",
+      "suite": "core",
+      "name": "runtime text/vision wrappers forward actual roles and preserve no-config wire behavior",
+      "location": "tests/thinking-workflow.test.ts:1:12040",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-213",
+      "suite": "core",
+      "name": "TokenDance direct runtimeFetch receives the frozen role setting",
+      "location": "tests/thinking-workflow.test.ts:1:14903",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-214",
+      "suite": "core",
+      "name": "Runware pre-transport thinking validation cannot become a resumable pending task",
+      "location": "tests/thinking-workflow.test.ts:1:16043",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-215",
+      "suite": "core",
+      "name": "real legacy adapters dispatch every eligible text and vision ID plus both Seedream generation/edit protocols",
+      "location": "tests/tokendance.test.ts:1:19818",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-216",
+      "suite": "core",
+      "name": "real Gateway/Core compose login, authorization, generation, balance failure, payment and same-job recovery without recharging the planner",
+      "location": "tests/tokendance.test.ts:1:21491",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-217",
+      "suite": "core",
+      "name": "catalog preflight failures resume the original workflow after retryAt without repeating completed steps or ambiguous paid transport",
+      "location": "tests/tokendance.test.ts:1:28954",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-218",
+      "suite": "core",
+      "name": "authenticated legacy bridge accepts connection-only GET and rejects blank inference routes/key hijacking",
+      "location": "tests/universal-catalog.test.ts:1:14482",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-219",
+      "suite": "core",
+      "name": "Expiring BYOK binds exact connection, requires expiry, and preserves it through encrypted-secret selection",
+      "location": "tests/universal-cloud-tools.test.ts:1:9811",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-220",
+      "suite": "core",
+      "name": "Gateway/Core custom chain keeps exact IDs and per-role endpoints, recovery uses no TokenDance and reuses planner",
+      "location": "tests/universal-workflow.test.ts:1:4414",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-221",
+      "suite": "core",
+      "name": "local capabilities, output budget, key binding and result-unknown refuse calls/replays",
+      "location": "tests/universal-workflow.test.ts:1:6325",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-222",
+      "suite": "core",
+      "name": "custom image budget sums actual inputs and Chinese errors distinguish local and unknown fees",
+      "location": "tests/universal-workflow.test.ts:1:7577",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-223",
+      "suite": "core",
+      "name": "custom critic failure cannot be hidden as successful generation",
+      "location": "tests/universal-workflow.test.ts:1:8565",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-224",
+      "suite": "core",
+      "name": "custom rerender failure cannot be hidden as successful generation",
+      "location": "tests/universal-workflow.test.ts:1:8565",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-225",
+      "suite": "core",
+      "name": "professional role mixing: custom main with native Ant Ling / LongCat / OpenAI routes",
+      "location": "tests/universal-workflow.test.ts:1:10042",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-226",
+      "suite": "core",
+      "name": "professional role mixing: custom vision with native Ant Ling / LongCat / OpenAI routes",
+      "location": "tests/universal-workflow.test.ts:1:10042",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-227",
+      "suite": "core",
+      "name": "professional role mixing: custom image with native Ant Ling / LongCat / OpenAI routes",
+      "location": "tests/universal-workflow.test.ts:1:10042",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-228",
+      "suite": "core",
+      "name": "existing vision route mixes LongCat 2.5 with antling planning and Novita Ming rendering",
+      "location": "tests/universal-workflow.test.ts:1:11770",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-229",
+      "suite": "core",
+      "name": "existing vision route mixes LongCat 2.5 with custom planning and Novita Ming rendering",
+      "location": "tests/universal-workflow.test.ts:1:11770",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-230",
+      "suite": "core",
+      "name": "custom thinking snapshot survives encrypted recovery and reuses successful planner without a second charge",
+      "location": "tests/universal-workflow.test.ts:1:13850",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-231",
+      "suite": "core",
+      "name": "accepted custom job continues without browser polling; reopening reads the same running/completed task",
+      "location": "tests/universal-workflow.test.ts:1:15377",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-232",
+      "suite": "core",
+      "name": "queued createJob is acknowledged only after its encrypted recovery snapshot is saved",
+      "location": "tests/universal-workflow.test.ts:1:16413",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-233",
+      "suite": "core",
+      "name": "snapshot persistence failure refuses admission before model calls and frees queue capacity",
+      "location": "tests/universal-workflow.test.ts:1:18065",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-234",
+      "suite": "core",
+      "name": "Responses tool traverses real create admission and original-task recovery with frozen parameters",
+      "location": "tests/universal-workflow.test.ts:1:19480",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-235",
+      "suite": "core",
+      "name": "expiring image token is checked again after a long planner and renewed only for the original safe task",
+      "location": "tests/universal-workflow.test.ts:1:21521",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-236",
+      "suite": "core",
+      "name": "full model-v1 gateway workflow preserves local veto, original model verdict and output without additional generation",
+      "location": "tests/upstream-repairs.test.ts:1:657",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-237",
+      "suite": "core",
+      "name": "legacy diagnostic evaluation never invents scores or ground truth, and refuses new material contexts before calls",
+      "location": "tests/upstream-repairs.test.ts:1:3953",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-238",
+      "suite": "core",
+      "name": "catalog merge: Replicate main reads images and fal redraw preserve the 4.0 review contract",
+      "location": "tests/workflow-catalog-integration.test.ts:1:1351",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-239",
+      "suite": "core",
+      "name": "catalog merge: Replicate observer and main and fal redraw preserve the 4.0 review contract",
+      "location": "tests/workflow-catalog-integration.test.ts:1:1351",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-240",
+      "suite": "core",
+      "name": "catalog merge: new text-only Replicate route is blocked before any model call when visual review has no observer",
+      "location": "tests/workflow-catalog-integration.test.ts:1:5183",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-241",
+      "suite": "core",
+      "name": "Gateway/Core offline regression: numeric waiver, inactive routes, observer adjudications and existing flow budgets",
+      "location": "tests/workflow-flow-fixes.test.ts:1:432",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-242",
+      "suite": "core",
+      "name": "uncertain redraw stops later candidates and retains completed results and recovery",
+      "location": "tests/workflow-uncertain-calls.test.ts:1:4584",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-243",
+      "suite": "core",
+      "name": "authenticated unmanaged plot enhancement transport uncertainty also stops later candidates",
+      "location": "tests/workflow-uncertain-calls.test.ts:1:7259",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-244",
+      "suite": "core",
+      "name": "parallel uncertainty waits for submitted images to save and stops later paid stages (reviews 0)",
+      "location": "tests/workflow-uncertain-calls.test.ts:1:8989",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-245",
+      "suite": "core",
+      "name": "parallel uncertainty waits for submitted images to save and stops later paid stages (reviews 1)",
+      "location": "tests/workflow-uncertain-calls.test.ts:1:8989",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-246",
+      "suite": "core",
+      "name": "managed in-flight planning cannot start an image after a sibling becomes unknown",
+      "location": "tests/workflow-uncertain-calls.test.ts:1:11706",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-247",
+      "suite": "core",
+      "name": "authenticated unmanaged in-flight planning cannot start an image after a sibling becomes unknown",
+      "location": "tests/workflow-uncertain-calls.test.ts:1:11706",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-248",
+      "suite": "core",
+      "name": "authenticated unmanaged HTTP 500 enhancement stops instead of silently retaining and continuing",
+      "location": "tests/workflow-uncertain-calls.test.ts:1:14142",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-249",
+      "suite": "core",
+      "name": "authenticated unmanaged incomplete HTTP 200 enhancement stops instead of silently retaining and continuing",
+      "location": "tests/workflow-uncertain-calls.test.ts:1:14142",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-250",
+      "suite": "core",
+      "name": "all main capability × optional vision combinations reject before inference or observe then main decides",
+      "location": "tests/workflow-v400.test.ts:1:7503",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-251",
+      "suite": "core",
+      "name": "uploaded references need vision even with zero reviews; SVG review also requires vision",
+      "location": "tests/workflow-v400.test.ts:1:9174",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-252",
+      "suite": "core",
+      "name": "full PNG styling receives complete task context without claiming unattached reference images",
+      "location": "tests/workflow-v400.test.ts:1:10632",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-253",
+      "suite": "core",
+      "name": "1 reviews bind each image version and send its prior image with complete context, without a hidden final review",
+      "location": "tests/workflow-v400.test.ts:1:11628",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-254",
+      "suite": "core",
+      "name": "5 reviews bind each image version and send its prior image with complete context, without a hidden final review",
+      "location": "tests/workflow-v400.test.ts:1:11628",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-255",
+      "suite": "core",
+      "name": "six candidates persist independently; one render failure leaves completed results visible",
+      "location": "tests/workflow-v400.test.ts:1:15408",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-256",
+      "suite": "core",
+      "name": "refinement always sends observation to main then executes the main plan; none + text main rejects",
+      "location": "tests/workflow-v400.test.ts:1:16284",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-257",
+      "suite": "core",
+      "name": "unsupported image route regenerates text only with a visible reason and no model switch",
+      "location": "tests/workflow-v400.test.ts:1:18329",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-258",
+      "suite": "core",
+      "name": "disabled observer ignores inactive credentials for signed-in users and rejects anonymous submissions",
+      "location": "tests/workflow-v400.test.ts:1:19127",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-259",
+      "suite": "core",
+      "name": "review observation normalizes a 4K copy to the chosen vision budget and keeps the full generation image",
+      "location": "tests/workflow-v400.test.ts:1:19858",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-260",
+      "suite": "core",
+      "name": "invalid review never passes, retries or hides the last successful render; native 2K zero-review has no extra enhancement",
+      "location": "tests/workflow-v400.test.ts:1:21366",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-261",
+      "suite": "core",
+      "name": "PNG rejects stale image hash without retrying or discarding the successful image",
+      "location": "tests/workflow-v400.test.ts:1:23153",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-262",
+      "suite": "core",
+      "name": "PNG rejects wrong image version without retrying or discarding the successful image",
+      "location": "tests/workflow-v400.test.ts:1:23153",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-263",
+      "suite": "core",
+      "name": "PNG rejects non-JSON observation without retrying or discarding the successful image",
+      "location": "tests/workflow-v400.test.ts:1:23153",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-264",
+      "suite": "core",
+      "name": "PNG rejects unresolved structured uncertainty with no-change verdict without retrying or discarding the successful image",
+      "location": "tests/workflow-v400.test.ts:1:23153",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-265",
+      "suite": "core",
+      "name": "PNG rejects passed conclusion with explicit findings without retrying or discarding the successful image",
+      "location": "tests/workflow-v400.test.ts:1:23153",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-266",
+      "suite": "core",
+      "name": "PNG revision storage failure delivers the previous image with its own plan and version evidence",
+      "location": "tests/workflow-v400.test.ts:1:24429",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-267",
+      "suite": "core",
+      "name": "completed candidate is public while the next candidate is still rendering; default concurrency remains one",
+      "location": "tests/workflow-v400.test.ts:1:26268",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-268",
+      "suite": "core",
+      "name": "oversize complete Wan prompt is rejected before any image request, without truncation",
+      "location": "tests/workflow-v400.test.ts:1:27363",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-269",
+      "suite": "core",
+      "name": "mixed-provider plot retains image capability and labels actual PNG visual review",
+      "location": "tests/workflow-v400.test.ts:1:27728",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "core-270",
+      "suite": "core",
+      "name": "real Gateway/Core admission accepts unified requirements without a hidden caption, while preserving legacy validation",
+      "location": "tests/workspace-input.test.ts:1:219",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1",
+      "category": "localhost-listen-EPERM"
+    },
+    {
+      "id": "root-001",
+      "suite": "root",
+      "name": "every original audit row has an explicit implementation or exclusion decision",
+      "location": "tests/model-catalog-source-contract.test.mjs:54:1",
+      "error": "AssertionError [ERR_ASSERTION]: siliconflow/baidu/ERNIE-Image-Turbo",
+      "category": "existing-root-contract-assertion"
+    },
+    {
+      "id": "root-002",
+      "suite": "root",
+      "name": "760 historical identities and capabilities remain unchanged except the explicitly added refine controls",
+      "location": "tests/model-version-contract.test.mjs:14:1",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "category": "existing-root-contract-assertion"
+    },
+    {
+      "id": "root-003",
+      "suite": "root",
+      "name": "every static ID carries reviewed version metadata through Web, Mini normalization, and repeated presentation",
+      "location": "tests/model-version-contract.test.mjs:54:1",
+      "error": "AssertionError [ERR_ASSERTION]: siliconflow/deepseek-ai/DeepSeek-V4.1-Flash",
+      "category": "existing-root-contract-assertion"
+    },
+    {
+      "id": "root-004",
+      "suite": "root",
+      "name": "DeepSeek direct and hosted IDs have distinct versions without alias substitution",
+      "location": "tests/model-version-contract.test.mjs:68:1",
+      "error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /待确认/. Input:",
+      "category": "existing-root-contract-assertion"
+    },
+    {
+      "id": "root-005",
+      "suite": "root",
+      "name": "rolling pointers use documented defaults, not the newest snapshot or a date heuristic",
+      "location": "tests/model-version-contract.test.mjs:86:1",
+      "error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /具体版本待确认/. Input:",
+      "category": "existing-root-contract-assertion"
+    },
+    {
+      "id": "core-271",
+      "suite": "core",
+      "name": "phase 2 production bundle dependencies are all included in the Core Docker build context",
+      "location": "tests/model-modality-phase2.test.ts:1:512",
+      "error": "AssertionError [ERR_ASSERTION]: Docker COPY missing ../../../Users/apple/agent-tools/tuyan-dev/Tuyan-wt-modality/packages/benchmark-core/src/hash.ts",
+      "category": "temporary-dependency-symlink"
+    }
+  ],
+  "allFourExecutionLocksPassedInBothRuns": true,
+  "missingHistoryFailures": 0,
+  "preExistingProductAndTestFilesUnchanged": "git diff --name-only -- apps packages config tests produced no entries.",
+  "followupChecks": [
+    {
+      "command": "node --import tsx --test tests/model-modality-phase2.test.ts",
+      "cwd": "/tmp/r22d-ci/apps/paperbanana-api",
+      "exit": 0,
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0
+      },
+      "log": "/tmp/r22d-logs/history-free/core-copy-layout-recheck.log",
+      "sha256": "3f3a0899ff1260a6b095c313b981d6a5286132a72662c874a6226dca8e0af959",
+      "reason": "The initial full-copy run resolved @paperbanana/benchmark-core outside the copy through the requested node_modules symlink. A temporary Core node_modules overlay redirected only that workspace dependency into the copied packages/benchmark-core. Both tests then passed; no repository source/assertion was changed. Initial full-suite results remain recorded above."
+    }
+  ]
+}

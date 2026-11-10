@@ -67,7 +67,7 @@ test('saved presets still show lifecycle and replacement when their library bind
       assert.equal(notice.textContent, 'MiMo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
       assert.deepEqual([...notice.querySelectorAll('.model-name-nowrap')].map(node=>node.textContent), ['MiMo-v2.5',replacement]);
     }
-    else assert.match(screen.getByText('将下线').title,/2027-01-19.*Qwen3.8 Flash/);
+    else assert.match(screen.getByText('将下线').title,/2027年01月19日.*Qwen3.8 Flash/);
     assert.deepEqual(draft,before);view.unmount();
   }
 });
@@ -76,7 +76,7 @@ test('scheduled status stays selectable before deadline and flips without rewrit
   t.mock.method(Date,'now',()=>Date.parse('2027-01-18T23:59:59Z'));
   assert.equal(catalogRows(r).length,1);
   render(React.createElement(ModelSpecifications,{provider:'bailian',model}));
-  assert.match(screen.getByRole('link').title,/将于2027-01-19下线/);assert.match(screen.getByRole('link').title,/Qwen3.8 Flash/);
+  assert.doesNotMatch(screen.getByRole('link').title,/将于2027-01-19下线|核实日期/);
   Date.now.mock.mockImplementation(()=>Date.parse('2027-01-19'));
   assert.equal(catalogRows(r).length,0);assert.deepEqual(model,before);
 });
@@ -86,7 +86,7 @@ test('unknown and explicitly unsupported modalities differ, with no invented tok
   assert.deepEqual(modalityIconStates('不支持',{state:'unsupported',value:null}).map(x=>x.state),Array(4).fill('unsupported'));
   const model=STATIC_MODEL_REGISTRY.openai.models.find(m=>m.id==='gpt-image-2.6-flare');
   const {container}=render(React.createElement(ModelSpecifications,{provider:'openai',model}));
-  assert.equal(screen.getAllByText('不适用').length,2);assert.match(screen.getByRole('link').title,/未核实/);
+  assert.equal(screen.getAllByText('不适用').length,2);assert.doesNotMatch(screen.getByRole('link').title,/未核实|核实日期/);
   assert.equal(container.querySelectorAll('.is-unsupported').length,0);
   assert.equal(container.querySelectorAll('.is-unknown').length,5);
   assert.doesNotMatch([...container.querySelectorAll('dd')].map(n=>n.textContent).join(' '),/tokens|∞|unlimited|\b0\b/);
@@ -108,12 +108,12 @@ test('Ling evidence preserves partial uncertainty and compact sources expose pro
   const view=render(React.createElement(ModelSpecifications,{provider:'antling',model,compactSources:true}));
   assert.equal(view.container.querySelectorAll('dl > div').length,4);
   assert.equal(view.container.querySelectorAll('.is-unknown').length,6);
-  assert.equal(view.container.querySelectorAll('.is-unknown sup').length,0);
+  assert.equal(view.container.querySelectorAll('.is-unknown .model-modality-question[aria-hidden="true"]').length,0);
   assert.equal(screen.queryByText('核实日期'),null);assert.equal(screen.queryByText('未核实'),null);
-  assert.equal(screen.getAllByRole('link').length,1);assert.match(screen.getByRole('link').getAttribute('aria-label'),/2026-11-09/);
+  assert.equal(screen.getAllByRole('link').length,1);assert.doesNotMatch(screen.getByRole('link').getAttribute('aria-label'),/核实日期|2026-11-09/);
   view.unmount();
   render(React.createElement(ModelSpecifications,{provider:'custom',model:{id:'unknown'}}));
-  assert.equal(screen.getAllByRole('img',{name:/：未知$/}).length,8);
+  assert.equal(screen.getAllByRole('img',{name:/^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/}).length,8);
 });
 test('removed models expose an explicit replacement action without changing the saved binding',()=>{
   const models=setup();

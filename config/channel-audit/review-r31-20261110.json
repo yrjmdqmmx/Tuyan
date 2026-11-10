@@ -1,0 +1,944 @@
+{
+  "phase": "R31 Phase I13",
+  "head": "702175ea",
+  "policy": "Public unauthenticated GET, cached once per URL. HTTP 200 and same final URL; exact case-insensitive configured model ID in the supplier identity sentence (not navigation or another model). Every known numeric value must match its labeled field exactly; every listed modality must appear in its corresponding input/output field. Unknown numeric facts remain unknown. Do not infer equivalence between namespaced endpoint IDs or round 1048576 to 1000000. HTML scripts/styles excluded; whitespace collapsed only. Reuses R24 exact-value/excerpt validation and R28 per-field section checks. Only primary links change; facts and dates remain intact.",
+  "pages": {
+    "https://help.aliyun.com/zh/model-studio/z-image-turbo": {
+      "url": "https://help.aliyun.com/zh/model-studio/z-image-turbo",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/z-image-turbo",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:28.492587+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:28.492587+08:00",
+      "sha256": "476e01f959b1ab01a87a8131cd8cd219eb975b7bdd2e1217f459ee82d8223d00",
+      "excerpts": [
+        "推理服务供应商 z-image-turbo 模型的推理服务供应商为阿里云百炼。",
+        "输入模态 Text",
+        "输出模态 Text Image",
+        "上下文长度 —",
+        "最大输出长度 —"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/glm-5-2": {
+      "url": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:28.782899+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:28.782899+08:00",
+      "sha256": "95b464b64b48cb032cde89ff6bf3cada5367a0ce9a4740ac7cbf894c0cd19226",
+      "excerpts": [
+        "推理服务供应商 glm-5.2 模型的推理服务供应商为阿里云百炼。",
+        "输入模态 Text",
+        "输出模态 Text",
+        "上下文长度 1048576",
+        "最大输出长度 131072"
+      ]
+    },
+    "https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf": {
+      "url": "https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf",
+      "status": 200,
+      "finalUrl": "https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:11.385817+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:11.385817+08:00",
+      "sha256": "944dbcd8b8cbe5c3ffcb595edfc9bd98c693cbdf8de64c9ed0da7fb2578a1443",
+      "excerpts": [
+        "prism-ml/Ternary-Bonsai-27B-gguf",
+        "Text Generation GGUF",
+        "Ternary Bonsai 27B"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/minimax-m2-7": {
+      "url": "https://help.aliyun.com/zh/model-studio/minimax-m2-7",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/minimax-m2-7",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:27.745548+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:27.745548+08:00",
+      "sha256": "525d147fecc56e7d4326d85dbe7f37fd545d29f2af4ea5b00e7d40304edb7c7b",
+      "excerpts": [
+        "推理服务供应商 MiniMax/MiniMax-M2.7 模型的推理服务供应商为 MiniMax。",
+        "输入模态 Text",
+        "输出模态 Text",
+        "上下文长度 204800",
+        "最大输出长度 131072"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen3-5-122b-a10b": {
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-122b-a10b",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-122b-a10b",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:27.058048+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:27.058048+08:00",
+      "sha256": "bccc17c6fccf07312e57bea1ffb014d272f79c0cb7651864ce09a2d940e43312",
+      "excerpts": [
+        "推理服务供应商 qwen3.5-122b-a10b 模型的推理服务供应商为阿里云百炼。",
+        "输入模态 Text Image Video",
+        "输出模态 Text",
+        "上下文长度 262144",
+        "最大输出长度 65536"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code": {
+      "url": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:28.113387+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:28.113387+08:00",
+      "sha256": "2dee716acad91769e26c9ca72257726c8208994ef5043d2b32167d32416ed2cd",
+      "excerpts": [
+        "推理服务供应商 kimi-k2.7-code 模型的推理服务供应商为阿里云百炼。",
+        "输入模态 Text Image Video",
+        "输出模态 Text",
+        "上下文长度 262144",
+        "最大输出长度 16384"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/minimax-m2-5": {
+      "url": "https://help.aliyun.com/zh/model-studio/minimax-m2-5",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/minimax-m2-5",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:27.747347+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:27.747347+08:00",
+      "sha256": "16880d0f5b3823629cf343332bbdec32a81484d767403d7ac08a5ce6c9dc8b54",
+      "excerpts": [
+        "推理服务供应商 MiniMax-M2.5 模型的推理服务供应商为阿里云百炼。",
+        "输入模态 Text",
+        "输出模态 Text",
+        "上下文长度 204800",
+        "最大输出长度 32768"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b": {
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:27.059915+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:27.059915+08:00",
+      "sha256": "9cedb6846ae2c377af53f1be8bff90bd3b30570cd1037281601f4a2901e06839",
+      "excerpts": [
+        "推理服务供应商 qwen3.5-35b-a3b 模型的推理服务供应商为阿里云百炼。",
+        "输入模态 Text Image Video",
+        "输出模态 Text",
+        "上下文长度 262144",
+        "最大输出长度 65536"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/kimi-k2-6": {
+      "url": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:28.490705+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:28.490705+08:00",
+      "sha256": "629ee04959bdaea19ce5c06605915d498cf4de9e6000d8876bec8f5aebdbc9f8",
+      "excerpts": [
+        "推理服务供应商 kimi-k2.6 模型的推理服务供应商为阿里云百炼。",
+        "输入模态 Image Text Video",
+        "输出模态 Text",
+        "上下文长度 262144",
+        "最大输出长度 16384"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen3-5": {
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-5",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5",
+      "contentType": "",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:27.057931+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:27.057931+08:00",
+      "sha256": "007cfd82dc55b85c746edaf144bbe36b7f879c61005edd657b1067d506675d9d",
+      "excerpts": []
+    },
+    "https://help.aliyun.com/zh/model-studio/glm-5-3": {
+      "url": "https://help.aliyun.com/zh/model-studio/glm-5-3",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/glm-5-3",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:28.495141+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:28.495141+08:00",
+      "sha256": "bfe157e9729443bfa1cd763a52fd26fb471b3256266abe3039698d2889fb30b3",
+      "excerpts": [
+        "推理服务供应商 glm-5.3 模型的推理服务供应商为阿里云百炼。",
+        "输入模态 Text",
+        "输出模态 Text",
+        "上下文长度 1048576",
+        "最大输出长度 131072"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen3-5-27b": {
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-27b",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-27b",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:27.060528+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:27.060528+08:00",
+      "sha256": "3ce12a778d386fb3a98606b923569f62f9caa4700e4fd0cfe81401d2c409959d",
+      "excerpts": [
+        "推理服务供应商 qwen3.5-27b 模型的推理服务供应商为阿里云百炼。",
+        "输入模态 Text Image Video",
+        "输出模态 Text",
+        "上下文长度 262144",
+        "最大输出长度 65536"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/models": {
+      "url": "https://help.aliyun.com/zh/model-studio/models",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:11.385722+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:11.385722+08:00",
+      "sha256": "0ff2341557f6b97c970aa13d7e5d6b6b74e8e72a1c2dd9c2106202a32d7ed024",
+      "excerpts": []
+    },
+    "https://help.aliyun.com/zh/model-studio/glm-5-1": {
+      "url": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:29.166372+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:29.166372+08:00",
+      "sha256": "f19ea73fae30ddee1dbbf0dcd7a83f752bed98e9725985ceb8c3db66e527e95e",
+      "excerpts": [
+        "推理服务供应商 glm-5.1 模型的推理服务供应商为阿里云百炼。",
+        "输入模态 Text",
+        "输出模态 Text",
+        "上下文长度 202745",
+        "最大输出长度 131072"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/kimi-k3": {
+      "url": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:27.745491+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:27.745491+08:00",
+      "sha256": "0eebe71262d9218d0dff316a7bc3b667e625ef5162b52d4f8faee9ccb5ab0579",
+      "excerpts": [
+        "推理服务供应商 kimi-k3 模型的推理服务供应商为阿里云百炼。",
+        "输入模态 Text Image",
+        "输出模态 Text",
+        "上下文长度 1048576",
+        "最大输出长度 1048576"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/minimax-m3": {
+      "url": "https://help.aliyun.com/zh/model-studio/minimax-m3",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/minimax-m3",
+      "contentType": "text/html;charset=UTF-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T12:48:27.466385+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T20:48:27.466385+08:00",
+      "sha256": "582777e38a2fd82c43804cc25422e708a23872993e93eb99dbab5b1379ac9992",
+      "excerpts": [
+        "推理服务供应商 MiniMax/MiniMax-M3 模型的推理服务供应商为 MiniMax。",
+        "输入模态 Image Text Video",
+        "输出模态 Text",
+        "上下文长度 1048576",
+        "最大输出长度 —"
+      ]
+    }
+  },
+  "candidates": [
+    {
+      "identity": "bailian/ZHIPU/GLM-5.3",
+      "url": "https://help.aliyun.com/zh/model-studio/glm-5-3",
+      "identityQuote": "推理服务供应商 glm-5.3 模型的推理服务供应商为阿里云百炼。",
+      "identityValidated": false,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输入模态 Text",
+          "validated": true
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输出模态 Text",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "known",
+          "value": 1000000,
+          "quote": "上下文长度 1048576",
+          "validated": false
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "known",
+          "value": 131072,
+          "quote": "最大输出长度 131072",
+          "validated": true
+        }
+      ],
+      "validated": false,
+      "displayTitle": "GLM 5.3",
+      "reason": "exact configured identity absent from supplier sentence; totalContextTokens does not contain the stored value",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1glm-5-3"
+    },
+    {
+      "identity": "bailian/MiniMax/MiniMax-M3",
+      "url": "https://help.aliyun.com/zh/model-studio/minimax-m3",
+      "identityQuote": "推理服务供应商 MiniMax/MiniMax-M3 模型的推理服务供应商为 MiniMax。",
+      "identityValidated": true,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "quote": "输入模态 Image Text Video",
+          "validated": true
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输出模态 Text",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "known",
+          "value": 1000000,
+          "quote": "上下文长度 1048576",
+          "validated": false
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "unknown",
+          "value": null,
+          "quote": "最大输出长度 —",
+          "validated": true
+        }
+      ],
+      "validated": false,
+      "displayTitle": "MiniMax M3",
+      "reason": "totalContextTokens does not contain the stored value",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1minimax-m3"
+    },
+    {
+      "identity": "bailian/MiniMax/MiniMax-M2.7",
+      "url": "https://help.aliyun.com/zh/model-studio/minimax-m2-7",
+      "identityQuote": "推理服务供应商 MiniMax/MiniMax-M2.7 模型的推理服务供应商为 MiniMax。",
+      "identityValidated": true,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输入模态 Text",
+          "validated": true
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输出模态 Text",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "known",
+          "value": 204800,
+          "quote": "上下文长度 204800",
+          "validated": true
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "known",
+          "value": 131072,
+          "quote": "最大输出长度 131072",
+          "validated": true
+        }
+      ],
+      "validated": true,
+      "displayTitle": "MiniMax-M2.7",
+      "reason": "Exact identity and all known field values verified.",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1minimax-m2-7"
+    },
+    {
+      "identity": "bailian/MiniMax-M2.5",
+      "url": "https://help.aliyun.com/zh/model-studio/minimax-m2-5",
+      "identityQuote": "推理服务供应商 MiniMax-M2.5 模型的推理服务供应商为阿里云百炼。",
+      "identityValidated": true,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输入模态 Text",
+          "validated": true
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输出模态 Text",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "known",
+          "value": 204800,
+          "quote": "上下文长度 204800",
+          "validated": true
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "known",
+          "value": 32768,
+          "quote": "最大输出长度 32768",
+          "validated": true
+        }
+      ],
+      "validated": true,
+      "displayTitle": "MiniMax-M2.5",
+      "reason": "Exact identity and all known field values verified.",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1minimax-m2-5"
+    },
+    {
+      "identity": "bailian/MiniMax/MiniMax-M2.5",
+      "url": "https://help.aliyun.com/zh/model-studio/minimax-m2-5",
+      "identityQuote": "推理服务供应商 MiniMax-M2.5 模型的推理服务供应商为阿里云百炼。",
+      "identityValidated": false,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输入模态 Text",
+          "validated": true
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输出模态 Text",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "known",
+          "value": 204800,
+          "quote": "上下文长度 204800",
+          "validated": true
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "known",
+          "value": 32768,
+          "quote": "最大输出长度 32768",
+          "validated": true
+        }
+      ],
+      "validated": false,
+      "displayTitle": "MiniMax-M2.5",
+      "reason": "exact configured identity absent from supplier sentence",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1minimax-m2-5"
+    },
+    {
+      "identity": "bailian/ZHIPU/GLM-5.2",
+      "url": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+      "identityQuote": "推理服务供应商 glm-5.2 模型的推理服务供应商为阿里云百炼。",
+      "identityValidated": false,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输入模态 Text",
+          "validated": true
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输出模态 Text",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "known",
+          "value": 1000000,
+          "quote": "上下文长度 1048576",
+          "validated": false
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "known",
+          "value": 131072,
+          "quote": "最大输出长度 131072",
+          "validated": true
+        }
+      ],
+      "validated": false,
+      "displayTitle": "GLM-5.2",
+      "reason": "exact configured identity absent from supplier sentence; totalContextTokens does not contain the stored value",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1glm-5-2"
+    },
+    {
+      "identity": "bailian/ZHIPU/GLM-5.1",
+      "url": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+      "identityQuote": "推理服务供应商 glm-5.1 模型的推理服务供应商为阿里云百炼。",
+      "identityValidated": false,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输入模态 Text",
+          "validated": true
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输出模态 Text",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "known",
+          "value": 200000,
+          "quote": "上下文长度 202745",
+          "validated": false
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "known",
+          "value": 131072,
+          "quote": "最大输出长度 131072",
+          "validated": true
+        }
+      ],
+      "validated": false,
+      "displayTitle": "GLM-5.1",
+      "reason": "exact configured identity absent from supplier sentence; totalContextTokens does not contain the stored value",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1glm-5-1"
+    },
+    {
+      "identity": "bailian/kimi/kimi-k3",
+      "url": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+      "identityQuote": "推理服务供应商 kimi-k3 模型的推理服务供应商为阿里云百炼。",
+      "identityValidated": false,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "quote": "输入模态 Text Image",
+          "validated": false
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输出模态 Text",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "known",
+          "value": 1000000,
+          "quote": "上下文长度 1048576",
+          "validated": false
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "unknown",
+          "value": null,
+          "quote": "最大输出长度 1048576",
+          "validated": true
+        }
+      ],
+      "validated": false,
+      "displayTitle": "Kimi K3",
+      "reason": "exact configured identity absent from supplier sentence; inputModalities does not contain the stored value; totalContextTokens does not contain the stored value",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1kimi-k3"
+    },
+    {
+      "identity": "bailian/kimi/kimi-k2.7-code",
+      "url": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+      "identityQuote": "推理服务供应商 kimi-k2.7-code 模型的推理服务供应商为阿里云百炼。",
+      "identityValidated": false,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "quote": "输入模态 Text Image Video",
+          "validated": true
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输出模态 Text",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "known",
+          "value": 256000,
+          "quote": "上下文长度 262144",
+          "validated": false
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "known",
+          "value": 16384,
+          "quote": "最大输出长度 16384",
+          "validated": true
+        }
+      ],
+      "validated": false,
+      "displayTitle": "Kimi-k2.7-code",
+      "reason": "exact configured identity absent from supplier sentence; totalContextTokens does not contain the stored value",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1kimi-k2-7-code"
+    },
+    {
+      "identity": "bailian/kimi/kimi-k2.6",
+      "url": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+      "identityQuote": "推理服务供应商 kimi-k2.6 模型的推理服务供应商为阿里云百炼。",
+      "identityValidated": false,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "quote": "输入模态 Image Text Video",
+          "validated": true
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输出模态 Text",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "known",
+          "value": 256000,
+          "quote": "上下文长度 262144",
+          "validated": false
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "known",
+          "value": 16384,
+          "quote": "最大输出长度 16384",
+          "validated": true
+        }
+      ],
+      "validated": false,
+      "displayTitle": "Kimi-k2.6",
+      "reason": "exact configured identity absent from supplier sentence; totalContextTokens does not contain the stored value",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1kimi-k2-6"
+    },
+    {
+      "identity": "bailian/qwen3.5-122b-a10b",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-122b-a10b",
+      "identityQuote": "推理服务供应商 qwen3.5-122b-a10b 模型的推理服务供应商为阿里云百炼。",
+      "identityValidated": true,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "quote": "输入模态 Text Image Video",
+          "validated": true
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输出模态 Text",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "known",
+          "value": 262144,
+          "quote": "上下文长度 262144",
+          "validated": true
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "known",
+          "value": 65536,
+          "quote": "最大输出长度 65536",
+          "validated": true
+        }
+      ],
+      "validated": true,
+      "displayTitle": "Qwen3.5-122b-a10b",
+      "reason": "Exact identity and all known field values verified.",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1qwen3-5-122b-a10b"
+    },
+    {
+      "identity": "bailian/qwen3.5-27b",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-27b",
+      "identityQuote": "推理服务供应商 qwen3.5-27b 模型的推理服务供应商为阿里云百炼。",
+      "identityValidated": true,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "quote": "输入模态 Text Image Video",
+          "validated": true
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输出模态 Text",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "known",
+          "value": 262144,
+          "quote": "上下文长度 262144",
+          "validated": true
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "known",
+          "value": 65536,
+          "quote": "最大输出长度 65536",
+          "validated": true
+        }
+      ],
+      "validated": true,
+      "displayTitle": "Qwen3.5-27b",
+      "reason": "Exact identity and all known field values verified.",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1qwen3-5-27b"
+    },
+    {
+      "identity": "bailian/qwen3.5-35b-a3b",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b",
+      "identityQuote": "推理服务供应商 qwen3.5-35b-a3b 模型的推理服务供应商为阿里云百炼。",
+      "identityValidated": true,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "quote": "输入模态 Text Image Video",
+          "validated": true
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输出模态 Text",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "known",
+          "value": 262144,
+          "quote": "上下文长度 262144",
+          "validated": true
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "known",
+          "value": 65536,
+          "quote": "最大输出长度 65536",
+          "validated": true
+        }
+      ],
+      "validated": true,
+      "displayTitle": "Qwen3.5-35b-a3b",
+      "reason": "Exact identity and all known field values verified.",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1qwen3-5-35b-a3b"
+    },
+    {
+      "identity": "bailian/z-image-turbo",
+      "url": "https://help.aliyun.com/zh/model-studio/z-image-turbo",
+      "identityQuote": "推理服务供应商 z-image-turbo 模型的推理服务供应商为阿里云百炼。",
+      "identityValidated": true,
+      "fields": [
+        {
+          "field": "inputModalities",
+          "state": "known",
+          "value": [
+            "text"
+          ],
+          "quote": "输入模态 Text",
+          "validated": true
+        },
+        {
+          "field": "outputModalities",
+          "state": "known",
+          "value": [
+            "image"
+          ],
+          "quote": "输出模态 Text Image",
+          "validated": true
+        },
+        {
+          "field": "totalContextTokens",
+          "state": "not-applicable",
+          "value": null,
+          "quote": "上下文长度 —",
+          "validated": true
+        },
+        {
+          "field": "maxOutputTokens",
+          "state": "not-applicable",
+          "value": null,
+          "quote": "最大输出长度 —",
+          "validated": true
+        }
+      ],
+      "validated": true,
+      "displayTitle": "Z-Image Turbo",
+      "reason": "Exact identity and all known field values verified.",
+      "evidenceRef": "config/channel-audit/review-r31-20261110.json#/pages/https:~1~1help.aliyun.com~1zh~1model-studio~1z-image-turbo"
+    }
+  ],
+  "bonsai": {
+    "url": "https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf",
+    "displayTitle": "Ternary Bonsai 27B GGUF",
+    "quotes": [
+      "prism-ml/Ternary-Bonsai-27B-gguf",
+      "Text Generation GGUF",
+      "Ternary Bonsai 27B"
+    ],
+    "reason": "Model-card heading supplies Ternary Bonsai 27B; the page format label supplies uppercase GGUF (repository suffix is lowercase gguf)."
+  },
+  "counts": {
+    "pages": 16,
+    "candidates": 14,
+    "validated": 6
+  }
+}

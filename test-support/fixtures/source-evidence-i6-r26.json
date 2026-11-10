@@ -1,0 +1,108 @@
+{
+  "web": [
+    {
+      "card": "bailian/qwen3.5-397b-a17b",
+      "before": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+          "label": "下线公告 · 百炼 · 模型下线公告"
+        },
+        {
+          "url": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+          "label": "官方文档 · Hugging Face · Qwen3.5-397b-a17b"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "label": "官方文档 · 百炼 · 模型定价"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118728",
+          "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+        },
+        {
+          "url": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+          "label": "官方文档 · Hugging Face · Qwen3.5-397b-a17b"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "label": "官方文档 · 百炼 · 模型定价"
+        }
+      ]
+    },
+    {
+      "card": "ark/doubao-seed-code-preview-251028",
+      "before": [
+        {
+          "url": "https://docs.volcengine.com/docs/ark/model-release-announcement-2025?lang=en",
+          "label": "官方文档 · 火山方舟 · Model Release Announcement 2025"
+        },
+        {
+          "url": "https://developer.volcengine.com/articles/7577301460712030258",
+          "label": "官方文档 · 火山方舟 · 豆包编程模型发布！AI 程序员双十一大促9.9元到岗"
+        },
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表（产品文档）"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表（开发者文档）"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://docs.volcengine.com/docs/ark/model-release-announcement-2025?lang=en",
+          "label": "官方文档 · 火山方舟 · Model Release Announcement 2025"
+        },
+        {
+          "url": "https://developer.volcengine.com/articles/7577301460712030258",
+          "label": "官方文档 · 火山方舟 · 豆包编程模型发布公告"
+        },
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表（产品文档）"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表（开发者文档）"
+        }
+      ]
+    }
+  ],
+  "mini": [
+    {
+      "card": "bailian/qwen3.5-397b-a17b",
+      "before": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+          "label": "下线公告 · 百炼 · 模型下线公告"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118728",
+          "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+        }
+      ]
+    }
+  ],
+  "notices": [
+    {
+      "card": "bailian/qwen3.5-397b-a17b",
+      "before": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+          "label": "下线公告 · 百炼 · 模型下线公告"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118728",
+          "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+        }
+      ]
+    }
+  ]
+}

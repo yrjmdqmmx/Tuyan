@@ -1,0 +1,784 @@
+{
+  "phase": "R27 Phase I7",
+  "baseline": "d1c6399493f4e216cb0cc482c5312cbea8ed2f8d",
+  "decision": "创始人已决定 A",
+  "decisionDate": "2026-11-10",
+  "decisionNote": "创始人决定 A（2026-11-10）",
+  "verifiedAt": "2026-11-10",
+  "tables": {},
+  "reviews": {
+    "fal/blackforestlabs/flux-3/klein/base/text-to-image": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+        "quote": "The reference images to edit or compose from (up to 10).",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "fal/blackforestlabs/flux-3/klein/text-to-image": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+        "quote": "The reference images to edit or compose from (up to 10).",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "fal/blackforestlabs/flux-3/text-to-image": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+        "quote": "Reference image URLs or data URIs, in image 1 through image 10 order.",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "fal/bytedance/seedream/v5/flash/text-to-image": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+        "quote": "List of URLs of input reference images.",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "fal/bytedance/seedream/v5/pro/text-to-image": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+        "quote": "List of URLs of input reference images.",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "fal/fal-ai/bytedance/seedream/v4.5/text-to-image": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+        "quote": "List of URLs of input images for editing.",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "fal/fal-ai/bytedance/seedream/v4/text-to-image": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+        "quote": "List of URLs of input images for editing.",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "fal/fal-ai/flux-2-pro": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+        "quote": "List of URLs of input images for editing",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "fal/krea/v3/text-to-image": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/krea/v3/edit/api",
+        "quote": "Reference images to edit or combine (1-8).",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "fal/meta/muse-image/text-to-image": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/meta/muse-image/edit/api",
+        "quote": "Reference images used for the edit. Provide between 1 and 10 HTTP(S) or data URLs.",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "fal/openai/gpt-image-2.5/flare/text-to-image": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+        "quote": "The URLs of the images to use as a reference for the generation.",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "fal/openai/gpt-image-2.5/sunburst/text-to-image": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+        "quote": "The URLs of the images to use as a reference for the generation.",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "fal/xai/grok-imagine-image": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+        "quote": "List of URLs of the images to edit.",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "fal/xai/grok-imagine-image/quality/text-to-image": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+        "quote": "List of URLs of the images to edit.",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    },
+    "ideogram/ideogram-v4": {
+      "inputModalities": {
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "provenance": "channel",
+        "sourceUrl": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md",
+        "quote": "Remix an image synchronously using the Ideogram 4.0 model with an initial image and a prompt.",
+        "verifiedAt": "2026-11-10",
+        "decisionNote": "创始人决定 A（2026-11-10）"
+      }
+    }
+  },
+  "links": {},
+  "pages": {
+    "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:09:53.755958+08:00",
+      "sha256": "bb1b134f114937d57af83a06c588b5cda6030fb662598dbff801f2ddbba0beda",
+      "excerpts": [
+        "The reference images to edit or compose from (up to 10)."
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "FLUX.3 Klein Base 编辑接口",
+      "registeredEditingEndpoint": "blackforestlabs/flux-3/klein/base/edit-image"
+    },
+    "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:09:53.475512+08:00",
+      "sha256": "22ac0fe4c4f5d4895e5bc50fa0d84606c2b3e0907211a44cec1f46e8c3ba4a7f",
+      "excerpts": [
+        "The reference images to edit or compose from (up to 10)."
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "FLUX.3 Klein 编辑接口",
+      "registeredEditingEndpoint": "blackforestlabs/flux-3/klein/edit-image"
+    },
+    "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:09:53.455854+08:00",
+      "sha256": "8ca20193de38fb8925d49ebcb5e34d35c3780f8dc8959a2ed19ed54815e7485f",
+      "excerpts": [
+        "Reference image URLs or data URIs, in image 1 through image 10 order."
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "FLUX.3 编辑接口",
+      "registeredEditingEndpoint": "blackforestlabs/flux-3/edit-image"
+    },
+    "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:09:53.496375+08:00",
+      "sha256": "67770f34e289735e05db52590c1c660b42a7a475fc0d1085b94f3cb5f2ad97ed",
+      "excerpts": [
+        "List of URLs of input reference images."
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "Seedream v5 Flash 编辑接口",
+      "registeredEditingEndpoint": "bytedance/seedream/v5/flash/edit"
+    },
+    "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:09:55.850544+08:00",
+      "sha256": "28405bf51e3f02178529277ea48deba0e4d99e28addaef431d5ba96126655886",
+      "excerpts": [
+        "List of URLs of input reference images."
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "Seedream v5 pro 编辑接口",
+      "registeredEditingEndpoint": "bytedance/seedream/v5/pro/edit"
+    },
+    "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:09:55.881201+08:00",
+      "sha256": "73aa59452db469f92890909e146f6de798d200991a31167876182a85bb1cc425",
+      "excerpts": [
+        "List of URLs of input images for editing."
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "Seedream v4.5 编辑接口",
+      "registeredEditingEndpoint": "fal-ai/bytedance/seedream/v4.5/edit"
+    },
+    "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:09:55.994990+08:00",
+      "sha256": "97627a6441cae8fb41daaf156c1f7b749c2f4d5af9d533a1531d9dfd0aca4494",
+      "excerpts": [
+        "List of URLs of input images for editing."
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "Seedream v4 编辑接口",
+      "registeredEditingEndpoint": "fal-ai/bytedance/seedream/v4/edit"
+    },
+    "https://fal.ai/models/fal-ai/flux-2-pro/edit/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:09:55.863823+08:00",
+      "sha256": "d66271c4d6b304c8f7816235b5659a9c1d80cccccf409e58b271331f030d9535",
+      "excerpts": [
+        "List of URLs of input images for editing"
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "FLUX-2-pro 编辑接口",
+      "registeredEditingEndpoint": "fal-ai/flux-2-pro/edit"
+    },
+    "https://fal.ai/models/krea/v3/edit/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:09:58.174039+08:00",
+      "sha256": "b48cbb374cf9255847ad8ac2fc693879f14bf1ac5a3996f1a10913dd34d1b151",
+      "excerpts": [
+        "Reference images to edit or combine (1-8)."
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "Krea 3 编辑接口",
+      "registeredEditingEndpoint": "krea/v3/edit"
+    },
+    "https://fal.ai/models/meta/muse-image/edit/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:09:57.987905+08:00",
+      "sha256": "0f83d7f2e2b8d48900aa34b315514ed5de0c1edb5b7ba80916004ae87d9cbce7",
+      "excerpts": [
+        "Reference images used for the edit. Provide between 1 and 10 HTTP(S) or data URLs."
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "muse-image 编辑接口",
+      "registeredEditingEndpoint": "meta/muse-image/edit"
+    },
+    "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:09:58.103925+08:00",
+      "sha256": "caef0591287923fff6d8c52faaae698c8938b0fa77b626a0249b10e5c101496a",
+      "excerpts": [
+        "The URLs of the images to use as a reference for the generation."
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "GPT Image 2.5 Flare 编辑接口",
+      "registeredEditingEndpoint": "openai/gpt-image-2.5/flare/edit"
+    },
+    "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:09:58.131065+08:00",
+      "sha256": "8d42b3b8c50812594a1eb92df188c4c173f9c72863f9aae560d1200e38941834",
+      "excerpts": [
+        "The URLs of the images to use as a reference for the generation."
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "GPT Image 2.5 Sunburst 编辑接口",
+      "registeredEditingEndpoint": "openai/gpt-image-2.5/sunburst/edit"
+    },
+    "https://fal.ai/models/xai/grok-imagine-image/edit/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:10:00.255718+08:00",
+      "sha256": "49c4c3e60bb6c259cf2ba506ef25c148066900c1cbf8a882f3e37c8364c5c139",
+      "excerpts": [
+        "List of URLs of the images to edit."
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "Grok-imagine-image 编辑接口",
+      "registeredEditingEndpoint": "xai/grok-imagine-image/edit"
+    },
+    "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:10:00.234235+08:00",
+      "sha256": "f9a35f7c54b35e98b392ad5ded93be40f2db83e9b7f10860726646378b7336bd",
+      "excerpts": [
+        "List of URLs of the images to edit."
+      ],
+      "sourceField": "image_urls",
+      "displayTitle": "Grok-imagine-image quality 编辑接口",
+      "registeredEditingEndpoint": "xai/grok-imagine-image/quality/edit"
+    },
+    "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md": {
+      "status": 200,
+      "checkedAt": "2026-11-10T09:09:59.924633+08:00",
+      "sha256": "61b12efae6884c624b4879639c96f235e903fd8d60198efeab0c85a1edf33ab6",
+      "excerpts": [
+        "Remix an image synchronously using the Ideogram 4.0 model with an initial image and a prompt."
+      ],
+      "sourceField": "image",
+      "displayTitle": "Ideogram 4.0 编辑接口",
+      "registeredEditingEndpoint": "/v1/ideogram-v4/remix"
+    }
+  },
+  "captures": [
+    {
+      "identity": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:51.289974+00:00",
+      "fetchedAtUtc": "2026-11-10T01:09:53.755958+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:09:53.755958+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+      "curlExitCode": 0,
+      "sha256": "bb1b134f114937d57af83a06c588b5cda6030fb662598dbff801f2ddbba0beda",
+      "bytes": 386481,
+      "body": ".audit-input/r24/fetches/i7-F14.html",
+      "quote": "The reference images to edit or compose from (up to 10).",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "fal/blackforestlabs/flux-3/klein/text-to-image",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:51.291072+00:00",
+      "fetchedAtUtc": "2026-11-10T01:09:53.475512+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:09:53.475512+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+      "curlExitCode": 0,
+      "sha256": "22ac0fe4c4f5d4895e5bc50fa0d84606c2b3e0907211a44cec1f46e8c3ba4a7f",
+      "bytes": 392160,
+      "body": ".audit-input/r24/fetches/i7-F16.html",
+      "quote": "The reference images to edit or compose from (up to 10).",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "fal/blackforestlabs/flux-3/text-to-image",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:51.292568+00:00",
+      "fetchedAtUtc": "2026-11-10T01:09:53.455854+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:09:53.455854+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+      "curlExitCode": 0,
+      "sha256": "8ca20193de38fb8925d49ebcb5e34d35c3780f8dc8959a2ed19ed54815e7485f",
+      "bytes": 344676,
+      "body": ".audit-input/r24/fetches/i7-F18.html",
+      "quote": "Reference image URLs or data URIs, in image 1 through image 10 order.",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "fal/bytedance/seedream/v5/flash/text-to-image",
+      "url": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:51.292664+00:00",
+      "fetchedAtUtc": "2026-11-10T01:09:53.496375+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:09:53.496375+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+      "curlExitCode": 0,
+      "sha256": "67770f34e289735e05db52590c1c660b42a7a475fc0d1085b94f3cb5f2ad97ed",
+      "bytes": 355151,
+      "body": ".audit-input/r24/fetches/i7-F04.html",
+      "quote": "List of URLs of input reference images.",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "fal/bytedance/seedream/v5/pro/text-to-image",
+      "url": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:53.475733+00:00",
+      "fetchedAtUtc": "2026-11-10T01:09:55.850544+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:09:55.850544+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+      "curlExitCode": 0,
+      "sha256": "28405bf51e3f02178529277ea48deba0e4d99e28addaef431d5ba96126655886",
+      "bytes": 364679,
+      "body": ".audit-input/r24/fetches/i7-F06.html",
+      "quote": "List of URLs of input reference images.",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:53.492268+00:00",
+      "fetchedAtUtc": "2026-11-10T01:09:55.881201+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:09:55.881201+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+      "curlExitCode": 0,
+      "sha256": "73aa59452db469f92890909e146f6de798d200991a31167876182a85bb1cc425",
+      "bytes": 357028,
+      "body": ".audit-input/r24/fetches/i7-F08.html",
+      "quote": "List of URLs of input images for editing.",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+      "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:53.506653+00:00",
+      "fetchedAtUtc": "2026-11-10T01:09:55.994990+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:09:55.994990+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+      "curlExitCode": 0,
+      "sha256": "97627a6441cae8fb41daaf156c1f7b749c2f4d5af9d533a1531d9dfd0aca4494",
+      "bytes": 361343,
+      "body": ".audit-input/r24/fetches/i7-F10.html",
+      "quote": "List of URLs of input images for editing.",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "fal/fal-ai/flux-2-pro",
+      "url": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:53.773978+00:00",
+      "fetchedAtUtc": "2026-11-10T01:09:55.863823+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:09:55.863823+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+      "curlExitCode": 0,
+      "sha256": "d66271c4d6b304c8f7816235b5659a9c1d80cccccf409e58b271331f030d9535",
+      "bytes": 354427,
+      "body": ".audit-input/r24/fetches/i7-F12.html",
+      "quote": "List of URLs of input images for editing",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "fal/krea/v3/text-to-image",
+      "url": "https://fal.ai/models/krea/v3/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:55.891608+00:00",
+      "fetchedAtUtc": "2026-11-10T01:09:58.174039+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:09:58.174039+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/krea/v3/edit/api",
+      "curlExitCode": 0,
+      "sha256": "b48cbb374cf9255847ad8ac2fc693879f14bf1ac5a3996f1a10913dd34d1b151",
+      "bytes": 369892,
+      "body": ".audit-input/r24/fetches/i7-F28.html",
+      "quote": "Reference images to edit or combine (1-8).",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "fal/meta/muse-image/text-to-image",
+      "url": "https://fal.ai/models/meta/muse-image/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:55.893024+00:00",
+      "fetchedAtUtc": "2026-11-10T01:09:57.987905+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:09:57.987905+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/meta/muse-image/edit/api",
+      "curlExitCode": 0,
+      "sha256": "0f83d7f2e2b8d48900aa34b315514ed5de0c1edb5b7ba80916004ae87d9cbce7",
+      "bytes": 338631,
+      "body": ".audit-input/r24/fetches/i7-F30.html",
+      "quote": "Reference images used for the edit. Provide between 1 and 10 HTTP(S) or data URLs.",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "fal/openai/gpt-image-2.5/flare/text-to-image",
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:55.894403+00:00",
+      "fetchedAtUtc": "2026-11-10T01:09:58.103925+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:09:58.103925+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+      "curlExitCode": 0,
+      "sha256": "caef0591287923fff6d8c52faaae698c8938b0fa77b626a0249b10e5c101496a",
+      "bytes": 365016,
+      "body": ".audit-input/r24/fetches/i7-F20.html",
+      "quote": "The URLs of the images to use as a reference for the generation.",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:56.009226+00:00",
+      "fetchedAtUtc": "2026-11-10T01:09:58.131065+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:09:58.131065+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+      "curlExitCode": 0,
+      "sha256": "8d42b3b8c50812594a1eb92df188c4c173f9c72863f9aae560d1200e38941834",
+      "bytes": 364691,
+      "body": ".audit-input/r24/fetches/i7-F22.html",
+      "quote": "The URLs of the images to use as a reference for the generation.",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "fal/xai/grok-imagine-image",
+      "url": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:58.005038+00:00",
+      "fetchedAtUtc": "2026-11-10T01:10:00.255718+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:10:00.255718+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+      "curlExitCode": 0,
+      "sha256": "49c4c3e60bb6c259cf2ba506ef25c148066900c1cbf8a882f3e37c8364c5c139",
+      "bytes": 347588,
+      "body": ".audit-input/r24/fetches/i7-F24.html",
+      "quote": "List of URLs of the images to edit.",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "fal/xai/grok-imagine-image/quality/text-to-image",
+      "url": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:58.116265+00:00",
+      "fetchedAtUtc": "2026-11-10T01:10:00.234235+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:10:00.234235+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+      "curlExitCode": 0,
+      "sha256": "f9a35f7c54b35e98b392ad5ded93be40f2db83e9b7f10860726646378b7336bd",
+      "bytes": 347854,
+      "body": ".audit-input/r24/fetches/i7-F26.html",
+      "quote": "List of URLs of the images to edit.",
+      "sourceField": "image_urls",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    },
+    {
+      "identity": "ideogram/ideogram-v4",
+      "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-10T01:09:58.140114+00:00",
+      "fetchedAtUtc": "2026-11-10T01:09:59.924633+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:09:59.924633+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md",
+      "curlExitCode": 0,
+      "sha256": "61b12efae6884c624b4879639c96f235e903fd8d60198efeab0c85a1edf33ab6",
+      "bytes": 12139,
+      "body": ".audit-input/r24/fetches/i7-F33.md",
+      "quote": "Remix an image synchronously using the Ideogram 4.0 model with an initial image and a prompt.",
+      "sourceField": "image",
+      "quoteMatched": true,
+      "sourceFieldMatched": true,
+      "error": null,
+      "verified": true
+    }
+  ],
+  "preservedFieldSources": {
+    "fal/blackforestlabs/flux-3/klein/base/text-to-image": {
+      "outputModalities": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api"
+    },
+    "fal/blackforestlabs/flux-3/klein/text-to-image": {
+      "outputModalities": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api"
+    },
+    "fal/blackforestlabs/flux-3/text-to-image": {
+      "outputModalities": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api"
+    },
+    "fal/bytedance/seedream/v5/flash/text-to-image": {
+      "outputModalities": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api"
+    },
+    "fal/krea/v3/text-to-image": {
+      "outputModalities": "https://fal.ai/models/krea/v3/text-to-image/api"
+    },
+    "ideogram/ideogram-v4": {
+      "outputModalities": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4"
+    }
+  },
+  "humanPageCapture": {
+    "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4",
+    "method": "GET",
+    "authenticated": false,
+    "httpStatus": 200,
+    "finalUrl": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4",
+    "fetchedAtUtc": "2026-11-10T01:13:16.117752+00:00",
+    "fetchedAtAsiaShanghai": "2026-11-10T09:13:16.117752+08:00",
+    "sha256": "a1eefe56094bcacb14b81185140b7fd9764dbd939f8818a7ebc72103cae0d673",
+    "quote": "Remix an image synchronously using the Ideogram 4.0 model with an initial image and a prompt.",
+    "quoteMatched": true,
+    "body": ".audit-input/r24/fetches/i7-ideogram-human.html"
+  }
+}

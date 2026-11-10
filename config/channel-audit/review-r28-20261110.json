@@ -1,0 +1,2224 @@
+{
+  "phase": "R28 Phase I9",
+  "baseline": "7858d7a44f0494b4d6aa1b7a500f366a8a7abe29",
+  "catalogUrl": "https://api.fal.ai/v1/models",
+  "policy": "Exact endpoint human API page; unauthenticated GET HTTP 200; exact identity in visible client example; every modality supported by its own Input or Output schema property, never navigation or other model examples. HTML scripts/styles excluded; whitespace collapsed only. URLs fetched once and cached. Facts and execution unchanged; source URLs and verification dates only.",
+  "pages": {
+    "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api": {
+      "url": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:02.468907+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:02.468907+08:00",
+      "sha256": "644ee60b9c74336e973febe120b4fcd2dac388b7a04a6251978b37a8d7bf0251",
+      "excerpts": [
+        "fal.subscribe(\"alibaba/qwen-image-3/text-to-image\"",
+        "prompt string * required Text prompt describing the desired image. Supports Chinese and English. Max 5000 characters.",
+        "images list< File > * required Generated images."
+      ]
+    },
+    "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api": {
+      "url": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:02.469111+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:02.469111+08:00",
+      "sha256": "572cca64f99eeaf869cbc77bcceb48a1662c9f88d6f9de212c00c0b84e0bb138",
+      "excerpts": [
+        "fal.subscribe(\"bytedance/seedream/v5/pro/text-to-image\"",
+        "images list< Image > * required Generated images."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api": {
+      "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:04.784425+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:04.784425+08:00",
+      "sha256": "b28b5391c795ba093a316a42b6f0bbd6db5769a88c9a39e143bb0b7cf46a2847",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/bytedance/seedream/v4.5/text-to-image\"",
+        "images list< Image > * required Generated images"
+      ]
+    },
+    "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api": {
+      "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:04.784549+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:04.784549+08:00",
+      "sha256": "fcb8f169e77777aafc874061231a81d02e831b99afc0a2625fb7f416bf3825ac",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/bytedance/seedream/v4/text-to-image\"",
+        "images list< Image > * required Generated images"
+      ]
+    },
+    "https://fal.ai/models/fal-ai/fast-sdxl/api": {
+      "url": "https://fal.ai/models/fal-ai/fast-sdxl/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/fast-sdxl/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:05.044072+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:05.044072+08:00",
+      "sha256": "da0c02de0624c6e11bb251e5e1c90c8628f270d37eb6df790fcc18d84c4af7d1",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/fast-sdxl\"",
+        "prompt string * required The prompt to use for generating the image. Be as descriptive as possible for best results.",
+        "images list< Image > * required The generated image files info."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux-2/api": {
+      "url": "https://fal.ai/models/fal-ai/flux-2/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-2/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:07.414823+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:07.414823+08:00",
+      "sha256": "d09f6062119c804d06608a90e9ea595086b68f0b3f212fb95371e869b58c81fd",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux-2\"",
+        "prompt string * required The prompt to generate an image from.",
+        "images list< ImageFile > * required The generated images"
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux-2-flex/api": {
+      "url": "https://fal.ai/models/fal-ai/flux-2-flex/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-2-flex/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:07.586926+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:07.586926+08:00",
+      "sha256": "1ca9a1986a4f2114826c2ca8e21823cd998f1e353c8d7aed6cce9767550673c4",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux-2-flex\"",
+        "prompt string * required The prompt to generate an image from.",
+        "images list< ImageFile > * required The generated images."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux-2-pro/api": {
+      "url": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:07.619862+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:07.619862+08:00",
+      "sha256": "ac2de515df134f57108777424c3196a8dc06b96c845de5ed89e03dd017761114",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux-2-pro\"",
+        "images list< ImageFile > * required The generated images."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux-2/flash/api": {
+      "url": "https://fal.ai/models/fal-ai/flux-2/flash/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-2/flash/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:08.157725+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:08.157725+08:00",
+      "sha256": "054eaa908580951cf47d44040a64512248857887792be9f19b100257ece8a6e7",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux-2/flash\"",
+        "prompt string * required The prompt to generate an image from.",
+        "images list< ImageFile > * required The generated images"
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux-2/klein/9b/api": {
+      "url": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:09.996357+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:09.996357+08:00",
+      "sha256": "2880d7085fa71fe2f98aa312d7c1e9fa15b0d7d585c3a7577f2c748aa274ab28",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux-2/klein/9b\"",
+        "prompt string * required The prompt to generate an image from.",
+        "images list< ImageFile > * required The generated images"
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux-2/turbo/api": {
+      "url": "https://fal.ai/models/fal-ai/flux-2/turbo/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-2/turbo/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:09.996480+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:09.996480+08:00",
+      "sha256": "c71699e5c6bf46a9b66dbf643300c38fd4e61fb795f4cd834bf28a32d81d35e1",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux-2/turbo\"",
+        "prompt string * required The prompt to generate an image from.",
+        "images list< ImageFile > * required The generated images"
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux-kontext-lora/api": {
+      "url": "https://fal.ai/models/fal-ai/flux-kontext-lora/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-kontext-lora/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:10.494889+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:10.494889+08:00",
+      "sha256": "700863604108c357986d419ee2feca029dcdfec66a0a890a940c6d81e679549d",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux-kontext-lora\"",
+        "image_url string * required The URL of the image to edit. Max width: 14142px, Max height: 14142px, Timeout: 20s",
+        "prompt string * required The prompt to edit the image.",
+        "images list< Image > * required The generated image files info."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux-pro/kontext/api": {
+      "url": "https://fal.ai/models/fal-ai/flux-pro/kontext/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-pro/kontext/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:12.303181+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:12.303181+08:00",
+      "sha256": "af098385a00eba6abafe0957dc4fed93fed6f2058eb5c923fc903a8d7936c458",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux-pro/kontext\"",
+        "image_url string * required Image prompt for the omni model.",
+        "prompt string * required The prompt to generate an image from.",
+        "images list< fal__toolkit__image__image__Image > * required The generated image files info."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux-pro/v1.1/api": {
+      "url": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:12.342356+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:12.342356+08:00",
+      "sha256": "5b0afd52d1ac8326f4804c175a40c349f863001152577dbfae8de1b2f372905f",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux-pro/v1.1\"",
+        "prompt string * required The prompt to generate an image from.",
+        "images list< registry__image__fast_sdxl__models__Image > * required The generated image files info."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api": {
+      "url": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:12.839175+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:12.839175+08:00",
+      "sha256": "b9fbe4327b0f93f5236f7763ab1f544e4551c3a8c3e4945797486c51a9941aaa",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux-pro/v1.1-ultra\"",
+        "images list< registry__image__fast_sdxl__models__Image > * required The generated image files info."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux-1/schnell/api": {
+      "url": "https://fal.ai/models/fal-ai/flux-1/schnell/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-1/schnell/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:05.600675+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:05.600675+08:00",
+      "sha256": "9fac2ddc7e6ef24e75067ab48e6411b9f2b5043a4fc044808127a328c99f90c1",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux-1/schnell\"",
+        "prompt string * required The prompt to generate an image from.",
+        "images list< Image > * required The generated image files info."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux-lora/api": {
+      "url": "https://fal.ai/models/fal-ai/flux-lora/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-lora/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:11.017878+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:11.017878+08:00",
+      "sha256": "6259257899406e070b06bfaede11faa622053def89f214a4f878c0a5dd78045e",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux-lora\"",
+        "prompt string * required The prompt to generate an image from.",
+        "images list< Image > * required The generated image files info."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux/dev/api": {
+      "url": "https://fal.ai/models/fal-ai/flux/dev/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux/dev/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:14.165182+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:14.165182+08:00",
+      "sha256": "62cadef1e0c9a4ab873d635e427aaef500d3bda339df8aac2927ba87264e6aa2",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux/dev\"",
+        "prompt string * required The prompt to generate an image from.",
+        "images list< Image > * required The generated image files info."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux/schnell/api": {
+      "url": "https://fal.ai/models/fal-ai/flux/schnell/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux/schnell/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:14.859768+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:14.859768+08:00",
+      "sha256": "a17e8c00e56b5f33aea18dfb89ecc13475c384dd39ca20e6388e97a05faa2380",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/flux/schnell\"",
+        "prompt string * required The prompt to generate an image from.",
+        "images list< Image > * required The generated image files info."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/ideogram/v3/api": {
+      "url": "https://fal.ai/models/fal-ai/ideogram/v3/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/ideogram/v3/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:15.433922+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:15.433922+08:00",
+      "sha256": "878c79c9d3b9ea84a166b78fb5d9cf13205ad2a3bdefdda32a37a9c2347ef7e2",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/ideogram/v3\"",
+        "prompt string * required",
+        "images list< File > * required"
+      ]
+    },
+    "https://fal.ai/models/fal-ai/qwen-image/api": {
+      "url": "https://fal.ai/models/fal-ai/qwen-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/qwen-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:18.064157+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:18.064157+08:00",
+      "sha256": "8215f48d87452338b50916f435408a81b073d7649836f6bad4a4752faf2ff22a",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/qwen-image\"",
+        "prompt string * required The prompt to generate the image with",
+        "images list< Image > * required The generated image files info."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api": {
+      "url": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:18.560368+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:18.560368+08:00",
+      "sha256": "de2fcb9b29b66b76697f97d05af1d5e5479757dbe605a777d0d89037984f8909",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/recraft/v4/pro/text-to-image\"",
+        "prompt string * required",
+        "images list< File > * required"
+      ]
+    },
+    "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api": {
+      "url": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:18.544870+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:18.544870+08:00",
+      "sha256": "28ce612e7699f10494a7ce92a82fb9ded116eea104aa36f1fd35d28a0e043052",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/recraft/v3/text-to-image\"",
+        "prompt string * required",
+        "images list< File > * required"
+      ]
+    },
+    "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api": {
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:23.078202+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:23.078202+08:00",
+      "sha256": "4f889e9461c63a54cdf055757218d83b78c3e5bbc44201f4f3b543eea82d3243",
+      "excerpts": [
+        "fal.subscribe(\"openai/gpt-image-2.5/flare/text-to-image\"",
+        "images list< ImageFile > * required The generated images."
+      ]
+    },
+    "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api": {
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:24.126348+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:24.126348+08:00",
+      "sha256": "81ae4786113e8e52c67f6bae4a3e9749c00689609aeb10c7844c9e9292386e0d",
+      "excerpts": [
+        "fal.subscribe(\"openai/gpt-image-2.5/sunburst/text-to-image\"",
+        "images list< ImageFile > * required The generated images."
+      ]
+    },
+    "https://fal.ai/models/openai/gpt-image-2/api": {
+      "url": "https://fal.ai/models/openai/gpt-image-2/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/openai/gpt-image-2/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:21.763933+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:21.763933+08:00",
+      "sha256": "fa68db6d6138e4781d884b9c36f42122f9b0fb0ce145f76f2db88550262db665",
+      "excerpts": [
+        "fal.subscribe(\"openai/gpt-image-2\"",
+        "images list< ImageFile > * required The generated images."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/gpt-image-1.5/api": {
+      "url": "https://fal.ai/models/fal-ai/gpt-image-1.5/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/gpt-image-1.5/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:15.431092+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:15.431092+08:00",
+      "sha256": "dcc577f74c991e732e73929de1397153500c4d36eb08742ec533bf894c0ddae8",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/gpt-image-1.5\"",
+        "prompt string * required The prompt for image generation image_size ImageSizeEnum Aspect ratio for the generated image Default value: \"1024x1024\" Possible enum values: 1024x1024, 1536x1024, 1024x1536 background BackgroundEnum Background for the generated image Default value: \"auto\" Possible enum values: auto, transparent, opaque quality QualityEnum Quality for the generated image Default value: \"high\" Possible enum values: low, medium, high",
+        "images list< ImageFile > * required The generated images."
+      ]
+    },
+    "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api": {
+      "url": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:26.597461+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:26.597461+08:00",
+      "sha256": "24417574440c67d7abbe62ba9bdf58542c40c43973aa7f2cfbe424aea4893275",
+      "excerpts": [
+        "fal.subscribe(\"xai/grok-imagine-image/v2.0/text-to-image\"",
+        "prompt string * required Text description of the desired image.",
+        "images list< ImageFile > * required The URL of the generated image."
+      ]
+    },
+    "https://fal.ai/models/xai/grok-imagine-image/api": {
+      "url": "https://fal.ai/models/xai/grok-imagine-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:24.918921+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:24.918921+08:00",
+      "sha256": "7fb02d0ca96bfb59c551f8504a684182f1e5450b293a22f104d3a30ceb152034",
+      "excerpts": [
+        "fal.subscribe(\"xai/grok-imagine-image\"",
+        "images list< ImageFile > * required The URL of the generated image."
+      ]
+    },
+    "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api": {
+      "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:24.935322+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:24.935322+08:00",
+      "sha256": "ca6c20b9fdb64e507df3e2b25ef1f912638b40a1fbd5e6b0811792cbb0264cf1",
+      "excerpts": [
+        "fal.subscribe(\"xai/grok-imagine-image/quality/text-to-image\"",
+        "images list< ImageFile > * required The URL of the generated image."
+      ]
+    },
+    "https://fal.ai/models/bria/fibo-edit-1.5/edit/api": {
+      "url": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:02.469048+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:02.469048+08:00",
+      "sha256": "fd4d10cc09cbdae89e6f8ef07e5ea209b48dba81d16de83a447f5c289dbba130",
+      "excerpts": [
+        "fal.subscribe(\"bria/fibo-edit-1.5/edit\"",
+        "image_urls list< string > 1-4 reference images (files or URLs). Order is significant: the instruction is resolved against the images in the order they are sent.",
+        "instruction string Instruction for image editing. aspect_ratio Enum Output aspect ratio. Left unset, the output keeps the ratio of the first reference image. A chosen ratio applies only with two or more reference images; with a single reference the output keeps that image's ratio either way. Possible enum values: 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9",
+        "image Image * required The edited image, in the source aspect ratio unless aspect_ratio was set."
+      ]
+    },
+    "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api": {
+      "url": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:02.469123+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:02.469123+08:00",
+      "sha256": "14bec5285f58a23167836e22d256246fc106e563d3f4dd44a69bc9560cacf08b",
+      "excerpts": [
+        "fal.subscribe(\"bria/fibo-gen-1.5/text-to-image\"",
+        "prompt string Prompt for image generation. structured_prompt StructuredPrompt The structured prompt to generate an image from.",
+        "image Image * required Generated image."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/krea-2/turbo/api": {
+      "url": "https://fal.ai/models/fal-ai/krea-2/turbo/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/krea-2/turbo/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:16.660315+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:16.660315+08:00",
+      "sha256": "c319b018b7368a5343fabd6cef093d196f00e8cdaa9b118d223f98f9b6d12ea8",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/krea-2/turbo\"",
+        "prompt string * required Base text description of the image to generate.",
+        "images list< ImageFile > * required The generated images."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/z-image/turbo/api": {
+      "url": "https://fal.ai/models/fal-ai/z-image/turbo/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/z-image/turbo/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:20.092158+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:20.092158+08:00",
+      "sha256": "405e19ce82e8e79a3c28fb7d650fa9e0047c7a293ea0e6f9be434c9cd5beb936",
+      "excerpts": [
+        "fal.subscribe(\"fal-ai/z-image/turbo\"",
+        "prompt string * required The prompt to generate an image from.",
+        "images list< ImageFile > * required The generated image files info."
+      ]
+    },
+    "https://fal.ai/models/krea/v2/large/text-to-image/api": {
+      "url": "https://fal.ai/models/krea/v2/large/text-to-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/krea/v2/large/text-to-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:21.234840+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:21.234840+08:00",
+      "sha256": "ce2deb8d0826f74e14572b475940ca0efe2c1f5e1e01051ef5e3614f6f77a68f",
+      "excerpts": [
+        "fal.subscribe(\"krea/v2/large/text-to-image\"",
+        "prompt string * required Text description of the image to generate. aspect_ratio AspectRatioEnum Aspect ratio of the generated image. Default value: \"1:1\" Possible enum values: 1:1, 4:3, 3:2, 16:9, 2.35:1, 4:5, 2:3, 9:16 creativity CreativityEnum Controls how loosely the model interprets the prompt. Higher values produce more creative results that may drift from the prompt; lower values stay closer to the prompt. Default value: \"medium\" Possible enum values: raw, low, medium, high",
+        "images list< Image > * required The generated images."
+      ]
+    },
+    "https://fal.ai/models/meta/muse-image/text-to-image/api": {
+      "url": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+      "contentType": "text/html; charset=utf-8",
+      "curlExitCode": 0,
+      "method": "GET",
+      "authenticated": false,
+      "fetchedAtUtc": "2026-11-10T10:44:21.709168+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T18:44:21.709168+08:00",
+      "sha256": "ec616f0e3cad1919446b6c29945a02f3b1e880dea15305c131fbdb6082aac3d0",
+      "excerpts": [
+        "fal.subscribe(\"meta/muse-image/text-to-image\"",
+        "images list< Image > * required The generated or edited images."
+      ]
+    }
+  },
+  "fields": [
+    {
+      "identity": "fal/alibaba/qwen-image-3/text-to-image",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"alibaba/qwen-image-3/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required Text prompt describing the desired image. Supports Chinese and English. Max 5000 characters."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/alibaba/qwen-image-3/text-to-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"alibaba/qwen-image-3/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< File > * required Generated images."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/bytedance/seedream/v5/pro/text-to-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"bytedance/seedream/v5/pro/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< Image > * required Generated images."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/bytedance/seedream/v4.5/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< Image > * required Generated images"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/bytedance/seedream/v4/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< Image > * required Generated images"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/fast-sdxl",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/fast-sdxl/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/fast-sdxl/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/fast-sdxl\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to use for generating the image. Be as descriptive as possible for best results."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/fast-sdxl",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/fast-sdxl/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/fast-sdxl/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/fast-sdxl\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< Image > * required The generated image files info."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-2",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-2/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-2\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to generate an image from."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-2",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-2/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-2\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The generated images"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-2-flex",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-2-flex/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-flex/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-2-flex\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to generate an image from."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-2-flex",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-2-flex/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-flex/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-2-flex\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The generated images."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-2-pro",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-2-pro\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The generated images."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-2/flash",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-2/flash/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/flash/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-2/flash\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to generate an image from."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-2/flash",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-2/flash/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/flash/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-2/flash\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The generated images"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-2/klein/9b",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-2/klein/9b\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to generate an image from."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-2/klein/9b",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-2/klein/9b\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The generated images"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-2/turbo",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-2/turbo/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/turbo/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-2/turbo\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to generate an image from."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-2/turbo",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-2/turbo/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/turbo/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-2/turbo\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The generated images"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-kontext-lora",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "image",
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-kontext-lora/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-kontext-lora/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-kontext-lora\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Input",
+          "quote": "image_url string * required The URL of the image to edit. Max width: 14142px, Max height: 14142px, Timeout: 20s"
+        },
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to edit the image."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-kontext-lora",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-kontext-lora/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-kontext-lora/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-kontext-lora\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< Image > * required The generated image files info."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-pro/kontext",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "image",
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-pro/kontext/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-pro/kontext/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-pro/kontext\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Input",
+          "quote": "image_url string * required Image prompt for the omni model."
+        },
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to generate an image from."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-pro/kontext",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-pro/kontext/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-pro/kontext/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-pro/kontext\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< fal__toolkit__image__image__Image > * required The generated image files info."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-pro/v1.1",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-pro/v1.1\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to generate an image from."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-pro/v1.1",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-pro/v1.1\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< registry__image__fast_sdxl__models__Image > * required The generated image files info."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-pro/v1.1-ultra",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-pro/v1.1-ultra\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< registry__image__fast_sdxl__models__Image > * required The generated image files info."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-1/schnell",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-1/schnell/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-1/schnell/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-1/schnell\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to generate an image from."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-1/schnell",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-1/schnell/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-1/schnell/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-1/schnell\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< Image > * required The generated image files info."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-lora",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-lora/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-lora/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-lora\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to generate an image from."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux-lora",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux-lora/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-lora/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux-lora\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< Image > * required The generated image files info."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux/dev",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux/dev/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux/dev/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux/dev\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to generate an image from."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux/dev",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux/dev/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux/dev/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux/dev\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< Image > * required The generated image files info."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux/schnell",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux/schnell/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux/schnell/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux/schnell\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to generate an image from."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/flux/schnell",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/flux/schnell/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux/schnell/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/flux/schnell\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< Image > * required The generated image files info."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/ideogram/v3",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/ideogram/v3/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/ideogram/v3/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/ideogram/v3\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/ideogram/v3",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/ideogram/v3/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/ideogram/v3/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/ideogram/v3\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< File > * required"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/qwen-image",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/qwen-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/qwen-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/qwen-image\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to generate the image with"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/qwen-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/qwen-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/qwen-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/qwen-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< Image > * required The generated image files info."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/recraft/v4/pro/text-to-image",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/recraft/v4/pro/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/recraft/v4/pro/text-to-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/recraft/v4/pro/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< File > * required"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/recraft/v3/text-to-image",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/recraft/v3/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/recraft/v3/text-to-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/recraft/v3/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< File > * required"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/openai/gpt-image-2.5/flare/text-to-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"openai/gpt-image-2.5/flare/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The generated images."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"openai/gpt-image-2.5/sunburst/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The generated images."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/openai/gpt-image-2",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/openai/gpt-image-2/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/openai/gpt-image-2/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"openai/gpt-image-2\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The generated images."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/gpt-image-1.5",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/gpt-image-1.5/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/gpt-image-1.5/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/gpt-image-1.5\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt for image generation image_size ImageSizeEnum Aspect ratio for the generated image Default value: \"1024x1024\" Possible enum values: 1024x1024, 1536x1024, 1024x1536 background BackgroundEnum Background for the generated image Default value: \"auto\" Possible enum values: auto, transparent, opaque quality QualityEnum Quality for the generated image Default value: \"high\" Possible enum values: low, medium, high"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/gpt-image-1.5",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/gpt-image-1.5/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/gpt-image-1.5/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/gpt-image-1.5\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The generated images."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/xai/grok-imagine-image/v2.0/text-to-image",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"xai/grok-imagine-image/v2.0/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required Text description of the desired image."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/xai/grok-imagine-image/v2.0/text-to-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"xai/grok-imagine-image/v2.0/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The URL of the generated image."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/xai/grok-imagine-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/xai/grok-imagine-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"xai/grok-imagine-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The URL of the generated image."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/xai/grok-imagine-image/quality/text-to-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"xai/grok-imagine-image/quality/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The URL of the generated image."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/bria/fibo-edit-1.5/edit",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "image",
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"bria/fibo-edit-1.5/edit\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Input",
+          "quote": "image_urls list< string > 1-4 reference images (files or URLs). Order is significant: the instruction is resolved against the images in the order they are sent."
+        },
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "instruction string Instruction for image editing. aspect_ratio Enum Output aspect ratio. Left unset, the output keeps the ratio of the first reference image. A chosen ratio applies only with two or more reference images; with a single reference the output keeps that image's ratio either way. Possible enum values: 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/bria/fibo-edit-1.5/edit",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"bria/fibo-edit-1.5/edit\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "image Image * required The edited image, in the source aspect ratio unless aspect_ratio was set."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/bria/fibo-gen-1.5/text-to-image",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"bria/fibo-gen-1.5/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string Prompt for image generation. structured_prompt StructuredPrompt The structured prompt to generate an image from."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/bria/fibo-gen-1.5/text-to-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"bria/fibo-gen-1.5/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "image Image * required Generated image."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/krea-2/turbo",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/krea-2/turbo/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/krea-2/turbo/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/krea-2/turbo\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required Base text description of the image to generate."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/krea-2/turbo",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/krea-2/turbo/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/krea-2/turbo/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/krea-2/turbo\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The generated images."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/z-image/turbo",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/z-image/turbo/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/z-image/turbo/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/z-image/turbo\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required The prompt to generate an image from."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/fal-ai/z-image/turbo",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/fal-ai/z-image/turbo/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/fal-ai/z-image/turbo/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"fal-ai/z-image/turbo\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< ImageFile > * required The generated image files info."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/krea/v2/large/text-to-image",
+      "field": "inputModalities",
+      "before": {
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/krea/v2/large/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/krea/v2/large/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"krea/v2/large/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "text",
+          "section": "Input",
+          "quote": "prompt string * required Text description of the image to generate. aspect_ratio AspectRatioEnum Aspect ratio of the generated image. Default value: \"1:1\" Possible enum values: 1:1, 4:3, 3:2, 16:9, 2.35:1, 4:5, 2:3, 9:16 creativity CreativityEnum Controls how loosely the model interprets the prompt. Higher values produce more creative results that may drift from the prompt; lower values stay closer to the prompt. Default value: \"medium\" Possible enum values: raw, low, medium, high"
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/krea/v2/large/text-to-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/krea/v2/large/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/krea/v2/large/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"krea/v2/large/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< Image > * required The generated images."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    },
+    {
+      "identity": "fal/meta/muse-image/text-to-image",
+      "field": "outputModalities",
+      "before": {
+        "value": [
+          "image"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "sourceUrl": "https://api.fal.ai/v1/models",
+        "verifiedAt": "2026-11-09"
+      },
+      "candidateUrl": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+      "decision": "moved",
+      "sourceUrl": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+      "verifiedAt": "2026-11-10",
+      "identityQuote": "fal.subscribe(\"meta/muse-image/text-to-image\"",
+      "evidence": [
+        {
+          "modality": "image",
+          "section": "Output",
+          "quote": "images list< Image > * required The generated or edited images."
+        }
+      ],
+      "reason": "Exact identity and every field value verified in the corresponding schema."
+    }
+  ],
+  "counts": {
+    "fields": 61,
+    "pages": 36,
+    "moved": 61,
+    "kept": 0
+  }
+}

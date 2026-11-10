@@ -80,7 +80,7 @@ test('R8 every rendered catalog card has uppercase token units while stored labe
   assert.equal(count, 1064); assert.ok(lowercaseSources > 0)
 })
 
-test('R8 Bailian Kimi K3 uses the supplied exact evidence and SiliconFlow main has no window', () => {
+test('R8 Bailian Kimi K3 keeps its exact evidence and R21 resolves SiliconFlow full registry specifications', () => {
   const card = modelCardSpecifications('bailian', STATIC_MODEL_REGISTRY.bailian.models.find(m => m.id === 'kimi-k3'))
   assert.deepEqual(card.fields.inputModalities.value, ['text', 'image'])
   assert.deepEqual(card.fields.outputModalities.value, ['text'])
@@ -91,7 +91,9 @@ test('R8 Bailian Kimi K3 uses the supplied exact evidence and SiliconFlow main h
     assert.equal(fact.verifiedAt, '2026-11-09')
   }
   const silicon = modelCardSpecifications('siliconflow', STATIC_MODEL_REGISTRY.siliconflow.models.find(m => m.id === 'Qwen/Qwen3.8-27B'))
-  assert.equal(silicon.fields.totalContextTokens.value, null); assert.equal(silicon.context, '未知')
+  assert.equal(silicon.fields.totalContextTokens.value, 262144); assert.equal(silicon.context, '≈ 262K tokens')
+  assert.equal(silicon.fields.totalContextTokens.sourceUrl, 'https://huggingface.co/Qwen/Qwen3.8-27B')
+  assert.equal(silicon.fields.totalContextTokens.verifiedAt, '2026-10-16')
   const native = modelCardSpecifications('kimi', STATIC_MODEL_REGISTRY.kimi.models.find(m => m.id === 'kimi-k3'))
   assert.equal(native.fields.totalContextTokens.value, 1000000, 'other channels remain unchanged')
 })

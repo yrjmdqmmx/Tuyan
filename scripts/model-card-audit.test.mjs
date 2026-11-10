@@ -50,8 +50,8 @@ test('misleading audit excludes vendor inheritance and unknowns; detects both er
 })
 
 test('R11 reports regenerate offline without baseline checkout or raw private captures', () => {
-  execFileSync(process.execPath, ['scripts/report-model-card-r11.mjs', '--frozen-main', '--check'], { cwd: root, stdio: 'pipe' })
-  execFileSync(process.execPath, ['scripts/report-model-card-r10.mjs', '--check'], { cwd: root, stdio: 'pipe' })
+  execFileSync(process.execPath, ['scripts/report-model-card-r11.mjs', '--frozen-main', '--frozen-head', '--check'], { cwd: root, stdio: 'pipe' })
+  execFileSync(process.execPath, ['scripts/report-model-card-r10.mjs', '--frozen-head', '--check'], { cwd: root, stdio: 'pipe' })
   const main = read('apps/web/tests/fixtures/r11-main-rendered.json')
   assert.equal(main.capture.commit, 'c7b6a2fc')
   const rows = Object.keys(main.fullObject.values).map(key => ({ channel: key.split('/')[0], model: { id: key } }))

@@ -1,0 +1,3935 @@
+{
+  "commit": "d1fe6ff6",
+  "registryCards": 1061,
+  "legacyStaticTables": [
+    "bailian/deepseek-v4.1-flash",
+    "bailian/qwen3.8-27b",
+    "bailian/qwen3.8-2.4t-a95b",
+    "bailian/qwen3.8-max",
+    "bailian/glm-5.2",
+    "bailian/glm-5.1",
+    "bailian/kimi-k2.7-code",
+    "bailian/kimi-k2.6",
+    "bailian/kimi-k2.5",
+    "bailian/qwen-image-2.0",
+    "bailian/qwen-image-2.0-pro",
+    "bailian/qwen3.7-max-2026-06-08",
+    "bailian/qwen3.7-plus",
+    "bailian/wan2.6-image",
+    "bailian/MiniMax/MiniMax-M3.1-Flash",
+    "bailian/qwen-plus-2025-01-25",
+    "bailian/qwen-plus-2025-04-28",
+    "bailian/qwen-plus-2025-07-14",
+    "bailian/unisound/unisound-u2",
+    "bailian/xiaomi/mimo-v2.6-pro-ultraspeed"
+  ],
+  "objectDifferences": {
+    "sourceDiff": 616,
+    "modalityDiff": 575,
+    "eitherDiff": 659
+  },
+  "rows": {
+    "bailian/deepseek-v4.1-flash": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+          "sourceUrls": [
+            "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": "1M",
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": "384K",
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
+    },
+    "bailian/qwen3.8-max-0902": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen3-8-max"
+    },
+    "bailian/qwen3.8-27b": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b"
+    },
+    "bailian/qwen3.8-2.4t-a95b": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b"
+    },
+    "bailian/qwen-image-3.0": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference"
+    },
+    "bailian/qwen-image-3.0-pro": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro"
+    },
+    "bailian/qwen3.8-max": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen3-8-max"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen3-8-max"
+    },
+    "bailian/glm-5.2": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1048576,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/glm-5-2"
+    },
+    "bailian/glm-5.1": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 202745,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/glm-5-1"
+    },
+    "bailian/kimi-k2.7-code": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 262144,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code"
+    },
+    "bailian/kimi-k2.6": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 262144,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/kimi-k2-6"
+    },
+    "bailian/kimi-k2.5": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 262144,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-5",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/kimi-k2-5"
+    },
+    "bailian/qwen-image-2.0-pro-2026-06-22": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+    },
+    "bailian/qwen-image-2.0": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0"
+    },
+    "bailian/qwen-image-2.0-2026-03-03": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0"
+    },
+    "bailian/qwen-image-2.0-pro": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+    },
+    "bailian/qwen-image-2.0-pro-2026-03-03": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+    },
+    "bailian/qwen-image-2.0-pro-2026-04-22": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+    },
+    "bailian/qwen3.7-max": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+    },
+    "bailian/qwen3.7-max-2026-05-17": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+    },
+    "bailian/qwen3.7-max-2026-05-20": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+    },
+    "bailian/qwen3.7-max-2026-06-08": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+    },
+    "bailian/qwen3.7-max-preview": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+    },
+    "bailian/qwen3.7-plus": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus"
+    },
+    "bailian/qwen3.7-plus-2026-05-26": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus"
+    },
+    "bailian/wan2.7-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/wan2-7-image"
+    },
+    "bailian/wan2.7-image-pro": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/wan2-7-image-pro"
+    },
+    "bailian/wan2.6-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "not-applicable",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/wan2-6-image"
+    },
+    "bailian/MiniMax/MiniMax-M3.1-Flash": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+            "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+            "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+            "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax"
+    },
+    "bailian/qwen-plus-2025-01-25": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 8192,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen-plus"
+    },
+    "bailian/qwen-plus-2025-04-28": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen-plus"
+    },
+    "bailian/qwen-plus-2025-07-14": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 16384,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/qwen-plus"
+    },
+    "bailian/unisound/unisound-u2": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound"
+          ],
+          "verifiedAt": "2026-10-16",
+          "displayValue": "文本"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound"
+          ],
+          "verifiedAt": "2026-10-16",
+          "displayValue": "文本"
+        },
+        "totalContextTokens": {
+          "value": 163840,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound"
+          ],
+          "verifiedAt": "2026-10-16",
+          "suffix": ""
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound"
+    },
+    "bailian/xiaomi/mimo-v2.6-pro-ultraspeed": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video",
+            "audio"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "totalContextTokens": {
+          "value": 1048576,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        },
+        "maxOutputTokens": {
+          "value": 131072,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ],
+          "verifiedAt": "2026-10-26"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/mimo"
+    },
+    "ideogram/ideogram-v4": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "sourceUrls": [],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+          "sourceUrls": [
+            "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+            "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4"
+    },
+    "fal/bytedance/seedream/v5/flash/text-to-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "sourceUrls": [],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+          "sourceUrls": [
+            "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        }
+      },
+      "source": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api"
+    },
+    "fal/bytedance/seedream/v5/pro/text-to-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://api.fal.ai/v1/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api"
+    },
+    "fal/fal-ai/bytedance/seedream/v4.5/text-to-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://api.fal.ai/v1/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api"
+    },
+    "fal/fal-ai/bytedance/seedream/v4/text-to-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://api.fal.ai/v1/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api"
+    },
+    "fal/fal-ai/flux-2-pro": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://api.fal.ai/v1/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://fal.ai/models/fal-ai/flux-2-pro/api"
+    },
+    "fal/blackforestlabs/flux-3/klein/base/text-to-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "sourceUrls": [],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "sourceUrls": [
+            "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        }
+      },
+      "source": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api"
+    },
+    "fal/blackforestlabs/flux-3/klein/text-to-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "sourceUrls": [],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "sourceUrls": [
+            "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        }
+      },
+      "source": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api"
+    },
+    "fal/blackforestlabs/flux-3/text-to-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "sourceUrls": [],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+          "sourceUrls": [
+            "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        }
+      },
+      "source": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api"
+    },
+    "fal/google/nano-banana-2.1": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video",
+            "file"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+          "sourceUrls": [
+            "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+          ],
+          "verifiedAt": "2026-10-16",
+          "displayValue": "文本、图像、视频、文件（PDF）"
+        },
+        "outputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+          "sourceUrls": [
+            "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+          ],
+          "verifiedAt": "2026-10-16",
+          "displayValue": "文本、图像"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        },
+        "maxOutputTokens": {
+          "value": 32768,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+          "sourceUrls": [
+            "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+          ],
+          "verifiedAt": "2026-10-16"
+        }
+      },
+      "source": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+    },
+    "fal/openai/gpt-image-2.5/flare/text-to-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://api.fal.ai/v1/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api"
+    },
+    "fal/openai/gpt-image-2.5/sunburst/text-to-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://api.fal.ai/v1/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api"
+    },
+    "fal/xai/grok-imagine-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://api.fal.ai/v1/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://fal.ai/models/xai/grok-imagine-image/api"
+    },
+    "fal/xai/grok-imagine-image/quality/text-to-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://api.fal.ai/v1/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api"
+    },
+    "fal/krea/v3/text-to-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "sourceUrls": [],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://fal.ai/models/krea/v3/text-to-image/api",
+          "sourceUrls": [
+            "https://fal.ai/models/krea/v3/text-to-image/api"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        }
+      },
+      "source": "https://fal.ai/models/krea/v3/text-to-image/api"
+    },
+    "fal/meta/muse-image/text-to-image": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://api.fal.ai/v1/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://fal.ai/models/meta/muse-image/text-to-image/api"
+    },
+    "replicate/google/imagen-4": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://replicate.com/google/imagen-4/api/schema",
+          "sourceUrls": [
+            "https://replicate.com/google/imagen-4/api/schema"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://replicate.com/google/imagen-4/api/schema",
+          "sourceUrls": [
+            "https://replicate.com/google/imagen-4/api/schema"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001"
+    },
+    "replicate/google/imagen-4-fast": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://replicate.com/google/imagen-4-fast/api/schema",
+          "sourceUrls": [
+            "https://replicate.com/google/imagen-4-fast/api/schema"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://replicate.com/google/imagen-4-fast/api/schema",
+          "sourceUrls": [
+            "https://replicate.com/google/imagen-4-fast/api/schema"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001"
+    },
+    "replicate/google/imagen-4-ultra": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://replicate.com/google/imagen-4-ultra/api/schema",
+          "sourceUrls": [
+            "https://replicate.com/google/imagen-4-ultra/api/schema"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://replicate.com/google/imagen-4-ultra/api/schema",
+          "sourceUrls": [
+            "https://replicate.com/google/imagen-4-ultra/api/schema"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001"
+    },
+    "replicate/google/imagen-3": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://replicate.com/google/imagen-3/api/schema",
+          "sourceUrls": [
+            "https://replicate.com/google/imagen-3/api/schema"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://replicate.com/google/imagen-3/api/schema",
+          "sourceUrls": [
+            "https://replicate.com/google/imagen-3/api/schema"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002"
+    },
+    "replicate/google/imagen-3-fast": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://replicate.com/google/imagen-3-fast/api/schema",
+          "sourceUrls": [
+            "https://replicate.com/google/imagen-3-fast/api/schema"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://replicate.com/google/imagen-3-fast/api/schema",
+          "sourceUrls": [
+            "https://replicate.com/google/imagen-3-fast/api/schema"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001"
+    },
+    "replicate/google/nano-banana-2.1": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video",
+            "file"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+          "sourceUrls": [
+            "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+          ],
+          "verifiedAt": "2026-10-16",
+          "displayValue": "文本、图像、视频、文件（PDF）"
+        },
+        "outputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+          "sourceUrls": [
+            "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+          ],
+          "verifiedAt": "2026-10-16",
+          "displayValue": "文本、图像"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": null
+        },
+        "maxOutputTokens": {
+          "value": 32768,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+          "sourceUrls": [
+            "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+          ],
+          "verifiedAt": "2026-10-16"
+        }
+      },
+      "source": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+    },
+    "replicate/prunaai/flux-kontext-fast": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "sourceUrls": [],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://replicate.com/prunaai/flux-kontext-fast/api/schema",
+          "sourceUrls": [
+            "https://replicate.com/prunaai/flux-kontext-fast/api/schema"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://replicate.com/prunaai/flux-kontext-fast"
+    },
+    "runware/xai:grok-imagine@image-quality": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json",
+          "sourceUrls": [
+            "https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json",
+          "sourceUrls": [
+            "https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2"
+    },
+    "runware/openai:1@1": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1/schema.json",
+          "sourceUrls": [
+            "https://runware.ai/docs/models/openai-gpt-image-1/schema.json"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1/schema.json",
+          "sourceUrls": [
+            "https://runware.ai/docs/models/openai-gpt-image-1/schema.json"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://developers.openai.com/api/docs/models/gpt-image-1"
+    },
+    "sensenova/kimi-k3": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3",
+          "sourceUrls": [
+            "https://huggingface.co/moonshotai/Kimi-K3"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3",
+          "sourceUrls": [
+            "https://huggingface.co/moonshotai/Kimi-K3"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3",
+          "sourceUrls": [
+            "https://huggingface.co/moonshotai/Kimi-K3"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://huggingface.co/moonshotai/Kimi-K3"
+    },
+    "qianfan/glm-5.3-flash": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "video",
+            "image",
+            "text",
+            "file"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+          "sourceUrls": [
+            "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+          "sourceUrls": [
+            "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+          "sourceUrls": [
+            "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash"
+          ],
+          "verifiedAt": "2026-10-16",
+          "approximate": true
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash"
+    },
+    "qianfan/kimi-k2.6": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K2.6",
+          "sourceUrls": [
+            "https://huggingface.co/moonshotai/Kimi-K2.6"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K2.6",
+          "sourceUrls": [
+            "https://huggingface.co/moonshotai/Kimi-K2.6"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": 256000,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K2.6",
+          "sourceUrls": [
+            "https://huggingface.co/moonshotai/Kimi-K2.6"
+          ],
+          "verifiedAt": "2026-10-16",
+          "approximate": true
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://huggingface.co/moonshotai/Kimi-K2.6"
+    },
+    "qianfan/qwen3.5-122b-a10b": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 262144,
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 65536,
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/models"
+    },
+    "qianfan/qwen3.5-27b": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 262144,
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 65536,
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/models"
+    },
+    "qianfan/qwen3.5-35b-a3b": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "totalContextTokens": {
+          "value": 262144,
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        },
+        "maxOutputTokens": {
+          "value": 65536,
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/models",
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://help.aliyun.com/zh/model-studio/models"
+    },
+    "qianfan/qwen3.5-397b-a17b": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+          "sourceUrls": [
+            "https://huggingface.co/Qwen/Qwen3.5-397B-A17B"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+          "sourceUrls": [
+            "https://huggingface.co/Qwen/Qwen3.5-397B-A17B"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "totalContextTokens": {
+          "value": 262144,
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+          "sourceUrls": [
+            "https://huggingface.co/Qwen/Qwen3.5-397B-A17B"
+          ],
+          "verifiedAt": "2026-10-16"
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B"
+    },
+    "qianfan/ernie-5.0-thinking-exp": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "sourceUrls": [
+            "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+            "https://cloud.baidu.com/doc/qianfan-docs/s/Jm8r1826a"
+          ],
+          "verifiedAt": "2026-10-16",
+          "displayValue": "文本、图像"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "sourceUrls": [
+            "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+            "https://cloud.baidu.com/doc/qianfan-docs/s/Jm8r1826a"
+          ],
+          "verifiedAt": "2026-10-16",
+          "displayValue": "文本"
+        },
+        "totalContextTokens": {
+          "value": "128K",
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "sourceUrls": [
+            "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+            "https://cloud.baidu.com/doc/qianfan-docs/s/Jm8r1826a"
+          ],
+          "verifiedAt": "2026-10-16",
+          "suffix": ""
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    "qianfan/internvl3-38b": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text",
+            "image",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://huggingface.co/OpenGVLab/InternVL3-38B",
+          "sourceUrls": [
+            "https://huggingface.co/OpenGVLab/InternVL3-38B"
+          ],
+          "verifiedAt": "2026-10-16",
+          "displayValue": "文本、图像、视频"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://huggingface.co/OpenGVLab/InternVL3-38B",
+          "sourceUrls": [
+            "https://huggingface.co/OpenGVLab/InternVL3-38B"
+          ],
+          "verifiedAt": "2026-10-16",
+          "displayValue": "文本"
+        },
+        "totalContextTokens": {
+          "value": "32K",
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "sourceUrls": [
+            "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+          ],
+          "verifiedAt": "2026-10-16",
+          "suffix": ""
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "source": "https://huggingface.co/OpenGVLab/InternVL3-38B"
+    }
+  },
+  "firstSources": {
+    "deepseek/deepseek-flash": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "deepseek/deepseek-v4-flash-vision-exp": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "deepseek/deepseek-v4-pro": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "deepseek/deepseek-v4-flash": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "kimi/kimi-k3": "https://huggingface.co/moonshotai/Kimi-K3",
+    "kimi/kimi-k2.7-code": "https://huggingface.co/moonshotai/Kimi-K2.7-Code",
+    "kimi/kimi-k2.7-code-highspeed": "https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart",
+    "kimi/kimi-k2.6": "https://huggingface.co/moonshotai/Kimi-K2.6",
+    "kimi/kimi-k3.1-pro": "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+    "kimi/kimi-k3.1-pro-highspeed": "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+    "zhipu/glm-5.3": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3",
+    "zhipu/glm-5.3-flash": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+    "zhipu/glm-5.3-flashx": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+    "zhipu/glm-5.2": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2",
+    "zhipu/glm-5.1": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1",
+    "zhipu/glm-5": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5",
+    "zhipu/glm-5-turbo": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5-turbo",
+    "zhipu/glm-5v-turbo": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5v-turbo",
+    "zhipu/glm-4.7": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+    "zhipu/glm-4.7-flash": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.7-flash",
+    "zhipu/glm-4.7-flashx": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+    "zhipu/glm-4.6": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.6",
+    "zhipu/glm-4.6v": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.6v",
+    "zhipu/glm-4.6v-flash": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.6v-flash",
+    "zhipu/glm-4.6v-flashx": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.6v",
+    "zhipu/glm-4.5-air": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5",
+    "zhipu/glm-4.5-airx": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5",
+    "zhipu/glm-4.5-flash": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.5-flash",
+    "zhipu/glm-4.1v-thinking-flash": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.1v-thinking-flash",
+    "zhipu/glm-4.1v-thinking-flashx": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.1v-thinking",
+    "zhipu/glm-4-flash-250414": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+    "zhipu/glm-4-flashx-250414": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+    "zhipu/glm-4-long": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4-long",
+    "zhipu/glm-4v-flash": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4v-flash",
+    "zhipu/cogview-3-flash": "https://docs.bigmodel.cn/cn/guide/models/free/cogview-3-flash",
+    "zhipu/cogview-4": "https://docs.bigmodel.cn/cn/guide/models/image-generation/cogview-4",
+    "zhipu/cogview-4-250304": "https://docs.bigmodel.cn/cn/guide/models/image-generation/cogview-4",
+    "zhipu/glm-image": "https://docs.bigmodel.cn/cn/guide/models/image-generation/glm-image",
+    "siliconflow/XingChenAGI/Xing4.0-29B": "https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B",
+    "siliconflow/tencent/Hy4-preview": "https://huggingface.co/tencent/Hy4-preview",
+    "siliconflow/Qwen/Qwen3.8-27B": "https://help.aliyun.com/zh/model-studio/models",
+    "siliconflow/MiniMaxAI/MiniMax-M2.5": "https://huggingface.co/MiniMaxAI/MiniMax-M2.5",
+    "siliconflow/Pro/MiniMaxAI/MiniMax-M2.5": "https://huggingface.co/MiniMaxAI/MiniMax-M2.5",
+    "siliconflow/Qwen/Qwen-Image-Edit-2509": "https://huggingface.co/Qwen/Qwen-Image-Edit-2509",
+    "siliconflow/Qwen/Qwen-Image": "https://help.aliyun.com/zh/model-studio/models",
+    "siliconflow/Qwen/Qwen-Image-Edit": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+    "siliconflow/Qwen/Qwen3.6-27B": "https://huggingface.co/Qwen/Qwen3.6-27B",
+    "siliconflow/Qwen/Qwen3.6-35B-A3B": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+    "siliconflow/Qwen/Qwen3.5-122B-A10B": "https://help.aliyun.com/zh/model-studio/models",
+    "siliconflow/Qwen/Qwen3.5-27B": "https://help.aliyun.com/zh/model-studio/models",
+    "siliconflow/Qwen/Qwen3.5-35B-A3B": "https://help.aliyun.com/zh/model-studio/models",
+    "siliconflow/Qwen/Qwen3.5-397B-A17B": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+    "siliconflow/Qwen/Qwen3.5-4B": "https://huggingface.co/Qwen/Qwen3.5-4B",
+    "siliconflow/Qwen/Qwen3.5-9B": "https://huggingface.co/Qwen/Qwen3.5-9B",
+    "siliconflow/Qwen/Qwen3-14B": "https://huggingface.co/Qwen/Qwen3-14B",
+    "siliconflow/Qwen/Qwen3-30B-A3B-Instruct-2507": "https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507",
+    "siliconflow/Qwen/Qwen3-32B": "https://huggingface.co/Qwen/Qwen3-32B",
+    "siliconflow/Qwen/Qwen3-8B": "https://huggingface.co/Qwen/Qwen3-8B",
+    "siliconflow/Pro/Qwen/Qwen2.5-7B-Instruct": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct",
+    "siliconflow/Qwen/Qwen2.5-32B-Instruct": "https://huggingface.co/Qwen/Qwen2.5-32B-Instruct",
+    "siliconflow/Qwen/Qwen2.5-72B-Instruct": "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct",
+    "siliconflow/Qwen/Qwen2.5-72B-Instruct-128K": "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct",
+    "siliconflow/Qwen/Qwen2.5-7B-Instruct": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct",
+    "siliconflow/deepseek-ai/DeepSeek-V4.1-Flash": "https://www.siliconflow.cn/models",
+    "siliconflow/deepseek-ai/DeepSeek-V4-Flash": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+    "siliconflow/deepseek-ai/DeepSeek-V4-Pro": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "siliconflow/Pro/deepseek-ai/DeepSeek-V3.2": "https://huggingface.co/deepseek-ai/DeepSeek-V3.2",
+    "siliconflow/deepseek-ai/DeepSeek-V3.2": "https://huggingface.co/deepseek-ai/DeepSeek-V3.2",
+    "siliconflow/Pro/deepseek-ai/DeepSeek-V3.1-Terminus": "https://huggingface.co/deepseek-ai/DeepSeek-V3.1-Terminus",
+    "siliconflow/deepseek-ai/DeepSeek-V3.1-Terminus": "https://huggingface.co/deepseek-ai/DeepSeek-V3.1-Terminus",
+    "siliconflow/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B": "https://huggingface.co/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+    "siliconflow/moonshotai/Kimi-K2.7-Code": "https://huggingface.co/moonshotai/Kimi-K2.7-Code",
+    "siliconflow/Pro/moonshotai/Kimi-K2.6": "https://huggingface.co/moonshotai/Kimi-K2.6",
+    "siliconflow/stepfun-ai/Step-3.5-Flash": "https://platform.stepfun.com/docs/zh/guides/models/list",
+    "siliconflow/zai-org/GLM-5.3": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3",
+    "siliconflow/zai-org/GLM-5.3-Flash": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+    "siliconflow/zai-org/GLM-5.2": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2",
+    "siliconflow/Pro/zai-org/GLM-5.1": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1",
+    "siliconflow/zai-org/GLM-4.5-Air": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5",
+    "siliconflow/zai-org/GLM-4.5V": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.5v",
+    "siliconflow/THUDM/GLM-4-32B-0414": "https://github.com/zai-org/GLM-4/blob/main/README.md",
+    "siliconflow/THUDM/GLM-4-9B-0414": "https://github.com/zai-org/GLM-4/blob/main/README.md",
+    "siliconflow/THUDM/GLM-Z1-9B-0414": "https://github.com/zai-org/GLM-4/blob/main/README.md",
+    "siliconflow/Pro/deepseek-ai/DeepSeek-V3": "https://huggingface.co/deepseek-ai/DeepSeek-V3",
+    "siliconflow/deepseek-ai/DeepSeek-V3": "https://huggingface.co/deepseek-ai/DeepSeek-V3",
+    "siliconflow/ByteDance-Seed/Seed-OSS-36B-Instruct": "https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Instruct",
+    "siliconflow/Kwai-Kolors/Kolors": "https://huggingface.co/Kwai-Kolors/Kolors",
+    "siliconflow/Pro/deepseek-ai/DeepSeek-R1": "https://huggingface.co/deepseek-ai/DeepSeek-R1",
+    "siliconflow/Qwen/Qwen3-Coder-30B-A3B-Instruct": "https://huggingface.co/Qwen/Qwen3-Coder-30B-A3B-Instruct",
+    "siliconflow/Qwen/Qwen3-Omni-30B-A3B-Instruct": "https://huggingface.co/Qwen/Qwen3-Omni-30B-A3B-Instruct",
+    "siliconflow/Qwen/Qwen3-Omni-30B-A3B-Thinking": "https://huggingface.co/Qwen/Qwen3-Omni-30B-A3B-Thinking",
+    "siliconflow/Qwen/Qwen3-VL-30B-A3B-Instruct": "https://huggingface.co/Qwen/Qwen3-VL-30B-A3B-Instruct",
+    "siliconflow/Qwen/Qwen3-VL-30B-A3B-Thinking": "https://huggingface.co/Qwen/Qwen3-VL-30B-A3B-Thinking",
+    "siliconflow/Qwen/Qwen3-VL-32B-Instruct": "https://huggingface.co/Qwen/Qwen3-VL-32B-Instruct",
+    "siliconflow/Qwen/Qwen3-VL-32B-Thinking": "https://huggingface.co/Qwen/Qwen3-VL-32B-Thinking",
+    "siliconflow/Qwen/Qwen3-VL-8B-Instruct": "https://huggingface.co/Qwen/Qwen3-VL-8B-Instruct",
+    "siliconflow/Qwen/Qwen3-VL-8B-Thinking": "https://huggingface.co/Qwen/Qwen3-VL-8B-Thinking",
+    "siliconflow/Tongyi-MAI/Z-Image": "https://huggingface.co/Tongyi-MAI/Z-Image",
+    "siliconflow/Tongyi-MAI/Z-Image-Turbo": "https://help.aliyun.com/zh/model-studio/models",
+    "siliconflow/baidu/ERNIE-Image-Turbo": "https://huggingface.co/baidu/ERNIE-Image-Turbo",
+    "siliconflow/deepseek-ai/DeepSeek-R1": "https://huggingface.co/deepseek-ai/DeepSeek-R1",
+    "siliconflow/inclusionAI/Ling-flash-2.0": "https://huggingface.co/inclusionAI/Ling-flash-2.0",
+    "siliconflow/inclusionAI/Ling-mini-2.0": "https://huggingface.co/inclusionAI/Ling-mini-2.0",
+    "siliconflow/meituan-longcat/LongCat-2.0": "https://huggingface.co/meituan-longcat/LongCat-2.0",
+    "siliconflow/nex-agi/Nex-N2-Pro": "https://huggingface.co/nex-agi/Nex-N2-Pro",
+    "siliconflow/tencent/Hunyuan-A13B-Instruct": "https://huggingface.co/tencent/Hunyuan-A13B-Instruct",
+    "anthropic/claude-haiku-5-5": "https://platform.claude.com/docs/en/models/haiku-5-5/overview",
+    "anthropic/claude-sonnet-5-5": "https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
+    "anthropic/claude-opus-5-5": "https://docs.anthropic.com/en/docs/about-claude/models/overview",
+    "anthropic/claude-fable-5-1": "https://docs.anthropic.com/en/docs/about-claude/models/overview",
+    "anthropic/claude-opus-5": "https://platform.claude.com/docs/en/models/opus-5/overview",
+    "anthropic/claude-sonnet-5": "https://platform.claude.com/docs/en/models/sonnet-5/overview",
+    "anthropic/claude-fable-5": "https://platform.claude.com/docs/en/models/fable-5/overview",
+    "anthropic/claude-opus-4-8": "https://platform.claude.com/docs/en/models/opus-4-8/overview",
+    "anthropic/claude-opus-4-7": "https://platform.claude.com/docs/en/models/opus-4-7/overview",
+    "anthropic/claude-sonnet-4-6": "https://platform.claude.com/docs/en/models/sonnet-4-6/overview",
+    "anthropic/claude-opus-4-6": "https://platform.claude.com/docs/en/models/opus-4-6/overview",
+    "anthropic/claude-opus-4-5-20251101": "https://platform.claude.com/docs/en/models/opus-4-5/overview",
+    "anthropic/claude-sonnet-4-5-20250929": "https://platform.claude.com/docs/en/models/sonnet-4-5/overview",
+    "anthropic/claude-haiku-4-5-20251001": "https://platform.claude.com/docs/en/models/haiku-4-5/overview",
+    "recraft/recraftv4_1": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+    "recraft/recraftv4_1_flash": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash",
+    "recraft/recraftv4_1_pro": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+    "recraft/recraftv4_1_pro_vector": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+    "recraft/recraftv4_1_utility": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+    "recraft/recraftv4_1_utility_pro": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+    "recraft/recraftv4_1_utility_pro_vector": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+    "recraft/recraftv4_1_utility_vector": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+    "recraft/recraftv4_1_vector": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+    "recraft/recraftv4": "https://www.recraft.ai/docs/api-reference/models/recraft-v4",
+    "recraft/recraftv4_pro": "https://www.recraft.ai/docs/api-reference/models/recraft-v4",
+    "recraft/recraftv4_pro_vector": "https://www.recraft.ai/docs/api-reference/models/recraft-v4",
+    "recraft/recraftv4_vector": "https://www.recraft.ai/docs/api-reference/models/recraft-v4",
+    "recraft/recraftv3": "https://www.recraft.ai/docs/api-reference/models/recraft-v3",
+    "recraft/recraftv3_vector": "https://www.recraft.ai/docs/api-reference/models/recraft-v3",
+    "recraft/recraftv2": "https://www.recraft.ai/docs/api-reference/models/recraft-v2",
+    "recraft/recraftv2_vector": "https://www.recraft.ai/docs/api-reference/models/recraft-v2",
+    "xai/grok-4.7": "https://docs.x.ai/developers/models/grok-4.7",
+    "xai/grok-4.6": "https://docs.x.ai/developers/models/grok-4.6",
+    "xai/grok-4.5": "https://docs.x.ai/developers/models/grok-4.5",
+    "xai/grok-4.3": "https://docs.x.ai/developers/models/grok-4.3",
+    "xai/grok-4.20-0309-non-reasoning": "https://docs.x.ai/developers/models/grok-4.20-0309-non-reasoning",
+    "xai/grok-4.20-0309-reasoning": "https://docs.x.ai/developers/models/grok-4.20-0309-reasoning",
+    "xai/grok-4.20-multi-agent": "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309",
+    "xai/grok-4.20-multi-agent-0309": "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309",
+    "xai/grok-imagine-image-2.0": "https://docs.x.ai/developers/models/grok-imagine-image-2.0",
+    "xai/grok-imagine-image": "https://docs.x.ai/developers/models/grok-imagine-image",
+    "xai/grok-imagine-image-quality": "https://docs.x.ai/developers/models/grok-imagine-image-quality",
+    "xai/grok-build-0.1": "https://docs.x.ai/developers/models/grok-build-0.1",
+    "gemini/gemini-4-argon": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+    "gemini/gemini-nano-banana-2.1": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+    "gemini/gemini-3.8-flash": "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+    "gemini/gemini-3.7-flash": "https://ai.google.dev/gemini-api/docs/models/gemini-3.7-flash",
+    "gemini/gemini-3.6-flash": "https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash",
+    "gemini/gemini-3.5-flash-lite": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite",
+    "gemini/gemini-3.1-flash-lite-image": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image",
+    "gemini/gemini-3.1-flash-image": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image",
+    "gemini/gemini-3-pro-image": "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+    "gemini/gemini-3.5-flash": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash",
+    "gemini/gemini-3.1-flash-lite": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite",
+    "gemini/gemini-3.1-pro-preview": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-pro-preview",
+    "gemini/gemini-3-flash-preview": "https://ai.google.dev/gemini-api/docs/models/gemini-3-flash-preview",
+    "gemini/gemini-2.5-flash": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash",
+    "gemini/gemini-2.5-flash-image": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+    "gemini/gemini-2.5-flash-lite": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-lite",
+    "gemini/gemini-2.5-pro": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-pro",
+    "bailian/deepseek-v4.1-flash": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+    "bailian/qwen3.8-max-0902": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+    "bailian/ZHIPU/GLM-5.3-Flash": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+    "bailian/qwen3.8-flash": "https://help.aliyun.com/zh/model-studio/vision-model",
+    "bailian/kimi-k3": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+    "bailian/qwen3.8-27b": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+    "bailian/ZHIPU/GLM-5.3": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen3.8-2.4t-a95b": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+    "bailian/MiniMax/MiniMax-M3": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/MiniMax/MiniMax-M2.7": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/MiniMax-M2.5": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/MiniMax/MiniMax-M2.5": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/ZHIPU/GLM-5.3-FlashX": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+    "bailian/ZHIPU/GLM-5.2": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/deepseek-v4.1-flash-1017": "https://help.aliyun.com/zh/model-studio/deepseek-api",
+    "bailian/deepseek-v4-pro-0813": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+    "bailian/vanchin/deepseek-v4-pro-0813": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+    "bailian/qwen-image-3.0": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+    "bailian/qwen-image-3.0-pro": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro",
+    "bailian/qwen3.8-max": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+    "bailian/deepseek-v4-flash-0731": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731",
+    "bailian/qwen3.7-flash": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen3.7-flash-2026-07-15": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/deepseek-v4-pro": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "bailian/glm-5.2": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+    "bailian/glm-5.2-fast-preview": "https://www.qianwenai.com/models/glm-5.2-fast-preview",
+    "bailian/ZHIPU/GLM-5.1": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/glm-5.1": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+    "bailian/ZHIPU/GLM-5": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5",
+    "bailian/glm-5": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5",
+    "bailian/kimi/kimi-k3": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/kimi-k2.7-code": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+    "bailian/kimi/kimi-k2.7-code": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/kimi/kimi-k2.7-code-highspeed": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/kimi-k2.6": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+    "bailian/kimi/kimi-k2.6": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/kimi-k2.5": "https://help.aliyun.com/zh/model-studio/kimi-k2-5",
+    "bailian/kimi/kimi-k2.5": "https://huggingface.co/moonshotai/Kimi-K2.5",
+    "bailian/qwen-image-2.1-pro": "https://help.aliyun.com/zh/model-studio/qwen-image-2-1-pro",
+    "bailian/qwen-image-2.1-turbo": "https://help.aliyun.com/zh/model-studio/qwen-image-2-1-turbo",
+    "bailian/qwen-image-2.0-pro-2026-06-22": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+    "bailian/qwen-image-2.0": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+    "bailian/qwen-image-2.0-2026-03-03": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+    "bailian/qwen-image-2.0-pro": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+    "bailian/qwen-image-2.0-pro-2026-03-03": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+    "bailian/qwen-image-2.0-pro-2026-04-22": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+    "bailian/qwen-image": "https://help.aliyun.com/zh/model-studio/qwen-image-api",
+    "bailian/qwen3.7-max": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+    "bailian/qwen3.7-max-2026-05-17": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+    "bailian/qwen3.7-max-2026-05-20": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+    "bailian/qwen3.7-max-2026-06-08": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+    "bailian/qwen3.7-max-preview": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+    "bailian/qwen3.7-plus": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+    "bailian/qwen3.7-plus-2026-05-26": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+    "bailian/qwen3.6-27b": "https://huggingface.co/Qwen/Qwen3.6-27B",
+    "bailian/qwen3.6-35b-a3b": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+    "bailian/qwen3.6-flash": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen3.6-flash-2026-04-16": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen3.6-plus": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+    "bailian/qwen3.6-plus-2026-04-02": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+    "bailian/qwen3.5-122b-a10b": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen3.5-27b": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen3.5-35b-a3b": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen3.5-397b-a17b": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+    "bailian/qwen3.5-flash": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen3.5-flash-2026-02-23": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen3.5-omni-flash": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+    "bailian/qwen3.5-omni-flash-2026-03-15": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+    "bailian/qwen3.5-omni-plus": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+    "bailian/qwen3.5-omni-plus-2026-03-15": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+    "bailian/qwen3.5-plus": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+    "bailian/qwen3.5-plus-2026-02-15": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+    "bailian/qwen3.5-plus-2026-04-20": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+    "bailian/qwen3-max": "https://www.aliyun.com/notice/118344",
+    "bailian/qwen3-max-2025-09-23": "https://www.aliyun.com/notice/118345",
+    "bailian/qwen3-max-2026-01-23": "https://www.aliyun.com/notice/118345",
+    "bailian/qwen3-max-preview": "https://www.aliyun.com/notice/118344",
+    "bailian/stepfun/step-3.7-flash": "https://platform.stepfun.com/docs/zh/guides/models/list",
+    "bailian/vanchin/deepseek-v4-pro": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+    "bailian/vanchin/deepseek-v3.2-think": "https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin",
+    "bailian/vanchin/deepseek-v3.1-terminus": "https://huggingface.co/deepseek-ai/DeepSeek-V3.1-Terminus",
+    "bailian/vanchin/deepseek-v3": "https://huggingface.co/deepseek-ai/DeepSeek-V3",
+    "bailian/wan2.7-image": "https://help.aliyun.com/zh/model-studio/wan2-7-image",
+    "bailian/wan2.7-image-pro": "https://help.aliyun.com/zh/model-studio/wan2-7-image-pro",
+    "bailian/wan2.6-image": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+    "bailian/wan2.6-t2i": "https://help.aliyun.com/zh/model-studio/wan2-6-t2i",
+    "bailian/wan2.5-i2i-preview": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/wan2.5-t2i-preview": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/wan2.2-t2i-flash": "https://help.aliyun.com/zh/model-studio/wan2-2-t2i-flash",
+    "bailian/wan2.2-t2i-plus": "https://help.aliyun.com/zh/model-studio/wan2-2-t2i-plus",
+    "bailian/MiniMax/MiniMax-M3.1-Flash": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+    "bailian/deepseek-r1-distill-llama-70b": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/deepseek-r1-distill-llama-8b": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/deepseek-r1-distill-qwen-1.5b": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/kling/kling-v3-image-generation": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/kling/kling-v3-omni-image-generation": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen-flash": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen-flash-2025-07-28": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen-long": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen-max": "https://help.aliyun.com/zh/model-studio/text-generation-model",
+    "bailian/qwen-plus": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen-plus-2025-01-25": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+    "bailian/qwen-plus-2025-04-28": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+    "bailian/qwen-plus-2025-07-14": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+    "bailian/qwen-plus-2025-12-01": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen-plus-latest": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen-turbo": "https://www.aliyun.com/notice/118177",
+    "bailian/qwen3-coder-flash": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen3-coder-flash-2025-07-28": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/qwen3-coder-next": "https://www.aliyun.com/notice/118345",
+    "bailian/unisound/unisound-u2": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+    "bailian/vanchin/deepseek-r1": "https://huggingface.co/deepseek-ai/DeepSeek-R1",
+    "bailian/vidu/vidu-image-lite_reference2image": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/vidu/vidu-image-pro_reference2image": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/vidu/vidu-image_reference2image": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/vidu/viduq2-fast_reference2image": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/vidu/viduq2-pro_reference2image": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/vidu/viduq3-fast_reference2image": "https://help.aliyun.com/zh/model-studio/models",
+    "bailian/wanx-v1": "https://help.aliyun.com/zh/model-studio/wanx-v1",
+    "bailian/wanx2.0-t2i-turbo": "https://help.aliyun.com/zh/model-studio/wanx2-0-t2i-turbo",
+    "bailian/wanx2.1-imageedit": "https://help.aliyun.com/zh/model-studio/wanx-image-edit-api-reference",
+    "bailian/wanx2.1-t2i-plus": "https://help.aliyun.com/zh/model-studio/wanx2-1-t2i-plus",
+    "bailian/wanx2.1-t2i-turbo": "https://help.aliyun.com/zh/model-studio/wanx2-1-t2i-turbo",
+    "bailian/xiaomi/mimo-v2.5-pro": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+    "bailian/xiaomi/mimo-v2.6-pro-ultraspeed": "https://help.aliyun.com/zh/model-studio/mimo",
+    "bailian/z-image-turbo": "https://help.aliyun.com/zh/model-studio/models",
+    "openai/gpt-6.1-sol": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+    "openai/gpt-6-luna": "https://developers.openai.com/api/docs/models/gpt-6-luna.md",
+    "openai/gpt-6-sol": "https://developers.openai.com/api/docs/models/gpt-6-sol.md",
+    "openai/gpt-image-2.5-flare": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare.md",
+    "openai/gpt-image-2.5-flare-2026-09-08": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+    "openai/gpt-image-2.5-sunburst": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst.md",
+    "openai/gpt-image-2.5-sunburst-2026-09-08": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+    "openai/gpt-6-astra": "https://developers.openai.com/api/docs/models/gpt-6-astra.md",
+    "openai/gpt-5.6-luna": "https://developers.openai.com/api/docs/models/gpt-5.6-luna.md",
+    "openai/gpt-5.6-sol": "https://developers.openai.com/api/docs/models/gpt-5.6-sol.md",
+    "openai/gpt-5.6-terra": "https://developers.openai.com/api/docs/models/gpt-5.6-terra.md",
+    "openai/gpt-5.5": "https://developers.openai.com/api/docs/models/gpt-5.5.md",
+    "openai/gpt-5.5-pro": "https://developers.openai.com/api/docs/models/gpt-5.5-pro.md",
+    "openai/gpt-5.4": "https://developers.openai.com/api/docs/models/gpt-5.4.md",
+    "openai/gpt-5.4-mini": "https://developers.openai.com/api/docs/models/gpt-5.4-mini.md",
+    "openai/gpt-5.4-nano": "https://developers.openai.com/api/docs/models/gpt-5.4-nano.md",
+    "openai/gpt-5.4-pro": "https://developers.openai.com/api/docs/models/gpt-5.4-pro.md",
+    "openai/gpt-5.3-codex": "https://developers.openai.com/api/docs/models/gpt-5.3-codex.md",
+    "openai/gpt-5.2": "https://developers.openai.com/api/docs/models/gpt-5.2.md",
+    "openai/gpt-5.2-2025-12-11": "https://developers.openai.com/api/docs/models/gpt-5.2",
+    "openai/gpt-5.2-pro": "https://developers.openai.com/api/docs/models/gpt-5.2-pro.md",
+    "openai/gpt-5.1": "https://developers.openai.com/api/docs/models/gpt-5.1.md",
+    "openai/gpt-5.1-2025-11-13": "https://developers.openai.com/api/docs/models/gpt-5.1",
+    "openai/gpt-5": "https://developers.openai.com/api/docs/models/gpt-5.md",
+    "openai/gpt-5-2025-08-07": "https://developers.openai.com/api/docs/models/gpt-5",
+    "openai/gpt-5-mini": "https://developers.openai.com/api/docs/models/gpt-5-mini.md",
+    "openai/gpt-5-mini-2025-08-07": "https://developers.openai.com/api/docs/models/gpt-5-mini",
+    "openai/gpt-5-nano": "https://developers.openai.com/api/docs/models/gpt-5-nano.md",
+    "openai/gpt-5-nano-2025-08-07": "https://developers.openai.com/api/docs/models/gpt-5-nano",
+    "openai/gpt-5-pro": "https://developers.openai.com/api/docs/models/gpt-5-pro.md",
+    "openai/gpt-5-pro-2025-10-06": "https://developers.openai.com/api/docs/models/gpt-5-pro",
+    "openai/gpt-4.1": "https://developers.openai.com/api/docs/models/gpt-4.1.md",
+    "openai/gpt-4.1-2025-04-14": "https://developers.openai.com/api/docs/models/gpt-4.1",
+    "openai/gpt-4.1-mini": "https://developers.openai.com/api/docs/models/gpt-4.1-mini.md",
+    "openai/gpt-4.1-mini-2025-04-14": "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+    "openai/gpt-4.1-nano": "https://developers.openai.com/api/docs/models/gpt-4.1-nano.md",
+    "openai/gpt-4.1-nano-2025-04-14": "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
+    "openai/gpt-4o": "https://developers.openai.com/api/docs/models/gpt-4o.md",
+    "openai/gpt-4o-2024-05-13": "https://developers.openai.com/api/docs/models/gpt-4o",
+    "openai/gpt-4o-2024-08-06": "https://developers.openai.com/api/docs/models/gpt-4o",
+    "openai/gpt-4o-2024-11-20": "https://developers.openai.com/api/docs/models/gpt-4o",
+    "openai/gpt-4o-mini": "https://developers.openai.com/api/docs/models/gpt-4o-mini.md",
+    "openai/gpt-4o-mini-2024-07-18": "https://developers.openai.com/api/docs/models/gpt-4o-mini",
+    "openai/gpt-4-turbo": "https://developers.openai.com/api/docs/models/gpt-4-turbo.md",
+    "openai/gpt-4-turbo-2024-04-09": "https://developers.openai.com/api/docs/models/gpt-4-turbo",
+    "openai/gpt-4": "https://developers.openai.com/api/docs/models/gpt-4.md",
+    "openai/gpt-4-0613": "https://developers.openai.com/api/docs/models/gpt-4",
+    "openai/gpt-4-1106-preview": "https://developers.openai.com/api/docs/models/gpt-4-turbo-preview",
+    "openai/gpt-image-2": "https://developers.openai.com/api/docs/models/gpt-image-2.md",
+    "openai/gpt-image-1.5": "https://developers.openai.com/api/docs/models/gpt-image-1.5.md",
+    "openai/gpt-image-1": "https://developers.openai.com/api/docs/models/gpt-image-1.md",
+    "openai/gpt-image-1-mini": "https://developers.openai.com/api/docs/models/gpt-image-1-mini.md",
+    "openai/chat-latest": "https://developers.openai.com/api/docs/models/chat-latest.md",
+    "openai/chatgpt-image-latest": "https://developers.openai.com/api/docs/models/chatgpt-image-latest.md",
+    "openai/gpt-3.5-turbo": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo.md",
+    "openai/gpt-3.5-turbo-0125": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo",
+    "openai/gpt-3.5-turbo-1106": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo",
+    "openai/gpt-image-2.6-flare": "https://developers.openai.com/api/docs/models/gpt-image-2.6-flare",
+    "openai/gpt-image-2.6-sunburst": "https://developers.openai.com/api/docs/models/gpt-image-2.6-sunburst",
+    "openai/o1": "https://developers.openai.com/api/docs/models/o1.md",
+    "openai/o1-2024-12-17": "https://developers.openai.com/api/docs/models/o1",
+    "openai/o1-pro": "https://developers.openai.com/api/docs/models/o1-pro.md",
+    "openai/o1-pro-2025-03-19": "https://developers.openai.com/api/docs/models/o1-pro",
+    "openai/o3": "https://developers.openai.com/api/docs/models/o3.md",
+    "openai/o3-2025-04-16": "https://developers.openai.com/api/docs/models/o3",
+    "openai/o3-mini": "https://developers.openai.com/api/docs/models/o3-mini.md",
+    "openai/o3-mini-2025-01-31": "https://developers.openai.com/api/docs/models/o3-mini",
+    "openai/o3-pro": "https://developers.openai.com/api/docs/models/o3-pro.md",
+    "openai/o3-pro-2025-06-10": "https://developers.openai.com/api/docs/models/o3-pro",
+    "openai/o4-mini": "https://developers.openai.com/api/docs/models/o4-mini.md",
+    "openai/o4-mini-2025-04-16": "https://developers.openai.com/api/docs/models/o4-mini",
+    "ark/deepseek-v4-1-flash-260910": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/deepseek-v4-1-flash-261017": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+    "ark/deepseek-v4-1-flash-economy-261017": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+    "ark/deepseek-v4-flash-260425": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/deepseek-v4-flash-ga-260731": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/deepseek-v4-pro-260425": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/deepseek-v4-pro-ga-260813": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-2-1-pro-260628": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-2-1-pro-260915": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-2-1-turbo-260628": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-2-0-code-preview-260215": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-2-0-lite-260215": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-2-0-lite-260428": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-2-0-mini-260215": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-2-0-mini-260428": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-2-0-pro-260215": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-1-8-251228": "https://docs.volcengine.com/docs/ark/bytedance-seed-1-8?lang=zh",
+    "ark/doubao-seed-1-6-250615": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-1-6-251015": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-1-6-flash-250615": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-1-6-flash-250828": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seed-1-6-vision-250815": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-1-5-lite-32k-250115": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-1-5-pro-32k-250115": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-1-5-vision-pro-32k-250115": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seedream-5-0-260128": "https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh",
+    "ark/doubao-seedream-5-0-flash-260915": "https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh",
+    "ark/doubao-seedream-5-0-pro-260628": "https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh",
+    "ark/doubao-seedream-4-5-251128": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/doubao-seedream-4-0-250828": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/glm-5-3-flash-260828": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/glm-5-2-260617": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/kimi-k3-1-pro-261024": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+    "ark/doubao-seed-code-preview-251028": "https://docs.volcengine.com/docs/ark/model-release-announcement-2025?lang=en",
+    "ark/doubao-seed-evolving": "https://www.volcengine.com/docs/82379/1330310",
+    "ark/glm-4-7-251222": "https://www.volcengine.com/docs/82379/1330310",
+    "bfl/flux-2-flex": "https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[flex]",
+    "bfl/flux-2-klein-4b": "https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[klein]-4b",
+    "bfl/flux-2-klein-9b": "https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[klein]-9b",
+    "bfl/flux-2-klein-9b-preview": "https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[klein]-9b-preview",
+    "bfl/flux-2-max": "https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[max]",
+    "bfl/flux-2-pro": "https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[pro]",
+    "bfl/flux-2-pro-preview": "https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[pro]-preview",
+    "bfl/flux-kontext-max": "https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[max]",
+    "bfl/flux-kontext-pro": "https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[pro]",
+    "bfl/flux-3-image": "https://docs.bfl.ml/api-reference/utility/generate-an-image-with-flux-3",
+    "bfl/flux-3-image-klein": "https://docs.bfl.ml/api-reference/utility/generate-an-image-with-flux-3-klein",
+    "bfl/flux-dev": "https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux1-[dev]",
+    "bfl/flux-pro-1.1": "https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro]",
+    "bfl/flux-pro-1.1-ultra": "https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro]-ultra-mode",
+    "stability/sd3.5-large": "https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1sd3/post",
+    "stability/sd3.5-large-turbo": "https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1sd3/post",
+    "stability/sd3.5-medium": "https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1sd3/post",
+    "stability/stable-image-core": "https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1core/post",
+    "stability/stable-image-ultra": "https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1ultra/post",
+    "ideogram/ideogram-v4": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+    "ideogram/ideogram-v4-transparent": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-transparent",
+    "ideogram/ideogram-v3": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-3",
+    "ideogram/ideogram-v3-transparent": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-3-transparent",
+    "ideogram/V_2A": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+    "ideogram/V_2A_TURBO": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+    "ideogram/V_2": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+    "ideogram/V_2_TURBO": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+    "ideogram/V_1": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+    "ideogram/V_1_TURBO": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+    "ideogram/AUTO": "https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate",
+    "ideogram/ideogram-4-5": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-5",
+    "ideogram/ideogram-edit": "https://developer.ideogram.ai/v2/api-reference/images/precise-edit/ideogram-4-5",
+    "ideogram/p-image-ideogram": "https://developer.ideogram.ai/v2/api-reference/images/generate/p-image-ideogram",
+    "minimax/MiniMax-M3": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+    "minimax/MiniMax-M2.7": "https://huggingface.co/MiniMaxAI/MiniMax-M2.7",
+    "minimax/MiniMax-M2.7-highspeed": "https://platform.minimax.cn/docs/api-reference/text-anthropic-api",
+    "minimax/MiniMax-M2.5": "https://huggingface.co/MiniMaxAI/MiniMax-M2.5",
+    "minimax/MiniMax-M2.5-highspeed": "https://platform.minimax.cn/docs/api-reference/text-anthropic-api",
+    "minimax/MiniMax-M2.1": "https://huggingface.co/MiniMaxAI/MiniMax-M2.1",
+    "minimax/MiniMax-M2.1-highspeed": "https://platform.minimax.cn/docs/api-reference/text-anthropic-api",
+    "minimax/MiniMax-M2": "https://huggingface.co/MiniMaxAI/MiniMax-M2",
+    "minimax/MiniMax-M3.1-Flash": "https://platform.minimax.io/docs/guides/text-generation",
+    "minimax/image-01": "https://platform.minimax.io/docs/api-reference/image-generation-t2i",
+    "minimax/image-01-live": "https://platform.minimax.cn/docs/api-reference/image-generation-t2i",
+    "mistral/mistral-large-4": "https://docs.mistral.ai/models/mistral-large-4-0",
+    "mistral/zai-glm-5-3": "https://docs.mistral.ai/models/zai-glm-5-3",
+    "mistral/mistral-medium-3-5": "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+    "mistral/mistral-medium-3": "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+    "mistral/zai-glm-5-3-flash": "https://docs.mistral.ai/models/zai-glm-5-3-flash",
+    "mistral/zai-glm-5-2": "https://docs.mistral.ai/models/zai-glm-5-2",
+    "mistral/codestral-2508": "https://docs.mistral.ai/models/codestral-25-08",
+    "mistral/codestral-latest": "https://docs.mistral.ai/models/codestral-25-08",
+    "mistral/labs-leanstral-1-5": "https://docs.mistral.ai/models/leanstral-1-5",
+    "mistral/ministral-14b-2512": "https://docs.mistral.ai/models/ministral-3-14b-25-12",
+    "mistral/ministral-14b-latest": "https://docs.mistral.ai/models/ministral-3-14b-25-12",
+    "mistral/ministral-3b-2512": "https://docs.mistral.ai/models/ministral-3-3b-25-12",
+    "mistral/ministral-3b-latest": "https://docs.mistral.ai/models/ministral-3-3b-25-12",
+    "mistral/ministral-8b-2512": "https://docs.mistral.ai/models/ministral-3-8b-25-12",
+    "mistral/ministral-8b-latest": "https://docs.mistral.ai/models/ministral-3-8b-25-12",
+    "mistral/mistral-large-2512": "https://docs.mistral.ai/models/mistral-large-3-25-12",
+    "mistral/mistral-medium-latest": "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+    "mistral/mistral-small-2603": "https://docs.mistral.ai/models/mistral-small-4-0-26-03",
+    "together/ByteDance/Seedream-5.0-lite": "https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh",
+    "together/MiniMaxAI/MiniMax-M3": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+    "together/Qwen/Qwen-Image-2.0": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+    "together/Qwen/Qwen-Image-2.0-Pro": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+    "together/Qwen/Qwen-Image": "https://help.aliyun.com/zh/model-studio/models",
+    "together/Qwen/Qwen3.8-2.4T-A95B": "https://help.aliyun.com/zh/model-studio/models",
+    "together/Qwen/Qwen3.8-Flash": "https://help.aliyun.com/zh/model-studio/vision-model",
+    "together/Qwen/Qwen3.7-Max": "https://help.aliyun.com/zh/model-studio/models",
+    "together/Qwen/Qwen3.7-Plus": "https://help.aliyun.com/zh/model-studio/models",
+    "together/Qwen/Qwen3.6-Plus": "https://help.aliyun.com/zh/model-studio/models",
+    "together/Qwen/Qwen3.5-9B": "https://huggingface.co/Qwen/Qwen3.5-9B",
+    "together/Wan-AI/Wan2.6-image": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+    "together/black-forest-labs/FLUX.2-dev": "https://docs.together.ai/docs/serverless-models",
+    "together/black-forest-labs/FLUX.2-flex": "https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[flex]",
+    "together/black-forest-labs/FLUX.2-max": "https://docs.together.ai/docs/serverless-models",
+    "together/black-forest-labs/FLUX.2-pro": "https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[pro]",
+    "together/deepseek-ai/DeepSeek-V4.1-Flash": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+    "together/deepseek-ai/DeepSeek-V4.1-Flash-1017": "https://docs.together.ai/docs/serverless/models",
+    "together/deepseek-ai/DeepSeek-V4-Pro-0813": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+    "together/deepseek-ai/DeepSeek-V4-Flash-0731": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731",
+    "together/google/gemini-3-pro-image": "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+    "together/moonshotai/Kimi-K3": "https://huggingface.co/moonshotai/Kimi-K3",
+    "together/openai/gpt-image-2": "https://developers.openai.com/api/docs/models/gpt-image-2.md",
+    "together/openai/gpt-image-1.5": "https://developers.openai.com/api/docs/models/gpt-image-1.5.md",
+    "together/stabilityai/stable-diffusion-xl-base-1.0": "https://docs.together.ai/docs/serverless-models",
+    "together/zai-org/GLM-5.3": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3",
+    "together/zai-org/GLM-5.3-Flash": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+    "together/zai-org/GLM-5.2": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2",
+    "together/ByteDance-Seed/Seedream-3.0": "https://docs.together.ai/docs/serverless-models",
+    "together/ByteDance-Seed/Seedream-4.0": "https://docs.together.ai/docs/serverless-models",
+    "together/MiniMaxAI/MiniMax-M3.1-Flash": "https://docs.together.ai/docs/serverless/models",
+    "together/Prism-ML/Ternary-Bonsai-27B": "https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf",
+    "together/RunDiffusion/Juggernaut-pro-flux": "https://docs.together.ai/docs/serverless-models",
+    "together/Rundiffusion/Juggernaut-Lightning-Flux": "https://docs.together.ai/docs/serverless-models",
+    "together/black-forest-labs/FLUX.1-kontext-max": "https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[max]",
+    "together/black-forest-labs/FLUX.1-kontext-pro": "https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[pro]",
+    "together/black-forest-labs/FLUX.1.1-pro": "https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro]",
+    "together/google/flash-image-2.5": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+    "together/google/flash-image-3.1": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image",
+    "together/google/flash-image-3.1-lite": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image",
+    "together/google/imagen-4.0-fast": "https://docs.together.ai/docs/serverless-models",
+    "together/google/imagen-4.0-preview": "https://docs.together.ai/docs/serverless-models",
+    "together/google/imagen-4.0-ultra": "https://docs.together.ai/docs/serverless-models",
+    "together/ideogram/ideogram-3.0": "https://docs.together.ai/docs/serverless-models",
+    "together/ideogram/ideogram-4.0": "https://docs.together.ai/docs/serverless-models",
+    "together/meta-llama/Llama-3.3-70B-Instruct-Turbo": "https://www.together.ai/models/llama-3-3-70b",
+    "together/meta-models/Muse-Glimmer-30B": "https://docs.together.ai/docs/serverless-models",
+    "together/meta-models/Muse-Spark-Open-816B-A42B": "https://docs.together.ai/docs/serverless/models",
+    "together/nvidia/NVIDIA-Nemotron-3.5-Super-VL": "https://docs.together.ai/docs/serverless/models",
+    "together/openai/gpt-oss-120b": "https://developers.openai.com/api/docs/models/gpt-oss-120b",
+    "together/prunaai/p-image-ideogram": "https://docs.together.ai/docs/serverless-models",
+    "together/reflection/Beam-1.0-501B-A23B": "https://docs.together.ai/docs/serverless/models",
+    "together/thinkingmachines/Inkling": "https://docs.together.ai/docs/serverless-models",
+    "fireworks/accounts/fireworks/models/glm-5p3": "https://fireworks.ai/models/fireworks/glm-5p3",
+    "fireworks/accounts/fireworks/models/glm-5p3-flash": "https://fireworks.ai/models/fireworks/glm-5p3-flash",
+    "fireworks/accounts/fireworks/models/kimi-k3": "https://fireworks.ai/models/fireworks/kimi-k3",
+    "fireworks/accounts/fireworks/models/kimi-k2p5": "https://fireworks.ai/models/fireworks/kimi-k2p5",
+    "fireworks/accounts/fireworks/models/minimax-m3": "https://fireworks.ai/models/fireworks/minimax-m3",
+    "fireworks/accounts/fireworks/models/qwen3p8-max": "https://fireworks.ai/models/fireworks/qwen3p8-max",
+    "fireworks/accounts/fireworks/models/qwen3p7-plus": "https://fireworks.ai/models/fireworks/qwen3p7-plus",
+    "fireworks/accounts/fireworks/models/qwen3-8b": "https://fireworks.ai/models/fireworks/qwen3-8b",
+    "fireworks/accounts/fireworks/models/deepseek-v4p1-flash": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash",
+    "fireworks/accounts/fireworks/models/deepseek-v4p1-flash-1017": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash-1017",
+    "fireworks/accounts/fireworks/models/gemma-4-31b-it": "https://fireworks.ai/models/fireworks/gemma-4-31b-it",
+    "fireworks/accounts/fireworks/models/gpt-oss-120b": "https://fireworks.ai/models/fireworks/gpt-oss-120b",
+    "fireworks/accounts/fireworks/models/kimi-k3p1-pro": "https://fireworks.ai/models/fireworks/kimi-k3p1-pro",
+    "fireworks/accounts/fireworks/models/minimax-m3p1-flash": "https://fireworks.ai/models/fireworks/minimax-m3p1-flash",
+    "fireworks/accounts/fireworks/models/muse-spark-open": "https://fireworks.ai/models/fireworks/muse-spark-open",
+    "fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4": "https://fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4",
+    "fireworks/accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b": "https://fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b",
+    "fireworks/accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b": "https://fireworks.ai/models/fireworks/nvidia-nemotron-3-nano-omni-30b-a3b",
+    "fireworks/accounts/fireworks/models/qwen3-omni-30b-a3b-instruct": "https://fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct",
+    "fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4": "https://fireworks.ai/models/fireworks/step-3p7-flash-nvfp4",
+    "fal/alibaba/qwen-image-3/text-to-image": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api",
+    "fal/bytedance/seedream/v5/flash/text-to-image": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+    "fal/bytedance/seedream/v5/pro/text-to-image": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+    "fal/fal-ai/bytedance/seedream/v5/lite/edit": "https://fal.ai/models/fal-ai/bytedance/seedream/v5/lite/edit/api",
+    "fal/fal-ai/bytedance/seedream/v4.5/text-to-image": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+    "fal/fal-ai/bytedance/seedream/v4/text-to-image": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+    "fal/fal-ai/fast-sdxl": "https://fal.ai/models/fal-ai/fast-sdxl/api",
+    "fal/fal-ai/flux-2": "https://fal.ai/models/fal-ai/flux-2/api",
+    "fal/fal-ai/flux-2-flex": "https://fal.ai/models/fal-ai/flux-2-flex/api",
+    "fal/fal-ai/flux-2-pro": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+    "fal/fal-ai/flux-2/flash": "https://fal.ai/models/fal-ai/flux-2/flash/api",
+    "fal/fal-ai/flux-2/klein/9b": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api",
+    "fal/fal-ai/flux-2/turbo": "https://fal.ai/models/fal-ai/flux-2/turbo/api",
+    "fal/fal-ai/flux-kontext-lora": "https://fal.ai/models/fal-ai/flux-kontext-lora/api",
+    "fal/fal-ai/flux-pro/kontext": "https://fal.ai/models/fal-ai/flux-pro/kontext/api",
+    "fal/fal-ai/flux-pro/v1.1": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api",
+    "fal/fal-ai/flux-pro/v1.1-ultra": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api",
+    "fal/blackforestlabs/flux-3/klein/base/text-to-image": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+    "fal/blackforestlabs/flux-3/klein/text-to-image": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+    "fal/blackforestlabs/flux-3/text-to-image": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+    "fal/fal-ai/flux-1/schnell": "https://fal.ai/models/fal-ai/flux-1/schnell/api",
+    "fal/fal-ai/flux-lora": "https://fal.ai/models/fal-ai/flux-lora/api",
+    "fal/fal-ai/flux/dev": "https://fal.ai/models/fal-ai/flux/dev/api",
+    "fal/fal-ai/flux/schnell": "https://fal.ai/models/fal-ai/flux/schnell/api",
+    "fal/fal-ai/ideogram/v3": "https://fal.ai/models/fal-ai/ideogram/v3/api",
+    "fal/fal-ai/nano-banana-2": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image",
+    "fal/fal-ai/qwen-image": "https://fal.ai/models/fal-ai/qwen-image/api",
+    "fal/fal-ai/recraft/v4/pro/text-to-image": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api",
+    "fal/fal-ai/recraft/v3/text-to-image": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api",
+    "fal/google/nano-banana-2-lite": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image",
+    "fal/fal-ai/nano-banana-pro": "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+    "fal/fal-ai/nano-banana": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+    "fal/google/nano-banana-2.1": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+    "fal/openai/gpt-image-2.5/flare/text-to-image": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+    "fal/openai/gpt-image-2.5/sunburst/text-to-image": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+    "fal/openai/gpt-image-2": "https://fal.ai/models/openai/gpt-image-2/api",
+    "fal/fal-ai/gpt-image-1.5": "https://fal.ai/models/fal-ai/gpt-image-1.5/api",
+    "fal/xai/grok-imagine-image/v2.0/text-to-image": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api",
+    "fal/xai/grok-imagine-image": "https://fal.ai/models/xai/grok-imagine-image/api",
+    "fal/xai/grok-imagine-image/quality/text-to-image": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+    "fal/bria/fibo-edit-1.5/edit": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api",
+    "fal/bria/fibo-gen-1.5/text-to-image": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api",
+    "fal/fal-ai/krea-2/turbo": "https://fal.ai/models/fal-ai/krea-2/turbo/api",
+    "fal/fal-ai/z-image/turbo": "https://fal.ai/models/fal-ai/z-image/turbo/api",
+    "fal/ideogram/v4.5": "https://fal.ai/models/ideogram/v4.5/api",
+    "fal/krea/v2/large/text-to-image": "https://fal.ai/models/krea/v2/large/text-to-image/api",
+    "fal/krea/v3/text-to-image": "https://fal.ai/models/krea/v3/text-to-image/api",
+    "fal/meta/muse-image/text-to-image": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+    "replicate/google/gemini-3.5-flash": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash",
+    "replicate/deepseek-ai/deepseek-v3.1": "https://huggingface.co/deepseek-ai/DeepSeek-V3.1",
+    "replicate/alibaba/qwen-image-3": "https://replicate.com/alibaba/qwen-image-3",
+    "replicate/alibaba/qwen-image-3-pro": "https://replicate.com/alibaba/qwen-image-3-pro",
+    "replicate/anthropic/claude-opus-5.5": "https://replicate.com/anthropic/claude-opus-5.5",
+    "replicate/black-forest-labs/flux-2-flex": "https://replicate.com/black-forest-labs/flux-2-flex",
+    "replicate/black-forest-labs/flux-2-klein-4b": "https://replicate.com/black-forest-labs/flux-2-klein-4b",
+    "replicate/black-forest-labs/flux-2-max": "https://replicate.com/black-forest-labs/flux-2-max",
+    "replicate/black-forest-labs/flux-2-pro": "https://replicate.com/black-forest-labs/flux-2-pro",
+    "replicate/black-forest-labs/flux-kontext-dev": "https://replicate.com/black-forest-labs/flux-kontext-dev",
+    "replicate/black-forest-labs/flux-kontext-max": "https://replicate.com/black-forest-labs/flux-kontext-max",
+    "replicate/black-forest-labs/flux-kontext-pro": "https://replicate.com/black-forest-labs/flux-kontext-pro",
+    "replicate/bytedance/seedream-5-lite": "https://replicate.com/bytedance/seedream-5-lite",
+    "replicate/bytedance/seedream-4.5": "https://replicate.com/bytedance/seedream-4.5",
+    "replicate/bytedance/seedream-4": "https://replicate.com/bytedance/seedream-4",
+    "replicate/bytedance/seedream-3": "https://replicate.com/bytedance/seedream-3",
+    "replicate/google/gemini-3-flash": "https://replicate.com/google/gemini-3-flash",
+    "replicate/google/gemini-2.5-flash": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash",
+    "replicate/google/imagen-4": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001",
+    "replicate/google/imagen-4-fast": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001",
+    "replicate/google/imagen-4-ultra": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001",
+    "replicate/google/imagen-3": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002",
+    "replicate/google/imagen-3-fast": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001",
+    "replicate/google/nano-banana-2": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image",
+    "replicate/google/nano-banana-2-lite": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image",
+    "replicate/google/nano-banana-pro": "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+    "replicate/google/nano-banana": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+    "replicate/google/nano-banana-2.1": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+    "replicate/ideogram-ai/ideogram-v3-balanced": "https://replicate.com/ideogram-ai/ideogram-v3-balanced",
+    "replicate/ideogram-ai/ideogram-v3-quality": "https://replicate.com/ideogram-ai/ideogram-v3-quality",
+    "replicate/ideogram-ai/ideogram-v3-turbo": "https://replicate.com/ideogram-ai/ideogram-v3-turbo",
+    "replicate/ideogram-ai/ideogram-v2a": "https://replicate.com/ideogram-ai/ideogram-v2a",
+    "replicate/ideogram-ai/ideogram-v2a-turbo": "https://replicate.com/ideogram-ai/ideogram-v2a-turbo",
+    "replicate/ideogram-ai/ideogram-v2": "https://replicate.com/ideogram-ai/ideogram-v2",
+    "replicate/ideogram-ai/ideogram-v2-turbo": "https://replicate.com/ideogram-ai/ideogram-v2-turbo",
+    "replicate/moonshotai/kimi-k2-thinking": "https://huggingface.co/moonshotai/Kimi-K2-Thinking",
+    "replicate/openai/gpt-image-2.5-flare": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+    "replicate/openai/gpt-image-2.5-sunburst": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+    "replicate/openai/gpt-image-2": "https://developers.openai.com/api/docs/models/gpt-image-2",
+    "replicate/openai/gpt-image-1.5": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+    "replicate/prunaai/flux-kontext-fast": "https://replicate.com/prunaai/flux-kontext-fast",
+    "replicate/black-forest-labs/flux-1.1-pro": "https://replicate.com/black-forest-labs/flux-1.1-pro",
+    "replicate/black-forest-labs/flux-1.1-pro-ultra": "https://replicate.com/black-forest-labs/flux-1.1-pro-ultra",
+    "replicate/black-forest-labs/flux-3-image": "https://replicate.com/black-forest-labs/flux-3-image",
+    "replicate/black-forest-labs/flux-dev": "https://replicate.com/black-forest-labs/flux-dev",
+    "replicate/black-forest-labs/flux-dev-lora": "https://replicate.com/black-forest-labs/flux-dev-lora",
+    "replicate/black-forest-labs/flux-pro": "https://replicate.com/black-forest-labs/flux-pro",
+    "replicate/black-forest-labs/flux-schnell": "https://replicate.com/black-forest-labs/flux-schnell",
+    "replicate/prunaai/flux-fast": "https://replicate.com/prunaai/flux-fast",
+    "replicate/qwen/qwen-image": "https://replicate.com/qwen/qwen-image",
+    "replicate/qwen/qwen-image-edit": "https://replicate.com/qwen/qwen-image-edit",
+    "replicate/qwen/qwen-image-edit-plus": "https://replicate.com/qwen/qwen-image-edit-plus",
+    "replicate/qwen/qwen3-235b-a22b-instruct-2507": "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507",
+    "replicate/qwen/qwen3-7-plus": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+    "replicate/recraft-ai/recraft-v4.1": "https://replicate.com/recraft-ai/recraft-v4.1",
+    "replicate/recraft-ai/recraft-v4-pro": "https://replicate.com/recraft-ai/recraft-v4-pro",
+    "replicate/recraft-ai/recraft-v3": "https://replicate.com/recraft-ai/recraft-v3",
+    "replicate/stability-ai/stable-diffusion-3.5-large": "https://replicate.com/stability-ai/stable-diffusion-3.5-large",
+    "replicate/stability-ai/stable-diffusion-3.5-large-turbo": "https://replicate.com/stability-ai/stable-diffusion-3.5-large-turbo",
+    "replicate/stability-ai/stable-diffusion-3.5-medium": "https://replicate.com/stability-ai/stable-diffusion-3.5-medium",
+    "replicate/stability-ai/sdxl": "https://replicate.com/stability-ai/sdxl",
+    "replicate/stability-ai/stable-diffusion": "https://replicate.com/stability-ai/stable-diffusion",
+    "replicate/wan-video/wan-2.7-image": "https://replicate.com/wan-video/wan-2.7-image",
+    "replicate/wan-video/wan-2.7-image-pro": "https://replicate.com/wan-video/wan-2.7-image-pro",
+    "replicate/prunaai/wan-2.2-image": "https://replicate.com/prunaai/wan-2.2-image",
+    "replicate/xai/grok-imagine-image": "https://replicate.com/xai/grok-imagine-image",
+    "replicate/xai/grok-imagine-image-2": "https://replicate.com/xai/grok-imagine-image-2",
+    "replicate/adirik/realvisxl-v3.0-turbo": "https://replicate.com/adirik/realvisxl-v3.0-turbo",
+    "replicate/ai-forever/kandinsky-2": "https://replicate.com/ai-forever/kandinsky-2",
+    "replicate/ai-forever/kandinsky-2.2": "https://replicate.com/ai-forever/kandinsky-2.2",
+    "replicate/bria/fibo": "https://replicate.com/bria/fibo",
+    "replicate/bria/fibo-edit": "https://replicate.com/bria/fibo-edit",
+    "replicate/bria/image-3.2": "https://replicate.com/bria/image-3.2",
+    "replicate/bytedance/bagel": "https://replicate.com/bytedance/bagel",
+    "replicate/bytedance/sdxl-lightning-4step": "https://replicate.com/bytedance/sdxl-lightning-4step",
+    "replicate/datacte/proteus-v0.2": "https://replicate.com/datacte/proteus-v0.2",
+    "replicate/datacte/proteus-v0.3": "https://replicate.com/datacte/proteus-v0.3",
+    "replicate/fofr/latent-consistency-model": "https://replicate.com/fofr/latent-consistency-model",
+    "replicate/fofr/sdxl-emoji": "https://replicate.com/fofr/sdxl-emoji",
+    "replicate/fofr/sticker-maker": "https://replicate.com/fofr/sticker-maker",
+    "replicate/ideogram-ai/ideogram-4-5": "https://replicate.com/ideogram-ai/ideogram-4-5",
+    "replicate/ideogram-ai/ideogram-4-5-precise-edit": "https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit",
+    "replicate/krea/krea-2-medium": "https://replicate.com/krea/krea-2-medium",
+    "replicate/leonardoai/lucid-origin": "https://replicate.com/leonardoai/lucid-origin",
+    "replicate/lucataco/dreamshaper-xl-turbo": "https://replicate.com/lucataco/dreamshaper-xl-turbo",
+    "replicate/lucataco/omnigen2": "https://replicate.com/lucataco/omnigen2",
+    "replicate/lucataco/open-dalle-v1.1": "https://replicate.com/lucataco/open-dalle-v1.1",
+    "replicate/lucataco/realistic-vision-v5.1": "https://replicate.com/lucataco/realistic-vision-v5.1",
+    "replicate/lucataco/ssd-1b": "https://replicate.com/lucataco/ssd-1b",
+    "replicate/luma/photon": "https://replicate.com/luma/photon",
+    "replicate/luma/photon-flash": "https://replicate.com/luma/photon-flash",
+    "replicate/minimax/image-01": "https://replicate.com/minimax/image-01",
+    "replicate/nvidia/sana": "https://replicate.com/nvidia/sana",
+    "replicate/nvidia/sana-sprint-1.6b": "https://replicate.com/nvidia/sana-sprint-1.6b",
+    "replicate/playgroundai/playground-v2.5-1024px-aesthetic": "https://replicate.com/playgroundai/playground-v2.5-1024px-aesthetic",
+    "replicate/prunaai/hidream-l1-dev": "https://replicate.com/prunaai/hidream-l1-dev",
+    "replicate/prunaai/hidream-l1-fast": "https://replicate.com/prunaai/hidream-l1-fast",
+    "replicate/prunaai/hidream-l1-full": "https://replicate.com/prunaai/hidream-l1-full",
+    "replicate/prunaai/p-image": "https://replicate.com/prunaai/p-image",
+    "replicate/prunaai/p-image-edit": "https://replicate.com/prunaai/p-image-edit",
+    "replicate/prunaai/p-image-ideogram": "https://replicate.com/prunaai/p-image-ideogram",
+    "replicate/prunaai/p-image-lora": "https://replicate.com/prunaai/p-image-lora",
+    "replicate/prunaai/sdxl-lightning": "https://replicate.com/prunaai/sdxl-lightning",
+    "replicate/prunaai/z-image-turbo": "https://replicate.com/prunaai/z-image-turbo",
+    "replicate/sourceful/riverflow-2.0-pro": "https://replicate.com/sourceful/riverflow-2.0-pro",
+    "replicate/tencent/hunyuan-image-3": "https://replicate.com/tencent/hunyuan-image-3",
+    "replicate/tstramer/material-diffusion": "https://replicate.com/tstramer/material-diffusion",
+    "replicate/zsxkib/step1x-edit": "https://replicate.com/zsxkib/step1x-edit",
+    "tokendance/deepseek-v4.1-flash": "https://tokendance.space/models/deepseek-v4.1-flash",
+    "tokendance/deepseek-v4.1-flash-1017": "https://tokendance.space/models/deepseek-v4.1-flash-1017",
+    "tokendance/deepseek-v4-flash-vision-exp": "https://tokendance.space/models/deepseek-v4-flash-vision-exp",
+    "tokendance/deepseek-v4-pro-0813": "https://tokendance.space/models/deepseek-v4-pro-0813",
+    "tokendance/deepseek-v4-flash-0731": "https://tokendance.space/models/deepseek-v4-flash-0731",
+    "tokendance/deepseek-v4-flash": "https://tokendance.space/models/deepseek-v4-flash",
+    "tokendance/deepseek-v4-pro": "https://tokendance.space/models/deepseek-v4-pro",
+    "tokendance/deepseek-v3.2": "https://tokendance.space/models/deepseek-v3.2",
+    "tokendance/deepseek-chat-v3-0324": "https://tokendance.space/models/deepseek-chat-v3-0324",
+    "tokendance/glm-5.3": "https://tokendance.space/models/glm-5.3",
+    "tokendance/glm-5.3-flash": "https://tokendance.space/models/glm-5.3-flash",
+    "tokendance/glm-5.3-flashx": "https://tokendance.space/models/glm-5.3-flashx",
+    "tokendance/glm-5.2": "https://tokendance.space/models/glm-5.2",
+    "tokendance/glm-5.1": "https://tokendance.space/models/glm-5.1",
+    "tokendance/glm-5": "https://tokendance.space/models/glm-5",
+    "tokendance/glm-5v-turbo": "https://tokendance.space/models/glm-5v-turbo",
+    "tokendance/glm-4.7": "https://tokendance.space/models/glm-4.7",
+    "tokendance/glm-4.6v": "https://tokendance.space/models/glm-4.6v",
+    "tokendance/glm-4.5-air": "https://tokendance.space/models/glm-4.5-air",
+    "tokendance/hy4-preview": "https://tokendance.space/models/hy4-preview",
+    "tokendance/hy3": "https://tokendance.space/models/hy3",
+    "tokendance/hy3-preview": "https://tokendance.space/models/hy3-preview",
+    "tokendance/kimi-k3": "https://tokendance.space/models/kimi-k3",
+    "tokendance/kimi-k2.7-code": "https://tokendance.space/models/kimi-k2.7-code",
+    "tokendance/kimi-k2.6": "https://tokendance.space/models/kimi-k2.6",
+    "tokendance/kimi-k2.5": "https://tokendance.space/models/kimi-k2.5",
+    "tokendance/minimax-m3": "https://tokendance.space/models/minimax-m3",
+    "tokendance/minimax-m2.7": "https://tokendance.space/models/minimax-m2.7",
+    "tokendance/minimax-m2.5": "https://tokendance.space/models/minimax-m2.5",
+    "tokendance/qwen3.8-flash": "https://tokendance.space/models/qwen3.8-flash",
+    "tokendance/qwen3.8-max": "https://tokendance.space/models/qwen3.8-max",
+    "tokendance/qwen3.8-max-0902": "https://tokendance.space/models/qwen3.8-max-0902",
+    "tokendance/qwen3.7-max": "https://tokendance.space/models/qwen3.7-max",
+    "tokendance/qwen3.7-plus": "https://tokendance.space/models/qwen3.7-plus",
+    "tokendance/qwen3.6-max-preview": "https://tokendance.space/models/qwen3.6-max-preview",
+    "tokendance/qwen3.6-plus": "https://tokendance.space/models/qwen3.6-plus",
+    "tokendance/qwen3.5-35b-a3b": "https://tokendance.space/models/qwen3.5-35b-a3b",
+    "tokendance/qwen3.5-flash": "https://tokendance.space/models/qwen3.5-flash",
+    "tokendance/qwen3.5-plus": "https://tokendance.space/models/qwen3.5-plus",
+    "tokendance/qwen3-30b-a3b-instruct-2507": "https://tokendance.space/models/qwen3-30b-a3b-instruct-2507",
+    "tokendance/qwen3-max": "https://tokendance.space/models/qwen3-max",
+    "tokendance/seed-2.1-pro": "https://tokendance.space/models/seed-2.1-pro",
+    "tokendance/seed-2.1-turbo": "https://tokendance.space/models/seed-2.1-turbo",
+    "tokendance/seed-2.0-code": "https://tokendance.space/models/seed-2.0-code",
+    "tokendance/seed-2.0-lite": "https://tokendance.space/models/seed-2.0-lite",
+    "tokendance/seed-2.0-mini": "https://tokendance.space/models/seed-2.0-mini",
+    "tokendance/seed-2.0-pro": "https://tokendance.space/models/seed-2.0-pro",
+    "tokendance/seedream-5.0-lite": "https://tokendance.space/models/seedream-5.0-lite",
+    "tokendance/seedream-5.0-pro": "https://tokendance.space/models/seedream-5.0-pro",
+    "tokendance/step-5-preview": "https://tokendance.space/models/step-5-preview",
+    "tokendance/step-3.7-flash": "https://tokendance.space/models/step-3.7-flash",
+    "tokendance/step-3.5-flash": "https://tokendance.space/models/step-3.5-flash",
+    "tokendance/cogevol-base": "https://tokendance.space/models/cogevol-base",
+    "tokendance/cogevol-interactive-0828": "https://tokendance.space/models/cogevol-interactive-0828",
+    "tokendance/cogevol-slide-0828": "https://tokendance.space/models/cogevol-slide-0828",
+    "tokendance/dots-3-note-preview": "https://tokendance.space/models/dots-3-note-preview",
+    "tokendance/kimi-k3.1-pro": "https://tokendance.space/models/kimi-k3.1-pro",
+    "tokendance/ling-3.0-flash": "https://tokendance.space/models/ling-3.0-flash",
+    "tokendance/ling-3.1-flash": "https://tokendance.space/models/ling-3.1-flash",
+    "tokendance/longcat-2.0": "https://tokendance.space/models/longcat-2.0",
+    "tokendance/mimo-v2.5": "https://tokendance.space/models/mimo-v2.5",
+    "tokendance/mimo-v2.5-pro": "https://tokendance.space/models/mimo-v2.5-pro",
+    "tokendance/mimo-v2.6-flash": "https://tokendance.space/models/mimo-v2.6-flash",
+    "tokendance/mimo-v2.6-pro": "https://tokendance.space/models/mimo-v2.6-pro",
+    "tokendance/mimo-v2.6-ultraspeed": "https://tokendance.space/models/mimo-v2.6-ultraspeed",
+    "tokendance/minimax-m3.1-flash": "https://tokendance.space/models/minimax-m3.1-flash",
+    "tokendance/qwen3-vl-plus": "https://tokendance.space/models/qwen3-vl-plus",
+    "tokendance/seed-evolving": "https://tokendance.space/models/seed-evolving",
+    "tokendance/spark-x2.5-1.7b": "https://tokendance.space/models/spark-x2.5-1.7b",
+    "tokendance/spark-x2.5-4b": "https://tokendance.space/models/spark-x2.5-4b",
+    "tokendance/unifuncs-s3": "https://tokendance.space/models/unifuncs-s3",
+    "tokendance/unifuncs-s3-pro": "https://tokendance.space/models/unifuncs-s3-pro",
+    "tokendance/unifuncs-u3": "https://tokendance.space/models/unifuncs-u3",
+    "tokendance/unifuncs-u3-pro": "https://tokendance.space/models/unifuncs-u3-pro",
+    "runware/bfl:flux@3-image-klein": "https://runware.ai/docs/models/bfl-flux-3-image-klein",
+    "runware/bfl:flux@3-image-klein-base": "https://runware.ai/docs/models/bfl-flux-3-image-klein-base",
+    "runware/alibaba:qwen-image@2.1-turbo": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo",
+    "runware/google:nano-banana@2.1": "https://runware.ai/docs/models/google-nano-banana-2-1",
+    "runware/bfl:flux@3-image": "https://runware.ai/docs/models/bfl-flux-3-image",
+    "runware/ideogram:4.5@0": "https://runware.ai/docs/models/ideogram-4-5",
+    "runware/ideogram:4.5@precise-edit": "https://runware.ai/docs/models/ideogram-4-5-precise-edit",
+    "runware/bytedance:seedream@5.0-flash": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash",
+    "runware/recraft:v4.1@flash": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash",
+    "runware/alibaba:qwen-image@2.1-pro": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro",
+    "runware/openai:gpt-image@2.5-flare": "https://runware.ai/docs/models/openai-gpt-image-2-5-flare",
+    "runware/openai:gpt-image@2.5-sunburst": "https://runware.ai/docs/models/openai-gpt-image-2-5-sunburst",
+    "runware/xai:grok-imagine@image-2.0": "https://runware.ai/docs/models/xai-grok-imagine-image-2-0",
+    "runware/alibaba:qwen-image@3.0": "https://runware.ai/docs/models/alibaba-qwen-image-3-0",
+    "runware/alibaba:qwen-image@3.0-pro": "https://runware.ai/docs/models/alibaba-qwen-image-3-0-pro",
+    "runware/deepseek:v4@flash": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+    "runware/prunaai:p-image@ideogram": "https://runware.ai/docs/models/prunaai-p-image-ideogram",
+    "runware/krea:krea@2-turbo": "https://runware.ai/docs/models/krea-2-turbo",
+    "runware/bytedance:seedream@5.0-pro": "https://runware.ai/docs/models/bytedance-seedream-5-0-pro",
+    "runware/meta:muse@image": "https://runware.ai/docs/models/meta-muse-image",
+    "runware/google:nano-banana@2-lite": "https://runware.ai/docs/models/google-nano-banana-2-lite",
+    "runware/krea:krea@2-raw": "https://runware.ai/docs/models/krea-2-raw",
+    "runware/rundiffusion:300@100": "https://runware.ai/docs/models/rundiffusion-juggernaut-z-fast",
+    "runware/anthropic:claude@fable-5": "https://runware.ai/docs/models/anthropic-claude-fable-5",
+    "runware/sourceful:riverflow-2.5@fast": "https://runware.ai/docs/models/sourceful-riverflow-2-5-fast",
+    "runware/sourceful:riverflow-2.5@pro": "https://runware.ai/docs/models/sourceful-riverflow-2-5-pro",
+    "runware/ideogram:4@0": "https://runware.ai/docs/models/ideogram-4-0",
+    "runware/ideogram:4@q": "https://runware.ai/docs/models/ideogram-4-0q",
+    "runware/ideogram:4@remix": "https://runware.ai/docs/models/ideogram-4-0-remix",
+    "runware/krea:krea@2-medium-turbo": "https://runware.ai/docs/models/krea-2-medium-turbo",
+    "runware/minimax:m3@0": "https://runware.ai/docs/models/minimax-m3",
+    "runware/anthropic:claude@opus-4.8": "https://runware.ai/docs/models/anthropic-claude-opus-4-8",
+    "runware/krea:krea@2-large": "https://runware.ai/docs/models/krea-2-large",
+    "runware/krea:krea@2-medium": "https://runware.ai/docs/models/krea-2-medium",
+    "runware/google:gemini@3.5-flash": "https://runware.ai/docs/models/google-gemini-3-5-flash",
+    "runware/recraft:v4.1-pro@0": "https://runware.ai/docs/models/recraft-v4-1-pro",
+    "runware/recraft:v4.1-utility-pro@0": "https://runware.ai/docs/models/recraft-v4-1-utility-pro",
+    "runware/recraft:v4.1-utility@0": "https://runware.ai/docs/models/recraft-v4-1-utility",
+    "runware/recraft:v4.1@0": "https://runware.ai/docs/models/recraft-v4-1",
+    "runware/xai:grok-imagine@image-quality": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2",
+    "runware/luma:uni@1": "https://runware.ai/docs/models/luma-uni-1",
+    "runware/luma:uni@1-max": "https://runware.ai/docs/models/luma-uni-1-max",
+    "runware/xai:grok@4.3": "https://runware.ai/docs/models/xai-grok-4-3",
+    "runware/rundiffusion:200@100": "https://runware.ai/docs/models/rundiffusion-juggernaut-z",
+    "runware/openai:gpt@5.5": "https://runware.ai/docs/models/openai-gpt-5-5",
+    "runware/openai:gpt-image@2": "https://runware.ai/docs/models/openai-gpt-image-2",
+    "runware/anthropic:claude@opus-4.7": "https://runware.ai/docs/models/anthropic-claude-opus-4-7",
+    "runware/baidu:ernie-image@0": "https://runware.ai/docs/models/baidu-ernie-image",
+    "runware/baidu:ernie-image@turbo": "https://runware.ai/docs/models/baidu-ernie-image-turbo",
+    "runware/imagineart:2.0@0": "https://runware.ai/docs/models/imagineart-2-0",
+    "runware/zai:glm@5.1": "https://runware.ai/docs/models/zai-glm-5-1",
+    "runware/google:gemma@4-31b": "https://runware.ai/docs/models/google-gemma-4-31b",
+    "runware/alibaba:wan@2.7-image": "https://runware.ai/docs/models/alibaba-wan2-7-image",
+    "runware/alibaba:wan@2.7-image-pro": "https://runware.ai/docs/models/alibaba-wan2-7-image-pro",
+    "runware/runware:400@6": "https://runware.ai/docs/models/bfl-flux-2-klein-9b-kv",
+    "runware/minimax:m2.7@0": "https://runware.ai/docs/models/minimax-m2-7",
+    "runware/minimax:m2.7@highspeed": "https://runware.ai/docs/models/minimax-m2-7-highspeed",
+    "runware/openai:gpt@5.4-mini": "https://runware.ai/docs/models/openai-gpt-5-4-mini",
+    "runware/openai:gpt@5.4-nano": "https://runware.ai/docs/models/openai-gpt-5-4-nano",
+    "runware/openai:gpt@5.4": "https://runware.ai/docs/models/openai-gpt-5-4",
+    "runware/openai:gpt@5.4-pro": "https://runware.ai/docs/models/openai-gpt-5-4-pro",
+    "runware/google:gemini@3.1-flash-lite": "https://runware.ai/docs/models/google-gemini-3-1-flash-lite",
+    "runware/google:4@3": "https://runware.ai/docs/models/google-nano-banana-2",
+    "runware/bytedance:seedream@5.0-lite": "https://runware.ai/docs/models/bytedance-seedream-5-0-lite",
+    "runware/google:gemini@3.1-pro": "https://runware.ai/docs/models/google-gemini-3-1-pro",
+    "runware/anthropic:claude@sonnet-4.6": "https://runware.ai/docs/models/anthropic-claude-sonnet-4-6",
+    "runware/recraft:v4-pro@0": "https://runware.ai/docs/models/recraft-v4-pro",
+    "runware/recraft:v4@0": "https://runware.ai/docs/models/recraft-v4",
+    "runware/alibaba:qwen-image@2.0": "https://runware.ai/docs/models/alibaba-qwen-image-2-0",
+    "runware/alibaba:qwen-image@2.0-pro": "https://runware.ai/docs/models/alibaba-qwen-image-2-0-pro",
+    "runware/klingai:kling-image@3": "https://runware.ai/docs/models/klingai-image-3-0",
+    "runware/klingai:kling-image@o3": "https://runware.ai/docs/models/klingai-image-o3",
+    "runware/sourceful:riverflow-2.0@fast": "https://runware.ai/docs/models/sourceful-riverflow-2-0-fast",
+    "runware/sourceful:riverflow-2.0@pro": "https://runware.ai/docs/models/sourceful-riverflow-2-0-pro",
+    "runware/xai:grok-imagine@image": "https://runware.ai/docs/models/xai-grok-imagine-image",
+    "runware/runware:z-image@0": "https://runware.ai/docs/models/alibaba-z-image",
+    "runware/runware:400@2": "https://runware.ai/docs/models/bfl-flux-2-klein-9b",
+    "runware/bria:21@1": "https://runware.ai/docs/models/bria-fibo-2-0-edit",
+    "runware/imagineart:1.5-pro@0": "https://runware.ai/docs/models/imagineart-1-5-pro",
+    "runware/runware:400@3": "https://runware.ai/docs/models/bfl-flux-2-klein-9b-base",
+    "runware/runware:400@4": "https://runware.ai/docs/models/bfl-flux-2-klein-4b",
+    "runware/runware:400@5": "https://runware.ai/docs/models/bfl-flux-2-klein-4b-base",
+    "runware/bria:20@3": "https://runware.ai/docs/models/bria-fibo-lite",
+    "runware/runware:twinflow-z-image-turbo@0": "https://runware.ai/docs/models/twinflow-z-image-turbo",
+    "runware/alibaba:qwen-image@2512": "https://runware.ai/docs/models/alibaba-qwen-image-2512",
+    "runware/google:gemini@3-flash": "https://runware.ai/docs/models/google-gemini-3-flash",
+    "runware/alibaba:wan@2.6-image": "https://runware.ai/docs/models/alibaba-wan2-6-image",
+    "runware/bfl:7@1": "https://runware.ai/docs/models/bfl-flux-2-max",
+    "runware/openai:4@1": "https://runware.ai/docs/models/openai-gpt-image-1-5",
+    "runware/bytedance:seedream@4.5": "https://runware.ai/docs/models/bytedance-seedream-4-5",
+    "runware/klingai:kling-image@o1": "https://runware.ai/docs/models/klingai-image-o1",
+    "runware/prunaai:1@1": "https://runware.ai/docs/models/prunaai-p-image",
+    "runware/bfl:5@1": "https://runware.ai/docs/models/bfl-flux-2-pro",
+    "runware/runware:kandinsky-5.0-image-lite@1": "https://runware.ai/docs/models/kandinsky-5-0-image-lite",
+    "runware/runware:z-image@turbo": "https://runware.ai/docs/models/alibaba-z-image-turbo",
+    "runware/alibaba:qwen-image-edit@2511": "https://runware.ai/docs/models/alibaba-qwen-image-edit-2511",
+    "runware/bfl:6@1": "https://runware.ai/docs/models/bfl-flux-2-flex",
+    "runware/runware:400@1": "https://runware.ai/docs/models/bfl-flux-2-dev",
+    "runware/google:4@2": "https://runware.ai/docs/models/google-nano-banana-pro",
+    "runware/imagineart:1@5": "https://runware.ai/docs/models/imagineart-1-5",
+    "runware/prunaai:2@1": "https://runware.ai/docs/models/prunaai-p-image-edit",
+    "runware/bria:20@1": "https://runware.ai/docs/models/bria-fibo-2-0",
+    "runware/anthropic:claude@haiku-4.5": "https://runware.ai/docs/models/anthropic-claude-haiku-4-5",
+    "runware/runware:201@10": "https://runware.ai/docs/models/alibaba-wan2-5-preview-image",
+    "runware/runware:108@22": "https://runware.ai/docs/models/alibaba-qwen-image-edit-plus",
+    "runware/bria:11@1": "https://runware.ai/docs/models/bria-image-replace-background",
+    "runware/runware:111@1": "https://runware.ai/docs/models/flux-1-dev-srpo",
+    "runware/bytedance:5@0": "https://runware.ai/docs/models/bytedance-seedream-4-0",
+    "runware/google:4@1": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+    "runware/runware:108@20": "https://runware.ai/docs/models/alibaba-qwen-image-edit",
+    "runware/runway:4@2": "https://runware.ai/docs/models/runway-gen-4-image-turbo",
+    "runware/openai:gpt@5-mini": "https://runware.ai/docs/models/openai-gpt-5-mini",
+    "runware/openai:gpt@5-nano": "https://runware.ai/docs/models/openai-gpt-5-nano",
+    "runware/runware:108@1": "https://runware.ai/docs/models/alibaba-qwen-image",
+    "runware/runware:107@1": "https://runware.ai/docs/models/krea-flux-1-krea-dev",
+    "runware/bfl:3@1": "https://runware.ai/docs/models/bfl-flux-1-kontext-pro",
+    "runware/bfl:4@1": "https://runware.ai/docs/models/bfl-flux-1-kontext-max",
+    "runware/runware:106@1": "https://runware.ai/docs/models/bfl-flux-1-kontext-dev",
+    "runware/runware:5@1": "https://runware.ai/docs/models/stabilityai-stable-diffusion-3",
+    "runware/bria:10@1": "https://runware.ai/docs/models/bria-3-2",
+    "runware/runway:4@1": "https://runware.ai/docs/models/runway-gen-4-image",
+    "runware/ideogram:4@3": "https://runware.ai/docs/models/ideogram-3-0-edit",
+    "runware/ideogram:4@2": "https://runware.ai/docs/models/ideogram-3-0-remix",
+    "runware/openai:1@2": "https://runware.ai/docs/models/openai-gpt-image-1-mini",
+    "runware/runware:97@2": "https://runware.ai/docs/models/hidream-i1-dev",
+    "runware/runware:97@1": "https://runware.ai/docs/models/hidream-i1-full",
+    "runware/runware:97@3": "https://runware.ai/docs/models/hidream-i1-fast",
+    "runware/vidu:q1@image": "https://runware.ai/docs/models/vidu-q1-image",
+    "runware/ideogram:4@1": "https://runware.ai/docs/models/ideogram-3-0",
+    "runware/ideogram:4@5": "https://runware.ai/docs/models/ideogram-3-0-replace-background",
+    "runware/openai:1@1": "https://developers.openai.com/api/docs/models/gpt-image-1",
+    "runware/rundiffusion:110@101": "https://runware.ai/docs/models/rundiffusion-juggernaut-lightning-flux",
+    "runware/rundiffusion:120@100": "https://runware.ai/docs/models/rundiffusion-juggernaut-base-flux",
+    "runware/rundiffusion:130@100": "https://runware.ai/docs/models/rundiffusion-juggernaut-pro-flux",
+    "runware/ideogram:2@1": "https://runware.ai/docs/models/ideogram-2a",
+    "runware/ideogram:2@2": "https://runware.ai/docs/models/ideogram-2a-remix",
+    "runware/runware:102@1": "https://runware.ai/docs/models/bfl-flux-1-fill-dev",
+    "runware/bfl:2@2": "https://runware.ai/docs/models/bfl-flux-1-1-pro-ultra",
+    "runware/bfl:1@2": "https://runware.ai/docs/models/bfl-flux-1-fill-pro",
+    "runware/ideogram:3@2": "https://runware.ai/docs/models/ideogram-2-0-remix",
+    "runware/bfl:2@1": "https://runware.ai/docs/models/bfl-flux-1-1-pro",
+    "runware/ideogram:3@1": "https://runware.ai/docs/models/ideogram-2-0",
+    "runware/runware:100@1": "https://runware.ai/docs/models/bfl-flux-1-schnell",
+    "runware/runware:101@1": "https://runware.ai/docs/models/bfl-flux-1-dev",
+    "runware/runware:150@2": "https://runware.ai/docs/models/meta-llava-1-6-mistral-7b",
+    "runware/runware:152@1": "https://runware.ai/docs/models/alibaba-qwen2-5-vl-3b-instruct",
+    "runware/runware:152@2": "https://runware.ai/docs/models/alibaba-qwen2-5-vl-7b-instruct",
+    "runware/civitai:101055@128078": "https://runware.ai/docs/models/stabilityai-stable-diffusion-xl-v1-0-vae-fix",
+    "tokenhub/deepseek-v4.1-flash": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+    "tokenhub/deepseek-v4.1-flash-1017": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/deepseek/deepseek-v4-flash-vision-exp": "https://api-docs.deepseek.com/news/news260821/",
+    "tokenhub/deepseek-v4-pro-0813": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+    "tokenhub/deepseek/deepseek-v4-pro-0813": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+    "tokenhub/deepseek-v4-flash-0731": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731",
+    "tokenhub/deepseek/deepseek-v4-flash-0731": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731",
+    "tokenhub/deepseek-v4-flash": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+    "tokenhub/deepseek-v4-flash-202605": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/deepseek-v4-pro": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "tokenhub/deepseek-v4-pro-202606": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/deepseek/deepseek-v4-flash": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+    "tokenhub/deepseek/deepseek-v4-pro": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "tokenhub/glm-5.3": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3",
+    "tokenhub/glm-5.3-flash": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+    "tokenhub/glm-5.3-flashx": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+    "tokenhub/glm-5.2": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2",
+    "tokenhub/glm-5.1": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1",
+    "tokenhub/glm-5": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5",
+    "tokenhub/glm-5-turbo": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5-turbo",
+    "tokenhub/glm-5v-turbo": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5v-turbo",
+    "tokenhub/hy4": "https://cloud.tencent.com/document/product/1823/132252",
+    "tokenhub/hy4-preview": "https://huggingface.co/tencent/Hy4-preview",
+    "tokenhub/hy3": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/kimi-k3": "https://huggingface.co/moonshotai/Kimi-K3",
+    "tokenhub/kimi-k2.7-code": "https://huggingface.co/moonshotai/Kimi-K2.7-Code",
+    "tokenhub/kimi-k2.7-code-highspeed": "https://www.kimi.com/code/docs/en/kimi-code/models",
+    "tokenhub/kimi-k2.6": "https://huggingface.co/moonshotai/Kimi-K2.6",
+    "tokenhub/minimax-m3": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+    "tokenhub/minimax-m2.7": "https://huggingface.co/MiniMaxAI/MiniMax-M2.7",
+    "tokenhub/step-5-preview": "https://platform.stepfun.com/docs/zh/guides/models/step-5-preview",
+    "tokenhub/deepseek/deepseek-flash": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/hunyuan-t1-vision-20250916": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/hy-image-v3": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/hy-image-v3.5-preview": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/hy-vision-2.0-instruct": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/kimi-k2.8-preview": "https://www.kimi.com/code/docs/en/kimi-code/models",
+    "tokenhub/kimi-k3.1-pro": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/kimi-k3.1-pro-highspeed": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/mimo-v2.5-pro": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+    "tokenhub/mimo-v2.6-flash": "https://mimo.mi.com/models/en-US/mimo-v2.6-flash",
+    "tokenhub/mimo-v2.6-pro": "https://mimo.mi.com/models/en-US/mimo-v2.6-pro",
+    "tokenhub/minimax-m3.1-flash": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/seedream-image-v5.0-lite": "https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh",
+    "tokenhub/seedream-image-v5.0-pro": "https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh",
+    "tokenhub/vidu-image-q2": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/wand-vega-image-flash": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/wand-vega-image-lite": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/wand-vega-image-pro": "https://cloud.tencent.com/document/product/1823/130051",
+    "tokenhub/youtu-vita": "https://cloud.tencent.com/document/product/1823/130051",
+    "xiaomi/mimo-v2.6-flash": "https://mimo.mi.com/models/en-US/mimo-v2.6-flash",
+    "xiaomi/mimo-v2.6-pro": "https://mimo.mi.com/models/en-US/mimo-v2.6-pro",
+    "xiaomi/mimo-v2.6-pro-ultraspeed": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "sensenova/deepseek-v4-flash": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+    "sensenova/deepseek-v4-pro": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "sensenova/glm-5.2": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2",
+    "sensenova/kimi-k3": "https://huggingface.co/moonshotai/Kimi-K3",
+    "sensenova/deepseek-flash": "https://platform.sensenova.cn/docs",
+    "sensenova/sensenova-6.8-flash-lite": "https://github.com/OpenSenseNova/SenseNova6.8/blob/main/API.md",
+    "sensenova/sensenova-u1.5-fast": "https://www.sensecore.cn/help/docs/model-as-a-service/nova/overview",
+    "sensenova/sensenova-u1.5-lite": "https://www.sensecore.cn/help/docs/model-as-a-service/nova/overview",
+    "stepfun/step-5-preview": "https://platform.stepfun.com/docs/zh/guides/models/step-5-preview",
+    "stepfun/step-3.7-flash": "https://platform.stepfun.com/docs/zh/guides/models/step-3.7-flash",
+    "stepfun/step-3.5-flash": "https://platform.stepfun.com/docs/zh/guides/models/step-3.5-flash",
+    "stepfun/step-3.5-flash-2603": "https://platform.stepfun.com/docs/zh/guides/models/step-3.5-flash",
+    "stepfun/step-1o-turbo-vision": "https://platform.stepfun.com/docs/zh/guides/models/list",
+    "qianfan/deepseek-v4.1-flash": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+    "qianfan/deepseek-v4.1-flash-1017": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "qianfan/deepseek-v4-pro-0813": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+    "qianfan/deepseek-v4-flash-0731": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731",
+    "qianfan/deepseek-v4-flash": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+    "qianfan/deepseek-v4-pro": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "qianfan/deepseek-v3.2": "https://huggingface.co/deepseek-ai/DeepSeek-V3.2",
+    "qianfan/deepseek-v3.2-think": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+    "qianfan/glm-5.3": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3",
+    "qianfan/glm-5.3-flash": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+    "qianfan/glm-5.2": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2",
+    "qianfan/glm-5.1": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1",
+    "qianfan/glm-5": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5",
+    "qianfan/kimi-k2.6": "https://huggingface.co/moonshotai/Kimi-K2.6",
+    "qianfan/qwen-image": "https://help.aliyun.com/zh/model-studio/models",
+    "qianfan/qwen-image-edit": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+    "qianfan/qwen3.5-122b-a10b": "https://help.aliyun.com/zh/model-studio/models",
+    "qianfan/qwen3.5-27b": "https://help.aliyun.com/zh/model-studio/models",
+    "qianfan/qwen3.5-35b-a3b": "https://help.aliyun.com/zh/model-studio/models",
+    "qianfan/qwen3.5-397b-a17b": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+    "qianfan/deepseek-flash": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "qianfan/deepseek-ocr": "https://huggingface.co/deepseek-ai/DeepSeek-OCR",
+    "qianfan/ernie-4.5-turbo-128k": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "qianfan/ernie-4.5-turbo-20260402": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "qianfan/ernie-4.5-turbo-32k": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "qianfan/ernie-4.5-turbo-vl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "qianfan/ernie-4.5-turbo-vl-32k": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "qianfan/ernie-5.0": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "qianfan/ernie-5.0-thinking-exp": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "qianfan/ernie-5.0-thinking-latest": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "qianfan/ernie-5.0-thinking-preview": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+    "qianfan/ernie-5.1": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "qianfan/ernie-x1.1": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+    "qianfan/ernie-x1.1-preview": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+    "qianfan/internvl3-38b": "https://huggingface.co/OpenGVLab/InternVL3-38B",
+    "qianfan/musesteamer-air-image": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+    "qianfan/qianfan-ocr": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "iflytek/xop3qwen30b": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xop3qwen32b": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xop3qwen32bvl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xopqwen35397b": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xopqwen36v35b": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xop35qwen2b": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/spark-x2.5": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/spark-x2.5-1.7b": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/spark-x2.5-4b": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/spark-x2.6": "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html",
+    "iflytek/spark-x2.6-4b": "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html",
+    "iflytek/xdeepseekr1qwen32b": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xminimaxm25": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xop3qwen0b6": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xop3qwen14b": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xop3qwen4b": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xop3qwen80bnext": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xop3qwen8b": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xopdeepseekv4flash": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xopdeepseekv4flash0731": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xopdeepseekv4pro": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xopdeepseekv4pro0813": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xopglm51": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xopglm52": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xopglm53": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xopglmv47flash": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xopkimik25": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xopkimik26": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xopkimik27code": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xqwen14bchat": "https://huggingface.co/Qwen/Qwen2.5-14B-Instruct",
+    "iflytek/xspark13b6k": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xsparkprox": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xsparkx2": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "iflytek/xsparkx2flash": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+    "longcat/LongCat-2.5-Preview": "https://longcat.ai/platform/docs/zh/api/model-params",
+    "longcat/LongCat-2.0": "https://huggingface.co/meituan-longcat/LongCat-2.0",
+    "longcat/LongCat-2.5": "https://longcat.chat/platform/docs/change-log",
+    "antling/Ling-3.0-flash-VL": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+    "antling/Ling-3.0-tiny": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+    "antling/Ling-3.0-flash": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+    "antling/Ling-2.6-1T": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+    "antling/Ling-2.6-flash": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+    "antling/Ling-3.1-flash": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+    "antling/Ling-3.2-flash": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+    "antling/Ring-2.6-1T": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+    "novita/ming-image-0.1-design": "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img"
+  },
+  "staticOnlySources": {
+    "stability/sd3.5-flash": "https://docs.stability.ai/api-reference/generate/stable-diffusion-35",
+    "fal/imagineart/imagineart-2.0-preview/text-to-image": "https://fal.ai/models/imagineart/imagineart-2.0-preview/text-to-image/api",
+    "replicate/alibaba/wan-3": "https://replicate.com/alibaba/wan-3"
+  }
+}

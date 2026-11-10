@@ -1,3 +1,6 @@
+import {currentPrimaryRow} from '../../../test-support/pm-decisions-r30.mjs'
+import expectedSourceRows from './fixtures/model-audit-r9-source-rows-r24.json' with { type: 'json' }
+import {r29SourceRows,expectedI11} from '../../../test-support/source-title-history-r29.mjs'
 import test, { afterEach, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
@@ -7,7 +10,7 @@ import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
 import { modelCardSpecifications, modelCardName, safeOfficialSources } from '../src/lib/modelCardSpecifications.js'
 import { modelVersionDetail } from '../src/lib/modelPresentation.js'
 import { ModelSpecifications } from '../src/components/ModelSpecifications.jsx'
-import { isApiSource, modelSourceName } from '../src/lib/modelCardSources.js'
+import { isApiSource } from '../src/lib/modelCardSources.js'
 import * as web from '../src/lib/modelAudit.js'
 import * as core from '../../../packages/api/src/model-audit.ts'
 import * as gateway from '../../auth-gateway/src/model-audit.js'
@@ -63,8 +66,8 @@ test('R9 Bailian Kimi K3 visible official link and title use the channel source 
     const view = render(React.createElement(ModelSpecifications, { provider: 'bailian', model, compactSources }))
     const link = screen.getByRole('link')
     assert.equal(link.getAttribute('href'), 'https://help.aliyun.com/zh/model-studio/kimi-k3')
-    assert.equal(link.textContent, '官方文档 · help.aliyun.com')
-    assert.match(link.title, /^核实日期 2026-11-09\n/)
+    assert.equal(link.textContent, '渠道资料 · 百炼 · Kimi K3')
+    assert.doesNotMatch(link.title, /核实日期|未核实/)
     assert.match(link.title, /上下文窗口：1,048,576 tokens/)
     assert.match(link.title, /最大输出：1,048,576 tokens/)
     assert.deepEqual(model, before)
@@ -75,7 +78,7 @@ test('R9 Bailian Kimi K3 visible official link and title use the channel source 
 test('R9 channel evidence remains available; R12 permits only notices, human pages and specific-source promotion', () => {
   let cards = 0, channels = new Set()
   for (const [provider, channel] of Object.entries(STATIC_MODEL_REGISTRY)) for (const original of channel.models) {
-    const model = { ...original, officialSourceUrl: 'https://catalog.example/generic' }
+    const model = { ...original, catalogReview: {...original.catalogReview, sourceUrls:[...(original.catalogReview?.sourceUrls || []),'https://catalog.example/generic']} }
     const data = modelCardSpecifications(provider, model)
     const sources = safeOfficialSources(Object.values(data.fields).filter(fact => fact.provenance === 'channel')
       .flatMap(fact => fact.sourceUrls || [fact.sourceUrl]))
@@ -84,14 +87,15 @@ test('R9 channel evidence remains available; R12 permits only notices, human pag
     for (const source of sources) assert.equal(data.sources.includes(source), !isApiSource(source, web.MODEL_AUDIT_DATA.sourceChecks))
     const first = data.sources[0]
     assert.ok(first && !isApiSource(first, web.MODEL_AUDIT_DATA.sourceChecks), provider + '/' + model.id)
-    assert.ok(data.channelSources.includes(first) || data.vendorSources.includes(first) || data.lifecycleSources.includes(first), provider + '/' + model.id)
-    assert.ok(data.sources.includes(model.officialSourceUrl), 'secondary evidence is retained')
+    assert.ok(data.channelSources.includes(first) || data.vendorSources.includes(first) || data.lifecycleSources.includes(first) || currentPrimaryRow(provider + '/' + model.id, expectedI11[provider + '/' + model.id].web.sources[0]).url === first, provider + '/' + model.id)
+    if (provider === 'tokendance') assert.deepEqual(data.sources, ['https://tokendance.space/models/' + model.id, ...data.vendorSources, ...data.lifecycleSources])
+    else assert.ok(data.sources.includes('https://catalog.example/generic'), 'secondary evidence is retained')
     const view = render(React.createElement(ModelSpecifications, { provider, model }))
     assert.equal(screen.getByRole('link').getAttribute('href'), first, provider + '/' + model.id)
-    assert.equal(screen.getByRole('link').textContent, modelSourceName(data, first) + ' · ' + new URL(first).hostname)
+    assert.deepEqual({url: screen.getByRole('link').getAttribute('href'), label: screen.getByRole('link').textContent}, currentPrimaryRow(provider + '/' + model.id,expectedI11[provider + '/' + model.id].web.sources[0]))
     view.unmount(); cards++; channels.add(provider)
   }
-  assert.ok(cards > 100); assert.ok(channels.size > 10)
+  assert.equal(cards, Object.keys(expectedSourceRows).length); assert.ok(cards > 100); assert.ok(channels.size > 10)
   for (const officialSourceUrl of ['https://catalog.example/exact', 'http://unsafe.example', 'https://user:password@unsafe.example']) {
     const model = { id: 'r9-unaudited', officialSourceUrl }
     const data = modelCardSpecifications('r9-unknown', model)
@@ -107,7 +111,7 @@ test('R9 touch source dialog keeps the same channel link and verification date',
   const model = STATIC_MODEL_REGISTRY.bailian.models.find(model => model.id === 'kimi-k3')
   render(React.createElement(ModelSpecifications, { provider: 'bailian', model }))
   fireEvent.click(screen.getByRole('link'))
-  const dialog = screen.getByRole('dialog', { name: '官方文档规格' })
-  assert.match(dialog.textContent, /核实日期 2026-11-09/)
+  const dialog = screen.getByRole('dialog', { name: '模型规格' })
+  assert.doesNotMatch(dialog.textContent, /核实日期|未核实/);assert.match(within(dialog).getAllByRole('link')[0].title,/核实日期：2026-11-09/)
   assert.equal(within(dialog).getAllByRole('link')[0].getAttribute('href'), 'https://help.aliyun.com/zh/model-studio/kimi-k3')
 })

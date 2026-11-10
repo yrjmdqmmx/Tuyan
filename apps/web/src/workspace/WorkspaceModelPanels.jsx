@@ -1,5 +1,5 @@
 import ControlField from '../components/ControlField.jsx';
-import { modelLifecycleMessage } from '../lib/modelUnavailablePresentation.js';
+import { ModelLifecycleBadge } from '../components/ModelSpecifications.jsx';
 import ModelReplacement from './ModelReplacement.jsx';
 import { removedModel, auditedModelLifecycle } from '../lib/modelAudit.js';
 import { useAppLocale } from '../components/BenchmarkLocale.jsx';
@@ -120,7 +120,7 @@ export function WorkspaceModelConfig({ models, draft, path, editing, onChange, o
       const mainVision = main && modelOption(main, library, registry, 'vision', path, editing, summary?.tokenDance);
       return <div className="tw-role-card" key={role}><WorkspaceModelPicker models={models} role={role} path={path} editing={editing} current={current} onManage={onManage} onChange={reference => onChange({ ...settings, models: { ...selected, [role]: reference } })}/>
 
-        <div className="tw-catalog-card-actions">{lifecycle && <div className="tw-catalog-tags"><span title={modelLifecycleMessage(option?.connection?.provider || current?.accessProvider, lifecycle)}>{t('将下线')}</span></div>}{current && !removed && <ModelReplacement provider={option?.connection?.provider || current.accessProvider} modelId={current.modelId} models={models} entry={option} role={role} path={path} editing={editing} onReplace={reference => onChange({ ...settings, models: { ...selected, [role]: reference } })}/>}</div>
+        <div className="tw-catalog-card-actions"><ModelLifecycleBadge provider={option?.connection?.provider || current?.accessProvider} modelId={current?.modelId} lifecycle={lifecycle}/>{current && !removed && <ModelReplacement provider={option?.connection?.provider || current.accessProvider} modelId={current.modelId} models={models} entry={option} role={role} path={path} editing={editing} onReplace={reference => onChange({ ...settings, models: { ...selected, [role]: reference } })}/>}</div>
         {noDefault && <p className="tw-muted" role="status">此连接暂无默认{{main:'主', image:'绘图', vision:'视觉理解'}[role]}模型</p>}
         {option?.reason && !removed && <p role="status">{option.reason}。请在模型管理中处理，系统不会替换型号。</p>}{role === 'vision' && !current && <p className="tw-muted">{mainVision && !mainVision.reason ? '当前主模型具备视觉角色能力；需要视觉处理时可复用主模型。' : '需要视觉分析时须补充符合条件的模型。无视觉步骤时不会调用。'}</p>}
         {draft.mode==='advanced' && current && !removed && <ThinkingSettings role={role} settings={thinking} registry={registry} operation={editing?'editing':'generation'} onChange={(role,value)=>onChange({...settings,thinking:{...settings.thinking,[role]:{libraryModelId:selected[role].libraryModelId,options:value.options}}})}/>}

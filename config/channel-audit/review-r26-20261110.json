@@ -1,0 +1,221 @@
+{
+  "phase": "R26 Phase I6",
+  "verifiedAt": "2026-11-10",
+  "baseline": "6864824a",
+  "cardsPerClient": 1064,
+  "captures": [
+    {
+      "url": "https://www.aliyun.com/notice/118728",
+      "httpStatus": 200,
+      "finalUrl": "https://www.aliyun.com/notice/118728",
+      "fetchStartUTC": "2026-11-10T00:27:10.924391+00:00",
+      "fetchEndUTC": "2026-11-10T00:27:11.436757+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T08:27:10.924391+08:00",
+      "sha256": "b107c1f0a2c8b44c0a34ec69af7e41a13a9d6b6b575ffe9904e1f53e389f6b77",
+      "bytes": 30424,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i6-aliyun-118728.html"
+    },
+    {
+      "url": "https://cloud-assets.alicdn.com/lowcode/entry/prod/4c06616382ae914768cb2899fcb9e7e3.js",
+      "httpStatus": 200,
+      "finalUrl": "https://cloud-assets.alicdn.com/lowcode/entry/prod/4c06616382ae914768cb2899fcb9e7e3.js",
+      "fetchStartUTC": "2026-11-10T00:27:34.423057+00:00",
+      "fetchEndUTC": "2026-11-10T00:27:34.820720+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T08:27:34.423057+08:00",
+      "sha256": "807b38498e953446500cb611758030db542b288d068f9d3133860faf1db51f2a",
+      "bytes": 1698313,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i6-notice-entry.html",
+      "extraction": "JSON-decoded httpDatas[encoded bulletinDetail URL].detailInfo.detailList[0].content; page-entry script referenced by notice HTML; no script execution",
+      "content": "影响时间 2027 年 01 月 19 日 10:00:00, 【以实际变更时间为准】 变更内容和影响 为了不断提升模型性能和服务体验，同时优化底层资源管理，大模型服务平台百炼将于 2027 年 01 月 19 日 对下表中的旧版本模型进行下线处理。 具体下线清单及替换模型推荐如下： 模型名称 输入成本 元/百万tokens 输出成本 元/百万tokens 推荐替换模型 输入成本 元/百万tokens 输出成本 元/百万tokens qwen3.5-plus 0.8 4.8 qwen3.8-flash 0.8 2.7 qwen3.5-plus-2026-02-15 0.8 4.8 qwen3.8-flash 0.8 2.7 qwen3.5-plus-2026-04-20 0.8 4.8 qwen3.8-flash 0.8 2.7 qwen3.5-397b-a17b 1.2 7.2 qwen3.8-flash 0.8 2.7 重要提示：考虑到公告到模型实际下线期间，阿里云百炼平台将持续快速迭代并发布性能更优的新模型，本公告中的推荐替换指引将不再随新模型上线而频繁更新。敬请您在业务迁移及日常使用中，持续关注阿里云百炼模型广场，以便灵活选用最新、最契合业务场景的模型版本。 应对建议 关键时间节点 为保障您的业务平稳过渡，请重点关注以下两个时间节点： 2026年11月18日（停止新购 EOM）：届时将关闭上述模型的新购入口。您将无法再新开通或购买这些模型的相关服务及资源包。 2027年01月19日（正式下线）：届时模型将全面停止推理服务。 模型下线后，将不再支持模型推理，仍在调用上述下线模型的应用和服务将无法返回结果。若您正在使用以上模型，请务必在 2027 年 01 月 19 日 前完成接口替换、参数调优与业务验证，以免影响线上服务的稳定性。 上述下架清单中，Coding Plan/Token Plan 支持的相关模型也会同步下线。如您已购买预付费资源包，您可以提交工单按未使用资源进行退款。 点击此处查看阿里云百炼的模型列表及计费信息。 如您有任何问题，可随时通过工单 或者服务热线与我们联系。",
+      "parentUrl": "https://www.aliyun.com/notice/118728",
+      "excerpts": [
+        "qwen3.5-397b-a17b 1.2 7.2 qwen3.8-flash 0.8 2.7",
+        "2027年01月19日（正式下线）：届时模型将全面停止推理服务。",
+        "qwen3.5-plus 0.8 4.8 qwen3.8-flash 0.8 2.7",
+        "2027年01月19日（正式下线）：届时模型将全面停止推理服务。",
+        "qwen3.5-plus-2026-02-15 0.8 4.8 qwen3.8-flash 0.8 2.7",
+        "2027年01月19日（正式下线）：届时模型将全面停止推理服务。",
+        "qwen3.5-plus-2026-04-20 0.8 4.8 qwen3.8-flash 0.8 2.7",
+        "2027年01月19日（正式下线）：届时模型将全面停止推理服务。"
+      ]
+    },
+    {
+      "url": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "httpStatus": 200,
+      "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "fetchStartUTC": "2026-11-10T00:27:10.925680+00:00",
+      "fetchEndUTC": "2026-11-10T00:27:16.287364+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T08:27:10.925680+08:00",
+      "sha256": "0288c5d4db9d72fdbddb2fa0decdfa530f5aff70f5c0cf5e895fabef906601ad",
+      "bytes": 168216,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i6-antling.html",
+      "extraction": "HTML text nodes with whitespace collapsed; script/style omitted",
+      "content": "下架 Skip to Content 文档 博客 搜索... ⌘ K Command Palette Search for a command to run... English 博客 文档 English 简介 入门与准备 准备工作 快速开始 更新日志 百灵计量计费服务升级说明 模型家族 Ling Ming 定价 下架 API 参考 对话 OpenAI Anthropic 语音 语音识别 语音合成 图像 图像生成 图像编辑 API 指引 调用限制 错误码 教程 Prompt 采样 流式输出 结构化输出 多模态理解 第三方平台 OpenRouter ZenMux 集成与接入 OpenClaw Claude Code Kilo Code Hermes Agent FAQ 联系我们 简介 入门与准备 准备工作 快速开始 更新日志 百灵计量计费服务升级说明 模型家族 Ling Ming 定价 下架 API 参考 对话 OpenAI Anthropic 语音 语音识别 语音合成 图像 图像生成 图像编辑 API 指引 调用限制 错误码 教程 Prompt 采样 流式输出 结构化输出 多模态理解 第三方平台 OpenRouter ZenMux 集成与接入 OpenClaw Claude Code Kilo Code Hermes Agent FAQ 联系我们 本页大纲 下架政策 下架模型 即将下架 已下架 当前可用模型 迁移指南 Ling Ring 第三方平台 回到顶部 模型家族 下架 下架 为持续提升服务质量，百灵会定期引入性能更强、成本更优的新版本模型，并且下架旧版本模型。本页说明下架政策、已下架模型及迁移建议。 下架政策 提前通知 ：模型正式下架前，我们会通过文档和公告的方式告知。 服务终止 ：到达下架日期后，相关 model ID 的 API 调用将返回错误，不再提供服务。 平滑迁移 ：每个被下架的模型均会提供推荐的替代模型，且替代模型在性能和成本上均不劣于原版本。 下架模型 即将下架 以下模型将于 2026-11-15 00:00:00 (UTC+8) 下线，请尽快将业务迁移至推荐的替代版本，避免届时请求失败。 模型 ID 系列 计划下架日期 推荐替代模型 Ling-2.6-1T Ling 2.6 2026-11-15 00:00:00 (UTC+8) Ling-3.1-flash Ring-2.6-1T Ring 2.6 2026-11-15 00:00:00 (UTC+8) Ling-3.1-flash Ling-2.6-flash Ling 2.6 2026-11-15 00:00:00 (UTC+8) Ling-3.1-flash 已下架 以下模型已下线，请迁移至推荐的替代版本。 模型 ID 系列 下架日期 推荐替代模型 Ling-1T Ling 2.0 2026-06-15 00:00:00 (UTC+8) Ling-3.1-flash Ring-1T Ring 2.0 2026-06-15 00:00:00 (UTC+8) Ling-3.1-flash Ling-2.5-1T Ling 2.5 2026-09-30 00:00:00 (UTC+8) Ling-3.1-flash Ring-2.5-1T Ring 2.5 2026-09-30 00:00:00 (UTC+8) Ling-3.1-flash 当前可用模型 以下模型当前处于稳定支持期，可放心用于生产环境。 模型 ID 系列 定位 Ling-3.2-flash Ling 3.2 最新一代原生多模态模型，支持图像、文本与视频输入，重点强化复杂视觉理解、多模态长程 Agent、3D 理解与交互、医疗多模态四大能力 Ling-3.1-flash Ling 3.1 新一代长流程混合推理模型，专为日常办公、长周期研发与复杂 Agent 任务设计 Ling-3.0-flash-VL Ling 3.0 原生多模态混合推理模型，支持图像、文本与视频输入 Ling-3.0-flash Ling 3.0 高性价比混合推理模型，可支撑高频任务 Ling-3.0-tiny Ling 3.0 轻量级混合推理模型，支持端侧部署与本地离线运行 迁移指南 Ling 将代码中的旧版 model ID 替换为对应新版即可： # 旧版（已下架） model = \"Ling-1T\" # 新版（推荐） model = \"Ling-3.1-flash\" # 新一代长流程混合推理模型 选型建议 ： 原先使用 Ling-1T / Ling-2.5-1T / Ling-2.6-1T / Ling-2.6-flash → 推荐迁移至 Ling-3.1-flash ，性能更强、成本更优，覆盖日常对话、复杂推理、长上下文与 Agent 任务场景。 Ring # 旧版（已下架） model = \"Ring-1T\" # 新版（推荐） model = \"Ling-3.1-flash\" 原先使用 Ring-1T / Ring-2.5-1T / Ring-2.6-1T → 推荐迁移至 Ling-3.1-flash ，新一代长流程混合推理模型，覆盖复杂推理与 Agent 任务场景。 第三方平台 通过 Zenmux 接入时，同样需要将 model ID 更新为新版本： # Zenmux inclusionai/ling-3.1-flash 如有问题，请参阅 Zenmux 接入文档 。 这个页面对你有帮助吗? Last updated on November 5, 2026 定价 API 参考 蚂蚁智能（杭州）科技有限公司 ｜ 浙ICP备14032978号-28"
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "httpStatus": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "fetchStartUTC": "2026-11-10T00:27:10.925363+00:00",
+      "fetchEndUTC": "2026-11-10T00:27:11.572028+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T08:27:10.925363+08:00",
+      "sha256": "3d70a90e7271abfa940ab0fda689f3a2787ab36792b225f134b3b54ae857ee1e",
+      "bytes": 60657,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i6-aliyun-generic.html",
+      "extraction": "HTML text nodes with whitespace collapsed; script/style omitted",
+      "content": "模型下线机制说明-大模型服务平台百炼-阿里云_大模型服务平台百炼(Model Studio)-大模型服务平台百炼(Model Studio)-阿里云帮助中心 大模型 产品 解决方案 权益 定价 AI 应用市场 伙伴 服务 了解阿里云 查看 \"\" 全部搜索结果 AI 助理 文档 备案 控制台 官方文档 Token Plan 模型 Agent 模型 API Agent API CLI 产品动态 首页 大模型服务平台百炼 产品动态 产品动态 模型下线机制说明 模型下线机制说明 更新时间： 复制 MD 格式 产品详情 我的收藏 为优化资源利用和确保用户使用最新、最优模型，阿里云百炼平台将根据模型迭代升级情况不定期下线历史模型。本文将为您介绍模型下线机制。 模型类型 百炼提供的模型版本分为正式版和预览版两类，建议优先使用正式版模型。 正式版模型 ：面向生产环境的稳定商用版本。同一模型系列提供三种形态：系列模型名（如 qwen-max、qwen-plus、qwen-turbo）、带「年-月-日」日期后缀的版本名（如 qwen-max-2025-01-25）、-latest 别名（如 qwen-max-latest）。以上形态均属于正式版模型。 预览版模型 ：公测模型，模型 ID 中包含 preview、beta、experimental 等标识，或在文档、控制台中明确标注为「预览版」。预览版模型用于新能力验证和体验收集，版本更新较快，后续可能下线。 下线节点 模型下线指旧版本模型停止提供服务，您需要切换至其他模型才能继续使用。下线过程包含以下节点： 节点 说明 时间安排 启动下线 发布下线公告，正式告知客户模型下线计划。自即日起停止新用户接入，并可能逐步下调该模型的默认限流（QPM 和 TPM） 正式版、预览版一致 停止新购（EoM） End of Marketing，停止该模型的所有新购订单。对于按量付费模型，指停止新客户开通该模型的按量计费服务 正式版：启动下线后 7 天；预览版：不涉及 停止服务（EoS） End of Service，停止该模型的所有服务。已创建的模型推理服务无法继续调用，控制台和文档同步下线，相关数据清理并撤销访问权限 正式版：启动下线后 3 个月；预览版：启动下线后 14 天 通知机制 通知时间 正式版模型 ：不晚于停止服务（EoS）前 3 个月 发布下线通知。 预览版模型 ：不晚于停止服务（EoS）前 14 天 发布下线通知。 通知方式 通过官网公告、邮件、短信、站内信等方式。 如您近 3 个月内调用过待下线模型，我们还会通过邮件、短信或站内信通知您。 下线影响 自启动下线之日起 ：停止新用户接入，并逐步缩减待下线模型的 QPM（每分钟调用次数）和 TPM（每分钟消耗 Token 数）。对于申请过扩容的模型，会先恢复至 默认限流 值，再进行缩减。在此过程中，模型 API 接口、控制台上的相关功能均保持正常使用。 自停止新购之日起（仅正式版模型） ：停止该模型的新购订单，按量付费模式下新客户无法开通该模型的计费服务。 自停止服务之日起 ： 模型推理 ：停止支持模型推理服务，已创建的调用该模型的应用和服务将无法返回结果。 控制台功能及官方文档 ：模型相关的控制台功能（模型广场、体验中心等）、官方文档将同步下线，相关数据清理、访问权限撤销。 下线计划的调整 如遇特殊情况，下线可能暂停、延期或中止。中止下线的模型恢复为正常售卖状态，并可能在后续下线计划中重新纳入。 已发布的公告可能更新内容，例如调整替代模型、部分模型中止下线。公告更新时会附加「变更说明」，标注变更内容、变更原因及变更前后对比。 操作建议 前往 模型监控 页面，检查您的账号是否正在使用待下线的模型。 如果正在使用，建议您先测试替代模型的业务效果，再切换至替代模型。 下线模型列表 2027 年 1 月 19 日将下线 详细说明，请参见以下官网公告： https://www.aliyun.com/notice/118728 2026 年 10 月 10 日已下线 详细说明，请参见以下官网公告： https://www.aliyun.com/notice/118177 https://www.aliyun.com/notice/118434 https://www.aliyun.com/notice/118344 https://www.aliyun.com/notice/118345 https://www.aliyun.com/notice/118331 https://www.aliyun.com/notice/118332 2026 年 5 月 30 日已下线 详细说明，请参见官网公告 https://www.aliyun.com/notice/118217 。 2026 年 5 月 13 日已下线 详细说明，请参见官网公告 https://www.aliyun.com/notice/118178 。 2026 年 3 月 30 日已下线 该批次未发布专项公告。 2026 年 1 月 30 日已下线 详细说明，请参见官网公告 https://www.aliyun.com/notice/117814 。 2025 年 7 月 30 日已下线 详细说明，请参见官网公告 https://www.aliyun.com/notice/117351 。 2025 年 7 月 2 日已下线 详细说明，请参见官网公告 https://www.aliyun.com/notice/117140 。 2025 年 5 月 8 日已下线 详细说明，请参见官网公告 https://www.aliyun.com/notice/117139 。 2024 年 4 月 22 日已下线 该批次未发布专项公告。 上一篇：产品动态 下一篇：模型上下架与更新 该文章对您有帮助吗？ 反馈 为什么选择阿里云 什么是云计算 全球基础设施 技术领先 稳定可靠 安全合规 分析师报告 大模型 大模型服务平台 千问大模型 模型市场 产品和定价 全部产品 免费试用 产品动态 产品定价 配置报价器 云上成本管理 技术内容 技术解决方案 帮助文档 开发者社区 天池大赛 阿里云认证 权益 免费试用 解决方案免费试用 高校计划 推荐返现计划 服务 基础服务 企业增值服务 迁云服务 官网公告 健康看板 信任中心 关注阿里云 关注阿里云公众号或下载阿里云APP，关注云资讯，随时随地运维管控云服务 联系我们：4008013260 法律声明 Cookies 政策 廉正举报 安全举报 联系我们 加入我们 友情链接 阿里巴巴集团 淘宝网 千问AI平台 千问办公 天猫 全球速卖通 阿里巴巴国际交易市场 1688 阿里妈妈 飞猪 阿里云计算 万网 高德 UC 友盟 优酷 钉钉 支付宝 达摩院 淘宝海外 阿里云盘 © 2009-现在 Aliyun.com 版权所有 增值电信业务经营许可证： 浙B2-20080101 域名注册服务机构许可： 浙D3-20210002 浙公网安备 33010602009975号"
+    }
+  ],
+  "models": {
+    "bailian/qwen3.5-397b-a17b": {
+      "badge": "将下线",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "sourceUrl": "https://www.aliyun.com/notice/118728",
+      "captureUrl": "https://cloud-assets.alicdn.com/lowcode/entry/prod/4c06616382ae914768cb2899fcb9e7e3.js",
+      "identity": "qwen3.5-397b-a17b",
+      "identityMatch": "exact",
+      "quote": "qwen3.5-397b-a17b 1.2 7.2 qwen3.8-flash 0.8 2.7",
+      "dateQuote": "2027年01月19日（正式下线）：届时模型将全面停止推理服务。",
+      "stopDate": "2027-01-19",
+      "verified": true,
+      "decision": "replace-source",
+      "reason": "Exact model ID is listed in the retirement table; the displayed date matches the dated notice.",
+      "sha256": "807b38498e953446500cb611758030db542b288d068f9d3133860faf1db51f2a",
+      "fetchStartUTC": "2026-11-10T00:27:34.423057+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T08:27:34.423057+08:00"
+    },
+    "bailian/qwen3.5-plus": {
+      "badge": "将下线",
+      "oldUrl": "https://www.aliyun.com/notice/118728",
+      "sourceUrl": "https://www.aliyun.com/notice/118728",
+      "captureUrl": "https://cloud-assets.alicdn.com/lowcode/entry/prod/4c06616382ae914768cb2899fcb9e7e3.js",
+      "identity": "qwen3.5-plus",
+      "identityMatch": "exact",
+      "quote": "qwen3.5-plus 0.8 4.8 qwen3.8-flash 0.8 2.7",
+      "dateQuote": "2027年01月19日（正式下线）：届时模型将全面停止推理服务。",
+      "stopDate": "2027-01-19",
+      "verified": true,
+      "decision": "keep",
+      "reason": "Exact model ID is listed in the retirement table; the displayed date matches the dated notice.",
+      "sha256": "807b38498e953446500cb611758030db542b288d068f9d3133860faf1db51f2a",
+      "fetchStartUTC": "2026-11-10T00:27:34.423057+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T08:27:34.423057+08:00"
+    },
+    "bailian/qwen3.5-plus-2026-02-15": {
+      "badge": "将下线",
+      "oldUrl": "https://www.aliyun.com/notice/118728",
+      "sourceUrl": "https://www.aliyun.com/notice/118728",
+      "captureUrl": "https://cloud-assets.alicdn.com/lowcode/entry/prod/4c06616382ae914768cb2899fcb9e7e3.js",
+      "identity": "qwen3.5-plus-2026-02-15",
+      "identityMatch": "exact",
+      "quote": "qwen3.5-plus-2026-02-15 0.8 4.8 qwen3.8-flash 0.8 2.7",
+      "dateQuote": "2027年01月19日（正式下线）：届时模型将全面停止推理服务。",
+      "stopDate": "2027-01-19",
+      "verified": true,
+      "decision": "keep",
+      "reason": "Exact model ID is listed in the retirement table; the displayed date matches the dated notice.",
+      "sha256": "807b38498e953446500cb611758030db542b288d068f9d3133860faf1db51f2a",
+      "fetchStartUTC": "2026-11-10T00:27:34.423057+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T08:27:34.423057+08:00"
+    },
+    "bailian/qwen3.5-plus-2026-04-20": {
+      "badge": "将下线",
+      "oldUrl": "https://www.aliyun.com/notice/118728",
+      "sourceUrl": "https://www.aliyun.com/notice/118728",
+      "captureUrl": "https://cloud-assets.alicdn.com/lowcode/entry/prod/4c06616382ae914768cb2899fcb9e7e3.js",
+      "identity": "qwen3.5-plus-2026-04-20",
+      "identityMatch": "exact",
+      "quote": "qwen3.5-plus-2026-04-20 0.8 4.8 qwen3.8-flash 0.8 2.7",
+      "dateQuote": "2027年01月19日（正式下线）：届时模型将全面停止推理服务。",
+      "stopDate": "2027-01-19",
+      "verified": true,
+      "decision": "keep",
+      "reason": "Exact model ID is listed in the retirement table; the displayed date matches the dated notice.",
+      "sha256": "807b38498e953446500cb611758030db542b288d068f9d3133860faf1db51f2a",
+      "fetchStartUTC": "2026-11-10T00:27:34.423057+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T08:27:34.423057+08:00"
+    },
+    "antling/Ling-2.6-1T": {
+      "badge": "将下线",
+      "oldUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "captureUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "identity": "Ling-2.6-1T",
+      "identityMatch": "exact",
+      "quote": "Ling-2.6-1T Ling 2.6 2026-11-15 00:00:00 (UTC+8) Ling-3.1-flash",
+      "dateQuote": "以下模型将于 2026-11-15 00:00:00 (UTC+8) 下线，请尽快将业务迁移至推荐的替代版本，避免届时请求失败。",
+      "stopDate": "2026-11-15T00:00:00+08:00",
+      "verified": true,
+      "decision": "keep",
+      "reason": "Exact model ID is listed in the retirement table; the displayed date matches the dated notice.",
+      "sha256": "0288c5d4db9d72fdbddb2fa0decdfa530f5aff70f5c0cf5e895fabef906601ad",
+      "fetchStartUTC": "2026-11-10T00:27:10.925680+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T08:27:10.925680+08:00"
+    },
+    "antling/Ling-2.6-flash": {
+      "badge": "将下线",
+      "oldUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "captureUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "identity": "Ling-2.6-flash",
+      "identityMatch": "exact",
+      "quote": "Ling-2.6-flash Ling 2.6 2026-11-15 00:00:00 (UTC+8) Ling-3.1-flash",
+      "dateQuote": "以下模型将于 2026-11-15 00:00:00 (UTC+8) 下线，请尽快将业务迁移至推荐的替代版本，避免届时请求失败。",
+      "stopDate": "2026-11-15T00:00:00+08:00",
+      "verified": true,
+      "decision": "keep",
+      "reason": "Exact model ID is listed in the retirement table; the displayed date matches the dated notice.",
+      "sha256": "0288c5d4db9d72fdbddb2fa0decdfa530f5aff70f5c0cf5e895fabef906601ad",
+      "fetchStartUTC": "2026-11-10T00:27:10.925680+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T08:27:10.925680+08:00"
+    },
+    "antling/Ring-2.6-1T": {
+      "badge": "将下线",
+      "oldUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "captureUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "identity": "Ring-2.6-1T",
+      "identityMatch": "exact",
+      "quote": "Ring-2.6-1T Ring 2.6 2026-11-15 00:00:00 (UTC+8) Ling-3.1-flash",
+      "dateQuote": "以下模型将于 2026-11-15 00:00:00 (UTC+8) 下线，请尽快将业务迁移至推荐的替代版本，避免届时请求失败。",
+      "stopDate": "2026-11-15T00:00:00+08:00",
+      "verified": true,
+      "decision": "keep",
+      "reason": "Exact model ID is listed in the retirement table; the displayed date matches the dated notice.",
+      "sha256": "0288c5d4db9d72fdbddb2fa0decdfa530f5aff70f5c0cf5e895fabef906601ad",
+      "fetchStartUTC": "2026-11-10T00:27:10.925680+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T08:27:10.925680+08:00"
+    }
+  },
+  "allowList": [],
+  "otherExactIdCards": [
+    {
+      "card": "qianfan/qwen3.5-397b-a17b",
+      "badge": null,
+      "decision": "No existing badge; the Bailian notice is not evidence of Qianfan retirement."
+    }
+  ],
+  "findings": [
+    {
+      "card": "bailian/qwen3.5-397b-a17b",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "reason": "Generic page does not name the model.",
+      "resolution": "Cite verified notice 118728; exclude the generic page from this card display."
+    }
+  ],
+  "relatedNamespaceIdCards": [
+    {
+      "card": "siliconflow/Qwen/Qwen3.5-397B-A17B",
+      "badge": null,
+      "decision": "No existing badge on the namespaced/case-variant ID; the Bailian notice is not evidence of SiliconFlow retirement."
+    }
+  ]
+}

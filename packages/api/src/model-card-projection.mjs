@@ -1,0 +1,14 @@
+// The complete registry model is required here. This is a display projection;
+// execution roles, capabilities, availability and request limits remain intact.
+import { catalogCardFacts, mergeCardFacts } from './catalog-card-facts.mjs'
+import { modelCardSources, modelSourceName } from './model-card-sources.mjs'
+import reviewed from './card-data/reviewed-models.json' with { type: 'json' }
+import pages from './card-data/specific-pages.json' with { type: 'json' }
+import { conflictNote } from './card-presentation.mjs'
+
+export function registryCardProjection(channel, model, audit, lifecycle, checks) {
+  const { fields, conflicts } = mergeCardFacts(audit, catalogCardFacts(channel, model, reviewed, pages), model)
+  const links = modelCardSources({channel, model, audit, fields, lifecycle, checks})
+  const sourceUrl = links.sources[0] || null
+  return { fields, verifiedAt: audit.verifiedAt || null, lifecycleSourceUrl: audit.lifecycleSourceUrl || null, excludedSources: audit.excludedSources || [], vendorSources: links.vendorSources, retirementSources: links.lifecycleSources.filter(url => url !== sourceUrl), sourceUrl, sourceLabel: sourceUrl ? modelSourceName(links, sourceUrl) : '官方文档', note: [audit.note, conflicts.length && !Object.values(fields).some(f => f.unsupportedModalities?.length) && conflictNote].filter(Boolean).join('；') }
+}

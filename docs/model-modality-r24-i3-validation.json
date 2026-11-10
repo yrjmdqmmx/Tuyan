@@ -1,0 +1,536 @@
+{
+  "phase": "R24 Phase I3",
+  "startingHead": "9a7128d613c339a999dad1e7dad50affe1ea230d",
+  "mainBaseline": "8c456709",
+  "runs": [
+    {
+      "id": "api-full",
+      "cwd": ".",
+      "command": "node --test packages/api/src/*.test.js",
+      "startedAt": "2026-11-09T22:45:47.355974+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/api-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:47.500673+00:00",
+      "tail": "ryRequest preserves English search copy and Chinese display copy (0.242209ms)\n✔ referenceLibraryRequest normalizes legacy reference-only responses with default pagination (0.077667ms)\n✔ referenceLibraryRequest defaults new callers to the cross-task bench scope (0.076833ms)\n✔ referenceLibraryRequest sends exact reference IDs and keeps the pagination envelope (0.087ms)\n✔ referenceLibraryRequest rejects exact reference IDs combined with scope before transport (0.066834ms)\n✔ referenceLibraryRequest rejects exact reference IDs combined with legacy limit before transport (0.049375ms)\n✔ referenceLibraryRequest forwards AbortSignal without serializing it (0.060542ms)\n✔ reference upload lifecycle explicitly finalizes successful PUTs and aborts failed ones (0.08475ms)\n✔ formatClientPlatform translates the complete canonical enum without guessing missing history (0.036792ms)\n✔ admin and user task normalization retain both platform aliases without backfilling history (0.249625ms)\n✔ unsupported transport fails before a network request (0.066584ms)\n✔ userJobsRequest trusts the freshly signed list response without N+1 detail requests (0.095375ms)\n✔ modelRegistryRequest reads the server-authoritative model roles and defaults (0.089875ms)\n✔ health and registry reads pass cancellation to fetch without changing the API body (0.07475ms)\n✔ benchmark clients use only the public and admin action contracts (0.21475ms)\n✔ shared job payloads preserve 512 and native-size resolution values (0.072667ms)\n✔ model material generation and refined recovery preserve files and independent manual references (0.199334ms)\n✔ read-only account catalogs isolate keys and reject probes before transport (0.115458ms)\nℹ tests 33\nℹ suites 0\nℹ pass 33\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.4505\n",
+      "tests": {
+        "tests": 33,
+        "pass": 33,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "auth-gateway-check",
+      "cwd": "apps/auth-gateway",
+      "command": "npm run check",
+      "startedAt": "2026-11-09T22:45:47.355975+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/auth-gateway-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:47.545225+00:00",
+      "tail": "\n> @paperbanana/auth-gateway@0.1.0 check\n> node --check src/*.js tests/*.test.js\n\n"
+    },
+    {
+      "id": "benchmark-core-check",
+      "cwd": "packages/benchmark-core",
+      "command": "npm run check",
+      "startedAt": "2026-11-09T22:45:47.356142+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/benchmark-core-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:50.505410+00:00",
+      "tail": "\n> @paperbanana/benchmark-core@0.1.0 check\n> tsc --noEmit\n\n"
+    },
+    {
+      "id": "benchmark-worker-check",
+      "cwd": "apps/benchmark-worker",
+      "command": "npm run check",
+      "startedAt": "2026-11-09T22:45:47.356225+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/benchmark-worker-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:54.152611+00:00",
+      "tail": "\n> @paperbanana/benchmark-worker@0.1.0 check\n> tsc --noEmit\n\n"
+    },
+    {
+      "id": "check-docker-bundles",
+      "cwd": ".",
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "startedAt": "2026-11-09T22:45:47.550192+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/check-docker-bundles.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:52.749235+00:00",
+      "tail": "external:ali-oss --external:mongodb --external:sharp --external:undici && esbuild src/ambiguous-judge-retry-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/ambiguous-judge-retry.mjs --external:ali-oss --external:mongodb --external:sharp --external:undici && esbuild src/calibration-recovery-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/calibration-recovery.mjs --external:ali-oss && esbuild src/calibration-snapshot.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/calibration-snapshot.mjs --external:sharp && esbuild src/judge-provider-diagnostic.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/judge-provider-diagnostic.mjs --external:undici && esbuild src/openrouter-judge-probe-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/openrouter-judge-probe.mjs --external:sharp --external:undici && esbuild src/public-evidence-backfill-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/public-evidence-backfill.mjs --external:ali-oss --external:mongodb --external:sharp && esbuild src/v1-retirement-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/v1-retirement.mjs --external:ali-oss --external:mongodb --external:sharp\",\n        \"bundles\": 12\n      }\n    ]\n  },\n  {\n    \"dockerfile\": \"apps/auth-gateway/Dockerfile\",\n    \"copyInstructions\": 11,\n    \"builds\": [\n      {\n        \"package\": \"@paperbanana/auth-gateway\",\n        \"command\": \"esbuild src/server.js --bundle --platform=node --target=node24 --format=esm --packages=external --outfile=/dev/null\",\n        \"bundles\": 1,\n        \"note\": \"Gateway has no build script; resolve all local runtime imports without starting the server\"\n      }\n    ]\n  }\n]\n"
+    },
+    {
+      "id": "core-build",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run build",
+      "startedAt": "2026-11-09T22:45:36.628861+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/core-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:37.027144+00:00",
+      "tail": "\n> @paperbanana/paperbanana-api@0.1.0 build\n> esbuild src/main.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/server.cjs --define:import.meta.url='\"file:///app/node_modules/@paperbanana/benchmark-core/src/scientific-edit-source.js\"' --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:ali-oss --external:express --external:mongodb --external:sharp && esbuild src/image-runtime-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/image-runtime.mjs --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:sharp && esbuild src/scientific-v2-lineage-inspector.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/scientific-v2-lineage-inspector.mjs --external:mongodb && esbuild src/svg-review.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/svg-review.cjs --define:import.meta.url='\"file:///app/dist/svg-review.cjs\"'\n\n\n  dist/server.cjs  13.2mb ⚠️\n\n⚡ Done in 138ms\n\n  dist/image-runtime.mjs  11.4mb ⚠️\n\n⚡ Done in 131ms\n\n  dist/scientific-v2-lineage-inspector.mjs  375.9kb\n\n⚡ Done in 8ms\n\n  dist/svg-review.cjs  7.6kb\n\n⚡ Done in 1ms\n"
+    },
+    {
+      "id": "core-targeted",
+      "cwd": "apps/paperbanana-api",
+      "command": "node --import tsx --test tests/model-modality-r21.test.ts tests/execution-capability-r22.test.ts tests/model-card-r22b.test.ts tests/model-modality-phase2.test.ts",
+      "startedAt": "2026-11-09T22:45:47.357244+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/core-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:59.662150+00:00",
+      "tail": "0000,\"stale\":false,\"total\":119,\"valid\":119,\"compatibleCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n✔ phase 2 Core channel tables and partial masks survive full registry enrichment without mutating base records (11475.026958ms)\n✔ R21 Core exact channel specifications leave the base/vendor archive intact (3.573084ms)\n{\"event\":\"tokendance_catalog_health\",\"level\":\"warn\",\"state\":\"partial\",\"cause\":null,\"alert\":\"warning\",\"consecutiveAnomalies\":1,\"anomalySince\":1794240000000,\"checkedAt\":1794240000000,\"stale\":false,\"total\":119,\"valid\":119,\"compatibleCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n✔ R21 real Core modelRegistry objects preserve channel facts through all enrichments (9640.50675ms)\n✔ R21 Core source consumers reject machine evidence and keep channel pages before labelled vendor field sources (5.843417ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 12270.152875\n",
+      "tests": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "core-tsc-explicit",
+      "cwd": "apps/paperbanana-api",
+      "command": "npx tsc --noEmit",
+      "startedAt": "2026-11-09T22:45:50.506062+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/core-tsc-explicit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:59.754730+00:00",
+      "tail": ""
+    },
+    {
+      "id": "freeze-audit-sources",
+      "cwd": ".",
+      "command": "node scripts/freeze-audit-sources.mjs --check",
+      "startedAt": "2026-11-09T22:45:52.750420+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/freeze-audit-sources.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:53.826270+00:00",
+      "tail": "{\"commits\":[\"8c456709\",\"d1fe6ff6\"],\"files\":18,\"bytes\":334238,\"check\":true}\n"
+    },
+    {
+      "id": "freeze-execution-capability",
+      "cwd": ".",
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "startedAt": "2026-11-09T22:45:53.826869+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/freeze-execution-capability.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:46:00.842237+00:00",
+      "tail": "{\"event\":\"tokendance_catalog_health\",\"level\":\"warn\",\"state\":\"partial\",\"cause\":null,\"alert\":\"warning\",\"consecutiveAnomalies\":1,\"anomalySince\":1794225600000,\"checkedAt\":1794225600000,\"stale\":false,\"total\":119,\"valid\":119,\"compatibleCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n{\"providers\":32,\"coreModels\":1064,\"staticModels\":1064,\"check\":true,\"fixture\":\"test-support/fixtures/execution-capability-8c456709.json.gz\"}\n"
+    },
+    {
+      "id": "gateway-targeted",
+      "cwd": "apps/auth-gateway",
+      "command": "node --test tests/model-modality-r21.test.js tests/execution-capability-r22.test.js tests/model-modality-phase2.test.js",
+      "startedAt": "2026-11-09T22:45:47.357614+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/gateway-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:59.815656+00:00",
+      "tail": "\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n✔ R22 Gateway preserves frozen main capability on the registry wire and in its audit decorator (9380.715208ms)\n{\"event\":\"tokendance_catalog_health\",\"level\":\"warn\",\"state\":\"partial\",\"cause\":null,\"alert\":\"warning\",\"consecutiveAnomalies\":1,\"anomalySince\":1794225600000,\"checkedAt\":1794225600000,\"stale\":false,\"total\":119,\"valid\":119,\"compatibleCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n✔ phase 2 Gateway relays all 1061 complete model objects and their display projections (11266.679791ms)\n✔ R21 Gateway generated facts preserve channel values, exclusions, provenance and unknowns (1.294416ms)\n✔ R21 Gateway facts cannot re-add stale base modalities in card consumers (4.546583ms)\n✔ R21 Gateway sources keep reviewed channel pages and labelled vendor field sources; machine evidence never leaks (8.212708ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 12425.160541\n",
+      "tests": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "generate-model-audit",
+      "cwd": ".",
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "startedAt": "2026-11-09T22:45:54.153351+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/generate-model-audit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:54.391288+00:00",
+      "tail": "Audit: 1125 pairs, 7 notices, 7 additions\n"
+    },
+    {
+      "id": "mini-build",
+      "cwd": "apps/miniprogram",
+      "command": "npm run build",
+      "startedAt": "2026-11-09T22:45:33.440138+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/mini-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:34.202759+00:00",
+      "tail": "\n> @paperbanana/miniprogram@3.5.5 build\n> node build.mjs\n\nMini source: 1564737 / 1572864 bytes\n"
+    },
+    {
+      "id": "mini-full",
+      "cwd": "apps/miniprogram",
+      "command": "npm test",
+      "startedAt": "2026-11-09T22:49:22.828172+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/mini-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:49:42.976811+00:00",
+      "tail": " task without a TokenDance connection (2.30975ms)\n✔ mini blocks submit and repeat selection while original image dimensions are pending (2.743875ms)\n✔ account A-B-A, detached and selected-order changes discard late replies (1.047209ms)\n✔ one-use codes stay out of view data and are cleared on hide; uncertain creation blocks a retry (0.439334ms)\n✔ definite payment rejection permits retry while uncertain server failures remain locked (84.0325ms)\n✔ returning to account from its reopened job detail pops the native stack and keeps the original task (0.605166ms)\n✔ TD throttling and uncertain errors retain recovery guidance instead of generic capacity failures (0.13275ms)\n✔ verification observer stays read-only, pauses and resumes, and ends on verified (1.187ms)\n✔ verification observer expires after one hour and rejects a stale response after stop (0.216584ms)\n✔ verification observer never overlaps requests and recovers from temporary failure (0.491125ms)\n✔ Watcha launch links accept only the gateway handoff route and opaque state (0.938791ms)\n✔ native initiation is unavailable on old gateways and drops a response after A-B-A account switching (1.633417ms)\n✔ one-use code stays outside view state, clears before exchange and cannot submit twice (0.558625ms)\n✔ pending existing identity is explicitly linked, and last login method cannot be unlinked (0.434917ms)\n✔ email code is purpose-bound, clears on email edits and only sent once during cooldown (0.444833ms)\n✔ late authentication response cannot replace cookies after cancellation or owner change (0.734084ms)\n✔ passwordless deletion exchanges email proof before deletion and drops confirmation after owner changes (287.769167ms)\nℹ tests 176\nℹ suites 0\nℹ pass 176\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 19956.797375\n",
+      "tests": {
+        "tests": 176,
+        "pass": 176,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "miniprogram-check",
+      "cwd": "apps/miniprogram",
+      "command": "npm run check",
+      "startedAt": "2026-11-09T22:45:54.392062+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/miniprogram-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:55.493191+00:00",
+      "tail": "\n> @paperbanana/miniprogram@3.5.5 check\n> tsc --noEmit\n\n"
+    },
+    {
+      "id": "name-image-invariants",
+      "cwd": ".",
+      "command": "node --test .audit-input/r24/i3-invariants.test.mjs",
+      "startedAt": "2026-11-09T22:47:15.161066+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/name-image-invariants.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:47:20.692490+00:00",
+      "tail": "7f12f1ff6a5a446f3e1a26695f\"}\nIMAGE_INPUT {\"models\":15,\"matches\":15,\"mainImageSupported\":15,\"headImageUnknown\":15}\n✔ R24 I3 vendor coverage, canonical dedupe and title scan cover all 1064 Web and Mini cards (188.914667ms)\n✔ R24 I3 required-provider rejection block is byte-identical to main and all picker names match main (30.20975ms)\n✔ R24 I3 scans every candidate API/OpenAPI/JSON source URL and preserves human API pages (43.73975ms)\n✔ R24 I3 gzip fixture is deterministic with mtime zero and smaller Git blob than 42ee9ffd (90.52875ms)\n✔ R24 I3 all 15 image-input decision rows match recomputed main and HEAD display state (6.477958ms)\n{\"event\":\"tokendance_catalog_health\",\"level\":\"warn\",\"state\":\"partial\",\"cause\":null,\"alert\":\"warning\",\"consecutiveAnomalies\":1,\"anomalySince\":1794225600000,\"checkedAt\":1794225600000,\"stale\":false,\"total\":119,\"valid\":119,\"compatibleCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\nSCREENSHOT_PLAN {\"status\":\"script-written-not-run\",\"sampleCards\":14,\"sampleChannels\":8,\"focalCards\":1,\"plannedShots\":30,\"widths\":[1280,390],\"manifest\":\".audit-input/r23/shots-m3.manifest.json\",\"liveFixtureCardsVerified\":15}\n✔ R24 I3 screenshot manifest selects 15 Core fixture cards with vendor evidence and 30 unique filenames (3229.771833ms)\nℹ tests 6\nℹ suites 0\nℹ pass 6\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 5499.845833\n",
+      "tests": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "paperbanana-api-check",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run check",
+      "startedAt": "2026-11-09T22:45:55.493596+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/paperbanana-api-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:46:04.999852+00:00",
+      "tail": "\n> @paperbanana/paperbanana-api@0.1.0 check\n> tsc --noEmit\n\n"
+    },
+    {
+      "id": "report-changed-tests",
+      "cwd": ".",
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "startedAt": "2026-11-09T22:52:19.646448+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/report-changed-tests.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:52:20.193769+00:00",
+      "tail": "{\"files\":23,\"assertionAndFixtureInputChanges\":145,\"consumedJsonFixtures\":2,\"semanticFixtureChanges\":617,\"justified\":761,\"unjustifiedRestored\":1,\"flagged\":0}\n"
+    },
+    {
+      "id": "report-model-modality-phase2",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "startedAt": "2026-11-09T22:46:00.842729+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/report-model-modality-phase2.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:46:04.762427+00:00",
+      "tail": "{\"event\":\"tokendance_catalog_health\",\"level\":\"warn\",\"state\":\"partial\",\"cause\":null,\"alert\":\"warning\",\"consecutiveAnomalies\":1,\"anomalySince\":1794225600000,\"checkedAt\":1794225600000,\"stale\":false,\"total\":119,\"valid\":119,\"compatibleCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n{\n  \"registryCards\": 1061,\n  \"legacyBailianCards\": 20,\n  \"bailianFullCards\": 34,\n  \"tableFields\": 68,\n  \"misleadingCards\": 27,\n  \"reviewedModalityEntries\": 30,\n  \"supported\": 2,\n  \"unknown\": 28,\n  \"unsupported\": 0,\n  \"links\": 7,\n  \"verifiedChannelAvailability\": 0,\n  \"unverifiedChannelAvailability\": 7,\n  \"sourceChanges\": 7,\n  \"beforeObjectDifferences\": {\n    \"sourceDiff\": 616,\n    \"modalityDiff\": 575,\n    \"eitherDiff\": 659\n  },\n  \"remainingProductDifferences\": {\n    \"source\": 0,\n    \"modalities\": 0,\n    \"either\": 0,\n    \"fullResolvedFields\": 0,\n    \"coreProjection\": 0\n  }\n}\n"
+    },
+    {
+      "id": "report-model-modality-r21",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "startedAt": "2026-11-09T22:46:01.482500+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/report-model-modality-r21.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:46:10.893624+00:00",
+      "tail": "eCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n{\n  \"basis\": \"Full offline Core modelRegistry + actual Web modelCardSpecifications + actual modalityIconStates\",\n  \"snapshotModels\": 119,\n  \"registryModels\": 74,\n  \"visibleModels\": 65,\n  \"staticModels\": 74,\n  \"mockedRequests\": [\n    \"https://tokendance.space/gateway/v1/models\",\n    \"https://openrouter.ai/api/v1/models\",\n    \"https://openrouter.ai/api/v1/images/models\",\n    \"https://api.fal.ai/v1/models?limit=10&expand=openapi-3.0\",\n    \"https://runware.ai/docs/models/index.json\",\n    \"https://api.novita.ai/v3/openai/models\"\n  ]\n}\n{\"renderedCards\":74,\"iconStatesMatch\":true}\n{\n  \"cards\": 74,\n  \"visibleCards\": 65,\n  \"channelConfirmed\": 67,\n  \"unknownCards\": [\n    \"deepseek-v4-flash-vision-exp\",\n    \"deepseek-v4-flash\",\n    \"deepseek-v3.2\",\n    \"deepseek-chat-v3-0324\",\n    \"qwen3.6-max-preview\",\n    \"qwen3-30b-a3b-instruct-2507\",\n    \"qwen3-max\"\n  ],\n  \"semanticChangedFields\": 18,\n  \"arrayChangedFields\": 27,\n  \"provenanceChangedFields\": 144,\n  \"priorMisSourcedCards\": 54,\n  \"misSourcedNowConfirmed\": 49,\n  \"misSourcedNowUnknown\": 5,\n  \"transitions\": {\n    \"supported -> supported\": 204,\n    \"unknown -> unsupported\": 326,\n    \"unknown -> supported\": 4,\n    \"supported -> unknown\": 11,\n    \"unknown -> unknown\": 45,\n    \"supported -> unsupported\": 2\n  },\n  \"portalMismatches\": 0,\n  \"renderedCards\": 74\n}\n"
+    },
+    {
+      "id": "report-model-modality-r22b",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "startedAt": "2026-11-09T22:46:04.762832+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/report-model-modality-r22b.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:46:11.927593+00:00",
+      "tail": "{\"event\":\"tokendance_catalog_health\",\"level\":\"warn\",\"state\":\"partial\",\"cause\":null,\"alert\":\"warning\",\"consecutiveAnomalies\":1,\"anomalySince\":1794225600000,\"checkedAt\":1794225600000,\"stale\":false,\"total\":119,\"valid\":119,\"compatibleCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n{\n  \"staticCards\": 1064,\n  \"fullCoreCards\": 1061,\n  \"unchangedPickerNames\": 1064,\n  \"verifiedPages\": 67,\n  \"historicalFallbacks\": 7,\n  \"missingFallbacks\": 0,\n  \"sourceRowsBefore\": 2489,\n  \"sourceRowsAfter\": 2450,\n  \"duplicateUrlRowsBefore\": 13,\n  \"duplicateUrlRowsAfter\": 0,\n  \"duplicateLabelsBefore\": 974,\n  \"duplicateLabelsAfter\": 0,\n  \"vendorTokenFields\": 20,\n  \"vendorTokenCards\": 18,\n  \"unknownTokenFields\": 63\n}\n"
+    },
+    {
+      "id": "report-source-titles-r23",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r23.mjs --check",
+      "startedAt": "2026-11-09T22:46:05.002592+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/report-source-titles-r23.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:46:05.922875+00:00",
+      "tail": "{\"counts\":{\"web\":{\"cards\":1064,\"sourceRows\":2450,\"changedTitles\":2152,\"changedCards\":1031,\"suspiciousTitles\":0},\"mini\":{\"cards\":1064,\"sourceRows\":1103,\"changedTitles\":974,\"changedCards\":965,\"suspiciousTitles\":0}},\"noticeDialogs\":7,\"changedNoticeTitles\":3,\"retained\":554}\n"
+    },
+    {
+      "id": "report-source-titles-r24",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r24.mjs --check",
+      "startedAt": "2026-11-09T22:52:20.194169+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/report-source-titles-r24.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:52:22.767523+00:00",
+      "tail": "{\"web\":{\"hiddenMachineRows\":1,\"cards\":1064,\"sourceRowsBefore\":2494,\"sourceRows\":2450,\"changedRows\":310,\"renamedRows\":265,\"htmlReplacements\":44,\"titles\":{\"before\":{\"findings\":318,\"affectedCards\":153,\"byRule\":{\"machine document link\":45,\"meaningless counter or format qualifier\":273}},\"after\":{\"findings\":0,\"affectedCards\":0,\"byRule\":{}}},\"dialogs\":{\"before\":{\"findings\":0,\"affectedCards\":0,\"byRule\":{}},\"after\":{\"findings\":0,\"affectedCards\":0,\"byRule\":{}}}},\"mini\":{\"hiddenMachineRows\":0,\"cards\":1064,\"sourceRowsBefore\":1103,\"sourceRows\":1103,\"changedRows\":77,\"renamedRows\":33,\"htmlReplacements\":44,\"titles\":{\"before\":{\"findings\":44,\"affectedCards\":44,\"byRule\":{\"machine document link\":44}},\"after\":{\"findings\":0,\"affectedCards\":0,\"byRule\":{}}},\"dialogs\":{\"before\":{\"findings\":0,\"affectedCards\":0,\"byRule\":{}},\"after\":{\"findings\":0,\"affectedCards\":0,\"byRule\":{}}}},\"notices\":{\"hiddenMachineRows\":0,\"cards\":7,\"sourceRowsBefore\":7,\"sourceRows\":7,\"changedRows\":0,\"renamedRows\":0,\"htmlReplacements\":0,\"titles\":{\"before\":{\"findings\":0,\"affectedCards\":0,\"byRule\":{}},\"after\":{\"findings\":0,\"affectedCards\":0,\"byRule\":{}}},\"dialogs\":{\"before\":{\"findings\":0,\"affectedCards\":0,\"byRule\":{}},\"after\":{\"findings\":0,\"affectedCards\":0,\"byRule\":{}}}}}\n"
+    },
+    {
+      "id": "scripts-full",
+      "cwd": ".",
+      "command": "node --test scripts/*.test.mjs",
+      "startedAt": "2026-11-09T22:49:22.828320+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/scripts-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:49:33.814489+00:00",
+      "tail": "t for 1064 cards per client (1.311167ms)\n✔ R23F complete title inventory stays reproducible with no unresolved heuristic findings (2659.556875ms)\n✔ R24 I2 baseline is the frozen starting HEAD for all 1064 cards per client (0.601375ms)\n✔ R24 I2 strict scanner rejects each previously missed title class (762.537417ms)\n✔ R24 I2 title examples preserve roles, versions and readable captured/fallback pages (0.59125ms)\n✔ R24 I2 copy checks reject contradictions, jargon and duplicates without conflating fields (0.594542ms)\n✔ R24 I2 complete report is reproducible offline (5817.101417ms)\n✔ R14 count and preview share a dated 119-row public snapshot with metadata only (14.668667ms)\n✔ R14 preview empty and timeout modes never access the network; invalid modes fail explicitly (0.323666ms)\n✔ production login keeps upstream credentials encrypted and exposes only a fresh HttpOnly handle (22.848334ms)\n✔ foreign, missing POST origins, changed local host and unsupported routes cannot reach production (0.782ms)\n✔ production registration and reset preserve canonical callback destinations and Retry-After (0.92325ms)\n✔ server revocation and local expiry remove access rather than trusting the local user ID (1.235ms)\n✔ account deletion, upstream identity changes and server failure all fail closed (0.992125ms)\n✔ bodyless Better Auth logout clears both the local handle and upstream session (0.313958ms)\n✔ a delayed server session response cannot restore a locally signed-out session (0.417083ms)\n✔ unconfirmed remote logout still clears local credentials and reports the uncertainty (0.361375ms)\n✔ stable local encryption supports restart; tampering never yields an authenticated session (0.498167ms)\nℹ tests 67\nℹ suites 0\nℹ pass 67\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 10956.144166\n",
+      "tests": {
+        "tests": 67,
+        "pass": 67,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "sync-card-display",
+      "cwd": ".",
+      "command": "node scripts/sync-card-display.mjs --check",
+      "startedAt": "2026-11-09T22:46:09.966794+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/sync-card-display.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:46:10.379585+00:00",
+      "tail": "Shared card display data: no drift; 67/74 verified TokenDance pages\n"
+    },
+    {
+      "id": "sync-model-catalog",
+      "cwd": ".",
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "startedAt": "2026-11-09T22:46:10.380106+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/sync-model-catalog.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:46:13.016282+00:00",
+      "tail": "Catalog 2026-11-09.v43: 1064 static models; no drift\n"
+    },
+    {
+      "id": "tuyan-knowledge-check",
+      "cwd": "packages/tuyan-knowledge",
+      "command": "npm run check",
+      "startedAt": "2026-11-09T22:46:10.894034+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/tuyan-knowledge-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:46:11.041304+00:00",
+      "tail": "\n> @paperbanana/tuyan-knowledge@1.2.1 check\n> node --check src/*.js tests/*.test.js\n\n"
+    },
+    {
+      "id": "web-build",
+      "cwd": "apps/web",
+      "command": "npm run build",
+      "startedAt": "2026-11-09T22:45:34.203174+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/web-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:45:36.628574+00:00",
+      "tail": " 0.86 kB\ndist/assets/dataviz-CmiSyx_n.png                             17.85 kB\ndist/assets/viznoir-BWsFoGJB.png                             56.99 kB\ndist/assets/tashan-logo-BUvrCAFf.svg                        136.73 kB │ gzip:  98.28 kB\ndist/assets/pdf.worker.min-wgc6bjNh.mjs                   1,078.61 kB\ndist/assets/WorkspaceRoot-B--PG3t_.css                      140.06 kB │ gzip:  26.95 kB\ndist/assets/main-D38nUiIS.css                               353.90 kB │ gzip:  63.56 kB\ndist/assets/upload-6yN1lrKn.js                                0.27 kB │ gzip:   0.23 kB\ndist/assets/not-found-DdRO0gD0.js                             0.53 kB │ gzip:   0.38 kB\ndist/assets/appPaths-YjsG8sbc.js                              0.63 kB │ gzip:   0.38 kB\ndist/assets/modulepreload-polyfill-B5Qt9EMX.js                0.71 kB │ gzip:   0.40 kB\ndist/assets/TokenDancePricing-ClGDi_jf.js                     1.15 kB │ gzip:   0.79 kB\ndist/assets/ChangelogRoot-CS12J0gC.js                         6.95 kB │ gzip:   2.28 kB\ndist/assets/ResearchEcosystem-CdYa4xpn.js                    17.67 kB │ gzip:   7.52 kB\ndist/assets/AdminWorkspace-BSLutjwY.js                       40.85 kB │ gzip:  13.50 kB\ndist/assets/jszip.min-Dx1vC0nR.js                            97.15 kB │ gzip:  30.09 kB\ndist/assets/main-DH-M3xH1.js                                469.57 kB │ gzip: 162.38 kB\ndist/assets/WorkspaceRoot-C4PNumQE.js                     5,975.48 kB │ gzip: 845.90 kB\n\n(!) Some chunks are larger than 500 kB after minification. Consider:\n- Using dynamic import() to code-split the application\n- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks\n- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.\n✓ built in 2.21s\n"
+    },
+    {
+      "id": "web-full",
+      "cwd": "apps/web",
+      "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+      "startedAt": "2026-11-09T22:49:22.828404+00:00",
+      "log": ".audit-input/r24/i3-validation-logs/web-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-09T22:52:01.741032+00:00",
+      "tail": "tings, handle offline conflict and retain queued state across reload (20.038667ms)\n✔ local CAS blocks stale tabs and quota failures never claim synced or permit unsafe exit (0.806917ms)\n✔ account caches and pending responses cannot cross users or revive a disposed workspace (2.503583ms)\n✔ typing during slow asset preparation is not overwritten by the completed upload (3.704708ms)\n✔ transport uploads only result assets and allowlisted metadata, preserving both PNG/SVG formats (2.498458ms)\n✔ originals stay device-local, only exact content can repair a missing reference (1.869167ms)\n✔ JSON key ordering and preview navigation do not produce conflict copies or new writes (3.048208ms)\n✔ real edit arriving during a remote read preserves newer content and immutable input snapshots (4.835833ms)\n✔ identical cache snapshots are idempotent across tabs while changed drafts still conflict (0.459542ms)\n✔ different tab view selections and refreshed signed URLs do not conflict with unchanged content (0.710083ms)\n✔ idle background checks read revisions without status churn, hydration or storage writes (1.978083ms)\n✔ quiet polling still receives remote changes and reports outages and recovery (5.427417ms)\n✔ an edit made during a quiet revision check is uploaded, not dropped by the no-change shortcut (2.70225ms)\n✔ task and path browsing stays local; real edits still upload and failures remain visible (13.104083ms)\n✔ local settings depth merges with unrelated remote text edits (0.286375ms)\n✔ switching settings depth alone does not turn an empty task into a saved draft (0.105667ms)\n✔ automatic SVG edits survive offline reload and sync into the same task on another device (11.273208ms)\nℹ tests 1489\nℹ suites 0\nℹ pass 1489\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 158881.080833\n",
+      "tests": {
+        "tests": 1489,
+        "pass": 1489,
+        "fail": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "summary": {
+    "tests": 1783,
+    "failedTests": 0,
+    "builds": 3,
+    "workspaceChecks": 6,
+    "maintenanceChecks": 12,
+    "coreExplicitTscErrors": 0,
+    "miniSourceBytes": 1564737,
+    "miniSourceLimit": 1572864,
+    "miniRemainingBytes": 8127,
+    "miniHistoricalLimit": 1569427
+  },
+  "titleReview": {
+    "file": "docs/model-card-source-titles-r24.json",
+    "section": "I3",
+    "counts": {
+      "web": {
+        "hiddenMachineRows": 1,
+        "cards": 1064,
+        "sourceRowsBefore": 2494,
+        "sourceRows": 2450,
+        "changedRows": 310,
+        "renamedRows": 265,
+        "htmlReplacements": 44,
+        "titles": {
+          "before": {
+            "findings": 318,
+            "affectedCards": 153,
+            "byRule": {
+              "machine document link": 45,
+              "meaningless counter or format qualifier": 273
+            }
+          },
+          "after": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          }
+        },
+        "dialogs": {
+          "before": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          },
+          "after": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          }
+        }
+      },
+      "mini": {
+        "hiddenMachineRows": 0,
+        "cards": 1064,
+        "sourceRowsBefore": 1103,
+        "sourceRows": 1103,
+        "changedRows": 77,
+        "renamedRows": 33,
+        "htmlReplacements": 44,
+        "titles": {
+          "before": {
+            "findings": 44,
+            "affectedCards": 44,
+            "byRule": {
+              "machine document link": 44
+            }
+          },
+          "after": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          }
+        },
+        "dialogs": {
+          "before": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          },
+          "after": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          }
+        }
+      },
+      "notices": {
+        "hiddenMachineRows": 0,
+        "cards": 7,
+        "sourceRowsBefore": 7,
+        "sourceRows": 7,
+        "changedRows": 0,
+        "renamedRows": 0,
+        "htmlReplacements": 0,
+        "titles": {
+          "before": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          },
+          "after": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          }
+        },
+        "dialogs": {
+          "before": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          },
+          "after": {
+            "findings": 0,
+            "affectedCards": 0,
+            "byRule": {}
+          }
+        }
+      }
+    }
+  },
+  "vendorCoverage": {
+    "web": {
+      "cards": 1064,
+      "vendorCards": 65,
+      "vendorFields": 166,
+      "missingVendorCards": 0,
+      "missingVendorFields": 0,
+      "duplicateUrls": 0,
+      "duplicateLabels": 0
+    },
+    "mini": {
+      "cards": 1064,
+      "vendorCards": 65,
+      "vendorFields": 166,
+      "missingVendorCards": 0,
+      "missingVendorFields": 0,
+      "duplicateUrls": 0,
+      "duplicateLabels": 0
+    }
+  },
+  "limitsPreserved": {
+    "qwen35plusMaxOutputTokens": 65536,
+    "pickerNamesEqualReviewedMain": {
+      "web": 1064,
+      "mini": 1064,
+      "changed": 0
+    },
+    "imageInputDecisionUnchanged": 15,
+    "executionLocksEqualReviewedMain": 4
+  },
+  "css": {
+    "dialogSelector": ".tw-dialog.model-evidence-dialog a.model-evidence-source",
+    "dialogSpecificity": [
+      0,
+      3,
+      1
+    ],
+    "footerSelector": ".model-card-specifications .model-spec-sources a",
+    "footerSpecificity": [
+      0,
+      2,
+      1
+    ],
+    "resetSpecificity": [
+      0,
+      1,
+      1
+    ],
+    "stylesheetOrdersTested": 2,
+    "statesTested": [
+      "default",
+      "hover",
+      "focus-visible"
+    ],
+    "miniWxssOrdersTested": 2,
+    "newImportantDeclarations": 0,
+    "visualBrowserRun": false
+  },
+  "initialFailuresResolved": [
+    "R12 raw Markdown acceptance and primary-link expectations now use the independent literal HTML mapping; historical HTTP evidence stays unchanged.",
+    "Mini source attribution parity now compares the same human representation; every value/state/provenance assertion remains.",
+    "44 of 297 R9 independent literal objects updated; complete old/new rows are recorded in the ledger.",
+    "The stricter generic counter rule initially rejected the real Nano Banana 2 alias. It now admits an alias only if independently present in the card identity, with a regression test. The complete Web/Mini/scripts suites were rerun.",
+    "The unchanged local Phase H audit harness expected raw Markdown vendor/screenshot URLs. Its I3 copy uses the same independent HTML mapping and keeps all six checks; no screenshots ran."
+  ],
+  "noGitWrites": true,
+  "network": {
+    "scope": "Public unauthenticated documentation GETs only",
+    "directCaptures": "config/channel-audit/source-titles-r24-i3.json",
+    "directCapturesCount": 3,
+    "webToolOpens": 3,
+    "webToolUnavailable": 2,
+    "paidOrInferenceCalls": 0
+  },
+  "nativeVisualVerification": "Not performed; operator Chrome and native WeChat acceptance remain pending."
+}

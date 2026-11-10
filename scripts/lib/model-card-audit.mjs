@@ -1,13 +1,20 @@
 // Offline audit helpers only; never imported by product code.
 import fs from 'node:fs'
 import path from 'node:path'
+import { archivedText } from '../../test-support/frozen-sources.mjs'
 import { build } from 'esbuild'
 export const fields = ['inputModalities', 'outputModalities', 'totalContextTokens', 'maxOutputTokens']
 export const labels = ['input', 'output', 'context', 'maxOutput']
 export const rowsOf = registry => Object.entries(registry.providers || registry).flatMap(([channel, provider]) => provider.models.map(model => ({ channel, model })))
 export const keyOf = row => row.channel + '/' + row.model.id
-export async function loadCard(root) {
-  const result = await build({ entryPoints: [path.join(root, 'apps/web/src/lib/modelCardSpecifications.js')], bundle: true, format: 'cjs', platform: 'node', write: false, logLevel: 'silent' })
+export const archivedAuditText = archivedText
+export async function loadCard(root, commit = null, readHistorical = archivedAuditText) {
+  // Historical reports use their original resolver/data, without a checkout or
+  // writes. Current-card tests continue to load the working tree by default.
+  const plugins = commit ? [{ name: 'archived-card', setup(builder) {
+    builder.onLoad({ filter: /\.(?:js|json)$/ }, args => ({ contents: readHistorical(root, commit, path.relative(root, args.path)), loader: args.path.endsWith('.json') ? 'json' : 'js' }))
+  } }] : []
+  const result = await build({ entryPoints: [path.join(root, 'apps/web/src/lib/modelCardSpecifications.js')], bundle: true, format: 'cjs', platform: 'node', write: false, logLevel: 'silent', plugins })
   const module = { exports: {} }
   new Function('module', 'exports', result.outputFiles[0].text)(module, module.exports)
   return module.exports.modelCardSpecifications

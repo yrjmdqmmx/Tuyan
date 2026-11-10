@@ -2,14 +2,16 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import vm from 'node:vm'
+import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import ts from '../apps/paperbanana-api/node_modules/typescript/lib/typescript.js'
-import { transformSync } from 'esbuild'
+import { buildSync, transformSync } from 'esbuild'
 import { packModelCatalog } from './lib/pack-model-catalog.mjs'
 import { supplementModelAudit } from './lib/model-audit-supplement.mjs'
 import { miniModelCatalog, miniModelAudit, webModelAudit } from './lib/mini-model-catalog.mjs'
 import { catalogCardFacts, needsImageInput, supportedModalities } from '../apps/web/src/lib/catalogCardFacts.js'
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+const miniWrites = new Map()
 const check = process.argv.includes('--check')
 // Explicit opt-out for isolated Web/Core work while the Mini Program stream is paused.
 // The default still checks/generates every client and therefore exposes pending drift.
@@ -38,7 +40,7 @@ write(path.join(root, 'apps/auth-gateway/src/model-audit.js'), '// Generated fro
 // All runtimes share the same display names and unavailable wording.
 const clientAuditSource = modelAuditSource
 const miniAuditSource = clientAuditSource
-  .replace('sourceLinks: details?.sourceLinks || []', "sourceLabel: row?.[6] || '官方文档'")
+  .replace('sourceLinks: details?.sourceLinks || []', "sourceLabel: row?.[6] || '官方文档', vendorSources: details?.vendorSources || [], retirementSources: details?.retirementSources || []")
   .replace(/export function modelDisplayName[\s\S]*?(?=export function removedModelHint)/, `export function modelDisplayName(channel: string, id: string): string {
   return removedModel(channel, id)?.displayName
     || STATIC_MODEL_REGISTRY[channel]?.models.find((model: { id: string }) => model.id === id)?.label
@@ -48,6 +50,7 @@ const miniAuditSource = clientAuditSource
 `)
   .replace('  unknownModalities?: string[]', '  suffix?: string\n  unknownModalities?: string[]')
   .replace('  if (details?.unknownInputModalities)', '  result.totalContextTokens.suffix = details?.suffix\n  if (details?.unknownInputModalities)')
+  .replace(/^[ \t]*\/\/.*\n/gm, '')
   .replace(/export function assertAuditedModelAvailable[\s\S]*?(?=export function withModelAudit)/, '').replace(/export function assertModelLibraryAdditions[\s\S]*$/, '')
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-audit.ts'), '// Generated card helpers from packages/api/src/model-audit.ts\nimport { STATIC_MODEL_REGISTRY } from \'./static-model-catalog\'\nconst MODEL_AUDIT_DATA = require(\'./model-audit-data.js\')\n' + miniAuditSource.trimEnd())
 const presentation = JSON.parse(fs.readFileSync(path.join(root, 'config/model-presentation.json'), 'utf8'))
@@ -279,6 +282,7 @@ function write(file, content) {
   const previous = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : ''
   if (previous === content) return
   if (check) throw new Error(`Generated model catalog drift: ${path.relative(root, file)}`)
+  if (path.relative(root, file).startsWith('apps/miniprogram/miniprogram/')) { miniWrites.set(file, content); return }
   fs.writeFileSync(file, content)
 }
 write(backend, source)
@@ -294,6 +298,20 @@ const context = vm.createContext({})
 // Full catalog schema evaluation can exceed 5s while other isolated builds are running.
 vm.runInContext(js, context, { timeout: 30000 })
 const providers = JSON.parse(JSON.stringify(context.catalog))
+// Static/offline cards need the same exact specifications as Core's registry.
+// Bundle pure local modules in memory; never load a provider or execute a request.
+const detailBundle = buildSync({entryPoints:[path.join(root, 'packages/api/src/provider-catalog.ts')],bundle:true,platform:'node',format:'cjs',write:false,logLevel:'silent'})
+const detailModule = { exports: {} }
+new Function('module', 'exports', 'require', detailBundle.outputFiles[0].text)(detailModule, detailModule.exports, createRequire(import.meta.url))
+for (const [channel, provider] of Object.entries(providers)) for (const model of provider.models) {
+  const exact = detailModule.exports.exactModelDetails(channel, model.id)
+  if (exact) {
+    // Enrich static facts/sources without replacing the existing curated names.
+    // Live catalog objects retain their explicit alias/version name overrides.
+    const { resolvedModel, ...specifications } = exact.specifications
+    model.specificModelSpecifications = specifications
+  }
+}
 const fireworksEvidence = JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/model-audit-supplement-20261109.json'), 'utf8')).fireworksServerless
 for (const [key, notice] of Object.entries(modelAudit.removed)) {
   const slash = key.indexOf('/'), channel = key.slice(0, slash), id = key.slice(slash + 1)
@@ -338,8 +356,10 @@ ${transformSync(`const registry = require('./static-model-catalog.js').STATIC_MO
 ${needsImageInput.toString()}
 ${supportedModalities.toString()}
 const models = Object.entries(registry).flatMap(([channel, provider]) => provider.models.map(model => [channel + '/' + model.id, model]))
+data.details = Object.fromEntries(models.flatMap(([key], index) => data.rows[index][6] ? [[key, data.rows[index][6]]] : []))
 data.rows = Object.fromEntries(models.map(([key, model], index) => {
   const row = data.rows[index]
+  row.splice(6)
   row.splice(4, 0, 0)
   if (row[5] === -2) row[5] = data.sources.push('https://tokendance.space/models/' + model.id) - 1
   if (row[5] <= -3) {
@@ -353,8 +373,8 @@ data.rows = Object.fromEntries(models.map(([key, model], index) => {
     if (i >= 2) { row[i] = data.facts.push(fact) - 1; continue }
     const value = fact[0] === 0 ? model[field] : fact[0]
     const prior = fact[4] === 0 ? model[field] : fact[4]
-    const excluded = data.details[key]?.unsupportedModalities?.[field] || []
-    const image = i === 0 && needsImageInput(model) && !excluded.includes('image')
+    const excluded = [...(data.details[key]?.unsupportedModalities?.[field] || []), ...(data.details[key]?.modalityMasks?.[field] || [])]
+    const image = i === 0 && needsImageInput(model) && !data.details[key]?.suppressFallback?.includes(field) && !excluded.includes('image')
     const values = supportedModalities(value, prior, image).filter(value => !excluded.includes(value))
     const product = image && !supportedModalities(value, prior).includes('image')
     row[i] = data.facts.push([values.length ? values : null, values.length ? 'known' : fact[1], product ? 'product' : fact[2], product ? null : fact[3]]) - 1
@@ -375,6 +395,18 @@ export const STATIC_MODEL_REGISTRY: Record<string, any> = catalog.registry
 `
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/static-model-catalog.ts'), miniCatalog)
 for (const [name, source] of [['static-model-catalog', miniCatalog], ['unpack-model-catalog', fs.readFileSync(path.join(root, 'apps/miniprogram/miniprogram/utils/unpack-model-catalog.ts'), 'utf8')]]) {
-  write(path.join(root, `apps/miniprogram/miniprogram/utils/${name}.js`), ts.transpileModule(source, {compilerOptions:{target:ts.ScriptTarget.ES2019,module:ts.ModuleKind.CommonJS,alwaysStrict:true}}).outputText)
+  write(path.join(root, `apps/miniprogram/miniprogram/utils/${name}.js`), name === 'unpack-model-catalog' ? transformSync(ts.transpileModule(source, {compilerOptions:{target:ts.ScriptTarget.ES2019,module:ts.ModuleKind.CommonJS,alwaysStrict:true}}).outputText, { minifyWhitespace:true,minifySyntax:true,minifyIdentifiers:true,format:'cjs',charset:'utf8',target:'es2019' }).code : ts.transpileModule(source, {compilerOptions:{target:ts.ScriptTarget.ES2019,module:ts.ModuleKind.CommonJS,alwaysStrict:true}}).outputText)
+}
+// Preflight generated sources AND their compiled JS before replacing Mini files.
+// Keep the original budget; an oversized projection never reaches the worktree.
+if (miniWrites.size) {
+  const projected = new Map(miniWrites)
+  for (const [file, content] of miniWrites) if (file.endsWith('.ts')) projected.set(file.slice(0, -3) + '.js', ts.transpileModule(content, {compilerOptions:{target:ts.ScriptTarget.ES2019,module:ts.ModuleKind.CommonJS,alwaysStrict:true}}).outputText)
+  const files = dir => fs.readdirSync(dir, {withFileTypes:true}).flatMap(entry => entry.isDirectory() ? files(path.join(dir, entry.name)) : [path.join(dir, entry.name)])
+  const all = new Set([...files(path.join(root, 'apps/miniprogram/miniprogram')), ...projected.keys()])
+  const bytes = [...all].reduce((n, file) => n + (projected.has(file) ? Buffer.byteLength(projected.get(file)) : fs.statSync(file).size), 0)
+  if (bytes >= 1572864) throw new Error(`Mini source projection ${bytes} exceeds unchanged 1572864-byte budget; no Mini files written`)
+  for (const [file, content] of miniWrites) fs.writeFileSync(file, content)
+  console.log(`Mini source projection: ${bytes} bytes`)
 }
 console.log(`Catalog ${config.version}: ${Object.values(providers).reduce((n, p) => n + p.models.length, 0)} static models; ${check ? 'no drift' : 'generated'}${skipMiniprogram ? ' (Web/Core only; Mini Program skipped)' : ''}`)

@@ -27,7 +27,7 @@ test('resuming an account directory retains previously discovered rows',async()=
 })
 test('specific page facts override unresolved overview and do not substitute prompt character counts',()=>{
  const m={id:'qwen3.8-max',specificModelSpecifications:{officialInputModalities:['text','image','video'],officialOutputModalities:['text'],contextWindowTokens:1000000,sourceUrls:['https://help.aliyun.com/zh/model-studio/qwen3-8-max']}}
- const card=modelCardSpecifications('tokendance',m);assert.equal(card.context,'1M tokens');assert.equal(card.input,'文本、图像、视频');assert.equal(card.inputScope,'图研既有核实')
+ const card=modelCardSpecifications('tokendance',m);assert.equal(card.context,'1M tokens');assert.equal(card.input,'文本、图像、视频');assert.equal(card.inputScope,'渠道') // R21 decision d: TokenDance channel facts (same text/image/video, 1M) take precedence over base records
  const image=modelCardSpecifications('openai',{id:'image',specificModelSpecifications:{officialInputModalities:['text','image'],officialOutputModalities:['image'],contextWindowStatus:'not-published',sourceUrls:['https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst']}})
  assert.equal(image.context,'不适用');assert.equal(image.input,'文本、图像');assert.equal(image.output,'图像')
 })
@@ -45,12 +45,12 @@ test('unknown model facts retain fal human pages including /api; real API lists 
  for(const url of ['https://fal.ai/models/new-endpoint','https://fal.ai/models/new-endpoint/api']) {
   const model={id:'new-endpoint',specifications:{version:1,sourceUrls:[url]}},before=structuredClone(model)
   const card=modelCardSpecifications('fal',model)
-  assert.equal(card.context,'未知');assert.deepEqual(card.sources,[url])
+  assert.equal(card.context,'未公布');assert.deepEqual(card.sources,[url])
   assert.deepEqual(model,before,'original source evidence is preserved')
  }
  const model={id:'new-endpoint',specifications:{version:1,sourceUrls:['https://api.fal.ai/v1/models']}},before=structuredClone(model)
  const card=modelCardSpecifications('fal',model)
- assert.equal(card.context,'未知');assert.deepEqual(card.sources,['https://fal.ai/models/new-endpoint'])
+ assert.equal(card.context,'未公布');assert.deepEqual(card.sources,['https://fal.ai/models/new-endpoint'])
  assert.deepEqual(model,before,'JSON evidence is retained underneath the human model link')
 })
 

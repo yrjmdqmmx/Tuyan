@@ -1,0 +1,418 @@
+{
+  "phase": "R31 Phase I13",
+  "head": "702175ea31ad17b7bff379a85ac7657822ac5c30",
+  "mainBaseline": "52e0f161",
+  "finishedAtUtc": "2026-11-10T12:57:36.947960+00:00",
+  "gitWrites": false,
+  "externalNetwork": "16 cached public unauthenticated GETs of documentation pages only; config/channel-audit/review-r31-20261110.json",
+  "runs": [
+    {
+      "id": "api-full",
+      "cwd": ".",
+      "command": "node --test packages/api/src/*.test.js",
+      "startedAt": "2026-11-10T12:53:07.573517+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/api-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:07.747170+00:00",
+      "tests": {
+        "tests": 33,
+        "pass": 33,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "c814ce5d4507ce4dec9afecf3cb173bd1cb2b2714872ffa50f795fed67902be3"
+    },
+    {
+      "id": "auth-gateway-check",
+      "cwd": "apps/auth-gateway",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T12:53:37.148403+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/auth-gateway-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:37.266690+00:00",
+      "logSha256": "3381247e3cc1ecf70a3ea11f99e01a819ed43240cadda685ae08d5f80a90bdb3"
+    },
+    {
+      "id": "benchmark-core-check",
+      "cwd": "packages/benchmark-core",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T12:53:37.148793+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/benchmark-core-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:38.097446+00:00",
+      "logSha256": "eea2233e8ff678c38bdca5667b83566ec1b5414b62a6cbf786d8630fcbf10c21"
+    },
+    {
+      "id": "benchmark-worker-check",
+      "cwd": "apps/benchmark-worker",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T12:53:37.148927+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/benchmark-worker-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:39.952114+00:00",
+      "logSha256": "aa86bc6ea81a42bf399a29a03dd8e84bcdf676df9d319c925d7b088338b2968a"
+    },
+    {
+      "id": "check-docker-bundles",
+      "cwd": ".",
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "startedAt": "2026-11-10T12:53:37.267593+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/check-docker-bundles.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:40.374748+00:00",
+      "logSha256": "7d41b0c301e108d92e770f6cfcc7d262686c308dc74390c70519f9b581f8457e"
+    },
+    {
+      "id": "core-build",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T12:53:30.359480+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/core-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:30.889803+00:00",
+      "logSha256": "839d22dd60151c8bd9b5e710f387c5f95acb690fc02c38451c9703948afb8c5f"
+    },
+    {
+      "id": "core-targeted",
+      "cwd": "apps/paperbanana-api",
+      "command": "node --import tsx --test tests/model-modality-r21.test.ts tests/execution-capability-r22.test.ts tests/model-card-r22b.test.ts tests/model-modality-phase2.test.ts tests/model-evidence-i4-r24.test.mjs tests/model-evidence-i5-r25.test.mjs tests/model-evidence-i6-r26.test.mjs",
+      "startedAt": "2026-11-10T12:53:07.573663+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/core-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:19.610171+00:00",
+      "tests": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "278e31072297b84013544d6cc90d70380bf6ddd38b2045a85f0e1d0f8db27bfb"
+    },
+    {
+      "id": "core-tsc-explicit",
+      "cwd": "apps/paperbanana-api",
+      "command": "npx tsc --noEmit",
+      "startedAt": "2026-11-10T12:53:38.098105+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/core-tsc-explicit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:44.522327+00:00",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "freeze-audit-sources",
+      "cwd": ".",
+      "command": "node scripts/freeze-audit-sources.mjs --check",
+      "startedAt": "2026-11-10T12:53:39.952949+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/freeze-audit-sources.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:40.849385+00:00",
+      "logSha256": "d80e602b846bfcd5222bb32faf4bcad4ce8ca896937b60227cc86ac9344c65bf"
+    },
+    {
+      "id": "freeze-execution-capability",
+      "cwd": ".",
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "startedAt": "2026-11-10T12:53:40.375205+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/freeze-execution-capability.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:46.256464+00:00",
+      "logSha256": "39b87a64e03dd9ddbdaed837dc25ed59413aa4d7cd2667b98bb03bf0fe66d524"
+    },
+    {
+      "id": "gateway-targeted",
+      "cwd": "apps/auth-gateway",
+      "command": "node --test tests/model-modality-r21.test.js tests/execution-capability-r22.test.js tests/model-modality-phase2.test.js tests/model-evidence-i4-r24.test.js tests/model-evidence-i5-r25.test.js tests/model-evidence-i6-r26.test.js",
+      "startedAt": "2026-11-10T12:53:07.573756+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/gateway-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:19.746110+00:00",
+      "tests": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "30fd023d436e98638854d1fb4aefc5ec2e72043c233baf1e14343ee092145092"
+    },
+    {
+      "id": "generate-model-audit",
+      "cwd": ".",
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "startedAt": "2026-11-10T12:53:40.850120+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/generate-model-audit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:41.147072+00:00",
+      "logSha256": "dbbc800e3318e734ff721660de4fd635b08425652c62ec26790efaf840a2207e"
+    },
+    {
+      "id": "mini-build",
+      "cwd": "apps/miniprogram",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T12:53:24.133821+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/mini-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:26.108606+00:00",
+      "logSha256": "27a39676dadc4e6d195e0bd7ae889d8abfa6910e65c75166be0cc9de5a5486f3"
+    },
+    {
+      "id": "mini-full",
+      "cwd": "apps/miniprogram",
+      "command": "npm test",
+      "startedAt": "2026-11-10T12:55:01.575884+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/mini-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:55:28.560474+00:00",
+      "tests": {
+        "tests": 188,
+        "pass": 188,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "a5ef19ee115d420d9eeba7b193bdfc5110e515a59b8a2bb7e68248cbd4e616d9"
+    },
+    {
+      "id": "miniprogram-check",
+      "cwd": "apps/miniprogram",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T12:53:41.147790+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/miniprogram-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:42.037969+00:00",
+      "logSha256": "38c246209d9a3bf1c4f7fdcd813aa459742b56f49ea9d1e6e0b11b70b574083c"
+    },
+    {
+      "id": "name-invariants",
+      "cwd": ".",
+      "command": "node --test .audit-input/r24/i10-invariants.test.mjs",
+      "startedAt": "2026-11-10T12:53:19.610812+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/name-invariants.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:31.167261+00:00",
+      "tests": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "04769c36c56e9315cc9a899b5d4a9f6ae10fb7be0d886ebbb3194714cc2c6deb"
+    },
+    {
+      "id": "paperbanana-api-check",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T12:53:42.038600+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/paperbanana-api-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:47.550494+00:00",
+      "logSha256": "711f8fe6b6d9b7ec11df0b7db28f6268875e7790f9a94aad807f396ebd578f3e"
+    },
+    {
+      "id": "report-changed-tests",
+      "cwd": ".",
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "startedAt": "2026-11-10T12:55:49.337920+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/report-changed-tests.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:55:52.781039+00:00",
+      "logSha256": "933e99ecdfa8928ebf477abbad01dc7ea04c464ae0434ab4ab12c26e8d9b0c22"
+    },
+    {
+      "id": "report-model-image-input-r27",
+      "cwd": ".",
+      "command": "node scripts/report-model-image-input-r27.mjs --check",
+      "startedAt": "2026-11-10T12:53:46.256902+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/report-model-image-input-r27.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:47.378127+00:00",
+      "logSha256": "e7872e2a0a317b698e0adadea4532851c958b7410dedc72acfa7e7fd3d12dc03"
+    },
+    {
+      "id": "report-model-modality-phase2",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "startedAt": "2026-11-10T12:53:47.378931+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/report-model-modality-phase2.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:51.137620+00:00",
+      "logSha256": "9ee4bdd47dfecca12bf50aaadb0a5c767e0e9c0432792d018ec229054d178aad"
+    },
+    {
+      "id": "report-model-modality-r21",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "startedAt": "2026-11-10T12:53:47.550849+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/report-model-modality-r21.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:57.069312+00:00",
+      "logSha256": "4d8dec325ae3aff990bacb21432685fa913be0cb671587f3e7301b6fdb661e5c"
+    },
+    {
+      "id": "report-model-modality-r22b",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "startedAt": "2026-11-10T12:53:47.626313+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/report-model-modality-r22b.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:54.845767+00:00",
+      "logSha256": "402625f141281bb30ad8dd702f02d88d30e80fe0317aedae44ef334f5c1af0ee"
+    },
+    {
+      "id": "report-model-pm-r30",
+      "cwd": ".",
+      "command": "node scripts/report-model-pm-r30.mjs --check",
+      "startedAt": "2026-11-10T12:55:01.577722+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/report-model-pm-r30.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:55:15.864363+00:00",
+      "logSha256": "c969b5a0d004c8eccd152c8a6b8135412c9df8714f25e4be9176928ca85cf950"
+    },
+    {
+      "id": "report-primary-links-r31",
+      "cwd": ".",
+      "command": "node scripts/report-primary-links-r31.mjs --check",
+      "startedAt": "2026-11-10T12:53:57.385161+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/report-primary-links-r31.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:58.530025+00:00",
+      "logSha256": "ef13d21fa9db0667ff5e1aebb65dfcef0ff5e2bae37561ad78cbc332b6a1db88"
+    },
+    {
+      "id": "report-source-titles-r23",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r23.mjs --check",
+      "startedAt": "2026-11-10T12:53:54.846133+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/report-source-titles-r23.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:56.066205+00:00",
+      "logSha256": "aaf6ec9eaf4ac3cb82ac72d2a1b515d1acd4cbb983b63e019ce5c335a8d44567"
+    },
+    {
+      "id": "report-source-titles-r24",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r24.mjs --check",
+      "startedAt": "2026-11-10T12:53:55.324340+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/report-source-titles-r24.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:54:02.188730+00:00",
+      "logSha256": "d101cf5c36704c8e56a66f8f138928214d64910920b00c454ea174ec64df6c41"
+    },
+    {
+      "id": "scripts-full",
+      "cwd": ".",
+      "command": "node --test scripts/*.test.mjs",
+      "startedAt": "2026-11-10T12:55:49.338068+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/scripts-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:56:02.843490+00:00",
+      "tests": {
+        "tests": 93,
+        "pass": 93,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "e1620e9f7111bfba267693a756c2c1440bcc33d9d650c0ffd6a5aea1603a1762"
+    },
+    {
+      "id": "sync-card-display",
+      "cwd": ".",
+      "command": "node scripts/sync-card-display.mjs --check",
+      "startedAt": "2026-11-10T12:53:56.066991+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/sync-card-display.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:57.171918+00:00",
+      "logSha256": "3a963a935b5f55bf2239d2be03f7d40af6b588a22cd07e5dee0bb5834bca39a9"
+    },
+    {
+      "id": "sync-model-catalog",
+      "cwd": ".",
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "startedAt": "2026-11-10T12:53:57.069703+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/sync-model-catalog.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:54:00.440912+00:00",
+      "logSha256": "4b51ceb5731b82fb3b9bee1ec0f0a2af83877edf5bf6578264bfabf47cdf029e"
+    },
+    {
+      "id": "sync-primary-links-r31",
+      "cwd": ".",
+      "command": "node scripts/sync-primary-links-r31.mjs --check",
+      "startedAt": "2026-11-10T12:53:57.336820+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/sync-primary-links-r31.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:57.384774+00:00",
+      "logSha256": "2cd9a7288ba306a3569b53d4cbd79ce076d3a8da5d8ffe4e34c0a3166ef5f022"
+    },
+    {
+      "id": "tuyan-knowledge-check",
+      "cwd": "packages/tuyan-knowledge",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T12:53:57.172673+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/tuyan-knowledge-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:57.336394+00:00",
+      "logSha256": "477d55b9e6f75596d0927ba1f207125b9854d31fd9d0c5184e4a08899b15efac"
+    },
+    {
+      "id": "web-build",
+      "cwd": "apps/web",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T12:53:26.109518+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/web-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:53:30.359098+00:00",
+      "logSha256": "207e5440f342bdbe726d09972baf9524559ddeb64990f41dbb3acce50f58fc17"
+    },
+    {
+      "id": "web-full",
+      "cwd": "apps/web",
+      "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=4",
+      "startedAt": "2026-11-10T12:55:49.338151+00:00",
+      "log": ".audit-input/r24/i13-validation-logs/web-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:57:29.022368+00:00",
+      "tests": {
+        "tests": 1521,
+        "pass": 1521,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "f38e6fc653b87cdbeecb78612925d2a7f270152838f699491a13c5f58d3b667d"
+    }
+  ],
+  "tests": {
+    "tests": 1856,
+    "pass": 1856,
+    "fail": 0,
+    "skipped": 0
+  },
+  "maintenanceChecks": 16,
+  "miniSourceBytes": 1566504,
+  "miniSourceLimit": 1572864,
+  "miniHeadroom": 6360,
+  "protectedFilesUnchanged": [
+    "apps/web/src/workspace/WorkspaceAccount.jsx",
+    "apps/web/src/workspace/WorkspaceLogin.jsx",
+    "apps/web/src/workspace/workspace.css",
+    "apps/web/tests/login-notice.test.mjs",
+    "apps/web/tests/execution-capability-r22.test.mjs",
+    "apps/miniprogram/tests/execution-capability-r22.test.cjs",
+    "apps/paperbanana-api/tests/execution-capability-r22.test.ts",
+    "apps/auth-gateway/tests/execution-capability-r22.test.js"
+  ],
+  "executionFieldsAndPickerNames": "Web/Mini/Core field and name equality against 52e0f161 passed; four frozen execution suites unchanged from 702175ea and passing.",
+  "decisions": "docs/model-card-primary-links-r31.json",
+  "casingFixes": 4,
+  "dialogTitle": "模型规格 on all shared channel/direct Web and Mini specification dialogs",
+  "screenshotRecipe": {
+    "path": ".audit-input/r24/shots-m12.mjs",
+    "manifest": ".audit-input/r24/shots-m12.manifest.json",
+    "syntaxChecked": true,
+    "executed": false,
+    "widths": [
+      1280,
+      390
+    ],
+    "deviceScaleFactor": 2,
+    "shots": 10
+  }
+}

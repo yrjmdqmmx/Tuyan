@@ -1,10 +1,12 @@
 import { removedModel, withModelAudit } from './model-audit'
+import type { AuditFact } from './model-audit'
 import { normalizeModelVersion, ModelVersion, presentRegistryModel, modelDeveloper, sortModelsNewestFirst } from './model-presentation'
 export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat', 'antling', 'novita', 'tokendance'] as const
 export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
 export type ModelRole = 'main' | 'image' | 'vision'
 
 export interface RegistryModel {
+  cardSpecifications?: {fields: Record<string, AuditFact>; verifiedAt?: string | null; sourceUrl: string | null; sourceLabel: string; vendorSources?: string[]; retirementSources?: string[]; lifecycleSourceUrl?: string | null; excludedSources?: string[]; note: string}
   catalogPresence?: {status: 'listed' | 'absent' | 'unverified'; cause?: string; checkedAt: string | null; sourceUrl?: string}
   auditChannel?: string
   id: string
@@ -158,6 +160,7 @@ function normalizeModel(input: unknown): RegistryModel {
   const roleReasonsSource = asRecord(source.roleReasons)
   return {
     id,
+    cardSpecifications: source.cardSpecifications as RegistryModel['cardSpecifications'],
     catalogPresence: source.catalogPresence as RegistryModel['catalogPresence'],
     version: normalizeModelVersion(source.version),
     apiIdentifier: stringValue(source.apiIdentifier),

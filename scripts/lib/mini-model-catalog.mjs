@@ -1,5 +1,6 @@
 import { mergeCardFacts } from '../../apps/web/src/lib/catalogCardFacts.js'
 import { modelCardSources, modelSourceName } from '../../apps/web/src/lib/modelCardSources.js'
+import { humanSourceUrl, conflictNote } from '../../packages/api/src/card-presentation.mjs'
 // The Mini Program consumes display/selection fields, not the full evidence archive.
 // Execution capabilities, eligibility, exact IDs and ordering stay unchanged.
 export function miniModelCatalog(catalog) {
@@ -24,10 +25,10 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
     const existing = fallback(channel, model)
     const audit = { fields: Object.fromEntries(data.fields.map((field, index) => {
       const fact = data.rows[key] ? data.facts[row[index]] : [null, 'unknown', null, null]
-      return [field, { value: fact[0], state: fact[1], provenance: fact[2], sourceUrl: data.sources[fact[3]] || null, suppressFallback: data.details[key]?.suppressFallback?.includes(field), unsupportedModalities: data.details[key]?.unsupportedModalities?.[field] }]
+      return [field, { value: fact[0], state: fact[1], provenance: fact[2], sourceUrl: data.sources[fact[3]] || null, suppressFallback: data.details[key]?.suppressFallback?.includes(field), unsupportedModalities: data.details[key]?.unsupportedModalities?.[field], modalityMasks: data.details[key]?.modalityMasks?.[field] }]
     })) }
     // Roles are already in the registry: apply their image floor at runtime.
-    const merged = mergeCardFacts(audit, existing).fields
+    const {fields: merged, conflicts} = mergeCardFacts(audit, existing)
     const source = data.rows[key] ? row[5] ?? row.slice(0, 4).map(i => data.facts[i][3]).find(i => i !== null) : null
     const notice = data.notices[key]
     const links = modelCardSources({ channel, model, fields: merged,
@@ -40,7 +41,7 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
       if (field.endsWith('Modalities')) {
         const original = audit.fields[field]
         // Store operands, never the union. Zero references the registry field.
-        if (original.state === 'known' && !original.unsupportedModalities?.length && existing[field]?.value?.some(x => !original.value.includes(x))) {
+        if (original.state === 'known' && !original.suppressFallback && !original.modalityMasks?.length && !original.unsupportedModalities?.length && existing[field]?.value?.some(x => !original.value.includes(x))) {
           value = original.value
           prior = existing[field].value
         }
@@ -49,17 +50,30 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
         if (JSON.stringify(value) === JSON.stringify(model[field])) value = 0
         if (prior && JSON.stringify(prior) === JSON.stringify(model[field])) prior = 0
       }
-      // The picker renders one card source, never per-field evidence URLs.
-      // Keep a reference when it is that same source; full evidence stays in Web/API.
-      return intern(facts, [value, fact.state, fact.provenance, fact.sourceUrl && fact.sourceUrl === sourceUrl ? -1 : null, ...(prior !== undefined ? [prior] : [])])
+      // Per-field slots reference the primary URL when equal. Additional vendor
+      // links are stored once in details; the full evidence stays in Web/API.
+      return intern(facts, [value, fact.state, fact.provenance, fact.sourceUrl && humanSourceUrl(fact.sourceUrl) === sourceUrl ? -1 : null, ...(prior !== undefined ? [prior] : [])])
     }), sourceUrl === 'https://tokendance.space/models/' + model.id && channel === 'tokendance'
       && data.details[key]?.sourceLinks?.some(link => link.url === sourceUrl && link.kind === 'model-page' && link.checkedAt)
       ? -2 : sourceUrl ? intern(sources, sourceUrl) : null]
     const label = sourceUrl && modelSourceName(links, sourceUrl)
     if (label && label !== '官方文档') rows[key].push(label === '下线公告' ? 1 : 2)
-    const note = data.details[key]?.note, suffix = merged.totalContextTokens?.suffix
+    const note = [data.details[key]?.note, conflicts.length && !Object.values(merged).some(f => f.unsupportedModalities?.length) && conflictNote].filter(Boolean).join('；'), suffix = merged.totalContextTokens?.suffix
     if (note || suffix) details[key] = { ...(note ? { note } : {}), ...(suffix ? { suffix } : {}) }
     if (data.details[key]?.unsupportedModalities) details[key] = { ...details[key], unsupportedModalities: data.details[key].unsupportedModalities }
+    if (data.details[key]?.suppressFallback) details[key] = { ...details[key], suppressFallback: data.details[key].suppressFallback }
+    const vendorSources = links.vendorSources.filter(url => url !== sourceUrl)
+    if (vendorSources.length && Object.values(merged).some(fact => fact.provenance === 'vendor')) details[key] = { ...details[key], vendorSources }
+    if (data.details[key]?.modalityMasks) details[key] = { ...details[key], modalityMasks: data.details[key].modalityMasks }
+    for (const field of ['fieldVerifiedAt', 'fieldSources', 'lifecycleSourceUrl', 'excludedSources']) if (Object.hasOwn(data.details[key] || {}, field)) details[key] = { ...details[key], [field]: data.details[key][field] }
+    // fal field attribution uses the same exact URLs as Web, including secondary
+    // vendor citations; a missing primary-URL slot must not erase its title.
+    if (channel === 'fal') details[key] = { ...details[key], fieldSources: {
+      ...Object.fromEntries(Object.entries(merged).filter(([, fact]) => fact.sourceUrl).map(([field, fact]) => [field, fact.sourceUrl])),
+      ...details[key]?.fieldSources,
+    } }
+    const retirementSources = links.lifecycleSources.filter(url => url !== sourceUrl)
+    if (retirementSources.length) details[key] = { ...details[key], retirementSources }
   }
   // Encode only exact round trips of already resolved links. Shared templates
   // reuse registry IDs; they never choose or invent a model's destination.
@@ -80,7 +94,9 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
   const keys = Object.entries(providers).flatMap(([channel, provider]) => provider.models.map(model => channel + '/' + model.id))
   // Unverified flags and tombstone evidence are not read by the Mini UI.
   const removed = Object.fromEntries(Object.entries(data.removed).map(([key, value]) => [key, [value.replacementApiId, value.displayName, value.replacementDisplayName || null]]))
-  return { verifiedAt: data.verifiedAt, fields: data.fields, facts, sources: compactSources, sourceTemplates, rows: keys.map(key => rows[key] || null), details, notices: data.notices, removed }
+  // Optional details share the existing row identity; slot 5 stays the source label.
+  const detailRows = keys.map(key => details[key] ? [...rows[key].slice(0, 5), rows[key][5] || null, details[key]] : rows[key] || null)
+  return { verifiedAt: data.verifiedAt, fields: data.fields, facts, sources: compactSources, sourceTemplates, rows: detailRows, details: {}, notices: data.notices, removed }
 }
 
 export function webModelAudit(data, providers) {

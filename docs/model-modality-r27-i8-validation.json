@@ -1,0 +1,378 @@
+{
+  "phase": "R27 Phase I8",
+  "head": "105744a9",
+  "choice": "R2",
+  "decisionDate": "2026-11-10",
+  "finishedAtUtc": "2026-11-10T01:34:02.466244+00:00",
+  "gitWrites": false,
+  "externalNetwork": "None; offline fixture validation only. No paid/inference calls or deployment.",
+  "runs": [
+    {
+      "id": "api-full",
+      "cwd": ".",
+      "command": "node --test packages/api/src/*.test.js",
+      "startedAt": "2026-11-10T01:27:25.649413+00:00",
+      "finishedAt": "2026-11-10T01:27:25.724857+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/api-full.log",
+      "tests": {
+        "tests": 33,
+        "pass": 33,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "auth-gateway-check",
+      "cwd": "apps/auth-gateway",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T01:27:25.649532+00:00",
+      "finishedAt": "2026-11-10T01:27:25.739641+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/auth-gateway-check.log"
+    },
+    {
+      "id": "benchmark-core-check",
+      "cwd": "packages/benchmark-core",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T01:27:25.649636+00:00",
+      "finishedAt": "2026-11-10T01:27:26.233493+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/benchmark-core-check.log"
+    },
+    {
+      "id": "benchmark-worker-check",
+      "cwd": "apps/benchmark-worker",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T01:27:25.725329+00:00",
+      "finishedAt": "2026-11-10T01:27:28.981229+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/benchmark-worker-check.log"
+    },
+    {
+      "id": "check-docker-bundles",
+      "cwd": ".",
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "startedAt": "2026-11-10T01:27:25.740014+00:00",
+      "finishedAt": "2026-11-10T01:27:29.237293+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/check-docker-bundles.log"
+    },
+    {
+      "id": "core-build",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T01:27:25.255980+00:00",
+      "finishedAt": "2026-11-10T01:27:25.647759+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/core-build.log"
+    },
+    {
+      "id": "core-targeted",
+      "cwd": "apps/paperbanana-api",
+      "command": "node --import tsx --test tests/model-modality-r21.test.ts tests/execution-capability-r22.test.ts tests/model-card-r22b.test.ts tests/model-modality-phase2.test.ts tests/model-evidence-i4-r24.test.mjs tests/model-evidence-i5-r25.test.mjs tests/model-evidence-i6-r26.test.mjs",
+      "startedAt": "2026-11-10T01:27:26.233920+00:00",
+      "finishedAt": "2026-11-10T01:27:34.078823+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/core-targeted.log",
+      "tests": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "core-tsc-explicit",
+      "cwd": "apps/paperbanana-api",
+      "command": "npx tsc --noEmit",
+      "startedAt": "2026-11-10T01:27:28.981910+00:00",
+      "finishedAt": "2026-11-10T01:27:34.266297+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/core-tsc-explicit.log"
+    },
+    {
+      "id": "freeze-audit-sources",
+      "cwd": ".",
+      "command": "node scripts/freeze-audit-sources.mjs --check",
+      "startedAt": "2026-11-10T01:27:29.238041+00:00",
+      "finishedAt": "2026-11-10T01:27:30.298703+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/freeze-audit-sources.log"
+    },
+    {
+      "id": "freeze-execution-capability",
+      "cwd": ".",
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "startedAt": "2026-11-10T01:27:30.299123+00:00",
+      "finishedAt": "2026-11-10T01:27:36.815676+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/freeze-execution-capability.log"
+    },
+    {
+      "id": "gateway-targeted",
+      "cwd": "apps/auth-gateway",
+      "command": "node --test tests/model-modality-r21.test.js tests/execution-capability-r22.test.js tests/model-modality-phase2.test.js tests/model-evidence-i4-r24.test.js tests/model-evidence-i5-r25.test.js tests/model-evidence-i6-r26.test.js",
+      "startedAt": "2026-11-10T01:27:34.079347+00:00",
+      "finishedAt": "2026-11-10T01:27:41.476245+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/gateway-targeted.log",
+      "tests": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "generate-model-audit",
+      "cwd": ".",
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "startedAt": "2026-11-10T01:27:34.266776+00:00",
+      "finishedAt": "2026-11-10T01:27:34.453168+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/generate-model-audit.log"
+    },
+    {
+      "id": "mini-build",
+      "cwd": "apps/miniprogram",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T01:27:22.021957+00:00",
+      "finishedAt": "2026-11-10T01:27:22.801670+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/mini-build.log"
+    },
+    {
+      "id": "mini-full",
+      "cwd": "apps/miniprogram",
+      "command": "npm test",
+      "startedAt": "2026-11-10T01:27:34.453561+00:00",
+      "finishedAt": "2026-11-10T01:27:53.802251+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/mini-full.log",
+      "tests": {
+        "tests": 182,
+        "pass": 182,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "miniprogram-check",
+      "cwd": "apps/miniprogram",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T01:27:36.816630+00:00",
+      "finishedAt": "2026-11-10T01:27:37.922758+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/miniprogram-check.log"
+    },
+    {
+      "id": "name-invariants",
+      "cwd": ".",
+      "command": "node --test .audit-input/r24/i7-names.test.mjs",
+      "startedAt": "2026-11-10T01:27:37.923435+00:00",
+      "finishedAt": "2026-11-10T01:27:39.330259+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/name-invariants.log",
+      "tests": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "paperbanana-api-check",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T01:27:39.330639+00:00",
+      "finishedAt": "2026-11-10T01:27:43.114423+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/paperbanana-api-check.log"
+    },
+    {
+      "id": "report-changed-tests",
+      "cwd": ".",
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "startedAt": "2026-11-10T01:33:52.679832+00:00",
+      "finishedAt": "2026-11-10T01:33:53.421484+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/report-changed-tests.log"
+    },
+    {
+      "id": "report-model-image-input-r27",
+      "cwd": ".",
+      "command": "node scripts/report-model-image-input-r27.mjs --check",
+      "startedAt": "2026-11-10T01:27:42.499975+00:00",
+      "finishedAt": "2026-11-10T01:27:43.104367+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/report-model-image-input-r27.log"
+    },
+    {
+      "id": "report-model-modality-phase2",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "startedAt": "2026-11-10T01:27:43.104838+00:00",
+      "finishedAt": "2026-11-10T01:27:45.025543+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/report-model-modality-phase2.log"
+    },
+    {
+      "id": "report-model-modality-r21",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "startedAt": "2026-11-10T01:27:43.114756+00:00",
+      "finishedAt": "2026-11-10T01:27:49.278676+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/report-model-modality-r21.log"
+    },
+    {
+      "id": "report-model-modality-r22b",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "startedAt": "2026-11-10T01:27:45.025913+00:00",
+      "finishedAt": "2026-11-10T01:27:50.727876+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/report-model-modality-r22b.log"
+    },
+    {
+      "id": "report-source-titles-r23",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r23.mjs --check",
+      "startedAt": "2026-11-10T01:27:49.279055+00:00",
+      "finishedAt": "2026-11-10T01:27:49.849500+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/report-source-titles-r23.log"
+    },
+    {
+      "id": "report-source-titles-r24",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r24.mjs --check",
+      "startedAt": "2026-11-10T01:29:11.551692+00:00",
+      "finishedAt": "2026-11-10T01:29:14.580919+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/report-source-titles-r24.log"
+    },
+    {
+      "id": "scripts-full",
+      "cwd": ".",
+      "command": "node --test scripts/*.test.mjs",
+      "startedAt": "2026-11-10T01:29:03.067491+00:00",
+      "finishedAt": "2026-11-10T01:29:11.550817+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/scripts-full.log",
+      "tests": {
+        "tests": 79,
+        "pass": 79,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "sync-card-display",
+      "cwd": ".",
+      "command": "node scripts/sync-card-display.mjs --check",
+      "startedAt": "2026-11-10T01:27:53.803460+00:00",
+      "finishedAt": "2026-11-10T01:27:54.264938+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/sync-card-display.log"
+    },
+    {
+      "id": "sync-model-catalog",
+      "cwd": ".",
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "startedAt": "2026-11-10T01:27:54.265658+00:00",
+      "finishedAt": "2026-11-10T01:27:57.138207+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/sync-model-catalog.log"
+    },
+    {
+      "id": "tuyan-knowledge-check",
+      "cwd": "packages/tuyan-knowledge",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T01:27:55.058573+00:00",
+      "finishedAt": "2026-11-10T01:27:55.186352+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/tuyan-knowledge-check.log"
+    },
+    {
+      "id": "web-build",
+      "cwd": "apps/web",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T01:27:22.802261+00:00",
+      "finishedAt": "2026-11-10T01:27:25.255621+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/web-build.log"
+    },
+    {
+      "id": "web-full",
+      "cwd": "apps/web",
+      "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+      "startedAt": "2026-11-10T01:31:12.586070+00:00",
+      "finishedAt": "2026-11-10T01:33:52.674856+00:00",
+      "exitCode": 0,
+      "log": ".audit-input/r24/i8-validation-logs/web-full.log",
+      "tests": {
+        "tests": 1504,
+        "pass": 1504,
+        "fail": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "totals": {
+    "tests": 1818,
+    "pass": 1818,
+    "fail": 0,
+    "skipped": 0
+  },
+  "maintenanceChecks": [
+    "check-docker-bundles",
+    "freeze-audit-sources",
+    "freeze-execution-capability",
+    "generate-model-audit",
+    "report-changed-tests",
+    "report-model-image-input-r27",
+    "report-model-modality-phase2",
+    "report-model-modality-r21",
+    "report-model-modality-r22b",
+    "report-source-titles-r23",
+    "report-source-titles-r24",
+    "sync-card-display",
+    "sync-model-catalog"
+  ],
+  "mini": {
+    "sourceBytes": 1564312,
+    "limitBytes": 1572864,
+    "remainingBytes": 8552,
+    "deltaFromHead": -718,
+    "existingSizeGuards": "Unchanged and passing; staged compiler and sync generator preflight output before installation."
+  },
+  "invariants": {
+    "cardsPerClient": 1064,
+    "decisionACards": 15,
+    "factsSourcesDatesUnchanged": true,
+    "frozenExecutionTestsUnchanged": true,
+    "pickerNamesEqualMain": true,
+    "presentationChanges": "Only exact R2 labels and evidence prefixes; all states and other fields compare to frozen 105744a9.",
+    "conditionalChoice": "Grey glyph, short 支持; 有条件支持 and qualifier only in tooltip/dialog."
+  },
+  "preChangeFixture": {
+    "path": "test-support/fixtures/icon-simplify-r27-before.json.gz",
+    "sha256": "24191702c69994dce1ca1d64ca55d83cb49353b65b957f95d29dc947ac53c8db"
+  },
+  "screenshots": {
+    "script": ".audit-input/r24/shots-m8.mjs",
+    "manifest": ".audit-input/r24/shots-m8.manifest.json",
+    "status": "prepared-and-syntax-checked-not-run",
+    "widths": [
+      1280,
+      390
+    ],
+    "plannedShots": 8
+  },
+  "resolvedValidationFindings": [
+    "Source-dialog scanner needed the new 未标注 section label; same-field contradiction detection remains tested.",
+    "Phase 2 rendered aria-label expectation changed from 未知 to 未标注; recorded with the required founder reason and targeted/full Web rechecked."
+  ]
+}

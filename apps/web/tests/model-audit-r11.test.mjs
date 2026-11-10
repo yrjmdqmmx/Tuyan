@@ -1,17 +1,18 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
-import { modelCardSpecifications } from '../src/lib/modelCardSpecifications.js'
-import { unpackRegistry, rowsOf, countCards } from '../../../scripts/lib/model-card-audit.mjs'
+import { unpackRegistry, rowsOf, countCards, loadCard } from '../../../scripts/lib/model-card-audit.mjs'
+import { fileURLToPath } from 'node:url'
 import headFixture from './fixtures/r11-registry-head.json' with { type: 'json' }
 import linkFixture from './fixtures/r11-link-check-20261109.json' with { type: 'json' }
 import counts from '../../../docs/model-card-audit-20261109-r11-counts.json' with { type: 'json' }
 const registry = unpackRegistry(headFixture), rows = rowsOf(registry)
 
-test('R11 captured full Core objects reproduce total and every channel count; ID-only is comparison only', () => {
+test('R11 captured full Core objects reproduce historical counts with their archived resolver; R21 has separate current coverage', async () => {
+  const historicalCard = await loadCard(fileURLToPath(new URL('../../../', import.meta.url)), '8c456709')
   assert.equal(rows.length, 1061)
   for (const idOnly of [false, true]) {
-    const result = countCards(rows, modelCardSpecifications, idOnly)
+    const result = countCards(rows, historicalCard, idOnly)
     const expected = counts.head[idOnly ? 'idOnly' : 'fullObject']
     assert.deepEqual(result.totals, expected.totals)
     assert.deepEqual(result.perChannel, expected.perChannel)

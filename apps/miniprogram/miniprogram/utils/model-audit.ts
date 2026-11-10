@@ -7,9 +7,12 @@ export interface AuditFact {
   state: 'known' | 'unknown' | 'unsupported' | 'not-applicable'
   provenance: 'channel' | 'vendor' | 'catalog' | 'product' | null
   sourceUrl: string | null
+  sourceUrls?: string[]
   verifiedAt: string | null
   suffix?: string
   unknownModalities?: string[]
+  modalityMasks?: string[]
+  approximate?: boolean
   unsupportedModalities?: string[]
   suppressFallback?: boolean
 }
@@ -21,14 +24,16 @@ export function auditedModelSpecs(channel: string, id: string) {
     result[field] = { value: fact[0], state: fact[1], provenance: fact[2], sourceUrl: fact[3] === null ? null : MODEL_AUDIT_DATA.sources[fact[3]], verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null }
   })
   const details = MODEL_AUDIT_DATA.details?.[channel + '/' + id]
+  for (const [field, date] of Object.entries(details?.fieldVerifiedAt || {})) result[field].verifiedAt = date as string
+  for (const [field, url] of Object.entries(details?.fieldSources || {})) result[field].sourceUrl = url as string | null
   result.totalContextTokens.suffix = details?.suffix
   if (details?.unknownInputModalities) result.inputModalities.unknownModalities = details.unknownInputModalities
+  for (const [field, values] of Object.entries(details?.modalityMasks || {})) result[field].modalityMasks = values as string[]
   for (const [field, values] of Object.entries(details?.unsupportedModalities || {})) result[field].unsupportedModalities = values as string[]
   for (const field of details?.suppressFallback || []) result[field].suppressFallback = true
-  return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: details?.sourceUrls || [], sourceLabel: row?.[6] || '官方文档', note: details?.note || '' }
+  return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: details?.sourceUrls || [], sourceLabel: row?.[6] || '官方文档', vendorSources: details?.vendorSources || [], retirementSources: details?.retirementSources || [], excludedSources: details?.excludedSources || [], lifecycleSourceUrl: details?.lifecycleSourceUrl || null, note: details?.note || '' }
 }
 
-// Tombstones preserve exact identities for messages and explicit replacement choices, never catalog entries.
 export function removedModel(channel: string, id: string, now = Date.now()) {
   const key = channel + '/' + String(id).trim()
   const removed = MODEL_AUDIT_DATA.removed?.[key]
@@ -49,8 +54,6 @@ export function removedModelHint(channel: string, id: string, now = Date.now()) 
   return removed ? `${removed.displayName}：原型号已不可用，请重新选择。${removed.replacementApiId ? `推荐：${removed.replacementDisplayName}` : ''}` : ''
 }
 
-// Date-only notices take effect at the start of the stated UTC calendar day.
-// Serverless notices apply only to the Fireworks adapter used by this product.
 export function auditedModelLifecycle(channel: string, id: string, now = Date.now()) {
   const notice = MODEL_AUDIT_DATA.notices[channel + '/' + String(id).trim()]
   if (!notice || notice.scope === 'serverless' && channel !== 'fireworks') return null

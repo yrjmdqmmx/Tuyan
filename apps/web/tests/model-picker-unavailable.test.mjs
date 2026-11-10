@@ -62,7 +62,7 @@ for (const role of ['main', 'image', 'vision']) test(`${role} card body selects 
   assert.deepEqual(changes, [], 'source clicks do not select a model')
   assert.ok(screen.getByRole('dialog'))
   assert.equal(screen.getByText('≈ 12K tokens').title, '12,345 tokens')
-  await user.click(screen.getAllByText('未知')[0])
+  await user.click(screen.getAllByText('未公布')[0])
   assert.equal(model.specifications.contextWindowTokens, 12345, 'display rounding preserves the exact source limit')
   assert.deepEqual(changes, [{ accessProvider: 'openrouter', modelId: 'live-model' }])
   assert.deepEqual(modes, role === 'vision' ? ['assist'] : [])

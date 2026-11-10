@@ -1,0 +1,433 @@
+{
+  "phase": "R24 Phase I1",
+  "head": "4e18513c",
+  "base": "8c456709",
+  "runs": [
+    {
+      "id": "mini-build",
+      "cwd": "apps/miniprogram",
+      "command": "npm run build",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:10:46.106981+00:00",
+      "finishedAt": "2026-11-09T22:10:46.846058+00:00",
+      "log": ".audit-input/r24/verification-logs/mini-build.log",
+      "sha256": "9552888fb401c27550316af482f01675d54c4574526bce09e8b6ae28f1814b16",
+      "tail": "\n> @paperbanana/miniprogram@3.5.5 build\n> tsc && node ../../scripts/sync-card-display.mjs --mini-picker\n\n"
+    },
+    {
+      "id": "core-build",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run build",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:10:46.846217+00:00",
+      "finishedAt": "2026-11-09T22:10:47.260426+00:00",
+      "log": ".audit-input/r24/verification-logs/core-build.log",
+      "sha256": "adea19f63bb9d6f6f3c7e43d6c2deaa6c2c3579c71f4b441f0ea2720c79809ac",
+      "tail": "\n> @paperbanana/paperbanana-api@0.1.0 build\n> esbuild src/main.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/server.cjs --define:import.meta.url='\"file:///app/node_modules/@paperbanana/benchmark-core/src/scientific-edit-source.js\"' --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:ali-oss --external:express --external:mongodb --external:sharp && esbuild src/image-runtime-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/image-runtime.mjs --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:sharp && esbuild src/scientific-v2-lineage-inspector.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/scientific-v2-lineage-inspector.mjs --external:mongodb && esbuild src/svg-review.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/svg-review.cjs --define:import.meta.url='\"file:///app/dist/svg-review.cjs\"'\n\n\n  dist/server.cjs  13.2mb \u26a0\ufe0f\n\n\u26a1 Done in 143ms\n\n  dist/image-runtime.mjs  11.4mb \u26a0\ufe0f\n\n\u26a1 Done in 131ms\n\n  dist/scientific-v2-lineage-inspector.mjs  375.9kb\n\n\u26a1 Done in 8ms\n\n  dist/svg-review.cjs  7.6kb\n\n\u26a1 Done in 1ms\n"
+    },
+    {
+      "id": "web-build",
+      "cwd": "apps/web",
+      "command": "npm run build",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:10:47.260569+00:00",
+      "finishedAt": "2026-11-09T22:10:50.021678+00:00",
+      "log": ".audit-input/r24/verification-logs/web-build.log",
+      "sha256": "2bfb02689a09eb22dcc39cb6ae80fa1f78cae031361bbb44f8c6b713c1d9fd7d",
+      "tail": " 0.86 kB\ndist/assets/dataviz-CmiSyx_n.png                             17.85 kB\ndist/assets/viznoir-BWsFoGJB.png                             56.99 kB\ndist/assets/tashan-logo-BUvrCAFf.svg                        136.73 kB \u2502 gzip:  98.28 kB\ndist/assets/pdf.worker.min-wgc6bjNh.mjs                   1,078.61 kB\ndist/assets/WorkspaceRoot-B--PG3t_.css                      140.06 kB \u2502 gzip:  26.95 kB\ndist/assets/main-BkQowtbn.css                               353.19 kB \u2502 gzip:  63.45 kB\ndist/assets/upload-DPih32-H.js                                0.27 kB \u2502 gzip:   0.23 kB\ndist/assets/not-found-DdRO0gD0.js                             0.53 kB \u2502 gzip:   0.38 kB\ndist/assets/appPaths-YjsG8sbc.js                              0.63 kB \u2502 gzip:   0.38 kB\ndist/assets/modulepreload-polyfill-B5Qt9EMX.js                0.71 kB \u2502 gzip:   0.40 kB\ndist/assets/TokenDancePricing-ByzbeeaD.js                     1.15 kB \u2502 gzip:   0.79 kB\ndist/assets/ChangelogRoot-CFzFHKga.js                         6.95 kB \u2502 gzip:   2.28 kB\ndist/assets/ResearchEcosystem-B3tEwpPY.js                    17.67 kB \u2502 gzip:   7.52 kB\ndist/assets/AdminWorkspace-DYKTJtma.js                       40.85 kB \u2502 gzip:  13.50 kB\ndist/assets/jszip.min-BUqS327R.js                            97.15 kB \u2502 gzip:  30.09 kB\ndist/assets/main-DtRKwRdz.js                                469.57 kB \u2502 gzip: 162.38 kB\ndist/assets/WorkspaceRoot-CPKFo1LC.js                     5,973.19 kB \u2502 gzip: 844.89 kB\n\n(!) Some chunks are larger than 500 kB after minification. Consider:\n- Using dynamic import() to code-split the application\n- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks\n- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.\n\u2713 built in 2.53s\n"
+    },
+    {
+      "id": "web-full",
+      "cwd": "apps/web",
+      "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:14:09.483065+00:00",
+      "finishedAt": "2026-11-09T22:16:43.242201+00:00",
+      "log": ".audit-input/r24/verification-logs/web-full.log",
+      "sha256": "7fb11ba67926f1c8d65133f660f54c952afeb990d91eff8ebb9313bd3f494985",
+      "tail": "ts/settings, handle offline conflict and retain queued state across reload (21.8545ms)\n\u2714 local CAS blocks stale tabs and quota failures never claim synced or permit unsafe exit (0.75525ms)\n\u2714 account caches and pending responses cannot cross users or revive a disposed workspace (2.384833ms)\n\u2714 typing during slow asset preparation is not overwritten by the completed upload (3.662708ms)\n\u2714 transport uploads only result assets and allowlisted metadata, preserving both PNG/SVG formats (2.590958ms)\n\u2714 originals stay device-local, only exact content can repair a missing reference (1.8925ms)\n\u2714 JSON key ordering and preview navigation do not produce conflict copies or new writes (3.196167ms)\n\u2714 real edit arriving during a remote read preserves newer content and immutable input snapshots (5.001083ms)\n\u2714 identical cache snapshots are idempotent across tabs while changed drafts still conflict (0.466875ms)\n\u2714 different tab view selections and refreshed signed URLs do not conflict with unchanged content (0.683209ms)\n\u2714 idle background checks read revisions without status churn, hydration or storage writes (2.003875ms)\n\u2714 quiet polling still receives remote changes and reports outages and recovery (5.43975ms)\n\u2714 an edit made during a quiet revision check is uploaded, not dropped by the no-change shortcut (2.677875ms)\n\u2714 task and path browsing stays local; real edits still upload and failures remain visible (13.245041ms)\n\u2714 local settings depth merges with unrelated remote text edits (0.31125ms)\n\u2714 switching settings depth alone does not turn an empty task into a saved draft (0.115375ms)\n\u2714 automatic SVG edits survive offline reload and sync into the same task on another device (10.604167ms)\n\u2139 tests 1485\n\u2139 suites 0\n\u2139 pass 1485\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 153730.395083\n",
+      "priorAttempts": [
+        {
+          "exitCode": 1,
+          "startedAt": "2026-11-09T22:10:50.025108+00:00",
+          "finishedAt": "2026-11-09T22:13:23.704762+00:00",
+          "log": ".audit-input/r24/verification-logs/web-full.initial.log",
+          "sha256": "560e13893c25bf8614d205fb62cb2860824969bc3d713d2bc03a5424878ef203"
+        }
+      ],
+      "tests": {
+        "total": 1485,
+        "passed": 1485,
+        "failed": 0
+      }
+    },
+    {
+      "id": "mini-full",
+      "cwd": "apps/miniprogram",
+      "command": "npm test",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:14:09.483094+00:00",
+      "finishedAt": "2026-11-09T22:14:28.973720+00:00",
+      "log": ".audit-input/r24/verification-logs/mini-full.log",
+      "sha256": "d5305646bba089cdcbfaac767256e5eae8455bdcc7e73ee27542c8db34e382d1",
+      "tail": "al task without a TokenDance connection (5.208875ms)\n\u2714 mini blocks submit and repeat selection while original image dimensions are pending (2.714833ms)\n\u2714 account A-B-A, detached and selected-order changes discard late replies (0.989125ms)\n\u2714 one-use codes stay out of view data and are cleared on hide; uncertain creation blocks a retry (0.428458ms)\n\u2714 definite payment rejection permits retry while uncertain server failures remain locked (24.033583ms)\n\u2714 returning to account from its reopened job detail pops the native stack and keeps the original task (0.47225ms)\n\u2714 TD throttling and uncertain errors retain recovery guidance instead of generic capacity failures (0.131417ms)\n\u2714 verification observer stays read-only, pauses and resumes, and ends on verified (0.43ms)\n\u2714 verification observer expires after one hour and rejects a stale response after stop (0.100083ms)\n\u2714 verification observer never overlaps requests and recovers from temporary failure (0.129792ms)\n\u2714 Watcha launch links accept only the gateway handoff route and opaque state (0.449916ms)\n\u2714 native initiation is unavailable on old gateways and drops a response after A-B-A account switching (1.867292ms)\n\u2714 one-use code stays outside view state, clears before exchange and cannot submit twice (1.326042ms)\n\u2714 pending existing identity is explicitly linked, and last login method cannot be unlinked (1.101334ms)\n\u2714 email code is purpose-bound, clears on email edits and only sent once during cooldown (0.783ms)\n\u2714 late authentication response cannot replace cookies after cancellation or owner change (0.84675ms)\n\u2714 passwordless deletion exchanges email proof before deletion and drops confirmation after owner changes (244.828709ms)\n\u2139 tests 173\n\u2139 suites 0\n\u2139 pass 173\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 19293.373542\n",
+      "priorAttempts": [
+        {
+          "exitCode": 1,
+          "startedAt": "2026-11-09T22:10:50.025177+00:00",
+          "finishedAt": "2026-11-09T22:11:10.772890+00:00",
+          "log": ".audit-input/r24/verification-logs/mini-full.initial.log",
+          "sha256": "7159b552b08ea8bc991f0b88b789550f04f30e432afeef8ba769e2bba5b506eb"
+        }
+      ],
+      "tests": {
+        "total": 173,
+        "passed": 173,
+        "failed": 0
+      }
+    },
+    {
+      "id": "scripts-full",
+      "cwd": ".",
+      "command": "node --test scripts/*.test.mjs",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:14:09.482985+00:00",
+      "finishedAt": "2026-11-09T22:14:19.749331+00:00",
+      "log": ".audit-input/r24/verification-logs/scripts-full.log",
+      "sha256": "3c8d988da98d609962e0f16e9f645ed72329489fd709daea27ba1315edbc6947",
+      "tail": "63.165667ms)\n\u2714 shared presentation metadata remains lossless with the existing shipped codec (39.355458ms)\n\u2714 Mini evidence projection preserves every execution and selection constraint (109.502959ms)\n\u2714 changed-test review rejects a missing pre-existing test file (1529.090917ms)\n\u2714 changed-test content hashes and ledger checks are stable at core.abbrev 7 and 12 (3106.724292ms)\n\u2714 R23F pre-title inventory is lossless and history independent for 1064 cards per client (3.495792ms)\n\u2714 R23F complete title inventory stays reproducible with no unresolved heuristic findings (2270.45575ms)\n\u2714 R14 count and preview share a dated 119-row public snapshot with metadata only (18.096792ms)\n\u2714 R14 preview empty and timeout modes never access the network; invalid modes fail explicitly (0.30525ms)\n\u2714 production login keeps upstream credentials encrypted and exposes only a fresh HttpOnly handle (46.433708ms)\n\u2714 foreign, missing POST origins, changed local host and unsupported routes cannot reach production (0.59625ms)\n\u2714 production registration and reset preserve canonical callback destinations and Retry-After (0.784ms)\n\u2714 server revocation and local expiry remove access rather than trusting the local user ID (1.316625ms)\n\u2714 account deletion, upstream identity changes and server failure all fail closed (2.984959ms)\n\u2714 bodyless Better Auth logout clears both the local handle and upstream session (0.52625ms)\n\u2714 a delayed server session response cannot restore a locally signed-out session (0.479916ms)\n\u2714 unconfirmed remote logout still clears local credentials and reports the uncertainty (0.354667ms)\n\u2714 stable local encryption supports restart; tampering never yields an authenticated session (0.551666ms)\n\u2139 tests 58\n\u2139 suites 0\n\u2139 pass 58\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 10237.195167\n",
+      "priorAttempts": [
+        {
+          "exitCode": 0,
+          "startedAt": "2026-11-09T22:10:50.025230+00:00",
+          "finishedAt": "2026-11-09T22:11:00.131377+00:00",
+          "log": ".audit-input/r24/verification-logs/scripts-full.initial.log",
+          "sha256": "a808ee296c6a5620b8f780a41f7351fd60c7aa360f7f5dbcdf42d80ba07d4702"
+        }
+      ],
+      "tests": {
+        "total": 58,
+        "passed": 58,
+        "failed": 0
+      }
+    },
+    {
+      "id": "api-full",
+      "cwd": ".",
+      "command": "node --test packages/api/src/*.test.js",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:00.131544+00:00",
+      "finishedAt": "2026-11-09T22:11:00.212655+00:00",
+      "log": ".audit-input/r24/verification-logs/api-full.log",
+      "sha256": "ebb36db798dde653ca412a6636484dfd92bc77d5604156f6ec564ff90844bed2",
+      "tail": "equest preserves English search copy and Chinese display copy (0.221084ms)\n\u2714 referenceLibraryRequest normalizes legacy reference-only responses with default pagination (0.074333ms)\n\u2714 referenceLibraryRequest defaults new callers to the cross-task bench scope (0.090875ms)\n\u2714 referenceLibraryRequest sends exact reference IDs and keeps the pagination envelope (0.088125ms)\n\u2714 referenceLibraryRequest rejects exact reference IDs combined with scope before transport (0.064ms)\n\u2714 referenceLibraryRequest rejects exact reference IDs combined with legacy limit before transport (0.052208ms)\n\u2714 referenceLibraryRequest forwards AbortSignal without serializing it (0.051458ms)\n\u2714 reference upload lifecycle explicitly finalizes successful PUTs and aborts failed ones (0.089917ms)\n\u2714 formatClientPlatform translates the complete canonical enum without guessing missing history (0.035458ms)\n\u2714 admin and user task normalization retain both platform aliases without backfilling history (0.251583ms)\n\u2714 unsupported transport fails before a network request (0.065834ms)\n\u2714 userJobsRequest trusts the freshly signed list response without N+1 detail requests (0.075667ms)\n\u2714 modelRegistryRequest reads the server-authoritative model roles and defaults (0.08875ms)\n\u2714 health and registry reads pass cancellation to fetch without changing the API body (0.076833ms)\n\u2714 benchmark clients use only the public and admin action contracts (0.199917ms)\n\u2714 shared job payloads preserve 512 and native-size resolution values (0.056833ms)\n\u2714 model material generation and refined recovery preserve files and independent manual references (0.161083ms)\n\u2714 read-only account catalogs isolate keys and reject probes before transport (0.106375ms)\n\u2139 tests 33\n\u2139 suites 0\n\u2139 pass 33\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 50.151417\n",
+      "tests": {
+        "total": 33,
+        "passed": 33,
+        "failed": 0
+      }
+    },
+    {
+      "id": "core-targeted",
+      "cwd": "apps/paperbanana-api",
+      "command": "node --import tsx --test tests/model-modality-r21.test.ts tests/execution-capability-r22.test.ts tests/model-card-r22b.test.ts tests/model-modality-phase2.test.ts",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:00.212821+00:00",
+      "finishedAt": "2026-11-09T22:11:06.668508+00:00",
+      "log": ".audit-input/r24/verification-logs/core-targeted.log",
+      "sha256": "a049940ef1e7f6de63f998e439006025a3b5c32aeaf29e84988fabb9b3f4f190",
+      "tail": "00000,\"stale\":false,\"total\":119,\"valid\":119,\"compatibleCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n\u2714 phase 2 Core channel tables and partial masks survive full registry enrichment without mutating base records (5818.859166ms)\n\u2714 R21 Core exact channel specifications leave the base/vendor archive intact (2.847083ms)\n{\"event\":\"tokendance_catalog_health\",\"level\":\"warn\",\"state\":\"partial\",\"cause\":null,\"alert\":\"warning\",\"consecutiveAnomalies\":1,\"anomalySince\":1794240000000,\"checkedAt\":1794240000000,\"stale\":false,\"total\":119,\"valid\":119,\"compatibleCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n\u2714 R21 real Core modelRegistry objects preserve channel facts through all enrichments (5316.707625ms)\n\u2714 R21 Core source consumers reject machine evidence and keep channel pages before labelled vendor field sources (3.592959ms)\n\u2139 tests 7\n\u2139 suites 0\n\u2139 pass 7\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 6424.040875\n",
+      "tests": {
+        "total": 7,
+        "passed": 7,
+        "failed": 0
+      }
+    },
+    {
+      "id": "gateway-targeted",
+      "cwd": "apps/auth-gateway",
+      "command": "node --test tests/model-modality-r21.test.js tests/execution-capability-r22.test.js tests/model-modality-phase2.test.js",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:14:19.749930+00:00",
+      "finishedAt": "2026-11-09T22:14:25.370526+00:00",
+      "log": ".audit-input/r24/verification-logs/gateway-targeted.log",
+      "sha256": "380884c83e57dfa97886bc9de4647004e2a222462cd2706a906ee89a7d8c37b6",
+      "tail": "[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n\u2714 R22 Gateway preserves frozen main capability on the registry wire and in its audit decorator (3498.508875ms)\n{\"event\":\"tokendance_catalog_health\",\"level\":\"warn\",\"state\":\"partial\",\"cause\":null,\"alert\":\"warning\",\"consecutiveAnomalies\":1,\"anomalySince\":1794225600000,\"checkedAt\":1794225600000,\"stale\":false,\"total\":119,\"valid\":119,\"compatibleCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n\u2714 phase 2 Gateway relays all 1061 complete model objects and their display projections (5170.010875ms)\n\u2714 R21 Gateway generated facts preserve channel values, exclusions, provenance and unknowns (2.156625ms)\n\u2714 R21 Gateway facts cannot re-add stale base modalities in card consumers (1.645292ms)\n\u2714 R21 Gateway sources keep reviewed channel pages and labelled vendor field sources; machine evidence never leaks (12.885417ms)\n\u2139 tests 5\n\u2139 suites 0\n\u2139 pass 5\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 5586.17925\n",
+      "priorAttempts": [
+        {
+          "exitCode": 1,
+          "startedAt": "2026-11-09T22:11:06.668662+00:00",
+          "finishedAt": "2026-11-09T22:11:12.173032+00:00",
+          "log": ".audit-input/r24/verification-logs/gateway-targeted.initial.log",
+          "sha256": "33258327d5e916839c6ef77a5b05a644c328bc2e3ae72fad10fad0e70e80aa61"
+        }
+      ],
+      "tests": {
+        "total": 5,
+        "passed": 5,
+        "failed": 0
+      }
+    },
+    {
+      "id": "paperbanana-api-check",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:10.773173+00:00",
+      "finishedAt": "2026-11-09T22:11:14.714043+00:00",
+      "log": ".audit-input/r24/verification-logs/paperbanana-api-check.log",
+      "sha256": "711f8fe6b6d9b7ec11df0b7db28f6268875e7790f9a94aad807f396ebd578f3e",
+      "tail": "\n> @paperbanana/paperbanana-api@0.1.0 check\n> tsc --noEmit\n\n"
+    },
+    {
+      "id": "miniprogram-check",
+      "cwd": "apps/miniprogram",
+      "command": "npm run check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:12.173310+00:00",
+      "finishedAt": "2026-11-09T22:11:12.796387+00:00",
+      "log": ".audit-input/r24/verification-logs/miniprogram-check.log",
+      "sha256": "38c246209d9a3bf1c4f7fdcd813aa459742b56f49ea9d1e6e0b11b70b574083c",
+      "tail": "\n> @paperbanana/miniprogram@3.5.5 check\n> tsc --noEmit\n\n"
+    },
+    {
+      "id": "auth-gateway-check",
+      "cwd": "apps/auth-gateway",
+      "command": "npm run check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:14:25.371060+00:00",
+      "finishedAt": "2026-11-09T22:14:25.455717+00:00",
+      "log": ".audit-input/r24/verification-logs/auth-gateway-check.log",
+      "sha256": "3381247e3cc1ecf70a3ea11f99e01a819ed43240cadda685ae08d5f80a90bdb3",
+      "tail": "\n> @paperbanana/auth-gateway@0.1.0 check\n> node --check src/*.js tests/*.test.js\n\n",
+      "priorAttempts": [
+        {
+          "exitCode": 0,
+          "startedAt": "2026-11-09T22:11:12.796668+00:00",
+          "finishedAt": "2026-11-09T22:11:12.895053+00:00",
+          "log": ".audit-input/r24/verification-logs/auth-gateway-check.initial.log",
+          "sha256": "3381247e3cc1ecf70a3ea11f99e01a819ed43240cadda685ae08d5f80a90bdb3"
+        }
+      ]
+    },
+    {
+      "id": "benchmark-worker-check",
+      "cwd": "apps/benchmark-worker",
+      "command": "npm run check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:12.895215+00:00",
+      "finishedAt": "2026-11-09T22:11:14.918874+00:00",
+      "log": ".audit-input/r24/verification-logs/benchmark-worker-check.log",
+      "sha256": "aa86bc6ea81a42bf399a29a03dd8e84bcdf676df9d319c925d7b088338b2968a",
+      "tail": "\n> @paperbanana/benchmark-worker@0.1.0 check\n> tsc --noEmit\n\n"
+    },
+    {
+      "id": "benchmark-core-check",
+      "cwd": "packages/benchmark-core",
+      "command": "npm run check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:14.714222+00:00",
+      "finishedAt": "2026-11-09T22:11:15.602034+00:00",
+      "log": ".audit-input/r24/verification-logs/benchmark-core-check.log",
+      "sha256": "eea2233e8ff678c38bdca5667b83566ec1b5414b62a6cbf786d8630fcbf10c21",
+      "tail": "\n> @paperbanana/benchmark-core@0.1.0 check\n> tsc --noEmit\n\n"
+    },
+    {
+      "id": "tuyan-knowledge-check",
+      "cwd": "packages/tuyan-knowledge",
+      "command": "npm run check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:14.919040+00:00",
+      "finishedAt": "2026-11-09T22:11:15.009584+00:00",
+      "log": ".audit-input/r24/verification-logs/tuyan-knowledge-check.log",
+      "sha256": "477d55b9e6f75596d0927ba1f207125b9854d31fd9d0c5184e4a08899b15efac",
+      "tail": "\n> @paperbanana/tuyan-knowledge@1.2.1 check\n> node --check src/*.js tests/*.test.js\n\n"
+    },
+    {
+      "id": "sync-model-catalog",
+      "cwd": ".",
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:15.009739+00:00",
+      "finishedAt": "2026-11-09T22:11:17.565175+00:00",
+      "log": ".audit-input/r24/verification-logs/sync-model-catalog.log",
+      "sha256": "4b51ceb5731b82fb3b9bee1ec0f0a2af83877edf5bf6578264bfabf47cdf029e",
+      "tail": "Catalog 2026-11-09.v43: 1064 static models; no drift\n"
+    },
+    {
+      "id": "generate-model-audit",
+      "cwd": ".",
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:15.602321+00:00",
+      "finishedAt": "2026-11-09T22:11:15.793228+00:00",
+      "log": ".audit-input/r24/verification-logs/generate-model-audit.log",
+      "sha256": "dbbc800e3318e734ff721660de4fd635b08425652c62ec26790efaf840a2207e",
+      "tail": "Audit: 1125 pairs, 7 notices, 7 additions\n"
+    },
+    {
+      "id": "report-model-modality-r21",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:15.793382+00:00",
+      "finishedAt": "2026-11-09T22:11:22.476732+00:00",
+      "log": ".audit-input/r24/verification-logs/report-model-modality-r21.log",
+      "sha256": "4d8dec325ae3aff990bacb21432685fa913be0cb671587f3e7301b6fdb661e5c",
+      "tail": "eCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n{\n  \"basis\": \"Full offline Core modelRegistry + actual Web modelCardSpecifications + actual modalityIconStates\",\n  \"snapshotModels\": 119,\n  \"registryModels\": 74,\n  \"visibleModels\": 65,\n  \"staticModels\": 74,\n  \"mockedRequests\": [\n    \"https://tokendance.space/gateway/v1/models\",\n    \"https://openrouter.ai/api/v1/models\",\n    \"https://openrouter.ai/api/v1/images/models\",\n    \"https://api.fal.ai/v1/models?limit=10&expand=openapi-3.0\",\n    \"https://runware.ai/docs/models/index.json\",\n    \"https://api.novita.ai/v3/openai/models\"\n  ]\n}\n{\"renderedCards\":74,\"iconStatesMatch\":true}\n{\n  \"cards\": 74,\n  \"visibleCards\": 65,\n  \"channelConfirmed\": 67,\n  \"unknownCards\": [\n    \"deepseek-v4-flash-vision-exp\",\n    \"deepseek-v4-flash\",\n    \"deepseek-v3.2\",\n    \"deepseek-chat-v3-0324\",\n    \"qwen3.6-max-preview\",\n    \"qwen3-30b-a3b-instruct-2507\",\n    \"qwen3-max\"\n  ],\n  \"semanticChangedFields\": 18,\n  \"arrayChangedFields\": 27,\n  \"provenanceChangedFields\": 144,\n  \"priorMisSourcedCards\": 54,\n  \"misSourcedNowConfirmed\": 49,\n  \"misSourcedNowUnknown\": 5,\n  \"transitions\": {\n    \"supported -> supported\": 204,\n    \"unknown -> unsupported\": 326,\n    \"unknown -> supported\": 4,\n    \"supported -> unknown\": 11,\n    \"unknown -> unknown\": 45,\n    \"supported -> unsupported\": 2\n  },\n  \"portalMismatches\": 0,\n  \"renderedCards\": 74\n}\n"
+    },
+    {
+      "id": "report-model-modality-phase2",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:17.565337+00:00",
+      "finishedAt": "2026-11-09T22:11:19.739465+00:00",
+      "log": ".audit-input/r24/verification-logs/report-model-modality-phase2.log",
+      "sha256": "9ee4bdd47dfecca12bf50aaadb0a5c767e0e9c0432792d018ec229054d178aad",
+      "tail": "{\"event\":\"tokendance_catalog_health\",\"level\":\"warn\",\"state\":\"partial\",\"cause\":null,\"alert\":\"warning\",\"consecutiveAnomalies\":1,\"anomalySince\":1794225600000,\"checkedAt\":1794225600000,\"stale\":false,\"total\":119,\"valid\":119,\"compatibleCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n{\n  \"registryCards\": 1061,\n  \"legacyBailianCards\": 20,\n  \"bailianFullCards\": 34,\n  \"tableFields\": 68,\n  \"misleadingCards\": 27,\n  \"reviewedModalityEntries\": 30,\n  \"supported\": 2,\n  \"unknown\": 28,\n  \"unsupported\": 0,\n  \"links\": 7,\n  \"verifiedChannelAvailability\": 0,\n  \"unverifiedChannelAvailability\": 7,\n  \"sourceChanges\": 7,\n  \"beforeObjectDifferences\": {\n    \"sourceDiff\": 616,\n    \"modalityDiff\": 575,\n    \"eitherDiff\": 659\n  },\n  \"remainingProductDifferences\": {\n    \"source\": 0,\n    \"modalities\": 0,\n    \"either\": 0,\n    \"fullResolvedFields\": 0,\n    \"coreProjection\": 0\n  }\n}\n"
+    },
+    {
+      "id": "sync-card-display",
+      "cwd": ".",
+      "command": "node scripts/sync-card-display.mjs --check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:19.739635+00:00",
+      "finishedAt": "2026-11-09T22:11:20.039906+00:00",
+      "log": ".audit-input/r24/verification-logs/sync-card-display.log",
+      "sha256": "3a963a935b5f55bf2239d2be03f7d40af6b588a22cd07e5dee0bb5834bca39a9",
+      "tail": "Shared card display data: no drift; 67/74 verified TokenDance pages\n"
+    },
+    {
+      "id": "report-model-modality-r22b",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:20.040084+00:00",
+      "finishedAt": "2026-11-09T22:11:25.915911+00:00",
+      "log": ".audit-input/r24/verification-logs/report-model-modality-r22b.log",
+      "sha256": "22683f4a82f021c20bb9445dd9c95dde9c339cdfa41612296178c6fffd8189c2",
+      "tail": "{\"event\":\"tokendance_catalog_health\",\"level\":\"warn\",\"state\":\"partial\",\"cause\":null,\"alert\":\"warning\",\"consecutiveAnomalies\":1,\"anomalySince\":1794225600000,\"checkedAt\":1794225600000,\"stale\":false,\"total\":119,\"valid\":119,\"compatibleCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n{\n  \"staticCards\": 1064,\n  \"fullCoreCards\": 1061,\n  \"unchangedPickerNames\": 1064,\n  \"verifiedPages\": 67,\n  \"historicalFallbacks\": 7,\n  \"missingFallbacks\": 0,\n  \"sourceRowsBefore\": 2489,\n  \"sourceRowsAfter\": 2494,\n  \"duplicateUrlRowsBefore\": 13,\n  \"duplicateUrlRowsAfter\": 0,\n  \"duplicateLabelsBefore\": 974,\n  \"duplicateLabelsAfter\": 0,\n  \"vendorTokenFields\": 20,\n  \"vendorTokenCards\": 18,\n  \"unknownTokenFields\": 63\n}\n"
+    },
+    {
+      "id": "report-changed-tests",
+      "cwd": ".",
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:14:25.456231+00:00",
+      "finishedAt": "2026-11-09T22:14:26.015928+00:00",
+      "log": ".audit-input/r24/verification-logs/report-changed-tests.log",
+      "sha256": "49f24587d46c43cca25dd065dbb4f7cd6d7893261f548a8962aada052b703f1a",
+      "tail": "{\"files\":23,\"assertionAndFixtureInputChanges\":138,\"consumedJsonFixtures\":2,\"semanticFixtureChanges\":616,\"justified\":753,\"unjustifiedRestored\":1,\"flagged\":0}\n",
+      "priorAttempts": [
+        {
+          "exitCode": 0,
+          "startedAt": "2026-11-09T22:11:22.476919+00:00",
+          "finishedAt": "2026-11-09T22:11:23.132467+00:00",
+          "log": ".audit-input/r24/verification-logs/report-changed-tests.initial.log",
+          "sha256": "0809df6d5fdb979189f1c1ba2b182e8f7b9bc7d57fb2acd97c0b40279dd568c0"
+        }
+      ]
+    },
+    {
+      "id": "freeze-execution-capability",
+      "cwd": ".",
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:23.132799+00:00",
+      "finishedAt": "2026-11-09T22:11:26.644496+00:00",
+      "log": ".audit-input/r24/verification-logs/freeze-execution-capability.log",
+      "sha256": "39b87a64e03dd9ddbdaed837dc25ed59413aa4d7cd2667b98bb03bf0fe66d524",
+      "tail": "{\"event\":\"tokendance_catalog_health\",\"level\":\"warn\",\"state\":\"partial\",\"cause\":null,\"alert\":\"warning\",\"consecutiveAnomalies\":1,\"anomalySince\":1794225600000,\"checkedAt\":1794225600000,\"stale\":false,\"total\":119,\"valid\":119,\"compatibleCount\":67,\"issueCount\":7,\"issues\":[{\"id\":\"deepseek-v4-flash-vision-exp\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v4-flash\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-v3.2\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"deepseek-chat-v3-0324\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3.6-max-preview\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-30b-a3b-instruct-2507\",\"index\":-1,\"reason\":\"missing_live\"},{\"id\":\"qwen3-max\",\"index\":-1,\"reason\":\"missing_live\"}]}\n{\"providers\":32,\"coreModels\":1064,\"staticModels\":1064,\"check\":true,\"fixture\":\"test-support/fixtures/execution-capability-8c456709.json.gz\"}\n"
+    },
+    {
+      "id": "check-docker-bundles",
+      "cwd": ".",
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:25.916199+00:00",
+      "finishedAt": "2026-11-09T22:11:27.867193+00:00",
+      "log": ".audit-input/r24/verification-logs/check-docker-bundles.log",
+      "sha256": "7d41b0c301e108d92e770f6cfcc7d262686c308dc74390c70519f9b581f8457e",
+      "tail": "external:ali-oss --external:mongodb --external:sharp --external:undici && esbuild src/ambiguous-judge-retry-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/ambiguous-judge-retry.mjs --external:ali-oss --external:mongodb --external:sharp --external:undici && esbuild src/calibration-recovery-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/calibration-recovery.mjs --external:ali-oss && esbuild src/calibration-snapshot.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/calibration-snapshot.mjs --external:sharp && esbuild src/judge-provider-diagnostic.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/judge-provider-diagnostic.mjs --external:undici && esbuild src/openrouter-judge-probe-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/openrouter-judge-probe.mjs --external:sharp --external:undici && esbuild src/public-evidence-backfill-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/public-evidence-backfill.mjs --external:ali-oss --external:mongodb --external:sharp && esbuild src/v1-retirement-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/v1-retirement.mjs --external:ali-oss --external:mongodb --external:sharp\",\n        \"bundles\": 12\n      }\n    ]\n  },\n  {\n    \"dockerfile\": \"apps/auth-gateway/Dockerfile\",\n    \"copyInstructions\": 11,\n    \"builds\": [\n      {\n        \"package\": \"@paperbanana/auth-gateway\",\n        \"command\": \"esbuild src/server.js --bundle --platform=node --target=node24 --format=esm --packages=external --outfile=/dev/null\",\n        \"bundles\": 1,\n        \"note\": \"Gateway has no build script; resolve all local runtime imports without starting the server\"\n      }\n    ]\n  }\n]\n"
+    },
+    {
+      "id": "freeze-audit-sources",
+      "cwd": ".",
+      "command": "node scripts/freeze-audit-sources.mjs --check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:26.644659+00:00",
+      "finishedAt": "2026-11-09T22:11:27.172013+00:00",
+      "log": ".audit-input/r24/verification-logs/freeze-audit-sources.log",
+      "sha256": "d80e602b846bfcd5222bb32faf4bcad4ce8ca896937b60227cc86ac9344c65bf",
+      "tail": "{\"commits\":[\"8c456709\",\"d1fe6ff6\"],\"files\":18,\"bytes\":334238,\"check\":true}\n"
+    },
+    {
+      "id": "report-source-titles-r23",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r23.mjs --check",
+      "exitCode": 0,
+      "startedAt": "2026-11-09T22:11:27.172249+00:00",
+      "finishedAt": "2026-11-09T22:11:27.701208+00:00",
+      "log": ".audit-input/r24/verification-logs/report-source-titles-r23.log",
+      "sha256": "62c733fd77070de88a34551cca99fdfdf12b3fc3ecbcdd0f269e75d8cf014081",
+      "tail": "{\"counts\":{\"web\":{\"cards\":1064,\"sourceRows\":2494,\"changedTitles\":2201,\"changedCards\":1031,\"suspiciousTitles\":0},\"mini\":{\"cards\":1064,\"sourceRows\":1103,\"changedTitles\":976,\"changedCards\":967,\"suspiciousTitles\":0}},\"noticeDialogs\":7,\"changedNoticeTitles\":3,\"retained\":1144}\n"
+    }
+  ],
+  "miniBytes": 1569424,
+  "miniLimit": 1572864,
+  "miniRemaining": 3440,
+  "webTypecheck": "No check/typecheck script or tsconfig; Vite build run instead.",
+  "invariants": {
+    "command": "node --test --test-name-pattern='all 15 image-input|all picker names' .audit-input/r24/invariants.test.mjs",
+    "exitCode": 0,
+    "passed": 2,
+    "log": ".audit-input/r24/verification-logs/invariants.log",
+    "sha256": "49501fbd3a6576a349e8faa60f36767208a6461a842653195da11d069a3b0e57",
+    "pickerNamesPerClient": 1064,
+    "changedPickerNames": 0,
+    "imageInputDecisionRows": 15,
+    "matchedImageInputRows": 15,
+    "decisionArtifactsByteIdenticalTo": "4e18513c",
+    "executionLocks": 4,
+    "executionBaseline": "8c456709"
+  },
+  "summary": {
+    "status": "PASS",
+    "suiteTests": 1761,
+    "invariantTests": 2,
+    "typeOrSyntaxCheckWorkspaces": 6,
+    "builds": 3,
+    "maintenanceChecks": 11,
+    "retirementRows": {
+      "web": 51,
+      "mini": 19
+    },
+    "cardsPerClient": 1064,
+    "historicalIds": 7,
+    "literalR9SourceRows": 297,
+    "changedPreExistingTestFiles": 7
+  },
+  "evidence": {
+    "report": ".audit-input/r24/qwen35plus-evidence.md",
+    "factChain": ".audit-input/r24/qwen35plus-fact-chain.json",
+    "documentationGets": 8,
+    "statuses": {
+      "200": 7,
+      "404": 1
+    },
+    "realBrowserVerified": false,
+    "maxOutputTokens": 65536,
+    "valueChanged": false
+  },
+  "constraints": {
+    "gitWriteCommands": 0,
+    "paidOrInferenceCalls": 0,
+    "deployments": 0,
+    "dockerOrImageBuilds": 0,
+    "otherWorktreesTouched": false,
+    "codexHomeRead": false,
+    "networkScope": "Eight public unauthenticated HTTPS documentation GETs with curl; no catalog/gateway/portal requests."
+  },
+  "completedAtUTC": "2026-11-09T22:17:46.308244+00:00"
+}

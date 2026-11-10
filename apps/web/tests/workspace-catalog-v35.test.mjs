@@ -34,7 +34,7 @@ for (const [provider, modelId] of additions) {
     fireEvent.click(screen.getByRole('button', { name: '主模型', exact: true }));
     assert.ok(screen.getByRole('dialog').classList.contains('model-route-drawer'));
     assert.equal(screen.getAllByRole('article').length, 1, 'unadded catalog models must stay out of the task picker');
-    assert.ok(screen.getByLabelText('官方文档规格'));
+    assert.ok(screen.getByLabelText('模型规格'));
     const choice = screen.getByRole('button', { name: `选择 ${model.label || model.id}`, exact: true });
     assert.equal(choice.disabled, false);
     fireEvent.click(choice);
@@ -57,7 +57,7 @@ test('v35 catalog preserves channel-specific vision roles and renders Reflection
   assert.ok(card.classList.contains('tw-catalog-card'));
   assert.match(card.textContent, /Reflection/);
   assert.ok(card.querySelector('img[src="/brand/catalog/reflection.png"]'));
-  assert.ok(within(card).getByLabelText('官方文档规格'));
+  assert.ok(within(card).getByLabelText('模型规格'));
   assert.equal(within(card).queryByText('规格与来源'), null);
   assert.equal(within(card).getByRole('button', { name: /添加/ }).disabled, false);
 });
@@ -83,7 +83,7 @@ test('v35 retired Ark identity remains visible and disabled without replacing a 
   render(React.createElement(WorkspaceModelPicker, { models, role: 'main', path: 'svg', current, onChange: value => changes.push(value) }));
   fireEvent.click(screen.getByRole('button', { name: '主模型', exact: true }));
   const card = screen.getByRole('article');
-  assert.match(card.querySelector('.model-spec-sources a').getAttribute('aria-label'), /2026-09-21/);
+  assert.doesNotMatch(card.querySelector('.model-spec-sources a').getAttribute('aria-label'), /核实日期|2026-09-21/);
   assert.match(card.querySelector('.tw-catalog-unavailable').title, /2026-09-21/);
   assert.equal(card.querySelector('.model-option-note, .thinking-status'), null);
   assert.equal(within(card).getByRole('button', { name: /^选择 / }).disabled, true);

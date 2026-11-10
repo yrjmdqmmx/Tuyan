@@ -1,0 +1,201 @@
+{
+  "phase": "R22 Phase C",
+  "date": "2026-11-09",
+  "base": "8c456709",
+  "startingHead": "2550c736",
+  "tests": [
+    {
+      "label": "Web full",
+      "command": "cd apps/web && NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+      "tests": 1477,
+      "pass": 1477,
+      "fail": 0,
+      "skipped": 0,
+      "logSha256": "6437d28ddc983a8025263bcb28356ce89ef0361fa95c18d00efd369d1a61f758"
+    },
+    {
+      "label": "Mini full",
+      "command": "cd apps/miniprogram && npm test",
+      "tests": 166,
+      "pass": 166,
+      "fail": 0,
+      "skipped": 0,
+      "logSha256": "752074fbda3fcbe51402cdaf8668685820835f1f97be0f63bd2d9556eb02b287"
+    },
+    {
+      "label": "Scripts full",
+      "command": "node --test scripts/*.test.mjs",
+      "tests": 50,
+      "pass": 50,
+      "fail": 0,
+      "skipped": 0,
+      "logSha256": "d19ea6ddea03892ea813d8b929a92a69f61a4ccb0ba9136416cc911fdf632331"
+    },
+    {
+      "label": "Core regression and execution lock",
+      "command": "cd apps/paperbanana-api && node --import tsx --test tests/model-card-r22b.test.ts tests/model-modality-r21.test.ts tests/model-modality-phase2.test.ts tests/execution-capability-r22.test.ts",
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "logSha256": "11d4bb27661cc88f01fe216122b19d61e5759a02a70ba126e908b69dbb53a77e"
+    },
+    {
+      "label": "Gateway regression and execution lock",
+      "command": "cd apps/auth-gateway && node --test tests/model-modality-r21.test.js tests/model-modality-phase2.test.js tests/execution-capability-r22.test.js",
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "logSha256": "150614100843820d05ca2da6300dd7dcb52a27245a139ea0a62104ab1469b5ce"
+    }
+  ],
+  "builds": [
+    {
+      "command": "cd apps/web && npm run build",
+      "exitCode": 0,
+      "logSha256": "d10c1d6bb0c61d1edd7acbff244eb5a0b6f9e033f43e0fdfd0c50ffcf3cad3e8"
+    },
+    {
+      "command": "cd apps/miniprogram && npm run build",
+      "exitCode": 0,
+      "logSha256": "9552888fb401c27550316af482f01675d54c4574526bce09e8b6ae28f1814b16"
+    },
+    {
+      "command": "pnpm --filter @paperbanana/paperbanana-api build",
+      "exitCode": 0,
+      "logSha256": "3cfb9e98c1be5a42fb3afb55aca7e339714f55a77b8f81fede25d757bb5b16fe"
+    },
+    {
+      "command": "pnpm --filter @paperbanana/paperbanana-api check",
+      "exitCode": 0,
+      "logSha256": "c950df47f90587493d7cc851c1423e7c21f479d0fc7dca46980dc837bb716024"
+    }
+  ],
+  "checks": [
+    {
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "exitCode": 0,
+      "logSha256": "4b51ceb5731b82fb3b9bee1ec0f0a2af83877edf5bf6578264bfabf47cdf029e"
+    },
+    {
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "exitCode": 0,
+      "logSha256": "dbbc800e3318e734ff721660de4fd635b08425652c62ec26790efaf840a2207e"
+    },
+    {
+      "command": "node scripts/sync-card-display.mjs --check",
+      "exitCode": 0,
+      "logSha256": "3a963a935b5f55bf2239d2be03f7d40af6b588a22cd07e5dee0bb5834bca39a9"
+    },
+    {
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "exitCode": 0,
+      "logSha256": "4d8dec325ae3aff990bacb21432685fa913be0cb671587f3e7301b6fdb661e5c"
+    },
+    {
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "exitCode": 0,
+      "logSha256": "9ee4bdd47dfecca12bf50aaadb0a5c767e0e9c0432792d018ec229054d178aad"
+    },
+    {
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "exitCode": 0,
+      "logSha256": "942c2fac1e38f16f6af13feb020c3065d4b83930667f9945c84f6b1b6da601b2"
+    },
+    {
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "exitCode": 0,
+      "logSha256": "63756e45e75654565ada9980f419875de81a3f7632c9b88d1bc04bd332e09c8d"
+    },
+    {
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "exitCode": 0,
+      "logSha256": "695c41186b6c96bb3696955207e4e301d365ea11a51fdc9702fb151b64bf1a8b"
+    },
+    {
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "exitCode": 0,
+      "logSha256": "7d41b0c301e108d92e770f6cfcc7d262686c308dc74390c70519f9b581f8457e"
+    },
+    {
+      "command": "node scripts/capture-tokendance-pages.mjs --check",
+      "exitCode": 0,
+      "logSha256": "fc0bfb9181acb34ac82a95bd204748b9890710040aec275341c22164d833e397"
+    },
+    {
+      "command": "node scripts/sync-reference-upload.mjs --check",
+      "exitCode": 0,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "node scripts/sync-thinking.mjs --check",
+      "exitCode": 0,
+      "logSha256": "4b4be58198262eacdb8e47e75014e76e9b685300732a48635c017c912ab2dbc5"
+    },
+    {
+      "command": "node scripts/sync-agent-knowledge.mjs --check",
+      "exitCode": 0,
+      "logSha256": "9ca9ce18b1f86bdd5382d7ae2d56d506264e239f2751f7a0a004b310958508b1"
+    },
+    {
+      "command": "node scripts/sync-model-version-report.mjs --check",
+      "exitCode": 0,
+      "logSha256": "2c2c900b126b92e63eb9f61218a8fb476effd8c0db2202d1433788dcb88d5961"
+    },
+    {
+      "command": "node scripts/report-model-card-r10.mjs --frozen-head --check",
+      "exitCode": 0,
+      "logSha256": "cd31e4eccf8468ef4b978b08b4cd9ba5531601651c597909e33de6b2c5b231ac"
+    },
+    {
+      "command": "node scripts/report-model-card-r11.mjs --frozen-head --frozen-main --check",
+      "exitCode": 0,
+      "logSha256": "2d8833872e716a15610c7506eb1faee08ab9bb18d645f2db7ae635b78c3136e9"
+    },
+    {
+      "command": "node scripts/report-model-card-r12.mjs --frozen-head --check",
+      "exitCode": 0,
+      "logSha256": "4b9b7bc3db19c81cfc98fa9f934c6d4e5991e5a449062be14874334060b50866"
+    }
+  ],
+  "miniBytes": {
+    "source": 1568957,
+    "runtime": 1143962,
+    "media": 189978,
+    "limit": 1572864,
+    "headroom": 3907,
+    "olderStricterLimit": 1569427,
+    "olderStricterHeadroom": 470
+  },
+  "contrast": {
+    "minimumActiveBackgroundRatio": 4.26,
+    "requiredRatio": 3,
+    "disabledOpacity": "Existing disabled-card styling retained; active-background ratios do not claim disabled opacity contrast."
+  },
+  "evidence": {
+    "tokenDanceExactPages": 67,
+    "tokenDanceHistoricalUnknowns": 7,
+    "bailianPhase2Identities": 34,
+    "bailianR10KimiIdentities": 1,
+    "sourceDataUnchanged": true,
+    "date": "2026-11-09"
+  },
+  "dockerContext": {
+    "coreBundles": 4,
+    "benchmarkImageBundles": 16,
+    "gatewayRuntimeImportBundles": 1,
+    "imagesBuilt": 0
+  },
+  "environment": {
+    "browser": "Offline Playwright Chrome launch failed with SIGABRT / kill EPERM before page creation. No browser screenshots.",
+    "browserLogSha256": "c20a0c9de2e26bed4b23e493b8b16c62a9c8f5543d35b57f9ccd1a78fc7d7c10",
+    "nativeWeChat": "Not available; native visual check remains pending.",
+    "viewportChecks": "1280/390 and compact-dialog DOM/CSS structure and interaction, not actual browser layout.",
+    "previousLimits": "Earlier broad Core/Gateway socket-suite EPERM failures and unrelated sync-workflow drift remain documented in Phases A/B; no related files were changed."
+  },
+  "resolvedValidationFindings": [
+    "Existing presentation expectations were updated with per-change reasons: channel wording, decorative question badges and keyboard/evidence controls. Facts, selection and execution assertions retained.",
+    "One intermediate scripts run overlapped Mini tsc before picker compaction and read the temporary larger JS output. Repeated after the complete build: all 50 pass; both byte ceilings remain unchanged."
+  ]
+}

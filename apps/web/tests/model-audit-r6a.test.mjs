@@ -1,6 +1,11 @@
+import reviewI4 from '../../../config/channel-audit/review-r24-20261110.json' with { type: 'json' }
+import {expectedHumanUrl} from '../../../test-support/source-links-i3-r24.mjs'
 import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
+import vm from 'node:vm'
+import { fileURLToPath } from 'node:url'
+import { loadCard, archivedAuditText } from '../../../scripts/lib/model-card-audit.mjs'
 import React from 'react'
 import { render, screen, cleanup, fireEvent } from '@testing-library/react'
 import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
@@ -8,12 +13,34 @@ import { modelCardSpecifications } from '../src/lib/modelCardSpecifications.js'
 import { ModelSpecifications } from '../src/components/ModelSpecifications.jsx'
 import { mergeCardFacts } from '../src/lib/catalogCardFacts.js'
 import { modalityIconStates } from '../src/lib/modelModalityIcons.js'
+import channelSnapshot from '../../../config/channel-audit/tokendance-catalog-snapshot-20261109b.json' with { type: 'json' }
 import baseline from './fixtures/model-modalities-main-c7b6a2fc.json' with { type: 'json' }
+import schemaExpectations from './fixtures/r22-exact-schema-expectations.json' with { type: 'json' }
+import {evidence as phase2} from '../../../test-support/phase2-modality.mjs'
+import reviewI7 from '../../../config/channel-audit/review-r27-20261110.json' with { type: 'json' }
 
 const require = createRequire(import.meta.url)
 const mini = require('../../miniprogram/miniprogram/utils/model-audit.js')
 const rows = Object.entries(STATIC_MODEL_REGISTRY).flatMap(([provider, entry]) => entry.models.map(model => ({ provider, model })))
 afterEach(cleanup)
+const root = fileURLToPath(new URL('../../../', import.meta.url))
+const beforeCard = await loadCard(root, 'd1fe6ff6')
+
+test('the pre-phase-2 static baseline still retains every previously supported modality', () => {
+  const source = archivedAuditText(root, 'd1fe6ff6', 'apps/web/src/lib/staticModelCatalog.js').replace(/export const /g, 'const ')
+  const registry = vm.runInNewContext(source + ';STATIC_MODEL_REGISTRY')
+  let count = 0
+  for (const [provider, entry] of Object.entries(registry)) for (const model of entry.models) {
+    count++
+    if (provider === 'tokendance') continue // all 74 are separately asserted against the phase-1 channel snapshot below
+    const card = beforeCard(provider, model), caps = model.capabilities || {}
+    if (model.roles.some(role => ['vision','edit','source-image','reference-image'].includes(role)) || caps.referenceImages || caps.requiresSourceImage || caps.imageEditing || caps.imageEditMode === 'direct-edit')
+      assert.ok(card.fields.inputModalities.value?.includes('image'), provider+'/'+model.id)
+    for (const field of ['inputModalities','outputModalities']) for (const value of baseline.modalities[provider+'/'+model.id]?.[field] || [])
+      assert.ok(card.fields[field].value?.includes(value), provider+'/'+model.id+'/'+value)
+  }
+  assert.equal(count,1064)
+})
 
 test('every static card retains main supported modalities and all product image-input requirements', () => {
   assert.equal(baseline.commit, 'c7b6a2fc')
@@ -24,10 +51,34 @@ test('every static card retains main supported modalities and all product image-
     const needsImage = model.roles.some(role => ['vision', 'edit', 'source-image', 'reference-image'].includes(role))
       || caps.referenceImages || caps.requiresSourceImage || caps.imageEditing || caps.imageEditMode === 'direct-edit'
       || model.operations?.some(op => op.requiresSourceImage || op.requiresImageInput)
-    if (needsImage) assert.ok(card.fields.inputModalities.value?.includes('image'), key + ' requires image input')
+    if (provider === 'tokendance') {
+      const architecture = channelSnapshot.portal[model.id]?.architecture
+      for (const [field, wire] of [['inputModalities', 'input_modalities'], ['outputModalities', 'output_modalities']]) {
+        assert.deepEqual(card.fields[field].value, architecture?.[wire] || null, key + '/' + field)
+        assert.equal(card.fields[field].state, architecture ? 'known' : 'unknown', key + '/' + field)
+      }
+      assert.deepEqual(model, before, key + ' display must not mutate execution data')
+      continue
+    }
+    const reviewedState = (field, modality) => phase2.tables[key]
+      ? phase2.tables[key][field].includes(modality) ? 'supported' : 'unsupported'
+      : phase2.reviews[key]?.[field]?.decisions[modality]
+    const checkSupport = (field, modality) => {
+      const state = reviewedState(field, modality), fact = card.fields[field]
+      const exact = schemaExpectations.find(row => row.key === key && row.field === field && row.modality === modality)
+      if (state) assert.equal(fact.value?.includes(modality) || false, state === 'supported', key + '/' + field + '/' + modality)
+      else if (exact) {
+        assert.deepEqual(fact.value, exact.expected, key + '/exact-schema')
+        assert.equal(fact.sourceUrl, exact.sourceUrl)
+        assert.equal(fact.verifiedAt, exact.checkedAt)
+        assert.ok(!fact.unsupportedModalities?.includes(modality), 'schema omission remains unknown')
+      } else assert.ok(fact.value?.includes(modality), key + '/' + field + ' lost main ' + modality)
+      if (state) assert.equal(fact.unsupportedModalities?.includes(modality) || false, state === 'unsupported', key + '/reviewed-' + modality)
+    }
+    if (needsImage) checkSupport('inputModalities', 'image')
     for (const field of ['inputModalities', 'outputModalities']) {
       for (const modality of baseline.modalities[key]?.[field] || []) {
-        assert.ok(card.fields[field].value?.includes(modality), key + '/' + field + ' lost main ' + modality)
+        checkSupport(field, modality)
       }
     }
     assert.deepEqual(model, before, key + ' display must not mutate execution data')
@@ -42,9 +93,11 @@ test('Mini runtime projection agrees with Web for all four fields across the who
       assert.deepEqual(small[field].value, web[field].value, provider + '/' + model.id + '/' + field)
       assert.equal(small[field].state, web[field].state, provider + '/' + model.id + '/' + field)
       assert.equal(small[field].provenance, web[field].provenance, provider + '/' + model.id + '/' + field)
-      // R12B omits evidence URLs the picker never renders. Its retained field
+      // R28 retains every fal field URL for title parity. Other R12B omitted URLs stay compact. Its retained field
       // reference must still be exact; the visible card source is tested below.
-      assert.equal(small[field].sourceUrl, web[field].sourceUrl === mini.auditedModelSpecs(provider, model.id).sourceUrl ? web[field].sourceUrl : null, provider + '/' + model.id + '/' + field + '/source')
+      const reviewed = (provider === 'fal' ? web[field].sourceUrl : null) || reviewI7.reviews[provider + '/' + model.id]?.[field]?.sourceUrl
+        || reviewI7.preservedFieldSources[provider + '/' + model.id]?.[field]
+      assert.equal(small[field].sourceUrl, reviewed || (reviewI4.models[provider + '/' + model.id]?.fields[field] ? reviewI4.models[provider + '/' + model.id].fields[field].sourceUrl : expectedHumanUrl(web[field].sourceUrl) === mini.auditedModelSpecs(provider, model.id).sourceUrl ? expectedHumanUrl(web[field].sourceUrl) : null), provider + '/' + model.id + '/' + field + '/source')
     }
     assert.equal(mini.auditedModelSpecs(provider, model.id).sourceUrl, modelCardSpecifications(provider, model).sources[0] || null, provider + '/' + model.id + '/visible-source')
   }
@@ -57,7 +110,7 @@ test('partial lists are unions, omissions stay unknown, and a source-image opera
   const result = mergeCardFacts(audit, { inputModalities: prior }, { operations: [{ requiresImageInput: true }] })
   assert.deepEqual(result.fields.inputModalities.value, ['text', 'video', 'image'])
   assert.equal(result.fields.inputModalities.provenance, 'product')
-  assert.deepEqual(modalityIconStates('', result.fields.inputModalities).map(x => x.state), ['supported', 'supported', 'unknown', 'supported'])
+  assert.deepEqual(modalityIconStates('', result.fields.inputModalities).map(x => x.state), ['supported', 'supported', 'supported', 'unknown'])
   assert.equal(result.fields.totalContextTokens.state, 'unknown')
   const qualified = { ...prior, displayValue: '文本、视频（需指定采样参数）' }
   assert.equal(mergeCardFacts(audit, { inputModalities: qualified }).fields.inputModalities.displayValue, qualified.displayValue)
@@ -101,6 +154,6 @@ test('image-role cards expose known token limits and only pure image models with
   assert.ok(showing >= 24)
   assert.ok(notApplicable > 0)
   const gemini = modelCardSpecifications('gemini', STATIC_MODEL_REGISTRY.gemini.models.find(m => m.id === 'gemini-nano-banana-2.1'))
-  assert.equal(gemini.context, '未知', 'an input limit is not a total context window')
+  assert.equal(gemini.context, '未公布', 'an input limit is not a total context window')
   assert.match(gemini.maxOutput, / tokens$/)
 })

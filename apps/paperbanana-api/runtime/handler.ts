@@ -7,6 +7,7 @@ import { accountImagePrefix } from '../src/image-library.js'
 import {readOptimizationMaterials} from '../src/optimization-materials.js'
 import { readDrawingActivity } from '../src/drawing-activity.js'
 import { catalogAbsenceReason, verifyPublicCatalogOmissions, PROVIDER_CATALOGS, readProviderCatalog, normalizeCatalogModel, exactModelDetails, mergeCatalogRows, type CatalogContinuation, type CatalogResult } from '../../../packages/api/src/provider-catalog.js'
+import { registryCardProjection } from '../../../packages/api/src/model-card-projection.mjs'
 import {admitJournal,journalFields,JOURNAL_VERSION,journalPrompt,journalFigureContent,JOURNAL_CONTENT,journalError} from '../../../packages/api/src/journal-rules.js'
 import {inspectJournalFile} from '../src/journal-export.js'
 import {indexVisualObservation,type VisualIssue} from '../../../packages/api/src/review-adjudication.js'
@@ -4767,6 +4768,14 @@ function mergeDiscoveredCatalog(provider: string, registry: ProviderModelRegistr
 function enrichSpecificPages(provider: string, registry: ProviderModelRegistry) {
   return { ...registry, models: registry.models.map(model => {
     const exact = exactModelDetails(provider, model.id)
+    if (exact?.specifications.modalityFacts) {
+      const facts = exact.specifications.modalityFacts
+      return { ...model, specificModelSpecifications: exact.specifications,
+        specifications: { ...model.specifications, version: 1 as const,
+          ...(facts.inputModalities ? { officialInputModalities: facts.inputModalities.value ?? undefined } : {}),
+          ...(facts.outputModalities ? { officialOutputModalities: facts.outputModalities.value ?? undefined } : {}), modalityFacts: facts },
+      }
+    }
     return exact ? { ...model, specificModelSpecifications: exact.specifications } : model
   }).map(applyModelLifecycle) }
 }
@@ -4860,7 +4869,10 @@ export async function modelRegistry(body: ModelRegistryBody) {
   }))
   for (const [provider, registry] of Object.entries(providers)) {
     if (!registry) continue
-    registry.models = enrichSpecificPages(provider, registry).models.map(model => withModelAudit(provider, model))
+    registry.models = enrichSpecificPages(provider, registry).models.map(model => {
+      const audited = withModelAudit(provider, model)
+      return { ...audited, cardSpecifications: registryCardProjection(provider, audited, audited.auditSpecifications, audited.auditLifecycle, MODEL_AUDIT_DATA.sourceChecks) }
+    })
     registry.models = registry.models.map(model => ({ ...model, capabilities: {
       ...model.capabilities,
       referenceGeneration: referenceGenerationSupport({accessProvider:provider,modelId:model.id}, model),

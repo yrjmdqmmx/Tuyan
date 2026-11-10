@@ -1,3 +1,5 @@
+import { modelSourceRows } from '../src/lib/modelCardSources.js'
+import { sourceTitle } from '../../../packages/api/src/card-presentation.mjs'
 import test, {afterEach, beforeEach} from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -35,11 +37,11 @@ test('R6B 4: all nine qualified windows put tokens before the qualifier, retaini
   }
 })
 
-test('R6B 6: unknown modalities use muted icons without question badges and output has a distinct icon', () => {
+test('R6B 6: unknown modalities use solid grey icons without decorative badges and output has a distinct icon', () => {
   const {container}=render(React.createElement(ModelSpecifications,{provider:'custom',model:{id:'unknown'}}))
-  assert.equal(screen.getAllByRole('img',{name:/：未知$/}).length,8)
+  assert.equal(screen.getAllByRole('img',{name:/^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/}).length,8)
   assert.equal(container.querySelectorAll('.model-modality-icon.is-unknown > svg').length,8)
-  assert.equal(container.querySelectorAll('sup').length,0)
+  assert.equal(container.querySelectorAll('.is-unknown .model-modality-question[aria-hidden="true"]').length,0)
   const context=screen.getByText('上下文窗口').querySelector('svg')
   const output=screen.getByText('最大输出').querySelector('svg')
   assert.ok(context.classList.contains('lucide-scan-text'))
@@ -95,7 +97,7 @@ test('R6B 9: touch evidence and deprecation sheets use content height and named 
       assert.equal(window.getComputedStyle(dialog).height,'auto')
       for(const link of within(dialog).getAllByRole('link')) {
         assert.match(link.textContent,/^(下线公告|官方文档|原厂规格) · /)
-        assert.ok(link.textContent.endsWith(new URL(link.href).hostname))
+        assert.equal(link.textContent, source ? modelSourceRows(modelCardSpecifications(provider, model)).find(row => row.url === link.getAttribute('href')).label : '下线公告 · ' + sourceTitle(link.href))
       }
       assert.doesNotMatch(dialog.textContent,/https:\/\//)
       view.unmount()

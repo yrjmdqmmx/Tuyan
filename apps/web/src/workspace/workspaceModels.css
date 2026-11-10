@@ -121,6 +121,7 @@
 .tw-catalog-card .model-specs dd { min-width:0; white-space:normal; overflow-wrap:anywhere; }
 .tw-catalog-card .model-modality-icons { gap:7px; }
 .tw-catalog-card .model-modality-icon svg { width:18px; height:18px; }
+.tw-catalog-card .model-modality-icon { width:18px; height:18px; flex-basis:18px; }
 .tw-catalog-card .model-spec-footer { display:flex; flex-wrap:wrap; align-items:center; gap:8px; min-width:0; }
 /* Wrap before shrinking the source; only a domain wider than the card is ellipsized. */
 .tw-catalog-card .model-spec-sources.is-compact { display:flex; flex:1 0 auto; width:max-content; min-width:auto; max-width:100%; flex-wrap:nowrap; align-items:center; gap:4px; min-height:24px; margin:0; padding:2px 0; }

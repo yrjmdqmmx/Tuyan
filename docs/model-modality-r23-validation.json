@@ -1,0 +1,174 @@
+{
+  "phase": "R23 Phase E",
+  "base": "8c456709",
+  "startingHead": "42ee9ffd",
+  "branch": "codex/model-modality-audit",
+  "networkRequests": 0,
+  "gitWrites": 0,
+  "cardsPerClient": 1064,
+  "vendorFieldsPerClient": 166,
+  "vendorLinkOffendingCards": {
+    "web": {
+      "before": 14,
+      "after": 0
+    },
+    "mini": {
+      "before": 37,
+      "after": 0
+    }
+  },
+  "visibleMachineLinkCards": {
+    "web": {
+      "before": 1,
+      "after": 0
+    },
+    "mini": {
+      "before": 0,
+      "after": 0
+    }
+  },
+  "executionAndPickerNames": {
+    "models": 1064,
+    "fourExecutionLocks": "passed",
+    "namesUnchanged": 1064
+  },
+  "executionFixture": {
+    "file": "test-support/fixtures/execution-capability-8c456709.json.gz",
+    "uncompressedBytes": 13538408,
+    "gzipBytes": 578207,
+    "savedBytes": 12960201,
+    "uncompressedSha256": "9766f063571be96a01bb81a120010483c219ddfd7d6ffe2cc822d62f4ff32e41",
+    "gzipLevel": 9,
+    "mtime": 0,
+    "filenameHeader": false
+  },
+  "miniBytes": {
+    "source": 1569099,
+    "runtime": 1143762,
+    "media": 189978,
+    "limit": 1572864,
+    "remaining": 3765,
+    "olderLimit": 1569427
+  },
+  "suites": {
+    "web": {
+      "cwd": "apps/web",
+      "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+      "status": "passed",
+      "tests": 1479,
+      "pass": 1479,
+      "fail": 0,
+      "skipped": 0
+    },
+    "mini": {
+      "cwd": "apps/miniprogram",
+      "command": "npm test",
+      "status": "passed",
+      "tests": 168,
+      "pass": 168,
+      "fail": 0,
+      "skipped": 0
+    },
+    "scripts": {
+      "cwd": ".",
+      "command": "node --test scripts/*.test.mjs",
+      "status": "passed",
+      "tests": 56,
+      "pass": 56,
+      "fail": 0,
+      "skipped": 0
+    },
+    "sharedApi": {
+      "cwd": ".",
+      "command": "node --test packages/api/src/*.test.js",
+      "status": "passed",
+      "tests": 33,
+      "pass": 33,
+      "fail": 0,
+      "skipped": 0
+    },
+    "core": {
+      "cwd": "apps/paperbanana-api",
+      "command": "node --import tsx --test tests/execution-capability-r22.test.ts tests/model-card-r22b.test.ts tests/model-modality-phase2.test.ts",
+      "status": "passed",
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0
+    },
+    "gateway": {
+      "cwd": ".",
+      "command": "node --test apps/auth-gateway/tests/execution-capability-r22.test.js apps/auth-gateway/tests/model-modality-phase2.test.js",
+      "status": "passed",
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "builds": {
+    "web": "passed",
+    "mini": "passed"
+  },
+  "maintenanceChecks": [
+    {
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/sync-card-display.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/freeze-audit-sources.mjs --check",
+      "exitCode": 0
+    }
+  ],
+  "abbrevChecks": {
+    "7": "passed",
+    "12": "passed",
+    "injection": "GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=core.abbrev GIT_CONFIG_VALUE_0=<7 or 12>"
+  },
+  "browser": {
+    "status": "blocked",
+    "reason": "Browser plugin unavailable; local Vite server: listen EPERM 127.0.0.1:5183",
+    "domAndCompiledMiniDialogs": "passed"
+  },
+  "targetedCoreGatewayEnvironmentalFailures": [],
+  "repositoryBytes": {
+    "trackedBefore": 546786785,
+    "existingTrackedAfter": 533279693,
+    "newIntendedFiles": 593288,
+    "includingNewFilesAfter": 533872981,
+    "deltaIncludingNewFiles": -12913804,
+    "method": "sum stat sizes over git ls-files -z; omit deleted paths; add git ls-files --others --exclude-standard -z for new intended files; no staging; .git, dependencies and ignored build output excluded"
+  }
+}

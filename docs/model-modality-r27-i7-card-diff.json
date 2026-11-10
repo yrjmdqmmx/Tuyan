@@ -1,0 +1,2525 @@
+{
+  "phase": "R27 Phase I7",
+  "baseline": "d1c6399493f4e216cb0cc482c5312cbea8ed2f8d",
+  "cardsPerClient": 1064,
+  "changedCardsPerClient": 15,
+  "unchangedCardsPerClient": 1049,
+  "scope": "Only image input and its source/date presentation. All other presentation fields compare exactly to HEAD.",
+  "rows": [
+    {
+      "key": "ideogram/ideogram-v4",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+          "after": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+          "after": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+          "after": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "before": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4",
+          "after": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4"
+        },
+        {
+          "path": "/web/data/sources/2",
+          "before": "https://developer.ideogram.ai/",
+          "after": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4"
+        },
+        {
+          "path": "/web/data/sources/3",
+          "before": "https://developer.ideogram.ai/api-reference/generate-images/generate-v4",
+          "after": "https://developer.ideogram.ai/"
+        },
+        {
+          "path": "/web/data/sources/4",
+          "after": "https://developer.ideogram.ai/api-reference/generate-images/generate-v4"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+          "after": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "before": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4",
+          "after": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4"
+        },
+        {
+          "path": "/web/data/channelSources/2",
+          "before": "https://developer.ideogram.ai/",
+          "after": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4"
+        },
+        {
+          "path": "/web/data/channelSources/3",
+          "before": "https://developer.ideogram.ai/api-reference/generate-images/generate-v4",
+          "after": "https://developer.ideogram.ai/"
+        },
+        {
+          "path": "/web/data/channelSources/4",
+          "after": "https://developer.ideogram.ai/api-reference/generate-images/generate-v4"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+          "after": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · Ideogram · Ideogram 4",
+          "after": "官方文档 · Ideogram · Ideogram 4.0 编辑接口"
+        },
+        {
+          "path": "/web/sources/1/url",
+          "before": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4",
+          "after": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4"
+        },
+        {
+          "path": "/web/sources/1/label",
+          "before": "官方文档 · Ideogram · Generate V4（V1 接口，图像生成）",
+          "after": "官方文档 · Ideogram · Ideogram 4"
+        },
+        {
+          "path": "/web/sources/2/url",
+          "before": "https://developer.ideogram.ai/",
+          "after": "https://developer.ideogram.ai/v1/api-reference/generate-images/generate-v4"
+        },
+        {
+          "path": "/web/sources/2/label",
+          "before": "官方文档 · Ideogram · 文档首页",
+          "after": "官方文档 · Ideogram · Generate V4（V1 接口，图像生成）"
+        },
+        {
+          "path": "/web/sources/3/url",
+          "before": "https://developer.ideogram.ai/api-reference/generate-images/generate-v4",
+          "after": "https://developer.ideogram.ai/"
+        },
+        {
+          "path": "/web/sources/3/label",
+          "before": "官方文档 · Ideogram · Generate V4（API 参考，图像生成）",
+          "after": "官方文档 · Ideogram · 文档首页"
+        },
+        {
+          "path": "/web/sources/4",
+          "after": {
+            "url": "https://developer.ideogram.ai/api-reference/generate-images/generate-v4",
+            "label": "官方文档 · Ideogram · Generate V4（API 参考，图像生成）"
+          }
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · Ideogram · Ideogram 4（2026-11-09）",
+          "after": "渠道资料 · Ideogram · Ideogram 4.0 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · Ideogram · Ideogram 4.0 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · Ideogram · Ideogram 4（2026-11-09）",
+          "after": "渠道资料 · Ideogram · Ideogram 4.0 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · Ideogram · Ideogram 4.0 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+          "after": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · Ideogram · Ideogram 4",
+          "after": "官方文档 · Ideogram · Ideogram 4.0 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：图研既有核实",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：图研既有核实"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+          "after": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+          "after": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4"
+        }
+      ]
+    },
+    {
+      "key": "fal/bytedance/seedream/v5/flash/text-to-image",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · Seedream v5 Flash API 文档",
+          "after": "官方文档 · fal · Seedream v5 Flash 编辑接口"
+        },
+        {
+          "path": "/web/sources/1/url",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/1/label",
+          "before": "官方文档 · fal · Seedream v5 Flash Edit API 文档",
+          "after": "官方文档 · fal · Seedream v5 Flash API 文档"
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · Seedream v5 Flash Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · Seedream v5 Flash 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Seedream v5 Flash 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · Seedream v5 Flash Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · Seedream v5 Flash 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Seedream v5 Flash 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · Seedream v5 Flash API 文档",
+          "after": "官方文档 · fal · Seedream v5 Flash 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：图研既有核实",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：图研既有核实"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api"
+        }
+      ]
+    },
+    {
+      "key": "fal/bytedance/seedream/v5/pro/text-to-image",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · Seedream（v5，pro） API 文档",
+          "after": "官方文档 · fal · Seedream v5 pro 编辑接口"
+        },
+        {
+          "path": "/web/sources/1",
+          "after": {
+            "url": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v5，pro） API 文档"
+          }
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · Seedream（v5，pro Text To Image API 文档）（2026-11-09）",
+          "after": "渠道资料 · fal · Seedream v5 pro 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Seedream v5 pro 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · Seedream（v5，pro Text To Image API 文档）（2026-11-09）",
+          "after": "渠道资料 · fal · Seedream v5 pro 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Seedream v5 pro 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · Seedream（v5，pro） API 文档",
+          "after": "官方文档 · fal · Seedream v5 pro 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+          "after": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api"
+        }
+      ]
+    },
+    {
+      "key": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · Seedream（v4.5） API 文档",
+          "after": "官方文档 · fal · Seedream v4.5 编辑接口"
+        },
+        {
+          "path": "/web/sources/1",
+          "after": {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v4.5） API 文档"
+          }
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · Bytedance Seedream（v4.5 Text To Image API 文档）（2026-11-09）",
+          "after": "渠道资料 · fal · Seedream v4.5 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Seedream v4.5 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · Bytedance Seedream（v4.5 Text To Image API 文档）（2026-11-09）",
+          "after": "渠道资料 · fal · Seedream v4.5 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Seedream v4.5 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · Seedream（v4.5） API 文档",
+          "after": "官方文档 · fal · Seedream v4.5 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api"
+        }
+      ]
+    },
+    {
+      "key": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · Seedream（v4） API 文档",
+          "after": "官方文档 · fal · Seedream v4 编辑接口"
+        },
+        {
+          "path": "/web/sources/1",
+          "after": {
+            "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+            "label": "官方文档 · fal · Seedream（v4） API 文档"
+          }
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · Bytedance Seedream V4 Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · Seedream v4 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Seedream v4 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · Bytedance Seedream V4 Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · Seedream v4 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Seedream v4 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · Seedream（v4） API 文档",
+          "after": "官方文档 · fal · Seedream v4 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+          "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api"
+        }
+      ]
+    },
+    {
+      "key": "fal/fal-ai/flux-2-pro",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+          "after": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+          "after": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+          "after": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "after": "https://fal.ai/models/fal-ai/flux-2-pro/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+          "after": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "after": "https://fal.ai/models/fal-ai/flux-2-pro/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+          "after": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · FLUX 2 Pro API 文档",
+          "after": "官方文档 · fal · FLUX 2 Pro 编辑接口"
+        },
+        {
+          "path": "/web/sources/1",
+          "after": {
+            "url": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+            "label": "官方文档 · fal · FLUX 2 Pro API 文档"
+          }
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · FLUX.2 [pro] API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · FLUX 2 Pro 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · FLUX 2 Pro 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · FLUX.2 [pro] API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · FLUX 2 Pro 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · FLUX 2 Pro 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+          "after": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · FLUX 2 Pro API 文档",
+          "after": "官方文档 · fal · FLUX 2 Pro 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+          "after": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+          "after": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api"
+        }
+      ]
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · FLUX.3 Klein Base API 文档",
+          "after": "官方文档 · fal · FLUX.3 Klein Base 编辑接口"
+        },
+        {
+          "path": "/web/sources/1/url",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/1/label",
+          "before": "官方文档 · fal · FLUX.3 Klein Base Edit Image API 文档",
+          "after": "官方文档 · fal · FLUX.3 Klein Base API 文档"
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · FLUX.3 Klein Base Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · FLUX.3 Klein Base 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · FLUX.3 Klein Base 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · FLUX.3 Klein Base Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · FLUX.3 Klein Base 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · FLUX.3 Klein Base 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · FLUX.3 Klein Base API 文档",
+          "after": "官方文档 · fal · FLUX.3 Klein Base 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：图研既有核实",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：图研既有核实"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api"
+        }
+      ]
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/klein/text-to-image",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · FLUX.3 Klein API 文档",
+          "after": "官方文档 · fal · FLUX.3 Klein 编辑接口"
+        },
+        {
+          "path": "/web/sources/1/url",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/1/label",
+          "before": "官方文档 · fal · FLUX.3 Klein Edit Image API 文档",
+          "after": "官方文档 · fal · FLUX.3 Klein API 文档"
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · FLUX.3 Klein Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · FLUX.3 Klein 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · FLUX.3 Klein 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · FLUX.3 Klein Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · FLUX.3 Klein 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · FLUX.3 Klein 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · FLUX.3 Klein API 文档",
+          "after": "官方文档 · fal · FLUX.3 Klein 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：图研既有核实",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：图研既有核实"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api"
+        }
+      ]
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/text-to-image",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · FLUX.3 API 文档",
+          "after": "官方文档 · fal · FLUX.3 编辑接口"
+        },
+        {
+          "path": "/web/sources/1/url",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/1/label",
+          "before": "官方文档 · fal · FLUX.3 Edit Image API 文档",
+          "after": "官方文档 · fal · FLUX.3 API 文档"
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · FLUX 3 Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · FLUX.3 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · FLUX.3 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · FLUX 3 Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · FLUX.3 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · FLUX.3 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · FLUX.3 API 文档",
+          "after": "官方文档 · fal · FLUX.3 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：图研既有核实",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：图研既有核实"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+          "after": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api"
+        }
+      ]
+    },
+    {
+      "key": "fal/openai/gpt-image-2.5/flare/text-to-image",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · GPT Image 2.5 Flare API 文档",
+          "after": "官方文档 · fal · GPT Image 2.5 Flare 编辑接口"
+        },
+        {
+          "path": "/web/sources/1",
+          "after": {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Flare API 文档"
+          }
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · GPT Image 2.5 Flare Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · GPT Image 2.5 Flare 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · GPT Image 2.5 Flare 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · GPT Image 2.5 Flare Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · GPT Image 2.5 Flare 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · GPT Image 2.5 Flare 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · GPT Image 2.5 Flare API 文档",
+          "after": "官方文档 · fal · GPT Image 2.5 Flare 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api"
+        }
+      ]
+    },
+    {
+      "key": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · GPT Image 2.5 Sunburst API 文档",
+          "after": "官方文档 · fal · GPT Image 2.5 Sunburst 编辑接口"
+        },
+        {
+          "path": "/web/sources/1",
+          "after": {
+            "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+            "label": "官方文档 · fal · GPT Image 2.5 Sunburst API 文档"
+          }
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · GPT Image 2.5 Sunburst Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · GPT Image 2.5 Sunburst 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · GPT Image 2.5 Sunburst 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · GPT Image 2.5 Sunburst Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · GPT Image 2.5 Sunburst 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · GPT Image 2.5 Sunburst 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · GPT Image 2.5 Sunburst API 文档",
+          "after": "官方文档 · fal · GPT Image 2.5 Sunburst 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+          "after": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api"
+        }
+      ]
+    },
+    {
+      "key": "fal/xai/grok-imagine-image",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/edit/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/edit/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/edit/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/edit/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/edit/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · Grok Imagine Image API 文档",
+          "after": "官方文档 · fal · Grok Imagine Image 编辑接口"
+        },
+        {
+          "path": "/web/sources/1",
+          "after": {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/api",
+            "label": "官方文档 · fal · Grok Imagine Image API 文档"
+          }
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · Grok Imagine Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · Grok Imagine Image 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Grok Imagine Image 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · Grok Imagine Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · Grok Imagine Image 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Grok Imagine Image 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/edit/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · Grok Imagine Image API 文档",
+          "after": "官方文档 · fal · Grok Imagine Image 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/edit/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/edit/api"
+        }
+      ]
+    },
+    {
+      "key": "fal/xai/grok-imagine-image/quality/text-to-image",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · Grok Imagine Image（Quality） API 文档",
+          "after": "官方文档 · fal · Grok Imagine Image Quality 编辑接口"
+        },
+        {
+          "path": "/web/sources/1",
+          "after": {
+            "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+            "label": "官方文档 · fal · Grok Imagine Image（Quality） API 文档"
+          }
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · Grok Imagine Image Quality Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · Grok Imagine Image Quality 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Grok Imagine Image Quality 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · Grok Imagine Image Quality Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · Grok Imagine Image Quality 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Grok Imagine Image Quality 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · Grok Imagine Image（Quality） API 文档",
+          "after": "官方文档 · fal · Grok Imagine Image Quality 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+          "after": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api"
+        }
+      ]
+    },
+    {
+      "key": "fal/krea/v3/text-to-image",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/krea/v3/text-to-image/api",
+          "after": "https://fal.ai/models/krea/v3/edit/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/krea/v3/text-to-image/api",
+          "after": "https://fal.ai/models/krea/v3/edit/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/krea/v3/text-to-image/api",
+          "after": "https://fal.ai/models/krea/v3/edit/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "before": "https://fal.ai/models/krea/v3/edit/api",
+          "after": "https://fal.ai/models/krea/v3/text-to-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/krea/v3/text-to-image/api",
+          "after": "https://fal.ai/models/krea/v3/edit/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "before": "https://fal.ai/models/krea/v3/edit/api",
+          "after": "https://fal.ai/models/krea/v3/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/krea/v3/text-to-image/api",
+          "after": "https://fal.ai/models/krea/v3/edit/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · Krea 3 API 文档",
+          "after": "官方文档 · fal · Krea 3 编辑接口"
+        },
+        {
+          "path": "/web/sources/1/url",
+          "before": "https://fal.ai/models/krea/v3/edit/api",
+          "after": "https://fal.ai/models/krea/v3/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/1/label",
+          "before": "官方文档 · fal · V3 Edit API 文档",
+          "after": "官方文档 · fal · Krea 3 API 文档"
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · V3 Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · Krea 3 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Krea 3 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · V3 Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · Krea 3 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Krea 3 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/krea/v3/text-to-image/api",
+          "after": "https://fal.ai/models/krea/v3/edit/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · Krea 3 API 文档",
+          "after": "官方文档 · fal · Krea 3 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：图研既有核实",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：图研既有核实"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/krea/v3/text-to-image/api",
+          "after": "https://fal.ai/models/krea/v3/edit/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/krea/v3/text-to-image/api",
+          "after": "https://fal.ai/models/krea/v3/edit/api"
+        }
+      ]
+    },
+    {
+      "key": "fal/meta/muse-image/text-to-image",
+      "changes": [
+        {
+          "path": "/web/data/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+          "after": "https://fal.ai/models/meta/muse-image/edit/api"
+        },
+        {
+          "path": "/web/data/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/input",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/web/data/inputFact/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/web/data/inputFact/sourceUrl",
+          "before": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+          "after": "https://fal.ai/models/meta/muse-image/edit/api"
+        },
+        {
+          "path": "/web/data/inputFact/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/web/data/sources/0",
+          "before": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+          "after": "https://fal.ai/models/meta/muse-image/edit/api"
+        },
+        {
+          "path": "/web/data/sources/1",
+          "after": "https://fal.ai/models/meta/muse-image/text-to-image/api"
+        },
+        {
+          "path": "/web/data/channelSources/0",
+          "before": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+          "after": "https://fal.ai/models/meta/muse-image/edit/api"
+        },
+        {
+          "path": "/web/data/channelSources/1",
+          "after": "https://fal.ai/models/meta/muse-image/text-to-image/api"
+        },
+        {
+          "path": "/web/sources/0/url",
+          "before": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+          "after": "https://fal.ai/models/meta/muse-image/edit/api"
+        },
+        {
+          "path": "/web/sources/0/label",
+          "before": "官方文档 · fal · Muse Image API 文档",
+          "after": "官方文档 · fal · Muse Image 编辑接口"
+        },
+        {
+          "path": "/web/sources/1",
+          "after": {
+            "url": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+            "label": "官方文档 · fal · Muse Image API 文档"
+          }
+        },
+        {
+          "path": "/web/inputIcons/0/tooltip",
+          "before": "渠道资料 · fal · Muse Image Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · Muse Image 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/inputIcons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/web/inputIcons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/web/inputIcons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Muse Image 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/web/fieldSources/0",
+          "before": "输入：渠道公布",
+          "after": "输入：渠道公布（核实日期：2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/value",
+          "before": "文本",
+          "after": "文本、图像"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/0/tooltip",
+          "before": "渠道资料 · fal · Muse Image Text To Image API 文档（2026-11-09）",
+          "after": "渠道资料 · fal · Muse Image 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/state",
+          "before": "unknown",
+          "after": "supported"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/accessibleLabel",
+          "before": "图像：未知",
+          "after": "图像：支持"
+        },
+        {
+          "path": "/mini/card/specRows/0/icons/1/tooltip",
+          "before": "渠道未标注此模态",
+          "after": "渠道资料 · fal · Muse Image 编辑接口（2026-11-10）"
+        },
+        {
+          "path": "/mini/card/specRows/0/unknownText",
+          "before": "图像、视频、音频",
+          "after": "视频、音频"
+        },
+        {
+          "path": "/mini/card/specSources/0/url",
+          "before": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+          "after": "https://fal.ai/models/meta/muse-image/edit/api"
+        },
+        {
+          "path": "/mini/card/specSources/0/label",
+          "before": "官方文档 · fal · Muse Image API 文档",
+          "after": "官方文档 · fal · Muse Image 编辑接口"
+        },
+        {
+          "path": "/mini/card/auditMessage",
+          "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+          "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/value/1",
+          "after": "image"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/sourceUrl",
+          "before": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+          "after": "https://fal.ai/models/meta/muse-image/edit/api"
+        },
+        {
+          "path": "/mini/audit/fields/inputModalities/verifiedAt",
+          "before": "2026-11-09",
+          "after": "2026-11-10"
+        },
+        {
+          "path": "/mini/audit/sourceUrl",
+          "before": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+          "after": "https://fal.ai/models/meta/muse-image/edit/api"
+        }
+      ]
+    }
+  ]
+}

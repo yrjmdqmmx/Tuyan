@@ -1,0 +1,703 @@
+{
+  "web": [
+    {
+      "card": "bailian/kimi-k3",
+      "before": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+          "label": "官方文档 · 百炼 · Kimi K3 (Bailian hosted)"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+          "label": "官方文档 · 百炼 · 模型更新"
+        },
+        {
+          "url": "https://huggingface.co/moonshotai/Kimi-K3",
+          "label": "官方文档 · Hugging Face · Kimi K3 (Bailian hosted)"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+          "label": "官方文档 · 百炼 · Kimi K3（百炼托管）"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+          "label": "官方文档 · 百炼 · 模型更新"
+        },
+        {
+          "url": "https://huggingface.co/moonshotai/Kimi-K3",
+          "label": "官方文档 · Hugging Face · Kimi K3（百炼托管）"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3.5-plus",
+      "before": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "label": "官方文档 · 百炼 · 模型定价"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+        },
+        {
+          "url": "https://www.aliyun.com/notice/118728",
+          "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "label": "官方文档 · 百炼 · 模型定价"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3.5-plus-2026-02-15",
+      "before": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "label": "官方文档 · 百炼 · 模型定价"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+        },
+        {
+          "url": "https://www.aliyun.com/notice/118728",
+          "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "label": "官方文档 · 百炼 · 模型定价"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3.5-plus-2026-04-20",
+      "before": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "label": "官方文档 · 百炼 · 模型定价"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+        },
+        {
+          "url": "https://www.aliyun.com/notice/118728",
+          "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "label": "官方文档 · 百炼 · 模型定价"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3-max",
+      "before": [
+        {
+          "url": "https://www.aliyun.com/notice/118344",
+          "label": "下线公告 · 百炼 · 文档 118344"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/models",
+          "label": "官方文档 · 百炼 · 模型列表"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118344",
+          "label": "下线公告 · 百炼 · 部分历史主线模型下线通知"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/models",
+          "label": "官方文档 · 百炼 · 模型列表"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3-max-2025-09-23",
+      "before": [
+        {
+          "url": "https://www.aliyun.com/notice/118345",
+          "label": "下线公告 · 百炼 · 文档 118345"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/models",
+          "label": "官方文档 · 百炼 · 模型列表"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118345",
+          "label": "下线公告 · 百炼 · 部分历史快照模型下线通知"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/models",
+          "label": "官方文档 · 百炼 · 模型列表"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3-max-2026-01-23",
+      "before": [
+        {
+          "url": "https://www.aliyun.com/notice/118345",
+          "label": "下线公告 · 百炼 · 文档 118345"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/models",
+          "label": "官方文档 · 百炼 · 模型列表"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118345",
+          "label": "下线公告 · 百炼 · 部分历史快照模型下线通知"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/models",
+          "label": "官方文档 · 百炼 · 模型列表"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3-max-preview",
+      "before": [
+        {
+          "url": "https://www.aliyun.com/notice/118344",
+          "label": "下线公告 · 百炼 · 文档 118344"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/models",
+          "label": "官方文档 · 百炼 · 模型列表"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118344",
+          "label": "下线公告 · 百炼 · 部分历史主线模型下线通知"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/models",
+          "label": "官方文档 · 百炼 · 模型列表"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen-turbo",
+      "before": [
+        {
+          "url": "https://www.aliyun.com/notice/118177",
+          "label": "下线公告 · 百炼 · 文档 118177"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/models",
+          "label": "官方文档 · 百炼 · 模型列表"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118177",
+          "label": "下线公告 · 百炼 · 部分历史主线模型下线通知"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/models",
+          "label": "官方文档 · 百炼 · 模型列表"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3-coder-next",
+      "before": [
+        {
+          "url": "https://www.aliyun.com/notice/118345",
+          "label": "下线公告 · 百炼 · 文档 118345"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/models",
+          "label": "官方文档 · 百炼 · 模型列表"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118345",
+          "label": "下线公告 · 百炼 · 部分历史快照模型下线通知"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/models",
+          "label": "官方文档 · 百炼 · 模型列表"
+        }
+      ]
+    },
+    {
+      "card": "ark/deepseek-v4-flash-260425",
+      "before": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 文档 1159178"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 模型发布公告"
+        }
+      ]
+    },
+    {
+      "card": "ark/deepseek-v4-flash-ga-260731",
+      "before": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 文档 1159178"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 模型发布公告"
+        }
+      ]
+    },
+    {
+      "card": "ark/deepseek-v4-pro-260425",
+      "before": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 文档 1159178"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 模型发布公告"
+        }
+      ]
+    },
+    {
+      "card": "ark/deepseek-v4-pro-ga-260813",
+      "before": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 文档 1159178"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 模型发布公告"
+        }
+      ]
+    },
+    {
+      "card": "ark/doubao-seed-2-1-pro-260628",
+      "before": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 文档 1159178"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 模型发布公告"
+        }
+      ]
+    },
+    {
+      "card": "ark/doubao-seed-2-1-turbo-260628",
+      "before": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 文档 1159178"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 模型发布公告"
+        }
+      ]
+    },
+    {
+      "card": "ark/glm-5-2-260617",
+      "before": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 文档 1159178"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1159178?lang=zh",
+          "label": "官方文档 · 火山方舟 · 模型发布公告"
+        }
+      ]
+    },
+    {
+      "card": "ark/doubao-seed-code-preview-251028",
+      "before": [
+        {
+          "url": "https://docs.volcengine.com/docs/ark/model-release-announcement-2025?lang=en",
+          "label": "官方文档 · 火山方舟 · Model Release Announcement 2025"
+        },
+        {
+          "url": "https://developer.volcengine.com/articles/7577301460712030258",
+          "label": "官方文档 · 火山方舟 · 文档 7577301460712030258"
+        },
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表（产品文档）"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表（开发者文档）"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://docs.volcengine.com/docs/ark/model-release-announcement-2025?lang=en",
+          "label": "官方文档 · 火山方舟 · Model Release Announcement 2025"
+        },
+        {
+          "url": "https://developer.volcengine.com/articles/7577301460712030258",
+          "label": "官方文档 · 火山方舟 · 豆包编程模型发布！AI 程序员双十一大促9.9元到岗"
+        },
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表（产品文档）"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表（开发者文档）"
+        }
+      ]
+    },
+    {
+      "card": "ark/doubao-seed-evolving",
+      "before": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/2549861?lang=zh",
+          "label": "官方文档 · 火山方舟 · 文档 2549861"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.volcengine.com/docs/82379/1330310",
+          "label": "官方文档 · 火山方舟 · 模型列表"
+        },
+        {
+          "url": "https://docs.volcengine.com/docs/82379/2549861?lang=zh",
+          "label": "官方文档 · 火山方舟 · Seed-Evolving"
+        }
+      ]
+    },
+    {
+      "card": "tokendance/dots-3-note-preview",
+      "before": [
+        {
+          "url": "https://tokendance.space/models/dots-3-note-preview",
+          "label": "官方文档 · TokenDance · Dots3-Note Preview（Free）"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://tokendance.space/models/dots-3-note-preview",
+          "label": "官方文档 · TokenDance · Dots3-Note Preview（免费）"
+        }
+      ]
+    }
+  ],
+  "mini": [
+    {
+      "card": "bailian/kimi-k3",
+      "before": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+          "label": "官方文档 · 百炼 · Kimi K3 (Bailian hosted)"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+          "label": "官方文档 · 百炼 · Kimi K3（百炼托管）"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3.5-plus",
+      "before": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+        },
+        {
+          "url": "https://www.aliyun.com/notice/118728",
+          "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3.5-plus-2026-02-15",
+      "before": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+        },
+        {
+          "url": "https://www.aliyun.com/notice/118728",
+          "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3.5-plus-2026-04-20",
+      "before": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+        },
+        {
+          "url": "https://www.aliyun.com/notice/118728",
+          "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3-max",
+      "before": [
+        {
+          "url": "https://www.aliyun.com/notice/118344",
+          "label": "下线公告 · 百炼 · 文档 118344"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118344",
+          "label": "下线公告 · 百炼 · 部分历史主线模型下线通知"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3-max-2025-09-23",
+      "before": [
+        {
+          "url": "https://www.aliyun.com/notice/118345",
+          "label": "下线公告 · 百炼 · 文档 118345"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118345",
+          "label": "下线公告 · 百炼 · 部分历史快照模型下线通知"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3-max-2026-01-23",
+      "before": [
+        {
+          "url": "https://www.aliyun.com/notice/118345",
+          "label": "下线公告 · 百炼 · 文档 118345"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118345",
+          "label": "下线公告 · 百炼 · 部分历史快照模型下线通知"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3-max-preview",
+      "before": [
+        {
+          "url": "https://www.aliyun.com/notice/118344",
+          "label": "下线公告 · 百炼 · 文档 118344"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118344",
+          "label": "下线公告 · 百炼 · 部分历史主线模型下线通知"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen-turbo",
+      "before": [
+        {
+          "url": "https://www.aliyun.com/notice/118177",
+          "label": "下线公告 · 百炼 · 文档 118177"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118177",
+          "label": "下线公告 · 百炼 · 部分历史主线模型下线通知"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3-coder-next",
+      "before": [
+        {
+          "url": "https://www.aliyun.com/notice/118345",
+          "label": "下线公告 · 百炼 · 文档 118345"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118345",
+          "label": "下线公告 · 百炼 · 部分历史快照模型下线通知"
+        }
+      ]
+    },
+    {
+      "card": "tokendance/dots-3-note-preview",
+      "before": [
+        {
+          "url": "https://tokendance.space/models/dots-3-note-preview",
+          "label": "官方文档 · TokenDance · Dots3-Note Preview（Free）"
+        }
+      ],
+      "after": [
+        {
+          "url": "https://tokendance.space/models/dots-3-note-preview",
+          "label": "官方文档 · TokenDance · Dots3-Note Preview（免费）"
+        }
+      ]
+    }
+  ],
+  "notices": [
+    {
+      "card": "bailian/qwen3.5-plus",
+      "before": [],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118728",
+          "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3.5-plus-2026-02-15",
+      "before": [],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118728",
+          "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+        }
+      ]
+    },
+    {
+      "card": "bailian/qwen3.5-plus-2026-04-20",
+      "before": [],
+      "after": [
+        {
+          "url": "https://www.aliyun.com/notice/118728",
+          "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+        }
+      ]
+    }
+  ]
+}

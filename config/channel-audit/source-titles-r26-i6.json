@@ -1,0 +1,23 @@
+{
+  "phase": "R26 Phase I6",
+  "captures": [
+    {
+      "url": "https://developer.volcengine.com/articles/7577301460712030258",
+      "httpStatus": 200,
+      "finalUrl": "https://developer.volcengine.com/articles/7577301460712030258",
+      "fetchStartUTC": "2026-11-10T00:27:10.927773+00:00",
+      "fetchEndUTC": "2026-11-10T00:27:11.888776+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T08:27:10.927773+08:00",
+      "sha256": "b1a6ca3c2dc5056d7a273fb73d23b82eba4ab679ca4789fffb4be606e5fc4444",
+      "bytes": 204156,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i6-volcengine-title.html",
+      "title": "豆包编程模型发布！AI 程序员双十一大促9.9元到岗",
+      "displayTitle": "豆包编程模型发布公告",
+      "checkedAt": "2026-11-10",
+      "extraction": "HTML title; curated neutral display-title override removes promotion, pricing and exclamation punctuation",
+      "reason": "Neutral announcement title; retains the existing role and site prefixes."
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+const r24 = require('../../../test-support/fixtures/model-card-r24.json')
+const {sourceTitle,visibleSourceTitle}=require('../miniprogram/utils/card-presentation.js')
 const test = require('node:test')
 const assert = require('node:assert/strict')
 const fs = require('node:fs')
@@ -18,12 +20,12 @@ test('R12 compiled Mini URLs and labels match full Web objects for 74 captured p
   const context = { Component() {}, exports: {}, require: createRequire(filename) }
   vm.runInNewContext(fs.readFileSync(filename, 'utf8') + '\nthis.present = presentModel', context, { filename })
   const rendered = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r12-tokendance-rendered.json')))
+  const {expectedTokenDanceSources}=await import('../../../test-support/card-review-r22.mjs')
   const cases = [...rendered.rows.map(row => {
-    const link = JSON.parse(fs.readFileSync(path.join(root, 'config/model-audit.generated.json'))).details['tokendance/' + row.modelId].sourceLinks[0]
-    return ['tokendance', row.modelId, row.rendersModel ? row.url : link.url, row.rendersModel ? '官方文档' : '原厂规格']
+    return ['tokendance', row.modelId, expectedTokenDanceSources(row.modelId)[0], row.rendersModel ? '官方文档' : '原厂规格']
   }),
     ...[['qwen3.8-max', 'qwen3-8-max'], ['qwen3.7-max-2026-06-08', 'qwen3-7-max'], ['qwen3.8-flash', 'vision-model']].map(([id, page]) => ['bailian', id, 'https://help.aliyun.com/zh/model-studio/' + page, '官方文档']),
-    ...['qwen3.5-plus', 'qwen3.5-plus-2026-02-15', 'qwen3.5-plus-2026-04-20'].map(id => ['bailian', id, 'https://help.aliyun.com/zh/model-studio/model-depreciation', '下线公告'])]
+    ...['qwen3.5-plus', 'qwen3.5-plus-2026-02-15', 'qwen3.5-plus-2026-04-20'].map(id => ['bailian', id, 'https://help.aliyun.com/zh/model-studio/qwen3-5-plus', '官方文档'])]
   assert.equal(cases.length, 80)
   for (const [channel, id, url, label] of cases) {
     const model = full.providers[channel].models.find(m => m.id === id)
@@ -32,7 +34,7 @@ test('R12 compiled Mini URLs and labels match full Web objects for 74 captured p
     assert.equal(modelSourceName(card, url), label); assert.equal(small.sourceLabel, label)
     const staticModel = STATIC_MODEL_REGISTRY[channel].models.find(m => m.id === id)
     const presented = context.present(staticModel, '', '', channel)
-    assert.deepEqual(structuredClone(presented.specSources), [{ url, label: label + ' · ' + new URL(url).hostname }])
+    assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: visibleSourceTitle(url, staticModel) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : visibleSourceTitle(source, staticModel)})), ...small.retirementSources.map(url => ({url,label:visibleSourceTitle(url,staticModel)}))])
   }
 })
 
@@ -48,7 +50,7 @@ test('R12C projection keeps every rendered fact, qualifier, note and source; onl
     for (const field of Object.keys(card.fields)) for (const property of ['value', 'state', 'provenance', 'unsupportedModalities'])
       assert.deepEqual(small.fields[field][property], card.fields[field][property], key + '/' + field + '/' + property)
     assert.equal(small.fields.totalContextTokens.suffix || '', card.fields.totalContextTokens.suffix || '', key + '/qualifier')
-    assert.equal(small.note, full.details[key]?.note || '', key + '/note')
+    assert.equal(small.note, [full.details[key]?.note, require('../../../test-support/fixtures/conflict-cards-r26.json').includes(key) && '该渠道页面与图研之前记录的信息不一致，这里只保留已经核实过的内容，没核实的显示为「未知」。'].filter(Boolean).join('；'), key + '/note')
     assert.equal(small.sourceUrl, card.sources[0], key + '/source')
     assert.equal(small.sourceLabel, modelSourceName(card, card.sources[0]), key + '/label')
     assert.equal(isApiSource(small.sourceUrl, full.sourceChecks), false, key)
@@ -81,7 +83,7 @@ test('R13 compiled picker shows all seven vendor replacements and no catalog car
     assert.equal(small.sourceUrl, finalUrl); assert.equal(small.sourceLabel, label)
     assert.equal(require('../miniprogram/utils/model-audit.js').removedModel(channel, modelId), null)
     const presented = context.present(entry, '', '', channel)
-    assert.deepEqual(structuredClone(presented.specSources), [{ url: finalUrl, label: label + ' · ' + new URL(finalUrl).hostname }])
+    assert.deepEqual(structuredClone(presented.specSources), [{ url: finalUrl, label: visibleSourceTitle(finalUrl, entry) }])
   }
   let cards = 0
   for (const [channel, provider] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of provider.models) {
@@ -93,29 +95,53 @@ test('R13 compiled picker shows all seven vendor replacements and no catalog car
   assert.equal(cards, 1064)
 })
 
-test('R13B compiled picker labels every notice and uses the exact DeepSeek vendor release', () => {
+test('R13B pre-phase-2 static notice priorities and all 34 visible notices remain reproducible', async () => {
+  const { archivedAuditText, loadCard } = await import('../../../scripts/lib/model-card-audit.mjs')
+  const web = await loadCard(root, 'd1fe6ff6')
+  const source = archivedAuditText(root, 'd1fe6ff6', 'apps/web/src/lib/staticModelCatalog.js').replace(/export const /g, 'const ')
+  const oldStatic = vm.runInNewContext(source + ';STATIC_MODEL_REGISTRY')
+  const cases = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r13b-notice-cards.json')))
+  assert.equal(cases.length, 25)
+  for (const { channel, modelId, url } of cases) {
+    assert.equal(web(channel, oldStatic[channel].models.find(model => model.id === modelId)).sources[0], url)
+  }
+  let notices = 0
+  for (const [channel, provider] of Object.entries(oldStatic)) for (const model of provider.models) {
+    if (/llms-full\.txt|deprecat|depreciat|retire|sunset|下线|aliyun\.com\/notice\/\d+|docs\.x\.ai\/developers\/migration\//i.test(web(channel, model).sources[0])) notices++
+  }
+  assert.equal(notices, 34)
+})
+
+test('R13B compiled picker resolves full-model source priorities and retains notice labels', async () => {
+  const {pmReview}=await import('../../../test-support/pm-decisions-r30.mjs')
+  const {r31Patches}=await import('../../../test-support/primary-links-r31.mjs')
   const cases = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r13b-notice-cards.json')))
   assert.equal(cases.length, 25)
   const filename = path.join(root, 'apps/miniprogram/miniprogram/components/model-picker/model-picker.js')
   const context = { Component() {}, exports: {}, require: createRequire(filename) }
   vm.runInNewContext(fs.readFileSync(filename, 'utf8') + '\nthis.present = presentModel', context, { filename })
-  for (const row of [...cases.map(row => ({ ...row, label: '下线公告' })), {
+  for (const row of [...cases.map(row => ({ ...row, url: row.fullFirstUrl, label: row.url === row.fullFirstUrl ? '下线公告' : '官方文档' })), {
     channel: 'tokendance', modelId: 'deepseek-chat-v3-0324', url: 'https://api-docs.deepseek.com/news/news250325', label: '原厂规格',
   }]) {
     const { channel, modelId, url, label } = row
     const entry = STATIC_MODEL_REGISTRY[channel].models.find(model => model.id === modelId)
     const small = auditedModelSpecs(channel, modelId)
-    assert.equal(small.sourceUrl, url); assert.equal(small.sourceLabel, label)
-    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ url, label: label + ' · ' + new URL(url).hostname }])
+    const patches=[...(r31Patches.rows[channel+'/'+modelId]||[]),...(pmReview.rows[channel+'/'+modelId]||[])], expected=(path,fallback)=>patches.find(p=>p.path===path)?.after??fallback
+    assert.equal(small.sourceUrl, expected('mini/audit/sourceUrl',url)); assert.equal(small.sourceLabel, expected('mini/audit/sourceLabel',label))
+    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), expected('mini/card/specSources', [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: visibleSourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : visibleSourceTitle(source, entry)}))]))
   }
   let notices = 0
+  const appendedNotices = []
   for (const [channel, provider] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of provider.models) {
     for (const { url, label } of context.present(model, '', '', channel).specSources) {
-      if (/deprecat|depreciat|retire|sunset|下线|aliyun\.com\/notice\/\d+|docs\.x\.ai\/developers\/migration\//i.test(url)) {
+      if (/llms-full\.txt|deprecat|depreciat|retire|sunset|下线|aliyun\.com\/notice\/\d+|docs\.x\.ai\/developers\/migration\//i.test(url)) {
         notices++
-        assert.equal(label, '下线公告 · ' + new URL(url).hostname, channel + '/' + model.id)
+        const primary = auditedModelSpecs(channel, model.id).sourceUrl === url
+        if (!primary) appendedNotices.push(channel + '/' + model.id)
+        assert.equal(label, visibleSourceTitle(url), channel + '/' + model.id)
       }
     }
   }
-  assert.equal(notices, 34)
+  assert.equal(notices, 17)
+  assert.deepEqual(appendedNotices.sort(), ['bailian/qwen3.5-plus', 'bailian/qwen3.5-plus-2026-02-15', 'bailian/qwen3.5-plus-2026-04-20', 'tokendance/qwen3.5-plus'].sort())
 })

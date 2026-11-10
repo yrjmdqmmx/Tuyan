@@ -1,3 +1,4 @@
+const {visibleSourceTitle}=require('../miniprogram/utils/card-presentation.js')
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const {removedModel,removedModelHint,auditedModelLifecycle,auditedModelSpecs,withModelAudit} = require('../miniprogram/utils/model-audit.js');
@@ -69,7 +70,7 @@ test('mini cards keep unlisted modalities neutral and preserve availability note
   picker.refreshModelLists();
   const card=picker.data.visibleCompatibleModels.find(m=>m.id===model.id);
   assert.equal(card.specRows[0].unknownText,'音频');
-  assert.equal(card.specRows[1].unknownText,'图像、音频、视频');
+  assert.equal(card.specRows[1].unknownText,'图像、视频、音频');
   assert.doesNotMatch(JSON.stringify(card.specRows),/不支持/);
   assert.ok(card.availabilityNotes.includes(model.availabilityNotes));
 });
@@ -80,7 +81,7 @@ test('compiled picker preserves official labels and shows Gemini output tokens',
   const {modelDeveloper}=require('../miniprogram/utils/model-presentation.js');
   for(const [provider,id,role,expectedContext,expectedOutput,exact] of [
     ['deepseek','deepseek-flash','main','1M tokens','384K tokens','384K tokens'],
-    ['gemini','gemini-nano-banana-2.1','image','未知','≈ 33K tokens','32768 tokens'],
+    ['gemini','gemini-nano-banana-2.1','image','未公布','≈ 33K tokens','32,768 tokens'],
   ]) {
     const picker=loadComponent('components/model-picker/model-picker.js').instance;
     picker.getRegistry=()=>({providers:STATIC_MODEL_REGISTRY});
@@ -149,7 +150,7 @@ test('R6B compiled picker keeps all nine token qualifiers after the unit and sou
     Object.assign(p.data,{activeProvider:provider,activeVendor:modelDeveloper(provider,model).label});p.refreshModelLists();
     const card=p.data.visibleCompatibleModels.find(m=>m.id===model.id);
     assert.ok(card,model.id);assert.match(card.specRows[2].value,/ tokens（[^）]+）$/);
-    for(const source of card.specSources) assert.equal(source.label,'官方文档 · '+new URL(source.url).hostname);
+    for(const source of card.specSources) assert.equal(source.label,visibleSourceTitle(source.url, model));
     assert.doesNotMatch(card.specRows.map(r=>r.unknownText).join(''),/\?/);
   }
   assert.deepEqual(counts,{siliconflow:6,runware:2,iflytek:1});

@@ -1,0 +1,1190 @@
+{
+  "deepseek/deepseek-flash": {
+    "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "label": "官方文档 · DeepSeek · 价格与规格"
+  },
+  "deepseek/deepseek-v4-flash-vision-exp": {
+    "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "label": "官方文档 · DeepSeek · 价格与规格"
+  },
+  "deepseek/deepseek-v4-pro": {
+    "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "label": "官方文档 · DeepSeek · 价格与规格"
+  },
+  "deepseek/deepseek-v4-flash": {
+    "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "label": "官方文档 · DeepSeek · 价格与规格"
+  },
+  "anthropic/claude-opus-5-5": {
+    "url": "https://docs.anthropic.com/en/docs/about-claude/models/overview",
+    "label": "官方文档 · Anthropic · 模型列表"
+  },
+  "anthropic/claude-fable-5-1": {
+    "url": "https://docs.anthropic.com/en/docs/about-claude/models/overview",
+    "label": "官方文档 · Anthropic · 模型列表"
+  },
+  "xai/grok-4.7": {
+    "url": "https://docs.x.ai/developers/models/grok-4.7",
+    "label": "官方文档 · xAI · Grok 4.7"
+  },
+  "xai/grok-4.6": {
+    "url": "https://docs.x.ai/developers/models/grok-4.6",
+    "label": "官方文档 · xAI · Grok 4.6"
+  },
+  "xai/grok-4.5": {
+    "url": "https://docs.x.ai/developers/models/grok-4.5",
+    "label": "官方文档 · xAI · Grok-4.5"
+  },
+  "xai/grok-4.3": {
+    "url": "https://docs.x.ai/developers/models/grok-4.3",
+    "label": "官方文档 · xAI · Grok-4.3"
+  },
+  "xai/grok-4.20-0309-non-reasoning": {
+    "url": "https://docs.x.ai/developers/models/grok-4.20-0309-non-reasoning",
+    "label": "官方文档 · xAI · Grok 4.20-0309 Non Reasoning"
+  },
+  "xai/grok-4.20-0309-reasoning": {
+    "url": "https://docs.x.ai/developers/models/grok-4.20-0309-reasoning",
+    "label": "官方文档 · xAI · Grok 4.20-0309 Reasoning"
+  },
+  "xai/grok-4.20-multi-agent-0309": {
+    "url": "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309",
+    "label": "官方文档 · xAI · Grok 4.20 Multi Agent 0309"
+  },
+  "xai/grok-build-0.1": {
+    "url": "https://docs.x.ai/developers/models/grok-build-0.1",
+    "label": "官方文档 · xAI · Grok Build 0.1"
+  },
+  "bailian/deepseek-v4.1-flash": {
+    "url": "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash",
+    "label": "官方文档 · 百炼 · DeepSeek-V4.1-Flash"
+  },
+  "bailian/qwen3.8-max-0902": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+    "label": "官方文档 · 百炼 · Qwen3.8 Max"
+  },
+  "bailian/qwen3.8-flash": {
+    "url": "https://help.aliyun.com/zh/model-studio/vision-model",
+    "label": "官方文档 · 百炼 · Vision Model"
+  },
+  "bailian/kimi-k3": {
+    "url": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+    "label": "官方文档 · 百炼 · Kimi K3（百炼托管）"
+  },
+  "bailian/qwen3.8-27b": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+    "label": "官方文档 · 百炼 · Qwen3.8 27B"
+  },
+  "bailian/ZHIPU/GLM-5.3": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen3.8-2.4t-a95b": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+    "label": "官方文档 · 百炼 · Qwen3.8 2.4T A95B"
+  },
+  "bailian/MiniMax/MiniMax-M3": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/MiniMax/MiniMax-M2.7": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/MiniMax-M2.5": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/MiniMax/MiniMax-M2.5": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/ZHIPU/GLM-5.2": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen-image-3.0": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0",
+    "label": "官方文档 · 百炼 · Qwen Image 3.0"
+  },
+  "bailian/qwen-image-3.0-pro": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro",
+    "label": "官方文档 · 百炼 · Qwen Image 3.0 Pro"
+  },
+  "bailian/qwen3.8-max": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+    "label": "官方文档 · 百炼 · Qwen3.8 Max"
+  },
+  "bailian/qwen3.7-flash": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen3.7-flash-2026-07-15": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/glm-5.2": {
+    "url": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+    "label": "官方文档 · 百炼 · GLM 5.2"
+  },
+  "bailian/glm-5.2-fast-preview": {
+    "url": "https://www.qianwenai.com/models/glm-5.2-fast-preview",
+    "label": "官方文档 · 千问 · GLM 5.2 Fast Preview"
+  },
+  "bailian/ZHIPU/GLM-5.1": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/glm-5.1": {
+    "url": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+    "label": "官方文档 · 百炼 · GLM-5.1"
+  },
+  "bailian/kimi/kimi-k3": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/kimi-k2.7-code": {
+    "url": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+    "label": "官方文档 · 百炼 · Kimi K2.7 Code"
+  },
+  "bailian/kimi/kimi-k2.7-code": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/kimi/kimi-k2.7-code-highspeed": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/kimi-k2.6": {
+    "url": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+    "label": "官方文档 · 百炼 · Kimi-k2.6"
+  },
+  "bailian/kimi/kimi-k2.6": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/kimi-k2.5": {
+    "url": "https://help.aliyun.com/zh/model-studio/kimi-k2-5",
+    "label": "官方文档 · 百炼 · Kimi-k2.5"
+  },
+  "bailian/qwen-image-2.0-pro-2026-06-22": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+    "label": "官方文档 · 百炼 · Qwen Image 2.0 Pro"
+  },
+  "bailian/qwen-image-2.0": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+    "label": "官方文档 · 百炼 · Qwen Image 2.0"
+  },
+  "bailian/qwen-image-2.0-2026-03-03": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+    "label": "官方文档 · 百炼 · Qwen Image 2.0"
+  },
+  "bailian/qwen-image-2.0-pro": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+    "label": "官方文档 · 百炼 · Qwen Image 2.0 Pro"
+  },
+  "bailian/qwen-image-2.0-pro-2026-03-03": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+    "label": "官方文档 · 百炼 · Qwen Image 2.0 Pro"
+  },
+  "bailian/qwen-image-2.0-pro-2026-04-22": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+    "label": "官方文档 · 百炼 · Qwen Image 2.0 Pro"
+  },
+  "bailian/qwen-image": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen3.7-max": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+    "label": "官方文档 · 百炼 · Qwen3.7 Max"
+  },
+  "bailian/qwen3.7-max-2026-05-17": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+    "label": "官方文档 · 百炼 · Qwen3.7 Max"
+  },
+  "bailian/qwen3.7-max-2026-05-20": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+    "label": "官方文档 · 百炼 · Qwen3.7 Max"
+  },
+  "bailian/qwen3.7-max-2026-06-08": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+    "label": "官方文档 · 百炼 · Qwen3.7 Max"
+  },
+  "bailian/qwen3.7-max-preview": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+    "label": "官方文档 · 百炼 · Qwen3.7 Max"
+  },
+  "bailian/qwen3.7-plus": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+    "label": "官方文档 · 百炼 · Qwen3.7 Plus"
+  },
+  "bailian/qwen3.7-plus-2026-05-26": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+    "label": "官方文档 · 百炼 · Qwen3.7 Plus"
+  },
+  "bailian/qwen3.6-flash": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen3.6-flash-2026-04-16": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen3.6-plus": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+    "label": "官方文档 · 百炼 · Qwen3.6 Plus"
+  },
+  "bailian/qwen3.6-plus-2026-04-02": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+    "label": "官方文档 · 百炼 · Qwen3.6 Plus"
+  },
+  "bailian/qwen3.5-122b-a10b": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen3.5-27b": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen3.5-35b-a3b": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen3.5-flash": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen3.5-flash-2026-02-23": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen3.5-omni-flash": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+    "label": "官方文档 · 百炼 · Qwen3.5 Omni Flash"
+  },
+  "bailian/qwen3.5-omni-flash-2026-03-15": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+    "label": "官方文档 · 百炼 · Qwen3.5 Omni Flash"
+  },
+  "bailian/qwen3.5-omni-plus": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+    "label": "官方文档 · 百炼 · Qwen3.5 Omni Plus"
+  },
+  "bailian/qwen3.5-omni-plus-2026-03-15": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+    "label": "官方文档 · 百炼 · Qwen3.5 Omni Plus"
+  },
+  "bailian/qwen3.5-plus": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+    "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+  },
+  "bailian/qwen3.5-plus-2026-02-15": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+    "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+  },
+  "bailian/qwen3.5-plus-2026-04-20": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+    "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+  },
+  "bailian/wan2.7-image": {
+    "url": "https://help.aliyun.com/zh/model-studio/wan2-7-image",
+    "label": "官方文档 · 百炼 · Wan 2.7 Image"
+  },
+  "bailian/wan2.7-image-pro": {
+    "url": "https://help.aliyun.com/zh/model-studio/wan2-7-image-pro",
+    "label": "官方文档 · 百炼 · Wan 2.7 Image Pro"
+  },
+  "bailian/wan2.6-image": {
+    "url": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+    "label": "官方文档 · 百炼 · Wan2.6 Image"
+  },
+  "bailian/wan2.6-t2i": {
+    "url": "https://help.aliyun.com/zh/model-studio/wan2-6-t2i",
+    "label": "官方文档 · 百炼 · Wan2.6 T2i"
+  },
+  "bailian/wan2.5-i2i-preview": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/wan2.5-t2i-preview": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/wan2.2-t2i-flash": {
+    "url": "https://help.aliyun.com/zh/model-studio/wan2-2-t2i-flash",
+    "label": "官方文档 · 百炼 · Wan2.2 T2i Flash"
+  },
+  "bailian/wan2.2-t2i-plus": {
+    "url": "https://help.aliyun.com/zh/model-studio/wan2-2-t2i-plus",
+    "label": "官方文档 · 百炼 · Wan2.2 T2i Plus"
+  },
+  "bailian/MiniMax/MiniMax-M3.1-Flash": {
+    "url": "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+    "label": "官方文档 · 百炼 · MiniMax M3.1 Flash"
+  },
+  "bailian/kling/kling-v3-image-generation": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/kling/kling-v3-omni-image-generation": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen-flash": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen-flash-2025-07-28": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen-long": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen-max": {
+    "url": "https://help.aliyun.com/zh/model-studio/text-generation-model",
+    "label": "官方文档 · 百炼 · Text Generation Model"
+  },
+  "bailian/qwen-plus": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen-plus-2025-01-25": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+    "label": "官方文档 · 百炼 · Qwen Plus"
+  },
+  "bailian/qwen-plus-2025-04-28": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+    "label": "官方文档 · 百炼 · Qwen Plus"
+  },
+  "bailian/qwen-plus-2025-07-14": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+    "label": "官方文档 · 百炼 · Qwen Plus"
+  },
+  "bailian/qwen-plus-2025-12-01": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen-plus-latest": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen3-coder-flash": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/qwen3-coder-flash-2025-07-28": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/unisound/unisound-u2": {
+    "url": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+    "label": "官方文档 · 百炼 · Unisound U2"
+  },
+  "bailian/vidu/vidu-image-lite_reference2image": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/vidu/vidu-image-pro_reference2image": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/vidu/vidu-image_reference2image": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/vidu/viduq2-fast_reference2image": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/vidu/viduq2-pro_reference2image": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/vidu/viduq3-fast_reference2image": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "bailian/wanx-v1": {
+    "url": "https://help.aliyun.com/zh/model-studio/wanx-v1",
+    "label": "官方文档 · 百炼 · Wanx V1"
+  },
+  "bailian/wanx2.0-t2i-turbo": {
+    "url": "https://help.aliyun.com/zh/model-studio/wanx2-0-t2i-turbo",
+    "label": "官方文档 · 百炼 · Wanx2.0 T2i Turbo"
+  },
+  "bailian/wanx2.1-imageedit": {
+    "url": "https://help.aliyun.com/zh/model-studio/wanx-image-edit-api-reference",
+    "label": "官方文档 · 百炼 · Wanx Image Edit API Reference"
+  },
+  "bailian/wanx2.1-t2i-plus": {
+    "url": "https://help.aliyun.com/zh/model-studio/wanx2-1-t2i-plus",
+    "label": "官方文档 · 百炼 · Wanx2.1 T2i Plus"
+  },
+  "bailian/wanx2.1-t2i-turbo": {
+    "url": "https://help.aliyun.com/zh/model-studio/wanx2-1-t2i-turbo",
+    "label": "官方文档 · 百炼 · Wanx2.1 T2i Turbo"
+  },
+  "bailian/xiaomi/mimo-v2.6-pro-ultraspeed": {
+    "url": "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+    "label": "官方文档 · 百炼 · MiMo V2.6 Pro UltraSpeed"
+  },
+  "bailian/z-image-turbo": {
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "label": "官方文档 · 百炼 · 模型列表"
+  },
+  "openai/gpt-6-luna": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+    "label": "官方文档 · OpenAI · GPT-6 Luna"
+  },
+  "openai/gpt-6-sol": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-6-sol",
+    "label": "官方文档 · OpenAI · GPT-6 Sol"
+  },
+  "openai/gpt-image-2.5-flare": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+    "label": "官方文档 · OpenAI · GPT Image 2.5 Flare（2026-09-08）"
+  },
+  "openai/gpt-image-2.5-sunburst": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+    "label": "官方文档 · OpenAI · GPT Image 2.5 Sunburst（2026-09-08）"
+  },
+  "openai/gpt-6-astra": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+    "label": "官方文档 · OpenAI · GPT-6 Astra"
+  },
+  "openai/gpt-5.6-luna": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.6-luna",
+    "label": "官方文档 · OpenAI · GPT-5.6 Luna"
+  },
+  "openai/gpt-5.6-sol": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.6-sol",
+    "label": "官方文档 · OpenAI · GPT-5.6 Sol"
+  },
+  "openai/gpt-5.6-terra": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.6-terra",
+    "label": "官方文档 · OpenAI · GPT-5.6 Terra"
+  },
+  "openai/gpt-5.5": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.5",
+    "label": "官方文档 · OpenAI · GPT-5.5（2026-04-23）"
+  },
+  "openai/gpt-5.5-pro": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.5-pro",
+    "label": "官方文档 · OpenAI · GPT-5.5 Pro（2026-04-23）"
+  },
+  "openai/gpt-5.4": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.4",
+    "label": "官方文档 · OpenAI · GPT-5.4（2026-03-05）"
+  },
+  "openai/gpt-5.4-mini": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.4-mini",
+    "label": "官方文档 · OpenAI · GPT-5.4 Mini（2026-03-17）"
+  },
+  "openai/gpt-5.4-nano": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.4-nano",
+    "label": "官方文档 · OpenAI · GPT-5.4 Nano（2026-03-17）"
+  },
+  "openai/gpt-5.4-pro": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.4-pro",
+    "label": "官方文档 · OpenAI · GPT-5.4 Pro（2026-03-05）"
+  },
+  "openai/gpt-5.3-codex": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.3-codex",
+    "label": "官方文档 · OpenAI · GPT 5.3 Codex"
+  },
+  "openai/gpt-5.2": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.2",
+    "label": "官方文档 · OpenAI · GPT-5.2（2025-12-11）"
+  },
+  "openai/gpt-5.2-pro": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.2-pro",
+    "label": "官方文档 · OpenAI · GPT 5.2 Pro（2025-12-11）"
+  },
+  "openai/gpt-5.1": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5.1",
+    "label": "官方文档 · OpenAI · GPT-5.1（2025-11-13）"
+  },
+  "openai/gpt-5": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5",
+    "label": "官方文档 · OpenAI · GPT-5（2025-08-07）"
+  },
+  "openai/gpt-5-mini": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5-mini",
+    "label": "官方文档 · OpenAI · GPT 5 Mini（2025-08-07）"
+  },
+  "openai/gpt-5-nano": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5-nano",
+    "label": "官方文档 · OpenAI · GPT 5 Nano（2025-08-07）"
+  },
+  "openai/gpt-5-pro": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-5-pro",
+    "label": "官方文档 · OpenAI · GPT 5 Pro（2025-10-06）"
+  },
+  "openai/gpt-4.1": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-4.1",
+    "label": "官方文档 · OpenAI · GPT-4.1（2025-04-14）"
+  },
+  "openai/gpt-4.1-mini": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+    "label": "官方文档 · OpenAI · GPT-4.1 Mini（2025-04-14）"
+  },
+  "openai/gpt-4.1-nano": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
+    "label": "官方文档 · OpenAI · GPT 4.1 Nano（2025-04-14）"
+  },
+  "openai/gpt-4o": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-4o",
+    "label": "官方文档 · OpenAI · GPT-4o（2024-08-06）"
+  },
+  "openai/gpt-4o-mini": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-4o-mini",
+    "label": "官方文档 · OpenAI · GPT 4o Mini（2024-07-18）"
+  },
+  "openai/gpt-4-turbo": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-4-turbo",
+    "label": "官方文档 · OpenAI · GPT 4 Turbo（2024-04-09）"
+  },
+  "openai/gpt-4": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-4",
+    "label": "官方文档 · OpenAI · GPT-4（0613）"
+  },
+  "openai/gpt-image-2": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+    "label": "官方文档 · OpenAI · GPT Image 2（2026-04-21）"
+  },
+  "openai/gpt-image-1.5": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+    "label": "官方文档 · OpenAI · GPT Image 1.5（2025-12-16）"
+  },
+  "openai/gpt-image-1": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-1",
+    "label": "官方文档 · OpenAI · GPT Image 1"
+  },
+  "openai/gpt-image-1-mini": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-1-mini",
+    "label": "官方文档 · OpenAI · GPT Image 1 Mini"
+  },
+  "openai/chat-latest": {
+    "url": "https://developers.openai.com/api/docs/models/chat-latest",
+    "label": "官方文档 · OpenAI · Chat Latest"
+  },
+  "openai/chatgpt-image-latest": {
+    "url": "https://developers.openai.com/api/docs/models/chatgpt-image-latest",
+    "label": "官方文档 · OpenAI · ChatGPT Image Latest"
+  },
+  "openai/gpt-3.5-turbo": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo",
+    "label": "官方文档 · OpenAI · GPT 3.5 Turbo（0125）"
+  },
+  "openai/gpt-image-2.6-flare": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-2.6-flare",
+    "label": "官方文档 · OpenAI · GPT Image 2.6 Flare"
+  },
+  "openai/gpt-image-2.6-sunburst": {
+    "url": "https://developers.openai.com/api/docs/models/gpt-image-2.6-sunburst",
+    "label": "官方文档 · OpenAI · GPT Image 2.6 Sunburst"
+  },
+  "openai/o1": {
+    "url": "https://developers.openai.com/api/docs/models/o1",
+    "label": "官方文档 · OpenAI · O1（2024-12-17）"
+  },
+  "openai/o1-pro": {
+    "url": "https://developers.openai.com/api/docs/models/o1-pro",
+    "label": "官方文档 · OpenAI · O1 Pro（2025-03-19）"
+  },
+  "openai/o3": {
+    "url": "https://developers.openai.com/api/docs/models/o3",
+    "label": "官方文档 · OpenAI · O3（2025-04-16）"
+  },
+  "openai/o3-mini": {
+    "url": "https://developers.openai.com/api/docs/models/o3-mini",
+    "label": "官方文档 · OpenAI · O3 Mini（2025-01-31）"
+  },
+  "openai/o3-pro": {
+    "url": "https://developers.openai.com/api/docs/models/o3-pro",
+    "label": "官方文档 · OpenAI · O3 Pro（2025-06-10）"
+  },
+  "openai/o4-mini": {
+    "url": "https://developers.openai.com/api/docs/models/o4-mini",
+    "label": "官方文档 · OpenAI · O4 Mini（2025-04-16）"
+  },
+  "ideogram/ideogram-v4": {
+    "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4",
+    "label": "官方文档 · Ideogram · Ideogram 4.0 编辑接口"
+  },
+  "fireworks/accounts/fireworks/models/glm-5p3": {
+    "url": "https://fireworks.ai/models/fireworks/glm-5p3",
+    "label": "官方文档 · Fireworks · GLM 5.3"
+  },
+  "fireworks/accounts/fireworks/models/glm-5p3-flash": {
+    "url": "https://fireworks.ai/models/fireworks/glm-5p3-flash",
+    "label": "官方文档 · Fireworks · GLM 5.3 Flash"
+  },
+  "fireworks/accounts/fireworks/models/kimi-k3": {
+    "url": "https://fireworks.ai/models/fireworks/kimi-k3",
+    "label": "官方文档 · Fireworks · Kimi K3"
+  },
+  "fireworks/accounts/fireworks/models/kimi-k2p5": {
+    "url": "https://fireworks.ai/models/fireworks/kimi-k2p5",
+    "label": "官方文档 · Fireworks · Kimi K2.5"
+  },
+  "fireworks/accounts/fireworks/models/minimax-m3": {
+    "url": "https://fireworks.ai/models/fireworks/minimax-m3",
+    "label": "官方文档 · Fireworks · MiniMax M3"
+  },
+  "fireworks/accounts/fireworks/models/qwen3p8-max": {
+    "url": "https://fireworks.ai/models/fireworks/qwen3p8-max",
+    "label": "官方文档 · Fireworks · Qwen 3.8 Max"
+  },
+  "fireworks/accounts/fireworks/models/qwen3p7-plus": {
+    "url": "https://fireworks.ai/models/fireworks/qwen3p7-plus",
+    "label": "官方文档 · Fireworks · Qwen 3.7 Plus"
+  },
+  "fireworks/accounts/fireworks/models/qwen3-8b": {
+    "url": "https://fireworks.ai/models/fireworks/qwen3-8b",
+    "label": "官方文档 · Fireworks · Qwen3 8B"
+  },
+  "fireworks/accounts/fireworks/models/deepseek-v4p1-flash": {
+    "url": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash",
+    "label": "官方文档 · Fireworks · DeepSeek-V4.1-Flash"
+  },
+  "fireworks/accounts/fireworks/models/gemma-4-31b-it": {
+    "url": "https://fireworks.ai/models/fireworks/gemma-4-31b-it",
+    "label": "官方文档 · Fireworks · Gemma 4-31b It"
+  },
+  "fireworks/accounts/fireworks/models/gpt-oss-120b": {
+    "url": "https://fireworks.ai/models/fireworks/gpt-oss-120b",
+    "label": "官方文档 · Fireworks · GPT-OSS 120B"
+  },
+  "fireworks/accounts/fireworks/models/kimi-k3p1-pro": {
+    "url": "https://fireworks.ai/models/fireworks/kimi-k3p1-pro",
+    "label": "官方文档 · Fireworks · Kimi K3.1 Pro"
+  },
+  "fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4": {
+    "url": "https://fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4",
+    "label": "官方文档 · Fireworks · Nemotron 3 Ultra Nvfp4（模型库）"
+  },
+  "fireworks/accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b": {
+    "url": "https://fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b",
+    "label": "官方文档 · Fireworks · Nemotron Lightning 3p5-30b A3b"
+  },
+  "fireworks/accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b": {
+    "url": "https://fireworks.ai/models/fireworks/nvidia-nemotron-3-nano-omni-30b-a3b",
+    "label": "官方文档 · Fireworks · NVIDIA Nemotron 3 Nano Omni 30B A3B"
+  },
+  "fireworks/accounts/fireworks/models/qwen3-omni-30b-a3b-instruct": {
+    "url": "https://fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct",
+    "label": "官方文档 · Fireworks · Qwen3 Omni 30B A3B Instruct"
+  },
+  "fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4": {
+    "url": "https://fireworks.ai/models/fireworks/step-3p7-flash-nvfp4",
+    "label": "官方文档 · Fireworks · Step 3.7 Flash（NVFP4）（模型库）"
+  },
+  "fal/alibaba/qwen-image-3/text-to-image": {
+    "url": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api",
+    "label": "官方文档 · fal · Qwen Image 3 API 文档"
+  },
+  "fal/bytedance/seedream/v5/flash/text-to-image": {
+    "url": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+    "label": "官方文档 · fal · Seedream v5 Flash 编辑接口"
+  },
+  "fal/bytedance/seedream/v5/pro/text-to-image": {
+    "url": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+    "label": "官方文档 · fal · Seedream v5 pro 编辑接口"
+  },
+  "fal/fal-ai/bytedance/seedream/v4.5/text-to-image": {
+    "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+    "label": "官方文档 · fal · Seedream v4.5 编辑接口"
+  },
+  "fal/fal-ai/bytedance/seedream/v4/text-to-image": {
+    "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+    "label": "官方文档 · fal · Seedream v4 编辑接口"
+  },
+  "fal/fal-ai/fast-sdxl": {
+    "url": "https://fal.ai/models/fal-ai/fast-sdxl/api",
+    "label": "官方文档 · fal · Fast SDXL API 文档"
+  },
+  "fal/fal-ai/flux-2": {
+    "url": "https://fal.ai/models/fal-ai/flux-2/api",
+    "label": "官方文档 · fal · FLUX-2 API 文档"
+  },
+  "fal/fal-ai/flux-2-flex": {
+    "url": "https://fal.ai/models/fal-ai/flux-2-flex/api",
+    "label": "官方文档 · fal · FLUX 2 Flex API 文档"
+  },
+  "fal/fal-ai/flux-2-pro": {
+    "url": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+    "label": "官方文档 · fal · FLUX 2 Pro 编辑接口"
+  },
+  "fal/fal-ai/flux-2/flash": {
+    "url": "https://fal.ai/models/fal-ai/flux-2/flash/api",
+    "label": "官方文档 · fal · FLUX-2（flash） API 文档"
+  },
+  "fal/fal-ai/flux-2/klein/9b": {
+    "url": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api",
+    "label": "官方文档 · fal · FLUX-2（klein，9b） API 文档"
+  },
+  "fal/fal-ai/flux-2/turbo": {
+    "url": "https://fal.ai/models/fal-ai/flux-2/turbo/api",
+    "label": "官方文档 · fal · FLUX-2（turbo） API 文档"
+  },
+  "fal/fal-ai/flux-kontext-lora": {
+    "url": "https://fal.ai/models/fal-ai/flux-kontext-lora/api",
+    "label": "官方文档 · fal · FLUX Kontext LoRA API 文档"
+  },
+  "fal/fal-ai/flux-pro/kontext": {
+    "url": "https://fal.ai/models/fal-ai/flux-pro/kontext/api",
+    "label": "官方文档 · fal · FLUX Pro（Kontext） API 文档"
+  },
+  "fal/fal-ai/flux-pro/v1.1": {
+    "url": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api",
+    "label": "官方文档 · fal · FLUX Pro（V1.1） API 文档"
+  },
+  "fal/fal-ai/flux-pro/v1.1-ultra": {
+    "url": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api",
+    "label": "官方文档 · fal · FLUX Pro（V1.1 Ultra） API 文档"
+  },
+  "fal/blackforestlabs/flux-3/klein/base/text-to-image": {
+    "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+    "label": "官方文档 · fal · FLUX.3 Klein Base 编辑接口"
+  },
+  "fal/blackforestlabs/flux-3/klein/text-to-image": {
+    "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+    "label": "官方文档 · fal · FLUX.3 Klein 编辑接口"
+  },
+  "fal/blackforestlabs/flux-3/text-to-image": {
+    "url": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+    "label": "官方文档 · fal · FLUX.3 编辑接口"
+  },
+  "fal/fal-ai/flux-1/schnell": {
+    "url": "https://fal.ai/models/fal-ai/flux-1/schnell/api",
+    "label": "官方文档 · fal · FLUX-1（schnell） API 文档"
+  },
+  "fal/fal-ai/flux-lora": {
+    "url": "https://fal.ai/models/fal-ai/flux-lora/api",
+    "label": "官方文档 · fal · FLUX LoRA API 文档"
+  },
+  "fal/fal-ai/flux/dev": {
+    "url": "https://fal.ai/models/fal-ai/flux/dev/api",
+    "label": "官方文档 · fal · FLUX（dev） API 文档"
+  },
+  "fal/fal-ai/flux/schnell": {
+    "url": "https://fal.ai/models/fal-ai/flux/schnell/api",
+    "label": "官方文档 · fal · FLUX（schnell） API 文档"
+  },
+  "fal/fal-ai/ideogram/v3": {
+    "url": "https://fal.ai/models/fal-ai/ideogram/v3/api",
+    "label": "官方文档 · fal · Ideogram V3 API 文档"
+  },
+  "fal/fal-ai/qwen-image": {
+    "url": "https://fal.ai/models/fal-ai/qwen-image/api",
+    "label": "官方文档 · fal · Qwen Image API 文档"
+  },
+  "fal/fal-ai/recraft/v4/pro/text-to-image": {
+    "url": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api",
+    "label": "官方文档 · fal · Recraft V4 Pro API 文档"
+  },
+  "fal/fal-ai/recraft/v3/text-to-image": {
+    "url": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api",
+    "label": "官方文档 · fal · Recraft V3 API 文档"
+  },
+  "fal/google/nano-banana-2.1": {
+    "url": "https://fal.ai/models/google/nano-banana-2.1/api",
+    "label": "官方文档 · fal · Nano Banana 2.1 API 文档"
+  },
+  "fal/openai/gpt-image-2.5/flare/text-to-image": {
+    "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+    "label": "官方文档 · fal · GPT Image 2.5 Flare 编辑接口"
+  },
+  "fal/openai/gpt-image-2.5/sunburst/text-to-image": {
+    "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+    "label": "官方文档 · fal · GPT Image 2.5 Sunburst 编辑接口"
+  },
+  "fal/openai/gpt-image-2": {
+    "url": "https://fal.ai/models/openai/gpt-image-2/api",
+    "label": "官方文档 · fal · GPT Image 2 API 文档"
+  },
+  "fal/fal-ai/gpt-image-1.5": {
+    "url": "https://fal.ai/models/fal-ai/gpt-image-1.5/api",
+    "label": "官方文档 · fal · GPT Image 1.5 API 文档"
+  },
+  "fal/xai/grok-imagine-image/v2.0/text-to-image": {
+    "url": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api",
+    "label": "官方文档 · fal · Grok Imagine Image（V2.0） API 文档"
+  },
+  "fal/xai/grok-imagine-image": {
+    "url": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+    "label": "官方文档 · fal · Grok Imagine Image 编辑接口"
+  },
+  "fal/xai/grok-imagine-image/quality/text-to-image": {
+    "url": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+    "label": "官方文档 · fal · Grok Imagine Image Quality 编辑接口"
+  },
+  "fal/bria/fibo-edit-1.5/edit": {
+    "url": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api",
+    "label": "官方文档 · fal · Fibo Edit 1.5（Edit） API 文档"
+  },
+  "fal/bria/fibo-gen-1.5/text-to-image": {
+    "url": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api",
+    "label": "官方文档 · fal · Fibo Gen 1.5 API 文档"
+  },
+  "fal/fal-ai/krea-2/turbo": {
+    "url": "https://fal.ai/models/fal-ai/krea-2/turbo/api",
+    "label": "官方文档 · fal · Krea 2（Turbo） API 文档"
+  },
+  "fal/fal-ai/z-image/turbo": {
+    "url": "https://fal.ai/models/fal-ai/z-image/turbo/api",
+    "label": "官方文档 · fal · Z Image（Turbo） API 文档"
+  },
+  "fal/krea/v2/large/text-to-image": {
+    "url": "https://fal.ai/models/krea/v2/large/text-to-image/api",
+    "label": "官方文档 · fal · Krea V2 Large API 文档"
+  },
+  "fal/krea/v3/text-to-image": {
+    "url": "https://fal.ai/models/krea/v3/edit/api",
+    "label": "官方文档 · fal · Krea 3 编辑接口"
+  },
+  "fal/meta/muse-image/text-to-image": {
+    "url": "https://fal.ai/models/meta/muse-image/edit/api",
+    "label": "官方文档 · fal · Muse Image 编辑接口"
+  },
+  "replicate/google/nano-banana-2.1": {
+    "url": "https://replicate.com/google/nano-banana-2.1",
+    "label": "官方文档 · Replicate · Nano Banana 2.1"
+  },
+  "replicate/prunaai/flux-kontext-fast": {
+    "url": "https://replicate.com/prunaai/flux-kontext-fast",
+    "label": "官方文档 · Replicate · FLUX Kontext Fast"
+  },
+  "tokendance/deepseek-v4.1-flash": {
+    "url": "https://tokendance.space/models/deepseek-v4.1-flash",
+    "label": "官方文档 · TokenDance · DeepSeek-V4.1-Flash"
+  },
+  "tokendance/deepseek-v4.1-flash-1017": {
+    "url": "https://tokendance.space/models/deepseek-v4.1-flash-1017",
+    "label": "官方文档 · TokenDance · DeepSeek V4.1 Flash 1017"
+  },
+  "tokendance/deepseek-v4-pro-0813": {
+    "url": "https://tokendance.space/models/deepseek-v4-pro-0813",
+    "label": "官方文档 · TokenDance · DeepSeek-V4-Pro-0813"
+  },
+  "tokendance/deepseek-v4-flash-0731": {
+    "url": "https://tokendance.space/models/deepseek-v4-flash-0731",
+    "label": "官方文档 · TokenDance · DeepSeek-V4-Flash-0731"
+  },
+  "tokendance/deepseek-v4-pro": {
+    "url": "https://tokendance.space/models/deepseek-v4-pro",
+    "label": "官方文档 · TokenDance · DeepSeek-V4-Pro Preview"
+  },
+  "tokendance/glm-5.3": {
+    "url": "https://tokendance.space/models/glm-5.3",
+    "label": "官方文档 · TokenDance · GLM 5.3"
+  },
+  "tokendance/glm-5.3-flash": {
+    "url": "https://tokendance.space/models/glm-5.3-flash",
+    "label": "官方文档 · TokenDance · GLM 5.3 Flash"
+  },
+  "tokendance/glm-5.3-flashx": {
+    "url": "https://tokendance.space/models/glm-5.3-flashx",
+    "label": "官方文档 · TokenDance · GLM 5.3 FlashX"
+  },
+  "tokendance/glm-5.2": {
+    "url": "https://tokendance.space/models/glm-5.2",
+    "label": "官方文档 · TokenDance · GLM 5.2"
+  },
+  "tokendance/glm-5.1": {
+    "url": "https://tokendance.space/models/glm-5.1",
+    "label": "官方文档 · TokenDance · GLM 5.1"
+  },
+  "tokendance/glm-5": {
+    "url": "https://tokendance.space/models/glm-5",
+    "label": "官方文档 · TokenDance · GLM 5"
+  },
+  "tokendance/glm-5v-turbo": {
+    "url": "https://tokendance.space/models/glm-5v-turbo",
+    "label": "官方文档 · TokenDance · GLM 5V Turbo"
+  },
+  "tokendance/glm-4.7": {
+    "url": "https://tokendance.space/models/glm-4.7",
+    "label": "官方文档 · TokenDance · GLM 4.7"
+  },
+  "tokendance/glm-4.6v": {
+    "url": "https://tokendance.space/models/glm-4.6v",
+    "label": "官方文档 · TokenDance · GLM 4.6V"
+  },
+  "tokendance/glm-4.5-air": {
+    "url": "https://tokendance.space/models/glm-4.5-air",
+    "label": "官方文档 · TokenDance · GLM 4.5 Air"
+  },
+  "tokendance/hy4-preview": {
+    "url": "https://tokendance.space/models/hy4-preview",
+    "label": "官方文档 · TokenDance · Hy4 preview"
+  },
+  "tokendance/hy3": {
+    "url": "https://tokendance.space/models/hy3",
+    "label": "官方文档 · TokenDance · Hy3"
+  },
+  "tokendance/hy3-preview": {
+    "url": "https://tokendance.space/models/hy3-preview",
+    "label": "官方文档 · TokenDance · Hy3 preview"
+  },
+  "tokendance/kimi-k3": {
+    "url": "https://tokendance.space/models/kimi-k3",
+    "label": "官方文档 · TokenDance · Kimi K3"
+  },
+  "tokendance/kimi-k2.7-code": {
+    "url": "https://tokendance.space/models/kimi-k2.7-code",
+    "label": "官方文档 · TokenDance · Kimi K2.7 Code"
+  },
+  "tokendance/kimi-k2.6": {
+    "url": "https://tokendance.space/models/kimi-k2.6",
+    "label": "官方文档 · TokenDance · Kimi K2.6"
+  },
+  "tokendance/kimi-k2.5": {
+    "url": "https://tokendance.space/models/kimi-k2.5",
+    "label": "官方文档 · TokenDance · Kimi K2.5"
+  },
+  "tokendance/minimax-m3": {
+    "url": "https://tokendance.space/models/minimax-m3",
+    "label": "官方文档 · TokenDance · MiniMax M3"
+  },
+  "tokendance/minimax-m2.7": {
+    "url": "https://tokendance.space/models/minimax-m2.7",
+    "label": "官方文档 · TokenDance · MiniMax M2.7"
+  },
+  "tokendance/minimax-m2.5": {
+    "url": "https://tokendance.space/models/minimax-m2.5",
+    "label": "官方文档 · TokenDance · MiniMax M2.5"
+  },
+  "tokendance/qwen3.8-flash": {
+    "url": "https://tokendance.space/models/qwen3.8-flash",
+    "label": "官方文档 · TokenDance · Qwen3.8 Flash"
+  },
+  "tokendance/qwen3.8-max": {
+    "url": "https://tokendance.space/models/qwen3.8-max",
+    "label": "官方文档 · TokenDance · Qwen3.8 Max"
+  },
+  "tokendance/qwen3.8-max-0902": {
+    "url": "https://tokendance.space/models/qwen3.8-max-0902",
+    "label": "官方文档 · TokenDance · Qwen3.8-Max-0902"
+  },
+  "tokendance/qwen3.7-max": {
+    "url": "https://tokendance.space/models/qwen3.7-max",
+    "label": "官方文档 · TokenDance · Qwen3.7 Max"
+  },
+  "tokendance/qwen3.7-plus": {
+    "url": "https://tokendance.space/models/qwen3.7-plus",
+    "label": "官方文档 · TokenDance · Qwen3.7 Plus"
+  },
+  "tokendance/qwen3.6-plus": {
+    "url": "https://tokendance.space/models/qwen3.6-plus",
+    "label": "官方文档 · TokenDance · Qwen3.6 Plus"
+  },
+  "tokendance/qwen3.5-35b-a3b": {
+    "url": "https://tokendance.space/models/qwen3.5-35b-a3b",
+    "label": "官方文档 · TokenDance · Qwen3.5-35B-A3B"
+  },
+  "tokendance/qwen3.5-flash": {
+    "url": "https://tokendance.space/models/qwen3.5-flash",
+    "label": "官方文档 · TokenDance · Qwen3.5 Flash"
+  },
+  "tokendance/qwen3.5-plus": {
+    "url": "https://tokendance.space/models/qwen3.5-plus",
+    "label": "官方文档 · TokenDance · Qwen3.5 Plus"
+  },
+  "tokendance/seed-2.1-pro": {
+    "url": "https://tokendance.space/models/seed-2.1-pro",
+    "label": "官方文档 · TokenDance · Seed-2.1-Pro"
+  },
+  "tokendance/seed-2.1-turbo": {
+    "url": "https://tokendance.space/models/seed-2.1-turbo",
+    "label": "官方文档 · TokenDance · Seed-2.1-Turbo"
+  },
+  "tokendance/seed-2.0-code": {
+    "url": "https://tokendance.space/models/seed-2.0-code",
+    "label": "官方文档 · TokenDance · Seed-2.0-Code"
+  },
+  "tokendance/seed-2.0-lite": {
+    "url": "https://tokendance.space/models/seed-2.0-lite",
+    "label": "官方文档 · TokenDance · Seed-2.0-Lite"
+  },
+  "tokendance/seed-2.0-mini": {
+    "url": "https://tokendance.space/models/seed-2.0-mini",
+    "label": "官方文档 · TokenDance · Seed-2.0-Mini"
+  },
+  "tokendance/seed-2.0-pro": {
+    "url": "https://tokendance.space/models/seed-2.0-pro",
+    "label": "官方文档 · TokenDance · Seed-2.0-Pro"
+  },
+  "tokendance/seedream-5.0-lite": {
+    "url": "https://tokendance.space/models/seedream-5.0-lite",
+    "label": "官方文档 · TokenDance · Seedream 5.0 lite"
+  },
+  "tokendance/seedream-5.0-pro": {
+    "url": "https://tokendance.space/models/seedream-5.0-pro",
+    "label": "官方文档 · TokenDance · Seedream 5.0 Pro"
+  },
+  "tokendance/step-5-preview": {
+    "url": "https://tokendance.space/models/step-5-preview",
+    "label": "官方文档 · TokenDance · Step 5 Preview"
+  },
+  "tokendance/step-3.7-flash": {
+    "url": "https://tokendance.space/models/step-3.7-flash",
+    "label": "官方文档 · TokenDance · Step 3.7 Flash"
+  },
+  "tokendance/step-3.5-flash": {
+    "url": "https://tokendance.space/models/step-3.5-flash",
+    "label": "官方文档 · TokenDance · Step 3.5 Flash"
+  },
+  "tokendance/cogevol-base": {
+    "url": "https://tokendance.space/models/cogevol-base",
+    "label": "官方文档 · TokenDance · CogEvol Base"
+  },
+  "tokendance/cogevol-interactive-0828": {
+    "url": "https://tokendance.space/models/cogevol-interactive-0828",
+    "label": "官方文档 · TokenDance · CogEvol Interactive 0828"
+  },
+  "tokendance/cogevol-slide-0828": {
+    "url": "https://tokendance.space/models/cogevol-slide-0828",
+    "label": "官方文档 · TokenDance · CogEvol Slide 0828"
+  },
+  "tokendance/dots-3-note-preview": {
+    "url": "https://tokendance.space/models/dots-3-note-preview",
+    "label": "官方文档 · TokenDance · Dots3-Note Preview（免费）"
+  },
+  "tokendance/kimi-k3.1-pro": {
+    "url": "https://tokendance.space/models/kimi-k3.1-pro",
+    "label": "官方文档 · TokenDance · Kimi K3.1 Pro"
+  },
+  "tokendance/ling-3.0-flash": {
+    "url": "https://tokendance.space/models/ling-3.0-flash",
+    "label": "官方文档 · TokenDance · Ling 3.0 Flash"
+  },
+  "tokendance/ling-3.1-flash": {
+    "url": "https://tokendance.space/models/ling-3.1-flash",
+    "label": "官方文档 · TokenDance · Ling 3.1 Flash"
+  },
+  "tokendance/longcat-2.0": {
+    "url": "https://tokendance.space/models/longcat-2.0",
+    "label": "官方文档 · TokenDance · LongCat-2.0"
+  },
+  "tokendance/mimo-v2.5": {
+    "url": "https://tokendance.space/models/mimo-v2.5",
+    "label": "官方文档 · TokenDance · MiMo-V2.5"
+  },
+  "tokendance/mimo-v2.5-pro": {
+    "url": "https://tokendance.space/models/mimo-v2.5-pro",
+    "label": "官方文档 · TokenDance · MiMo-V2.5-Pro"
+  },
+  "tokendance/mimo-v2.6-flash": {
+    "url": "https://tokendance.space/models/mimo-v2.6-flash",
+    "label": "官方文档 · TokenDance · Mimo-V2.6-Flash"
+  },
+  "tokendance/mimo-v2.6-pro": {
+    "url": "https://tokendance.space/models/mimo-v2.6-pro",
+    "label": "官方文档 · TokenDance · Mimo-V2.6-Pro"
+  },
+  "tokendance/mimo-v2.6-ultraspeed": {
+    "url": "https://tokendance.space/models/mimo-v2.6-ultraspeed",
+    "label": "官方文档 · TokenDance · MiMo-V2.6-Pro-UltraSpeed"
+  },
+  "tokendance/minimax-m3.1-flash": {
+    "url": "https://tokendance.space/models/minimax-m3.1-flash",
+    "label": "官方文档 · TokenDance · MiniMax M3.1 Flash"
+  },
+  "tokendance/qwen3-vl-plus": {
+    "url": "https://tokendance.space/models/qwen3-vl-plus",
+    "label": "官方文档 · TokenDance · Qwen3 VL Plus"
+  },
+  "tokendance/seed-evolving": {
+    "url": "https://tokendance.space/models/seed-evolving",
+    "label": "官方文档 · TokenDance · Seed-Evolving"
+  },
+  "tokendance/spark-x2.5-1.7b": {
+    "url": "https://tokendance.space/models/spark-x2.5-1.7b",
+    "label": "官方文档 · TokenDance · Spark-X2.5-1.7B"
+  },
+  "tokendance/spark-x2.5-4b": {
+    "url": "https://tokendance.space/models/spark-x2.5-4b",
+    "label": "官方文档 · TokenDance · Spark-X2.5-4B"
+  },
+  "tokendance/unifuncs-s3": {
+    "url": "https://tokendance.space/models/unifuncs-s3",
+    "label": "官方文档 · TokenDance · Deep Search S3"
+  },
+  "tokendance/unifuncs-s3-pro": {
+    "url": "https://tokendance.space/models/unifuncs-s3-pro",
+    "label": "官方文档 · TokenDance · Deep Search S3 Pro"
+  },
+  "tokendance/unifuncs-u3": {
+    "url": "https://tokendance.space/models/unifuncs-u3",
+    "label": "官方文档 · TokenDance · Deep Research U3"
+  },
+  "tokendance/unifuncs-u3-pro": {
+    "url": "https://tokendance.space/models/unifuncs-u3-pro",
+    "label": "官方文档 · TokenDance · Deep Research U3 Pro"
+  },
+  "tokenhub/hy4": {
+    "url": "https://cloud.tencent.com/document/product/1823/132252",
+    "label": "官方文档 · 腾讯云 · 文档 132252"
+  },
+  "xiaomi/mimo-v2.6-flash": {
+    "url": "https://mimo.mi.com/models/en-US/mimo-v2.6-flash",
+    "label": "官方文档 · MiMo · MiMo-V2.6-Flash"
+  },
+  "xiaomi/mimo-v2.6-pro": {
+    "url": "https://mimo.mi.com/models/en-US/mimo-v2.6-pro",
+    "label": "官方文档 · MiMo · MiMo-V2.6-Pro"
+  },
+  "xiaomi/mimo-v2.6-pro-ultraspeed": {
+    "url": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "label": "官方文档 · MiMo · 模型说明"
+  },
+  "stepfun/step-5-preview": {
+    "url": "https://platform.stepfun.com/docs/zh/guides/models/step-5-preview",
+    "label": "官方文档 · StepFun · Step 5 Preview"
+  },
+  "stepfun/step-3.7-flash": {
+    "url": "https://platform.stepfun.com/docs/zh/guides/models/step-3.7-flash",
+    "label": "官方文档 · StepFun · Step 3.7 Flash"
+  },
+  "stepfun/step-3.5-flash": {
+    "url": "https://platform.stepfun.com/docs/zh/guides/models/step-3.5-flash",
+    "label": "官方文档 · StepFun · Step 3.5 Flash"
+  },
+  "stepfun/step-3.5-flash-2603": {
+    "url": "https://platform.stepfun.com/docs/zh/guides/models/step-3.5-flash",
+    "label": "官方文档 · StepFun · Step 3.5 Flash"
+  },
+  "stepfun/step-1o-turbo-vision": {
+    "url": "https://platform.stepfun.com/docs/zh/guides/models/list",
+    "label": "官方文档 · StepFun · List"
+  },
+  "longcat/LongCat-2.5": {
+    "url": "https://longcat.chat/platform/docs/change-log",
+    "label": "官方文档 · LongCat · Change Log"
+  },
+  "antling/Ling-3.0-flash-VL": {
+    "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+    "label": "官方文档 · 蚂蚁百灵 · OpenAI"
+  },
+  "antling/Ling-3.0-tiny": {
+    "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+    "label": "官方文档 · 蚂蚁百灵 · OpenAI"
+  },
+  "antling/Ling-3.0-flash": {
+    "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+    "label": "官方文档 · 蚂蚁百灵 · OpenAI"
+  },
+  "antling/Ling-3.1-flash": {
+    "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+    "label": "官方文档 · 蚂蚁百灵 · OpenAI"
+  },
+  "antling/Ling-3.2-flash": {
+    "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+    "label": "官方文档 · 蚂蚁百灵 · OpenAI"
+  }
+}
