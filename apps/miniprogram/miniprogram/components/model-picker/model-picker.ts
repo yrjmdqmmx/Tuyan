@@ -1,4 +1,4 @@
-import { fieldSourceLines, cardLifecycle, displayModalities, titleSourceRows, modalityIconStates } from '../../utils/card-presentation'
+import { evidenceStatusLines, numericStatus, readableEventDates, cardLifecycle, displayModalities, titleSourceRows, modalityIconStates } from '../../utils/card-presentation'
 import { removedModelHint, modelDisplayName, removedModel, auditedModelSpecs, auditedModelLifecycle, AuditFact } from '../../utils/model-audit'
 import { formatContextLimit, MODEL_CHANNEL_LABELS, modelDeveloper, orderModelChannels, modelVersionLabel, modelVersionDetail } from '../../utils/model-presentation'
 import { getModelRegistryState } from '../../utils/model-registry-store'
@@ -177,9 +177,9 @@ function roleLabel(role: ModelRole): string { return role === 'image' ? '图像�
 function presentModel(model: RegistryModel, selectedProvider: unknown, selectedModel: unknown, providerId: ModelProviderId) {
   const audit = model.cardSpecifications || auditedModelSpecs(providerId, model.id), lifecycle = cardLifecycle(auditedModelLifecycle(providerId, model.id), audit)
   const names: Record<string,string> = {text:'文本',image:'图像',audio:'音频',video:'视频',file:'文件',document:'文件'}
-  const display = (fact: AuditFact) => fact.state === 'known' ? Array.isArray(fact.value) ? displayModalities(fact.value as string[]).map(x => names[x]).join('、') : `${typeof fact.value === 'string' ? fact.value.replace(/[km]$/i, unit => unit.toUpperCase()) : formatContextLimit(Number(fact.value), fact.approximate)} tokens${fact.suffix || ''}` : fact.state === 'unsupported' ? '暂不支持' : fact.state === 'not-applicable' ? '不适用' : '未知'
-  const origin = (fact: AuditFact) => fact.provenance === 'vendor' ? '源自原厂' : fact.provenance === 'catalog' ? '图研既有核实' : fact.provenance === 'product' ? '图研输入要求' : ''
-  const image = model.roles.includes('image') && !(audit.fields.outputModalities.value as string[] || []).includes('text') && !['totalContextTokens','maxOutputTokens'].some(k => audit.fields[k].state === 'known')
+  const display = (fact: AuditFact) => fact.state === 'known' ? Array.isArray(fact.value) ? displayModalities(fact.value as string[]).map(x => names[x]).join('、') : `${typeof fact.value === 'string' ? fact.value.replace(/[km]$/i, unit => unit.toUpperCase()) : formatContextLimit(Number(fact.value), fact.approximate)} tokens${fact.suffix || ''}` : numericStatus(fact.state)
+  const origin = (fact: AuditFact) => fact.provenance === 'vendor' ? '源自原厂' : ''
+  const image = (model.roles.includes('image') || (audit.fields.outputModalities.value as string[] || []).some(x => x === 'image' || x === 'video')) && !(audit.fields.outputModalities.value as string[] || []).includes('text') && !['totalContextTokens','maxOutputTokens'].some(k => audit.fields[k].state === 'known')
   const specRows = [['inputModalities','输入'],['outputModalities','输出'],['totalContextTokens','上下文窗口'],['maxOutputTokens','最大输出']].map(([key,label]) => {
     const fact = audit.fields[key], modality = key.endsWith('Modalities')
     const icons = modality ? modalityIconStates(display(fact), fact, providerId, model.id, key === 'outputModalities' ? 'output' : 'input') : []
@@ -190,11 +190,12 @@ function presentModel(model: RegistryModel, selectedProvider: unknown, selectedM
   return {
     disabled: model.selectionDisabled, disabledReason: model.selectionDisabledReason,
     scheduled: lifecycle?.state === 'scheduled',
+    retirementMessage:lifecycle ? readableEventDates(lifecycle.message) : '',
     retirementSource: lifecycle ? titleSourceRows([{url:lifecycle.sourceUrl,label:'下线公告'}])[0] : null,
     vendorLabel:modelDeveloper(providerId, model).label,channelLabel:PROVIDER_LABELS[providerId],
     specRows,
-    specSources: titleSourceRows([...(audit.sourceUrl ? [{...(audit.sourceLabel === '下线公告' && Object.values(audit.fields).some(f => f.provenance === 'vendor' && f.sourceUrl === audit.sourceUrl) ? {role:'vendor'} : {}),url:audit.sourceUrl,label:audit.sourceLabel}] : []), ...Object.values(audit.fields).filter(f => providerId === 'fal' && f.provenance === 'channel' && /^https:\/\/fal\.ai\/models\//.test(f.sourceUrl || '')).map(f => ({url:f.sourceUrl!,label:'官方文档'})), ...(audit.vendorSources || []).filter((url: string) => url !== audit.sourceUrl).map((url: string) => ({url,label:'原厂规格'})), ...(audit.retirementSources || []).map((url: string) => ({url,label:'下线公告'}))], model),
-    auditMessage:[...new Set([audit.verifiedAt && `核实日期：${audit.verifiedAt}`, ...fieldSourceLines(audit.fields, audit.verifiedAt), lifecycle?.message, audit.note, ...[['totalContextTokens','上下文窗口'],['maxOutputTokens','最大输出']].map(([key,label]) => audit.fields[key].state === 'known' ? `${label}：${audit.fields[key].value} tokens` : '')].filter(Boolean).flatMap(value => value.split('\n')))].join('\n'),
+    specSources: titleSourceRows([...(audit.sourceUrl ? [{...(audit.sourceLabel === '下线公告' && Object.values(audit.fields).some(f => f.provenance === 'vendor' && f.sourceUrl === audit.sourceUrl) ? {role:'vendor'} : {}),url:audit.sourceUrl,label:audit.sourceLabel}] : []), ...Object.values(audit.fields).filter(f => ['fal','ideogram'].includes(providerId) && f.provenance === 'channel' && /^https:\/\/(?:fal\.ai\/models\/|developer\.ideogram\.ai\/)/.test(f.sourceUrl || '')).map(f => ({url:f.sourceUrl!,label:'官方文档'})), ...(audit.vendorSources || []).filter((url: string) => url !== audit.sourceUrl).map((url: string) => ({url,label:'原厂规格'})), ...(audit.retirementSources || []).map((url: string) => ({url,label:'下线公告'}))], model),
+    auditMessage:evidenceStatusLines(specRows.flatMap(row => row.icons), audit.fields, specRows.slice(2).map(row => row.value)),
     id: model.id, label: model.label,
     availabilityNotes: [model.availabilityNotes, model.capabilities?.requiresSourceImage ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),
     versionLabel:modelVersionLabel(model), versionText:modelVersionDetail(model), apiIdentifier:model.apiIdentifier || model.id,

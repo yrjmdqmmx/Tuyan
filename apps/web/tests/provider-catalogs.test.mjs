@@ -45,12 +45,12 @@ test('unknown model facts retain fal human pages including /api; real API lists 
  for(const url of ['https://fal.ai/models/new-endpoint','https://fal.ai/models/new-endpoint/api']) {
   const model={id:'new-endpoint',specifications:{version:1,sourceUrls:[url]}},before=structuredClone(model)
   const card=modelCardSpecifications('fal',model)
-  assert.equal(card.context,'未知');assert.deepEqual(card.sources,[url])
+  assert.equal(card.context,'未公布');assert.deepEqual(card.sources,[url])
   assert.deepEqual(model,before,'original source evidence is preserved')
  }
  const model={id:'new-endpoint',specifications:{version:1,sourceUrls:['https://api.fal.ai/v1/models']}},before=structuredClone(model)
  const card=modelCardSpecifications('fal',model)
- assert.equal(card.context,'未知');assert.deepEqual(card.sources,['https://fal.ai/models/new-endpoint'])
+ assert.equal(card.context,'未公布');assert.deepEqual(card.sources,['https://fal.ai/models/new-endpoint'])
  assert.deepEqual(model,before,'JSON evidence is retained underneath the human model link')
 })
 

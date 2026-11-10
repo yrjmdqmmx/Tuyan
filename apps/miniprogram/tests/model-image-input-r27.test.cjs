@@ -11,12 +11,13 @@ test('R27 all 15 compiled Mini image icons and dialog sources retain the edit qu
   for (const [key, fields] of Object.entries(review.reviews)) {
     const {card, audit} = now[key].mini
     assertImageInput(key, audit.fields.inputModalities, card.specRows[0].icons, card.specSources)
-    assert.ok(card.auditMessage.includes('输入：渠道公布（核实日期：' + fields.inputModalities.verifiedAt + '）'), key)
+    assert.doesNotMatch(card.auditMessage,/核实日期|渠道公布|\d{4}-\d{2}-\d{2}/,key); assert.ok(card.auditMessage.includes('支持图像输入'),key)
     assert.doesNotMatch(card.auditMessage, /创始人|决定 A/)
     const icon = card.specRows[0].icons.find(icon => icon.id === 'image')
     definition.methods.showModality({currentTarget:{dataset:{label:icon.accessibleLabel,detail:icon.tooltip}}})
     assert.equal(modal.title, '支持图像输入'); assert.equal(modal.content, icon.tooltip)
-    const source = card.specSources[0]
+    const source = card.specSources.find(s=>s.url===fields.inputModalities.sourceUrl.replace(/\.md$/,''))
+    assert.ok(source,key+' retained image-input evidence')
     definition.methods.copySource({currentTarget:{dataset:{url:source.url,source:source.label,notice:card.auditMessage}}})
     assert.match(modal.content, /编辑接口|Edit API 文档/); modal.success({confirm:true}); assert.equal(clipboard, source.url)
   }

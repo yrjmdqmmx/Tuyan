@@ -18,7 +18,7 @@ test('R24 Web keeps retirement roles in the three reported cards and their dialo
     const model = STATIC_MODEL_REGISTRY[provider].models.find(model => model.id === id)
     const rows = modelSourceRows(modelCardSpecifications(provider, model))
     assert.ok(!rows.some(row => row.url === fixture.noticeUrl))
-    const expected = fixture.currentNotices[key]
+    const expected = fixture.currentNotices[key] && JSON.parse(JSON.stringify(fixture.currentNotices[key]).replaceAll('2027-01-19','2027年01月19日'))
     render(React.createElement(ModelSpecifications, {provider, model}))
     fireEvent.click(screen.getByRole('button', {name: /^输入模态/}))
     const dialog = screen.getByRole('dialog')

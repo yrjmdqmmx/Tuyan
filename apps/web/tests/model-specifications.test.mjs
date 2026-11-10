@@ -31,7 +31,7 @@ test('Novita shows confirmed text-to-image facts offline and after conflicting c
     assert.ok(card.sources.includes('https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img'))
     const view = render(React.createElement(ModelSpecifications, { provider: 'novita', model }))
     assert.equal(view.container.querySelectorAll('.is-unknown').length,6)
-    assert.match(screen.getByRole('link').title, /未核实/)
+    assert.doesNotMatch(screen.getByRole('link').title, /未核实|核实日期/)
     assert.deepEqual(model, before, 'display correction never expands runtime capabilities or changes history')
     view.unmount()
   }
@@ -48,7 +48,7 @@ test('documented specifications never change adapted capabilities or request lim
   assert.equal(summary.maxInputTokens,131072)
   const card=modelCardSpecifications('gemini',model)
   assert.match(card.input,/视频/)
-  assert.equal(card.context,'未知');assert.equal(card.maxOutput,'≈ 33K tokens')
+  assert.equal(card.context,'未公布');assert.equal(card.maxOutput,'≈ 33K tokens')
   render(React.createElement(ModelSpecifications,{provider:'gemini',model}))
   assert.ok(screen.getByText('上下文窗口'));assert.ok(screen.getByText('最大输出'))
   assert.equal(screen.queryByText('131.072K tokens'),null)
@@ -85,13 +85,13 @@ test('missing native window can use this exact channel with distinct provenance'
 
 test('similar names and unconfirmed manufacturer references cannot supply facts',()=>{
   const data=modelCardSpecifications('custom',{id:'unknown',label:'GPT-5 Pro',specifications:{version:1,manufacturer:{identity:'reference-only',contextWindowTokens:400000,officialInputModalities:['text','image'],sourceUrls:['https://developers.openai.com/api/docs/models/gpt-5-pro']}}})
-  assert.equal(data.context,'未知');assert.equal(data.input,'未知');assert.equal(data.output,'未知')
+  assert.equal(data.context,'未公布');assert.equal(data.input,'未知');assert.equal(data.output,'未知')
 })
 
 test('malformed links and invalid context values remain unknown',()=>{
   assert.deepEqual(safeOfficialSources(['https://','javascript:alert(1)','http://example.com','https://a:b@example.com']),[])
   for (const contextWindowTokens of [Infinity,NaN,-1,0,'1M']) {
-    assert.equal(modelCardSpecifications('custom',{id:'unknown',specifications:{version:1,contextWindowTokens,sourceUrls:['https://example.com/docs']}}).context,'未知')
+    assert.equal(modelCardSpecifications('custom',{id:'unknown',specifications:{version:1,contextWindowTokens,sourceUrls:['https://example.com/docs']}}).context,'未公布')
   }
   render(React.createElement(ModelSpecifications,{provider:'custom',model:{id:'missing',releaseSourceUrl:'javascript:alert(1)'}}))
   assert.equal(screen.queryByRole('link'),null);assert.ok(screen.getByText('官方文档待确认'))
@@ -117,7 +117,7 @@ test('service-specific quantization and Prime specs do not leak to unrelated pro
   const model={id:'glm-5.2-fast-preview'}
   assert.equal(modelCardSpecifications('bailian',model).context,'1M tokens')
   assert.equal(modelCardSpecifications('bailian',model).contextScope,'渠道')
-  assert.equal(modelCardSpecifications('custom',model).context,'未知')
+  assert.equal(modelCardSpecifications('custom',model).context,'未公布')
 })
 
 test('channel-only windows keep native modality provenance and do not cross providers',()=>{
@@ -126,9 +126,9 @@ test('channel-only windows keep native modality provenance and do not cross prov
   assert.equal(qianfan.inputScope,'图研既有核实');assert.equal(qianfan.contextScope,'图研既有核实')
   assert.equal(qianfan.context,'8K tokens')
   assert.ok(qianfan.sources.includes('https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5'))
-  assert.equal(modelCardSpecifications('custom',model).context,'未知')
+  assert.equal(modelCardSpecifications('custom',model).context,'未公布')
   assert.equal(modelCardSpecifications('bailian',{id:'qwen3-omni-flash'}).context,'≈ 66K tokens')
-  assert.equal(modelCardSpecifications('bailian',{id:'qwen3-omni-flash-2025-09-15'}).context,'未知')
+  assert.equal(modelCardSpecifications('bailian',{id:'qwen3-omni-flash-2025-09-15'}).context,'未公布')
 })
 
 test('existing channel and manufacturer runtime limit semantics are preserved',()=>{
@@ -172,10 +172,10 @@ test('new official specifications remain bound to exact IDs and channels',()=>{
   assert.equal(modelCardSpecifications('siliconflow',{id:'XingChenAGI/Xing4.0-29B'}).context,'256K tokens')
   assert.equal(modelCardSpecifications('runware',{id:'google:gemini@3.1-pro'}).context,'1M tokens')
   assert.equal(modelCardSpecifications('runware',{id:'google:gemini@3.1-pro'}).contextScope,'图研既有核实')
-  assert.equal(modelCardSpecifications('custom',{id:'google:gemini@3.1-pro'}).context,'未知')
+  assert.equal(modelCardSpecifications('custom',{id:'google:gemini@3.1-pro'}).context,'未公布')
   assert.equal(modelCardName('deepseek',{id:'deepseek-v4-pro'}),'DeepSeek V4 Pro')
   assert.equal(modelCardName('tokendance',{id:'deepseek-v4-pro',label:'Preview'}),'Preview')
-  assert.equal(modelCardSpecifications('sensenova',{id:'sensenova-6.8-flash-lite'}).context,'未知')
+  assert.equal(modelCardSpecifications('sensenova',{id:'sensenova-6.8-flash-lite'}).context,'未公布')
 })
 
 test('brand assets exist locally and model branding follows the vendor rather than aggregator',()=>{
@@ -198,7 +198,7 @@ test('brand assets exist locally and model branding follows the vendor rather th
 test('image prompt limits remain in evidence without substituting for token windows',()=>{
   const model={id:'specific-image',roles:['image'],specifications:{version:1,contextWindowTokens:128000,sourceUrls:['https://example.com/model'],promptLimits:[{kind:'editing',max:4096,unit:'bytes',sourceUrls:['https://example.com/model']}]}}
   const before=structuredClone(model), data=modelCardSpecifications('custom',model)
-  assert.deepEqual(data.limitRows,[{label:'上下文窗口',value:'128K tokens'},{label:'最大输出',value:'未知'}])
+  assert.deepEqual(data.limitRows,[{label:'上下文窗口',value:'128K tokens'},{label:'最大输出',value:'未公布'}])
   const {container}=render(React.createElement(ModelSpecifications,{provider:'custom',model}))
   assert.match(container.textContent,/128K tokens/);assert.equal(screen.getByText('128K tokens').title,'128,000 tokens');assert.doesNotMatch(container.textContent,/4096/);assert.deepEqual(model,before)
 })
@@ -210,7 +210,7 @@ test('verified catalog limits retain exact integers; similar names do not supply
     assert.equal(data.context,`${formatContextLimit(max)} tokens`);assert.equal(data.maxOutput,`${formatContextLimit(max)} tokens`);assert.equal(data.fields.totalContextTokens.value,max);assert.equal(data.fields.maxOutputTokens.value,max);assert.equal(data.contextScope,'图研既有核实');assert.deepEqual(model,before)
   }
   for(const [id,expected] of [['xqwen14bchat','≈ 131K tokens（需 YaRN）'],['THUDM/GLM-4-9B-0414','128K tokens（需 YaRN；原生 32K）'],['xsparkx2','192K tokens']]) assert.equal(modelCardSpecifications('custom',{id}).context,expected)
-  assert.equal(modelCardSpecifications('custom',{id:'unlisted-similar-GLM-4'}).context,'未知')
+  assert.equal(modelCardSpecifications('custom',{id:'unlisted-similar-GLM-4'}).context,'未公布')
 })
 
 test('specific catalog pages supply modalities and served context when audit is missing',()=>{
@@ -230,5 +230,5 @@ test('context and max output retain independent exact integers and per-value pro
   assert.equal(data.context,'≈ 1M tokens');assert.equal(data.maxOutput,'384K tokens')
   assert.equal(data.contextScope,'渠道');assert.equal(data.maxOutputScope,'原厂')
   const {container}=render(React.createElement(ModelSpecifications,{provider:'tokendance',model:{id:'deepseek-v4-pro'}}))
-  assert.match(screen.getByRole('link').title,/源自原厂/);assert.match(screen.getByRole('link').title,/2026-11-09/)
+  assert.doesNotMatch(screen.getByRole('link').title,/源自原厂|核实日期/);assert.ok(screen.getAllByText('源自原厂').length)
 })

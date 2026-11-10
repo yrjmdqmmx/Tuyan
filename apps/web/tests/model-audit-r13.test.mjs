@@ -1,3 +1,4 @@
+import {currentPrimary} from '../../../test-support/pm-decisions-r30.mjs'
 import { sourceTitle, visibleSourceTitle } from '../../../packages/api/src/card-presentation.mjs'
 import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
@@ -110,15 +111,15 @@ test('R13B every specified notice has 下线公告 in full/static cards and pres
     assert.equal(matches.length, 2)
     for (const { model } of matches) {
       const card = modelCardSpecifications(channel, model)
-      assert.equal(card.sources[0], fullFirstUrl, 'static cards now resolve the same complete specifications as Core')
+      assert.equal(card.sources[0], currentPrimary(channel + '/' + modelId,fullFirstUrl), 'static cards now resolve the same complete specifications as Core')
       assert.ok(card.sources.includes(url), channel + '/' + modelId)
       assert.equal(modelSourceName(card, url), '下线公告')
       for (const compactSources of [false, true]) {
         const view = render(React.createElement(ModelSpecifications, { provider: channel, model, compactSources }))
         const visible = view.getByRole('link')
         assert.equal(visible.getAttribute('href'), card.sources[0])
-        assert.ok(visible.getAttribute('title').includes('下线公告 · ' + sourceTitle(url)))
-        if (card.sources[0] === url) assert.equal(visible.textContent, '下线公告 · ' + sourceTitle(url))
+        assert.ok(visible.getAttribute('title').includes(visibleSourceTitle(url)))
+        if (card.sources[0] === url) assert.equal(visible.textContent, visibleSourceTitle(url))
         view.unmount()
       }
     }
@@ -139,12 +140,12 @@ test('R13B catalog-wide notice links are labelled 下线公告 regardless of cha
       if (url === card.sources[0]) {
         visible++
         const view = render(React.createElement(ModelSpecifications, { provider: channel, model }))
-        assert.equal(view.getByRole('link').textContent, '下线公告 · ' + sourceTitle(url))
+        assert.equal(view.getByRole('link').textContent, visibleSourceTitle(url))
         view.unmount()
       }
     }
   }
-  assert.equal(visible, 26, '13 full-registry and 13 static notice cards; three unsupported Bailian primary citations removed per projection')
+  assert.equal(visible, 14, 'Seven full-registry and seven static notice primaries; six per projection now prioritize an existing own-model page, with notices retained')
   const ordinary = modelCardSources({ channel: 'unknown', audit: {}, fields: {}, model: { officialSourceUrl: 'https://example.test/notice/118177' } })
   assert.equal(modelSourceName(ordinary, ordinary.sources[0]), '官方文档')
 })

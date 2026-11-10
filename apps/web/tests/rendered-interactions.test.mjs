@@ -161,7 +161,7 @@ test('rendered model cards omit verification badges and keep unsupported specifi
   assert.equal(card.querySelectorAll('.model-modality-icon.is-unknown').length, 8)
   assert.equal(card.querySelectorAll('.model-modality-icon.is-unknown .model-modality-question[aria-hidden="true"]').length, 0)
   assert.equal(card.querySelectorAll('[role=img][aria-label^="官方资料未说明是否支持"]').length, 8)
-  assert.equal(card.querySelectorAll('dd')[2].textContent, '未知')
+  assert.equal(card.querySelectorAll('dd')[2].textContent, '未公布')
   assert.doesNotMatch(catalogCard.textContent, /稳定版/)
   assert.doesNotMatch(catalogCard.textContent, /真实调用已验证/)
 })

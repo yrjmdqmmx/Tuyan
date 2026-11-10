@@ -35,7 +35,7 @@ test('R21 Gateway sources keep reviewed channel pages and labelled vendor field 
       assert.equal(isApiSource(url), false, id + ': ' + url)
     }
     for (const row of modelSourceRows(data).slice(reviewed.length)) {
-      if (retirement.includes(row.url)) { assert.equal(row.label, '下线公告 · TokenDance · Qwen3.5 Plus 下线（2027-01-19）'); continue }
+      if (retirement.includes(row.url)) { assert.equal(row.label, '下线公告 · TokenDance · Qwen3.5 Plus 下线（2027年01月19日）'); continue }
       assert.ok(vendorUrls.some(url => sourceIdentity(url) === sourceIdentity(row.url)), id + ': ' + row.url)
       if (row.url === r24.noticeUrl) assert.equal(row.label, r24.noticeLabel, id)
       else assert.match(row.label, /^(官方文档|渠道资料) · /, id)

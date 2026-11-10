@@ -128,9 +128,9 @@ test('scheduled badge is beside the title, preserves full IDs, and tap opens dat
     assert.ok(badge.closest('.tw-catalog-title'));
     assert.equal(view.container.querySelector('.tw-catalog-card-meta code').textContent,id);
     assert.doesNotMatch(view.container.querySelector('.tw-catalog-card-meta').textContent,/将下线/);
-    assert.ok(badge.title.includes(date)); assert.ok(badge.title.includes(replacement));
+    assert.ok(badge.title.includes(date.replace(/(\d{4})-(\d{2})-(\d{2})/g,'$1年$2月$3日'))); assert.ok(badge.title.includes(replacement));
     fireEvent.click(badge);
-    assert.ok(screen.getByRole('dialog').textContent.includes(date));
+    assert.ok(screen.getByRole('dialog').textContent.includes(date.replace(/(\d{4})-(\d{2})-(\d{2})/g,'$1年$2月$3日')));
     view.unmount();
   }
 });

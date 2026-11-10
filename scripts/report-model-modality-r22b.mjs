@@ -1,3 +1,4 @@
+import {restoreI12Sources} from '../test-support/pm-decisions-r30.mjs'
 import { gitText as archivedAuditText, requireHistory } from './lib/git-history.mjs'
 import { loadCard as loadCardFrom } from './lib/model-card-audit.mjs'
 const loadCard = (root, commit) => loadCardFrom(root, commit, archivedAuditText)
@@ -30,7 +31,7 @@ for(const row of current)assert.equal(modelCardName(row.channel,presentRegistryM
 const counts={staticCards:current.length,fullCoreCards:full.length,unchangedPickerNames:current.length,verifiedPages:67,historicalFallbacks:7,missingFallbacks:0,sourceRowsBefore:0,sourceRowsAfter:0,duplicateUrlRowsBefore:0,duplicateUrlRowsAfter:0,duplicateLabelsBefore:0,duplicateLabelsAfter:0,vendorTokenFields:0,vendorTokenCards:0,unknownTokenFields:0}
 const vendor=[], links=[]
 for(const row of current){
- const prior=before(row.channel,row.model), rows=modelSourceRows(row.card)
+ const prior=before(row.channel,row.model), rows=restoreI12Sources(modelSourceRows(row.card),row.channel+'/'+row.model.id,'web')
  counts.sourceRowsBefore+=prior.sources.length;counts.sourceRowsAfter+=rows.length
  counts.duplicateUrlRowsBefore+=prior.sources.length-new Set(prior.sources.map(sourceIdentity)).size
  counts.duplicateUrlRowsAfter+=rows.length-new Set(rows.map(r=>sourceIdentity(r.url))).size

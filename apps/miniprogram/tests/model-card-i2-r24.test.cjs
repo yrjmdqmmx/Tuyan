@@ -26,7 +26,7 @@ test('R24 I2 all 1064 compiled Mini cards, copy dialogs and modality dialogs pas
   assert.equal(new Set(card.specSources.map(s=>s.label)).size,card.specSources.length)
   assert.deepEqual(dialogIssues(card.auditMessage),[],key)
   const audit=require('../miniprogram/utils/model-audit.js').auditedModelSpecs(provider,model.id)
-  assert.equal(card.auditMessage.includes('该渠道页面与图研之前记录的信息不一致，这里只保留已经核实过的内容，没核实的显示为「未知」。'),require('../../../test-support/fixtures/conflict-cards-r26.json').includes(key),key)
+  assert.doesNotMatch(card.auditMessage,/图研之前记录|核实日期|渠道公布/,key)
   assertDialogDates(card.auditMessage,audit.fields,audit.verifiedAt,key)
   assertUnknownIconDates(card.specRows.flatMap(row=>row.icons),key)
   for(const row of card.specSources) {
@@ -42,6 +42,6 @@ test('R24 I2 all 1064 compiled Mini cards, copy dialogs and modality dialogs pas
   }
   cards++
  }
- assert.equal(cards,1064);assert.equal(rows,1114);assert.ok(icons>=1064*8)
+ assert.equal(cards,1064);assert.equal(rows,1149);assert.ok(icons>=1064*8)
  t.diagnostic(JSON.stringify({cards,rows,icons,titleFindings:0,copyFindings:0}))
 })

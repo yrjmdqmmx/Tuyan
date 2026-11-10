@@ -1,4 +1,4 @@
-import { cardLifecycle, displayModalities, displayModalityText, conflictNote } from '../../../../packages/api/src/card-presentation.mjs'
+import { cardLifecycle, displayModalities, displayModalityText, conflictNote, numericStatus } from '../../../../packages/api/src/card-presentation.mjs'
 import { auditedModelSpecs, auditedModelLifecycle, removedModel, MODEL_AUDIT_DATA } from './modelAudit.js'
 import { modelCardSources } from './modelCardSources.js'
 import { catalogCardFacts, mergeCardFacts } from './catalogCardFacts.js'
@@ -60,7 +60,7 @@ export function modelCardSpecifications(provider, model, registry) {
   const image = model.roles?.includes('image') || fields.outputModalities.value?.some?.(x => x === 'image' || x === 'video')
   const scope = fact => fact.provenance === 'vendor' ? '原厂' : fact.provenance === 'channel' ? '渠道' : fact.provenance === 'catalog' ? '图研既有核实' : fact.provenance === 'product' ? '图研输入要求' : ''
   const pureImage = image && !fields.outputModalities.value?.includes?.('text') && !['totalContextTokens', 'maxOutputTokens'].some(key => fields[key].state === 'known')
-  const limit = fact => pureImage && fact.state === 'unknown' && !fact.suppressFallback ? '不适用' : text(fact)
+  const limit = fact => pureImage && fact.state === 'unknown' && !fact.suppressFallback ? '不适用' : fact.state === 'known' ? text(fact) : numericStatus(fact.state)
   const context = limit(fields.totalContextTokens)
   const maxOutput = limit(fields.maxOutputTokens)
   const retired = removedModel(provider, model.id)

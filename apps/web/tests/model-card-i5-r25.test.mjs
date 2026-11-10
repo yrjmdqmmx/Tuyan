@@ -20,7 +20,7 @@ test('R25 I5 all 1064 Web cards: every displayed retirement badge opens a non-ex
   const badge=screen.queryByRole('button',{name:/^(?:将下线|已下线)/})
   if(badge){badges++;fireEvent.click(badge);const links=within(screen.getByRole('dialog')).getAllByRole('link');assert.equal(links.length,1)
    const url=links[0].getAttribute('href');assert.match(url,/^https:\/\//);verifiedRetirement(p+'/'+m.id,url,lifecycle.stopDate);assert.ok(!audit.excludedSources.includes(url),p+'/'+m.id)
-   if(p==='bailian'&&ids.includes(m.id)){assert.equal(url,notice);assert.match(screen.getByRole('dialog').textContent,/2027-01-19/)}
+   if(p==='bailian'&&ids.includes(m.id)){assert.equal(url,notice);assert.match(screen.getByRole('dialog').textContent,/2027年01月19日/)}
   }else assert.ok(!lifecycle||!lifecycle.sourceUrl||audit.excludedSources.includes(lifecycle.sourceUrl))
   cleanup()
  }
@@ -34,7 +34,7 @@ test('R25 I5 all three Bailian cards separate specification and retirement sourc
   render(React.createElement(ModelSpecifications,{provider:'bailian',model}));fireEvent.click(screen.getByRole('button',{name:/^输入模态/}))
   const dialog=screen.getByRole('dialog');assert.equal(within(dialog).getByRole('link',{name:'下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知'}).getAttribute('href'),notice)
   assert.ok(within(dialog).getAllByRole('link').some(a=>a.getAttribute('href')===spec))
-  assert.match(dialog.textContent,/核实日期：2026-11-09/);assert.match(dialog.textContent,/上下文窗口：渠道公布（核实日期：2026-11-10）/)
+  assert.doesNotMatch(dialog.textContent,/核实日期|渠道公布/);assert.ok(within(dialog).getAllByRole('link').every(a=>a.title.includes('核实日期：2026-11-09')))
   assert.doesNotMatch(dialog.textContent,/日期\s+\d{4}-\d{2}-\d{2}/);cleanup()
  }
 })
@@ -50,5 +50,5 @@ test('R25 I5 saved role badges open the same sourced retirement dialog',()=>{
  const draft=newDraft();draft.settings.simple.models={main:{libraryModelId:'m',connectionId:'c',accessProvider:'bailian',modelId:'qwen3.5-plus'}}
  render(React.createElement(WorkspaceModelConfig,{models,draft,path:'svg',onChange:()=>assert.fail('Opening evidence must not change selection')}))
  fireEvent.click(screen.getByRole('button',{name:/^将下线/}))
- const dialog=screen.getByRole('dialog');assert.match(dialog.textContent,/2027-01-19/);assert.equal(within(dialog).getByRole('link').getAttribute('href'),notice)
+ const dialog=screen.getByRole('dialog');assert.match(dialog.textContent,/2027年01月19日/);assert.equal(within(dialog).getByRole('link').getAttribute('href'),notice)
 })

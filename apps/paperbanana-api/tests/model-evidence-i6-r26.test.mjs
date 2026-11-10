@@ -22,7 +22,7 @@ test('R26 I6 Core projects the model-specific 397b retirement citation and exclu
   const key=provider+'/'+model.id,display=context.present(model,'','',provider),audit=model.cardSpecifications
   assertDialogDates(display.auditMessage,audit.fields,audit.verifiedAt,key)
   assertUnknownIconDates(display.specRows.flatMap(row=>row.icons),key)
-  assert.equal(display.auditMessage.includes('该渠道页面与图研之前记录的信息不一致，这里只保留已经核实过的内容，没核实的显示为「未知」。'),conflictCards.includes(key),key)
+  assert.doesNotMatch(display.auditMessage,/图研之前记录|核实日期|渠道公布/,key)
   cards++
  }
  // The existing phase2 fixture has 1061 live models (model-modality-phase2.test.ts).

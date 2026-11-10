@@ -1,3 +1,4 @@
+import {currentPrimary} from '../../../test-support/pm-decisions-r30.mjs'
 import evidenceI6 from '../../../test-support/fixtures/source-evidence-i6-r26.json' with {type:'json'}
 import evidenceI7 from '../../../test-support/fixtures/source-evidence-i7-r27.json' with {type:'json'}
 import evidenceI4 from '../../../test-support/fixtures/source-evidence-i4-r24.json' with {type:'json'}
@@ -27,8 +28,9 @@ const model = (channel, id) => registry.providers[channel].models.find(m => m.id
 const models = new Map(rowsOf(STATIC_MODEL_REGISTRY).map(row => [row.channel + '/' + row.model.id, row.model]))
 for (const row of rows) models.set(row.channel + '/' + row.model.id, row.model)
 const linkIdentity = ({ channel, modelId, oldUrl, finalUrl }) => ({ channel, modelId, oldUrl, finalUrl })
-const r21Url = row => evidenceI7.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || evidenceI6.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || evidenceI4.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || (row.channel === 'tokendance' ? expectedTokenDanceSources(row.modelId)[0] : phase2.sourceChanges.find(change => change.key === row.channel + '/' + row.modelId)?.after
+const oldR21Url = row => evidenceI7.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || evidenceI6.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || evidenceI4.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || (row.channel === 'tokendance' ? expectedTokenDanceSources(row.modelId)[0] : phase2.sourceChanges.find(change => change.key === row.channel + '/' + row.modelId)?.after
   || (row.channel === 'tokendance' ? 'https://tokendance.space/models/' + row.modelId : row.finalUrl))
+const r21Url = row => currentPrimary(row.channel + '/' + row.modelId, oldR21Url(row))
 const expectedR21Changes = before.rows.map(({ channel, modelId, oldUrl }) => {
   const archived = final.find(row => row.channel === channel && row.modelId === modelId)
   return { channel, modelId, oldUrl, finalUrl: expectedHumanUrl(r21Url({ channel, modelId, finalUrl: archived?.finalUrl || oldUrl })) }
@@ -42,12 +44,12 @@ beforeEach(t => t.mock.method(Date, 'now', () => Date.parse('2026-11-09')))
 afterEach(cleanup)
 function assertLink(channel, entry, url, label) {
   const card = modelCardSpecifications(channel, entry)
-  assert.equal(card.sources[0], url)
+  assert.equal(card.sources[0], currentPrimary(channel + '/' + entry.id,url))
   assert.equal(modelSourceName(card, url), label)
   for (const compactSources of [false, true]) {
     const view = render(React.createElement(ModelSpecifications, { provider: channel, model: entry, compactSources }))
     const link = view.getByRole('link')
-    assert.equal(link.getAttribute('href'), url)
+    assert.equal(link.getAttribute('href'), currentPrimary(channel + '/' + entry.id,url))
     assert.equal(link.textContent, modelSourceRows(card)[0].label)
     view.unmount()
   }
@@ -146,11 +148,11 @@ test('R12C keeps OpenAI/Together docs and replaces Replicate/fal endpoints with 
       assert.equal(url, repairedLinks.find(item => item.channel === row.channel && item.modelId === row.modelId)?.finalUrl || row.r11Url.replace(/\/api\/schema(?:\?.*)?$/, '')); replicate++
     }
     if (row.channel === 'replicate' && row.r11Url.startsWith('https://developers.openai.com/api/docs/models/')) {
-      assert.equal(url, expectedHumanUrl(row.r11Url)); replicateOpenAI++
+      assert.equal(url, currentPrimary(row.channel + '/' + row.modelId,expectedHumanUrl(row.r11Url))); replicateOpenAI++
     }
     if (row.channel === 'fal' && isApiSource(row.r11Url)) {
       const editSource = evidenceI7.web.find(item => item.card === row.channel + '/' + row.modelId)?.after[0]?.url
-      if (editSource) assert.equal(url, editSource, entry.id)
+      if (editSource) assert.equal(url, currentPrimary(row.channel + '/' + row.modelId,editSource), entry.id)
       else assert.ok([`https://fal.ai/models/${entry.id}`, `https://fal.ai/models/${entry.id}/api`].includes(url), entry.id + ': ' + url)
       fal++
     }

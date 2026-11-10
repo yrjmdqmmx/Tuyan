@@ -1,0 +1,397 @@
+{
+  "phase": "R30 Phase I12",
+  "head": "588f1d67b387a8cc5079e5f74e0b21631372f122",
+  "mainBaseline": "52e0f161",
+  "finishedAtUtc": "2026-11-10T12:31:44.821187+00:00",
+  "gitWrites": false,
+  "externalNetwork": false,
+  "runs": [
+    {
+      "id": "api-full",
+      "cwd": ".",
+      "command": "node --test packages/api/src/*.test.js",
+      "startedAt": "2026-11-10T12:24:19.501541+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/api-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:19.782884+00:00",
+      "tests": {
+        "tests": 33,
+        "pass": 33,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "39c22791503b646e32db588b8019fd395adb3bc3d559989f66f6d3fdbbaf75fe"
+    },
+    {
+      "id": "auth-gateway-check",
+      "cwd": "apps/auth-gateway",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T12:24:11.270075+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/auth-gateway-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:11.363031+00:00",
+      "logSha256": "3381247e3cc1ecf70a3ea11f99e01a819ed43240cadda685ae08d5f80a90bdb3"
+    },
+    {
+      "id": "benchmark-core-check",
+      "cwd": "packages/benchmark-core",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T12:24:11.270231+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/benchmark-core-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:11.957328+00:00",
+      "logSha256": "eea2233e8ff678c38bdca5667b83566ec1b5414b62a6cbf786d8630fcbf10c21"
+    },
+    {
+      "id": "benchmark-worker-check",
+      "cwd": "apps/benchmark-worker",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T12:24:11.270326+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/benchmark-worker-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:13.135934+00:00",
+      "logSha256": "aa86bc6ea81a42bf399a29a03dd8e84bcdf676df9d319c925d7b088338b2968a"
+    },
+    {
+      "id": "check-docker-bundles",
+      "cwd": ".",
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "startedAt": "2026-11-10T12:24:11.363495+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/check-docker-bundles.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:14.221711+00:00",
+      "logSha256": "7d41b0c301e108d92e770f6cfcc7d262686c308dc74390c70519f9b581f8457e"
+    },
+    {
+      "id": "core-build",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T12:24:18.976988+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/core-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:19.461839+00:00",
+      "logSha256": "bf5694dcb00f4403cd2e07c17fdfdf759b5962b71f1cafdeaf790b2e1cdccc18"
+    },
+    {
+      "id": "core-targeted",
+      "cwd": "apps/paperbanana-api",
+      "command": "node --import tsx --test tests/model-modality-r21.test.ts tests/execution-capability-r22.test.ts tests/model-card-r22b.test.ts tests/model-modality-phase2.test.ts tests/model-evidence-i4-r24.test.mjs tests/model-evidence-i5-r25.test.mjs tests/model-evidence-i6-r26.test.mjs",
+      "startedAt": "2026-11-10T12:24:19.501759+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/core-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:34.458611+00:00",
+      "tests": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "baa7284bdd74f626e69d4138e6045f10dae463f6539acd5dceee78dbd0779f6b"
+    },
+    {
+      "id": "core-tsc-explicit",
+      "cwd": "apps/paperbanana-api",
+      "command": "npx tsc --noEmit",
+      "startedAt": "2026-11-10T12:24:11.957635+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/core-tsc-explicit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:16.414247+00:00",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "freeze-audit-sources",
+      "cwd": ".",
+      "command": "node scripts/freeze-audit-sources.mjs --check",
+      "startedAt": "2026-11-10T12:24:13.136285+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/freeze-audit-sources.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:13.735976+00:00",
+      "logSha256": "d80e602b846bfcd5222bb32faf4bcad4ce8ca896937b60227cc86ac9344c65bf"
+    },
+    {
+      "id": "freeze-execution-capability",
+      "cwd": ".",
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "startedAt": "2026-11-10T12:24:13.736359+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/freeze-execution-capability.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:17.486006+00:00",
+      "logSha256": "39b87a64e03dd9ddbdaed837dc25ed59413aa4d7cd2667b98bb03bf0fe66d524"
+    },
+    {
+      "id": "gateway-targeted",
+      "cwd": "apps/auth-gateway",
+      "command": "node --test tests/model-modality-r21.test.js tests/execution-capability-r22.test.js tests/model-modality-phase2.test.js tests/model-evidence-i4-r24.test.js tests/model-evidence-i5-r25.test.js tests/model-evidence-i6-r26.test.js",
+      "startedAt": "2026-11-10T12:24:19.501870+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/gateway-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:34.636172+00:00",
+      "tests": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "1ee078b063e503d705490a36db8b6b272fe41464c021d2022fbaeb4dda5d3c6a"
+    },
+    {
+      "id": "generate-model-audit",
+      "cwd": ".",
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "startedAt": "2026-11-10T12:24:14.222063+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/generate-model-audit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:14.425128+00:00",
+      "logSha256": "dbbc800e3318e734ff721660de4fd635b08425652c62ec26790efaf840a2207e"
+    },
+    {
+      "id": "mini-build",
+      "cwd": "apps/miniprogram",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T12:24:14.786286+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/mini-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:15.952480+00:00",
+      "logSha256": "0331cf3f97e898e1538f4d5284eb6d49babdaaad7de51d5eb93673bb9b49d6fe"
+    },
+    {
+      "id": "mini-full",
+      "cwd": "apps/miniprogram",
+      "command": "npm test",
+      "startedAt": "2026-11-10T12:25:10.225987+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/mini-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:25:34.256514+00:00",
+      "tests": {
+        "tests": 188,
+        "pass": 188,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "eda12d53827562905582338881f7a9e2974a8d4f9e60be25ceab08ea92f3c8ea"
+    },
+    {
+      "id": "miniprogram-check",
+      "cwd": "apps/miniprogram",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T12:24:14.425445+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/miniprogram-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:14.998871+00:00",
+      "logSha256": "38c246209d9a3bf1c4f7fdcd813aa459742b56f49ea9d1e6e0b11b70b574083c"
+    },
+    {
+      "id": "name-invariants",
+      "cwd": ".",
+      "command": "node --test .audit-input/r24/i10-invariants.test.mjs",
+      "startedAt": "2026-11-10T12:24:34.459938+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/name-invariants.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:46.828015+00:00",
+      "tests": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "07b8cb6ec7f8491c754f4674178243bb1e0d1b97d26b91db8e8553fae308079d"
+    },
+    {
+      "id": "paperbanana-api-check",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T12:24:14.999441+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/paperbanana-api-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:19.038369+00:00",
+      "logSha256": "711f8fe6b6d9b7ec11df0b7db28f6268875e7790f9a94aad807f396ebd578f3e"
+    },
+    {
+      "id": "report-changed-tests",
+      "cwd": ".",
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "startedAt": "2026-11-10T12:29:41.522408+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/report-changed-tests.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:29:44.818503+00:00",
+      "logSha256": "fc98d23cb7e534b9351a021d29675d946a9635010c6b1a23b2b3c29576726098"
+    },
+    {
+      "id": "report-model-image-input-r27",
+      "cwd": ".",
+      "command": "node scripts/report-model-image-input-r27.mjs --check",
+      "startedAt": "2026-11-10T12:24:17.486421+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/report-model-image-input-r27.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:18.378818+00:00",
+      "logSha256": "e7872e2a0a317b698e0adadea4532851c958b7410dedc72acfa7e7fd3d12dc03"
+    },
+    {
+      "id": "report-model-modality-phase2",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "startedAt": "2026-11-10T12:24:18.085491+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/report-model-modality-phase2.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:23.266066+00:00",
+      "logSha256": "9ee4bdd47dfecca12bf50aaadb0a5c767e0e9c0432792d018ec229054d178aad"
+    },
+    {
+      "id": "report-model-modality-r21",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "startedAt": "2026-11-10T12:24:18.379216+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/report-model-modality-r21.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:35.490980+00:00",
+      "logSha256": "4d8dec325ae3aff990bacb21432685fa913be0cb671587f3e7301b6fdb661e5c"
+    },
+    {
+      "id": "report-model-modality-r22b",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "startedAt": "2026-11-10T12:24:53.156986+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/report-model-modality-r22b.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:58.786922+00:00",
+      "logSha256": "402625f141281bb30ad8dd702f02d88d30e80fe0317aedae44ef334f5c1af0ee"
+    },
+    {
+      "id": "report-model-pm-r30",
+      "cwd": ".",
+      "command": "node scripts/report-model-pm-r30.mjs --check",
+      "startedAt": "2026-11-10T12:31:42.127071+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/report-model-pm-r30.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:31:44.707082+00:00",
+      "logSha256": "c969b5a0d004c8eccd152c8a6b8135412c9df8714f25e4be9176928ca85cf950"
+    },
+    {
+      "id": "report-source-titles-r23",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r23.mjs --check",
+      "startedAt": "2026-11-10T12:24:23.266969+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/report-source-titles-r23.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:26.369084+00:00",
+      "logSha256": "aaf6ec9eaf4ac3cb82ac72d2a1b515d1acd4cbb983b63e019ce5c335a8d44567"
+    },
+    {
+      "id": "report-source-titles-r24",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r24.mjs --check",
+      "startedAt": "2026-11-10T12:24:26.370473+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/report-source-titles-r24.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:39.942041+00:00",
+      "logSha256": "d101cf5c36704c8e56a66f8f138928214d64910920b00c454ea174ec64df6c41"
+    },
+    {
+      "id": "scripts-full",
+      "cwd": ".",
+      "command": "node --test scripts/*.test.mjs",
+      "startedAt": "2026-11-10T12:29:41.522650+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/scripts-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:29:53.842229+00:00",
+      "tests": {
+        "tests": 88,
+        "pass": 88,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "0d2325be5964d5da0e3d9a67b2e6d9f38ecaed565d76def7b3188ceaa24ae714"
+    },
+    {
+      "id": "sync-card-display",
+      "cwd": ".",
+      "command": "node scripts/sync-card-display.mjs --check",
+      "startedAt": "2026-11-10T12:24:34.605020+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/sync-card-display.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:37.260755+00:00",
+      "logSha256": "3a963a935b5f55bf2239d2be03f7d40af6b588a22cd07e5dee0bb5834bca39a9"
+    },
+    {
+      "id": "sync-model-catalog",
+      "cwd": ".",
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "startedAt": "2026-11-10T12:24:35.491352+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/sync-model-catalog.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:41.983883+00:00",
+      "logSha256": "4b51ceb5731b82fb3b9bee1ec0f0a2af83877edf5bf6578264bfabf47cdf029e"
+    },
+    {
+      "id": "tuyan-knowledge-check",
+      "cwd": "packages/tuyan-knowledge",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T12:24:37.261585+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/tuyan-knowledge-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:37.443579+00:00",
+      "logSha256": "477d55b9e6f75596d0927ba1f207125b9854d31fd9d0c5184e4a08899b15efac"
+    },
+    {
+      "id": "web-build",
+      "cwd": "apps/web",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T12:24:15.953048+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/web-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:24:18.976595+00:00",
+      "logSha256": "f0e8bc9cca6b6b93273cb7148ca00375061b10ca5dc44a6e27322bf9975a433e"
+    },
+    {
+      "id": "web-full",
+      "cwd": "apps/web",
+      "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=4",
+      "startedAt": "2026-11-10T12:28:38.464061+00:00",
+      "log": ".audit-input/r24/i12-validation-logs/web-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T12:30:23.893188+00:00",
+      "tests": {
+        "tests": 1521,
+        "pass": 1521,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "d9d82b8f27bd052f9e344b6d36cc9fbf89a3438134f5a8a10c3d4c200af599ac"
+    }
+  ],
+  "tests": {
+    "tests": 1851,
+    "pass": 1851,
+    "fail": 0,
+    "skipped": 0
+  },
+  "maintenanceChecks": 14,
+  "miniSourceBytes": 1565912,
+  "miniSourceLimit": 1572864,
+  "miniHeadroom": 6952,
+  "protectedFilesUnchanged": [
+    "apps/web/src/workspace/WorkspaceAccount.jsx",
+    "apps/web/src/workspace/WorkspaceLogin.jsx",
+    "apps/web/src/workspace/workspace.css",
+    "apps/web/tests/login-notice.test.mjs",
+    "apps/web/tests/execution-capability-r22.test.mjs",
+    "apps/miniprogram/tests/execution-capability-r22.test.cjs",
+    "apps/paperbanana-api/tests/execution-capability-r22.test.ts",
+    "apps/auth-gateway/tests/execution-capability-r22.test.js"
+  ],
+  "executionFieldsAndPickerNames": "Web/Mini/Core full invariant test against 52e0f161 passed; frozen Gateway execution tests unchanged and passing.",
+  "decisions": "docs/model-modality-r30-i12-decisions.json",
+  "screenshotRecipe": {
+    "path": ".audit-input/r24/shots-m11.mjs",
+    "manifest": ".audit-input/r24/shots-m11.manifest.json",
+    "syntaxChecked": true,
+    "executed": false,
+    "widths": [
+      1280,
+      390
+    ],
+    "deviceScaleFactor": 2,
+    "shots": 12
+  },
+  "exploratoryLogNote": "An initial exploratory test run reused the local i11-validation-logs directory for seven test-suite logs. The committed historical I11 report was not rewritten; its local log hashes therefore no longer describe those overwritten files. All final I12 results and hashes use the separate i12-validation-logs directory."
+}

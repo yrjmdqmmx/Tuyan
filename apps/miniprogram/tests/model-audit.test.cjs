@@ -81,7 +81,7 @@ test('compiled picker preserves official labels and shows Gemini output tokens',
   const {modelDeveloper}=require('../miniprogram/utils/model-presentation.js');
   for(const [provider,id,role,expectedContext,expectedOutput,exact] of [
     ['deepseek','deepseek-flash','main','1M tokens','384K tokens','384K tokens'],
-    ['gemini','gemini-nano-banana-2.1','image','未知','≈ 33K tokens','32768 tokens'],
+    ['gemini','gemini-nano-banana-2.1','image','未公布','≈ 33K tokens','32,768 tokens'],
   ]) {
     const picker=loadComponent('components/model-picker/model-picker.js').instance;
     picker.getRegistry=()=>({providers:STATIC_MODEL_REGISTRY});

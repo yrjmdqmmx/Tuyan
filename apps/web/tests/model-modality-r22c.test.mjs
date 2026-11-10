@@ -68,7 +68,7 @@ test('R22C desktop 1280, mobile 390 and compact cards expose evidence through th
     render(React.createElement(ModelSpecifications, {...qwen, compactSources}))
     fireEvent.click(screen.getByRole('button',{name:/^输入模态 · 官方文档规格/}))
     assert.match(screen.getByRole('dialog').textContent, /支持文本输入\n/)
-    assert.equal(screen.getByRole('dialog').textContent.match(/核实日期：2026-11-09/g).length, 1)
+    assert.doesNotMatch(screen.getByRole('dialog').textContent,/核实日期|未核实|渠道公布/)
     assert.match(screen.getByRole('dialog').textContent, /此渠道不支持图像输入/)
     assert.match(screen.getByRole('dialog').textContent, /此渠道不支持视频输入/)
     cleanup()

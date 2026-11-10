@@ -36,6 +36,15 @@ export function fieldSourceLines(fields, checkedAt, t = value => value) {
     return origin ? [`${t(labels[key])}：${t(origin)}${date ? `（${t('核实日期')}：${date}）` : ''}`] : []
   })
 }
+// Numeric absence is different from an unsupported capability.
+export const numericStatus = state => state === 'not-applicable' ? '不适用' : state === 'unsupported' ? '不支持' : '未公布'
+export function evidenceStatusLines(icons, fields, limits) {
+  return [...icons.map(icon => icon.tooltip), ...['totalContextTokens', 'maxOutputTokens'].map((key, i) =>
+    ['上下文窗口', '最大输出'][i] + '：' + (fields[key].state === 'known'
+      ? fields[key].value.toLocaleString('en-US') + ' tokens' : limits[i]))].join('\n')
+}
+// Event dates remain meaningful; verification dates belong only to link hovers.
+export const readableEventDates = text => text.replace(/(\d{4})-(\d{2})-(\d{2})/g, '$1年$2月$3日')
 export function cardLifecycle(lifecycle, audit = {}) {
   const sourceUrl = audit.lifecycleSourceUrl || lifecycle?.sourceUrl
   return lifecycle && /^https:\/\//.test(sourceUrl || '') && !(audit.excludedSources || []).includes(sourceUrl)
@@ -78,7 +87,7 @@ export function visibleSourceTitle(value, model = {}, fallback = '官方文档')
     || /(?:^|\.)(?:aliyun\.com|baidu\.com|volcengine\.com|tencent\.com)$/.test(host)
       && !/(?:qwen|qvq|wan[\d/-]|tongyi|ernie|doubao|seedream|seedance|hunyuan)/i.test(key)
   const role = notice ? '下线公告' : channel ? '渠道资料' : host.endsWith('.test') ? fallback : '官方文档'
-  return role + ' · ' + sourceTitle(value, model)
+  return role + ' · ' + readableEventDates(sourceTitle(value, model))
 }
 const compactSubject = value => value.toLowerCase().replace(/(\d)p(?=\d)/g, '$1.').replace(/[^a-z0-9\u4e00-\u9fff]/g, '')
 const brands = 'OpenAI GPT ChatGPT DeepSeek Qwen GLM Kimi MiniMax MiMo FLUX Stable Diffusion SDXL Claude Grok Gemini Recraft Ideogram Seedream Wan Hunyuan ERNIE CogView LongCat SenseNova TokenDance Fireworks Hugging Face SiliconFlow Runware Replicate Novita StepFun BFL API HTTP VL OCR LoRA'.split(' ')

@@ -1391,3 +1391,106 @@ Validation: **1,847 / 1,847 required tests pass**, with Web/Mini/Core builds, ex
 The visible-label scan is scoped to modality status copy: the pre-existing specification note `模型页未标注最大输出` remains unchanged. Hover/aria still reject every occurrence of 未标注, source/site/provider names, raw notes and dates.
 
 After validation, `.audit-input/r24/shots-m10.mjs` and its plan were updated and syntax/identity checked **without running the browser**. Fourteen planned files: desktop/mobile 111–117 at 1280/390, DPR 2 for both. Hover shots inject an absolutely positioned, screenshot-only div next to the selected icon using its actual title, then remove it in `finally`; no product overlay component exists. Every shot records hover/aria/dialog texts for all eight icons, selected icon text/state, and source URL/title/hover data in the output-directory `manifest.json`. Dialog 112 retains the I10 URL single-title assertions, including exact base and Edit fal API page titles. TokenDance `qwen3.6-plus` has channel-unsupported image input, so no substitute is needed. FLUX 2 Pro has no conditional icon; shot 117 uses supported image input. Native Mini visual acceptance and all captures remain unperformed, as requested.
+
+## R30 Phase I12
+
+PM decisions for PR #251, head `588f1d67`; read-only Git throughout. This supersedes earlier dialog-date/provenance rows and primary-source priorities. Execution fields and picker names remain locked to `52e0f161`.
+
+Evidence dialogs now contain the eight R29 modality sentences and the two numeric specifications. Removed top-date / field-provenance / standalone unverified rows: **Web 1064 / 2779 / 657**; **Mini 1064 / 2779 / 0**. The removed provenance inventory per client is **渠道公布 914**, **源自原厂 162**, **图研既有核实 1668** and **图研输入要求 35**; 原厂公布 has zero occurrences. Raw review/conflict/inheritance notes and lifecycle messages also leave the specification status area; original facts/notes remain in the audit data, and retirement badges retain their separate sourced notice. No replacement provenance sentence is needed: source-link roles carry attribution. Web source-link hover keeps its existing 核实日期 and date; native Mini has no browser title hover and continues to retain dates in its underlying facts, without adding dates to tap-dialog text.
+
+The small **源自原厂** card label is kept: it plainly says that a displayed specification comes from the original vendor and does not assert channel availability. Mini's additional **图研既有核实** (1668) and **图研输入要求** (35) card labels are removed to match Web. Source roles remain unchanged. Four source URLs had release/retirement dates in their visible titles; these event dates use Chinese 年/月/日 spelling across both clients to satisfy the ISO-date body scan without losing their meaning. Verification dates are not reintroduced there.
+
+Numeric absence is **未公布** on both clients: **584 fields each** (137 context, 447 max output); **816 不适用**, **728 known**, **0 unsupported numeric facts**. A synthetic unsupported numeric state renders **不支持**. Unknown is never converted to zero or infinity. Mini's video-only `replicate/alibaba/wan-3` now uses the same not-applicable rule as Web. Existing known numbers and their stored facts remain unchanged. ModelAudit contains state/facts only; catalog, saved picker and settings sheet use ModelSpecifications or Mini's same picker, so no saved configuration is changed. Existing approximate-number formatting differences are outside this numeric-absence change.
+
+Primary-link rule: among existing visible, non-dead human sources, match the full model identity or a numeric model leaf (case/separator normalized, no prefix/family match); prefer the channel's own page, then the vendor's own page. Recognize the existing `ideogram-v4` → `ideogram-4` URL spelling and terminal `-api` / `/api` / `/overview` documentation suffixes. Preserve old ordering when there is no own page; exclude retirement notices from own-page matching. TokenDance's verified-page and historical fallback policy remains. **82 primary-link cards changed**, including all **15 Option-A** cards. Fields retain their exact evidence URLs; fal's edit API is still the image-input source in the dialog. No network requests were needed because all destinations already existed in the captured sources.
+
+The only conditional card is **together/Prism-ML/Ternary-Bonsai-27B**, image input: **支持图像输入（需启用视觉组件）**. Its underlying qualifier remains 图像（需视觉组件）.
+
+Regression checks cover all 1,064 Web dialogs, all compiled Mini cards/source-copy dialogs, numeric absence, Web/Mini status parity, source hover dates, all Option-A destinations, source-title consistency and a negative display-drift case. Historical reports remain immutable through exact, hashed I12 display patches; all current replacement values are asserted before restoring historical presentation. [Machine-readable counts and URL list](model-modality-r30-i12-decisions.json). The M11 script is derived from M10, syntax checked only, **not run**: twelve shots at 1280 and 390, DPR 2, output from argv[2], manifest.json, temporary conditional-title overlay removed in finally. No product overlay.
+
+**1,851/1,851 tests**, all requested builds/types and **14 maintenance checks** pass. Mini **1,565,912 / 1,572,864 bytes**, **6,952 remaining**. See the [full I12 validation record](model-modality-r30-i12-validation.json). No Git writes, paid calls, deployment, secrets, saved-config changes or login-file edits.
+
+| Changed card | Previous primary | Own-model primary | Option A |
+| --- | --- | --- | --- |
+| siliconflow/Qwen/Qwen3.8-27B | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen3.8-27B |  |
+| siliconflow/Qwen/Qwen-Image | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen-Image |  |
+| siliconflow/Qwen/Qwen3.5-122B-A10B | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen3.5-122B-A10B |  |
+| siliconflow/Qwen/Qwen3.5-27B | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen3.5-27B |  |
+| siliconflow/Qwen/Qwen3.5-35B-A3B | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen3.5-35B-A3B |  |
+| siliconflow/deepseek-ai/DeepSeek-V4-Pro | https://api-docs.deepseek.com/quick_start/pricing/ | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro |  |
+| siliconflow/stepfun-ai/Step-3.5-Flash | https://platform.stepfun.com/docs/zh/guides/models/list | https://platform.stepfun.com/docs/zh/guides/models/step-3.5-flash |  |
+| siliconflow/Tongyi-MAI/Z-Image-Turbo | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Tongyi-MAI/Z-Image-Turbo |  |
+| bailian/ZHIPU/GLM-5.3 | https://help.aliyun.com/zh/model-studio/models | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3 |  |
+| bailian/MiniMax/MiniMax-M3 | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/MiniMaxAI/MiniMax-M3 |  |
+| bailian/MiniMax/MiniMax-M2.7 | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/MiniMaxAI/MiniMax-M2.7 |  |
+| bailian/MiniMax-M2.5 | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/MiniMaxAI/MiniMax-M2.5 |  |
+| bailian/MiniMax/MiniMax-M2.5 | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/MiniMaxAI/MiniMax-M2.5 |  |
+| bailian/ZHIPU/GLM-5.2 | https://help.aliyun.com/zh/model-studio/models | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2 |  |
+| bailian/deepseek-v4-pro | https://api-docs.deepseek.com/quick_start/pricing/ | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro |  |
+| bailian/ZHIPU/GLM-5.1 | https://help.aliyun.com/zh/model-studio/models | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1 |  |
+| bailian/kimi/kimi-k3 | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/moonshotai/Kimi-K3 |  |
+| bailian/kimi/kimi-k2.7-code | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/moonshotai/Kimi-K2.7-Code |  |
+| bailian/kimi/kimi-k2.6 | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/moonshotai/Kimi-K2.6 |  |
+| bailian/qwen3.5-122b-a10b | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen3.5-122B-A10B |  |
+| bailian/qwen3.5-27b | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen3.5-27B |  |
+| bailian/qwen3.5-35b-a3b | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen3.5-35B-A3B |  |
+| bailian/qwen3.5-397b-a17b | https://www.aliyun.com/notice/118728 | https://huggingface.co/Qwen/Qwen3.5-397B-A17B |  |
+| bailian/stepfun/step-3.7-flash | https://platform.stepfun.com/docs/zh/guides/models/list | https://platform.stepfun.com/docs/zh/guides/models/step-3.7-flash |  |
+| bailian/xiaomi/mimo-v2.5-pro | https://mimo.mi.com/docs/zh-CN/updates/deprecate | https://mimo.mi.com/models/en-US/mimo-v2.5-pro |  |
+| bailian/z-image-turbo | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Tongyi-MAI/Z-Image-Turbo |  |
+| ideogram/ideogram-v4 | https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4 | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4 | Yes |
+| together/Qwen/Qwen-Image | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen-Image |  |
+| together/Qwen/Qwen3.8-2.4T-A95B | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B |  |
+| together/Qwen/Qwen3.7-Max | https://help.aliyun.com/zh/model-studio/models | https://help.aliyun.com/zh/model-studio/qwen3-7-max |  |
+| together/Qwen/Qwen3.7-Plus | https://help.aliyun.com/zh/model-studio/models | https://help.aliyun.com/zh/model-studio/qwen3-7-plus |  |
+| together/Qwen/Qwen3.6-Plus | https://help.aliyun.com/zh/model-studio/models | https://help.aliyun.com/zh/model-studio/qwen3-6-plus |  |
+| fal/bytedance/seedream/v5/flash/text-to-image | https://fal.ai/models/bytedance/seedream/v5/flash/edit/api | https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api | Yes |
+| fal/bytedance/seedream/v5/pro/text-to-image | https://fal.ai/models/bytedance/seedream/v5/pro/edit/api | https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api | Yes |
+| fal/fal-ai/bytedance/seedream/v4.5/text-to-image | https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api | https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api | Yes |
+| fal/fal-ai/bytedance/seedream/v4/text-to-image | https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api | https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api | Yes |
+| fal/fal-ai/flux-2-pro | https://fal.ai/models/fal-ai/flux-2-pro/edit/api | https://fal.ai/models/fal-ai/flux-2-pro/api | Yes |
+| fal/blackforestlabs/flux-3/klein/base/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api | https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api | Yes |
+| fal/blackforestlabs/flux-3/klein/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api | https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api | Yes |
+| fal/blackforestlabs/flux-3/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/edit-image/api | https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api | Yes |
+| fal/fal-ai/nano-banana-2 | https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image | https://fal.ai/models/fal-ai/nano-banana-2/api |  |
+| fal/google/nano-banana-2-lite | https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image | https://fal.ai/models/google/nano-banana-2-lite/api |  |
+| fal/fal-ai/nano-banana-pro | https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image | https://fal.ai/models/fal-ai/nano-banana-pro/api |  |
+| fal/fal-ai/nano-banana | https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image | https://fal.ai/models/fal-ai/nano-banana/api |  |
+| fal/openai/gpt-image-2.5/flare/text-to-image | https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api | https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api | Yes |
+| fal/openai/gpt-image-2.5/sunburst/text-to-image | https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api | https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api | Yes |
+| fal/xai/grok-imagine-image | https://fal.ai/models/xai/grok-imagine-image/edit/api | https://fal.ai/models/xai/grok-imagine-image/api | Yes |
+| fal/xai/grok-imagine-image/quality/text-to-image | https://fal.ai/models/xai/grok-imagine-image/quality/edit/api | https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api | Yes |
+| fal/krea/v3/text-to-image | https://fal.ai/models/krea/v3/edit/api | https://fal.ai/models/krea/v3/text-to-image/api | Yes |
+| fal/meta/muse-image/text-to-image | https://fal.ai/models/meta/muse-image/edit/api | https://fal.ai/models/meta/muse-image/text-to-image/api | Yes |
+| replicate/google/gemini-3.5-flash | https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash | https://replicate.com/google/gemini-3.5-flash |  |
+| replicate/deepseek-ai/deepseek-v3.1 | https://huggingface.co/deepseek-ai/DeepSeek-V3.1 | https://replicate.com/deepseek-ai/deepseek-v3.1 |  |
+| replicate/google/gemini-2.5-flash | https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash | https://replicate.com/google/gemini-2.5-flash |  |
+| replicate/google/nano-banana-2 | https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image | https://replicate.com/google/nano-banana-2 |  |
+| replicate/google/nano-banana-2-lite | https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image | https://replicate.com/google/nano-banana-2-lite |  |
+| replicate/google/nano-banana-pro | https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image | https://replicate.com/google/nano-banana-pro |  |
+| replicate/google/nano-banana | https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image | https://replicate.com/google/nano-banana |  |
+| replicate/moonshotai/kimi-k2-thinking | https://huggingface.co/moonshotai/Kimi-K2-Thinking | https://replicate.com/moonshotai/kimi-k2-thinking |  |
+| replicate/openai/gpt-image-2.5-flare | https://developers.openai.com/api/docs/models/gpt-image-2.5-flare | https://replicate.com/openai/gpt-image-2.5-flare |  |
+| replicate/openai/gpt-image-2.5-sunburst | https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst | https://replicate.com/openai/gpt-image-2.5-sunburst |  |
+| replicate/openai/gpt-image-2 | https://developers.openai.com/api/docs/models/gpt-image-2 | https://replicate.com/openai/gpt-image-2 |  |
+| replicate/openai/gpt-image-1.5 | https://developers.openai.com/api/docs/models/gpt-image-1.5 | https://replicate.com/openai/gpt-image-1.5 |  |
+| replicate/qwen/qwen3-235b-a22b-instruct-2507 | https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507 | https://replicate.com/qwen/qwen3-235b-a22b-instruct-2507 |  |
+| replicate/qwen/qwen3-7-plus | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | https://replicate.com/qwen/qwen3-7-plus |  |
+| runware/recraft:v4.1@flash | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash | https://runware.ai/docs/models/recraft-v4-1-flash |  |
+| runware/deepseek:v4@flash | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash | https://runware.ai/docs/models/deepseek-v4-flash |  |
+| tokenhub/deepseek-v4-pro | https://api-docs.deepseek.com/quick_start/pricing/ | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro |  |
+| tokenhub/deepseek/deepseek-v4-pro | https://api-docs.deepseek.com/quick_start/pricing/ | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro |  |
+| tokenhub/mimo-v2.5-pro | https://mimo.mi.com/docs/zh-CN/updates/deprecate | https://mimo.mi.com/models/en-US/mimo-v2.5-pro |  |
+| sensenova/deepseek-v4-pro | https://api-docs.deepseek.com/quick_start/pricing/ | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro |  |
+| qianfan/deepseek-v4-pro | https://api-docs.deepseek.com/quick_start/pricing/ | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro |  |
+| qianfan/qwen-image | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen-Image |  |
+| qianfan/qwen3.5-122b-a10b | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen3.5-122B-A10B |  |
+| qianfan/qwen3.5-27b | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen3.5-27B |  |
+| qianfan/qwen3.5-35b-a3b | https://help.aliyun.com/zh/model-studio/models | https://huggingface.co/Qwen/Qwen3.5-35B-A3B |  |
+| antling/Ling-3.0-flash-VL | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | https://huggingface.co/inclusionAI/Ling-3.0-flash-VL |  |
+| antling/Ling-3.0-tiny | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | https://huggingface.co/inclusionAI/Ling-3.0-tiny |  |
+| antling/Ling-3.0-flash | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | https://huggingface.co/inclusionAI/Ling-3.0-flash |  |
+| antling/Ling-2.6-1T | https://developer.ant-ling.com/zh-CN/docs/models/deprecation/ | https://huggingface.co/inclusionAI/Ling-2.6-1T |  |
+| antling/Ling-2.6-flash | https://developer.ant-ling.com/zh-CN/docs/models/deprecation/ | https://huggingface.co/inclusionAI/Ling-2.6-flash |  |
+| antling/Ring-2.6-1T | https://developer.ant-ling.com/zh-CN/docs/models/deprecation/ | https://huggingface.co/inclusionAI/Ring-2.6-1T |  |
+| novita/ming-image-0.1-design | https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img | https://novita.ai/models/model-detail/ming-image-0.1-design |  |

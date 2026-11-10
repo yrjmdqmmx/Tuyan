@@ -154,6 +154,6 @@ test('image-role cards expose known token limits and only pure image models with
   assert.ok(showing >= 24)
   assert.ok(notApplicable > 0)
   const gemini = modelCardSpecifications('gemini', STATIC_MODEL_REGISTRY.gemini.models.find(m => m.id === 'gemini-nano-banana-2.1'))
-  assert.equal(gemini.context, '未知', 'an input limit is not a total context window')
+  assert.equal(gemini.context, '未公布', 'an input limit is not a total context window')
   assert.match(gemini.maxOutput, / tokens$/)
 })

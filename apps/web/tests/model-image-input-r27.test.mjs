@@ -25,7 +25,7 @@ test('R27 all 15 Web image icons and opened evidence dialogs cite the verified e
       assert.ok(dialog, key)
       assert.match(dialog.textContent, /支持图像输入/)
       assert.match(dialog.textContent, /编辑接口|Edit API 文档/)
-      assert.ok(dialog.textContent.includes(fields.inputModalities.verifiedAt), key)
+      assert.doesNotMatch(dialog.textContent,/核实日期|\d{4}-\d{2}-\d{2}/,key);assert.ok([...dialog.querySelectorAll('a')].every(a=>a.title.includes('核实日期：')),key)
       assert.ok([...dialog.querySelectorAll('a')].some(a => a.href === humanSourceUrl(fields.inputModalities.sourceUrl)), key)
       assert.doesNotMatch(dialog.textContent, /创始人|决定 A/)
     } finally { cleanup() }

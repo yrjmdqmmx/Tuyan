@@ -52,6 +52,21 @@ function modelPageForEndpoint(value, model, captured) {
   return null
 }
 
+// Match exact identities, not a family prefix or an operation such as text-to-image.
+// Prefer a channel's own endpoint; then an exact vendor model page already cited.
+export function ownModelPage(channel, model, urls) {
+  const normalize = value => value.toLowerCase().replace(/[^a-z0-9/]/g, '')
+  const id = normalize(channel === 'ideogram' ? (model.id || '').replace(/^ideogram-v(\d)/, 'ideogram-$1') : model.id || ''), leaf = id.split('/').at(-1)
+  if (!id) return null
+  const own = urls.filter(value => {
+    const url = new URL(value)
+    if (noticePage(value)) return false
+    const path = normalize(decodeURIComponent(url.pathname).replace(/\/(?:api(?:\/schema)?|overview)\/?$/, '').replace(/\/$/, '').replace(/-api$/, ''))
+    return path.endsWith('/' + id) || /\d/.test(leaf) && leaf.length >= 4 && path.endsWith('/' + leaf)
+  })
+  return own.find(url => channelOwns(channel, url)) || own[0] || null
+}
+
 export function modelCardSources({ channel, model = {}, audit, fields, lifecycle, checks = {} }) {
   const visible = url => !(audit.excludedSources || []).includes(url) && visibleSource(url)
   const notices = safeSources((audit.sourceLinks || []).filter(link => link.kind === 'retirement-notice').map(link => link.url)).filter(visible)
@@ -92,7 +107,7 @@ export function modelCardSources({ channel, model = {}, audit, fields, lifecycle
   const isGeneral = url => sourceSpecificity(url) < 2
   const replacement = captured[0] && isApiSource(captured[0], checks)
     ? urls.find(url => isChannel(url) && !isGeneral(url)) || urls.find(url => !isGeneral(url)) : null
-  const first = (audit.lifecycleSourceUrl && urls.includes(audit.sourceUrl) ? audit.sourceUrl : null) || lifecycleSources[0] || replacement || (urls[0] && isChannel(urls[0]) && isGeneral(urls[0]) && !/\/pricing\/?$/.test(new URL(urls[0]).pathname)
+  const first = ownModelPage(channel, model, urls) || (audit.lifecycleSourceUrl && urls.includes(audit.sourceUrl) ? audit.sourceUrl : null) || lifecycleSources[0] || replacement || (urls[0] && isChannel(urls[0]) && isGeneral(urls[0]) && !/\/pricing\/?$/.test(new URL(urls[0]).pathname)
     ? urls.find(url => isChannel(url) && !isGeneral(url)) : null)
   const sources = first ? [first, ...urls.filter(url => url !== first)] : urls
   const unique = uniqueSources(sources)

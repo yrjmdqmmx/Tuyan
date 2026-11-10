@@ -5,7 +5,7 @@ export const retirementUrl='https://tokendance.space/llms-full.txt'
 export const rejectedUrl='https://help.aliyun.com/zh/model-studio/model-depreciation'
 export const inheritanceNote='沿用百炼同一 API ID 的原厂记录；TokenDance 模型页未标注最大输出'
 export const specLabel='官方文档 · 百炼 · Qwen3.5 Plus'
-export const retirementLabel='下线公告 · TokenDance · Qwen3.5 Plus 下线（2027-01-19）'
+export const retirementLabel='下线公告 · TokenDance · Qwen3.5 Plus 下线（2027年01月19日）'
 export function assertQwenEvidence(card) {
  const f=card.fields.maxOutputTokens
  assert.equal(f.value,65536);assert.equal(f.state,'known');assert.equal(f.provenance,'vendor')

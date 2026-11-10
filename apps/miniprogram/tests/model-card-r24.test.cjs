@@ -21,9 +21,9 @@ test('R24 Mini preserves retirement labels in all 1064 cards and the three repor
         assert.match(row.label, /^下线公告 · /, key); notices++
       }
       if (fixture.currentNotices[key] && row.url === fixture.currentNotices[key].url) {
-        assert.equal(row.label, fixture.currentNotices[key].label)
+        assert.equal(row.label, fixture.currentNotices[key].label.replace('2027-01-19','2027年01月19日'))
         definition.methods.copySource({currentTarget:{dataset:{url:row.url,source:row.label,notice:card.auditMessage}}})
-        assert.ok(modal.content.endsWith(fixture.currentNotices[key].label)); examples++
+        assert.ok(modal.content.endsWith(fixture.currentNotices[key].label.replace('2027-01-19','2027年01月19日'))); examples++
       }
     }
     for (const icon of card.specRows.flatMap(row=>row.icons)) if (icon.tooltip.includes('渠道页无此型号')) {assert.equal(provider,'tokendance'); historical.add(model.id)}

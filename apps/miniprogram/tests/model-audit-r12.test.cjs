@@ -112,7 +112,8 @@ test('R13B pre-phase-2 static notice priorities and all 34 visible notices remai
   assert.equal(notices, 34)
 })
 
-test('R13B compiled picker resolves full-model source priorities and retains notice labels', () => {
+test('R13B compiled picker resolves full-model source priorities and retains notice labels', async () => {
+  const {pmReview}=await import('../../../test-support/pm-decisions-r30.mjs')
   const cases = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r13b-notice-cards.json')))
   assert.equal(cases.length, 25)
   const filename = path.join(root, 'apps/miniprogram/miniprogram/components/model-picker/model-picker.js')
@@ -124,8 +125,9 @@ test('R13B compiled picker resolves full-model source priorities and retains not
     const { channel, modelId, url, label } = row
     const entry = STATIC_MODEL_REGISTRY[channel].models.find(model => model.id === modelId)
     const small = auditedModelSpecs(channel, modelId)
-    assert.equal(small.sourceUrl, url); assert.equal(small.sourceLabel, label)
-    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: visibleSourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : visibleSourceTitle(source, entry)}))])
+    const patches=pmReview.rows[channel+'/'+modelId]||[], expected=(path,fallback)=>patches.find(p=>p.path===path)?.after??fallback
+    assert.equal(small.sourceUrl, expected('mini/audit/sourceUrl',url)); assert.equal(small.sourceLabel, expected('mini/audit/sourceLabel',label))
+    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), expected('mini/card/specSources', [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: visibleSourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : visibleSourceTitle(source, entry)}))]))
   }
   let notices = 0
   const appendedNotices = []
@@ -135,10 +137,10 @@ test('R13B compiled picker resolves full-model source priorities and retains not
         notices++
         const primary = auditedModelSpecs(channel, model.id).sourceUrl === url
         if (!primary) appendedNotices.push(channel + '/' + model.id)
-        assert.equal(label, '下线公告 · ' + sourceTitle(url), channel + '/' + model.id)
+        assert.equal(label, visibleSourceTitle(url), channel + '/' + model.id)
       }
     }
   }
   assert.equal(notices, 17)
-  assert.deepEqual(appendedNotices.sort(), ['bailian/qwen3.5-plus', 'bailian/qwen3.5-plus-2026-02-15', 'bailian/qwen3.5-plus-2026-04-20', 'tokendance/qwen3.5-plus'])
+  assert.deepEqual(appendedNotices.sort(), ['bailian/qwen3.5-plus', 'bailian/qwen3.5-plus-2026-02-15', 'bailian/qwen3.5-plus-2026-04-20', 'tokendance/qwen3.5-plus','bailian/qwen3.5-397b-a17b','bailian/xiaomi/mimo-v2.5-pro','tokenhub/mimo-v2.5-pro','antling/Ling-2.6-1T','antling/Ling-2.6-flash','antling/Ring-2.6-1T'].sort())
 })

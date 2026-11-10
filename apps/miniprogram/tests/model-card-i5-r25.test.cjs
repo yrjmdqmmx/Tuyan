@@ -14,9 +14,9 @@ test('R25 I5 all 1064 compiled Mini cards: every retirement badge copies its own
   for(const row of card.specRows)for(const icon of row.icons)assert.doesNotMatch(icon.tooltip,/日期\s+\d{4}-\d{2}-\d{2}/)
   if(!card.scheduled)continue
   badges++;const source=card.retirementSource;verifiedRetirement(p+'/'+m.id,source.url,require('../miniprogram/utils/model-audit.js').auditedModelLifecycle(p,m.id).stopDate);assert.match(source.url,/^https:\/\//);assert.ok(!audit.excludedSources.includes(source.url));assert.ok(card.specSources.some(r=>r.url===source.url))
-  clipboard=null;definition.methods.copySource({currentTarget:{dataset:{url:source.url,source:source.label,notice:card.auditMessage}}});modal.success({confirm:true});assert.equal(clipboard,source.url)
+  clipboard=null;definition.methods.copySource({currentTarget:{dataset:{url:source.url,source:source.label,notice:card.retirementMessage}}});modal.success({confirm:true});assert.equal(clipboard,source.url)
   if(p==='bailian'&&ids.includes(m.id)){
-   assert.equal(source.url,notice);assert.match(modal.content,/2027-01-19/);assert.equal(source.label,'下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知')
+   assert.equal(source.url,notice);assert.match(modal.content,/2027年01月19日/);assert.equal(source.label,'下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知')
    assert.ok(card.specSources.some(r=>r.url===spec));for(const fact of Object.values(audit.fields))assert.equal(fact.sourceUrl,spec)
   }
  }

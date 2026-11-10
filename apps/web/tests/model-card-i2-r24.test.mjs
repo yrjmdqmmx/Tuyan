@@ -31,7 +31,7 @@ test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable style
    const dialog=screen.getByRole('dialog'),links=within(dialog).queryAllByRole('link')
    assert.deepEqual(dialogIssues(dialog.querySelector('.tw-preserve-text').textContent),[],card)
    const specifications=modelCardSpecifications(provider,model)
-   assert.equal(dialog.textContent.includes('该渠道页面与图研之前记录的信息不一致，这里只保留已经核实过的内容，没核实的显示为「未知」。'),conflictCards.includes(card),card)
+   assert.doesNotMatch(dialog.textContent,/图研之前记录|核实日期|渠道公布/,card)
    assertDialogDates(dialog.querySelector('.tw-preserve-text').textContent,specifications.fields,specifications.checkedAt,card)
    for(const direction of ['input','output'])assertUnknownIconDates(modalityIconStates(specifications[direction],specifications[direction+'Fact'],provider,model.id),card)
    assert.deepEqual(links.map(a=>a.getAttribute('href')),expectedHumanRows(old.rows,card,'web').map(r=>r.url),card)

@@ -19,7 +19,7 @@ test('missing audit values preserve exact verified catalog facts with accessible
   assert.equal(card.fields.totalContextTokens.value,1000000)
   assert.equal(card.inputFact.provenance,'catalog');assert.equal(card.fields.totalContextTokens.provenance,'catalog');assert.equal(card.context,'1M tokens')
   render(React.createElement(ModelSpecifications,{provider:'kimi',model}))
-  assert.match(screen.getByRole('link').title,/图研既有核实/)
+  assert.doesNotMatch(screen.getByRole('link').title,/图研既有核实|核实日期/)
   assert.deepEqual(model,before)
 })
 
@@ -30,7 +30,7 @@ test('audit disagreements are recorded, and the unverified Kimi output cannot fa
   assert.ok(card.conflicts.some(row=>row.field==='totalContextTokens'&&row.existingValue===42&&row.sources.includes('https://example.com/catalog')))
   const kimi={id:'kimi/kimi-k2.7-code-highspeed',specifications:{version:1,maxOutputTokens:262144,sourceUrls:['https://help.aliyun.com/zh/model-studio/models']}}
   const uncertain=modelCardSpecifications('bailian',kimi)
-  assert.equal(uncertain.maxOutput,'未知');assert.equal(uncertain.fields.maxOutputTokens.value,null)
+  assert.equal(uncertain.maxOutput,'未公布');assert.equal(uncertain.fields.maxOutputTokens.value,null)
   assert.match(uncertain.note,/待核实：官方页面需浏览器渲染核对/)
 })
 

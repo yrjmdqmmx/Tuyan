@@ -1,11 +1,11 @@
 {
   "base": "8c456709",
   "counts": {
-    "files": 26,
-    "assertionAndFixtureInputChanges": 199,
+    "files": 29,
+    "assertionAndFixtureInputChanges": 256,
     "consumedJsonFixtures": 2,
     "semanticFixtureChanges": 695,
-    "justified": 893,
+    "justified": 950,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -33,7 +33,8 @@
     "R27 Phase I8: founder: grey is enough (R2, 2026-11-10). Revised short labels and evidence prefixes replace strike/question/dash/asterisk assertions with absence and shared-solid-glyph checks. Conditional uses short 支持 in grey, with 有条件支持 only in evidence. The I7 report guard validates exact R2 text before projecting only those strings back to its frozen wording; no state/fact/source or execution assertion is relaxed. All 1064 presentations per client and 15 decision-A image inputs have new independent regression coverage.",
     "R28 Phase I9: founder round 7. Unknown tooltip/accessibility includes the required prefix and existing explanation; conditional uses dark 支持 with its exact qualifier in hover/dialog. All 61 fal catalog fields have freshly validated human sources, and Mini preserves all fal field titles plus nine secondary human links. Literal source/date deltas and the pre-R28 snapshot validate changes before historical projection. Mini setData test doubles now implement native indexed-array patches; the unchanged 128 KiB guard loads all pages. Frozen execution tests, byte guards and identity/name expectations are unchanged.",
     "R29 Phase I10: 353 conflicting source URLs unified across all catalog surfaces. Vendor/channel roles and endpoint names are identical in Web/Mini; explicit source namespaces replace list-context variants. Literal 997585e2-to-R29 title patches are validated before projecting historical snapshots; every non-title value stays exact. The only locale removal is the unreferenced conditional-support entry. Existing execution tests, name locks, size guards, source URLs and facts stay unchanged. New all-card render/copy/formatter/locale checks are independent of the historical expectations.",
-    "R29 Phase I11 supersedes R27/R28 status copy: every icon has one exact sentence for hover, accessibility and dialog status, with no source/date. Independent all-1064-card Web/Mini/script checks enforce four sentence patterns, state mapping, source-name/date exclusion and full parity. One catalog qualifier plus three fixture qualifiers have explicit concise mappings; custom unknown qualifiers use a safe generic condition. Four modalities per direction remove 12 legacy Web file icons without changing facts. Mini now retains the existing Together conditional qualifier. I10 title rules and historical reports remain frozen through a strictly validated presentation-only projection. No execution lock, login file, size ceiling, saved config or catalog name is changed."
+    "R29 Phase I11 supersedes R27/R28 status copy: every icon has one exact sentence for hover, accessibility and dialog status, with no source/date. Independent all-1064-card Web/Mini/script checks enforce four sentence patterns, state mapping, source-name/date exclusion and full parity. One catalog qualifier plus three fixture qualifiers have explicit concise mappings; custom unknown qualifiers use a safe generic condition. Four modalities per direction remove 12 legacy Web file icons without changing facts. Mini now retains the existing Together conditional qualifier. I10 title rules and historical reports remain frozen through a strictly validated presentation-only projection. No execution lock, login file, size ceiling, saved config or catalog name is changed.",
+    "R30 Phase I12: all 1064 rendered Web dialogs and compiled Mini cards enforce plain R29 statuses and numeric 未公布 (584 each, no unsupported numeric catalog facts), no verification dates outside source-link hover, and own-model primaries (82 cards, all 15 Option-A). Raw fields, execution locks, picker names, login files and byte ceilings remain unchanged. Event dates use Chinese 年/月/日 spelling; Mini-only provenance jargon is removed. Exact hashed presentation patches preserve prior audit reports; new regression suites independently enforce the PM decisions."
   ],
   "files": [
     {
@@ -115,7 +116,7 @@
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r12.test.cjs",
-      "diffSha256": "c25f0e810b26113b8905a37ae56c1e743ecb69d0cc10a81f73a13efcaa11a061",
+      "diffSha256": "f5ac5b239f30245eed7b4ff47fb953064d376fbf459bc28106a84e8d78164376",
       "changes": [
         {
           "line": 105,
@@ -691,6 +692,70 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 115,
+          "oldLine": 115,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "test('R13B compiled picker resolves full-model source priorities and retains notice labels', () => {",
+          "new": "test('R13B compiled picker resolves full-model source priorities and retains notice labels', async () => {\n  const {pmReview}=await import('../../../test-support/pm-decisions-r30.mjs')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 128,
+          "oldLine": 127,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    assert.equal(small.sourceUrl, url); assert.equal(small.sourceLabel, label)\n    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: visibleSourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : visibleSourceTitle(source, entry)}))])",
+          "new": "    const patches=pmReview.rows[channel+'/'+modelId]||[], expected=(path,fallback)=>patches.find(p=>p.path===path)?.after??fallback\n    assert.equal(small.sourceUrl, expected('mini/audit/sourceUrl',url)); assert.equal(small.sourceLabel, expected('mini/audit/sourceLabel',label))\n    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), expected('mini/card/specSources', [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: visibleSourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : visibleSourceTitle(source, entry)}))]))",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 140,
+          "oldLine": 138,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "        assert.equal(label, '下线公告 · ' + sourceTitle(url), channel + '/' + model.id)",
+          "new": "        assert.equal(label, visibleSourceTitle(url), channel + '/' + model.id)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 145,
+          "oldLine": 143,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.deepEqual(appendedNotices.sort(), ['bailian/qwen3.5-plus', 'bailian/qwen3.5-plus-2026-02-15', 'bailian/qwen3.5-plus-2026-04-20', 'tokendance/qwen3.5-plus'])",
+          "new": "  assert.deepEqual(appendedNotices.sort(), ['bailian/qwen3.5-plus', 'bailian/qwen3.5-plus-2026-02-15', 'bailian/qwen3.5-plus-2026-04-20', 'tokendance/qwen3.5-plus','bailian/qwen3.5-397b-a17b','bailian/xiaomi/mimo-v2.5-pro','tokenhub/mimo-v2.5-pro','antling/Ling-2.6-1T','antling/Ling-2.6-flash','antling/Ring-2.6-1T'].sort())",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -802,9 +867,25 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 84,
+          "oldLine": 84,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    ['gemini','gemini-nano-banana-2.1','image','未知','≈ 33K tokens','32768 tokens'],",
+          "new": "    ['gemini','gemini-nano-banana-2.1','image','未公布','≈ 33K tokens','32,768 tokens'],",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "67eb3bf600b0852d038966ebc92b268fe8ac5789eaaf1e5d1b48e66ce11e6d17"
+      "diffSha256": "8887119da4b22beca9ec6c0c5200b6f3e3253852f088773e7c1f012a3f79c021"
     },
     {
       "file": "apps/miniprogram/tests/model-picker-flow.test.cjs",
@@ -883,7 +964,7 @@
     },
     {
       "file": "apps/web/tests/bailian-multimodal.test.mjs",
-      "diffSha256": "c00a89960d2092a6682127dd8a557eee82f6e9fff16cf6eaa7ce220652d206de",
+      "diffSha256": "99310d6d5fd7d970ffd0e05590d8602a07ca461779e0c452b3272ad47b74c83f",
       "changes": [
         {
           "line": 19,
@@ -897,6 +978,22 @@
           ],
           "verdict": "JUSTIFIED",
           "phase": "R22 Phase A"
+        },
+        {
+          "line": 19,
+          "oldLine": 19,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  const data=modelCardSpecifications('bailian',model);assert.equal(data.inputScope,id===ids[0]?'图研既有核实':'渠道');assert.match(data.input,/图像/);assert.notEqual(data.context,'未知');assert.match(data.productInput,/图像/);",
+          "new": "  const data=modelCardSpecifications('bailian',model);assert.equal(data.inputScope,id===ids[0]?'图研既有核实':'渠道');assert.match(data.input,/图像/);assert.notEqual(data.context,'未公布');assert.match(data.productInput,/图像/);",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -1048,9 +1145,25 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 36,
+          "oldLine": 36,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "      assert.match(link.title, /^核实日期：2026-11-09\\n/)\n      assert.match(link.title, /输入：渠道公布/)",
+          "new": "      assert.doesNotMatch(link.title, /核实日期|未核实/)\n      assert.match(link.title, /支持文本输入/)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "74be813832378f44c5d2307042ad8230e37e63d7dd52c69a4119c062a5d70ff4"
+      "diffSha256": "817fad21bd738a7a1b492dd70c99522a00f495ad8cb1647413934c81abf20adc"
     },
     {
       "file": "apps/web/tests/model-audit-r11.test.mjs",
@@ -1088,7 +1201,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r12.test.mjs",
-      "diffSha256": "ed158a46dd2999defee1ae0a85f2c74ebbd020a035c0eec9d443ff202436167c",
+      "diffSha256": "1b761a52a8995db15842252197d88c910ba8984128964e30843312dfb1e771ca",
       "changes": [
         {
           "line": 85,
@@ -1452,12 +1565,124 @@
             "test-support/fixtures/source-evidence-i7-r27.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "(absent)",
+          "new": "import {currentPrimary} from '../../../test-support/pm-decisions-r30.mjs'",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 31,
+          "oldLine": 30,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "const r21Url = row => evidenceI7.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || evidenceI6.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || evidenceI4.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || (row.channel === 'tokendance' ? expectedTokenDanceSources(row.modelId)[0] : phase2.sourceChanges.find(change => change.key === row.channel + '/' + row.modelId)?.after",
+          "new": "const oldR21Url = row => evidenceI7.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || evidenceI6.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || evidenceI4.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || (row.channel === 'tokendance' ? expectedTokenDanceSources(row.modelId)[0] : phase2.sourceChanges.find(change => change.key === row.channel + '/' + row.modelId)?.after",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 33,
+          "oldLine": 32,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "(absent)",
+          "new": "const r21Url = row => currentPrimary(row.channel + '/' + row.modelId, oldR21Url(row))",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 47,
+          "oldLine": 45,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(card.sources[0], url)",
+          "new": "  assert.equal(card.sources[0], currentPrimary(channel + '/' + entry.id,url))",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 52,
+          "oldLine": 50,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    assert.equal(link.getAttribute('href'), url)",
+          "new": "    assert.equal(link.getAttribute('href'), currentPrimary(channel + '/' + entry.id,url))",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 151,
+          "oldLine": 149,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "      assert.equal(url, expectedHumanUrl(row.r11Url)); replicateOpenAI++",
+          "new": "      assert.equal(url, currentPrimary(row.channel + '/' + row.modelId,expectedHumanUrl(row.r11Url))); replicateOpenAI++",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 155,
+          "oldLine": 153,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "      if (editSource) assert.equal(url, editSource, entry.id)",
+          "new": "      if (editSource) assert.equal(url, currentPrimary(row.channel + '/' + row.modelId,editSource), entry.id)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/web/tests/model-audit-r13.test.mjs",
-      "diffSha256": "b316a48a36f98f3ca00ecb0aef250074239a350dd72a52dde8d9bb9f8365ea55",
+      "diffSha256": "c10b15c600f83cad0b7d34ba05adf71a5a0a621f278cb8e814a24bc6c86e435b",
       "changes": [
         {
           "line": 40,
@@ -1811,12 +2036,130 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "(absent)",
+          "new": "import {currentPrimary} from '../../../test-support/pm-decisions-r30.mjs'",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 114,
+          "oldLine": 113,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "      assert.equal(card.sources[0], fullFirstUrl, 'static cards now resolve the same complete specifications as Core')",
+          "new": "      assert.equal(card.sources[0], currentPrimary(channel + '/' + modelId,fullFirstUrl), 'static cards now resolve the same complete specifications as Core')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 121,
+          "oldLine": 120,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "        assert.ok(visible.getAttribute('title').includes('下线公告 · ' + sourceTitle(url)))\n        if (card.sources[0] === url) assert.equal(visible.textContent, '下线公告 · ' + sourceTitle(url))",
+          "new": "        assert.ok(visible.getAttribute('title').includes(visibleSourceTitle(url)))\n        if (card.sources[0] === url) assert.equal(visible.textContent, visibleSourceTitle(url))",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 143,
+          "oldLine": 142,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "        assert.equal(view.getByRole('link').textContent, '下线公告 · ' + sourceTitle(url))",
+          "new": "        assert.equal(view.getByRole('link').textContent, visibleSourceTitle(url))",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 148,
+          "oldLine": 147,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(visible, 26, '13 full-registry and 13 static notice cards; three unsupported Bailian primary citations removed per projection')",
+          "new": "  assert.equal(visible, 14, 'Seven full-registry and seven static notice primaries; six per projection now prioritize an existing own-model page, with notices retained')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
+      "file": "apps/web/tests/model-audit-r3.test.mjs",
+      "changes": [
+        {
+          "line": 131,
+          "oldLine": 131,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    assert.ok(badge.title.includes(date)); assert.ok(badge.title.includes(replacement));",
+          "new": "    assert.ok(badge.title.includes(date.replace(/(\\d{4})-(\\d{2})-(\\d{2})/g,'$1年$2月$3日'))); assert.ok(badge.title.includes(replacement));",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 133,
+          "oldLine": 133,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    assert.ok(screen.getByRole('dialog').textContent.includes(date));",
+          "new": "    assert.ok(screen.getByRole('dialog').textContent.includes(date.replace(/(\\d{4})-(\\d{2})-(\\d{2})/g,'$1年$2月$3日')));",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "2e49d2d65d012666e5de12381958dbe825842545fef404a1d4d08268bd51a29b"
+    },
+    {
       "file": "apps/web/tests/model-audit-r4.test.mjs",
-      "diffSha256": "183c1b2f157f3d3988d664b88b82403af84f16cc78d127ece4e98b78b968b77e",
+      "diffSha256": "18fd493e003db83f3cf58c6bea7596d59cddd585d99639a90f5479b509ec1c52",
       "changes": [
         {
           "line": 17,
@@ -1843,12 +2186,44 @@
           ],
           "verdict": "JUSTIFIED",
           "phase": "R22 Phase A"
+        },
+        {
+          "line": 22,
+          "oldLine": 22,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.match(screen.getByRole('link').title,/图研既有核实/)",
+          "new": "  assert.doesNotMatch(screen.getByRole('link').title,/图研既有核实|核实日期/)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 33,
+          "oldLine": 33,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(uncertain.maxOutput,'未知');assert.equal(uncertain.fields.maxOutputTokens.value,null)",
+          "new": "  assert.equal(uncertain.maxOutput,'未公布');assert.equal(uncertain.fields.maxOutputTokens.value,null)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/web/tests/model-audit-r6a.test.mjs",
-      "diffSha256": "9b5398905f52c38e4ddfa20fe644c2ed8c5dbc27d98e58b32d1c79de4c360278",
+      "diffSha256": "767906f3d2f6596783837472bac210d6bba65e35962ef0a6f24b7e44148dc4f1",
       "changes": [
         {
           "line": 35,
@@ -2158,6 +2533,22 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 157,
+          "oldLine": 157,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(gemini.context, '未知', 'an input limit is not a total context window')",
+          "new": "  assert.equal(gemini.context, '未公布', 'an input limit is not a total context window')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -2389,7 +2780,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r9.test.mjs",
-      "diffSha256": "4bceec021925bf93a1de3dda0b34d2d62a6c04c68ddebeafdbca895dad877bc3",
+      "diffSha256": "b1c3013c6f5902dd2e8043e52827619dd6db5321cfa5268aa8f6cf650d1f9ae6",
       "changes": [
         {
           "line": 90,
@@ -2593,6 +2984,134 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "(absent)",
+          "new": "import {currentPrimaryRow} from '../../../test-support/pm-decisions-r30.mjs'",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 3,
+          "oldLine": 2,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "import {r29SourceRows} from '../../../test-support/source-title-history-r29.mjs'",
+          "new": "import {r29SourceRows,expectedI11} from '../../../test-support/source-title-history-r29.mjs'",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 70,
+          "oldLine": 69,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    assert.match(link.title, /^核实日期：2026-11-09\\n/)",
+          "new": "    assert.doesNotMatch(link.title, /核实日期|未核实/)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 81,
+          "oldLine": 80,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    const model = { ...original, officialSourceUrl: 'https://catalog.example/generic' }",
+          "new": "    const model = { ...original, catalogReview: {...original.catalogReview, sourceUrls:[...(original.catalogReview?.sourceUrls || []),'https://catalog.example/generic']} }",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 90,
+          "oldLine": 89,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    assert.ok(data.channelSources.includes(first) || data.vendorSources.includes(first) || data.lifecycleSources.includes(first), provider + '/' + model.id)",
+          "new": "    assert.ok(data.channelSources.includes(first) || data.vendorSources.includes(first) || data.lifecycleSources.includes(first) || currentPrimaryRow(provider + '/' + model.id, expectedI11[provider + '/' + model.id].web.sources[0]).url === first, provider + '/' + model.id)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 92,
+          "oldLine": 91,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    else assert.ok(data.sources.includes(model.officialSourceUrl), 'secondary evidence is retained')",
+          "new": "    else assert.ok(data.sources.includes('https://catalog.example/generic'), 'secondary evidence is retained')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 95,
+          "oldLine": 94,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    assert.deepEqual({url: screen.getByRole('link').getAttribute('href'), label: screen.getByRole('link').textContent}, r29SourceRows([expectedSourceRows[provider + '/' + model.id]])[0])",
+          "new": "    assert.deepEqual({url: screen.getByRole('link').getAttribute('href'), label: screen.getByRole('link').textContent}, currentPrimaryRow(provider + '/' + model.id,expectedI11[provider + '/' + model.id].web.sources[0]))",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 115,
+          "oldLine": 114,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.match(dialog.textContent, /核实日期：2026-11-09/)",
+          "new": "  assert.doesNotMatch(dialog.textContent, /核实日期|未核实/);assert.match(within(dialog).getAllByRole('link')[0].title,/核实日期：2026-11-09/)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -2674,9 +3193,73 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 70,
+          "oldLine": 70,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    else assert.match(screen.getByText('将下线').title,/2027-01-19.*Qwen3.8 Flash/);",
+          "new": "    else assert.match(screen.getByText('将下线').title,/2027年01月19日.*Qwen3.8 Flash/);",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 79,
+          "oldLine": 79,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.match(screen.getByRole('link').title,/将于2027-01-19下线/);assert.match(screen.getByRole('link').title,/Qwen3.8 Flash/);",
+          "new": "  assert.doesNotMatch(screen.getByRole('link').title,/将于2027-01-19下线|核实日期/);",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 89,
+          "oldLine": 89,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(screen.getAllByText('不适用').length,2);assert.match(screen.getByRole('link').title,/未核实/);",
+          "new": "  assert.equal(screen.getAllByText('不适用').length,2);assert.doesNotMatch(screen.getByRole('link').title,/未核实|核实日期/);",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 113,
+          "oldLine": 113,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(screen.getAllByRole('link').length,1);assert.match(screen.getByRole('link').getAttribute('aria-label'),/2026-11-09/);",
+          "new": "  assert.equal(screen.getAllByRole('link').length,1);assert.doesNotMatch(screen.getByRole('link').getAttribute('aria-label'),/核实日期|2026-11-09/);",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f7198faf0c3a87636d49620c670df6b7ba40e0e919e5ec06b05956d2f9c904e0"
+      "diffSha256": "cb4645847ddb6569962e1ac407b847ff57583c4b791c142aa22308a892a87ffb"
     },
     {
       "file": "apps/web/tests/model-card-footer-r16.test.mjs",
@@ -2802,13 +3385,51 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 120,
+          "oldLine": 120,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    ['antling', {id: 'Ling-2.6-flash'}, '下线公告'],",
+          "new": "    ['antling', {id: 'Ling-2.6-flash'}, '官方文档'],",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "0ba548518070e8d7936835dc1539502c4bff5f106234928362adcd4db706ed93"
+      "diffSha256": "40de3db1fdd9421c2c69f167ab80aa48c5f2da79828e5a1742e3f1d6038a92f0"
+    },
+    {
+      "file": "apps/web/tests/model-picker-unavailable.test.mjs",
+      "changes": [
+        {
+          "line": 65,
+          "oldLine": 65,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  await user.click(screen.getAllByText('未知')[0])",
+          "new": "  await user.click(screen.getAllByText('未公布')[0])",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "f0b70675aa3c32f615e96d3aab79fdbd2bf3a6bd6eeb451e882177ca0f5e717e"
     },
     {
       "file": "apps/web/tests/model-specifications.test.mjs",
-      "diffSha256": "4a1336bf0dfd32c2a86a95280849f83c4a31fe4b86c97c78aac927b7589f73e7",
+      "diffSha256": "ad9f8a1a06a0ede8336858f4d28d38dee30863a89fef6122b6596a81cdb40898",
       "changes": [
         {
           "line": 80,
@@ -2907,12 +3528,204 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 34,
+          "oldLine": 34,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    assert.match(screen.getByRole('link').title, /未核实/)",
+          "new": "    assert.doesNotMatch(screen.getByRole('link').title, /未核实|核实日期/)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 51,
+          "oldLine": 51,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(card.context,'未知');assert.equal(card.maxOutput,'≈ 33K tokens')",
+          "new": "  assert.equal(card.context,'未公布');assert.equal(card.maxOutput,'≈ 33K tokens')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 88,
+          "oldLine": 88,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(data.context,'未知');assert.equal(data.input,'未知');assert.equal(data.output,'未知')",
+          "new": "  assert.equal(data.context,'未公布');assert.equal(data.input,'未知');assert.equal(data.output,'未知')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 94,
+          "oldLine": 94,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    assert.equal(modelCardSpecifications('custom',{id:'unknown',specifications:{version:1,contextWindowTokens,sourceUrls:['https://example.com/docs']}}).context,'未知')",
+          "new": "    assert.equal(modelCardSpecifications('custom',{id:'unknown',specifications:{version:1,contextWindowTokens,sourceUrls:['https://example.com/docs']}}).context,'未公布')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 120,
+          "oldLine": 120,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(modelCardSpecifications('custom',model).context,'未知')",
+          "new": "  assert.equal(modelCardSpecifications('custom',model).context,'未公布')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 129,
+          "oldLine": 129,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(modelCardSpecifications('custom',model).context,'未知')",
+          "new": "  assert.equal(modelCardSpecifications('custom',model).context,'未公布')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 131,
+          "oldLine": 131,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(modelCardSpecifications('bailian',{id:'qwen3-omni-flash-2025-09-15'}).context,'未知')",
+          "new": "  assert.equal(modelCardSpecifications('bailian',{id:'qwen3-omni-flash-2025-09-15'}).context,'未公布')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 175,
+          "oldLine": 175,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(modelCardSpecifications('custom',{id:'google:gemini@3.1-pro'}).context,'未知')",
+          "new": "  assert.equal(modelCardSpecifications('custom',{id:'google:gemini@3.1-pro'}).context,'未公布')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 178,
+          "oldLine": 178,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(modelCardSpecifications('sensenova',{id:'sensenova-6.8-flash-lite'}).context,'未知')",
+          "new": "  assert.equal(modelCardSpecifications('sensenova',{id:'sensenova-6.8-flash-lite'}).context,'未公布')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 201,
+          "oldLine": 201,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.deepEqual(data.limitRows,[{label:'上下文窗口',value:'128K tokens'},{label:'最大输出',value:'未知'}])",
+          "new": "  assert.deepEqual(data.limitRows,[{label:'上下文窗口',value:'128K tokens'},{label:'最大输出',value:'未公布'}])",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 213,
+          "oldLine": 213,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(modelCardSpecifications('custom',{id:'unlisted-similar-GLM-4'}).context,'未知')",
+          "new": "  assert.equal(modelCardSpecifications('custom',{id:'unlisted-similar-GLM-4'}).context,'未公布')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 233,
+          "oldLine": 233,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.match(screen.getByRole('link').title,/源自原厂/);assert.match(screen.getByRole('link').title,/2026-11-09/)\n})",
+          "new": "  assert.doesNotMatch(screen.getByRole('link').title,/源自原厂|核实日期/);assert.ok(screen.getAllByText('源自原厂').length)\n})",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/web/tests/provider-catalogs.test.mjs",
-      "diffSha256": "2336a855eca2ad95acca683a74b76d7c161d7fe20dbc8dd086e3165bdc8f05fb",
+      "diffSha256": "b41400f05ebadb6ee4ab1d14802a80757f370589843047db4f6a702394383b98",
       "changes": [
         {
           "line": 30,
@@ -2925,6 +3738,38 @@
           ],
           "verdict": "JUSTIFIED",
           "phase": "R22 Phase A"
+        },
+        {
+          "line": 48,
+          "oldLine": 48,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(card.context,'未知');assert.deepEqual(card.sources,[url])",
+          "new": "  assert.equal(card.context,'未公布');assert.deepEqual(card.sources,[url])",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 53,
+          "oldLine": 53,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": " assert.equal(card.context,'未知');assert.deepEqual(card.sources,['https://fal.ai/models/new-endpoint'])",
+          "new": " assert.equal(card.context,'未公布');assert.deepEqual(card.sources,['https://fal.ai/models/new-endpoint'])",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -3021,9 +3866,25 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 164,
+          "oldLine": 164,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(card.querySelectorAll('dd')[2].textContent, '未知')",
+          "new": "  assert.equal(card.querySelectorAll('dd')[2].textContent, '未公布')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "8a00379a6260b4808d9e23e69bd5e96e446bcc9fd8d175b60765313473e3f0fb"
+      "diffSha256": "30901548fd3c847c2bee2066bb2045df1c0b887cb370824463df762d86c46f04"
     },
     {
       "file": "apps/web/tests/tokendance-catalog-r14.test.mjs",
@@ -3139,6 +4000,28 @@
       "diffSha256": "21f5333c1798721f4f2a9eaee5ba077e9a53e2555bf3051ceee1600e7469af26"
     },
     {
+      "file": "apps/web/tests/workspace-catalog-v35.test.mjs",
+      "changes": [
+        {
+          "line": 86,
+          "oldLine": 86,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.match(card.querySelector('.model-spec-sources a').getAttribute('aria-label'), /2026-09-21/);",
+          "new": "  assert.doesNotMatch(card.querySelector('.model-spec-sources a').getAttribute('aria-label'), /核实日期|2026-09-21/);",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "e161b2b60c16581bf4d76b229677e99289b81254f963a31c3d65b93832b1af2a"
+    },
+    {
       "file": "apps/web/tests/workspace-model-catalog.test.mjs",
       "changes": [
         {
@@ -3155,9 +4038,57 @@
             "packages/api/src/modality-presentation.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 77,
+          "oldLine": 77,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": " assert.match(screen.getByRole('link').getAttribute('aria-label'),/已确认专用文生图 JSON 协议.*待确认仅限通用目录/);",
+          "new": " assert.doesNotMatch(screen.getByRole('link').getAttribute('aria-label'),/待确认仅限通用目录|核实日期/);",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 156,
+          "oldLine": 156,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": " assert.ok(within(card).getAllByText('未知')[0]);",
+          "new": " assert.ok(within(card).getAllByText('未公布')[0]);",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 294,
+          "oldLine": 294,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": " assert.match(screen.getByRole('link').getAttribute('aria-label'),/未核实[\\s\\S]*官方目录与到期记录冲突/);",
+          "new": " assert.doesNotMatch(screen.getByRole('link').getAttribute('aria-label'),/未核实|官方目录与到期记录冲突/);",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "3d172dabfbf0e9e1aa91bf5d5411625baf071982066e3b8db579c6ac13b09c21"
+      "diffSha256": "1e82d8a3ab3b089967f46c0b952852f8fbe308041705cd10174573af349babb2"
     },
     {
       "file": "scripts/model-card-audit.test.mjs",
@@ -22814,7 +23745,7 @@
     {
       "file": "apps/auth-gateway/tests/model-modality-r21.test.js",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "e4a3c1bc4a35f008442661f4d499c43c80606e32e5a79cfb2cdbd17edeba5d72",
+      "diffSha256": "b5e22f6fc79a3aaa0a386cee18412af18d42470635999441fb63b5e346c50d90",
       "changes": [
         {
           "phase": "R23 Phase H2",
@@ -22872,6 +23803,22 @@
             "docs/model-modality-audit-20261109.md#r29-phase-i10",
             "apps/web/tests/model-source-titles-r29.test.mjs",
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 38,
+          "oldLine": 38,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "      if (retirement.includes(row.url)) { assert.equal(row.label, '下线公告 · TokenDance · Qwen3.5 Plus 下线（2027-01-19）'); continue }",
+          "new": "      if (retirement.includes(row.url)) { assert.equal(row.label, '下线公告 · TokenDance · Qwen3.5 Plus 下线（2027年01月19日）'); continue }",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -23471,9 +24418,25 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 71,
+          "oldLine": 71,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    assert.equal(screen.getByRole('dialog').textContent.match(/核实日期：2026-11-09/g).length, 1)",
+          "new": "    assert.doesNotMatch(screen.getByRole('dialog').textContent,/核实日期|未核实|渠道公布/)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "b93967b5445bef8363a2b2d86fdb78e069811597efc940ad41f65f577e16c6eb"
+      "diffSha256": "09cbfde2f3b796f061725fefa1144b7666d9420615dd8a9a191b1009c15da84d"
     },
     {
       "file": "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
@@ -25822,9 +26785,25 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 34,
+          "oldLine": 34,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "   assert.equal(dialog.textContent.includes('该渠道页面与图研之前记录的信息不一致，这里只保留已经核实过的内容，没核实的显示为「未知」。'),conflictCards.includes(card),card)",
+          "new": "   assert.doesNotMatch(dialog.textContent,/图研之前记录|核实日期|渠道公布/,card)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f3ef4518bf87cf0e6bb903f8a7fd47f01b6dc6370e5ce77d876031f1033a4132"
+      "diffSha256": "013dfd01c2867ac9f5257958c25ac574bf448f591a1878a3a95f3edd1a4dbd5e"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
@@ -25904,9 +26883,41 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 29,
+          "oldLine": 29,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(card.auditMessage.includes('该渠道页面与图研之前记录的信息不一致，这里只保留已经核实过的内容，没核实的显示为「未知」。'),require('../../../test-support/fixtures/conflict-cards-r26.json').includes(key),key)",
+          "new": "  assert.doesNotMatch(card.auditMessage,/图研之前记录|核实日期|渠道公布/,key)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 45,
+          "oldLine": 45,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": " assert.equal(cards,1064);assert.equal(rows,1114);assert.ok(icons>=1064*8)",
+          "new": " assert.equal(cards,1064);assert.equal(rows,1149);assert.ok(icons>=1064*8)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "5e33adf773df5f79274ac63260230c2bd6b2289bcdc8a1fddfe553bdcde4ead0"
+      "diffSha256": "6534b29dac9ada536354ec03e597d59c64fc79bfcd70744026c1b230d23e4465"
     },
     {
       "file": "scripts/source-titles-r24.test.mjs",
@@ -26104,9 +27115,41 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 24,
+          "oldLine": 24,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "        assert.equal(row.label, fixture.currentNotices[key].label)",
+          "new": "        assert.equal(row.label, fixture.currentNotices[key].label.replace('2027-01-19','2027年01月19日'))",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 26,
+          "oldLine": 26,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "        assert.ok(modal.content.endsWith(fixture.currentNotices[key].label)); examples++",
+          "new": "        assert.ok(modal.content.endsWith(fixture.currentNotices[key].label.replace('2027-01-19','2027年01月19日'))); examples++",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "6697658fd996af335bed50cfb87b340ffd1f3f365629603c76cad1d284efc404"
+      "diffSha256": "81ac977a714f2282e597ff4d655ae40907563f9659fd9a4c2cb10def70045d39"
     },
     {
       "file": "apps/web/tests/model-card-r24.test.mjs",
@@ -26187,9 +27230,25 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 21,
+          "oldLine": 21,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    const expected = fixture.currentNotices[key]",
+          "new": "    const expected = fixture.currentNotices[key] && JSON.parse(JSON.stringify(fixture.currentNotices[key]).replaceAll('2027-01-19','2027年01月19日'))",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "a48e6e436bde263ce6934e3c462b3925b5a69f64325baa889d60b1b3bf5fddd0"
+      "diffSha256": "92f3322bf65ea572d2fb3ab0c5220c02ce2a1e9e3a7145262a49b35c17616b13"
     },
     {
       "file": "test-support/fixtures/model-card-r24.json",
@@ -26367,9 +27426,41 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "(absent)",
+          "new": "import {currentI12Sources} from './pm-decisions-r30.mjs'",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 13,
+          "oldLine": 12,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": " const current = value => includeR28 ? r29SourceRows(value) : value",
+          "new": " const current = value => includeR28 ? currentI12Sources(r29SourceRows(value),card,client) : value",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "c0da6fe632e023d64fb954a0631aee8851764a89ca5e925ba5e6bd4e916d603f"
+      "diffSha256": "fb6f9d04650636f248d900b31bae65ac64a6f104b956d1965eb12adcc6dd05cf"
     },
     {
       "file": "test-support/source-review-r24.mjs",
@@ -26428,9 +27519,41 @@
             "test-support/fixtures/conflict-cards-r26.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 9,
+          "oldLine": 9,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": " assert.ok(card.auditMessage.includes(e.inheritanceNote));assert.match(card.auditMessage,/最大输出：源自原厂（核实日期：2026-11-10）/);assert.match(card.auditMessage,/最大输出：65536 tokens/)\n for(const row of card.specSources){definition.methods.copySource({currentTarget:{dataset:{url:row.url,source:row.label,notice:card.auditMessage}}});assert.ok(modal.content.includes(e.inheritanceNote));assert.ok(modal.content.includes(row.label));assert.ok(!modal.content.includes(e.rejectedUrl))}",
+          "new": " assert.doesNotMatch(card.auditMessage,/核实日期|源自原厂/);assert.match(card.auditMessage,/最大输出：65,536 tokens/)\n for(const row of card.specSources){definition.methods.copySource({currentTarget:{dataset:{url:row.url,source:row.label,notice:card.auditMessage}}});assert.doesNotMatch(modal.content,/核实日期|渠道公布/);assert.ok(modal.content.includes(row.label));assert.ok(!modal.content.includes(e.rejectedUrl))}",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 15,
+          "oldLine": 15,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  if(['qianfan/qwen-image-edit','siliconflow/Qwen/Qwen-Image-Edit'].includes(p+'/'+m.id))for(const row of c.specRows.filter(r=>['上下文窗口','最大输出'].includes(r.label)))assert.equal(row.value,'未知')",
+          "new": "  if(['qianfan/qwen-image-edit','siliconflow/Qwen/Qwen-Image-Edit'].includes(p+'/'+m.id))for(const row of c.specRows.filter(r=>['上下文窗口','最大输出'].includes(r.label)))assert.equal(row.value,'未公布')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "370220b69ef79d5c3beccf30ae66c62ea325abba9919e007751c66663d4a6dcc"
+      "diffSha256": "fd9d167e1e1c779fb668a4731179094b82ec5bc6c6e0234d60651b96579fada6"
     },
     {
       "file": "apps/web/tests/model-card-i4-r24.test.mjs",
@@ -26468,9 +27591,57 @@
             "test-support/fixtures/conflict-cards-r26.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 17,
+          "oldLine": 17,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": " const dialog=screen.getByRole('dialog');assert.ok(dialog.textContent.includes(inheritanceNote));assert.match(dialog.textContent,/最大输出：源自原厂（核实日期：2026-11-10）/);assert.match(dialog.textContent,/65,536 tokens/)",
+          "new": " const dialog=screen.getByRole('dialog');assert.doesNotMatch(dialog.textContent,/核实日期|源自原厂/);assert.match(dialog.textContent,/65,536 tokens/)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 28,
+          "oldLine": 28,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(c.context,'未知');assert.equal(c.maxOutput,'未知');assert.ok(!c.sources.includes(rejectedUrl))",
+          "new": "  assert.equal(c.context,'未公布');assert.equal(c.maxOutput,'未公布');assert.ok(!c.sources.includes(rejectedUrl))",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 38,
+          "oldLine": 38,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  const dialog=screen.getByRole('dialog');assert.match(dialog.textContent,/2027-01-19/);assert.equal(within(dialog).getByRole('link',{name:'下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知'}).getAttribute('href'),'https://www.aliyun.com/notice/118728')",
+          "new": "  const dialog=screen.getByRole('dialog');assert.match(dialog.textContent,/2027年01月19日/);assert.equal(within(dialog).getByRole('link',{name:'下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知'}).getAttribute('href'),'https://www.aliyun.com/notice/118728')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "e863ad3116349c0aafe476bdbc3170b45e4ba6b12f0b8bcbab9b4a6f509b2795"
+      "diffSha256": "84d8dc4e49957997714d559672045613e0c84896f82ade6776490cb5a4f3aa5a"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i5-r25.test.cjs",
@@ -26492,9 +27663,41 @@
             "test-support/fixtures/conflict-cards-r26.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 17,
+          "oldLine": 17,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  clipboard=null;definition.methods.copySource({currentTarget:{dataset:{url:source.url,source:source.label,notice:card.auditMessage}}});modal.success({confirm:true});assert.equal(clipboard,source.url)",
+          "new": "  clipboard=null;definition.methods.copySource({currentTarget:{dataset:{url:source.url,source:source.label,notice:card.retirementMessage}}});modal.success({confirm:true});assert.equal(clipboard,source.url)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 19,
+          "oldLine": 19,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "   assert.equal(source.url,notice);assert.match(modal.content,/2027-01-19/);assert.equal(source.label,'下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知')",
+          "new": "   assert.equal(source.url,notice);assert.match(modal.content,/2027年01月19日/);assert.equal(source.label,'下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "8364752adc0cc718fce3270d7e973f4213bfb4e835fa563ce3695501fb84f1d9"
+      "diffSha256": "32de28a630af757d58605c249774a0d568f60c89e7bc163625c7902cc7e0d5d4"
     },
     {
       "file": "apps/web/tests/model-card-i5-r25.test.mjs",
@@ -26516,9 +27719,57 @@
             "test-support/fixtures/conflict-cards-r26.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 23,
+          "oldLine": 23,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "   if(p==='bailian'&&ids.includes(m.id)){assert.equal(url,notice);assert.match(screen.getByRole('dialog').textContent,/2027-01-19/)}",
+          "new": "   if(p==='bailian'&&ids.includes(m.id)){assert.equal(url,notice);assert.match(screen.getByRole('dialog').textContent,/2027年01月19日/)}",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 37,
+          "oldLine": 37,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.match(dialog.textContent,/核实日期：2026-11-09/);assert.match(dialog.textContent,/上下文窗口：渠道公布（核实日期：2026-11-10）/)",
+          "new": "  assert.doesNotMatch(dialog.textContent,/核实日期|渠道公布/);assert.ok(within(dialog).getAllByRole('link').every(a=>a.title.includes('核实日期：2026-11-09')))",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 53,
+          "oldLine": 53,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": " const dialog=screen.getByRole('dialog');assert.match(dialog.textContent,/2027-01-19/);assert.equal(within(dialog).getByRole('link').getAttribute('href'),notice)",
+          "new": " const dialog=screen.getByRole('dialog');assert.match(dialog.textContent,/2027年01月19日/);assert.equal(within(dialog).getByRole('link').getAttribute('href'),notice)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "746cdbb3544202f725e4f5c6a26a9eb55be45fdb7f10825ab077ef4f54595500"
+      "diffSha256": "da47b2f48868821131d390c7674ceae592cdb23e61030bca3de421ddd7c5f2e1"
     },
     {
       "file": "scripts/model-evidence-i5-r25.test.mjs",
@@ -27942,9 +29193,25 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 36,
+          "oldLine": 36,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(sources[0].url, humanSourceUrl(row.url), key + ' primary edit-interface source')",
+          "new": "  assert.equal(sources[0].url, historical ? humanSourceUrl(row.url) : key.startsWith('fal/') ? 'https://fal.ai/models/' + key.slice(4) + '/api' : 'https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4', key + ' primary model-page source')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "b97a90a7ed65cff6cea464e2ff31df18e5b2ea355b3b31f19766aa31adfa98cb"
+      "diffSha256": "3af3b0ecb0cfd6b69ce3f0a9557d80966f8cf7ba089eba2dd1d8099df2917bfd"
     },
     {
       "file": "scripts/report-changed-tests.mjs",
@@ -28071,9 +29338,41 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 62,
+          "oldLine": 62,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13', 'fd29cf36', '4e18513c', 'cd72eace', '9a7128d6', 'f8ff7648', 'd29097c0', '6864824a', 'd1c63994', '105744a9', '7858d7a4', '997585e2', '873fc7fd'].includes(file.comparisonBase))",
+          "new": "  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13', 'fd29cf36', '4e18513c', 'cd72eace', '9a7128d6', 'f8ff7648', 'd29097c0', '6864824a', 'd1c63994', '105744a9', '7858d7a4', '997585e2', '873fc7fd', '588f1d67'].includes(file.comparisonBase))",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 83,
+          "oldLine": 83,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  '# Changed test expectations — R22, R23 Phases E/F/F3 and R24 Phases I1/I2/I3/I4 and R25 Phase I5 and R26 Phase I6 and R27 Phases I7/I8 and R28 Phase I9 and R29 Phases I10/I11', '',",
+          "new": "  '# Changed test expectations — R22, R23 Phases E/F/F3 and R24 Phases I1/I2/I3/I4 and R25 Phase I5 and R26 Phase I6 and R27 Phases I7/I8 and R28 Phase I9 and R29 Phases I10/I11 and R30 Phase I12', '',",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "30c282ca3e4192a87a15878c57d79ee276cce791d2096034c2982f2e543b9f11"
+      "diffSha256": "1803a190edabab83dc88658d58824736480245bda6bd3518022e4f093e859d8a"
     },
     {
       "file": "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs",
@@ -28668,9 +29967,41 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 14,
+          "oldLine": 14,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    assert.ok(card.auditMessage.includes('输入：渠道公布（核实日期：' + fields.inputModalities.verifiedAt + '）'), key)",
+          "new": "    assert.doesNotMatch(card.auditMessage,/核实日期|渠道公布|\\d{4}-\\d{2}-\\d{2}/,key); assert.ok(card.auditMessage.includes('支持图像输入'),key)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 19,
+          "oldLine": 19,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "    const source = card.specSources[0]",
+          "new": "    const source = card.specSources.find(s=>s.url===fields.inputModalities.sourceUrl.replace(/\\.md$/,''))\n    assert.ok(source,key+' retained image-input evidence')",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "77035f831effe462a976323bcc30cbe8a337025183d6574c5abc6ff8a5df6b00"
+      "diffSha256": "0b0f060e91b0fbae542d1d5354042db513cff749e5f0644221b0c060310c93d4"
     },
     {
       "file": "apps/web/tests/model-founder-fixes-r28.test.mjs",
@@ -28840,9 +30171,25 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 28,
+          "oldLine": 28,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "      assert.ok(dialog.textContent.includes(fields.inputModalities.verifiedAt), key)",
+          "new": "      assert.doesNotMatch(dialog.textContent,/核实日期|\\d{4}-\\d{2}-\\d{2}/,key);assert.ok([...dialog.querySelectorAll('a')].every(a=>a.title.includes('核实日期：')),key)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "36b74da228a1c5639849c2edd2175d3064682f09bda0a13daf0fc39aeba83f6b"
+      "diffSha256": "29a2911cca18878b9f3014be5b04a76471d0e3b1ef0db10681c3840ba127219b"
     },
     {
       "file": "scripts/model-icon-simplify-r27.test.mjs",
@@ -29013,7 +30360,7 @@
           "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "c4ca4cf6afece01a355197c956830b1dbb57c19df8fccaacafe8cdb1132849ff"
+      "diffSha256": "f7c4870e106008c99365e85b294142bebeed9f1bb8bcd009234a9d5c3a8427b1"
     },
     {
       "file": "scripts/source-titles-i3-r24.test.mjs",
@@ -29070,9 +30417,25 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 8,
+          "oldLine": 8,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "export const retirementLabel='下线公告 · TokenDance · Qwen3.5 Plus 下线（2027-01-19）'",
+          "new": "export const retirementLabel='下线公告 · TokenDance · Qwen3.5 Plus 下线（2027年01月19日）'",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "c0e9912043e4237934980ce3fc5ded908e8ce3d6a4e3797c014cee19c5c7e852"
+      "diffSha256": "909853007d461b649d14b5cbccbd07797c18bb122e2bd268eadd10bc14e109f2"
     },
     {
       "file": "test-support/founder-fixes-r28.mjs",
@@ -29146,7 +30509,7 @@
           "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "26a6e8f57048831ffa3a0dc9c481ad2ebc77a57c6e5005f713ec9925f167cb8c"
+      "diffSha256": "89b9e8c435b7ebcbdeb5a7aa05285924a82995c13479a220395a991a4eee4e0b"
     },
     {
       "file": "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs",
@@ -29325,9 +30688,57 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "(absent)",
+          "new": "import {restoreI12,restoreI12Sources} from './pm-decisions-r30.mjs'",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 26,
+          "oldLine": 25,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "export function historicalR29Rows(rows, card, client) {",
+          "new": "export function historicalR29Rows(rows, card, client, restored = false) {\n  if (!restored) rows = restoreI12Sources(rows, card, client)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 45,
+          "oldLine": 43,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  const copy = structuredClone(rows)",
+          "new": "  const copy = restoreI12(rows)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "67a2d5a32897c7f0b42c0f4de790b1c5d74afe68cb2f340ac694d3b8b78bc60c"
+      "diffSha256": "3739c702de348a3419fbb34579697b6b561808f25e6d9cbabc4e6ff05c850ce6"
     },
     {
       "file": "test-support/source-title-report-r29.mjs",
@@ -29383,6 +30794,52 @@
         }
       ],
       "diffSha256": "8d4676a78ce3f22fb9231f3dd4ccd3c5b278e2deab8e0e9b0c6ccd4cffd51390"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/model-evidence-i6-r26.test.mjs",
+      "comparisonBase": "588f1d67",
+      "changes": [
+        {
+          "line": 25,
+          "oldLine": 25,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": "  assert.equal(display.auditMessage.includes('该渠道页面与图研之前记录的信息不一致，这里只保留已经核实过的内容，没核实的显示为「未知」。'),conflictCards.includes(key),key)",
+          "new": "  assert.doesNotMatch(display.auditMessage,/图研之前记录|核实日期|渠道公布/,key)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "68f2c28774d8822d38fb05c4b701e4fc8113f6148810968d2a67d5cb6378fd51"
+    },
+    {
+      "file": "test-support/dialog-dates-r26.mjs",
+      "comparisonBase": "588f1d67",
+      "changes": [
+        {
+          "line": 5,
+          "oldLine": 5,
+          "comparisonBase": "588f1d67",
+          "phase": "R30 Phase I12",
+          "old": " const lines=text.split('\\n').filter(Boolean)\n assert.equal(lines.filter(line=>line.startsWith('核实日期：')).length,topDate?1:0,key)\n if(topDate)assert.equal(lines[0],'核实日期：'+topDate,key)\n assert.doesNotMatch(text,/^(?:输入|输出|上下文窗口|最大输出)核实日期：|（\\d{4}-\\d{2}-\\d{2}）/m,key)\n for(const [field,label]of Object.entries(labels)) {\n  const fact=fields[field],source=origins[fact.provenance]\n  const dated=lines.filter(line=>line.startsWith(label+'：')&&line.includes('核实日期：'))\n  if(fact.state==='unknown'||!source||!fact.verifiedAt||fact.verifiedAt===topDate)assert.deepEqual(dated,[],key+'/'+field)\n  else assert.deepEqual(dated,[`${label}：${source}（核实日期：${fact.verifiedAt}）`],key+'/'+field)\n }\n assert.doesNotMatch(text,/渠道资料与此前记录不一致，已保留确认过的模态/)",
+          "new": " assert.doesNotMatch(text,/\\d{4}-\\d{2}-\\d{2}|核实日期|未核实|渠道公布|原厂公布|图研既有核实|图研输入要求/,key)\n for(const label of ['上下文窗口','最大输出'])assert.ok(text.split('\\n').some(line=>line.startsWith(label+'：')),key)",
+          "reason": "R30 PM decision: remove verification/provenance/unverified dialog rows; preserve source hover dates; numeric unknowns render 未公布; exact existing model pages outrank edit, variant, generic and retirement pages while field citations remain; Chinese event-date spelling keeps meaning. Keep source-title, fact, execution and name invariants; historical expectations use exact hashed display-only patches, asserted before projection.",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r30-phase-i12",
+            "apps/web/tests/model-pm-r30.test.mjs",
+            "apps/miniprogram/tests/model-pm-r30.test.cjs",
+            "scripts/model-pm-r30.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "c20d6aaf12b292eedf550342adc0fb9ceeef5c05357f8a7e2407fe871afc92e6"
     }
   ]
 }

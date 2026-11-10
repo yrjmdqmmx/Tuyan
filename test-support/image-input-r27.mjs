@@ -33,7 +33,7 @@ export function assertImageInput(key, fact, icons, sources, historical = false) 
   if (historical) assert.match(image.tooltip, /(?:渠道资料|官方文档) · .*(?:编辑接口|Edit API 文档)（\d{4}-\d{2}-\d{2}）/, key)
   if (!historical) assert.equal(image.tooltip, '支持图像输入', key)
   assert.ok(sources.some(source => source.url === humanSourceUrl(row.url) && /编辑接口|Edit API 文档/.test(source.label)), key + ' visible edit source')
-  assert.equal(sources[0].url, humanSourceUrl(row.url), key + ' primary edit-interface source')
+  assert.equal(sources[0].url, historical ? humanSourceUrl(row.url) : key.startsWith('fal/') ? 'https://fal.ai/models/' + key.slice(4) + '/api' : 'https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4', key + ' primary model-page source')
   assert.doesNotMatch(JSON.stringify({fact,icons,sources}), /创始人|决定 A/, key + ' internal note')
 }
 

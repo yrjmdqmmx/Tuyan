@@ -1,3 +1,4 @@
+import {restoreI12Review} from '../test-support/pm-decisions-r30.mjs'
 // Completed I2-I6 reports remain immutable; I7 uses the exact HEAD presentation fixture.
 import fs from 'node:fs'
 import reviewR28 from '../config/channel-audit/review-r28-20261110.json' with {type:'json'}
@@ -13,9 +14,9 @@ import {scanTitles,scanDialogs} from '../test-support/source-titles-r24.mjs'
 import corrections from '../test-support/fixtures/source-evidence-i7-r27.json' with {type:'json'}
 import {baseline, imageInputPresentations, assertPresentationChanges} from '../test-support/image-input-r27.mjs'
 const historical=JSON.parse(gunzipSync(fs.readFileSync(new URL('../test-support/fixtures/source-report-i6.json.gz',import.meta.url))))
-const latest=await collectSourceReview(),current=structuredClone(latest),counts={},changes=[]
+const latest=await collectSourceReview(),current=restoreI12Review(latest),counts={},changes=[]
 for(const client of ['web','mini','notices']) {assert.deepEqual(scanTitles(latest[client]),[]);assert.deepEqual(scanDialogs(latest[client].filter(c=>c.text)),[])}
-for(const client of ['web','mini']) for(const card of current[client]) card.rows=historicalR29Rows(card.rows,card.card,client)
+for(const client of ['web','mini']) for(const card of current[client]) card.rows=historicalR29Rows(card.rows,card.card,client,true)
 for(const card of current.mini) {
  assert.deepEqual(card.rows,expectedR28[card.card].mini.card.specSources)
  card.rows=structuredClone(r28Baseline[card.card].mini.card.specSources)
