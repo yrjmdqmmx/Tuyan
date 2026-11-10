@@ -56,7 +56,7 @@
   .input-copy { gap: 24px; }
   .input-copy .field { gap: 8px; }
   .input-field-head { flex-direction: row; align-items: center; flex-wrap: wrap; gap: 6px 10px; }
-  .input-field-head label, .input-options .field > span { color: var(--ink); font-size: 14px; font-weight: 650; }
+  .input-field-head label, .input-options .field > :is(span, label) { color: var(--ink); font-size: 14px; font-weight: 650; }
   .input-optimization-field-actions { width: auto; margin-left: auto; }
   .input-optimization-trigger, .input-optimization-restore { min-height: 44px; padding: 0 4px; color: var(--sage); background: transparent; border: 0; border-radius: 6px; font-size: 12px; font-weight: 500; box-shadow: none; }
   .input-optimization-disabled-reason { flex-basis: 100%; }
