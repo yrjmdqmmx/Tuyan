@@ -92,7 +92,7 @@ export function modelCardSources({ channel, model = {}, audit, fields, lifecycle
   const isGeneral = url => sourceSpecificity(url) < 2
   const replacement = captured[0] && isApiSource(captured[0], checks)
     ? urls.find(url => isChannel(url) && !isGeneral(url)) || urls.find(url => !isGeneral(url)) : null
-  const first = lifecycleSources[0] || replacement || (urls[0] && isChannel(urls[0]) && isGeneral(urls[0]) && !/\/pricing\/?$/.test(new URL(urls[0]).pathname)
+  const first = (audit.lifecycleSourceUrl && urls.includes(audit.sourceUrl) ? audit.sourceUrl : null) || lifecycleSources[0] || replacement || (urls[0] && isChannel(urls[0]) && isGeneral(urls[0]) && !/\/pricing\/?$/.test(new URL(urls[0]).pathname)
     ? urls.find(url => isChannel(url) && !isGeneral(url)) : null)
   const sources = first ? [first, ...urls.filter(url => url !== first)] : urls
   const unique = uniqueSources(sources)

@@ -6,7 +6,7 @@ export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
 export type ModelRole = 'main' | 'image' | 'vision'
 
 export interface RegistryModel {
-  cardSpecifications?: {fields: Record<string, AuditFact>; sourceUrl: string | null; sourceLabel: string; vendorSources?: string[]; retirementSources?: string[]; note: string}
+  cardSpecifications?: {fields: Record<string, AuditFact>; sourceUrl: string | null; sourceLabel: string; vendorSources?: string[]; retirementSources?: string[]; lifecycleSourceUrl?: string | null; excludedSources?: string[]; note: string}
   catalogPresence?: {status: 'listed' | 'absent' | 'unverified'; cause?: string; checkedAt: string | null; sourceUrl?: string}
   auditChannel?: string
   id: string

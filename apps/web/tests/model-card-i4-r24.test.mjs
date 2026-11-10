@@ -14,7 +14,7 @@ test('R24 I4 Web renders exact vendor max output, inheritance/date and separate 
  assertQwenEvidence(card);assert.equal(card.maxOutputExact,'65,536 tokens');assert.equal(isApiSource(retirementUrl),false)
  assert.deepEqual(modelSourceRows(card).slice(1),[{url:specUrl,label:specLabel},{url:retirementUrl,label:retirementLabel}]);assert.ok(!card.sources.includes(rejectedUrl))
  render(React.createElement(ModelSpecifications,{provider,model}));fireEvent.click(screen.getByRole('button',{name:/^输入模态/}))
- const dialog=screen.getByRole('dialog');assert.ok(dialog.textContent.includes(inheritanceNote));assert.match(dialog.textContent,/最大输出核实日期 2026-11-10/);assert.match(dialog.textContent,/65,536 tokens/)
+ const dialog=screen.getByRole('dialog');assert.ok(dialog.textContent.includes(inheritanceNote));assert.match(dialog.textContent,/最大输出核实日期：2026-11-10/);assert.match(dialog.textContent,/65,536 tokens/)
  for(const[url,label]of[[specUrl,specLabel],[retirementUrl,retirementLabel]])assert.equal(within(dialog).getByRole('link',{name:label}).getAttribute('href'),url)
  assert.ok(!dialog.innerHTML.includes(rejectedUrl))
 })
@@ -29,13 +29,13 @@ test('R24 I4 Web scans every card: retirement spec citations need exact recorded
  }
 })
 
-test('R24 I4 actual lifecycle badges omit unsupported Bailian links without changing cutoff dates',()=>{
+test('R24 I4 actual lifecycle badges replace unsupported Bailian links with I5 verified notice without changing cutoff dates',()=>{
  for(const modelId of ['qwen3.5-plus','qwen3.5-plus-2026-02-15','qwen3.5-plus-2026-04-20']){
   const lifecycle=auditedModelLifecycle('bailian',modelId,Date.parse('2026-11-10'))
   assert.equal(lifecycle.stopDate,'2027-01-19')
   render(React.createElement(ModelLifecycleBadge,{provider:'bailian',modelId,lifecycle}))
   fireEvent.click(screen.getByRole('button',{name:/^将下线/}))
-  const dialog=screen.getByRole('dialog');assert.match(dialog.textContent,/2027-01-19/);assert.equal(within(dialog).queryAllByRole('link').length,0)
+  const dialog=screen.getByRole('dialog');assert.match(dialog.textContent,/2027-01-19/);assert.equal(within(dialog).getByRole('link',{name:'下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知'}).getAttribute('href'),'https://www.aliyun.com/notice/118728')
   cleanup()
  }
 })

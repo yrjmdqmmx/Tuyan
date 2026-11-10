@@ -53,7 +53,7 @@ test('R23F Mini icon taps show the missing-page hint for exactly seven historica
   if(historicalIds.includes(model.id)){
    assert.ok(unknown.length,model.id)
    for(const icon of unknown){
-    assert.equal(icon.tooltip,'渠道页无此型号（核实日期 2026-11-09）')
+    assert.equal(icon.tooltip,'渠道页无此型号（核实日期：2026-11-09）')
     definition.methods.showModality({currentTarget:{dataset:{label:icon.accessibleLabel,detail:icon.tooltip}}})
     assert.equal(modal.content,icon.tooltip);assert.equal(modal.showCancel,false)
    }

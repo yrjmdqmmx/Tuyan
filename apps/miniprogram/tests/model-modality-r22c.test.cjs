@@ -11,7 +11,7 @@ test('R22C Mini presentation distinguishes supported, channel exclusion, vendor 
  const icons=modalityIconStates('文本',fact)
  assert.deepEqual(icons.map(i=>i.state),['supported','unsupported','unknown','unknown'])
  assert.deepEqual(icons.map(i=>i.accessibleLabel),['文本：支持','图像：渠道未开放','视频：未知','音频：未知'])
- assert.equal(icons[2].tooltip,'渠道未标注此模态（核实日期 2026-11-09）')
+ assert.equal(icons[2].tooltip,'渠道未标注此模态（核实日期：2026-11-09）')
  assert.match(icons[0].tooltip,/渠道资料.*2026-11-09/)
  const vendor=modalityIconStates('文本',{...fact,provenance:'vendor'})
  assert.equal(vendor[1].accessibleLabel,'图像：不支持');assert.equal(vendor[1].state,'unsupported')

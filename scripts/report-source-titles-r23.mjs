@@ -1,3 +1,4 @@
+import i5 from '../config/channel-audit/review-r25-20261110.json' with {type:'json'}
 import {expectedHumanRows} from '../test-support/source-links-i3-r24.mjs'
 // Offline, deterministic title inventory. --check reads only; no Git history
 // needed: the pre-F rows are losslessly frozen in the small gzip fixture.
@@ -23,8 +24,8 @@ for (const [provider, entry] of Object.entries(web.STATIC_MODEL_REGISTRY)) for (
   if (data.lifecycle?.state === 'scheduled' && data.lifecycle.sourceUrl) {
     const url = data.lifecycle.sourceUrl
     const old = titleBaseline.web.find(row=>row.card===card).rows.find(row=>row.url===url)
-    assert.ok(old,card+' lifecycle URL in baseline')
-    notices.push({client:'Web notice dialog',card,url,before:'下线公告 · '+old.label.split(' · ').slice(1).join(' · '),after:'下线公告 · '+sourceTitle(url)})
+    assert.ok(old || i5.models[card]?.sourceUrl === url,card+' lifecycle URL in baseline or explicit I5 evidence')
+    notices.push({client:'Web notice dialog',card,url,before:old ? '下线公告 · '+old.label.split(' · ').slice(1).join(' · ') : '无已核实来源',after:'下线公告 · '+sourceTitle(url)})
   }
 }
 for (const [provider, entry] of Object.entries(mini.STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
@@ -79,6 +80,7 @@ const report = [
   'Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无此型号** with the existing verification date in Web tooltips/dialogs and Mini icon dialogs: '+historicalIds.map(id=>'`'+id+'`').join(', ')+'. Other hints and all modality states remain unchanged.', '',
   '## R24 Phase I1 role corrections (superseded by I4)', '', 'The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciation retains 下线公告 on tokendance/qwen3.5-plus, qianfan/qwen-image-edit and siliconflow/Qwen/Qwen-Image-Edit in both clients. Vendor provenance and links remain intact. The role guard permits only these three card/URL pairs to differ from the frozen baseline. New R24 tests scan all 1,064 cards per client and require every retirement source to keep its role.', '',
   'I4 removes unsupported retirement citations and substitutes independently reviewed specification/retirement URLs through a six-card literal mapping per client. See model-card-qwen35plus-evidence-r24.md for decisions and quotes.', '',
+  'I5 restores three verified Bailian lifecycle links from notice 118728 and replaces captured numeric titles. Its exact source corrections and complete before/after inventory are in the R25 I5 section of the R24 report.', '',
   '## Every changed title','',
   '| Client | Card | URL | Before | After |','| --- | --- | --- | --- | --- |',
   ...changes.map(row=>`| ${[row.client,row.card,row.url,row.before,row.after].map(cell).join(' | ')} |`),'',

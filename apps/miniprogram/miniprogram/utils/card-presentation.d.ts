@@ -1,3 +1,4 @@
+export function cardLifecycle<T extends{sourceUrl?:string|null}>(l:T|null|undefined,a?:{lifecycleSourceUrl?:string|null;excludedSources?:string[]}):(T&{sourceUrl:string})|null
 export function displayModalities(v:string[]):string[]
 export function displayModalityText(v:string):string
 export function historicalChannelIds(pages:Record<string,{verified:boolean}>):Set<string>

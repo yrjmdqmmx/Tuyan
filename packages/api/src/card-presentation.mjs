@@ -26,6 +26,11 @@ export function uniqueSources(values) {
 }
 // Model subjects take the existing card name; general pages retain captured titles.
 // Keep this URL-parser-free implementation usable in the native Mini runtime.
+export function cardLifecycle(lifecycle, audit = {}) {
+  const sourceUrl = audit.lifecycleSourceUrl || lifecycle?.sourceUrl
+  return lifecycle && /^https:\/\//.test(sourceUrl || '') && !(audit.excludedSources || []).includes(sourceUrl)
+    && !isMachineDocument(sourceUrl) ? { ...lifecycle, sourceUrl } : null
+}
 // These documentation Markdown URLs have the same human page without .md.
 // GitHub /blob/*.md is already an HTML reader, not a machine document.
 export function humanSourceUrl(value) {
@@ -95,6 +100,10 @@ function pageSubject(value) {
   title = title.replace(/ · (.*)/, (_, rest) => '（' + rest.replaceAll(' · ', '，') + '）').replace(/\brecraftv(\d+)/gi, 'Recraft V$1')
   // Site prefixes are separate from model names. Remove repetitions within a page.
   title = title.replace(/\b([A-Z][a-z]+)(.*?) By \1\b/i, '$1$2')
+  title = title.replace(/\s*[（(]([^（）()]+)[）)]/g, (original, qualifier) => {
+    const translated = {'bailian hosted':'百炼托管',hosted:'托管',docs:'文档',documentation:'文档',guide:'指南',overview:'概览',free:'免费'}[qualifier.toLowerCase()]
+    return translated ? '（' + translated + '）' : original
+  })
   return title
 }
 export function sourceTitle(value, model = {}) {

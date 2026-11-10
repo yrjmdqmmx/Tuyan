@@ -84,9 +84,9 @@ for (const channel of ['qianfan', 'sensenova', 'stepfun']) for (const row of rea
   if (row.title && /[\u4e00-\u9fff]/.test(row.title) && !/[\/]|https?:|：/.test(row.title)) sourceTitles[row.url.replace(/\/+$/, '')] = row.title
 }
 // I3 captures resolve ambiguous legacy namespaces and opaque page identifiers.
-for (const row of read('config/channel-audit/source-titles-r24-i3.json').captures) {
+for (const row of [...read('config/channel-audit/source-titles-r24-i3.json').captures, ...read('config/channel-audit/source-titles-r25-i5.json').captures]) {
   assert.equal(row.httpStatus, 200); assert.match(row.sha256, /^[a-f0-9]{64}$/)
-  for (const url of [row.url, ...(row.aliases || [])]) sourceTitles[url] = row.displayTitle
+  for (const url of [row.url, ...(row.aliases || [])]) sourceTitles[url.split(/[?#]/)[0].replace(/\/+$/, '')] = row.displayTitle
 }
 for (const model of Object.values(read('config/channel-audit/review-r24-20261110.json').models)) {
   if (model.retirement) sourceTitles[model.retirement.sourceUrl] = model.retirement.title
@@ -128,12 +128,17 @@ const miniTitles = Object.fromEntries(Object.entries(sourceTitles).filter(([url]
 // Avoid shipping these long model IDs a second time in the Mini helper.
 const tokenDanceIds = STATIC_MODEL_REGISTRY.tokendance.models.map(model => model.id)
 const miniEvidence = compactQuotes.map(([prefix, date, rows]) => [prefix, date, rows.map(([quote, ids]) => [quote, prefix === 'https://tokendance.space/models/' ? ids.split('|').map(id => { const index = tokenDanceIds.indexOf(id); assert.ok(index >= 0); return index }) : ids])])
-const combined = miniPages + `const knownModels = Object.values(catalog).flatMap(entry => entry.models.map(model => [model.id, model.label]));\nconst storedTitles = ${JSON.stringify(miniTitles)};\nconst evidence = ${JSON.stringify(miniEvidence)};\nfor (const group of evidence) for (const row of group[2]) if (Array.isArray(row[1])) row[1] = row[1].map(index => catalog.tokendance.models[index].id).join('|');\n` + mini + modality
+// Reuse exact source strings already decoded in Mini; only unmatched keys are literal.
+const indexedMiniTitles = Object.entries(miniTitles).map(([url, title]) => {
+  const index = miniAudit.sources.indexOf(url)
+  return [index < 0 ? url : index, title]
+})
+const combined = miniPages + `const knownModels = Object.values(catalog).flatMap(entry => entry.models.map(model => [model.id, model.label]));\nconst storedTitles = Object.fromEntries(${JSON.stringify(indexedMiniTitles)}.map(([key, title]) => [typeof key === 'number' ? audit.sources[key] : key, title]));\nconst evidence = ${JSON.stringify(miniEvidence)};\nfor (const group of evidence) for (const row of group[2]) if (Array.isArray(row[1])) row[1] = row[1].map(index => catalog.tokendance.models[index].id).join('|');\n` + mini + modality
 // Explicit CommonJS exports avoid an unnecessary ESM interoperability facade
 // in this native-only helper; the same public functions remain available.
 const exports = [...combined.matchAll(/export (?:function|const) (\w+)/g)].map(match => match[1])
 const commonjs = combined.replace(/export /g, '') + '\nmodule.exports = {' + exports.join(',') + '};\n'
 write('apps/miniprogram/miniprogram/utils/card-presentation.js', '// Generated\n' + transformSync(commonjs, { minify: true, charset: 'utf8', format: 'cjs', target: 'es2019' }).code)
-write('apps/miniprogram/miniprogram/utils/card-presentation.d.ts', 'export function displayModalities(values: string[]): string[]\nexport function displayModalityText(value: string): string\nexport function historicalChannelIds(pages: Record<string, {verified: boolean}>): Set<string>\nexport function sourceTitle(value: string, model?: {id?: string; label?: string; displayName?: string}): string\nexport function humanSourceUrl(value: string): string\nexport function isMachineDocument(value: string): boolean\nexport function titleSourceRows<T extends {url: string; label: string}>(rows: T[], model?: {id?: string; label?: string; displayName?: string}): T[]\nexport interface ModalityIcon { id: string; label: string; state: string; detail: string; accessibleLabel: string; tooltip: string }\nexport function modalityIconStates(value: string, fact?: object, provider?: string, modelId?: string): ModalityIcon[]\n'.replace(/[ \t]*([:;,{}<>?])[ \t]*/g, '$1').replace(/\b(values|value|model|rows|fact|provider|modelId)(?=[?:])/g, name => ({values:'v',value:'v',model:'m',rows:'r',fact:'f',provider:'p',modelId:'i'})[name]))
+write('apps/miniprogram/miniprogram/utils/card-presentation.d.ts', 'export function cardLifecycle<T extends {sourceUrl?:string|null}>(l:T|null|undefined,a?:{lifecycleSourceUrl?:string|null;excludedSources?:string[]}):(T&{sourceUrl:string})|null\nexport function displayModalities(values: string[]): string[]\nexport function displayModalityText(value: string): string\nexport function historicalChannelIds(pages: Record<string, {verified: boolean}>): Set<string>\nexport function sourceTitle(value: string, model?: {id?: string; label?: string; displayName?: string}): string\nexport function humanSourceUrl(value: string): string\nexport function isMachineDocument(value: string): boolean\nexport function titleSourceRows<T extends {url: string; label: string}>(rows: T[], model?: {id?: string; label?: string; displayName?: string}): T[]\nexport interface ModalityIcon { id: string; label: string; state: string; detail: string; accessibleLabel: string; tooltip: string }\nexport function modalityIconStates(value: string, fact?: object, provider?: string, modelId?: string): ModalityIcon[]\n'.replace(/[ \t]*([:;,{}<>?])[ \t]*/g, '$1').replace(/\b(values|value|model|rows|fact|provider|modelId)(?=[?:])/g, name => ({values:'v',value:'v',model:'m',rows:'r',fact:'f',provider:'p',modelId:'i'})[name]))
 flushMini()
 console.log(`Shared card display data: ${check ? 'no drift' : 'generated'}; ${capture.pages.filter(row => row.verified).length}/74 verified TokenDance pages`)

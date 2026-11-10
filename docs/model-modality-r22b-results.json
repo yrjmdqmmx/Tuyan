@@ -12,7 +12,7 @@
     "historicalFallbacks": 7,
     "missingFallbacks": 0,
     "sourceRowsBefore": 2489,
-    "sourceRowsAfter": 2449,
+    "sourceRowsAfter": 2452,
     "duplicateUrlRowsBefore": 13,
     "duplicateUrlRowsAfter": 0,
     "duplicateLabelsBefore": 974,
@@ -648,7 +648,7 @@
       "evidenceSha256": "60d03d6af9fd3c588ed3310490b66a653476f6116d31c4f17233a241edd6423f",
       "source": {
         "url": "https://tokendance.space/models/dots-3-note-preview",
-        "label": "官方文档 · TokenDance · Dots3-Note Preview（Free）"
+        "label": "官方文档 · TokenDance · Dots3-Note Preview（免费）"
       }
     },
     {

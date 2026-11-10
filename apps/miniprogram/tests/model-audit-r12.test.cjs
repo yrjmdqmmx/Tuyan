@@ -139,6 +139,6 @@ test('R13B compiled picker resolves full-model source priorities and retains not
       }
     }
   }
-  assert.equal(notices, 14)
-  assert.deepEqual(appendedNotices.sort(), ['tokendance/qwen3.5-plus'])
+  assert.equal(notices, 17)
+  assert.deepEqual(appendedNotices.sort(), ['bailian/qwen3.5-plus', 'bailian/qwen3.5-plus-2026-02-15', 'bailian/qwen3.5-plus-2026-04-20', 'tokendance/qwen3.5-plus'])
 })

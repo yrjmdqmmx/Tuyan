@@ -6,10 +6,10 @@ Baseline: `1dcd8b13` (pre-F), frozen in `test-support/fixtures/source-titles-1dc
 
 | Client | Cards | Source rows | Changed titles | Changed cards | Unresolved heuristic findings |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| web | 1064 | 2449 | 2144 | 1028 | 0 |
-| mini | 1064 | 1102 | 969 | 962 | 0 |
+| web | 1064 | 2452 | 2115 | 1011 | 0 |
+| mini | 1064 | 1105 | 961 | 954 | 0 |
 
-Also scanned **4 Web lifecycle dialogs**; **3** changed titles are listed separately below. Web tests open every rendered evidence dialog, check the card link/tooltip, and compare every anchor. Mini tests invoke every copy dialog and clipboard callback. Shared-helper parity is checked on all Mini rows.
+Also scanned **7 Web lifecycle dialogs**; **6** changed titles are listed separately below. Web tests open every rendered evidence dialog, check the card link/tooltip, and compare every anchor. Mini tests invoke every copy dialog and clipboard callback. Shared-helper parity is checked on all Mini rows.
 
 Heuristics cover collapsed/split numeric versions, hyphens replacing known dotted versions (letter/version tokens such as Qwen3-8, K2-7 and V4-1), raw hosts/paths, API-prefix subjects, case/punctuation differing from the curated name, leftover slug separators, trailing ellipses and repeated words. The dotted-version oracle independently reads every catalog ID/name, plus the current card ID/name. Genuine parameter/release hyphens such as Qwen3-8B, Qwen3.8-27B and DeepSeek-R1-0528 remain valid. Zero duplicate URLs/labels; source ordering is unchanged. R24 restores 下线公告 on the three explicitly reviewed vendor notice rows per client; every other role prefix remains unchanged.
 
@@ -45,6 +45,8 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciation retains 下线公告 on tokendance/qwen3.5-plus, qianfan/qwen-image-edit and siliconflow/Qwen/Qwen-Image-Edit in both clients. Vendor provenance and links remain intact. The role guard permits only these three card/URL pairs to differ from the frozen baseline. New R24 tests scan all 1,064 cards per client and require every retirement source to keep its role.
 
 I4 removes unsupported retirement citations and substitutes independently reviewed specification/retirement URLs through a six-card literal mapping per client. See model-card-qwen35plus-evidence-r24.md for decisions and quotes.
+
+I5 restores three verified Bailian lifecycle links from notice 118728 and replaces captured numeric titles. Its exact source corrections and complete before/after inventory are in the R25 I5 section of the R24 report.
 
 ## Every changed title
 
@@ -479,8 +481,6 @@ I4 removes unsupported retirement citations and substitutes independently review
 | web | bailian/ZHIPU/GLM-5.3-Flash | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash | 官方文档 · bigmodel.cn · glm 5.3 flash | 官方文档 · 智谱 · GLM 5.3 Flash |
 | web | bailian/qwen3.8-flash | https://help.aliyun.com/zh/model-studio/vision-model | 官方文档 · 百炼 · vision model | 官方文档 · 百炼 · Vision Model |
 | web | bailian/qwen3.8-flash | https://help.aliyun.com/zh/model-studio/text-generation-model | 官方文档 · 百炼 · text generation model | 官方文档 · 百炼 · Text Generation Model |
-| web | bailian/kimi-k3 | https://help.aliyun.com/zh/model-studio/kimi-k3 | 官方文档 · 百炼 · Kimi-K3 模型页 | 官方文档 · 百炼 · Kimi K3 (Bailian hosted) |
-| web | bailian/kimi-k3 | https://huggingface.co/moonshotai/Kimi-K3 | 官方文档 · Hugging Face · Kimi K3 | 官方文档 · Hugging Face · Kimi K3 (Bailian hosted) |
 | web | bailian/qwen3.8-27b | https://help.aliyun.com/zh/model-studio/qwen3-8-27b | 官方文档 · 百炼 · qwen3 8 27b | 官方文档 · 百炼 · Qwen3.8 27B |
 | web | bailian/ZHIPU/GLM-5.3 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3 | 官方文档 · bigmodel.cn · glm 5.3 | 官方文档 · 智谱 · GLM 5.3 |
 | web | bailian/qwen3.8-2.4t-a95b | https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b | 官方文档 · 百炼 · qwen3 8 2 4t a95b | 官方文档 · 百炼 · Qwen3.8 2.4T A95B |
@@ -568,10 +568,6 @@ I4 removes unsupported retirement citations and substitutes independently review
 | web | bailian/qwen3.5-omni-flash-2026-03-15 | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash | 官方文档 · 百炼 · qwen3 5 omni flash | 官方文档 · 百炼 · Qwen3.5 Omni Flash |
 | web | bailian/qwen3.5-omni-plus | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus | 官方文档 · 百炼 · qwen3 5 omni plus | 官方文档 · 百炼 · Qwen3.5 Omni Plus |
 | web | bailian/qwen3.5-omni-plus-2026-03-15 | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus | 官方文档 · 百炼 · qwen3 5 omni plus | 官方文档 · 百炼 · Qwen3.5 Omni Plus |
-| web | bailian/qwen3-max | https://www.aliyun.com/notice/118344 | 下线公告 · aliyun.com · 118344 | 下线公告 · 百炼 · 文档 118344 |
-| web | bailian/qwen3-max-2025-09-23 | https://www.aliyun.com/notice/118345 | 下线公告 · aliyun.com · 118345 | 下线公告 · 百炼 · 文档 118345 |
-| web | bailian/qwen3-max-2026-01-23 | https://www.aliyun.com/notice/118345 | 下线公告 · aliyun.com · 118345 | 下线公告 · 百炼 · 文档 118345 |
-| web | bailian/qwen3-max-preview | https://www.aliyun.com/notice/118344 | 下线公告 · aliyun.com · 118344 | 下线公告 · 百炼 · 文档 118344 |
 | web | bailian/stepfun/step-3.7-flash | https://platform.stepfun.com/docs/zh/guides/models/list | 原厂规格 · stepfun.com · list | 原厂规格 · StepFun · List |
 | web | bailian/stepfun/step-3.7-flash | https://platform.stepfun.com/docs/zh/guides/models/step-3.7-flash | 官方文档 · stepfun.com · step 3.7 flash | 官方文档 · StepFun · Step 3.7 Flash |
 | web | bailian/vanchin/deepseek-v4-pro | https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin | 官方文档 · 百炼 · deepseek api by vanchin | 官方文档 · 百炼 · DeepSeek API By Vanchin |
@@ -596,8 +592,6 @@ I4 removes unsupported retirement citations and substitutes independently review
 | web | bailian/qwen-plus-2025-01-25 | https://help.aliyun.com/zh/model-studio/qwen-plus | 官方文档 · 百炼 · qwen plus | 官方文档 · 百炼 · Qwen Plus |
 | web | bailian/qwen-plus-2025-04-28 | https://help.aliyun.com/zh/model-studio/qwen-plus | 官方文档 · 百炼 · qwen plus | 官方文档 · 百炼 · Qwen Plus |
 | web | bailian/qwen-plus-2025-07-14 | https://help.aliyun.com/zh/model-studio/qwen-plus | 官方文档 · 百炼 · qwen plus | 官方文档 · 百炼 · Qwen Plus |
-| web | bailian/qwen-turbo | https://www.aliyun.com/notice/118177 | 下线公告 · aliyun.com · 118177 | 下线公告 · 百炼 · 文档 118177 |
-| web | bailian/qwen3-coder-next | https://www.aliyun.com/notice/118345 | 下线公告 · aliyun.com · 118345 | 下线公告 · 百炼 · 文档 118345 |
 | web | bailian/unisound/unisound-u2 | https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound | 官方文档 · 百炼 · unisound u2 by unisound | 官方文档 · 百炼 · Unisound U2 |
 | web | bailian/vanchin/deepseek-r1 | https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin | 官方文档 · 百炼 · deepseek api by vanchin | 官方文档 · 百炼 · DeepSeek API By Vanchin |
 | web | bailian/wanx-v1 | https://help.aliyun.com/zh/model-studio/wanx-v1 | 官方文档 · 百炼 · wanx v1 | 官方文档 · 百炼 · Wanx V1 |
@@ -773,20 +767,8 @@ I4 removes unsupported retirement citations and substitutes independently review
 | web | ark/deepseek-v4-1-flash-261017 | https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash | 官方文档 · ark.volcengine.com · DeepSeek-V4.1-Flash 模型页 | 官方文档 · 火山方舟 · DeepSeek V4.1 Flash |
 | web | ark/deepseek-v4-1-flash-economy-261017 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
 | web | ark/deepseek-v4-1-flash-economy-261017 | https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash | 官方文档 · ark.volcengine.com · DeepSeek-V4.1-Flash 模型页 | 官方文档 · 火山方舟 · DeepSeek V4.1 Flash |
-| web | ark/deepseek-v4-flash-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
-| web | ark/deepseek-v4-flash-260425 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
-| web | ark/deepseek-v4-flash-ga-260731 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
-| web | ark/deepseek-v4-flash-ga-260731 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
-| web | ark/deepseek-v4-pro-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
-| web | ark/deepseek-v4-pro-260425 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
-| web | ark/deepseek-v4-pro-ga-260813 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
-| web | ark/deepseek-v4-pro-ga-260813 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
-| web | ark/doubao-seed-2-1-pro-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
-| web | ark/doubao-seed-2-1-pro-260628 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
 | web | ark/doubao-seed-2-1-pro-260915 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/doubao-seed-2-1-pro-260915 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
-| web | ark/doubao-seed-2-1-turbo-260628 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
-| web | ark/doubao-seed-2-1-turbo-260628 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
 | web | ark/doubao-seed-2-0-code-preview-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
 | web | ark/doubao-seed-2-0-code-preview-260215 | https://docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310?lang=zh | 官方文档 · 火山方舟 · 模型列表（开发者文档，中文版） |
 | web | ark/doubao-seed-2-0-lite-260215 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
@@ -833,15 +815,7 @@ I4 removes unsupported retirement citations and substitutes independently review
 | web | ark/doubao-seedream-4-0-250828 | https://api.volcengine.com/api-docs/view?action=ImageGenerations&serviceCode=ark&version=2024-01-01 | 官方文档 · api.volcengine.com · view | 官方文档 · 火山方舟 · View |
 | web | ark/glm-5-3-flash-260828 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
 | web | ark/glm-5-3-flash-260828 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
-| web | ark/glm-5-2-260617 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
-| web | ark/glm-5-2-260617 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
 | web | ark/kimi-k3-1-pro-261024 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
-| web | ark/doubao-seed-code-preview-251028 | https://docs.volcengine.com/docs/ark/model-release-announcement-2025?lang=en | 官方文档 · volcengine.com · model release announcement 2025 | 官方文档 · 火山方舟 · Model Release Announcement 2025 |
-| web | ark/doubao-seed-code-preview-251028 | https://developer.volcengine.com/articles/7577301460712030258 | 官方文档 · developer.volcengine.com · 7577301460712030258 | 官方文档 · 火山方舟 · 文档 7577301460712030258 |
-| web | ark/doubao-seed-code-preview-251028 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
-| web | ark/doubao-seed-code-preview-251028 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（开发者文档） |
-| web | ark/doubao-seed-evolving | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 模型列表 |
-| web | ark/doubao-seed-evolving | https://docs.volcengine.com/docs/82379/2549861?lang=zh | 官方文档 · volcengine.com · 2549861 | 官方文档 · 火山方舟 · 文档 2549861 |
 | web | ark/glm-4-7-251222 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · www.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（产品文档） |
 | web | ark/glm-4-7-251222 | https://docs.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 · docs.volcengine.com/docs/82379/1330310 | 官方文档 · 火山方舟 · 模型列表（开发者文档） |
 | web | bfl/flux-2-flex | https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[flex] | 官方文档 · bfl.ml · generate or edit an image with flux2 [flex] | 官方文档 · BFL · FLUX 2 Flex |
@@ -1522,7 +1496,6 @@ I4 removes unsupported retirement citations and substitutes independently review
 | web | tokendance/cogevol-base | https://tokendance.space/models/cogevol-base | 官方文档 · TokenDance · cogevol base | 官方文档 · TokenDance · CogEvol Base |
 | web | tokendance/cogevol-interactive-0828 | https://tokendance.space/models/cogevol-interactive-0828 | 官方文档 · TokenDance · cogevol interactive 0828 | 官方文档 · TokenDance · CogEvol Interactive 0828 |
 | web | tokendance/cogevol-slide-0828 | https://tokendance.space/models/cogevol-slide-0828 | 官方文档 · TokenDance · cogevol slide 0828 | 官方文档 · TokenDance · CogEvol Slide 0828 |
-| web | tokendance/dots-3-note-preview | https://tokendance.space/models/dots-3-note-preview | 官方文档 · TokenDance · dots 3 note preview | 官方文档 · TokenDance · Dots3-Note Preview（Free） |
 | web | tokendance/kimi-k3.1-pro | https://tokendance.space/models/kimi-k3.1-pro | 官方文档 · TokenDance · kimi k3.1 pro | 官方文档 · TokenDance · Kimi K3.1 Pro |
 | web | tokendance/ling-3.0-flash | https://tokendance.space/models/ling-3.0-flash | 官方文档 · TokenDance · ling 3.0 flash | 官方文档 · TokenDance · Ling 3.0 Flash |
 | web | tokendance/ling-3.1-flash | https://tokendance.space/models/ling-3.1-flash | 官方文档 · TokenDance · ling 3.1 flash | 官方文档 · TokenDance · Ling 3.1 Flash |
@@ -2347,7 +2320,6 @@ I4 removes unsupported retirement citations and substitutes independently review
 | mini | bailian/qwen3.8-max-0902 | https://help.aliyun.com/zh/model-studio/qwen3-8-max | 官方文档 · 百炼 · qwen3 8 max | 官方文档 · 百炼 · Qwen3.8 Max |
 | mini | bailian/ZHIPU/GLM-5.3-Flash | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash | 官方文档 · bigmodel.cn · glm 5.3 flash | 官方文档 · 智谱 · GLM 5.3 Flash |
 | mini | bailian/qwen3.8-flash | https://help.aliyun.com/zh/model-studio/vision-model | 官方文档 · 百炼 · vision model | 官方文档 · 百炼 · Vision Model |
-| mini | bailian/kimi-k3 | https://help.aliyun.com/zh/model-studio/kimi-k3 | 官方文档 · 百炼 · Kimi-K3 模型页 | 官方文档 · 百炼 · Kimi K3 (Bailian hosted) |
 | mini | bailian/qwen3.8-27b | https://help.aliyun.com/zh/model-studio/qwen3-8-27b | 官方文档 · 百炼 · qwen3 8 27b | 官方文档 · 百炼 · Qwen3.8 27B |
 | mini | bailian/qwen3.8-2.4t-a95b | https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b | 官方文档 · 百炼 · qwen3 8 2 4t a95b | 官方文档 · 百炼 · Qwen3.8 2.4T A95B |
 | mini | bailian/ZHIPU/GLM-5.3-FlashX | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash | 官方文档 · bigmodel.cn · glm 5.3 flash | 官方文档 · 智谱 · GLM 5.3 Flash |
@@ -2391,10 +2363,6 @@ I4 removes unsupported retirement citations and substitutes independently review
 | mini | bailian/qwen3.5-omni-flash-2026-03-15 | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash | 官方文档 · 百炼 · qwen3 5 omni flash | 官方文档 · 百炼 · Qwen3.5 Omni Flash |
 | mini | bailian/qwen3.5-omni-plus | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus | 官方文档 · 百炼 · qwen3 5 omni plus | 官方文档 · 百炼 · Qwen3.5 Omni Plus |
 | mini | bailian/qwen3.5-omni-plus-2026-03-15 | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus | 官方文档 · 百炼 · qwen3 5 omni plus | 官方文档 · 百炼 · Qwen3.5 Omni Plus |
-| mini | bailian/qwen3-max | https://www.aliyun.com/notice/118344 | 下线公告 · aliyun.com · 118344 | 下线公告 · 百炼 · 文档 118344 |
-| mini | bailian/qwen3-max-2025-09-23 | https://www.aliyun.com/notice/118345 | 下线公告 · aliyun.com · 118345 | 下线公告 · 百炼 · 文档 118345 |
-| mini | bailian/qwen3-max-2026-01-23 | https://www.aliyun.com/notice/118345 | 下线公告 · aliyun.com · 118345 | 下线公告 · 百炼 · 文档 118345 |
-| mini | bailian/qwen3-max-preview | https://www.aliyun.com/notice/118344 | 下线公告 · aliyun.com · 118344 | 下线公告 · 百炼 · 文档 118344 |
 | mini | bailian/stepfun/step-3.7-flash | https://platform.stepfun.com/docs/zh/guides/models/list | 原厂规格 · stepfun.com · list | 原厂规格 · StepFun · List |
 | mini | bailian/vanchin/deepseek-v3.2-think | https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin | 官方文档 · 百炼 · deepseek api by vanchin | 官方文档 · 百炼 · DeepSeek API By Vanchin |
 | mini | bailian/vanchin/deepseek-v3.1-terminus | https://huggingface.co/deepseek-ai/DeepSeek-V3.1-Terminus | 官方文档 · Hugging Face · DeepSeek V3.1 Terminus | 官方文档 · Hugging Face · DeepSeek-V3.1-Terminus |
@@ -2409,8 +2377,6 @@ I4 removes unsupported retirement citations and substitutes independently review
 | mini | bailian/qwen-plus-2025-01-25 | https://help.aliyun.com/zh/model-studio/qwen-plus | 官方文档 · 百炼 · qwen plus | 官方文档 · 百炼 · Qwen Plus |
 | mini | bailian/qwen-plus-2025-04-28 | https://help.aliyun.com/zh/model-studio/qwen-plus | 官方文档 · 百炼 · qwen plus | 官方文档 · 百炼 · Qwen Plus |
 | mini | bailian/qwen-plus-2025-07-14 | https://help.aliyun.com/zh/model-studio/qwen-plus | 官方文档 · 百炼 · qwen plus | 官方文档 · 百炼 · Qwen Plus |
-| mini | bailian/qwen-turbo | https://www.aliyun.com/notice/118177 | 下线公告 · aliyun.com · 118177 | 下线公告 · 百炼 · 文档 118177 |
-| mini | bailian/qwen3-coder-next | https://www.aliyun.com/notice/118345 | 下线公告 · aliyun.com · 118345 | 下线公告 · 百炼 · 文档 118345 |
 | mini | bailian/unisound/unisound-u2 | https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound | 官方文档 · 百炼 · unisound u2 by unisound | 官方文档 · 百炼 · Unisound U2 |
 | mini | bailian/wanx-v1 | https://help.aliyun.com/zh/model-studio/wanx-v1 | 官方文档 · 百炼 · wanx v1 | 官方文档 · 百炼 · Wanx V1 |
 | mini | bailian/wanx2.0-t2i-turbo | https://help.aliyun.com/zh/model-studio/wanx2-0-t2i-turbo | 官方文档 · 百炼 · wanx2 0 t2i turbo | 官方文档 · 百炼 · Wanx2.0 T2i Turbo |
@@ -2860,7 +2826,6 @@ I4 removes unsupported retirement citations and substitutes independently review
 | mini | tokendance/cogevol-base | https://tokendance.space/models/cogevol-base | 官方文档 · TokenDance · cogevol base | 官方文档 · TokenDance · CogEvol Base |
 | mini | tokendance/cogevol-interactive-0828 | https://tokendance.space/models/cogevol-interactive-0828 | 官方文档 · TokenDance · cogevol interactive 0828 | 官方文档 · TokenDance · CogEvol Interactive 0828 |
 | mini | tokendance/cogevol-slide-0828 | https://tokendance.space/models/cogevol-slide-0828 | 官方文档 · TokenDance · cogevol slide 0828 | 官方文档 · TokenDance · CogEvol Slide 0828 |
-| mini | tokendance/dots-3-note-preview | https://tokendance.space/models/dots-3-note-preview | 官方文档 · TokenDance · dots 3 note preview | 官方文档 · TokenDance · Dots3-Note Preview（Free） |
 | mini | tokendance/kimi-k3.1-pro | https://tokendance.space/models/kimi-k3.1-pro | 官方文档 · TokenDance · kimi k3.1 pro | 官方文档 · TokenDance · Kimi K3.1 Pro |
 | mini | tokendance/ling-3.0-flash | https://tokendance.space/models/ling-3.0-flash | 官方文档 · TokenDance · ling 3.0 flash | 官方文档 · TokenDance · Ling 3.0 Flash |
 | mini | tokendance/ling-3.1-flash | https://tokendance.space/models/ling-3.1-flash | 官方文档 · TokenDance · ling 3.1 flash | 官方文档 · TokenDance · Ling 3.1 Flash |
@@ -3163,13 +3128,16 @@ I4 removes unsupported retirement citations and substitutes independently review
 | mini | antling/Ling-3.2-flash | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ | 官方文档 · developer.ant-ling.com · openai | 官方文档 · 蚂蚁百灵 · OpenAI |
 | mini | antling/Ring-2.6-1T | https://developer.ant-ling.com/zh-CN/docs/models/deprecation/ | 下线公告 · developer.ant-ling.com · deprecation | 下线公告 · 蚂蚁百灵 · 模型下线公告 |
 | mini | novita/ming-image-0.1-design | https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img | 官方文档 · novita.ai · model apis ming image txt2img | 官方文档 · Novita · Model Apis Ming Image Txt2img |
+| Web notice dialog | bailian/qwen3.5-plus | https://www.aliyun.com/notice/118728 | 无已核实来源 | 下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知 |
+| Web notice dialog | bailian/qwen3.5-plus-2026-02-15 | https://www.aliyun.com/notice/118728 | 无已核实来源 | 下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知 |
+| Web notice dialog | bailian/qwen3.5-plus-2026-04-20 | https://www.aliyun.com/notice/118728 | 无已核实来源 | 下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知 |
 | Web notice dialog | antling/Ling-2.6-1T | https://developer.ant-ling.com/zh-CN/docs/models/deprecation/ | 下线公告 · developer.ant-ling.com · deprecation | 下线公告 · 蚂蚁百灵 · 模型下线公告 |
 | Web notice dialog | antling/Ling-2.6-flash | https://developer.ant-ling.com/zh-CN/docs/models/deprecation/ | 下线公告 · developer.ant-ling.com · deprecation | 下线公告 · 蚂蚁百灵 · 模型下线公告 |
 | Web notice dialog | antling/Ring-2.6-1T | https://developer.ant-ling.com/zh-CN/docs/models/deprecation/ | 下线公告 · developer.ant-ling.com · deprecation | 下线公告 · 蚂蚁百灵 · 模型下线公告 |
 
 ## Retained spelling and opaque identifiers
 
-The following **554** source-row instances merit manual explanation but are not unresolved defects. These are exact curated spellings, release codes, or page identifiers with no captured human title; changing their model names would violate the picker-name lock.
+The following **531** source-row instances merit manual explanation but are not unresolved defects. These are exact curated spellings, release codes, or page identifiers with no captured human title; changing their model names would violate the picker-name lock.
 
 | Client | Card | URL | Retained title | Justification |
 | --- | --- | --- | --- | --- |
@@ -3264,12 +3232,6 @@ The following **554** source-row instances merit manual explanation but are not 
 | web | bailian/qwen3.5-27b | https://huggingface.co/Qwen/Qwen3.5-27B | 官方文档 · Hugging Face · Qwen3.5-27b | Exact curated picker name; required to retain its spelling and separators. |
 | web | bailian/qwen3.5-35b-a3b | https://huggingface.co/Qwen/Qwen3.5-35B-A3B | 官方文档 · Hugging Face · Qwen3.5-35b-a3b | Exact curated picker name; required to retain its spelling and separators. |
 | web | bailian/qwen3.5-397b-a17b | https://huggingface.co/Qwen/Qwen3.5-397B-A17B | 官方文档 · Hugging Face · Qwen3.5-397b-a17b | Exact curated picker name; required to retain its spelling and separators. |
-| web | bailian/qwen3-max | https://www.aliyun.com/notice/118344 | 下线公告 · 百炼 · 文档 118344 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | bailian/qwen3-max-2025-09-23 | https://www.aliyun.com/notice/118345 | 下线公告 · 百炼 · 文档 118345 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | bailian/qwen3-max-2026-01-23 | https://www.aliyun.com/notice/118345 | 下线公告 · 百炼 · 文档 118345 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | bailian/qwen3-max-preview | https://www.aliyun.com/notice/118344 | 下线公告 · 百炼 · 文档 118344 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | bailian/qwen-turbo | https://www.aliyun.com/notice/118177 | 下线公告 · 百炼 · 文档 118177 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | bailian/qwen3-coder-next | https://www.aliyun.com/notice/118345 | 下线公告 · 百炼 · 文档 118345 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | bailian/z-image-turbo | https://huggingface.co/Tongyi-MAI/Z-Image-Turbo | 官方文档 · Hugging Face · Z-Image Turbo | Exact curated picker name; required to retain its spelling and separators. |
 | web | openai/gpt-6.1-sol | https://developers.openai.com/api/docs/models/gpt-6.1-sol | 官方文档 · OpenAI · GPT-6.1 Sol | Exact curated picker name; required to retain its spelling and separators. |
 | web | openai/gpt-6-luna | https://developers.openai.com/api/docs/models/gpt-6-luna | 官方文档 · OpenAI · GPT-6 Luna | Exact curated picker name; required to retain its spelling and separators. |
@@ -3280,18 +3242,9 @@ The following **554** source-row instances merit manual explanation but are not 
 | web | openai/gpt-5.6-terra | https://developers.openai.com/api/docs/models/gpt-5.6-terra | 官方文档 · OpenAI · GPT-5.6 Terra | Exact curated picker name; required to retain its spelling and separators. |
 | web | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · OpenAI · O1 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · OpenAI · O3 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/deepseek-v4-flash-260425 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/deepseek-v4-flash-ga-260731 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/deepseek-v4-pro-260425 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/deepseek-v4-pro-ga-260813 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-1-pro-260628 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-2-1-turbo-260628 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/doubao-seedream-5-0-260128 | https://docs.volcengine.com/docs/82379/1824121?lang=zh | 官方文档 · 火山方舟 · 文档 1824121 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/doubao-seedream-5-0-pro-260628 | https://docs.volcengine.com/docs/82379/1824121?lang=zh | 官方文档 · 火山方舟 · 文档 1824121 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | ark/doubao-seedream-4-5-251128 | https://docs.volcengine.com/docs/82379/1824121?lang=zh | 官方文档 · 火山方舟 · 文档 1824121 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/glm-5-2-260617 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · 火山方舟 · 文档 1159178 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-code-preview-251028 | https://developer.volcengine.com/articles/7577301460712030258 | 官方文档 · 火山方舟 · 文档 7577301460712030258 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| web | ark/doubao-seed-evolving | https://docs.volcengine.com/docs/82379/2549861?lang=zh | 官方文档 · 火山方舟 · 文档 2549861 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | mistral/codestral-2508 | https://docs.mistral.ai/models/codestral-25-08 | 官方文档 · Mistral · Codestral 2508 | 2508 is the curated release code; the page spells that date code 25-08. No model version was collapsed. |
 | web | mistral/codestral-latest | https://docs.mistral.ai/models/codestral-25-08 | 官方文档 · Mistral · Codestral（2508） | 2508 is the curated release code; the page spells that date code 25-08. No model version was collapsed. |
 | web | together/Qwen/Qwen3.8-2.4T-A95B | https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B | 官方文档 · Hugging Face · Qwen3.8-2.4T-A95B | Exact curated picker name; required to retain its spelling and separators. |
@@ -3321,7 +3274,6 @@ The following **554** source-row instances merit manual explanation but are not 
 | web | tokendance/seed-2.0-lite | https://tokendance.space/models/seed-2.0-lite | 官方文档 · TokenDance · Seed-2.0-Lite | Exact curated picker name; required to retain its spelling and separators. |
 | web | tokendance/seed-2.0-mini | https://tokendance.space/models/seed-2.0-mini | 官方文档 · TokenDance · Seed-2.0-Mini | Exact curated picker name; required to retain its spelling and separators. |
 | web | tokendance/seed-2.0-pro | https://tokendance.space/models/seed-2.0-pro | 官方文档 · TokenDance · Seed-2.0-Pro | Exact curated picker name; required to retain its spelling and separators. |
-| web | tokendance/dots-3-note-preview | https://tokendance.space/models/dots-3-note-preview | 官方文档 · TokenDance · Dots3-Note Preview（Free） | Exact curated picker name; required to retain its spelling and separators. |
 | web | tokendance/longcat-2.0 | https://tokendance.space/models/longcat-2.0 | 官方文档 · TokenDance · LongCat-2.0 | Exact curated picker name; required to retain its spelling and separators. |
 | web | tokendance/mimo-v2.5 | https://tokendance.space/models/mimo-v2.5 | 官方文档 · TokenDance · MiMo-V2.5 | Exact curated picker name; required to retain its spelling and separators. |
 | web | tokendance/mimo-v2.5-pro | https://tokendance.space/models/mimo-v2.5-pro | 官方文档 · TokenDance · MiMo-V2.5-Pro | Exact curated picker name; required to retain its spelling and separators. |
@@ -3585,12 +3537,6 @@ The following **554** source-row instances merit manual explanation but are not 
 | mini | bailian/kimi/kimi-k2.5 | https://huggingface.co/moonshotai/Kimi-K2.5 | 官方文档 · Hugging Face · Kimi-k2.5 | Exact curated picker name; required to retain its spelling and separators. |
 | mini | bailian/qwen3.6-27b | https://huggingface.co/Qwen/Qwen3.6-27B | 官方文档 · Hugging Face · Qwen3.6-27b | Exact curated picker name; required to retain its spelling and separators. |
 | mini | bailian/qwen3.6-35b-a3b | https://huggingface.co/Qwen/Qwen3.6-35B-A3B | 官方文档 · Hugging Face · Qwen3.6-35b-a3b | Exact curated picker name; required to retain its spelling and separators. |
-| mini | bailian/qwen3-max | https://www.aliyun.com/notice/118344 | 下线公告 · 百炼 · 文档 118344 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | bailian/qwen3-max-2025-09-23 | https://www.aliyun.com/notice/118345 | 下线公告 · 百炼 · 文档 118345 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | bailian/qwen3-max-2026-01-23 | https://www.aliyun.com/notice/118345 | 下线公告 · 百炼 · 文档 118345 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | bailian/qwen3-max-preview | https://www.aliyun.com/notice/118344 | 下线公告 · 百炼 · 文档 118344 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | bailian/qwen-turbo | https://www.aliyun.com/notice/118177 | 下线公告 · 百炼 · 文档 118177 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
-| mini | bailian/qwen3-coder-next | https://www.aliyun.com/notice/118345 | 下线公告 · 百炼 · 文档 118345 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | mini | openai/gpt-6.1-sol | https://developers.openai.com/api/docs/models/gpt-6.1-sol | 官方文档 · OpenAI · GPT-6.1 Sol | Exact curated picker name; required to retain its spelling and separators. |
 | mini | openai/gpt-6-luna | https://developers.openai.com/api/docs/models/gpt-6-luna | 官方文档 · OpenAI · GPT-6 Luna | Exact curated picker name; required to retain its spelling and separators. |
 | mini | openai/gpt-6-sol | https://developers.openai.com/api/docs/models/gpt-6-sol | 官方文档 · OpenAI · GPT-6 Sol | Exact curated picker name; required to retain its spelling and separators. |
@@ -3628,7 +3574,6 @@ The following **554** source-row instances merit manual explanation but are not 
 | mini | tokendance/seed-2.0-lite | https://tokendance.space/models/seed-2.0-lite | 官方文档 · TokenDance · Seed-2.0-Lite | Exact curated picker name; required to retain its spelling and separators. |
 | mini | tokendance/seed-2.0-mini | https://tokendance.space/models/seed-2.0-mini | 官方文档 · TokenDance · Seed-2.0-Mini | Exact curated picker name; required to retain its spelling and separators. |
 | mini | tokendance/seed-2.0-pro | https://tokendance.space/models/seed-2.0-pro | 官方文档 · TokenDance · Seed-2.0-Pro | Exact curated picker name; required to retain its spelling and separators. |
-| mini | tokendance/dots-3-note-preview | https://tokendance.space/models/dots-3-note-preview | 官方文档 · TokenDance · Dots3-Note Preview（Free） | Exact curated picker name; required to retain its spelling and separators. |
 | mini | tokendance/longcat-2.0 | https://tokendance.space/models/longcat-2.0 | 官方文档 · TokenDance · LongCat-2.0 | Exact curated picker name; required to retain its spelling and separators. |
 | mini | tokendance/mimo-v2.5 | https://tokendance.space/models/mimo-v2.5 | 官方文档 · TokenDance · MiMo-V2.5 | Exact curated picker name; required to retain its spelling and separators. |
 | mini | tokendance/mimo-v2.5-pro | https://tokendance.space/models/mimo-v2.5-pro | 官方文档 · TokenDance · MiMo-V2.5-Pro | Exact curated picker name; required to retain its spelling and separators. |

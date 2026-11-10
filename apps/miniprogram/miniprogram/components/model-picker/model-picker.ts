@@ -1,4 +1,4 @@
-import { displayModalities, titleSourceRows, modalityIconStates } from '../../utils/card-presentation'
+import { cardLifecycle, displayModalities, titleSourceRows, modalityIconStates } from '../../utils/card-presentation'
 import { removedModelHint, modelDisplayName, removedModel, auditedModelSpecs, auditedModelLifecycle, AuditFact } from '../../utils/model-audit'
 import { formatContextLimit, MODEL_CHANNEL_LABELS, modelDeveloper, orderModelChannels, modelVersionLabel, modelVersionDetail } from '../../utils/model-presentation'
 import { getModelRegistryState } from '../../utils/model-registry-store'
@@ -169,7 +169,7 @@ Component({
 function normalizeRole(value: unknown): ModelRole { return value === 'image' || value === 'vision' ? value : 'main' }
 function roleLabel(role: ModelRole): string { return role === 'image' ? '图像生成模型' : role === 'vision' ? '参考图识别模型' : '主模型' }
 function presentModel(model: RegistryModel, selectedProvider: unknown, selectedModel: unknown, providerId: ModelProviderId) {
-  const audit = model.cardSpecifications || auditedModelSpecs(providerId, model.id), lifecycle = auditedModelLifecycle(providerId, model.id)
+  const audit = model.cardSpecifications || auditedModelSpecs(providerId, model.id), lifecycle = cardLifecycle(auditedModelLifecycle(providerId, model.id), audit)
   const names: Record<string,string> = {text:'文本',image:'图像',audio:'音频',video:'视频',file:'文件',document:'文件'}
   const display = (fact: AuditFact) => fact.state === 'known' ? Array.isArray(fact.value) ? displayModalities(fact.value as string[]).map(x => names[x]).join('、') : `${typeof fact.value === 'string' ? fact.value.replace(/[km]$/i, unit => unit.toUpperCase()) : formatContextLimit(Number(fact.value), fact.approximate)} tokens${fact.suffix || ''}` : fact.state === 'unsupported' ? (fact.provenance === 'channel' ? '渠道未开放' : '不支持') : fact.state === 'not-applicable' ? '不适用' : '未知'
   const origin = (fact: AuditFact) => fact.provenance === 'vendor' ? '源自原厂' : fact.provenance === 'catalog' ? '图研既有核实' : fact.provenance === 'product' ? '图研输入要求' : ''
@@ -184,10 +184,11 @@ function presentModel(model: RegistryModel, selectedProvider: unknown, selectedM
   return {
     disabled: model.selectionDisabled, disabledReason: model.selectionDisabledReason,
     scheduled: lifecycle?.state === 'scheduled',
+    retirementSource: lifecycle ? titleSourceRows([{url:lifecycle.sourceUrl,label:'下线公告'}])[0] : null,
     vendorLabel:modelDeveloper(providerId, model).label,channelLabel:PROVIDER_LABELS[providerId],
     specRows,
     specSources: titleSourceRows([...(audit.sourceUrl ? [{...(audit.sourceLabel === '下线公告' && Object.values(audit.fields).some(f => f.provenance === 'vendor' && f.sourceUrl === audit.sourceUrl) ? {role:'vendor'} : {}),url:audit.sourceUrl,label:audit.sourceLabel}] : []), ...(audit.vendorSources || []).filter((url: string) => url !== audit.sourceUrl).map((url: string) => ({url,label:'原厂规格'})), ...(audit.retirementSources || []).map((url: string) => ({url,label:'下线公告'}))], model),
-    auditMessage:[...new Set([lifecycle?.message, audit.note, ...Object.entries(audit.fields).filter(([,f]) => f.verifiedAt && f.provenance === 'vendor').map(([key,f]) => `${({inputModalities:'输入',outputModalities:'输出',totalContextTokens:'上下文窗口',maxOutputTokens:'最大输出'} as Record<string,string>)[key]}核实日期 ${f.verifiedAt}`), ...Object.entries(audit.fields).filter(([,f]) => origin(f)).map(([key,f]) => `${({inputModalities:'输入',outputModalities:'输出',totalContextTokens:'上下文窗口',maxOutputTokens:'最大输出'} as Record<string,string>)[key]}：${origin(f)}`), ...[['totalContextTokens','上下文窗口'],['maxOutputTokens','最大输出']].map(([key,label]) => audit.fields[key].state === 'known' ? `${label}：${audit.fields[key].value} tokens` : '')].filter(Boolean).flatMap(value => value.split('\n')))].join('\n'),
+    auditMessage:[...new Set([lifecycle?.message, audit.note, ...Object.entries(audit.fields).filter(([,f]) => f.verifiedAt && f.provenance === 'vendor').map(([key,f]) => `${({inputModalities:'输入',outputModalities:'输出',totalContextTokens:'上下文窗口',maxOutputTokens:'最大输出'} as Record<string,string>)[key]}核实日期：${f.verifiedAt}`), ...Object.entries(audit.fields).filter(([,f]) => origin(f)).map(([key,f]) => `${({inputModalities:'输入',outputModalities:'输出',totalContextTokens:'上下文窗口',maxOutputTokens:'最大输出'} as Record<string,string>)[key]}：${origin(f)}`), ...[['totalContextTokens','上下文窗口'],['maxOutputTokens','最大输出']].map(([key,label]) => audit.fields[key].state === 'known' ? `${label}：${audit.fields[key].value} tokens` : '')].filter(Boolean).flatMap(value => value.split('\n')))].join('\n'),
     id: model.id, label: model.label,
     availabilityNotes: [model.availabilityNotes, model.capabilities?.requiresSourceImage ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),
     versionLabel:modelVersionLabel(model), versionText:modelVersionDetail(model), apiIdentifier:model.apiIdentifier || model.id,

@@ -1,5 +1,5 @@
 import type { AuditFact } from './model-audit.js'
-export function registryCardProjection(channel: string, model: {id: string}, audit: {fields: Record<string, AuditFact>}, lifecycle: unknown, checks: unknown): {
+export function registryCardProjection(channel: string, model: {id: string}, audit: {fields: Record<string, AuditFact>; lifecycleSourceUrl?: string | null; excludedSources?: string[]}, lifecycle: unknown, checks: unknown): {
   fields: Record<string, AuditFact>; sourceUrl: string | null; sourceLabel: string; note: string
-  vendorSources: string[]; retirementSources: string[]
+  lifecycleSourceUrl: string | null; excludedSources: string[]; vendorSources: string[]; retirementSources: string[]
 }

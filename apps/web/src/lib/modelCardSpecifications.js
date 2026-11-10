@@ -1,4 +1,4 @@
-import { displayModalities, displayModalityText } from '../../../../packages/api/src/card-presentation.mjs'
+import { cardLifecycle, displayModalities, displayModalityText } from '../../../../packages/api/src/card-presentation.mjs'
 import { auditedModelSpecs, auditedModelLifecycle, removedModel, MODEL_AUDIT_DATA } from './modelAudit.js'
 import { modelCardSources } from './modelCardSources.js'
 import { catalogCardFacts, mergeCardFacts } from './catalogCardFacts.js'
@@ -65,7 +65,7 @@ export function modelCardSpecifications(provider, model, registry) {
   const maxOutput = limit(fields.maxOutputTokens)
   const retired = removedModel(provider, model.id)
   const originalLifecycle = auditedModelLifecycle(provider, model.id)
-  const lifecycle = originalLifecycle && audit.excludedSources.includes(originalLifecycle.sourceUrl) ? { ...originalLifecycle, sourceUrl: null } : originalLifecycle
+  const lifecycle = cardLifecycle(originalLifecycle, audit)
   const sources = modelCardSources({ channel: provider, model, audit, fields,
     lifecycle: lifecycle || (retired ? { ...retired, state: 'retired' } : null), checks: MODEL_AUDIT_DATA.sourceChecks })
   return {

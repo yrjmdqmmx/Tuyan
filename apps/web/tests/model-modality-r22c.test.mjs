@@ -26,7 +26,7 @@ test('R22C all three states have accessible names and non-colour marks in a fixe
     assert.equal(!!icon.querySelector('.model-modality-question'), state === 'unknown')
     for (const mark of icon.querySelectorAll('.model-modality-strike, .model-modality-question')) assert.equal(mark.getAttribute('aria-hidden'), 'true')
   }
-  assert.match(inputs.getByRole('img', {name:'视频：未知'}).title, /^渠道未标注此模态（核实日期 2026-11-09）$/)
+  assert.match(inputs.getByRole('img', {name:'视频：未知'}).title, /^渠道未标注此模态（核实日期：2026-11-09）$/)
   assert.equal(container.querySelectorAll('dt').length, 4, 'no legend or extra specification row')
   const css = fs.readFileSync(new URL('../src/components/ModelSpecifications.css', import.meta.url), 'utf8')
   assert.match(css, /\.model-modality-icon \{[^}]*width: 20px; height: 20px; flex: 0 0 20px/)

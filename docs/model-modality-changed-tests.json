@@ -2,10 +2,10 @@
   "base": "8c456709",
   "counts": {
     "files": 23,
-    "assertionAndFixtureInputChanges": 150,
+    "assertionAndFixtureInputChanges": 153,
     "consumedJsonFixtures": 2,
-    "semanticFixtureChanges": 617,
-    "justified": 766,
+    "semanticFixtureChanges": 618,
+    "justified": 770,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -26,7 +26,8 @@
     "R24 Phase I2 preserves all source URLs/order/roles and all picker/execution locks. Only source-title spelling and field-source attribution change. The strict scan replaces opaque-ID and picker-slug exemptions; Web and Mini dialog scans include duplicate lines, internal terms and source/no-source contradictions. Staged Mini compilation prevents temporary budget overruns; both old size guards stay unchanged.",
     "R24 Phase I3: the operator real-browser check found that I2 link selectors lost to the later workspace reset. Cascade tests parse all imported CSS with selector specificity and source order. Source title scans now reject counter/format qualifiers and machine-document URLs. Exact I3 row changes, captures and literal HTML mappings are recorded; all existing model names, execution locks, vendor coverage, 65536 and the 15-model decision remain asserted. The I2 report is preserved verbatim inside the historical fixture and I3 is appended as a new comparison.",
     "R24 I3 local audit harness (not Git-tracked): .audit-input/r24/i3-invariants.test.mjs retains all six Phase H checks. Two expectations change: vendor raw fact URLs and archived screenshot URLs are mapped through the independent source-links-i3-r24.json literal table before matching human anchors. The old harness remains unchanged. This preserves 166 vendor-field checks, all 1064 picker names, all 15 image-input decisions and all 15 screenshot-card identities; it does not run screenshots. The original harness file SHA-256 is 20063c9788589720baa28451f24948d96e8df3bba56195f774bf608aae15992c.",
-    "R24 Phase I4: operator browser verification and eight public documentation GET captures correct 19 retirement/spec citations across eight cards. Thirteen Qwen3.5 facts retain values with the exact vendor URL, four unsupported N/A fields become unknown, and two MiMo text-input facts retain their explicit supporting quote. Independent literal source corrections cover six cards per client; new Web/Mini tests scan all 1064 cards and reject unsupported retirement/spec pairs. The local I4 invariants adapt seven lifecycle-link expectations to four supported anchors while preserving names, execution, registry and all 15 deferred image-input assertions. I2/I3 source reports remain frozen; I4 is appended. All four execution locks and both Mini byte guards are unchanged."
+    "R24 Phase I4: operator browser verification and eight public documentation GET captures correct 19 retirement/spec citations across eight cards. Thirteen Qwen3.5 facts retain values with the exact vendor URL, four unsupported N/A fields become unknown, and two MiMo text-input facts retain their explicit supporting quote. Independent literal source corrections cover six cards per client; new Web/Mini tests scan all 1064 cards and reject unsupported retirement/spec pairs. The local I4 invariants adapt seven lifecycle-link expectations to four supported anchors while preserving names, execution, registry and all 15 deferred image-input assertions. I2/I3 source reports remain frozen; I4 is appended. All four execution locks and both Mini byte guards are unchanged.",
+    "R25 Phase I5: public notice 118728 page-entry JSON explicitly names all three Bailian Plus IDs and 2027-01-19 retirement. Display-only citations restore three badge links; no execution notice or field value changes. Six of 20 numeric page URLs receive captured titles, fourteen failed title GETs remain on an exact allow-list; title/date scans are strengthened. Hosting/free source qualifiers and date punctuation are fixed without changing picker names. Exactly two R9 literal fixture objects change. New Web/Mini tests scan all 1064 cards for sourced badges and preserve the four execution locks; both Mini byte guards are unchanged. The local I5 invariants update four-to-seven sourced lifecycle assertions, retaining names, image-input decisions and required-provider behavior. I2/I3/I4 source reports remain frozen; I5 is appended. The ledger recognizes d29097c0 for new follow-up comparisons."
   ],
   "files": [
     {
@@ -57,7 +58,7 @@
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r12.test.cjs",
-      "diffSha256": "6db1e08c6598d3adcb20b2247773a2a52b682f0a1a395cc16168d63bb7bc75c6",
+      "diffSha256": "34fbd7c6f8f403f2f0b8d2231b985671254ba09f3c694e330388165d6a7e215f",
       "changes": [
         {
           "line": 105,
@@ -540,6 +541,22 @@
             "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "14 retirement source rows; only TokenDance appended notice",
+          "new": "17 retirement source rows; exact literal list of all three Bailian cards plus TokenDance",
+          "reason": "Three individually verified Bailian snapshot/base notices are restored, each naming its exact ID; all prior source priorities and exact cases remain.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -748,9 +765,25 @@
             "apps/web/tests/fixtures/kimi-k3-live-registry-model.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "Literal Kimi K3 (Bailian hosted); 核实日期 2026-11-09",
+          "new": "Literal Kimi K3（百炼托管）; 核实日期：2026-11-09",
+          "reason": "Translate the hosting qualifier only in source titles and require the missing colon. Fixed literal oracle is retained.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "0d39f339725db8de07bbf1b838d08ea056d8d9f536f3120d014f265b2777f183"
+      "diffSha256": "ed1873b47f6f85dfe04eeffb12524c0065374c6fe5f453e45e9552a3dc050e61"
     },
     {
       "file": "apps/web/tests/model-audit-r11.test.mjs",
@@ -1891,7 +1924,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r9.test.mjs",
-      "diffSha256": "8d254b9de62712d036403f7700e36f991f2e3f652339631ea11af6dfb9ed5de3",
+      "diffSha256": "b5d82c76481e11407a5231f6f69e316ee29fe921ad398851dbbd9eca800ad1e0",
       "changes": [
         {
           "line": 90,
@@ -2032,6 +2065,22 @@
             "docs/model-card-qwen35plus-evidence-r24.md",
             "config/channel-audit/review-r24-20261110.json",
             "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "English hosting qualifier and unpunctuated date labels",
+          "new": "Chinese 百炼托管 and colon-separated date labels",
+          "reason": "PM explicitly requests Chinese source qualifiers and consistent date punctuation; source href and disclosure checks remain.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -2566,7 +2615,7 @@
     },
     {
       "file": "config/model-audit.generated.json",
-      "diffSha256": "fdedc80536adb91b96536a503dd08cbd08bbbbd63cec343b071da5c8f10858ac",
+      "diffSha256": "d32de10677a39702aa20957bac9d4d6c62df609053a8622c57ac5cdc1f5d00f5",
       "changes": [
         {
           "line": 2,
@@ -18649,6 +18698,22 @@
           ],
           "verdict": "JUSTIFIED",
           "pointer": "tokendance/wan3.0-video-prime/sourceUrl"
+        },
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "Three Bailian display citations filtered with no verified replacement",
+          "new": "Three display-only lifecycleSourceUrl/sourceLinks entries point to verified notice 118728",
+          "reason": "No field value, execution notice/cutoff, capability, identity or 15-model decision changes. Generic depreciation stays excluded.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     }
@@ -18823,7 +18888,7 @@
     {
       "file": "apps/miniprogram/tests/model-modality-r22c.test.cjs",
       "comparisonBase": "1dcd8b13",
-      "diffSha256": "49e8dcfb1e671fedf9cd9496ff58c0b1d012c4f0cc3ab55b51b51ea1938dc3b7",
+      "diffSha256": "aab00199b084e246b6b5f4ff04ac84c19bf756e6a1940337d17ee595b3384a81",
       "changes": [
         {
           "line": 25,
@@ -18853,13 +18918,29 @@
             "apps/miniprogram/tests/model-card-i2-r24.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "Exact historical/unknown tooltip contains 核实日期 2026-11-09",
+          "new": "The same literal tooltip contains 核实日期：2026-11-09",
+          "reason": "Only the missing colon changes; historical IDs, source attribution, modality states and all-card checks stay intact.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/web/tests/model-card-source-titles-r23.test.mjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "0a041324d18d6c9cba508caf52d67d7dd3b671020a3722968c035dec83f9efa2",
+      "diffSha256": "9329d9f79c1958e266a8dd2f76265aa835e17365b91a8d7b26a77e7f44c52030",
       "changes": [
         {
           "line": 25,
@@ -18899,13 +18980,29 @@
             "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "Exact historical/unknown tooltip contains 核实日期 2026-11-09",
+          "new": "The same literal tooltip contains 核实日期：2026-11-09",
+          "reason": "Only the missing colon changes; historical IDs, source attribution, modality states and all-card checks stay intact.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "bdc8033c6ef039ed0a2a5e8896160fa0b3d9a7b3f12ced54e07fd3d2b7fc249c",
+      "diffSha256": "3157490537faed5f155fce413138630b7e6512f064748bd41dd0bd11278185eb",
       "changes": [
         {
           "line": 16,
@@ -18943,6 +19040,22 @@
             "docs/model-card-qwen35plus-evidence-r24.md",
             "config/channel-audit/review-r24-20261110.json",
             "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "Exact historical/unknown tooltip contains 核实日期 2026-11-09",
+          "new": "The same literal tooltip contains 核实日期：2026-11-09",
+          "reason": "Only the missing colon changes; historical IDs, source attribution, modality states and all-card checks stay intact.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -19162,9 +19275,25 @@
             "apps/web/tests/model-card-i2-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "Exact historical/unknown tooltip contains 核实日期 2026-11-09",
+          "new": "The same literal tooltip contains 核实日期：2026-11-09",
+          "reason": "Only the missing colon changes; historical IDs, source attribution, modality states and all-card checks stay intact.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "cff03f4ea9de5123a48c2e23e3172f5ae3e512401d8d1b79ed26dbe92ac6857d"
+      "diffSha256": "f17416088d2f3c82391c23a283cd8f9f0921fed9c1b125c2b120d6083f82e0bd"
     },
     {
       "file": "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
@@ -20847,9 +20976,25 @@
             "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "Two frozen literals contain (Bailian hosted) / （Free）",
+          "new": "The same two literal objects contain （百炼托管） / （免费）",
+          "reason": "Only bailian/kimi-k3 and tokendance/dots-3-note-preview labels change. The other 295 literal objects and all URLs remain identical.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "dd6de5680d849d56faaaf56c2fc24c8d2fc0f660234af5e8f5e9bfd4582e3c62"
+      "diffSha256": "fa907679538c00d6e14220db33743d6529c00b407683a5a05359dbdb4e32f190"
     },
     {
       "file": "scripts/card-presentation-r22b.test.mjs",
@@ -20913,9 +21058,25 @@
             "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "2449 source rows and four clickable notices",
+          "new": "2452 source rows and seven clickable notices; strict scan also rejects missing date colons/numeric IDs outside allow-list",
+          "reason": "Three verified notice 118728 links are added. All 1064 actual evidence dialogs, tooltips, link styling and exact URL ordering still run.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "8046831ca05a72fa519bb2b2587a32c1f5da4400d870976d813c4c0cab1f3605"
+      "diffSha256": "98308086bcd864328eee8b736d0442e7c1f57e506f987d54748e2571cd58b218"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
@@ -20947,9 +21108,25 @@
             "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "1102 source rows",
+          "new": "1105 source rows with stronger numeric-ID/date scan",
+          "reason": "Three Bailian retirement sources are appended separately from specifications. All 1064 compiled cards and 8512 icon dialogs still run.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "66c6f04bcde0e7377c6f27a0d7b113de9a55dbdbd693168b42138b3d85f37200"
+      "diffSha256": "03e2187c18e393b65d539c4f65be85715a46bdc23cbcb51a81bf4ef563602477"
     },
     {
       "file": "scripts/source-titles-r24.test.mjs",
@@ -21001,9 +21178,25 @@
             "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "Numeric 文档 IDs, English qualifiers and missing date colons escape the strict scan",
+          "new": "Numeric/bare page IDs fail except exact documented unfetchable URLs; hosting/docs qualifiers and missing colons fail",
+          "reason": "Adds PM-requested negative checks while preserving every existing rule; 14 failed public title captures form an auditable exact URL allow-list.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ff445ce7cdda7ea8912b4cc6fb9f56e5691673583cc40b4b666030473b3ad958"
+      "diffSha256": "2cc543ff223d26676638141a1b8caa1bf584130e2a6741d9f16321629fcc0c19"
     },
     {
       "file": "apps/miniprogram/tests/model-card-r24.test.cjs",
@@ -21085,9 +21278,25 @@
             "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "Only I3/I4 frozen source corrections are accepted",
+          "new": "Additional independent literal I5 before/after rows accepted for listed cards only",
+          "reason": "Numeric title captures and three newly verified retirement URLs require an explicit new oracle; every unlisted card remains exact.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "282d0a244e5e4d7d8b0cabb8a0f95b462848af2c815050f379af9361775a9149"
+      "diffSha256": "89952cf3fcea9516d38430463eeed6021baa8c72961f91a786543d5b377c44f0"
     },
     {
       "file": "test-support/source-review-r24.mjs",
@@ -21109,6 +21318,52 @@
         }
       ],
       "diffSha256": "20bc987b0a009c6f7eb6aa328faa1a5a2583210da7b2920380beca9f23ce753a"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-card-i4-r24.test.cjs",
+      "comparisonBase": "d29097c0",
+      "changes": [
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "最大输出核实日期 2026-11-10",
+          "new": "最大输出核实日期：2026-11-10",
+          "reason": "Copy-only punctuation; the exact 65536 value, vendor provenance/date and separate TokenDance retirement source stay asserted.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "578224502118ab4342d360b8897c95678ab37014beb349a083e5a74d3f681f24"
+    },
+    {
+      "file": "apps/web/tests/model-card-i4-r24.test.mjs",
+      "comparisonBase": "d29097c0",
+      "changes": [
+        {
+          "phase": "R25 Phase I5",
+          "comparisonBase": "d29097c0",
+          "line": 1,
+          "old": "Unpunctuated max-output date; three badges open dialogs with zero links",
+          "new": "Colon max-output date; each Bailian badge opens the exact independently verified notice 118728 anchor",
+          "reason": "The earlier zero-link expectation preserved the defect. Public notice JSON now names all three IDs and the same 2027-01-19 date.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "docs/model-card-source-titles-r24.md",
+            "config/channel-audit/review-r25-20261110.json",
+            "config/channel-audit/source-titles-r25-i5.json",
+            "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "98023b5560670c647f577e6f097b361d722ef7fd4543177927a1e40122bf5aff"
     }
   ]
 }

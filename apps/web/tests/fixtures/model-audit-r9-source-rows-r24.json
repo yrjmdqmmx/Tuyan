@@ -69,7 +69,7 @@
   },
   "bailian/kimi-k3": {
     "url": "https://help.aliyun.com/zh/model-studio/kimi-k3",
-    "label": "官方文档 · 百炼 · Kimi K3 (Bailian hosted)"
+    "label": "官方文档 · 百炼 · Kimi K3（百炼托管）"
   },
   "bailian/qwen3.8-27b": {
     "url": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
@@ -1053,7 +1053,7 @@
   },
   "tokendance/dots-3-note-preview": {
     "url": "https://tokendance.space/models/dots-3-note-preview",
-    "label": "官方文档 · TokenDance · Dots3-Note Preview（Free）"
+    "label": "官方文档 · TokenDance · Dots3-Note Preview（免费）"
   },
   "tokendance/kimi-k3.1-pro": {
     "url": "https://tokendance.space/models/kimi-k3.1-pro",

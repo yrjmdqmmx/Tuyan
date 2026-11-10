@@ -9,5 +9,5 @@ export function registryCardProjection(channel, model, audit, lifecycle, checks)
   const { fields } = mergeCardFacts(audit, catalogCardFacts(channel, model, reviewed, pages), model)
   const links = modelCardSources({channel, model, audit, fields, lifecycle, checks})
   const sourceUrl = links.sources[0] || null
-  return { fields, vendorSources: links.vendorSources, retirementSources: links.lifecycleSources.filter(url => url !== sourceUrl), sourceUrl, sourceLabel: sourceUrl ? modelSourceName(links, sourceUrl) : '官方文档', note: audit.note || '' }
+  return { fields, lifecycleSourceUrl: audit.lifecycleSourceUrl || null, excludedSources: audit.excludedSources || [], vendorSources: links.vendorSources, retirementSources: links.lifecycleSources.filter(url => url !== sourceUrl), sourceUrl, sourceLabel: sourceUrl ? modelSourceName(links, sourceUrl) : '官方文档', note: audit.note || '' }
 }

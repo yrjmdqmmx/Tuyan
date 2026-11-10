@@ -1236,3 +1236,31 @@ Seven existing lifecycle schedules remain; four have public notice anchors after
 Mini source is **1,566,769 / 1,572,864 bytes**, leaving **6,095 bytes**; the unchanged older **1,569,427-byte** guard also passes (2,658 remaining). Starting size was 1,564,737, so this phase adds **2,032 bytes**. Source writes use the existing projected-size/staged-build guards. All four execution locks, all 1,064 picker names and all 15 deferred image-input decisions remain equal to the reviewed main baseline `8c456709` (`origin/main` in this checkout). No Git write commands, secrets, paid/inference requests, deployment, Docker/image builds or other-worktree changes were performed. Network was restricted to eight public unauthenticated HTTPS documentation GETs with curl. `sync-agent-knowledge` and `sync-workflow` remain untouched; Mini deployment stays paused.
 
 Final validation: **1,793 tests, zero failures/skips** — Web **1,492/1,492** with `NODE_OPTIONS=--no-experimental-webstorage`; Mini **178/178**; scripts **70/70**; packages/api **33/33**; targeted Core **8/8**; Gateway **6/6**; local I4 invariants **6/6**. Web, Mini and Core builds pass. All six workspace check scripts, explicit Core `npx tsc --noEmit` (**0 errors**) and all **12 maintenance checks** pass. [Exact commands, timestamps, counts and logs](model-modality-r24-i4-validation.json). The actual client interactions are tested offline (Web DOM and compiled Mini dialogs); the operator's page verification is attributed separately, and native WeChat rendering was not repeated.
+
+## R25 Phase I5
+
+Starting HEAD **d29097c0e5d8bb5f60da3896d7ece41b67fba81c**. No Git write commands, authenticated requests, secrets, inference/paid calls, deployment, Docker/image builds, other-worktree changes, sync-agent-knowledge or sync-workflow operations.
+
+All three reported Bailian cards keep their retirement badge, now citing [Aliyun notice 118728](https://www.aliyun.com/notice/118728). Its public page-entry JSON explicitly names every exact ID and states `2027年01月19日（正式下线）：届时模型将全面停止推理服务。` The original HTML's empty article was resolved by decoding the referenced public asset's `httpDatas`; no fetched JavaScript executed. TokenDance names only the base ID and has zero matches for both snapshots, so it is not used as their retirement proof. [Exact passages and full capture manifest](model-card-qwen35plus-evidence-r24.md#r25-phase-i5).
+
+The display-only citation override preserves the original execution notices and cutoff dates. Both clients retain separate specification and retirement links, and the Mini badge copies the notice itself. Saved Web role badges now use the same dialog. Missing/excluded source regression cases suppress a badge. Web/Mini scan all **1,064 cards each**, all seven displayed badges, source/copy dialogs and tooltips. The I4 retirement/spec evidence scan remains at **two supported MiMo exceptions, zero unsupported citations**. All four fields on each Bailian Plus card still cite `qwen3-5-plus`; 1,000,000 and 65,536 stay unchanged.
+
+Six of 20 numeric-document URLs now use captured page titles; 13 Tencent bot-check shells and one Volcengine empty redirect remain on the exact documented allow-list. An additional captured title identifies notice 118728. The full title changes are **18 Web + eight Mini row instances**, across **20 Web + 11 Mini changed cards** including three restored links per client. Three lifecycle-only dialogs also gain their source. Both clients show colon-separated date labels and Chinese hosting/free qualifiers; product names and picker names are preserved. [Complete before/after inventory and capture hashes](model-card-source-titles-r24.md#r25-i5).
+
+Captured-title indexing first reduced Mini from **1,566,769 to 1,566,664 bytes**, preserving exact URL/title pairs. Final source is **1,568,100 / 1,572,864 bytes**, **4,764 bytes remaining** and **1,327 below the older 1,569,427-byte guard**. Existing staged-build/sync preflights and both guards are unchanged. No package intermediate exceeded the user ceiling. The ledger records every changed prior expectation, the two R9 literal title changes, new sourced badge counts and local I5 invariant adaptations; its check remains required.
+
+Screenshot preparation: `.audit-input/r24/shots-m5.mjs` derives from m4 and is syntax-checked only. Its manifest specifies `desktop|mobile-61-source-dialog-bailian-qwen3.5-plus-m5.png` and `desktop|mobile-62-retirement-dialog-bailian-qwen3.5-plus-m5.png` at **1280 / 390**. It opens the real modality/source dialog and the separate 将下线 badge dialog, requiring notice 118728 and date 2027-01-19. **Not run**; native Mini visual acceptance and deployment remain pending under the existing boundary.
+
+Final validation: **1803 / 1803 tests**, Web/Mini/Core builds, six workspace checks, explicit Core `tsc --noEmit` (**0 errors**) and all **12 maintenance `--check` scripts** pass. The ledger check is green with zero flagged changes. Web uses `NODE_OPTIONS=--no-experimental-webstorage`. [Every command, timestamp, exit code and log](model-modality-r25-i5-validation.json).
+
+| Suite | Passed / total |
+| --- | ---: |
+| api-full | 33 / 33 |
+| core-targeted | 9 / 9 |
+| gateway-targeted | 7 / 7 |
+| mini-full | 180 / 180 |
+| name-image-invariants | 6 / 6 |
+| scripts-full | 72 / 72 |
+| web-full | 1496 / 1496 |
+
+Initial validation exposed the intended notice-count/list changes, stale ledger hashes and cumulative source-report drift; all were corrected and rechecked. The Mini staged compiler also caught missing optional projection metadata typing, which is now explicit. Final full Web testing followed the saved-role badge fix. Failed first-pass logs remain archived; no tests or size limits were weakened. `git diff --check` and the M5 script syntax/manifest checks pass. HEAD is unchanged.

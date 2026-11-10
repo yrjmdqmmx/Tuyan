@@ -149,3 +149,53 @@ Raw files are under `.audit-input/r24/fetches/i4-*`; checked metadata and verbat
 | https://tokendance.space/llms-full.txt | 200 | 2026-11-09T23:08:35.792668+00:00 | 2026-11-10T07:08:35.792668+08:00 | `46b344b1fd51f0364ce562c3fc56c9db18ffe7836736938e26901326593fa046` | 331710 |
 
 The earlier I1 captures remain unchanged and are cited in `priorCaptures`. New Aliyun HTML body hashes differ, while the TokenDance full-text body hash remains `46b344b1fd51f0364ce562c3fc56c9db18ffe7836736938e26901326593fa046`. The saved passages, not hash equality across different fetch times, determine support.
+
+## R25 Phase I5
+
+**All three Bailian badges are retained, each with the verified public notice [118728](https://www.aliyun.com/notice/118728), dated 2027-01-19.** I4's empty HTML article is a retrieval limitation, not proof that the notice lacks the model list. The HTML directly loads the public page-entry script linked below. Its static `httpDatas` JSON includes `detailInfo.detailList[0].contentHtml` and `content`; these explicitly list all three IDs in the retirement table. Only JSON was decoded; no fetched script was executed.
+
+Verbatim notice passages:
+
+> 2027 年 01 月 19 日 10:00:00, 【以实际变更时间为准】
+
+> 为了不断提升模型性能和服务体验，同时优化底层资源管理，大模型服务平台百炼将于 2027 年 01 月 19 日 对下表中的旧版本模型进行下线处理。
+
+> 2027年01月19日（正式下线）：届时模型将全面停止推理服务。
+
+| Card | Exact retirement-table model cell | Decision / public source | Displayed date |
+| --- | --- | --- | --- |
+| `bailian/qwen3.5-plus` | `qwen3.5-plus` | Keep badge; [notice 118728](https://www.aliyun.com/notice/118728) | 2027-01-19 |
+| `bailian/qwen3.5-plus-2026-02-15` | `qwen3.5-plus-2026-02-15` | Keep badge; [notice 118728](https://www.aliyun.com/notice/118728) | 2027-01-19 |
+| `bailian/qwen3.5-plus-2026-04-20` | `qwen3.5-plus-2026-04-20` | Keep badge; [notice 118728](https://www.aliyun.com/notice/118728) | 2027-01-19 |
+
+The notice distinguishes **2026-11-18** (停止新购 EOM) from **2027-01-19** (正式下线). Both clients show the retirement date; the existing date-only execution schedule remains byte-for-byte unchanged. The notice's time is recorded above; this phase does not alter execution cutoff semantics.
+
+TokenDance's alternative evidence says:
+
+> ### 北京时间 2027 年 1 月 19 日 10:00：Qwen3.5 Plus 下线
+
+> - [Qwen: Qwen3.5 Plus](/models/qwen3.5-plus)（`qwen3.5-plus`）：建议切换至 [Qwen: Qwen3.8 Flash](/models/qwen3.8-flash)（`qwen3.8-flash`）。
+
+> [查看阿里云百炼模型下线公告](https://www.aliyun.com/notice/118728)
+
+Neither snapshot ID occurs anywhere in the fetched TokenDance full text (zero exact matches each). That page is therefore not used to establish either Bailian snapshot retirement; the Aliyun notice itself covers them.
+
+### Public GET investigation and capture manifest
+
+The notice HTML has no embedded article JSON, but includes the exact `cloud-assets.alicdn.com/lowcode/entry/prod/4c06616382ae914768cb2899fcb9e7e3.js` entry. That entry's `httpDatas` is the successful evidence path. The page's public `t.aliyun.com/abs/bulletin/bulletinDetail` endpoint was also attempted without headers/cookies/authentication; its HTTP 200 body says `illegal origin, cannot access cross-origin resource` (51 bytes), so it is not used as evidence. No origin bypass or authenticated retry was performed. The notice component asset was inspected only as static text.
+
+SHA-256 covers raw response bytes. Requested and final URLs, curl exits, exact timestamps and excerpts are retained in [canonical I5 review](../config/channel-audit/review-r25-20261110.json). Raw captures remain under `.audit-input/r24/fetches/i5-*`.
+
+| URL | HTTP | UTC | Asia/Shanghai | SHA-256 | Bytes |
+| --- | ---: | --- | --- | --- | ---: |
+| https://www.aliyun.com/notice/118728 | 200 | 2026-11-09T23:47:17.776214+00:00 | 2026-11-10T07:47:17.776214+08:00 | `280ebdede0418fd532c8947ab248ed2d2ac6a9e981d13e8594144c7ebec6036f` | 30424 |
+| https://cloud-assets.alicdn.com/lowcode/entry/prod/4c06616382ae914768cb2899fcb9e7e3.js | 200 | 2026-11-09T23:47:34.699702+00:00 | 2026-11-10T07:47:34.699702+08:00 | `807b38498e953446500cb611758030db542b288d068f9d3133860faf1db51f2a` | 1698313 |
+| https://g.alicdn.com/code/npm/@ali/hmod-aliyundotcom-notice-detail/0.5.3/index.js | 200 | 2026-11-09T23:47:34.677437+00:00 | 2026-11-10T07:47:34.677437+08:00 | `24fd2142fee77f7c9af7346ca1375698f9f957826eb0d4e47536c1af3663cdfa` | 200110 |
+| https://t.aliyun.com/abs/bulletin/bulletinDetail?id=118728&language=zh&website=cn | 200 | 2026-11-09T23:48:11.834154+00:00 | 2026-11-10T07:48:11.834154+08:00 | `5781a81c412a8d7fe135905a8073fe81423d29584196691be35ace7c787541fa` | 51 |
+| https://tokendance.space/llms-full.txt | 200 | 2026-11-09T23:47:17.776324+00:00 | 2026-11-10T07:47:17.776324+08:00 | `46b344b1fd51f0364ce562c3fc56c9db18ffe7836736938e26901326593fa046` | 331710 |
+
+### Resulting behavior and regression coverage
+
+`model-depreciation` remains excluded for all three cards and never backs input, output, context or maximum-output fields. Each of those fields still cites the exact `qwen3-5-plus` specification page; 1,000,000 and 65,536 are unchanged. The new `lifecycleSourceUrl` is display evidence only. Shared projections carry it to Web/Mini/Core/Gateway while preserving notices, cutoff dates and execution behavior. Mini retains both specification and retirement rows; tapping the badge copies its own notice instead of the first source row.
+
+Web and compiled Mini scan all **1,064 cards each**, including all seven displayed retirement badges, requiring a clickable/copyable non-excluded URL. Explicit tests cover all three exact IDs and dates, both spec/retirement sources, and suppression when a source is missing or excluded. The I4 all-card retirement/spec scan remains green: only the two previously supported MiMo exceptions remain. Core/Gateway tests verify the correction survives live projections; negative generator tests reject missing model/date quotes and bad captures. All changed prior expectations are recorded in the ledger.
