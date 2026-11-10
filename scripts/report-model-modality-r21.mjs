@@ -22,6 +22,8 @@ const coreRequire=createRequire(path.join(root,'apps/paperbanana-api/package.jso
 const deny=()=>{throw new Error('R21: network disabled')};
 globalThis.fetch=deny; http.request=deny; http.get=deny; https.request=deny; https.get=deny; net.connect=deny; net.createConnection=deny;
 Date.now=()=>Date.parse('2026-11-09T12:00:00Z');
+// Freeze argument-less `new Date()` too (Date.now alone does not affect it), so --check is independent of the wall clock.
+{const RealDate=Date;globalThis.Date=class extends RealDate{constructor(...a){super(...(a.length?a:[RealDate.now()]))}};Object.setPrototypeOf(globalThis.Date,RealDate)}
 const {memoryDb}=await import(pathToFileURL(path.join(root,'test-support/memory-db.mjs')));
 globalThis.__r21Db=memoryDb();
 globalThis.__r21Sharp=coreRequire('sharp');
