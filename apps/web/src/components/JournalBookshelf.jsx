@@ -1,3 +1,4 @@
+import ControlField from './ControlField.jsx';
 import MenuSelect from './MenuSelect.jsx';
 import {forwardRef,useEffect,useImperativeHandle,useLayoutEffect,useRef,useState} from 'react';
 import {ArrowLeft,Check,ChevronDown,Search,X} from 'lucide-react';
@@ -103,8 +104,8 @@ const JournalBookshelf=forwardRef(function JournalBookshelf({value,onBrowse,onNo
     <div className="journal-shelf-view" inert={active?true:undefined} aria-hidden={active?true:undefined}>
       {header}
       <div className="journal-shelf-tools">
-        <label className="journal-search"><Search size={17}/><input data-autofocus type="search" aria-label="搜索期刊" placeholder="搜索刊名、简称或出版社" value={query} onChange={e=>setQuery(e.target.value)}/></label>
-        <label className="journal-category-filter"><span>学科</span><MenuSelect aria-label="学科筛选" value={category} onChange={e=>setCategory(e.target.value)}><option value="">全部学科</option>{JOURNAL_CATEGORIES.map(c=><option key={c}>{c}</option>)}</MenuSelect></label>
+        <ControlField className="journal-search" label={<Search size={17}/>}><input data-autofocus type="search" aria-label="搜索期刊" placeholder="搜索刊名、简称或出版社" value={query} onChange={e=>setQuery(e.target.value)}/></ControlField>
+        <ControlField className="journal-category-filter" label={<span>学科</span>}><MenuSelect aria-label="学科筛选" value={category} onChange={e=>setCategory(e.target.value)}><option value="">全部学科</option>{JOURNAL_CATEGORIES.map(c=><option key={c}>{c}</option>)}</MenuSelect></ControlField>
       </div>
       <div className="journal-tag-filters" aria-label="细分学科"><button type="button" aria-pressed={!tag} onClick={()=>setTag('')}>全部</button>{tags.map(t=><button type="button" key={t} aria-pressed={tag===t} onClick={()=>setTag(tag===t?'':t)}>{t}</button>)}</div>
       <nav ref={shelfScrollRef} className="journal-shelves" aria-label="期刊列表">

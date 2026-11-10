@@ -62,7 +62,7 @@ body:has(.bench-shell),body:has(.bench-state){margin:0;background:var(--bench-bg
 .bench-matrix-section{min-width:0}
 .bench-matrix-head{align-items:end}
 .bench-search{display:grid;grid-template-columns:auto auto;gap:4px 10px;align-items:center;min-width:260px}
-.bench-search label{grid-column:1/-1;color:#5e6463;font-size:10px;font-weight:700}
+.bench-search :is(label, .control-field){grid-column:1/-1;color:#5e6463;font-size:10px;font-weight:700}
 .bench-search>span{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #cfc8bb;border-radius:9px;padding:0 9px;min-height:36px}
 .bench-search input{width:100%;min-width:0;border:0;background:transparent;color:var(--bench-ink);font:12px/1.2 inherit}
 .bench-search input:focus-visible{outline:2px solid #315f72;outline-offset:3px;border-radius:3px}
@@ -232,10 +232,10 @@ body:has(.bench-shell),body:has(.bench-state){margin:0;background:var(--bench-bg
 .bench-prompt-page{max-width:1040px}
 .bench-prompt-form,.bench-prompt-login{margin-top:16px;padding:22px;border:1px solid var(--bench-line);border-radius:15px;background:var(--bench-paper);box-shadow:0 10px 30px #332b1e0d}
 .bench-prompt-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.bench-prompt-form label{display:grid;gap:6px;color:#343a3b;font-size:11px;font-weight:800}
-.bench-prompt-form label:first-child{grid-column:1/-1}
+.bench-prompt-form :is(label, .control-field){display:grid;gap:6px;color:#343a3b;font-size:11px;font-weight:800}
+.bench-prompt-form :is(label, .control-field):first-child{grid-column:1/-1}
 .bench-prompt-form textarea{width:100%;min-height:105px;resize:vertical;padding:11px;border:1px solid #cbc4b7;border-radius:9px;background:#fff;color:#202426;font:11px/1.6 inherit}
-.bench-prompt-form label:first-child textarea{min-height:170px}
+.bench-prompt-form :is(label, .control-field):first-child textarea{min-height:170px}
 .bench-prompt-form textarea:focus-visible{outline:3px solid #315f7244;border-color:#315f72}
 .bench-prompt-form>p,.bench-prompt-form>button,.bench-prompt-form>[role]{grid-column:1/-1}
 .bench-prompt-form>p{margin:0;color:#737977;font-size:9px}
@@ -247,7 +247,7 @@ body:has(.bench-shell),body:has(.bench-state){margin:0;background:var(--bench-bg
 .bench-prompt-admin-list article{padding:16px;border:1px solid var(--bench-line);border-radius:12px;background:var(--bench-paper)}
 .bench-prompt-admin-list article>header,.bench-prompt-admin-list article>footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .bench-prompt-admin-list article code{color:#777;font-size:9px}.bench-prompt-admin-list article>p{font-size:12px;line-height:1.7}
-.bench-prompt-admin-list article>label{display:grid;gap:5px;margin-top:9px;color:#555c5c;font-size:9px;font-weight:800}
+.bench-prompt-admin-list article>:is(label, .control-field){display:grid;gap:5px;margin-top:9px;color:#555c5c;font-size:9px;font-weight:800}
 .bench-prompt-admin-list input,.bench-prompt-admin-list textarea{width:100%;padding:9px;border:1px solid #ccc5b8;border-radius:7px;background:#fff;font:10px/1.55 inherit}
 .bench-prompt-admin-list textarea{min-height:100px;resize:vertical}
 .bench-prompt-admin-list dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.bench-prompt-admin-list dl>div{padding:9px;border-radius:7px;background:#f7f3ea}.bench-prompt-admin-list dt{font-size:9px;font-weight:800}.bench-prompt-admin-list dd{margin:4px 0 0;font-size:10px}
@@ -259,7 +259,7 @@ body:has(.bench-shell),body:has(.bench-state){margin:0;background:var(--bench-bg
 .benchmark-admin fieldset{display:flex;flex-direction:column;gap:10px;border:1px solid #d8d2c7;border-radius:12px;padding:14px;min-width:0}
 .benchmark-admin legend{padding:0 7px;font-weight:700}
 .benchmark-admin p{color:#68707a;font-size:12px;margin:0}
-.benchmark-admin label{display:flex;flex-direction:column;gap:4px;color:#68707a;font-size:11px;flex:1}
+.benchmark-admin :is(label, .control-field){display:flex;flex-direction:column;gap:4px;color:#68707a;font-size:11px;flex:1}
 .benchmark-admin input,.benchmark-admin :is(select, .ui-select),.benchmark-admin textarea{width:100%;min-height:36px;border:1px solid #ccc4b6;border-radius:7px;padding:6px 8px;background:#fff}
 .benchmark-admin textarea{min-height:64px;resize:vertical;font:11px/1.4 ui-monospace,SFMono-Regular,monospace}
 .benchmark-admin button,.benchmark-file-button{display:flex;justify-content:center;align-items:center;gap:5px;border:1px solid #c9c1b4;border-radius:7px;padding:8px 10px;background:#fff;color:#292c32;cursor:pointer;font-size:11px}
@@ -305,7 +305,7 @@ body:has(.bench-shell),body:has(.bench-state){margin:0;background:var(--bench-bg
   .bench-evidence-card>header,.bench-evidence-card>footer{align-items:flex-start;flex-direction:column}
   .bench-evidence-card>footer code{max-width:100%}
   .bench-prompt-form{grid-template-columns:1fr;padding:16px}
-  .bench-prompt-form label:first-child,.bench-prompt-form>p,.bench-prompt-form>button,.bench-prompt-form>[role]{grid-column:auto}
+  .bench-prompt-form :is(label, .control-field):first-child,.bench-prompt-form>p,.bench-prompt-form>button,.bench-prompt-form>[role]{grid-column:auto}
 }
 @media (max-width:430px){
   .bench-shell{padding-inline:10px}
