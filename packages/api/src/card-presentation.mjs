@@ -63,6 +63,23 @@ function sourceRole(value, role) {
     || /(^|\.)aliyun\.com$/i.test(host) && /^notice\/\d+\/?$/.test(path)
     || host === 'docs.x.ai' && /^developers\/migration\//.test(path) ? '下线公告' : role
 }
+// Native Mini has no URL/URLSearchParams. Match sourceIdentity's existing
+// fragment, trailing slash and tracking-query policy without changing links.
+export function sourceTitleKey(value) {
+  const [path, query = ''] = humanSourceUrl(value).split('#')[0].split('?')
+  const parameters = query.split('&').filter(Boolean).filter(part => !/^(utm_.+|ref|referrer|fbclid|gclid|msclkid)$/i.test(decodeURIComponent(part.split('=')[0])))
+  parameters.sort((a,b) => { const x=decodeURIComponent(a.split('=')[0]), y=decodeURIComponent(b.split('=')[0]); return x < y ? -1 : x > y ? 1 : 0 })
+  return path.replace(/\/+$/, '') + (parameters.length ? '?' + parameters.join('&') : '')
+}
+export function visibleSourceTitle(value, model = {}, fallback = '官方文档') {
+  const key = sourceTitleKey(value), host = key.replace(/^https?:\/\//, '').split('/')[0]
+  const notice = sourceRole(value, '官方文档') === '下线公告' || key === 'https://tokendance.space/llms-full.txt'
+  const channel = /(?:^|\.)(?:fal\.ai|fal\.run|tokendance\.space|replicate\.com|fireworks\.ai|novita\.ai|runware\.ai|siliconflow\.(?:cn|com)|openrouter\.ai|together\.(?:ai|xyz)|tencentmaas\.com)$/.test(host)
+    || /(?:^|\.)(?:aliyun\.com|baidu\.com|volcengine\.com|tencent\.com)$/.test(host)
+      && !/(?:qwen|qvq|wan[\d/-]|tongyi|ernie|doubao|seedream|seedance|hunyuan)/i.test(key)
+  const role = notice ? '下线公告' : channel ? '渠道资料' : host.endsWith('.test') ? fallback : '官方文档'
+  return role + ' · ' + sourceTitle(value, model)
+}
 const compactSubject = value => value.toLowerCase().replace(/(\d)p(?=\d)/g, '$1.').replace(/[^a-z0-9\u4e00-\u9fff]/g, '')
 const brands = 'OpenAI GPT ChatGPT DeepSeek Qwen GLM Kimi MiniMax MiMo FLUX Stable Diffusion SDXL Claude Grok Gemini Recraft Ideogram Seedream Wan Hunyuan ERNIE CogView LongCat SenseNova TokenDance Fireworks Hugging Face SiliconFlow Runware Replicate Novita StepFun BFL API HTTP VL OCR LoRA'.split(' ')
 function readableSubject(value) {
@@ -131,6 +148,9 @@ export function sourceTitle(value, model = {}) {
     'volcengine.com':'火山方舟','ark.volcengine.com':'火山方舟','api.volcengine.com':'火山方舟','xfyun.cn':'讯飞星火','maas.xfyun.cn':'讯飞星辰',
     'minimax.io':'MiniMax','minimaxi.com':'MiniMax','kimi.com':'Kimi','github.com':'GitHub','qianwenai.com':'千问'})[siteKey]
     || readableSubject(siteKey.split('.')[0])
+  const unified = storedTitles[sourceTitleKey(value)]
+  if (Array.isArray(unified)) return site + ' · ' + unified[0]
+  if (subject === 'schema.json') return site + ' · ' + pageSubject(modelSubject(slugs.at(-2) || '', [], '')).replace(/-(?=[a-z])/gi, ' ') + ' API 规格'
   const rawName = model.displayName || model.label || '', knownName = modelSubjects.get(compactSubject(rawName)) || ''
   // A slug-like picker label stays unchanged in the picker, but may not hide a
   // known dotted version in its source title (e.g. Replicate qwen3-7-plus).
@@ -139,7 +159,7 @@ export function sourceTitle(value, model = {}) {
   const own = name && keys.some(key => compactSubject(slugs.join('/')).endsWith(key) && (key.length > 3 || compactSubject(subject) === key))
   if (own) return site + ' · ' + pageSubject(name) + (api ? ' API 文档' : '')
   const stored = storedTitles[value.split(/[?#]/)[0].replace(/\/+$/, '')]
-  if (stored) return site + ' · ' + pageSubject(stored)
+  if (stored) return site + ' · ' + pageSubject(Array.isArray(stored) ? stored[0] : stored)
   if (host === 'cloud.baidu.com' && slugs[1] === 'WENXINWORKSHOP') return site + ' · 千帆 ModelBuilder 旧版文档：' + pageSubject(stored || '模型列表')
   if (host === 'cloud.baidu.com' && slugs[1] === 'qianfan-docs' && !stored) return site + ' · AI 应用开发入门：模型说明'
   const general = {models:'模型列表',model:'模型说明','model-list':'模型列表','models-overview':'模型概览','model-overview':'模型概览','models_overview':'模型概览','model-pricing':'模型定价',pricing:'价格与规格','newly-released-models':'模型更新','model-depreciation':'模型下线公告',deprecations:'模型下线公告',deprecation:'模型下线公告',deprecate:'模型下线公告','api-reference':'API 文档','api-docs':'API 文档',docs:'文档首页',documentation:'文档首页',welcome:'文档首页',overview:'概览','stable-diffusion-35':'Stable Diffusion 3.5'}
@@ -173,11 +193,11 @@ export function titleSourceRows(rows, model = {}) {
     if (isMachineDocument(row.url) || seen.has(row.url)) return false
     seen.add(row.url); return true
   })
-  const titled = human.map(row => ({...row, label: sourceRole(row.url, row.label) + ' · ' + sourceTitle(row.url, model)}))
+  const titled = human.map(row => ({...row, label: visibleSourceTitle(row.url, model, row.label)}))
   const counts = new Map()
   for (const row of titled) counts.set(row.label, (counts.get(row.label) || 0) + 1)
   return titled.map(row => {
-    const section = counts.get(row.label) > 1 ? sourceSection(row.url) : ''
+    const section = !Array.isArray(storedTitles[sourceTitleKey(row.url)]) && counts.get(row.label) > 1 ? sourceSection(row.url) : ''
     return {...row, label: row.label + (section ? '（' + section + '）' : '')}
   })
 }

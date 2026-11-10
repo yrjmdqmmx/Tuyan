@@ -65,7 +65,7 @@ test('R21 Core source consumers reject machine evidence and keep channel pages b
     }
     for (const row of modelSourceRows(data).slice(1)) {
       assert.ok(vendorUrls.some(url => sourceIdentity(url) === sourceIdentity(row.url)), id + ': ' + row.url)
-      assert.match(row.label, /^原厂规格 · /, id)
+      assert.match(row.label, /^(官方文档|渠道资料) · /, id)
     }
     assert.equal(audit.fields.maxOutputTokens.provenance, 'vendor', id)
     assert.equal(audit.fields.maxOutputTokens.sourceUrl, id === 'deepseek-v4.1-flash'

@@ -25,7 +25,7 @@ function assertSource(card) {
   const label = link.querySelector('.model-spec-source-label')
   const domain = link.querySelector('.model-spec-source-domain')
   assert.equal(link.textContent, `${label.textContent}${sourceTitle(link.href, {displayName:card.querySelector('h3')?.textContent})}`)
-  assert.match(label.textContent, /^(官方文档|原厂规格|下线公告) · $/)
+  assert.match(label.textContent, /^(官方文档|渠道资料|下线公告) · $/)
   assert.equal(domain.title, link.href)
   assert.ok(link.title.includes(link.href))
   for (const node of [link, domain]) {
@@ -116,7 +116,7 @@ test('R16 long domains only ellipsize visually and retain the complete URL for e
   const longUrl = `https://${'very-long-hostname-'.repeat(3)}example.com/model/footer`
   for (const [provider, model, expectedLabel] of [
     ['custom', {id: 'long-domain', specifications: {version: 1, sourceUrls: [longUrl]}}, '官方文档'],
-    ['replicate', {id: 'google/imagen-3'}, '原厂规格'],
+    ['replicate', {id: 'google/imagen-3'}, '官方文档'],
     ['antling', {id: 'Ling-2.6-flash'}, '下线公告'],
   ]) {
     const {container, unmount} = render(React.createElement('article', {className: 'tw-catalog-card', style: {width: 155}},

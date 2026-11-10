@@ -30,8 +30,8 @@ export function assertImageInput(key, fact, icons, sources) {
   const image = icons.find(icon => icon.id === 'image')
   assert.equal(image.state, 'supported', key)
   assert.equal(image.accessibleLabel, '图像：支持', key)
-  assert.match(image.tooltip, /渠道资料 · .*编辑接口（\d{4}-\d{2}-\d{2}）/, key)
-  assert.ok(sources.some(source => source.url === humanSourceUrl(row.url) && source.label.includes('编辑接口')), key + ' visible edit source')
+  assert.match(image.tooltip, /(?:渠道资料|官方文档) · .*(?:编辑接口|Edit API 文档)（\d{4}-\d{2}-\d{2}）/, key)
+  assert.ok(sources.some(source => source.url === humanSourceUrl(row.url) && /编辑接口|Edit API 文档/.test(source.label)), key + ' visible edit source')
   assert.equal(sources[0].url, humanSourceUrl(row.url), key + ' primary edit-interface source')
   assert.doesNotMatch(JSON.stringify({fact,icons,sources}), /创始人|决定 A/, key + ' internal note')
 }

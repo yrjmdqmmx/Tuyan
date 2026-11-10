@@ -24,7 +24,7 @@ test('R27 all 15 Web image icons and opened evidence dialogs cite the verified e
       const dialog = document.querySelector('.model-evidence-dialog')
       assert.ok(dialog, key)
       assert.match(dialog.textContent, /图像：支持/)
-      assert.match(dialog.textContent, /编辑接口/)
+      assert.match(dialog.textContent, /编辑接口|Edit API 文档/)
       assert.ok(dialog.textContent.includes(fields.inputModalities.verifiedAt), key)
       assert.ok([...dialog.querySelectorAll('a')].some(a => a.href === humanSourceUrl(fields.inputModalities.sourceUrl)), key)
       assert.doesNotMatch(dialog.textContent, /创始人|决定 A/)

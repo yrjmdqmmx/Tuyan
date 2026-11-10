@@ -16,8 +16,8 @@ test('R22B Mini keeps distinct page titles and unique source rows for all 1064 c
  for(const [channel,provider] of Object.entries(STATIC_MODEL_REGISTRY))for(const model of provider.models){const rows=context.present(model,'','',channel).specSources;assert.equal(new Set(rows.map(r=>r.url)).size,rows.length);assert.equal(new Set(rows.map(r=>r.label)).size,rows.length);count++}
  assert.equal(count,1064)
  const card=context.present(STATIC_MODEL_REGISTRY.bailian.models.find(m=>m.id==='deepseek-v4.1-flash'),'','','bailian')
- assert.equal(card.specSources[0].label,'官方文档 · 百炼 · DeepSeek-V4.1-Flash')
- assert.equal(sourceTitle('https://help.aliyun.com/zh/model-studio/models'),'百炼 · 模型列表')
+ assert.equal(card.specSources[0].label,'渠道资料 · 百炼 · DeepSeek-V4.1-Flash')
+ assert.equal(sourceTitle('https://help.aliyun.com/zh/model-studio/models'),'百炼 · 模型列表（中文版）')
 })
 test('R22B compiled Mini sorts display copies and labels every vendor limit visibly without promoting vision roles',()=>{
  const template=fs.readFileSync(require('node:path').join(require('node:path').dirname(filename),'model-picker.wxml'),'utf8')

@@ -32,7 +32,7 @@ test('R10 full live registry keeps channel exclusions, visible source and date i
       for (const label of ['音频', '视频']) input.getByRole('img', { name: `${label}：暂不支持` })
       for (const label of ['图像', '音频', '视频']) output.getByRole('img', { name: `${label}：暂不支持` })
       const link = screen.getByRole('link')
-      assert.equal(link.getAttribute('href'), source); assert.equal(link.textContent, '官方文档 · 百炼 · Kimi K3（百炼托管）')
+      assert.equal(link.getAttribute('href'), source); assert.equal(link.textContent, '渠道资料 · 百炼 · Kimi K3')
       assert.match(link.title, /^核实日期：2026-11-09\n/)
       assert.match(link.title, /输入：渠道公布/)
       assert.doesNotMatch(link.title, /输入：图研既有核实/)

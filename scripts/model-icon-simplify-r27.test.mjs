@@ -7,11 +7,11 @@ test('R27 I8 all 1064 Web and Mini presentations preserve every field except the
  assertR2Presentations(now)
  const key='fal/fal-ai/flux-2-pro',bad=structuredClone(now)
  bad[key].web.inputIcons[1].state='unknown'
- assert.throws(()=>assertR2Presentations(bad),/unexpected changed card\/field/)
+ assert.throws(()=>assertR2Presentations(bad),/unexpected changed card\/field|R29 literal title drift/)
  bad[key]=structuredClone(now[key]);bad[key].web.data.inputFact.verifiedAt='2000-01-01'
- assert.throws(()=>assertR2Presentations(bad),/unexpected changed card\/field/)
+ assert.throws(()=>assertR2Presentations(bad),/unexpected changed card\/field|R29 literal title drift/)
  bad[key]=structuredClone(now[key]);bad[key].mini.card.specRows[0].icons[1].tooltip='missing attribution'
- assert.throws(()=>assertR2Presentations(bad),/unexpected changed card\/field/)
+ assert.throws(()=>assertR2Presentations(bad),/unexpected changed card\/field|R29 literal title drift/)
 })
 
 

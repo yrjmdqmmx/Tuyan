@@ -1,10 +1,10 @@
 import { auditedModelSpecs } from '../lib/modelAudit.js'
-import { cardLifecycle, sourceTitle, fieldSourceLines } from '../../../../packages/api/src/card-presentation.mjs'
+import { cardLifecycle, visibleSourceTitle, fieldSourceLines } from '../../../../packages/api/src/card-presentation.mjs'
 import { modelLifecycleMessage } from '../lib/modelUnavailablePresentation.js'
 import { useState } from 'react'
 import { ArrowDownToLine, ArrowUpFromLine, ScanText, TextCursorInput, ExternalLink, Type, Image, AudioLines, Video, FileText } from 'lucide-react'
 import { modelCardSpecifications } from '../lib/modelCardSpecifications'
-import { modelSourceRows, modelSourceName } from '../lib/modelCardSources.js'
+import { modelSourceRows } from '../lib/modelCardSources.js'
 import { modalityIconStates } from '../lib/modelModalityIcons'
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import WorkspaceDialog from '../workspace/WorkspaceDialog.jsx'
@@ -30,7 +30,10 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
   const data = modelCardSpecifications(provider, model)
   const sourceRows = modelSourceRows(data)
   const inputs = modalityIconStates(data.input, data.inputFact, provider, model.id), outputs = modalityIconStates(data.output, data.outputFact, provider, model.id)
-  const modalityDetails = [[t('输入'), inputs], [t('输出'), outputs]].map(([direction, states]) => `${direction}：${states.map(item => t(item.accessibleLabel)).join('；')}\n${[...new Set(states.map(item => t(item.tooltip.replace(/（(?:核实日期：)?\d{4}-\d{2}-\d{2}）/g, ''))))].join('\n')}`)
+  const modalityDetails = [[t('输入'), inputs, data.inputFact], [t('输出'), outputs, data.outputFact]].map(([direction, states, fact]) => `${direction}：${states.map(item => t(item.accessibleLabel)).join('；')}\n${[...new Set(states.map(item => {
+    const date = !['unknown','unlisted'].includes(item.state) && fact.verifiedAt && `（${fact.verifiedAt}）`
+    return t(date && item.tooltip.endsWith(date) ? item.tooltip.slice(0, -date.length) : item.tooltip)
+  }))].join('\n')}`)
   const vendorOrigin = scope => scope === '原厂' ? <small className="model-spec-origin">{t('源自原厂')}</small> : null
   const provenance = fieldSourceLines(data.fields, data.checkedAt, t)
   const details = [...new Set([data.checkedAt && `${t('核实日期')}：${data.checkedAt}`, ...provenance, ...modalityDetails,
@@ -42,7 +45,7 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
     {url ? <a href={url} title={`${details}\n${sourceRows.map(row => row.label).join('\n')}\n${data.sources.join('\n')}`} aria-label={`${sourceRows[0].label}\n${details}`} target="_blank" rel="noopener noreferrer" onClick={event => {
       // Touch devices expose the same evidence through the existing dialog.
       if (window.matchMedia?.('(hover: none)').matches) { event.preventDefault(); setShowSources(true) }
-    }}><ExternalLink size={13} aria-hidden="true" /><span className="model-spec-source-text"><span className="model-spec-source-label">{t(modelSourceName(data, url))} · </span><span className="model-spec-source-domain" title={url}>{sourceRows[0].label.slice(modelSourceName(data, url).length + 3)}</span></span></a>
+    }}><ExternalLink size={13} aria-hidden="true" /><span className="model-spec-source-text"><span className="model-spec-source-label">{sourceRows[0].label.split(' · ')[0]} · </span><span className="model-spec-source-domain" title={url}>{sourceRows[0].label.split(' · ').slice(1).join(' · ')}</span></span></a>
       : <span title={`${details}\n${data.sources.join('\n')}`} aria-label={details}>{t('官方文档待确认')}</span>}
   </div>
   return <div className="model-card-specifications">
@@ -70,6 +73,6 @@ export function ModelLifecycleBadge({ lifecycle, provider, modelId }) {
     <span className="tw-catalog-tags"><span className="is-unavailable" role="button" tabIndex={0} title={message} aria-label={`将下线：${message}`} onClick={() => setOpen(true)} onKeyDown={event => {
       if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setOpen(true) }
     }}>将下线</span></span>
-    {open && <div onClick={event => event.stopPropagation()}><WorkspaceDialog className="model-evidence-dialog" title="下线公告" onClose={() => setOpen(false)}><p>{message}</p>{sourceUrl && <a className="model-evidence-source" href={sourceUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} aria-hidden="true" /><span>下线公告 · {sourceTitle(sourceUrl)}</span></a>}</WorkspaceDialog></div>}
+    {open && <div onClick={event => event.stopPropagation()}><WorkspaceDialog className="model-evidence-dialog" title="下线公告" onClose={() => setOpen(false)}><p>{message}</p>{sourceUrl && <a className="model-evidence-source" href={sourceUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} aria-hidden="true" /><span>{visibleSourceTitle(sourceUrl)}</span></a>}</WorkspaceDialog></div>}
   </>
 }

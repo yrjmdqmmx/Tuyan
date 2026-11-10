@@ -3,7 +3,7 @@ const {loadComponent}=require('./helpers/component.cjs')
 const {modalityIconStates}=require('../miniprogram/utils/card-presentation.js')
 test('R27 I8 all 1064 compiled Mini cards use one solid grey non-supported glyph and exact modal distinctions',async()=>{
  const {imageInputPresentations,review}=await import('../../../test-support/image-input-r27.mjs')
- const {expectedR28}=await import('../../../test-support/founder-fixes-r28.mjs')
+ const {expectedR29:expectedR28}=await import('../../../test-support/source-title-history-r29.mjs')
  const root=__dirname+'/../miniprogram/components/model-picker/',wxml=fs.readFileSync(root+'model-picker.wxml','utf8'),css=fs.readFileSync(root+'model-picker.wxss','utf8')
  // Exact shipped template: the state only selects the wrapper class; the sole child depends on modality ID.
  assert.match(wxml,/class="modality-icon is-\{\{icon.state\}\}" data-state="\{\{icon.state\}\}" aria-role="button" aria-label="\{\{icon.accessibleLabel\}\}" data-label="\{\{spec.label\}\} · \{\{icon.accessibleLabel\}\}" data-detail="\{\{icon.tooltip\}\}" catchtap="showModality"><view class="modality-glyph glyph-\{\{icon.id\}\}" aria-hidden="true"\/><\/view>/)
@@ -33,7 +33,7 @@ test('R27 I8 all 1064 compiled Mini cards use one solid grey non-supported glyph
  }
  assert.equal(cards,1064);assert.equal(decisionA,15);assert.equal(events.length,0)
  const vendor=modalityIconStates('',{state:'unsupported',provenance:'vendor',sourceUrl:'https://example.com/spec',verifiedAt:'2026-11-09'})
- for(const icon of vendor)assert.equal(icon.tooltip,'原厂资料标明不支持。原厂资料 · Example · Spec（2026-11-09）')
+ for(const icon of vendor)assert.equal(icon.tooltip,'原厂资料标明不支持。官方文档 · Example · Spec（2026-11-09）')
  const legacy=modalityIconStates('文本、音频（有限支持）')
  assert.equal(legacy[1].accessibleLabel,'图像：未标注 · 暂无官方资料');assert.equal(legacy[3].accessibleLabel,'音频：支持')
  assert.equal(legacy[3].tooltip,'支持（条件：音频（有限支持）） · 暂无官方资料')

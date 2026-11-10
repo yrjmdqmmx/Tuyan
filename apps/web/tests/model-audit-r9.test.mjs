@@ -1,4 +1,5 @@
 import expectedSourceRows from './fixtures/model-audit-r9-source-rows-r24.json' with { type: 'json' }
+import {r29SourceRows} from '../../../test-support/source-title-history-r29.mjs'
 import test, { afterEach, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
@@ -64,7 +65,7 @@ test('R9 Bailian Kimi K3 visible official link and title use the channel source 
     const view = render(React.createElement(ModelSpecifications, { provider: 'bailian', model, compactSources }))
     const link = screen.getByRole('link')
     assert.equal(link.getAttribute('href'), 'https://help.aliyun.com/zh/model-studio/kimi-k3')
-    assert.equal(link.textContent, '官方文档 · 百炼 · Kimi K3（百炼托管）')
+    assert.equal(link.textContent, '渠道资料 · 百炼 · Kimi K3')
     assert.match(link.title, /^核实日期：2026-11-09\n/)
     assert.match(link.title, /上下文窗口：1,048,576 tokens/)
     assert.match(link.title, /最大输出：1,048,576 tokens/)
@@ -90,7 +91,7 @@ test('R9 channel evidence remains available; R12 permits only notices, human pag
     else assert.ok(data.sources.includes(model.officialSourceUrl), 'secondary evidence is retained')
     const view = render(React.createElement(ModelSpecifications, { provider, model }))
     assert.equal(screen.getByRole('link').getAttribute('href'), first, provider + '/' + model.id)
-    assert.deepEqual({url: screen.getByRole('link').getAttribute('href'), label: screen.getByRole('link').textContent}, expectedSourceRows[provider + '/' + model.id])
+    assert.deepEqual({url: screen.getByRole('link').getAttribute('href'), label: screen.getByRole('link').textContent}, r29SourceRows([expectedSourceRows[provider + '/' + model.id]])[0])
     view.unmount(); cards++; channels.add(provider)
   }
   assert.equal(cards, Object.keys(expectedSourceRows).length); assert.ok(cards > 100); assert.ok(channels.size > 10)

@@ -7,6 +7,7 @@ import { createRequire } from 'node:module'
 import assert from 'node:assert/strict'
 import { transformSync } from 'esbuild'
 import { STATIC_MODEL_REGISTRY } from '../apps/web/src/lib/staticModelCatalog.js'
+import { unifiedPageTitles } from './lib/source-titles-r29.mjs'
 const root = fileURLToPath(new URL('../', import.meta.url)), check = process.argv.includes('--check')
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))
 const miniWrites = new Map()
@@ -110,6 +111,9 @@ for (const [url, page] of Object.entries(read('config/channel-audit/review-r27-2
   if (referenced.has(url)) sourceTitles[url.replace(/\.md$/, '')] = page.displayTitle
 }
 for (const url of Object.keys(sourceTitles)) sourceTitles[url] = sourceTitles[url].split(/ - | \| | – |·(?=百度|阿里|DeepSeek)/)[0].trim()
+// Array entries are URL-wide titles: they outrank per-card names and local
+// sibling disambiguation. Existing captured evidence remains unchanged.
+for (const [url, title] of Object.entries(unifiedPageTitles())) sourceTitles[url] = [title]
 write('packages/api/src/card-data/source-titles.json', JSON.stringify(sourceTitles) + '\n')
 // Package-local names keep Core independent of the Web catalog. Mini reuses its
 // existing catalog instead of shipping a second copy of these identities.
@@ -131,7 +135,8 @@ const miniPages = `const catalog = require('./static-model-catalog.js').STATIC_M
 const audit = require('./model-audit-data.js');
 const tokenDancePages = Object.fromEntries(catalog.tokendance.models.map(({id}) => [id, {verified: audit.sources[audit.rows['tokendance/' + id][5]] === 'https://tokendance.space/models/' + id}]));
 `
-const miniTitles = Object.fromEntries(Object.entries(sourceTitles).filter(([url]) => referenced.has(url)))
+// Both helpers resolve every catalog URL, even when Mini displays fewer links.
+const miniTitles = sourceTitles
 // Losslessly reference TokenDance quote subjects through the existing catalog.
 // Avoid shipping these long model IDs a second time in the Mini helper.
 const tokenDanceIds = STATIC_MODEL_REGISTRY.tokendance.models.map(model => model.id)
@@ -141,7 +146,20 @@ const indexedMiniTitles = Object.entries(miniTitles).map(([url, title]) => {
   const index = miniAudit.sources.indexOf(url)
   return [index < 0 ? url : index, title]
 })
-const combined = miniPages + `const knownModels = Object.values(catalog).flatMap(entry => entry.models.map(model => [model.id, model.label]));\nconst storedTitles = Object.fromEntries(${JSON.stringify(indexedMiniTitles)}.map(([key, title]) => [typeof key === 'number' ? audit.sources[key] : key, title]));\nconst evidence = ${JSON.stringify(miniEvidence)};\nfor (const group of evidence) for (const row of group[2]) if (Array.isArray(row[1])) row[1] = row[1].map(index => catalog.tokendance.models[index].id).join('|');\n` + mini + modality
+// Lossless prefix interning keeps the full cross-client title dictionary below
+// both original Mini byte guards; numeric keys still reuse audit.sources.
+const prefixes = new Map(), titleGroups = new Map()
+for (const [key] of indexedMiniTitles) if (typeof key === 'string') {
+  const prefix = key.slice(0, key.lastIndexOf('/') + 1)
+  prefixes.set(prefix, (prefixes.get(prefix) || 0) + 1)
+}
+for (const [key, title] of indexedMiniTitles) {
+  const prefix = typeof key === 'string' ? key.slice(0, key.lastIndexOf('/') + 1) : ''
+  const shared = prefixes.get(prefix) > 1 ? prefix : ''
+  if (!titleGroups.has(shared)) titleGroups.set(shared, [])
+  titleGroups.get(shared).push([typeof key === 'string' ? key.slice(shared.length) : key, title])
+}
+const combined = miniPages + `const knownModels = Object.values(catalog).flatMap(entry => entry.models.map(model => [model.id, model.label]));\nconst storedTitles = {}; for (const [prefix, rows] of ${JSON.stringify([...titleGroups])}) for (const [key, title] of rows) storedTitles[typeof key === 'number' ? audit.sources[key] : prefix + key] = title;\nconst evidence = ${JSON.stringify(miniEvidence)};\nfor (const group of evidence) for (const row of group[2]) if (Array.isArray(row[1])) row[1] = row[1].map(index => catalog.tokendance.models[index].id).join('|');\n` + mini + modality
 // Explicit CommonJS exports avoid an unnecessary ESM interoperability facade
 // in this native-only helper; the same public functions remain available.
 const exports = [...combined.matchAll(/export (?:function|const) (\w+)/g)].map(match => match[1])

@@ -18,6 +18,6 @@ test('R27 all 15 compiled Mini image icons and dialog sources retain the edit qu
     assert.equal(modal.title, '图像：支持'); assert.equal(modal.content, icon.tooltip)
     const source = card.specSources[0]
     definition.methods.copySource({currentTarget:{dataset:{url:source.url,source:source.label,notice:card.auditMessage}}})
-    assert.match(modal.content, /编辑接口/); modal.success({confirm:true}); assert.equal(clipboard, source.url)
+    assert.match(modal.content, /编辑接口|Edit API 文档/); modal.success({confirm:true}); assert.equal(clipboard, source.url)
   }
 })

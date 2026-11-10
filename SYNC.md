@@ -1,3 +1,11 @@
+## 2026-11-10 · R29 Phase I10: one visible source title per URL (not deployed)
+
+- [x] Shared / Web / Mini: URL-wide titles replace per-card/list-context variations. Fal API pages always use `渠道资料 · fal · <endpoint name> API 文档`; edit/variant endpoints retain their identity. Vendor/channel ownership controls the prefix; retirement labels and separate fact provenance remain. No execution, name, action, env, saved-setting or routing changes.
+- [x] Evidence / regression: 1,064 cards per client, 1,088 URLs, every footer/field/dialog/retirement surface; 353 title conflicts resolved. Exact before/after counts and every changed URL are in the [R29 title report](docs/model-card-source-titles-r24.md#r29-title-unification). Full Web/Mini formatter parity, strict title scans and exact title-only presentation patches. Changed expectations recorded in the ledger.
+- [x] Locales: removed the one unused Web conditional-support translation; Web/Mini/scripts reject Chinese/English labels and corresponding keys in locales and UI. Conditional data state and dark support presentation remain.
+- [x] Validation: **1,843/1,843 tests**, Web/Mini/Core builds, Core types and all **13 maintenance checks** pass. Mini **1,568,548 / 1,572,864 bytes**, **4,316 remaining**; both original size guards and frozen execution tests are unchanged. [Results](docs/model-modality-r29-i10-validation.json).
+- [x] Review: M10 recipe and plan prepared at 1280/390, DPR 2 for both, with per-URL dialog title checks and output manifest; not run. [Audit](docs/model-modality-audit-20261109.md#r29-phase-i10).
+
 ## 2026-11-10 · R28 Phase I9: founder fixes for unknown icons, fal sources and conditional support (not deployed)
 
 - [x] Shared / Web / Mini: unknown/unlisted tooltip `未标注 · explanation`; accessible `<modality>：未标注 · explanation`. Unsupported wording is unchanged. Conditional remains in data but displays dark `支持`, with `支持（条件：qualifier） · attribution` in tooltip/dialog.

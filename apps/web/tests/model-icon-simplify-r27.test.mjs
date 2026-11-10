@@ -7,7 +7,7 @@ import {ModelSpecifications} from '../src/components/ModelSpecifications.jsx'
 import {STATIC_MODEL_REGISTRY} from '../src/lib/staticModelCatalog.js'
 import {modalityIconStates} from '../src/lib/modelModalityIcons.js'
 import {iconBaseline, expectedR2Icon} from '../../../test-support/icon-simplify-r27.mjs'
-import {expectedR28} from '../../../test-support/founder-fixes-r28.mjs'
+import {expectedR29 as expectedR28} from '../../../test-support/source-title-history-r29.mjs'
 import {review} from '../../../test-support/image-input-r27.mjs'
 
 const css = fs.readFileSync(new URL('../src/components/ModelSpecifications.css', import.meta.url), 'utf8')
@@ -69,13 +69,13 @@ test('R27 I8 vendor, conditional and unlisted fixtures retain semantics without 
   const vendor = modalityIconStates('', {state:'unsupported', provenance:'vendor', sourceUrl:'https://example.com/spec', verifiedAt:'2026-11-09'})
   for (const icon of vendor) {
     assert.match(icon.accessibleLabel, /：暂不支持$/)
-    assert.equal(icon.tooltip, '原厂资料标明不支持。原厂资料 · Example · Spec（2026-11-09）')
+    assert.equal(icon.tooltip, '原厂资料标明不支持。官方文档 · Example · Spec（2026-11-09）')
   }
   const vendorModel = {id:'vendor-exclusion',specifications:{version:1,modalityFacts:{inputModalities:{state:'unsupported',provenance:'vendor',sourceUrl:'https://example.com/spec',verifiedAt:'2026-11-09'}}}}
   try {
     const ui = render(React.createElement(ModelSpecifications, {provider:'custom',model:vendorModel}))
     fireEvent.click(ui.container.querySelector('.model-modality-trigger'))
-    assert.match(document.querySelector('.model-evidence-dialog').textContent, /原厂资料标明不支持。原厂资料 · Example · Spec/)
+    assert.match(document.querySelector('.model-evidence-dialog').textContent, /原厂资料标明不支持。官方文档 · Example · Spec/)
   } finally {cleanup()}
   const icons = modalityIconStates('文本、音频（有限支持）')
   assert.equal(icons[1].state, 'unlisted'); assert.equal(icons[1].accessibleLabel, '图像：未标注 · 暂无官方资料')

@@ -20,7 +20,8 @@ export function titleIssues({ url, label }, name, id) {
   if (/\b([a-z][a-z0-9]*(?:\s+[a-z][a-z0-9]*){0,3})\s+\1\b/i.test(subject)) issues.push('duplicate word')
   const repairedDottedName = knownNames.includes(subject) && /\d\.\d/.test(subject) && /[a-z]\d+-\d+(?![a-z\d])/i.test(name || '')
   const readableOwn = /^[A-Z]/.test(subject) && !/_|[a-z]-[a-z]|\d-[a-z]{2}/i.test(subject)
-  if (!readableOwn && name && compact(subject) === compact(name) && subject !== name && !repairedDottedName) issues.push('curated case/punctuation')
+  const canonicalRelease = /^DeepSeek-V4-(?:Pro|Flash) \d{4}$/.test(subject)
+  if (!readableOwn && name && compact(subject) === compact(name) && subject !== name && !repairedDottedName && !canonicalRelease) issues.push('curated case/punctuation')
   const knownSpelling = knownNames.some(known => subject === known || subject.startsWith(known + ' ') || subject.startsWith(known + '（'))
   if (subject !== name && !knownSpelling && /_|[a-z]-[a-z]/i.test(subject)) issues.push('slug separators')
   const ownDottedTokens = dottedTokens([name, id])
@@ -64,7 +65,7 @@ export const f3TitleExamples = [
     ['kimi-k3-1-pro-quickstart', 'Kimi K3.1 Pro Quickstart'], ['recraft-v4-1', 'Recraft V4.1'],
     ['deepseek-v4-1-flash', 'DeepSeek V4.1 Flash'], ['deepseek-r1-0528', 'DeepSeek-R1-0528'],
   ].map(([slug, expected]) => ['https://docs.example.test/guide/' + slug, {id:'unrelated-card',label:'Unrelated Card'}, 'Example · ' + expected]),
-  ['https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[klein]-4b', {id:'flux-2-klein-4b',label:'FLUX.2 [klein] 4B'}, 'BFL · FLUX.2 [klein] 4B'],
+  ['https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[klein]-4b', {id:'flux-2-klein-4b',label:'FLUX.2 [klein] 4B'}, 'BFL · Generate Or Edit An Image With FLUX.2 [klein] 4B'],
   ['https://docs.example.test/models/qwen3-8-27b', {id:'qwen3.8-27b',label:'Qwen3.8-27B'}, 'Example · Qwen3.8-27B'],
   ['https://docs.example.test/guide/custom-v7-2-quickstart', {id:'custom-v7.2',label:'Custom V7.2'}, 'Example · Custom V7.2 Quickstart'],
   ...[

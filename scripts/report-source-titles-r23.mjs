@@ -1,4 +1,5 @@
 import {r28Baseline,expectedR28} from '../test-support/founder-fixes-r28.mjs'
+import {historicalR29Rows} from '../test-support/source-title-history-r29.mjs'
 const expectedHumanRows=(rows,card,client)=>currentHumanRows(rows,card,client,false)
 import i5 from '../config/channel-audit/review-r26-20261110.json' with {type:'json'}
 import {expectedHumanRows as currentHumanRows} from '../test-support/source-links-i3-r24.mjs'
@@ -22,7 +23,7 @@ const mini = require('../apps/miniprogram/miniprogram/utils/static-model-catalog
 const current = {web:[],mini:[]}, notices = []
 for (const [provider, entry] of Object.entries(web.STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
   const card = provider+'/'+model.id, data = web.modelCardSpecifications(provider,model)
-  current.web.push({card,name:data.sourceModel.displayName,rows:web.modelSourceRows(data)})
+  current.web.push({card,name:data.sourceModel.displayName,rows:historicalR29Rows(web.modelSourceRows(data),card,'web')})
   if (data.lifecycle?.state === 'scheduled' && data.lifecycle.sourceUrl) {
     const url = data.lifecycle.sourceUrl
     const old = titleBaseline.web.find(row=>row.card===card).rows.find(row=>row.url===url)
@@ -33,7 +34,7 @@ for (const [provider, entry] of Object.entries(web.STATIC_MODEL_REGISTRY)) for (
 for (const [provider, entry] of Object.entries(mini.STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
   const data = context.present(model,'','',provider)
   const key=provider+'/'+model.id
-  assert.deepEqual(structuredClone(data.specSources),expectedR28[key].mini.card.specSources,key+' R28 sources')
+  assert.deepEqual(historicalR29Rows(structuredClone(data.specSources),key,'mini'),expectedR28[key].mini.card.specSources,key+' R28 sources')
   current.mini.push({card:key,name:data.label,rows:structuredClone(r28Baseline[key].mini.card.specSources)})
 }
 const counts = {}, changes = [], retained = []

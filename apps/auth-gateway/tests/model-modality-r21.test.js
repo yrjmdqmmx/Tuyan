@@ -38,7 +38,7 @@ test('R21 Gateway sources keep reviewed channel pages and labelled vendor field 
       if (retirement.includes(row.url)) { assert.equal(row.label, '下线公告 · TokenDance · Qwen3.5 Plus 下线（2027-01-19）'); continue }
       assert.ok(vendorUrls.some(url => sourceIdentity(url) === sourceIdentity(row.url)), id + ': ' + row.url)
       if (row.url === r24.noticeUrl) assert.equal(row.label, r24.noticeLabel, id)
-      else assert.match(row.label, /^原厂规格 · /, id)
+      else assert.match(row.label, /^(官方文档|渠道资料) · /, id)
     }
     if (id === 'deepseek-v4.1-flash') {
       assert.equal(audit.fields.maxOutputTokens.provenance, 'vendor')

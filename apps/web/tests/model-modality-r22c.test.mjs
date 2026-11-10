@@ -51,8 +51,8 @@ test('R22C vendor exclusions retain their attribution; vendor silence stays unkn
   render(React.createElement(ModelSpecifications, {provider:'custom', model:mixed('vendor')}))
   const inputs = within(screen.getByRole('group', {name:'输入模态'}))
   assert.equal(inputs.getByRole('img', {name:'图像：暂不支持'}).dataset.state, 'unsupported')
-  assert.match(inputs.getByRole('img', {name:'文本：支持'}).title, /^原厂资料.*2026-11-09/)
-  assert.equal(inputs.getByRole('img', {name:/^视频：未标注 · /}).title, '未标注 · 原厂资料 · Example · Spec')
+  assert.match(inputs.getByRole('img', {name:'文本：支持'}).title, /^官方文档.*2026-11-09/)
+  assert.equal(inputs.getByRole('img', {name:/^视频：未标注 · /}).title, '未标注 · 官方文档 · Example · Spec')
   for (const [key, row] of Object.entries(phase2.tables)) {
     cleanup()
     render(React.createElement(ModelSpecifications, {provider:'bailian',model:{id:key.slice(key.indexOf('/') + 1)}}))

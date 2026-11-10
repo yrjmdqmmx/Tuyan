@@ -1094,7 +1094,6 @@
   "输入模态": "Input modalities",
   "输出模态": "Output modalities",
   "官方未列支持": "Not listed as supported",
-  "有条件支持": "Conditionally supported",
   "生图提示词上限": "Generation prompt limit",
   "编辑提示词上限": "Editing prompt limit",
   "范围：{min}–{max} 的整数。": "Range: integers from {min} to {max}.",

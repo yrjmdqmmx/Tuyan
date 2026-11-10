@@ -29,7 +29,7 @@ test('R24 Web keeps retirement roles in the three reported cards and their dialo
     assert.ok(!dialog.innerHTML.includes(fixture.noticeUrl))
     cleanup()
   }
-  assert.equal(titleSourceRows([{url:fixture.noticeUrl,label:'渠道公告'}])[0].label, '渠道公告 · 百炼 · 模型下线公告')
+  assert.equal(titleSourceRows([{url:fixture.noticeUrl,label:'渠道公告'}])[0].label, '下线公告 · 百炼 · 模型下线公告')
 })
 
 test('R24 Web scans all 1064 cards for retirement labels and the exact seven historical hints', t => {

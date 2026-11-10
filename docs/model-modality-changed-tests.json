@@ -2,10 +2,10 @@
   "base": "8c456709",
   "counts": {
     "files": 26,
-    "assertionAndFixtureInputChanges": 177,
+    "assertionAndFixtureInputChanges": 193,
     "consumedJsonFixtures": 2,
     "semanticFixtureChanges": 695,
-    "justified": 871,
+    "justified": 887,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -31,7 +31,8 @@
     "R26 Phase I6: seven displayed retirement badges across 1064 cards per client are verified by exact model-ID/date quotes. Only Bailian qwen3.5-397b-a17b changes source; Qianfan does not acquire a badge. Existing all-card badge tests now require the offline review evidence. Date simplification removes unknown/historical tooltip dates and separate field date lines, retaining differing known dates inline. Both clients use the exact requested sentence on the frozen 66 conflict cards. One captured title is neutralized, with strict promotional-token tests. The source report freezes I2-I5 and appends I6. Facts, notices, names, image-input decisions and byte ceilings remain unchanged; new follow-up comparisons use 6864824a.",
     "R27 Phase I7: Founder decision A 2026-11-10 restores image input on 14 fal and one Ideogram card after 15 successful public documentation quote checks. The original Phase 2 report remains historical. All-card presentation comparison requires exactly these 15 changes on Web and Mini; six old output citations remain preserved. Main picker names, execution locks, and both Mini byte guards are unchanged. The R9 literal fixture records all 15 old/new URLs and labels. Source report I6 is frozen; I7 is appended. New follow-up comparisons use d1c63994.",
     "R27 Phase I8: founder: grey is enough (R2, 2026-11-10). Revised short labels and evidence prefixes replace strike/question/dash/asterisk assertions with absence and shared-solid-glyph checks. Conditional uses short 支持 in grey, with 有条件支持 only in evidence. The I7 report guard validates exact R2 text before projecting only those strings back to its frozen wording; no state/fact/source or execution assertion is relaxed. All 1064 presentations per client and 15 decision-A image inputs have new independent regression coverage.",
-    "R28 Phase I9: founder round 7. Unknown tooltip/accessibility includes the required prefix and existing explanation; conditional uses dark 支持 with its exact qualifier in hover/dialog. All 61 fal catalog fields have freshly validated human sources, and Mini preserves all fal field titles plus nine secondary human links. Literal source/date deltas and the pre-R28 snapshot validate changes before historical projection. Mini setData test doubles now implement native indexed-array patches; the unchanged 128 KiB guard loads all pages. Frozen execution tests, byte guards and identity/name expectations are unchanged."
+    "R28 Phase I9: founder round 7. Unknown tooltip/accessibility includes the required prefix and existing explanation; conditional uses dark 支持 with its exact qualifier in hover/dialog. All 61 fal catalog fields have freshly validated human sources, and Mini preserves all fal field titles plus nine secondary human links. Literal source/date deltas and the pre-R28 snapshot validate changes before historical projection. Mini setData test doubles now implement native indexed-array patches; the unchanged 128 KiB guard loads all pages. Frozen execution tests, byte guards and identity/name expectations are unchanged.",
+    "R29 Phase I10: 353 conflicting source URLs unified across all catalog surfaces. Vendor/channel roles and endpoint names are identical in Web/Mini; explicit source namespaces replace list-context variants. Literal 997585e2-to-R29 title patches are validated before projecting historical snapshots; every non-title value stays exact. The only locale removal is the unreferenced conditional-support entry. Existing execution tests, name locks, size guards, source URLs and facts stay unchanged. New all-card render/copy/formatter/locale checks are independent of the historical expectations."
   ],
   "files": [
     {
@@ -113,7 +114,7 @@
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r12.test.cjs",
-      "diffSha256": "6fb29621358b7031ea4c3b0ba6c081f7a0c637d1a6f750cab1e8a7f32d124443",
+      "diffSha256": "c25f0e810b26113b8905a37ae56c1e743ecb69d0cc10a81f73a13efcaa11a061",
       "changes": [
         {
           "line": 105,
@@ -629,6 +630,66 @@
             "test-support/fixtures/conflict-cards-r26.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 2,
+          "oldLine": 2,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "const {sourceTitle}=require('../miniprogram/utils/card-presentation.js')",
+          "new": "const {sourceTitle,visibleSourceTitle}=require('../miniprogram/utils/card-presentation.js')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 37,
+          "oldLine": 37,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "    assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, staticModel) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : '原厂规格 · '+sourceTitle(source, staticModel)})), ...small.retirementSources.map(url => ({url,label:'下线公告 · '+sourceTitle(url,staticModel)}))])",
+          "new": "    assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: visibleSourceTitle(url, staticModel) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : visibleSourceTitle(source, staticModel)})), ...small.retirementSources.map(url => ({url,label:visibleSourceTitle(url,staticModel)}))])",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 86,
+          "oldLine": 86,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "    assert.deepEqual(structuredClone(presented.specSources), [{ url: finalUrl, label: label + ' · ' + sourceTitle(finalUrl, entry) }])",
+          "new": "    assert.deepEqual(structuredClone(presented.specSources), [{ url: finalUrl, label: visibleSourceTitle(finalUrl, entry) }])",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 128,
+          "oldLine": 128,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : '原厂规格 · '+sourceTitle(source, entry)}))])",
+          "new": "    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: visibleSourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : visibleSourceTitle(source, entry)}))])",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -710,9 +771,39 @@
             "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "const {sourceTitle}=require('../miniprogram/utils/card-presentation.js')",
+          "new": "const {visibleSourceTitle}=require('../miniprogram/utils/card-presentation.js')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 153,
+          "oldLine": 153,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "    for(const source of card.specSources) assert.equal(source.label,'官方文档 · '+sourceTitle(source.url, model));",
+          "new": "    for(const source of card.specSources) assert.equal(source.label,visibleSourceTitle(source.url, model));",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "bc52b96b6b984045acc9599efa18f1d1dd142decaa3a84cfb30777db603388ec"
+      "diffSha256": "67eb3bf600b0852d038966ebc92b268fe8ac5789eaaf1e5d1b48e66ce11e6d17"
     },
     {
       "file": "apps/miniprogram/tests/model-picker-flow.test.cjs",
@@ -925,9 +1016,24 @@
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 35,
+          "oldLine": 35,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "      assert.equal(link.getAttribute('href'), source); assert.equal(link.textContent, '官方文档 · 百炼 · Kimi K3（百炼托管）')",
+          "new": "      assert.equal(link.getAttribute('href'), source); assert.equal(link.textContent, '渠道资料 · 百炼 · Kimi K3')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "91f26fb739178c99efcb5504fcf2337e6ad71c6835079b25eb836f450897f492"
+      "diffSha256": "0e15d40f66405943ee10863e448e682c05687caa1ad2250fea2e8ee9a165e426"
     },
     {
       "file": "apps/web/tests/model-audit-r11.test.mjs",
@@ -1334,7 +1440,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r13.test.mjs",
-      "diffSha256": "881ebffdf645383f3a6ce4ea9318d5b31959518509f28922f068d39c34e23965",
+      "diffSha256": "b316a48a36f98f3ca00ecb0aef250074239a350dd72a52dde8d9bb9f8365ea55",
       "changes": [
         {
           "line": 40,
@@ -1641,6 +1747,51 @@
             "docs/model-card-qwen35plus-evidence-r24.md",
             "config/channel-audit/review-r24-20261110.json",
             "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "import { sourceTitle } from '../../../packages/api/src/card-presentation.mjs'",
+          "new": "import { sourceTitle, visibleSourceTitle } from '../../../packages/api/src/card-presentation.mjs'",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 69,
+          "oldLine": 69,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "        assert.equal(visible.textContent, label + ' · ' + sourceTitle(url))",
+          "new": "        assert.equal(visible.textContent, visibleSourceTitle(url))",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 167,
+          "oldLine": 167,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "      assert.equal(view.getByRole('link').textContent, '原厂规格 · DeepSeek · V3-0324 Release')",
+          "new": "      assert.equal(view.getByRole('link').textContent, '官方文档 · DeepSeek · V3-0324 Release')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -2205,7 +2356,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r9.test.mjs",
-      "diffSha256": "b5d82c76481e11407a5231f6f69e316ee29fe921ad398851dbbd9eca800ad1e0",
+      "diffSha256": "4bceec021925bf93a1de3dda0b34d2d62a6c04c68ddebeafdbca895dad877bc3",
       "changes": [
         {
           "line": 90,
@@ -2362,6 +2513,51 @@
             "config/channel-audit/review-r25-20261110.json",
             "config/channel-audit/source-titles-r25-i5.json",
             "test-support/fixtures/source-evidence-i5-r25.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 2,
+          "oldLine": 2,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "(absent)",
+          "new": "import {r29SourceRows} from '../../../test-support/source-title-history-r29.mjs'",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 68,
+          "oldLine": 67,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "    assert.equal(link.textContent, '官方文档 · 百炼 · Kimi K3（百炼托管）')",
+          "new": "    assert.equal(link.textContent, '渠道资料 · 百炼 · Kimi K3')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 94,
+          "oldLine": 93,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "    assert.deepEqual({url: screen.getByRole('link').getAttribute('href'), label: screen.getByRole('link').textContent}, expectedSourceRows[provider + '/' + model.id])",
+          "new": "    assert.deepEqual({url: screen.getByRole('link').getAttribute('href'), label: screen.getByRole('link').textContent}, r29SourceRows([expectedSourceRows[provider + '/' + model.id]])[0])",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -2527,9 +2723,39 @@
             "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 28,
+          "oldLine": 28,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  assert.match(label.textContent, /^(官方文档|原厂规格|下线公告) · $/)",
+          "new": "  assert.match(label.textContent, /^(官方文档|渠道资料|下线公告) · $/)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 119,
+          "oldLine": 119,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "    ['replicate', {id: 'google/imagen-3'}, '原厂规格'],",
+          "new": "    ['replicate', {id: 'google/imagen-3'}, '官方文档'],",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ca65af3924aa4c2f7c645ceb52147699749766ba2eac3bca8acc05a6308bc707"
+      "diffSha256": "0ba548518070e8d7936835dc1539502c4bff5f106234928362adcd4db706ed93"
     },
     {
       "file": "apps/web/tests/model-specifications.test.mjs",
@@ -2796,9 +3022,24 @@
             "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 67,
+          "oldLine": 67,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  assert.equal(screen.getByRole('link').textContent,'原厂规格 · Google Cloud · 3-0 Generate')",
+          "new": "  assert.equal(screen.getByRole('link').textContent,'官方文档 · Google Cloud · 3-0 Generate')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "4139390ade2281adcf9f40c773654fc6233122e2a82d41844c10daaabb7b24b6"
+      "diffSha256": "21f5333c1798721f4f2a9eaee5ba077e9a53e2555bf3051ceee1600e7469af26"
     },
     {
       "file": "apps/web/tests/workspace-model-catalog.test.mjs",
@@ -21508,7 +21749,7 @@
     {
       "file": "apps/web/tests/model-card-r22b.test.mjs",
       "comparisonBase": "2550c736",
-      "diffSha256": "66dfb6bf7db4fa47961d9397b93aa8de49d44b2f8677ed0682c5e52a5085abb5",
+      "diffSha256": "c7689d93d0869fc26933ea82aa3fcc25a86351d67d8f96a92c982841f4d04f5b",
       "changes": [
         {
           "phase": "R22 Phase C",
@@ -21553,6 +21794,36 @@
             "docs/model-modality-audit-20261109.md#r27-phase-i8",
             "apps/web/tests/model-icon-simplify-r27.test.mjs",
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 55,
+          "oldLine": 55,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  assert.equal(screen.getByRole('link').textContent,'官方文档 · 百炼 · DeepSeek-V4.1-Flash')",
+          "new": "  assert.equal(screen.getByRole('link').textContent,'渠道资料 · 百炼 · DeepSeek-V4.1-Flash')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 61,
+          "oldLine": 61,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  within(dialog).getByRole('link',{name:'官方文档 · 百炼 · 模型列表'})",
+          "new": "  within(dialog).getByRole('link',{name:'渠道资料 · 百炼 · 模型列表（中文版）'})",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -21674,7 +21945,7 @@
     {
       "file": "apps/miniprogram/tests/model-card-r22b.test.cjs",
       "comparisonBase": "1dcd8b13",
-      "diffSha256": "ddeb814a69b2373c0dd5157a281cd635b8ac68153f909a1ed9bce3bf8717481a",
+      "diffSha256": "4fe45df1268e15a8fb990d162618616e0bbd1ce89bd1feb63b14ef271c7e1e0f",
       "changes": [
         {
           "line": 19,
@@ -21691,13 +21962,28 @@
             "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 19,
+          "oldLine": 19,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " assert.equal(card.specSources[0].label,'官方文档 · 百炼 · DeepSeek-V4.1-Flash')\n assert.equal(sourceTitle('https://help.aliyun.com/zh/model-studio/models'),'百炼 · 模型列表')",
+          "new": " assert.equal(card.specSources[0].label,'渠道资料 · 百炼 · DeepSeek-V4.1-Flash')\n assert.equal(sourceTitle('https://help.aliyun.com/zh/model-studio/models'),'百炼 · 模型列表（中文版）')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/miniprogram/tests/model-modality-r22c.test.cjs",
       "comparisonBase": "1dcd8b13",
-      "diffSha256": "c31c27f2cfe84bebffbce0e692bca2ba27d56b9cc381971c86a85e32892acaa1",
+      "diffSha256": "7e97bc4d1534be3743af3f059b17d47874829793508c8c8deb1aa2b761af87e5",
       "changes": [
         {
           "line": 25,
@@ -21908,6 +22194,36 @@
             "docs/model-modality-audit-20261109.md#r28-phase-i9",
             "apps/web/tests/model-founder-fixes-r28.test.mjs",
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 15,
+          "oldLine": 15,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " assert.match(icons[0].tooltip,/渠道资料.*2026-11-09/)",
+          "new": " assert.match(icons[0].tooltip,/官方文档.*2026-11-09/)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 18,
+          "oldLine": 18,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " assert.equal(vendor[2].tooltip,'未标注 · 原厂资料 · Example · Spec');assert.deepEqual(fact,before)",
+          "new": " assert.equal(vendor[2].tooltip,'未标注 · 官方文档 · Example · Spec');assert.deepEqual(fact,before)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -22134,7 +22450,7 @@
     {
       "file": "test-support/source-titles-r23.mjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "4f9c7b450ea90a6a37c96f6eb18a37b9778de6e421267ad0fa1d42627d461c28",
+      "diffSha256": "844fa0b659b6807d207bf271d2286fc46cbfd87b866b39d1bd1e01120918511e",
       "changes": [
         {
           "line": 14,
@@ -22173,13 +22489,43 @@
             "scripts/source-titles-i3-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 23,
+          "oldLine": 23,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  if (!readableOwn && name && compact(subject) === compact(name) && subject !== name && !repairedDottedName) issues.push('curated case/punctuation')",
+          "new": "  const canonicalRelease = /^DeepSeek-V4-(?:Pro|Flash) \\d{4}$/.test(subject)\n  if (!readableOwn && name && compact(subject) === compact(name) && subject !== name && !repairedDottedName && !canonicalRelease) issues.push('curated case/punctuation')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 68,
+          "oldLine": 67,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  ['https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[klein]-4b', {id:'flux-2-klein-4b',label:'FLUX.2 [klein] 4B'}, 'BFL · FLUX.2 [klein] 4B'],",
+          "new": "  ['https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[klein]-4b', {id:'flux-2-klein-4b',label:'FLUX.2 [klein] 4B'}, 'BFL · Generate Or Edit An Image With FLUX.2 [klein] 4B'],",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/auth-gateway/tests/model-modality-r21.test.js",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "b2e3b9064230321bbc415ffd719a381841e73673edefbf331f8037d048324228",
+      "diffSha256": "e4a3c1bc4a35f008442661f4d499c43c80606e32e5a79cfb2cdbd17edeba5d72",
       "changes": [
         {
           "phase": "R23 Phase H2",
@@ -22224,13 +22570,28 @@
             "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 41,
+          "oldLine": 41,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "      else assert.match(row.label, /^原厂规格 · /, id)",
+          "new": "      else assert.match(row.label, /^(官方文档|渠道资料) · /, id)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/paperbanana-api/tests/model-modality-r21.test.ts",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "e1a73f7abf40a321c887e9eef8057f1dfa53f14cc2949e398d8145d689c0efac",
+      "diffSha256": "f6dfd06942bc0b30e08cf14d54f457f838161087186c3b975b0e1953cfb5fb23",
       "changes": [
         {
           "phase": "R23 Phase H2",
@@ -22258,6 +22619,21 @@
           "evidence": [
             "packages/api/src/model-audit.ts",
             "packages/api/src/card-presentation.d.mts"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 68,
+          "oldLine": 68,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "      assert.match(row.label, /^原厂规格 · /, id)",
+          "new": "      assert.match(row.label, /^(官方文档|渠道资料) · /, id)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -22293,14 +22669,29 @@
             "scripts/source-titles-i3-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 26,
+          "oldLine": 26,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "   if(!card.specSources.some(s=>(s.role==='vendor'||s.label.startsWith('原厂规格 · ')||s.url===r24.noticeUrl&&s.label===r24.noticeLabel)&&vendorKeys.has(sourceIdentity(s.url))&&urls.includes(sourceIdentity(s.url))))offending.push(key+'/'+field)",
+          "new": "   if(!card.specSources.some(s=>(s.role==='vendor'||/^(官方文档|渠道资料|下线公告) · /.test(s.label)||s.url===r24.noticeUrl&&s.label===r24.noticeLabel)&&vendorKeys.has(sourceIdentity(s.url))&&urls.includes(sourceIdentity(s.url))))offending.push(key+'/'+field)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "bf4895cad1290642b21a7cfe4b0d5c0fe22f815dad14d1f35c54b004326e10c7"
+      "diffSha256": "8b64116852854f41b5bd9d4e8a369c5ac913307f56b9becdb3ba36d0cb427f7c"
     },
     {
       "file": "apps/web/tests/model-card-r23.test.mjs",
       "comparisonBase": "4e18513c",
-      "diffSha256": "37e4d78e91f22def0f30af56b1e8eee3db0b3a636b58924e09b0426c66d2b468",
+      "diffSha256": "062bebbcb233f1ee2267f1a8b54902be17136b4d37b9edd1b4124066b0c41d18",
       "changes": [
         {
           "phase": "R24 Phase I1",
@@ -22324,6 +22715,21 @@
           "evidence": [
             "docs/model-card-source-titles-r24.md",
             "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 44,
+          "oldLine": 44,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "      else assert.ok(anchor.textContent.startsWith('原厂规格 · '), key)",
+          "new": "      else assert.ok(/^(官方文档|渠道资料|下线公告) · /.test(anchor.textContent), key)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -22633,9 +23039,24 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 54,
+          "oldLine": 54,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  assert.match(inputs.getByRole('img', {name:'文本：支持'}).title, /^原厂资料.*2026-11-09/)\n  assert.equal(inputs.getByRole('img', {name:/^视频：未标注 · /}).title, '未标注 · 原厂资料 · Example · Spec')",
+          "new": "  assert.match(inputs.getByRole('img', {name:'文本：支持'}).title, /^官方文档.*2026-11-09/)\n  assert.equal(inputs.getByRole('img', {name:/^视频：未标注 · /}).title, '未标注 · 官方文档 · Example · Spec')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "415e9135a07b48b58fc3f50d181aa8f54dcaaa54302740ce9fa8cce47a44bd9c"
+      "diffSha256": "4d7972454c11326b6ea6eff9e541fc906860a5a2f1d6ae2917b11b80ad65a295"
     },
     {
       "file": "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
@@ -24953,9 +25374,24 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 70,
+          "oldLine": 70,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " assert.equal(states[1].state,'unknown');assert.equal(states[1].tooltip,'未标注 · 原厂资料 · DeepSeek · 更新日志 2026-04-24')",
+          "new": " assert.equal(states[1].state,'unknown');assert.equal(states[1].tooltip,'未标注 · 官方文档 · DeepSeek · 更新日志 2026-04-24')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "e7d1189aaf03af110dde097705c03932bd10a08f3d2a527939749474a9313966"
+      "diffSha256": "ba7b5af01a5905a3deaf23bae5807af9a8ceee2e284af718a22b0d21e2be96ad"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
@@ -25137,9 +25573,24 @@
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 9,
+          "oldLine": 9,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "const roles=new Set(['官方文档','原厂文档','原厂规格','渠道公告','下线公告'])",
+          "new": "const roles=new Set(['官方文档','原厂文档','原厂规格','渠道资料','渠道公告','下线公告'])",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "599e6afe2e3ba7df8f92126c91a94ab9be96aebc6b23200f45ec28a45323cabc"
+      "diffSha256": "494b872da738f35d16b3fdcf322aa1768e382483f0d48711a4ce25d5a7aba0d7"
     },
     {
       "file": "apps/miniprogram/tests/model-card-r24.test.cjs",
@@ -25173,9 +25624,24 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 39,
+          "oldLine": 39,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  assert.equal(titleSourceRows([{url:fixture.noticeUrl,label:'渠道公告'}])[0].label,'渠道公告 · 百炼 · 模型下线公告')",
+          "new": "  assert.equal(titleSourceRows([{url:fixture.noticeUrl,label:'渠道公告'}])[0].label,'下线公告 · 百炼 · 模型下线公告')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ab974b6554a55236e060fa4f5ecacfe59c304520ab692ebfb6937c72329a578a"
+      "diffSha256": "bd45148970707aeb9fc2ecbf33c6d4e33545c5f8ad1a15f391106799d273f620"
     },
     {
       "file": "apps/web/tests/model-card-r24.test.mjs",
@@ -25209,9 +25675,24 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 32,
+          "oldLine": 32,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  assert.equal(titleSourceRows([{url:fixture.noticeUrl,label:'渠道公告'}])[0].label, '渠道公告 · 百炼 · 模型下线公告')",
+          "new": "  assert.equal(titleSourceRows([{url:fixture.noticeUrl,label:'渠道公告'}])[0].label, '下线公告 · 百炼 · 模型下线公告')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ccf8b2e346873ee0e3e612e038855cf34b35a6a488d609f4119d66dd65ea4d6b"
+      "diffSha256": "44818eae8d44fa0a9e989647011434c78c8304eeafd71f5f2ec856ed14880614"
     },
     {
       "file": "test-support/fixtures/model-card-r24.json",
@@ -25329,9 +25810,69 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 2,
+          "oldLine": 2,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "(absent)",
+          "new": "import {r29SourceRows} from './source-title-history-r29.mjs'",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 12,
+          "oldLine": 11,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " if(includeR28 && client==='mini' && card.startsWith('fal/'))return expectedR28[card].mini.card.specSources",
+          "new": " const current = value => includeR28 ? r29SourceRows(value) : value\n if(includeR28 && client==='mini' && card.startsWith('fal/'))return current(expectedR28[card].mini.card.specSources)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 15,
+          "oldLine": 13,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " if(correction)return correction.after",
+          "new": " if(correction)return current(correction.after)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 21,
+          "oldLine": 19,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " return result",
+          "new": " return current(result)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ddaceadf733e44995f562c9313e9ec4da2bdad51dc936043846b5d80d2d319a2"
+      "diffSha256": "c0da6fe632e023d64fb954a0631aee8851764a89ca5e925ba5e6bd4e916d603f"
     },
     {
       "file": "test-support/source-review-r24.mjs",
@@ -25502,9 +26043,24 @@
             "test-support/fixtures/conflict-cards-r26.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 28,
+          "oldLine": 28,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " assert.equal(sourceTitle('https://help.aliyun.com/zh/model-studio/kimi-k3',{id:'kimi-k3',label:'Kimi K3 (Bailian hosted)'}),'百炼 · Kimi K3（百炼托管）')",
+          "new": " assert.equal(sourceTitle('https://help.aliyun.com/zh/model-studio/kimi-k3',{id:'kimi-k3',label:'Kimi K3 (Bailian hosted)'}),'百炼 · Kimi K3')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "2b4498eaf9f1f8964488a67f9347e3b8a721081f52e1c0ac556f26e46f30d611"
+      "diffSha256": "a94d783f081485bee2ba27f0a769df5a11c1f05378550fbf5930a10dac5c4bcd"
     },
     {
       "file": "test-support/phase2-modality.mjs",
@@ -25568,9 +26124,1115 @@
             "test-support/fixtures/source-evidence-i7-r27.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/bailian/0/label",
+          "old": "官方文档 · 百炼 · DeepSeek-V4.1-Flash",
+          "new": "渠道资料 · 百炼 · DeepSeek-V4.1-Flash",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/bailian/1/label",
+          "old": "原厂规格 · DeepSeek · 价格与规格",
+          "new": "官方文档 · DeepSeek · 价格与规格",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/bailian/2/label",
+          "old": "官方文档 · 百炼 · 模型列表",
+          "new": "渠道资料 · 百炼 · 模型列表（中文版）",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/bailian/3/label",
+          "old": "官方文档 · Hugging Face · DeepSeek-V4.1-Flash",
+          "new": "官方文档 · Hugging Face · DeepSeek V4.1 Flash",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/0/source/label",
+          "old": "官方文档 · TokenDance · DeepSeek-V4.1-Flash",
+          "new": "渠道资料 · TokenDance · DeepSeek-V4.1-Flash",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/1/source/label",
+          "old": "官方文档 · TokenDance · DeepSeek V4.1 Flash 1017",
+          "new": "渠道资料 · TokenDance · DeepSeek V4.1 Flash 1017",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/2/source/label",
+          "old": "原厂规格 · DeepSeek · 更新日志 2026-08-21",
+          "new": "官方文档 · DeepSeek · 更新日志 2026-08-21",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/3/source/label",
+          "old": "官方文档 · TokenDance · DeepSeek-V4-Pro-0813",
+          "new": "渠道资料 · TokenDance · DeepSeek-V4-Pro-0813",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/4/source/label",
+          "old": "官方文档 · TokenDance · DeepSeek-V4-Flash-0731",
+          "new": "渠道资料 · TokenDance · DeepSeek-V4-Flash-0731",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/5/source/label",
+          "old": "原厂规格 · Hugging Face · DeepSeek-V4-Flash Preview",
+          "new": "官方文档 · Hugging Face · DeepSeek V4 Flash",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/6/source/label",
+          "old": "官方文档 · TokenDance · DeepSeek-V4-Pro Preview",
+          "new": "渠道资料 · TokenDance · DeepSeek-V4-Pro Preview",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/7/source/label",
+          "old": "原厂规格 · Hugging Face · DeepSeek-V3.2",
+          "new": "官方文档 · Hugging Face · DeepSeek-V3.2",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/8/source/label",
+          "old": "原厂规格 · DeepSeek · V3-0324 Release",
+          "new": "官方文档 · DeepSeek · V3-0324 Release",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/9/source/label",
+          "old": "官方文档 · TokenDance · GLM 5.3",
+          "new": "渠道资料 · TokenDance · GLM 5.3",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/10/source/label",
+          "old": "官方文档 · TokenDance · GLM 5.3 Flash",
+          "new": "渠道资料 · TokenDance · GLM 5.3 Flash",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/11/source/label",
+          "old": "官方文档 · TokenDance · GLM 5.3 FlashX",
+          "new": "渠道资料 · TokenDance · GLM 5.3 FlashX",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/12/source/label",
+          "old": "官方文档 · TokenDance · GLM 5.2",
+          "new": "渠道资料 · TokenDance · GLM 5.2",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/13/source/label",
+          "old": "官方文档 · TokenDance · GLM 5.1",
+          "new": "渠道资料 · TokenDance · GLM 5.1",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/14/source/label",
+          "old": "官方文档 · TokenDance · GLM 5",
+          "new": "渠道资料 · TokenDance · GLM 5",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/15/source/label",
+          "old": "官方文档 · TokenDance · GLM 5V Turbo",
+          "new": "渠道资料 · TokenDance · GLM 5V Turbo",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/16/source/label",
+          "old": "官方文档 · TokenDance · GLM 4.7",
+          "new": "渠道资料 · TokenDance · GLM 4.7",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/17/source/label",
+          "old": "官方文档 · TokenDance · GLM 4.6V",
+          "new": "渠道资料 · TokenDance · GLM 4.6V",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/18/source/label",
+          "old": "官方文档 · TokenDance · GLM 4.5 Air",
+          "new": "渠道资料 · TokenDance · GLM 4.5 Air",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/19/source/label",
+          "old": "官方文档 · TokenDance · Hy4 preview",
+          "new": "渠道资料 · TokenDance · Hy4 preview",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/20/source/label",
+          "old": "官方文档 · TokenDance · Hy3",
+          "new": "渠道资料 · TokenDance · Hy3",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/21/source/label",
+          "old": "官方文档 · TokenDance · Hy3 preview",
+          "new": "渠道资料 · TokenDance · Hy3 preview",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/22/source/label",
+          "old": "官方文档 · TokenDance · Kimi K3",
+          "new": "渠道资料 · TokenDance · Kimi K3",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/23/source/label",
+          "old": "官方文档 · TokenDance · Kimi K2.7 Code",
+          "new": "渠道资料 · TokenDance · Kimi K2.7 Code",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/24/source/label",
+          "old": "官方文档 · TokenDance · Kimi K2.6",
+          "new": "渠道资料 · TokenDance · Kimi K2.6",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/25/source/label",
+          "old": "官方文档 · TokenDance · Kimi K2.5",
+          "new": "渠道资料 · TokenDance · Kimi K2.5",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/26/source/label",
+          "old": "官方文档 · TokenDance · MiniMax M3",
+          "new": "渠道资料 · TokenDance · MiniMax M3",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/27/source/label",
+          "old": "官方文档 · TokenDance · MiniMax M2.7",
+          "new": "渠道资料 · TokenDance · MiniMax M2.7",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/28/source/label",
+          "old": "官方文档 · TokenDance · MiniMax M2.5",
+          "new": "渠道资料 · TokenDance · MiniMax M2.5",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/29/source/label",
+          "old": "官方文档 · TokenDance · Qwen3.8 Flash",
+          "new": "渠道资料 · TokenDance · Qwen3.8 Flash",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/30/source/label",
+          "old": "官方文档 · TokenDance · Qwen3.8 Max",
+          "new": "渠道资料 · TokenDance · Qwen3.8 Max",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/31/source/label",
+          "old": "官方文档 · TokenDance · Qwen3.8-Max-0902",
+          "new": "渠道资料 · TokenDance · Qwen3.8-Max-0902",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/32/source/label",
+          "old": "官方文档 · TokenDance · Qwen3.7 Max",
+          "new": "渠道资料 · TokenDance · Qwen3.7 Max",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/33/source/label",
+          "old": "官方文档 · TokenDance · Qwen3.7 Plus",
+          "new": "渠道资料 · TokenDance · Qwen3.7 Plus",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/34/source/label",
+          "old": "原厂规格 · 百炼 · Qwen3.6 Max",
+          "new": "官方文档 · 百炼 · Qwen3.6 Max",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/35/source/label",
+          "old": "官方文档 · TokenDance · Qwen3.6 Plus",
+          "new": "渠道资料 · TokenDance · Qwen3.6 Plus",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/36/source/label",
+          "old": "官方文档 · TokenDance · Qwen3.5-35B-A3B",
+          "new": "渠道资料 · TokenDance · Qwen3.5-35B-A3B",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/37/source/label",
+          "old": "官方文档 · TokenDance · Qwen3.5 Flash",
+          "new": "渠道资料 · TokenDance · Qwen3.5 Flash",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/38/source/label",
+          "old": "官方文档 · TokenDance · Qwen3.5 Plus",
+          "new": "渠道资料 · TokenDance · Qwen3.5 Plus",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/39/source/label",
+          "old": "原厂规格 · Hugging Face · Qwen3 30B A3B Instruct 2507",
+          "new": "官方文档 · Hugging Face · Qwen3 30B A3B Instruct 2507",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/40/source/label",
+          "old": "原厂规格 · 百炼 · 模型列表",
+          "new": "渠道资料 · 百炼 · 模型列表（中文版）",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/41/source/label",
+          "old": "官方文档 · TokenDance · Seed-2.1-Pro",
+          "new": "渠道资料 · TokenDance · Seed-2.1-Pro",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/42/source/label",
+          "old": "官方文档 · TokenDance · Seed-2.1-Turbo",
+          "new": "渠道资料 · TokenDance · Seed-2.1-Turbo",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/43/source/label",
+          "old": "官方文档 · TokenDance · Seed-2.0-Code",
+          "new": "渠道资料 · TokenDance · Seed-2.0-Code",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/44/source/label",
+          "old": "官方文档 · TokenDance · Seed-2.0-Lite",
+          "new": "渠道资料 · TokenDance · Seed-2.0-Lite",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/45/source/label",
+          "old": "官方文档 · TokenDance · Seed-2.0-Mini",
+          "new": "渠道资料 · TokenDance · Seed-2.0-Mini",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/46/source/label",
+          "old": "官方文档 · TokenDance · Seed-2.0-Pro",
+          "new": "渠道资料 · TokenDance · Seed-2.0-Pro",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/47/source/label",
+          "old": "官方文档 · TokenDance · Seedream 5.0 lite",
+          "new": "渠道资料 · TokenDance · Seedream 5.0 lite",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/48/source/label",
+          "old": "官方文档 · TokenDance · Seedream 5.0 Pro",
+          "new": "渠道资料 · TokenDance · Seedream 5.0 Pro",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/49/source/label",
+          "old": "官方文档 · TokenDance · Step 5 Preview",
+          "new": "渠道资料 · TokenDance · Step 5 Preview",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/50/source/label",
+          "old": "官方文档 · TokenDance · Step 3.7 Flash",
+          "new": "渠道资料 · TokenDance · Step 3.7 Flash",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/51/source/label",
+          "old": "官方文档 · TokenDance · Step 3.5 Flash",
+          "new": "渠道资料 · TokenDance · Step 3.5 Flash",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/52/source/label",
+          "old": "官方文档 · TokenDance · CogEvol Base",
+          "new": "渠道资料 · TokenDance · CogEvol Base",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/53/source/label",
+          "old": "官方文档 · TokenDance · CogEvol Interactive 0828",
+          "new": "渠道资料 · TokenDance · CogEvol Interactive 0828",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/54/source/label",
+          "old": "官方文档 · TokenDance · CogEvol Slide 0828",
+          "new": "渠道资料 · TokenDance · CogEvol Slide 0828",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/55/source/label",
+          "old": "官方文档 · TokenDance · Dots3-Note Preview（免费）",
+          "new": "渠道资料 · TokenDance · Dots 3 Note Preview",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/56/source/label",
+          "old": "官方文档 · TokenDance · Kimi K3.1 Pro",
+          "new": "渠道资料 · TokenDance · Kimi K3.1 Pro",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/57/source/label",
+          "old": "官方文档 · TokenDance · Ling 3.0 Flash",
+          "new": "渠道资料 · TokenDance · Ling 3.0 Flash",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/58/source/label",
+          "old": "官方文档 · TokenDance · Ling 3.1 Flash",
+          "new": "渠道资料 · TokenDance · Ling 3.1 Flash",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/59/source/label",
+          "old": "官方文档 · TokenDance · LongCat-2.0",
+          "new": "渠道资料 · TokenDance · LongCat-2.0",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/60/source/label",
+          "old": "官方文档 · TokenDance · MiMo-V2.5",
+          "new": "渠道资料 · TokenDance · MiMo-V2.5",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/61/source/label",
+          "old": "官方文档 · TokenDance · MiMo-V2.5-Pro",
+          "new": "渠道资料 · TokenDance · MiMo-V2.5-Pro",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/62/source/label",
+          "old": "官方文档 · TokenDance · Mimo-V2.6-Flash",
+          "new": "渠道资料 · TokenDance · Mimo-V2.6-Flash",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/63/source/label",
+          "old": "官方文档 · TokenDance · Mimo-V2.6-Pro",
+          "new": "渠道资料 · TokenDance · Mimo-V2.6-Pro",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/64/source/label",
+          "old": "官方文档 · TokenDance · MiMo-V2.6-Pro-UltraSpeed",
+          "new": "渠道资料 · TokenDance · MiMo-V2.6-Pro-UltraSpeed",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/65/source/label",
+          "old": "官方文档 · TokenDance · MiniMax M3.1 Flash",
+          "new": "渠道资料 · TokenDance · MiniMax M3.1 Flash",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/66/source/label",
+          "old": "官方文档 · TokenDance · Qwen3 VL Plus",
+          "new": "渠道资料 · TokenDance · Qwen3 VL Plus",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/67/source/label",
+          "old": "官方文档 · TokenDance · Seed-Evolving",
+          "new": "渠道资料 · TokenDance · Seed-Evolving",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/68/source/label",
+          "old": "官方文档 · TokenDance · Spark-X2.5-1.7B",
+          "new": "渠道资料 · TokenDance · Spark-X2.5-1.7B",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/69/source/label",
+          "old": "官方文档 · TokenDance · Spark-X2.5-4B",
+          "new": "渠道资料 · TokenDance · Spark-X2.5-4B",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/70/source/label",
+          "old": "官方文档 · TokenDance · Deep Search S3",
+          "new": "渠道资料 · TokenDance · Deep Search S3",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/71/source/label",
+          "old": "官方文档 · TokenDance · Deep Search S3 Pro",
+          "new": "渠道资料 · TokenDance · Deep Search S3 Pro",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/72/source/label",
+          "old": "官方文档 · TokenDance · Deep Research U3",
+          "new": "渠道资料 · TokenDance · Deep Research U3",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/links/73/source/label",
+          "old": "官方文档 · TokenDance · Deep Research U3 Pro",
+          "new": "渠道资料 · TokenDance · Deep Research U3 Pro",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "pointer": "/rules/sources",
+          "old": "One normalized URL per source list. Roles retained; curated titles or readable path subjects distinguish sources. Mini preserves the primary source and copy dialog; R23 appends vendor field sources.",
+          "new": "One normalized URL per source list. R29 URL-wide ownership roles and readable titles are shared by all surfaces; meaningful namespaces distinguish separate pages. Mini preserves the primary source and copy dialog; R23 appends vendor field sources.",
+          "reason": "R29: regenerate the current R22B source inventory with canonical ownership roles and URL-wide titles; facts, URLs and counts unchanged.",
+          "evidence": [
+            "docs/model-card-source-titles-r24.md#r29-title-unification",
+            "scripts/report-model-modality-r22b.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "d526e764d546c99bc4cbc7d1ac8576e9d13a5266bd4471a13e5952cc78a97482"
+      "diffSha256": "2c42baaaf8be7cc88b0c98d826fe1fc716a01e63d6ae1dd5da248225a1d1a802"
     },
     {
       "file": "scripts/model-modality-r22c.test.mjs",
@@ -25672,9 +27334,24 @@
             "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 33,
+          "oldLine": 33,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  assert.match(image.tooltip, /渠道资料 · .*编辑接口（\\d{4}-\\d{2}-\\d{2}）/, key)\n  assert.ok(sources.some(source => source.url === humanSourceUrl(row.url) && source.label.includes('编辑接口')), key + ' visible edit source')",
+          "new": "  assert.match(image.tooltip, /(?:渠道资料|官方文档) · .*(?:编辑接口|Edit API 文档)（\\d{4}-\\d{2}-\\d{2}）/, key)\n  assert.ok(sources.some(source => source.url === humanSourceUrl(row.url) && /编辑接口|Edit API 文档/.test(source.label)), key + ' visible edit source')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "6e8c2e749e16e6b542a79b26393a123be41538ec9cd6cbb732564459570bcead"
+      "diffSha256": "9af833c05a4120f7df3854d29a379212d88375f300f95e03f3306055ba8dfe37"
     },
     {
       "file": "scripts/report-changed-tests.mjs",
@@ -25739,9 +27416,39 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 62,
+          "oldLine": 62,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13', 'fd29cf36', '4e18513c', 'cd72eace', '9a7128d6', 'f8ff7648', 'd29097c0', '6864824a', 'd1c63994', '105744a9', '7858d7a4'].includes(file.comparisonBase))",
+          "new": "  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13', 'fd29cf36', '4e18513c', 'cd72eace', '9a7128d6', 'f8ff7648', 'd29097c0', '6864824a', 'd1c63994', '105744a9', '7858d7a4', '997585e2'].includes(file.comparisonBase))",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 83,
+          "oldLine": 83,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  '# Changed test expectations — R22, R23 Phases E/F/F3 and R24 Phases I1/I2/I3/I4 and R25 Phase I5 and R26 Phase I6 and R27 Phases I7/I8 and R28 Phase I9', '',",
+          "new": "  '# Changed test expectations — R22, R23 Phases E/F/F3 and R24 Phases I1/I2/I3/I4 and R25 Phase I5 and R26 Phase I6 and R27 Phases I7/I8 and R28 Phase I9 and R29 Phase I10', '',",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "175394cec160a23d90f92079b6265f976f00d4af3182399bee4fa2d4c23f7b30"
+      "diffSha256": "2a2119afdf3d6ae2a2f878b6ade029a76d0530e462e38f239b9e9d0b8b26d949"
     },
     {
       "file": "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs",
@@ -25806,9 +27513,39 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 6,
+          "oldLine": 6,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " const {expectedR28}=await import('../../../test-support/founder-fixes-r28.mjs')",
+          "new": " const {expectedR29:expectedR28}=await import('../../../test-support/source-title-history-r29.mjs')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 36,
+          "oldLine": 36,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " for(const icon of vendor)assert.equal(icon.tooltip,'原厂资料标明不支持。原厂资料 · Example · Spec（2026-11-09）')",
+          "new": " for(const icon of vendor)assert.equal(icon.tooltip,'原厂资料标明不支持。官方文档 · Example · Spec（2026-11-09）')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "c8da3f35ea625b6c5a1a068de0ebbc15d3fbe537c8d0d33ebce389f48a6afc12"
+      "diffSha256": "e1bfe61aa615ea937c7a7f07b92f70f04aedbe66ffaa7c34552dd21c21bd3b7e"
     },
     {
       "file": "apps/web/tests/model-icon-simplify-r27.test.mjs",
@@ -25948,9 +27685,54 @@
             "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 10,
+          "oldLine": 10,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "import {expectedR28} from '../../../test-support/founder-fixes-r28.mjs'",
+          "new": "import {expectedR29 as expectedR28} from '../../../test-support/source-title-history-r29.mjs'",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 72,
+          "oldLine": 72,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "    assert.equal(icon.tooltip, '原厂资料标明不支持。原厂资料 · Example · Spec（2026-11-09）')",
+          "new": "    assert.equal(icon.tooltip, '原厂资料标明不支持。官方文档 · Example · Spec（2026-11-09）')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 78,
+          "oldLine": 78,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "    assert.match(document.querySelector('.model-evidence-dialog').textContent, /原厂资料标明不支持。原厂资料 · Example · Spec/)",
+          "new": "    assert.match(document.querySelector('.model-evidence-dialog').textContent, /原厂资料标明不支持。官方文档 · Example · Spec/)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "23c4030bdc42e3266a4c360796cc0bfab0e802190cb982ebe047f7f34a740a97"
+      "diffSha256": "5caee6a531687ab23a468a3df4732e190191036534fc1c385e169d11ce2cbc41"
     },
     {
       "file": "test-support/icon-simplify-r27.mjs",
@@ -26018,6 +27800,376 @@
         }
       ],
       "diffSha256": "bfe21a3696534c6a8ee39631845859b8b02ef1552e4f5b5bbbdb753bf2c53c80"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-image-input-r27.test.cjs",
+      "comparisonBase": "997585e2",
+      "changes": [
+        {
+          "line": 21,
+          "oldLine": 21,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "    assert.match(modal.content, /编辑接口/); modal.success({confirm:true}); assert.equal(clipboard, source.url)",
+          "new": "    assert.match(modal.content, /编辑接口|Edit API 文档/); modal.success({confirm:true}); assert.equal(clipboard, source.url)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "d492720ec192fd0cd059cd93f68a20208b51f705a9b18fe014adf91c071ddd33"
+    },
+    {
+      "file": "apps/web/tests/model-founder-fixes-r28.test.mjs",
+      "comparisonBase": "997585e2",
+      "changes": [
+        {
+          "line": 43,
+          "oldLine": 43,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "    assert.ok(icons.some(icon => icon.title === '未标注 · 图研既有核实 · Hugging Face · Kimi K3'))",
+          "new": "    assert.ok(icons.some(icon => icon.title === '未标注 · 图研既有核实：官方文档 · Hugging Face · Kimi K3'))",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "f91d188c712029f1a16abc15719b93127fe17735a942ec31bbe1f33bae4d12d4"
+    },
+    {
+      "file": "apps/web/tests/model-image-input-r27.test.mjs",
+      "comparisonBase": "997585e2",
+      "changes": [
+        {
+          "line": 27,
+          "oldLine": 27,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "      assert.match(dialog.textContent, /编辑接口/)",
+          "new": "      assert.match(dialog.textContent, /编辑接口|Edit API 文档/)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "5ef12d161e837e75e64495454babad6fa6bd549202887994ed91f05493662651"
+    },
+    {
+      "file": "scripts/model-icon-simplify-r27.test.mjs",
+      "comparisonBase": "997585e2",
+      "changes": [
+        {
+          "line": 10,
+          "oldLine": 10,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " assert.throws(()=>assertR2Presentations(bad),/unexpected changed card\\/field/)",
+          "new": " assert.throws(()=>assertR2Presentations(bad),/unexpected changed card\\/field|R29 literal title drift/)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 12,
+          "oldLine": 12,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " assert.throws(()=>assertR2Presentations(bad),/unexpected changed card\\/field/)",
+          "new": " assert.throws(()=>assertR2Presentations(bad),/unexpected changed card\\/field|R29 literal title drift/)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 14,
+          "oldLine": 14,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " assert.throws(()=>assertR2Presentations(bad),/unexpected changed card\\/field/)",
+          "new": " assert.throws(()=>assertR2Presentations(bad),/unexpected changed card\\/field|R29 literal title drift/)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "8703cc7ef3fc60b0f774f4d829649106d3670acc4f538f5f225129c0ec93d614"
+    },
+    {
+      "file": "scripts/report-source-titles-r23.mjs",
+      "comparisonBase": "997585e2",
+      "changes": [
+        {
+          "line": 2,
+          "oldLine": 2,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "(absent)",
+          "new": "import {historicalR29Rows} from '../test-support/source-title-history-r29.mjs'",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 26,
+          "oldLine": 25,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  current.web.push({card,name:data.sourceModel.displayName,rows:web.modelSourceRows(data)})",
+          "new": "  current.web.push({card,name:data.sourceModel.displayName,rows:historicalR29Rows(web.modelSourceRows(data),card,'web')})",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 37,
+          "oldLine": 36,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  assert.deepEqual(structuredClone(data.specSources),expectedR28[key].mini.card.specSources,key+' R28 sources')",
+          "new": "  assert.deepEqual(historicalR29Rows(structuredClone(data.specSources),key,'mini'),expectedR28[key].mini.card.specSources,key+' R28 sources')",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "a8c787ba1d2e669d5bb75ddb7fd83e926df7a12865f0066e5af5dacd20f495d9"
+    },
+    {
+      "file": "scripts/report-source-titles-r24.mjs",
+      "comparisonBase": "997585e2",
+      "changes": [
+        {
+          "line": 5,
+          "oldLine": 5,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "(absent)",
+          "new": "import {historicalR29Rows} from '../test-support/source-title-history-r29.mjs'\nimport {r29Baseline, titleIdentity} from '../test-support/source-titles-r29.mjs'\nimport {buildR29TitleReport, r29TitleMarkdown} from '../test-support/source-title-report-r29.mjs'",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 18,
+          "oldLine": 15,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "(absent)",
+          "new": "for(const client of ['web','mini']) for(const card of current[client]) card.rows=historicalR29Rows(card.rows,card.card,client)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 39,
+          "oldLine": 35,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "const report={...historical.json,I9:{phase:'R28 Phase I9',counts:reviewR28.counts,review:'config/channel-audit/review-r28-20261110.json',fields:reviewR28.fields.map(row=>({identity:row.identity,field:row.field,decision:row.decision,url:row.sourceUrl,title:'渠道资料 · '+sourceTitle(row.sourceUrl)}))},I7:{phase:'R27 Phase I7',baseline:baseline.head,counts,changes,review:'config/channel-audit/review-r27-20261110.json'}}",
+          "new": "const report={...historical.json,I9:{phase:'R28 Phase I9',counts:reviewR28.counts,review:'config/channel-audit/review-r28-20261110.json',fields:reviewR28.fields.map(row=>({identity:row.identity,field:row.field,decision:row.decision,url:row.sourceUrl,title:'渠道资料 · '+r29Baseline.unscopedTitles[titleIdentity(row.sourceUrl)]}))},I7:{phase:'R27 Phase I7',baseline:baseline.head,counts,changes,review:'config/channel-audit/review-r27-20261110.json'},I10:await buildR29TitleReport()}",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 43,
+          "oldLine": 39,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "(absent)",
+          "new": "markdown += r29TitleMarkdown(report.I10)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "c4ca4cf6afece01a355197c956830b1dbb57c19df8fccaacafe8cdb1132849ff"
+    },
+    {
+      "file": "scripts/source-titles-i3-r24.test.mjs",
+      "comparisonBase": "997585e2",
+      "changes": [
+        {
+          "line": 26,
+          "oldLine": 26,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " ]).map(r=>r.label),['官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）','官方文档 · 百度千帆 · 模型列表'])",
+          "new": " ]).map(r=>r.label),['渠道资料 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）','渠道资料 · 百度千帆 · 模型列表'])",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 37,
+          "oldLine": 37,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " ],{id:'gpt-6-luna',label:'GPT-6 Luna'}),[{url:'https://developers.openai.com/api/docs/models/gpt-6-luna',label:'原厂规格 · OpenAI · GPT-6 Luna'}])",
+          "new": " ],{id:'gpt-6-luna',label:'GPT-6 Luna'}),[{url:'https://developers.openai.com/api/docs/models/gpt-6-luna',label:'官方文档 · OpenAI · GPT-6 Luna'}])",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "119d13ee2ba590a4c8e5b858eae1c17efc0698b879ffb7d1b32562333cb574e6"
+    },
+    {
+      "file": "test-support/evidence-i4-r24.mjs",
+      "comparisonBase": "997585e2",
+      "changes": [
+        {
+          "line": 7,
+          "oldLine": 7,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "export const specLabel='原厂规格 · 百炼 · Qwen3.5 Plus'",
+          "new": "export const specLabel='官方文档 · 百炼 · Qwen3.5 Plus'",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "c0e9912043e4237934980ce3fc5ded908e8ce3d6a4e3797c014cee19c5c7e852"
+    },
+    {
+      "file": "test-support/founder-fixes-r28.mjs",
+      "comparisonBase": "997585e2",
+      "changes": [
+        {
+          "line": 6,
+          "oldLine": 6,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "(absent)",
+          "new": "import {restoreR29Titles} from './source-title-history-r29.mjs'",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 30,
+          "oldLine": 29,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "(absent)",
+          "new": "  now = restoreR29Titles(now)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 35,
+          "oldLine": 33,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": "  const copy = structuredClone(now)",
+          "new": "  const copy = restoreR29Titles(now)",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "fa49b385e9a0e11afb17a84b081d0ac09c2116fae1c65489ef1eae512560ae74"
+    },
+    {
+      "file": "scripts/report-model-modality-r22b.mjs",
+      "comparisonBase": "997585e2",
+      "changes": [
+        {
+          "line": 51,
+          "oldLine": 51,
+          "comparisonBase": "997585e2",
+          "phase": "R29 Phase I10",
+          "old": " rules:{links:'Only exact TokenDance model pages with successful rendered-content evidence, date and hash may be linked. Seven failures use original main vendor links.',sources:'One normalized URL per source list. Roles retained; curated titles or readable path subjects distinguish sources. Mini preserves the primary source and copy dialog; R23 appends vendor field sources.',modalities:'Display-only order: text, image, video, audio, then other modalities. Stored arrays unchanged.',vendor:'All known vendor-only fields visibly show 源自原厂; null/unknown stays unknown. Four prior catalog fallbacks sourced solely from vendor pages are classified vendor at the display boundary; original evidence and verification dates remain.',vision:'视觉理解 is derived from the execution vision role in ModelPicker/presentRegistryModel and Mini. kimi-k3.1-pro has roles=[main]; image/video display facts do not enable vision execution.'},",
+          "new": " rules:{links:'Only exact TokenDance model pages with successful rendered-content evidence, date and hash may be linked. Seven failures use original main vendor links.',sources:'One normalized URL per source list. R29 URL-wide ownership roles and readable titles are shared by all surfaces; meaningful namespaces distinguish separate pages. Mini preserves the primary source and copy dialog; R23 appends vendor field sources.',modalities:'Display-only order: text, image, video, audio, then other modalities. Stored arrays unchanged.',vendor:'All known vendor-only fields visibly show 源自原厂; null/unknown stays unknown. Four prior catalog fallbacks sourced solely from vendor pages are classified vendor at the display boundary; original evidence and verification dates remain.',vision:'视觉理解 is derived from the execution vision role in ModelPicker/presentRegistryModel and Mini. kimi-k3.1-pro has roles=[main]; image/video display facts do not enable vision execution.'},",
+          "reason": "PM R29: one visible title per normalized URL across all surfaces; URL ownership controls role and one endpoint name replaces per-card spelling; retain all non-title fields and frozen historical evidence (2026-11-10)",
+          "evidence": [
+            "docs/model-modality-audit-20261109.md#r29-phase-i10",
+            "apps/web/tests/model-source-titles-r29.test.mjs",
+            "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "26a6e8f57048831ffa3a0dc9c481ad2ebc77a57c6e5005f713ec9925f167cb8c"
     }
   ]
 }

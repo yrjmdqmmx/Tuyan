@@ -23,7 +23,7 @@ test('R24 I3 source collisions use namespaces, preserve source roles and drop ma
  assert.deepEqual(titleSourceRows([
   {url:'https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5',label:'官方文档'},
   {url:'https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j',label:'官方文档'}
- ]).map(r=>r.label),['官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）','官方文档 · 百度千帆 · 模型列表'])
+ ]).map(r=>r.label),['渠道资料 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）','渠道资料 · 百度千帆 · 模型列表'])
  assert.deepEqual(titleSourceRows([
   {url:'https://docs.example.test/guide/generation/models',label:'原厂规格'},
   {url:'https://docs.example.test/guide/editing/models',label:'原厂规格'}
@@ -34,7 +34,7 @@ test('R24 I3 source collisions use namespaces, preserve source roles and drop ma
   {url:'https://docs.example.test/llms.txt',label:'官方文档'},
   {url:'https://docs.example.test/llms-full.txt',label:'官方文档'},
   {url:'https://docs.example.test/page.mdx',label:'官方文档'}
- ],{id:'gpt-6-luna',label:'GPT-6 Luna'}),[{url:'https://developers.openai.com/api/docs/models/gpt-6-luna',label:'原厂规格 · OpenAI · GPT-6 Luna'}])
+ ],{id:'gpt-6-luna',label:'GPT-6 Luna'}),[{url:'https://developers.openai.com/api/docs/models/gpt-6-luna',label:'官方文档 · OpenAI · GPT-6 Luna'}])
  assert.equal(isMachineDocument('https://github.com/zai-org/GLM-4/blob/main/README.md'),false)
  for(const url of ['https://docs.example.test/llms-full.txt','https://docs.example.test/page.md','https://docs.example.test/page.mdx'])assert.ok(titleIssues({url,label:'官方文档 · Example · Guide'}).includes('machine document link'))
 })

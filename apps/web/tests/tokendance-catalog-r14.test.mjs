@@ -64,7 +64,7 @@ test('R14 absence never depends on disabledReason wording and requires healthy e
 })
 test('R22B compact source has a descriptive page subject and full URL while R16 prevents letter wrapping',()=>{
   render(React.createElement(ModelSpecifications,{provider:'replicate',model:{id:'google/imagen-3'},compactSources:true}))
-  assert.equal(screen.getByRole('link').textContent,'原厂规格 · Google Cloud · 3-0 Generate')
+  assert.equal(screen.getByRole('link').textContent,'官方文档 · Google Cloud · 3-0 Generate')
   const css=fs.readFileSync(new URL('../src/workspace/workspaceModels.css',import.meta.url),'utf8')
   const link=screen.getByRole('link'),domain=link.querySelector('.model-spec-source-domain')
   assert.equal(domain.textContent,'Google Cloud · 3-0 Generate')

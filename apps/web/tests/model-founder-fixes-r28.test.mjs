@@ -40,6 +40,6 @@ test('R28 Kimi K3 unknown icon retains its modality and exact prefixed source ex
       assert.match(icon.title, /^未标注 · /)
       assert.equal(icon.getAttribute('aria-label').split('：').slice(1).join('：'), icon.title)
     }
-    assert.ok(icons.some(icon => icon.title === '未标注 · 图研既有核实 · Hugging Face · Kimi K3'))
+    assert.ok(icons.some(icon => icon.title === '未标注 · 图研既有核实：官方文档 · Hugging Face · Kimi K3'))
   } finally {cleanup()}
 })

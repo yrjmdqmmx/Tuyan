@@ -41,7 +41,7 @@ test('R23 every vendor field on all 1064 Web cards has its vendor href in the di
     }
     for (const anchor of anchors.slice(1)) if (vendorKeys.has(sourceIdentity(anchor.href))) {
       if (anchor.href === r24.noticeUrl) assert.equal(anchor.textContent, r24.noticeLabel, key)
-      else assert.ok(anchor.textContent.startsWith('原厂规格 · '), key)
+      else assert.ok(/^(官方文档|渠道资料|下线公告) · /.test(anchor.textContent), key)
     }
     for (const url of [...['sources','channelSources','vendorSources','lifecycleSources'].flatMap(k=>data[k]), ...Array.from(document.querySelectorAll('a[href]'),a=>a.href)])
       if (isApiSource(url)) apiLinks.push(key+': '+url)

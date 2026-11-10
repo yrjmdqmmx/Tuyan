@@ -1,4 +1,4 @@
-import { sourceTitle } from '../../../packages/api/src/card-presentation.mjs'
+import { sourceTitle, visibleSourceTitle } from '../../../packages/api/src/card-presentation.mjs'
 import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
 import vm from 'node:vm'
@@ -66,7 +66,7 @@ test('R13 exactly seven cards render verified vendor links in full/static and no
         const view = render(React.createElement(ModelSpecifications, { provider: channel, model, compactSources }))
         const visible = view.getByRole('link')
         assert.equal(visible.getAttribute('href'), url)
-        assert.equal(visible.textContent, label + ' · ' + sourceTitle(url))
+        assert.equal(visible.textContent, visibleSourceTitle(url))
         for (const dead of deadLinks) assert.ok(!visible.getAttribute('title').includes(dead.url))
         view.unmount()
       }
@@ -164,7 +164,7 @@ test('R22B DeepSeek V3-0324 restores the vendor release page without inheriting 
     for (const compactSources of [false, true]) {
       const view = render(React.createElement(ModelSpecifications, { provider: channel, model, compactSources }))
       assert.equal(view.getByRole('link').getAttribute('href'), channelUrl)
-      assert.equal(view.getByRole('link').textContent, '原厂规格 · DeepSeek · V3-0324 Release')
+      assert.equal(view.getByRole('link').textContent, '官方文档 · DeepSeek · V3-0324 Release')
       view.unmount()
     }
   }
