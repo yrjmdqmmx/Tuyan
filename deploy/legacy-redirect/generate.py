@@ -21,7 +21,6 @@ TEMPLATE = """<!doctype html>
 <meta charset="utf-8">
 <title>图研 Tuyan 已迁移到 tuyansci.cn</title>
 <link rel="canonical" href="{canonical}">
-<meta name="robots" content="noindex, follow">
 <meta http-equiv="refresh" content="0; url={canonical}">
 <meta name="viewport" content="width=device-width, initial-scale=1">{extra}
 </head>

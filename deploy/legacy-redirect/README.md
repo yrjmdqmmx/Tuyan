@@ -6,7 +6,7 @@ legacy domain stops serving a duplicate of the Tuyan web app and points to
 
 - Every page: inline `location.replace()` to the same path/query/hash on tuyansci.cn,
   `<meta http-equiv="refresh">` no-JS fallback, `rel=canonical` to the tuyansci.cn URL,
-  `robots: noindex, follow`.
+  no `noindex` (so Google consolidates signals onto the canonical).
 - Known public paths are real files (200); any other path is served by `404.html`,
   which redirects to the same path on tuyansci.cn.
 - `robots.txt` allows everything so crawlers can see the canonical/redirect.
