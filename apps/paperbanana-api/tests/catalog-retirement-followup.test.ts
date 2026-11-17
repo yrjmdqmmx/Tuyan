@@ -28,12 +28,13 @@ test('OpenAI shutdown metadata is account-scoped and announced future retirement
  try {
   r.legacy.configureRuntimeFetch(async(input:any)=>{
    assert.equal(String(input),'https://api.openai.com/v1/models')
-   return Response.json({data:[{id:'gpt-6-sol',shutdown_date:'2026-10-01'}]})
+   return Response.json({data:[{id:'gpt-6-sol',shutdown_date:'2026-10-01'},{id:'o1'}]})
   })
   const account=await r.legacy.readAccountModelCatalog({provider:'openai',apiKeys:{openai:'fixture'}})
+  assert.equal(account.providerRegistry.models.some((m:any)=>m.id==='o1'),false,'account refresh cannot resurrect a batch 1 removed ID')
   assert.equal(account.providerRegistry.models.find((m:any)=>m.id==='gpt-6-sol').selectable,false)
   assert.equal((await r.legacy.modelRegistry({provider:'openai'})).providers.openai.models.find((m:any)=>m.id==='gpt-6-sol').selectable,true)
-  for (const [id, date] of [['gpt-4o-2024-11-20','2027-01-14'],['gpt-image-1','2026-10-23']]) {
+  for (const [id, date] of [['gpt-4o-2024-11-20','2027-01-14'],['gpt-image-2','2027-02-10']]) {
    const cutoff=Date.parse(date+'T00:00:00Z')
    Date.now=()=>cutoff-1
    assert.equal((await r.legacy.modelRegistry({provider:'openai'})).providers.openai.models.find((m:any)=>m.id===id).selectable,true,id)

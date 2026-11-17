@@ -1280,7 +1280,7 @@ test('refinement rejects noncanonical image sizes before persistence or provider
 })
 
 test('direct-edit refinement rejects registered but unsupported 4K before persistence or provider dispatch', async (t) => {
-  // Exercise the legacy size contract before its separate retirement gate.
+  // Use the surviving Mini sibling for the same legacy size contract.
   t.mock.timers.enable({ apis: ['Date'], now: Date.parse('2026-10-22T00:00:00Z') })
   const legacy = await loadLegacy()
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
@@ -1305,7 +1305,7 @@ test('direct-edit refinement rejects registered but unsupported 4K before persis
       sourceImageObjectKey: 'owned/openai-4k.png', editInstruction: 'Improve label clarity.', imageSize: '4K',
       modelRoutes: {
         main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
-        image: { accessProvider: 'openai', modelId: 'gpt-image-1' },
+        image: { accessProvider: 'openai', modelId: 'gpt-image-1-mini' },
         vision: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
       },
     })
@@ -1321,7 +1321,7 @@ test('direct-edit refinement rejects registered but unsupported 4K before persis
     await legacy.drainJobAdmission()
 
     for (const [result, route, supported] of [
-      [openai, 'openai/gpt-image-1', '1K'],
+      [openai, 'openai/gpt-image-1-mini', '1K'],
       [bailian, 'bailian/wan2.7-image-pro', '1K, 2K'],
     ] as const) {
       assert.equal(result.code, 400, JSON.stringify(result))
@@ -1621,7 +1621,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   assert.equal(openaiModels.get('gpt-5.4-pro')?.protocol, 'openai-responses')
   assert.equal(openaiModels.get('gpt-image-2')?.recommended, true)
   assert.equal(openaiModels.get('gpt-image-2')?.lifecycle, 'stable')
-  assert.equal(openaiModels.get('gpt-image-1')?.lifecycle, 'legacy')
+  assert.equal(openaiModels.has('gpt-image-1'), false, 'batch 1 removal is physical even in modelRegistry')
   assert.equal(openaiModels.get('gpt-image-1-mini')?.lifecycle, 'legacy')
 
   for (const [providerName, providerRegistry] of Object.entries({
@@ -1747,7 +1747,6 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
     },
     openai: {
       'gpt-image-2': ['1K', '2K', '4K'],
-      'gpt-image-1': ['1K'],
       'gpt-image-1-mini': ['1K'],
     },
     ark: {
@@ -5152,7 +5151,6 @@ test('v14 static image registry exposes exact canonical generation and refinemen
     },
     openai: {
       'gpt-image-2': allImageAspectRatios.filter(ratio => { const [w,h] = ratio.split(':').map(Number); return Math.max(w,h) / Math.min(w,h) <= 3 }),
-      'gpt-image-1': ['1:1', '3:2', '2:3'],
       'gpt-image-1-mini': ['1:1', '3:2', '2:3'],
     },
     bailian: {

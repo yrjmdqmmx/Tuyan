@@ -134,6 +134,7 @@ const retirementGroups = [
     ],
   },
 ]
+retirementGroups.push(...read('channel-audit/retirements-20261117').remove.map((row: any) => ({ stopDate: row.provider === 'antling' ? '2026-11-15T00:00:00+08:00' : row.date, sourceUrl: row.source, keys: [row.provider + '/' + row.id] })))
 export const removedKeys = retirementGroups.flatMap(group => group.keys)
 export function assertRemoved(provider: string, id: string) {
   const key = provider + '/' + id

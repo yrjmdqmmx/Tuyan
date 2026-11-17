@@ -16,8 +16,8 @@ test('R11 captured full Core objects reproduce total and every channel count; ID
     assert.deepEqual(result.totals, expected.totals)
     assert.deepEqual(result.perChannel, expected.perChannel)
   }
-  assert.deepEqual(Object.values(counts.head.fullObject.totals).slice(0, 5), [1061, 997, 967, 926, 616])
-  assert.deepEqual(Object.values(counts.head.idOnly.totals).slice(0, 5), [1061, 403, 397, 390, 260])
+  assert.deepEqual(Object.values(counts.head.fullObject.totals).slice(0, 5), [1061, 997, 967, 926, 607])
+  assert.deepEqual(Object.values(counts.head.idOnly.totals).slice(0, 5), [1061, 392, 386, 379, 250])
   assert.ok(rows.filter(row => row.model.specificModelSpecifications).length > 500)
   assert.deepEqual(counts.unexplainedLosses, [])
   assert.ok(counts.losses.every(row => row.reason === 'removed-model' && row.removalSource))

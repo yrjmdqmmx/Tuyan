@@ -86,7 +86,7 @@ test('R6B 9: touch evidence and deprecation sheets use content height and named 
   style.textContent='.tw-dialog { min-height:45dvh; }\n'+fs.readFileSync(new URL('../src/components/ModelSpecifications.css',import.meta.url),'utf8')
   document.head.append(style)
   try {
-    const provider='antling', model=STATIC_MODEL_REGISTRY.antling.models.find(m=>m.id==='Ling-2.6-flash')
+    const provider='bailian', model=STATIC_MODEL_REGISTRY.bailian.models.find(m=>m.id==='qwen3.5-plus')
     for(const source of [true,false]) {
       const view=render(source ? React.createElement(ModelSpecifications,{provider,model}) : React.createElement(ModelLifecycleBadge,{lifecycle:auditedModelLifecycle(provider,model.id)}))
       fireEvent.click(source ? screen.getByRole('link') : screen.getByRole('button',{name:/将下线：/}))

@@ -17,7 +17,7 @@ afterEach(cleanup)
 
 test('every static card retains main supported modalities and all product image-input requirements', () => {
   assert.equal(baseline.commit, 'c7b6a2fc')
-  assert.equal(rows.length, 1064)
+  assert.equal(rows.length, 1033)
   for (const { provider, model } of rows) {
     const key = provider + '/' + model.id, before = structuredClone(model)
     const card = modelCardSpecifications(provider, model), caps = model.capabilities || {}

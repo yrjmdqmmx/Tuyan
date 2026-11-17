@@ -20,6 +20,7 @@ test('R12 compiled Mini URLs and labels match full Web objects for 74 captured p
   const rendered = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r12-tokendance-rendered.json')))
   const cases = [...rendered.rows.map(row => {
     const link = JSON.parse(fs.readFileSync(path.join(root, 'config/model-audit.generated.json'))).details['tokendance/' + row.modelId].sourceLinks[0]
+    if (row.modelId === 'qwen3.5-plus') return ['tokendance', row.modelId, 'https://tokendance.space/docs/changelog.md', '下线公告']
     return ['tokendance', row.modelId, row.rendersModel ? row.url : link.url, row.rendersModel ? '官方文档' : '原厂规格']
   }),
     ...[['qwen3.8-max', 'qwen3-8-max'], ['qwen3.7-max-2026-06-08', 'qwen3-7-max'], ['qwen3.8-flash', 'vision-model']].map(([id, page]) => ['bailian', id, 'https://help.aliyun.com/zh/model-studio/' + page, '官方文档']),
@@ -58,8 +59,8 @@ test('R12C projection keeps every rendered fact, qualifier, note and source; onl
   const data = unpackModelCatalog(JSON.parse(source.match(/unpackModelCatalog\((.*)\)\n/)[1]))
   const identities = Object.entries(STATIC_MODEL_REGISTRY).flatMap(([channel, provider]) => provider.models.map(model => channel + '/' + model.id))
   const flagged = identities.filter((_, i) => data.rows[i][4] === -2).sort()
-  const verified = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r12-tokendance-rendered.json'))).rows.filter(row => row.rendersModel).map(row => 'tokendance/' + row.modelId).sort()
-  assert.deepEqual(flagged, verified); assert.equal(flagged.length, 67)
+  const verified = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r12-tokendance-rendered.json'))).rows.filter(row => row.rendersModel && row.modelId !== 'qwen3.5-plus').map(row => 'tokendance/' + row.modelId).sort()
+  assert.deepEqual(flagged, verified); assert.equal(flagged.length, 66)
   const templatedUrls = new Set(verified.map(key => 'https://tokendance.space/models/' + key.slice('tokendance/'.length)))
   assert.ok(data.sources.every(url => !templatedUrls.has(url)))
   assert.ok(Object.values(data.details).every(detail => !detail.sourceLinks && !detail.sourceUrls))
@@ -90,7 +91,7 @@ test('R13 compiled picker shows all seven vendor replacements and no catalog car
     for (const source of presented.specSources) assert.ok(!deadUrls.has(source.url), channel + '/' + model.id)
     assert.ok(!deadUrls.has(auditedModelSpecs(channel, model.id).sourceUrl))
   }
-  assert.equal(cards, 1064)
+  assert.equal(cards, 1033)
 })
 
 test('R13B compiled picker labels every notice and uses the exact DeepSeek vendor release', () => {
@@ -104,6 +105,7 @@ test('R13B compiled picker labels every notice and uses the exact DeepSeek vendo
   }]) {
     const { channel, modelId, url, label } = row
     const entry = STATIC_MODEL_REGISTRY[channel].models.find(model => model.id === modelId)
+    if (!entry) { assert.ok(require('../../../config/removed-models.json')[channel + '/' + modelId]); continue }
     const small = auditedModelSpecs(channel, modelId)
     assert.equal(small.sourceUrl, url); assert.equal(small.sourceLabel, label)
     assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ url, label: label + ' · ' + new URL(url).hostname }])
@@ -117,5 +119,5 @@ test('R13B compiled picker labels every notice and uses the exact DeepSeek vendo
       }
     }
   }
-  assert.equal(notices, 34)
+  assert.equal(notices, 22)
 })

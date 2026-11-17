@@ -76,8 +76,8 @@ test('scheduled status stays selectable before deadline and flips without rewrit
   t.mock.method(Date,'now',()=>Date.parse('2027-01-18T23:59:59Z'));
   assert.equal(catalogRows(r).length,1);
   render(React.createElement(ModelSpecifications,{provider:'bailian',model}));
-  assert.match(screen.getByRole('link').title,/将于2027-01-19下线/);assert.match(screen.getByRole('link').title,/Qwen3.8 Flash/);
-  Date.now.mock.mockImplementation(()=>Date.parse('2027-01-19'));
+  assert.match(screen.getByRole('link').title,/将于2027-01-19 10:00 \(UTC\+8\)下线/);assert.match(screen.getByRole('link').title,/Qwen3.8 Flash/);
+  Date.now.mock.mockImplementation(()=>Date.parse('2027-01-19T10:00:00+08:00'));
   assert.equal(catalogRows(r).length,0);assert.deepEqual(model,before);
 });
 test('unknown and explicitly unsupported modalities differ, with no invented token limits',()=>{
