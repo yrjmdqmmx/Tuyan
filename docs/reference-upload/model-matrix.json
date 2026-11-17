@@ -511,32 +511,6 @@
     },
     {
       "provider": "siliconflow",
-      "model": "Qwen/Qwen3.5-122B-A10B",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "unconfirmed",
-        "source": "",
-        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "siliconflow",
       "model": "Qwen/Qwen3.5-27B",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
@@ -745,32 +719,6 @@
     },
     {
       "provider": "siliconflow",
-      "model": "zai-org/GLM-4.5V",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "unconfirmed",
-        "source": "",
-        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "siliconflow",
       "model": "Kwai-Kolors/Kolors",
       "workflow": "refine",
       "protocol": "provider-images",
@@ -848,32 +796,6 @@
     {
       "provider": "siliconflow",
       "model": "Qwen/Qwen3-VL-30B-A3B-Instruct",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "unconfirmed",
-        "source": "",
-        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "siliconflow",
-      "model": "Qwen/Qwen3-VL-30B-A3B-Thinking",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
       "policy": {
@@ -5006,85 +4928,7 @@
     },
     {
       "provider": "openai",
-      "model": "gpt-4.1-nano",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 8192,
-        "maxPixels": 32000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 50000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://developers.openai.com/api/docs/guides/images-vision",
-        "note": "平台额度低于当前通用 API 上限；模型和 detail 各自的缩放、patch 与上下文限制仍适用。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "openai",
-      "model": "gpt-4.1-nano-2025-04-14",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 8192,
-        "maxPixels": 32000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 50000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://developers.openai.com/api/docs/guides/images-vision",
-        "note": "平台额度低于当前通用 API 上限；模型和 detail 各自的缩放、patch 与上下文限制仍适用。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "openai",
       "model": "gpt-4o",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 8192,
-        "maxPixels": 32000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 50000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://developers.openai.com/api/docs/guides/images-vision",
-        "note": "平台额度低于当前通用 API 上限；模型和 detail 各自的缩放、patch 与上下文限制仍适用。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "openai",
-      "model": "gpt-4o-2024-05-13",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
       "policy": {
@@ -5214,58 +5058,6 @@
     },
     {
       "provider": "openai",
-      "model": "gpt-4-turbo",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 8192,
-        "maxPixels": 32000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 50000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://developers.openai.com/api/docs/guides/images-vision",
-        "note": "平台额度低于当前通用 API 上限；模型和 detail 各自的缩放、patch 与上下文限制仍适用。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "openai",
-      "model": "gpt-4-turbo-2024-04-09",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 8192,
-        "maxPixels": 32000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 50000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://developers.openai.com/api/docs/guides/images-vision",
-        "note": "平台额度低于当前通用 API 上限；模型和 detail 各自的缩放、patch 与上下文限制仍适用。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "openai",
       "model": "gpt-image-2",
       "workflow": "refine",
       "protocol": "openai-images",
@@ -5291,30 +5083,6 @@
     {
       "provider": "openai",
       "model": "gpt-image-1.5",
-      "workflow": "refine",
-      "protocol": "openai-images",
-      "policy": {
-        "maxCount": 1,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 16000000,
-        "maxDimension": 8192,
-        "maxPixels": 16000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png"
-        ],
-        "status": "partial",
-        "source": "https://developers.openai.com/api/reference/resources/images/methods/edit",
-        "note": "平台保持单图编辑；精确新版型号的独立输入上限仍待确认。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "openai",
-      "model": "gpt-image-1",
       "workflow": "refine",
       "protocol": "openai-images",
       "policy": {
@@ -5412,110 +5180,6 @@
     },
     {
       "provider": "openai",
-      "model": "o1",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 8192,
-        "maxPixels": 32000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 50000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://developers.openai.com/api/docs/guides/images-vision",
-        "note": "平台额度低于当前通用 API 上限；模型和 detail 各自的缩放、patch 与上下文限制仍适用。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "openai",
-      "model": "o1-2024-12-17",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 8192,
-        "maxPixels": 32000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 50000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://developers.openai.com/api/docs/guides/images-vision",
-        "note": "平台额度低于当前通用 API 上限；模型和 detail 各自的缩放、patch 与上下文限制仍适用。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "openai",
-      "model": "o1-pro",
-      "workflow": "generation",
-      "protocol": "openai-responses",
-      "policy": {
-        "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 8192,
-        "maxPixels": 32000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 50000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://developers.openai.com/api/docs/guides/images-vision",
-        "note": "平台额度低于当前通用 API 上限；模型和 detail 各自的缩放、patch 与上下文限制仍适用。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "openai",
-      "model": "o1-pro-2025-03-19",
-      "workflow": "generation",
-      "protocol": "openai-responses",
-      "policy": {
-        "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 8192,
-        "maxPixels": 32000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 50000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://developers.openai.com/api/docs/guides/images-vision",
-        "note": "平台额度低于当前通用 API 上限；模型和 detail 各自的缩放、patch 与上下文限制仍适用。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "openai",
       "model": "o3",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
@@ -5597,58 +5261,6 @@
       "model": "o3-pro-2025-06-10",
       "workflow": "generation",
       "protocol": "openai-responses",
-      "policy": {
-        "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 8192,
-        "maxPixels": 32000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 50000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://developers.openai.com/api/docs/guides/images-vision",
-        "note": "平台额度低于当前通用 API 上限；模型和 detail 各自的缩放、patch 与上下文限制仍适用。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "openai",
-      "model": "o4-mini",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 8192,
-        "maxPixels": 32000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 50000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://developers.openai.com/api/docs/guides/images-vision",
-        "note": "平台额度低于当前通用 API 上限；模型和 detail 各自的缩放、patch 与上下文限制仍适用。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "openai",
-      "model": "o4-mini-2025-04-16",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
       "policy": {
         "maxCount": 8,
         "maxBytes": 16000000,

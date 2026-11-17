@@ -9097,15 +9097,6 @@
       ],
       "notes": "Official fixed values; no capabilities copied across channels."
     },
-    "openai/gpt-image-1": {
-      "generation": "openai-gpt-image-1",
-      "editing": "openai-gpt-image-1",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://developers.openai.com/api/docs/guides/image-generation"
-      ],
-      "notes": "Official fixed values; no capabilities copied across channels."
-    },
     "openai/gpt-image-1-mini": {
       "generation": "openai-gpt-image-1-mini",
       "editing": "openai-gpt-image-1-mini",
