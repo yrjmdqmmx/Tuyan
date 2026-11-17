@@ -1,3 +1,4 @@
+import {frozenTime} from '../../../test-support/execution-capability.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import React from 'react'
@@ -6,7 +7,8 @@ import {ModelSpecifications} from '../src/components/ModelSpecifications.jsx'
 import {STATIC_MODEL_REGISTRY} from '../src/lib/staticModelCatalog.js'
 import {imageInputPresentations} from '../../../test-support/image-input-r27.mjs'
 import {assertPMDecisions,forbiddenBody} from '../../../test-support/pm-decisions-r30.mjs'
-test('R30 all 1064 rendered dialogs omit verification/provenance rows, preserve source-hover dates and match Mini numeric absence',async()=>{
+test('R30 all 1064 rendered dialogs omit verification/provenance rows, preserve source-hover dates and match Mini numeric absence',async t=>{
+ t.mock.timers.enable({apis:['Date'],now:Date.parse(frozenTime)})
  const rows=await imageInputPresentations();assertPMDecisions(rows)
  let unknown=0
  for(const [provider,entry]of Object.entries(STATIC_MODEL_REGISTRY))for(const model of entry.models){

@@ -16,9 +16,19 @@ export const fixturePath = path.join(root, 'test-support/fixtures/execution-capa
 export const readExecutionFixture = () => JSON.parse(gunzipSync(fs.readFileSync(fixturePath)))
 const require = createRequire(new URL('../apps/paperbanana-api/package.json', import.meta.url))
 const deny = () => { throw Error('R22: infrastructure/network calls are forbidden') }
-class FrozenDate extends Date {
+// Snapshot comparisons use the original R22 instant, not the host timezone or
+// the current retirement state. Both Date.now() and new Date() must agree.
+export class FrozenDate extends Date {
   constructor(...args) { super(...(args.length ? args : [frozenTime])) }
   static now() { return Date.parse(frozenTime) }
+}
+// Only wrap synchronous snapshot rendering: ordinary CommonJS dependencies use
+// the host Date, whereas bundled/VM modules receive FrozenDate explicitly.
+// Restore even on assertion failure; never keep a global clock across an await.
+export function withFrozenClock(render) {
+  const previous = globalThis.Date
+  globalThis.Date = FrozenDate
+  try { return render() } finally { globalThis.Date = previous }
 }
 export const inputPath = path.join(root, 'test-support/fixtures/execution-inputs-8c456709.json')
 export const readSource = (file, commit, readHistorical = archivedText) => commit

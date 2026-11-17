@@ -27001,9 +27001,21 @@
             "scripts/primary-links-r31.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "PR #251 frozen-clock repair",
+          "line": 1,
+          "old": "Frozen lifecycle comparisons could read the host wall clock.",
+          "new": "Evaluate unchanged frozen expectations at the explicit R22 snapshot instant (2026-11-09T12:00:00.000Z).",
+          "reason": "The AntLing retirement cutoff has passed. Pin only test/maintenance evaluation; retain every assertion, frozen artifact and runtime behavior.",
+          "evidence": [
+            "docs/model-modality-frozen-clock.md",
+            "test-support/execution-capability.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "a03fbf68c806e1470fec8e999e9a4b483d3941d8977c2b0c35df49b647fe679b"
+      "diffSha256": "1a48a280fd9b3217ec6ea6e4818c642b54418c9e8756a80dfc6108740f939f4a"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
@@ -27695,9 +27707,21 @@
             "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "PR #251 frozen-clock repair",
+          "line": 1,
+          "old": "Frozen lifecycle comparisons could read the host wall clock.",
+          "new": "Evaluate unchanged frozen expectations at the explicit R22 snapshot instant (2026-11-09T12:00:00.000Z).",
+          "reason": "The AntLing retirement cutoff has passed. Pin only test/maintenance evaluation; retain every assertion, frozen artifact and runtime behavior.",
+          "evidence": [
+            "docs/model-modality-frozen-clock.md",
+            "test-support/execution-capability.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "20bc987b0a009c6f7eb6aa328faa1a5a2583210da7b2920380beca9f23ce753a"
+      "diffSha256": "3f92e52ffea0d253a5290d86db4e3dc2f2d2431380bf9d518658a563c025641a"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i4-r24.test.cjs",
@@ -27911,9 +27935,21 @@
             "scripts/model-pm-r30.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "PR #251 frozen-clock repair",
+          "line": 1,
+          "old": "Frozen lifecycle comparisons could read the host wall clock.",
+          "new": "Evaluate unchanged frozen expectations at the explicit R22 snapshot instant (2026-11-09T12:00:00.000Z).",
+          "reason": "The AntLing retirement cutoff has passed. Pin only test/maintenance evaluation; retain every assertion, frozen artifact and runtime behavior.",
+          "evidence": [
+            "docs/model-modality-frozen-clock.md",
+            "test-support/execution-capability.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "32de28a630af757d58605c249774a0d568f60c89e7bc163625c7902cc7e0d5d4"
+      "diffSha256": "7c1880a0ddab3489e4c1b7cfc66ab7b7698e7f962ac94359453b700138a4ea87"
     },
     {
       "file": "apps/web/tests/model-card-i5-r25.test.mjs",
@@ -29425,9 +29461,21 @@
             "scripts/model-pm-r30.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "PR #251 frozen-clock repair",
+          "line": 1,
+          "old": "Frozen lifecycle comparisons could read the host wall clock.",
+          "new": "Evaluate unchanged frozen expectations at the explicit R22 snapshot instant (2026-11-09T12:00:00.000Z).",
+          "reason": "The AntLing retirement cutoff has passed. Pin only test/maintenance evaluation; retain every assertion, frozen artifact and runtime behavior.",
+          "evidence": [
+            "docs/model-modality-frozen-clock.md",
+            "test-support/execution-capability.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "3af3b0ecb0cfd6b69ce3f0a9557d80966f8cf7ba089eba2dd1d8099df2917bfd"
+      "diffSha256": "2cefea192b76aa3dcc43886e359f44bb6c05c9c23a88177a8f17aeaad240d641"
     },
     {
       "file": "scripts/report-changed-tests.mjs",
@@ -31131,9 +31179,21 @@
             "scripts/primary-links-r31.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "PR #251 frozen-clock repair",
+          "line": 1,
+          "old": "Frozen lifecycle comparisons could read the host wall clock.",
+          "new": "Evaluate unchanged frozen expectations at the explicit R22 snapshot instant (2026-11-09T12:00:00.000Z).",
+          "reason": "The AntLing retirement cutoff has passed. Pin only test/maintenance evaluation; retain every assertion, frozen artifact and runtime behavior.",
+          "evidence": [
+            "docs/model-modality-frozen-clock.md",
+            "test-support/execution-capability.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "3559560809c077c904722c332b3efa4ffb775d92d8e48b319da7f285f6d4a705"
+      "diffSha256": "ca8f0e441a074551611057de45f0bcfc92b6458b69025e5090ed1dcbf35a8000"
     },
     {
       "file": "scripts/model-pm-r30.test.mjs",

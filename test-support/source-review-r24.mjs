@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import vm from 'node:vm'
 import {createRequire} from 'node:module'
-import {productBundle} from './execution-capability.mjs'
+import {productBundle, FrozenDate, withFrozenClock} from './execution-capability.mjs'
 
 export async function collectSourceReview() {
   const web = await productBundle(`
@@ -17,7 +17,7 @@ export async function collectSourceReview() {
   const require=createRequire(import.meta.url), {JSDOM}=createRequire(new URL('../apps/web/package.json',import.meta.url))('jsdom')
   const filename=require.resolve('../apps/miniprogram/miniprogram/components/model-picker/model-picker.js')
   let definition, modal
-  const context={Component(v){definition=v},exports:{},require:createRequire(filename),wx:{showModal(v){modal=v}}}
+  const context={Component(v){definition=v},exports:{},require:createRequire(filename),Date:FrozenDate,wx:{showModal(v){modal=v}}}
   vm.runInNewContext(fs.readFileSync(filename,'utf8')+'\nthis.present=presentModel',context,{filename})
   const current={web:[],mini:[],notices:[]}
   globalThis.React=createRequire(new URL('../apps/web/package.json',import.meta.url))('react')
@@ -31,6 +31,7 @@ export async function collectSourceReview() {
     current.web.push({card,name:data.sourceModel.displayName,rows,text,tooltips})
     if(data.lifecycle?.state==='scheduled') current.notices.push({card,name:data.sourceModel.displayName,rows:data.lifecycle.sourceUrl ? [{url:data.lifecycle.sourceUrl,label:'下线公告 · '+web.sourceTitle(data.lifecycle.sourceUrl)}] : []})
   }
+  withFrozenClock(() => {
   for(const [provider,entry] of Object.entries(require('../apps/miniprogram/miniprogram/utils/static-model-catalog.js').STATIC_MODEL_REGISTRY)) for(const model of entry.models) {
     const data=context.present(model,'','',provider),dialogs=[]
     for(const row of data.specSources) {
@@ -39,6 +40,7 @@ export async function collectSourceReview() {
     }
     current.mini.push({card:provider+'/'+model.id,name:data.label,rows:structuredClone(data.specSources),text:data.auditMessage,dialogs,tooltips:structuredClone(data.specRows.flatMap(row=>row.icons.map(icon=>icon.tooltip)))})
   }
+  })
   dom.window.close()
   return current
 }

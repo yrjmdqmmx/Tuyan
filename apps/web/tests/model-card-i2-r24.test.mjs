@@ -1,3 +1,4 @@
+import {frozenTime} from '../../../test-support/execution-capability.mjs'
 import conflictCards from '../../../test-support/fixtures/conflict-cards-r26.json' with {type:'json'}
 import {assertDialogDates,assertUnknownIconDates} from '../../../test-support/dialog-dates-r26.mjs'
 import {expectedHumanRows} from '../../../test-support/source-links-i3-r24.mjs'
@@ -14,6 +15,7 @@ import {titleIssues,dialogIssues,reviewBaseline} from '../../../test-support/sou
 afterEach(cleanup)
 
 test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable styled links and clean copy',t=>{
+ t.mock.timers.enable({apis:['Date'],now:Date.parse(frozenTime)})
  const css=fs.readFileSync(new URL('../src/components/ModelSpecifications.css',import.meta.url),'utf8')
  assert.match(css,/\.tw-dialog\.model-evidence-dialog a\.model-evidence-source\s*\{[^}]*color: var\(--accent, #267f68\)/)
  assert.match(css,/\.tw-dialog\.model-evidence-dialog a\.model-evidence-source:focus-visible\s*\{[^}]*outline: 2px solid var\(--accent, #267f68\)/)

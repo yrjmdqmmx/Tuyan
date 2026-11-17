@@ -5,7 +5,9 @@ const context={Component(v){definition=v},exports:{},require:createRequire(filen
 vm.runInNewContext(fs.readFileSync(filename,'utf8')+'\nthis.present=presentModel',context,{filename})
 const notice='https://www.aliyun.com/notice/118728',spec='https://help.aliyun.com/zh/model-studio/qwen3-5-plus'
 const ids=['qwen3.5-plus','qwen3.5-plus-2026-02-15','qwen3.5-plus-2026-04-20']
-test('R25 I5 all 1064 compiled Mini cards: every retirement badge copies its own non-excluded notice URL',async()=>{
+test('R25 I5 all 1064 compiled Mini cards: every retirement badge copies its own non-excluded notice URL',async t=>{
+ const {frozenTime}=await import('../../../test-support/execution-capability.mjs')
+ t.mock.timers.enable({apis:['Date'],now:Date.parse(frozenTime)})
  const {verifiedRetirement}=await import('../../../scripts/lib/model-evidence-r26.mjs')
  let cards=0,badges=0
  for(const[p,e]of Object.entries(STATIC_MODEL_REGISTRY))for(const m of e.models){

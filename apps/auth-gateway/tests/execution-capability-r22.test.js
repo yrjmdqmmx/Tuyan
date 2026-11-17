@@ -6,8 +6,9 @@ import { withModelAudit } from '../src/model-audit.js'
 import { postInMemory } from '../../paperbanana-api/tests/helpers/in-memory-http.ts'
 import { readExecutionFixture, coreProducts, executionRegistry, executionModel, modelRows } from '../../../test-support/execution-capability.mjs'
 
-test('R22 Gateway preserves frozen main capability on the registry wire and in its audit decorator', async () => {
+test('R22 Gateway preserves frozen main capability on the registry wire and in its audit decorator', async t => {
   const fixture = readExecutionFixture()
+  t.mock.timers.enable({ apis: ['Date'], now: Date.parse(fixture.frozenTime) })
   const { registry } = await coreProducts()
   for (const { provider, model } of modelRows(registry)) {
     const before = structuredClone(model)

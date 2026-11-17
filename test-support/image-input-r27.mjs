@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import {restoreI7IconWording} from './icon-simplify-r27.mjs'
 import vm from 'node:vm'
 import {createRequire} from 'node:module'
-import {productBundle} from './execution-capability.mjs'
+import {productBundle, FrozenDate, withFrozenClock} from './execution-capability.mjs'
 import assert from 'node:assert/strict'
 import {gunzipSync} from 'node:zlib'
 import {createHash} from 'node:crypto'
@@ -91,11 +91,11 @@ export async function imageInputPresentations() {
   `)
   const require = createRequire(new URL('../apps/miniprogram/package.json', import.meta.url))
   const filename = require.resolve('./miniprogram/components/model-picker/model-picker.js')
-  const context = {Component(){}, exports:{}, require:createRequire(filename)}
+  const context = {Component(){}, exports:{}, require:createRequire(filename), Date:FrozenDate}
   vm.runInNewContext(fs.readFileSync(filename, 'utf8') + '\nthis.present=presentModel', context, {filename})
   const mini = require('./miniprogram/utils/static-model-catalog.js').STATIC_MODEL_REGISTRY
   const {auditedModelSpecs} = require('./miniprogram/utils/model-audit.js')
-  return plain(Object.fromEntries(Object.entries(web.STATIC_MODEL_REGISTRY).flatMap(([channel, provider]) => provider.models.map(model => {
+  return withFrozenClock(() => plain(Object.fromEntries(Object.entries(web.STATIC_MODEL_REGISTRY).flatMap(([channel, provider]) => provider.models.map(model => {
     const data = web.modelCardSpecifications(channel, model)
     const miniModel = mini[channel].models.find(row => row.id === model.id)
     return [channel + '/' + model.id, {
@@ -105,5 +105,5 @@ export async function imageInputPresentations() {
         fieldSources:web.fieldSourceLines(data.fields, data.checkedAt), refine:web.modelRefinePresentation(model)},
       mini: {card:context.present(miniModel, '', '', channel), audit:auditedModelSpecs(channel, model.id)},
     }]
-  }))))
+  })))))
 }

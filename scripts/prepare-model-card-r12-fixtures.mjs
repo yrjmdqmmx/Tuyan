@@ -5,6 +5,7 @@ import vm from 'node:vm'
 import assert from 'node:assert/strict'
 import { gitText, requireHistory } from './lib/git-history.mjs'
 import { build } from 'esbuild'
+import { FrozenDate } from '../test-support/execution-capability.mjs'
 import { fileURLToPath } from 'node:url'
 import { readPackedRegistry, rowsOf } from './lib/model-card-audit.mjs'
 import { isApiSource } from '../apps/web/src/lib/modelCardSources.js'
@@ -16,7 +17,7 @@ async function cardAt(commit) {
       contents: gitText(root, commit, path.relative(root, file)),
       loader: file.endsWith('.json') ? 'json' : 'js', resolveDir: path.dirname(file),
     })) } }] })
-  const module = { exports: {} }; new Function('module', 'exports', result.outputFiles[0].text)(module, module.exports)
+  const module = { exports: {} }; new Function('module', 'exports', 'Date', result.outputFiles[0].text)(module, module.exports, FrozenDate)
   return module.exports.modelCardSpecifications
 }
 const before = await cardAt('6d88b28f'), r8 = await cardAt('785b99df')
