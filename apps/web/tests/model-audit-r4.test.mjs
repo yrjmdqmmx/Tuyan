@@ -19,7 +19,7 @@ test('missing audit values preserve exact verified catalog facts with accessible
   assert.equal(card.fields.totalContextTokens.value,1000000)
   assert.equal(card.inputFact.provenance,'catalog');assert.equal(card.fields.totalContextTokens.provenance,'catalog');assert.equal(card.context,'1M tokens')
   render(React.createElement(ModelSpecifications,{provider:'kimi',model}))
-  assert.doesNotMatch(screen.getByRole('link').title,/图研既有核实|核实日期/)
+  assert.equal(screen.getByRole('link').title, '')
   assert.deepEqual(model,before)
 })
 

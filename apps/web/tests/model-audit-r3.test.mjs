@@ -116,7 +116,9 @@ test('production compact formatter is shared by both numeric rows and exact valu
   const { container } = render(React.createElement(ModelSpecifications, {provider:'tokendance',model:{id:'deepseek-v4-pro'}}));
   assert.equal(screen.getByText(data.context).title, '1,048,576 tokens');
   assert.equal(screen.getByText(data.maxOutput).title, '384K tokens');
-  const source = screen.getByRole('link'); assert.ok(source.title.includes(source.href));
+  const source = screen.getByRole('link');
+  assert.equal(source.title, '');
+  assert.equal(source.getAttribute('href'), data.sources[0]);
   assert.equal(container.querySelectorAll('dl > div').length, 4);
 });
 

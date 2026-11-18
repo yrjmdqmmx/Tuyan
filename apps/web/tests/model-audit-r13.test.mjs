@@ -6,7 +6,7 @@ import vm from 'node:vm'
 import path from 'node:path'
 import {fileURLToPath} from 'node:url'
 import React from 'react'
-import { render, cleanup } from '@testing-library/react'
+import { render, cleanup, fireEvent, within } from '@testing-library/react'
 import { ModelSpecifications } from '../src/components/ModelSpecifications.jsx'
 import { modelCardSpecifications } from '../src/lib/modelCardSpecifications.js'
 import { modelCardSources, modelSourceName, isDeadSource } from '../src/lib/modelCardSources.js'
@@ -68,7 +68,10 @@ test('R13 exactly seven cards render verified vendor links in full/static and no
         const visible = view.getByRole('link')
         assert.equal(visible.getAttribute('href'), url)
         assert.equal(visible.textContent, visibleSourceTitle(url))
-        for (const dead of deadLinks) assert.ok(!visible.getAttribute('title').includes(dead.url))
+        assert.equal(visible.title, '')
+        fireEvent.click(view.getByRole('button', { name: /^输入模态/ }))
+        const dialog = view.getByRole('dialog', { name: '模型规格' })
+        for (const source of within(dialog).getAllByRole('link')) assert.equal(isDeadSource(source.href), false)
         view.unmount()
       }
     }
@@ -118,8 +121,11 @@ test('R13B every specified notice has 下线公告 in full/static cards and pres
         const view = render(React.createElement(ModelSpecifications, { provider: channel, model, compactSources }))
         const visible = view.getByRole('link')
         assert.equal(visible.getAttribute('href'), card.sources[0])
-        assert.ok(visible.getAttribute('title').includes(visibleSourceTitle(url)))
+        assert.equal(visible.title, '')
         if (card.sources[0] === url) assert.equal(visible.textContent, visibleSourceTitle(url))
+        fireEvent.click(view.getByRole('button', { name: /^输入模态/ }))
+        const dialog = within(view.getByRole('dialog', { name: '模型规格' }))
+        assert.equal(dialog.getByRole('link', { name: visibleSourceTitle(url) }).getAttribute('href'), url)
         view.unmount()
       }
     }

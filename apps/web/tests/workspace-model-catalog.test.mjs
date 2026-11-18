@@ -155,7 +155,10 @@ test('cards show four specifications immediately and expose all human sources wh
  assert.deepEqual([...card.querySelectorAll('dt')].map(node=>node.textContent),['输入','输出','上下文窗口','最大输出']);
  assert.ok(within(card).getAllByText('未公布')[0]);
  assert.deepEqual(within(card).getAllByRole('link').map(link=>link.href),sources.slice(0,1));
- for(const source of sources) assert.equal(within(card).getByRole('link').title.includes(source),sources.slice(0,3).includes(source));
+ assert.equal(within(card).getByRole('link').title,'');
+ fireEvent.click(within(card).getByRole('button',{name:/^输入模态/}));
+ const dialog=within(screen.getByRole('dialog',{name:'模型规格'}));
+ assert.deepEqual(dialog.getAllByRole('link').map(link=>link.href),sources.slice(0,3));
  assert.deepEqual(r.providers.openai.models[0].specifications.sourceUrls,sources);
  assert.ok(container.querySelector('.tw-catalog-card-actions > button'));
 });

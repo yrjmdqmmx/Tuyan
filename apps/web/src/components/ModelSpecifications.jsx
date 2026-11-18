@@ -36,11 +36,11 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
   const modalityButton = (states, direction) => <button type="button" className="model-modality-trigger" aria-label={`${t(direction)} · ${t('模型规格')}；${states.map(item => t(item.accessibleLabel)).join('；')}`} onClick={event => { event.stopPropagation(); setShowSources(true) }}><ModalityIcons states={states} direction={direction} /></button>
   const url = data.sources[0]
   const sources = <div className={`model-spec-sources${compactSources ? ' is-compact' : ''}`} aria-label={t('官方文档')}>
-    {url ? <a href={url} title={`${details}\n${sourceRows.map(row => row.label).join('\n')}\n${data.sources.join('\n')}`} aria-label={`${sourceRows[0].label}\n${details}`} target="_blank" rel="noopener noreferrer" onClick={event => {
+    {url ? <a href={url} aria-label={sourceRows[0].label} target="_blank" rel="noopener noreferrer" onClick={event => {
       // Touch devices expose the same evidence through the existing dialog.
       if (window.matchMedia?.('(hover: none)').matches) { event.preventDefault(); setShowSources(true) }
-    }}><ExternalLink size={13} aria-hidden="true" /><span className="model-spec-source-text"><span className="model-spec-source-label">{sourceRows[0].label.split(' · ')[0]} · </span><span className="model-spec-source-domain" title={url}>{sourceRows[0].label.split(' · ').slice(1).join(' · ')}</span></span></a>
-      : <span title={`${details}\n${data.sources.join('\n')}`} aria-label={details}>{t('官方文档待确认')}</span>}
+    }}><ExternalLink size={13} aria-hidden="true" /><span className="model-spec-source-text"><span className="model-spec-source-label">{sourceRows[0].label.split(' · ')[0]} · </span><span className="model-spec-source-domain">{sourceRows[0].label.split(' · ').slice(1).join(' · ')}</span></span></a>
+      : <span>{t('官方文档待确认')}</span>}
   </div>
   return <div className="model-card-specifications">
     <dl className="model-specs" aria-label={t('模型规格')}>

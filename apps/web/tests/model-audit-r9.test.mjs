@@ -57,7 +57,7 @@ test('R9 removal/lifecycle display names and notices contain no uncertainty or f
   assert.doesNotMatch(miniPresentation.modelVersionDetail({ id: 'unknown' }), /具体版本待确认/)
 })
 
-test('R9 Bailian Kimi K3 visible official link and title use the channel source and verification date', () => {
+test('R9 Bailian Kimi K3 footer links to the channel source and the dialog retains both exact limits', () => {
   const original = STATIC_MODEL_REGISTRY.bailian.models.find(model => model.id === 'kimi-k3')
   // A generic catalog source must never displace the channel capability evidence.
   const model = { ...original, officialSourceUrl: 'https://huggingface.co/moonshotai/Kimi-K3' }
@@ -67,9 +67,11 @@ test('R9 Bailian Kimi K3 visible official link and title use the channel source 
     const link = screen.getByRole('link')
     assert.equal(link.getAttribute('href'), 'https://help.aliyun.com/zh/model-studio/kimi-k3')
     assert.equal(link.textContent, '渠道资料 · 百炼 · Kimi K3')
-    assert.doesNotMatch(link.title, /核实日期|未核实/)
-    assert.match(link.title, /上下文窗口：1,048,576 tokens/)
-    assert.match(link.title, /最大输出：1,048,576 tokens/)
+    assert.equal(link.title, '')
+    fireEvent.click(screen.getByRole('button', { name: /^输入模态/ }))
+    const dialog = screen.getByRole('dialog', { name: '模型规格' })
+    assert.match(dialog.textContent, /上下文窗口：1,048,576 tokens/)
+    assert.match(dialog.textContent, /最大输出：1,048,576 tokens/)
     assert.deepEqual(model, before)
     view.unmount()
   }

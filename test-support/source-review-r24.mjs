@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import vm from 'node:vm'
 import {createRequire} from 'node:module'
 import {productBundle, FrozenDate, withFrozenClock} from './execution-capability.mjs'
+import {evidenceStatusLines} from '../packages/api/src/card-presentation.mjs'
 
 export async function collectSourceReview() {
   const web = await productBundle(`
@@ -25,9 +26,8 @@ export async function collectSourceReview() {
   for(const [provider,entry] of Object.entries(web.STATIC_MODEL_REGISTRY)) for(const model of entry.models) {
     const data=web.modelCardSpecifications(provider,model),card=provider+'/'+model.id,rows=web.modelSourceRows(data)
     dom.window.document.body.innerHTML=web.markup(provider,model)
-    const footer=dom.window.document.querySelector('.model-spec-sources > *')
-    const text=(footer?.getAttribute('aria-label') || '').replace(rows[0]?.label+'\n','')
     const tooltips=[...dom.window.document.querySelectorAll('.model-modality-icon')].map(el=>el.title)
+    const text=evidenceStatusLines(tooltips.map(tooltip => ({tooltip})), data.fields, [data.context, data.maxOutput])
     current.web.push({card,name:data.sourceModel.displayName,rows,text,tooltips})
     if(data.lifecycle?.state==='scheduled') current.notices.push({card,name:data.sourceModel.displayName,rows:data.lifecycle.sourceUrl ? [{url:data.lifecycle.sourceUrl,label:'下线公告 · '+web.sourceTitle(data.lifecycle.sourceUrl)}] : []})
   }

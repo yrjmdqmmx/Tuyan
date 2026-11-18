@@ -47,14 +47,18 @@ test('R23F all 1064 rendered Web cards and evidence/notice dialogs pass the titl
     assert.deepEqual(rows.map(row => row.url), expectedHumanRows(old.rows,card,'web').map(row => row.url), card)
     assert.equal(new Set(rows.map(row => row.label)).size, rows.length, card)
     assert.equal(new Set(rows.map(row => sourceIdentity(row.url))).size, rows.length, card)
-    render(React.createElement(ModelSpecifications, {provider, model, compactSources:true}))
+    const {container} = render(React.createElement(ModelSpecifications, {provider, model, compactSources:true}))
+    assert.equal(container.querySelector('.model-spec-sources[title], .model-spec-sources [title]'), null, card)
     if (rows.length) {
       const link = screen.getByRole('link')
       assert.equal(link.textContent, rows[0].label)
-      for (const row of rows) assert.ok(link.title.includes(row.label))
+      assert.equal(link.getAttribute('aria-label'), rows[0].label, card)
     }
     fireEvent.click(screen.getByRole('button', {name:/^输入模态/}))
-    const links = within(screen.getByRole('dialog')).queryAllByRole('link')
+    const dialog = within(screen.getByRole('dialog', {name:'模型规格'}))
+    const sourcesLabel = dialog.getByText('资料来源', {exact:true})
+    const links = dialog.queryAllByRole('link')
+    for (const link of links) assert.ok(sourcesLabel.compareDocumentPosition(link) & window.Node.DOCUMENT_POSITION_FOLLOWING, card)
     assert.deepEqual(links.map(link => ({url:link.getAttribute('href'),label:link.textContent})), rows)
     renderedRows += links.length
     cards.push({card, name:old.name, rows}); cleanup()

@@ -26,8 +26,8 @@ function assertSource(card) {
   const domain = link.querySelector('.model-spec-source-domain')
   assert.equal(link.textContent, `${label.textContent}${sourceTitle(link.href, {displayName:card.querySelector('h3')?.textContent})}`)
   assert.match(label.textContent, /^(官方文档|渠道资料|下线公告) · $/)
-  assert.equal(domain.title, link.href)
-  assert.ok(link.title.includes(link.href))
+  assert.equal(card.querySelector('.model-spec-sources[title], .model-spec-sources [title]'), null)
+  assert.equal(link.getAttribute('aria-label'), link.textContent)
   for (const node of [link, domain]) {
     assert.equal(computed(node).whiteSpace, 'nowrap')
     assert.equal(computed(node).overflowWrap, 'normal')

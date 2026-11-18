@@ -68,7 +68,7 @@ test('R22B compact source has a descriptive page subject and full URL while R16 
   const css=fs.readFileSync(new URL('../src/workspace/workspaceModels.css',import.meta.url),'utf8')
   const link=screen.getByRole('link'),domain=link.querySelector('.model-spec-source-domain')
   assert.equal(domain.textContent,'Google Cloud · 3-0 Generate')
-  assert.equal(domain.title,link.href)
+  assert.equal(domain.title,'')
   assert.match(css,/\.model-spec-footer\s*{[^}]*flex-wrap:wrap;/)
   assert.doesNotMatch(css,/\.model-spec-sources[^{}]*\{[^}]*(?:overflow-wrap:anywhere|word-break:break-all|white-space:normal)/)
   assert.match(css,/\.tw-catalog-card\.is-paused\s*{\s*opacity:\s*\.6/)

@@ -76,7 +76,7 @@ test('scheduled status stays selectable before deadline and flips without rewrit
   t.mock.method(Date,'now',()=>Date.parse('2027-01-18T23:59:59Z'));
   assert.equal(catalogRows(r).length,1);
   render(React.createElement(ModelSpecifications,{provider:'bailian',model}));
-  assert.doesNotMatch(screen.getByRole('link').title,/将于2027-01-19下线|核实日期/);
+  assert.equal(screen.getByRole('link').title, '');
   Date.now.mock.mockImplementation(()=>Date.parse('2027-01-19'));
   assert.equal(catalogRows(r).length,0);assert.deepEqual(model,before);
 });
@@ -86,7 +86,7 @@ test('unknown and explicitly unsupported modalities differ, with no invented tok
   assert.deepEqual(modalityIconStates('不支持',{state:'unsupported',value:null}).map(x=>x.state),Array(4).fill('unsupported'));
   const model=STATIC_MODEL_REGISTRY.openai.models.find(m=>m.id==='gpt-image-2.6-flare');
   const {container}=render(React.createElement(ModelSpecifications,{provider:'openai',model}));
-  assert.equal(screen.getAllByText('不适用').length,2);assert.doesNotMatch(screen.getByRole('link').title,/未核实|核实日期/);
+  assert.equal(screen.getAllByText('不适用').length,2);assert.equal(screen.getByRole('link').title, '');
   assert.equal(container.querySelectorAll('.is-unsupported').length,0);
   assert.equal(container.querySelectorAll('.is-unknown').length,5);
   assert.doesNotMatch([...container.querySelectorAll('dd')].map(n=>n.textContent).join(' '),/tokens|∞|unlimited|\b0\b/);

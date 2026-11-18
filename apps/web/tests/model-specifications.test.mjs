@@ -31,7 +31,7 @@ test('Novita shows confirmed text-to-image facts offline and after conflicting c
     assert.ok(card.sources.includes('https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img'))
     const view = render(React.createElement(ModelSpecifications, { provider: 'novita', model }))
     assert.equal(view.container.querySelectorAll('.is-unknown').length,6)
-    assert.doesNotMatch(screen.getByRole('link').title, /未核实|核实日期/)
+    assert.equal(screen.getByRole('link').title, '')
     assert.deepEqual(model, before, 'display correction never expands runtime capabilities or changes history')
     view.unmount()
   }
@@ -94,7 +94,10 @@ test('malformed links and invalid context values remain unknown',()=>{
     assert.equal(modelCardSpecifications('custom',{id:'unknown',specifications:{version:1,contextWindowTokens,sourceUrls:['https://example.com/docs']}}).context,'未公布')
   }
   render(React.createElement(ModelSpecifications,{provider:'custom',model:{id:'missing',releaseSourceUrl:'javascript:alert(1)'}}))
-  assert.equal(screen.queryByRole('link'),null);assert.ok(screen.getByText('官方文档待确认'))
+  assert.equal(screen.queryByRole('link'),null)
+  const fallback = screen.getByText('官方文档待确认')
+  assert.equal(fallback.closest('[title]'), null)
+  assert.equal(fallback.querySelector('[title]'), null)
 })
 
 test('product-required image input has its own provenance without inventing official outputs or tokens',()=>{
@@ -230,5 +233,5 @@ test('context and max output retain independent exact integers and per-value pro
   assert.equal(data.context,'≈ 1M tokens');assert.equal(data.maxOutput,'384K tokens')
   assert.equal(data.contextScope,'渠道');assert.equal(data.maxOutputScope,'原厂')
   const {container}=render(React.createElement(ModelSpecifications,{provider:'tokendance',model:{id:'deepseek-v4-pro'}}))
-  assert.doesNotMatch(screen.getByRole('link').title,/源自原厂|核实日期/);assert.ok(screen.getAllByText('源自原厂').length)
+  assert.equal(screen.getByRole('link').title, '');assert.ok(screen.getAllByText('源自原厂').length)
 })
