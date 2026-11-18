@@ -28,15 +28,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Check redirect site
-        run: |
-          set -eu
-          d=deploy/legacy-redirect/site
-          for f in index.html 404.html about.html privacy-policy.html terms-of-service.html \
-                   changelog/index.html leaderboard/index.html leaderboard/methodology/index.html \
-                   robots.txt .nojekyll CNAME; do test -f "$d/$f"; done
-          grep -qx 'www.paperbanana.asia' "$d/CNAME"
-          grep -q 'rel="canonical" href="https://tuyansci.cn/"' "$d/index.html"
-          ! grep -qi 'disallow' "$d/robots.txt"
+        run: bash deploy/legacy-redirect/check-site.sh
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

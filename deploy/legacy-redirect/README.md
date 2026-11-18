@@ -15,6 +15,8 @@ legacy domain stops serving a duplicate of the Tuyan web app and points to
 Regenerate with `python3 deploy/legacy-redirect/generate.py`; publish with the
 `Deploy Legacy Domain Redirect` workflow (manual dispatch).
 
-Note: the `pages` job in `deploy-hangzhou.yml` (on `codex/hangzhou-production`)
-republishes the full web app to the same Pages site after each production deploy,
-which would overwrite this redirect site.
+The `pages` job in `deploy-hangzhou.yml` publishes this same site (checked by
+`check-site.sh`) after each production deploy, so a release keeps the redirect in
+place instead of republishing the full web app. The manual `Deploy GitHub Pages`
+workflow (`deploy-pages.yml`) still builds the full app; do not dispatch it while
+the legacy domain is retired.
