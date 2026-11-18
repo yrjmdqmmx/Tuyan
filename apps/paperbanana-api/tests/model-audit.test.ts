@@ -14,7 +14,7 @@ test('R8 all removed MODEL_UNAVAILABLE messages use main labels with unchanged m
       assert.equal(error.statusCode, 400); assert.equal(error.replacement, row.replacementApiId); assert.equal(error.sourceUrl, row.sourceUrl)
       assert.equal(error.requestState, 'not_sent'); assert.equal(error.localInputFailure, true); assert.equal(error.retryable, false)
       for (const [apiId, name] of [[id, row.displayName], [row.replacementApiId, row.replacementDisplayName]]) {
-        if (apiId && apiId !== name) assert.ok(!error.message.includes(apiId), key)
+        if (apiId && !name.includes(apiId)) assert.ok(!error.message.includes(apiId), key)
       }
       return true
     })
@@ -24,8 +24,8 @@ test('R8 all removed MODEL_UNAVAILABLE messages use main labels with unchanged m
 test('scheduled notices change at the stated date and serverless restrictions are channel scoped', () => {
   const id='qwen3.5-plus'
   assert.equal(auditedModelLifecycle('bailian',id,Date.parse('2027-01-18T23:59:59Z'))?.state,'scheduled')
-  assert.equal(removedModel('bailian',id,Date.parse('2027-01-19T00:00:00Z'))?.replacementApiId,'qwen3.8-flash')
-  assert.throws(()=>assertAuditedModelAvailable('bailian',id,Date.parse('2027-01-19')), (e:any)=>e.code==='MODEL_UNAVAILABLE' && e.replacement==='qwen3.8-flash')
+  assert.equal(removedModel('bailian',id,Date.parse('2027-01-19T10:00:00+08:00'))?.replacementApiId,'qwen3.8-flash')
+  assert.throws(()=>assertAuditedModelAvailable('bailian',id,Date.parse('2027-01-19T10:00:00+08:00')), (e:any)=>e.code==='MODEL_UNAVAILABLE' && e.replacement==='qwen3.8-flash')
   assert.equal(removedModel('fireworks','accounts/fireworks/models/glm-5p2')?.replacementApiId,'accounts/fireworks/models/glm-5p3')
   assert.equal(auditedModelLifecycle('zhipu','glm-5.2'),null)
   assert.equal(auditedModelLifecycle('openai','unresolved'),null)
@@ -99,23 +99,20 @@ test('optimization returns the removed-model 400 and hint before registry or pro
   } finally { await runtime.close() }
 })
 
-test('all Ant Ling notices stop at UTC+8 midnight before transport and leave other channels unaffected', async t => {
+test('batch 1 removed identities retain evidence and reject saved routes before transport', async t => {
+  t.mock.method(Date, 'now', () => Date.parse('2026-11-17T12:00:00+08:00'))
   const runtime:any = await createRefineRuntime({startServer:false}); let calls = 0
-  t.mock.method(Date, 'now', () => Date.parse('2026-11-14T15:59:59.999Z'))
   try {
-    runtime.legacy.configureRuntimeFetch(async () => { calls++; throw Error('No transport after expiry') })
-    for (const id of ['Ling-2.6-1T','Ling-2.6-flash','Ring-2.6-1T']) {
-      const before = Date.parse('2026-11-14T15:59:59.999Z'), stop = before + 1
-      assert.equal(auditedModelLifecycle('antling',id,before)?.state,'scheduled')
-      assert.match(auditedModelLifecycle('antling',id,before)?.message || '',/2026-11-15 00:00 \(UTC\+8\)/)
-      assert.equal(removedModel('antling',id,before),null)
-      assert.doesNotThrow(() => assertAuditedModelAvailable('antling',id,before))
-      assert.equal(auditedModelLifecycle('antling',id,stop),null)
-      assert.equal(removedModel('antling',id,stop)?.replacementApiId,'Ling-3.1-flash')
-      assert.equal(removedModel('other',id,stop),null)
-      t.mock.method(Date, 'now', () => stop)
-      await assert.rejects(runtime.legacy.callTextModel('antling',id,'fixture','system','prompt'), (e:any) => e.businessCode === 'MODEL_UNAVAILABLE' && e.requestState === 'not_sent')
+    runtime.legacy.configureRuntimeFetch(async () => { calls++; throw Error('No transport for removed models') })
+    for (const [provider, id] of [['openai','o1'], ['antling','Ling-2.6-1T'], ['antling','Ling-2.6-flash'], ['antling','Ring-2.6-1T'], ['siliconflow','Pro/zai-org/GLM-5.1']]) {
+      assert.equal(auditedModelLifecycle(provider,id),null)
+      const removed = removedModel(provider,id)
+      assert.ok(removed)
+      if (provider === 'antling') assert.equal(removed.stopDate,'2026-11-15T00:00:00+08:00')
+      assert.equal(removedModel('other',id),null)
+      await assert.rejects(runtime.legacy.callTextModel(provider,id,'fixture','system','prompt'), (e:any) => e.businessCode === 'MODEL_UNAVAILABLE' && e.requestState === 'not_sent')
     }
+    await assert.rejects(runtime.legacy.callImageModel('openai','gpt-image-1','fixture','prompt','1:1'), (e:any) => e.businessCode === 'MODEL_UNAVAILABLE' && e.requestState === 'not_sent')
     assert.equal(calls,0)
   } finally { await runtime.close() }
 })

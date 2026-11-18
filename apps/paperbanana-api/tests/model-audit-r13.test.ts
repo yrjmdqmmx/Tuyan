@@ -34,7 +34,7 @@ test('R13B Core audit sources resolve notice labels for full/static consumers wi
   for (const { channel, modelId, url } of cases) {
     const audit = auditedModelSpecs(channel, modelId)
     for (const model of [registry.providers[channel].models.find((m: any) => m.id === modelId), STATIC_MODEL_REGISTRY[channel].models.find((m: any) => m.id === modelId)]) {
-      assert.ok(model)
+      if (!model) { assert.ok(MODEL_AUDIT_DATA.removed[channel + '/' + modelId]); continue }
       const sources = modelCardSources({ channel, model, audit, fields: audit.fields, lifecycle: auditedModelLifecycle(channel, modelId), checks: MODEL_AUDIT_DATA.sourceChecks })
       assert.ok(sources.sources.includes(url), channel + '/' + modelId)
       assert.equal(modelSourceName(sources, url), '下线公告')

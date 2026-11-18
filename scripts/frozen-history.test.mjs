@@ -40,8 +40,11 @@ test('execution and historical card loaders work without invoking Git', t => {
     import fs from 'node:fs';
     import { root, coreProducts, executionRegistry, readExecutionFixture } from './test-support/execution-capability.mjs';
     import { loadCard } from './scripts/lib/model-card-audit.mjs';
-    const fixture = readExecutionFixture();
-    assert.equal(fixture.counts.coreModels, 1064);
+    import {batchExecutionFixture} from './test-support/retirement-evidence.mjs';
+    const fixture = batchExecutionFixture();
+    assert.equal(readExecutionFixture().counts.coreModels, 1064);
+    assert.equal(fixture.counts.coreModels, 1033);
+    assert.equal(fixture.counts.staticModels, 1033);
     assert.deepEqual(executionRegistry((await coreProducts()).registry), fixture.core);
     for (const commit of ['8c456709', 'd1fe6ff6']) {
       const card = await loadCard(root, commit);

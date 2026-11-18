@@ -1,0 +1,373 @@
+{
+  "recordedAt": "2026-11-17",
+  "baselineCommit": "e013c7260388dd37c0e0cc121354beebf26c141d",
+  "note": "Operator-supplied official evidence re-read on 2026-11-17. Only these exact channel/model identities are authorized; the other 51 candidates and Gemini 2.5 are untouched.",
+  "remove": [
+    {
+      "provider": "openai",
+      "id": "gpt-3.5-turbo-1106",
+      "date": "2026-09-28",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "gpt-3.5-turbo",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "gpt-3.5-turbo-0125",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "gpt-4",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "gpt-4-0613",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "gpt-4-1106-preview",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "gpt-4-turbo",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "gpt-4-turbo-2024-04-09",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "gpt-4.1-nano",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "gpt-4.1-nano-2025-04-14",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "gpt-4o-2024-05-13",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "gpt-image-1",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "o1",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "o1-2024-12-17",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "o1-pro",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "o1-pro-2025-03-19",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "o3-mini",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "o3-mini-2025-01-31",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "o4-mini",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "o4-mini-2025-04-16",
+      "date": "2026-10-23",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "from": "main",
+      "evidence": "已核（OpenAI 停服表 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "Pro/zai-org/GLM-5.1",
+      "date": "2026-11-10",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "from": "v42",
+      "evidence": "已核（官方公告 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "antling",
+      "id": "Ling-2.6-1T",
+      "date": "2026-11-15",
+      "source": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "from": "v42",
+      "evidence": "已核（官方公告 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "antling",
+      "id": "Ling-2.6-flash",
+      "date": "2026-11-15",
+      "source": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "from": "v42",
+      "evidence": "已核（官方公告 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "antling",
+      "id": "Ring-2.6-1T",
+      "date": "2026-11-15",
+      "source": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "from": "v42",
+      "evidence": "已核（官方公告 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+      "date": "2026-11-16",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "from": "v42",
+      "evidence": "已核（官方公告 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "Qwen/Qwen3-VL-30B-A3B-Thinking",
+      "date": "2026-11-16",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "from": "v42",
+      "evidence": "已核（官方公告 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "Qwen/Qwen3.5-122B-A10B",
+      "date": "2026-11-16",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "from": "v42",
+      "evidence": "已核（官方公告 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "inclusionAI/Ling-mini-2.0",
+      "date": "2026-11-16",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "from": "v42",
+      "evidence": "已核（官方公告 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "stepfun-ai/Step-3.5-Flash",
+      "date": "2026-11-16",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "from": "v42",
+      "evidence": "已核（官方公告 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "tencent/Hunyuan-A13B-Instruct",
+      "date": "2026-11-16",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "from": "v42",
+      "evidence": "已核（官方公告 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "zai-org/GLM-4.5V",
+      "date": "2026-11-16",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "from": "v42",
+      "evidence": "已核（官方公告 11-17 读取）",
+      "evidence_read": "2026-11-17"
+    }
+  ],
+  "upcoming": [
+    {
+      "provider": "minimax",
+      "id": "MiniMax-M2.5",
+      "date": "2026-11-18",
+      "source": "https://platform.minimax.io/docs/faq/models",
+      "note": "listed as Retired on 2026-11-17",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "minimax",
+      "id": "MiniMax-M2.5-highspeed",
+      "date": "2026-11-18",
+      "source": "https://platform.minimax.io/docs/faq/models",
+      "note": "listed as Retired on 2026-11-17",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "minimax",
+      "id": "MiniMax-M2.7",
+      "date": "2026-11-18",
+      "source": "https://platform.minimax.io/docs/faq/models",
+      "note": "listed as Retired on 2026-11-17",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "minimax",
+      "id": "MiniMax-M2.7-highspeed",
+      "date": "2026-11-18",
+      "source": "https://platform.minimax.io/docs/faq/models",
+      "note": "listed as Retired on 2026-11-17",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "openai",
+      "id": "gpt-image-2",
+      "date": "2027-02-10",
+      "source": "https://developers.openai.com/api/docs/deprecations",
+      "note": "read 2026-11-17",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3.5-plus",
+      "date": "2027-01-19",
+      "source": "https://tokendance.space/docs/changelog.md",
+      "note": "confirmed 2026-11-17 in TokenDance changelog entry 20261030-model-retirements; retire 2027-01-19 10:00 UTC+8; replacement qwen3.8-flash",
+      "time": "2027-01-19T10:00:00+08:00",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3.5-397b-a17b",
+      "date": "2027-01-19",
+      "source": "https://www.aliyun.com/notice/118728",
+      "note": "confirmed 2026-11-17: exact ID listed in Aliyun notice 118728 table (published 2026-10-19); retire 2027-01-19 10:00 UTC+8; replacement qwen3.8-flash; new purchases closed 2026-11-18",
+      "time": "2027-01-19T10:00:00+08:00",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3.5-plus",
+      "date": "2027-01-19",
+      "source": "https://www.aliyun.com/notice/118728",
+      "note": "confirmed 2026-11-17: exact ID listed in Aliyun notice 118728 table (published 2026-10-19); retire 2027-01-19 10:00 UTC+8; replacement qwen3.8-flash; new purchases closed 2026-11-18",
+      "time": "2027-01-19T10:00:00+08:00",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3.5-plus-2026-02-15",
+      "date": "2027-01-19",
+      "source": "https://www.aliyun.com/notice/118728",
+      "note": "confirmed 2026-11-17: exact ID listed in Aliyun notice 118728 table (published 2026-10-19); retire 2027-01-19 10:00 UTC+8; replacement qwen3.8-flash; new purchases closed 2026-11-18",
+      "time": "2027-01-19T10:00:00+08:00",
+      "evidence_read": "2026-11-17"
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3.5-plus-2026-04-20",
+      "date": "2027-01-19",
+      "source": "https://www.aliyun.com/notice/118728",
+      "note": "confirmed 2026-11-17: exact ID listed in Aliyun notice 118728 table (published 2026-10-19); retire 2027-01-19 10:00 UTC+8; replacement qwen3.8-flash; new purchases closed 2026-11-18",
+      "time": "2027-01-19T10:00:00+08:00",
+      "evidence_read": "2026-11-17"
+    }
+  ]
+}

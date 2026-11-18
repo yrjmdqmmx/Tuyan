@@ -53,7 +53,7 @@ export function assertSentence(icon, fact, direction, terms = []) {
   for (const term of terms) assert.ok(!icon.tooltip.toLowerCase().includes(term.toLowerCase()), 'Attribution leaked: ' + term)
 }
 export function assertAllSentences(rows) {
-  assert.equal(Object.keys(rows).length, 1064)
+  assert.equal(Object.keys(rows).length, 1033)
   const terms = forbiddenAttribution(rows), counts = {}, qualifiers = new Set()
   for (const [key, row] of Object.entries(rows)) for (const [index, direction] of ['input','output'].entries()) {
     const fact = row.web.data[direction + 'Fact'], icons = row.web[direction + 'Icons']
@@ -67,7 +67,7 @@ export function assertAllSentences(rows) {
       if (icon.state === 'conditional') qualifiers.add(icon.detail)
     }
   }
-  assert.deepEqual(counts, {supported:2847, unknown:5163, 'channel-unsupported':501, conditional:1})
+  assert.deepEqual(counts, {supported:2767, unknown:4995, 'channel-unsupported':501, conditional:1})
   assert.deepEqual([...qualifiers], ['图像（需视觉组件）'])
   return counts
 }

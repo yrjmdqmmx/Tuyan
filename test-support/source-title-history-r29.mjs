@@ -1,3 +1,5 @@
+import {visibleSourceTitle} from '../packages/api/src/card-presentation.mjs'
+import {beforeRetirements} from './retirement-projections.mjs'
 import {restoreI12,restoreI12Sources} from './pm-decisions-r30.mjs'
 import {expectedIcons} from './status-sentences-r29.mjs'
 import fs from 'node:fs'
@@ -35,6 +37,7 @@ export function historicalR29Rows(rows, card, client, restored = false) {
   return copy
 }
 const baseline = JSON.parse(gunzipSync(fs.readFileSync(new URL('./fixtures/source-titles-r29-before.json.gz', import.meta.url))))
+const r29Notices = baseline.review.notices
 export const expectedR29 = applyR29Titles(baseline.rows)
 const titles = new Map(Object.values(expectedR29).flatMap(row => [...row.web.sources, ...row.mini.card.specSources]).map(row => [row.url,row.label]))
 export const r29SourceRows = rows => rows.map(row => ({...row,label:titles.get(row.url) || row.label}))
@@ -42,7 +45,14 @@ export const r29SourceRows = rows => rows.map(row => ({...row,label:titles.get(r
 // I11 replaces only icon text and removes the legacy Web-only fifth file icon.
 // Assert the new wording independently before restoring frozen I10 history.
 export function restoreI11Statuses(rows) {
-  const copy = restoreI12(rows)
+  const withNotices = Object.values(rows).some(row => row.web.noticeSource)
+  const plain = Object.fromEntries(Object.entries(rows).map(([key, row]) => {
+    const {noticeSource, ...web} = row.web
+    return [key, {...row, web}]
+  }))
+  const previous = beforeRetirements('cards', plain)
+  if (withNotices) for (const {card, rows} of r29Notices) previous[card] = {...previous[card], web:{...previous[card].web, noticeSource:{url:rows[0].url,label:visibleSourceTitle(rows[0].url)}}}
+  const copy = restoreI12(previous)
   for (const [key, row] of Object.entries(copy)) for (const [i, direction] of ['input','output'].entries()) {
     const old = expectedR29[key]
     const web = old.web[direction + 'Icons'], mini = old.mini.card.specRows[i].icons

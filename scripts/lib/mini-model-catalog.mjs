@@ -56,6 +56,9 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
     }), sourceUrl === 'https://tokendance.space/models/' + model.id && channel === 'tokendance'
       && data.details[key]?.sourceLinks?.some(link => link.url === sourceUrl && link.kind === 'model-page' && link.checkedAt)
       ? -2 : sourceUrl ? intern(sources, sourceUrl) : null]
+    // A retirement notice can displace the specification that supplied a field.
+    // Keep its citation in the compact projection even when it is no longer primary.
+    const noticePrimary = notice && sourceUrl === notice.sourceUrl
     const label = sourceUrl && modelSourceName(links, sourceUrl)
     if (label && label !== '官方文档') rows[key].push(label === '下线公告' ? 1 : 2)
     const note = [data.details[key]?.note, conflicts.length && !Object.values(merged).some(f => f.unsupportedModalities?.length) && conflictNote].filter(Boolean).join('；'), suffix = merged.totalContextTokens?.suffix
@@ -68,10 +71,11 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
     for (const field of ['fieldVerifiedAt', 'fieldSources', 'lifecycleSourceUrl', 'excludedSources']) if (Object.hasOwn(data.details[key] || {}, field)) details[key] = { ...details[key], [field]: data.details[key][field] }
     // fal field attribution uses the same exact URLs as Web, including secondary
     // vendor citations; a missing primary-URL slot must not erase its title.
-    if (channel === 'fal') details[key] = { ...details[key], fieldSources: {
+    if (channel === 'fal' || noticePrimary) details[key] = { ...details[key], fieldSources: {
       ...Object.fromEntries(Object.entries(merged).filter(([, fact]) => fact.sourceUrl).map(([field, fact]) => [field, fact.sourceUrl])),
       ...details[key]?.fieldSources,
     } }
+    if (noticePrimary && links.sources[1]) details[key].specificationSourceUrl = links.sources[1]
     const retirementSources = links.lifecycleSources.filter(url => url !== sourceUrl)
     if (retirementSources.length) details[key] = { ...details[key], retirementSources }
   }

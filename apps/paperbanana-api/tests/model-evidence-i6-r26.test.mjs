@@ -11,6 +11,7 @@ test('R26 I6 Core projects the model-specific 397b retirement citation and exclu
  const registry=await phase2Registry(),card=registry.providers.bailian.models.find(m=>m.id==='qwen3.5-397b-a17b').cardSpecifications
  assert.equal(card.lifecycleSourceUrl,'https://www.aliyun.com/notice/118728')
  assert.ok([card.sourceUrl,...card.retirementSources].includes('https://www.aliyun.com/notice/118728'))
+ assert.equal(card.specificationSourceUrl, 'https://huggingface.co/Qwen/Qwen3.5-397B-A17B')
  assert.equal(card.verifiedAt,'2026-11-09')
  assert.ok(card.excludedSources.includes('https://help.aliyun.com/zh/model-studio/model-depreciation'))
  verifiedRetirement('bailian/qwen3.5-397b-a17b',card.lifecycleSourceUrl,'2027-01-19')
@@ -25,6 +26,6 @@ test('R26 I6 Core projects the model-specific 397b retirement citation and exclu
   assert.doesNotMatch(display.auditMessage,/图研之前记录|核实日期|渠道公布/,key)
   cards++
  }
- // The existing phase2 fixture has 1061 live models (model-modality-phase2.test.ts).
- assert.equal(cards,1061)
+ // The existing phase2 fixture has 1030 live models (model-modality-phase2.test.ts).
+ assert.equal(cards,1030)
 })

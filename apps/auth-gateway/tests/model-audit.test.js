@@ -22,7 +22,7 @@ test('R8 generated gateway errors preserve machine fields and use main display n
       assert.equal(error.message,`模型 ${row.displayName}：原型号已不可用，请重新选择。${row.replacementApiId ? `推荐：${row.replacementDisplayName}` : ''}`);
       assert.equal(error.businessCode,'MODEL_UNAVAILABLE');assert.equal(error.code,'MODEL_UNAVAILABLE');assert.equal(error.statusCode,400);
       assert.equal(error.replacement,row.replacementApiId);assert.equal(error.sourceUrl,row.sourceUrl);assert.equal(error.requestState,'not_sent');
-      for(const [apiId,name] of [[id,row.displayName],[row.replacementApiId,row.replacementDisplayName]]) if(apiId && apiId!==name) assert.ok(!error.message.includes(apiId),key);
+      for(const [apiId,name] of [[id,row.displayName],[row.replacementApiId,row.replacementDisplayName]]) if(apiId && !name.includes(apiId)) assert.ok(!error.message.includes(apiId),key);
       return true;
     });
   }
@@ -85,3 +85,26 @@ test('Ant Ling saved bindings round-trip after the exact deadline while new ones
   assert.deepEqual(retained.models,before.models);
   for(const model of before.models) await assert.rejects(store.put('owner',{...retained,models:[...retained.models,{...model,id:'new'}]}),e=>e.businessCode==='MODEL_UNAVAILABLE'&&e.replacement==='Ling-3.1-flash');
 });
+
+for (const [provider, modelId] of [['openai', 'o1'], ['antling', 'Ling-2.6-1T']]) {
+  test(`batch 1 gateway retains saved ${provider}/${modelId} and rejects new bindings`, async t => {
+    t.mock.method(Date, 'now', () => Date.parse('2026-11-17T12:00:00+08:00'));
+    const store = createModelLibraryStore({ db: memoryDb(), secret: 'isolated-test-only' });
+    const input = { revision: 0, connections: [{ id: 'c', provider, scope: 'browser', label: 'Saved' }], models: [{ id: 'old', connectionId: 'c', modelId }] };
+    const first = await store.put('owner', input);
+    const saved = await store.put('owner', first);
+    assert.deepEqual(saved.models, cleanModelLibrary(input).models);
+    assert.equal(saved.models[0].disabled, false);
+    const reopened = await store.get('owner');
+    assert.deepEqual(reopened, saved);
+    await assert.rejects(store.put('owner', { ...reopened, intent: 'add', models: [...reopened.models, { id: 'new', connectionId: 'c', modelId }] }), error => {
+      assert.equal(error.businessCode, 'MODEL_UNAVAILABLE');
+      assert.match(error.message, /原型号已不可用，请重新选择/);
+      assert.equal(error.requestState, 'not_sent');
+      return true;
+    });
+    assert.deepEqual(await store.get('owner'), saved);
+    const imported = await store.put('import-owner', { ...input, intent: 'import' });
+    assert.deepEqual(imported.models, saved.models);
+  });
+}

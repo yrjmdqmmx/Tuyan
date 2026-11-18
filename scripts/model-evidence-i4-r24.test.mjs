@@ -18,8 +18,8 @@ test('R24 I4 evidence records 19 audited fields, preserves literal model/value q
 })
 test('R24 I4 human text exception is limited to the verified TokenDance retirement document',()=>{
  const url='https://tokendance.space/llms-full.txt'
- assert.equal(isMachineDocument(url),false);assert.equal(isApiSource(url),false)
- for(const other of ['https://tokendance.space/llms.txt','https://example.com/llms-full.txt','https://tokendance.space/portal/api/models/qwen3.5-plus'])assert.equal(isApiSource(other),true)
+ for (const notice of [url,'https://tokendance.space/docs/changelog.md']) {assert.equal(isMachineDocument(notice),false);assert.equal(isApiSource(notice),false)}
+ for(const other of ['https://tokendance.space/llms.txt','https://example.com/llms-full.txt','https://tokendance.space/docs/other.md','https://tokendance.space/portal/api/models/qwen3.5-plus'])assert.equal(isApiSource(other),true)
 })
 
 test('R24 I4 generator refuses values without matching archived excerpts',()=>{

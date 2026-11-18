@@ -1,3 +1,4 @@
+import batch from '../../../config/channel-audit/retirements-20261117.json' with {type:'json'}
 import reviewI4 from '../../../config/channel-audit/review-r24-20261110.json' with { type: 'json' }
 import {expectedHumanUrl} from '../../../test-support/source-links-i3-r24.mjs'
 import test, { afterEach } from 'node:test'
@@ -44,7 +45,7 @@ test('the pre-phase-2 static baseline still retains every previously supported m
 
 test('every static card retains main supported modalities and all product image-input requirements', () => {
   assert.equal(baseline.commit, 'c7b6a2fc')
-  assert.equal(rows.length, 1064)
+  assert.equal(rows.length, 1033)
   for (const { provider, model } of rows) {
     const key = provider + '/' + model.id, before = structuredClone(model)
     const card = modelCardSpecifications(provider, model), caps = model.capabilities || {}
@@ -87,15 +88,17 @@ test('every static card retains main supported modalities and all product image-
 
 test('Mini runtime projection agrees with Web for all four fields across the whole catalog', () => {
   for (const { provider, model } of rows) {
-    const web = modelCardSpecifications(provider, model).fields
+    const card = modelCardSpecifications(provider, model)
+    const web = card.fields
+    const noticePrimary = batch.upcoming.some(row => row.provider === provider && row.id === model.id && row.source === card.sources[0])
     const small = mini.auditedModelSpecs(provider, model.id).fields
     for (const field of Object.keys(web)) {
       assert.deepEqual(small[field].value, web[field].value, provider + '/' + model.id + '/' + field)
       assert.equal(small[field].state, web[field].state, provider + '/' + model.id + '/' + field)
       assert.equal(small[field].provenance, web[field].provenance, provider + '/' + model.id + '/' + field)
-      // R28 retains every fal field URL for title parity. Other R12B omitted URLs stay compact. Its retained field
+      // Keep field citations when a retirement notice becomes primary, just as for fal. The retained field
       // reference must still be exact; the visible card source is tested below.
-      const reviewed = (provider === 'fal' ? web[field].sourceUrl : null) || reviewI7.reviews[provider + '/' + model.id]?.[field]?.sourceUrl
+      const reviewed = (provider === 'fal' || noticePrimary ? web[field].sourceUrl : null) || reviewI7.reviews[provider + '/' + model.id]?.[field]?.sourceUrl
         || reviewI7.preservedFieldSources[provider + '/' + model.id]?.[field]
       assert.equal(small[field].sourceUrl, reviewed || (reviewI4.models[provider + '/' + model.id]?.fields[field] ? reviewI4.models[provider + '/' + model.id].fields[field].sourceUrl : expectedHumanUrl(web[field].sourceUrl) === mini.auditedModelSpecs(provider, model.id).sourceUrl ? expectedHumanUrl(web[field].sourceUrl) : null), provider + '/' + model.id + '/' + field + '/source')
     }

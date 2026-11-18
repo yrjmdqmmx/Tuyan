@@ -10,7 +10,7 @@ import { applyEvidenceR24 } from './model-evidence-r24.mjs'
 import { applyEvidenceR25 } from './model-evidence-r25.mjs'
 import { applyEvidenceR26 } from './model-evidence-r26.mjs'
 export function supplementModelAudit(snapshot, supplement, removed, addendum = { scheduledDeprecations: [] }) {
-  const data = structuredClone(snapshot)
+  const data = { ...structuredClone(snapshot), removed }
   const intern = (list, value) => {
     const index = list.findIndex(item => JSON.stringify(item) === JSON.stringify(value))
     return index < 0 ? list.push(value) - 1 : index

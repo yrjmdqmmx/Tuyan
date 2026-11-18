@@ -1,3 +1,4 @@
+import {retiredKeys} from '../../../test-support/retirement-evidence.mjs'
 import {currentPrimaryRow} from '../../../test-support/pm-decisions-r30.mjs'
 import expectedSourceRows from './fixtures/model-audit-r9-source-rows-r24.json' with { type: 'json' }
 import {r29SourceRows,expectedI11} from '../../../test-support/source-title-history-r29.mjs'
@@ -97,7 +98,7 @@ test('R9 channel evidence remains available; R12 permits only notices, human pag
     assert.deepEqual({url: screen.getByRole('link').getAttribute('href'), label: screen.getByRole('link').textContent}, currentPrimaryRow(provider + '/' + model.id,expectedI11[provider + '/' + model.id].web.sources[0]))
     view.unmount(); cards++; channels.add(provider)
   }
-  assert.equal(cards, Object.keys(expectedSourceRows).length); assert.ok(cards > 100); assert.ok(channels.size > 10)
+  assert.equal(cards, Object.keys(expectedSourceRows).filter(key => !retiredKeys.has(key)).length); assert.ok(cards > 100); assert.ok(channels.size > 10)
   for (const officialSourceUrl of ['https://catalog.example/exact', 'http://unsafe.example', 'https://user:password@unsafe.example']) {
     const model = { id: 'r9-unaudited', officialSourceUrl }
     const data = modelCardSpecifications('r9-unknown', model)

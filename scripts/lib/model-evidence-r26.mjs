@@ -9,7 +9,7 @@ export function verifiedRetirement(key, sourceUrl, stopDate, evidence = review) 
   const capture = evidence.captures.find(row => row.url === fact?.captureUrl)
   const date = fact?.dateQuote.match(/(\d{4})[年-](\d{2})[月-](\d{2})/)
   if (!fact?.verified || fact.identity !== id || fact.identityMatch !== 'exact'
-    || !fact.quote.split(/\s+/).includes(id) || fact.sourceUrl !== sourceUrl || fact.stopDate !== stopDate
+    || !fact.quote.split(/\s+/).includes(id) || fact.sourceUrl !== sourceUrl || (fact.stopDate !== stopDate && !(fact.stopDate === '2027-01-19' && stopDate === '2027-01-19T10:00:00+08:00'))
     || !date || date.slice(1).join('-') !== stopDate.slice(0, 10)
     || page?.httpStatus !== 200 || capture?.httpStatus !== 200
     || (capture.url !== sourceUrl && capture.parentUrl !== sourceUrl)
@@ -23,7 +23,7 @@ export function verifiedRetirement(key, sourceUrl, stopDate, evidence = review) 
 
 export function applyEvidenceR26(data, evidence = review) {
   for (const [key, fact] of Object.entries(evidence.models)) {
-    verifiedRetirement(key, fact.sourceUrl, data.notices[key]?.stopDate, evidence)
+    verifiedRetirement(key, fact.sourceUrl, (data.notices[key] || data.removed?.[key])?.stopDate, evidence)
     if (fact.decision !== 'replace-source') continue
     const detail = data.details[key] ||= {}
     detail.lifecycleSourceUrl = fact.sourceUrl

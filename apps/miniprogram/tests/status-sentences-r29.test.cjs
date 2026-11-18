@@ -1,6 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs')
 const {loadComponent}=require('./helpers/component.cjs')
-test('R29 I11 all 1064 Mini cards: accessible text equals tap status, Web parity and no obsolete labels',async()=>{
+test('R29 I11 all 1033 Mini cards: accessible text equals tap status, Web parity and no obsolete labels',async()=>{
  const {imageInputPresentations}=await import('../../../test-support/image-input-r27.mjs')
  const {assertAllSentences,obsoleteStatus}=await import('../../../test-support/status-sentences-r29.mjs')
  const rows=await imageInputPresentations();assertAllSentences(rows)

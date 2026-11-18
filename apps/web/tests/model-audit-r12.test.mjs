@@ -1,3 +1,4 @@
+import {beforeRetirements, batchPrimary} from '../../../test-support/retirement-projections.mjs'
 import {currentPrimary} from '../../../test-support/pm-decisions-r30.mjs'
 import evidenceI6 from '../../../test-support/fixtures/source-evidence-i6-r26.json' with {type:'json'}
 import evidenceI7 from '../../../test-support/fixtures/source-evidence-i7-r27.json' with {type:'json'}
@@ -5,6 +6,8 @@ import evidenceI4 from '../../../test-support/fixtures/source-evidence-i4-r24.js
 import {expectedHumanUrl} from '../../../test-support/source-links-i3-r24.mjs'
 import { expectedTokenDanceSources } from '../../../test-support/card-review-r22.mjs'
 import { sourceTitle } from '../../../packages/api/src/card-presentation.mjs'
+import batch1 from '../../../config/channel-audit/retirements-20261117.json' with { type: 'json' }
+const batchNotice = (channel, id) => [...batch1.remove, ...batch1.upcoming].find(row => row.provider === channel && row.id === id)
 import test, { afterEach, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -30,13 +33,21 @@ for (const row of rows) models.set(row.channel + '/' + row.model.id, row.model)
 const linkIdentity = ({ channel, modelId, oldUrl, finalUrl }) => ({ channel, modelId, oldUrl, finalUrl })
 const oldR21Url = row => evidenceI7.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || evidenceI6.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || evidenceI4.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || (row.channel === 'tokendance' ? expectedTokenDanceSources(row.modelId)[0] : phase2.sourceChanges.find(change => change.key === row.channel + '/' + row.modelId)?.after
   || (row.channel === 'tokendance' ? 'https://tokendance.space/models/' + row.modelId : row.finalUrl))
-const r21Url = row => currentPrimary(row.channel + '/' + row.modelId, oldR21Url(row))
+const previousPrimary = row => currentPrimary(row.channel + '/' + row.modelId, oldR21Url(row))
+const r21Url = row => MODEL_AUDIT_DATA.removed[row.channel+'/'+row.modelId]?.sourceUrl
+  || batchPrimary(row.channel+'/'+row.modelId, {url:previousPrimary(row)}).url
 const expectedR21Changes = before.rows.map(({ channel, modelId, oldUrl }) => {
   const archived = final.find(row => row.channel === channel && row.modelId === modelId)
-  return { channel, modelId, oldUrl, finalUrl: expectedHumanUrl(r21Url({ channel, modelId, finalUrl: archived?.finalUrl || oldUrl })) }
+  return { channel, modelId, oldUrl, finalUrl: expectedHumanUrl(previousPrimary({ channel, modelId, finalUrl: archived?.finalUrl || oldUrl })) }
 }).filter(row => row.oldUrl !== row.finalUrl)
-const changedLinksFromR8 = () => before.rows.map(({ channel, modelId, oldUrl }) => ({ channel, modelId, oldUrl,
-  finalUrl: modelCardSpecifications(channel, models.get(channel + '/' + modelId)).sources[0] || null })).filter(row => row.oldUrl !== row.finalUrl)
+const changedLinksFromR8 = () => {
+  const live = Object.fromEntries(before.rows.map(row => {
+    const key = row.channel+'/'+row.modelId
+    return [key, {key,url:modelCardSpecifications(row.channel,models.get(key)).sources[0] || null}]
+  }))
+  const prior = beforeRetirements('r12Full', live)
+  return before.rows.map(({channel,modelId,oldUrl}) => ({channel,modelId,oldUrl,finalUrl:prior[channel+'/'+modelId].url})).filter(row => row.oldUrl !== row.finalUrl)
+}
 // R13 replaces all seven failures with operator-verified vendor sources.
 const httpExceptions = []
 const repairedLinks = linkChecks.filter(row => row.originalStatus === 404)
@@ -141,7 +152,7 @@ test('R12C keeps OpenAI/Together docs and replaces Replicate/fal endpoints with 
       || STATIC_MODEL_REGISTRY[row.channel].models.find(m => m.id === row.modelId)
     const url = modelCardSpecifications(row.channel, entry).sources[0]
     if (['openai', 'together'].includes(row.channel) && row.r11Url.startsWith('https://developers.openai.com/api/docs/models/')) {
-      assert.equal(url, expectedHumanUrl(row.r11Url), row.channel + '/' + row.modelId)
+      assert.equal(url, batchNotice(row.channel, row.modelId)?.source || expectedHumanUrl(row.r11Url), row.channel + '/' + row.modelId)
       row.channel === 'openai' ? openai++ : together++
     }
     if (/^https:\/\/replicate\.com\/[^/]+\/[^/]+\/api\/schema/.test(row.r11Url)) {
@@ -164,10 +175,19 @@ test('R12C every full/static card preserves R11 specificity with exact, reasoned
   const actualExceptions = []
   assert.equal(before.staticRows.length, 1064)
   for (const [scope, originals] of [['full', before.rows], ['static', before.staticRows]]) for (const row of originals) {
+    if (batch1.remove.some(item => item.provider === row.channel && item.id === row.modelId)) {
+      assert.ok(MODEL_AUDIT_DATA.removed[row.channel + '/' + row.modelId]);
+      continue;
+    }
     const entry = (scope === 'full' && registry.providers[row.channel]?.models.find(m => m.id === row.modelId))
       || STATIC_MODEL_REGISTRY[row.channel].models.find(m => m.id === row.modelId)
     const card = modelCardSpecifications(row.channel, entry), finalUrl = card.sources[0], key = scope + '/' + row.channel + '/' + row.modelId
     assert.ok(finalUrl && !isApiSource(finalUrl, MODEL_AUDIT_DATA.sourceChecks), key)
+    const updated = batchNotice(row.channel, row.modelId);
+    if (updated) {
+      assert.ok(card.sources.includes(updated.source), key + ': sourced retirement may replace a model page');
+      continue;
+    }
     const apiFallback = isApiSource(row.r11Url, MODEL_AUDIT_DATA.sourceChecks) && sourceSpecificity(finalUrl) < 2
     if (apiFallback) {
       const exception = exceptions.rows.find(item => item.scope === scope && item.channel === row.channel && item.modelId === row.modelId)
@@ -253,7 +273,8 @@ test('R12D links retain current DOM coverage with the explicit R21 TokenDance pa
   for (const row of linkChecks) {
     const entry = models.get(row.channel + '/' + row.modelId)
     const card = modelCardSpecifications(row.channel, entry)
-    assertLink(row.channel, entry, r21Url(row), modelSourceName(card, r21Url(row)))
+    const expected = MODEL_AUDIT_DATA.removed[row.channel + '/' + row.modelId]?.sourceUrl || r21Url(row)
+    assertLink(row.channel, entry, expected, modelSourceName(card, expected))
   }
 })
 

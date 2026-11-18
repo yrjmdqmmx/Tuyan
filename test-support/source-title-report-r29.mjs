@@ -24,7 +24,7 @@ export async function currentTitlePresentations() {
 // Current source titles are still scanned separately over all rendered/source-copy rows.
 export async function buildR29TitleReport() {
   const rows = restoreI11Statuses(await currentTitlePresentations()), before = sourceSurfaces(r29Baseline.rows), after = sourceSurfaces(rows)
-  assertUnifiedTitles(after)
+  assertUnifiedTitles(after, 1064)
   for (const row of after) assert.deepEqual(titleIssues({url:row.identity,label:row.title},rows[row.card].web.name)
     .filter(issue => issue !== 'machine document link' || /footer|dialog-link/.test(row.surface)), [], row.card + ' ' + row.title)
   const key = row => [row.client,row.card,row.surface,row.identity].join('|')

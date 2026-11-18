@@ -1,5 +1,5 @@
 import primaryPages from './card-data/primary-pages-r31.json' with { type: 'json' }
-import { sourceIdentity, uniqueSources, titleSourceRows, humanSourceUrl, isMachineDocument } from './card-presentation.mjs'
+import { sourceIdentity, uniqueSources, titleSourceRows, humanSourceUrl, isMachineDocument, isTokenDanceNotice } from './card-presentation.mjs'
 import tokenDancePages from './card-data/tokendance-pages.json' with { type: 'json' }
 import { safeSources as rawSafeSources } from './catalog-card-facts.mjs'
 import deadLinks from './card-data/dead-links.json' with { type: 'json' }
@@ -81,7 +81,7 @@ export function siblingEndpoint(channel, previous, own) {
 
 export function modelCardSources({ channel, model = {}, audit, fields, lifecycle, checks = {} }) {
   const visible = url => !(audit.excludedSources || []).includes(url) && visibleSource(url)
-  const notices = safeSources((audit.sourceLinks || []).filter(link => link.kind === 'retirement-notice').map(link => link.url)).filter(visible)
+  const notices = uniqueSources(safeSources([...(audit.sourceLinks || []).filter(link => link.kind === 'retirement-notice').map(link => link.url), lifecycle?.sourceUrl])).filter(visible)
   const fieldVendors = uniqueSources(safeSources(Object.values(fields).filter(fact => fact.provenance === 'vendor').flatMap(fact => fact.sourceUrls || [fact.sourceUrl])).filter(url => visibleSource(url) && !isApiSource(url, checks)))
   if (channel === 'tokendance' && model.id) {
     const url = 'https://tokendance.space/models/' + model.id
@@ -163,7 +163,7 @@ export function isVerifiedTokenDancePage(value) {
   } catch { return false }
 }
 const visibleSource = url => !isDeadSource(url) && !isApiSource(url)
-  && (new URL(url).hostname !== 'tokendance.space' || isVerifiedTokenDancePage(url) || url === 'https://tokendance.space/llms-full.txt')
+  && (new URL(url).hostname !== 'tokendance.space' || isVerifiedTokenDancePage(url) || isTokenDanceNotice(url))
 
 export function modelSourceRows(data) {
   const vendors = new Set(data.vendorSources.map(sourceIdentity))

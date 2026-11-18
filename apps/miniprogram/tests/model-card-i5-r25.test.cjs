@@ -5,10 +5,10 @@ const context={Component(v){definition=v},exports:{},require:createRequire(filen
 vm.runInNewContext(fs.readFileSync(filename,'utf8')+'\nthis.present=presentModel',context,{filename})
 const notice='https://www.aliyun.com/notice/118728',spec='https://help.aliyun.com/zh/model-studio/qwen3-5-plus'
 const ids=['qwen3.5-plus','qwen3.5-plus-2026-02-15','qwen3.5-plus-2026-04-20']
-test('R25 I5 all 1064 compiled Mini cards: every retirement badge copies its own non-excluded notice URL',async t=>{
+test('R25 I5 all 1033 compiled Mini cards: every retirement badge copies its own non-excluded notice URL',async t=>{
  const {frozenTime}=await import('../../../test-support/execution-capability.mjs')
  t.mock.timers.enable({apis:['Date'],now:Date.parse(frozenTime)})
- const {verifiedRetirement}=await import('../../../scripts/lib/model-evidence-r26.mjs')
+ const {verifiedRetirement}=await import('../../../test-support/retirement-evidence.mjs')
  let cards=0,badges=0
  for(const[p,e]of Object.entries(STATIC_MODEL_REGISTRY))for(const m of e.models){
   cards++;const audit=auditedModelSpecs(p,m.id),card=context.present(m,'','',p)
@@ -22,13 +22,13 @@ test('R25 I5 all 1064 compiled Mini cards: every retirement badge copies its own
    assert.ok(card.specSources.some(r=>r.url===spec));for(const fact of Object.values(audit.fields))assert.equal(fact.sourceUrl,spec)
   }
  }
- assert.equal(cards,1064);assert.equal(badges,7)
+ assert.equal(cards,1033);assert.equal(badges,10)
  const wxml=fs.readFileSync(filename.replace(/\.js$/,'.wxml'),'utf8')
  assert.match(wxml,/wx:if="\{\{item.scheduled\}\}"[^>]+data-url="\{\{item.retirementSource.url\}\}"[^>]+data-source="\{\{item.retirementSource.label\}\}"[^>]+catchtap="copySource"/)
 })
 test('R25 I5 missing or excluded lifecycle sources suppress Mini badges; live card projections retain the correction',()=>{
  const m=STATIC_MODEL_REGISTRY.bailian.models.find(m=>m.id==='qwen3.5-plus'),audit=auditedModelSpecs('bailian',m.id)
  assert.equal(context.present({...m,cardSpecifications:audit},'','','bailian').retirementSource.url,notice)
- const excluded=context.present({...m,cardSpecifications:{...audit,lifecycleSourceUrl:null}},'','','bailian')
+ const excluded=context.present({...m,cardSpecifications:{...audit,lifecycleSourceUrl:null,excludedSources:[notice]}},'','','bailian')
  assert.equal(excluded.scheduled,false);assert.equal(excluded.retirementSource,null)
 })

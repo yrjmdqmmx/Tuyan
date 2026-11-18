@@ -1,3 +1,4 @@
+import {beforeRetirements} from '../test-support/retirement-projections.mjs'
 import fs from 'node:fs'
 import assert from 'node:assert/strict'
 import {imageInputPresentations} from '../test-support/image-input-r27.mjs'
@@ -7,7 +8,7 @@ import prior from '../docs/model-modality-r30-i12-decisions.json' with {type:'js
 import review from '../config/channel-audit/review-r31-20261110.json' with {type:'json'}
 import {validatedPrimaryPages} from './lib/primary-links-r31.mjs'
 import {siblingEndpoint} from '../packages/api/src/model-card-sources.mjs'
-const current=await imageInputPresentations(),before=restoreI13(current),preI12=restoreI12(current),official=validatedPrimaryPages(review)
+const current=beforeRetirements('cards',await imageInputPresentations()),before=restoreI13(current),preI12=restoreI12(current),official=validatedPrimaryPages(review)
 const rows=prior.primaryLinks.map(row=>{
  const channel=row.key.split('/')[0],candidate=review.candidates.find(r=>r.identity===row.key)
  const kept=siblingEndpoint(channel,row.before.url,row.after.url)

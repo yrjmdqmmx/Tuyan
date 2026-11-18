@@ -1,3 +1,15 @@
+## 2026-11-18 · PR #251 合入模型退役第一批（未发布）
+
+- [x] Shared / Core / Gateway：保留 99 条移除记录和 10 条精确截止公告。模型卡继续采用渠道模态证据。公告成为首链接时，可选字段 `cardSpecifications.specificationSourceUrl` 给出次位规格资料，供小程序展示。
+- [x] Web / 小程序：1,033 个静态身份；规格弹窗保留资料标题和渠道链接，Web 卡片页脚链接无 title。TokenDance 的变更记录与原有下线资料并存。旧配置按原身份提示改选。
+
+## 2026-11-17 · 模型退役第一批（本地，未发布）
+
+- [x] Shared / Core：依操作方 2026-11-17 复读证据，从源目录移除 OpenAI 20、SiliconFlow 8、Ant Ling 3 个精确身份；移除表 68 → 99，保留原显示名与既有推荐。完整来源/读取日期见 `config/channel-audit/retirements-20261117.json`；31 项外的型号和默认值不变。
+- [x] 将下线：10 项保留可选，MiniMax 4、OpenAI 1、TokenDance 1 新增公告，百炼 4 项更新来源和 2027-01-19 10:00 UTC+8 精确时间；日期单独给出的公告沿用既有 UTC 日界线。Gemini 2.5 两项与 51 个禁止触碰的候选仅列 TODO。
+- [x] Web / 小程序 / Gateway：同步生成目录与审计数据，旧模型库和预设原样保留并显示“原型号已不可用，请重新选择”；新增绑定/执行沿用 MODEL_UNAVAILABLE / not_sent。增加固定时钟的旧引用保存、重开、提示和日期边界回归；无 UI 组件或持久化逻辑改动。
+- [x] 协作边界：目录版本沿用 v43；无新增 action、请求字段、价格、权限或部署变更。PR #251 同改生成目录，后合并者须合入另一 PR 后重新生成。小程序仍暂停发布。
+
 ## 2026-11-10 · R31 Phase I14: immutable historical report checks (not deployed)
 
 - [x] Scripts / historical reports: default R10/R12 checks verify current display projections against the independently captured `bdcc2baf` values, then apply exact hashed patches to the `52e0f161` presentation. All three report artifacts remain byte-identical to main; no historical report was regenerated.

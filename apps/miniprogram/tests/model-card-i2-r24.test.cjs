@@ -14,7 +14,7 @@ test('R24 I2 Mini source rows reuse the accent class and show a wrapping copy hi
  assert.match(css,/\.source-copy-hint\{font-size:10px/)
 })
 
-test('R24 I2 all 1064 compiled Mini cards, copy dialogs and modality dialogs pass strict scans',async t=>{
+test('R24 I2 all 1033 compiled Mini cards, copy dialogs and modality dialogs pass strict scans',async t=>{
  const {titleIssues,dialogIssues,reviewBaseline}=await import('../../../test-support/source-titles-r24.mjs')
  const {expectedHumanRows}=await import('../../../test-support/source-links-i3-r24.mjs')
  const {assertDialogDates,assertUnknownIconDates}=await import('../../../test-support/dialog-dates-r26.mjs')
@@ -42,6 +42,6 @@ test('R24 I2 all 1064 compiled Mini cards, copy dialogs and modality dialogs pas
   }
   cards++
  }
- assert.equal(cards,1064);assert.equal(rows,1120);assert.ok(icons>=1064*8)
+ assert.equal(cards,1033);assert.equal(rows,1096);assert.ok(icons>=1033*8)
  t.diagnostic(JSON.stringify({cards,rows,icons,titleFindings:0,copyFindings:0}))
 })

@@ -1,4 +1,4 @@
-import {verifiedRetirement} from '../../../scripts/lib/model-evidence-r26.mjs'
+import {verifiedRetirement} from '../../../test-support/retirement-evidence.mjs'
 import test,{afterEach}from'node:test'
 import assert from'node:assert/strict'
 import React from'react'
@@ -12,7 +12,7 @@ import{newDraft}from'../src/workspace/workspaceState.js'
 const notice='https://www.aliyun.com/notice/118728',spec='https://help.aliyun.com/zh/model-studio/qwen3-5-plus'
 const ids=['qwen3.5-plus','qwen3.5-plus-2026-02-15','qwen3.5-plus-2026-04-20']
 afterEach(cleanup)
-test('R25 I5 all 1064 Web cards: every displayed retirement badge opens a non-excluded source',()=>{
+test('R25 I5 all 1033 Web cards: every displayed retirement badge opens a non-excluded source',()=>{
  let cards=0,badges=0
  for(const[p,e]of Object.entries(STATIC_MODEL_REGISTRY))for(const m of e.models){
   cards++;const audit=auditedModelSpecs(p,m.id),lifecycle=auditedModelLifecycle(p,m.id,Date.parse('2026-11-10'))
@@ -24,12 +24,12 @@ test('R25 I5 all 1064 Web cards: every displayed retirement badge opens a non-ex
   }else assert.ok(!lifecycle||!lifecycle.sourceUrl||audit.excludedSources.includes(lifecycle.sourceUrl))
   cleanup()
  }
- assert.equal(cards,1064);assert.equal(badges,7)
+ assert.equal(cards,1033);assert.equal(badges,10)
 })
 test('R25 I5 all three Bailian cards separate specification and retirement sources and use colon dates',()=>{
  for(const id of ids){
   const model=STATIC_MODEL_REGISTRY.bailian.models.find(m=>m.id===id),data=modelCardSpecifications('bailian',model)
-  assert.equal(data.lifecycle.sourceUrl,notice);assert.equal(data.lifecycle.stopDate,'2027-01-19')
+  assert.equal(data.lifecycle.sourceUrl,notice);assert.equal(data.lifecycle.stopDate,'2027-01-19T10:00:00+08:00')
   for(const fact of Object.values(data.fields))assert.equal(fact.sourceUrl,spec)
   render(React.createElement(ModelSpecifications,{provider:'bailian',model}));fireEvent.click(screen.getByRole('button',{name:/^输入模态/}))
   const dialog=screen.getByRole('dialog');assert.equal(within(dialog).getByRole('link',{name:'下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知'}).getAttribute('href'),notice)

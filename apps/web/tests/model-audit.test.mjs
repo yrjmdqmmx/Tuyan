@@ -17,8 +17,9 @@ const registry={providers:STATIC_MODEL_REGISTRY};
 const library={connections:[{id:'c',provider:'xiaomi',label:'小米连接',hasCredential:true}],models:[{id:'old',connectionId:'c',modelId:'mimo-v2.5'}]};
 const setup=()=>({registry,library:structuredClone(library),ready:true,busy:false,registryStatus:'ready',save:async()=>true});
 
-test('all 61 retired and seven serverless identities are hidden from catalog, removed from cards while saved data stays unchanged',()=>{
+test('all 99 removed identities, including seven serverless-only retirements are hidden from catalog, removed from cards while saved data stays unchanged',()=>{
   const now=Date.parse('2026-11-09'),visible=new Set(catalogRows(registry).map(row=>row.provider+'/'+row.model.id));
+  assert.equal(Object.keys(MODEL_AUDIT_DATA.removed).length,99);
   for(const key of Object.keys(MODEL_AUDIT_DATA.removed)){
     const split=key.indexOf('/'),provider=key.slice(0,split),modelId=key.slice(split+1);
     if(!removedModel(provider,modelId,now))continue;
@@ -77,7 +78,7 @@ test('scheduled status stays selectable before deadline and flips without rewrit
   assert.equal(catalogRows(r).length,1);
   render(React.createElement(ModelSpecifications,{provider:'bailian',model}));
   assert.equal(screen.getByRole('link').title, '');
-  Date.now.mock.mockImplementation(()=>Date.parse('2027-01-19'));
+  Date.now.mock.mockImplementation(()=>Date.parse('2027-01-19T10:00:00+08:00'));
   assert.equal(catalogRows(r).length,0);assert.deepEqual(model,before);
 });
 test('unknown and explicitly unsupported modalities differ, with no invented token limits',()=>{

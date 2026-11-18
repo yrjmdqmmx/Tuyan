@@ -15,10 +15,10 @@ import * as sourcePolicy from '../apps/web/src/lib/modelCardSources.js'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const read = file => JSON.parse(fs.readFileSync(root + file, 'utf8'))
-// Independently read from git show 52e0f161:<artifact>, not generated outputs.
+// Independent Git blobs from 52e0f161, including the R12 provenance note added by a47e80b7.
 const mainHashes = {
   'docs/model-card-audit-20261109-r10-counts.json': '43e0aa5618892ebd0fd8ecfdf411750b0bd2dd268e9b0b2ccdf0d8f619457dd1',
-  'docs/model-card-audit-20261109-r12-links.md': 'dced655fbbcce4cf71f92676d08e01bec35975e2c6bf073acfc647e2da86d492',
+  'docs/model-card-audit-20261109-r12-links.md': '09250cf46faa0286f9c9602f39a8cb6eb201e6e537ce2e987cd113eff1fdaf1e',
   'apps/web/tests/fixtures/r12-final-changed-links.json': '60e885e26e3598c48c1fc91a980afef925aeeaddbff60094c324d4a3d0fb8943',
 }
 
@@ -60,6 +60,7 @@ test('R31 I14 exact projections reject source, modality, identity/order and unch
     assert.throws(() => historicalCardRows(scope, wrongIdentity), /unreviewed current presentation drift/)
     assert.throws(() => historicalCardRows(scope, rows.toReversed()), /unreviewed current presentation drift/)
     assert.throws(() => historicalCardRows(scope, rows.slice(1)), /identity count drift/)
+    assert.throws(() => historicalCardRows(scope, [...rows, rows[0]]), /identity count drift/)
   }
   const badSource = structuredClone(current.r10); badSource[0].full.sources[0] = 'https://example.invalid/'
   const badState = structuredClone(current.r10); badState[0].minimal.modalities[0][0][1] = 'unreviewed'

@@ -10,7 +10,7 @@ export function applyEvidenceR25(data, evidence = review) {
       || !capture.excerpts.includes(fact.identityQuote) || fact.identityQuote !== key.slice(key.indexOf('/') + 1)
       || !capture.content.includes(fact.quote) || !capture.content.includes(fact.identityQuote)
       || fact.stopDate !== '2027-01-19' || !fact.quote.includes('2027年01月19日（正式下线）')
-      || data.notices[key]?.stopDate !== fact.stopDate) throw Error('Invalid retirement evidence: ' + key)
+      || ![fact.stopDate, fact.stopDate+'T10:00:00+08:00'].includes(data.notices[key]?.stopDate)) throw Error('Invalid retirement evidence: ' + key)
     const detail = data.details[key] ||= {}
     if (detail.excludedSources?.includes(fact.sourceUrl)) throw Error('Excluded retirement source: ' + key)
     detail.lifecycleSourceUrl = fact.sourceUrl

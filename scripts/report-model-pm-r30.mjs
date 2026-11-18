@@ -1,3 +1,4 @@
+import {beforeRetirements, previousSourceReview} from '../test-support/retirement-projections.mjs'
 import {restoreI13,restoreI13Review} from '../test-support/primary-links-r31.mjs'
 import fs from 'node:fs'
 import assert from 'node:assert/strict'
@@ -5,8 +6,8 @@ import {imageInputPresentations} from '../test-support/image-input-r27.mjs'
 import {collectSourceReview} from '../test-support/source-review-r24.mjs'
 import {assertPMDecisions,restoreI12,restoreI12Review,forbiddenBody} from '../test-support/pm-decisions-r30.mjs'
 import decisions from '../docs/model-modality-image-input-decision.json' with {type:'json'}
-const actual=await imageInputPresentations(),actualReview=await collectSourceReview(),now=restoreI13(actual),before=restoreI12(actual),review=restoreI13Review(actualReview),oldReview=restoreI12Review(actualReview)
-const numeric=assertPMDecisions(actual),removed={}
+const actual=beforeRetirements('cards',await imageInputPresentations()),actualReview=previousSourceReview(await collectSourceReview()),now=restoreI13(actual),before=restoreI12(actual),review=restoreI13Review(actualReview),oldReview=restoreI12Review(actualReview)
+const numeric=assertPMDecisions(actual,true),removed={}
 for(const client of ['web','mini']){
  const lines=oldReview[client].flatMap(row=>row.text.split('\n'))
  removed[client]={dateRows:lines.filter(s=>/^核实日期：/.test(s)).length,provenanceRows:lines.filter(s=>/^(输入|输出|上下文窗口|最大输出)：(?:渠道公布|原厂公布|源自原厂|图研既有核实|图研输入要求)/.test(s)).length,unverifiedRows:lines.filter(s=>s==='未核实').length}

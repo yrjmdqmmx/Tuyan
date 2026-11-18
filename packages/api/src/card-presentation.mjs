@@ -57,10 +57,11 @@ export function humanSourceUrl(value) {
   if (/^https:\/\/developer\.ideogram\.ai\/v1\/api-reference\/edit-images\//.test(value)) return value.replace(/\.md(?=[?#]|$)/, '')
   return value
 }
+export const isTokenDanceNotice = url => ['https://tokendance.space/llms-full.txt', 'https://tokendance.space/docs/changelog.md'].includes(url)
 export function isMachineDocument(value) {
   const path = value.split(/[?#]/)[0]
-  // This public text document contains the only model-specific channel notice.
-  if (path === 'https://tokendance.space/llms-full.txt') return false
+  // These two exact public documents name the TokenDance retirement and replacement.
+  if (isTokenDanceNotice(path)) return false
   return /\/(?:llms(?:-full)?\.txt|[^/]+\.(?:md|mdx))\/?$/i.test(path)
     && !/^https:\/\/(?:github\.com\/[^/]+\/[^/]+\/blob\/|huggingface\.co\/[^/]+\/[^/]+\/blob\/)/.test(path)
 }
@@ -82,7 +83,7 @@ export function sourceTitleKey(value) {
 }
 export function visibleSourceTitle(value, model = {}, fallback = '官方文档') {
   const key = sourceTitleKey(value), host = key.replace(/^https?:\/\//, '').split('/')[0]
-  const notice = sourceRole(value, '官方文档') === '下线公告' || key === 'https://tokendance.space/llms-full.txt'
+  const notice = sourceRole(value, '官方文档') === '下线公告' || isTokenDanceNotice(key) || key === 'https://platform.minimax.io/docs/faq/models'
   const channel = /(?:^|\.)(?:fal\.ai|fal\.run|tokendance\.space|replicate\.com|fireworks\.ai|novita\.ai|runware\.ai|siliconflow\.(?:cn|com)|openrouter\.ai|together\.(?:ai|xyz)|tencentmaas\.com)$/.test(host)
     || /(?:^|\.)(?:aliyun\.com|baidu\.com|volcengine\.com|tencent\.com)$/.test(host)
       && !/(?:qwen|qvq|wan[\d/-]|tongyi|ernie|doubao|seedream|seedance|hunyuan)/i.test(key)
@@ -145,6 +146,7 @@ function pageSubject(value) {
   return sourceAcronyms(title)
 }
 export function sourceTitle(value, model = {}) {
+  if (sourceTitleKey(value) === 'https://tokendance.space/docs/changelog.md') return 'TokenDance · 渠道变更记录'
   if (value.split(/[?#]/)[0].replace(/\/+$/, '') === 'https://api.fal.ai/v1/models') return 'fal 模型目录'
   const parts = value.replace(/^https?:\/\//, '').split(/[?#]/)[0].replace(/\/+$/, '').split('/')
   const host = parts.shift(), path = decodeURIComponent(parts.join('/')).replace(/\.(html|md)$/, '')

@@ -1,3 +1,4 @@
+import {retiredKeys} from '../../../test-support/retirement-evidence.mjs'
 import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
 import React from 'react'
@@ -10,13 +11,13 @@ import baseline from './fixtures/model-picker-names-8c456709.json' with { type: 
 
 afterEach(cleanup)
 
-test('R21 static picker titles preserve all 1,064 display names from 8c456709', t => {
+test('R21 static picker titles preserve all 1,033 display names from 8c456709', t => {
   t.mock.method(Date, 'now', () => Date.parse('2026-11-09T12:00:00Z'))
   assert.deepEqual(Object.keys(STATIC_MODEL_REGISTRY), Object.keys(baseline.names))
   const container = document.createElement('div')
   let count = 0
   for (const [provider, channel] of Object.entries(STATIC_MODEL_REGISTRY)) {
-    assert.deepEqual(channel.models.map(model => model.id), Object.keys(baseline.names[provider]), provider)
+    assert.deepEqual(channel.models.map(model => model.id), Object.keys(baseline.names[provider]).filter(id => !retiredKeys.has(provider+'/'+id)), provider)
     for (const model of channel.models) {
       container.innerHTML = renderToStaticMarkup(React.createElement(ModelPicker, {
         label: '主模型', provider, role: model.roles[0] || 'main', value: model.id,
@@ -27,7 +28,7 @@ test('R21 static picker titles preserve all 1,064 display names from 8c456709', 
       count++
     }
   }
-  assert.equal(count, 1064)
+  assert.equal(count, 1033)
 })
 
 test('R21 picker options preserve static names and submit exact IDs across DeepSeek, Bailian and TokenDance', t => {

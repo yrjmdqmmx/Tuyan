@@ -14,7 +14,7 @@ import {modalityIconStates} from '../../../packages/api/src/modality-presentatio
 import {titleIssues,dialogIssues,reviewBaseline} from '../../../test-support/source-titles-r24.mjs'
 afterEach(cleanup)
 
-test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable styled links and clean copy',t=>{
+test('R24 I2 all 1033 Web evidence dialogs and ten notices have readable styled links and clean copy',t=>{
  t.mock.timers.enable({apis:['Date'],now:Date.parse(frozenTime)})
  const css=fs.readFileSync(new URL('../src/components/ModelSpecifications.css',import.meta.url),'utf8')
  assert.match(css,/\.tw-dialog\.model-evidence-dialog a\.model-evidence-source\s*\{[^}]*color: var\(--accent, #267f68\)/)
@@ -63,7 +63,7 @@ test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable style
    }
   }
  }finally{style.remove()}
- assert.equal(cards,1064);assert.equal(rows,2468);assert.equal(notices,7)
+ assert.equal(cards,1033);assert.equal(rows,2391);assert.equal(notices,10)
  t.diagnostic(JSON.stringify({cards,rows,notices,titleFindings:0,copyFindings:0}))
 })
 

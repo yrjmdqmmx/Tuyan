@@ -1,3 +1,5 @@
+import {previousSourceReview} from '../test-support/retirement-projections.mjs'
+import {collectSourceReview} from '../test-support/source-review-r24.mjs'
 import {r28Baseline,expectedR28} from '../test-support/founder-fixes-r28.mjs'
 import {historicalR29Rows} from '../test-support/source-title-history-r29.mjs'
 const expectedHumanRows=(rows,card,client)=>currentHumanRows(rows,card,client,false)
@@ -6,36 +8,22 @@ import {expectedHumanRows as currentHumanRows} from '../test-support/source-link
 // Offline, deterministic title inventory. --check reads only; no Git history
 // needed: the pre-F rows are losslessly frozen in the small gzip fixture.
 import fs from 'node:fs'
-import vm from 'node:vm'
 import assert from 'node:assert/strict'
-import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
-import { productBundle } from '../test-support/execution-capability.mjs'
 import { titleBaseline, scanTitles, historicalIds, titleIssues, f3TitleExamples } from '../test-support/source-titles-r23.mjs'
 import { sourceTitle } from '../packages/api/src/card-presentation.mjs'
 import r24 from '../test-support/fixtures/model-card-r24.json' with { type: 'json' }
-const root = fileURLToPath(new URL('../', import.meta.url)), require = createRequire(import.meta.url)
-const web = await productBundle(`export {STATIC_MODEL_REGISTRY} from './apps/web/src/lib/staticModelCatalog.js'; export {modelCardSpecifications} from './apps/web/src/lib/modelCardSpecifications.js'; export {modelSourceRows} from './apps/web/src/lib/modelCardSources.js'`)
-const filename = require.resolve('../apps/miniprogram/miniprogram/components/model-picker/model-picker.js')
-const context = {Component(){},exports:{},require:createRequire(filename)}
-vm.runInNewContext(fs.readFileSync(filename,'utf8')+'\nthis.present=presentModel',context,{filename})
-const mini = require('../apps/miniprogram/miniprogram/utils/static-model-catalog.js')
-const current = {web:[],mini:[]}, notices = []
-for (const [provider, entry] of Object.entries(web.STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
-  const card = provider+'/'+model.id, data = web.modelCardSpecifications(provider,model)
-  current.web.push({card,name:data.sourceModel.displayName,rows:historicalR29Rows(web.modelSourceRows(data),card,'web')})
-  if (data.lifecycle?.state === 'scheduled' && data.lifecycle.sourceUrl) {
-    const url = data.lifecycle.sourceUrl
-    const old = titleBaseline.web.find(row=>row.card===card).rows.find(row=>row.url===url)
-    assert.ok(old || i5.models[card]?.sourceUrl === url,card+' lifecycle URL in baseline or explicit I6 evidence')
-    notices.push({client:'Web notice dialog',card,url,before:old ? '下线公告 · '+old.label.split(' · ').slice(1).join(' · ') : '无已核实来源',after:'下线公告 · '+sourceTitle(url)})
-  }
+const root = fileURLToPath(new URL('../', import.meta.url))
+const captured = previousSourceReview(await collectSourceReview()), notices = []
+const current = { web: captured.web.map(({card,name,rows}) => ({card,name,rows:historicalR29Rows(rows,card,'web')})), mini: [] }
+for (const {card, rows} of captured.notices) {
+  const url = rows[0].url, old = titleBaseline.web.find(row => row.card === card).rows.find(row => row.url === url)
+  assert.ok(old || i5.models[card]?.sourceUrl === url, card+' lifecycle URL in baseline or explicit I6 evidence')
+  notices.push({client:'Web notice dialog',card,url,before:old ? '下线公告 · '+old.label.split(' · ').slice(1).join(' · ') : '无已核实来源',after:'下线公告 · '+sourceTitle(url)})
 }
-for (const [provider, entry] of Object.entries(mini.STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
-  const data = context.present(model,'','',provider)
-  const key=provider+'/'+model.id
-  assert.deepEqual(historicalR29Rows(structuredClone(data.specSources),key,'mini'),expectedR28[key].mini.card.specSources,key+' R28 sources')
-  current.mini.push({card:key,name:data.label,rows:structuredClone(r28Baseline[key].mini.card.specSources)})
+for (const {card,name,rows} of captured.mini) {
+  assert.deepEqual(historicalR29Rows(rows,card,'mini'),expectedR28[card].mini.card.specSources,card+' R28 sources')
+  current.mini.push({card,name,rows:structuredClone(r28Baseline[card].mini.card.specSources)})
 }
 const counts = {}, changes = [], retained = []
 for (const client of ['web','mini']) {

@@ -83,7 +83,7 @@ test('catalog lifecycle and regional corrections are present without advertising
   const get = (provider: string, id: string) => STATIC_MODEL_REGISTRY[provider].models.find((m: any) => m.id===id)
   assert.equal(get('openai','o3-pro').protocol,'openai-responses')
   assert.equal(get('openai','o3-pro').expirationDate,'2026-12-11')
-  assert.equal(get('openai','gpt-4').roles.includes('vision'),false)
+  assertRemoved('openai','gpt-4')
   assert.equal(get('siliconflow','Qwen/Qwen3.5-397B-A17B').expirationDate,'2026-09-11')
   assert.equal(get('together','Qwen/Qwen3.5-397B-A17B'),undefined)
   assertRemoved('bailian','qwen-image-edit')

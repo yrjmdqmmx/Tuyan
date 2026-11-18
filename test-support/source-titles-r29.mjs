@@ -45,7 +45,7 @@ export function titleMap(surfaces, client) {
   }
   return map
 }
-export function assertUnifiedTitles(surfaces) {
+export function assertUnifiedTitles(surfaces, cardCount = 1033) {
   const maps = Object.fromEntries(['web', 'mini'].map(client => [client, titleMap(surfaces, client)]))
   for (const [url, titles] of titleMap(surfaces)) {
     assert.equal(titles.size, 1, url + ': ' + [...titles].join(' / '))
@@ -53,6 +53,6 @@ export function assertUnifiedTitles(surfaces) {
     if (/^https:\/\/fal\.ai\/models\/.+\/api$/.test(url)) assert.match(title, /^渠道资料 · fal · .+ API 文档$/)
     if (maps.web.has(url) && maps.mini.has(url)) assert.deepEqual(maps.web.get(url), maps.mini.get(url), url)
   }
-  for (const client of ['web','mini']) assert.equal(new Set(surfaces.filter(r => r.client === client).map(r => r.card)).size, 1064)
+  for (const client of ['web','mini']) assert.equal(new Set(surfaces.filter(r => r.client === client).map(r => r.card)).size, cardCount)
   return maps
 }

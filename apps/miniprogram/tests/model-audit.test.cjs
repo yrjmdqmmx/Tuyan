@@ -7,7 +7,7 @@ test('mini program shares exact channel lifecycle and independently sourced outp
   assert.equal(withModelAudit('xiaomi',old).selectable,false);
   assert.equal(removedModelHint('xiaomi',old.id),'MiMo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');assert.deepEqual(old,before);
   assert.equal(auditedModelLifecycle('bailian','qwen3.5-plus',Date.parse('2027-01-18')).state,'scheduled');
-  assert.equal(removedModel('bailian','qwen3.5-plus',Date.parse('2027-01-19')).replacementApiId,'qwen3.8-flash');
+  assert.equal(removedModel('bailian','qwen3.5-plus',Date.parse('2027-01-19T10:00:00+08:00')).replacementApiId,'qwen3.8-flash');
   const spec=auditedModelSpecs('tokendance','deepseek-v4-pro');
   assert.ok(spec.fields.totalContextTokens.value>0);assert.equal(spec.fields.maxOutputTokens.provenance,'vendor');
   assert.equal(auditedModelSpecs('antling','Ling-3.2-flash').fields.totalContextTokens.value,'1M');
@@ -49,11 +49,12 @@ test('R7 a single removed model without replacement names the original in picker
   assert.deepEqual(initial,before);assert.equal(sheet.events.length,0);
 });
 
-test('mini Ling deadlines use the UTC+8 boundary and production compact tokens',()=>{
+test('mini removed Ling tombstones retain the UTC+8 deadline and production compact tokens',()=>{
   const {formatContextLimit}=require('../miniprogram/utils/model-presentation.js');
   assert.equal(formatContextLimit(1048576),'≈ 1M');assert.equal(formatContextLimit(262144),'≈ 262K');
   for(const id of ['Ling-2.6-1T','Ling-2.6-flash','Ring-2.6-1T']) {
-    assert.equal(auditedModelLifecycle('antling',id,Date.parse('2026-11-14T15:59:59.999Z')).state,'scheduled');
+    assert.equal(auditedModelLifecycle('antling',id,Date.parse('2026-11-17T12:00:00+08:00')),null);
+    assert.equal(require('../../../config/removed-models.json')['antling/'+id].stopDate,'2026-11-15T00:00:00+08:00');
     assert.equal(removedModel('antling',id,Date.parse('2026-11-14T16:00:00Z')).replacementApiId,'Ling-3.1-flash');
   }
 });

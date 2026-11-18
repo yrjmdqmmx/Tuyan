@@ -1,3 +1,4 @@
+import {previousBatchSources} from '../test-support/retirement-projections.mjs'
 import {restoreI12Sources} from '../test-support/pm-decisions-r30.mjs'
 import { gitText as archivedAuditText, requireHistory } from './lib/git-history.mjs'
 import { loadCard as loadCardFrom } from './lib/model-card-audit.mjs'
@@ -20,9 +21,9 @@ Date.now=()=>Date.parse('2026-11-09T12:00:00Z')
 const card=await loadCard(root), before=await loadCard(root,'c76e9c2a'), registry=await phase2Registry()
 const {modelSourceName:oldSourceName}=await productBundle("export { modelSourceName } from './apps/web/src/lib/modelCardSources.js'",'c76e9c2a')
 const current=Object.entries(STATIC_MODEL_REGISTRY).flatMap(([channel,p])=>p.models.map(model=>({channel,model,card:card(channel,model)})))
-assert.equal(current.length,1064)
+assert.equal(current.length,1033)
 const full=Object.entries(registry.providers).flatMap(([channel,p])=>p.models.map(model=>({channel,model,card:card(channel,model)})))
-assert.equal(full.length,1061)
+assert.equal(full.length,1030)
 for(const row of full){assert.equal(row.card.sources[0],card(row.channel,{id:row.model.id}).sources[0]);assert.deepEqual(row.card.fields,row.model.cardSpecifications.fields)}
 assertReviewedLinks(id=>card('tokendance',{id}))
 const {modelCardName,presentRegistryModel}=await productBundle("export { modelCardName } from './apps/web/src/lib/modelCardSpecifications.js'; export { presentRegistryModel } from './apps/web/src/lib/modelPresentation.js'")
@@ -31,7 +32,7 @@ for(const row of current)assert.equal(modelCardName(row.channel,presentRegistryM
 const counts={staticCards:current.length,fullCoreCards:full.length,unchangedPickerNames:current.length,verifiedPages:67,historicalFallbacks:7,missingFallbacks:0,sourceRowsBefore:0,sourceRowsAfter:0,duplicateUrlRowsBefore:0,duplicateUrlRowsAfter:0,duplicateLabelsBefore:0,duplicateLabelsAfter:0,vendorTokenFields:0,vendorTokenCards:0,unknownTokenFields:0}
 const vendor=[], links=[]
 for(const row of current){
- const prior=before(row.channel,row.model), rows=restoreI12Sources(modelSourceRows(row.card),row.channel+'/'+row.model.id,'web')
+ const prior=before(row.channel,row.model), key=row.channel+'/'+row.model.id, rows=restoreI12Sources(previousBatchSources('web',key,modelSourceRows(row.card)),key,'web')
  counts.sourceRowsBefore+=prior.sources.length;counts.sourceRowsAfter+=rows.length
  counts.duplicateUrlRowsBefore+=prior.sources.length-new Set(prior.sources.map(sourceIdentity)).size
  counts.duplicateUrlRowsAfter+=rows.length-new Set(rows.map(r=>sourceIdentity(r.url))).size

@@ -28,6 +28,6 @@ export function scanRetirementSpecs(cards) {
   if(!url||!urls.has(url)&&!/deprecat|depreciat|retire|sunset|\/notice\//i.test(url))continue
   assertRetirementSpecEvidence(c.key,field,fact,url);exceptions++
  }
- assert.equal(cards.length,1064);assert.equal(exceptions,2)
+ assert.equal(cards.length,1033);assert.equal(exceptions,2)
  return {cards:cards.length,supportedRetirementSpecFields:exceptions,unsupported:0}
 }

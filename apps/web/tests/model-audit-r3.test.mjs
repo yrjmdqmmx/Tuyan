@@ -123,7 +123,7 @@ test('production compact formatter is shared by both numeric rows and exact valu
 });
 
 test('scheduled badge is beside the title, preserves full IDs, and tap opens date and replacement', () => {
-  for (const [provider, id, date, replacement] of [['bailian','qwen3.5-plus-2026-04-20','2027-01-19','Qwen3.8 Flash'], ['antling','Ling-2.6-flash','2026-11-15 00:00 (UTC+8)','Ling-3.1-flash']]) {
+  for (const [provider, id, date, replacement] of [['bailian','qwen3.5-plus-2026-04-20','2027-01-19','Qwen3.8 Flash'], ['tokendance','qwen3.5-plus','2027-01-19 10:00 (UTC+8)','Qwen3.8 Flash']]) {
     const models = makeModels([[provider,id]]);
     const view = render(React.createElement(WorkspaceModelCatalog, { models, mode:'library' }));
     const badge = screen.getByRole('button', { name:/将下线：/ });
@@ -138,7 +138,7 @@ test('scheduled badge is beside the title, preserves full IDs, and tap opens dat
 });
 
 test('tapping a scheduled badge inside the picker never selects that model', () => {
-  const models = makeModels([['antling','Ling-2.6-flash']]);
+  const models = makeModels([['bailian','qwen3.5-plus']]);
   render(React.createElement(WorkspaceModelPicker, {models,role:'main',path:'svg',current:ref(models),onChange:()=>assert.fail('Badge is not a selection')}));
   fireEvent.click(screen.getByRole('button', {name:'主模型'}));
   fireEvent.click(screen.getByRole('button', {name:/将下线：/}));

@@ -92,7 +92,7 @@ test('R13 compiled picker shows all seven vendor replacements and no catalog car
     for (const source of presented.specSources) assert.ok(!deadUrls.has(source.url), channel + '/' + model.id)
     assert.ok(!deadUrls.has(auditedModelSpecs(channel, model.id).sourceUrl))
   }
-  assert.equal(cards, 1064)
+  assert.equal(cards, 1033)
 })
 
 test('R13B pre-phase-2 static notice priorities and all 34 visible notices remain reproducible', async () => {
@@ -125,16 +125,18 @@ test('R13B compiled picker resolves full-model source priorities and retains not
   }]) {
     const { channel, modelId, url, label } = row
     const entry = STATIC_MODEL_REGISTRY[channel].models.find(model => model.id === modelId)
+    if (!entry) { assert.ok(require('../../../config/removed-models.json')[channel + '/' + modelId]); continue }
     const small = auditedModelSpecs(channel, modelId)
     const patches=[...(r31Patches.rows[channel+'/'+modelId]||[]),...(pmReview.rows[channel+'/'+modelId]||[])], expected=(path,fallback)=>patches.find(p=>p.path===path)?.after??fallback
     assert.equal(small.sourceUrl, expected('mini/audit/sourceUrl',url)); assert.equal(small.sourceLabel, expected('mini/audit/sourceLabel',label))
     assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), expected('mini/card/specSources', [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: visibleSourceTitle(url, entry) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : visibleSourceTitle(source, entry)}))]))
   }
   let notices = 0
+  const batchNoticeUrls = new Set(require('../../../config/channel-audit/retirements-20261117.json').upcoming.map(row => row.source))
   const appendedNotices = []
   for (const [channel, provider] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of provider.models) {
     for (const { url, label } of context.present(model, '', '', channel).specSources) {
-      if (/llms-full\.txt|deprecat|depreciat|retire|sunset|下线|aliyun\.com\/notice\/\d+|docs\.x\.ai\/developers\/migration\//i.test(url)) {
+      if (batchNoticeUrls.has(url) || /llms-full\.txt|deprecat|depreciat|retire|sunset|下线|aliyun\.com\/notice\/\d+|docs\.x\.ai\/developers\/migration\//i.test(url)) {
         notices++
         const primary = auditedModelSpecs(channel, model.id).sourceUrl === url
         if (!primary) appendedNotices.push(channel + '/' + model.id)
@@ -142,6 +144,6 @@ test('R13B compiled picker resolves full-model source priorities and retains not
       }
     }
   }
-  assert.equal(notices, 17)
-  assert.deepEqual(appendedNotices.sort(), ['bailian/qwen3.5-plus', 'bailian/qwen3.5-plus-2026-02-15', 'bailian/qwen3.5-plus-2026-04-20', 'tokendance/qwen3.5-plus'].sort())
+  assert.equal(notices, 20)
+  assert.deepEqual(appendedNotices.sort(), ['bailian/qwen3.5-plus', 'bailian/qwen3.5-plus-2026-02-15', 'bailian/qwen3.5-plus-2026-04-20', 'tokendance/qwen3.5-plus', 'tokendance/qwen3.5-plus'].sort())
 })

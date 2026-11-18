@@ -1,3 +1,4 @@
+import {beforeRetirements} from '../test-support/retirement-projections.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {execFileSync} from 'node:child_process'
@@ -13,8 +14,8 @@ import {validatedPrimaryPages} from './lib/primary-links-r31.mjs'
 import {visibleSourceTitle,sourceAcronyms} from '../packages/api/src/card-presentation.mjs'
 import {siblingEndpoint} from '../packages/api/src/model-card-sources.mjs'
 import {sourceSurfaces,assertUnifiedTitles} from '../test-support/source-titles-r29.mjs'
-test('R31 all 82 decisions match generated Web/Mini; all 1064 retain only authorized primary and source changes',async()=>{
- const rows=await imageInputPresentations(),old=restoreI12(rows),i12=restoreI13(rows)
+test('R31 all 82 decisions match generated Web/Mini; all 1033 retain only authorized primary and source changes',async()=>{
+ const live=await imageInputPresentations(),rows=beforeRetirements('cards',live),old=restoreI12(rows),i12=restoreI13(rows)
  const decisions=[...report.kept,...report.restored,...report.bailianOfficialPages]
  assert.deepEqual(decisions.map(r=>r.key).sort(),prior.primaryLinks.map(r=>r.key).sort())
  assert.deepEqual(report.counts,{cards:82,kept:15,restored:61,officialPages:6})
@@ -31,7 +32,7 @@ test('R31 all 82 decisions match generated Web/Mini; all 1064 retain only author
   if(!decisions.some(r=>r.key===key))assert.equal(row.web.sources[0]?.url,i12[key].web.sources[0]?.url,key)
   assert.deepEqual(row.web.data.fields,i12[key].web.data.fields,key+' evidence facts/dates unchanged')
  }
- assertUnifiedTitles(sourceSurfaces(rows))
+ assertUnifiedTitles(sourceSurfaces(live))
  const bad=structuredClone(rows);bad['replicate/google/gemini-3.5-flash'].web.sources[0].url+='oops';assert.throws(()=>restoreI13(bad))
 })
 test('R31 strict Alibaba validator rejects bad status, wrong identity, missing quote and numeric drift',()=>{

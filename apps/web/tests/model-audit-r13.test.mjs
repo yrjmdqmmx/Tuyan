@@ -79,7 +79,7 @@ test('R13 exactly seven cards render verified vendor links in full/static and no
 })
 
 test('R13 catalog-wide visible and secondary sources never contain any known dead URL', () => {
-  assert.equal(all.length, 2125)
+  assert.equal(all.length, 2094)
   assert.equal(deadLinks.length, 14)
   assert.equal(new Set(deadLinks.map(row => row.url)).size, 14)
   for (const row of deadLinks) {
@@ -111,10 +111,10 @@ test('R13B every specified notice has 下线公告 in full/static cards and pres
   assert.equal(noticeCards.filter(row => row.channel === 'openai').length, 15)
   for (const { channel, modelId, url, fullFirstUrl } of noticeCards) {
     const matches = all.filter(row => row.channel === channel && row.model.id === modelId)
-    assert.equal(matches.length, 2)
+    assert.equal(matches.length, MODEL_AUDIT_DATA.removed[channel + '/' + modelId] ? 1 : 2)
     for (const { model } of matches) {
       const card = modelCardSpecifications(channel, model)
-      assert.equal(card.sources[0], currentPrimary(channel + '/' + modelId,fullFirstUrl), 'static cards now resolve the same complete specifications as Core')
+      assert.equal(card.sources[0], MODEL_AUDIT_DATA.removed[channel + '/' + modelId]?.sourceUrl || currentPrimary(channel + '/' + modelId,fullFirstUrl), 'static cards now resolve the same complete specifications as Core')
       assert.ok(card.sources.includes(url), channel + '/' + modelId)
       assert.equal(modelSourceName(card, url), '下线公告')
       for (const compactSources of [false, true]) {
@@ -138,7 +138,7 @@ test('R13B catalog-wide notice links are labelled 下线公告 regardless of cha
     const card = modelCardSpecifications(channel, model)
     for (const url of card.sources) {
       const { hostname, pathname } = new URL(url)
-      const notice = /llms-full\.txt|deprecat|depreciat|retire|sunset|下线/i.test(pathname)
+      const notice = card.lifecycleSources.includes(url) || /llms-full\.txt|deprecat|depreciat|retire|sunset|下线/i.test(pathname)
         || /(^|\.)aliyun\.com$/.test(hostname) && /^\/notice\/\d+\/?$/.test(pathname)
         || hostname === 'docs.x.ai' && pathname.startsWith('/developers/migration/')
       if (!notice) continue
@@ -151,7 +151,7 @@ test('R13B catalog-wide notice links are labelled 下线公告 regardless of cha
       }
     }
   }
-  assert.equal(visible, 26, 'R31 restores six notice primaries per projection: thirteen full-registry and thirteen static notice primaries')
+  assert.equal(visible, 61, 'notice primaries across the historical full registry and the surviving static cards')
   const ordinary = modelCardSources({ channel: 'unknown', audit: {}, fields: {}, model: { officialSourceUrl: 'https://example.test/notice/118177' } })
   assert.equal(modelSourceName(ordinary, ordinary.sources[0]), '官方文档')
 })
