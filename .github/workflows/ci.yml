@@ -43,6 +43,7 @@ jobs:
         run: |
           node scripts/sync-model-catalog.mjs --check
           node scripts/sync-reference-upload.mjs --check
+          node scripts/sync-workflow.mjs --check
           node --test scripts/pack-model-catalog.test.mjs
       - run: pnpm --filter @paperbanana/auth-gateway test
       - name: Account lifecycle with disposable Mongo replica set
