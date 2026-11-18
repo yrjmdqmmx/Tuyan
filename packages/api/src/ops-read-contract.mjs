@@ -1,5 +1,17 @@
 // Shared, deliberately closed query vocabulary. Never accepts Mongo/SQL or actions.
-export const OPS_KINDS = ['overview', 'failures', 'health'];
+export const OPS_KINDS = ['overview', 'failures', 'health', 'feedback'];
+// Feedback window items carry only these closed fields; never message, contact, user, IP or UA.
+export const FEEDBACK_CATEGORIES = ['bug', 'feature', 'experience', 'other', 'unknown'];
+export const FEEDBACK_PLATFORMS = ['web', 'miniprogram', 'android', 'ios', 'windows', 'macos', 'harmony', 'unknown'];
+export const FEEDBACK_STATUSES = ['new', 'unknown'];
+export const FEEDBACK_WINDOW_LIMIT = 100;
+export function projectFeedbackItem(row) {
+  const id = typeof row?.id === 'string' && /^feedback-[A-Za-z0-9_-]{1,64}$/.test(row.id) ? row.id : null;
+  const createdAt = opsTimestamp(row?.createdAt);
+  if (!id || !createdAt) return null;
+  const pick = (value, allowed) => allowed.includes(value) ? value : 'unknown';
+  return { id, createdAt, category: pick(row.category, FEEDBACK_CATEGORIES), platform: pick(row.platform, FEEDBACK_PLATFORMS), status: pick(row.status, FEEDBACK_STATUSES) };
+}
 export const JOB_STATES = ['reserved', 'queued', 'running', 'awaiting_provider', 'succeeded', 'failed', 'cancelled', 'unknown'];
 export const FAILURE_CATEGORIES = ['input', 'balance', 'quota', 'permission', 'rate_limit', 'timeout', 'network', 'provider', 'internal', 'unknown'];
 export const FAILURE_STAGES = ['reference_selection', 'reference_preparation', 'reference_analysis', 'planning', 'styling', 'rendering', 'review', 'execution', 'unknown'];

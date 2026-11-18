@@ -17,6 +17,7 @@ import { createBoundedAuthHandler } from './auth-http.js';
 import { readGuestIdentity, resolveGuestIdentity } from './guest-identity.js';
 import { createTuyanMcpRouter } from './mcp.js';
 import { createOpsRouter } from './ops-router.js';
+import { createOpsEventEmitter, opsEventArea } from './ops-events.js';
 import { authorizeJobOwner, normalizeRefineSource } from './ownership.js';
 import { redactErrorForLog } from './redaction.js';
 import { createWorkspaceHistory } from './workspace-history.js';
@@ -81,8 +82,11 @@ export function createApp({
   randomBytes,
   logger = console,
   accountDeletion,
+  opsEvents,
 }) {
   const app = express();
+  // Disabled (no-op) unless TUYAN_OPS_EVENTS_ENABLED=true; never blocks a request.
+  const events = opsEvents || createOpsEventEmitter({ config: config.opsEvents, logger });
   const accountDeletionOperations = new Map();
   app.disable('x-powered-by');
   app.set('trust proxy', config.trustProxy);
@@ -351,17 +355,17 @@ export function createApp({
       }
       if (action === 'submitFeedback') {
         const session = await auth.optionalSession(request);
-        return relay(
-          response,
-          await backend.call(
-            {
-              ...normalizeFeedbackBody(request.body),
-              userId: String(session?.user?.id || ''),
-              userEmail: String(session?.user?.email || ''),
-            },
-            context,
-          ),
+        const result = await backend.call(
+          {
+            ...normalizeFeedbackBody(request.body),
+            userId: String(session?.user?.id || ''),
+            userEmail: String(session?.user?.email || ''),
+          },
+          context,
         );
+        // Only the stored feedback id leaves the process; message, contact and user stay in Core.
+        if (result?.status === 200 && result.data?.code === 0) events.emit('feedback.created', { feedbackId: result.data.id });
+        return relay(response, result);
       }
 
       if (
@@ -494,7 +498,7 @@ export function createApp({
     }),
   );
 
-  app.use((error, _request, response, next) => {
+  app.use((error, request, response, next) => {
     if (error?.type === 'entity.too.large') {
       return response.status(413).json({ code: 413, error: 'Request body too large' });
     }
@@ -509,6 +513,7 @@ export function createApp({
       code: error?.code || 'REQUEST_FAILED',
       error: redactErrorForLog(error),
     });
+    if (status >= 500) events.emit('error.captured', { status, code: error?.code, area: opsEventArea(request.path, request.body?.action) });
     return response.status(status).json({ code: status, error: publicError });
   });
 

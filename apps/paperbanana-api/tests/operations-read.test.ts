@@ -57,7 +57,7 @@ test('Core aggregate routes require independent read credentials; never invoke l
     const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`
     const headers = { 'x-paperbanana-operations-token': 'fixture-ops' }
     try {
-      for (const kind of ['overview', 'failures']) {
+      for (const kind of ['overview', 'failures', 'feedback']) {
         const path = `/internal/operations/${kind}`
         for (const h of [{}, { 'x-paperbanana-gateway-token': 'fixture-gateway' }, { 'x-paperbanana-admin-transport-token': 'fixture-admin' }]) {
           assert.equal((await fetch(base + path + '?token=fixture-ops', { headers: h as Record<string, string> })).status, enabled ? 401 : 404)
@@ -71,7 +71,7 @@ test('Core aggregate routes require independent read credentials; never invoke l
           assert.equal((await fetch(base + path, { headers, method: 'POST' })).status, 404)
         }
       }
-      assert.equal(calls, enabled ? 2 : 0)
+      assert.equal(calls, enabled ? 3 : 0)
       const denied = await fetch(base + '/paperbanana-api', { headers: { ...headers, 'content-type': 'application/json' }, method: 'POST', body: JSON.stringify({ action: 'adminTaskFollowup' }) })
       assert.equal(denied.status, 401); assert.equal(legacyCalls, 0)
       if (enabled) {
@@ -82,4 +82,27 @@ test('Core aggregate routes require independent read credentials; never invoke l
       }
     } finally { server.closeAllConnections(); await new Promise<void>(resolve => server.close(() => resolve())) }
   }
+})
+
+test('feedback window reads only ids, timestamps and closed enums, oldest first and bounded', async () => {
+  const finds: any[] = []
+  const rows = Array.from({ length: 101 }, (_, i) => ({ _id: `feedback-${i}`, createdAt: new Date(Date.parse(window.from) + i * 1000),
+    category: i === 0 ? 'PRIVATE_SENTINEL' : 'bug', platform: 'web', status: 'new', message: 'PRIVATE_SENTINEL', contact: 'PRIVATE_SENTINEL' }))
+  const db = { collection(name: string) {
+    if (name === 'paperbanana_jobs') return { aggregate() { throw new Error('unexpected aggregate') } }
+    assert.equal(name, 'paperbanana_feedback')
+    return { find(filter: any, options: any) { finds.push({ filter, options }); return { async toArray() { return rows.slice(0, options.limit) } } } }
+  } }
+  const read = createOperationsRead(db as any, () => Date.parse('2026-11-01T12:00:00.000Z'))
+  const result: any = await read('feedback', window)
+  assert.equal(result.items.length, 100)
+  assert.equal(result.truncated, true)
+  assert.deepEqual(result.items[0], { id: 'feedback-0', createdAt: '2026-10-30T00:00:00.000Z', category: 'unknown', platform: 'web', status: 'new' })
+  assert.doesNotMatch(JSON.stringify(result), /PRIVATE_SENTINEL/)
+  assert.deepEqual(finds[0].filter, { createdAt: { $gte: new Date(window.from), $lt: new Date(window.to) } })
+  assert.deepEqual(finds[0].options.projection, { _id: 1, createdAt: 1, category: 1, platform: 1, status: 1 })
+  assert.deepEqual(finds[0].options.sort, { createdAt: 1, _id: 1 })
+  assert.equal(finds[0].options.limit, 101)
+  assert.equal(finds[0].options.maxTimeMS, 5000)
+  await assert.rejects(read('feedback', { ...window, message: 'x' }))
 })

@@ -35,7 +35,7 @@ def validate_agent_tokens(value):
             if not isinstance(row, dict) or set(row) != {'id', 'sha256', 'scopes', 'expiresAt'}: raise ValueError()
             if not re.fullmatch(r'[A-Za-z0-9_-]{1,40}', row['id']) or not re.fullmatch(r'[a-f0-9]{64}', row['sha256']): raise ValueError()
             if row['id'] in ids or row['sha256'] in hashes: raise ValueError()
-            if not isinstance(row['scopes'], list) or not 1 <= len(row['scopes']) <= 3 or any(s not in {'overview:read','failures:read','health:read'} for s in row['scopes']): raise ValueError()
+            if not isinstance(row['scopes'], list) or not 1 <= len(row['scopes']) <= 4 or len(set(row['scopes'])) != len(row['scopes']) or any(s not in {'overview:read','failures:read','health:read','feedback:read'} for s in row['scopes']): raise ValueError()
             if not re.fullmatch(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z', row['expiresAt']): raise ValueError()
             datetime.datetime.fromisoformat(row['expiresAt'])
             ids.add(row['id']); hashes.add(row['sha256'])
@@ -122,6 +122,11 @@ def validate(m):
                 if key == 'TUYAN_OPS_AGENT_ENABLED' and value in {'true','false'}: continue
                 if key == 'TUYAN_OPS_HOST_SNAPSHOT_FILE' and value == AGENT_HOST_FILE: continue
                 if key == 'TUYAN_OPS_AGENT_TOKENS': validate_agent_tokens(value); continue
+                # Passive ops events (docs/operations/passive-events.md); the gateway itself stays off unless ENABLED=true.
+                if key == 'TUYAN_OPS_EVENTS_ENABLED' and value in {'true','false'}: continue
+                if key == 'TUYAN_OPS_EVENTS_URL' and isinstance(value, str) and re.fullmatch(r'https://[A-Za-z0-9.-]{1,253}(?::\d{1,5})?/[A-Za-z0-9._~/%=&?+-]{0,1024}', value) and '@' not in value: continue
+                if key == 'TUYAN_OPS_EVENTS_SECRET' and isinstance(value, str) and re.fullmatch(r'[A-Za-z0-9_-]{32,128}', value): continue
+                if key == 'TUYAN_OPS_EVENTS_SOURCE' and isinstance(value, str) and re.fullmatch(r'[a-z0-9-]{1,32}', value): continue
                 raise ValueError('invalid operations agent configuration')
             if key == 'PAPERBANANA_PLUS_PREPARED':
                 if name != 'core' or value not in {'true', 'false'}: raise ValueError('invalid Core Plus preparation switch')
