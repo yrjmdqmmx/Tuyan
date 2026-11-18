@@ -6,7 +6,7 @@ import {referenceSubmissionPolicy} from '../../../packages/api/src/reference-upl
 import {auditedChannelContract, assertChannelRequest} from '../../../packages/api/src/audited-channel-contracts.js'
 // @ts-ignore generated client oracle
 import {STATIC_MODEL_REGISTRY as catalog,EXTENDED_MODEL_CHANNELS} from '../../web/src/lib/staticModelCatalog.js'
-const antIds=['Ling-3.0-flash-VL','Ling-3.0-flash','Ling-3.0-tiny','Ling-2.6-1T','Ling-2.6-flash','Ring-2.6-1T']
+const antIds=['Ling-3.0-flash-VL','Ling-3.0-flash','Ling-3.0-tiny']
 const input=(model:string,images:any[]=[])=>({provider:(model.startsWith('LongCat')?'longcat':'antling') as 'longcat'|'antling',model,apiKey:'fixture-key',system:'Keep labels',user:'Explain the figure',images})
 test('v3.8.1 exact identities, admitted roles, history, defaults and evidence boundary',()=>{
  assert.deepEqual(catalog.antling.models.map((m:any)=>m.id).sort(),[...antIds,'Ling-3.1-flash','Ling-3.2-flash'].sort())

@@ -1,16 +1,143 @@
 {
-  "recordedAt": "2026-11-09T13:30:00+08:00",
-  "note": "Addendum to verify-2026-11-09-r2; earlier snapshots are not modified.",
+  "recordedAt": "2026-11-17",
+  "note": "2026-11-17 batch 1 official evidence re-read; Ant Ling 2.6 identities moved to removed-models.json. Source/read-date ledger: retirements-20261117.json. Date-only deadlines use the existing UTC-day convention; exact UTC+8 times are preserved.",
   "scheduledDeprecations": [
-    {"channel": "antling", "apiModelId": "Ling-2.6-1T", "stopDate": "2026-11-15T00:00:00+08:00", "replacement": "Ling-3.1-flash", "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/", "scheduled": true, "inTuyanCatalog": true, "displayName": "Ling 2.6-1T", "replacementDisplayName": "Ling-3.1-flash"},
-    {"channel": "antling", "apiModelId": "Ling-2.6-flash", "stopDate": "2026-11-15T00:00:00+08:00", "replacement": "Ling-3.1-flash", "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/", "scheduled": true, "inTuyanCatalog": true, "displayName": "Ling 2.6-flash", "replacementDisplayName": "Ling-3.1-flash"},
-    {"channel": "antling", "apiModelId": "Ring-2.6-1T", "stopDate": "2026-11-15T00:00:00+08:00", "replacement": "Ling-3.1-flash", "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/", "scheduled": true, "inTuyanCatalog": true, "displayName": "Ring 2.6-1T", "replacementDisplayName": "Ling-3.1-flash"}
+    {
+      "channel": "minimax",
+      "apiModelId": "MiniMax-M2.5",
+      "stopDate": "2026-11-18",
+      "replacement": null,
+      "sourceUrl": "https://platform.minimax.io/docs/faq/models",
+      "scheduled": true,
+      "inTuyanCatalog": true,
+      "displayName": "MiniMax M2.5",
+      "replacementDisplayName": null
+    },
+    {
+      "channel": "minimax",
+      "apiModelId": "MiniMax-M2.5-highspeed",
+      "stopDate": "2026-11-18",
+      "replacement": null,
+      "sourceUrl": "https://platform.minimax.io/docs/faq/models",
+      "scheduled": true,
+      "inTuyanCatalog": true,
+      "displayName": "MiniMax M2.5-highspeed",
+      "replacementDisplayName": null
+    },
+    {
+      "channel": "minimax",
+      "apiModelId": "MiniMax-M2.7",
+      "stopDate": "2026-11-18",
+      "replacement": null,
+      "sourceUrl": "https://platform.minimax.io/docs/faq/models",
+      "scheduled": true,
+      "inTuyanCatalog": true,
+      "displayName": "MiniMax M2.7",
+      "replacementDisplayName": null
+    },
+    {
+      "channel": "minimax",
+      "apiModelId": "MiniMax-M2.7-highspeed",
+      "stopDate": "2026-11-18",
+      "replacement": null,
+      "sourceUrl": "https://platform.minimax.io/docs/faq/models",
+      "scheduled": true,
+      "inTuyanCatalog": true,
+      "displayName": "MiniMax M2.7-highspeed",
+      "replacementDisplayName": null
+    },
+    {
+      "channel": "openai",
+      "apiModelId": "gpt-image-2",
+      "stopDate": "2027-02-10",
+      "replacement": null,
+      "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+      "scheduled": true,
+      "inTuyanCatalog": true,
+      "displayName": "GPT Image 2 · 2026-04-21",
+      "replacementDisplayName": null
+    },
+    {
+      "channel": "tokendance",
+      "apiModelId": "qwen3.5-plus",
+      "stopDate": "2027-01-19T10:00:00+08:00",
+      "replacement": "qwen3.8-flash",
+      "sourceUrl": "https://tokendance.space/docs/changelog.md",
+      "scheduled": true,
+      "inTuyanCatalog": true,
+      "displayName": "Qwen3.5 Plus",
+      "replacementDisplayName": "Qwen3.8 Flash"
+    },
+    {
+      "channel": "bailian",
+      "apiModelId": "qwen3.5-397b-a17b",
+      "stopDate": "2027-01-19T10:00:00+08:00",
+      "replacement": "qwen3.8-flash",
+      "sourceUrl": "https://www.aliyun.com/notice/118728",
+      "scheduled": true,
+      "inTuyanCatalog": true,
+      "displayName": "Qwen3.5-397b-a17b",
+      "replacementDisplayName": "Qwen3.8 Flash"
+    },
+    {
+      "channel": "bailian",
+      "apiModelId": "qwen3.5-plus",
+      "stopDate": "2027-01-19T10:00:00+08:00",
+      "replacement": "qwen3.8-flash",
+      "sourceUrl": "https://www.aliyun.com/notice/118728",
+      "scheduled": true,
+      "inTuyanCatalog": true,
+      "displayName": "Qwen3.5-plus",
+      "replacementDisplayName": "Qwen3.8 Flash"
+    },
+    {
+      "channel": "bailian",
+      "apiModelId": "qwen3.5-plus-2026-02-15",
+      "stopDate": "2027-01-19T10:00:00+08:00",
+      "replacement": "qwen3.8-flash",
+      "sourceUrl": "https://www.aliyun.com/notice/118728",
+      "scheduled": true,
+      "inTuyanCatalog": true,
+      "displayName": "Qwen3.5-plus-2026-02-15",
+      "replacementDisplayName": "Qwen3.8 Flash"
+    },
+    {
+      "channel": "bailian",
+      "apiModelId": "qwen3.5-plus-2026-04-20",
+      "stopDate": "2027-01-19T10:00:00+08:00",
+      "replacement": "qwen3.8-flash",
+      "sourceUrl": "https://www.aliyun.com/notice/118728",
+      "scheduled": true,
+      "inTuyanCatalog": true,
+      "displayName": "Qwen3.5-plus-2026-04-20",
+      "replacementDisplayName": "Qwen3.8 Flash"
+    }
   ],
   "alreadyRetiredOnOfficialPage": [
-    {"channel": "antling", "apiModelId": "Ling-1T", "stopDate": "2026-06-15T00:00:00+08:00", "replacement": "Ling-3.1-flash"},
-    {"channel": "antling", "apiModelId": "Ring-1T", "stopDate": "2026-06-15T00:00:00+08:00", "replacement": "Ling-3.1-flash"},
-    {"channel": "antling", "apiModelId": "Ling-2.5-1T", "stopDate": "2026-09-30T00:00:00+08:00", "replacement": "Ling-3.1-flash"},
-    {"channel": "antling", "apiModelId": "Ring-2.5-1T", "stopDate": "2026-09-30T00:00:00+08:00", "replacement": "Ling-3.1-flash"}
+    {
+      "channel": "antling",
+      "apiModelId": "Ling-1T",
+      "stopDate": "2026-06-15T00:00:00+08:00",
+      "replacement": "Ling-3.1-flash"
+    },
+    {
+      "channel": "antling",
+      "apiModelId": "Ring-1T",
+      "stopDate": "2026-06-15T00:00:00+08:00",
+      "replacement": "Ling-3.1-flash"
+    },
+    {
+      "channel": "antling",
+      "apiModelId": "Ling-2.5-1T",
+      "stopDate": "2026-09-30T00:00:00+08:00",
+      "replacement": "Ling-3.1-flash"
+    },
+    {
+      "channel": "antling",
+      "apiModelId": "Ring-2.5-1T",
+      "stopDate": "2026-09-30T00:00:00+08:00",
+      "replacement": "Ling-3.1-flash"
+    }
   ],
   "stepfunImageDefault": {
     "checkedUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",

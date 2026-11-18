@@ -211,7 +211,8 @@ test('invalid thinking values and request budgets are classified not_sent withou
   }
 })
 
-test('runtime text/vision wrappers forward actual roles and preserve no-config wire behavior', async () => {
+test('runtime text/vision wrappers forward actual roles and preserve no-config wire behavior', async t => {
+  t.mock.method(Date, 'now', () => Date.parse('2026-11-17T12:00:00+08:00'))
   const runtime = await createRefineRuntime()
   try {
     const f = fixture(runtime.db), original = task('thinking-runtime-roles'), roles: unknown[] = []
@@ -242,7 +243,7 @@ test('runtime text/vision wrappers forward actual roles and preserve no-config w
 
     const resolve = (runtime.legacy as any).resolveModelRouting
     const forged = { version: 1, roles: { main: { ...roleSnapshot('main', 'high'), wire: { model: 'forged-model', arbitraryWireField: true } } } }
-    const routed = resolve({ provider: 'openai', mainModelName: 'gpt-4.1', referenceVisionModelName: 'gpt-4.1', imageModelName: 'gpt-image-1', thinkingSnapshot: forged })
+    const routed = resolve({ provider: 'openai', mainModelName: 'gpt-4.1', referenceVisionModelName: 'gpt-4.1', imageModelName: 'gpt-image-2', thinkingSnapshot: forged })
     assert.equal(routed.thinkingConfig, undefined)
     assert.equal(routed.thinkingSnapshot, undefined)
     const identity = { provider: 'openai', modelId: 'gpt-4.1', protocol: 'fixture-unconfirmed-protocol' }

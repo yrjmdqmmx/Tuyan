@@ -467,5 +467,194 @@
     "sourceUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
     "displayName": "MiMo-v2.5-pro",
     "replacementDisplayName": "MiMo-V2.6-Pro"
+  },
+  "openai/gpt-3.5-turbo-1106": {
+    "stopDate": "2026-09-28",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "GPT-3.5-turbo-1106"
+  },
+  "openai/gpt-3.5-turbo": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "GPT-3.5-turbo · 0125"
+  },
+  "openai/gpt-3.5-turbo-0125": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "GPT-3.5-turbo-0125"
+  },
+  "openai/gpt-4": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "GPT-4 · 0613"
+  },
+  "openai/gpt-4-0613": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "GPT-4-0613"
+  },
+  "openai/gpt-4-1106-preview": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "GPT-4-1106-preview"
+  },
+  "openai/gpt-4-turbo": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "GPT-4-turbo · 2024-04-09"
+  },
+  "openai/gpt-4-turbo-2024-04-09": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "GPT-4-turbo-2024-04-09"
+  },
+  "openai/gpt-4.1-nano": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "GPT-4.1-nano · 2025-04-14"
+  },
+  "openai/gpt-4.1-nano-2025-04-14": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "GPT-4.1-nano-2025-04-14"
+  },
+  "openai/gpt-4o-2024-05-13": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "GPT-4o-2024-05-13"
+  },
+  "openai/gpt-image-1": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "GPT Image 1"
+  },
+  "openai/o1": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "o1 · 2024-12-17"
+  },
+  "openai/o1-2024-12-17": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "o1-2024-12-17"
+  },
+  "openai/o1-pro": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "o1-pro · 2025-03-19"
+  },
+  "openai/o1-pro-2025-03-19": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "o1-pro-2025-03-19"
+  },
+  "openai/o3-mini": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "o3-mini · 2025-01-31"
+  },
+  "openai/o3-mini-2025-01-31": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "o3-mini-2025-01-31"
+  },
+  "openai/o4-mini": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "o4-mini · 2025-04-16"
+  },
+  "openai/o4-mini-2025-04-16": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://developers.openai.com/api/docs/deprecations",
+    "displayName": "o4-mini-2025-04-16"
+  },
+  "siliconflow/Pro/zai-org/GLM-5.1": {
+    "stopDate": "2026-11-10",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+    "displayName": "GLM-5.1"
+  },
+  "antling/Ling-2.6-1T": {
+    "stopDate": "2026-11-15T00:00:00+08:00",
+    "replacementApiId": "Ling-3.1-flash",
+    "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+    "displayName": "Ling 2.6-1T",
+    "replacementDisplayName": "Ling-3.1-flash"
+  },
+  "antling/Ling-2.6-flash": {
+    "stopDate": "2026-11-15T00:00:00+08:00",
+    "replacementApiId": "Ling-3.1-flash",
+    "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+    "displayName": "Ling 2.6-flash",
+    "replacementDisplayName": "Ling-3.1-flash"
+  },
+  "antling/Ring-2.6-1T": {
+    "stopDate": "2026-11-15T00:00:00+08:00",
+    "replacementApiId": "Ling-3.1-flash",
+    "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+    "displayName": "Ring 2.6-1T",
+    "replacementDisplayName": "Ling-3.1-flash"
+  },
+  "siliconflow/Qwen/Qwen3-Coder-30B-A3B-Instruct": {
+    "stopDate": "2026-11-16",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+    "displayName": "Qwen3-Coder-30B-A3B-Instruct"
+  },
+  "siliconflow/Qwen/Qwen3-VL-30B-A3B-Thinking": {
+    "stopDate": "2026-11-16",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+    "displayName": "Qwen3-VL-30B-A3B-Thinking"
+  },
+  "siliconflow/Qwen/Qwen3.5-122B-A10B": {
+    "stopDate": "2026-11-16",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+    "displayName": "Qwen3.5-122B-A10B"
+  },
+  "siliconflow/inclusionAI/Ling-mini-2.0": {
+    "stopDate": "2026-11-16",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+    "displayName": "Ling-mini-2.0"
+  },
+  "siliconflow/stepfun-ai/Step-3.5-Flash": {
+    "stopDate": "2026-11-16",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+    "displayName": "Step-3.5-Flash"
+  },
+  "siliconflow/tencent/Hunyuan-A13B-Instruct": {
+    "stopDate": "2026-11-16",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+    "displayName": "Hunyuan-A13B-Instruct"
+  },
+  "siliconflow/zai-org/GLM-4.5V": {
+    "stopDate": "2026-11-16",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+    "displayName": "GLM-4.5V"
   }
 }

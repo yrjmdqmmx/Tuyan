@@ -6,9 +6,9 @@
   "totals": {
     "cards": 1061,
     "tableUnknown": 34,
-    "sourceDiff": 616,
-    "modalityDiff": 614,
-    "eitherDiff": 698
+    "sourceDiff": 599,
+    "modalityDiff": 625,
+    "eitherDiff": 709
   },
   "counts": {
     "deepseek": {
@@ -35,9 +35,9 @@
     "siliconflow": {
       "cards": 68,
       "tableUnknown": 0,
-      "sourceDiff": 51,
-      "modalityDiff": 51,
-      "eitherDiff": 51
+      "sourceDiff": 46,
+      "modalityDiff": 53,
+      "eitherDiff": 53
     },
     "anthropic": {
       "cards": 14,
@@ -77,9 +77,9 @@
     "openai": {
       "cards": 71,
       "tableUnknown": 0,
-      "sourceDiff": 25,
-      "modalityDiff": 25,
-      "eitherDiff": 25
+      "sourceDiff": 15,
+      "modalityDiff": 34,
+      "eitherDiff": 34
     },
     "ark": {
       "cards": 36,
@@ -112,7 +112,7 @@
     "minimax": {
       "cards": 11,
       "tableUnknown": 0,
-      "sourceDiff": 8,
+      "sourceDiff": 6,
       "modalityDiff": 8,
       "eitherDiff": 8
     },
@@ -823,6 +823,11 @@
       "modalityDiff": true
     },
     {
+      "key": "siliconflow/Qwen/Qwen3.5-122B-A10B",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
       "key": "siliconflow/Qwen/Qwen3.5-397B-A17B",
       "sourceDiff": true,
       "modalityDiff": true
@@ -913,6 +918,11 @@
       "modalityDiff": true
     },
     {
+      "key": "siliconflow/stepfun-ai/Step-3.5-Flash",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
       "key": "siliconflow/zai-org/GLM-5.3",
       "sourceDiff": true,
       "modalityDiff": true
@@ -929,7 +939,7 @@
     },
     {
       "key": "siliconflow/Pro/zai-org/GLM-5.1",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -939,7 +949,7 @@
     },
     {
       "key": "siliconflow/zai-org/GLM-4.5V",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -969,7 +979,7 @@
     },
     {
       "key": "siliconflow/Qwen/Qwen3-Coder-30B-A3B-Instruct",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -989,7 +999,7 @@
     },
     {
       "key": "siliconflow/Qwen/Qwen3-VL-30B-A3B-Thinking",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -1034,7 +1044,7 @@
     },
     {
       "key": "siliconflow/inclusionAI/Ling-mini-2.0",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -1613,13 +1623,18 @@
       "modalityDiff": true
     },
     {
+      "key": "openai/gpt-4.1-nano",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
       "key": "openai/gpt-4.1-nano-2025-04-14",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "openai/gpt-4o-2024-05-13",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -1638,33 +1653,63 @@
       "modalityDiff": true
     },
     {
+      "key": "openai/gpt-4-turbo",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
       "key": "openai/gpt-4-turbo-2024-04-09",
-      "sourceDiff": true,
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-4",
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "openai/gpt-4-0613",
-      "sourceDiff": true,
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-image-1",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/gpt-3.5-turbo",
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "openai/gpt-3.5-turbo-0125",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "openai/gpt-3.5-turbo-1106",
-      "sourceDiff": true,
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/o1",
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "openai/o1-2024-12-17",
-      "sourceDiff": true,
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
+      "key": "openai/o1-pro",
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "openai/o1-pro-2025-03-19",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -1673,8 +1718,13 @@
       "modalityDiff": true
     },
     {
+      "key": "openai/o3-mini",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
       "key": "openai/o3-mini-2025-01-31",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -1683,8 +1733,13 @@
       "modalityDiff": true
     },
     {
+      "key": "openai/o4-mini",
+      "sourceDiff": false,
+      "modalityDiff": true
+    },
+    {
       "key": "openai/o4-mini-2025-04-16",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
@@ -1894,12 +1949,12 @@
     },
     {
       "key": "minimax/MiniMax-M2.7",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {
       "key": "minimax/MiniMax-M2.5",
-      "sourceDiff": true,
+      "sourceDiff": false,
       "modalityDiff": true
     },
     {

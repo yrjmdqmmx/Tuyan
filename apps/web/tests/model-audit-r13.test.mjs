@@ -56,7 +56,7 @@ test('R13 exactly seven cards render verified vendor links in full/static and no
 })
 
 test('R13 catalog-wide visible and secondary sources never contain any known dead URL', () => {
-  assert.equal(all.length, 2125)
+  assert.equal(all.length, 2094)
   assert.equal(deadLinks.length, 14)
   assert.equal(new Set(deadLinks.map(row => row.url)).size, 14)
   for (const row of deadLinks) {
@@ -88,10 +88,10 @@ test('R13B every specified notice has 下线公告 in full/static cards and pres
   assert.equal(noticeCards.filter(row => row.channel === 'openai').length, 15)
   for (const { channel, modelId, url, fullFirstUrl } of noticeCards) {
     const matches = all.filter(row => row.channel === channel && row.model.id === modelId)
-    assert.equal(matches.length, 2)
+    assert.equal(matches.length, MODEL_AUDIT_DATA.removed[channel + '/' + modelId] ? 1 : 2)
     for (const [i, { model }] of matches.entries()) {
       const card = modelCardSpecifications(channel, model)
-      assert.equal(card.sources[0], i === 0 ? fullFirstUrl : url)
+      assert.equal(card.sources[0], MODEL_AUDIT_DATA.removed[channel + '/' + modelId]?.sourceUrl || (i === 0 ? fullFirstUrl : url))
       assert.ok(card.sources.includes(url), channel + '/' + modelId)
       assert.equal(modelSourceName(card, url), '下线公告')
       for (const compactSources of [false, true]) {
@@ -125,7 +125,7 @@ test('R13B catalog-wide notice links are labelled 下线公告 regardless of cha
       }
     }
   }
-  assert.equal(visible, 50, '16 full-registry and 34 static notice cards')
+  assert.equal(visible, 59, 'historical full registry plus current static notice cards after batch 1')
   const ordinary = modelCardSources({ channel: 'unknown', audit: {}, fields: {}, model: { officialSourceUrl: 'https://example.test/notice/118177' } })
   assert.equal(modelSourceName(ordinary, ordinary.sources[0]), '官方文档')
 })

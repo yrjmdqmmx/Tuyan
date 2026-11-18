@@ -3954,20 +3954,6 @@
     },
     {
       "channel": "siliconflow",
-      "apiModelId": "Qwen/Qwen3.5-122B-A10B",
-      "displayName": "Qwen3.5-122B-A10B",
-      "kind": "unconfirmed",
-      "versionId": "Qwen/Qwen3.5-122B-A10B",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://www.siliconflow.cn/models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "公开模型目录嵌入数据的 modelName 字段逐 ID 匹配；具体 SKU 已确认，更细快照或固定性未公开。",
-      "previousDisplayName": "Qwen3.5-122B-A10B"
-    },
-    {
-      "channel": "siliconflow",
       "apiModelId": "Qwen/Qwen3.5-27B",
       "displayName": "Qwen3.5-27B",
       "kind": "unconfirmed",
@@ -4192,20 +4178,6 @@
     },
     {
       "channel": "siliconflow",
-      "apiModelId": "stepfun-ai/Step-3.5-Flash",
-      "displayName": "Step-3.5-Flash",
-      "kind": "unconfirmed",
-      "versionId": "stepfun-ai/Step-3.5-Flash",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://www.siliconflow.cn/models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "公开模型目录嵌入数据的 modelName 字段逐 ID 匹配；具体 SKU 已确认，更细快照或固定性未公开。",
-      "previousDisplayName": "Step-3.5-Flash"
-    },
-    {
-      "channel": "siliconflow",
       "apiModelId": "zai-org/GLM-5.3",
       "displayName": "GLM-5.3",
       "kind": "unconfirmed",
@@ -4234,20 +4206,6 @@
     },
     {
       "channel": "siliconflow",
-      "apiModelId": "Pro/zai-org/GLM-5.1",
-      "displayName": "GLM-5.1",
-      "kind": "unconfirmed",
-      "versionId": "Pro/zai-org/GLM-5.1",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://www.siliconflow.cn/models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "GLM-5.1"
-    },
-    {
-      "channel": "siliconflow",
       "apiModelId": "zai-org/GLM-4.5-Air",
       "displayName": "GLM-4.5-Air",
       "kind": "unconfirmed",
@@ -4259,20 +4217,6 @@
       "idEvidence": "exact-id",
       "notes": "公开模型目录嵌入数据的 modelName 字段逐 ID 匹配；具体 SKU 已确认，更细快照或固定性未公开。",
       "previousDisplayName": "GLM-4.5-Air"
-    },
-    {
-      "channel": "siliconflow",
-      "apiModelId": "zai-org/GLM-4.5V",
-      "displayName": "GLM-4.5V",
-      "kind": "unconfirmed",
-      "versionId": "zai-org/GLM-4.5V",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://www.siliconflow.cn/models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "公开模型目录嵌入数据的 modelName 字段逐 ID 匹配；具体 SKU 已确认，更细快照或固定性未公开。",
-      "previousDisplayName": "GLM-4.5V"
     },
     {
       "channel": "siliconflow",
@@ -4388,20 +4332,6 @@
     },
     {
       "channel": "siliconflow",
-      "apiModelId": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
-      "displayName": "Qwen3-Coder-30B-A3B-Instruct",
-      "kind": "unconfirmed",
-      "versionId": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://www.siliconflow.cn/models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "公开模型目录嵌入数据的 modelName 字段逐 ID 匹配；具体 SKU 已确认，更细快照或固定性未公开。",
-      "previousDisplayName": "Qwen3-Coder-30B-A3B-Instruct"
-    },
-    {
-      "channel": "siliconflow",
       "apiModelId": "Qwen/Qwen3-Omni-30B-A3B-Instruct",
       "displayName": "Qwen3-Omni-30B-A3B-Instruct",
       "kind": "unconfirmed",
@@ -4441,20 +4371,6 @@
       "idEvidence": "exact-id",
       "notes": "公开模型目录嵌入数据的 modelName 字段逐 ID 匹配；具体 SKU 已确认，更细快照或固定性未公开。",
       "previousDisplayName": "Qwen3-VL-30B-A3B-Instruct"
-    },
-    {
-      "channel": "siliconflow",
-      "apiModelId": "Qwen/Qwen3-VL-30B-A3B-Thinking",
-      "displayName": "Qwen3-VL-30B-A3B-Thinking",
-      "kind": "unconfirmed",
-      "versionId": "Qwen/Qwen3-VL-30B-A3B-Thinking",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://www.siliconflow.cn/models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "公开模型目录嵌入数据的 modelName 字段逐 ID 匹配；具体 SKU 已确认，更细快照或固定性未公开。",
-      "previousDisplayName": "Qwen3-VL-30B-A3B-Thinking"
     },
     {
       "channel": "siliconflow",
@@ -4584,20 +4500,6 @@
     },
     {
       "channel": "siliconflow",
-      "apiModelId": "inclusionAI/Ling-mini-2.0",
-      "displayName": "Ling-mini-2.0",
-      "kind": "unconfirmed",
-      "versionId": "inclusionAI/Ling-mini-2.0",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://www.siliconflow.cn/models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "公开模型目录嵌入数据的 modelName 字段逐 ID 匹配；具体 SKU 已确认，更细快照或固定性未公开。",
-      "previousDisplayName": "Ling-mini-2.0"
-    },
-    {
-      "channel": "siliconflow",
       "apiModelId": "meituan-longcat/LongCat-2.0",
       "displayName": "LongCat-2.0",
       "kind": "unconfirmed",
@@ -4623,20 +4525,6 @@
       "idEvidence": "exact-id",
       "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
       "previousDisplayName": "Nex-N2-Pro"
-    },
-    {
-      "channel": "siliconflow",
-      "apiModelId": "tencent/Hunyuan-A13B-Instruct",
-      "displayName": "Hunyuan-A13B-Instruct",
-      "kind": "unconfirmed",
-      "versionId": "tencent/Hunyuan-A13B-Instruct",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://www.siliconflow.cn/models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "公开模型目录嵌入数据的 modelName 字段逐 ID 匹配；具体 SKU 已确认，更细快照或固定性未公开。",
-      "previousDisplayName": "Hunyuan-A13B-Instruct"
     },
     {
       "channel": "anthropic",
@@ -7531,34 +7419,6 @@
     },
     {
       "channel": "openai",
-      "apiModelId": "gpt-4.1-nano",
-      "displayName": "GPT-4.1-nano · 2025-04-14",
-      "kind": "rolling",
-      "versionId": "gpt-4.1-nano-2025-04-14",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/gpt-4.1-nano.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "别名的当前版本取自该型号页面的 Default snapshot 字段，未取最新发布日期。",
-      "previousDisplayName": "GPT-4.1-nano"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "gpt-4.1-nano-2025-04-14",
-      "displayName": "GPT-4.1-nano-2025-04-14",
-      "kind": "fixed",
-      "versionId": "gpt-4.1-nano-2025-04-14",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/gpt-4.1-nano.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "该精确 ID 列于该模型的官方 Snapshots 表。",
-      "previousDisplayName": "GPT-4.1-nano-2025-04-14"
-    },
-    {
-      "channel": "openai",
       "apiModelId": "gpt-4o",
       "displayName": "GPT-4o · 2024-08-06",
       "kind": "rolling",
@@ -7570,20 +7430,6 @@
       "idEvidence": "exact-id",
       "notes": "别名的当前版本取自该型号页面的 Default snapshot 字段，未取最新发布日期。",
       "previousDisplayName": "GPT-4o"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "gpt-4o-2024-05-13",
-      "displayName": "GPT-4o-2024-05-13",
-      "kind": "fixed",
-      "versionId": "gpt-4o-2024-05-13",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/gpt-4o.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "该精确 ID 列于该模型的官方 Snapshots 表。",
-      "previousDisplayName": "GPT-4o-2024-05-13"
     },
     {
       "channel": "openai",
@@ -7643,76 +7489,6 @@
     },
     {
       "channel": "openai",
-      "apiModelId": "gpt-4-turbo",
-      "displayName": "GPT-4-turbo · 2024-04-09",
-      "kind": "rolling",
-      "versionId": "gpt-4-turbo-2024-04-09",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/gpt-4-turbo.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "别名的当前版本取自该型号页面的 Default snapshot 字段，未取最新发布日期。",
-      "previousDisplayName": "GPT-4-turbo"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "gpt-4-turbo-2024-04-09",
-      "displayName": "GPT-4-turbo-2024-04-09",
-      "kind": "fixed",
-      "versionId": "gpt-4-turbo-2024-04-09",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/gpt-4-turbo.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "该精确 ID 列于该模型的官方 Snapshots 表。",
-      "previousDisplayName": "GPT-4-turbo-2024-04-09"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "gpt-4",
-      "displayName": "GPT-4 · 0613",
-      "kind": "rolling",
-      "versionId": "gpt-4-0613",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/gpt-4.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "别名的当前版本取自该型号页面的 Default snapshot 字段，未取最新发布日期。",
-      "previousDisplayName": "GPT-4"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "gpt-4-0613",
-      "displayName": "GPT-4-0613",
-      "kind": "fixed",
-      "versionId": "gpt-4-0613",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/gpt-4.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "该精确 ID 列于该模型的官方 Snapshots 表。",
-      "previousDisplayName": "GPT-4-0613"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "gpt-4-1106-preview",
-      "displayName": "GPT-4-1106-preview",
-      "kind": "unconfirmed",
-      "versionId": "gpt-4-1106-preview",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/deprecations"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "保留此具体历史预览 ID；不能把 GPT-4 基础型号的默认 0613 快照误套给 1106-preview。此项具体映射固定性本轮待确认。",
-      "previousDisplayName": "GPT-4-1106-preview"
-    },
-    {
-      "channel": "openai",
       "apiModelId": "gpt-image-2",
       "displayName": "GPT Image 2 · 2026-04-21",
       "kind": "rolling",
@@ -7738,20 +7514,6 @@
       "idEvidence": "exact-id",
       "notes": "别名的当前版本取自该型号页面的 Default snapshot 字段，未取最新发布日期。",
       "previousDisplayName": "GPT-image-1.5"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "gpt-image-1",
-      "displayName": "GPT Image 1",
-      "kind": "unconfirmed",
-      "versionId": "gpt-image-1",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/gpt-image-1.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "官方 Default snapshot 为此 ID；未提供更细快照或明确不可变承诺，固定性待确认。",
-      "previousDisplayName": "GPT Image 1"
     },
     {
       "channel": "openai",
@@ -7797,104 +7559,6 @@
     },
     {
       "channel": "openai",
-      "apiModelId": "gpt-3.5-turbo",
-      "displayName": "GPT-3.5-turbo · 0125",
-      "kind": "rolling",
-      "versionId": "gpt-3.5-turbo-0125",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/gpt-3.5-turbo.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "别名的当前版本取自该型号页面的 Default snapshot 字段，未取最新发布日期。",
-      "previousDisplayName": "GPT-3.5-turbo"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "gpt-3.5-turbo-0125",
-      "displayName": "GPT-3.5-turbo-0125",
-      "kind": "fixed",
-      "versionId": "gpt-3.5-turbo-0125",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/gpt-3.5-turbo.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "该精确 ID 列于该模型的官方 Snapshots 表。",
-      "previousDisplayName": "GPT-3.5-turbo-0125"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "gpt-3.5-turbo-1106",
-      "displayName": "GPT-3.5-turbo-1106",
-      "kind": "fixed",
-      "versionId": "gpt-3.5-turbo-1106",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/gpt-3.5-turbo.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "该精确 ID 列于该模型的官方 Snapshots 表。",
-      "previousDisplayName": "GPT-3.5-turbo-1106"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "o1",
-      "displayName": "o1 · 2024-12-17",
-      "kind": "rolling",
-      "versionId": "o1-2024-12-17",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/o1.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "别名的当前版本取自该型号页面的 Default snapshot 字段，未取最新发布日期。",
-      "previousDisplayName": "o1"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "o1-2024-12-17",
-      "displayName": "o1-2024-12-17",
-      "kind": "fixed",
-      "versionId": "o1-2024-12-17",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/o1.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "该精确 ID 列于该模型的官方 Snapshots 表。",
-      "previousDisplayName": "o1-2024-12-17"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "o1-pro",
-      "displayName": "o1-pro · 2025-03-19",
-      "kind": "rolling",
-      "versionId": "o1-pro-2025-03-19",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/o1-pro.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "别名的当前版本取自该型号页面的 Default snapshot 字段，未取最新发布日期。",
-      "previousDisplayName": "o1-pro"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "o1-pro-2025-03-19",
-      "displayName": "o1-pro-2025-03-19",
-      "kind": "fixed",
-      "versionId": "o1-pro-2025-03-19",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/o1-pro.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "该精确 ID 列于该模型的官方 Snapshots 表。",
-      "previousDisplayName": "o1-pro-2025-03-19"
-    },
-    {
-      "channel": "openai",
       "apiModelId": "o3",
       "displayName": "o3 · 2025-04-16",
       "kind": "rolling",
@@ -7923,34 +7587,6 @@
     },
     {
       "channel": "openai",
-      "apiModelId": "o3-mini",
-      "displayName": "o3-mini · 2025-01-31",
-      "kind": "rolling",
-      "versionId": "o3-mini-2025-01-31",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/o3-mini.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "别名的当前版本取自该型号页面的 Default snapshot 字段，未取最新发布日期。",
-      "previousDisplayName": "o3-mini"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "o3-mini-2025-01-31",
-      "displayName": "o3-mini-2025-01-31",
-      "kind": "fixed",
-      "versionId": "o3-mini-2025-01-31",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/o3-mini.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "该精确 ID 列于该模型的官方 Snapshots 表。",
-      "previousDisplayName": "o3-mini-2025-01-31"
-    },
-    {
-      "channel": "openai",
       "apiModelId": "o3-pro",
       "displayName": "o3-pro · 2025-06-10",
       "kind": "rolling",
@@ -7976,34 +7612,6 @@
       "idEvidence": "exact-id",
       "notes": "该精确 ID 列于该模型的官方 Snapshots 表。",
       "previousDisplayName": "o3-pro-2025-06-10"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "o4-mini",
-      "displayName": "o4-mini · 2025-04-16",
-      "kind": "rolling",
-      "versionId": "o4-mini-2025-04-16",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/o4-mini.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "别名的当前版本取自该型号页面的 Default snapshot 字段，未取最新发布日期。",
-      "previousDisplayName": "o4-mini"
-    },
-    {
-      "channel": "openai",
-      "apiModelId": "o4-mini-2025-04-16",
-      "displayName": "o4-mini-2025-04-16",
-      "kind": "fixed",
-      "versionId": "o4-mini-2025-04-16",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://developers.openai.com/api/docs/models/o4-mini.md"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "该精确 ID 列于该模型的官方 Snapshots 表。",
-      "previousDisplayName": "o4-mini-2025-04-16"
     },
     {
       "channel": "ark",
@@ -26251,45 +25859,6 @@
       "channel": "antling",
       "apiModelId": "Ling-3.0-tiny",
       "displayName": "Ling 3.0-tiny",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-27",
-      "sourceUrls": [
-        "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "Exact public API ID; no immutable snapshot binding documented. Preview is not a fixed weight version."
-    },
-    {
-      "channel": "antling",
-      "apiModelId": "Ling-2.6-1T",
-      "displayName": "Ling 2.6-1T",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-27",
-      "sourceUrls": [
-        "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "Exact public API ID; no immutable snapshot binding documented. Preview is not a fixed weight version."
-    },
-    {
-      "channel": "antling",
-      "apiModelId": "Ling-2.6-flash",
-      "displayName": "Ling 2.6-flash",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-27",
-      "sourceUrls": [
-        "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "Exact public API ID; no immutable snapshot binding documented. Preview is not a fixed weight version."
-    },
-    {
-      "channel": "antling",
-      "apiModelId": "Ring-2.6-1T",
-      "displayName": "Ring 2.6-1T",
       "kind": "unconfirmed",
       "versionId": "",
       "checkedAt": "2026-09-27",

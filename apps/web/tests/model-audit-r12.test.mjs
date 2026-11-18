@@ -1,3 +1,5 @@
+import batch1 from '../../../config/channel-audit/retirements-20261117.json' with { type: 'json' }
+const batchNotice = (channel, id) => [...batch1.remove, ...batch1.upcoming].find(row => row.provider === channel && row.id === id)
 import test, { afterEach, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -21,7 +23,7 @@ const models = new Map(rowsOf(STATIC_MODEL_REGISTRY).map(row => [row.channel + '
 for (const row of rows) models.set(row.channel + '/' + row.model.id, row.model)
 const linkIdentity = ({ channel, modelId, oldUrl, finalUrl }) => ({ channel, modelId, oldUrl, finalUrl })
 const changedLinksFromR8 = () => before.rows.map(({ channel, modelId, oldUrl }) => ({ channel, modelId, oldUrl,
-  finalUrl: modelCardSpecifications(channel, models.get(channel + '/' + modelId)).sources[0] || null })).filter(row => row.oldUrl !== row.finalUrl)
+  finalUrl: batchNotice(channel, modelId) ? linkChecks.find(row => row.channel === channel && row.modelId === modelId)?.finalUrl || oldUrl : modelCardSpecifications(channel, models.get(channel + '/' + modelId)).sources[0] || null })).filter(row => row.oldUrl !== row.finalUrl)
 // R13 replaces all seven failures with operator-verified vendor sources.
 const httpExceptions = []
 const repairedLinks = linkChecks.filter(row => row.originalStatus === 404)
@@ -66,7 +68,7 @@ test('R12C all 74 Chrome captures choose 67 verified channel pages and 7 vendor 
     const link = MODEL_AUDIT_DATA.details['tokendance/' + row.modelId].sourceLinks[0]
     if (row.rendersModel) {
       assert.deepEqual([link.url, link.scope, link.kind, link.checkedAt], [row.url, 'channel', 'model-page', '2026-11-09'])
-      assertLink('tokendance', entry, row.url, '官方文档')
+      assertLink('tokendance', entry, batchNotice('tokendance', row.modelId)?.source || row.url, batchNotice('tokendance', row.modelId) ? '下线公告' : '官方文档')
     } else {
       rejected.push(row.modelId)
       assert.equal(MODEL_AUDIT_DATA.sourceChecks[row.url].rendersModel, false)
@@ -126,7 +128,7 @@ test('R12C keeps OpenAI/Together docs and replaces Replicate/fal endpoints with 
       || STATIC_MODEL_REGISTRY[row.channel].models.find(m => m.id === row.modelId)
     const url = modelCardSpecifications(row.channel, entry).sources[0]
     if (['openai', 'together'].includes(row.channel) && row.r11Url.startsWith('https://developers.openai.com/api/docs/models/')) {
-      assert.equal(url, row.r11Url, row.channel + '/' + row.modelId)
+      assert.equal(url, batchNotice(row.channel, row.modelId)?.source || row.r11Url, row.channel + '/' + row.modelId)
       row.channel === 'openai' ? openai++ : together++
     }
     if (/^https:\/\/replicate\.com\/[^/]+\/[^/]+\/api\/schema/.test(row.r11Url)) {
@@ -146,10 +148,19 @@ test('R12C every full/static card preserves R11 specificity with exact, reasoned
   const actualExceptions = []
   assert.equal(before.staticRows.length, 1064)
   for (const [scope, originals] of [['full', before.rows], ['static', before.staticRows]]) for (const row of originals) {
+    if (batch1.remove.some(item => item.provider === row.channel && item.id === row.modelId)) {
+      assert.ok(MODEL_AUDIT_DATA.removed[row.channel + '/' + row.modelId]);
+      continue;
+    }
     const entry = (scope === 'full' && registry.providers[row.channel]?.models.find(m => m.id === row.modelId))
       || STATIC_MODEL_REGISTRY[row.channel].models.find(m => m.id === row.modelId)
     const card = modelCardSpecifications(row.channel, entry), finalUrl = card.sources[0], key = scope + '/' + row.channel + '/' + row.modelId
     assert.ok(finalUrl && !isApiSource(finalUrl, MODEL_AUDIT_DATA.sourceChecks), key)
+    const updated = batchNotice(row.channel, row.modelId);
+    if (updated) {
+      assert.ok(card.sources.includes(updated.source), key + ': sourced retirement may replace a model page');
+      continue;
+    }
     const apiFallback = isApiSource(row.r11Url, MODEL_AUDIT_DATA.sourceChecks) && sourceSpecificity(finalUrl) < 2
     if (apiFallback) {
       const exception = exceptions.rows.find(item => item.scope === scope && item.channel === row.channel && item.modelId === row.modelId)
@@ -234,7 +245,8 @@ test('R12D every checked final link remains the visible link in normal and compa
   for (const row of linkChecks) {
     const entry = models.get(row.channel + '/' + row.modelId)
     const card = modelCardSpecifications(row.channel, entry)
-    assertLink(row.channel, entry, row.finalUrl, modelSourceName(card, row.finalUrl))
+    const expected = batchNotice(row.channel, row.modelId)?.source || row.finalUrl
+    assertLink(row.channel, entry, expected, modelSourceName(card, expected))
   }
 })
 
