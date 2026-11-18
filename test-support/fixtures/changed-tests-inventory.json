@@ -282,8 +282,8 @@
     {
       "file": "config/model-audit.generated.json",
       "comparisonBase": "8c456709",
-      "contentSha256": "f4f4b18f3356ebacde32c550215570aabcfb8fa9b1ff71a62bffdeecd7c37367",
-      "diffSha256": "43117421da967cc92fbda197471e45e165e0e475c29676a9dd81d0c9703beccd"
+      "contentSha256": "23d3df0ebe7f5ed8588308eeaf8f9e8eb1582b473d19801228555a52d0e012b6",
+      "diffSha256": "1a050fa4bd7d94589bcc88f151f9f54e30dea639658d435dce746efcf6ec812c"
     },
     {
       "file": "config/model-catalog-updates.json",
@@ -300,8 +300,8 @@
     {
       "file": "config/removed-models.json",
       "comparisonBase": "8c456709",
-      "contentSha256": "b0d96d5c5aaa8fd33f9b1c5553b89ce33459d107905bf825d8fdf0d3165a0947",
-      "diffSha256": "61a9ab76d35e4cec6b236df228619fe147402e0051c3883345fffb40871b85bc"
+      "contentSha256": "25c10bf26dd5076ae5cb7571f150941689d71b678eb1d98673dd0d58305b0f6d",
+      "diffSha256": "4e4ec7db165b48174e86f92e0353ac1de20f8ca9e94b6c108619fc3a8653bece"
     },
     {
       "file": "docs/reference-upload/model-matrix.json",

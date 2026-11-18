@@ -5,9 +5,9 @@ import { partitionRegistryModels, modelMissingFromCatalog } from '../lib/modelRe
 export const ROLE_NAMES = { main: '主模型', image: '绘图模型', vision: '视觉理解' };
 export const emptyLibrary = () => ({ revision: 0, connections: [], models: [] });
 export const customBindingChanged=(entry,connection)=>entry.custom&&['connectionId','baseUrl','protocol','auth'].some(key=>normalizeUniversalConnection(entry.custom)[key]!==connection?.custom?.[key]);
-export function libraryModelMissingFromCatalog(entry, library, registry) {
+export function libraryModelMissingFromCatalog(entry, library, registry, { includeRemoved = false } = {}) {
   const provider = library.connections.find(c => c.id === entry.connectionId)?.provider;
-  if (removedModel(provider, entry.modelId)) return true;
+  if (removedModel(provider, entry.modelId)) return !includeRemoved;
   return Boolean(provider) && !entry.custom && modelMissingFromCatalog(registry, provider, entry.modelId);
 }
 export function modelOption(entry, library, registry, role, path, editing, tokenDance) {

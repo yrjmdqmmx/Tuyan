@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import { createHash } from 'node:crypto';
 import { STATIC_MODEL_REGISTRY as catalog } from '../apps/web/src/lib/staticModelCatalog.js';
 import { MODEL_AUDIT_DATA, removedModel, auditedModelLifecycle } from '../apps/web/src/lib/modelAudit.js';
+import { modelDeveloper } from '../apps/web/src/lib/modelPresentation.js';
+import miniAudit from '../apps/miniprogram/miniprogram/utils/model-audit.js';
 const read = file => JSON.parse(fs.readFileSync(new URL('../' + file, import.meta.url), 'utf8'));
 const batch = read('config/channel-audit/retirements-20261117.json');
 const baseline = read('test-support/model-retirements-20261117-baseline.json');
@@ -28,13 +30,32 @@ test('batch 1 removes exactly 31 catalog identities and preserves every survivin
     assert.ok(tombstone, key);
     assert.equal(tombstone.stopDate.slice(0, 10), row.date);
     assert.equal(tombstone.sourceUrl, row.source);
-    assert.equal(tombstone.displayName, baseline.removedLabels[key]);
+    // The old catalog appended the resolved snapshot to eight OpenAI alias labels.
+    assert.equal(tombstone.displayName, baseline.removedLabels[key].replace(/ · \d{4}(?:-\d{2}-\d{2})?$/, ''), key);
     assert.equal(row.evidence_read, '2026-11-17');
     assert.equal(catalog[row.provider].models.some(m => m.id === row.id), false, key);
     assert.equal(source.providers[row.provider].some(m => m.id === row.id), false, key);
     assert.equal(versions.models.some(m => m.channel === row.provider && m.apiModelId === row.id), false, key);
     assert.equal(sizes.routes[key], undefined, key);
     assert.equal(MODEL_AUDIT_DATA.rows[key], undefined, key);
+  }
+});
+test('removed names identify the exact batch API ID and both clients retain its developer', () => {
+  const normalize = name => name.toLowerCase().replace(/[ -]/g, '');
+  const source = read('config/removed-models.json');
+  const now = Date.parse('2026-11-17T12:00:00+08:00');
+  for (const { provider, id } of batch.remove) {
+    const key = provider + '/' + id;
+    assert.equal(normalize(source[key].displayName), normalize(id.split('/').at(-1)), key);
+  }
+  for (const [key, row] of Object.entries(source)) {
+    const [provider, ...path] = key.split('/'), id = path.join('/');
+    for (const notice of [removedModel(provider, id, now), miniAudit.removedModel(provider, id, now)]) {
+      assert.equal(notice.displayName, row.displayName, key);
+      assert.equal(notice.developer, row.developer, key);
+      assert.notEqual(modelDeveloper(provider, { id, vendorId: notice.developer }).id, 'unconfirmed', key);
+    }
+    if (row.developer) assert.equal(modelDeveloper(provider, { id }).id, 'unconfirmed', key);
   }
 });
 test('batch 1 leaves all 51 protected candidates and their notices unchanged', () => {
