@@ -1,0 +1,1570 @@
+{
+  "verifiedAt": "2026-11-09",
+  "method": "Public unauthenticated GET with browser User-Agent. Quotes are exact HTML text (whitespace normalized), or exact embedded model JSON strings. A title/parameter quote used for silence is not negative capability evidence. No inference, credentials, or sign-in.",
+  "pages": {
+    "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash",
+      "checkedAt": "2026-11-09T16:12:32.551054+00:00",
+      "sha256": "588ec5747b4aa622b766cb9981160c40e00a682ea332529b4d3d98a98d9235c5",
+      "excerpts": [
+        "输入模态 Text、Image 输出模态 Text",
+        "deepseek-v4.1-flash模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen3-8-max": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "checkedAt": "2026-11-09T16:12:33.811779+00:00",
+      "sha256": "7df91b813a7277db504019363ecc21027f5ef67adab8916f1c175ef150e7f756",
+      "excerpts": [
+        "输入模态 Image Text Video 输出模态 Text",
+        "模型调用 ID（model 参数取值）：qwen3.8-max 快照版本：qwen3.8-max-0902（别名 qwen3.8-max-2026-09-02）"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen3-8-27b": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+      "checkedAt": "2026-11-09T16:12:33.788819+00:00",
+      "sha256": "1ebd5fcdc826975fe8d32c31ffc7610536ed41c14a4ac6e73e486477013d9a44",
+      "excerpts": [
+        "输入模态 Image Text Video 输出模态 Text",
+        "qwen3.8-27b模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+      "checkedAt": "2026-11-09T16:12:33.779879+00:00",
+      "sha256": "d52d70450fbab3993d28969adfe02ade25d52936f0455d1eea5a27d2db5f4563",
+      "excerpts": [
+        "输入模态 Text 输出模态 Text",
+        "qwen3.8-2.4t-a95b模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen-image-3-0": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0",
+      "checkedAt": "2026-11-09T16:12:31.891710+00:00",
+      "sha256": "d2f04e7af326e351e14238e260cb21e2232d5d5c8b19d75260ae172f7dda00f5",
+      "excerpts": [
+        "输入模态 Image Text 输出模态 Image",
+        "qwen-image-3.0模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro",
+      "checkedAt": "2026-11-09T16:12:31.891761+00:00",
+      "sha256": "d67581af0edc2f4c02b6282dd04dd7d394f4e33ecd0b9fc8584506d367631306",
+      "excerpts": [
+        "输入模态 Image Text 输出模态 Image",
+        "qwen-image-3.0-pro模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/glm-5-2": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+      "checkedAt": "2026-11-09T16:12:33.167699+00:00",
+      "sha256": "1de7b82989ec0b2aa12fe09045260fdc2e0ed7ed801249c5419e5935bd7dd3ea",
+      "excerpts": [
+        "输入模态 Text 输出模态 Text",
+        "glm-5.2模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/glm-5-1": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+      "checkedAt": "2026-11-09T16:12:32.854895+00:00",
+      "sha256": "5d21fa2af2f9f72afd5791f320b57d6f7d71d0d74418b86a6bf0498ccb76d263",
+      "excerpts": [
+        "输入模态 Text 输出模态 Text",
+        "glm-5.1模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+      "checkedAt": "2026-11-09T16:12:33.259435+00:00",
+      "sha256": "66f192ca994216ceb669d024684ba8b9bfc3c75ed97c81009f5a1d006ee1eb4e",
+      "excerpts": [
+        "输入模态 Text Image Video 输出模态 Text",
+        "kimi-k2.7-code模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/kimi-k2-6": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+      "checkedAt": "2026-11-09T16:12:33.235625+00:00",
+      "sha256": "8cf12e6109ae81029b220efc92154a923900bbc87103942a012e695d8eb4d067",
+      "excerpts": [
+        "输入模态 Image Text Video 输出模态 Text",
+        "kimi-k2.6模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/kimi-k2-5": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-5",
+      "checkedAt": "2026-11-09T16:12:33.206835+00:00",
+      "sha256": "9ddeb6f97f9e1949d1961239e73bff00480bf86746ae382897c58bef1025d1e4",
+      "excerpts": [
+        "输入模态 Text Image Video 输出模态 Text",
+        "kimi-k2.5模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "checkedAt": "2026-11-09T16:12:31.891651+00:00",
+      "sha256": "872fa510acd9f9ccfe6daf7bb2a094339e056d56ad3e31ffa09f73cf39886e26",
+      "excerpts": [
+        "输入模态 Text Image 输出模态 Image",
+        "qwen-image-2.0-pro-2026-06-22模型的推理服务供应商为阿里云百炼。",
+        "qwen-image-2.0-pro模型的推理服务供应商为阿里云百炼。",
+        "qwen-image-2.0-pro-2026-03-03模型的推理服务供应商为阿里云百炼。",
+        "输入模态 Image Text 输出模态 Image",
+        "qwen-image-2.0-pro-2026-04-22模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen-image-2-0": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+      "checkedAt": "2026-11-09T16:12:31.890902+00:00",
+      "sha256": "a075fea848bc87338de8aaade1dbba2bc2577464fdb5f208c3482330d8e3a05a",
+      "excerpts": [
+        "输入模态 Text Image 输出模态 Image",
+        "qwen-image-2.0模型的推理服务供应商为阿里云百炼。",
+        "qwen-image-2.0-2026-03-03模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen3-7-max": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "checkedAt": "2026-11-09T16:12:32.498705+00:00",
+      "sha256": "05bdc2cdbf82066f4e085579bbe6457385e590bc611de9a7d2deba8620c465f5",
+      "excerpts": [
+        "输入模态 Text 输出模态 Text",
+        "qwen3.7-max模型的推理服务供应商为阿里云百炼。",
+        "qwen3.7-max-2026-05-17模型的推理服务供应商为阿里云百炼。",
+        "qwen3.7-max-2026-05-20模型的推理服务供应商为阿里云百炼。",
+        "输入模态 Image Text Video 输出模态 Text",
+        "qwen3.7-max-2026-06-08模型的推理服务供应商为阿里云百炼。",
+        "qwen3.7-max-preview模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen3-7-plus": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "checkedAt": "2026-11-09T16:12:33.749044+00:00",
+      "sha256": "c8d20e9d563e89255f5a10cca8403ebe7c928021ad41ceb0cee3eedd27944abb",
+      "excerpts": [
+        "输入模态 Image Text Video 输出模态 Text",
+        "qwen3.7-plus模型的推理服务供应商为阿里云百炼。",
+        "qwen3.7-plus-2026-05-26模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/wan2-7-image": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image",
+      "checkedAt": "2026-11-09T16:12:32.544882+00:00",
+      "sha256": "0e9c91219193b7b5544e6aec3d553fa5383a31c31d783a55535aaada4c9f832f",
+      "excerpts": [
+        "输入模态 Image Text 输出模态 Image",
+        "wan2.7-image模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/wan2-7-image-pro": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image-pro",
+      "checkedAt": "2026-11-09T16:12:32.545397+00:00",
+      "sha256": "a3d50ee5b33154729605863bbc8420049873449fde3f75484c93e43a272ea188",
+      "excerpts": [
+        "输入模态 Image Text 输出模态 Image",
+        "wan2.7-image-pro模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/wan2-6-image": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+      "checkedAt": "2026-11-09T16:12:32.530003+00:00",
+      "sha256": "4f3e63b0a888b7c5516d145c0b4b84fc6b20cd739d8a9386330b6de4cd933a43",
+      "excerpts": [
+        "输入模态 Text Image 输出模态 Image Text",
+        "wan2.6-image模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+      "checkedAt": "2026-11-09T16:12:33.464443+00:00",
+      "sha256": "12ae202ff43af46cb22d55dfefab598983bfd2fa49fe61ef0cbc7b9b5e99da5c",
+      "excerpts": [
+        "输入模态 Image Text Video 输出模态 Text",
+        "MiniMax/MiniMax-M3.1-Flash 模型的推理服务供应商为 MiniMax。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/qwen-plus": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "checkedAt": "2026-11-09T16:12:31.891803+00:00",
+      "sha256": "caf0e13a33c39ad80a69432ed65af8602c7c9f7f9810f446d129d1d4ff452d10",
+      "excerpts": [
+        "输入模态 Text 输出模态 Text",
+        "qwen-plus-2025-01-25模型的推理服务供应商为阿里云百炼。",
+        "qwen-plus-2025-04-28模型的推理服务供应商为阿里云百炼。",
+        "qwen-plus-2025-07-14模型的推理服务供应商为阿里云百炼。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+      "checkedAt": "2026-11-09T16:12:33.975201+00:00",
+      "sha256": "98bce9eec8701071b81c20a2077aa032390772f82e5534a1bb676b508cbfe349",
+      "excerpts": [
+        "输入模态 Text 输出模态 Text",
+        "unisound/unisound-u2模型的推理服务供应商为云知声。"
+      ]
+    },
+    "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed": {
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+      "checkedAt": "2026-11-09T16:12:33.430533+00:00",
+      "sha256": "f421b70332955eef7149372b8fd2c24a50fe9b6e45b98ba6fb0b80e72366d719",
+      "excerpts": [
+        "输入模态 Text Image Video Audio 输出模态 Text",
+        "xiaomi/mimo-v2.6-pro-ultraspeed模型的推理服务供应商为小米Mimo。"
+      ]
+    },
+    "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+      "checkedAt": "2026-11-09T16:12:34.054194+00:00",
+      "sha256": "8881372d5db6a8f56a88eaf3f099f98c5e2d5091ecb1a15470afe56267b69bb7",
+      "excerpts": [
+        "Input# prompt string* required The prompt to generate an image from. "
+      ]
+    },
+    "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+      "checkedAt": "2026-11-09T16:12:34.385497+00:00",
+      "sha256": "37cbfbeb202825be000437d6b303d536857cc976a3038405f17446372cca4cd5",
+      "excerpts": [
+        "Input# prompt string* required The prompt to generate an image from. "
+      ]
+    },
+    "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+      "checkedAt": "2026-11-09T16:12:34.391077+00:00",
+      "sha256": "e3805d823228791f557642f754ca9bece598472beba960d408124de60ac7fea6",
+      "excerpts": [
+        "Input# prompt string* required The prompt to generate an image from."
+      ]
+    },
+    "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+      "checkedAt": "2026-11-09T16:12:34.395802+00:00",
+      "sha256": "35eb71e7ed1f50ab381571415d8494cbb1e6acdf2584eda9a095be454bec14f7",
+      "excerpts": [
+        "Input# prompt string* required The text prompt used to generate the image."
+      ]
+    },
+    "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+      "checkedAt": "2026-11-09T16:12:34.566661+00:00",
+      "sha256": "2b6cca3697e951548d26414b8ad84039ffdc718609840d9788a075b83b32ff30",
+      "excerpts": [
+        "Input# prompt string* required The text prompt used to generate the image."
+      ]
+    },
+    "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+      "checkedAt": "2026-11-09T16:12:34.628482+00:00",
+      "sha256": "32973850822daf629638bad14bb4f89f98e25cf5cfef20fc38a51a49ba50b58b",
+      "excerpts": [
+        "Input# prompt string* required The text prompt used to generate the image"
+      ]
+    },
+    "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+      "checkedAt": "2026-11-09T16:12:36.641696+00:00",
+      "sha256": "ebb671f4868f442601de7a7415412bb7fcf85ce29376c51cede82a72d721afb3",
+      "excerpts": [
+        "Input# prompt string* required The text prompt used to generate the image"
+      ]
+    },
+    "https://fal.ai/models/fal-ai/flux-2-pro/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+      "checkedAt": "2026-11-09T16:12:36.703015+00:00",
+      "sha256": "459e078bc4b50273d3cf42fdedf6bb09f048e7696359e5f98829f79b75f521bd",
+      "excerpts": [
+        "Input# prompt string* required The prompt to generate an image from."
+      ]
+    },
+    "https://fal.ai/models/google/nano-banana-2.1/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/google/nano-banana-2.1/api",
+      "checkedAt": "2026-11-09T16:12:36.851651+00:00",
+      "sha256": "37227d5fbfc08c960e6d83248e2de279cacf1c1dc36f0b96962a30dd504ba55e",
+      "excerpts": [
+        "Output# images list<ImageFile>* required The generated images. description string* required The description of the generated images."
+      ]
+    },
+    "https://fal.ai/models/krea/v3/text-to-image/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/krea/v3/text-to-image/api",
+      "checkedAt": "2026-11-09T16:12:37.379675+00:00",
+      "sha256": "e4534c0bcca8c09d56e814e351afe16f3591847eee175f8f00af1bada126fea8",
+      "excerpts": [
+        "Input# prompt string* required Description of the image to generate."
+      ]
+    },
+    "https://fal.ai/models/meta/muse-image/text-to-image/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+      "checkedAt": "2026-11-09T16:12:37.537701+00:00",
+      "sha256": "c0ae1562fdec1663b792c316b65f96ead52d38c696f210f1a0e8c7a99ff038a7",
+      "excerpts": [
+        "Input# prompt string* required The text prompt used to generate or edit the image."
+      ]
+    },
+    "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+      "checkedAt": "2026-11-09T16:12:37.564481+00:00",
+      "sha256": "f05c41549d14126aaf66f1dff374b3efa02075d254b9ba590b07f29de22161a4",
+      "excerpts": [
+        "Input# prompt string* required The prompt for image generation"
+      ]
+    },
+    "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+      "checkedAt": "2026-11-09T16:12:39.185287+00:00",
+      "sha256": "bda78cb23a4df432814bcb69a600df49103db64d4992500674c0da47c1a96b93",
+      "excerpts": [
+        "Input# prompt string* required The prompt for image generation"
+      ]
+    },
+    "https://fal.ai/models/xai/grok-imagine-image/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/api",
+      "checkedAt": "2026-11-09T16:12:39.310178+00:00",
+      "sha256": "e45ac8c81ab0b8c9828f383aeab70be71622a153dcf8e430d79f9bc380e2bb33",
+      "excerpts": [
+        "Input# prompt string* required Text description of the desired image."
+      ]
+    },
+    "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api": {
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+      "checkedAt": "2026-11-09T16:12:39.996628+00:00",
+      "sha256": "3d6ab930fae62f0a473d189ec77b74293960fe2770b5ec071d688ba6ac46d90c",
+      "excerpts": [
+        "Input# prompt string* required Text description of the desired image."
+      ]
+    },
+    "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4": {
+      "status": 200,
+      "finalUrl": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+      "checkedAt": "2026-11-09T16:12:40.012015+00:00",
+      "sha256": "0080cc588c22cc376d7c06e4b5796a24779408b8bba27feb7f763d824d29cc32",
+      "excerpts": [
+        "Generate images with Ideogram 4.0 from a natural-language or structured JSON prompt."
+      ]
+    },
+    "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j": {
+      "status": 200,
+      "finalUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "checkedAt": "2026-11-09T16:12:40.136627+00:00",
+      "sha256": "2d0c7a61cad54faad5f03d460e7b3c2b1a78356580330b76c6647d8e2650bae5",
+      "excerpts": [
+        "模型列表",
+        "glm-5.3-flash",
+        "internvl3-38b",
+        "kimi-k2.6",
+        "qwen3.5-122b-a10b",
+        "qwen3.5-27b",
+        "qwen3.5-35b-a3b",
+        "qwen3.5-397b-a17b"
+      ]
+    },
+    "https://replicate.com/google/nano-banana-2.1/api/schema": {
+      "status": 200,
+      "finalUrl": "https://replicate.com/google/nano-banana-2.1/api/schema",
+      "checkedAt": "2026-11-09T16:12:40.672995+00:00",
+      "sha256": "d43d88e1bf4e4a488623a2c19f4de0fa0b75aef6ccf7f96c382cd3e0eb0ed0cb",
+      "outputSchema": {
+        "type": "string",
+        "title": "Output",
+        "format": "uri"
+      },
+      "inputProperties": {
+        "prompt": {
+          "type": "string",
+          "description": "A text description of the image you want to generate"
+        },
+        "image_input": {
+          "type": "array",
+          "description": "Input images to transform or use as reference (supports up to 14 images)"
+        }
+      },
+      "excerpts": [
+        "Input images to transform or use as reference (supports up to 14 images)",
+        "Google's fast image generation and editing model, with sharp text rendering, multi-image editing, and up to 4K output.",
+        "A text description of the image you want to generate"
+      ]
+    },
+    "https://replicate.com/prunaai/flux-kontext-fast/api/schema": {
+      "status": 200,
+      "finalUrl": "https://replicate.com/prunaai/flux-kontext-fast/api/schema",
+      "checkedAt": "2026-11-09T16:12:40.706777+00:00",
+      "sha256": "3ff46f506d05ed2814ae6f0bdba2b18199e4ba8bcdf4c52f1b14bc225c525492",
+      "inputProperties": {
+        "prompt": {
+          "type": "string",
+          "description": "Prompt"
+        },
+        "img_cond_path": {
+          "type": "string",
+          "description": "Input image for image to image mode. The aspect ratio of your output will match this image",
+          "format": "uri"
+        }
+      },
+      "excerpts": [
+        "Input image for image to image mode. The aspect ratio of your output will match this image",
+        "\"prompt\": {\"type\": \"string\", \"title\": \"Prompt\", \"x-order\": 0, \"description\": \"Prompt\"}"
+      ]
+    },
+    "https://platform.sensenova.cn/docs": {
+      "status": 200,
+      "finalUrl": "https://platform.sensenova.cn/docs",
+      "checkedAt": "2026-11-09T16:12:42.368710+00:00",
+      "sha256": "c12d721541a2807ca31f5406f791c782f43bfdd1c96414b8d1aadc263dd0dc04",
+      "excerpts": [
+        "SenseNova · LLM API 服务平台"
+      ]
+    }
+  },
+  "tables": {
+    "bailian/deepseek-v4.1-flash": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text、Image 输出模态 Text",
+      "identityQuote": "deepseek-v4.1-flash模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.8-27b": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "qwen3.8-27b模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.8-2.4t-a95b": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen3.8-2.4t-a95b模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-image-3.0": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text 输出模态 Image",
+      "identityQuote": "qwen-image-3.0模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "bailian/qwen-image-3.0-pro": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text 输出模态 Image",
+      "identityQuote": "qwen-image-3.0-pro模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "bailian/glm-5.2": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "glm-5.2模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/glm-5.1": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "glm-5.1模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/kimi-k2.7-code": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image Video 输出模态 Text",
+      "identityQuote": "kimi-k2.7-code模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/kimi-k2.6": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "kimi-k2.6模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/kimi-k2.5": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-5",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image Video 输出模态 Text",
+      "identityQuote": "kimi-k2.5模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-image-2.0-pro-2026-06-22": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image 输出模态 Image",
+      "identityQuote": "qwen-image-2.0-pro-2026-06-22模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "bailian/qwen-image-2.0": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image 输出模态 Image",
+      "identityQuote": "qwen-image-2.0模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "bailian/qwen-image-2.0-2026-03-03": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image 输出模态 Image",
+      "identityQuote": "qwen-image-2.0-2026-03-03模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "bailian/qwen-image-2.0-pro": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image 输出模态 Image",
+      "identityQuote": "qwen-image-2.0-pro模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "bailian/qwen-image-2.0-pro-2026-03-03": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image 输出模态 Image",
+      "identityQuote": "qwen-image-2.0-pro-2026-03-03模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "bailian/qwen-image-2.0-pro-2026-04-22": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text 输出模态 Image",
+      "identityQuote": "qwen-image-2.0-pro-2026-04-22模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "bailian/qwen3.7-max": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen3.7-max模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.7-max-2026-05-17": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen3.7-max-2026-05-17模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.7-max-2026-05-20": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen3.7-max-2026-05-20模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.7-max-2026-06-08": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "qwen3.7-max-2026-06-08模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.7-max-preview": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen3.7-max-preview模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.7-plus": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "qwen3.7-plus模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.7-plus-2026-05-26": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "qwen3.7-plus-2026-05-26模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/wan2.7-image": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text 输出模态 Image",
+      "identityQuote": "wan2.7-image模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "bailian/wan2.7-image-pro": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image-pro",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text 输出模态 Image",
+      "identityQuote": "wan2.7-image-pro模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "image",
+        "text"
+      ],
+      "outputModalities": [
+        "image"
+      ]
+    },
+    "bailian/wan2.6-image": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/wan2-6-image",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image 输出模态 Image Text",
+      "identityQuote": "wan2.6-image模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image",
+        "text"
+      ]
+    },
+    "bailian/MiniMax/MiniMax-M3.1-Flash": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "MiniMax/MiniMax-M3.1-Flash 模型的推理服务供应商为 MiniMax。",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-plus-2025-01-25": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen-plus-2025-01-25模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-plus-2025-04-28": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen-plus-2025-04-28模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen-plus-2025-07-14": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "qwen-plus-2025-07-14模型的推理服务供应商为阿里云百炼。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/unisound/unisound-u2": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text 输出模态 Text",
+      "identityQuote": "unisound/unisound-u2模型的推理服务供应商为云知声。",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/xiaomi/mimo-v2.6-pro-ultraspeed": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Text Image Video Audio 输出模态 Text",
+      "identityQuote": "xiaomi/mimo-v2.6-pro-ultraspeed模型的推理服务供应商为小米Mimo。",
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.8-max": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "模型调用 ID（model 参数取值）：qwen3.8-max 快照版本：qwen3.8-max-0902（别名 qwen3.8-max-2026-09-02）",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    },
+    "bailian/qwen3.8-max-0902": {
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "verifiedAt": "2026-11-09",
+      "quote": "输入模态 Image Text Video 输出模态 Text",
+      "identityQuote": "模型调用 ID（model 参数取值）：qwen3.8-max 快照版本：qwen3.8-max-0902（别名 qwen3.8-max-2026-09-02）",
+      "inputModalities": [
+        "image",
+        "text",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ]
+    }
+  },
+  "reviews": {
+    "fal/blackforestlabs/flux-3/klein/base/text-to-image": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required The prompt to generate an image from. ",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "fal/blackforestlabs/flux-3/klein/text-to-image": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required The prompt to generate an image from. ",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "fal/blackforestlabs/flux-3/text-to-image": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required The prompt to generate an image from.",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "fal/bytedance/seedream/v5/flash/text-to-image": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required The text prompt used to generate the image.",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "fal/bytedance/seedream/v5/pro/text-to-image": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required The text prompt used to generate the image.",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "fal/fal-ai/bytedance/seedream/v4.5/text-to-image": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required The text prompt used to generate the image",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "fal/fal-ai/bytedance/seedream/v4/text-to-image": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required The text prompt used to generate the image",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "fal/fal-ai/flux-2-pro": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required The prompt to generate an image from.",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "fal/google/nano-banana-2.1": {
+      "outputModalities": {
+        "sourceUrl": "https://fal.ai/models/google/nano-banana-2.1/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Output# images list<ImageFile>* required The generated images. description string* required The description of the generated images.",
+        "mode": "positive-only",
+        "value": [
+          "image",
+          "text"
+        ],
+        "decisions": {
+          "text": "supported"
+        }
+      }
+    },
+    "fal/krea/v3/text-to-image": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/krea/v3/text-to-image/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required Description of the image to generate.",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "fal/meta/muse-image/text-to-image": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required The text prompt used to generate or edit the image.",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "fal/openai/gpt-image-2.5/flare/text-to-image": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required The prompt for image generation",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "fal/openai/gpt-image-2.5/sunburst/text-to-image": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required The prompt for image generation",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "fal/xai/grok-imagine-image": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required Text description of the desired image.",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "fal/xai/grok-imagine-image/quality/text-to-image": {
+      "inputModalities": {
+        "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input# prompt string* required Text description of the desired image.",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "ideogram/ideogram-v4": {
+      "inputModalities": {
+        "sourceUrl": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+        "verifiedAt": "2026-11-09",
+        "quote": "Generate images with Ideogram 4.0 from a natural-language or structured JSON prompt.",
+        "mode": "positive-only",
+        "value": [
+          "text"
+        ],
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "qianfan/ernie-5.0-thinking-exp": {
+      "inputModalities": {
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "verifiedAt": "2026-11-09",
+        "quote": "模型列表",
+        "mode": "mask",
+        "decisions": {
+          "image": "unknown"
+        }
+      }
+    },
+    "qianfan/glm-5.3-flash": {
+      "inputModalities": {
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "verifiedAt": "2026-11-09",
+        "quote": "glm-5.3-flash",
+        "mode": "mask",
+        "decisions": {
+          "video": "unknown"
+        }
+      }
+    },
+    "qianfan/internvl3-38b": {
+      "inputModalities": {
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "verifiedAt": "2026-11-09",
+        "quote": "internvl3-38b",
+        "mode": "mask",
+        "decisions": {
+          "video": "unknown"
+        }
+      }
+    },
+    "qianfan/kimi-k2.6": {
+      "inputModalities": {
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "verifiedAt": "2026-11-09",
+        "quote": "kimi-k2.6",
+        "mode": "mask",
+        "decisions": {
+          "image": "unknown",
+          "video": "unknown"
+        }
+      }
+    },
+    "qianfan/qwen3.5-122b-a10b": {
+      "inputModalities": {
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "verifiedAt": "2026-11-09",
+        "quote": "qwen3.5-122b-a10b",
+        "mode": "mask",
+        "decisions": {
+          "video": "unknown"
+        }
+      }
+    },
+    "qianfan/qwen3.5-27b": {
+      "inputModalities": {
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "verifiedAt": "2026-11-09",
+        "quote": "qwen3.5-27b",
+        "mode": "mask",
+        "decisions": {
+          "video": "unknown"
+        }
+      }
+    },
+    "qianfan/qwen3.5-35b-a3b": {
+      "inputModalities": {
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "verifiedAt": "2026-11-09",
+        "quote": "qwen3.5-35b-a3b",
+        "mode": "mask",
+        "decisions": {
+          "video": "unknown"
+        }
+      }
+    },
+    "qianfan/qwen3.5-397b-a17b": {
+      "inputModalities": {
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "verifiedAt": "2026-11-09",
+        "quote": "qwen3.5-397b-a17b",
+        "mode": "mask",
+        "decisions": {
+          "video": "unknown"
+        }
+      }
+    },
+    "replicate/google/nano-banana-2.1": {
+      "inputModalities": {
+        "sourceUrl": "https://replicate.com/google/nano-banana-2.1/api/schema",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input images to transform or use as reference (supports up to 14 images)",
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "file": "unknown",
+          "video": "unknown"
+        },
+        "supportingQuotes": [
+          "A text description of the image you want to generate"
+        ]
+      },
+      "outputModalities": {
+        "sourceUrl": "https://replicate.com/google/nano-banana-2.1/api/schema",
+        "verifiedAt": "2026-11-09",
+        "quote": "Google's fast image generation and editing model, with sharp text rendering, multi-image editing, and up to 4K output.",
+        "mode": "positive-only",
+        "value": [
+          "image"
+        ],
+        "decisions": {
+          "text": "unknown"
+        }
+      }
+    },
+    "replicate/prunaai/flux-kontext-fast": {
+      "inputModalities": {
+        "sourceUrl": "https://replicate.com/prunaai/flux-kontext-fast/api/schema",
+        "verifiedAt": "2026-11-09",
+        "quote": "Input image for image to image mode. The aspect ratio of your output will match this image",
+        "mode": "positive-only",
+        "value": [
+          "text",
+          "image"
+        ],
+        "decisions": {
+          "image": "supported"
+        },
+        "supportingQuotes": [
+          "\"prompt\": {\"type\": \"string\", \"title\": \"Prompt\", \"x-order\": 0, \"description\": \"Prompt\"}"
+        ]
+      }
+    },
+    "sensenova/kimi-k3": {
+      "inputModalities": {
+        "sourceUrl": "https://platform.sensenova.cn/docs",
+        "verifiedAt": "2026-11-09",
+        "quote": "SenseNova · LLM API 服务平台",
+        "mode": "mask",
+        "decisions": {
+          "video": "unknown"
+        }
+      }
+    }
+  },
+  "links": {
+    "replicate/google/imagen-3": {
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence.",
+      "attempts": [
+        {
+          "sourceUrl": "https://replicate.com/google/imagen-3",
+          "status": 404,
+          "finalUrl": "https://replicate.com/google/imagen-3",
+          "checkedAt": "2026-11-09T16:12:42.608116+00:00",
+          "sha256": "4d5a749d96e4dbdc2bf4408928c8dc1d57fb2aa21f971398393b3993c6958369",
+          "quote": "Page not found",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/collections/official",
+          "status": 200,
+          "finalUrl": "https://replicate.com/collections/official",
+          "checkedAt": "2026-11-09T16:15:35.300551+00:00",
+          "sha256": "33ba878bd6d517c64e0bdc774e2b13013ea718ec4e8898266ed813a65f90a332",
+          "quote": "Run our collection of official AI models - Replicate MiniMax logoMinimax H3 Lite and Highspeed are 5",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/google",
+          "status": 200,
+          "finalUrl": "https://replicate.com/google",
+          "checkedAt": "2026-11-09T16:17:59.390574+00:00",
+          "sha256": "33cf181d69a95a599111035aa89bce9175bb309508a27875acbc389b9908a95a",
+          "quote": "google | Replicate google Google google / lyria-3.5 Generate full-length songs with vocals and lyric",
+          "matchesExactModel": false
+        }
+      ]
+    },
+    "replicate/google/imagen-3-fast": {
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence.",
+      "attempts": [
+        {
+          "sourceUrl": "https://replicate.com/google/imagen-3-fast",
+          "status": 404,
+          "finalUrl": "https://replicate.com/google/imagen-3-fast",
+          "checkedAt": "2026-11-09T16:12:43.150327+00:00",
+          "sha256": "6e4c2f63bc96ca2ceb42d150cfc269ad824a98b5da64f9089fc2ecca2451b195",
+          "quote": "Page not found",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/collections/official",
+          "status": 200,
+          "finalUrl": "https://replicate.com/collections/official",
+          "checkedAt": "2026-11-09T16:15:35.300551+00:00",
+          "sha256": "33ba878bd6d517c64e0bdc774e2b13013ea718ec4e8898266ed813a65f90a332",
+          "quote": "Run our collection of official AI models - Replicate MiniMax logoMinimax H3 Lite and Highspeed are 5",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/google",
+          "status": 200,
+          "finalUrl": "https://replicate.com/google",
+          "checkedAt": "2026-11-09T16:17:59.390574+00:00",
+          "sha256": "33cf181d69a95a599111035aa89bce9175bb309508a27875acbc389b9908a95a",
+          "quote": "google | Replicate google Google google / lyria-3.5 Generate full-length songs with vocals and lyric",
+          "matchesExactModel": false
+        }
+      ]
+    },
+    "replicate/google/imagen-4": {
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence.",
+      "attempts": [
+        {
+          "sourceUrl": "https://replicate.com/google/imagen-4",
+          "status": 404,
+          "finalUrl": "https://replicate.com/google/imagen-4",
+          "checkedAt": "2026-11-09T16:12:43.150437+00:00",
+          "sha256": "4438c15d0c772c6046d818ac7978af2a209fe7e933b138c450d592bb9535b5e5",
+          "quote": "Page not found",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/collections/official",
+          "status": 200,
+          "finalUrl": "https://replicate.com/collections/official",
+          "checkedAt": "2026-11-09T16:15:35.300551+00:00",
+          "sha256": "33ba878bd6d517c64e0bdc774e2b13013ea718ec4e8898266ed813a65f90a332",
+          "quote": "Run our collection of official AI models - Replicate MiniMax logoMinimax H3 Lite and Highspeed are 5",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/google",
+          "status": 200,
+          "finalUrl": "https://replicate.com/google",
+          "checkedAt": "2026-11-09T16:17:59.390574+00:00",
+          "sha256": "33cf181d69a95a599111035aa89bce9175bb309508a27875acbc389b9908a95a",
+          "quote": "google | Replicate google Google google / lyria-3.5 Generate full-length songs with vocals and lyric",
+          "matchesExactModel": false
+        }
+      ]
+    },
+    "replicate/google/imagen-4-fast": {
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence.",
+      "attempts": [
+        {
+          "sourceUrl": "https://replicate.com/google/imagen-4-fast",
+          "status": 404,
+          "finalUrl": "https://replicate.com/google/imagen-4-fast",
+          "checkedAt": "2026-11-09T16:12:43.150802+00:00",
+          "sha256": "9914ef2d022856ed5ae522c2c48592243c407f7248c89d7f9a72b72c108459b3",
+          "quote": "Page not found",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/collections/official",
+          "status": 200,
+          "finalUrl": "https://replicate.com/collections/official",
+          "checkedAt": "2026-11-09T16:15:35.300551+00:00",
+          "sha256": "33ba878bd6d517c64e0bdc774e2b13013ea718ec4e8898266ed813a65f90a332",
+          "quote": "Run our collection of official AI models - Replicate MiniMax logoMinimax H3 Lite and Highspeed are 5",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/google",
+          "status": 200,
+          "finalUrl": "https://replicate.com/google",
+          "checkedAt": "2026-11-09T16:17:59.390574+00:00",
+          "sha256": "33cf181d69a95a599111035aa89bce9175bb309508a27875acbc389b9908a95a",
+          "quote": "google | Replicate google Google google / lyria-3.5 Generate full-length songs with vocals and lyric",
+          "matchesExactModel": false
+        }
+      ]
+    },
+    "replicate/google/imagen-4-ultra": {
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence.",
+      "attempts": [
+        {
+          "sourceUrl": "https://replicate.com/google/imagen-4-ultra",
+          "status": 404,
+          "finalUrl": "https://replicate.com/google/imagen-4-ultra",
+          "checkedAt": "2026-11-09T16:12:43.175522+00:00",
+          "sha256": "4f392bff1ffcedd470a8ff9fecd9a6d1e3fce80825273c060c4cd75493b317c2",
+          "quote": "Page not found",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/collections/official",
+          "status": 200,
+          "finalUrl": "https://replicate.com/collections/official",
+          "checkedAt": "2026-11-09T16:15:35.300551+00:00",
+          "sha256": "33ba878bd6d517c64e0bdc774e2b13013ea718ec4e8898266ed813a65f90a332",
+          "quote": "Run our collection of official AI models - Replicate MiniMax logoMinimax H3 Lite and Highspeed are 5",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://replicate.com/google",
+          "status": 200,
+          "finalUrl": "https://replicate.com/google",
+          "checkedAt": "2026-11-09T16:17:59.390574+00:00",
+          "sha256": "33cf181d69a95a599111035aa89bce9175bb309508a27875acbc389b9908a95a",
+          "quote": "google | Replicate google Google google / lyria-3.5 Generate full-length songs with vocals and lyric",
+          "matchesExactModel": false
+        }
+      ]
+    },
+    "runware/openai:1@1": {
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://developers.openai.com/api/docs/models/gpt-image-1",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence.",
+      "attempts": [
+        {
+          "sourceUrl": "https://runware.ai/models/openai-1",
+          "status": 404,
+          "finalUrl": "https://runware.ai/models/openai-1",
+          "checkedAt": "2026-11-09T16:12:43.191884+00:00",
+          "sha256": "dc5bc997cc45abc6ded798adfab40d40d7bf2b64df3be4153883175fb01092d4",
+          "quote": "Runware | AI Infrastructure Rebuilt to Cost Less",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/models/gpt-image-1",
+          "status": 404,
+          "finalUrl": "https://runware.ai/models/openai-gpt-image-1",
+          "checkedAt": "2026-11-09T16:15:32.339980+00:00",
+          "sha256": "28f660707fe35b43f993234104585f4d46d226ecf1f8e0d3d507c1ba609e429b",
+          "quote": "Runware | AI Infrastructure Rebuilt to Cost Less",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1",
+          "status": 404,
+          "finalUrl": "https://runware.ai/docs/models/openai-gpt-image-1",
+          "checkedAt": "2026-11-09T16:15:32.340807+00:00",
+          "sha256": "9a1c4fd2d6fcb77802b91c3bd69c4bd4a72f6a026caf9c1976fcaadfa671e7e8",
+          "quote": "Page Not Found | Runware Docs / docs_ Search⌘K AllModelsGuidesExamplesModels APIServerlessToolsLearn",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/models/openai-gpt-image-1",
+          "status": 404,
+          "finalUrl": "https://runware.ai/models/openai-gpt-image-1",
+          "checkedAt": "2026-11-09T16:17:59.389681+00:00",
+          "sha256": "28f660707fe35b43f993234104585f4d46d226ecf1f8e0d3d507c1ba609e429b",
+          "quote": "Runware | AI Infrastructure Rebuilt to Cost Less",
+          "matchesExactModel": false
+        }
+      ]
+    },
+    "runware/xai:grok-imagine@image-quality": {
+      "availability": "unverified",
+      "verifiedAt": "2026-11-09",
+      "visibleUrl": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2",
+      "decision": "Retain model and existing vendor fallback. No verified exact channel page was found; 404 is not delisting evidence. The sibling Grok image page has a different AIR and cannot establish quality availability.",
+      "attempts": [
+        {
+          "sourceUrl": "https://runware.ai/models/grok-imagine-image-quality",
+          "status": 404,
+          "finalUrl": "https://runware.ai/models/grok-imagine-image-quality",
+          "checkedAt": "2026-11-09T16:12:44.717033+00:00",
+          "sha256": "662c0dba2a5ebd6c935d6b8feb86c97261edfd11fee9c95bb449367fdbec9511",
+          "quote": "Runware | AI Infrastructure Rebuilt to Cost Less",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/models/grok-imagine-image",
+          "status": 200,
+          "finalUrl": "https://runware.ai/models/xai-grok-imagine-image",
+          "checkedAt": "2026-11-09T16:15:32.340675+00:00",
+          "sha256": "2073830b3a972ab1e6f861f16dd34e04c8e795316b1847822fba0c7541b4a857",
+          "quote": "Grok Imagine Imagexai:grok-imagine@image",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/models/xai-grok-imagine-image-quality",
+          "status": 404,
+          "finalUrl": "https://runware.ai/models/xai-grok-imagine-image-quality",
+          "checkedAt": "2026-11-09T16:15:32.340752+00:00",
+          "sha256": "a361e85409c7308c2957f857f81f6fcfeaa0b78c4170ecd2bc4b1ce397d9d9e3",
+          "quote": "Runware | AI Infrastructure Rebuilt to Cost Less",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality",
+          "status": 404,
+          "finalUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality",
+          "checkedAt": "2026-11-09T16:15:32.340857+00:00",
+          "sha256": "9a1c4fd2d6fcb77802b91c3bd69c4bd4a72f6a026caf9c1976fcaadfa671e7e8",
+          "quote": "Page Not Found | Runware Docs / docs_ Search⌘K AllModelsGuidesExamplesModels APIServerlessToolsLearn",
+          "matchesExactModel": false
+        },
+        {
+          "sourceUrl": "https://runware.ai/models/xai-grok-imagine-image-quality",
+          "status": 404,
+          "finalUrl": "https://runware.ai/models/xai-grok-imagine-image-quality",
+          "checkedAt": "2026-11-09T16:17:59.389904+00:00",
+          "sha256": "a361e85409c7308c2957f857f81f6fcfeaa0b78c4170ecd2bc4b1ce397d9d9e3",
+          "quote": "Runware | AI Infrastructure Rebuilt to Cost Less",
+          "matchesExactModel": false
+        }
+      ]
+    }
+  },
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+  "visibleLinkChecks": {
+    "https://replicate.com/google/nano-banana-2.1": {
+      "status": 200,
+      "finalUrl": "https://replicate.com/google/nano-banana-2.1",
+      "checkedAt": "2026-11-09T16:35:20.001268+00:00",
+      "sha256": "75cb040ac8c5284b0d0076415e3aae63a1b8d68cf884a50206251aa072e5f558",
+      "quote": "Nano Banana 2.1 | Image generation and editing API",
+      "interpretation": "Model HTML page"
+    },
+    "https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1sd3/post": {
+      "status": 200,
+      "finalUrl": "https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1sd3/post",
+      "checkedAt": "2026-11-09T16:35:20.001522+00:00",
+      "sha256": "759a47ad087d2367eafebb6d1d4ef60bb717d21ca738e663afa123710ebbeac9",
+      "quote": "Stability AI API reference",
+      "interpretation": "Existing static-only full-model link resolves to a relocation notice; this is not a new model-capability verification."
+    }
+  }
+}

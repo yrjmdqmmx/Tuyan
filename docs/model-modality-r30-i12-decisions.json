@@ -1,0 +1,1054 @@
+{
+  "phase": "R30 Phase I12",
+  "head": "588f1d67",
+  "mainBaseline": "52e0f161",
+  "cardsPerClient": 1064,
+  "removedDialogRows": {
+    "web": {
+      "dateRows": 1064,
+      "provenanceRows": 2779,
+      "unverifiedRows": 657
+    },
+    "mini": {
+      "dateRows": 1064,
+      "provenanceRows": 2779,
+      "unverifiedRows": 0
+    }
+  },
+  "dialogProvenanceInventory": {
+    "渠道公布": 914,
+    "图研既有核实": 1668,
+    "源自原厂": 162,
+    "图研输入要求": 35,
+    "原厂公布": 0
+  },
+  "numeric": {
+    "web": 584,
+    "mini": 584,
+    "unsupported": 0,
+    "notApplicable": 816
+  },
+  "oldMiniCardOrigins": {
+    "图研既有核实": 1668,
+    "源自原厂": 162,
+    "图研输入要求": 35
+  },
+  "primaryLinkCardsChanged": 82,
+  "optionACardsChanged": 15,
+  "primaryLinks": [
+    {
+      "key": "siliconflow/Qwen/Qwen3.8-27B",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen3.8-27B",
+        "label": "官方文档 · Hugging Face · Qwen3.8 27B"
+      },
+      "optionA": false
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen-Image",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen-Image",
+        "label": "官方文档 · Hugging Face · Qwen Image"
+      },
+      "optionA": false
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-122B-A10B",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-122b A10b"
+      },
+      "optionA": false
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-27B",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-27B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-27B"
+      },
+      "optionA": false
+    },
+    {
+      "key": "siliconflow/Qwen/Qwen3.5-35B-A3B",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-35b A3b"
+      },
+      "optionA": false
+    },
+    {
+      "key": "siliconflow/deepseek-ai/DeepSeek-V4-Pro",
+      "before": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      },
+      "after": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Pro"
+      },
+      "optionA": false
+    },
+    {
+      "key": "siliconflow/stepfun-ai/Step-3.5-Flash",
+      "before": {
+        "url": "https://platform.stepfun.com/docs/zh/guides/models/list",
+        "label": "官方文档 · StepFun · List"
+      },
+      "after": {
+        "url": "https://platform.stepfun.com/docs/zh/guides/models/step-3.5-flash",
+        "label": "官方文档 · StepFun · Step 3.5 Flash"
+      },
+      "optionA": false
+    },
+    {
+      "key": "siliconflow/Tongyi-MAI/Z-Image-Turbo",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Tongyi-MAI/Z-Image-Turbo",
+        "label": "官方文档 · Hugging Face · Z Image Turbo"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/ZHIPU/GLM-5.3",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3",
+        "label": "官方文档 · 智谱 · GLM 5.3"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M3",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+        "label": "官方文档 · Hugging Face · MiniMax M3"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M2.7",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/MiniMaxAI/MiniMax-M2.7",
+        "label": "官方文档 · Hugging Face · MiniMax M2.7"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/MiniMax-M2.5",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/MiniMaxAI/MiniMax-M2.5",
+        "label": "官方文档 · Hugging Face · MiniMax M2.5"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M2.5",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/MiniMaxAI/MiniMax-M2.5",
+        "label": "官方文档 · Hugging Face · MiniMax M2.5"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/ZHIPU/GLM-5.2",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2",
+        "label": "官方文档 · 智谱 · GLM 5.2"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/deepseek-v4-pro",
+      "before": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      },
+      "after": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Pro"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/ZHIPU/GLM-5.1",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1",
+        "label": "官方文档 · 智谱 · GLM 5.1"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/kimi/kimi-k3",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/moonshotai/Kimi-K3",
+        "label": "官方文档 · Hugging Face · Kimi K3"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/kimi/kimi-k2.7-code",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/moonshotai/Kimi-K2.7-Code",
+        "label": "官方文档 · Hugging Face · Kimi K2.7 Code"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/kimi/kimi-k2.6",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/moonshotai/Kimi-K2.6",
+        "label": "官方文档 · Hugging Face · Kimi K2.6"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/qwen3.5-122b-a10b",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-122b A10b"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/qwen3.5-27b",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-27B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-27B"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/qwen3.5-35b-a3b",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-35b A3b"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/qwen3.5-397b-a17b",
+      "before": {
+        "url": "https://www.aliyun.com/notice/118728",
+        "label": "下线公告 · 百炼 · 部分 Qwen3.5 系列旧版本模型下线通知"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-397b A17b"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/stepfun/step-3.7-flash",
+      "before": {
+        "url": "https://platform.stepfun.com/docs/zh/guides/models/list",
+        "label": "官方文档 · StepFun · List"
+      },
+      "after": {
+        "url": "https://platform.stepfun.com/docs/zh/guides/models/step-3.7-flash",
+        "label": "官方文档 · StepFun · Step 3.7 Flash"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/xiaomi/mimo-v2.5-pro",
+      "before": {
+        "url": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+        "label": "下线公告 · MiMo · 模型下线公告"
+      },
+      "after": {
+        "url": "https://mimo.mi.com/models/en-US/mimo-v2.5-pro",
+        "label": "官方文档 · MiMo · MiMo V2.5 Pro"
+      },
+      "optionA": false
+    },
+    {
+      "key": "bailian/z-image-turbo",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Tongyi-MAI/Z-Image-Turbo",
+        "label": "官方文档 · Hugging Face · Z Image Turbo"
+      },
+      "optionA": false
+    },
+    {
+      "key": "ideogram/ideogram-v4",
+      "before": {
+        "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4",
+        "label": "官方文档 · Ideogram · Ideogram 4.0 编辑接口"
+      },
+      "after": {
+        "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+        "label": "官方文档 · Ideogram · Ideogram 4"
+      },
+      "optionA": true
+    },
+    {
+      "key": "together/Qwen/Qwen-Image",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen-Image",
+        "label": "官方文档 · Hugging Face · Qwen Image"
+      },
+      "optionA": false
+    },
+    {
+      "key": "together/Qwen/Qwen3.8-2.4T-A95B",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B",
+        "label": "官方文档 · Hugging Face · Qwen3.8 2.4T A95B"
+      },
+      "optionA": false
+    },
+    {
+      "key": "together/Qwen/Qwen3.7-Max",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+        "label": "官方文档 · 百炼 · Qwen3.7 Max"
+      },
+      "optionA": false
+    },
+    {
+      "key": "together/Qwen/Qwen3.7-Plus",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+        "label": "官方文档 · 百炼 · Qwen3.7 Plus"
+      },
+      "optionA": false
+    },
+    {
+      "key": "together/Qwen/Qwen3.6-Plus",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+        "label": "官方文档 · 百炼 · Qwen3.6 Plus"
+      },
+      "optionA": false
+    },
+    {
+      "key": "fal/bytedance/seedream/v5/flash/text-to-image",
+      "before": {
+        "url": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+        "label": "渠道资料 · fal · Seedream V5 Flash Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+        "label": "渠道资料 · fal · Seedream V5 Flash API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "fal/bytedance/seedream/v5/pro/text-to-image",
+      "before": {
+        "url": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+        "label": "渠道资料 · fal · Seedream V5 Pro Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+        "label": "渠道资料 · fal · Seedream V5 Pro API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "before": {
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+        "label": "渠道资料 · fal · Seedream V4.5 Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+        "label": "渠道资料 · fal · Seedream V4.5 API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+      "before": {
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+        "label": "渠道资料 · fal · Seedream V4 Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+        "label": "渠道资料 · fal · Seedream V4 API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "fal/fal-ai/flux-2-pro",
+      "before": {
+        "url": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+        "label": "渠道资料 · fal · FLUX 2 Pro Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+        "label": "渠道资料 · fal · FLUX 2 Pro API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+      "before": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+        "label": "渠道资料 · fal · FLUX.3 Klein Base Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+        "label": "渠道资料 · fal · FLUX.3 Klein Base API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/klein/text-to-image",
+      "before": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+        "label": "渠道资料 · fal · FLUX.3 Klein Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+        "label": "渠道资料 · fal · FLUX.3 Klein API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "fal/blackforestlabs/flux-3/text-to-image",
+      "before": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+        "label": "渠道资料 · fal · FLUX.3 Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+        "label": "渠道资料 · fal · FLUX.3 API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "fal/fal-ai/nano-banana-2",
+      "before": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image",
+        "label": "官方文档 · Google · Gemini 3.1 Flash Image"
+      },
+      "after": {
+        "url": "https://fal.ai/models/fal-ai/nano-banana-2/api",
+        "label": "渠道资料 · fal · Nano Banana 2 API 文档"
+      },
+      "optionA": false
+    },
+    {
+      "key": "fal/google/nano-banana-2-lite",
+      "before": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image",
+        "label": "官方文档 · Google · Gemini 3.1 Flash Lite Image"
+      },
+      "after": {
+        "url": "https://fal.ai/models/google/nano-banana-2-lite/api",
+        "label": "渠道资料 · fal · Nano Banana 2 Lite API 文档"
+      },
+      "optionA": false
+    },
+    {
+      "key": "fal/fal-ai/nano-banana-pro",
+      "before": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        "label": "官方文档 · Google · Gemini 3 Pro Image"
+      },
+      "after": {
+        "url": "https://fal.ai/models/fal-ai/nano-banana-pro/api",
+        "label": "渠道资料 · fal · Nano Banana Pro API 文档"
+      },
+      "optionA": false
+    },
+    {
+      "key": "fal/fal-ai/nano-banana",
+      "before": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+        "label": "官方文档 · Google · Gemini 2.5 Flash Image"
+      },
+      "after": {
+        "url": "https://fal.ai/models/fal-ai/nano-banana/api",
+        "label": "渠道资料 · fal · Nano Banana API 文档"
+      },
+      "optionA": false
+    },
+    {
+      "key": "fal/openai/gpt-image-2.5/flare/text-to-image",
+      "before": {
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+        "label": "渠道资料 · fal · GPT Image 2.5 Flare Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+        "label": "渠道资料 · fal · GPT Image 2.5 Flare API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+      "before": {
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+        "label": "渠道资料 · fal · GPT Image 2.5 Sunburst Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+        "label": "渠道资料 · fal · GPT Image 2.5 Sunburst API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "fal/xai/grok-imagine-image",
+      "before": {
+        "url": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+        "label": "渠道资料 · fal · Grok Imagine Image Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/xai/grok-imagine-image/api",
+        "label": "渠道资料 · fal · Grok Imagine Image API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "fal/xai/grok-imagine-image/quality/text-to-image",
+      "before": {
+        "url": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+        "label": "渠道资料 · fal · Grok Imagine Image Quality Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+        "label": "渠道资料 · fal · Grok Imagine Image Quality API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "fal/krea/v3/text-to-image",
+      "before": {
+        "url": "https://fal.ai/models/krea/v3/edit/api",
+        "label": "渠道资料 · fal · Krea 3 Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/krea/v3/text-to-image/api",
+        "label": "渠道资料 · fal · Krea 3 API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "fal/meta/muse-image/text-to-image",
+      "before": {
+        "url": "https://fal.ai/models/meta/muse-image/edit/api",
+        "label": "渠道资料 · fal · Muse Image Edit API 文档"
+      },
+      "after": {
+        "url": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+        "label": "渠道资料 · fal · Muse Image API 文档"
+      },
+      "optionA": true
+    },
+    {
+      "key": "replicate/google/gemini-3.5-flash",
+      "before": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash",
+        "label": "官方文档 · Google · Gemini 3.5 Flash"
+      },
+      "after": {
+        "url": "https://replicate.com/google/gemini-3.5-flash",
+        "label": "渠道资料 · Replicate · Gemini 3.5 Flash"
+      },
+      "optionA": false
+    },
+    {
+      "key": "replicate/deepseek-ai/deepseek-v3.1",
+      "before": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V3.1",
+        "label": "官方文档 · Hugging Face · DeepSeek V3.1"
+      },
+      "after": {
+        "url": "https://replicate.com/deepseek-ai/deepseek-v3.1",
+        "label": "渠道资料 · Replicate · DeepSeek V3.1"
+      },
+      "optionA": false
+    },
+    {
+      "key": "replicate/google/gemini-2.5-flash",
+      "before": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash",
+        "label": "官方文档 · Google · Gemini 2.5 Flash"
+      },
+      "after": {
+        "url": "https://replicate.com/google/gemini-2.5-flash",
+        "label": "渠道资料 · Replicate · Gemini 2.5 Flash"
+      },
+      "optionA": false
+    },
+    {
+      "key": "replicate/google/nano-banana-2",
+      "before": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image",
+        "label": "官方文档 · Google · Gemini 3.1 Flash Image"
+      },
+      "after": {
+        "url": "https://replicate.com/google/nano-banana-2",
+        "label": "渠道资料 · Replicate · Nano Banana 2"
+      },
+      "optionA": false
+    },
+    {
+      "key": "replicate/google/nano-banana-2-lite",
+      "before": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image",
+        "label": "官方文档 · Google · Gemini 3.1 Flash Lite Image"
+      },
+      "after": {
+        "url": "https://replicate.com/google/nano-banana-2-lite",
+        "label": "渠道资料 · Replicate · Nano Banana 2 Lite"
+      },
+      "optionA": false
+    },
+    {
+      "key": "replicate/google/nano-banana-pro",
+      "before": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        "label": "官方文档 · Google · Gemini 3 Pro Image"
+      },
+      "after": {
+        "url": "https://replicate.com/google/nano-banana-pro",
+        "label": "渠道资料 · Replicate · Nano Banana Pro"
+      },
+      "optionA": false
+    },
+    {
+      "key": "replicate/google/nano-banana",
+      "before": {
+        "url": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+        "label": "官方文档 · Google · Gemini 2.5 Flash Image"
+      },
+      "after": {
+        "url": "https://replicate.com/google/nano-banana",
+        "label": "渠道资料 · Replicate · Nano Banana"
+      },
+      "optionA": false
+    },
+    {
+      "key": "replicate/moonshotai/kimi-k2-thinking",
+      "before": {
+        "url": "https://huggingface.co/moonshotai/Kimi-K2-Thinking",
+        "label": "官方文档 · Hugging Face · Kimi K2 Thinking"
+      },
+      "after": {
+        "url": "https://replicate.com/moonshotai/kimi-k2-thinking",
+        "label": "渠道资料 · Replicate · Kimi K2 Thinking"
+      },
+      "optionA": false
+    },
+    {
+      "key": "replicate/openai/gpt-image-2.5-flare",
+      "before": {
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        "label": "官方文档 · OpenAI · GPT Image 2.5 Flare"
+      },
+      "after": {
+        "url": "https://replicate.com/openai/gpt-image-2.5-flare",
+        "label": "渠道资料 · Replicate · GPT Image 2.5 Flare"
+      },
+      "optionA": false
+    },
+    {
+      "key": "replicate/openai/gpt-image-2.5-sunburst",
+      "before": {
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+        "label": "官方文档 · OpenAI · GPT Image 2.5 Sunburst"
+      },
+      "after": {
+        "url": "https://replicate.com/openai/gpt-image-2.5-sunburst",
+        "label": "渠道资料 · Replicate · GPT Image 2.5 Sunburst"
+      },
+      "optionA": false
+    },
+    {
+      "key": "replicate/openai/gpt-image-2",
+      "before": {
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+        "label": "官方文档 · OpenAI · GPT Image 2"
+      },
+      "after": {
+        "url": "https://replicate.com/openai/gpt-image-2",
+        "label": "渠道资料 · Replicate · GPT Image 2"
+      },
+      "optionA": false
+    },
+    {
+      "key": "replicate/openai/gpt-image-1.5",
+      "before": {
+        "url": "https://developers.openai.com/api/docs/models/gpt-image-1.5",
+        "label": "官方文档 · OpenAI · GPT Image 1.5"
+      },
+      "after": {
+        "url": "https://replicate.com/openai/gpt-image-1.5",
+        "label": "渠道资料 · Replicate · GPT Image 1.5"
+      },
+      "optionA": false
+    },
+    {
+      "key": "replicate/qwen/qwen3-235b-a22b-instruct-2507",
+      "before": {
+        "url": "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "label": "官方文档 · Hugging Face · Qwen3-235b A22b Instruct 2507"
+      },
+      "after": {
+        "url": "https://replicate.com/qwen/qwen3-235b-a22b-instruct-2507",
+        "label": "渠道资料 · Replicate · Qwen3-235b A22b Instruct 2507"
+      },
+      "optionA": false
+    },
+    {
+      "key": "replicate/qwen/qwen3-7-plus",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+        "label": "官方文档 · 百炼 · Qwen3.7 Plus"
+      },
+      "after": {
+        "url": "https://replicate.com/qwen/qwen3-7-plus",
+        "label": "渠道资料 · Replicate · Qwen3.7 Plus"
+      },
+      "optionA": false
+    },
+    {
+      "key": "runware/recraft:v4.1@flash",
+      "before": {
+        "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash",
+        "label": "官方文档 · Recraft · Recraft V4.1 Flash"
+      },
+      "after": {
+        "url": "https://runware.ai/docs/models/recraft-v4-1-flash",
+        "label": "渠道资料 · Runware · Runware"
+      },
+      "optionA": false
+    },
+    {
+      "key": "runware/deepseek:v4@flash",
+      "before": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Flash"
+      },
+      "after": {
+        "url": "https://runware.ai/docs/models/deepseek-v4-flash",
+        "label": "渠道资料 · Runware · DeepSeek-V4-Flash-0731"
+      },
+      "optionA": false
+    },
+    {
+      "key": "tokenhub/deepseek-v4-pro",
+      "before": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      },
+      "after": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Pro"
+      },
+      "optionA": false
+    },
+    {
+      "key": "tokenhub/deepseek/deepseek-v4-pro",
+      "before": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      },
+      "after": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Pro"
+      },
+      "optionA": false
+    },
+    {
+      "key": "tokenhub/mimo-v2.5-pro",
+      "before": {
+        "url": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+        "label": "下线公告 · MiMo · 模型下线公告"
+      },
+      "after": {
+        "url": "https://mimo.mi.com/models/en-US/mimo-v2.5-pro",
+        "label": "官方文档 · MiMo · MiMo V2.5 Pro"
+      },
+      "optionA": false
+    },
+    {
+      "key": "sensenova/deepseek-v4-pro",
+      "before": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      },
+      "after": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Pro"
+      },
+      "optionA": false
+    },
+    {
+      "key": "qianfan/deepseek-v4-pro",
+      "before": {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "label": "官方文档 · DeepSeek · 价格与规格"
+      },
+      "after": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+        "label": "官方文档 · Hugging Face · DeepSeek V4 Pro"
+      },
+      "optionA": false
+    },
+    {
+      "key": "qianfan/qwen-image",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen-Image",
+        "label": "官方文档 · Hugging Face · Qwen Image"
+      },
+      "optionA": false
+    },
+    {
+      "key": "qianfan/qwen3.5-122b-a10b",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-122b A10b"
+      },
+      "optionA": false
+    },
+    {
+      "key": "qianfan/qwen3.5-27b",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-27B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-27B"
+      },
+      "optionA": false
+    },
+    {
+      "key": "qianfan/qwen3.5-35b-a3b",
+      "before": {
+        "url": "https://help.aliyun.com/zh/model-studio/models",
+        "label": "渠道资料 · 百炼 · 模型列表（中文版）"
+      },
+      "after": {
+        "url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B",
+        "label": "官方文档 · Hugging Face · Qwen3.5-35b A3b"
+      },
+      "optionA": false
+    },
+    {
+      "key": "antling/Ling-3.0-flash-VL",
+      "before": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "label": "官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）"
+      },
+      "after": {
+        "url": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL",
+        "label": "官方文档 · Hugging Face · Ling 3.0 Flash VL"
+      },
+      "optionA": false
+    },
+    {
+      "key": "antling/Ling-3.0-tiny",
+      "before": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "label": "官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）"
+      },
+      "after": {
+        "url": "https://huggingface.co/inclusionAI/Ling-3.0-tiny",
+        "label": "官方文档 · Hugging Face · Ling 3.0 Tiny"
+      },
+      "optionA": false
+    },
+    {
+      "key": "antling/Ling-3.0-flash",
+      "before": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "label": "官方文档 · 蚂蚁百灵 · OpenAI（对话接口兼容指南）"
+      },
+      "after": {
+        "url": "https://huggingface.co/inclusionAI/Ling-3.0-flash",
+        "label": "官方文档 · Hugging Face · Ling 3.0 Flash"
+      },
+      "optionA": false
+    },
+    {
+      "key": "antling/Ling-2.6-1T",
+      "before": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+        "label": "下线公告 · 蚂蚁百灵 · 模型下线公告"
+      },
+      "after": {
+        "url": "https://huggingface.co/inclusionAI/Ling-2.6-1T",
+        "label": "官方文档 · Hugging Face · Ling 2.6-1T"
+      },
+      "optionA": false
+    },
+    {
+      "key": "antling/Ling-2.6-flash",
+      "before": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+        "label": "下线公告 · 蚂蚁百灵 · 模型下线公告"
+      },
+      "after": {
+        "url": "https://huggingface.co/inclusionAI/Ling-2.6-flash",
+        "label": "官方文档 · Hugging Face · Ling 2.6 Flash"
+      },
+      "optionA": false
+    },
+    {
+      "key": "antling/Ring-2.6-1T",
+      "before": {
+        "url": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+        "label": "下线公告 · 蚂蚁百灵 · 模型下线公告"
+      },
+      "after": {
+        "url": "https://huggingface.co/inclusionAI/Ring-2.6-1T",
+        "label": "官方文档 · Hugging Face · Ring 2.6-1T"
+      },
+      "optionA": false
+    },
+    {
+      "key": "novita/ming-image-0.1-design",
+      "before": {
+        "url": "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img",
+        "label": "渠道资料 · Novita · Model Apis Ming Image Txt2img"
+      },
+      "after": {
+        "url": "https://novita.ai/models/model-detail/ming-image-0.1-design",
+        "label": "渠道资料 · Novita · Ming Image 0.1 Design"
+      },
+      "optionA": false
+    }
+  ],
+  "dateTitles": [
+    {
+      "url": "https://api-docs.deepseek.com/news/news261017/",
+      "before": "官方文档 · DeepSeek · 更新日志 2026-10-17",
+      "after": "官方文档 · DeepSeek · 更新日志 2026年10月17日"
+    },
+    {
+      "url": "https://api-docs.deepseek.com/news/news260821/",
+      "before": "官方文档 · DeepSeek · 更新日志 2026-08-21",
+      "after": "官方文档 · DeepSeek · 更新日志 2026年08月21日"
+    },
+    {
+      "url": "https://api-docs.deepseek.com/news/news260424/",
+      "before": "官方文档 · DeepSeek · 更新日志 2026-04-24",
+      "after": "官方文档 · DeepSeek · 更新日志 2026年04月24日"
+    },
+    {
+      "url": "https://tokendance.space/llms-full.txt",
+      "before": "下线公告 · TokenDance · Qwen3.5 Plus 下线（2027-01-19）",
+      "after": "下线公告 · TokenDance · Qwen3.5 Plus 下线（2027年01月19日）"
+    }
+  ],
+  "conditional": {
+    "provider": "together",
+    "model": "Prism-ML/Ternary-Bonsai-27B",
+    "modality": "image",
+    "direction": "input",
+    "qualifier": "图像（需视觉组件）",
+    "sentence": "支持图像输入（需启用视觉组件）"
+  }
+}

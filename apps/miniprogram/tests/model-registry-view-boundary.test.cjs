@@ -47,7 +47,7 @@ function context(component, properties = {}) {
       assert.ok(size < 128 * 1024, `view update has ${size} bytes`)
       assert.equal(patch.registry, undefined)
       assert.equal(patch.pickerRegistry, undefined)
-      Object.assign(data, structuredClone(patch))
+      require('./helpers/component.cjs').applyData(data, structuredClone(patch))
     },
     triggerEvent(name, detail) { this.lastEvent = { name, detail } },
   }, component.methods)
@@ -133,6 +133,8 @@ assert.equal(picker.data.visibleCompatibleModels[0].capabilities, undefined)
 const first = picker.data.visibleCompatibleModels[0].id
 picker.loadMore()
 assert.ok(picker.data.visibleCompatibleModels.length <= 60)
+while (picker.data.hasMore) picker.loadMore()
+assert.equal(picker.data.visibleCompatibleModels.length, picker.data.compatibleCount)
 picker.onSearch({ detail: { value: first } })
 assert.ok(picker.data.visibleCompatibleModels.some((model) => model.id === first))
 picker.choose({ currentTarget: { dataset: { model: first } } })

@@ -1,0 +1,122 @@
+{
+  "phase": "R25 Phase I5",
+  "verifiedAt": "2026-11-10",
+  "captures": [
+    {
+      "url": "https://www.aliyun.com/notice/118728",
+      "httpStatus": 200,
+      "finalUrl": "https://www.aliyun.com/notice/118728",
+      "fetchStartUTC": "2026-11-09T23:47:17.776214+00:00",
+      "fetchEndUTC": "2026-11-09T23:47:18.043239+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T07:47:17.776214+08:00",
+      "sha256": "280ebdede0418fd532c8947ab248ed2d2ac6a9e981d13e8594144c7ebec6036f",
+      "bytes": 30424,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i5-aliyun-118728.html",
+      "checkedAt": "2026-11-10",
+      "retrieval": "public unauthenticated documentation GET",
+      "title": "【大模型服务平台百炼】部分Qwen3.5系列旧版本模型下线通知",
+      "displayTitle": "部分 Qwen3.5 系列旧版本模型下线通知",
+      "extraction": "h1"
+    },
+    {
+      "url": "https://cloud-assets.alicdn.com/lowcode/entry/prod/4c06616382ae914768cb2899fcb9e7e3.js",
+      "httpStatus": 200,
+      "finalUrl": "https://cloud-assets.alicdn.com/lowcode/entry/prod/4c06616382ae914768cb2899fcb9e7e3.js",
+      "fetchStartUTC": "2026-11-09T23:47:34.699702+00:00",
+      "fetchEndUTC": "2026-11-09T23:47:35.856734+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T07:47:34.699702+08:00",
+      "sha256": "807b38498e953446500cb611758030db542b288d068f9d3133860faf1db51f2a",
+      "bytes": 1698313,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i5-notice-entry.html",
+      "extraction": "JSON-decoded httpDatas[encoded bulletinDetail URL].detailInfo.detailList[0].content and contentHtml; no script execution",
+      "excerpts": [
+        "2027年01月19日（正式下线）：届时模型将全面停止推理服务。",
+        "2027 年 01 月 19 日 10:00:00, 【以实际变更时间为准】",
+        "qwen3.5-plus",
+        "qwen3.5-plus-2026-02-15",
+        "qwen3.5-plus-2026-04-20"
+      ],
+      "title": "【大模型服务平台百炼】部分Qwen3.5系列旧版本模型下线通知",
+      "content": "影响时间 2027 年 01 月 19 日 10:00:00, 【以实际变更时间为准】 变更内容和影响 为了不断提升模型性能和服务体验，同时优化底层资源管理，大模型服务平台百炼将于 2027 年 01 月 19 日 对下表中的旧版本模型进行下线处理。 具体下线清单及替换模型推荐如下： 模型名称 输入成本 元/百万tokens 输出成本 元/百万tokens 推荐替换模型 输入成本 元/百万tokens 输出成本 元/百万tokens qwen3.5-plus 0.8 4.8 qwen3.8-flash 0.8 2.7 qwen3.5-plus-2026-02-15 0.8 4.8 qwen3.8-flash 0.8 2.7 qwen3.5-plus-2026-04-20 0.8 4.8 qwen3.8-flash 0.8 2.7 qwen3.5-397b-a17b 1.2 7.2 qwen3.8-flash 0.8 2.7 重要提示：考虑到公告到模型实际下线期间，阿里云百炼平台将持续快速迭代并发布性能更优的新模型，本公告中的推荐替换指引将不再随新模型上线而频繁更新。敬请您在业务迁移及日常使用中，持续关注阿里云百炼模型广场，以便灵活选用最新、最契合业务场景的模型版本。 应对建议 关键时间节点 为保障您的业务平稳过渡，请重点关注以下两个时间节点： 2026年11月18日（停止新购 EOM）：届时将关闭上述模型的新购入口。您将无法再新开通或购买这些模型的相关服务及资源包。 2027年01月19日（正式下线）：届时模型将全面停止推理服务。 模型下线后，将不再支持模型推理，仍在调用上述下线模型的应用和服务将无法返回结果。若您正在使用以上模型，请务必在 2027 年 01 月 19 日 前完成接口替换、参数调优与业务验证，以免影响线上服务的稳定性。 上述下架清单中，Coding Plan/Token Plan 支持的相关模型也会同步下线。如您已购买预付费资源包，您可以提交工单按未使用资源进行退款。 点击此处查看阿里云百炼的模型列表及计费信息。 如您有任何问题，可随时通过工单 或者服务热线与我们联系。"
+    },
+    {
+      "url": "https://g.alicdn.com/code/npm/@ali/hmod-aliyundotcom-notice-detail/0.5.3/index.js",
+      "httpStatus": 200,
+      "finalUrl": "https://g.alicdn.com/code/npm/@ali/hmod-aliyundotcom-notice-detail/0.5.3/index.js",
+      "fetchStartUTC": "2026-11-09T23:47:34.677437+00:00",
+      "fetchEndUTC": "2026-11-09T23:47:34.967712+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T07:47:34.677437+08:00",
+      "sha256": "24fd2142fee77f7c9af7346ca1375698f9f957826eb0d4e47536c1af3663cdfa",
+      "bytes": 200110,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i5-notice-component.html"
+    },
+    {
+      "url": "https://t.aliyun.com/abs/bulletin/bulletinDetail?id=118728&language=zh&website=cn",
+      "httpStatus": 200,
+      "finalUrl": "https://t.aliyun.com/abs/bulletin/bulletinDetail?id=118728&language=zh&website=cn",
+      "fetchStartUTC": "2026-11-09T23:48:11.834154+00:00",
+      "fetchEndUTC": "2026-11-09T23:48:12.222692+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T07:48:11.834154+08:00",
+      "sha256": "5781a81c412a8d7fe135905a8073fe81423d29584196691be35ace7c787541fa",
+      "bytes": 51,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i5-notice-public-json.html",
+      "finding": "Public GET denied by origin check; response is not evidence. No retry with cookies or authentication."
+    },
+    {
+      "url": "https://tokendance.space/llms-full.txt",
+      "httpStatus": 200,
+      "finalUrl": "https://tokendance.space/llms-full.txt",
+      "fetchStartUTC": "2026-11-09T23:47:17.776324+00:00",
+      "fetchEndUTC": "2026-11-09T23:47:17.950999+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T07:47:17.776324+08:00",
+      "sha256": "46b344b1fd51f0364ce562c3fc56c9db18ffe7836736938e26901326593fa046",
+      "bytes": 331710,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i5-tokendance-llms-full.txt",
+      "excerpts": [
+        "### 北京时间 2027 年 1 月 19 日 10:00：Qwen3.5 Plus 下线",
+        "- [Qwen: Qwen3.5 Plus](/models/qwen3.5-plus)（`qwen3.5-plus`）：建议切换至 [Qwen: Qwen3.8 Flash](/models/qwen3.8-flash)（`qwen3.8-flash`）。",
+        "[查看阿里云百炼模型下线公告](https://www.aliyun.com/notice/118728)"
+      ],
+      "absentTerms": {
+        "qwen3.5-plus-2026-02-15": 0,
+        "qwen3.5-plus-2026-04-20": 0
+      }
+    }
+  ],
+  "models": {
+    "bailian/qwen3.5-plus": {
+      "sourceUrl": "https://www.aliyun.com/notice/118728",
+      "captureUrl": "https://cloud-assets.alicdn.com/lowcode/entry/prod/4c06616382ae914768cb2899fcb9e7e3.js",
+      "stopDate": "2027-01-19",
+      "quote": "2027年01月19日（正式下线）：届时模型将全面停止推理服务。",
+      "identityQuote": "qwen3.5-plus",
+      "decision": "Keep badge: the linked public page-entry JSON explicitly lists this exact model in the retirement table. Date matches the existing schedule. Display evidence only; preserve execution cutoff and rejection behavior."
+    },
+    "bailian/qwen3.5-plus-2026-02-15": {
+      "sourceUrl": "https://www.aliyun.com/notice/118728",
+      "captureUrl": "https://cloud-assets.alicdn.com/lowcode/entry/prod/4c06616382ae914768cb2899fcb9e7e3.js",
+      "stopDate": "2027-01-19",
+      "quote": "2027年01月19日（正式下线）：届时模型将全面停止推理服务。",
+      "identityQuote": "qwen3.5-plus-2026-02-15",
+      "decision": "Keep badge: the linked public page-entry JSON explicitly lists this exact model in the retirement table. Date matches the existing schedule. Display evidence only; preserve execution cutoff and rejection behavior."
+    },
+    "bailian/qwen3.5-plus-2026-04-20": {
+      "sourceUrl": "https://www.aliyun.com/notice/118728",
+      "captureUrl": "https://cloud-assets.alicdn.com/lowcode/entry/prod/4c06616382ae914768cb2899fcb9e7e3.js",
+      "stopDate": "2027-01-19",
+      "quote": "2027年01月19日（正式下线）：届时模型将全面停止推理服务。",
+      "identityQuote": "qwen3.5-plus-2026-04-20",
+      "decision": "Keep badge: the linked public page-entry JSON explicitly lists this exact model in the retirement table. Date matches the existing schedule. Display evidence only; preserve execution cutoff and rejection behavior."
+    }
+  }
+}

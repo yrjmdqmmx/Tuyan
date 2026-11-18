@@ -1,0 +1,78 @@
+{
+  "8c456709": {
+    "apps/web/src/data/model-card-specifications.json": {
+      "bytes": 109947,
+      "sha256": "5ed1fb7f6a624307a6dc832ebf82bcaaad42d986d17c1b54879cc0870bc7b388"
+    },
+    "apps/web/src/lib/catalogCardFacts.js": {
+      "bytes": 6166,
+      "sha256": "3644bcd67fc9c8d864ad4686d3966a6d59635e29ca0750b0020431f5049c10ee"
+    },
+    "apps/web/src/lib/modelAudit.js": {
+      "bytes": 91945,
+      "sha256": "d4492acbfa953e7bbd68c391ce8f24a24d8259e199bb0aa0f66e96786395e7a7"
+    },
+    "apps/web/src/lib/modelCardSources.js": {
+      "bytes": 7544,
+      "sha256": "9ba311d028855a730ed8b0652c89a825641277733924b63f1429d1e5d0fa4b68"
+    },
+    "apps/web/src/lib/modelCardSpecifications.js": {
+      "bytes": 5009,
+      "sha256": "1f2706c617465a9e078674d2d0bff37f3568a69d8920c6c8a59f601f242cda54"
+    },
+    "apps/web/src/lib/modelPresentation.js": {
+      "bytes": 56114,
+      "sha256": "d6f3a1ed6b35f896d0a6163c957fd7dfa433ef32ee5a5d27752154ef2f62e9aa"
+    },
+    "apps/web/src/lib/staticModelCatalog.js": {
+      "bytes": 2094234,
+      "sha256": "c1628d22bc09bc6294750f72d86c21d43971f6e877cb2714d614eb881c400455"
+    },
+    "config/channel-audit/dead-links-20261109.json": {
+      "bytes": 2554,
+      "sha256": "e62ae197ea14e7ae5225bfa9b840aa10e5cd1feb4db3790e735f3826d67beb7c"
+    },
+    "config/channel-audit/specific-model-page-overrides.json": {
+      "bytes": 4382,
+      "sha256": "c183d8a239be19bbac1acbe8fc02f691fdd27b1bd96e8e5036f095599965e0b2"
+    }
+  },
+  "d1fe6ff6": {
+    "apps/web/src/data/model-card-specifications.json": {
+      "bytes": 109947,
+      "sha256": "5ed1fb7f6a624307a6dc832ebf82bcaaad42d986d17c1b54879cc0870bc7b388"
+    },
+    "apps/web/src/lib/catalogCardFacts.js": {
+      "bytes": 6468,
+      "sha256": "f71f6c92a5bc14572fb99fd5d294b3fb178e722568c8b237916f57e52fc28539"
+    },
+    "apps/web/src/lib/modelAudit.js": {
+      "bytes": 120841,
+      "sha256": "2c1b93662dbf3635fd36e5badf973bcb8458e297be5e0bbce7adb82e9266d1e9"
+    },
+    "apps/web/src/lib/modelCardSources.js": {
+      "bytes": 7929,
+      "sha256": "cf7a38daa6590587c5a2973206206118d70c4b72ffb94712998617eb754eda40"
+    },
+    "apps/web/src/lib/modelCardSpecifications.js": {
+      "bytes": 5009,
+      "sha256": "1f2706c617465a9e078674d2d0bff37f3568a69d8920c6c8a59f601f242cda54"
+    },
+    "apps/web/src/lib/modelPresentation.js": {
+      "bytes": 56114,
+      "sha256": "d6f3a1ed6b35f896d0a6163c957fd7dfa433ef32ee5a5d27752154ef2f62e9aa"
+    },
+    "apps/web/src/lib/staticModelCatalog.js": {
+      "bytes": 2094234,
+      "sha256": "c1628d22bc09bc6294750f72d86c21d43971f6e877cb2714d614eb881c400455"
+    },
+    "config/channel-audit/dead-links-20261109.json": {
+      "bytes": 2554,
+      "sha256": "e62ae197ea14e7ae5225bfa9b840aa10e5cd1feb4db3790e735f3826d67beb7c"
+    },
+    "config/channel-audit/specific-model-page-overrides.json": {
+      "bytes": 4382,
+      "sha256": "c183d8a239be19bbac1acbe8fc02f691fdd27b1bd96e8e5036f095599965e0b2"
+    }
+  }
+}

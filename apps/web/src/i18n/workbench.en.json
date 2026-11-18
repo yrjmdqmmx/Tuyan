@@ -1,4 +1,5 @@
 {
+  "渠道未开放": "Not available on this channel",
   "目录暂不可用": "Catalog temporarily unavailable",
   "OpenRouter model catalog is temporarily unavailable": "OpenRouter model catalog is temporarily unavailable",
   "精修评审会逐项核对遮罩、辅助图用途和结构化约束。材料页与精修输入超过模型单次容量时会分批观察，可能增加调用；证据不足或核对缺失不会显示通过。完整流程的风格方案格式无效或材料不足时，会在绘图前停止。": "Editing review checks masks, reference purposes, and structured constraints individually. Material pages and editing inputs are observed in batches when they exceed the model's per-call capacity, which can add calls. Missing checks or insufficient evidence cannot pass. In the full workflow, an invalid styling plan or missing material stops the task before drawing.",
@@ -1084,7 +1085,7 @@
   "省去风格整理，保留成图评审。视觉模型启用时先观察画面、主模型再决策；选择“无”时由支持识图的主模型直接检查。": "Skips style preparation while retaining image review. With assisted vision, the vision model observes and the main model decides; with None, an image-capable main model reviews directly.",
   "普通模式和专业模式均默认完整生成；手动选择后会保存到当前浏览器。": "Simple and advanced modes both default to Full generation. Your manual choice is saved in this browser.",
   " 轮。每轮评审一次、必要时修改一次；通过即提前结束。最后一轮修改后结束，不自动追加复审。": " rounds. Each round reviews once and revises once if needed. A pass ends the process early. The process ends after the last revision without adding a final review.",
-  "官方文档规格": "Published specifications",
+  "模型规格": "Model specifications",
   "官方文档": "Official documentation",
   "官方文档待确认": "Official documentation unconfirmed",
   "原厂": "Manufacturer",
@@ -1093,7 +1094,6 @@
   "输入模态": "Input modalities",
   "输出模态": "Output modalities",
   "官方未列支持": "Not listed as supported",
-  "有条件支持": "Conditionally supported",
   "生图提示词上限": "Generation prompt limit",
   "编辑提示词上限": "Editing prompt limit",
   "范围：{min}–{max} 的整数。": "Range: integers from {min} to {max}.",

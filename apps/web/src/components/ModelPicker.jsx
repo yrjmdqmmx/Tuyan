@@ -376,7 +376,7 @@ export default function ModelPicker({
               <div className="model-option-heading"><button type="button" className="model-option-select" data-model-index={rowIndex} disabled={Boolean(model.selectionDisabled || model.savedChoice?.disabledReason)} aria-label={t("选择 {v0}", {v0: [model.label || model.id, model.savedChoice?.description].filter(Boolean).join(" · ")})} onClick={() => chooseModel(model)}>
                 <span className="model-option-main model-brand-heading"><span className="tw-catalog-logo"><ModelBrandLogo brand={model.vendorId} /></span><span className="model-brand-caption"><strong title={model.label || model.id}>{model.label || model.id}</strong><small>{model.vendor} / {providerDisplayName(selectedProvider, providerConfigs)}</small></span></span>
                 {visionMode !== 'none' && isSelected(model) && effectiveRoute.accessProvider === selectedProvider ? <Check size={18} /> : null}
-              </button><ModelLifecycleBadge provider={selectedProvider} lifecycle={model.auditLifecycle}/></div>
+              </button><ModelLifecycleBadge provider={selectedProvider} lifecycle={model.auditLifecycle} modelId={model.id}/></div>
               {model.catalogPresence?.status === 'unverified' && <p className="model-option-note">{model.disabledReason}</p>}
               <ThinkingStatus compact profile={thinkingProfile(selectedProvider, model.id, role, model.roleProtocols?.[role] || model.protocol)} role={role} operation={operation} />
               {model.savedChoice?.description ? <p className="model-option-note" title={model.savedChoice.description}>{model.savedChoice.connectionLabel || model.savedChoice.description}</p> : null}

@@ -1,0 +1,438 @@
+{
+  "phase": "R29 Phase I10",
+  "head": "997585e2870bc21a857f2c8a7a2cda5f9f2d53a1",
+  "mainBaseline": "52e0f161",
+  "finishedAtUtc": "2026-11-10T11:34:39.939828+00:00",
+  "gitWrites": false,
+  "externalNetwork": false,
+  "runs": [
+    {
+      "id": "api-full",
+      "cwd": ".",
+      "command": "node --test packages/api/src/*.test.js",
+      "startedAt": "2026-11-10T11:32:25.863443+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/api-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:26.060928+00:00",
+      "tests": {
+        "tests": 33,
+        "pass": 33,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "7fb2ac90a62f7bd16c9ecaee03ccb83e6ba13ad9200648e2228c9560f1c58639"
+    },
+    {
+      "id": "auth-gateway-check",
+      "cwd": "apps/auth-gateway",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T11:32:25.863451+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/auth-gateway-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:26.139315+00:00",
+      "logSha256": "3381247e3cc1ecf70a3ea11f99e01a819ed43240cadda685ae08d5f80a90bdb3"
+    },
+    {
+      "id": "benchmark-core-check",
+      "cwd": "packages/benchmark-core",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T11:32:25.863688+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/benchmark-core-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:30.151954+00:00",
+      "logSha256": "eea2233e8ff678c38bdca5667b83566ec1b5414b62a6cbf786d8630fcbf10c21"
+    },
+    {
+      "id": "benchmark-worker-check",
+      "cwd": "apps/benchmark-worker",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T11:32:25.864907+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/benchmark-worker-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:35.443550+00:00",
+      "logSha256": "aa86bc6ea81a42bf399a29a03dd8e84bcdf676df9d319c925d7b088338b2968a"
+    },
+    {
+      "id": "check-docker-bundles",
+      "cwd": ".",
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "startedAt": "2026-11-10T11:32:26.139796+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/check-docker-bundles.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:32.845206+00:00",
+      "logSha256": "7d41b0c301e108d92e770f6cfcc7d262686c308dc74390c70519f9b581f8457e"
+    },
+    {
+      "id": "core-build",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T11:31:52.821198+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/core-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:31:53.309715+00:00",
+      "logSha256": "b540e73e6a1e5e49fc1576b3051f2c2b3fa04962ba9f24b639c80ff413091da6"
+    },
+    {
+      "id": "core-targeted",
+      "cwd": "apps/paperbanana-api",
+      "command": "node --import tsx --test tests/model-modality-r21.test.ts tests/execution-capability-r22.test.ts tests/model-card-r22b.test.ts tests/model-modality-phase2.test.ts tests/model-evidence-i4-r24.test.mjs tests/model-evidence-i5-r25.test.mjs tests/model-evidence-i6-r26.test.mjs",
+      "startedAt": "2026-11-10T11:32:25.863688+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/core-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:44.229577+00:00",
+      "tests": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "7a7dd79b322401b7202b8ddc33a3b6685b8fe420d34b5ffc6cc72126596d1990"
+    },
+    {
+      "id": "core-tsc-explicit",
+      "cwd": "apps/paperbanana-api",
+      "command": "npx tsc --noEmit",
+      "startedAt": "2026-11-10T11:32:30.153371+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/core-tsc-explicit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:44.091331+00:00",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "freeze-audit-sources",
+      "cwd": ".",
+      "command": "node scripts/freeze-audit-sources.mjs --check",
+      "startedAt": "2026-11-10T11:32:32.846194+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/freeze-audit-sources.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:34.047623+00:00",
+      "logSha256": "d80e602b846bfcd5222bb32faf4bcad4ce8ca896937b60227cc86ac9344c65bf"
+    },
+    {
+      "id": "freeze-execution-capability",
+      "cwd": ".",
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "startedAt": "2026-11-10T11:32:34.047998+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/freeze-execution-capability.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:42.520186+00:00",
+      "logSha256": "39b87a64e03dd9ddbdaed837dc25ed59413aa4d7cd2667b98bb03bf0fe66d524"
+    },
+    {
+      "id": "gateway-targeted",
+      "cwd": "apps/auth-gateway",
+      "command": "node --test tests/model-modality-r21.test.js tests/execution-capability-r22.test.js tests/model-modality-phase2.test.js tests/model-evidence-i4-r24.test.js tests/model-evidence-i5-r25.test.js tests/model-evidence-i6-r26.test.js",
+      "startedAt": "2026-11-10T11:32:25.864687+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/gateway-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:44.166920+00:00",
+      "tests": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "d27ad968625836bf30192dbe62acacd2d9149d6aab382b598c81a9496981f6e8"
+    },
+    {
+      "id": "generate-model-audit",
+      "cwd": ".",
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "startedAt": "2026-11-10T11:32:35.444385+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/generate-model-audit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:36.066887+00:00",
+      "logSha256": "dbbc800e3318e734ff721660de4fd635b08425652c62ec26790efaf840a2207e"
+    },
+    {
+      "id": "mini-build",
+      "cwd": "apps/miniprogram",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T11:31:49.040314+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/mini-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:31:49.983802+00:00",
+      "logSha256": "94078f769d574efce0aff7a760740165a695296e56182d0f0531b7670dd38f39"
+    },
+    {
+      "id": "mini-full",
+      "cwd": "apps/miniprogram",
+      "command": "npm test",
+      "startedAt": "2026-11-10T11:32:26.061400+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/mini-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:33:02.433838+00:00",
+      "tests": {
+        "tests": 186,
+        "pass": 186,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "1e1bcbf02c58f7143b60e10e6eb92612653e5d967597a7858d24a909c4089f94"
+    },
+    {
+      "id": "miniprogram-check",
+      "cwd": "apps/miniprogram",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T11:32:36.067585+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/miniprogram-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:37.984206+00:00",
+      "logSha256": "38c246209d9a3bf1c4f7fdcd813aa459742b56f49ea9d1e6e0b11b70b574083c"
+    },
+    {
+      "id": "name-invariants",
+      "cwd": ".",
+      "command": "node --test .audit-input/r24/i10-invariants.test.mjs",
+      "startedAt": "2026-11-10T11:32:44.168470+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/name-invariants.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:59.197829+00:00",
+      "tests": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "6c8b164f53370466188b82ee36b31ef0014ab5ac66deb0d0aaec9c6c2ab26931"
+    },
+    {
+      "id": "paperbanana-api-check",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T11:32:37.984860+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/paperbanana-api-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:50.789363+00:00",
+      "logSha256": "711f8fe6b6d9b7ec11df0b7db28f6268875e7790f9a94aad807f396ebd578f3e"
+    },
+    {
+      "id": "report-changed-tests",
+      "cwd": ".",
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "startedAt": "2026-11-10T11:32:42.521020+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/report-changed-tests.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:45.347372+00:00",
+      "logSha256": "c1a02f732236b295edc0df2d13aacfbb990d23a7eb58ff9d93f8156ace54d52b"
+    },
+    {
+      "id": "report-model-image-input-r27",
+      "cwd": ".",
+      "command": "node scripts/report-model-image-input-r27.mjs --check",
+      "startedAt": "2026-11-10T11:32:44.092100+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/report-model-image-input-r27.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:47.089792+00:00",
+      "logSha256": "e7872e2a0a317b698e0adadea4532851c958b7410dedc72acfa7e7fd3d12dc03"
+    },
+    {
+      "id": "report-model-modality-phase2",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "startedAt": "2026-11-10T11:32:45.347736+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/report-model-modality-phase2.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:50.427363+00:00",
+      "logSha256": "9ee4bdd47dfecca12bf50aaadb0a5c767e0e9c0432792d018ec229054d178aad"
+    },
+    {
+      "id": "report-model-modality-r21",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "startedAt": "2026-11-10T11:32:47.091425+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/report-model-modality-r21.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:58.747411+00:00",
+      "logSha256": "4d8dec325ae3aff990bacb21432685fa913be0cb671587f3e7301b6fdb661e5c"
+    },
+    {
+      "id": "report-model-modality-r22b",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "startedAt": "2026-11-10T11:32:50.428043+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/report-model-modality-r22b.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:59.452368+00:00",
+      "logSha256": "402625f141281bb30ad8dd702f02d88d30e80fe0317aedae44ef334f5c1af0ee"
+    },
+    {
+      "id": "report-source-titles-r23",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r23.mjs --check",
+      "startedAt": "2026-11-10T11:32:50.790023+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/report-source-titles-r23.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:52.193849+00:00",
+      "logSha256": "aaf6ec9eaf4ac3cb82ac72d2a1b515d1acd4cbb983b63e019ce5c335a8d44567"
+    },
+    {
+      "id": "report-source-titles-r24",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r24.mjs --check",
+      "startedAt": "2026-11-10T11:32:52.194594+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/report-source-titles-r24.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:33:00.553508+00:00",
+      "logSha256": "d101cf5c36704c8e56a66f8f138928214d64910920b00c454ea174ec64df6c41"
+    },
+    {
+      "id": "scripts-full",
+      "cwd": ".",
+      "command": "node --test scripts/*.test.mjs",
+      "startedAt": "2026-11-10T11:32:44.230416+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/scripts-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:58.792763+00:00",
+      "tests": {
+        "tests": 84,
+        "pass": 84,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "a504e3bf86ed7b717afd70178c7792a69ed2cf2c55c24eedcf119f7523be3b0f"
+    },
+    {
+      "id": "sync-card-display",
+      "cwd": ".",
+      "command": "node scripts/sync-card-display.mjs --check",
+      "startedAt": "2026-11-10T11:32:58.747803+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/sync-card-display.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:59.376232+00:00",
+      "logSha256": "3a963a935b5f55bf2239d2be03f7d40af6b588a22cd07e5dee0bb5834bca39a9"
+    },
+    {
+      "id": "sync-model-catalog",
+      "cwd": ".",
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "startedAt": "2026-11-10T11:32:59.377004+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/sync-model-catalog.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:33:01.999587+00:00",
+      "logSha256": "4b51ceb5731b82fb3b9bee1ec0f0a2af83877edf5bf6578264bfabf47cdf029e"
+    },
+    {
+      "id": "tuyan-knowledge-check",
+      "cwd": "packages/tuyan-knowledge",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T11:32:59.453071+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/tuyan-knowledge-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:32:59.593331+00:00",
+      "logSha256": "477d55b9e6f75596d0927ba1f207125b9854d31fd9d0c5184e4a08899b15efac"
+    },
+    {
+      "id": "web-build",
+      "cwd": "apps/web",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T11:31:49.984307+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/web-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:31:52.820846+00:00",
+      "logSha256": "46659cd7a8c6287e5913b2b288a552bc8a1877a65d25c309c64128c0e8811820"
+    },
+    {
+      "id": "web-full",
+      "cwd": "apps/web",
+      "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+      "startedAt": "2026-11-10T11:30:13.460301+00:00",
+      "log": ".audit-input/r24/i10-validation-logs/web-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T11:33:22.311795+00:00",
+      "tests": {
+        "tests": 1519,
+        "pass": 1519,
+        "fail": 0,
+        "skipped": 0
+      },
+      "logSha256": "f24f886afacd7b67d35b126209ae8553b061f580e3379cbe9c0e5df8f749db85"
+    }
+  ],
+  "totals": {
+    "tests": 1843,
+    "pass": 1843,
+    "fail": 0,
+    "skipped": 0
+  },
+  "maintenanceChecks": [
+    "check-docker-bundles",
+    "freeze-audit-sources",
+    "freeze-execution-capability",
+    "generate-model-audit",
+    "report-changed-tests",
+    "report-model-image-input-r27",
+    "report-model-modality-phase2",
+    "report-model-modality-r21",
+    "report-model-modality-r22b",
+    "report-source-titles-r23",
+    "report-source-titles-r24",
+    "sync-card-display",
+    "sync-model-catalog"
+  ],
+  "titleCounts": {
+    "cardsPerClient": 1064,
+    "urls": 1088,
+    "urlsWithMultipleTitlesBefore": 353,
+    "urlsWithMultipleTitlesAfter": 0,
+    "changedUrls": 993,
+    "titleStringsChanged": 1012,
+    "urlTitlePairsChanged": 1256,
+    "cardSurfaceOccurrences": 18469,
+    "cardSurfaceOccurrencesChanged": 16388,
+    "changedOccurrencesByClient": {
+      "web": 9964,
+      "mini": 6424
+    },
+    "falApiPagesChanged": 65,
+    "falApiOccurrencesChanged": 570
+  },
+  "localeRemovals": [
+    {
+      "file": "apps/web/src/i18n/workbench.en.json",
+      "key": "有条件支持",
+      "value": "Conditionally supported",
+      "remainingLocaleOrUiReferences": 0
+    }
+  ],
+  "mini": {
+    "sourceBytes": 1568548,
+    "limitBytes": 1572864,
+    "remainingBytes": 4316,
+    "olderSizeNeutralGuardBytes": 1569427,
+    "deltaFromHead": 12890,
+    "existingSizeGuards": "Unchanged and passing",
+    "compaction": "Lossless common URL prefixes plus reuse of existing audit.sources indices; complete title dictionary in both helpers"
+  },
+  "invariants": {
+    "cardsPerClient": 1064,
+    "executionRegistryEqualsMain": true,
+    "pickerNamesEqualMain": true,
+    "frozenExecutionTestsAndFixturesUnchanged": true,
+    "sourceUrlsOrderAndFactValuesStatesProvenanceUnchanged": true,
+    "loginFilesUnchanged": true,
+    "sourceTitlesR23ReportUnchanged": true,
+    "sourceTitlesR24PriorSectionsUnchanged": true,
+    "conditionalStateAndDarkSupportPresentationUnchanged": true
+  },
+  "snapshots": {
+    "test-support/fixtures/source-titles-r29-before.json.gz": "e438b2d9c6983d98a924d0e706df98e34a7aeca9157a373f70a52d7a17785a12",
+    "test-support/fixtures/source-title-patches-r29.json.gz": "31086224ad14ee90daec9e5829b9784b1b9e04f647d2d50cab4d4b65d6b5c38a"
+  },
+  "screenshots": {
+    "script": ".audit-input/r24/shots-m10.mjs",
+    "plan": ".audit-input/r24/shots-m10.manifest.json",
+    "status": "prepared-and-syntax-checked-not-run",
+    "plannedShots": 6,
+    "widths": [
+      1280,
+      390
+    ],
+    "deviceScaleFactors": [
+      2,
+      2
+    ],
+    "outputManifest": "manifest.json in the supplied output directory",
+    "assertions": "Every dialog URL maps to one visible title across actual input/output field paragraphs, card tooltips and source links; fal API labels use 渠道资料 · fal · <endpoint name> API 文档."
+  }
+}

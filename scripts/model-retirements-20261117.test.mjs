@@ -16,7 +16,11 @@ test('batch 1 removes exactly 31 catalog identities and preserves every survivin
   assert.deepEqual(Object.fromEntries(['openai', 'siliconflow', 'antling'].map(p => [p, batch.remove.filter(r => r.provider === p).length])), { openai: 20, siliconflow: 8, antling: 3 });
   assert.equal(Object.keys(MODEL_AUDIT_DATA.removed).length, 99);
   assert.equal(Object.values(catalog).reduce((sum, p) => sum + p.models.length, 0), 1033);
-  const retained = Object.fromEntries(Object.entries(catalog).map(([p, value]) => [p, { ...value, models: value.models.filter(m => !removals.has(p + '/' + m.id)) }]));
+  // Main's static catalog omitted the display-only specification. Keep its exact hash
+  // and independently lock the complete merged catalog to the surviving #251 rows.
+  assert.equal(hash(catalog), 'acadc122db56fde4ecddb2dfb9d9b16caac5a2f2ef063395711ddc653b8b81be');
+  const mainModel = ({specificModelSpecifications, ...model}) => model;
+  const retained = Object.fromEntries(Object.entries(catalog).map(([p, value]) => [p, { ...value, models: value.models.filter(m => !removals.has(p + '/' + m.id)).map(mainModel) }]));
   assert.equal(hash(retained), baseline.survivingCatalogSha256);
   const source = read('config/model-catalog-updates.json'), versions = read('config/model-version-audit.json'), sizes = read('config/image-size-contracts.json');
   for (const row of batch.remove) {
@@ -37,7 +41,7 @@ test('batch 1 leaves all 51 protected candidates and their notices unchanged', (
   assert.equal(baseline.protected.length, 51);
   for (const row of baseline.protected) {
     const key = row.provider + '/' + row.id;
-    assert.equal(hash(catalog[row.provider]?.models.find(m => m.id === row.id) ?? null), row.staticSha256, key);
+    assert.equal(hash(catalog[row.provider]?.models.filter(m => m.id === row.id).map(({specificModelSpecifications,...model}) => model)[0] ?? null), row.staticSha256, key);
     assert.deepEqual(MODEL_AUDIT_DATA.notices[key] ?? null, row.notice, key);
     assert.equal(MODEL_AUDIT_DATA.removed[key], undefined, key);
   }

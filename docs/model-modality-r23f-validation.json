@@ -1,0 +1,216 @@
+{
+  "phase": "R23 Phase F",
+  "date": "2026-11-09",
+  "base": "8c456709",
+  "startingHead": "1dcd8b13",
+  "branch": "codex/model-modality-audit",
+  "networkRequests": 0,
+  "gitWrites": 0,
+  "sourceTitleScan": {
+    "counts": {
+      "web": {
+        "cards": 1064,
+        "sourceRows": 2494,
+        "changedTitles": 2193,
+        "changedCards": 1031,
+        "suspiciousTitles": 0
+      },
+      "mini": {
+        "cards": 1064,
+        "sourceRows": 1103,
+        "changedTitles": 969,
+        "changedCards": 962,
+        "suspiciousTitles": 0
+      }
+    },
+    "noticeDialogs": 7,
+    "changedNoticeTitles": 3,
+    "retained": 1151
+  },
+  "totalChangedTitleInstances": 3165,
+  "historicalHintIds": [
+    "deepseek-v4-flash-vision-exp",
+    "deepseek-v4-flash",
+    "deepseek-v3.2",
+    "deepseek-chat-v3-0324",
+    "qwen3.6-max-preview",
+    "qwen3-30b-a3b-instruct-2507",
+    "qwen3-max"
+  ],
+  "historicalHint": "渠道页无此型号",
+  "executionAndPickerNames": {
+    "models": 1064,
+    "fourExecutionLocks": "passed",
+    "namesUnchanged": 1064
+  },
+  "sourceTitleBaseline": {
+    "file": "test-support/fixtures/source-titles-1dcd8b13.json.gz",
+    "gzipBytes": 50327,
+    "uncompressedSha256": "92df8770927c968eb0ef294b9a853eaede1ad6dd28c7372151a70e5ab026a5a9",
+    "historyIndependent": true
+  },
+  "miniBytes": {
+    "resumedBefore": 1575037,
+    "headBefore": 1569099,
+    "source": 1568946,
+    "savedSinceResume": 6091,
+    "deltaVsHead": -153,
+    "runtime": 1143434,
+    "media": 189978,
+    "target": 1570500,
+    "limit": 1572864,
+    "remaining": 3918,
+    "olderLimit": 1569427,
+    "olderRemaining": 481
+  },
+  "suites": {
+    "web": {
+      "cwd": "apps/web",
+      "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+      "status": "passed",
+      "tests": 1482,
+      "pass": 1482,
+      "fail": 0,
+      "skipped": 0,
+      "durationMs": 182473.199
+    },
+    "mini": {
+      "cwd": "apps/miniprogram",
+      "command": "npm test",
+      "status": "passed",
+      "tests": 171,
+      "pass": 171,
+      "fail": 0,
+      "skipped": 0,
+      "durationMs": 29952.152458
+    },
+    "scripts": {
+      "cwd": ".",
+      "command": "node --test scripts/*.test.mjs",
+      "status": "passed",
+      "tests": 58,
+      "pass": 58,
+      "fail": 0,
+      "skipped": 0,
+      "durationMs": 7885.332667
+    },
+    "sharedApi": {
+      "cwd": ".",
+      "command": "node --test packages/api/src/*.test.js",
+      "status": "passed",
+      "tests": 33,
+      "pass": 33,
+      "fail": 0,
+      "skipped": 0,
+      "durationMs": 194.3695
+    },
+    "core": {
+      "cwd": "apps/paperbanana-api",
+      "command": "node --import tsx --test tests/execution-capability-r22.test.ts tests/model-card-r22b.test.ts tests/model-modality-phase2.test.ts",
+      "status": "passed",
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0,
+      "durationMs": 13678.251041
+    },
+    "gateway": {
+      "cwd": ".",
+      "command": "node --test apps/auth-gateway/tests/execution-capability-r22.test.js apps/auth-gateway/tests/model-modality-phase2.test.js",
+      "status": "passed",
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "durationMs": 9255.150959
+    }
+  },
+  "totalPassingTests": 1750,
+  "builds": {
+    "web": {
+      "command": "npm run build",
+      "cwd": "apps/web",
+      "status": "passed"
+    },
+    "mini": {
+      "command": "npm run build",
+      "cwd": "apps/miniprogram",
+      "status": "passed"
+    }
+  },
+  "maintenanceChecks": [
+    {
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/sync-card-display.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/freeze-audit-sources.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/report-source-titles-r23.mjs --check",
+      "exitCode": 0
+    }
+  ],
+  "changedTestReview": {
+    "phaseFAssertionBlocks": 14,
+    "phaseFTestFiles": 10,
+    "flagged": 0,
+    "abbrev7and12": "passed in scripts suite",
+    "savedIdFullObjectEquality": "original assertion retained"
+  },
+  "finalScannerRecheck": {
+    "web": {
+      "tests": 3,
+      "pass": 3
+    },
+    "miniAndScripts": {
+      "tests": 5,
+      "pass": 5
+    },
+    "reason": "Host-with-space and repeated-phrase negative controls strengthened; both rendered/compiled scans and report rechecked."
+  },
+  "preservedFilesCheck": {
+    "miniBudgetTests": "unchanged",
+    "compressedExecutionOracle": "unchanged",
+    "mainPickerNamesFixture": "unchanged",
+    "syncAgentKnowledgeAndSyncWorkflow": "unchanged"
+  },
+  "gitDiffCheck": "passed",
+  "browserAndNative": {
+    "status": "not performed",
+    "reason": "Earlier browser/native rendering boundary remains; DOM and compiled Mini interaction assertions passed."
+  }
+}

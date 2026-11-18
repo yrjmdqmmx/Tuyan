@@ -116,7 +116,9 @@ test('production compact formatter is shared by both numeric rows and exact valu
   const { container } = render(React.createElement(ModelSpecifications, {provider:'tokendance',model:{id:'deepseek-v4-pro'}}));
   assert.equal(screen.getByText(data.context).title, '1,048,576 tokens');
   assert.equal(screen.getByText(data.maxOutput).title, '384K tokens');
-  const source = screen.getByRole('link'); assert.ok(source.title.includes(source.href));
+  const source = screen.getByRole('link');
+  assert.equal(source.title, '');
+  assert.equal(source.getAttribute('href'), data.sources[0]);
   assert.equal(container.querySelectorAll('dl > div').length, 4);
 });
 
@@ -128,9 +130,9 @@ test('scheduled badge is beside the title, preserves full IDs, and tap opens dat
     assert.ok(badge.closest('.tw-catalog-title'));
     assert.equal(view.container.querySelector('.tw-catalog-card-meta code').textContent,id);
     assert.doesNotMatch(view.container.querySelector('.tw-catalog-card-meta').textContent,/将下线/);
-    assert.ok(badge.title.includes(date)); assert.ok(badge.title.includes(replacement));
+    assert.ok(badge.title.includes(date.replace(/(\d{4})-(\d{2})-(\d{2})/g,'$1年$2月$3日'))); assert.ok(badge.title.includes(replacement));
     fireEvent.click(badge);
-    assert.ok(screen.getByRole('dialog').textContent.includes(date));
+    assert.ok(screen.getByRole('dialog').textContent.includes(date.replace(/(\d{4})-(\d{2})-(\d{2})/g,'$1年$2月$3日')));
     view.unmount();
   }
 });

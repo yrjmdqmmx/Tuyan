@@ -727,9 +727,9 @@
         "inputModalities": 997,
         "outputModalities": 967,
         "totalContextTokens": 926,
-        "maxOutputTokens": 607,
+        "maxOutputTokens": 616,
         "contextNumeric": 519,
-        "maxOutputNumeric": 200,
+        "maxOutputNumeric": 209,
         "contextNotApplicable": 407,
         "maxOutputNotApplicable": 407
       },
@@ -772,9 +772,9 @@
           "inputModalities": 68,
           "outputModalities": 68,
           "totalContextTokens": 62,
-          "maxOutputTokens": 12,
+          "maxOutputTokens": 13,
           "contextNumeric": 55,
-          "maxOutputNumeric": 5,
+          "maxOutputNumeric": 6,
           "contextNotApplicable": 7,
           "maxOutputNotApplicable": 7
         },
@@ -838,9 +838,9 @@
           "inputModalities": 71,
           "outputModalities": 71,
           "totalContextTokens": 69,
-          "maxOutputTokens": 37,
+          "maxOutputTokens": 45,
           "contextNumeric": 60,
-          "maxOutputNumeric": 28,
+          "maxOutputNumeric": 36,
           "contextNotApplicable": 9,
           "maxOutputNotApplicable": 9
         },
@@ -1080,14 +1080,14 @@
     "idOnly": {
       "totals": {
         "cards": 1061,
-        "inputModalities": 392,
-        "outputModalities": 386,
-        "totalContextTokens": 379,
-        "maxOutputTokens": 250,
-        "contextNumeric": 288,
-        "maxOutputNumeric": 159,
-        "contextNotApplicable": 91,
-        "maxOutputNotApplicable": 91
+        "inputModalities": 403,
+        "outputModalities": 397,
+        "totalContextTokens": 390,
+        "maxOutputTokens": 260,
+        "contextNumeric": 298,
+        "maxOutputNumeric": 168,
+        "contextNotApplicable": 92,
+        "maxOutputNotApplicable": 92
       },
       "perChannel": {
         "deepseek": {
@@ -1125,12 +1125,12 @@
         },
         "siliconflow": {
           "cards": 68,
-          "inputModalities": 15,
-          "outputModalities": 16,
-          "totalContextTokens": 16,
-          "maxOutputTokens": 8,
-          "contextNumeric": 13,
-          "maxOutputNumeric": 5,
+          "inputModalities": 17,
+          "outputModalities": 18,
+          "totalContextTokens": 18,
+          "maxOutputTokens": 9,
+          "contextNumeric": 15,
+          "maxOutputNumeric": 6,
           "contextNotApplicable": 3,
           "maxOutputNotApplicable": 3
         },
@@ -1191,14 +1191,14 @@
         },
         "openai": {
           "cards": 71,
-          "inputModalities": 37,
-          "outputModalities": 37,
-          "totalContextTokens": 35,
-          "maxOutputTokens": 33,
-          "contextNumeric": 29,
-          "maxOutputNumeric": 27,
-          "contextNotApplicable": 6,
-          "maxOutputNotApplicable": 6
+          "inputModalities": 46,
+          "outputModalities": 46,
+          "totalContextTokens": 44,
+          "maxOutputTokens": 42,
+          "contextNumeric": 37,
+          "maxOutputNumeric": 35,
+          "contextNotApplicable": 7,
+          "maxOutputNotApplicable": 7
         },
         "ark": {
           "cards": 36,

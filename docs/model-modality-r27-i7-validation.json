@@ -1,0 +1,521 @@
+{
+  "phase": "R27 Phase I7",
+  "head": "d1c6399493f4e216cb0cc482c5312cbea8ed2f8d",
+  "decision": "A",
+  "decisionDate": "2026-11-10",
+  "finishedAtUtc": "2026-11-10T01:20:52.247949+00:00",
+  "gitWrites": false,
+  "network": "16 public unauthenticated documentation GETs: 15 original edit/remix pages plus the Ideogram HTML counterpart. No API/inference/paid requests.",
+  "runs": [
+    {
+      "id": "api-full",
+      "cwd": ".",
+      "command": "node --test packages/api/src/*.test.js",
+      "startedAt": "2026-11-10T01:13:36.432323+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/api-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:13:36.600686+00:00",
+      "tests": {
+        "tests": 33,
+        "pass": 33,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "auth-gateway-check",
+      "cwd": "apps/auth-gateway",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T01:17:05.846712+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/auth-gateway-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:05.940825+00:00"
+    },
+    {
+      "id": "benchmark-core-check",
+      "cwd": "packages/benchmark-core",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T01:17:05.846860+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/benchmark-core-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:06.583531+00:00"
+    },
+    {
+      "id": "benchmark-worker-check",
+      "cwd": "apps/benchmark-worker",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T01:17:05.846956+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/benchmark-worker-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:07.634858+00:00"
+    },
+    {
+      "id": "check-docker-bundles",
+      "cwd": ".",
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "startedAt": "2026-11-10T01:17:05.941302+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/check-docker-bundles.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:08.007741+00:00"
+    },
+    {
+      "id": "core-build",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T01:16:22.031621+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/core-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:16:22.469838+00:00"
+    },
+    {
+      "id": "core-targeted",
+      "cwd": "apps/paperbanana-api",
+      "command": "node --import tsx --test tests/model-modality-r21.test.ts tests/execution-capability-r22.test.ts tests/model-card-r22b.test.ts tests/model-modality-phase2.test.ts tests/model-evidence-i4-r24.test.mjs tests/model-evidence-i5-r25.test.mjs tests/model-evidence-i6-r26.test.mjs",
+      "startedAt": "2026-11-10T01:13:36.432463+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/core-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:13:47.491720+00:00",
+      "tests": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "core-tsc-explicit",
+      "cwd": "apps/paperbanana-api",
+      "command": "npx tsc --noEmit",
+      "startedAt": "2026-11-10T01:17:06.584243+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/core-tsc-explicit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:10.717549+00:00"
+    },
+    {
+      "id": "freeze-audit-sources",
+      "cwd": ".",
+      "command": "node scripts/freeze-audit-sources.mjs --check",
+      "startedAt": "2026-11-10T01:17:07.635274+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/freeze-audit-sources.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:08.137444+00:00"
+    },
+    {
+      "id": "freeze-execution-capability",
+      "cwd": ".",
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "startedAt": "2026-11-10T01:17:08.008178+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/freeze-execution-capability.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:11.409229+00:00"
+    },
+    {
+      "id": "gateway-targeted",
+      "cwd": "apps/auth-gateway",
+      "command": "node --test tests/model-modality-r21.test.js tests/execution-capability-r22.test.js tests/model-modality-phase2.test.js tests/model-evidence-i4-r24.test.js tests/model-evidence-i5-r25.test.js tests/model-evidence-i6-r26.test.js",
+      "startedAt": "2026-11-10T01:13:36.434450+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/gateway-targeted.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:13:47.635499+00:00",
+      "tests": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "generate-model-audit",
+      "cwd": ".",
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "startedAt": "2026-11-10T01:17:08.137789+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/generate-model-audit.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:08.323682+00:00"
+    },
+    {
+      "id": "mini-build",
+      "cwd": "apps/miniprogram",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T01:16:18.488273+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/mini-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:16:19.372419+00:00"
+    },
+    {
+      "id": "mini-full",
+      "cwd": "apps/miniprogram",
+      "command": "npm test",
+      "startedAt": "2026-11-10T01:17:12.896725+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/mini-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:35.840133+00:00",
+      "tests": {
+        "tests": 181,
+        "pass": 181,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "miniprogram-check",
+      "cwd": "apps/miniprogram",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T01:17:08.324041+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/miniprogram-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:08.871498+00:00"
+    },
+    {
+      "id": "name-invariants",
+      "cwd": ".",
+      "command": "node --test .audit-input/r24/i7-names.test.mjs",
+      "startedAt": "2026-11-10T01:18:37.710524+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/name-invariants.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:18:38.755377+00:00",
+      "tests": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "paperbanana-api-check",
+      "cwd": "apps/paperbanana-api",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T01:17:08.871837+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/paperbanana-api-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:12.475687+00:00"
+    },
+    {
+      "id": "report-changed-tests",
+      "cwd": ".",
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "startedAt": "2026-11-10T01:18:37.710267+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/report-changed-tests.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:18:38.870135+00:00"
+    },
+    {
+      "id": "report-model-image-input-r27",
+      "cwd": ".",
+      "command": "node scripts/report-model-image-input-r27.mjs --check",
+      "startedAt": "2026-11-10T01:18:37.713055+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/report-model-image-input-r27.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:18:38.308484+00:00"
+    },
+    {
+      "id": "report-model-modality-phase2",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "startedAt": "2026-11-10T01:17:11.409636+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/report-model-modality-phase2.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:14.796588+00:00"
+    },
+    {
+      "id": "report-model-modality-r21",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "startedAt": "2026-11-10T01:17:11.605672+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/report-model-modality-r21.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:25.587334+00:00"
+    },
+    {
+      "id": "report-model-modality-r22b",
+      "cwd": ".",
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "startedAt": "2026-11-10T01:18:03.630978+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/report-model-modality-r22b.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:18:09.378461+00:00"
+    },
+    {
+      "id": "report-source-titles-r23",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r23.mjs --check",
+      "startedAt": "2026-11-10T01:17:14.797330+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/report-source-titles-r23.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:17.811375+00:00"
+    },
+    {
+      "id": "report-source-titles-r24",
+      "cwd": ".",
+      "command": "node scripts/report-source-titles-r24.mjs --check",
+      "startedAt": "2026-11-10T01:17:17.811792+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/report-source-titles-r24.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:24.833277+00:00"
+    },
+    {
+      "id": "scripts-full",
+      "cwd": ".",
+      "command": "node --test scripts/*.test.mjs",
+      "startedAt": "2026-11-10T01:17:12.897086+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/scripts-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:26.721946+00:00",
+      "tests": {
+        "tests": 77,
+        "pass": 77,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "sync-card-display",
+      "cwd": ".",
+      "command": "node scripts/sync-card-display.mjs --check",
+      "startedAt": "2026-11-10T01:17:24.834230+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/sync-card-display.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:25.344794+00:00"
+    },
+    {
+      "id": "sync-model-catalog",
+      "cwd": ".",
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "startedAt": "2026-11-10T01:17:25.345525+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/sync-model-catalog.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:28.122228+00:00"
+    },
+    {
+      "id": "tuyan-knowledge-check",
+      "cwd": "packages/tuyan-knowledge",
+      "command": "npm run check",
+      "startedAt": "2026-11-10T01:17:25.520059+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/tuyan-knowledge-check.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:17:25.709843+00:00"
+    },
+    {
+      "id": "web-build",
+      "cwd": "apps/web",
+      "command": "npm run build",
+      "startedAt": "2026-11-10T01:16:19.373249+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/web-build.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:16:22.031259+00:00"
+    },
+    {
+      "id": "web-full",
+      "cwd": "apps/web",
+      "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+      "startedAt": "2026-11-10T01:17:12.897232+00:00",
+      "log": ".audit-input/r24/i7-validation-logs/web-full.log",
+      "exitCode": 0,
+      "finishedAt": "2026-11-10T01:19:56.750752+00:00",
+      "tests": {
+        "tests": 1497,
+        "pass": 1497,
+        "fail": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "totals": {
+    "tests": 1808,
+    "pass": 1808,
+    "fail": 0,
+    "skipped": 0
+  },
+  "mini": {
+    "bytes": 1565030,
+    "limit": 1572864,
+    "remaining": 7834,
+    "beforeBytes": 1562992,
+    "deltaBytes": 2038,
+    "stricterUnchangedGuard": 1569427
+  },
+  "cards": {
+    "web": 1064,
+    "mini": 1064,
+    "changedPerClient": 15,
+    "unchangedPerClient": 1049,
+    "unexpectedChanges": 0,
+    "namesMatchMain": true,
+    "executionLocksUnchanged": true,
+    "comparison": "docs/model-modality-r27-i7-card-diff.json"
+  },
+  "reverification": {
+    "verifiedModels": 15,
+    "failedQuotes": 0,
+    "publicGets": 16,
+    "review": "config/channel-audit/review-r27-20261110.json",
+    "models": [
+      {
+        "identity": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:09:53.755958+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:53.755958+08:00",
+        "sha256": "bb1b134f114937d57af83a06c588b5cda6030fb662598dbff801f2ddbba0beda"
+      },
+      {
+        "identity": "fal/blackforestlabs/flux-3/klein/text-to-image",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:09:53.475512+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:53.475512+08:00",
+        "sha256": "22ac0fe4c4f5d4895e5bc50fa0d84606c2b3e0907211a44cec1f46e8c3ba4a7f"
+      },
+      {
+        "identity": "fal/blackforestlabs/flux-3/text-to-image",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:09:53.455854+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:53.455854+08:00",
+        "sha256": "8ca20193de38fb8925d49ebcb5e34d35c3780f8dc8959a2ed19ed54815e7485f"
+      },
+      {
+        "identity": "fal/bytedance/seedream/v5/flash/text-to-image",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:09:53.496375+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:53.496375+08:00",
+        "sha256": "67770f34e289735e05db52590c1c660b42a7a475fc0d1085b94f3cb5f2ad97ed"
+      },
+      {
+        "identity": "fal/bytedance/seedream/v5/pro/text-to-image",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:09:55.850544+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:55.850544+08:00",
+        "sha256": "28405bf51e3f02178529277ea48deba0e4d99e28addaef431d5ba96126655886"
+      },
+      {
+        "identity": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:09:55.881201+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:55.881201+08:00",
+        "sha256": "73aa59452db469f92890909e146f6de798d200991a31167876182a85bb1cc425"
+      },
+      {
+        "identity": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:09:55.994990+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:55.994990+08:00",
+        "sha256": "97627a6441cae8fb41daaf156c1f7b749c2f4d5af9d533a1531d9dfd0aca4494"
+      },
+      {
+        "identity": "fal/fal-ai/flux-2-pro",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:09:55.863823+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:55.863823+08:00",
+        "sha256": "d66271c4d6b304c8f7816235b5659a9c1d80cccccf409e58b271331f030d9535"
+      },
+      {
+        "identity": "fal/krea/v3/text-to-image",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:09:58.174039+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:58.174039+08:00",
+        "sha256": "b48cbb374cf9255847ad8ac2fc693879f14bf1ac5a3996f1a10913dd34d1b151"
+      },
+      {
+        "identity": "fal/meta/muse-image/text-to-image",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:09:57.987905+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:57.987905+08:00",
+        "sha256": "0f83d7f2e2b8d48900aa34b315514ed5de0c1edb5b7ba80916004ae87d9cbce7"
+      },
+      {
+        "identity": "fal/openai/gpt-image-2.5/flare/text-to-image",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:09:58.103925+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:58.103925+08:00",
+        "sha256": "caef0591287923fff6d8c52faaae698c8938b0fa77b626a0249b10e5c101496a"
+      },
+      {
+        "identity": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:09:58.131065+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:58.131065+08:00",
+        "sha256": "8d42b3b8c50812594a1eb92df188c4c173f9c72863f9aae560d1200e38941834"
+      },
+      {
+        "identity": "fal/xai/grok-imagine-image",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:10:00.255718+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:10:00.255718+08:00",
+        "sha256": "49c4c3e60bb6c259cf2ba506ef25c148066900c1cbf8a882f3e37c8364c5c139"
+      },
+      {
+        "identity": "fal/xai/grok-imagine-image/quality/text-to-image",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:10:00.234235+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:10:00.234235+08:00",
+        "sha256": "f9a35f7c54b35e98b392ad5ded93be40f2db83e9b7f10860726646378b7336bd"
+      },
+      {
+        "identity": "ideogram/ideogram-v4",
+        "httpStatus": 200,
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "fetchedAtUtc": "2026-11-10T01:09:59.924633+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:59.924633+08:00",
+        "sha256": "61b12efae6884c624b4879639c96f235e903fd8d60198efeab0c85a1edf33ab6"
+      }
+    ]
+  },
+  "maintenanceChecks": [
+    "check-docker-bundles",
+    "freeze-audit-sources",
+    "freeze-execution-capability",
+    "generate-model-audit",
+    "report-changed-tests",
+    "report-model-image-input-r27",
+    "report-model-modality-phase2",
+    "report-model-modality-r21",
+    "report-model-modality-r22b",
+    "report-source-titles-r23",
+    "report-source-titles-r24",
+    "sync-card-display",
+    "sync-model-catalog"
+  ],
+  "screenshots": {
+    "status": "prepared-syntax-checked-not-run",
+    "script": ".audit-input/r24/shots-m7.mjs",
+    "manifest": ".audit-input/r24/shots-m7.manifest.json",
+    "widths": [
+      1280,
+      390
+    ],
+    "shots": 2
+  },
+  "preliminaryFailuresResolved": [
+    "Updated Phase 2 current expectations for founder decision A while leaving historical R21 and Phase 2 reports unchanged.",
+    "Regenerated source inventories and 15 exact R9 source URL/title expectations; Web source rows 2452 to 2462.",
+    "Preserved six previously visible output field citations during Mini compaction.",
+    "Regenerated changed-test ledger and the live R22B source-row count; all final checks pass."
+  ]
+}

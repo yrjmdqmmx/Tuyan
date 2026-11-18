@@ -1,0 +1,3129 @@
+{
+  "fal/alibaba/qwen-image-3/text-to-image": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Qwen Image 3 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Qwen Image 3 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Qwen Image 3 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Qwen Image 3 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/bytedance/seedream/v5/pro/text-to-image": [
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Seedream（v5，pro Text To Image API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Seedream（v5，pro Text To Image API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specSources/1",
+      "after": {
+        "url": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+        "label": "官方文档 · fal · Seedream（v5，pro） API 文档"
+      }
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/bytedance/seedream/v4.5/text-to-image": [
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Bytedance Seedream（v4.5 Text To Image API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Bytedance Seedream（v4.5 Text To Image API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specSources/1",
+      "after": {
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+        "label": "官方文档 · fal · Seedream（v4.5） API 文档"
+      }
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/bytedance/seedream/v4/text-to-image": [
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Bytedance Seedream V4 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Bytedance Seedream V4 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specSources/1",
+      "after": {
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+        "label": "官方文档 · fal · Seedream（v4） API 文档"
+      }
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/fast-sdxl": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/fast-sdxl/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/fast-sdxl/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/fast-sdxl/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/fast-sdxl/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Fast SDXL API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Fast SDXL API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Fast SDXL API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Fast SDXL API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/fast-sdxl/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/fast-sdxl/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux-2": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-2/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-2/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux-2-flex": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2-flex/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2-flex/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2-flex/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2-flex/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 [flex] API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 [flex] API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 [flex] API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 [flex] API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-2-flex/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-2-flex/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux-2-pro": [
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2-pro/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2-pro/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 [pro] API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 [pro] API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specSources/1",
+      "after": {
+        "url": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+        "label": "官方文档 · fal · FLUX 2 Pro API 文档"
+      }
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-2-pro/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux-2/flash": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/flash/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/flash/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/flash/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/flash/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX-2（flash API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX-2（flash API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX-2（flash API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX-2（flash API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-2/flash/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-2/flash/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux-2/klein/9b": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 [klein] 9B API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 [klein] 9B API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 [klein] 9B API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.2 [klein] 9B API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux-2/turbo": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/turbo/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/turbo/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/turbo/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-2/turbo/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX-2（turbo API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX-2（turbo API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX-2（turbo API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX-2（turbo API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-2/turbo/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-2/turbo/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux-kontext-lora": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-kontext-lora/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-kontext-lora/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-kontext-lora/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-kontext-lora/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Kontext LoRA API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/inputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Kontext LoRA API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Kontext LoRA API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Kontext LoRA API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Kontext LoRA API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Kontext LoRA API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-kontext-lora/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-kontext-lora/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux-pro/kontext": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-pro/kontext/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-pro/kontext/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-pro/kontext/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-pro/kontext/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Pro Kontext API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/inputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Pro Kontext API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Pro Kontext API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Pro Kontext API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Pro Kontext API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Pro Kontext API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-pro/kontext/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-pro/kontext/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux-pro/v1.1": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Pro（V1.1 API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Pro（V1.1 API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Pro（V1.1 API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Pro（V1.1 API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux-pro/v1.1-ultra": [
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Pro（V1.1 Ultra API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Pro（V1.1 Ultra API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：图研输入要求\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：图研输入要求\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux-1/schnell": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-1/schnell/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-1/schnell/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-1/schnell/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-1/schnell/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.1 [schnell] API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.1 [schnell] API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.1 [schnell] API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX.1 [schnell] API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-1/schnell/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-1/schnell/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux-lora": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-lora/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-lora/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-lora/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux-lora/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX LoRA API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX LoRA API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX LoRA API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX LoRA API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-lora/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux-lora/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux/dev": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux/dev/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux/dev/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux/dev/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux/dev/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Dev API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Dev API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Dev API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Dev API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux/dev/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux/dev/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/flux/schnell": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux/schnell/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux/schnell/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux/schnell/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/flux/schnell/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Schnell API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Schnell API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Schnell API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · FLUX Schnell API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux/schnell/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/flux/schnell/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/ideogram/v3": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/ideogram/v3/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/ideogram/v3/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/ideogram/v3/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/ideogram/v3/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Ideogram V3 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Ideogram V3 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Ideogram V3 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Ideogram V3 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/ideogram/v3/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/ideogram/v3/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/qwen-image": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/qwen-image/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/qwen-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/qwen-image/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/qwen-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Qwen Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Qwen Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Qwen Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Qwen Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/qwen-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/qwen-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/recraft/v4/pro/text-to-image": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Recraft V4 Pro Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Recraft V4 Pro Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Recraft V4 Pro Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Recraft V4 Pro Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/recraft/v3/text-to-image": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Recraft V3 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Recraft V3 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Recraft V3 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Recraft V3 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/google/nano-banana-2.1": [
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "图研既有核实（2026-11-09）",
+      "after": "图研既有核实 · Google · Gemini Nano Banana 2.1（2026-11-09）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/1/tooltip",
+      "before": "图研既有核实（2026-11-09）",
+      "after": "图研既有核实 · Google · Gemini Nano Banana 2.1（2026-11-09）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/2/tooltip",
+      "before": "图研既有核实（2026-11-09）",
+      "after": "图研既有核实 · Google · Gemini Nano Banana 2.1（2026-11-09）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/3/accessibleLabel",
+      "before": "音频：未标注 · 图研既有核实",
+      "after": "音频：未标注 · 图研既有核实 · Google · Gemini Nano Banana 2.1"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/3/tooltip",
+      "before": "未标注 · 图研既有核实",
+      "after": "未标注 · 图研既有核实 · Google · Gemini Nano Banana 2.1"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+    },
+    {
+      "path": "/mini/audit/fields/maxOutputTokens/sourceUrl",
+      "before": null,
+      "after": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+    }
+  ],
+  "fal/openai/gpt-image-2.5/flare/text-to-image": [
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · GPT Image 2.5 Flare Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · GPT Image 2.5 Flare Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specSources/1",
+      "after": {
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+        "label": "官方文档 · fal · GPT Image 2.5 Flare API 文档"
+      }
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/openai/gpt-image-2.5/sunburst/text-to-image": [
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · GPT Image 2.5 Sunburst Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · GPT Image 2.5 Sunburst Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specSources/1",
+      "after": {
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+        "label": "官方文档 · fal · GPT Image 2.5 Sunburst API 文档"
+      }
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/openai/gpt-image-2": [
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/openai/gpt-image-2/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/openai/gpt-image-2/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · GPT Image 2 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · GPT Image 2 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：图研输入要求\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：图研输入要求\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/openai/gpt-image-2/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/gpt-image-1.5": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/gpt-image-1.5/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/gpt-image-1.5/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/gpt-image-1.5/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/gpt-image-1.5/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · GPT Image 1.5 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · GPT Image 1.5 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · GPT Image 1.5 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · GPT Image 1.5 API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/gpt-image-1.5/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/gpt-image-1.5/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/xai/grok-imagine-image/v2.0/text-to-image": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Grok Imagine Image（V2.0 Text To Image API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Grok Imagine Image（V2.0 Text To Image API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Grok Imagine Image（V2.0 Text To Image API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Grok Imagine Image（V2.0 Text To Image API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/xai/grok-imagine-image": [
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/xai/grok-imagine-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/xai/grok-imagine-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Grok Imagine Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Grok Imagine Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specSources/1",
+      "after": {
+        "url": "https://fal.ai/models/xai/grok-imagine-image/api",
+        "label": "官方文档 · fal · Grok Imagine Image API 文档"
+      }
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/xai/grok-imagine-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/xai/grok-imagine-image/quality/text-to-image": [
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Grok Imagine Image Quality Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Grok Imagine Image Quality Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specSources/1",
+      "after": {
+        "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+        "label": "官方文档 · fal · Grok Imagine Image（Quality） API 文档"
+      }
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/bria/fibo-edit-1.5/edit": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Fibo Edit 1.5（Edit API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/inputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Fibo Edit 1.5（Edit API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Fibo Edit 1.5（Edit API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Fibo Edit 1.5（Edit API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Fibo Edit 1.5（Edit API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Fibo Edit 1.5（Edit API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/bria/fibo-gen-1.5/text-to-image": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Fibo Gen 1.5 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Fibo Gen 1.5 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Fibo Gen 1.5 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Fibo Gen 1.5 Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/krea-2/turbo": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/krea-2/turbo/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/krea-2/turbo/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/krea-2/turbo/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/krea-2/turbo/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Krea 2（Turbo API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Krea 2（Turbo API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Krea 2（Turbo API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Krea 2（Turbo API 文档）（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/krea-2/turbo/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/krea-2/turbo/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/fal-ai/z-image/turbo": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/z-image/turbo/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/z-image/turbo/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/z-image/turbo/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/fal-ai/z-image/turbo/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Z Image Turbo API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Z Image Turbo API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Z Image Turbo API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Z Image Turbo API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/z-image/turbo/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/fal-ai/z-image/turbo/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/krea/v2/large/text-to-image": [
+    {
+      "path": "/web/data/fields/inputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/krea/v2/large/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/krea/v2/large/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/inputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/krea/v2/large/text-to-image/api"
+    },
+    {
+      "path": "/web/data/inputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/krea/v2/large/text-to-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/inputIcons/0/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · V2 Large Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · V2 Large Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/0",
+      "before": "输入：渠道公布",
+      "after": "输入：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/0/icons/0/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · V2 Large Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · V2 Large Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/krea/v2/large/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/inputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/krea/v2/large/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ],
+  "fal/meta/muse-image/text-to-image": [
+    {
+      "path": "/web/data/fields/outputModalities/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/meta/muse-image/text-to-image/api"
+    },
+    {
+      "path": "/web/data/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/data/outputFact/sourceUrl",
+      "before": "https://api.fal.ai/v1/models",
+      "after": "https://fal.ai/models/meta/muse-image/text-to-image/api"
+    },
+    {
+      "path": "/web/data/outputFact/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    },
+    {
+      "path": "/web/outputIcons/1/tooltip",
+      "before": "渠道资料 · API · 模型列表（2026-11-09）",
+      "after": "渠道资料 · fal · Muse Image Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/web/fieldSources/1",
+      "before": "输出：渠道公布",
+      "after": "输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specRows/1/icons/1/tooltip",
+      "before": "渠道资料（2026-11-09）",
+      "after": "渠道资料 · fal · Muse Image Text To Image API 文档（2026-11-10）"
+    },
+    {
+      "path": "/mini/card/specSources/1",
+      "after": {
+        "url": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+        "label": "官方文档 · fal · Muse Image API 文档"
+      }
+    },
+    {
+      "path": "/mini/card/auditMessage",
+      "before": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布",
+      "after": "核实日期：2026-11-09\n输入：渠道公布（核实日期：2026-11-10）\n输出：渠道公布（核实日期：2026-11-10）"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/sourceUrl",
+      "before": null,
+      "after": "https://fal.ai/models/meta/muse-image/text-to-image/api"
+    },
+    {
+      "path": "/mini/audit/fields/outputModalities/verifiedAt",
+      "before": "2026-11-09",
+      "after": "2026-11-10"
+    }
+  ]
+}

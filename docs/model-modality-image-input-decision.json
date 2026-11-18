@@ -1,0 +1,2840 @@
+{
+  "title": "R27 Phase I7 — 创始人已决定 A",
+  "status": "创始人已决定 A",
+  "decision": {
+    "option": "A",
+    "id": "restore-image-supported",
+    "date": "2026-11-10",
+    "scope": "Display layer only; image input supported on the 15 directly editable drawing cards. Execution capabilities unchanged."
+  },
+  "recommendation": null,
+  "verificationDateAsiaShanghai": "2026-11-10",
+  "generatedAtUtc": "2026-11-09T20:37:12.932601+00:00",
+  "generatedAtAsiaShanghai": "2026-11-10T04:37:12.932601+08:00",
+  "scope": {
+    "directEditGroupPredicate": "capabilities.imageEditMode === 'direct-edit'",
+    "groupDefinitionSource": "../apps/web/src/lib/modelRegistry.js:112",
+    "groupPresentationSource": "../apps/web/src/lib/modelRegistry.js:166",
+    "directEditGroupCount": 274,
+    "filter": "Archived main input includes image and current input no longer includes image; current image icon is unknown.",
+    "affectedModels": 15,
+    "channelCounts": {
+      "fal": 14,
+      "ideogram": 1
+    }
+  },
+  "method": {
+    "baseline": "Execute archived 8c456709 STATIC_MODEL_REGISTRY and modelCardSpecifications via test-support/execution-capability.mjs productBundle. All 9 archived files verified against the frozen SHA-256 manifest.",
+    "baselineArchive": "../test-support/archive/model-card-sources.json.gz",
+    "baselineManifest": "../test-support/archive/manifest.json",
+    "current": "Execute current STATIC_MODEL_REGISTRY and modelCardSpecifications via in-memory esbuild and independently via node --import ./apps/web/node_modules/tsx/dist/loader.mjs; all 15 full-model and saved-ID results agree.",
+    "currentResolver": "../apps/web/src/lib/modelCardSpecifications.js:54",
+    "iconResolver": "../packages/api/src/modality-presentation.mjs:6",
+    "fetch": "Fresh unauthenticated public HTTPS GETs using curl --disable, no authentication, browser-style User-Agent and Cache-Control: no-cache; no inference, paid calls, sign-in or examples executed.",
+    "userAgent": "Mozilla/5.0 (compatible; Tuyan-public-doc-review/1.0)",
+    "timestamps": "Actual GET completion timestamps; 2026-11-10 in Asia/Shanghai corresponds to 2026-11-09 UTC during this capture.",
+    "quotes": "Verbatim source wording. HTML tags and script/style contents removed; whitespace normalized between text nodes. Markdown quote copied directly. Quotes checked as exact substrings.",
+    "limitations": "Documentation evidence only; execution, account access and model output were not tested. A failed fetch or absent parameter is not negative capability proof."
+  },
+  "validation": {
+    "tsxMatchesInMemoryBundle": 15,
+    "idOnlyMatchesFullModel": 15,
+    "imageIconUnknown": 15,
+    "directEditStillTrue": 15,
+    "olderFixtureMatches": 5,
+    "baselineArchiveFilesVerified": 9,
+    "freshFetches": 33,
+    "http200": 32,
+    "http404": 1,
+    "primaryQuotesVerified": 15,
+    "productSourceFilesUnchanged": 5094
+  },
+  "rows": [
+    {
+      "model": "FLUX.3 Klein Base",
+      "modelId": "blackforestlabs/flux-3/klein/base/text-to-image",
+      "channel": "fal",
+      "identity": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "sourceUrls": [
+            "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+            "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api"
+          ],
+          "verifiedAt": "2026-10-16"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/blackforestlabs/flux-3/klein/base/text-to-image\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "blackforestlabs/flux-3/klein/base/edit-image",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "The reference images to edit or compose from (up to 10).",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:33:53.059413+00:00",
+        "asiaShanghai": "2026-11-10T04:33:53.059413+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F14",
+        "allFetchIds": [
+          "F13",
+          "F14"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:51.289974+00:00",
+        "fetchedAtUtc": "2026-11-10T01:09:53.755958+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:53.755958+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+        "curlExitCode": 0,
+        "sha256": "bb1b134f114937d57af83a06c588b5cda6030fb662598dbff801f2ddbba0beda",
+        "bytes": 386481,
+        "body": ".audit-input/r24/fetches/i7-F14.html",
+        "quote": "The reference images to edit or compose from (up to 10).",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "FLUX.3 Klein",
+      "modelId": "blackforestlabs/flux-3/klein/text-to-image",
+      "channel": "fal",
+      "identity": "fal/blackforestlabs/flux-3/klein/text-to-image",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "sourceUrls": [
+            "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+            "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api"
+          ],
+          "verifiedAt": "2026-10-16"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/blackforestlabs/flux-3/klein/text-to-image\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "blackforestlabs/flux-3/klein/edit-image",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "The reference images to edit or compose from (up to 10).",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:33:53.481548+00:00",
+        "asiaShanghai": "2026-11-10T04:33:53.481548+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F16",
+        "allFetchIds": [
+          "F15",
+          "F16"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/blackforestlabs/flux-3/klein/text-to-image",
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:51.291072+00:00",
+        "fetchedAtUtc": "2026-11-10T01:09:53.475512+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:53.475512+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+        "curlExitCode": 0,
+        "sha256": "22ac0fe4c4f5d4895e5bc50fa0d84606c2b3e0907211a44cec1f46e8c3ba4a7f",
+        "bytes": 392160,
+        "body": ".audit-input/r24/fetches/i7-F16.html",
+        "quote": "The reference images to edit or compose from (up to 10).",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "FLUX.3",
+      "modelId": "blackforestlabs/flux-3/text-to-image",
+      "channel": "fal",
+      "identity": "fal/blackforestlabs/flux-3/text-to-image",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+          "sourceUrls": [
+            "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+            "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api"
+          ],
+          "verifiedAt": "2026-10-09"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/blackforestlabs/flux-3/text-to-image\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "blackforestlabs/flux-3/edit-image",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "Reference image URLs or data URIs, in image 1 through image 10 order.",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:33:53.341539+00:00",
+        "asiaShanghai": "2026-11-10T04:33:53.341539+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F18",
+        "allFetchIds": [
+          "F17",
+          "F18"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/blackforestlabs/flux-3/text-to-image",
+        "url": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:51.292568+00:00",
+        "fetchedAtUtc": "2026-11-10T01:09:53.455854+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:53.455854+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+        "curlExitCode": 0,
+        "sha256": "8ca20193de38fb8925d49ebcb5e34d35c3780f8dc8959a2ed19ed54815e7485f",
+        "bytes": 344676,
+        "body": ".audit-input/r24/fetches/i7-F18.html",
+        "quote": "Reference image URLs or data URIs, in image 1 through image 10 order.",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "Seedream v5 Flash",
+      "modelId": "bytedance/seedream/v5/flash/text-to-image",
+      "channel": "fal",
+      "identity": "fal/bytedance/seedream/v5/flash/text-to-image",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+          "sourceUrls": [
+            "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+            "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api"
+          ],
+          "verifiedAt": "2026-10-09"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/bytedance/seedream/v5/flash/text-to-image\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "bytedance/seedream/v5/flash/edit",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "List of URLs of input reference images.",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:33:47.881990+00:00",
+        "asiaShanghai": "2026-11-10T04:33:47.881990+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F04",
+        "allFetchIds": [
+          "F03",
+          "F04"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/bytedance/seedream/v5/flash/text-to-image",
+        "url": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:51.292664+00:00",
+        "fetchedAtUtc": "2026-11-10T01:09:53.496375+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:53.496375+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+        "curlExitCode": 0,
+        "sha256": "67770f34e289735e05db52590c1c660b42a7a475fc0d1085b94f3cb5f2ad97ed",
+        "bytes": 355151,
+        "body": ".audit-input/r24/fetches/i7-F04.html",
+        "quote": "List of URLs of input reference images.",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "Seedream · v5 · pro",
+      "modelId": "bytedance/seedream/v5/pro/text-to-image",
+      "channel": "fal",
+      "identity": "fal/bytedance/seedream/v5/pro/text-to-image",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/bytedance/seedream/v5/pro/text-to-image\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "bytedance/seedream/v5/pro/edit",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "List of URLs of input reference images.",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:33:47.827283+00:00",
+        "asiaShanghai": "2026-11-10T04:33:47.827283+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F06",
+        "allFetchIds": [
+          "F05",
+          "F06"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/bytedance/seedream/v5/pro/text-to-image",
+        "url": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:53.475733+00:00",
+        "fetchedAtUtc": "2026-11-10T01:09:55.850544+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:55.850544+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+        "curlExitCode": 0,
+        "sha256": "28405bf51e3f02178529277ea48deba0e4d99e28addaef431d5ba96126655886",
+        "bytes": 364679,
+        "body": ".audit-input/r24/fetches/i7-F06.html",
+        "quote": "List of URLs of input reference images.",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "Seedream · v4.5",
+      "modelId": "fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "channel": "fal",
+      "identity": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/fal-ai/bytedance/seedream/v4.5/text-to-image\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "fal-ai/bytedance/seedream/v4.5/edit",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "List of URLs of input images for editing.",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:33:50.433327+00:00",
+        "asiaShanghai": "2026-11-10T04:33:50.433327+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F08",
+        "allFetchIds": [
+          "F07",
+          "F08"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:53.492268+00:00",
+        "fetchedAtUtc": "2026-11-10T01:09:55.881201+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:55.881201+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+        "curlExitCode": 0,
+        "sha256": "73aa59452db469f92890909e146f6de798d200991a31167876182a85bb1cc425",
+        "bytes": 357028,
+        "body": ".audit-input/r24/fetches/i7-F08.html",
+        "quote": "List of URLs of input images for editing.",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "Seedream · v4",
+      "modelId": "fal-ai/bytedance/seedream/v4/text-to-image",
+      "channel": "fal",
+      "identity": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/fal-ai/bytedance/seedream/v4/text-to-image\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "fal-ai/bytedance/seedream/v4/edit",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "List of URLs of input images for editing.",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:33:50.274641+00:00",
+        "asiaShanghai": "2026-11-10T04:33:50.274641+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F10",
+        "allFetchIds": [
+          "F09",
+          "F10"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+        "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:53.506653+00:00",
+        "fetchedAtUtc": "2026-11-10T01:09:55.994990+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:55.994990+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+        "curlExitCode": 0,
+        "sha256": "97627a6441cae8fb41daaf156c1f7b749c2f4d5af9d533a1531d9dfd0aca4494",
+        "bytes": 361343,
+        "body": ".audit-input/r24/fetches/i7-F10.html",
+        "quote": "List of URLs of input images for editing.",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "FLUX-2-pro",
+      "modelId": "fal-ai/flux-2-pro",
+      "channel": "fal",
+      "identity": "fal/fal-ai/flux-2-pro",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/fal-ai/flux-2-pro\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "fal-ai/flux-2-pro/edit",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "List of URLs of input images for editing",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:33:50.618885+00:00",
+        "asiaShanghai": "2026-11-10T04:33:50.618885+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F12",
+        "allFetchIds": [
+          "F11",
+          "F12"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/fal-ai/flux-2-pro",
+        "url": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:53.773978+00:00",
+        "fetchedAtUtc": "2026-11-10T01:09:55.863823+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:55.863823+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+        "curlExitCode": 0,
+        "sha256": "d66271c4d6b304c8f7816235b5659a9c1d80cccccf409e58b271331f030d9535",
+        "bytes": 354427,
+        "body": ".audit-input/r24/fetches/i7-F12.html",
+        "quote": "List of URLs of input images for editing",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "Krea 3",
+      "modelId": "krea/v3/text-to-image",
+      "channel": "fal",
+      "identity": "fal/krea/v3/text-to-image",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "catalog",
+          "sourceUrl": "https://fal.ai/models/krea/v3/text-to-image/api",
+          "sourceUrls": [
+            "https://fal.ai/models/krea/v3/text-to-image/api",
+            "https://fal.ai/models/krea/v3/edit/api"
+          ],
+          "verifiedAt": "2026-10-19"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/krea/v3/text-to-image/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/krea/v3/text-to-image\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/krea/v3/text-to-image/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "krea/v3/edit",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "Reference images to edit or combine (1-8).",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/krea/v3/edit/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:33:59.620768+00:00",
+        "asiaShanghai": "2026-11-10T04:33:59.620768+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F28",
+        "allFetchIds": [
+          "F27",
+          "F28"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/krea/v3/text-to-image",
+        "url": "https://fal.ai/models/krea/v3/edit/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:55.891608+00:00",
+        "fetchedAtUtc": "2026-11-10T01:09:58.174039+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:58.174039+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/krea/v3/edit/api",
+        "curlExitCode": 0,
+        "sha256": "b48cbb374cf9255847ad8ac2fc693879f14bf1ac5a3996f1a10913dd34d1b151",
+        "bytes": 369892,
+        "body": ".audit-input/r24/fetches/i7-F28.html",
+        "quote": "Reference images to edit or combine (1-8).",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/krea/v3/edit/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "muse-image",
+      "modelId": "meta/muse-image/text-to-image",
+      "channel": "fal",
+      "identity": "fal/meta/muse-image/text-to-image",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/meta/muse-image/text-to-image\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "meta/muse-image/edit",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "Reference images used for the edit. Provide between 1 and 10 HTTP(S) or data URLs.",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/meta/muse-image/edit/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:34:00.574461+00:00",
+        "asiaShanghai": "2026-11-10T04:34:00.574461+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F30",
+        "allFetchIds": [
+          "F29",
+          "F30"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/meta/muse-image/text-to-image",
+        "url": "https://fal.ai/models/meta/muse-image/edit/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:55.893024+00:00",
+        "fetchedAtUtc": "2026-11-10T01:09:57.987905+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:57.987905+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/meta/muse-image/edit/api",
+        "curlExitCode": 0,
+        "sha256": "0f83d7f2e2b8d48900aa34b315514ed5de0c1edb5b7ba80916004ae87d9cbce7",
+        "bytes": 338631,
+        "body": ".audit-input/r24/fetches/i7-F30.html",
+        "quote": "Reference images used for the edit. Provide between 1 and 10 HTTP(S) or data URLs.",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/meta/muse-image/edit/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "GPT Image 2.5 Flare",
+      "modelId": "openai/gpt-image-2.5/flare/text-to-image",
+      "channel": "fal",
+      "identity": "fal/openai/gpt-image-2.5/flare/text-to-image",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/openai/gpt-image-2.5/flare/text-to-image\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "openai/gpt-image-2.5/flare/edit",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "The URLs of the images to use as a reference for the generation.",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:33:55.169337+00:00",
+        "asiaShanghai": "2026-11-10T04:33:55.169337+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F20",
+        "allFetchIds": [
+          "F19",
+          "F20"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/openai/gpt-image-2.5/flare/text-to-image",
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:55.894403+00:00",
+        "fetchedAtUtc": "2026-11-10T01:09:58.103925+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:58.103925+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+        "curlExitCode": 0,
+        "sha256": "caef0591287923fff6d8c52faaae698c8938b0fa77b626a0249b10e5c101496a",
+        "bytes": 365016,
+        "body": ".audit-input/r24/fetches/i7-F20.html",
+        "quote": "The URLs of the images to use as a reference for the generation.",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "GPT Image 2.5 Sunburst",
+      "modelId": "openai/gpt-image-2.5/sunburst/text-to-image",
+      "channel": "fal",
+      "identity": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/openai/gpt-image-2.5/sunburst/text-to-image\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "openai/gpt-image-2.5/sunburst/edit",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "The URLs of the images to use as a reference for the generation.",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:33:57.251916+00:00",
+        "asiaShanghai": "2026-11-10T04:33:57.251916+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F22",
+        "allFetchIds": [
+          "F21",
+          "F22"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+        "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:56.009226+00:00",
+        "fetchedAtUtc": "2026-11-10T01:09:58.131065+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:58.131065+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+        "curlExitCode": 0,
+        "sha256": "8d42b3b8c50812594a1eb92df188c4c173f9c72863f9aae560d1200e38941834",
+        "bytes": 364691,
+        "body": ".audit-input/r24/fetches/i7-F22.html",
+        "quote": "The URLs of the images to use as a reference for the generation.",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "Grok-imagine-image",
+      "modelId": "xai/grok-imagine-image",
+      "channel": "fal",
+      "identity": "fal/xai/grok-imagine-image",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/xai/grok-imagine-image\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/xai/grok-imagine-image/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "xai/grok-imagine-image/edit",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "List of URLs of the images to edit.",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:33:55.910604+00:00",
+        "asiaShanghai": "2026-11-10T04:33:55.910604+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F24",
+        "allFetchIds": [
+          "F23",
+          "F24"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/xai/grok-imagine-image",
+        "url": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:58.005038+00:00",
+        "fetchedAtUtc": "2026-11-10T01:10:00.255718+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:10:00.255718+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+        "curlExitCode": 0,
+        "sha256": "49c4c3e60bb6c259cf2ba506ef25c148066900c1cbf8a882f3e37c8364c5c139",
+        "bytes": 347588,
+        "body": ".audit-input/r24/fetches/i7-F24.html",
+        "quote": "List of URLs of the images to edit.",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "Grok-imagine-image · quality",
+      "modelId": "xai/grok-imagine-image/quality/text-to-image",
+      "channel": "fal",
+      "identity": "fal/xai/grok-imagine-image/quality/text-to-image",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "文本、图像",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09"
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"fal/xai/grok-imagine-image/quality/text-to-image\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "xai/grok-imagine-image/quality/edit",
+        "sourceField": "image_urls",
+        "sourceFile": "../packages/api/src/image-channel-routes.ts:2"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "List of URLs of the images to edit.",
+      "quoteContext": "Input schema: image_urls",
+      "url": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:33:57.776537+00:00",
+        "asiaShanghai": "2026-11-10T04:33:57.776537+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F26",
+        "allFetchIds": [
+          "F25",
+          "F26"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": null,
+      "reverification": {
+        "identity": "fal/xai/grok-imagine-image/quality/text-to-image",
+        "url": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:58.116265+00:00",
+        "fetchedAtUtc": "2026-11-10T01:10:00.234235+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:10:00.234235+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+        "curlExitCode": 0,
+        "sha256": "f9a35f7c54b35e98b392ad5ded93be40f2db83e9b7f10860726646378b7336bd",
+        "bytes": 347854,
+        "body": ".audit-input/r24/fetches/i7-F26.html",
+        "quote": "List of URLs of the images to edit.",
+        "sourceField": "image_urls",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    },
+    {
+      "model": "Ideogram 4.0",
+      "modelId": "ideogram-v4",
+      "channel": "ideogram",
+      "identity": "ideogram/ideogram-v4",
+      "mainShows": {
+        "commit": "8c456709",
+        "inputLabel": "图像",
+        "inputModalities": [
+          "image"
+        ],
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "image"
+          ],
+          "state": "known",
+          "provenance": "product",
+          "sourceUrl": null,
+          "verifiedAt": "2026-11-09",
+          "sourceUrls": []
+        }
+      },
+      "nowShows": {
+        "snapshotCommitSuppliedByUser": "42ee9ffd",
+        "inputLabel": "文本",
+        "inputModalities": [
+          "text"
+        ],
+        "imageState": "unknown",
+        "imageLabel": "图像：未知",
+        "inputFact": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+          "verifiedAt": "2026-11-09",
+          "suppressFallback": true
+        }
+      },
+      "whyChanged": {
+        "summary": "R: positive-only keeps text; image is unknown; suppressFallback prevents the direct-edit capability from restoring image in the card.",
+        "reviewFile": "../config/channel-audit/model-modality-phase2-20261109.json",
+        "reviewEntry": "reviews[\"ideogram/ideogram-v4\"].inputModalities",
+        "reviewMode": "positive-only",
+        "reviewValue": [
+          "text"
+        ],
+        "reviewDecisions": {
+          "image": "unknown"
+        },
+        "reviewSourceUrl": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+        "reviewVerifiedAt": "2026-11-09",
+        "suppressFallback": true,
+        "ruleReferences": [
+          {
+            "path": "../scripts/lib/model-modality-phase2.mjs",
+            "lines": "23-28,45",
+            "effect": "positive-only calls replace(..., false), replaces the supported list with [text], and sets suppressFallback for inputModalities without declaring exclusions"
+          },
+          {
+            "path": "../packages/api/src/catalog-card-facts.mjs",
+            "lines": "65-80",
+            "effect": "suppressFallback makes the reviewed fact authoritative and prevents the image-input capability fallback"
+          },
+          {
+            "path": "../packages/api/src/modality-presentation.mjs",
+            "lines": "12-14",
+            "effect": "an absent image value with no explicit exclusion renders unknown"
+          }
+        ]
+      },
+      "directEditGroup": {
+        "imageEditMode": "direct-edit",
+        "mainImageEditMode": "direct-edit",
+        "nowDirectEditPresentation": true,
+        "registeredEditingEndpoint": "/v1/ideogram-v4/remix",
+        "sourceField": "image",
+        "sourceFile": "../packages/api/src/image-channel-adapters.ts:304"
+      },
+      "officialQuoteOnEditingOrReferenceImages": "Remix an image synchronously using the Ideogram 4.0 model with an initial image and a prompt.",
+      "quoteContext": "Legacy Ideogram 4.0 remix overview; request field image",
+      "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md",
+      "verificationDateTime": {
+        "utc": "2026-11-09T20:35:18.048163+00:00",
+        "asiaShanghai": "2026-11-10T04:35:18.048163+08:00"
+      },
+      "fetchStatus": {
+        "httpStatus": 200,
+        "curlExitCode": 0,
+        "primaryFetchId": "F33",
+        "allFetchIds": [
+          "F01",
+          "F02",
+          "F31",
+          "F32",
+          "F33"
+        ]
+      },
+      "officialEvidenceScope": "Exact configured editing endpoint on the same channel; generation identity is retained as the model card ID.",
+      "note": "Official v1 page marks this endpoint legacy and links v2. The v1 documentation still describes initial-image input. Candidate URL F32 returned 404; official index F31 led to successful F33. The 404 is not capability evidence.",
+      "reverification": {
+        "identity": "ideogram/ideogram-v4",
+        "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md",
+        "method": "GET",
+        "authenticated": false,
+        "startedAtUtc": "2026-11-10T01:09:58.140114+00:00",
+        "fetchedAtUtc": "2026-11-10T01:09:59.924633+00:00",
+        "fetchedAtAsiaShanghai": "2026-11-10T09:09:59.924633+08:00",
+        "httpStatus": 200,
+        "finalUrl": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md",
+        "curlExitCode": 0,
+        "sha256": "61b12efae6884c624b4879639c96f235e903fd8d60198efeab0c85a1edf33ab6",
+        "bytes": 12139,
+        "body": ".audit-input/r24/fetches/i7-F33.md",
+        "quote": "Remix an image synchronously using the Ideogram 4.0 model with an initial image and a prompt.",
+        "sourceField": "image",
+        "quoteMatched": true,
+        "sourceFieldMatched": true,
+        "error": null,
+        "verified": true,
+        "status": "verified-restored",
+        "verifiedAt": "2026-11-10"
+      },
+      "decidedShows": {
+        "inputLabel": "文本、图像",
+        "imageState": "supported",
+        "inputFact": {
+          "value": [
+            "text",
+            "image"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md",
+          "verifiedAt": "2026-11-10",
+          "suppressFallback": true
+        }
+      }
+    }
+  ],
+  "fetches": [
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:45.477920+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:48.068161+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:48.068161+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "3db2f7ec82b2787f3ec60de472fbf3a6622c13ff89c8935c02d21ba8786c0815",
+      "bytes": 369617,
+      "fetchId": "F01",
+      "identity": "ideogram/ideogram-v4",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://developer.ideogram.ai/v2/api-reference/images/remix/ideogram-4",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:45.478031+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:48.212132+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:48.212132+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://developer.ideogram.ai/v2/api-reference/images/remix/ideogram-4",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "c64d33e463d7b45ee8fa07f74478c0c0a5b8f2d23616e30c82a9cc5a7a930339",
+      "bytes": 604438,
+      "fetchId": "F02",
+      "identity": "ideogram/ideogram-v4",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:45.479840+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:47.881435+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:47.881435+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "ecdebba5604eb72fc5ddc32bb229790bcd0e7eb22d3cdaa2b5759031c9505667",
+      "bytes": 349287,
+      "fetchId": "F03",
+      "identity": "fal/bytedance/seedream/v5/flash/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:45.479979+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:47.881990+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:47.881990+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "801e426f12b6c2de49914bdf5daec2342d957b18ba767a35a64e7736fe9a0ab2",
+      "bytes": 355010,
+      "fetchId": "F04",
+      "identity": "fal/bytedance/seedream/v5/flash/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:45.480043+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:47.865082+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:47.865082+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "ea384945b71889e03090f8f594fb7da1e4582ed4579bcbec31f864cbf0187e7c",
+      "bytes": 357401,
+      "fetchId": "F05",
+      "identity": "fal/bytedance/seedream/v5/pro/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:45.480097+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:47.827283+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:47.827283+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/edit/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "1e97d08956b56d6edfa78f183f59cb04867dda99db6a78914d4ec67922ab1d9e",
+      "bytes": 364638,
+      "fetchId": "F06",
+      "identity": "fal/bytedance/seedream/v5/pro/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:47.830076+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:50.191285+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:50.191285+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "676e2419ff37d67e859332263dd4ddd4abfdc073908f59dabacceb11840d8928",
+      "bytes": 355555,
+      "fetchId": "F07",
+      "identity": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:47.865904+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:50.433327+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:50.433327+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/edit/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "c93fce9917cfefe43611729583a0c877040a5d0565c4babc7468409899aa0a0e",
+      "bytes": 356951,
+      "fetchId": "F08",
+      "identity": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:47.882151+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:50.605396+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:50.605396+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "221ff90ab24731ab2c7b2546043ebd36d2b3324eb3414f6ad4577d0db093ec41",
+      "bytes": 355618,
+      "fetchId": "F09",
+      "identity": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:47.883520+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:50.274641+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:50.274641+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/edit/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "68ab68810bbe275f50c2ae281a87b7a85db01a15494cbb5d6893c13c9013f366",
+      "bytes": 361304,
+      "fetchId": "F10",
+      "identity": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:48.068970+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:50.519632+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:50.519632+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "907d3319c720d2040a50144311de7913b0fcdd88f9017fd91c598ece6e95227a",
+      "bytes": 352648,
+      "fetchId": "F11",
+      "identity": "fal/fal-ai/flux-2-pro",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:48.213464+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:50.618885+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:50.618885+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/fal-ai/flux-2-pro/edit/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "2d110fc001d26ce4a5cf0cd6ffe6254bfc35c0695d463f170a23e8320a12071d",
+      "bytes": 354387,
+      "fetchId": "F12",
+      "identity": "fal/fal-ai/flux-2-pro",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:50.192395+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:52.908805+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:52.908805+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "1afc8e3c3bde3b159d78dfe0d2822d2090b1ead10176c10f65d80d6ee7537748",
+      "bytes": 381466,
+      "fetchId": "F13",
+      "identity": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:50.275514+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:53.059413+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:53.059413+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "d7c0c087c8cc229ce52d99594cd032237205f6cb0dda85d7f758e96a95a6fb6d",
+      "bytes": 386438,
+      "fetchId": "F14",
+      "identity": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:50.434306+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:52.799928+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:52.799928+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "058d71665ac4f0976ba71499700322f211290983a90e7e9d147cbdfe0182f911",
+      "bytes": 385778,
+      "fetchId": "F15",
+      "identity": "fal/blackforestlabs/flux-3/klein/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:50.520352+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:53.481548+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:53.481548+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "c08ca9a35360714606973409ee8179c4dcf975c67ccebaf1d1ad09eb8ee1f319",
+      "bytes": 389939,
+      "fetchId": "F16",
+      "identity": "fal/blackforestlabs/flux-3/klein/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:50.606219+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:52.890598+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:52.890598+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "fdc06c7d4c337631418f1a285468f54c2cb669525ce9dc4c2a1c9195ab2e1b14",
+      "bytes": 344561,
+      "fetchId": "F17",
+      "identity": "fal/blackforestlabs/flux-3/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:50.619548+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:53.341539+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:53.341539+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "1edf11b3315dcecdd0b8aac8fdb01e6e4352031eaada59ebcfb11b8170a39f69",
+      "bytes": 344635,
+      "fetchId": "F18",
+      "identity": "fal/blackforestlabs/flux-3/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:52.801204+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:55.168718+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:55.168718+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "a0b334a9104c83a6ee5f2fffe8dfa3b939720ceea11ccef54b253344cd271ef0",
+      "bytes": 360090,
+      "fetchId": "F19",
+      "identity": "fal/openai/gpt-image-2.5/flare/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:52.891625+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:55.169337+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:55.169337+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "a9c992cfd79781c477a249fd56443d9e2e76e425778d2b4439cb5771698f6d52",
+      "bytes": 364977,
+      "fetchId": "F20",
+      "identity": "fal/openai/gpt-image-2.5/flare/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:52.909622+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:56.203477+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:56.203477+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "7e792f2735b13381b644b9d4f3eaf082699a8071a14d9d7999eb439da6c4d73b",
+      "bytes": 361004,
+      "fetchId": "F21",
+      "identity": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:53.060652+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:57.251916+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:57.251916+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "3bd83bc6fefe0c2b86470f4c7712da2982b50a28cf4989b7346dcd6ca7bb7e3e",
+      "bytes": 364703,
+      "fetchId": "F22",
+      "identity": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/xai/grok-imagine-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:53.342854+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:56.203189+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:56.203189+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "42afb5b177aa07766ac48ad93c89f74c7f99a7ec4efb1de5935d1bf52f8803c0",
+      "bytes": 344865,
+      "fetchId": "F23",
+      "identity": "fal/xai/grok-imagine-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:53.482775+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:55.910604+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:55.910604+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/edit/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "c0b663e6a3ea04dac82c7cc26cba9d06953ed6062881294f7ab9609921354dcb",
+      "bytes": 347548,
+      "fetchId": "F24",
+      "identity": "fal/xai/grok-imagine-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:55.170045+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:58.986720+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:58.986720+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "2d153178f02d0ecb7277e078b82ab6910822173922689ff79693a19248b884e1",
+      "bytes": 346668,
+      "fetchId": "F25",
+      "identity": "fal/xai/grok-imagine-image/quality/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:55.170284+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:57.776537+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:57.776537+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/edit/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "11d821b0531349e372bd28b3c04bd99c0e86fb0da49cb489606a8e7bafaf5bd4",
+      "bytes": 347769,
+      "fetchId": "F26",
+      "identity": "fal/xai/grok-imagine-image/quality/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/krea/v3/text-to-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:55.911555+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:58.312236+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:58.312236+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/krea/v3/text-to-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "6f634a2032e39e9a939e3a6c176da2db9767d7a73f3399a6230592425324847b",
+      "bytes": 356968,
+      "fetchId": "F27",
+      "identity": "fal/krea/v3/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/krea/v3/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:56.204535+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:59.620768+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:59.620768+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/krea/v3/edit/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "51720d359bfcbb84a8ab5429a247f848ea93b6b1614f12695357be14b66f5356",
+      "bytes": 369940,
+      "fetchId": "F28",
+      "identity": "fal/krea/v3/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "reviewed generation API page",
+      "url": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:56.204772+00:00",
+      "fetchedAtUtc": "2026-11-09T20:33:58.609817+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:33:58.609817+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/meta/muse-image/text-to-image/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "e014f2d6a65f7753689cc5bfc3b5ec81bfcdf91d0f46e06e15831f0484052090",
+      "bytes": 336336,
+      "fetchId": "F29",
+      "identity": "fal/meta/muse-image/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "configured edit or remix API page",
+      "url": "https://fal.ai/models/meta/muse-image/edit/api",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:33:57.253056+00:00",
+      "fetchedAtUtc": "2026-11-09T20:34:00.574461+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:34:00.574461+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://fal.ai/models/meta/muse-image/edit/api",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "ceb39fcd97f6be1ac867999e2ffd1e755070529f06c2e7d28f0b5ec33d6d77e6",
+      "bytes": 338593,
+      "fetchId": "F30",
+      "identity": "fal/meta/muse-image/text-to-image",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "official v1 documentation index",
+      "url": "https://developer.ideogram.ai/v1/llms.txt",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:34:47.760622+00:00",
+      "fetchedAtUtc": "2026-11-09T20:34:49.190373+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:34:49.190373+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://developer.ideogram.ai/v1/llms.txt",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/plain; charset=utf-8",
+      "sha256": "7567fbb870698825a8cd7dd34e82c92d0b9b8183fa96fba8b62183be4ffde36d",
+      "bytes": 7190,
+      "fetchId": "F31",
+      "identity": "ideogram/ideogram-v4",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    },
+    {
+      "purpose": "candidate legacy remix documentation path (not linked by the local model)",
+      "url": "https://developer.ideogram.ai/api-reference/remix-images/remix-v4",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:34:47.760961+00:00",
+      "fetchedAtUtc": "2026-11-09T20:34:49.540696+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:34:49.540696+08:00",
+      "httpStatus": 404,
+      "finalUrl": "https://developer.ideogram.ai/api-reference/remix-images/remix-v4",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "2ba9daf041c884338f3224ba7a12e76ef0fe16e3e3fe255b01409af905c13a7a",
+      "bytes": 51945,
+      "fetchId": "F32",
+      "identity": "ideogram/ideogram-v4",
+      "interpretation": "Failed documentation URL; not evidence for or against image-input capability."
+    },
+    {
+      "purpose": "exact v1 remix documentation discovered in official v1 index",
+      "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md",
+      "method": "GET",
+      "authenticated": false,
+      "startedAtUtc": "2026-11-09T20:35:16.387254+00:00",
+      "fetchedAtUtc": "2026-11-09T20:35:18.048163+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T04:35:18.048163+08:00",
+      "httpStatus": 200,
+      "finalUrl": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4.md",
+      "curlExitCode": 0,
+      "error": null,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "61b12efae6884c624b4879639c96f235e903fd8d60198efeab0c85a1edf33ab6",
+      "bytes": 12139,
+      "fetchId": "F33",
+      "identity": "ideogram/ideogram-v4",
+      "interpretation": "Documentation fetched; no API invocation performed."
+    }
+  ],
+  "options": [
+    {
+      "id": "restore-image-supported",
+      "text": "Restore 图像 as supported for these edit-capable endpoints using the quoted channel evidence."
+    },
+    {
+      "id": "keep-image-unknown",
+      "text": "Keep 图像 as 未知 under the current positive-only display rules."
+    }
+  ],
+  "decisionDate": "2026-11-10",
+  "originalSnapshotNote": "Original R23 rows, nowShows, validation and fetchLog are retained as historical evidence. Current results are in each row.reverification and decidedShows.",
+  "I7Validation": {
+    "cardsPerClient": 1064,
+    "changedCardsPerClient": 15,
+    "unchangedCardsPerClient": 1049,
+    "verifiedModels": 15,
+    "failedQuotes": 0,
+    "reverificationPublicGets": 16,
+    "humanPageCapture": {
+      "url": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4",
+      "method": "GET",
+      "authenticated": false,
+      "httpStatus": 200,
+      "finalUrl": "https://developer.ideogram.ai/v1/api-reference/edit-images/remix-v4",
+      "fetchedAtUtc": "2026-11-10T01:13:16.117752+00:00",
+      "fetchedAtAsiaShanghai": "2026-11-10T09:13:16.117752+08:00",
+      "sha256": "a1eefe56094bcacb14b81185140b7fd9764dbd939f8818a7ebc72103cae0d673",
+      "quote": "Remix an image synchronously using the Ideogram 4.0 model with an initial image and a prompt.",
+      "quoteMatched": true,
+      "body": ".audit-input/r24/fetches/i7-ideogram-human.html"
+    },
+    "review": "config/channel-audit/review-r27-20261110.json",
+    "diffReport": "docs/model-modality-r27-i7-card-diff.json"
+  }
+}
