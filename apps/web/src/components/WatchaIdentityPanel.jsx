@@ -1,3 +1,4 @@
+import ControlField from './ControlField.jsx';
 import { accountPageUrl } from '../lib/runtimePolicy.js';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useState } from 'react';
@@ -46,7 +47,7 @@ export default function WatchaIdentityPanel({ controller, user, onSignIn, compac
       </> : <>
         <p>{t("首次使用时，可验证邮箱创建图研账号，也可以绑定已有账号。")}</p>
         <form aria-label={t("验证邮箱并创建图研账号")} onSubmit={async event => { event.preventDefault(); if (await c.complete(email.trim(), code)) setCode(''); }}>
-          <label className="field"><span>{t("接收验证的邮箱")}</span><input type="email" autoComplete="email" required value={email} onChange={event => { setEmail(event.target.value); setCode(''); }} maxLength={254} /></label>
+          <ControlField className="field" label={<span>{t("接收验证的邮箱")}</span>}><input type="email" autoComplete="email" required value={email} onChange={event => { setEmail(event.target.value); setCode(''); }} maxLength={254} /></ControlField>
           <CodeInput code={code} setCode={setCode} />
           <div className="watcha-actions"><button className="account-button" type="button" onClick={() => sendCode('signup')} disabled={c.busy || cooldown > 0 || !email.trim()}>{t(cooldown ? `${cooldown} 秒后重发` : '发送验证码')}</button><button className="primary-button" type="submit" disabled={c.busy || !email.trim() || !/^\d{6}$/.test(code)}>{t("验证邮箱并创建账号")}</button></div>
         </form>
@@ -62,7 +63,7 @@ export default function WatchaIdentityPanel({ controller, user, onSignIn, compac
 
 function CodeInput({ code, setCode }) {
   const { t } = useAppLocale()
-  return <label className="field"><span>{t("邮箱验证码")}</span><input inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={code} onChange={event => setCode(event.target.value.replace(/\D/g, '').slice(0, 6))} placeholder={t("6 位验证码")} required /></label>;
+  return <ControlField className="field" label={<span>{t("邮箱验证码")}</span>}><input inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={code} onChange={event => setCode(event.target.value.replace(/\D/g, '').slice(0, 6))} placeholder={t("6 位验证码")} required /></ControlField>;
 }
 
 function WatchaMark() {

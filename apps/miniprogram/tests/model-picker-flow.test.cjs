@@ -59,7 +59,7 @@ function context() {
   return Object.assign({
     data: state,
     properties: { registryVersion: 'fixture', role: 'main', outputFormat: 'png', selectedProvider: 'bailian', selectedModel: 'qwen-main' },
-    setData(patch) { Object.assign(state, patch) },
+    setData(patch) { require('./helpers/component.cjs').applyData(state, patch) },
     triggerEvent() {},
   }, definition.methods)
 }

@@ -23,7 +23,9 @@ test('GPT Image 2.5 uses documented IDs in both clients and sorts ahead of Image
         assert.equal(model.capabilities.imageEditing, true)
         assert.equal(model.capabilities.maxReferenceImages, 1)
         assert.equal(model.capabilities.imageEditMode, 'direct-edit')
-        assert.ok(model.officialSourceUrl.includes(provider === 'openai' ? 'developers.openai.com' : provider === 'fal' ? 'fal.ai/models/' : 'replicate.com/openai/'))
+        if (catalog === mini.STATIC_MODEL_REGISTRY) assert.equal(model.officialSourceUrl,undefined, 'full archive is not shipped to the picker')
+        const evidence = STATIC_MODEL_REGISTRY[provider].models.find(m=>m.id===id)
+        assert.ok(evidence.officialSourceUrl.includes(provider === 'openai' ? 'developers.openai.com' : provider === 'fal' ? 'fal.ai/models/' : 'replicate.com/openai/'))
       }
     }
     for (const variant of ['sunburst', 'flare']) {

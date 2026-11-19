@@ -1,6 +1,7 @@
 import { normalizeBailianWorkspace } from './bailian-workspace.js'
 import { enumerateArkCatalog, arkCatalogProgress, type ArkCatalogProgress, type CatalogCredentials } from './ark-catalog.js'
 import details from './provider-model-details.js'
+import { auditedModelSpecs } from './model-audit.js'
 
 /** Read-only discovery. A catalog entry never grants permission to run inference. */
 export type CatalogDefinition = { access: 'public' | 'key' | 'workspace' | 'control-plane' | 'documents'; url?: string; source: string; note?: string; parser?: string; auth?: string }
@@ -79,9 +80,31 @@ export function schemaPromptLimits(schema:any, root:any, kinds:string[], source:
   // Conflicting or unbounded alternatives cannot establish one maximum.
   return !missing && limits.size===1 ? kinds.map(kind=>({kind,max:[...limits][0],unit:'characters',field:'prompt',sourceUrls:[source]})) : []
 }
-export function exactModelDetails(provider: string, id: string) {
+function executionModelDetails(provider: string, id: string) {
   // No family-prefix matching or removal of snapshot/preview/pro suffixes.
   return detailModels[`${provider}/${id}`] || (id.startsWith('openai/') ? detailModels[id] : undefined)
+}
+
+export function exactModelDetails(provider: string, id: string) {
+  const base = executionModelDetails(provider, id)
+  // Preserve the vendor/base archive; overlay only the exact channel identity.
+  const specifications = channelModelSpecifications(provider, id, base?.specifications)
+  return specifications.modalityFacts ? { ...base, specifications } : base
+}
+
+export function channelModelSpecifications(provider: string, id: string, specifications: any = {}) {
+  const { fields } = auditedModelSpecs(provider, id)
+  const result = { ...specifications }, facts: Record<string, any> = {}
+  for (const [field, property] of [['inputModalities', 'officialInputModalities'], ['outputModalities', 'officialOutputModalities']]) {
+    const fact = fields[field]
+    // Partial silence is applied after the display layers are merged. It must
+    // not replace unrelated facts supplied by reviewed or manufacturer layers.
+    if (!fact.suppressFallback && !fact.unsupportedModalities) continue
+    const value = Array.isArray(fact.value) ? fact.value : null
+    facts[field] = { ...fact, value: value?.length ? value : null, state: value?.length ? 'known' : 'unknown' }
+    result[property] = value?.length ? value : undefined
+  }
+  return Object.keys(facts).length ? { ...result, version: 1, modalityFacts: facts } : specifications
 }
 
 export function normalizeCatalogModel(provider: string, row: any, source: string) {
@@ -91,7 +114,9 @@ export function normalizeCatalogModel(provider: string, row: any, source: string
   if (provider === 'replicate') id = row.owner && row.name ? `${row.owner}/${row.name}` : ''
   if (provider === 'novita' && new URL(source).pathname === '/v3/model') id = row.sd_name_in_api || row.sd_name || (Number.isSafeInteger(row.id) ? `novita-model:${row.id}` : row.name)
   if (!id || typeof id !== 'string' || id.length > 512) return null
-  const exact = exactModelDetails(provider, id)
+  // Execution metadata uses the unchanged base archive. Channel review facts
+  // are applied only to the display specifications below.
+  const exact = executionModelDetails(provider, id)
   if (provider === 'runware' && exact?.apiIdentifier) id = exact.apiIdentifier
   const facts: any = { version:1, checkedAt:new Date().toISOString().slice(0,10), sourceUrls:[source] }
   if(provider==='novita' && new URL(source).pathname==='/v3/model')facts.sourceUrls.push('https://docs.novita.ai/api-reference/model-apis-get-model')
@@ -152,12 +177,13 @@ export function normalizeCatalogModel(provider: string, row: any, source: string
   if (output?.length) facts.officialOutputModalities=output
   if (context) facts.contextWindowTokens=context
   // Live channel limits take precedence over a previously reviewed channel page.
-  const specifications={...exact?.specifications,...facts,sourceUrls:unique([...(exact?.specifications?.sourceUrls || []),...facts.sourceUrls])}
+  const executionSpecifications={...exact?.specifications,...facts,sourceUrls:unique([...(exact?.specifications?.sourceUrls || []),...facts.sourceUrls])}
+  const specifications=channelModelSpecifications(provider, id, executionSpecifications)
   const shutdown = provider === 'openai' && typeof row.shutdown_date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(row.shutdown_date) && Number.isFinite(Date.parse(row.shutdown_date)) ? row.shutdown_date : undefined
   return { id, ...(shutdown ? {expirationDate:shutdown,lifecycleSourceUrl:source} : {}), catalogAliases:unique([row.id,row.air,row.endpoint_id,...(Array.isArray(row.aliases)?row.aliases:[])].filter(Boolean)), label:row.display_name || row.displayName || row.metadata?.display_name || row.title || exact?.label || row.name || id,
     vendor:exact?.vendor || row.organization || row.owned_by || row.owner || row.provider || provider,
     vendorId:exact?.vendorId || row.organization || row.owned_by || row.owner || row.provider || provider,
-    specifications, inputModalities:specifications.officialInputModalities || [], outputModalities:specifications.officialOutputModalities || [],
+    specifications, inputModalities:executionSpecifications.officialInputModalities || [], outputModalities:executionSpecifications.officialOutputModalities || [],
     catalogSourceUrl:source, officialSourceUrl:exact?.specifications?.sourceUrls?.[0] || def.source, catalogDiscovered:true }
 }
 
@@ -170,8 +196,10 @@ export function mergeCatalogRows(rows:any[]) {
     const contextConflict=a.contextWindowTokens && b.contextWindowTokens && a.contextWindowTokens!==b.contextWindowTokens
     merged.set(row.id,{...previous,...row,catalogAliases:unique([...(previous.catalogAliases || []),...(row.catalogAliases || [])]),specifications:{...a,...b,
       sourceUrls:unique([...(a.sourceUrls || []),...(b.sourceUrls || [])]),
-      officialInputModalities:unique([...(a.officialInputModalities || []),...(b.officialInputModalities || [])]),
-      officialOutputModalities:unique([...(a.officialOutputModalities || []),...(b.officialOutputModalities || [])]),
+      officialInputModalities:(b.modalityFacts || a.modalityFacts)?.inputModalities
+        ? (b.modalityFacts || a.modalityFacts).inputModalities.value ?? undefined : unique([...(a.officialInputModalities || []),...(b.officialInputModalities || [])]),
+      officialOutputModalities:(b.modalityFacts || a.modalityFacts)?.outputModalities
+        ? (b.modalityFacts || a.modalityFacts).outputModalities.value ?? undefined : unique([...(a.officialOutputModalities || []),...(b.officialOutputModalities || [])]),
       ...(contextConflict?{contextWindowTokens:undefined,contextWindowStatus:undefined,notes:['同一调用 ID 的目录规格存在冲突，待核对']}:{}),
     }})
   }

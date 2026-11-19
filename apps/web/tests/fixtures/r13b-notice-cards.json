@@ -1,0 +1,152 @@
+[
+  {
+    "channel": "xai",
+    "modelId": "grok-imagine-image-quality",
+    "url": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2",
+    "fullFirstUrl": "https://docs.x.ai/developers/models/grok-imagine-image-quality"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3-max",
+    "url": "https://www.aliyun.com/notice/118344",
+    "fullFirstUrl": "https://www.aliyun.com/notice/118344"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3-max-2025-09-23",
+    "url": "https://www.aliyun.com/notice/118345",
+    "fullFirstUrl": "https://www.aliyun.com/notice/118345"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3-max-2026-01-23",
+    "url": "https://www.aliyun.com/notice/118345",
+    "fullFirstUrl": "https://www.aliyun.com/notice/118345"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3-max-preview",
+    "url": "https://www.aliyun.com/notice/118344",
+    "fullFirstUrl": "https://www.aliyun.com/notice/118344"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen-turbo",
+    "url": "https://www.aliyun.com/notice/118177",
+    "fullFirstUrl": "https://www.aliyun.com/notice/118177"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3-coder-next",
+    "url": "https://www.aliyun.com/notice/118345",
+    "fullFirstUrl": "https://www.aliyun.com/notice/118345"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "xiaomi/mimo-v2.5-pro",
+    "url": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+    "fullFirstUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate"
+  },
+  {
+    "channel": "openai",
+    "modelId": "gpt-5-2025-08-07",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/gpt-5"
+  },
+  {
+    "channel": "openai",
+    "modelId": "gpt-5-mini-2025-08-07",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/gpt-5-mini"
+  },
+  {
+    "channel": "openai",
+    "modelId": "gpt-5-nano-2025-08-07",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/gpt-5-nano"
+  },
+  {
+    "channel": "openai",
+    "modelId": "gpt-4.1-nano-2025-04-14",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/gpt-4.1-nano"
+  },
+  {
+    "channel": "openai",
+    "modelId": "gpt-4o-2024-05-13",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/gpt-4o"
+  },
+  {
+    "channel": "openai",
+    "modelId": "gpt-4-turbo-2024-04-09",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/gpt-4-turbo"
+  },
+  {
+    "channel": "openai",
+    "modelId": "gpt-4-0613",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/gpt-4"
+  },
+  {
+    "channel": "openai",
+    "modelId": "gpt-3.5-turbo-0125",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo"
+  },
+  {
+    "channel": "openai",
+    "modelId": "gpt-3.5-turbo-1106",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo"
+  },
+  {
+    "channel": "openai",
+    "modelId": "o1-2024-12-17",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/o1"
+  },
+  {
+    "channel": "openai",
+    "modelId": "o1-pro-2025-03-19",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/o1-pro"
+  },
+  {
+    "channel": "openai",
+    "modelId": "o3-2025-04-16",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/o3"
+  },
+  {
+    "channel": "openai",
+    "modelId": "o3-mini-2025-01-31",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/o3-mini"
+  },
+  {
+    "channel": "openai",
+    "modelId": "o3-pro-2025-06-10",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/o3-pro"
+  },
+  {
+    "channel": "openai",
+    "modelId": "o4-mini-2025-04-16",
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "fullFirstUrl": "https://developers.openai.com/api/docs/models/o4-mini"
+  },
+  {
+    "channel": "runware",
+    "modelId": "xai:grok-imagine@image-quality",
+    "url": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2",
+    "fullFirstUrl": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2"
+  },
+  {
+    "channel": "tokenhub",
+    "modelId": "mimo-v2.5-pro",
+    "url": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+    "fullFirstUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate"
+  }
+]

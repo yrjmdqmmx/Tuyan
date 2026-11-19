@@ -1,0 +1,2200 @@
+{
+  "date": "2026-11-09",
+  "commits": {
+    "main": "c7b6a2fc",
+    "head": "1576ee00"
+  },
+  "basis": "Captured Core modelRegistry models, each side rendered with its own web card code. Trimmed fixtures preserve all consumed fields; raw-to-trimmed card equality checked for every model.",
+  "knownRule": "Displayed value != unknown. Baseline 待确认/官方未公布/未单列 and absent maximum-output row normalize to 未知. 不适用 is included, with numeric and not-applicable subtotals. main never renders max output, even when hidden limitRows contain it.",
+  "main": {
+    "fullObject": {
+      "totals": {
+        "cards": 1122,
+        "inputModalities": 983,
+        "outputModalities": 968,
+        "totalContextTokens": 534,
+        "maxOutputTokens": 0,
+        "contextNumeric": 534,
+        "maxOutputNumeric": 0,
+        "contextNotApplicable": 0,
+        "maxOutputNotApplicable": 0
+      },
+      "perChannel": {
+        "deepseek": {
+          "cards": 4,
+          "inputModalities": 4,
+          "outputModalities": 4,
+          "totalContextTokens": 4,
+          "maxOutputTokens": 0,
+          "contextNumeric": 4,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "kimi": {
+          "cards": 6,
+          "inputModalities": 6,
+          "outputModalities": 6,
+          "totalContextTokens": 6,
+          "maxOutputTokens": 0,
+          "contextNumeric": 6,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "zhipu": {
+          "cards": 28,
+          "inputModalities": 28,
+          "outputModalities": 28,
+          "totalContextTokens": 24,
+          "maxOutputTokens": 0,
+          "contextNumeric": 24,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "siliconflow": {
+          "cards": 68,
+          "inputModalities": 68,
+          "outputModalities": 68,
+          "totalContextTokens": 55,
+          "maxOutputTokens": 0,
+          "contextNumeric": 55,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "anthropic": {
+          "cards": 14,
+          "inputModalities": 14,
+          "outputModalities": 14,
+          "totalContextTokens": 14,
+          "maxOutputTokens": 0,
+          "contextNumeric": 14,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "recraft": {
+          "cards": 17,
+          "inputModalities": 17,
+          "outputModalities": 17,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "xai": {
+          "cards": 12,
+          "inputModalities": 12,
+          "outputModalities": 12,
+          "totalContextTokens": 9,
+          "maxOutputTokens": 0,
+          "contextNumeric": 9,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "gemini": {
+          "cards": 17,
+          "inputModalities": 17,
+          "outputModalities": 17,
+          "totalContextTokens": 1,
+          "maxOutputTokens": 0,
+          "contextNumeric": 1,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "bailian": {
+          "cards": 183,
+          "inputModalities": 128,
+          "outputModalities": 128,
+          "totalContextTokens": 98,
+          "maxOutputTokens": 0,
+          "contextNumeric": 98,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "openai": {
+          "cards": 69,
+          "inputModalities": 69,
+          "outputModalities": 69,
+          "totalContextTokens": 60,
+          "maxOutputTokens": 0,
+          "contextNumeric": 60,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "ark": {
+          "cards": 36,
+          "inputModalities": 26,
+          "outputModalities": 26,
+          "totalContextTokens": 12,
+          "maxOutputTokens": 0,
+          "contextNumeric": 12,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "bfl": {
+          "cards": 14,
+          "inputModalities": 14,
+          "outputModalities": 14,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "stability": {
+          "cards": 5,
+          "inputModalities": 5,
+          "outputModalities": 5,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "ideogram": {
+          "cards": 14,
+          "inputModalities": 14,
+          "outputModalities": 14,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "minimax": {
+          "cards": 11,
+          "inputModalities": 11,
+          "outputModalities": 11,
+          "totalContextTokens": 9,
+          "maxOutputTokens": 0,
+          "contextNumeric": 9,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "mistral": {
+          "cards": 18,
+          "inputModalities": 18,
+          "outputModalities": 18,
+          "totalContextTokens": 18,
+          "maxOutputTokens": 0,
+          "contextNumeric": 18,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "together": {
+          "cards": 53,
+          "inputModalities": 38,
+          "outputModalities": 38,
+          "totalContextTokens": 21,
+          "maxOutputTokens": 0,
+          "contextNumeric": 21,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "fireworks": {
+          "cards": 26,
+          "inputModalities": 24,
+          "outputModalities": 8,
+          "totalContextTokens": 20,
+          "maxOutputTokens": 0,
+          "contextNumeric": 20,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "fal": {
+          "cards": 48,
+          "inputModalities": 41,
+          "outputModalities": 41,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "replicate": {
+          "cards": 108,
+          "inputModalities": 104,
+          "outputModalities": 104,
+          "totalContextTokens": 4,
+          "maxOutputTokens": 0,
+          "contextNumeric": 4,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "tokendance": {
+          "cards": 74,
+          "inputModalities": 72,
+          "outputModalities": 72,
+          "totalContextTokens": 68,
+          "maxOutputTokens": 0,
+          "contextNumeric": 68,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "runware": {
+          "cards": 148,
+          "inputModalities": 148,
+          "outputModalities": 148,
+          "totalContextTokens": 20,
+          "maxOutputTokens": 0,
+          "contextNumeric": 20,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "tokenhub": {
+          "cards": 49,
+          "inputModalities": 40,
+          "outputModalities": 40,
+          "totalContextTokens": 35,
+          "maxOutputTokens": 0,
+          "contextNumeric": 35,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "xiaomi": {
+          "cards": 5,
+          "inputModalities": 5,
+          "outputModalities": 5,
+          "totalContextTokens": 5,
+          "maxOutputTokens": 0,
+          "contextNumeric": 5,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "sensenova": {
+          "cards": 8,
+          "inputModalities": 6,
+          "outputModalities": 6,
+          "totalContextTokens": 5,
+          "maxOutputTokens": 0,
+          "contextNumeric": 5,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "stepfun": {
+          "cards": 7,
+          "inputModalities": 5,
+          "outputModalities": 5,
+          "totalContextTokens": 5,
+          "maxOutputTokens": 0,
+          "contextNumeric": 5,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "qianfan": {
+          "cards": 37,
+          "inputModalities": 30,
+          "outputModalities": 31,
+          "totalContextTokens": 27,
+          "maxOutputTokens": 0,
+          "contextNumeric": 27,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "iflytek": {
+          "cards": 34,
+          "inputModalities": 10,
+          "outputModalities": 10,
+          "totalContextTokens": 8,
+          "maxOutputTokens": 0,
+          "contextNumeric": 8,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "longcat": {
+          "cards": 2,
+          "inputModalities": 2,
+          "outputModalities": 2,
+          "totalContextTokens": 2,
+          "maxOutputTokens": 0,
+          "contextNumeric": 2,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "antling": {
+          "cards": 6,
+          "inputModalities": 6,
+          "outputModalities": 6,
+          "totalContextTokens": 4,
+          "maxOutputTokens": 0,
+          "contextNumeric": 4,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "novita": {
+          "cards": 1,
+          "inputModalities": 1,
+          "outputModalities": 1,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        }
+      }
+    },
+    "idOnly": {
+      "totals": {
+        "cards": 1122,
+        "inputModalities": 199,
+        "outputModalities": 200,
+        "totalContextTokens": 141,
+        "maxOutputTokens": 0,
+        "contextNumeric": 141,
+        "maxOutputNumeric": 0,
+        "contextNotApplicable": 0,
+        "maxOutputNotApplicable": 0
+      },
+      "perChannel": {
+        "deepseek": {
+          "cards": 4,
+          "inputModalities": 3,
+          "outputModalities": 3,
+          "totalContextTokens": 3,
+          "maxOutputTokens": 0,
+          "contextNumeric": 3,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "kimi": {
+          "cards": 6,
+          "inputModalities": 1,
+          "outputModalities": 1,
+          "totalContextTokens": 1,
+          "maxOutputTokens": 0,
+          "contextNumeric": 1,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "zhipu": {
+          "cards": 28,
+          "inputModalities": 12,
+          "outputModalities": 12,
+          "totalContextTokens": 12,
+          "maxOutputTokens": 0,
+          "contextNumeric": 12,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "siliconflow": {
+          "cards": 68,
+          "inputModalities": 9,
+          "outputModalities": 9,
+          "totalContextTokens": 9,
+          "maxOutputTokens": 0,
+          "contextNumeric": 9,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "anthropic": {
+          "cards": 14,
+          "inputModalities": 0,
+          "outputModalities": 0,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "recraft": {
+          "cards": 17,
+          "inputModalities": 0,
+          "outputModalities": 0,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "xai": {
+          "cards": 12,
+          "inputModalities": 2,
+          "outputModalities": 2,
+          "totalContextTokens": 2,
+          "maxOutputTokens": 0,
+          "contextNumeric": 2,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "gemini": {
+          "cards": 17,
+          "inputModalities": 5,
+          "outputModalities": 5,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "bailian": {
+          "cards": 183,
+          "inputModalities": 34,
+          "outputModalities": 34,
+          "totalContextTokens": 31,
+          "maxOutputTokens": 0,
+          "contextNumeric": 31,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "openai": {
+          "cards": 69,
+          "inputModalities": 4,
+          "outputModalities": 4,
+          "totalContextTokens": 4,
+          "maxOutputTokens": 0,
+          "contextNumeric": 4,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "ark": {
+          "cards": 36,
+          "inputModalities": 23,
+          "outputModalities": 23,
+          "totalContextTokens": 12,
+          "maxOutputTokens": 0,
+          "contextNumeric": 12,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "bfl": {
+          "cards": 14,
+          "inputModalities": 0,
+          "outputModalities": 0,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "stability": {
+          "cards": 5,
+          "inputModalities": 0,
+          "outputModalities": 0,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "ideogram": {
+          "cards": 14,
+          "inputModalities": 0,
+          "outputModalities": 0,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "minimax": {
+          "cards": 11,
+          "inputModalities": 3,
+          "outputModalities": 3,
+          "totalContextTokens": 3,
+          "maxOutputTokens": 0,
+          "contextNumeric": 3,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "mistral": {
+          "cards": 18,
+          "inputModalities": 3,
+          "outputModalities": 3,
+          "totalContextTokens": 3,
+          "maxOutputTokens": 0,
+          "contextNumeric": 3,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "together": {
+          "cards": 53,
+          "inputModalities": 8,
+          "outputModalities": 8,
+          "totalContextTokens": 3,
+          "maxOutputTokens": 0,
+          "contextNumeric": 3,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "fireworks": {
+          "cards": 26,
+          "inputModalities": 3,
+          "outputModalities": 3,
+          "totalContextTokens": 2,
+          "maxOutputTokens": 0,
+          "contextNumeric": 2,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "fal": {
+          "cards": 48,
+          "inputModalities": 5,
+          "outputModalities": 5,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "replicate": {
+          "cards": 108,
+          "inputModalities": 5,
+          "outputModalities": 5,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "tokendance": {
+          "cards": 74,
+          "inputModalities": 25,
+          "outputModalities": 25,
+          "totalContextTokens": 17,
+          "maxOutputTokens": 0,
+          "contextNumeric": 17,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "runware": {
+          "cards": 148,
+          "inputModalities": 14,
+          "outputModalities": 14,
+          "totalContextTokens": 5,
+          "maxOutputTokens": 0,
+          "contextNumeric": 5,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "tokenhub": {
+          "cards": 49,
+          "inputModalities": 12,
+          "outputModalities": 12,
+          "totalContextTokens": 9,
+          "maxOutputTokens": 0,
+          "contextNumeric": 9,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "xiaomi": {
+          "cards": 5,
+          "inputModalities": 1,
+          "outputModalities": 1,
+          "totalContextTokens": 1,
+          "maxOutputTokens": 0,
+          "contextNumeric": 1,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "sensenova": {
+          "cards": 8,
+          "inputModalities": 3,
+          "outputModalities": 3,
+          "totalContextTokens": 2,
+          "maxOutputTokens": 0,
+          "contextNumeric": 2,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "stepfun": {
+          "cards": 7,
+          "inputModalities": 1,
+          "outputModalities": 1,
+          "totalContextTokens": 1,
+          "maxOutputTokens": 0,
+          "contextNumeric": 1,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "qianfan": {
+          "cards": 37,
+          "inputModalities": 13,
+          "outputModalities": 14,
+          "totalContextTokens": 14,
+          "maxOutputTokens": 0,
+          "contextNumeric": 14,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "iflytek": {
+          "cards": 34,
+          "inputModalities": 8,
+          "outputModalities": 8,
+          "totalContextTokens": 6,
+          "maxOutputTokens": 0,
+          "contextNumeric": 6,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "longcat": {
+          "cards": 2,
+          "inputModalities": 1,
+          "outputModalities": 1,
+          "totalContextTokens": 1,
+          "maxOutputTokens": 0,
+          "contextNumeric": 1,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "antling": {
+          "cards": 6,
+          "inputModalities": 0,
+          "outputModalities": 0,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "novita": {
+          "cards": 1,
+          "inputModalities": 1,
+          "outputModalities": 1,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        }
+      }
+    }
+  },
+  "head": {
+    "fullObject": {
+      "totals": {
+        "cards": 1061,
+        "inputModalities": 997,
+        "outputModalities": 967,
+        "totalContextTokens": 926,
+        "maxOutputTokens": 616,
+        "contextNumeric": 519,
+        "maxOutputNumeric": 209,
+        "contextNotApplicable": 407,
+        "maxOutputNotApplicable": 407
+      },
+      "perChannel": {
+        "deepseek": {
+          "cards": 4,
+          "inputModalities": 4,
+          "outputModalities": 4,
+          "totalContextTokens": 4,
+          "maxOutputTokens": 4,
+          "contextNumeric": 4,
+          "maxOutputNumeric": 4,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "kimi": {
+          "cards": 6,
+          "inputModalities": 6,
+          "outputModalities": 6,
+          "totalContextTokens": 6,
+          "maxOutputTokens": 2,
+          "contextNumeric": 6,
+          "maxOutputNumeric": 2,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "zhipu": {
+          "cards": 28,
+          "inputModalities": 28,
+          "outputModalities": 28,
+          "totalContextTokens": 28,
+          "maxOutputTokens": 8,
+          "contextNumeric": 24,
+          "maxOutputNumeric": 4,
+          "contextNotApplicable": 4,
+          "maxOutputNotApplicable": 4
+        },
+        "siliconflow": {
+          "cards": 68,
+          "inputModalities": 68,
+          "outputModalities": 68,
+          "totalContextTokens": 62,
+          "maxOutputTokens": 13,
+          "contextNumeric": 55,
+          "maxOutputNumeric": 6,
+          "contextNotApplicable": 7,
+          "maxOutputNotApplicable": 7
+        },
+        "anthropic": {
+          "cards": 14,
+          "inputModalities": 14,
+          "outputModalities": 14,
+          "totalContextTokens": 14,
+          "maxOutputTokens": 4,
+          "contextNumeric": 14,
+          "maxOutputNumeric": 4,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "recraft": {
+          "cards": 17,
+          "inputModalities": 17,
+          "outputModalities": 17,
+          "totalContextTokens": 17,
+          "maxOutputTokens": 17,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 17,
+          "maxOutputNotApplicable": 17
+        },
+        "xai": {
+          "cards": 12,
+          "inputModalities": 12,
+          "outputModalities": 12,
+          "totalContextTokens": 12,
+          "maxOutputTokens": 3,
+          "contextNumeric": 9,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 3,
+          "maxOutputNotApplicable": 3
+        },
+        "gemini": {
+          "cards": 17,
+          "inputModalities": 17,
+          "outputModalities": 17,
+          "totalContextTokens": 1,
+          "maxOutputTokens": 17,
+          "contextNumeric": 1,
+          "maxOutputNumeric": 17,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "bailian": {
+          "cards": 126,
+          "inputModalities": 116,
+          "outputModalities": 116,
+          "totalContextTokens": 114,
+          "maxOutputTokens": 94,
+          "contextNumeric": 81,
+          "maxOutputNumeric": 61,
+          "contextNotApplicable": 33,
+          "maxOutputNotApplicable": 33
+        },
+        "openai": {
+          "cards": 71,
+          "inputModalities": 71,
+          "outputModalities": 71,
+          "totalContextTokens": 69,
+          "maxOutputTokens": 45,
+          "contextNumeric": 60,
+          "maxOutputNumeric": 36,
+          "contextNotApplicable": 9,
+          "maxOutputNotApplicable": 9
+        },
+        "ark": {
+          "cards": 36,
+          "inputModalities": 30,
+          "outputModalities": 26,
+          "totalContextTokens": 17,
+          "maxOutputTokens": 5,
+          "contextNumeric": 12,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 5,
+          "maxOutputNotApplicable": 5
+        },
+        "bfl": {
+          "cards": 14,
+          "inputModalities": 14,
+          "outputModalities": 14,
+          "totalContextTokens": 14,
+          "maxOutputTokens": 14,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 14,
+          "maxOutputNotApplicable": 14
+        },
+        "stability": {
+          "cards": 5,
+          "inputModalities": 5,
+          "outputModalities": 5,
+          "totalContextTokens": 5,
+          "maxOutputTokens": 5,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 5,
+          "maxOutputNotApplicable": 5
+        },
+        "ideogram": {
+          "cards": 14,
+          "inputModalities": 14,
+          "outputModalities": 14,
+          "totalContextTokens": 14,
+          "maxOutputTokens": 14,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 14,
+          "maxOutputNotApplicable": 14
+        },
+        "minimax": {
+          "cards": 11,
+          "inputModalities": 11,
+          "outputModalities": 11,
+          "totalContextTokens": 11,
+          "maxOutputTokens": 3,
+          "contextNumeric": 9,
+          "maxOutputNumeric": 1,
+          "contextNotApplicable": 2,
+          "maxOutputNotApplicable": 2
+        },
+        "mistral": {
+          "cards": 18,
+          "inputModalities": 18,
+          "outputModalities": 18,
+          "totalContextTokens": 18,
+          "maxOutputTokens": 0,
+          "contextNumeric": 18,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "together": {
+          "cards": 53,
+          "inputModalities": 39,
+          "outputModalities": 38,
+          "totalContextTokens": 45,
+          "maxOutputTokens": 34,
+          "contextNumeric": 21,
+          "maxOutputNumeric": 10,
+          "contextNotApplicable": 24,
+          "maxOutputNotApplicable": 24
+        },
+        "fireworks": {
+          "cards": 20,
+          "inputModalities": 19,
+          "outputModalities": 8,
+          "totalContextTokens": 17,
+          "maxOutputTokens": 1,
+          "contextNumeric": 17,
+          "maxOutputNumeric": 1,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "fal": {
+          "cards": 48,
+          "inputModalities": 48,
+          "outputModalities": 48,
+          "totalContextTokens": 43,
+          "maxOutputTokens": 48,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 5,
+          "contextNotApplicable": 43,
+          "maxOutputNotApplicable": 43
+        },
+        "replicate": {
+          "cards": 108,
+          "inputModalities": 106,
+          "outputModalities": 104,
+          "totalContextTokens": 98,
+          "maxOutputTokens": 105,
+          "contextNumeric": 4,
+          "maxOutputNumeric": 11,
+          "contextNotApplicable": 94,
+          "maxOutputNotApplicable": 94
+        },
+        "tokendance": {
+          "cards": 74,
+          "inputModalities": 72,
+          "outputModalities": 72,
+          "totalContextTokens": 71,
+          "maxOutputTokens": 18,
+          "contextNumeric": 69,
+          "maxOutputNumeric": 16,
+          "contextNotApplicable": 2,
+          "maxOutputNotApplicable": 2
+        },
+        "runware": {
+          "cards": 148,
+          "inputModalities": 148,
+          "outputModalities": 148,
+          "totalContextTokens": 137,
+          "maxOutputTokens": 122,
+          "contextNumeric": 20,
+          "maxOutputNumeric": 5,
+          "contextNotApplicable": 117,
+          "maxOutputNotApplicable": 117
+        },
+        "tokenhub": {
+          "cards": 50,
+          "inputModalities": 46,
+          "outputModalities": 40,
+          "totalContextTokens": 45,
+          "maxOutputTokens": 19,
+          "contextNumeric": 37,
+          "maxOutputNumeric": 11,
+          "contextNotApplicable": 8,
+          "maxOutputNotApplicable": 8
+        },
+        "xiaomi": {
+          "cards": 3,
+          "inputModalities": 3,
+          "outputModalities": 3,
+          "totalContextTokens": 3,
+          "maxOutputTokens": 3,
+          "contextNumeric": 3,
+          "maxOutputNumeric": 3,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "sensenova": {
+          "cards": 8,
+          "inputModalities": 8,
+          "outputModalities": 6,
+          "totalContextTokens": 7,
+          "maxOutputTokens": 5,
+          "contextNumeric": 5,
+          "maxOutputNumeric": 3,
+          "contextNotApplicable": 2,
+          "maxOutputNotApplicable": 2
+        },
+        "stepfun": {
+          "cards": 5,
+          "inputModalities": 5,
+          "outputModalities": 5,
+          "totalContextTokens": 5,
+          "maxOutputTokens": 1,
+          "contextNumeric": 5,
+          "maxOutputNumeric": 1,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "qianfan": {
+          "cards": 37,
+          "inputModalities": 31,
+          "outputModalities": 32,
+          "totalContextTokens": 31,
+          "maxOutputTokens": 11,
+          "contextNumeric": 28,
+          "maxOutputNumeric": 8,
+          "contextNotApplicable": 3,
+          "maxOutputNotApplicable": 3
+        },
+        "iflytek": {
+          "cards": 34,
+          "inputModalities": 16,
+          "outputModalities": 10,
+          "totalContextTokens": 8,
+          "maxOutputTokens": 0,
+          "contextNumeric": 8,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "longcat": {
+          "cards": 3,
+          "inputModalities": 2,
+          "outputModalities": 3,
+          "totalContextTokens": 3,
+          "maxOutputTokens": 0,
+          "contextNumeric": 3,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "antling": {
+          "cards": 8,
+          "inputModalities": 8,
+          "outputModalities": 8,
+          "totalContextTokens": 6,
+          "maxOutputTokens": 0,
+          "contextNumeric": 6,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "novita": {
+          "cards": 1,
+          "inputModalities": 1,
+          "outputModalities": 1,
+          "totalContextTokens": 1,
+          "maxOutputTokens": 1,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 1,
+          "maxOutputNotApplicable": 1
+        }
+      }
+    },
+    "idOnly": {
+      "totals": {
+        "cards": 1061,
+        "inputModalities": 403,
+        "outputModalities": 397,
+        "totalContextTokens": 390,
+        "maxOutputTokens": 260,
+        "contextNumeric": 298,
+        "maxOutputNumeric": 168,
+        "contextNotApplicable": 92,
+        "maxOutputNotApplicable": 92
+      },
+      "perChannel": {
+        "deepseek": {
+          "cards": 4,
+          "inputModalities": 4,
+          "outputModalities": 4,
+          "totalContextTokens": 4,
+          "maxOutputTokens": 4,
+          "contextNumeric": 4,
+          "maxOutputNumeric": 4,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "kimi": {
+          "cards": 6,
+          "inputModalities": 1,
+          "outputModalities": 1,
+          "totalContextTokens": 1,
+          "maxOutputTokens": 0,
+          "contextNumeric": 1,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "zhipu": {
+          "cards": 28,
+          "inputModalities": 12,
+          "outputModalities": 12,
+          "totalContextTokens": 12,
+          "maxOutputTokens": 0,
+          "contextNumeric": 12,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "siliconflow": {
+          "cards": 68,
+          "inputModalities": 17,
+          "outputModalities": 18,
+          "totalContextTokens": 18,
+          "maxOutputTokens": 9,
+          "contextNumeric": 15,
+          "maxOutputNumeric": 6,
+          "contextNotApplicable": 3,
+          "maxOutputNotApplicable": 3
+        },
+        "anthropic": {
+          "cards": 14,
+          "inputModalities": 2,
+          "outputModalities": 2,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "recraft": {
+          "cards": 17,
+          "inputModalities": 0,
+          "outputModalities": 0,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "xai": {
+          "cards": 12,
+          "inputModalities": 9,
+          "outputModalities": 9,
+          "totalContextTokens": 9,
+          "maxOutputTokens": 0,
+          "contextNumeric": 9,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "gemini": {
+          "cards": 17,
+          "inputModalities": 5,
+          "outputModalities": 5,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 5,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 5,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "bailian": {
+          "cards": 126,
+          "inputModalities": 93,
+          "outputModalities": 92,
+          "totalContextTokens": 87,
+          "maxOutputTokens": 86,
+          "contextNumeric": 60,
+          "maxOutputNumeric": 59,
+          "contextNotApplicable": 27,
+          "maxOutputNotApplicable": 27
+        },
+        "openai": {
+          "cards": 71,
+          "inputModalities": 46,
+          "outputModalities": 46,
+          "totalContextTokens": 44,
+          "maxOutputTokens": 42,
+          "contextNumeric": 37,
+          "maxOutputNumeric": 35,
+          "contextNotApplicable": 7,
+          "maxOutputNotApplicable": 7
+        },
+        "ark": {
+          "cards": 36,
+          "inputModalities": 23,
+          "outputModalities": 23,
+          "totalContextTokens": 15,
+          "maxOutputTokens": 3,
+          "contextNumeric": 12,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 3,
+          "maxOutputNotApplicable": 3
+        },
+        "bfl": {
+          "cards": 14,
+          "inputModalities": 0,
+          "outputModalities": 0,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "stability": {
+          "cards": 5,
+          "inputModalities": 0,
+          "outputModalities": 0,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "ideogram": {
+          "cards": 14,
+          "inputModalities": 0,
+          "outputModalities": 0,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 0,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "minimax": {
+          "cards": 11,
+          "inputModalities": 3,
+          "outputModalities": 3,
+          "totalContextTokens": 3,
+          "maxOutputTokens": 0,
+          "contextNumeric": 3,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "mistral": {
+          "cards": 18,
+          "inputModalities": 3,
+          "outputModalities": 3,
+          "totalContextTokens": 3,
+          "maxOutputTokens": 0,
+          "contextNumeric": 3,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "together": {
+          "cards": 53,
+          "inputModalities": 15,
+          "outputModalities": 18,
+          "totalContextTokens": 13,
+          "maxOutputTokens": 16,
+          "contextNumeric": 7,
+          "maxOutputNumeric": 10,
+          "contextNotApplicable": 6,
+          "maxOutputNotApplicable": 6
+        },
+        "fireworks": {
+          "cards": 20,
+          "inputModalities": 16,
+          "outputModalities": 5,
+          "totalContextTokens": 15,
+          "maxOutputTokens": 1,
+          "contextNumeric": 15,
+          "maxOutputNumeric": 1,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "fal": {
+          "cards": 48,
+          "inputModalities": 41,
+          "outputModalities": 41,
+          "totalContextTokens": 36,
+          "maxOutputTokens": 41,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 5,
+          "contextNotApplicable": 36,
+          "maxOutputNotApplicable": 36
+        },
+        "replicate": {
+          "cards": 108,
+          "inputModalities": 5,
+          "outputModalities": 5,
+          "totalContextTokens": 0,
+          "maxOutputTokens": 5,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 5,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "tokendance": {
+          "cards": 74,
+          "inputModalities": 37,
+          "outputModalities": 35,
+          "totalContextTokens": 61,
+          "maxOutputTokens": 16,
+          "contextNumeric": 59,
+          "maxOutputNumeric": 14,
+          "contextNotApplicable": 2,
+          "maxOutputNotApplicable": 2
+        },
+        "runware": {
+          "cards": 148,
+          "inputModalities": 14,
+          "outputModalities": 14,
+          "totalContextTokens": 8,
+          "maxOutputTokens": 8,
+          "contextNumeric": 5,
+          "maxOutputNumeric": 5,
+          "contextNotApplicable": 3,
+          "maxOutputNotApplicable": 3
+        },
+        "tokenhub": {
+          "cards": 50,
+          "inputModalities": 14,
+          "outputModalities": 15,
+          "totalContextTokens": 17,
+          "maxOutputTokens": 8,
+          "contextNumeric": 15,
+          "maxOutputNumeric": 6,
+          "contextNotApplicable": 2,
+          "maxOutputNotApplicable": 2
+        },
+        "xiaomi": {
+          "cards": 3,
+          "inputModalities": 3,
+          "outputModalities": 3,
+          "totalContextTokens": 3,
+          "maxOutputTokens": 3,
+          "contextNumeric": 3,
+          "maxOutputNumeric": 3,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "sensenova": {
+          "cards": 8,
+          "inputModalities": 3,
+          "outputModalities": 3,
+          "totalContextTokens": 2,
+          "maxOutputTokens": 2,
+          "contextNumeric": 2,
+          "maxOutputNumeric": 2,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "stepfun": {
+          "cards": 5,
+          "inputModalities": 5,
+          "outputModalities": 4,
+          "totalContextTokens": 5,
+          "maxOutputTokens": 1,
+          "contextNumeric": 5,
+          "maxOutputNumeric": 1,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "qianfan": {
+          "cards": 37,
+          "inputModalities": 17,
+          "outputModalities": 20,
+          "totalContextTokens": 21,
+          "maxOutputTokens": 9,
+          "contextNumeric": 19,
+          "maxOutputNumeric": 7,
+          "contextNotApplicable": 2,
+          "maxOutputNotApplicable": 2
+        },
+        "iflytek": {
+          "cards": 34,
+          "inputModalities": 8,
+          "outputModalities": 8,
+          "totalContextTokens": 6,
+          "maxOutputTokens": 0,
+          "contextNumeric": 6,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "longcat": {
+          "cards": 3,
+          "inputModalities": 1,
+          "outputModalities": 2,
+          "totalContextTokens": 2,
+          "maxOutputTokens": 0,
+          "contextNumeric": 2,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "antling": {
+          "cards": 8,
+          "inputModalities": 5,
+          "outputModalities": 5,
+          "totalContextTokens": 4,
+          "maxOutputTokens": 0,
+          "contextNumeric": 4,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 0,
+          "maxOutputNotApplicable": 0
+        },
+        "novita": {
+          "cards": 1,
+          "inputModalities": 1,
+          "outputModalities": 1,
+          "totalContextTokens": 1,
+          "maxOutputTokens": 1,
+          "contextNumeric": 0,
+          "maxOutputNumeric": 0,
+          "contextNotApplicable": 1,
+          "maxOutputNotApplicable": 1
+        }
+      }
+    }
+  },
+  "lossCounts": {
+    "inputModalities": {
+      "total": 31,
+      "removed": 31,
+      "unexplained": 0
+    },
+    "outputModalities": {
+      "total": 27,
+      "removed": 27,
+      "unexplained": 0
+    },
+    "totalContextTokens": {
+      "total": 24,
+      "removed": 24,
+      "unexplained": 0
+    },
+    "maxOutputTokens": {
+      "total": 0,
+      "removed": 0,
+      "unexplained": 0
+    }
+  },
+  "losses": [
+    {
+      "key": "bailian/MiniMax/MiniMax-M2.1",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M2.1",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/MiniMax/MiniMax-M2.1",
+      "field": "totalContextTokens",
+      "before": "≈ 205K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/deepseek-v4-flash",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/deepseek-v4-flash",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/deepseek-v4-flash",
+      "field": "totalContextTokens",
+      "before": "1M tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen-image-edit",
+      "field": "inputModalities",
+      "before": "文本、图像",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen-image-edit",
+      "field": "outputModalities",
+      "before": "图像",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3.6-max-preview",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3.6-max-preview",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3.6-max-preview",
+      "field": "totalContextTokens",
+      "before": "≈ 262K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-14b",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-14b",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-14b",
+      "field": "totalContextTokens",
+      "before": "≈ 33K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-235b-a22b-instruct-2507",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-235b-a22b-instruct-2507",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-235b-a22b-instruct-2507",
+      "field": "totalContextTokens",
+      "before": "≈ 262K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-30b-a3b-instruct-2507",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-30b-a3b-instruct-2507",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-30b-a3b-instruct-2507",
+      "field": "totalContextTokens",
+      "before": "≈ 262K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-32b",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-32b",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-32b",
+      "field": "totalContextTokens",
+      "before": "≈ 33K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-8b",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-8b",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-8b",
+      "field": "totalContextTokens",
+      "before": "≈ 33K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/MiniMax-M2.1",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/MiniMax-M2.1",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/MiniMax-M2.1",
+      "field": "totalContextTokens",
+      "before": "≈ 205K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/deepseek-r1",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/deepseek-r1",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/deepseek-r1",
+      "field": "totalContextTokens",
+      "before": "≈ 128K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/deepseek-v3",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/deepseek-v3",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/deepseek-v3",
+      "field": "totalContextTokens",
+      "before": "≈ 128K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/deepseek-v3.2",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/deepseek-v3.2",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/deepseek-v3.2-exp",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/deepseek-v3.2-exp",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/glm-4.5",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/glm-4.5",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/glm-4.5",
+      "field": "totalContextTokens",
+      "before": "≈ 128K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/glm-4.5-air",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/glm-4.5-air",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/glm-4.5-air",
+      "field": "totalContextTokens",
+      "before": "≈ 128K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/glm-4.7",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/glm-4.7",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/glm-4.7",
+      "field": "totalContextTokens",
+      "before": "≈ 200K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/kimi-k2-thinking",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/kimi-k2-thinking",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/kimi-k2-thinking",
+      "field": "totalContextTokens",
+      "before": "≈ 262K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-coder-30b-a3b-instruct",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-coder-30b-a3b-instruct",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-coder-30b-a3b-instruct",
+      "field": "totalContextTokens",
+      "before": "≈ 262K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-omni-flash",
+      "field": "inputModalities",
+      "before": "文本、图像、视频、音频",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-omni-flash",
+      "field": "outputModalities",
+      "before": "文本、音频",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-omni-flash",
+      "field": "totalContextTokens",
+      "before": "≈ 66K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-omni-flash-2025-09-15",
+      "field": "inputModalities",
+      "before": "文本、图像、音频、视频",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-omni-flash-2025-09-15",
+      "field": "outputModalities",
+      "before": "文本、音频",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-omni-flash-2025-12-01",
+      "field": "inputModalities",
+      "before": "文本、图像、音频、视频",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "bailian/qwen3-omni-flash-2025-12-01",
+      "field": "outputModalities",
+      "before": "文本、音频",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "removalStopDate": "2026-10-10"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/deepseek-v4-flash-vision-exp",
+      "field": "inputModalities",
+      "before": "文本、图像",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/deepseek-ai/deepseek-v4-flash-vision-exp",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/deepseek-v4-flash-vision-exp",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/deepseek-ai/deepseek-v4-flash-vision-exp",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/deepseek-v4-pro-0813",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/deepseek-ai/deepseek-v4-pro-0813",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/deepseek-v4-pro-0813",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/deepseek-ai/deepseek-v4-pro-0813",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/deepseek-v4-pro-0813",
+      "field": "totalContextTokens",
+      "before": "≈ 1M tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/deepseek-ai/deepseek-v4-pro-0813",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
+      "field": "inputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/deepseek-ai/deepseek-v4-flash-0731",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/deepseek-ai/deepseek-v4-flash-0731",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/glm-5p2",
+      "field": "inputModalities",
+      "before": "文本；其他模态待确认",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/fireworks/glm-5p2",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/glm-5p2",
+      "field": "totalContextTokens",
+      "before": "≈ 1M tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/fireworks/glm-5p2",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/kimi-k2p7-code",
+      "field": "inputModalities",
+      "before": "文本、图像；其他模态待确认",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/fireworks/kimi-k2p7-code",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/kimi-k2p7-code",
+      "field": "totalContextTokens",
+      "before": "≈ 262K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/fireworks/kimi-k2p7-code",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/kimi-k2p6",
+      "field": "inputModalities",
+      "before": "文本、图像；其他模态待确认",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/fireworks/kimi-k2p6",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/kimi-k2p6",
+      "field": "totalContextTokens",
+      "before": "≈ 262K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/fireworks/kimi-k2p6",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/muse-glimmer-30b",
+      "field": "inputModalities",
+      "before": "文本、图像；其他模态待确认",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/fireworks/muse-glimmer-30b",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "fireworks/accounts/fireworks/models/muse-glimmer-30b",
+      "field": "totalContextTokens",
+      "before": "≈ 131K tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://fireworks.ai/models/fireworks/muse-glimmer-30b",
+      "removalStopDate": "2026-09-25"
+    },
+    {
+      "key": "xiaomi/mimo-v2.5",
+      "field": "inputModalities",
+      "before": "文本、图像、音频、视频",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+      "removalStopDate": "2026-10-21T10:00:00+08:00"
+    },
+    {
+      "key": "xiaomi/mimo-v2.5",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+      "removalStopDate": "2026-10-21T10:00:00+08:00"
+    },
+    {
+      "key": "xiaomi/mimo-v2.5",
+      "field": "totalContextTokens",
+      "before": "≈ 1M tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+      "removalStopDate": "2026-10-21T10:00:00+08:00"
+    },
+    {
+      "key": "xiaomi/mimo-v2.5-pro",
+      "field": "inputModalities",
+      "before": "文本、图像、音频、视频",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+      "removalStopDate": "2026-10-21T10:00:00+08:00"
+    },
+    {
+      "key": "xiaomi/mimo-v2.5-pro",
+      "field": "outputModalities",
+      "before": "文本",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+      "removalStopDate": "2026-10-21T10:00:00+08:00"
+    },
+    {
+      "key": "xiaomi/mimo-v2.5-pro",
+      "field": "totalContextTokens",
+      "before": "≈ 1M tokens",
+      "after": null,
+      "reason": "removed-model",
+      "removalSource": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+      "removalStopDate": "2026-10-21T10:00:00+08:00"
+    }
+  ],
+  "unexplainedLosses": []
+}

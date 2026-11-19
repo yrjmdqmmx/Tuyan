@@ -1,0 +1,2948 @@
+{
+  "sourceUrl": "https://tokendance.space/gateway/v1/models",
+  "checkedAt": "2026-11-09T15:54:02Z",
+  "status": 200,
+  "captureNote": "public unauthenticated GET; audit evidence only; gateway 23:54:02 UTC+8; portal timestamps retained per id. Zero context_length is raw evidence, never a known limit.",
+  "data": [
+    {
+      "id": "glm-4.7",
+      "name": "Z.ai: GLM 4.7",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "glm-5",
+      "name": "Z.ai: GLM 5",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "minimax-h3-max",
+      "name": "MiniMax: MiniMax H3 Max",
+      "context_length": 0,
+      "supported_protocols": [
+        "minimax:video_generation_v2"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "minimax-m2.5",
+      "name": "MiniMax: MiniMax M2.5",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "kimi-k2.5",
+      "name": "MoonshotAI: Kimi K2.5",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "minimax-m2.7",
+      "name": "MiniMax: MiniMax M2.7",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "kimi-k3.1-pro",
+      "name": "MoonshotAI: Kimi K3.1 Pro",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "glm-4.5-air",
+      "name": "Z.ai: GLM 4.5 Air",
+      "context_length": 128000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "glm-4.6v",
+      "name": "Z.ai: GLM 4.6V",
+      "context_length": 128000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "step-3.5-flash",
+      "name": "StepFun: Step 3.5 Flash",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seed-2.0-pro",
+      "name": "ByteDance Seed: Seed-2.0-Pro",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seed-2.0-mini",
+      "name": "ByteDance Seed: Seed-2.0-Mini",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "glm-5v-turbo",
+      "name": "Z.ai: GLM 5V Turbo",
+      "context_length": 202752,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seedream-5.0-lite",
+      "name": "ByteDance Seed: Seedream 5.0 lite",
+      "context_length": 0,
+      "supported_protocols": [
+        "ark:image-generations",
+        "openai:image-generations"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "glm-5.1",
+      "name": "Z.ai: GLM 5.1",
+      "context_length": 202752,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seed-2.0-lite",
+      "name": "ByteDance Seed: Seed-2.0-Lite",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "ling-3.1-flash",
+      "name": "Ling: Ling 3.1 Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "ateve-jev-v1",
+      "name": "Ateve: Ateve Jev V1",
+      "context_length": 32000,
+      "supported_protocols": [
+        "typesafe:systemone"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "mimo-v2.5",
+      "name": "Xiaomi: MiMo-V2.5",
+      "context_length": 1048576,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen3-vl-plus",
+      "name": "Qwen: Qwen3 VL Plus",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen-image-2.1-pro",
+      "name": "Qwen: Qwen-Image-2.1-Pro",
+      "context_length": 0,
+      "supported_protocols": [
+        "dashscope:multimodal-generation"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "glm-ocr",
+      "name": "Z.ai: GLM-OCR",
+      "context_length": 128000,
+      "supported_protocols": [
+        "zai:layout-parsing"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "kimi-k2.6",
+      "name": "MoonshotAI: Kimi K2.6",
+      "context_length": 262144,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen-text-embedding-v4",
+      "name": "Qwen: Text Embedding V4",
+      "context_length": 8000,
+      "supported_protocols": [
+        "openai:embeddings"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "deepseek-v4.1-flash-1017",
+      "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "minimax-m3.1-flash",
+      "name": "MiniMax: MiniMax M3.1 Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "deepseek-fetch",
+      "name": "DeepSeek: DeepSeek Fetch",
+      "context_length": 0,
+      "supported_protocols": [
+        "deepseek:web-fetch"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "kling-4.0",
+      "name": "Kling: Video 4.0",
+      "context_length": 0,
+      "supported_protocols": [
+        "kling:text2video-v2",
+        "kling:image2video-v2",
+        "kling:omni-video-v2"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen3.5-plus",
+      "name": "Qwen: Qwen3.5 Plus",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen3.5-flash",
+      "name": "Qwen: Qwen3.5 Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen-image-2.1-turbo",
+      "name": "Qwen: Qwen-Image-2.1-Turbo",
+      "context_length": 0,
+      "supported_protocols": [
+        "dashscope:multimodal-generation"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "deepseek-search",
+      "name": "DeepSeek: DeepSeek Search",
+      "context_length": 0,
+      "supported_protocols": [
+        "deepseek:web-search"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "happyhorse-1.0-video-edit",
+      "name": "Alibaba: HappyHorse 1.0 Video Edit",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "happyhorse-1.0-i2v",
+      "name": "Alibaba: HappyHorse 1.0 Image To Video",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "happyhorse-1.0-t2v",
+      "name": "Alibaba: HappyHorse 1.0 Text To Video",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "happyhorse-1.0-r2v",
+      "name": "Alibaba: HappyHorse 1.0 Reference To Video",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "name": "DeepSeek: DeepSeek V4 Pro Preview",
+      "context_length": 1048576,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen3.6-plus",
+      "name": "Qwen: Qwen3.6 Plus",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "mimo-v2.5-pro",
+      "name": "Xiaomi: MiMo-V2.5-Pro",
+      "context_length": 1048576,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seedream-5.0-flash",
+      "name": "ByteDance Seed: Seedream 5.0 Flash",
+      "context_length": 0,
+      "supported_protocols": [
+        "ark:image-generations"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "unifuncs-s3",
+      "name": "UniFuncs: Deep Search S3",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen-audio-3.1-asr-flash-streaming",
+      "name": "Qwen: Qwen-Audio-3.1-ASR-Flash-Streaming",
+      "context_length": 0,
+      "supported_protocols": [
+        "qwen:audio-asr-streaming"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "unifuncs-u3",
+      "name": "UniFuncs: Deep Research U3",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seedance-2.0",
+      "name": "ByteDance: Seedance 2.0",
+      "context_length": 0,
+      "supported_protocols": [
+        "seedance:generations"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seedance-2.0-fast",
+      "name": "ByteDance: Seedance 2.0 Fast",
+      "context_length": 0,
+      "supported_protocols": [
+        "seedance:generations"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "deepseek-flash-latest",
+      "name": "DeepSeek: DeepSeek Flash Latest",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "mimo-v2.5-tts",
+      "name": "Xiaomi: MiMo-V2.5-TTS",
+      "context_length": 8000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "mimo-v2.5-tts-voicedesign",
+      "name": "Xiaomi: MiMo-V2.5-TTS-VoiceDesign",
+      "context_length": 8000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "mimo-v2.5-tts-voiceclone",
+      "name": "Xiaomi: MiMo-V2.5-TTS-VoiceClone",
+      "context_length": 8000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "kling-effects",
+      "name": "Kling: Kling Video Effects",
+      "context_length": 0,
+      "supported_protocols": [
+        "kling:video-effects"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "kling-avatar-image2video",
+      "name": "Kling: Kling Avatar",
+      "context_length": 0,
+      "supported_protocols": [
+        "kling:avatar"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen3.7-plus",
+      "name": "Qwen: Qwen3.7 Plus",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen3.7-max",
+      "name": "Qwen: Qwen3.7 Max",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "minimax-speech-2.8-hd",
+      "name": "MiniMax: Speech-2.8-HD",
+      "context_length": 0,
+      "supported_protocols": [
+        "minimax:t2a_v2",
+        "minimax:t2a_v2_ws",
+        "minimax:voice_clone"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "minimax-speech-2.8-turbo",
+      "name": "MiniMax: Speech-2.8-Turbo",
+      "context_length": 0,
+      "supported_protocols": [
+        "minimax:t2a_v2",
+        "minimax:t2a_v2_ws",
+        "minimax:voice_clone"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "step-3.7-flash",
+      "name": "StepFun: Step 3.7 Flash",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "bocha-web-search",
+      "name": "Bocha: Web Search",
+      "context_length": 0,
+      "supported_protocols": [
+        "bocha:web-search"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "unifuncs-u3-pro",
+      "name": "UniFuncs: Deep Research U3 Pro",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "unifuncs-s3-pro",
+      "name": "UniFuncs: Deep Search S3 Pro",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "unifuncs-web-reader",
+      "name": "UniFuncs: Web Reader",
+      "context_length": 0,
+      "supported_protocols": [
+        "unifuncs:web-reader"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "unifuncs-web-search",
+      "name": "UniFuncs: Web Search",
+      "context_length": 0,
+      "supported_protocols": [
+        "unifuncs:web-search"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "hy3-preview",
+      "name": "Tencent: Hy3 preview",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "kimi-k2.7-code",
+      "name": "MoonshotAI: Kimi K2.7 Code",
+      "context_length": 262144,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "glm-5.2",
+      "name": "Z.ai: GLM 5.2",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "happyhorse-1.1-r2v",
+      "name": "Alibaba: HappyHorse 1.1 Reference To Video",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seed-evolving",
+      "name": "ByteDance Seed: Seed-Evolving",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "hy4",
+      "name": "Tencent: Hy4",
+      "context_length": 1024000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seed-2.1-turbo",
+      "name": "ByteDance Seed: Seed-2.1-Turbo",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "minimax-m3",
+      "name": "MiniMax: MiniMax M3",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seed-2.1-pro",
+      "name": "ByteDance Seed: Seed-2.1-Pro",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "wan3.0-video",
+      "name": "Qwen: Wan3.0",
+      "context_length": 0,
+      "supported_protocols": [
+        "wan3:video-synthesis"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seedance-2.0-mini",
+      "name": "ByteDance: Seedance 2.0 Mini",
+      "context_length": 0,
+      "supported_protocols": [
+        "seedance:generations"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen3.8-max",
+      "name": "Qwen: Qwen3.8 Max",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "longcat-2.0",
+      "name": "Meituan: LongCat-2.0",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "kling-4.0-flash",
+      "name": "Kling: Video 4.0 Flash",
+      "context_length": 0,
+      "supported_protocols": [
+        "kling:text2video-v2",
+        "kling:image2video-v2",
+        "kling:omni-video-v2"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "hy3",
+      "name": "Tencent: Hy3",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "kling-3.0",
+      "name": "Kling: Video 3.0",
+      "context_length": 0,
+      "supported_protocols": [
+        "kling:text2video",
+        "kling:image2video",
+        "kling:motion-control"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "happyhorse-1.1-t2v",
+      "name": "Alibaba: HappyHorse 1.1 Text To Video",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "cogevol-interactive-0828",
+      "name": "CogEvol: CogEvol Interactive 0828",
+      "context_length": 32768,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seedream-5.0-pro",
+      "name": "ByteDance Seed: Seedream 5.0 Pro",
+      "context_length": 0,
+      "supported_protocols": [
+        "ark:image-generations"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen3.5-35b-a3b",
+      "name": "Qwen: Qwen3.5-35B-A3B",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "happyhorse-1.1-i2v",
+      "name": "Alibaba: HappyHorse 1.1 Image To Video",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "deepseek-v4-flash-0731",
+      "name": "DeepSeek: DeepSeek V4 Flash 0731",
+      "context_length": 1048576,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seedance-2.5",
+      "name": "ByteDance: Seedance 2.5",
+      "context_length": 0,
+      "supported_protocols": [
+        "seedance:generations"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "glm-5.3-flash",
+      "name": "Z.ai: GLM 5.3 Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "ling-3.0-flash",
+      "name": "Ling: Ling 3.0 Flash",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "wan3.0-video-prime",
+      "name": "Qwen: Wan3.0 Prime",
+      "context_length": 0,
+      "supported_protocols": [
+        "wan3:video-synthesis"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "kling-tts",
+      "name": "Kling: Kling TTS",
+      "context_length": 0,
+      "supported_protocols": [
+        "kling:tts"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "dots-3-note-preview",
+      "name": "Dots Studio: Dots3-Note Preview（Free）",
+      "context_length": 512000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seed-2.0-code",
+      "name": "ByteDance Seed: Seed-2.0-Code",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "kling-3.0-turbo",
+      "name": "Kling: Video 3.0 Turbo",
+      "context_length": 0,
+      "supported_protocols": [
+        "kling:text2video",
+        "kling:image2video"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "glm-5.3",
+      "name": "Z.ai: GLM 5.3",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "hy4-preview",
+      "name": "Tencent: Hy4 preview",
+      "context_length": 1024000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "seed-tts-2.0",
+      "name": "ByteDance Seed: Doubao-Seed-TTS 2.0",
+      "context_length": 0,
+      "supported_protocols": [
+        "ark:tts",
+        "ark:tts_ws"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen3.7-text-embedding",
+      "name": "Qwen: Qwen3.7 Text Embedding",
+      "context_length": 128000,
+      "supported_protocols": [
+        "openai:embeddings"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "kling-3.0-omni",
+      "name": "Kling: Video 3.0 Omni",
+      "context_length": 0,
+      "supported_protocols": [
+        "kling:omni-video"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen3.8-max-0902",
+      "name": "Qwen: Qwen3.8-Max-0902",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "spark-x2.5-1.7b",
+      "name": "Xunfei: Spark-X2.5-1.7B",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "spark-x2.5-4b",
+      "name": "Xunfei: Spark-X2.5-4B",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen3.7-text-rerank",
+      "name": "Qwen: Qwen3.7 Text Rerank",
+      "context_length": 0,
+      "supported_protocols": [
+        "qwen:text-rerank"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "cogevol-slide-0828",
+      "name": "CogEvol: CogEvol Slide 0828",
+      "context_length": 32768,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "cogevol-base",
+      "name": "CogEvol: CogEvol Base",
+      "context_length": 65536,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "kimi-k3",
+      "name": "MoonshotAI: Kimi K3",
+      "context_length": 1048576,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "deepseek-v4.1-flash",
+      "name": "DeepSeek: DeepSeek V4.1 Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "glm-5.3-flashx",
+      "name": "GLM: GLM 5.3 FlashX",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen3.5-ocr",
+      "name": "Qwen: Qwen3.5-OCR",
+      "context_length": 64000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "step-5-preview",
+      "name": "StepFun: Step 5 Preview",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "mimo-v2.6-ultraspeed",
+      "name": "Xiaomi: MiMo-V2.6-Pro-UltraSpeed",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen3.8-flash",
+      "name": "Qwen: Qwen3.8 Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "deepseek-v4-pro-0813",
+      "name": "DeepSeek: DeepSeek V4 Pro 0813",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "minimax-h3",
+      "name": "MiniMax: MiniMax H3",
+      "context_length": 0,
+      "supported_protocols": [
+        "minimax:video_generation_v2"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "bocha-jev-v1",
+      "name": "Bocha: Bocha Jev V1",
+      "context_length": 32000,
+      "supported_protocols": [
+        "typesafe:systemone"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "mimo-v2.6-flash",
+      "name": "Xiaomi: MiMo-V2.6-Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "mimo-v2.6-pro",
+      "name": "Xiaomi: MiMo-V2.6-Pro",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen-audio-3.1-asr-flash",
+      "name": "Qwen: Qwen-Audio-3.1-ASR-Flash",
+      "context_length": 0,
+      "supported_protocols": [
+        "dashscope:multimodal-generation"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen-audio-3.0-asr-flash",
+      "name": "Qwen: Qwen-Audio-3.0-ASR-Flash",
+      "context_length": 0,
+      "supported_protocols": [
+        "dashscope:multimodal-generation"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "yc-song-4.0",
+      "name": "Yinchao: Song V4.0",
+      "context_length": 0,
+      "supported_protocols": [
+        "yinchao:song",
+        "yinchao:lyric-generate"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "qwen-audio-3.1-asr-flash-message",
+      "name": "Qwen: Qwen-Audio-3.1-ASR-Flash-Message",
+      "context_length": 0,
+      "supported_protocols": [
+        "qwen:audio-asr-streaming"
+      ],
+      "descriptionPresent": true
+    },
+    {
+      "id": "yc-song-3.5",
+      "name": "Yinchao: Song V3.5",
+      "context_length": 0,
+      "supported_protocols": [
+        "yinchao:song",
+        "yinchao:lyric-generate"
+      ],
+      "descriptionPresent": true
+    }
+  ],
+  "portal": {
+    "ateve-jev-v1": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/ateve-jev-v1",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:02Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "bocha-jev-v1": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/bocha-jev-v1",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:03Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "bocha-web-search": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/bocha-web-search",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:03Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "cogevol-base": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/cogevol-base",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:04Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "cogevol-interactive-0828": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/cogevol-interactive-0828",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:04Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "cogevol-slide-0828": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/cogevol-slide-0828",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:04Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "deepseek-fetch": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/deepseek-fetch",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:05Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "deepseek-flash-latest": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/deepseek-flash-latest",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:05Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image→text"
+      }
+    },
+    "deepseek-search": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/deepseek-search",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:06Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "deepseek-v4-flash-0731": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/deepseek-v4-flash-0731",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:06Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "deepseek-v4-pro": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/deepseek-v4-pro",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:07Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "deepseek-v4-pro-0813": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/deepseek-v4-pro-0813",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:07Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "deepseek-v4.1-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/deepseek-v4.1-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:07Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image→text"
+      }
+    },
+    "deepseek-v4.1-flash-1017": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/deepseek-v4.1-flash-1017",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:08Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image→text"
+      }
+    },
+    "dots-3-note-preview": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/dots-3-note-preview",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:08Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,audio,video→text"
+      }
+    },
+    "glm-4.5-air": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/glm-4.5-air",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:09Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "glm-4.6v": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/glm-4.6v",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:09Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "glm-4.7": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/glm-4.7",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:10Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "glm-5": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/glm-5",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:10Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "glm-5.1": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/glm-5.1",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:11Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "glm-5.2": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/glm-5.2",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:11Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "glm-5.3": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/glm-5.3",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:11Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "glm-5.3-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/glm-5.3-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:12Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "glm-5.3-flashx": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/glm-5.3-flashx",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:12Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "glm-5v-turbo": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/glm-5v-turbo",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:13Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "glm-ocr": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/glm-ocr",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:13Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image→text"
+      }
+    },
+    "happyhorse-1.0-i2v": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/happyhorse-1.0-i2v",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:14Z",
+      "architecture": {
+        "input_modalities": [
+          "image",
+          "text"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "image,text→video"
+      }
+    },
+    "happyhorse-1.0-r2v": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/happyhorse-1.0-r2v",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:14Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image→video"
+      }
+    },
+    "happyhorse-1.0-t2v": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/happyhorse-1.0-t2v",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:14Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text→video"
+      }
+    },
+    "happyhorse-1.0-video-edit": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/happyhorse-1.0-video-edit",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:15Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "video"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,video→video"
+      }
+    },
+    "happyhorse-1.1-i2v": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/happyhorse-1.1-i2v",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:15Z",
+      "architecture": {
+        "input_modalities": [
+          "image",
+          "text"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "image,text→video"
+      }
+    },
+    "happyhorse-1.1-r2v": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/happyhorse-1.1-r2v",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:16Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image→video"
+      }
+    },
+    "happyhorse-1.1-t2v": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/happyhorse-1.1-t2v",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:16Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text→video"
+      }
+    },
+    "hy3": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/hy3",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:16Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "hy3-preview": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/hy3-preview",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:17Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "hy4": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/hy4",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:17Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image→text"
+      }
+    },
+    "hy4-preview": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/hy4-preview",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:18Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "kimi-k2.5": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/kimi-k2.5",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:18Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "kimi-k2.6": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/kimi-k2.6",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:19Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "kimi-k2.7-code": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/kimi-k2.7-code",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:19Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "kimi-k3": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/kimi-k3",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:20Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "kimi-k3.1-pro": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/kimi-k3.1-pro",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:20Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "kling-3.0": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/kling-3.0",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:20Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image→video"
+      }
+    },
+    "kling-3.0-omni": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/kling-3.0-omni",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:21Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video",
+          "audio"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image,video,audio→video"
+      }
+    },
+    "kling-3.0-turbo": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/kling-3.0-turbo",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:21Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image→video"
+      }
+    },
+    "kling-4.0": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/kling-4.0",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:22Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image→video"
+      }
+    },
+    "kling-4.0-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/kling-4.0-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:22Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image→video"
+      }
+    },
+    "kling-avatar-image2video": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/kling-avatar-image2video",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:22Z",
+      "architecture": {
+        "input_modalities": [
+          "image",
+          "audio"
+        ],
+        "output_modalities": [
+          "text",
+          "video"
+        ],
+        "modality": "image,audio→text,video"
+      }
+    },
+    "kling-effects": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/kling-effects",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:23Z",
+      "architecture": {
+        "input_modalities": [
+          "image"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "image→video"
+      }
+    },
+    "kling-tts": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/kling-tts",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:23Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "audio"
+        ],
+        "modality": "text→audio"
+      }
+    },
+    "ling-3.0-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/ling-3.0-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:24Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "ling-3.1-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/ling-3.1-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:24Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "longcat-2.0": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/longcat-2.0",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:25Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "mimo-v2.5": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/mimo-v2.5",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:25Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video",
+          "audio"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video,audio→text"
+      }
+    },
+    "mimo-v2.5-pro": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/mimo-v2.5-pro",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:25Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "mimo-v2.5-tts": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/mimo-v2.5-tts",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:26Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "audio"
+        ],
+        "modality": "text→audio"
+      }
+    },
+    "mimo-v2.5-tts-voiceclone": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/mimo-v2.5-tts-voiceclone",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:26Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "audio"
+        ],
+        "modality": "text→audio"
+      }
+    },
+    "mimo-v2.5-tts-voicedesign": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/mimo-v2.5-tts-voicedesign",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:27Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "audio"
+        ],
+        "modality": "text→audio"
+      }
+    },
+    "mimo-v2.6-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/mimo-v2.6-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:27Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video",
+          "audio"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video,audio→text"
+      }
+    },
+    "mimo-v2.6-pro": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/mimo-v2.6-pro",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:27Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,audio,video→text"
+      }
+    },
+    "mimo-v2.6-ultraspeed": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/mimo-v2.6-ultraspeed",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:28Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,audio,video→text"
+      }
+    },
+    "minimax-h3": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/minimax-h3",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:28Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image→video"
+      }
+    },
+    "minimax-h3-max": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/minimax-h3-max",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:29Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image→video"
+      }
+    },
+    "minimax-m2.5": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/minimax-m2.5",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:29Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "minimax-m2.7": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/minimax-m2.7",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:30Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "minimax-m3": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/minimax-m3",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:30Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "minimax-m3.1-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/minimax-m3.1-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:31Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image→text"
+      }
+    },
+    "minimax-speech-2.8-hd": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/minimax-speech-2.8-hd",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:31Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "audio"
+        ],
+        "modality": "text→audio"
+      }
+    },
+    "minimax-speech-2.8-turbo": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/minimax-speech-2.8-turbo",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:31Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "audio"
+        ],
+        "modality": "text→audio"
+      }
+    },
+    "qwen-audio-3.0-asr-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen-audio-3.0-asr-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:32Z",
+      "architecture": {
+        "input_modalities": [
+          "audio"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "audio→text"
+      }
+    },
+    "qwen-audio-3.1-asr-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen-audio-3.1-asr-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:32Z",
+      "architecture": {
+        "input_modalities": [
+          "audio"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "audio→text"
+      }
+    },
+    "qwen-audio-3.1-asr-flash-message": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen-audio-3.1-asr-flash-message",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:33Z",
+      "architecture": {
+        "input_modalities": [
+          "audio"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "audio→text"
+      }
+    },
+    "qwen-audio-3.1-asr-flash-streaming": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen-audio-3.1-asr-flash-streaming",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:33Z",
+      "architecture": {
+        "input_modalities": [
+          "audio"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "audio→text"
+      }
+    },
+    "qwen-image-2.1-pro": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen-image-2.1-pro",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:33Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "image"
+        ],
+        "modality": "text,image→image"
+      }
+    },
+    "qwen-image-2.1-turbo": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen-image-2.1-turbo",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:34Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "image"
+        ],
+        "modality": "text,image→image"
+      }
+    },
+    "qwen-text-embedding-v4": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen-text-embedding-v4",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:34Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "embedding"
+        ],
+        "modality": "text→embedding"
+      }
+    },
+    "qwen3-vl-plus": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen3-vl-plus",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:35Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "qwen3.5-35b-a3b": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen3.5-35b-a3b",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:35Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "qwen3.5-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen3.5-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:35Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "qwen3.5-ocr": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen3.5-ocr",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:36Z",
+      "architecture": {
+        "input_modalities": [
+          "image"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "image→text"
+      }
+    },
+    "qwen3.5-plus": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen3.5-plus",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:36Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "qwen3.6-plus": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen3.6-plus",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:37Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "qwen3.7-max": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen3.7-max",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:37Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "qwen3.7-plus": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen3.7-plus",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:37Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "qwen3.7-text-embedding": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen3.7-text-embedding",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:38Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "embedding"
+        ],
+        "modality": "text→embedding"
+      }
+    },
+    "qwen3.7-text-rerank": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen3.7-text-rerank",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:38Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "embedding"
+        ],
+        "modality": "text→embedding"
+      }
+    },
+    "qwen3.8-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen3.8-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:39Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "qwen3.8-max": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen3.8-max",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:39Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "qwen3.8-max-0902": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/qwen3.8-max-0902",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:40Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "seed-2.0-code": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seed-2.0-code",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:40Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "seed-2.0-lite": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seed-2.0-lite",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:41Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "seed-2.0-mini": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seed-2.0-mini",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:41Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "seed-2.0-pro": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seed-2.0-pro",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:41Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "seed-2.1-pro": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seed-2.1-pro",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:42Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "seed-2.1-turbo": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seed-2.1-turbo",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:42Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "seed-evolving": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seed-evolving",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:43Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "seed-tts-2.0": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seed-tts-2.0",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:43Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "audio"
+        ],
+        "modality": "text→audio"
+      }
+    },
+    "seedance-2.0": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seedance-2.0",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:44Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video",
+          "audio"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image,video,audio→video"
+      }
+    },
+    "seedance-2.0-fast": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seedance-2.0-fast",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:44Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image,audio,video→video"
+      }
+    },
+    "seedance-2.0-mini": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seedance-2.0-mini",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:44Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image,audio,video→video"
+      }
+    },
+    "seedance-2.5": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seedance-2.5",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:45Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "video",
+          "audio",
+          "image"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,video,audio,image→video"
+      }
+    },
+    "seedream-5.0-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seedream-5.0-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:45Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "image"
+        ],
+        "modality": "text,image→image"
+      }
+    },
+    "seedream-5.0-lite": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seedream-5.0-lite",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:45Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "image"
+        ],
+        "modality": "text,image→image"
+      }
+    },
+    "seedream-5.0-pro": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/seedream-5.0-pro",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:46Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "image"
+        ],
+        "modality": "text,image→image"
+      }
+    },
+    "spark-x2.5-1.7b": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/spark-x2.5-1.7b",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:46Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "spark-x2.5-4b": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/spark-x2.5-4b",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:47Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "step-3.5-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/step-3.5-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:47Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "step-3.7-flash": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/step-3.7-flash",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:48Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "step-5-preview": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/step-5-preview",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:48Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text,image,video→text"
+      }
+    },
+    "unifuncs-s3": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/unifuncs-s3",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:48Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "unifuncs-s3-pro": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/unifuncs-s3-pro",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:49Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "unifuncs-u3": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/unifuncs-u3",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:49Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "unifuncs-u3-pro": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/unifuncs-u3-pro",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:50Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "unifuncs-web-reader": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/unifuncs-web-reader",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:50Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "unifuncs-web-search": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/unifuncs-web-search",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:51Z",
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "modality": "text→text"
+      }
+    },
+    "wan3.0-video": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/wan3.0-video",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:51Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image,audio,video→video"
+      }
+    },
+    "wan3.0-video-prime": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/wan3.0-video-prime",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:51Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "modality": "text,image,audio,video→video"
+      }
+    },
+    "yc-song-3.5": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/yc-song-3.5",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:52Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "audio"
+        ],
+        "output_modalities": [
+          "text",
+          "audio"
+        ],
+        "modality": "text,audio→text,audio"
+      }
+    },
+    "yc-song-4.0": {
+      "sourceUrl": "https://tokendance.space/portal/api/models/yc-song-4.0",
+      "status": 200,
+      "checkedAt": "2026-11-09T15:54:52Z",
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "audio"
+        ],
+        "output_modalities": [
+          "audio"
+        ],
+        "modality": "text,audio→audio"
+      }
+    }
+  }
+}

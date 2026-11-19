@@ -1,0 +1,2384 @@
+[
+  {
+    "channel": "antling",
+    "modelId": "Ling-3.0-flash",
+    "oldUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+    "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/"
+  },
+  {
+    "channel": "antling",
+    "modelId": "Ling-3.0-flash-VL",
+    "oldUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+    "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/"
+  },
+  {
+    "channel": "antling",
+    "modelId": "Ling-3.0-tiny",
+    "oldUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+    "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/"
+  },
+  {
+    "channel": "antling",
+    "modelId": "Ling-3.1-flash",
+    "oldUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+    "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/"
+  },
+  {
+    "channel": "antling",
+    "modelId": "Ling-3.2-flash",
+    "oldUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+    "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "glm-5.1",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/glm-5-1"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "glm-5.2",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/glm-5-2"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "glm-5.2-fast-preview",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://www.qianwenai.com/models/glm-5.2-fast-preview"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "kimi-k2.5",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-5"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "kimi-k2.6",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-6"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "kimi-k2.7-code",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/kimi-k2-7-code"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "kimi-k3",
+    "oldUrl": "https://huggingface.co/moonshotai/Kimi-K3",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen-image",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-api"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen-image-3.0",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen-image-3.0-pro",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen-max",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/text-generation-model"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen-plus-2025-01-25",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen-plus-2025-04-28",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen-plus-2025-07-14",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-plus"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen-turbo",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://www.aliyun.com/notice/118177"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3-coder-next",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://www.aliyun.com/notice/118345"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3-max",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://www.aliyun.com/notice/118344"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3-max-2025-09-23",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://www.aliyun.com/notice/118345"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3-max-2026-01-23",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://www.aliyun.com/notice/118345"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3-max-preview",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://www.aliyun.com/notice/118344"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.5-omni-flash",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.5-omni-flash-2026-03-15",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.5-omni-plus",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.5-omni-plus-2026-03-15",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.6-plus",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.6-plus-2026-04-02",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.7-max",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.7-max-2026-05-17",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.7-max-2026-05-20",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.7-max-preview",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.7-plus",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.7-plus-2026-05-26",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.8-2.4t-a95b",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.8-27b",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "qwen3.8-max-0902",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "vanchin/deepseek-v3.2-think",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "wan2.2-t2i-flash",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/wan2-2-t2i-flash"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "wan2.2-t2i-plus",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/wan2-2-t2i-plus"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "wan2.6-t2i",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/wan2-6-t2i"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "wan2.7-image",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "wan2.7-image-pro",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/wan2-7-image-pro"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "wanx-v1",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/wanx-v1"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "wanx2.0-t2i-turbo",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/wanx2-0-t2i-turbo"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "wanx2.1-t2i-plus",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/wanx2-1-t2i-plus"
+  },
+  {
+    "channel": "bailian",
+    "modelId": "wanx2.1-t2i-turbo",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/wanx2-1-t2i-turbo"
+  },
+  {
+    "channel": "fal",
+    "modelId": "alibaba/qwen-image-3/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "bria/fibo-edit-1.5/edit",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/bria/fibo-edit-1.5/edit/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "bria/fibo-gen-1.5/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/bria/fibo-gen-1.5/text-to-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "bytedance/seedream/v5/pro/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/bytedance/seedream/v4.5/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/bytedance/seedream/v4/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/fast-sdxl",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/fast-sdxl/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux-1/schnell",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux-1/schnell/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux-2",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux-2/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux-2-flex",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux-2-flex/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux-2-pro",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux-2-pro/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux-2/flash",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux-2/flash/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux-2/klein/9b",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux-2/klein/9b/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux-2/turbo",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux-2/turbo/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux-kontext-lora",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux-kontext-lora/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux-lora",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux-lora/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux-pro/kontext",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux-pro/kontext/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux-pro/v1.1",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux-pro/v1.1/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux-pro/v1.1-ultra",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux/dev",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux/dev/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/flux/schnell",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/flux/schnell/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/gpt-image-1.5",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/gpt-image-1.5/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/ideogram/v3",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/ideogram/v3/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/krea-2/turbo",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/krea-2/turbo/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/qwen-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/qwen-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/recraft/v3/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/recraft/v4/pro/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/recraft/v4/pro/text-to-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "fal-ai/z-image/turbo",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/fal-ai/z-image/turbo/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "imagineart/imagineart-2.0-preview/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/imagineart/imagineart-2.0-preview/text-to-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "krea/v2/large/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/krea/v2/large/text-to-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "meta/muse-image/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/meta/muse-image/text-to-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "openai/gpt-image-2",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/openai/gpt-image-2/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "openai/gpt-image-2.5/flare/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "openai/gpt-image-2.5/sunburst/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "xai/grok-imagine-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "xai/grok-imagine-image/quality/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api"
+  },
+  {
+    "channel": "fal",
+    "modelId": "xai/grok-imagine-image/v2.0/text-to-image",
+    "oldUrl": "https://api.fal.ai/v1/models",
+    "finalUrl": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api"
+  },
+  {
+    "channel": "iflytek",
+    "modelId": "spark-x2.5",
+    "oldUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+  },
+  {
+    "channel": "iflytek",
+    "modelId": "spark-x2.5-1.7b",
+    "oldUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+  },
+  {
+    "channel": "iflytek",
+    "modelId": "spark-x2.5-4b",
+    "oldUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+  },
+  {
+    "channel": "iflytek",
+    "modelId": "spark-x2.6",
+    "oldUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "finalUrl": "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html"
+  },
+  {
+    "channel": "iflytek",
+    "modelId": "spark-x2.6-4b",
+    "oldUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "finalUrl": "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html"
+  },
+  {
+    "channel": "iflytek",
+    "modelId": "xsparkx2",
+    "oldUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+  },
+  {
+    "channel": "iflytek",
+    "modelId": "xsparkx2flash",
+    "oldUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+  },
+  {
+    "channel": "kimi",
+    "modelId": "kimi-k2.7-code-highspeed",
+    "oldUrl": "https://www.kimi.com/code/docs/en/kimi-code/models",
+    "finalUrl": "https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart"
+  },
+  {
+    "channel": "kimi",
+    "modelId": "kimi-k3.1-pro",
+    "oldUrl": "https://platform.kimi.com/docs/models",
+    "finalUrl": "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart"
+  },
+  {
+    "channel": "kimi",
+    "modelId": "kimi-k3.1-pro-highspeed",
+    "oldUrl": "https://platform.kimi.com/docs/models",
+    "finalUrl": "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "adirik/realvisxl-v3.0-turbo",
+    "oldUrl": "https://replicate.com/adirik/realvisxl-v3.0-turbo/api/schema",
+    "finalUrl": "https://replicate.com/adirik/realvisxl-v3.0-turbo"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "ai-forever/kandinsky-2",
+    "oldUrl": "https://replicate.com/ai-forever/kandinsky-2/api/schema",
+    "finalUrl": "https://replicate.com/ai-forever/kandinsky-2"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "ai-forever/kandinsky-2.2",
+    "oldUrl": "https://replicate.com/ai-forever/kandinsky-2.2/api/schema",
+    "finalUrl": "https://replicate.com/ai-forever/kandinsky-2.2"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "alibaba/qwen-image-3",
+    "oldUrl": "https://replicate.com/alibaba/qwen-image-3/api/schema",
+    "finalUrl": "https://replicate.com/alibaba/qwen-image-3"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "alibaba/qwen-image-3-pro",
+    "oldUrl": "https://replicate.com/alibaba/qwen-image-3-pro/api/schema",
+    "finalUrl": "https://replicate.com/alibaba/qwen-image-3-pro"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "alibaba/wan-3",
+    "oldUrl": "https://replicate.com/alibaba/wan-3/api/schema",
+    "finalUrl": "https://replicate.com/alibaba/wan-3"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "anthropic/claude-opus-5.5",
+    "oldUrl": "https://replicate.com/anthropic/claude-opus-5.5/api/schema",
+    "finalUrl": "https://replicate.com/anthropic/claude-opus-5.5"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-1.1-pro",
+    "oldUrl": "https://replicate.com/black-forest-labs/flux-1.1-pro/api/schema",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-1.1-pro"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-1.1-pro-ultra",
+    "oldUrl": "https://replicate.com/black-forest-labs/flux-1.1-pro-ultra/api/schema",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-1.1-pro-ultra"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-2-flex",
+    "oldUrl": "https://replicate.com/black-forest-labs/flux-2-flex/api/schema",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-2-flex"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-2-klein-4b",
+    "oldUrl": "https://replicate.com/black-forest-labs/flux-2-klein-4b/api/schema",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-2-klein-4b"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-2-max",
+    "oldUrl": "https://replicate.com/black-forest-labs/flux-2-max/api/schema",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-2-max"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-2-pro",
+    "oldUrl": "https://replicate.com/black-forest-labs/flux-2-pro/api/schema",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-2-pro"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-3-image",
+    "oldUrl": "https://replicate.com/black-forest-labs/flux-3-image/api/schema",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-3-image"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-dev",
+    "oldUrl": "https://replicate.com/black-forest-labs/flux-dev/api/schema",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-dev"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-dev-lora",
+    "oldUrl": "https://replicate.com/black-forest-labs/flux-dev-lora/api/schema",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-dev-lora"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-kontext-dev",
+    "oldUrl": "https://replicate.com/black-forest-labs/flux-kontext-dev/api/schema",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-kontext-dev"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-kontext-max",
+    "oldUrl": "https://replicate.com/black-forest-labs/flux-kontext-max/api/schema",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-kontext-max"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-kontext-pro",
+    "oldUrl": "https://replicate.com/collections/official",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-kontext-pro"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-pro",
+    "oldUrl": "https://replicate.com/black-forest-labs/flux-pro/api/schema",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-pro"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "black-forest-labs/flux-schnell",
+    "oldUrl": "https://replicate.com/black-forest-labs/flux-schnell/api/schema",
+    "finalUrl": "https://replicate.com/black-forest-labs/flux-schnell"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "bria/fibo",
+    "oldUrl": "https://replicate.com/bria/fibo/api/schema",
+    "finalUrl": "https://replicate.com/bria/fibo"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "bria/fibo-edit",
+    "oldUrl": "https://replicate.com/bria/fibo-edit/api/schema",
+    "finalUrl": "https://replicate.com/bria/fibo-edit"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "bria/image-3.2",
+    "oldUrl": "https://replicate.com/bria/image-3.2/api/schema",
+    "finalUrl": "https://replicate.com/bria/image-3.2"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "bytedance/bagel",
+    "oldUrl": "https://replicate.com/bytedance/bagel/api/schema",
+    "finalUrl": "https://replicate.com/bytedance/bagel"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "bytedance/sdxl-lightning-4step",
+    "oldUrl": "https://replicate.com/bytedance/sdxl-lightning-4step/api/schema",
+    "finalUrl": "https://replicate.com/bytedance/sdxl-lightning-4step"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "bytedance/seedream-3",
+    "oldUrl": "https://replicate.com/bytedance/seedream-3/api/schema",
+    "finalUrl": "https://replicate.com/bytedance/seedream-3"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "bytedance/seedream-4",
+    "oldUrl": "https://replicate.com/bytedance/seedream-4/api/schema",
+    "finalUrl": "https://replicate.com/bytedance/seedream-4"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "bytedance/seedream-4.5",
+    "oldUrl": "https://replicate.com/bytedance/seedream-4.5/api/schema",
+    "finalUrl": "https://replicate.com/bytedance/seedream-4.5"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "bytedance/seedream-5-lite",
+    "oldUrl": "https://replicate.com/bytedance/seedream-5-lite/api/schema",
+    "finalUrl": "https://replicate.com/bytedance/seedream-5-lite"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "datacte/proteus-v0.2",
+    "oldUrl": "https://replicate.com/datacte/proteus-v0.2/api/schema",
+    "finalUrl": "https://replicate.com/datacte/proteus-v0.2"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "datacte/proteus-v0.3",
+    "oldUrl": "https://replicate.com/datacte/proteus-v0.3/api/schema",
+    "finalUrl": "https://replicate.com/datacte/proteus-v0.3"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "fofr/latent-consistency-model",
+    "oldUrl": "https://replicate.com/fofr/latent-consistency-model/api/schema",
+    "finalUrl": "https://replicate.com/fofr/latent-consistency-model"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "fofr/sdxl-emoji",
+    "oldUrl": "https://replicate.com/fofr/sdxl-emoji/api/schema",
+    "finalUrl": "https://replicate.com/fofr/sdxl-emoji"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "fofr/sticker-maker",
+    "oldUrl": "https://replicate.com/fofr/sticker-maker/api/schema",
+    "finalUrl": "https://replicate.com/fofr/sticker-maker"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "google/gemini-3-flash",
+    "oldUrl": "https://replicate.com/google/gemini-3-flash/api/schema",
+    "finalUrl": "https://replicate.com/google/gemini-3-flash"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "google/imagen-3",
+    "oldUrl": "https://replicate.com/google/imagen-3/api/schema",
+    "finalUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-generate-002"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "google/imagen-3-fast",
+    "oldUrl": "https://replicate.com/google/imagen-3-fast/api/schema",
+    "finalUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/3-0-generate#3.0-fast-generate-001"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "google/imagen-4",
+    "oldUrl": "https://replicate.com/google/imagen-4/api/schema",
+    "finalUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-generate-001"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "google/imagen-4-fast",
+    "oldUrl": "https://replicate.com/google/imagen-4-fast/api/schema",
+    "finalUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-fast-generate-001"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "google/imagen-4-ultra",
+    "oldUrl": "https://replicate.com/google/imagen-4-ultra/api/schema",
+    "finalUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "ideogram-ai/ideogram-4-5",
+    "oldUrl": "https://replicate.com/ideogram-ai/ideogram-4-5/api/schema",
+    "finalUrl": "https://replicate.com/ideogram-ai/ideogram-4-5"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "ideogram-ai/ideogram-4-5-precise-edit",
+    "oldUrl": "https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema",
+    "finalUrl": "https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "ideogram-ai/ideogram-v2",
+    "oldUrl": "https://replicate.com/ideogram-ai/ideogram-v2/api/schema",
+    "finalUrl": "https://replicate.com/ideogram-ai/ideogram-v2"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "ideogram-ai/ideogram-v2-turbo",
+    "oldUrl": "https://replicate.com/ideogram-ai/ideogram-v2-turbo/api/schema",
+    "finalUrl": "https://replicate.com/ideogram-ai/ideogram-v2-turbo"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "ideogram-ai/ideogram-v2a",
+    "oldUrl": "https://replicate.com/ideogram-ai/ideogram-v2a/api/schema",
+    "finalUrl": "https://replicate.com/ideogram-ai/ideogram-v2a"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "ideogram-ai/ideogram-v2a-turbo",
+    "oldUrl": "https://replicate.com/ideogram-ai/ideogram-v2a-turbo/api/schema",
+    "finalUrl": "https://replicate.com/ideogram-ai/ideogram-v2a-turbo"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "ideogram-ai/ideogram-v3-balanced",
+    "oldUrl": "https://replicate.com/ideogram-ai/ideogram-v3-balanced/api/schema",
+    "finalUrl": "https://replicate.com/ideogram-ai/ideogram-v3-balanced"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "ideogram-ai/ideogram-v3-quality",
+    "oldUrl": "https://replicate.com/ideogram-ai/ideogram-v3-quality/api/schema",
+    "finalUrl": "https://replicate.com/ideogram-ai/ideogram-v3-quality"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "ideogram-ai/ideogram-v3-turbo",
+    "oldUrl": "https://replicate.com/ideogram-ai/ideogram-v3-turbo/api/schema",
+    "finalUrl": "https://replicate.com/ideogram-ai/ideogram-v3-turbo"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "krea/krea-2-medium",
+    "oldUrl": "https://replicate.com/krea/krea-2-medium/api/schema",
+    "finalUrl": "https://replicate.com/krea/krea-2-medium"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "leonardoai/lucid-origin",
+    "oldUrl": "https://replicate.com/leonardoai/lucid-origin/api/schema",
+    "finalUrl": "https://replicate.com/leonardoai/lucid-origin"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "lucataco/dreamshaper-xl-turbo",
+    "oldUrl": "https://replicate.com/lucataco/dreamshaper-xl-turbo/api/schema",
+    "finalUrl": "https://replicate.com/lucataco/dreamshaper-xl-turbo"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "lucataco/omnigen2",
+    "oldUrl": "https://replicate.com/collections/official",
+    "finalUrl": "https://replicate.com/lucataco/omnigen2"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "lucataco/open-dalle-v1.1",
+    "oldUrl": "https://replicate.com/lucataco/open-dalle-v1.1/api/schema",
+    "finalUrl": "https://replicate.com/lucataco/open-dalle-v1.1"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "lucataco/realistic-vision-v5.1",
+    "oldUrl": "https://replicate.com/collections/official",
+    "finalUrl": "https://replicate.com/lucataco/realistic-vision-v5.1"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "lucataco/ssd-1b",
+    "oldUrl": "https://replicate.com/lucataco/ssd-1b/api/schema",
+    "finalUrl": "https://replicate.com/lucataco/ssd-1b"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "luma/photon",
+    "oldUrl": "https://replicate.com/luma/photon/api/schema",
+    "finalUrl": "https://replicate.com/luma/photon"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "luma/photon-flash",
+    "oldUrl": "https://replicate.com/luma/photon-flash/api/schema",
+    "finalUrl": "https://replicate.com/luma/photon-flash"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "minimax/image-01",
+    "oldUrl": "https://replicate.com/minimax/image-01/api/schema",
+    "finalUrl": "https://replicate.com/minimax/image-01"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "nvidia/sana",
+    "oldUrl": "https://replicate.com/collections/official",
+    "finalUrl": "https://replicate.com/nvidia/sana"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "nvidia/sana-sprint-1.6b",
+    "oldUrl": "https://replicate.com/nvidia/sana-sprint-1.6b/api/schema",
+    "finalUrl": "https://replicate.com/nvidia/sana-sprint-1.6b"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "playgroundai/playground-v2.5-1024px-aesthetic",
+    "oldUrl": "https://replicate.com/playgroundai/playground-v2.5-1024px-aesthetic/api/schema",
+    "finalUrl": "https://replicate.com/playgroundai/playground-v2.5-1024px-aesthetic"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "prunaai/flux-fast",
+    "oldUrl": "https://replicate.com/prunaai/flux-fast/api/schema",
+    "finalUrl": "https://replicate.com/prunaai/flux-fast"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "prunaai/flux-kontext-fast",
+    "oldUrl": "https://replicate.com/prunaai/flux-kontext-fast/api/schema",
+    "finalUrl": "https://replicate.com/prunaai/flux-kontext-fast"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "prunaai/hidream-l1-dev",
+    "oldUrl": "https://replicate.com/prunaai/hidream-l1-dev/api/schema",
+    "finalUrl": "https://replicate.com/prunaai/hidream-l1-dev"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "prunaai/hidream-l1-fast",
+    "oldUrl": "https://replicate.com/prunaai/hidream-l1-fast/api/schema",
+    "finalUrl": "https://replicate.com/prunaai/hidream-l1-fast"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "prunaai/hidream-l1-full",
+    "oldUrl": "https://replicate.com/prunaai/hidream-l1-full/api/schema",
+    "finalUrl": "https://replicate.com/prunaai/hidream-l1-full"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "prunaai/p-image",
+    "oldUrl": "https://replicate.com/prunaai/p-image/api/schema",
+    "finalUrl": "https://replicate.com/prunaai/p-image"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "prunaai/p-image-edit",
+    "oldUrl": "https://replicate.com/prunaai/p-image-edit/api/schema",
+    "finalUrl": "https://replicate.com/prunaai/p-image-edit"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "prunaai/p-image-ideogram",
+    "oldUrl": "https://replicate.com/prunaai/p-image-ideogram/api/schema",
+    "finalUrl": "https://replicate.com/prunaai/p-image-ideogram"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "prunaai/p-image-lora",
+    "oldUrl": "https://replicate.com/prunaai/p-image-lora/api/schema",
+    "finalUrl": "https://replicate.com/prunaai/p-image-lora"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "prunaai/sdxl-lightning",
+    "oldUrl": "https://replicate.com/prunaai/sdxl-lightning/api/schema",
+    "finalUrl": "https://replicate.com/prunaai/sdxl-lightning"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "prunaai/wan-2.2-image",
+    "oldUrl": "https://replicate.com/prunaai/wan-2.2-image/api/schema",
+    "finalUrl": "https://replicate.com/prunaai/wan-2.2-image"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "prunaai/z-image-turbo",
+    "oldUrl": "https://replicate.com/prunaai/z-image-turbo/api/schema",
+    "finalUrl": "https://replicate.com/prunaai/z-image-turbo"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "qwen/qwen-image",
+    "oldUrl": "https://replicate.com/qwen/qwen-image/api/schema",
+    "finalUrl": "https://replicate.com/qwen/qwen-image"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "qwen/qwen-image-edit",
+    "oldUrl": "https://replicate.com/qwen/qwen-image-edit/api/schema",
+    "finalUrl": "https://replicate.com/qwen/qwen-image-edit"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "qwen/qwen-image-edit-plus",
+    "oldUrl": "https://replicate.com/qwen/qwen-image-edit-plus/api/schema",
+    "finalUrl": "https://replicate.com/qwen/qwen-image-edit-plus"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "recraft-ai/recraft-v3",
+    "oldUrl": "https://replicate.com/recraft-ai/recraft-v3/api/schema",
+    "finalUrl": "https://replicate.com/recraft-ai/recraft-v3"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "recraft-ai/recraft-v4-pro",
+    "oldUrl": "https://replicate.com/recraft-ai/recraft-v4-pro/api/schema",
+    "finalUrl": "https://replicate.com/recraft-ai/recraft-v4-pro"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "recraft-ai/recraft-v4.1",
+    "oldUrl": "https://replicate.com/recraft-ai/recraft-v4.1/api/schema",
+    "finalUrl": "https://replicate.com/recraft-ai/recraft-v4.1"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "sourceful/riverflow-2.0-pro",
+    "oldUrl": "https://replicate.com/sourceful/riverflow-2.0-pro/api/schema",
+    "finalUrl": "https://replicate.com/sourceful/riverflow-2.0-pro"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "stability-ai/sdxl",
+    "oldUrl": "https://replicate.com/stability-ai/sdxl/api/schema",
+    "finalUrl": "https://replicate.com/stability-ai/sdxl"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "stability-ai/stable-diffusion",
+    "oldUrl": "https://replicate.com/stability-ai/stable-diffusion/api/schema",
+    "finalUrl": "https://replicate.com/stability-ai/stable-diffusion"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "stability-ai/stable-diffusion-3.5-large",
+    "oldUrl": "https://replicate.com/stability-ai/stable-diffusion-3.5-large/api/schema",
+    "finalUrl": "https://replicate.com/stability-ai/stable-diffusion-3.5-large"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "stability-ai/stable-diffusion-3.5-large-turbo",
+    "oldUrl": "https://replicate.com/stability-ai/stable-diffusion-3.5-large-turbo/api/schema",
+    "finalUrl": "https://replicate.com/stability-ai/stable-diffusion-3.5-large-turbo"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "stability-ai/stable-diffusion-3.5-medium",
+    "oldUrl": "https://replicate.com/stability-ai/stable-diffusion-3.5-medium/api/schema",
+    "finalUrl": "https://replicate.com/stability-ai/stable-diffusion-3.5-medium"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "tencent/hunyuan-image-3",
+    "oldUrl": "https://replicate.com/tencent/hunyuan-image-3/api/schema",
+    "finalUrl": "https://replicate.com/tencent/hunyuan-image-3"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "tstramer/material-diffusion",
+    "oldUrl": "https://replicate.com/tstramer/material-diffusion/api/schema",
+    "finalUrl": "https://replicate.com/tstramer/material-diffusion"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "wan-video/wan-2.7-image",
+    "oldUrl": "https://replicate.com/wan-video/wan-2.7-image/api/schema",
+    "finalUrl": "https://replicate.com/wan-video/wan-2.7-image"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "wan-video/wan-2.7-image-pro",
+    "oldUrl": "https://replicate.com/wan-video/wan-2.7-image-pro/api/schema",
+    "finalUrl": "https://replicate.com/wan-video/wan-2.7-image-pro"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "xai/grok-imagine-image",
+    "oldUrl": "https://replicate.com/xai/grok-imagine-image/api/schema",
+    "finalUrl": "https://replicate.com/xai/grok-imagine-image"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "xai/grok-imagine-image-2",
+    "oldUrl": "https://replicate.com/xai/grok-imagine-image-2/api/schema",
+    "finalUrl": "https://replicate.com/xai/grok-imagine-image-2"
+  },
+  {
+    "channel": "replicate",
+    "modelId": "zsxkib/step1x-edit",
+    "oldUrl": "https://replicate.com/zsxkib/step1x-edit/api/schema",
+    "finalUrl": "https://replicate.com/zsxkib/step1x-edit"
+  },
+  {
+    "channel": "runware",
+    "modelId": "alibaba:qwen-image-edit@2511",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-qwen-image-edit-2511/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image-edit-2511"
+  },
+  {
+    "channel": "runware",
+    "modelId": "alibaba:qwen-image@2.0",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-0/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-0"
+  },
+  {
+    "channel": "runware",
+    "modelId": "alibaba:qwen-image@2.0-pro",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-0-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-0-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "alibaba:qwen-image@2.1-pro",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "alibaba:qwen-image@2.1-turbo",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo"
+  },
+  {
+    "channel": "runware",
+    "modelId": "alibaba:qwen-image@2512",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2512/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2512"
+  },
+  {
+    "channel": "runware",
+    "modelId": "alibaba:qwen-image@3.0",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-qwen-image-3-0/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image-3-0"
+  },
+  {
+    "channel": "runware",
+    "modelId": "alibaba:qwen-image@3.0-pro",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-qwen-image-3-0-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image-3-0-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "alibaba:wan@2.6-image",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-wan2-6-image/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-wan2-6-image"
+  },
+  {
+    "channel": "runware",
+    "modelId": "alibaba:wan@2.7-image",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-wan2-7-image/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-wan2-7-image"
+  },
+  {
+    "channel": "runware",
+    "modelId": "alibaba:wan@2.7-image-pro",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-wan2-7-image-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-wan2-7-image-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "anthropic:claude@fable-5",
+    "oldUrl": "https://runware.ai/docs/models/anthropic-claude-fable-5/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/anthropic-claude-fable-5"
+  },
+  {
+    "channel": "runware",
+    "modelId": "anthropic:claude@haiku-4.5",
+    "oldUrl": "https://runware.ai/docs/models/anthropic-claude-haiku-4-5/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/anthropic-claude-haiku-4-5"
+  },
+  {
+    "channel": "runware",
+    "modelId": "anthropic:claude@opus-4.7",
+    "oldUrl": "https://runware.ai/docs/models/anthropic-claude-opus-4-7/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/anthropic-claude-opus-4-7"
+  },
+  {
+    "channel": "runware",
+    "modelId": "anthropic:claude@opus-4.8",
+    "oldUrl": "https://runware.ai/docs/models/anthropic-claude-opus-4-8/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/anthropic-claude-opus-4-8"
+  },
+  {
+    "channel": "runware",
+    "modelId": "anthropic:claude@sonnet-4.6",
+    "oldUrl": "https://runware.ai/docs/models/anthropic-claude-sonnet-4-6/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/anthropic-claude-sonnet-4-6"
+  },
+  {
+    "channel": "runware",
+    "modelId": "baidu:ernie-image@0",
+    "oldUrl": "https://runware.ai/docs/models/baidu-ernie-image/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/baidu-ernie-image"
+  },
+  {
+    "channel": "runware",
+    "modelId": "baidu:ernie-image@turbo",
+    "oldUrl": "https://runware.ai/docs/models/baidu-ernie-image-turbo/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/baidu-ernie-image-turbo"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bfl:1@2",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-1-fill-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-1-fill-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bfl:2@1",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-1-1-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-1-1-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bfl:2@2",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-1-1-pro-ultra/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-1-1-pro-ultra"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bfl:3@1",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-1-kontext-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-1-kontext-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bfl:4@1",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-1-kontext-max/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-1-kontext-max"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bfl:5@1",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-2-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-2-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bfl:6@1",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-2-flex/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-2-flex"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bfl:7@1",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-2-max/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-2-max"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bfl:flux@3-image",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-3-image/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-3-image"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bfl:flux@3-image-klein",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-3-image-klein/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-3-image-klein"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bfl:flux@3-image-klein-base",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-3-image-klein-base/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-3-image-klein-base"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bria:10@1",
+    "oldUrl": "https://runware.ai/docs/models/bria-3-2/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bria-3-2"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bria:11@1",
+    "oldUrl": "https://runware.ai/docs/models/bria-image-replace-background/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bria-image-replace-background"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bria:20@1",
+    "oldUrl": "https://runware.ai/docs/models/bria-fibo/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bria-fibo-2-0"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bria:20@3",
+    "oldUrl": "https://runware.ai/docs/models/bria-fibo-lite/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bria-fibo-lite"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bria:21@1",
+    "oldUrl": "https://runware.ai/docs/models/bria-fibo-edit/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bria-fibo-2-0-edit"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bytedance:5@0",
+    "oldUrl": "https://runware.ai/docs/models/bytedance-seedream-4-0/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bytedance-seedream-4-0"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bytedance:seedream@4.5",
+    "oldUrl": "https://runware.ai/docs/models/bytedance-seedream-4-5/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bytedance-seedream-4-5"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bytedance:seedream@5.0-flash",
+    "oldUrl": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bytedance:seedream@5.0-lite",
+    "oldUrl": "https://runware.ai/docs/models/bytedance-seedream-5-0-lite/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bytedance-seedream-5-0-lite"
+  },
+  {
+    "channel": "runware",
+    "modelId": "bytedance:seedream@5.0-pro",
+    "oldUrl": "https://runware.ai/docs/models/bytedance-seedream-5-0-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bytedance-seedream-5-0-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "civitai:101055@128078",
+    "oldUrl": "https://runware.ai/docs/models/stabilityai-stable-diffusion-xl-v1-0-vae-fix/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/stabilityai-stable-diffusion-xl-v1-0-vae-fix"
+  },
+  {
+    "channel": "runware",
+    "modelId": "google:4@2",
+    "oldUrl": "https://runware.ai/docs/models/google-nano-banana-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/google-nano-banana-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "google:4@3",
+    "oldUrl": "https://runware.ai/docs/models/google-nano-banana-2/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/google-nano-banana-2"
+  },
+  {
+    "channel": "runware",
+    "modelId": "google:gemini@3-flash",
+    "oldUrl": "https://runware.ai/docs/models/google-gemini-3-flash/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/google-gemini-3-flash"
+  },
+  {
+    "channel": "runware",
+    "modelId": "google:gemini@3.1-flash-lite",
+    "oldUrl": "https://runware.ai/docs/models/google-gemini-3-1-flash-lite/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/google-gemini-3-1-flash-lite"
+  },
+  {
+    "channel": "runware",
+    "modelId": "google:gemini@3.1-pro",
+    "oldUrl": "https://runware.ai/docs/models/google-gemini-3-1-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/google-gemini-3-1-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "google:gemini@3.5-flash",
+    "oldUrl": "https://runware.ai/docs/models/google-gemini-3-5-flash/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/google-gemini-3-5-flash"
+  },
+  {
+    "channel": "runware",
+    "modelId": "google:gemma@4-31b",
+    "oldUrl": "https://runware.ai/docs/models/google-gemma-4-31b/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/google-gemma-4-31b"
+  },
+  {
+    "channel": "runware",
+    "modelId": "google:nano-banana@2-lite",
+    "oldUrl": "https://runware.ai/docs/models/google-nano-banana-2-lite/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/google-nano-banana-2-lite"
+  },
+  {
+    "channel": "runware",
+    "modelId": "google:nano-banana@2.1",
+    "oldUrl": "https://runware.ai/docs/models/google-nano-banana-2-1/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/google-nano-banana-2-1"
+  },
+  {
+    "channel": "runware",
+    "modelId": "ideogram:2@1",
+    "oldUrl": "https://runware.ai/docs/models/ideogram-2a/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/ideogram-2a"
+  },
+  {
+    "channel": "runware",
+    "modelId": "ideogram:2@2",
+    "oldUrl": "https://runware.ai/docs/models/ideogram-2a-remix/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/ideogram-2a-remix"
+  },
+  {
+    "channel": "runware",
+    "modelId": "ideogram:3@1",
+    "oldUrl": "https://runware.ai/docs/models/ideogram-2-0/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/ideogram-2-0"
+  },
+  {
+    "channel": "runware",
+    "modelId": "ideogram:3@2",
+    "oldUrl": "https://runware.ai/docs/models/ideogram-2-0-remix/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/ideogram-2-0-remix"
+  },
+  {
+    "channel": "runware",
+    "modelId": "ideogram:4.5@0",
+    "oldUrl": "https://runware.ai/docs/models/ideogram-4-5/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/ideogram-4-5"
+  },
+  {
+    "channel": "runware",
+    "modelId": "ideogram:4.5@precise-edit",
+    "oldUrl": "https://runware.ai/docs/models/ideogram-4-5-precise-edit/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/ideogram-4-5-precise-edit"
+  },
+  {
+    "channel": "runware",
+    "modelId": "ideogram:4@0",
+    "oldUrl": "https://runware.ai/docs/models/ideogram-4-0/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/ideogram-4-0"
+  },
+  {
+    "channel": "runware",
+    "modelId": "ideogram:4@1",
+    "oldUrl": "https://runware.ai/docs/models/ideogram-3-0/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/ideogram-3-0"
+  },
+  {
+    "channel": "runware",
+    "modelId": "ideogram:4@2",
+    "oldUrl": "https://runware.ai/docs/models/ideogram-3-0-remix/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/ideogram-3-0-remix"
+  },
+  {
+    "channel": "runware",
+    "modelId": "ideogram:4@3",
+    "oldUrl": "https://runware.ai/docs/models/ideogram-3-0-edit/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/ideogram-3-0-edit"
+  },
+  {
+    "channel": "runware",
+    "modelId": "ideogram:4@5",
+    "oldUrl": "https://runware.ai/docs/models/ideogram-3-0-replace-background/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/ideogram-3-0-replace-background"
+  },
+  {
+    "channel": "runware",
+    "modelId": "ideogram:4@q",
+    "oldUrl": "https://runware.ai/docs/models/ideogram-4-0q/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/ideogram-4-0q"
+  },
+  {
+    "channel": "runware",
+    "modelId": "ideogram:4@remix",
+    "oldUrl": "https://runware.ai/docs/models/ideogram-4-0-remix/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/ideogram-4-0-remix"
+  },
+  {
+    "channel": "runware",
+    "modelId": "imagineart:1.5-pro@0",
+    "oldUrl": "https://runware.ai/docs/models/imagineart-1-5-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/imagineart-1-5-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "imagineart:1@5",
+    "oldUrl": "https://runware.ai/docs/models/imagineart-1-5/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/imagineart-1-5"
+  },
+  {
+    "channel": "runware",
+    "modelId": "imagineart:2.0@0",
+    "oldUrl": "https://runware.ai/docs/models/imagineart-2-0/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/imagineart-2-0"
+  },
+  {
+    "channel": "runware",
+    "modelId": "klingai:kling-image@3",
+    "oldUrl": "https://runware.ai/docs/models/klingai-image-3-0/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/klingai-image-3-0"
+  },
+  {
+    "channel": "runware",
+    "modelId": "klingai:kling-image@o1",
+    "oldUrl": "https://runware.ai/docs/models/klingai-image-o1/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/klingai-image-o1"
+  },
+  {
+    "channel": "runware",
+    "modelId": "klingai:kling-image@o3",
+    "oldUrl": "https://runware.ai/docs/models/klingai-image-o3/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/klingai-image-o3"
+  },
+  {
+    "channel": "runware",
+    "modelId": "krea:krea@2-large",
+    "oldUrl": "https://runware.ai/docs/models/krea-2-large/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/krea-2-large"
+  },
+  {
+    "channel": "runware",
+    "modelId": "krea:krea@2-medium",
+    "oldUrl": "https://runware.ai/docs/models/krea-2-medium/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/krea-2-medium"
+  },
+  {
+    "channel": "runware",
+    "modelId": "krea:krea@2-medium-turbo",
+    "oldUrl": "https://runware.ai/docs/models/krea-2-medium-turbo/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/krea-2-medium-turbo"
+  },
+  {
+    "channel": "runware",
+    "modelId": "krea:krea@2-raw",
+    "oldUrl": "https://runware.ai/docs/models/krea-2-raw/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/krea-2-raw"
+  },
+  {
+    "channel": "runware",
+    "modelId": "krea:krea@2-turbo",
+    "oldUrl": "https://runware.ai/docs/models/krea-2-turbo/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/krea-2-turbo"
+  },
+  {
+    "channel": "runware",
+    "modelId": "luma:uni@1",
+    "oldUrl": "https://runware.ai/docs/models/luma-uni-1/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/luma-uni-1"
+  },
+  {
+    "channel": "runware",
+    "modelId": "luma:uni@1-max",
+    "oldUrl": "https://runware.ai/docs/models/luma-uni-1-max/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/luma-uni-1-max"
+  },
+  {
+    "channel": "runware",
+    "modelId": "meta:muse@image",
+    "oldUrl": "https://runware.ai/docs/models/meta-muse-image/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/meta-muse-image"
+  },
+  {
+    "channel": "runware",
+    "modelId": "minimax:m2.7@0",
+    "oldUrl": "https://runware.ai/docs/models/minimax-m2-7/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/minimax-m2-7"
+  },
+  {
+    "channel": "runware",
+    "modelId": "minimax:m2.7@highspeed",
+    "oldUrl": "https://runware.ai/docs/models/minimax-m2-7-highspeed/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/minimax-m2-7-highspeed"
+  },
+  {
+    "channel": "runware",
+    "modelId": "minimax:m3@0",
+    "oldUrl": "https://runware.ai/docs/models/minimax-m3/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/minimax-m3"
+  },
+  {
+    "channel": "runware",
+    "modelId": "openai:1@1",
+    "oldUrl": "https://runware.ai/docs/models/openai-gpt-image-1/schema.json",
+    "finalUrl": "https://developers.openai.com/api/docs/models/gpt-image-1"
+  },
+  {
+    "channel": "runware",
+    "modelId": "openai:1@2",
+    "oldUrl": "https://runware.ai/docs/models/openai-gpt-image-1-mini/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/openai-gpt-image-1-mini"
+  },
+  {
+    "channel": "runware",
+    "modelId": "openai:4@1",
+    "oldUrl": "https://runware.ai/docs/models/openai-gpt-image-1-5/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/openai-gpt-image-1-5"
+  },
+  {
+    "channel": "runware",
+    "modelId": "openai:gpt-image@2",
+    "oldUrl": "https://runware.ai/docs/models/openai-gpt-image-2/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/openai-gpt-image-2"
+  },
+  {
+    "channel": "runware",
+    "modelId": "openai:gpt-image@2.5-flare",
+    "oldUrl": "https://runware.ai/docs/models/openai-gpt-image-2-5-flare/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/openai-gpt-image-2-5-flare"
+  },
+  {
+    "channel": "runware",
+    "modelId": "openai:gpt-image@2.5-sunburst",
+    "oldUrl": "https://runware.ai/docs/models/openai-gpt-image-2-5-sunburst/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/openai-gpt-image-2-5-sunburst"
+  },
+  {
+    "channel": "runware",
+    "modelId": "openai:gpt@5-mini",
+    "oldUrl": "https://runware.ai/docs/models/openai-gpt-5-mini/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/openai-gpt-5-mini"
+  },
+  {
+    "channel": "runware",
+    "modelId": "openai:gpt@5-nano",
+    "oldUrl": "https://runware.ai/docs/models/openai-gpt-5-nano/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/openai-gpt-5-nano"
+  },
+  {
+    "channel": "runware",
+    "modelId": "openai:gpt@5.4",
+    "oldUrl": "https://runware.ai/docs/models/openai-gpt-5-4/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/openai-gpt-5-4"
+  },
+  {
+    "channel": "runware",
+    "modelId": "openai:gpt@5.4-mini",
+    "oldUrl": "https://runware.ai/docs/models/openai-gpt-5-4-mini/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/openai-gpt-5-4-mini"
+  },
+  {
+    "channel": "runware",
+    "modelId": "openai:gpt@5.4-nano",
+    "oldUrl": "https://runware.ai/docs/models/openai-gpt-5-4-nano/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/openai-gpt-5-4-nano"
+  },
+  {
+    "channel": "runware",
+    "modelId": "openai:gpt@5.4-pro",
+    "oldUrl": "https://runware.ai/docs/models/openai-gpt-5-4-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/openai-gpt-5-4-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "openai:gpt@5.5",
+    "oldUrl": "https://runware.ai/docs/models/openai-gpt-5-5/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/openai-gpt-5-5"
+  },
+  {
+    "channel": "runware",
+    "modelId": "prunaai:1@1",
+    "oldUrl": "https://runware.ai/docs/models/prunaai-p-image/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/prunaai-p-image"
+  },
+  {
+    "channel": "runware",
+    "modelId": "prunaai:2@1",
+    "oldUrl": "https://runware.ai/docs/models/prunaai-p-image-edit/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/prunaai-p-image-edit"
+  },
+  {
+    "channel": "runware",
+    "modelId": "prunaai:p-image@ideogram",
+    "oldUrl": "https://runware.ai/docs/models/prunaai-p-image-ideogram/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/prunaai-p-image-ideogram"
+  },
+  {
+    "channel": "runware",
+    "modelId": "recraft:v4-pro@0",
+    "oldUrl": "https://runware.ai/docs/models/recraft-v4-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/recraft-v4-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "recraft:v4.1-pro@0",
+    "oldUrl": "https://runware.ai/docs/models/recraft-v4-1-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/recraft-v4-1-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "recraft:v4.1-utility-pro@0",
+    "oldUrl": "https://runware.ai/docs/models/recraft-v4-1-utility-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/recraft-v4-1-utility-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "recraft:v4.1-utility@0",
+    "oldUrl": "https://runware.ai/docs/models/recraft-v4-1-utility/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/recraft-v4-1-utility"
+  },
+  {
+    "channel": "runware",
+    "modelId": "recraft:v4.1@0",
+    "oldUrl": "https://runware.ai/docs/models/recraft-v4-1/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/recraft-v4-1"
+  },
+  {
+    "channel": "runware",
+    "modelId": "recraft:v4@0",
+    "oldUrl": "https://runware.ai/docs/models/recraft-v4/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/recraft-v4"
+  },
+  {
+    "channel": "runware",
+    "modelId": "rundiffusion:110@101",
+    "oldUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-lightning-flux/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-lightning-flux"
+  },
+  {
+    "channel": "runware",
+    "modelId": "rundiffusion:120@100",
+    "oldUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-base-flux/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-base-flux"
+  },
+  {
+    "channel": "runware",
+    "modelId": "rundiffusion:130@100",
+    "oldUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-pro-flux/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-pro-flux"
+  },
+  {
+    "channel": "runware",
+    "modelId": "rundiffusion:200@100",
+    "oldUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-z/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-z"
+  },
+  {
+    "channel": "runware",
+    "modelId": "rundiffusion:300@100",
+    "oldUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-z-fast/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-z-fast"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:100@1",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-1-schnell/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-1-schnell"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:101@1",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-1-dev/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-1-dev"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:102@1",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-1-fill-dev/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-1-fill-dev"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:106@1",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-1-kontext-dev/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-1-kontext-dev"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:107@1",
+    "oldUrl": "https://runware.ai/docs/models/krea-flux-1-krea-dev/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/krea-flux-1-krea-dev"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:108@1",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-qwen-image/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:108@20",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-qwen-image-edit/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image-edit"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:108@22",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-qwen-image-edit-plus/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image-edit-plus"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:111@1",
+    "oldUrl": "https://runware.ai/docs/models/flux-1-dev-srpo/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/flux-1-dev-srpo"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:150@2",
+    "oldUrl": "https://runware.ai/docs/models/meta-llava-1-6-mistral-7b/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/meta-llava-1-6-mistral-7b"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:152@1",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-qwen2-5-vl-3b-instruct/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-qwen2-5-vl-3b-instruct"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:152@2",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-qwen2-5-vl-7b-instruct/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-qwen2-5-vl-7b-instruct"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:201@10",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-wan2-5-preview-image/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-wan2-5-preview-image"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:400@1",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-2-dev/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-2-dev"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:400@2",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-9b/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-9b"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:400@3",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-9b-base/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-9b-base"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:400@4",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-4b/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-4b"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:400@5",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-4b-base/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-4b-base"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:400@6",
+    "oldUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-9b-kv/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-9b-kv"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:5@1",
+    "oldUrl": "https://runware.ai/docs/models/stabilityai-stable-diffusion-3/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/stabilityai-stable-diffusion-3"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:97@1",
+    "oldUrl": "https://runware.ai/docs/models/hidream-i1-full/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/hidream-i1-full"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:97@2",
+    "oldUrl": "https://runware.ai/docs/models/hidream-i1-dev/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/hidream-i1-dev"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:97@3",
+    "oldUrl": "https://runware.ai/docs/models/hidream-i1-fast/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/hidream-i1-fast"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:kandinsky-5.0-image-lite@1",
+    "oldUrl": "https://runware.ai/docs/models/kandinsky-5-0-image-lite/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/kandinsky-5-0-image-lite"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:twinflow-z-image-turbo@0",
+    "oldUrl": "https://runware.ai/docs/models/twinflow-z-image-turbo/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/twinflow-z-image-turbo"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:z-image@0",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-z-image/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-z-image"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runware:z-image@turbo",
+    "oldUrl": "https://runware.ai/docs/models/alibaba-z-image-turbo/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/alibaba-z-image-turbo"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runway:4@1",
+    "oldUrl": "https://runware.ai/docs/models/runway-gen-4-image/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/runway-gen-4-image"
+  },
+  {
+    "channel": "runware",
+    "modelId": "runway:4@2",
+    "oldUrl": "https://runware.ai/docs/models/runway-gen-4-image-turbo/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/runway-gen-4-image-turbo"
+  },
+  {
+    "channel": "runware",
+    "modelId": "sourceful:riverflow-2.0@fast",
+    "oldUrl": "https://runware.ai/docs/models/sourceful-riverflow-2-0-fast/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/sourceful-riverflow-2-0-fast"
+  },
+  {
+    "channel": "runware",
+    "modelId": "sourceful:riverflow-2.0@pro",
+    "oldUrl": "https://runware.ai/docs/models/sourceful-riverflow-2-0-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/sourceful-riverflow-2-0-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "sourceful:riverflow-2.5@fast",
+    "oldUrl": "https://runware.ai/docs/models/sourceful-riverflow-2-5-fast/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/sourceful-riverflow-2-5-fast"
+  },
+  {
+    "channel": "runware",
+    "modelId": "sourceful:riverflow-2.5@pro",
+    "oldUrl": "https://runware.ai/docs/models/sourceful-riverflow-2-5-pro/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/sourceful-riverflow-2-5-pro"
+  },
+  {
+    "channel": "runware",
+    "modelId": "vidu:q1@image",
+    "oldUrl": "https://runware.ai/docs/models/vidu-q1-image/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/vidu-q1-image"
+  },
+  {
+    "channel": "runware",
+    "modelId": "xai:grok-imagine@image",
+    "oldUrl": "https://runware.ai/docs/models/xai-grok-imagine-image/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/xai-grok-imagine-image"
+  },
+  {
+    "channel": "runware",
+    "modelId": "xai:grok-imagine@image-2.0",
+    "oldUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-2-0/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-2-0"
+  },
+  {
+    "channel": "runware",
+    "modelId": "xai:grok-imagine@image-quality",
+    "oldUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json",
+    "finalUrl": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2"
+  },
+  {
+    "channel": "runware",
+    "modelId": "xai:grok@4.3",
+    "oldUrl": "https://runware.ai/docs/models/xai-grok-4-3/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/xai-grok-4-3"
+  },
+  {
+    "channel": "runware",
+    "modelId": "zai:glm@5.1",
+    "oldUrl": "https://runware.ai/docs/models/zai-glm-5-1/schema.json",
+    "finalUrl": "https://runware.ai/docs/models/zai-glm-5-1"
+  },
+  {
+    "channel": "stability",
+    "modelId": "sd3.5-flash",
+    "oldUrl": "https://platform.stability.ai/docs/getting-started/models",
+    "finalUrl": "https://docs.stability.ai/api-reference/generate/stable-diffusion-35"
+  },
+  {
+    "channel": "stepfun",
+    "modelId": "step-3.5-flash",
+    "oldUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+    "finalUrl": "https://platform.stepfun.com/docs/zh/guides/models/step-3.5-flash"
+  },
+  {
+    "channel": "stepfun",
+    "modelId": "step-3.5-flash-2603",
+    "oldUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+    "finalUrl": "https://platform.stepfun.com/docs/zh/guides/models/step-3.5-flash"
+  },
+  {
+    "channel": "stepfun",
+    "modelId": "step-3.7-flash",
+    "oldUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+    "finalUrl": "https://platform.stepfun.com/docs/zh/guides/models/step-3.7-flash"
+  },
+  {
+    "channel": "stepfun",
+    "modelId": "step-5-preview",
+    "oldUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+    "finalUrl": "https://platform.stepfun.com/docs/zh/guides/models/step-5-preview"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "deepseek-chat-v3-0324",
+    "oldUrl": "https://tokendance.space/gateway/v1/models",
+    "finalUrl": "https://api-docs.deepseek.com/news/news250325"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "deepseek-v4-pro",
+    "oldUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "finalUrl": "https://tokendance.space/models/deepseek-v4-pro"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "deepseek-v4-pro-0813",
+    "oldUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+    "finalUrl": "https://tokendance.space/models/deepseek-v4-pro-0813"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "deepseek-v4.1-flash",
+    "oldUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+    "finalUrl": "https://tokendance.space/models/deepseek-v4.1-flash"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "deepseek-v4.1-flash-1017",
+    "oldUrl": "https://tokendance.space/gateway/v1/models",
+    "finalUrl": "https://tokendance.space/models/deepseek-v4.1-flash-1017"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "dots-3-note-preview",
+    "oldUrl": "https://github.com/studio-dots-ai/dots3-note-prev",
+    "finalUrl": "https://tokendance.space/models/dots-3-note-preview"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "glm-4.5-air",
+    "oldUrl": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5",
+    "finalUrl": "https://tokendance.space/models/glm-4.5-air"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "glm-4.6v",
+    "oldUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.6v",
+    "finalUrl": "https://tokendance.space/models/glm-4.6v"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "glm-4.7",
+    "oldUrl": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+    "finalUrl": "https://tokendance.space/models/glm-4.7"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "glm-5",
+    "oldUrl": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5",
+    "finalUrl": "https://tokendance.space/models/glm-5"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "glm-5.1",
+    "oldUrl": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1",
+    "finalUrl": "https://tokendance.space/models/glm-5.1"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "glm-5.2",
+    "oldUrl": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2",
+    "finalUrl": "https://tokendance.space/models/glm-5.2"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "glm-5.3",
+    "oldUrl": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3",
+    "finalUrl": "https://tokendance.space/models/glm-5.3"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "glm-5.3-flash",
+    "oldUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+    "finalUrl": "https://tokendance.space/models/glm-5.3-flash"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "glm-5.3-flashx",
+    "oldUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+    "finalUrl": "https://tokendance.space/models/glm-5.3-flashx"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "glm-5v-turbo",
+    "oldUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5v-turbo",
+    "finalUrl": "https://tokendance.space/models/glm-5v-turbo"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "hy4-preview",
+    "oldUrl": "https://huggingface.co/tencent/Hy4-preview",
+    "finalUrl": "https://tokendance.space/models/hy4-preview"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "kimi-k2.5",
+    "oldUrl": "https://huggingface.co/moonshotai/Kimi-K2.5",
+    "finalUrl": "https://tokendance.space/models/kimi-k2.5"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "kimi-k2.6",
+    "oldUrl": "https://huggingface.co/moonshotai/Kimi-K2.6",
+    "finalUrl": "https://tokendance.space/models/kimi-k2.6"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "kimi-k2.7-code",
+    "oldUrl": "https://huggingface.co/moonshotai/Kimi-K2.7-Code",
+    "finalUrl": "https://tokendance.space/models/kimi-k2.7-code"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "kimi-k3",
+    "oldUrl": "https://huggingface.co/moonshotai/Kimi-K3",
+    "finalUrl": "https://tokendance.space/models/kimi-k3"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "kimi-k3.1-pro",
+    "oldUrl": "https://tokendance.space/gateway/v1/models",
+    "finalUrl": "https://tokendance.space/models/kimi-k3.1-pro"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "ling-3.0-flash",
+    "oldUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash",
+    "finalUrl": "https://tokendance.space/models/ling-3.0-flash"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "longcat-2.0",
+    "oldUrl": "https://huggingface.co/meituan-longcat/LongCat-2.0",
+    "finalUrl": "https://tokendance.space/models/longcat-2.0"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "mimo-v2.5",
+    "oldUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+    "finalUrl": "https://tokendance.space/models/mimo-v2.5"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "mimo-v2.5-pro",
+    "oldUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+    "finalUrl": "https://tokendance.space/models/mimo-v2.5-pro"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "mimo-v2.6-flash",
+    "oldUrl": "https://mimo.mi.com/models/en-US/mimo-v2.6-flash",
+    "finalUrl": "https://tokendance.space/models/mimo-v2.6-flash"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "mimo-v2.6-pro",
+    "oldUrl": "https://mimo.mi.com/models/en-US/mimo-v2.6-pro",
+    "finalUrl": "https://tokendance.space/models/mimo-v2.6-pro"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "mimo-v2.6-ultraspeed",
+    "oldUrl": "https://mimo.mi.com/models/zh-CN/mimo-v2.6-pro-ultraspeed",
+    "finalUrl": "https://tokendance.space/models/mimo-v2.6-ultraspeed"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "minimax-m2.5",
+    "oldUrl": "https://huggingface.co/MiniMaxAI/MiniMax-M2.5",
+    "finalUrl": "https://tokendance.space/models/minimax-m2.5"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "minimax-m2.7",
+    "oldUrl": "https://huggingface.co/MiniMaxAI/MiniMax-M2.7",
+    "finalUrl": "https://tokendance.space/models/minimax-m2.7"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "minimax-m3",
+    "oldUrl": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+    "finalUrl": "https://tokendance.space/models/minimax-m3"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "minimax-m3.1-flash",
+    "oldUrl": "https://tokendance.space/gateway/v1/models",
+    "finalUrl": "https://tokendance.space/models/minimax-m3.1-flash"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "qwen3-max",
+    "oldUrl": "https://tokendance.space/gateway/v1/models",
+    "finalUrl": "https://help.aliyun.com/zh/model-studio/models"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "qwen3-vl-plus",
+    "oldUrl": "https://platform.qianwenai.com/docs/developer-guides/getting-started/vision-models",
+    "finalUrl": "https://tokendance.space/models/qwen3-vl-plus"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "qwen3.5-35b-a3b",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://tokendance.space/models/qwen3.5-35b-a3b"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "qwen3.5-flash",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://tokendance.space/models/qwen3.5-flash"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "qwen3.5-plus",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+    "finalUrl": "https://tokendance.space/models/qwen3.5-plus"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "qwen3.6-plus",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://tokendance.space/models/qwen3.6-plus"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "qwen3.7-max",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://tokendance.space/models/qwen3.7-max"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "qwen3.7-plus",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://tokendance.space/models/qwen3.7-plus"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "qwen3.8-flash",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/vision-model",
+    "finalUrl": "https://tokendance.space/models/qwen3.8-flash"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "qwen3.8-max",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+    "finalUrl": "https://tokendance.space/models/qwen3.8-max"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "qwen3.8-max-0902",
+    "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+    "finalUrl": "https://tokendance.space/models/qwen3.8-max-0902"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "seed-2.0-lite",
+    "oldUrl": "https://www.volcengine.com/docs/82379/1330310",
+    "finalUrl": "https://tokendance.space/models/seed-2.0-lite"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "seed-2.0-mini",
+    "oldUrl": "https://www.volcengine.com/docs/82379/1330310",
+    "finalUrl": "https://tokendance.space/models/seed-2.0-mini"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "seed-2.0-pro",
+    "oldUrl": "https://www.volcengine.com/docs/82379/1330310",
+    "finalUrl": "https://tokendance.space/models/seed-2.0-pro"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "seed-2.1-turbo",
+    "oldUrl": "https://www.volcengine.com/docs/82379/1330310",
+    "finalUrl": "https://tokendance.space/models/seed-2.1-turbo"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "seed-evolving",
+    "oldUrl": "https://www.volcengine.com/docs/82379/1330310",
+    "finalUrl": "https://tokendance.space/models/seed-evolving"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "spark-x2.5-1.7b",
+    "oldUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "finalUrl": "https://tokendance.space/models/spark-x2.5-1.7b"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "spark-x2.5-4b",
+    "oldUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "finalUrl": "https://tokendance.space/models/spark-x2.5-4b"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "step-3.5-flash",
+    "oldUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+    "finalUrl": "https://tokendance.space/models/step-3.5-flash"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "step-3.7-flash",
+    "oldUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+    "finalUrl": "https://tokendance.space/models/step-3.7-flash"
+  },
+  {
+    "channel": "tokendance",
+    "modelId": "step-5-preview",
+    "oldUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+    "finalUrl": "https://tokendance.space/models/step-5-preview"
+  },
+  {
+    "channel": "xiaomi",
+    "modelId": "mimo-v2.6-flash",
+    "oldUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "finalUrl": "https://mimo.mi.com/models/en-US/mimo-v2.6-flash"
+  },
+  {
+    "channel": "xiaomi",
+    "modelId": "mimo-v2.6-pro",
+    "oldUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "finalUrl": "https://mimo.mi.com/models/en-US/mimo-v2.6-pro"
+  }
+]

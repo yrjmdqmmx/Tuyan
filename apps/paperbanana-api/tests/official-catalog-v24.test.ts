@@ -1,3 +1,5 @@
+import { assertRemoved } from './helpers/catalog-retirements.js'
+import { assertAuditedModelAvailable } from '../../../packages/api/src/model-audit.js'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import test from 'node:test'
@@ -27,7 +29,8 @@ const presentation = read('config/model-presentation.json')
 const auditTime = Date.parse('2026-09-22T12:00:00+08:00')
 const image = { url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB' }
 const roleSet = (roles: string[]) => [...new Set(roles.map(role => role.startsWith('image-') ? 'image' : role))].sort()
-const laterIndependentlyAudited = new Set(['LongCat-2.5-Preview', 'deepseek-v4.1-flash-1017', 'spark-x2.6', 'spark-x2.6-4b']) // v3.8.1, catalog-20261019 and catalog-20261026 have independent identity and wire oracles.
+const laterIndependentlyAudited = new Set(['LongCat-2.5', 'LongCat-2.5-Preview', 'deepseek-v4.1-flash-1017', 'spark-x2.6', 'spark-x2.6-4b']) // Later identities have independent oracles in channels-v381, official-text-channels and the weekly catalog suites.
+const removedV24 = ['stepfun/step-2x-large', 'stepfun/step-image-edit-2']
 const isV24 = (row: any) => !laterIndependentlyAudited.has(row.id)
 const ids = (rows: any[]) => rows.filter(isV24).map(row => row.id).sort()
 const notSent = (error: any) => error.localInputFailure === true && error.requestState === 'not_sent'
@@ -37,9 +40,18 @@ for (const provider of providers) {
   test(`v24 ${provider}: every selected identity and role equals the audit, Web catalog and generated contract`, t => {
     t.mock.method(Date, 'now', () => auditTime)
     const integration = integrations[provider], audit = audits[provider]
-    const selected = integration.models as any[], web = STATIC_MODEL_REGISTRY[provider].models as any[]
+    const historical = integration.models as any[], web = STATIC_MODEL_REGISTRY[provider].models as any[]
+    const selected = historical.filter(row => !removedV24.includes(provider + '/' + row.id))
+    for (const row of historical.filter(row => removedV24.includes(provider + '/' + row.id))) {
+      const evidence = assertRemoved(provider, row.id)
+      const source = audit.models.find((model: any) => model.id === row.id)
+      assert.equal(evidence.stopDate, source.lifecycle.retirementDate)
+      assert.deepEqual(roleSet(row.roles), roleSet(source.roles))
+      assert.equal(row.apiId, source.id)
+      assert.equal(row.realInference, false); assert.equal(row.accountEntitlement, false); assert.equal(row.billingVerified, false)
+    }
     assert.equal(integration.provider, provider); assert.equal(integration.checkedAt.slice(0, 10), audit.checkedAt.slice(0, 10))
-    assert.equal(new Set(selected.map(row => row.id)).size, selected.length, 'duplicate integration ID')
+    assert.equal(new Set(historical.map(row => row.id)).size, historical.length, 'duplicate integration ID')
     assert.deepEqual(ids(web), ids(selected), 'Web must contain every selected ID and no additional IDs')
     assert.deepEqual(ids(config.providers[provider]), ids(selected), 'shared catalog must equal the integration list')
     const contractIds = Object.keys(AUDITED_CHANNEL_CONTRACTS).filter(key => key.startsWith(provider + '/') && !laterIndependentlyAudited.has(key.slice(provider.length + 1))).map(key => key.slice(provider.length + 1)).sort()
@@ -78,10 +90,12 @@ for (const provider of providers) {
 test('v24 coverage totals are calculated from every manifest, with overlapping roles counted separately', t => {
   const expected = { models: 0, main: 0, vision: 0, image: 0 }, actual = { ...expected }
   for (const provider of providers) {
-    expected.models += integrations[provider].models.length
+    const removed = integrations[provider].models.filter((row: any) => removedV24.includes(provider + '/' + row.id))
+    for (const row of removed) assertRemoved(provider, row.id)
+    expected.models += integrations[provider].models.length - removed.length
     actual.models += STATIC_MODEL_REGISTRY[provider].models.filter(isV24).length
     for (const role of ['main', 'vision', 'image'] as const) {
-      expected[role] += integrations[provider].models.filter((row: any) => row.roles.includes(role)).length
+      expected[role] += integrations[provider].models.filter((row: any) => row.roles.includes(role)).length - removed.filter((row: any) => row.roles.includes(role)).length
       actual[role] += STATIC_MODEL_REGISTRY[provider].models.filter(isV24).filter((row: any) => row.roles.includes(role)).length
     }
   }
@@ -198,6 +212,16 @@ test('September 29 and October 10 retirement gates use Beijing midnight and pres
     if (!date) continue
     dates.add(date)
     const cutoff = Date.parse(`${date}T00:00:00+08:00`)
+    if (removedV24.includes(provider + '/' + selected.id)) {
+      const evidence = assertRemoved(provider, selected.id)
+      assert.equal(evidence.stopDate, date)
+      assert.equal(Date.parse(source.lifecycle.productSubmissionCutoff.at), cutoff)
+      for (const instant of [cutoff - 1, cutoff, cutoff + 1, cutoff + 86400000]) {
+        now = instant
+        assert.throws(() => assertAuditedModelAvailable(provider, selected.id), { businessCode: 'MODEL_UNAVAILABLE', requestState: 'not_sent' })
+      }
+      continue // Physical removal is unconditional, even when replaying a historical clock.
+    }
     const contract = AUDITED_CHANNEL_CONTRACTS[provider + '/' + selected.id]
     const rendered = STATIC_MODEL_REGISTRY[provider].models.find((row: any) => row.id === selected.id)
     assert.equal(Date.parse(contract.expiresAt), cutoff)

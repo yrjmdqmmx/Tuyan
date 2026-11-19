@@ -23,7 +23,7 @@
 .reference-preferences-fields {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px}
 .reference-preferences-fields .field {min-width:0;margin:0;gap:7px}
 .reference-preferences-topic {grid-column:1/-1}
-.reference-preferences-fields .field>span {display:flex;align-items:center;gap:8px;font-size:12px}
+.reference-preferences-fields .field > :is(span, label) {display:flex;align-items:center;gap:8px;font-size:12px}
 .reference-preferences-fields small {font-size:11px;font-weight:400;color:var(--muted-2)}
 .reference-preferences-fields input,.reference-preferences-fields :is(select, .ui-select) {box-sizing:border-box;width:100%;min-width:0;min-height:44px;padding:10px 12px;border:1px solid var(--hairline);border-radius:var(--radius-control);background-color:var(--surface);color:var(--ink);font:inherit;font-size:13px;transition:border-color .15s,box-shadow .15s}
 .reference-preferences-fields input:focus-visible,.reference-preferences-fields :is(select, .ui-select):focus-visible {outline:2px solid var(--sage);outline-offset:2px;border-color:var(--sage)}

@@ -1,0 +1,958 @@
+{
+  "phase": "R23 Phase F3",
+  "date": "2026-11-09",
+  "startingHead": "fd29cf36",
+  "sourceTitleBaseline": "1dcd8b13",
+  "executionAndNameBaseline": "8c456709",
+  "networkRequests": 0,
+  "gitWrites": 0,
+  "sourceTitleScan": {
+    "counts": {
+      "web": {
+        "cards": 1064,
+        "sourceRows": 2494,
+        "changedTitles": 2198,
+        "changedCards": 1031,
+        "suspiciousTitles": 0
+      },
+      "mini": {
+        "cards": 1064,
+        "sourceRows": 1103,
+        "changedTitles": 973,
+        "changedCards": 966,
+        "suspiciousTitles": 0
+      }
+    },
+    "noticeDialogs": 7,
+    "changedNoticeTitles": 3,
+    "retained": 1144
+  },
+  "totalChangedTitleInstancesVsTitleBaseline": 3174,
+  "changesVsPhaseF": {
+    "web": 59,
+    "mini": 48,
+    "total": 107,
+    "method": "Overlay each report Every changed title table onto the unchanged 1dcd8b13 fixture, then compare with the fd29cf36 report."
+  },
+  "phaseFCorrections": [
+    {
+      "client": "web",
+      "card": "deepseek/deepseek-v4-pro",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+      "before": "官方文档 · Hugging Face · DeepSeek V4 Pro 0813",
+      "after": "官方文档 · Hugging Face · DeepSeek-V4-Pro 0813"
+    },
+    {
+      "client": "web",
+      "card": "kimi/kimi-k2.7-code",
+      "url": "https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart",
+      "before": "官方文档 · Kimi · Kimi K2-7 Code Quickstart",
+      "after": "官方文档 · Kimi · Kimi K2.7 Code Quickstart"
+    },
+    {
+      "client": "web",
+      "card": "kimi/kimi-k2.7-code-highspeed",
+      "url": "https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart",
+      "before": "官方文档 · Kimi · Kimi K2-7 Code Quickstart",
+      "after": "官方文档 · Kimi · Kimi K2.7 Code Quickstart"
+    },
+    {
+      "client": "web",
+      "card": "kimi/kimi-k2.6",
+      "url": "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart",
+      "before": "官方文档 · Kimi · Kimi K2-6 Quickstart",
+      "after": "官方文档 · Kimi · Kimi K2.6 Quickstart"
+    },
+    {
+      "client": "web",
+      "card": "kimi/kimi-k3.1-pro",
+      "url": "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+      "before": "官方文档 · Kimi · Kimi K3-1 Pro Quickstart",
+      "after": "官方文档 · Kimi · Kimi K3.1 Pro Quickstart"
+    },
+    {
+      "client": "web",
+      "card": "kimi/kimi-k3.1-pro-highspeed",
+      "url": "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+      "before": "官方文档 · Kimi · Kimi K3-1 Pro Quickstart",
+      "after": "官方文档 · Kimi · Kimi K3.1 Pro Quickstart"
+    },
+    {
+      "client": "web",
+      "card": "zhipu/cogview-4-250304",
+      "url": "https://docs.bigmodel.cn/cn/guide/models/image-generation/cogview-4",
+      "before": "官方文档 · 智谱 · CogView 4",
+      "after": "官方文档 · 智谱 · cogview-4"
+    },
+    {
+      "client": "web",
+      "card": "siliconflow/Qwen/Qwen2.5-72B-Instruct-128K",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct",
+      "before": "官方文档 · Hugging Face · Qwen2.5-72B Instruct",
+      "after": "官方文档 · Hugging Face · Qwen2.5-72B-Instruct"
+    },
+    {
+      "client": "web",
+      "card": "recraft/recraftv4_1_pro",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "web",
+      "card": "recraft/recraftv4_1_pro_vector",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "web",
+      "card": "recraft/recraftv4_1_utility",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "web",
+      "card": "recraft/recraftv4_1_utility_pro",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "web",
+      "card": "recraft/recraftv4_1_utility_pro_vector",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "web",
+      "card": "recraft/recraftv4_1_utility_vector",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "web",
+      "card": "recraft/recraftv4_1_vector",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "web",
+      "card": "recraft/recraftv2_vector",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v2",
+      "before": "官方文档 · Recraft · Recraft V2",
+      "after": "官方文档 · Recraft · recraftv2"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen3.8-max-0902",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "before": "官方文档 · 百炼 · Qwen3-8 Max",
+      "after": "官方文档 · 百炼 · Qwen3.8 Max"
+    },
+    {
+      "client": "web",
+      "card": "bailian/vanchin/deepseek-v4-pro-0813",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+      "before": "官方文档 · Hugging Face · DeepSeek V4 Pro 0813",
+      "after": "官方文档 · Hugging Face · DeepSeek-V4-Pro 0813"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen-image-2.0-pro-2026-06-22",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "before": "官方文档 · 百炼 · Qwen Image 2-0 Pro",
+      "after": "官方文档 · 百炼 · Qwen Image 2.0 Pro"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen-image-2.0-2026-03-03",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+      "before": "官方文档 · 百炼 · Qwen Image 2-0",
+      "after": "官方文档 · 百炼 · Qwen Image 2.0"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen-image-2.0-pro-2026-03-03",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "before": "官方文档 · 百炼 · Qwen Image 2-0 Pro",
+      "after": "官方文档 · 百炼 · Qwen Image 2.0 Pro"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen-image-2.0-pro-2026-04-22",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "before": "官方文档 · 百炼 · Qwen Image 2-0 Pro",
+      "after": "官方文档 · 百炼 · Qwen Image 2.0 Pro"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen-image",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-api",
+      "before": "官方文档 · 百炼 · Qwen Image API",
+      "after": "官方文档 · 百炼 · Qwen-image API"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen3.7-max-2026-05-17",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "before": "官方文档 · 百炼 · Qwen3-7 Max",
+      "after": "官方文档 · 百炼 · Qwen3.7 Max"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen3.7-max-2026-05-20",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "before": "官方文档 · 百炼 · Qwen3-7 Max",
+      "after": "官方文档 · 百炼 · Qwen3.7 Max"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen3.7-max-2026-06-08",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "before": "官方文档 · 百炼 · Qwen3-7 Max",
+      "after": "官方文档 · 百炼 · Qwen3.7 Max"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen3.7-max-preview",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "before": "官方文档 · 百炼 · Qwen3-7 Max",
+      "after": "官方文档 · 百炼 · Qwen3.7 Max"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen3.7-plus-2026-05-26",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "before": "官方文档 · 百炼 · Qwen3-7 Plus",
+      "after": "官方文档 · 百炼 · Qwen3.7 Plus"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen3.6-plus-2026-04-02",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+      "before": "官方文档 · 百炼 · Qwen3-6 Plus",
+      "after": "官方文档 · 百炼 · Qwen3.6 Plus"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen3.5-omni-flash-2026-03-15",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+      "before": "官方文档 · 百炼 · Qwen3-5 Omni Flash",
+      "after": "官方文档 · 百炼 · Qwen3.5 Omni Flash"
+    },
+    {
+      "client": "web",
+      "card": "bailian/qwen3.5-omni-plus-2026-03-15",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+      "before": "官方文档 · 百炼 · Qwen3-5 Omni Plus",
+      "after": "官方文档 · 百炼 · Qwen3.5 Omni Plus"
+    },
+    {
+      "client": "web",
+      "card": "bailian/vanchin/deepseek-v3.1-terminus",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V3.1-Terminus",
+      "before": "官方文档 · Hugging Face · DeepSeek V3.1 Terminus",
+      "after": "官方文档 · Hugging Face · DeepSeek-V3.1-Terminus"
+    },
+    {
+      "client": "web",
+      "card": "bailian/unisound/unisound-u2",
+      "url": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+      "before": "官方文档 · 百炼 · Unisound U2 By Unisound",
+      "after": "官方文档 · 百炼 · unisound-u2 By Unisound"
+    },
+    {
+      "client": "web",
+      "card": "openai/gpt-5.1-2025-11-13",
+      "url": "https://developers.openai.com/api/docs/models/gpt-5.1",
+      "before": "官方文档 · OpenAI · GPT 5.1",
+      "after": "官方文档 · OpenAI · GPT-5.1"
+    },
+    {
+      "client": "web",
+      "card": "openai/gpt-4.1-mini-2025-04-14",
+      "url": "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+      "before": "官方文档 · OpenAI · GPT 4.1 Mini",
+      "after": "官方文档 · OpenAI · GPT-4.1 Mini"
+    },
+    {
+      "client": "web",
+      "card": "openai/o1-2024-12-17",
+      "url": "https://developers.openai.com/api/docs/models/o1",
+      "before": "官方文档 · OpenAI · O1",
+      "after": "官方文档 · OpenAI · o1"
+    },
+    {
+      "client": "web",
+      "card": "openai/o3-2025-04-16",
+      "url": "https://developers.openai.com/api/docs/models/o3",
+      "before": "官方文档 · OpenAI · O3",
+      "after": "官方文档 · OpenAI · o3"
+    },
+    {
+      "client": "web",
+      "card": "ark/deepseek-v4-1-flash-261017",
+      "url": "https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash",
+      "before": "官方文档 · 火山方舟 · DeepSeek V4-1 Flash",
+      "after": "官方文档 · 火山方舟 · DeepSeek V4.1 Flash"
+    },
+    {
+      "client": "web",
+      "card": "ark/deepseek-v4-1-flash-economy-261017",
+      "url": "https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash",
+      "before": "官方文档 · 火山方舟 · DeepSeek V4-1 Flash",
+      "after": "官方文档 · 火山方舟 · DeepSeek V4.1 Flash"
+    },
+    {
+      "client": "web",
+      "card": "bfl/flux-kontext-max",
+      "url": "https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[max]",
+      "before": "官方文档 · BFL · Edit Or Create An Image With Flux1 Kontext [Max]",
+      "after": "官方文档 · BFL · Edit Or Create An Image With FLUX.1 Kontext [max]"
+    },
+    {
+      "client": "web",
+      "card": "bfl/flux-kontext-pro",
+      "url": "https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[pro]",
+      "before": "官方文档 · BFL · Edit Or Create An Image With Flux1 Kontext [Pro]",
+      "after": "官方文档 · BFL · Edit Or Create An Image With FLUX.1 Kontext [pro]"
+    },
+    {
+      "client": "web",
+      "card": "bfl/flux-3-image-klein",
+      "url": "https://docs.bfl.ml/api-reference/utility/generate-an-image-with-flux-3-klein",
+      "before": "官方文档 · BFL · Generate An Image With FLUX 3 Klein",
+      "after": "官方文档 · BFL · Generate An Image With FLUX.3 Klein"
+    },
+    {
+      "client": "web",
+      "card": "bfl/flux-dev",
+      "url": "https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux1-[dev]",
+      "before": "官方文档 · BFL · Generate An Image With Flux1 [Dev]",
+      "after": "官方文档 · BFL · Generate An Image With FLUX.1 [dev]"
+    },
+    {
+      "client": "web",
+      "card": "bfl/flux-pro-1.1",
+      "url": "https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro]",
+      "before": "官方文档 · BFL · Generate An Image With FLUX.1.1 [Pro]",
+      "after": "官方文档 · BFL · Generate An Image With FLUX.1.1 [pro]"
+    },
+    {
+      "client": "web",
+      "card": "bfl/flux-pro-1.1-ultra",
+      "url": "https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro]-ultra-mode",
+      "before": "官方文档 · BFL · Generate An Image With FLUX.1.1 [Pro] Ultra Mode",
+      "after": "官方文档 · BFL · Generate An Image With FLUX.1.1 [pro] Ultra Mode"
+    },
+    {
+      "client": "web",
+      "card": "ideogram/ideogram-edit",
+      "url": "https://developer.ideogram.ai/v2/api-reference/images/precise-edit/ideogram-4-5",
+      "before": "官方文档 · Ideogram · Ideogram 4-5",
+      "after": "官方文档 · Ideogram · Ideogram 4.5"
+    },
+    {
+      "client": "web",
+      "card": "together/meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "url": "https://www.together.ai/models/llama-3-3-70b",
+      "before": "官方文档 · Together · Llama 3-3-70b",
+      "after": "官方文档 · Together · Llama 3.3 70B"
+    },
+    {
+      "client": "web",
+      "card": "fireworks/accounts/fireworks/models/gpt-oss-120b",
+      "url": "https://fireworks.ai/models/fireworks/gpt-oss-120b",
+      "before": "官方文档 · Fireworks · GPT Oss 120b（文档）",
+      "after": "官方文档 · Fireworks · GPT-OSS 120B（文档）"
+    },
+    {
+      "client": "web",
+      "card": "fireworks/accounts/fireworks/models/gpt-oss-120b",
+      "url": "https://app.fireworks.ai/models/fireworks/gpt-oss-120b",
+      "before": "官方文档 · Fireworks · GPT Oss 120b（控制台）",
+      "after": "官方文档 · Fireworks · GPT-OSS 120B（控制台）"
+    },
+    {
+      "client": "web",
+      "card": "fal/bytedance/seedream/v5/flash/text-to-image",
+      "url": "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api",
+      "before": "官方文档 · fal · Seedream V5 Flash Edit API 文档",
+      "after": "官方文档 · fal · Seedream v5 Flash Edit API 文档"
+    },
+    {
+      "client": "web",
+      "card": "fal/blackforestlabs/flux-3/klein/base/text-to-image",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api",
+      "before": "官方文档 · fal · FLUX 3 Klein Base Edit Image API 文档",
+      "after": "官方文档 · fal · FLUX.3 Klein Base Edit Image API 文档"
+    },
+    {
+      "client": "web",
+      "card": "fal/blackforestlabs/flux-3/klein/text-to-image",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api",
+      "before": "官方文档 · fal · FLUX 3 Klein Edit Image API 文档",
+      "after": "官方文档 · fal · FLUX.3 Klein Edit Image API 文档"
+    },
+    {
+      "client": "web",
+      "card": "fal/blackforestlabs/flux-3/text-to-image",
+      "url": "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api",
+      "before": "官方文档 · fal · FLUX 3 Edit Image API 文档",
+      "after": "官方文档 · fal · FLUX.3 Edit Image API 文档"
+    },
+    {
+      "client": "web",
+      "card": "replicate/qwen/qwen3-7-plus",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "before": "官方文档 · 百炼 · qwen3-7-plus",
+      "after": "官方文档 · 百炼 · Qwen3.7 Plus"
+    },
+    {
+      "client": "web",
+      "card": "replicate/qwen/qwen3-7-plus",
+      "url": "https://replicate.com/qwen/qwen3-7-plus",
+      "before": "官方文档 · Replicate · qwen3-7-plus",
+      "after": "官方文档 · Replicate · Qwen3.7 Plus"
+    },
+    {
+      "client": "web",
+      "card": "tokendance/qwen3.6-max-preview",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-6-max",
+      "before": "原厂规格 · 百炼 · Qwen3-6 Max",
+      "after": "原厂规格 · 百炼 · Qwen3.6 Max"
+    },
+    {
+      "client": "web",
+      "card": "runware/ideogram:4.5@0",
+      "url": "https://runware.ai/docs/models/ideogram-4-5",
+      "before": "官方文档 · Runware · Ideogram 4-5",
+      "after": "官方文档 · Runware · Ideogram 4.5"
+    },
+    {
+      "client": "web",
+      "card": "tokenhub/deepseek/deepseek-v4-pro-0813",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+      "before": "官方文档 · Hugging Face · DeepSeek V4 Pro 0813",
+      "after": "官方文档 · Hugging Face · DeepSeek-V4-Pro 0813"
+    },
+    {
+      "client": "web",
+      "card": "tokenhub/deepseek/deepseek-v4-flash-0731",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731",
+      "before": "官方文档 · Hugging Face · DeepSeek V4 Flash 0731",
+      "after": "官方文档 · Hugging Face · DeepSeek-V4-Flash 0731"
+    },
+    {
+      "client": "mini",
+      "card": "kimi/kimi-k2.7-code-highspeed",
+      "url": "https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart",
+      "before": "官方文档 · Kimi · Kimi K2-7 Code Quickstart",
+      "after": "官方文档 · Kimi · Kimi K2.7 Code Quickstart"
+    },
+    {
+      "client": "mini",
+      "card": "kimi/kimi-k3.1-pro",
+      "url": "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+      "before": "官方文档 · Kimi · Kimi K3-1 Pro Quickstart",
+      "after": "官方文档 · Kimi · Kimi K3.1 Pro Quickstart"
+    },
+    {
+      "client": "mini",
+      "card": "kimi/kimi-k3.1-pro-highspeed",
+      "url": "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+      "before": "官方文档 · Kimi · Kimi K3-1 Pro Quickstart",
+      "after": "官方文档 · Kimi · Kimi K3.1 Pro Quickstart"
+    },
+    {
+      "client": "mini",
+      "card": "zhipu/cogview-4-250304",
+      "url": "https://docs.bigmodel.cn/cn/guide/models/image-generation/cogview-4",
+      "before": "官方文档 · 智谱 · CogView 4",
+      "after": "官方文档 · 智谱 · cogview-4"
+    },
+    {
+      "client": "mini",
+      "card": "siliconflow/Qwen/Qwen2.5-72B-Instruct-128K",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct",
+      "before": "官方文档 · Hugging Face · Qwen2.5-72B Instruct",
+      "after": "官方文档 · Hugging Face · Qwen2.5-72B-Instruct"
+    },
+    {
+      "client": "mini",
+      "card": "recraft/recraftv4_1_pro",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "mini",
+      "card": "recraft/recraftv4_1_pro_vector",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "mini",
+      "card": "recraft/recraftv4_1_utility",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "mini",
+      "card": "recraft/recraftv4_1_utility_pro",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "mini",
+      "card": "recraft/recraftv4_1_utility_pro_vector",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "mini",
+      "card": "recraft/recraftv4_1_utility_vector",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "mini",
+      "card": "recraft/recraftv4_1_vector",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1",
+      "before": "官方文档 · Recraft · Recraft V4-1",
+      "after": "官方文档 · Recraft · Recraft V4.1"
+    },
+    {
+      "client": "mini",
+      "card": "recraft/recraftv2_vector",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v2",
+      "before": "官方文档 · Recraft · Recraft V2",
+      "after": "官方文档 · Recraft · recraftv2"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen3.8-max-0902",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "before": "官方文档 · 百炼 · Qwen3-8 Max",
+      "after": "官方文档 · 百炼 · Qwen3.8 Max"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/vanchin/deepseek-v4-pro-0813",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+      "before": "官方文档 · Hugging Face · DeepSeek V4 Pro 0813",
+      "after": "官方文档 · Hugging Face · DeepSeek-V4-Pro 0813"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen-image-2.0-pro-2026-06-22",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "before": "官方文档 · 百炼 · Qwen Image 2-0 Pro",
+      "after": "官方文档 · 百炼 · Qwen Image 2.0 Pro"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen-image-2.0-2026-03-03",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0",
+      "before": "官方文档 · 百炼 · Qwen Image 2-0",
+      "after": "官方文档 · 百炼 · Qwen Image 2.0"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen-image-2.0-pro-2026-03-03",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "before": "官方文档 · 百炼 · Qwen Image 2-0 Pro",
+      "after": "官方文档 · 百炼 · Qwen Image 2.0 Pro"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen-image-2.0-pro-2026-04-22",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro",
+      "before": "官方文档 · 百炼 · Qwen Image 2-0 Pro",
+      "after": "官方文档 · 百炼 · Qwen Image 2.0 Pro"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen-image",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-api",
+      "before": "官方文档 · 百炼 · Qwen Image API",
+      "after": "官方文档 · 百炼 · Qwen-image API"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen3.7-max-2026-05-17",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "before": "官方文档 · 百炼 · Qwen3-7 Max",
+      "after": "官方文档 · 百炼 · Qwen3.7 Max"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen3.7-max-2026-05-20",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "before": "官方文档 · 百炼 · Qwen3-7 Max",
+      "after": "官方文档 · 百炼 · Qwen3.7 Max"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen3.7-max-2026-06-08",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "before": "官方文档 · 百炼 · Qwen3-7 Max",
+      "after": "官方文档 · 百炼 · Qwen3.7 Max"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen3.7-max-preview",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "before": "官方文档 · 百炼 · Qwen3-7 Max",
+      "after": "官方文档 · 百炼 · Qwen3.7 Max"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen3.7-plus-2026-05-26",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "before": "官方文档 · 百炼 · Qwen3-7 Plus",
+      "after": "官方文档 · 百炼 · Qwen3.7 Plus"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen3.6-plus-2026-04-02",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+      "before": "官方文档 · 百炼 · Qwen3-6 Plus",
+      "after": "官方文档 · 百炼 · Qwen3.6 Plus"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen3.5-omni-flash-2026-03-15",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+      "before": "官方文档 · 百炼 · Qwen3-5 Omni Flash",
+      "after": "官方文档 · 百炼 · Qwen3.5 Omni Flash"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/qwen3.5-omni-plus-2026-03-15",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+      "before": "官方文档 · 百炼 · Qwen3-5 Omni Plus",
+      "after": "官方文档 · 百炼 · Qwen3.5 Omni Plus"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/vanchin/deepseek-v3.1-terminus",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V3.1-Terminus",
+      "before": "官方文档 · Hugging Face · DeepSeek V3.1 Terminus",
+      "after": "官方文档 · Hugging Face · DeepSeek-V3.1-Terminus"
+    },
+    {
+      "client": "mini",
+      "card": "bailian/unisound/unisound-u2",
+      "url": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+      "before": "官方文档 · 百炼 · Unisound U2 By Unisound",
+      "after": "官方文档 · 百炼 · unisound-u2 By Unisound"
+    },
+    {
+      "client": "mini",
+      "card": "openai/gpt-5.1-2025-11-13",
+      "url": "https://developers.openai.com/api/docs/models/gpt-5.1",
+      "before": "官方文档 · OpenAI · GPT 5.1",
+      "after": "官方文档 · OpenAI · GPT-5.1"
+    },
+    {
+      "client": "mini",
+      "card": "openai/gpt-4.1-mini-2025-04-14",
+      "url": "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+      "before": "官方文档 · OpenAI · GPT 4.1 Mini",
+      "after": "官方文档 · OpenAI · GPT-4.1 Mini"
+    },
+    {
+      "client": "mini",
+      "card": "openai/o1-2024-12-17",
+      "url": "https://developers.openai.com/api/docs/models/o1",
+      "before": "官方文档 · OpenAI · O1",
+      "after": "官方文档 · OpenAI · o1"
+    },
+    {
+      "client": "mini",
+      "card": "openai/o3-2025-04-16",
+      "url": "https://developers.openai.com/api/docs/models/o3",
+      "before": "官方文档 · OpenAI · O3",
+      "after": "官方文档 · OpenAI · o3"
+    },
+    {
+      "client": "mini",
+      "card": "bfl/flux-kontext-max",
+      "url": "https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[max]",
+      "before": "官方文档 · BFL · Edit Or Create An Image With Flux1 Kontext [Max]",
+      "after": "官方文档 · BFL · Edit Or Create An Image With FLUX.1 Kontext [max]"
+    },
+    {
+      "client": "mini",
+      "card": "bfl/flux-kontext-pro",
+      "url": "https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[pro]",
+      "before": "官方文档 · BFL · Edit Or Create An Image With Flux1 Kontext [Pro]",
+      "after": "官方文档 · BFL · Edit Or Create An Image With FLUX.1 Kontext [pro]"
+    },
+    {
+      "client": "mini",
+      "card": "bfl/flux-3-image-klein",
+      "url": "https://docs.bfl.ml/api-reference/utility/generate-an-image-with-flux-3-klein",
+      "before": "官方文档 · BFL · Generate An Image With FLUX 3 Klein",
+      "after": "官方文档 · BFL · Generate An Image With FLUX.3 Klein"
+    },
+    {
+      "client": "mini",
+      "card": "bfl/flux-dev",
+      "url": "https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux1-[dev]",
+      "before": "官方文档 · BFL · Generate An Image With Flux1 [Dev]",
+      "after": "官方文档 · BFL · Generate An Image With FLUX.1 [dev]"
+    },
+    {
+      "client": "mini",
+      "card": "bfl/flux-pro-1.1",
+      "url": "https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro]",
+      "before": "官方文档 · BFL · Generate An Image With FLUX.1.1 [Pro]",
+      "after": "官方文档 · BFL · Generate An Image With FLUX.1.1 [pro]"
+    },
+    {
+      "client": "mini",
+      "card": "bfl/flux-pro-1.1-ultra",
+      "url": "https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro]-ultra-mode",
+      "before": "官方文档 · BFL · Generate An Image With FLUX.1.1 [Pro] Ultra Mode",
+      "after": "官方文档 · BFL · Generate An Image With FLUX.1.1 [pro] Ultra Mode"
+    },
+    {
+      "client": "mini",
+      "card": "ideogram/ideogram-edit",
+      "url": "https://developer.ideogram.ai/v2/api-reference/images/precise-edit/ideogram-4-5",
+      "before": "官方文档 · Ideogram · Ideogram 4-5",
+      "after": "官方文档 · Ideogram · Ideogram 4.5"
+    },
+    {
+      "client": "mini",
+      "card": "together/meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "url": "https://www.together.ai/models/llama-3-3-70b",
+      "before": "官方文档 · Together · Llama 3-3-70b",
+      "after": "官方文档 · Together · Llama 3.3 70B"
+    },
+    {
+      "client": "mini",
+      "card": "fireworks/accounts/fireworks/models/gpt-oss-120b",
+      "url": "https://fireworks.ai/models/fireworks/gpt-oss-120b",
+      "before": "官方文档 · Fireworks · GPT Oss 120b",
+      "after": "官方文档 · Fireworks · GPT-OSS 120B"
+    },
+    {
+      "client": "mini",
+      "card": "replicate/qwen/qwen3-7-plus",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "before": "官方文档 · 百炼 · qwen3-7-plus",
+      "after": "官方文档 · 百炼 · Qwen3.7 Plus"
+    },
+    {
+      "client": "mini",
+      "card": "tokendance/qwen3.6-max-preview",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-6-max",
+      "before": "原厂规格 · 百炼 · Qwen3-6 Max",
+      "after": "原厂规格 · 百炼 · Qwen3.6 Max"
+    },
+    {
+      "client": "mini",
+      "card": "runware/ideogram:4.5@0",
+      "url": "https://runware.ai/docs/models/ideogram-4-5",
+      "before": "官方文档 · Runware · Ideogram 4-5",
+      "after": "官方文档 · Runware · Ideogram 4.5"
+    },
+    {
+      "client": "mini",
+      "card": "tokenhub/deepseek/deepseek-v4-pro-0813",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+      "before": "官方文档 · Hugging Face · DeepSeek V4 Pro 0813",
+      "after": "官方文档 · Hugging Face · DeepSeek-V4-Pro 0813"
+    },
+    {
+      "client": "mini",
+      "card": "tokenhub/deepseek/deepseek-v4-flash-0731",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731",
+      "before": "官方文档 · Hugging Face · DeepSeek V4 Flash 0731",
+      "after": "官方文档 · Hugging Face · DeepSeek-V4-Flash 0731"
+    }
+  ],
+  "miniBytes": {
+    "source": 1569424,
+    "runtime": 1144004,
+    "media": 189978,
+    "phaseFSource": 1568946,
+    "deltaVsPhaseF": 478,
+    "limit": 1572864,
+    "remaining": 3440,
+    "olderLimit": 1569427,
+    "olderRemaining": 3
+  },
+  "suites": {
+    "web": {
+      "cwd": "apps/web",
+      "command": "NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+      "status": "passed",
+      "tests": 1483,
+      "pass": 1483,
+      "fail": 0,
+      "skipped": 0,
+      "duration_ms": 177639.351916,
+      "logSha256": "6d80ff0418359fcce5b451c34ebe1d993ff4aca3078b3b61fef102b1273ca038"
+    },
+    "mini": {
+      "cwd": "apps/miniprogram",
+      "command": "npm test",
+      "status": "passed",
+      "tests": 172,
+      "pass": 172,
+      "fail": 0,
+      "skipped": 0,
+      "duration_ms": 32848.836542,
+      "logSha256": "f47bd715f3f327a29252b37fe592f82f5236dd73540546a03229cffd019aa387"
+    },
+    "scripts": {
+      "cwd": ".",
+      "command": "node --test scripts/*.test.mjs",
+      "status": "passed",
+      "tests": 58,
+      "pass": 58,
+      "fail": 0,
+      "skipped": 0,
+      "duration_ms": 16829.660125,
+      "logSha256": "4a49b8ec8180b78c569db4d77b8bddaa90b312974600e17d9dc9eb73c40770bf"
+    },
+    "api": {
+      "cwd": ".",
+      "command": "node --test packages/api/src/*.test.js",
+      "status": "passed",
+      "tests": 33,
+      "pass": 33,
+      "fail": 0,
+      "skipped": 0,
+      "duration_ms": 165.793792,
+      "logSha256": "67ca588737210a5c47aacfb857fbc6387e407efabbed681d07d046c623289778"
+    },
+    "core": {
+      "cwd": "apps/paperbanana-api",
+      "command": "node --import tsx --test tests/execution-capability-r22.test.ts tests/model-card-r22b.test.ts tests/model-modality-phase2.test.ts",
+      "status": "passed",
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0,
+      "duration_ms": 19501.744875,
+      "logSha256": "bb28097f35ddce92e531d3bd9283a0eff754d522a19d81691017446c85253966"
+    },
+    "gateway": {
+      "cwd": ".",
+      "command": "node --test apps/auth-gateway/tests/execution-capability-r22.test.js apps/auth-gateway/tests/model-modality-phase2.test.js",
+      "status": "passed",
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "duration_ms": 17251.261083,
+      "logSha256": "3042edeb35abe83b385787b4c77261e96e85c2e5ad23fa05154312aa33d2e319"
+    }
+  },
+  "totalPassingTests": 1752,
+  "builds": {
+    "web": {
+      "command": "npm run build",
+      "cwd": "apps/web",
+      "status": "passed",
+      "logSha256": "21218abf52b20469282dc747a6631169ef28a7cf50e327b6db7406674e845a24"
+    },
+    "mini": {
+      "command": "npm run build",
+      "cwd": "apps/miniprogram",
+      "status": "passed",
+      "logSha256": "9552888fb401c27550316af482f01675d54c4574526bce09e8b6ae28f1814b16"
+    }
+  },
+  "maintenanceChecks": [
+    {
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "exitCode": 0,
+      "logSha256": "4b51ceb5731b82fb3b9bee1ec0f0a2af83877edf5bf6578264bfabf47cdf029e"
+    },
+    {
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "exitCode": 0,
+      "logSha256": "dbbc800e3318e734ff721660de4fd635b08425652c62ec26790efaf840a2207e"
+    },
+    {
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "exitCode": 0,
+      "logSha256": "4d8dec325ae3aff990bacb21432685fa913be0cb671587f3e7301b6fdb661e5c"
+    },
+    {
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "exitCode": 0,
+      "logSha256": "9ee4bdd47dfecca12bf50aaadb0a5c767e0e9c0432792d018ec229054d178aad"
+    },
+    {
+      "command": "node scripts/sync-card-display.mjs --check",
+      "exitCode": 0,
+      "logSha256": "3a963a935b5f55bf2239d2be03f7d40af6b588a22cd07e5dee0bb5834bca39a9"
+    },
+    {
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "exitCode": 0,
+      "logSha256": "22683f4a82f021c20bb9445dd9c95dde9c339cdfa41612296178c6fffd8189c2"
+    },
+    {
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "exitCode": 0,
+      "logSha256": "825a52d9feffedf9a27fce0b785ecadd9eb30e31d5a88005d6d4d6cf35406fe4"
+    },
+    {
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "exitCode": 0,
+      "logSha256": "39b87a64e03dd9ddbdaed837dc25ed59413aa4d7cd2667b98bb03bf0fe66d524"
+    },
+    {
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "exitCode": 0,
+      "logSha256": "7d41b0c301e108d92e770f6cfcc7d262686c308dc74390c70519f9b581f8457e"
+    },
+    {
+      "command": "node scripts/freeze-audit-sources.mjs --check",
+      "exitCode": 0,
+      "logSha256": "d80e602b846bfcd5222bb32faf4bcad4ce8ca896937b60227cc86ac9344c65bf"
+    },
+    {
+      "command": "node scripts/report-source-titles-r23.mjs --check",
+      "exitCode": 0,
+      "logSha256": "2bb4f088a96d50b072bf5a9419ebd0f010fea92504237f86404bcb7616703adb"
+    }
+  ],
+  "changedTestReview": {
+    "phaseF3Entries": 3,
+    "newTitleCasesPerClient": 19,
+    "flagged": 0,
+    "abbrev7and12": "passed in scripts suite"
+  },
+  "invariants": {
+    "cardsPerClient": 1064,
+    "pickerNames": "unchanged",
+    "sourceUrlsAndRoles": "unchanged",
+    "executionLocks": "all four passed",
+    "historicalHints": "unchanged",
+    "compressedExecutionOracle": "unchanged",
+    "frozenSourceArchive": "unchanged",
+    "miniByteGuards": "unchanged",
+    "syncAgentKnowledgeAndSyncWorkflow": "untouched"
+  },
+  "browserAndNative": "Not performed; existing DOM/compiled-client validation boundary remains.",
+  "intermediateCorrections": "Targeted tests caught a split unknown v2.6 suffix and the older Mini byte ceiling. Final manual title review caught bracket-prefix artifacts; BFL/short-ID cases were added. All final suites/checks pass; neither budget nor existing client expectations was relaxed."
+}

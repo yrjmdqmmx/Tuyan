@@ -65392,6 +65392,93 @@
         "https://replicate.com/anthropic/claude-opus-5.5/api/schema"
       ],
       "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "global:20261109:fireworks:accounts/fireworks/models/kimi-k3p1-pro",
+      "provider": "fireworks",
+      "modelIds": [
+        "accounts/fireworks/models/kimi-k3p1-pro"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "Exact newly catalogued identity; no independently confirmed thinking fields. Keep provider defaults without inheriting adjacent models.",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "Exact newly catalogued identity; no independently confirmed thinking fields. Keep provider defaults without inheriting adjacent models."
+      ],
+      "sourceUrls": [
+        "https://fireworks.ai/models/fireworks/kimi-k3p1-pro"
+      ],
+      "checkedAt": "2026-11-09"
+    },
+    {
+      "id": "global:20261109:openai:gpt-image-2.6-flare",
+      "provider": "openai",
+      "modelIds": [
+        "gpt-image-2.6-flare"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "openai-images"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "Catalogued but disabled pending an audited output-size contract; no thinking control is admitted.",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "Catalogued but disabled pending an audited output-size contract; no thinking control is admitted."
+      ],
+      "sourceUrls": [
+        "https://developers.openai.com/api/docs/models/gpt-image-2.6-flare"
+      ],
+      "checkedAt": "2026-11-09"
+    },
+    {
+      "id": "global:20261109:openai:gpt-image-2.6-sunburst",
+      "provider": "openai",
+      "modelIds": [
+        "gpt-image-2.6-sunburst"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "openai-images"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "Catalogued but disabled pending an audited output-size contract; no thinking control is admitted.",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "Catalogued but disabled pending an audited output-size contract; no thinking control is admitted."
+      ],
+      "sourceUrls": [
+        "https://developers.openai.com/api/docs/models/gpt-image-2.6-sunburst"
+      ],
+      "checkedAt": "2026-11-09"
     }
   ],
   "excluded": [

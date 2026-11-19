@@ -2,10 +2,16 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import vm from 'node:vm'
+import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import ts from '../apps/paperbanana-api/node_modules/typescript/lib/typescript.js'
+import { buildSync, transformSync } from 'esbuild'
 import { packModelCatalog } from './lib/pack-model-catalog.mjs'
+import { supplementModelAudit } from './lib/model-audit-supplement.mjs'
+import { miniModelCatalog, miniModelAudit, webModelAudit } from './lib/mini-model-catalog.mjs'
+import { catalogCardFacts, needsImageInput, supportedModalities } from '../apps/web/src/lib/catalogCardFacts.js'
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+const miniWrites = new Map()
 const check = process.argv.includes('--check')
 // Explicit opt-out for isolated Web/Core work while the Mini Program stream is paused.
 // The default still checks/generates every client and therefore exposes pending drift.
@@ -21,6 +27,32 @@ const end = '// END GENERATED AUDITED CATALOG'
 const sizeConfig = JSON.parse(fs.readFileSync(path.join(root, 'config/image-size-contracts.json'), 'utf8'))
 const sizeRuntime = fs.readFileSync(path.join(root, 'packages/types/src/image-size-contract.ts'), 'utf8')
 const lines = [start, '// Source: config/model-catalog-updates.json; run node scripts/sync-model-catalog.mjs.']
+const modelAudit = supplementModelAudit(JSON.parse(fs.readFileSync(path.join(root, 'config/model-audit.generated.json'), 'utf8')),
+  JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/model-audit-supplement-20261109.json'), 'utf8')),
+  JSON.parse(fs.readFileSync(path.join(root, 'config/removed-models.json'), 'utf8')),
+  JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/deprecations-addendum-20261109.json'), 'utf8')))
+write(path.join(root, 'config/model-audit.generated.json'), JSON.stringify(modelAudit) + '\n')
+const modelAuditData = 'export const MODEL_AUDIT_DATA: any = ' + JSON.stringify(modelAudit) + '\n'
+write(path.join(root, 'packages/api/src/model-audit-data.ts'), '// Generated from config/model-audit.generated.json\n' + modelAuditData)
+const modelAuditSource = fs.readFileSync(path.join(root, 'packages/api/src/model-audit.ts'), 'utf8').replace(/^import .* from .*\n/gm, '')
+lines.push(modelAuditData, modelAuditSource)
+write(path.join(root, 'apps/auth-gateway/src/model-audit.js'), '// Generated from packages/api/src/model-audit.ts and config/model-audit.generated.json\n' + modelAuditData.replace(': any', '') + ts.transpileModule(modelAuditSource, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
+// All runtimes share the same display names and unavailable wording.
+const clientAuditSource = modelAuditSource
+const miniAuditSource = clientAuditSource
+  .replace('sourceLinks: details?.sourceLinks || []', "sourceLabel: row?.[6] || '官方文档', specificationSourceUrl: details?.specificationSourceUrl, vendorSources: details?.vendorSources || [], retirementSources: details?.retirementSources || []")
+  .replace(/export function modelDisplayName[\s\S]*?(?=export function removedModelHint)/, `export function modelDisplayName(channel: string, id: string): string {
+  return removedModel(channel, id)?.displayName
+    || STATIC_MODEL_REGISTRY[channel]?.models.find((model: { id: string }) => model.id === id)?.label
+    || id.replace(/^accounts\\/[^/]+\\/models\\//, '')
+}
+
+`)
+  .replace('  unknownModalities?: string[]', '  suffix?: string\n  unknownModalities?: string[]')
+  .replace('  if (details?.unknownInputModalities)', '  result.totalContextTokens.suffix = details?.suffix\n  if (details?.unknownInputModalities)')
+  .replace(/^[ \t]*\/\/.*\n/gm, '')
+  .replace(/export function assertAuditedModelAvailable[\s\S]*?(?=export function withModelAudit)/, '').replace(/export function assertModelLibraryAdditions[\s\S]*$/, '')
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-audit.ts'), '// Generated card helpers from packages/api/src/model-audit.ts\nimport { STATIC_MODEL_REGISTRY } from \'./static-model-catalog\'\nconst MODEL_AUDIT_DATA = require(\'./model-audit-data.js\')\n' + miniAuditSource.trimEnd())
 const presentation = JSON.parse(fs.readFileSync(path.join(root, 'config/model-presentation.json'), 'utf8'))
 const presentationData = `export const MODEL_PRESENTATION: {
   channels: Record<string, string>;
@@ -45,7 +77,7 @@ const imageChannelRoutes = JSON.parse(fs.readFileSync(path.join(root, 'config/im
 const routeModule = '// Generated from config/image-channel-routes.json.\nexport const IMAGE_CHANNEL_ROUTES: Record<string, any> = ' + JSON.stringify(imageChannelRoutes) + '\n'
 write(path.join(root, 'packages/api/src/image-channel-routes.ts'), routeModule)
 const channelAuditDir = path.join(root, 'config/channel-audit')
-const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json','v381-contracts.json','catalog-20261009-contracts.json','catalog-20261016-contracts.json','catalog-20261019-contracts.json','catalog-20261026-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
+const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json','v381-contracts.json','catalog-20261009-contracts.json','catalog-20261016-contracts.json','catalog-20261019-contracts.json','catalog-20261026-contracts.json','catalog-20261109-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
 const auditRefine = Object.assign({}, ...['runware-refine-controls.json','cn-refine-controls.json','official-refine-controls.json','catalog-20261016-refine-controls.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
 const auditData = 'export const AUDITED_CHANNEL_CONTRACTS: Record<string, any> = ' + JSON.stringify(auditContracts) + '\n'
 const auditedInputPolicy = Object.fromEntries(Object.entries(auditContracts).filter(([,c])=>c.generateInputPolicy!==false).map(([key,c]) => {
@@ -187,7 +219,7 @@ for (const row of versionAudit.models.filter(row => row.channel !== 'openrouter'
   lines.push(`Object.assign(staticModelRegistry[${JSON.stringify(row.channel)}].models.find(model => model.id === ${JSON.stringify(row.apiModelId)})!, ${JSON.stringify({label:row.displayName,version,...(row.apiIdentifier ? {apiIdentifier:row.apiIdentifier} : {})})})`)
 }
 lines.push(`for (const [provider, registry] of Object.entries(staticModelRegistry)) {
-  registry.models = sortModelsNewestFirst(registry.models.map(model => presentRegistryModel(provider, model)))
+  registry.models = sortModelsNewestFirst(registry.models.map(model => ({...presentRegistryModel(provider, model), auditChannel: provider})))
 }`)
 lines.push(end)
 const block = lines.join('\n')
@@ -216,6 +248,8 @@ function useModule(file, embedded) {
   runtimeImports.push(`export * from '${specifier}'`)
 }
 useModule('packages/types/src/model-presentation.ts', presentationRuntime)
+useModule('packages/api/src/model-audit-data.ts', modelAuditData)
+useModule('packages/api/src/model-audit.ts', modelAuditSource)
 useModule('packages/types/src/model-presentation-data.ts')
 useModule('packages/api/src/audited-channel-data.ts', auditData)
 useModule('packages/api/src/audited-channel-contracts.ts', fs.readFileSync(path.join(root,'packages/api/src/audited-channel-contracts.ts'),'utf8').replace(/^import .* from .*\n/gm,''))
@@ -237,7 +271,7 @@ useModule('packages/api/src/tokendance-models.ts', tokenDanceModels)
 useModule('packages/api/src/tokendance.ts', fs.readFileSync(path.join(root,'packages/api/src/tokendance.ts'),'utf8').replace(/^import .* from .*\n/gm,''))
 useModule('packages/types/src/image-size-contract.ts', sizeRuntime)
 runtimeImports.push("import { measureGeneration, withGenerationPerformance } from '../src/generation-performance.js'",
-  "function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, operation: () => Promise<T>): Promise<T> { return measureGeneration('phase:' + stage, () => rawAtJobStage(stage, operation)) }")
+  "function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, operation: () => Promise<T>): Promise<T> { const run=()=>measureGeneration('phase:' + stage, () => rawAtJobStage(stage, operation)); return providerWorkflow.stage?providerWorkflow.stage(stage,run):run() }")
 runtimeBlock = runtimeBlock.replace(start, start+'\n'+runtimeImports.join('\n'))
 source = source.includes(start)
   ? source.slice(0, source.indexOf(start)) + runtimeBlock + source.slice(source.indexOf(end) + end.length)
@@ -248,6 +282,7 @@ function write(file, content) {
   const previous = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : ''
   if (previous === content) return
   if (check) throw new Error(`Generated model catalog drift: ${path.relative(root, file)}`)
+  if (path.relative(root, file).startsWith('apps/miniprogram/miniprogram/')) { miniWrites.set(file, content); return }
   fs.writeFileSync(file, content)
 }
 write(backend, source)
@@ -263,6 +298,33 @@ const context = vm.createContext({})
 // Full catalog schema evaluation can exceed 5s while other isolated builds are running.
 vm.runInContext(js, context, { timeout: 30000 })
 const providers = JSON.parse(JSON.stringify(context.catalog))
+// Static/offline cards need the same exact specifications as Core's registry.
+// Bundle pure local modules in memory; never load a provider or execute a request.
+const detailBundle = buildSync({entryPoints:[path.join(root, 'packages/api/src/provider-catalog.ts')],bundle:true,platform:'node',format:'cjs',write:false,logLevel:'silent'})
+const detailModule = { exports: {} }
+new Function('module', 'exports', 'require', detailBundle.outputFiles[0].text)(detailModule, detailModule.exports, createRequire(import.meta.url))
+for (const [channel, provider] of Object.entries(providers)) for (const model of provider.models) {
+  const exact = detailModule.exports.exactModelDetails(channel, model.id)
+  if (exact) {
+    // Enrich static facts/sources without replacing the existing curated names.
+    // Live catalog objects retain their explicit alias/version name overrides.
+    const { resolvedModel, ...specifications } = exact.specifications
+    model.specificModelSpecifications = specifications
+  }
+}
+const fireworksEvidence = JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/model-audit-supplement-20261109.json'), 'utf8')).fireworksServerless
+for (const [key, notice] of Object.entries(modelAudit.removed)) {
+  const slash = key.indexOf('/'), channel = key.slice(0, slash), id = key.slice(slash + 1)
+  if (providers[channel]?.models.some(model => model.id === id)) throw new Error('Removed model remains in catalog: ' + key)
+  if (channel !== 'fireworks' || !notice.replacementApiId) continue
+  const evidence = fireworksEvidence[id.split('/').at(-1)]
+  const replacement = providers.fireworks.models.find(model => model.id === notice.replacementApiId)
+  if (!evidence?.serverlessSupported || !evidence.replacementApiIds.includes(notice.replacementApiId)
+    || !replacement || replacement.selectable === false || !replacement.roles.length
+    || replacement.expirationDate && Date.parse(replacement.expirationDate) <= Date.parse(modelAudit.verifiedAt)) {
+    throw new Error('Fireworks replacement lacks notice, serverless support or selectable exact ID: ' + key)
+  }
+}
 for (const [provider, registry] of Object.entries(providers)) {
   const ids = new Set()
   for (const model of registry.models) {
@@ -272,18 +334,79 @@ for (const [provider, registry] of Object.entries(providers)) {
 }
 const generated = `export const EXTENDED_MODEL_CHANNELS = ${JSON.stringify(config.channels || {})}\n// Generated by scripts/sync-model-catalog.mjs. Do not edit by hand.\nexport const STATIC_MODEL_REGISTRY_VERSION = ${JSON.stringify(config.version)}\nexport const STATIC_MODEL_REGISTRY = {\n${Object.entries(providers).map(([p, value]) => `  ${JSON.stringify(p)}: ${JSON.stringify({...value, models: undefined}).slice(0,-1)}, "models": [\n${value.models.map((m) => '    ' + JSON.stringify(m)).join(',\n')}\n  ]}`).join(',\n')}\n}\n`
 write(path.join(root, 'apps/web/src/lib/staticModelCatalog.js'), generated)
+const webAuditSource = clientAuditSource
+write(path.join(root, 'apps/web/src/lib/modelAudit.js'), `// Generated card facts and lifecycle; identities reuse the static catalog.
+import { STATIC_MODEL_REGISTRY } from './staticModelCatalog.js'
+export const MODEL_AUDIT_DATA = ${JSON.stringify(webModelAudit(modelAudit, providers))}
+const keys = Object.entries(STATIC_MODEL_REGISTRY).flatMap(([channel, provider]) => provider.models.map(model => channel + '/' + model.id))
+MODEL_AUDIT_DATA.rows = { ...MODEL_AUDIT_DATA.extraRows, ...Object.fromEntries(keys.flatMap((key, i) => MODEL_AUDIT_DATA.rows[i] ? [[key, MODEL_AUDIT_DATA.rows[i]]] : [])) }
+delete MODEL_AUDIT_DATA.extraRows
+` + ts.transpileModule(webAuditSource, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
 // Keep the dictionary in one generated JS asset, rather than duplicating the
-// full catalog in both the TS source and its compiled JS. Public exports and
-// every model field remain identical to Web and the service catalog.
-const packed = packModelCatalog({ channels: config.channels || {}, registry: providers })
+// full catalog in both TS and compiled JS. Mini keeps execution/selection
+// fields and a compact picker projection; the full evidence stays in Web/Core.
+const packed = packModelCatalog(miniModelCatalog({ channels: config.channels || {}, registry: providers }))
+const reviewedCards = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/src/data/model-card-specifications.json'), 'utf8'))
+const specificCards = JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/specific-model-page-overrides.json'), 'utf8'))
+// Compact only the existing decoder initialization to offset the longer R13 URLs.
+// The packed data and runtime projection remain lossless; no denylist ships in Mini.
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-audit-data.js'), `// Generated.
+const data = require('./unpack-model-catalog.js').unpackModelCatalog(${JSON.stringify(packModelCatalog(miniModelAudit(modelAudit, providers, (channel, model) => catalogCardFacts(channel, model, reviewedCards, specificCards))))})
+${transformSync(`const registry = require('./static-model-catalog.js').STATIC_MODEL_REGISTRY
+${needsImageInput.toString()}
+${supportedModalities.toString()}
+const models = Object.entries(registry).flatMap(([channel, provider]) => provider.models.map(model => [channel + '/' + model.id, model]))
+data.details = Object.fromEntries(models.flatMap(([key], index) => data.rows[index][6] ? [[key, data.rows[index][6]]] : []))
+data.rows = Object.fromEntries(models.map(([key, model], index) => {
+  const row = data.rows[index]
+  row.splice(6)
+  row.splice(4, 0, 0)
+  if (row[5] === -2) row[5] = data.sources.push('https://tokendance.space/models/' + model.id) - 1
+  if (row[5] <= -3) {
+    const [prefix, suffix, format] = data.sourceTemplates[-3 - row[5]]
+    row[5] = data.sources.push(prefix + (format ? model.id.replace(/[:@]/g, '-') : model.id) + suffix) - 1
+  }
+  if (row[6]) row[6] = row[6] === 1 ? '下线公告' : '原厂规格'
+  for (let i = 0; i < 4; i++) {
+    const fact = [...data.facts[row[i]]], field = data.fields[i]
+    if (fact[3] === -1) fact[3] = row[5]
+    if (i >= 2) { row[i] = data.facts.push(fact) - 1; continue }
+    const value = fact[0] === 0 ? model[field] : fact[0]
+    const prior = fact[4] === 0 ? model[field] : fact[4]
+    const excluded = [...(data.details[key]?.unsupportedModalities?.[field] || []), ...(data.details[key]?.modalityMasks?.[field] || [])]
+    const image = i === 0 && needsImageInput(model) && !data.details[key]?.suppressFallback?.includes(field) && !excluded.includes('image')
+    const values = supportedModalities(value, prior, image).filter(value => !excluded.includes(value))
+    const product = image && !supportedModalities(value, prior).includes('image')
+    row[i] = data.facts.push([values.length ? values : null, values.length ? 'known' : fact[1], product ? 'product' : fact[2], product ? null : fact[3]]) - 1
+  }
+  return [key, row]
+}))
+data.removed = Object.fromEntries(Object.entries(data.removed).map(([key, [replacementApiId, displayName, replacementDisplayName, developer]]) => [key, {replacementApiId, displayName, replacementDisplayName, developer}]))
+module.exports = data
+`, { minify: true, target: 'es2019' }).code}`)
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/static-model-catalog-data.js'),
   '// Generated by scripts/sync-model-catalog.mjs. Do not edit by hand.\nmodule.exports = ' + JSON.stringify(packed) + '\n')
-write(path.join(root, 'apps/miniprogram/miniprogram/utils/static-model-catalog.ts'),
-  `// Generated by scripts/sync-model-catalog.mjs. Do not edit by hand.
+const miniCatalog = `// Generated by scripts/sync-model-catalog.mjs. Do not edit by hand.
 import { unpackModelCatalog } from './unpack-model-catalog'
 const catalog = unpackModelCatalog(require('./static-model-catalog-data.js'))
 export const EXTENDED_MODEL_CHANNELS: Record<string, any> = catalog.channels
 export const STATIC_MODEL_REGISTRY_VERSION = ${JSON.stringify(config.version)}
 export const STATIC_MODEL_REGISTRY: Record<string, any> = catalog.registry
-`)
+`
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/static-model-catalog.ts'), miniCatalog)
+for (const [name, source] of [['static-model-catalog', miniCatalog], ['unpack-model-catalog', fs.readFileSync(path.join(root, 'apps/miniprogram/miniprogram/utils/unpack-model-catalog.ts'), 'utf8')]]) {
+  write(path.join(root, `apps/miniprogram/miniprogram/utils/${name}.js`), name === 'unpack-model-catalog' ? transformSync(ts.transpileModule(source, {compilerOptions:{target:ts.ScriptTarget.ES2019,module:ts.ModuleKind.CommonJS,alwaysStrict:true}}).outputText, { minifyWhitespace:true,minifySyntax:true,minifyIdentifiers:true,format:'cjs',charset:'utf8',target:'es2019' }).code : ts.transpileModule(source, {compilerOptions:{target:ts.ScriptTarget.ES2019,module:ts.ModuleKind.CommonJS,alwaysStrict:true}}).outputText)
+}
+// Preflight generated sources AND their compiled JS before replacing Mini files.
+// Keep the original budget; an oversized projection never reaches the worktree.
+if (miniWrites.size) {
+  const projected = new Map(miniWrites)
+  for (const [file, content] of miniWrites) if (file.endsWith('.ts')) projected.set(file.slice(0, -3) + '.js', ts.transpileModule(content, {compilerOptions:{target:ts.ScriptTarget.ES2019,module:ts.ModuleKind.CommonJS,alwaysStrict:true}}).outputText)
+  const files = dir => fs.readdirSync(dir, {withFileTypes:true}).flatMap(entry => entry.isDirectory() ? files(path.join(dir, entry.name)) : [path.join(dir, entry.name)])
+  const all = new Set([...files(path.join(root, 'apps/miniprogram/miniprogram')), ...projected.keys()])
+  const bytes = [...all].reduce((n, file) => n + (projected.has(file) ? Buffer.byteLength(projected.get(file)) : fs.statSync(file).size), 0)
+  if (bytes >= 1572864) throw new Error(`Mini source projection ${bytes} exceeds unchanged 1572864-byte budget; no Mini files written`)
+  for (const [file, content] of miniWrites) fs.writeFileSync(file, content)
+  console.log(`Mini source projection: ${bytes} bytes`)
+}
 console.log(`Catalog ${config.version}: ${Object.values(providers).reduce((n, p) => n + p.models.length, 0)} static models; ${check ? 'no drift' : 'generated'}${skipMiniprogram ? ' (Web/Core only; Mini Program skipped)' : ''}`)

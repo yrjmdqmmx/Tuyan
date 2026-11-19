@@ -1,0 +1,191 @@
+{
+  "phase": "R22 Phase B",
+  "date": "2026-11-10",
+  "tests": [
+    {
+      "label": "Web full",
+      "command": "cd apps/web && NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2",
+      "tests": 1472,
+      "pass": 1472,
+      "fail": 0,
+      "skipped": 0,
+      "logSha256": "dd1378239d1f98f42bebf39d5edac145d79ae74ed990e3acd73d8f0b4cb2705a"
+    },
+    {
+      "label": "Mini full",
+      "command": "cd apps/miniprogram && npm test",
+      "tests": 163,
+      "pass": 163,
+      "fail": 0,
+      "skipped": 0,
+      "logSha256": "49f390a84b78c5de28bc6730a5b70ffe5f79488fa12b6a1d421717a5950ff617"
+    },
+    {
+      "label": "Scripts full",
+      "command": "node --test scripts/*.test.mjs",
+      "tests": 48,
+      "pass": 48,
+      "fail": 0,
+      "skipped": 0,
+      "logSha256": "0809ab106c4c68fd60aa5184657719b8ca4f4ef0185d669f67ff0ef4515dee62"
+    },
+    {
+      "label": "Core touched and execution lock",
+      "command": "cd apps/paperbanana-api && node --import tsx --test tests/model-card-r22b.test.ts tests/model-modality-r21.test.ts tests/model-modality-phase2.test.ts tests/execution-capability-r22.test.ts",
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "logSha256": "d29e4a10a35d618e4797900b788b8f9b3a78ac45addea52cb5f1df5e00cb3272"
+    },
+    {
+      "label": "Gateway touched and execution lock",
+      "command": "cd apps/auth-gateway && node --test tests/model-modality-r21.test.js tests/model-modality-phase2.test.js tests/execution-capability-r22.test.js",
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "logSha256": "0f4f3938e55b6d7d32f4c854bbe26f3dbebaeae74ff7cb4bbec52839c777b094"
+    }
+  ],
+  "builds": [
+    {
+      "command": "cd apps/web && npm run build",
+      "exitCode": 0,
+      "logSha256": "f809f22894af100578dae0be80ac00a6b8fbb00cd098bafcdf6c9a39a4148f5a"
+    },
+    {
+      "command": "cd apps/miniprogram && npm run build",
+      "exitCode": 0,
+      "logSha256": "06281357c66c8b2b0b6e549d9b9f606416b1ddd4b6730ed2338c3fe340e322fb"
+    },
+    {
+      "command": "pnpm --filter @paperbanana/paperbanana-api build",
+      "exitCode": 0,
+      "logSha256": "5e70e71d39cc59e7db3a052767f6c2f31be0df70cf627c899ac1cbfa305163ae"
+    },
+    {
+      "command": "pnpm --filter @paperbanana/paperbanana-api check",
+      "exitCode": 0,
+      "logSha256": "c950df47f90587493d7cc851c1423e7c21f479d0fc7dca46980dc837bb716024"
+    }
+  ],
+  "miniBytes": {
+    "source": 1564986,
+    "runtime": 1139989,
+    "media": 189978,
+    "limit": 1572864,
+    "headroom": 7878
+  },
+  "checks": [
+    {
+      "script": "sync-model-catalog",
+      "command": "node scripts/sync-model-catalog.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "script": "generate-model-audit",
+      "command": "node scripts/generate-model-audit.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "script": "report-model-modality-r21",
+      "command": "node scripts/report-model-modality-r21.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "script": "report-model-modality-phase2",
+      "command": "node scripts/report-model-modality-phase2.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "script": "report-changed-tests",
+      "command": "node scripts/report-changed-tests.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "script": "freeze-execution-capability",
+      "command": "node scripts/freeze-execution-capability.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "script": "capture-tokendance-pages",
+      "command": "node scripts/capture-tokendance-pages.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "script": "sync-card-display",
+      "command": "node scripts/sync-card-display.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "script": "check-docker-bundles",
+      "command": "node scripts/check-docker-bundles.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "script": "report-model-modality-r22b",
+      "command": "node scripts/report-model-modality-r22b.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "script": "sync-reference-upload",
+      "command": "node scripts/sync-reference-upload.mjs --check",
+      "exitCode": 0,
+      "resolution": "Regenerated the lossless compact policy data with the existing sync script after the codec update; final check passed."
+    },
+    {
+      "script": "sync-thinking",
+      "command": "node scripts/sync-thinking.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "script": "sync-agent-knowledge",
+      "command": "node scripts/sync-agent-knowledge.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "script": "sync-model-version-report",
+      "command": "node scripts/sync-model-version-report.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "script": "sync-workflow",
+      "command": "node scripts/sync-workflow.mjs --check",
+      "exitCode": 1,
+      "classification": "Pre-existing drift; generator and workflow.ts are unchanged from c76e9c2a. Preserve the Phase A execution boundary."
+    },
+    {
+      "script": "sync-agent-distributions",
+      "command": "node scripts/sync-agent-distributions.mjs --check",
+      "exitCode": 1,
+      "classification": "Not applicable to one checkout: requires skill|mcp and an existing independent repository; usage guard exited before accessing any target."
+    },
+    {
+      "script": "report-model-card-r10",
+      "command": "node scripts/report-model-card-r10.mjs --frozen-head --check",
+      "exitCode": 0
+    },
+    {
+      "script": "report-model-card-r11",
+      "command": "node scripts/report-model-card-r11.mjs --frozen-head --frozen-main --check",
+      "exitCode": 0
+    },
+    {
+      "script": "report-model-card-r12",
+      "command": "node scripts/report-model-card-r12.mjs --frozen-head --check",
+      "exitCode": 0
+    }
+  ],
+  "dockerContext": {
+    "coreBundles": 4,
+    "benchmarkImageBundles": 16,
+    "gatewayRuntimeImportBundles": 1,
+    "imagesBuilt": 0
+  },
+  "environment": {
+    "headlessChrome": "Launch blocked: SIGABRT / kill EPERM. Actual SPA DOM/text capture used JSDOM; browser visual QA remains unperformed.",
+    "localhostFailuresInTouchedTests": [],
+    "previousSocketFailures": "Prior Phase A Core/Gateway EPERM list remains recorded; broader socket suites were not rerun."
+  }
+}

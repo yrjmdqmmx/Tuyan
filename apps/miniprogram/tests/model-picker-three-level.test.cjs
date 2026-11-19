@@ -32,7 +32,7 @@ test('aggregator vendor boundaries, backtracking and channel switching clear sta
 test('every role and region uses exact compatible channel-vendor-model membership, including format filters',()=>{
  for(const role of ['main','image','vision'])for(const region of ['global','cn'])for(const format of ['png','svg']){
   const {instance:p,events}=picker(role);p.properties.providerRegions={minimax:region};p.properties.outputFormat=format;p.resetFlow();const scoped=registryForRegions(registry,p.properties.providerRegions);
-  const expected=Object.entries(scoped.providers).filter(([,e])=>partitionRegistryModels(e.models,{role,outputFormat:format}).compatible.length).map(([id])=>id).sort();assert.deepEqual(p.data.providerCards.map(c=>c.id).sort(),expected);
+  const expected=Object.entries(scoped.providers).filter(([id,e])=>partitionRegistryModels(e.models,{role,outputFormat:format}).compatible.length || id==='tokendance' && e.models.some(m=>m.catalogPresence)).map(([id])=>id).sort();assert.deepEqual(p.data.providerCards.map(c=>c.id).sort(),expected);
   for(const card of p.data.providerCards){p.selectProvider(tap('provider',card.id));assert.equal(p.data.step,'vendors');const groups=groupRegistryModels(partitionRegistryModels(scoped.providers[card.id].models,{role,outputFormat:format}).compatible);assert.deepEqual(p.data.vendorCards.map(v=>[v.vendor,v.count]),groups.map(g=>[g.vendor,g.models.length]));
    for(const group of groups){p.selectVendor(tap('vendor',group.vendor));while(p.data.hasMore)p.loadMore();assert.deepEqual(p.data.visibleCompatibleModels.map(m=>m.id),group.models.map(m=>m.id));p.backStep();}
   }assert.equal(events.length,0);
@@ -53,4 +53,14 @@ test('each role selects only into its draft; save payload matches channel and ID
 test('role and directory changes reset stale browse state; incompatible saved routes never become selectable',()=>{
  const f=picker('main',routeFor('kimi','main')),p=f.instance;p.selectProvider(tap('provider','kimi'));p.selectVendor(tap('vendor','月之暗面'));p.properties.role='image';f.definition.observers['show, registryVersion, providerRegions, role, outputFormat, selectedProvider, selectedModel'].call(p);assert.equal(p.data.step,'providers');assert.equal(p.data.activeProvider,'');assert.equal(p.data.activeVendor,'');assert.equal(p.data.activeModelLabel,'');p.choose(tap('model','kimi-k3'));assert.equal(f.events.length,0);
  const old=getModelRegistryState().registry;getModelRegistryState().registry=null;p.resetFlow();assert.equal(p.data.providerCards.length,0);assert.equal(p.data.visibleCompatibleModels.length,0);getModelRegistryState().registry=old;
+});
+
+test('removed saved IDs show empty-slot hints without cards or automatic selection writes',()=>{
+ for(const route of [{accessProvider:'xiaomi',modelId:'mimo-v2.5'},{accessProvider:'fireworks',modelId:'accounts/fireworks/models/glm-5p2'}]) {
+  const {instance:p,events}=picker('main',route);
+  assert.match(p.data.removedHint,/原型号已不可用，请重新选择。推荐：/);
+  assert.ok(p.data.savedReplacement);assert.equal(p.data.savedLifecycle,'');
+  assert.equal(p.properties.selectedModel,route.modelId);assert.equal(events.length,0);
+  assert.equal(p.compatibleModels(route.accessProvider).some(model=>model.id===route.modelId),false);
+ }
 });

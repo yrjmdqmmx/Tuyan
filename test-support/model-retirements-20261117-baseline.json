@@ -1,0 +1,345 @@
+{
+  "commit": "e013c7260388dd37c0e0cc121354beebf26c141d",
+  "survivingCatalogSha256": "6ebdd232ad827568a00964bf3c7430390d738f318bb95d517ede94aa53f8d1d2",
+  "removedLabels": {
+    "openai/gpt-3.5-turbo-1106": "GPT-3.5-turbo-1106",
+    "openai/gpt-3.5-turbo": "GPT-3.5-turbo · 0125",
+    "openai/gpt-3.5-turbo-0125": "GPT-3.5-turbo-0125",
+    "openai/gpt-4": "GPT-4 · 0613",
+    "openai/gpt-4-0613": "GPT-4-0613",
+    "openai/gpt-4-1106-preview": "GPT-4-1106-preview",
+    "openai/gpt-4-turbo": "GPT-4-turbo · 2024-04-09",
+    "openai/gpt-4-turbo-2024-04-09": "GPT-4-turbo-2024-04-09",
+    "openai/gpt-4.1-nano": "GPT-4.1-nano · 2025-04-14",
+    "openai/gpt-4.1-nano-2025-04-14": "GPT-4.1-nano-2025-04-14",
+    "openai/gpt-4o-2024-05-13": "GPT-4o-2024-05-13",
+    "openai/gpt-image-1": "GPT Image 1",
+    "openai/o1": "o1 · 2024-12-17",
+    "openai/o1-2024-12-17": "o1-2024-12-17",
+    "openai/o1-pro": "o1-pro · 2025-03-19",
+    "openai/o1-pro-2025-03-19": "o1-pro-2025-03-19",
+    "openai/o3-mini": "o3-mini · 2025-01-31",
+    "openai/o3-mini-2025-01-31": "o3-mini-2025-01-31",
+    "openai/o4-mini": "o4-mini · 2025-04-16",
+    "openai/o4-mini-2025-04-16": "o4-mini-2025-04-16",
+    "siliconflow/Pro/zai-org/GLM-5.1": "GLM-5.1",
+    "antling/Ling-2.6-1T": "Ling 2.6-1T",
+    "antling/Ling-2.6-flash": "Ling 2.6-flash",
+    "antling/Ring-2.6-1T": "Ring 2.6-1T",
+    "siliconflow/Qwen/Qwen3-Coder-30B-A3B-Instruct": "Qwen3-Coder-30B-A3B-Instruct",
+    "siliconflow/Qwen/Qwen3-VL-30B-A3B-Thinking": "Qwen3-VL-30B-A3B-Thinking",
+    "siliconflow/Qwen/Qwen3.5-122B-A10B": "Qwen3.5-122B-A10B",
+    "siliconflow/inclusionAI/Ling-mini-2.0": "Ling-mini-2.0",
+    "siliconflow/stepfun-ai/Step-3.5-Flash": "Step-3.5-Flash",
+    "siliconflow/tencent/Hunyuan-A13B-Instruct": "Hunyuan-A13B-Instruct",
+    "siliconflow/zai-org/GLM-4.5V": "GLM-4.5V"
+  },
+  "protected": [
+    {
+      "provider": "siliconflow",
+      "id": "MiniMaxAI/MiniMax-M2.5",
+      "staticSha256": "5d2a99716b1befcfca275a4513261e326bbb1a0c761c8f1abe3bdcfde0d4d977",
+      "notice": null
+    },
+    {
+      "provider": "siliconflow",
+      "id": "Pro/MiniMaxAI/MiniMax-M2.5",
+      "staticSha256": "41245fabb199df6d6f0be0742872aa9daa7399e3a2bfd5c8c1dce56ef721a935",
+      "notice": null
+    },
+    {
+      "provider": "siliconflow",
+      "id": "Qwen/Qwen3.5-397B-A17B",
+      "staticSha256": "2e5c95693d9342243c38b7dd34ac73232bcb1eead2d0917f6d99fb5e07c867d2",
+      "notice": null
+    },
+    {
+      "provider": "siliconflow",
+      "id": "nex-agi/Nex-N2-Pro",
+      "staticSha256": "4310d92db01f199495ccf805d20fee0216ad22e6a1a7a6e35b0636ba967048a8",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "deepseek-v4-flash-260425",
+      "staticSha256": "cf889a85e7cce8ead183b96888626bc06d5435fc315ecfa248163cb438aa9419",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-1-5-lite-32k-250115",
+      "staticSha256": "197f3c9a6c6738d25ef3e7f4c660e183af93cb29eb8bd659360188bcb97114f6",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-1-5-pro-32k-250115",
+      "staticSha256": "54a3c12adf99247a87bb81713134a00af772402815aa2bc76bc3522a40bd80a4",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-1-5-vision-pro-32k-250115",
+      "staticSha256": "3f31ee88876af2731a43951797e482db9819bb7bf27c4c1a06d455920893039b",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-1-6-250615",
+      "staticSha256": "e242e7b554171b619673fca29faa9efc21664cb3a2be2bdd283723609cd062ac",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-1-6-251015",
+      "staticSha256": "c86ee5184d365821ae17d8464310dd053bb85c698f8266702f904709e46618c4",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-1-6-flash-250615",
+      "staticSha256": "8b2267d1d12587fb8455de6ddd3e1fd557b83001e24498693d7f0d245e847939",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-1-6-flash-250828",
+      "staticSha256": "6291876d57a0d50489a5a0eb86829e49bc40091bd934faef8b00952be8f7d9bf",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-1-6-vision-250815",
+      "staticSha256": "4052f2728036499388657e8755d98044bd468b2871d9dd9ab8bba8760ae562f3",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-1-8-251228",
+      "staticSha256": "6e3bad52f3876c587f210dcce81a285e1639130664a7b2920d252f0dcdcaf7a3",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-code-preview-251028",
+      "staticSha256": "465e61164f374ed0c467c05a349206ab86cf231cfc820d330c982e980f48f7b6",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "glm-4-7-251222",
+      "staticSha256": "e4159b521d8e73ff8c0b67d3b3d13d7f3c148474fe42d3113e9557c304860801",
+      "notice": null
+    },
+    {
+      "provider": "qianfan",
+      "id": "deepseek-v3.2",
+      "staticSha256": "a237d10482d56c8e5253138672b1015a9ae5c93da74e550ac86336dbbc3e69cc",
+      "notice": null
+    },
+    {
+      "provider": "qianfan",
+      "id": "deepseek-v3.2-think",
+      "staticSha256": "a9a33a47e638e9917e04b8c9196286753be89399842df56aa610bd421b55e297",
+      "notice": null
+    },
+    {
+      "provider": "qianfan",
+      "id": "deepseek-v4-flash",
+      "staticSha256": "d63116950172bf6328b1121476d75cfa30f42267c0711390c638d8031945288f",
+      "notice": null
+    },
+    {
+      "provider": "qianfan",
+      "id": "ernie-x1.1",
+      "staticSha256": "e629215514a2d92f4514472c357995f5e6252fef98f8aede3706d258164d02d5",
+      "notice": null
+    },
+    {
+      "provider": "qianfan",
+      "id": "ernie-x1.1-preview",
+      "staticSha256": "d566033b1c2da774c78038a2ec11fdc1e0162e9c28e61a188708517c4c8c6a01",
+      "notice": null
+    },
+    {
+      "provider": "qianfan",
+      "id": "glm-5",
+      "staticSha256": "85ba642cd415672377e312b3a5c279ac0524eccf19c52c8473af5b277a3a68d3",
+      "notice": null
+    },
+    {
+      "provider": "qianfan",
+      "id": "kimi-k2.6",
+      "staticSha256": "b3faa3b82e98884a87cb37c0b2c90be5582513b8db25167f597d2f23ae6a318e",
+      "notice": null
+    },
+    {
+      "provider": "together",
+      "id": "deepseek-ai/DeepSeek-V4-Flash-0731",
+      "staticSha256": "9729bb9339718edf9d9351c6ebcc38a3e066388b0d456bf98389dfe1a77eabbc",
+      "notice": null
+    },
+    {
+      "provider": "together",
+      "id": "deepseek-ai/DeepSeek-V4-Pro-0813",
+      "staticSha256": "a75b701abe48f00803b111aee1e3d33764c4f49d35787628297cd2650bbebdcb",
+      "notice": null
+    },
+    {
+      "provider": "mistral",
+      "id": "labs-leanstral-1-5",
+      "staticSha256": "19ef16838af49473fe9f7d1de335310d1da8d47f5d8e8a4acd8ae454a3354041",
+      "notice": null
+    },
+    {
+      "provider": "siliconflow",
+      "id": "baidu/ERNIE-Image-Turbo",
+      "staticSha256": "e1f926513128ccc131cf619ee55d9ba672e274172e4809c8f9c74363bb9c7217",
+      "notice": null
+    },
+    {
+      "provider": "runware",
+      "id": "google:4@1",
+      "staticSha256": "808f10309265c13367bdb7cfc3fa9c79029492326695d8f866a10eb5ba88ad4c",
+      "notice": null
+    },
+    {
+      "provider": "tokenhub",
+      "id": "glm-5",
+      "staticSha256": "643e728394f646113db53e3fb08d91fe4aaa2ec65f1f009fcb9cb4cf816590c8",
+      "notice": null
+    },
+    {
+      "provider": "tokenhub",
+      "id": "glm-5-turbo",
+      "staticSha256": "380b806b44498d73026767878f2d95d468fcf93c608fc91ae36932ef0a824ec9",
+      "notice": null
+    },
+    {
+      "provider": "tokenhub",
+      "id": "glm-5.1",
+      "staticSha256": "c74c35999fdd4ed5dc8738b532f4a0e233f3823f5236e83881d3de0ce03362ef",
+      "notice": null
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen-image",
+      "staticSha256": "a973540a721d80cbcdb0f0ee7c6c568eb48ccd24f0e95fe8a2d42270013d38f6",
+      "notice": null
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen-turbo",
+      "staticSha256": "bc5546f2a8f44be5b3cc5d39995295bc6c8fd7fea5146b7cc7112e404f3a1544",
+      "notice": null
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3-coder-next",
+      "staticSha256": "d68e1452bf6fa486cb1b961eded338b27f4745a928cfe4239a773f14ffef2bb4",
+      "notice": null
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3-max",
+      "staticSha256": "9b5be31bf426db148f3aac54b01a22a8feeee22ef5d040f2c71871e1e1e8b712",
+      "notice": null
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3-max-2025-09-23",
+      "staticSha256": "2249acac73e26821de398c9658a218aa8afdcf112794b4bbb5cd3eeead5af11d",
+      "notice": null
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3-max-2026-01-23",
+      "staticSha256": "37f390ce695aabd74ad073d17ee7a0b25971d7acf7a7904d77c0514d774b7170",
+      "notice": null
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3-max-preview",
+      "staticSha256": "371790fc27b1f2c1721442e4a2b3638b4c9293c3c0134d538a20e291c691031e",
+      "notice": null
+    },
+    {
+      "provider": "tokendance",
+      "id": "mimo-v2.5",
+      "staticSha256": "19da7a0ad4ee94fd9a721772ebe19113639d1d0dd90eaebb6f3e11bf06bd6e74",
+      "notice": null
+    },
+    {
+      "provider": "tokendance",
+      "id": "mimo-v2.5-pro",
+      "staticSha256": "38df7a0c8e85b9273c2d5dc26654f13100594fde17fb43d42ab8017be91b2e08",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-2-0-lite-260215",
+      "staticSha256": "a6ce75a7b287160ffb7ace57e41282bdfe0541b0bf8982ac99542fa8d383a30b",
+      "notice": null
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-2-0-mini-260215",
+      "staticSha256": "a79ddd8dc57f8ecd68799e1665d34038e8a071cba1bffda41b01911e88ca0314",
+      "notice": null
+    },
+    {
+      "provider": "runware",
+      "id": "openai:1@1",
+      "staticSha256": "282c575eb610ff89fd4ed2879a5fe51ce8f249ccdffe5379ded413bc6a55043c",
+      "notice": null
+    },
+    {
+      "provider": "tokenhub",
+      "id": "glm-5v-turbo",
+      "staticSha256": "967ee0823fbc172ca20e37877991cd8ab3eace812579af1bf1194d1a45f87eb7",
+      "notice": null
+    },
+    {
+      "provider": "mistral",
+      "id": "zai-glm-5-2",
+      "staticSha256": "96b0ff0aee10782afa1aee87ed6bb65add95942ace8d937b5465d03ec7429578",
+      "notice": null
+    },
+    {
+      "provider": "tokenhub",
+      "id": "deepseek-v4-flash-0731",
+      "staticSha256": "2967a21f15edb5d38c710d100bb99a54aed6b6025b8d3e804abcbf3644c26c56",
+      "notice": null
+    },
+    {
+      "provider": "runware",
+      "id": "xai:grok-imagine@image-quality",
+      "staticSha256": "12e01696097ea0aa8d192c84618dbeda77e924aaba4bc762e2612c02fe64230f",
+      "notice": null
+    },
+    {
+      "provider": "xai",
+      "id": "grok-imagine-image-quality",
+      "staticSha256": "9fa76f72de811a7deeca4816861283826a635949814afe68bcee0de1056ca1b8",
+      "notice": null
+    },
+    {
+      "provider": "tokendance",
+      "id": "deepseek-v4-flash",
+      "staticSha256": "62c297230320d46ed1105c3100c99a2082149e7de99b2211d1a781221f00378b",
+      "notice": null
+    },
+    {
+      "provider": "tokenhub",
+      "id": "hy-image-v3",
+      "staticSha256": "8b27996df496f1e916d763e81e5aacd755c63b16050338bfb09c6ed67a98781e",
+      "notice": null
+    },
+    {
+      "provider": "tokenhub",
+      "id": "minimax-m2.7",
+      "staticSha256": "852c7b3cf3bfaeb995d7157a3ac4c123e0ae015872ddec8e2eecc51790990d1d",
+      "notice": null
+    }
+  ]
+}

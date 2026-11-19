@@ -1,0 +1,27 @@
+[
+  {
+    "file": "components/ModelRoutingSettings.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "components/UniversalCapabilities.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "components/UniversalCapabilities.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "components/UniversalExtensions.jsx",
+    "type": "checkbox",
+    "reason": "文字与复选框共用点击区域，切换意图一致"
+  },
+  {
+    "file": "workspace/WorkspaceModelPanels.jsx",
+    "type": "radio",
+    "reason": "整项单选卡片作为点击目标"
+  }
+]

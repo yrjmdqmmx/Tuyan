@@ -1,0 +1,465 @@
+{
+  "method": "GET, browser User-Agent, redirect: follow, 25s timeout, from operator Mac mini (outside Codex sandbox)",
+  "rows": [
+    {
+      "channel": "antling",
+      "modelId": "Ling-3.0-flash",
+      "oldUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+      "newUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+      "status": 200,
+      "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "antling",
+      "modelId": "Ling-3.0-flash-VL",
+      "oldUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+      "newUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+      "status": 200,
+      "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "antling",
+      "modelId": "Ling-3.0-tiny",
+      "oldUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+      "newUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+      "status": 200,
+      "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "antling",
+      "modelId": "Ling-3.1-flash",
+      "oldUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+      "newUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+      "status": 200,
+      "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "antling",
+      "modelId": "Ling-3.2-flash",
+      "oldUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+      "newUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+      "status": 200,
+      "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "bailian",
+      "modelId": "qwen3.7-max-2026-06-08",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "newUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "bailian",
+      "modelId": "qwen3.8-flash",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/vision-model",
+      "newUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "bailian",
+      "modelId": "qwen3.8-max",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "newUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "deepseek-v4-pro",
+      "oldUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "deepseek-v4.1-flash",
+      "oldUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "dots-3-note-preview",
+      "oldUrl": "https://github.com/studio-dots-ai/dots3-note-prev",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "glm-5.3-flashx",
+      "oldUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "hy4-preview",
+      "oldUrl": "https://huggingface.co/tencent/Hy4-preview",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "kimi-k2.5",
+      "oldUrl": "https://tokendance.space/docs/kimi-thinking-models.md",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "kimi-k2.6",
+      "oldUrl": "https://platform.kimi.com/docs/models",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "kimi-k2.7-code",
+      "oldUrl": "https://platform.kimi.com/docs/models",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "kimi-k3",
+      "oldUrl": "https://platform.kimi.com/docs/models",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "mimo-v2.5",
+      "oldUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "mimo-v2.5-pro",
+      "oldUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "qwen3-vl-plus",
+      "oldUrl": "https://platform.qianwenai.com/docs/developer-guides/getting-started/vision-models",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "qwen3.5-35b-a3b",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "qwen3.5-flash",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "qwen3.5-plus",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "qwen3.6-plus",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "qwen3.7-max",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "qwen3.7-plus",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "qwen3.8-flash",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/vision-model",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "qwen3.8-max",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "qwen3.8-max-0902",
+      "oldUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "seed-2.0-lite",
+      "oldUrl": "https://www.volcengine.com/docs/82379/1330310",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "seed-2.0-mini",
+      "oldUrl": "https://www.volcengine.com/docs/82379/1330310",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "seed-2.0-pro",
+      "oldUrl": "https://www.volcengine.com/docs/82379/1330310",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "seed-2.1-pro",
+      "oldUrl": "https://www.volcengine.com/docs/82379/1330310",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "seed-2.1-turbo",
+      "oldUrl": "https://www.volcengine.com/docs/82379/1330310",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "seed-evolving",
+      "oldUrl": "https://www.volcengine.com/docs/82379/1330310",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "seedream-5.0-lite",
+      "oldUrl": "https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "seedream-5.0-pro",
+      "oldUrl": "https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "spark-x2.5-1.7b",
+      "oldUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "spark-x2.5-4b",
+      "oldUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "step-3.5-flash",
+      "oldUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "step-3.7-flash",
+      "oldUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "step-5-preview",
+      "oldUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "unifuncs-s3",
+      "oldUrl": "https://unifuncs.com/api/deepsearch",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "unifuncs-s3-pro",
+      "oldUrl": "https://unifuncs.com/api/deepsearch",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "unifuncs-u3",
+      "oldUrl": "https://unifuncs.com/api/deepresearch",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    },
+    {
+      "channel": "tokendance",
+      "modelId": "unifuncs-u3-pro",
+      "oldUrl": "https://unifuncs.com/api/deepresearch",
+      "newUrl": "https://tokendance.space/gateway/v1/models",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "redirected": false,
+      "checkedAt": "2026-11-09T09:45:47.209Z"
+    }
+  ]
+}

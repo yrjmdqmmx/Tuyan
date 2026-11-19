@@ -1,0 +1,95 @@
+{
+  "files": [
+    "App.jsx",
+    "components/AccountSettingsDialog.jsx",
+    "components/AuthPanel.jsx",
+    "components/BenchmarkAdminPanel.jsx",
+    "components/BenchmarkEvidencePages.jsx",
+    "components/BenchmarkPareto.jsx",
+    "components/BenchmarkParetoScatter.jsx",
+    "components/BenchmarkRankingFilters.jsx",
+    "components/FeedbackDialog.jsx",
+    "components/FigureInputs.jsx",
+    "components/FigureReferencePreferences.jsx",
+    "components/FigureTypePicker.jsx",
+    "components/JournalBookshelf.jsx",
+    "components/JournalRulePicker.jsx",
+    "components/PhoneCodeForm.jsx",
+    "components/PlusPanel.jsx",
+    "components/ReferenceLibraryPanel.jsx",
+    "components/ReferenceUploadPanel.jsx",
+    "components/RefinePanel.jsx",
+    "components/RefineSourceContext.jsx",
+    "components/Select.jsx",
+    "components/SvgEditorCanvas.jsx",
+    "components/SvgResultWorkspace.jsx",
+    "components/WatchaIdentityPanel.jsx",
+    "components/admin/AdminCommon.jsx",
+    "components/admin/AdminDetails.jsx",
+    "components/admin/AdminWorkspace.jsx",
+    "components/admin/admin.css",
+    "components/benchmark.css",
+    "components/benchmarkPareto.css",
+    "components/figureTypePicker.css",
+    "components/journal-rules.css",
+    "components/leaderboard-mobile.css",
+    "components/plus.css",
+    "components/svgWorkspace.css",
+    "ecosystem/ResearchEcosystem.jsx",
+    "styles.css",
+    "workspace/AccountProfileEditor.jsx",
+    "workspace/ResultWorkspace.jsx",
+    "workspace/TaskComposer.jsx",
+    "workspace/TaskWorkspace.jsx",
+    "workspace/WorkspaceDrawingSettings.jsx",
+    "workspace/WorkspaceRefineControls.jsx",
+    "workspace/workspace.css"
+  ],
+  "allowedWrappers": [
+    {
+      "file": "App.jsx",
+      "type": "checkbox",
+      "reason": "文字与复选框共用点击区域，切换意图一致"
+    },
+    {
+      "file": "components/BenchmarkAdminPanel.jsx",
+      "type": "file",
+      "reason": "上传文字有意触发隐藏的文件输入"
+    },
+    {
+      "file": "components/BenchmarkPareto.jsx",
+      "type": "checkbox",
+      "reason": "文字与复选框共用点击区域，切换意图一致"
+    },
+    {
+      "file": "components/ReferenceUploadPanel.jsx",
+      "type": "file",
+      "reason": "上传文字有意触发隐藏的文件输入"
+    },
+    {
+      "file": "components/RefinePanel.jsx",
+      "type": "checkbox",
+      "reason": "文字与复选框共用点击区域，切换意图一致"
+    },
+    {
+      "file": "components/SvgEditorCanvas.jsx",
+      "type": "checkbox",
+      "reason": "文字与复选框共用点击区域，切换意图一致"
+    },
+    {
+      "file": "components/SvgEditorCanvas.jsx",
+      "type": "checkbox",
+      "reason": "文字与复选框共用点击区域，切换意图一致"
+    },
+    {
+      "file": "ecosystem/ResearchEcosystem.jsx",
+      "type": "range",
+      "reason": "紧凑工具栏滑杆，标签和滑杆共用操作区域，无下拉悬停样式"
+    },
+    {
+      "file": "workspace/WorkspaceRefineControls.jsx",
+      "type": "checkbox",
+      "reason": "文字与复选框共用点击区域，切换意图一致"
+    }
+  ]
+}

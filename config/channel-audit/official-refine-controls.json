@@ -19,27 +19,6 @@
     "checkedAt": "2026-09-22",
     "source": "https://platform.sensenova.cn/docs"
   },
-  "stepfun/step-2x-large": {
-    "version": 1,
-    "maxImages": 1,
-    "sourceCounts": true,
-    "mask": false,
-    "maskWithReferences": false,
-    "structured": null,
-    "checkedAt": "2026-09-22",
-    "source": "https://platform.stepfun.com/docs/zh/guides/models/image"
-  },
-  "stepfun/step-image-edit-2": {
-    "version": 1,
-    "maxImages": 1,
-    "sourceCounts": true,
-    "mask": false,
-    "maskWithReferences": false,
-    "structured": null,
-    "checkedAt": "2026-09-22",
-    "source": "https://platform.stepfun.com/docs/zh/guides/models/image",
-    "singleImageInheritsSize": true
-  },
   "qianfan/qwen-image-edit": {
     "version": 1,
     "maxImages": 3,

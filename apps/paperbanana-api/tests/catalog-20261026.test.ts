@@ -1,3 +1,4 @@
+import { assertCatalogDelta, assertSurvivingDefaults, assertRemoved } from './helpers/catalog-retirements.js'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -11,10 +12,10 @@ import { STATIC_MODEL_REGISTRY as catalog, STATIC_MODEL_REGISTRY_VERSION } from 
 const additions=JSON.parse(fs.readFileSync(new URL('./fixtures/catalog-20261026/additions.json',import.meta.url),'utf8'))
 const endpoints:Record<string,string>={kimi:'https://api.moonshot.cn/v1/chat/completions',minimax:'https://api.minimax.io/v1/chat/completions',mistral:'https://api.mistral.ai/v1/chat/completions',together:'https://api.together.ai/v1/chat/completions',fireworks:'https://api.fireworks.ai/inference/v1/chat/completions',ark:'https://ark.cn-beijing.volces.com/api/v3/chat/completions',tokenhub:'https://tokenhub.tencentmaas.com/v1/chat/completions',iflytek:'https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions',tokendance:'https://tokendance.space/gateway/v1/chat/completions'}
 test('weekly 19 identities preserve defaults and keep unsupported protocol paths closed',()=>{
- assert.equal(STATIC_MODEL_REGISTRY_VERSION,'2026-10-31.v42')
- assert.equal(Object.values(catalog).reduce((n:number,p:any)=>n+p.models.length,0),1125)
+ assert.equal(STATIC_MODEL_REGISTRY_VERSION,'2026-11-09.v43')
+ assertCatalogDelta()
  const defaults=JSON.parse(fs.readFileSync(new URL('./fixtures/catalog-20261016/baseline-defaults.json',import.meta.url),'utf8'))
- for(const [p,v] of Object.entries(defaults))assert.deepEqual(catalog[p].defaults,v)
+ for(const [p,v] of Object.entries(defaults))assertSurvivingDefaults(p,v)
  for(const {provider,id,vision}of additions){const m=catalog[provider].models.find((m:any)=>m.id===id);assert.ok(m.selectable,id);assert.equal(m.verified,false);assert.equal(m.verificationState,'catalog');assert.equal(m.roles.includes('vision'),vision);assert.equal(m.capabilities.referenceImages,vision)}
  for(const id of ['deepseek-v4.1-flash-1017','MiniMax/MiniMax-M3.1-Flash','xiaomi/mimo-v2.6-pro-ultraspeed'])assert.equal(catalog.bailian.models.some((m:any)=>m.id===id),true) // Follow-up workspace adapter, tested separately.
  for(const id of ['moonshotai/kimi-k3.1-pro','minimax/minimax-m3.1-flash'])assert.equal(catalog.novita.models.some((m:any)=>m.id===id),false)
@@ -57,8 +58,16 @@ test('new retirement metadata retains identities and date-only evidence; effecti
   }
   Date.now=()=>Date.parse('2026-10-26T12:00:00+08:00')
   for(const [p,id]of [['xiaomi','mimo-v2.5'],['xiaomi','mimo-v2.5-pro'],['ark','doubao-seed-2-0-lite-260215'],['ark','doubao-seed-2-0-mini-260215']]){
-   assert.equal((await r.legacy.modelRegistry({provider:p})).providers[p].models.find((m:any)=>m.id===id).selectable,false)
-   await assert.rejects(r.legacy.callTextModel(p,id,'fixture','system','prompt'))
+   const models=(await r.legacy.modelRegistry({provider:p})).providers[p].models
+   if(p==='xiaomi') {
+    const evidence=assertRemoved(p,id)
+    assert.equal(evidence.stopDate,'2026-10-21T10:00:00+08:00')
+    assert.equal(models.some((m:any)=>m.id===id),false)
+    await assert.rejects(r.legacy.callTextModel(p,id,'fixture','system','prompt'),{businessCode:'MODEL_UNAVAILABLE',requestState:'not_sent'})
+   } else {
+    assert.equal(models.find((m:any)=>m.id===id).selectable,false)
+    await assert.rejects(r.legacy.callTextModel(p,id,'fixture','system','prompt'))
+   }
   }
   Date.now=()=>Date.parse('2027-04-03T12:00:00+08:00')
   for(const [p,id]of [['openai','gpt-5.1-2025-11-13'],['tokenhub','minimax-m2.7']])await assert.rejects(r.legacy.callTextModel(p,id,'fixture','system','prompt'))

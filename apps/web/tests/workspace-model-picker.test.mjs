@@ -49,7 +49,7 @@ test('card selection shows only added role models and binds the exact connection
  fireEvent.click(screen.getByRole('button',{name:'主模型',exact:true}));
  assert.equal(screen.getAllByRole('article').length,3);
  assert.equal(screen.queryByText('Never added'),null);assert.equal(screen.queryByText('Drawing fixture'),null);
- assert.ok(screen.getAllByLabelText('官方文档规格').length);
+ assert.ok(screen.getAllByLabelText('模型规格').length);
  assert.equal(screen.getByRole('button',{name:'选择 Retired · First · one'}).disabled,true);
  assert.ok(screen.getByRole('dialog').classList.contains('model-route-drawer'));
  assert.equal(document.querySelector('.tw-picker-cards'),null);

@@ -1,3 +1,4 @@
+import ControlField from './ControlField.jsx';
 import {JournalTaskSummary} from './JournalExportPanel.jsx';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useRef, useState } from 'react';
@@ -61,7 +62,7 @@ export default function RefinePanel({
           {controls?.mask && source.url ? <RefineMaskEditor source={source} value={mask} onChange={onMaskChange} disabled={running}/> : mask ? <p>{t("遮罩已保留，当前模型不能提交。")}<button type="button" disabled={running} onClick={()=>onMaskChange(null)}>{t("清除遮罩")}</button></p> : null}
           {controls?.structured || structuredEnabled ? <div className="refine-structured">
             <label><input type="checkbox" checked={structuredEnabled} disabled={running || !controls?.structured && !structuredEnabled} onChange={event=>onStructuredEnabledChange(event.target.checked)}/>{t("使用原生结构化编辑")}</label>
-            {structuredEnabled ? <><p>{t("将对象、属性和关系映射到 BRIA 的正式结构化字段；结果仍是像素图，文字、箭头不会成为独立可编辑对象。")}</p><div className="refine-structured-fields">{[['object','修改对象','例如：流程图右侧的对照组节点'],['attributes','目标属性','例如：蓝色边框，标签更大'],['relationship','对象关系','例如：保留与上游节点的箭头连接'],['preserve','保留约束','例如：所有数值、文字内容与其余节点位置']].map(([key,label,placeholder])=><label key={key}>{t(label)}<textarea aria-label={t(label)} value={structured[key]} maxLength={500} rows={2} placeholder={placeholder} disabled={running || !controls?.structured} onChange={event=>onStructuredChange({...structured,[key]:event.target.value})}/></label>)}</div></> : null}
+            {structuredEnabled ? <><p>{t("将对象、属性和关系映射到 BRIA 的正式结构化字段；结果仍是像素图，文字、箭头不会成为独立可编辑对象。")}</p><div className="refine-structured-fields">{[['object','修改对象','例如：流程图右侧的对照组节点'],['attributes','目标属性','例如：蓝色边框，标签更大'],['relationship','对象关系','例如：保留与上游节点的箭头连接'],['preserve','保留约束','例如：所有数值、文字内容与其余节点位置']].map(([key,label,placeholder])=><ControlField key={key} label={t(label)}><textarea aria-label={t(label)} value={structured[key]} maxLength={500} rows={2} placeholder={placeholder} disabled={running || !controls?.structured} onChange={event=>onStructuredChange({...structured,[key]:event.target.value})}/></ControlField>)}</div></> : null}
           </div> : null}
           {controlsIssue ? <p className="refine-upload-error" role="alert">{controlsIssue}</p> : null}
         </section> : null}

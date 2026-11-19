@@ -3,8 +3,8 @@
 // Bytes are exact; official MB ceilings use decimal bytes, platform MiB uses 1024².
 export const REFERENCE_UPLOAD_VERSION = 2
 export const REFERENCE_UPLOAD_PLATFORM = {
-  maxCount: 8, maxBytes: 20 * 1024 * 1024, maxTotalBytes: 80 * 1024 * 1024,
-  maxDimension: 16384, maxPixels: 32000000, maxSvgBytes: 5 * 1024 * 1024, uploadConcurrency: 2,
+  maxCount: 10, maxBytes: 10_000_000, maxTotalBytes: 100_000_000,
+  maxDimension: 16384, maxPixels: 32000000, maxSvgBytes: 10_000_000, uploadConcurrency: 2,
   mimeTypes: ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'],
   accept: 'image/png,image/jpeg,image/webp,image/svg+xml,.png,.jpg,.jpeg,.webp,.svg',
 }
@@ -19,6 +19,10 @@ export function referenceSubmissionPolicy(provider: string, model: string, workf
     maxDimension: 4096, maxPixels: 8000000, minDimension: 1, maxAspectRatio: 200,
     requestMaxBytes: 20 * 1000000, mimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
     status: 'unconfirmed', source: '', note: '该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。',
+  }
+  if (provider === 'bailian' && ['deepseek-v4.1-flash-1017','MiniMax/MiniMax-M3.1-Flash','xiaomi/mimo-v2.6-pro-ultraspeed'].includes(model)) {
+    return {...p, status:'partial', source:'https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions',
+      note:'已核对精确型号图片能力与Chat Data URL合同；图研采用3张、4MiB/张、12MiB合计、4096边长、8MP、整包20MB。MiniMax官方单图10MB，其余精确图片总量限制未单列；真实调用未验证。'}
   }
   if (provider === 'antling' && model === 'Ling-3.0-flash-VL') {
     return {...p, mimeTypes:['image/png','image/jpeg'], status:'partial', source:'https://developer.ant-ling.com/zh-CN/docs/tutorials/multimodal-understanding/', note:'官方支持 Base64 PNG/JPEG、40 张、单图 12845056 像素、整包 32MB；图研采用 3 张、4MiB/张、8MP、整包 20MB 的更低额度。'}

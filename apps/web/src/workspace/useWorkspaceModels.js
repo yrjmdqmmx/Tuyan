@@ -4,6 +4,7 @@ import useBackendRegistry from '../hooks/useBackendRegistry.js';
 import { browserCredentialKey, emptyLibrary } from './workspaceModels.js';
 import {useTokenDance} from '../hooks/useTokenDance.js';
 import { tokenDanceLibraryAddition } from './tokenDanceLibrary.js';
+import { assertModelLibraryAdditions } from '../lib/modelAudit.js';
 
 export default function useWorkspaceModels(userId, base = API_BASE_DEFAULT) {
   const catalog = useBackendRegistry(base, { refreshMs: 0, timeoutMs: 60000 });
@@ -29,12 +30,13 @@ export default function useWorkspaceModels(userId, base = API_BASE_DEFAULT) {
     if (userId && LOCAL_CONSUMPTION_TEST) try { const data = await request('/api/workspace-account'); if (live.current) setSummary(data); } catch (e) { if (live.current) setSummary({ error: e.message }); }
   }, [userId, request, guestKey]);
   useEffect(() => { live.current = true; void refresh(); return () => { live.current = false; }; }, [refresh]);
-  async function save(next, credentialChange) {
+  async function save(next, credentialChange, { intent = 'save' } = {}) {
     if (lock.current || !ready) return false;
     lock.current = true; setBusy(true); setError('');
     try {
+      assertModelLibraryAdditions(next, library.revision ? library : null, Date.now(), intent);
       const connections = next.connections.map(({ hasCredential, ...c }) => c);
-      const body = { revision: library.revision, connections, models: next.models };
+      const body = { revision: library.revision, connections, models: next.models, intent };
       if (credentialChange?.value) {
         const c = connections.find(c => c.id === credentialChange.id);
         if (c.scope === 'account') body.credentials = { [c.id]: credentialChange.value };

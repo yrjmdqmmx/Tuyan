@@ -8,7 +8,8 @@ const packed = require('../miniprogram/utils/static-model-catalog-data.js')
 const { unpackModelCatalog } = require('../miniprogram/utils/unpack-model-catalog.js')
 const catalog = require('../miniprogram/utils/static-model-catalog.js')
 
-test('packed catalog restores every canonical field without sharing mutable model data', () => {
+test('packed catalog restores the picker projection without sharing mutable model data', async () => {
+  const {miniModelCatalog} = await import('../../../scripts/lib/mini-model-catalog.mjs')
   const restored = { channels: catalog.EXTENDED_MODEL_CHANNELS, registry: catalog.STATIC_MODEL_REGISTRY }
   assert.equal(createHash('sha256').update(JSON.stringify(restored)).digest('hex'), packed.sourceDigest)
   const reference = unpackModelCatalog(packed)
@@ -18,7 +19,7 @@ test('packed catalog restores every canonical field without sharing mutable mode
   if (fs.existsSync(web)) {
     const source = fs.readFileSync(web, 'utf8').replace(/export const /g, 'const ')
     const original = require('node:vm').runInNewContext(`${source}; ({channels: EXTENDED_MODEL_CHANNELS, registry: STATIC_MODEL_REGISTRY})`)
-    assert.equal(JSON.stringify(restored), JSON.stringify(original))
+    assert.equal(JSON.stringify(restored), JSON.stringify(miniModelCatalog(original)))
   }
   const containers = new Set()
   function walk(value) {
@@ -37,8 +38,10 @@ test('main package and static media stay within conservative source byte budgets
       return entry.isDirectory() ? files(file) : [file]
     })
   }
+  // Preserve the original 1.5 MiB budget, including TS sources.
   const all = files(root)
   const bytes = (list) => list.reduce((n, file) => n + fs.statSync(file).size, 0)
+  console.log(JSON.stringify({source:bytes(all),runtime:bytes(all.filter(file => !file.endsWith('.ts'))),media:bytes(all.filter(file => /\.(png|jpe?g|svg|webp|gif|mp3|wav|aac|mp4)$/i.test(file)))}))
   assert.ok(bytes(all) < 1.5 * 1024 * 1024, `including TS sources, total is ${bytes(all)} bytes`)
   const media = all.filter((file) => /\.(png|jpe?g|svg|webp|gif|mp3|wav|aac|mp4)$/i.test(file))
   assert.ok(bytes(media) < 200 * 1024, `media total is ${bytes(media)} bytes`)

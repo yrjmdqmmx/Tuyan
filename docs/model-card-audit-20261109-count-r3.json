@@ -1,0 +1,1849 @@
+{
+  "comparison": "main c7b6a2fc vs fe5a764d + uncommitted R4",
+  "asOf": "2026-11-09",
+  "resolver": "The current modelCardSpecifications function on both roots; root-specific static/reviewed/audit data, empty audit on main. Token N/A rows are not counted as known numeric windows.",
+  "base": {
+    "root": "../Tuyan-wt-baseline",
+    "commit": "c7b6a2fc",
+    "asOf": "2026-11-09",
+    "knownFields": {
+      "inputModalities": 326,
+      "outputModalities": 327,
+      "totalContextTokens": 224,
+      "maxOutputTokens": 50
+    },
+    "knownFieldScopes": {
+      "mockRegistry": {
+        "inputModalities": 983,
+        "outputModalities": 968,
+        "totalContextTokens": 534,
+        "maxOutputTokens": 50
+      },
+      "catalogVisible": {
+        "inputModalities": 834,
+        "outputModalities": 819,
+        "totalContextTokens": 411,
+        "maxOutputTokens": 45
+      }
+    },
+    "counts": {
+      "staticRegistry": 1125,
+      "mockRegistry": 1122,
+      "catalogVisible": 923,
+      "pickerSelectable": 884
+    },
+    "perChannel": {
+      "anthropic": {
+        "static": 14,
+        "mock": 14,
+        "catalog": 14,
+        "picker": 14
+      },
+      "antling": {
+        "static": 6,
+        "mock": 6,
+        "catalog": 6,
+        "picker": 6
+      },
+      "ark": {
+        "static": 36,
+        "mock": 36,
+        "catalog": 22,
+        "picker": 22
+      },
+      "bailian": {
+        "static": 183,
+        "mock": 183,
+        "catalog": 123,
+        "picker": 121
+      },
+      "bfl": {
+        "static": 14,
+        "mock": 14,
+        "catalog": 14,
+        "picker": 14
+      },
+      "deepseek": {
+        "static": 4,
+        "mock": 4,
+        "catalog": 2,
+        "picker": 2
+      },
+      "fal": {
+        "static": 49,
+        "mock": 48,
+        "catalog": 48,
+        "picker": 44
+      },
+      "fireworks": {
+        "static": 26,
+        "mock": 26,
+        "catalog": 26,
+        "picker": 26
+      },
+      "gemini": {
+        "static": 17,
+        "mock": 17,
+        "catalog": 17,
+        "picker": 17
+      },
+      "ideogram": {
+        "static": 14,
+        "mock": 14,
+        "catalog": 14,
+        "picker": 13
+      },
+      "iflytek": {
+        "static": 34,
+        "mock": 34,
+        "catalog": 34,
+        "picker": 34
+      },
+      "kimi": {
+        "static": 6,
+        "mock": 6,
+        "catalog": 6,
+        "picker": 6
+      },
+      "longcat": {
+        "static": 2,
+        "mock": 2,
+        "catalog": 2,
+        "picker": 2
+      },
+      "minimax": {
+        "static": 11,
+        "mock": 11,
+        "catalog": 11,
+        "picker": 11
+      },
+      "mistral": {
+        "static": 18,
+        "mock": 18,
+        "catalog": 16,
+        "picker": 16
+      },
+      "novita": {
+        "static": 1,
+        "mock": 1,
+        "catalog": 1,
+        "picker": 1
+      },
+      "openai": {
+        "static": 69,
+        "mock": 69,
+        "catalog": 49,
+        "picker": 49
+      },
+      "qianfan": {
+        "static": 37,
+        "mock": 37,
+        "catalog": 30,
+        "picker": 29
+      },
+      "recraft": {
+        "static": 17,
+        "mock": 17,
+        "catalog": 17,
+        "picker": 17
+      },
+      "replicate": {
+        "static": 109,
+        "mock": 108,
+        "catalog": 108,
+        "picker": 99
+      },
+      "runware": {
+        "static": 148,
+        "mock": 148,
+        "catalog": 144,
+        "picker": 124
+      },
+      "sensenova": {
+        "static": 8,
+        "mock": 8,
+        "catalog": 8,
+        "picker": 8
+      },
+      "siliconflow": {
+        "static": 68,
+        "mock": 68,
+        "catalog": 63,
+        "picker": 61
+      },
+      "stability": {
+        "static": 6,
+        "mock": 5,
+        "catalog": 5,
+        "picker": 5
+      },
+      "stepfun": {
+        "static": 7,
+        "mock": 7,
+        "catalog": 5,
+        "picker": 5
+      },
+      "together": {
+        "static": 53,
+        "mock": 53,
+        "catalog": 52,
+        "picker": 52
+      },
+      "tokendance": {
+        "static": 74,
+        "mock": 74,
+        "catalog": 0,
+        "picker": 0
+      },
+      "tokenhub": {
+        "static": 49,
+        "mock": 49,
+        "catalog": 44,
+        "picker": 44
+      },
+      "xai": {
+        "static": 12,
+        "mock": 12,
+        "catalog": 11,
+        "picker": 11
+      },
+      "xiaomi": {
+        "static": 5,
+        "mock": 5,
+        "catalog": 3,
+        "picker": 3
+      },
+      "zhipu": {
+        "static": 28,
+        "mock": 28,
+        "catalog": 28,
+        "picker": 28
+      }
+    },
+    "hiddenDeprecated": 127,
+    "channelUnavailable": 0,
+    "scheduled": 7,
+    "scheduledUiState": 0,
+    "unverified": null,
+    "additions": 0,
+    "unselectableAdditions": 0,
+    "removedStillInStatic": [
+      "bailian/MiniMax/MiniMax-M2.1",
+      "bailian/deepseek-v4-flash",
+      "bailian/qwen-image-edit",
+      "bailian/qwen-image-edit-max",
+      "bailian/qwen-image-edit-max-2026-01-16",
+      "bailian/qwen-image-edit-plus",
+      "bailian/qwen-image-edit-plus-2025-10-30",
+      "bailian/qwen-image-edit-plus-2025-12-15",
+      "bailian/qwen-image-max",
+      "bailian/qwen-image-max-2025-12-30",
+      "bailian/qwen-image-plus",
+      "bailian/qwen-image-plus-2026-01-09",
+      "bailian/qwen3.6-max-preview",
+      "bailian/qwen3-14b",
+      "bailian/qwen3-235b-a22b",
+      "bailian/qwen3-235b-a22b-instruct-2507",
+      "bailian/qwen3-235b-a22b-thinking-2507",
+      "bailian/qwen3-30b-a3b",
+      "bailian/qwen3-30b-a3b-instruct-2507",
+      "bailian/qwen3-30b-a3b-thinking-2507",
+      "bailian/qwen3-32b",
+      "bailian/qwen3-8b",
+      "bailian/MiniMax-M2.1",
+      "bailian/Moonshot-Kimi-K2-Instruct",
+      "bailian/deepseek-r1",
+      "bailian/deepseek-r1-0528",
+      "bailian/deepseek-r1-distill-qwen-14b",
+      "bailian/deepseek-r1-distill-qwen-32b",
+      "bailian/deepseek-r1-distill-qwen-7b",
+      "bailian/deepseek-v3",
+      "bailian/deepseek-v3.1",
+      "bailian/deepseek-v3.2",
+      "bailian/deepseek-v3.2-exp",
+      "bailian/glm-4.5",
+      "bailian/glm-4.5-air",
+      "bailian/glm-4.7",
+      "bailian/kimi-k2-thinking",
+      "bailian/qvq-max",
+      "bailian/qvq-plus",
+      "bailian/qwen-long-2025-01-25",
+      "bailian/qwen-long-latest",
+      "bailian/qwen-omni-turbo",
+      "bailian/qwen-vl-max",
+      "bailian/qwen-vl-plus",
+      "bailian/qwen2.5-omni-7b",
+      "bailian/qwen3-coder-30b-a3b-instruct",
+      "bailian/qwen3-coder-480b-a35b-instruct",
+      "bailian/qwen3-coder-plus",
+      "bailian/qwen3-coder-plus-2025-07-22",
+      "bailian/qwen3-coder-plus-2025-09-23",
+      "bailian/qwen3-next-80b-a3b-instruct",
+      "bailian/qwen3-next-80b-a3b-thinking",
+      "bailian/qwen3-omni-flash",
+      "bailian/qwen3-omni-flash-2025-09-15",
+      "bailian/qwen3-omni-flash-2025-12-01",
+      "bailian/qwen3-vl-flash",
+      "bailian/qwq-plus",
+      "fireworks/accounts/fireworks/models/deepseek-v4-flash-vision-exp",
+      "fireworks/accounts/fireworks/models/deepseek-v4-pro-0813",
+      "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
+      "fireworks/accounts/fireworks/models/glm-5p2",
+      "fireworks/accounts/fireworks/models/kimi-k2p7-code",
+      "fireworks/accounts/fireworks/models/kimi-k2p6",
+      "fireworks/accounts/fireworks/models/muse-glimmer-30b",
+      "xiaomi/mimo-v2.5",
+      "xiaomi/mimo-v2.5-pro",
+      "stepfun/step-2x-large",
+      "stepfun/step-image-edit-2"
+    ],
+    "removedLookup": 0,
+    "previewLibrary": {
+      "storedBefore": 13,
+      "storedAfter": 13,
+      "cards": 11,
+      "removedCardsOmitted": 0
+    },
+    "mockedCatalogRequests": [
+      "https://tokendance.space/gateway/v1/models",
+      "https://openrouter.ai/api/v1/models",
+      "https://openrouter.ai/api/v1/images/models",
+      "https://api.fal.ai/v1/models?limit=10&expand=openapi-3.0",
+      "https://runware.ai/docs/models/index.json",
+      "https://api.novita.ai/v3/openai/models"
+    ],
+    "scopeDeltaBasis": {
+      "staticRegistry": {
+        "removedPresent": 68,
+        "addedPresent": 0
+      },
+      "mockRegistry": {
+        "removedPresent": 68,
+        "addedPresent": 0
+      },
+      "catalogVisible": {
+        "removedPresent": 11,
+        "addedPresent": 0
+      },
+      "pickerSelectable": {
+        "removedPresent": 11,
+        "addedPresent": 0
+      }
+    }
+  },
+  "head": {
+    "root": ".",
+    "commit": "fe5a764d",
+    "asOf": "2026-11-09",
+    "knownFields": {
+      "inputModalities": 512,
+      "outputModalities": 496,
+      "totalContextTokens": 359,
+      "maxOutputTokens": 186
+    },
+    "knownFieldScopes": {
+      "mockRegistry": {
+        "inputModalities": 976,
+        "outputModalities": 967,
+        "totalContextTokens": 519,
+        "maxOutputTokens": 186
+      },
+      "catalogVisible": {
+        "inputModalities": 847,
+        "outputModalities": 838,
+        "totalContextTokens": 412,
+        "maxOutputTokens": 159
+      }
+    },
+    "counts": {
+      "staticRegistry": 1064,
+      "mockRegistry": 1061,
+      "catalogVisible": 919,
+      "pickerSelectable": 878
+    },
+    "perChannel": {
+      "anthropic": {
+        "static": 14,
+        "mock": 14,
+        "catalog": 14,
+        "picker": 14
+      },
+      "antling": {
+        "static": 8,
+        "mock": 8,
+        "catalog": 8,
+        "picker": 8
+      },
+      "ark": {
+        "static": 36,
+        "mock": 36,
+        "catalog": 22,
+        "picker": 22
+      },
+      "bailian": {
+        "static": 126,
+        "mock": 126,
+        "catalog": 119,
+        "picker": 117
+      },
+      "bfl": {
+        "static": 14,
+        "mock": 14,
+        "catalog": 14,
+        "picker": 14
+      },
+      "deepseek": {
+        "static": 4,
+        "mock": 4,
+        "catalog": 2,
+        "picker": 2
+      },
+      "fal": {
+        "static": 49,
+        "mock": 48,
+        "catalog": 48,
+        "picker": 44
+      },
+      "fireworks": {
+        "static": 20,
+        "mock": 20,
+        "catalog": 20,
+        "picker": 20
+      },
+      "gemini": {
+        "static": 17,
+        "mock": 17,
+        "catalog": 17,
+        "picker": 17
+      },
+      "ideogram": {
+        "static": 14,
+        "mock": 14,
+        "catalog": 14,
+        "picker": 13
+      },
+      "iflytek": {
+        "static": 34,
+        "mock": 34,
+        "catalog": 34,
+        "picker": 34
+      },
+      "kimi": {
+        "static": 6,
+        "mock": 6,
+        "catalog": 6,
+        "picker": 6
+      },
+      "longcat": {
+        "static": 3,
+        "mock": 3,
+        "catalog": 3,
+        "picker": 3
+      },
+      "minimax": {
+        "static": 11,
+        "mock": 11,
+        "catalog": 11,
+        "picker": 11
+      },
+      "mistral": {
+        "static": 18,
+        "mock": 18,
+        "catalog": 16,
+        "picker": 16
+      },
+      "novita": {
+        "static": 1,
+        "mock": 1,
+        "catalog": 1,
+        "picker": 1
+      },
+      "openai": {
+        "static": 71,
+        "mock": 71,
+        "catalog": 51,
+        "picker": 49
+      },
+      "qianfan": {
+        "static": 37,
+        "mock": 37,
+        "catalog": 30,
+        "picker": 29
+      },
+      "recraft": {
+        "static": 17,
+        "mock": 17,
+        "catalog": 17,
+        "picker": 17
+      },
+      "replicate": {
+        "static": 109,
+        "mock": 108,
+        "catalog": 108,
+        "picker": 99
+      },
+      "runware": {
+        "static": 148,
+        "mock": 148,
+        "catalog": 144,
+        "picker": 124
+      },
+      "sensenova": {
+        "static": 8,
+        "mock": 8,
+        "catalog": 8,
+        "picker": 8
+      },
+      "siliconflow": {
+        "static": 68,
+        "mock": 68,
+        "catalog": 63,
+        "picker": 61
+      },
+      "stability": {
+        "static": 6,
+        "mock": 5,
+        "catalog": 5,
+        "picker": 5
+      },
+      "stepfun": {
+        "static": 5,
+        "mock": 5,
+        "catalog": 5,
+        "picker": 5
+      },
+      "together": {
+        "static": 53,
+        "mock": 53,
+        "catalog": 52,
+        "picker": 52
+      },
+      "tokendance": {
+        "static": 74,
+        "mock": 74,
+        "catalog": 0,
+        "picker": 0
+      },
+      "tokenhub": {
+        "static": 50,
+        "mock": 50,
+        "catalog": 45,
+        "picker": 45
+      },
+      "xai": {
+        "static": 12,
+        "mock": 12,
+        "catalog": 11,
+        "picker": 11
+      },
+      "xiaomi": {
+        "static": 3,
+        "mock": 3,
+        "catalog": 3,
+        "picker": 3
+      },
+      "zhipu": {
+        "static": 28,
+        "mock": 28,
+        "catalog": 28,
+        "picker": 28
+      }
+    },
+    "hiddenDeprecated": 70,
+    "channelUnavailable": 0,
+    "scheduled": 7,
+    "scheduledUiState": 7,
+    "unverified": 667,
+    "additions": 7,
+    "unselectableAdditions": 2,
+    "removedStillInStatic": [],
+    "removedLookup": 68,
+    "previewLibrary": {
+      "storedBefore": 13,
+      "storedAfter": 13,
+      "cards": 10,
+      "removedCardsOmitted": 3
+    },
+    "mockedCatalogRequests": [
+      "https://tokendance.space/gateway/v1/models",
+      "https://openrouter.ai/api/v1/models",
+      "https://openrouter.ai/api/v1/images/models",
+      "https://api.fal.ai/v1/models?limit=10&expand=openapi-3.0",
+      "https://runware.ai/docs/models/index.json",
+      "https://api.novita.ai/v3/openai/models"
+    ],
+    "scopeDeltaBasis": {
+      "staticRegistry": {
+        "removedPresent": 0,
+        "addedPresent": 7
+      },
+      "mockRegistry": {
+        "removedPresent": 0,
+        "addedPresent": 7
+      },
+      "catalogVisible": {
+        "removedPresent": 0,
+        "addedPresent": 7
+      },
+      "pickerSelectable": {
+        "removedPresent": 0,
+        "addedPresent": 5
+      }
+    }
+  },
+  "knownFieldDelta": {
+    "inputModalities": 186,
+    "outputModalities": 169,
+    "totalContextTokens": 135,
+    "maxOutputTokens": 136
+  },
+  "conflicts": [
+    {
+      "channel": "deepseek",
+      "id": "deepseek-flash",
+      "field": "maxOutputTokens",
+      "auditValue": 393216,
+      "auditState": "known",
+      "existingValue": 384000,
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/quick_start/pricing",
+        "https://api-docs.deepseek.com/news/news261017/"
+      ]
+    },
+    {
+      "channel": "deepseek",
+      "id": "deepseek-v4-flash-vision-exp",
+      "field": "maxOutputTokens",
+      "auditValue": 393216,
+      "auditState": "known",
+      "existingValue": 384000,
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/quick_start/pricing",
+        "https://api-docs.deepseek.com/news/news261017/"
+      ]
+    },
+    {
+      "channel": "deepseek",
+      "id": "deepseek-v4-pro",
+      "field": "maxOutputTokens",
+      "auditValue": 393216,
+      "auditState": "known",
+      "existingValue": 384000,
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/quick_start/pricing"
+      ]
+    },
+    {
+      "channel": "deepseek",
+      "id": "deepseek-v4-flash",
+      "field": "maxOutputTokens",
+      "auditValue": 393216,
+      "auditState": "known",
+      "existingValue": 384000,
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/quick_start/pricing",
+        "https://api-docs.deepseek.com/news/news261017/"
+      ]
+    },
+    {
+      "channel": "xai",
+      "id": "grok-4.20-multi-agent-0309",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "qwen3.8-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image",
+        "video"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/vision-model",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "glm-5.2-fast-preview",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://www.qianwenai.com/models/glm-5.2-fast-preview",
+        "https://platform.qianwenai.com/docs/developer-guides/run-and-scale/prime-mode"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "qwen3.7-max-2026-06-08",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image",
+        "video"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "qwen-max",
+      "field": "totalContextTokens",
+      "auditValue": 32768,
+      "auditState": "known",
+      "existingValue": 32000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "qwen-plus-2025-01-25",
+      "field": "totalContextTokens",
+      "auditValue": 131072,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "qwen-plus-2025-04-28",
+      "field": "totalContextTokens",
+      "auditValue": 131072,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "qwen-plus-2025-07-14",
+      "field": "totalContextTokens",
+      "auditValue": 131072,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "channel": "together",
+      "id": "Qwen/Qwen3.8-Flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image",
+        "video"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/vision-model",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "channel": "fal",
+      "id": "fal-ai/nano-banana-2",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image"
+      ]
+    },
+    {
+      "channel": "fal",
+      "id": "fal-ai/nano-banana-2",
+      "field": "outputModalities",
+      "auditValue": [
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image"
+      ]
+    },
+    {
+      "channel": "fal",
+      "id": "google/nano-banana-2-lite",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image",
+        "video",
+        "file"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image"
+      ]
+    },
+    {
+      "channel": "fal",
+      "id": "google/nano-banana-2-lite",
+      "field": "outputModalities",
+      "auditValue": [
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image"
+      ]
+    },
+    {
+      "channel": "fal",
+      "id": "fal-ai/nano-banana-pro",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image"
+      ]
+    },
+    {
+      "channel": "fal",
+      "id": "fal-ai/nano-banana-pro",
+      "field": "outputModalities",
+      "auditValue": [
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image"
+      ]
+    },
+    {
+      "channel": "fal",
+      "id": "fal-ai/nano-banana",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image"
+      ]
+    },
+    {
+      "channel": "fal",
+      "id": "fal-ai/nano-banana",
+      "field": "outputModalities",
+      "auditValue": [
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "deepseek-v4-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text",
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text"
+      ],
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/news/news260424/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "deepseek-v4-pro",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://api-docs.deepseek.com/news/news260424/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "hy4-preview",
+      "field": "totalContextTokens",
+      "auditValue": 1024000,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://huggingface.co/tencent/Hy4-preview"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "qwen3.8-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image",
+        "video"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/vision-model",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "qwen3.5-35b-a3b",
+      "field": "totalContextTokens",
+      "auditValue": 256000,
+      "auditState": "known",
+      "existingValue": 262144,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://huggingface.co/Qwen/Qwen3.5-35B-A3B"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "seed-evolving",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 1024000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://www.volcengine.com/docs/82379/1330310"
+      ]
+    },
+    {
+      "channel": "tokenhub",
+      "id": "deepseek-v4-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text",
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text"
+      ],
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/news/news260424/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"
+      ]
+    },
+    {
+      "channel": "xiaomi",
+      "id": "mimo-v2.6-flash",
+      "field": "maxOutputTokens",
+      "auditValue": 128000,
+      "auditState": "known",
+      "existingValue": 131072,
+      "sources": [
+        "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "https://mimo.mi.com/docs/zh-CN/api/chat/openai-api",
+        "https://mimo.mi.com/docs/zh-CN/usage-guide/multimodal-understanding/image-understanding"
+      ]
+    },
+    {
+      "channel": "xiaomi",
+      "id": "mimo-v2.6-pro",
+      "field": "maxOutputTokens",
+      "auditValue": 128000,
+      "auditState": "known",
+      "existingValue": 131072,
+      "sources": [
+        "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "https://mimo.mi.com/docs/zh-CN/api/chat/openai-api",
+        "https://mimo.mi.com/docs/zh-CN/usage-guide/multimodal-understanding/image-understanding"
+      ]
+    },
+    {
+      "channel": "xiaomi",
+      "id": "mimo-v2.6-pro-ultraspeed",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 1048576,
+      "sources": [
+        "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model"
+      ]
+    },
+    {
+      "channel": "xiaomi",
+      "id": "mimo-v2.6-pro-ultraspeed",
+      "field": "maxOutputTokens",
+      "auditValue": 128000,
+      "auditState": "known",
+      "existingValue": 131072,
+      "sources": [
+        "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model"
+      ]
+    },
+    {
+      "channel": "sensenova",
+      "id": "deepseek-v4-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text",
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text"
+      ],
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/news/news260424/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"
+      ]
+    },
+    {
+      "channel": "qianfan",
+      "id": "deepseek-v4-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text",
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text"
+      ],
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/news/news260424/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"
+      ]
+    },
+    {
+      "channel": "siliconflow",
+      "id": "Qwen/Qwen3.8-27B",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 262144,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/Qwen/Qwen3.8-27B"
+      ]
+    },
+    {
+      "channel": "siliconflow",
+      "id": "deepseek-ai/DeepSeek-V4-Flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text",
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text"
+      ],
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"
+      ]
+    },
+    {
+      "channel": "xai",
+      "id": "grok-4.7",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.7"
+      ]
+    },
+    {
+      "channel": "xai",
+      "id": "grok-4.6",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.6"
+      ]
+    },
+    {
+      "channel": "xai",
+      "id": "grok-4.5",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.5"
+      ]
+    },
+    {
+      "channel": "xai",
+      "id": "grok-4.3",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.3"
+      ]
+    },
+    {
+      "channel": "xai",
+      "id": "grok-4.20-0309-non-reasoning",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.20-0309-non-reasoning"
+      ]
+    },
+    {
+      "channel": "xai",
+      "id": "grok-4.20-0309-reasoning",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-4.20-0309-reasoning"
+      ]
+    },
+    {
+      "channel": "xai",
+      "id": "grok-build-0.1",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/developers/models/grok-build-0.1"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "kimi-k3",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K3"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "qwen3.8-27b",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 262144,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/Qwen/Qwen3.8-27B"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "ZHIPU/GLM-5.3",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "qwen3.8-2.4t-a95b",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 262144,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "MiniMax/MiniMax-M3",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/MiniMaxAI/MiniMax-M3"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "ZHIPU/GLM-5.2",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "qwen-image-3.0",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "image",
+        "text"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen-image-3-0"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "qwen-image-3.0-pro",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "image",
+        "text"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "glm-5.2",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "ZHIPU/GLM-5.1",
+      "field": "totalContextTokens",
+      "auditValue": 202745,
+      "auditState": "known",
+      "existingValue": 200000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "glm-5.1",
+      "field": "totalContextTokens",
+      "auditValue": 202745,
+      "auditState": "known",
+      "existingValue": 200000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "kimi/kimi-k3",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K3"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "kimi-k2.7-code",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K2.7-Code"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "kimi/kimi-k2.7-code",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K2.7-Code"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "kimi-k2.6",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K2.6"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "kimi/kimi-k2.6",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K2.6"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "kimi-k2.5",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/moonshotai/Kimi-K2.5"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "qwen-image-2.0",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen-image-2-0"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "qwen-image-2.0-pro",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "wan2.7-image",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "image",
+        "text"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wan2-7-image"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "wan2.7-image-pro",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "image",
+        "text"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wan2-7-image-pro"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "wan2.6-image",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wan2-6-image"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "wan2.6-image",
+      "field": "outputModalities",
+      "auditValue": [
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "image",
+        "text"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wan2-6-image"
+      ]
+    },
+    {
+      "channel": "bailian",
+      "id": "wanx2.1-imageedit",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wanx-image-edit",
+        "https://help.aliyun.com/zh/model-studio/wanx-image-edit-api-reference"
+      ]
+    },
+    {
+      "channel": "together",
+      "id": "Qwen/Qwen-Image-2.0",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen-image-2-0"
+      ]
+    },
+    {
+      "channel": "together",
+      "id": "Qwen/Qwen-Image-2.0-Pro",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro"
+      ]
+    },
+    {
+      "channel": "together",
+      "id": "Qwen/Qwen3.8-2.4T-A95B",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 262144,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B"
+      ]
+    },
+    {
+      "channel": "together",
+      "id": "Wan-AI/Wan2.6-image",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wan2-6-image"
+      ]
+    },
+    {
+      "channel": "together",
+      "id": "Wan-AI/Wan2.6-image",
+      "field": "outputModalities",
+      "auditValue": [
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "image",
+        "text"
+      ],
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models",
+        "https://help.aliyun.com/zh/model-studio/wan2-6-image"
+      ]
+    },
+    {
+      "channel": "fal",
+      "id": "openai/gpt-image-2",
+      "field": "inputModalities",
+      "auditValue": [
+        "text"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text",
+        "image"
+      ],
+      "sources": [
+        "https://api.fal.ai/v1/models",
+        "https://developers.openai.com/api/docs/models/gpt-image-2"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "deepseek-v4-pro-0813",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 1048576,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813/blob/main/config.json"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "deepseek-v4-flash-0731",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://tokendance.space/models/deepseek-v4-flash-0731"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "glm-5.1",
+      "field": "totalContextTokens",
+      "auditValue": 202752,
+      "auditState": "known",
+      "existingValue": 200000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "glm-5v-turbo",
+      "field": "totalContextTokens",
+      "auditValue": 202752,
+      "auditState": "known",
+      "existingValue": 200000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5v-turbo"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "minimax-m2.7",
+      "field": "totalContextTokens",
+      "auditValue": 200000,
+      "auditState": "known",
+      "existingValue": 204800,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://huggingface.co/MiniMaxAI/MiniMax-M2.7",
+        "https://platform.minimax.io/docs/api-reference/text-openai-api"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "minimax-m2.5",
+      "field": "totalContextTokens",
+      "auditValue": 200000,
+      "auditState": "known",
+      "existingValue": 204800,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://huggingface.co/MiniMaxAI/MiniMax-M2.5",
+        "https://platform.minimax.io/docs/api-reference/text-openai-api"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "longcat-2.0",
+      "field": "totalContextTokens",
+      "auditValue": 1000000,
+      "auditState": "known",
+      "existingValue": 262144,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://huggingface.co/meituan-longcat/LongCat-2.0",
+        "https://huggingface.co/meituan-longcat/LongCat-2.0/blob/main/config.json"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "mimo-v2.5",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://mimo.mi.com/models/en-US/mimo-v2.5"
+      ]
+    },
+    {
+      "channel": "tokendance",
+      "id": "mimo-v2.5-pro",
+      "field": "totalContextTokens",
+      "auditValue": 1048576,
+      "auditState": "known",
+      "existingValue": 1000000,
+      "sources": [
+        "https://tokendance.space/gateway/v1/models",
+        "https://mimo.mi.com/models/en-US/mimo-v2.5-pro"
+      ]
+    },
+    {
+      "channel": "tokenhub",
+      "id": "deepseek/deepseek-v4-flash",
+      "field": "inputModalities",
+      "auditValue": [
+        "text",
+        "image"
+      ],
+      "auditState": "known",
+      "existingValue": [
+        "text"
+      ],
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"
+      ]
+    },
+    {
+      "channel": "antling",
+      "id": "Ling-3.0-flash-VL",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL",
+        "https://developer.ant-ling.com/zh-CN/docs/models/ling/#ling-30-flash-vl"
+      ]
+    },
+    {
+      "channel": "antling",
+      "id": "Ling-3.0-flash",
+      "field": "totalContextTokens",
+      "auditValue": 262144,
+      "auditState": "known",
+      "existingValue": 256000,
+      "sources": [
+        "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "https://huggingface.co/inclusionAI/Ling-3.0-flash",
+        "https://developer.ant-ling.com/zh-CN/docs/models/ling/#ling-30-flash"
+      ]
+    }
+  ]
+}

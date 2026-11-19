@@ -3,8 +3,9 @@ import {FIGURE_TYPES} from '../../../packages/figure-taxonomy/src/index.js'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
+import { tmpdir } from 'node:os'
 import test from 'node:test'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 import { build } from 'esbuild'
 import sharp from 'sharp'
@@ -281,7 +282,7 @@ test('full modelRegistry preserves static providers when OpenRouter discovery is
     assert.equal(result.providers.openai.defaults.main, 'gpt-5.6-sol')
     assert.equal(result.providers.ark.defaults.main, 'doubao-seed-2-1-pro-260628')
     assert.equal(Object.hasOwn(result.providers, 'openrouter'), false)
-    assert.deepEqual(result.unavailableProviders, { openrouter: '海外模型出口暂不可用，请稍后重试。', tokendance: '观猹 TokenDance：读取目录时网络连接失败，暂不能确认模型可用性。已保留原选择，请稍后重试目录或主动选择其他模型。' })
+    assert.deepEqual(result.unavailableProviders, { openrouter: '海外模型出口暂不可用，请稍后重试。', tokendance: '观猹 TokenDance：读取目录时网络连接失败，暂时无法确认模型可用性。已保留原选择，请稍后重试目录或主动选择其他模型。' })
     assert.doesNotMatch(JSON.stringify(result), /OpenRouter model metadata|request failed/)
   } finally {
     legacy.configureRuntimeFetch()
@@ -1280,7 +1281,7 @@ test('refinement rejects noncanonical image sizes before persistence or provider
 })
 
 test('direct-edit refinement rejects registered but unsupported 4K before persistence or provider dispatch', async (t) => {
-  // Exercise the legacy size contract before its separate retirement gate.
+  // Use the surviving Mini sibling for the same legacy size contract.
   t.mock.timers.enable({ apis: ['Date'], now: Date.parse('2026-10-22T00:00:00Z') })
   const legacy = await loadLegacy()
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
@@ -1305,7 +1306,7 @@ test('direct-edit refinement rejects registered but unsupported 4K before persis
       sourceImageObjectKey: 'owned/openai-4k.png', editInstruction: 'Improve label clarity.', imageSize: '4K',
       modelRoutes: {
         main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
-        image: { accessProvider: 'openai', modelId: 'gpt-image-1' },
+        image: { accessProvider: 'openai', modelId: 'gpt-image-1-mini' },
         vision: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
       },
     })
@@ -1321,7 +1322,7 @@ test('direct-edit refinement rejects registered but unsupported 4K before persis
     await legacy.drainJobAdmission()
 
     for (const [result, route, supported] of [
-      [openai, 'openai/gpt-image-1', '1K'],
+      [openai, 'openai/gpt-image-1-mini', '1K'],
       [bailian, 'bailian/wan2.7-image-pro', '1K, 2K'],
     ] as const) {
       assert.equal(result.code, 400, JSON.stringify(result))
@@ -1562,7 +1563,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
 
   const gemini = await invokeTrusted(legacy, context({ action: 'modelRegistry', provider: 'gemini' }))
   assert.equal(gemini.code, 0)
-  assert.match(gemini.registryVersion, /^2026-10-/)
+  assert.equal(gemini.registryVersion, '2026-11-09.v43')
   assert.deepEqual(gemini.providers.gemini.defaults, {
     main: 'gemini-3.7-flash',
     image: 'gemini-3.1-flash-image',
@@ -1621,7 +1622,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   assert.equal(openaiModels.get('gpt-5.4-pro')?.protocol, 'openai-responses')
   assert.equal(openaiModels.get('gpt-image-2')?.recommended, true)
   assert.equal(openaiModels.get('gpt-image-2')?.lifecycle, 'stable')
-  assert.equal(openaiModels.get('gpt-image-1')?.lifecycle, 'legacy')
+  assert.equal(openaiModels.has('gpt-image-1'), false, 'batch 1 removal is physical even in modelRegistry')
   assert.equal(openaiModels.get('gpt-image-1-mini')?.lifecycle, 'legacy')
 
   for (const [providerName, providerRegistry] of Object.entries({
@@ -1747,7 +1748,6 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
     },
     openai: {
       'gpt-image-2': ['1K', '2K', '4K'],
-      'gpt-image-1': ['1K'],
       'gpt-image-1-mini': ['1K'],
     },
     ark: {
@@ -3014,7 +3014,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-10-31.v42')
+    assert.equal(registry.registryVersion, '2026-11-09.v43')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -4234,8 +4234,15 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
           },
         }],
       })
-      const source = result.outputFiles[0].text
-      return import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`) as Promise<LegacyPolicyModule>
+      // Node includes the module URL in every stack frame, including its failure recap.
+      const directory = await fs.promises.mkdtemp(path.join(tmpdir(), 'tuyan-core-test-'))
+      const bundlePath = path.join(directory, 'core-entry.mjs')
+      try {
+        await fs.promises.writeFile(bundlePath, result.outputFiles[0].contents)
+        return await import(pathToFileURL(bundlePath).href) as LegacyPolicyModule
+      } finally {
+        await fs.promises.rm(directory, { recursive: true, force: true })
+      }
     })()
   }
   return legacyPromise
@@ -5152,7 +5159,6 @@ test('v14 static image registry exposes exact canonical generation and refinemen
     },
     openai: {
       'gpt-image-2': allImageAspectRatios.filter(ratio => { const [w,h] = ratio.split(':').map(Number); return Math.max(w,h) / Math.min(w,h) <= 3 }),
-      'gpt-image-1': ['1:1', '3:2', '2:3'],
       'gpt-image-1-mini': ['1:1', '3:2', '2:3'],
     },
     bailian: {
@@ -5176,7 +5182,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-10-31.v42')
+    assert.equal(registry.registryVersion, '2026-11-09.v43')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities
@@ -6514,7 +6520,22 @@ test('Bailian scheduled retirement follows the official Beijing midnight boundar
   } finally { Date.now = now }
 })
 
-test('xAI normalizes WebP references to supported PNG for planning, vision and image editing', async () => {
+test('Core bundle errors retain useful frames within the CI failure report budget', async () => {
+  const legacy = await loadLegacy()
+  assert.throws(
+    () => legacy.resolveModelRouting({ modelRoutes: [] }),
+    (error: Error) => {
+      assert.match(error.message, /modelRoutes must be an object/)
+      const stack = error.stack || ''
+      assert.ok(Buffer.byteLength(stack) < 8192, 'a single bundled error stack exceeds 8 KiB')
+      assert.match(stack, /core-entry\.mjs:\d+:\d+/)
+      return true
+    },
+  )
+})
+
+test('xAI normalizes WebP references to supported PNG for planning, vision and image editing', async (t) => {
+  t.mock.method(Date, 'now', () => Date.parse('2026-10-31T12:00:00Z'))
   const legacy = await loadLegacy()
   const images = [{ url: `data:image/webp;base64,${onePixelWebpBase64}`, mimeType: 'image/webp' }]
   const bodies: any[] = []

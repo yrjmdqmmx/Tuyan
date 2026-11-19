@@ -1,3 +1,4 @@
+import ControlField from './ControlField.jsx';
 import MenuSelect from './MenuSelect.jsx';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { TokenDanceStatus } from './TokenDancePanel'
@@ -128,16 +129,12 @@ export default function ModelRoutingSettings({
           const label = providerLabel(provider, providerConfigs)
           return (
             <div className="credential-provider" key={provider}>
-              {provider === 'minimax' ? <label className="field">
-                <span>{t("稀宇科技区域")}</span>
-                <MenuSelect aria-label={t("稀宇科技区域")} value={minimaxRegion(providerRegions)} onChange={event => onMiniMaxRegionChange(event.target.value)}>
+              {provider === 'minimax' ? <ControlField className="field" label={<span>{t("稀宇科技区域")}</span>}><MenuSelect aria-label={t("稀宇科技区域")} value={minimaxRegion(providerRegions)} onChange={event => onMiniMaxRegionChange(event.target.value)}>
                   {Object.entries(MINIMAX_REGIONS).map(([id, region]) => <option key={id} value={id} disabled={id === 'cn' && !modelRegistry?.providerRegionContractVersion}>{t(region.label)}</option>)}
                 </MenuSelect>
                 <small>{MINIMAX_REGIONS[minimaxRegion(providerRegions)].apiBase}{t(" · 请填写该区域平台的 Key")}</small>
-              </label> : null}
-              <label className="field">
-                <span>{t(label)}{t(" 接入密钥")}</span>
-                <div className="key-input">
+              </ControlField> : null}
+              <ControlField className="field" label={<span>{t(label)}{t(" 接入密钥")}</span>}><div className="key-input">
                   <KeyRound size={18} />
                   <input
                     type="password"
@@ -148,7 +145,7 @@ export default function ModelRoutingSettings({
                     autoComplete="off"
                   />
                 </div>
-              </label>
+              </ControlField>
               <ApiKeyGuide recoverable={recoverableCredentials} providerConfig={provider === 'minimax' ? {...config, guideUrl: MINIMAX_REGIONS[minimaxRegion(providerRegions)].keyUrl, guideSteps: ['登录所选区域的 稀宇科技（MiniMax）开放平台并创建 API Key。', '不同区域的 Key 分别保存在当前页面内存，切换时不会互用。']} : config} />
             </div>
           )

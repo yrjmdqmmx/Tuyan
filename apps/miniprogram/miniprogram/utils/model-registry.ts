@@ -1,9 +1,14 @@
+import { removedModel, withModelAudit } from './model-audit'
+import type { AuditFact } from './model-audit'
 import { normalizeModelVersion, ModelVersion, presentRegistryModel, modelDeveloper, sortModelsNewestFirst } from './model-presentation'
 export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat', 'antling', 'novita', 'tokendance'] as const
 export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
 export type ModelRole = 'main' | 'image' | 'vision'
 
 export interface RegistryModel {
+  cardSpecifications?: {fields: Record<string, AuditFact>; verifiedAt?: string | null; sourceUrl: string | null; sourceLabel: string; specificationSourceUrl?: string; vendorSources?: string[]; retirementSources?: string[]; lifecycleSourceUrl?: string | null; excludedSources?: string[]; note: string}
+  catalogPresence?: {status: 'listed' | 'absent' | 'unverified'; cause?: string; checkedAt: string | null; sourceUrl?: string}
+  auditChannel?: string
   id: string
   version?: ModelVersion
   apiIdentifier?: string
@@ -118,7 +123,7 @@ function normalizeProvider(providerId: ModelProviderId, input: unknown): Registr
   const defaultsSource = asRecord(source.defaults)
   const modelsSource = Array.isArray(source.models) ? source.models : []
   if (!modelsSource.length) throw new Error(`${providerId} 模型目录为空。`)
-  const models = sortModelsNewestFirst(modelsSource.map((model) => presentRegistryModel(providerId, normalizeModel(model))))
+  const models = sortModelsNewestFirst(modelsSource.map((model) => withModelAudit(providerId, presentRegistryModel(providerId, normalizeModel(model)))))
   const uniqueIds = new Set(models.map((model) => model.id))
   if (uniqueIds.size !== models.length) throw new Error(`${providerId} 模型目录包含重复 ID。`)
 
@@ -129,7 +134,9 @@ function normalizeProvider(providerId: ModelProviderId, input: unknown): Registr
   }
   const labels: Record<ModelRole, string> = { main: '主模型', image: '图像模型', vision: '识别模型' }
   for (const role of ['main', 'image', 'vision'] as const) {
-    if (!defaults[role] && !models.some((model) => model.selectable !== false && model.roles.includes(role))) continue
+    // A channel may offer a role without preselecting a model for that role.
+    if (!defaults[role]) continue
+    if (removedModel(providerId, defaults[role])) continue
     const entry = models.find((model) => model.id === defaults[role])
     const catalogQuarantined = entry?.selectable === false && Boolean(entry.disabledReason)
     if (!entry || (entry.selectable === false && !catalogQuarantined) || !entry.roles.includes(role)) {
@@ -153,6 +160,8 @@ function normalizeModel(input: unknown): RegistryModel {
   const roleReasonsSource = asRecord(source.roleReasons)
   return {
     id,
+    cardSpecifications: source.cardSpecifications as RegistryModel['cardSpecifications'],
+    catalogPresence: source.catalogPresence as RegistryModel['catalogPresence'],
     version: normalizeModelVersion(source.version),
     apiIdentifier: stringValue(source.apiIdentifier),
     label: stringValue(source.label) || id,
@@ -226,7 +235,9 @@ export function partitionRegistryModels(
 ): RegistryModelPartition {
   const query = stringValue(options.query).toLocaleLowerCase('zh-CN')
   const annotated = models
-    .filter((model) => model.selectable !== false && !(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`)))
+    .filter(model => !removedModel(model.auditChannel || '', model.id))
+    // Core retains audited absence on failure; only unverified cards stay grey.
+    .filter((model) => model.catalogPresence?.status !== 'absent' && (model.selectable !== false || model.catalogPresence?.status === 'unverified') && !(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`)))
     .filter((model) => model.roles.includes(options.role) || Boolean(model.roleReasons[options.role]))
     .filter((model) => !options.recommendedOnly || (model.recommended && model.lifecycle === 'stable'))
     .filter((model) => !query || modelSearchValues(model).some((value) => value.toLocaleLowerCase('zh-CN').includes(query)))

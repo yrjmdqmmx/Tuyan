@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "phase": "R24 Phase I3",
+  "captures": [
+    {
+      "url": "https://www.volcengine.com/docs/82379/1330310",
+      "retrieval": "public unauthenticated documentation GET",
+      "checkedAt": "2026-11-09T22:43:09.050005+00:00",
+      "httpStatus": 200,
+      "finalUrl": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "bytes": 1038444,
+      "sha256": "b0c0b9b3c61e90844e6523314feec1f239027f1d75a8c1dd83cb63e06fdf2ec1",
+      "title": "",
+      "displayTitle": "模型列表",
+      "aliases": [
+        "https://docs.volcengine.com/docs/82379/1330310"
+      ],
+      "reason": "HTTP redirect resolves the opaque numeric path to ark/model-list; retain both original human entry URLs."
+    },
+    {
+      "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+      "retrieval": "public unauthenticated documentation GET",
+      "checkedAt": "2026-11-09T22:43:09.050161+00:00",
+      "httpStatus": 200,
+      "finalUrl": "https://cloud.baidu.com/doc/qianfan/index.html",
+      "bytes": 442690,
+      "sha256": "2d83956fe7850c80110cb5e32405870b2a7a7a721db7b28d14ac1c2560d62020",
+      "title": "百度千帆·大模型服务及Agent开发平台 -百度智能云",
+      "displayTitle": "千帆 ModelBuilder 旧版入口（平台首页）",
+      "reason": "WENXINWORKSHOP legacy namespace now redirects to the Qianfan platform index; do not present the current destination as a model list."
+    },
+    {
+      "url": "https://cloud.baidu.com/doc/qianfan-docs/s/Jm8r1826a",
+      "retrieval": "public unauthenticated documentation GET",
+      "checkedAt": "2026-11-09T22:43:09.050225+00:00",
+      "httpStatus": 200,
+      "finalUrl": "https://cloud.baidu.com/doc/qianfan-docs/s/Jm8r1826a",
+      "bytes": 113327,
+      "sha256": "3c77f737c11f590ad00144503eedc01e73f34be325ab9e3c5407efd163a21a06",
+      "title": "价格 - 千帆AI应用开发者中心-开始使用qianfan-docs | 百度智能云文档",
+      "displayTitle": "AI 应用开发入门：价格",
+      "reason": "Captured HTML title says 价格 and the qianfan-docs namespace identifies the getting-started product section."
+    }
+  ]
+}

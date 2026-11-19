@@ -1,3 +1,5 @@
+import { assertRemoved } from './helpers/catalog-retirements.js'
+import { assertAuditedModelAvailable } from '../../../packages/api/src/model-audit.js'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import test from 'node:test'
@@ -12,18 +14,21 @@ import { STATIC_MODEL_REGISTRY } from '../../web/src/lib/staticModelCatalog.js'
 
 const root = new URL('../../../', import.meta.url)
 const sizes = JSON.parse(fs.readFileSync(new URL('config/image-size-contracts.json', root), 'utf8'))
-const catalog = JSON.parse(fs.readFileSync(new URL('config/model-catalog-updates.json', root), 'utf8'))
+const stepAudit = JSON.parse(fs.readFileSync(new URL('config/channel-audit/v24/stepfun.json', root), 'utf8'))
 const sourceBytes = await sharp({ create: { width: 1024, height: 1024, channels: 4, background: '#fff' } }).png().toBuffer()
 const sourceBase64 = sourceBytes.toString('base64')
 const source = { mimeType: 'image/png', base64: sourceBase64, dataUrl: 'data:image/png;base64,' + sourceBase64 }
-const expected = [
+const original = [
   'sensenova/sensenova-u1.5-lite', 'sensenova/sensenova-u1.5-fast',
   'stepfun/step-2x-large', 'stepfun/step-image-edit-2',
 ]
 
 test('all advertised SenseNova/StepFun model/operation/tier/ratio selections produce valid official requests', context => {
   const routes = Object.keys(sizes.routes).filter(key => /^(sensenova|stepfun)\//.test(key))
-  assert.deepEqual(new Set(routes), new Set(expected), 'test must cover the complete set of new image SKUs')
+  const removed = ['stepfun/step-2x-large', 'stepfun/step-image-edit-2']
+  for (const key of removed) assertRemoved('stepfun', key.slice('stepfun/'.length))
+  const expected = original.filter(key => !removed.includes(key))
+  assert.deepEqual(new Set(routes), new Set(expected), 'all surviving image SKUs, minus the two enumerated removals')
   let combinations = 0
   for (const key of routes) {
     const slash = key.indexOf('/'), provider = key.slice(0, slash), modelId = key.slice(slash + 1)
@@ -72,13 +77,18 @@ test('all advertised SenseNova/StepFun model/operation/tier/ratio selections pro
 
 test('Step image lifecycle cutoff matches ordinary API guard and explicitly identifies the China product policy', () => {
   for (const id of ['step-2x-large', 'step-image-edit-2']) {
-    const row = catalog.providers.stepfun.find((model: any) => model.id === id)
-    const contract = auditedChannelContract('stepfun', id)
-    assert.equal(row.metadata.expirationDate, '2026-10-10')
-    assert.equal(Date.parse(row.metadata.expirationAt), Date.parse(STEP_IMAGE_SUBMISSION_CUTOFF))
-    assert.equal(Date.parse(contract.expiresAt), Date.parse(STEP_IMAGE_SUBMISSION_CUTOFF))
-    assert.match(row.availabilityNotes, /本产品.*北京时间.*零点/)
-    assert.equal(row.metadata.lifecycleSourceUrl, 'https://platform.stepfun.com/docs/zh/guides/image-offline-notice')
+    const evidence = assertRemoved('stepfun', id)
+    const lifecycle = stepAudit.models.find((model: any) => model.id === id).lifecycle
+    assert.equal(evidence.stopDate, '2026-10-10')
+    assert.equal(lifecycle.retirementDate, evidence.stopDate)
+    assert.equal(Date.parse(evidence.stopDate + 'T00:00:00+08:00'), Date.parse(STEP_IMAGE_SUBMISSION_CUTOFF))
+    assert.equal(Date.parse(lifecycle.productSubmissionCutoff.at), Date.parse(STEP_IMAGE_SUBMISSION_CUTOFF))
+    assert.equal(lifecycle.productSubmissionCutoff.timezone, 'Asia/Shanghai')
+    assert.match(lifecycle.productSubmissionCutoff.reason, /application policy.*China midnight.*not a provider-announced timestamp/)
+    assert.equal(lifecycle.retirementAt, null, 'official evidence supplies a date, not an exact instant')
+    assert.ok(lifecycle.sourceUrls.includes('https://platform.stepfun.com/docs/zh/guides/image-offline-notice'))
+    assert.equal(auditedChannelContract('stepfun', id), undefined)
+    assert.throws(() => assertAuditedModelAvailable('stepfun', id), { businessCode: 'MODEL_UNAVAILABLE', requestState: 'not_sent' })
   }
   for (const id of ['sensenova-u1.5-lite', 'sensenova-u1.5-fast']) assert.equal(auditedChannelContract('sensenova', id).expiresAt, undefined)
 })

@@ -1,3 +1,4 @@
+import ControlField from './ControlField.jsx';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useState } from 'react';
 import { ArrowUpRight, Link2, RefreshCw, Wallet, History } from 'lucide-react';
@@ -67,7 +68,7 @@ export default function TokenDancePanel({ controller: td }) {
       <div className="account-card-title"><Wallet size={20} /><h3>{t("钱包与充值")}</h3>{td.connection.connected && <button type="button" className="account-button account-button-quiet" disabled={td.busy} onClick={td.balance}><RefreshCw size={14} />{t("查询余额")}</button>}</div>
       <div className="td-wallet"><span>{t("钱包可用余额 · 人民币")}</span><strong>¥ {td.connection.connected ? formatTokenDanceMoney(td.wallet?.balance) : '—'}</strong></div>
       <div className="td-quota-note"><strong>{t("钱包余额与 Key 额度分别管理")}</strong><p>{t("Key 额度需在观猹 TokenDance 查看；充值不会调整 Key 的额度限制。余额充足时，Key 仍可能因额度耗尽、到期或禁用而无法调用。")}</p><a href="https://tokendance.space/" target="_blank" rel="noreferrer">{t("管理渠道额度与密钥")}<ArrowUpRight size={14} /></a></div>
-      {td.connection.connected ? <div className="td-recharge"><label htmlFor="td-recharge-amount">{t("充值金额（人民币元）")}<input id="td-recharge-amount" aria-label={t("观猹 TokenDance 充值金额")} type="number" inputMode="numeric" min="1" max="100000" step="1" value={amount} onChange={event => setAmount(event.target.value)} /></label><button type="button" className="account-button account-button-primary" disabled={td.busy || uncertainOrder || !/^\d+$/.test(amount) || Number(amount) < 1 || Number(amount) > 100000 || pendingOrder} onClick={() => td.createPayment(Number(amount))}>{t("创建 ¥")}{amount || '0'}{t(" 充值单")}</button></div> : <p className="account-muted">{t("连接渠道后可查询余额和充值。")}</p>}
+      {td.connection.connected ? <div className="td-recharge"><ControlField htmlFor="td-recharge-amount" label={t("充值金额（人民币元）")}><input id="td-recharge-amount" aria-label={t("观猹 TokenDance 充值金额")} type="number" inputMode="numeric" min="1" max="100000" step="1" value={amount} onChange={event => setAmount(event.target.value)} /></ControlField><button type="button" className="account-button account-button-primary" disabled={td.busy || uncertainOrder || !/^\d+$/.test(amount) || Number(amount) < 1 || Number(amount) > 100000 || pendingOrder} onClick={() => td.createPayment(Number(amount))}>{t("创建 ¥")}{amount || '0'}{t(" 充值单")}</button></div> : <p className="account-muted">{t("连接渠道后可查询余额和充值。")}</p>}
       {uncertainOrder && <p role="status" className="account-inline-notice">{t("有订单创建结果待核对，请先在渠道后台确认，暂不重复创建。")}</p>}
       {session && <div className="td-payment" aria-live="polite"><strong>¥{session.amount} · {paymentStateLabel(td.payment)}</strong>
         {pendingOrder && (mobile ? <>

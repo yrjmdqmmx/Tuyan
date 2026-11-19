@@ -1,0 +1,197 @@
+{
+  "basis": "Only captured sources; no live HTTP or model capability claim. Every API/JSON to generic fallback is enumerated for each projection.",
+  "rows": [
+    {
+      "scope": "full",
+      "channel": "iflytek",
+      "modelId": "spark-x2.5",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+      ]
+    },
+    {
+      "scope": "full",
+      "channel": "iflytek",
+      "modelId": "spark-x2.5-1.7b",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+      ]
+    },
+    {
+      "scope": "full",
+      "channel": "iflytek",
+      "modelId": "spark-x2.5-4b",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+      ]
+    },
+    {
+      "scope": "full",
+      "channel": "iflytek",
+      "modelId": "spark-x2.6",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html"
+      ]
+    },
+    {
+      "scope": "full",
+      "channel": "iflytek",
+      "modelId": "spark-x2.6-4b",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html"
+      ]
+    },
+    {
+      "scope": "full",
+      "channel": "iflytek",
+      "modelId": "xsparkx2",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+      ]
+    },
+    {
+      "scope": "full",
+      "channel": "iflytek",
+      "modelId": "xsparkx2flash",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+      ]
+    },
+    {
+      "scope": "full",
+      "channel": "tokendance",
+      "modelId": "qwen3-max",
+      "r11Url": "https://tokendance.space/gateway/v1/models",
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "reason": "R11 首链接为 JSON 模型列表；2026-11-09 Chrome 捕获确认此型号页不展示指定模型，已有来源无具体型号人可读页，回退到原厂文档。",
+      "evidence": "apps/web/tests/fixtures/r12-tokendance-rendered.json",
+      "availableHumanSources": [
+        "https://help.aliyun.com/zh/model-studio/models"
+      ]
+    },
+    {
+      "scope": "static",
+      "channel": "iflytek",
+      "modelId": "spark-x2.5",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+      ]
+    },
+    {
+      "scope": "static",
+      "channel": "iflytek",
+      "modelId": "spark-x2.5-1.7b",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+      ]
+    },
+    {
+      "scope": "static",
+      "channel": "iflytek",
+      "modelId": "spark-x2.5-4b",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+      ]
+    },
+    {
+      "scope": "static",
+      "channel": "iflytek",
+      "modelId": "spark-x2.6",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html"
+      ]
+    },
+    {
+      "scope": "static",
+      "channel": "iflytek",
+      "modelId": "spark-x2.6-4b",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html"
+      ]
+    },
+    {
+      "scope": "static",
+      "channel": "iflytek",
+      "modelId": "xsparkx2",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+      ]
+    },
+    {
+      "scope": "static",
+      "channel": "iflytek",
+      "modelId": "xsparkx2flash",
+      "r11Url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "finalUrl": "https://www.xfyun.cn/doc/spark/HTTP调用文档.html",
+      "reason": "R11 首链接为 MaaS JSON 模型列表；此精确型号的完整 Core / 静态捕获来源没有型号专属人可读页，回退到已有星火接口文档。",
+      "evidence": "apps/web/tests/fixtures/r11-registry-head.json",
+      "availableHumanSources": [
+        "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+      ]
+    },
+    {
+      "scope": "static",
+      "channel": "tokendance",
+      "modelId": "qwen3-max",
+      "r11Url": "https://tokendance.space/gateway/v1/models",
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "reason": "R11 首链接为 JSON 模型列表；2026-11-09 Chrome 捕获确认此型号页不展示指定模型，已有来源无具体型号人可读页，回退到原厂文档。",
+      "evidence": "apps/web/tests/fixtures/r12-tokendance-rendered.json",
+      "availableHumanSources": [
+        "https://help.aliyun.com/zh/model-studio/models"
+      ]
+    }
+  ]
+}

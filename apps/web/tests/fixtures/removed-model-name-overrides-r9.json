@@ -1,0 +1,6 @@
+{
+  "bailian/deepseek-v4-flash": {
+    "displayName": "DeepSeek-V4-Flash",
+    "reason": "R9: remove the historical uncertainty note from user-facing names; retain the frozen main label as audit evidence."
+  }
+}

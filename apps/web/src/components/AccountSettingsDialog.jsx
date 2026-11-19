@@ -1,3 +1,4 @@
+import ControlField from './ControlField.jsx';
 import { usePhoneAuth, visibleAccountEmail } from '../hooks/usePhoneAuth.js';
 import PhoneCodeForm from './PhoneCodeForm.jsx';
 import { useEffect, useRef, useState } from 'react'
@@ -128,16 +129,12 @@ export default function AccountSettingsDialog({ apiBase, email, userId, onClose,
           <p>将删除任务记录、生成结果、参考图、反馈、个人投稿、会话和账号。此操作不可恢复。</p>
           {useGoogleCode ? <><button type="button" className="account-button" disabled={isDeleting || google.busy || Boolean(googleProof)} onClick={async()=>{if(google.status.pending?.intent==='delete'){const result=await google.complete();if(result?.confirmationToken)setGoogleProof({...result,expiresAt:Date.now()+300000});}else await google.start('delete');}}>{googleProof?'Google 身份已验证':google.status.pending?.intent==='delete'?'确认使用本次 Google 验证':google.busy?'等待 Google 确认…':'使用 Google 验证身份'}</button>{google.error?<p className="error-line" role="alert">{google.error}</p>:null}</> : useGithubCode ? <><button type="button" className="account-button" disabled={isDeleting || github.busy || Boolean(githubProof)} onClick={async()=>{if(github.status.pending?.intent==='delete'){const result=await github.complete();if(result?.confirmationToken)setGithubProof({...result,expiresAt:Date.now()+300000});}else await github.start('delete');}}>{githubProof?'GitHub 身份已验证':github.status.pending?.intent==='delete'?'确认使用本次 GitHub 验证':github.busy?'等待 GitHub 确认…':'使用 GitHub 验证身份'}</button>{github.error?<p className="error-line" role="alert">{github.error}</p>:null}</> : useWechatCode ? <><button type="button" className="account-button" disabled={isDeleting || wechat.busy || Boolean(wechatProof)} onClick={async()=>{if(wechat.status.pending?.intent==='delete'){const result=await wechat.complete();if(result?.confirmationToken)setWechatProof({...result,expiresAt:Date.now()+300000});}else await wechat.start('delete');}}>{wechatProof?'微信身份已验证':wechat.status.pending?.intent==='delete'?'确认使用本次微信验证':wechat.busy?'等待微信确认…':'微信扫码验证身份'}</button>{wechat.error?<p className="error-line" role="alert">{wechat.error}</p>:null}</> : usePhoneCode ? <p role="status">{phoneProof ? "手机号已验证" : "请先验证已绑定的手机号"}</p> : useEmailCode ? <>
             <p>请使用当前图研邮箱收到的验证码确认注销。</p>
-            <label className="field"><span>注销邮箱验证码</span><input inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={code} onChange={event => setCode(event.target.value.replace(/\D/g, '').slice(0, 6))} required /></label>
+            <ControlField className="field" label={<span>注销邮箱验证码</span>}><input inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={code} onChange={event => setCode(event.target.value.replace(/\D/g, '').slice(0, 6))} required /></ControlField>
             <button type="button" className="account-button" onClick={sendDeletionCode} disabled={isDeleting || watcha.busy || cooldown > 0 || lifecycle?.state !== 'active'}>{cooldown > 0 ? `${cooldown} 秒后重发` : '发送注销验证码'}</button>
-          </> : <label className="field">
-            <span>当前登录密码</span>
-            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required />
-          </label>}
-          <label className="field">
-            <span>输入“删除账号”确认</span>
-            <input value={confirmation} onChange={(event) => setConfirmation(event.target.value)} autoComplete="off" required />
-          </label>
+          </> : <ControlField className="field" label={<span>当前登录密码</span>}><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required />
+          </ControlField>}
+          <ControlField className="field" label={<span>输入“删除账号”确认</span>}><input value={confirmation} onChange={(event) => setConfirmation(event.target.value)} autoComplete="off" required />
+          </ControlField>
           <button className="danger-button" type="submit" disabled={!canDelete}>
             {isDeleting ? <Loader2 className="spin" size={17} /> : <Trash2 size={17} />}
             {isDeleting ? '正在永久删除' : '永久删除账号'}

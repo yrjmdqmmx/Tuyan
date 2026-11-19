@@ -1,7 +1,7 @@
 import {mockTopology,mockTopologyAudit} from './helpers/topology-fixtures.js'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {spawn} from 'node:child_process'
+import {renderPlot} from './helpers/plot-worker.js'
 import {mkdir,writeFile,mkdtemp} from 'node:fs/promises'
 import {tmpdir} from 'node:os'
 import {join} from 'node:path'
@@ -12,10 +12,6 @@ const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"><title>
 const parts=(w:any)=>[...(Array.isArray(w.input)?w.input:[]),...(w.messages||[])]
 const user=(w:any)=>parts(w).filter((m:any)=>m.role==='user').flatMap((m:any)=>typeof m.content==='string'?[m.content]:m.content.filter((p:any)=>['text','input_text'].includes(p.type)).map((p:any)=>p.text)).join('\n')
 const images=(w:any)=>parts(w).flatMap((m:any)=>Array.isArray(m.content)?m.content:[]).filter((p:any)=>['image_url','input_image'].includes(p.type)).length
-function worker(wire:any):Promise<any>{return new Promise((resolve,reject)=>{
- const child=spawn(process.env.TUYAN_QA_PYTHON||'/Users/a1-6/.cache/tuyan-figure-qa-20261010/bin/python',['../../scripts/figures/render-json.py']),out:Buffer[]=[],err:Buffer[]=[]
- child.stdout.on('data',d=>out.push(d));child.stderr.on('data',d=>err.push(d));child.on('error',reject);child.on('close',code=>{try{if(code)throw Error(Buffer.concat(err).toString());resolve(JSON.parse(Buffer.concat(out).toString()))}catch(e){reject(e)}});child.stdin.end(JSON.stringify(wire))
-})}
 const data={rows:[{label:'A',value:2},{label:'B',value:5},{label:'C',value:3}],source:'Explicit synthetic test data; no scientific conclusion',units:{value:'arbitrary test units'}}
 const base={action:'createJob',provider:'openai',apiKeys:{openai:'fixture'},mainModelName:'gpt-5.6-sol',imageModelName:'gpt-image-2',referenceVisionModelName:'gpt-5.6-sol',visionMode:'none',methodContent:'Synthetic composition only.',caption:'Synthetic QA',taskName:'diagram',figureSpecVersion:TAXONOMY_VERSION,pipelineMode:'planner_critic',retrievalSetting:'auto',maxCriticRounds:1,numCandidates:1,imageSize:'1K',aspectRatio:'16:9'}
 test('mixed and repeated panels × PNG/SVG: actual data worker and vector assembly, per-child automatic references, admission and refine guards',async(t)=>{
@@ -30,7 +26,7 @@ test('mixed and repeated panels × PNG/SVG: actual data worker and vector assemb
     if(String(url).endsWith('/models'))return Response.json({data:[]})
     assert.ok(!String(url).includes('/images/'),'composite numerical marks must never use image generation')
     const wire=JSON.parse(String(init.body)),all=JSON.stringify(wire)
-    if(String(url).endsWith('/render')){rendered++;const result=await worker(wire);assert.equal(result.ok,true);return Response.json(result)}
+    if(String(url).endsWith('/render')){rendered++;const result=await renderPlot(wire);assert.equal(result.ok,true);return Response.json(result)}
     assert.ok(!all.includes('attacker.invalid'));assert.ok(String(url).startsWith('https://api.openai.com/'))
     let kind='plan',answer=JSON.stringify({plan:'Synthetic fixture. Keep all numbers and source facts.',plotStyle:{width:9,height:6,fontSize:12}})
     if(all.includes('Retrieval Agent')){kind='retrieval';const contract=JSON.parse(user(wire).match(/<figure_type_contract[^>]*>\s*([\s\S]*?)\s*<\/figure_type_contract>/)![1]);const ref=retrieveFigureCandidates({figureTypeId:contract.id})[0];answer=JSON.stringify({selections:ref?[{id:ref.id,relevance:.95,visualFit:true,contribution:'Explicit matching structure'}]:[]})}

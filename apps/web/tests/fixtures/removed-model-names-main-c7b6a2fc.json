@@ -1,0 +1,339 @@
+{
+  "commit": "c7b6a2fc",
+  "source": "apps/web/src/lib/staticModelCatalog.js / STATIC_MODEL_REGISTRY[channel].models[id].label",
+  "models": {
+    "bailian/MiniMax-M2.1": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "MiniMax-M2.1",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/MiniMax/MiniMax-M2.1": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "MiniMax-M2.1",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/Moonshot-Kimi-K2-Instruct": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Moonshot-Kimi-K2-Instruct",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/deepseek-r1": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "DeepSeek-r1",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/deepseek-r1-0528": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "DeepSeek-r1-0528",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/deepseek-r1-distill-qwen-14b": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "DeepSeek-r1-distill-qwen-14b",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/deepseek-r1-distill-qwen-32b": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "DeepSeek-r1-distill-qwen-32b",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/deepseek-r1-distill-qwen-7b": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "DeepSeek-r1-distill-qwen-7b",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/deepseek-v3": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "DeepSeek-V3",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/deepseek-v3.1": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "DeepSeek-V3.1",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/deepseek-v3.2": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "DeepSeek-V3.2",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/deepseek-v3.2-exp": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "DeepSeek-V3.2-exp",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/deepseek-v4-flash": {
+      "replacementApiId": "deepseek-v4-flash-0731",
+      "displayName": "DeepSeek-V4-Flash（具体版本待确认）",
+      "replacementDisplayName": "DeepSeek-V4-Flash-0731"
+    },
+    "bailian/glm-4.5": {
+      "replacementApiId": "glm-5.2",
+      "displayName": "GLM-4.5",
+      "replacementDisplayName": "GLM 5.2"
+    },
+    "bailian/glm-4.5-air": {
+      "replacementApiId": "glm-5.2",
+      "displayName": "GLM-4.5-air",
+      "replacementDisplayName": "GLM 5.2"
+    },
+    "bailian/glm-4.7": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "GLM-4.7",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/kimi-k2-thinking": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Kimi-k2-thinking",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qvq-max": {
+      "replacementApiId": null,
+      "displayName": "qvq-max"
+    },
+    "bailian/qvq-plus": {
+      "replacementApiId": null,
+      "displayName": "qvq-plus"
+    },
+    "bailian/qwen-image-edit": {
+      "replacementApiId": "qwen-image-3.0",
+      "displayName": "Qwen-image-edit",
+      "replacementDisplayName": "Qwen Image 3.0"
+    },
+    "bailian/qwen-image-edit-max": {
+      "replacementApiId": "qwen-image-3.0",
+      "displayName": "Qwen-image-edit-max",
+      "replacementDisplayName": "Qwen Image 3.0"
+    },
+    "bailian/qwen-image-edit-max-2026-01-16": {
+      "replacementApiId": "qwen-image-3.0",
+      "displayName": "Qwen-image-edit-max-2026-01-16",
+      "replacementDisplayName": "Qwen Image 3.0"
+    },
+    "bailian/qwen-image-edit-plus": {
+      "replacementApiId": "qwen-image-3.0",
+      "displayName": "Qwen-image-edit-plus",
+      "replacementDisplayName": "Qwen Image 3.0"
+    },
+    "bailian/qwen-image-edit-plus-2025-10-30": {
+      "replacementApiId": "qwen-image-3.0",
+      "displayName": "Qwen-image-edit-plus-2025-10-30",
+      "replacementDisplayName": "Qwen Image 3.0"
+    },
+    "bailian/qwen-image-edit-plus-2025-12-15": {
+      "replacementApiId": "qwen-image-3.0",
+      "displayName": "Qwen-image-edit-plus-2025-12-15",
+      "replacementDisplayName": "Qwen Image 3.0"
+    },
+    "bailian/qwen-image-max": {
+      "replacementApiId": "qwen-image-3.0",
+      "displayName": "Qwen-image-max",
+      "replacementDisplayName": "Qwen Image 3.0"
+    },
+    "bailian/qwen-image-max-2025-12-30": {
+      "replacementApiId": "qwen-image-3.0",
+      "displayName": "Qwen-image-max-2025-12-30",
+      "replacementDisplayName": "Qwen Image 3.0"
+    },
+    "bailian/qwen-image-plus": {
+      "replacementApiId": "qwen-image-3.0",
+      "displayName": "Qwen-image-plus",
+      "replacementDisplayName": "Qwen Image 3.0"
+    },
+    "bailian/qwen-image-plus-2026-01-09": {
+      "replacementApiId": "qwen-image-3.0",
+      "displayName": "Qwen-image-plus-2026-01-09",
+      "replacementDisplayName": "Qwen Image 3.0"
+    },
+    "bailian/qwen-long-2025-01-25": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen-long-2025-01-25",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen-long-latest": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen-long-latest",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen-omni-turbo": {
+      "replacementApiId": "qwen3.5-omni-plus",
+      "displayName": "Qwen-omni-turbo",
+      "replacementDisplayName": "Qwen3.5 Omni Plus"
+    },
+    "bailian/qwen-vl-max": {
+      "replacementApiId": null,
+      "displayName": "Qwen-vl-max"
+    },
+    "bailian/qwen-vl-plus": {
+      "replacementApiId": null,
+      "displayName": "Qwen-vl-plus"
+    },
+    "bailian/qwen2.5-omni-7b": {
+      "replacementApiId": "qwen3.5-omni-plus",
+      "displayName": "Qwen2.5-omni-7b",
+      "replacementDisplayName": "Qwen3.5 Omni Plus"
+    },
+    "bailian/qwen3-14b": {
+      "replacementApiId": "qwen3.6-flash",
+      "displayName": "Qwen3-14b",
+      "replacementDisplayName": "Qwen3.6-flash"
+    },
+    "bailian/qwen3-235b-a22b": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-235b-a22b",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-235b-a22b-instruct-2507": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-235b-a22b-instruct-2507",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-235b-a22b-thinking-2507": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-235b-a22b-thinking-2507",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-30b-a3b": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-30b-a3b",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-30b-a3b-instruct-2507": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-30b-a3b-instruct-2507",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-30b-a3b-thinking-2507": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-30b-a3b-thinking-2507",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-32b": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-32b",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-8b": {
+      "replacementApiId": "qwen3.6-flash",
+      "displayName": "Qwen3-8b",
+      "replacementDisplayName": "Qwen3.6-flash"
+    },
+    "bailian/qwen3-coder-30b-a3b-instruct": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-coder-30b-a3b-instruct",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-coder-480b-a35b-instruct": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-coder-480b-a35b-instruct",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-coder-plus": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-coder-plus",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-coder-plus-2025-07-22": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-coder-plus-2025-07-22",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-coder-plus-2025-09-23": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-coder-plus-2025-09-23",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-next-80b-a3b-instruct": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-next-80b-a3b-instruct",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-next-80b-a3b-thinking": {
+      "replacementApiId": "qwen3.7-plus",
+      "displayName": "Qwen3-next-80b-a3b-thinking",
+      "replacementDisplayName": "Qwen3.7 Plus"
+    },
+    "bailian/qwen3-omni-flash": {
+      "replacementApiId": "qwen3.5-omni-plus",
+      "displayName": "Qwen3-omni-flash",
+      "replacementDisplayName": "Qwen3.5 Omni Plus"
+    },
+    "bailian/qwen3-omni-flash-2025-09-15": {
+      "replacementApiId": "qwen3.5-omni-plus",
+      "displayName": "Qwen3-omni-flash-2025-09-15",
+      "replacementDisplayName": "Qwen3.5 Omni Plus"
+    },
+    "bailian/qwen3-omni-flash-2025-12-01": {
+      "replacementApiId": "qwen3.5-omni-plus",
+      "displayName": "Qwen3-omni-flash-2025-12-01",
+      "replacementDisplayName": "Qwen3.5 Omni Plus"
+    },
+    "bailian/qwen3-vl-flash": {
+      "replacementApiId": "qwen3.6-flash",
+      "displayName": "Qwen3-vl-flash",
+      "replacementDisplayName": "Qwen3.6-flash"
+    },
+    "bailian/qwen3.6-max-preview": {
+      "replacementApiId": "qwen3.7-max",
+      "displayName": "Qwen3.6-max-preview",
+      "replacementDisplayName": "Qwen3.7-max"
+    },
+    "bailian/qwq-plus": {
+      "replacementApiId": null,
+      "displayName": "qwq-plus"
+    },
+    "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731": {
+      "replacementApiId": "accounts/fireworks/models/deepseek-v4p1-flash",
+      "displayName": "DeepSeek V4 Flash (0731)",
+      "replacementDisplayName": "DeepSeek-V4.1-Flash"
+    },
+    "fireworks/accounts/fireworks/models/deepseek-v4-flash-vision-exp": {
+      "replacementApiId": "accounts/fireworks/models/deepseek-v4p1-flash",
+      "displayName": "DeepSeek V4 Flash Vision Exp",
+      "replacementDisplayName": "DeepSeek-V4.1-Flash"
+    },
+    "fireworks/accounts/fireworks/models/deepseek-v4-pro-0813": {
+      "replacementApiId": "accounts/fireworks/models/deepseek-v4p1-flash",
+      "displayName": "DeepSeek-V4-Pro-0813",
+      "replacementDisplayName": "DeepSeek-V4.1-Flash"
+    },
+    "fireworks/accounts/fireworks/models/glm-5p2": {
+      "replacementApiId": "accounts/fireworks/models/glm-5p3",
+      "displayName": "GLM 5.2",
+      "replacementDisplayName": "GLM 5.3"
+    },
+    "fireworks/accounts/fireworks/models/kimi-k2p6": {
+      "replacementApiId": "accounts/fireworks/models/glm-5p3",
+      "displayName": "Kimi K2.6",
+      "replacementDisplayName": "GLM 5.3"
+    },
+    "fireworks/accounts/fireworks/models/kimi-k2p7-code": {
+      "replacementApiId": "accounts/fireworks/models/glm-5p3",
+      "displayName": "Kimi K2.7 Code",
+      "replacementDisplayName": "GLM 5.3"
+    },
+    "fireworks/accounts/fireworks/models/muse-glimmer-30b": {
+      "replacementApiId": "accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b",
+      "displayName": "Muse Glimmer 30B",
+      "replacementDisplayName": "NVIDIA Nemotron 3.5 Lightning 30B A3B"
+    },
+    "stepfun/step-2x-large": {
+      "replacementApiId": null,
+      "displayName": "Step 2x Large"
+    },
+    "stepfun/step-image-edit-2": {
+      "replacementApiId": null,
+      "displayName": "Step Image Edit 2"
+    },
+    "xiaomi/mimo-v2.5": {
+      "replacementApiId": "mimo-v2.6-flash",
+      "displayName": "MiMo-v2.5",
+      "replacementDisplayName": "MiMo-V2.6-Flash"
+    },
+    "xiaomi/mimo-v2.5-pro": {
+      "replacementApiId": "mimo-v2.6-pro",
+      "displayName": "MiMo-v2.5-pro",
+      "replacementDisplayName": "MiMo-V2.6-Pro"
+    }
+  }
+}

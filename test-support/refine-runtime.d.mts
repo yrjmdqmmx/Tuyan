@@ -1,7 +1,7 @@
 import type { memoryDb } from './memory-db.mjs';
 import type { ReferenceSubmissionPolicy } from '../packages/api/src/reference-upload.js';
 
-export function createRefineRuntime(options?: { port?: number; providerDelay?: number; tokenDance?: boolean; frontendOrigin?: string; retrievalResponse?: unknown }): Promise<{
+export function createRefineRuntime(options?: { port?: number; startServer?: boolean; providerDelay?: number; tokenDance?: boolean; tokenDanceCatalogMode?: 'snapshot' | 'empty' | 'timeout'; frontendOrigin?: string; retrievalResponse?: unknown }): Promise<{
   baseUrl: string;
   db: ReturnType<typeof memoryDb>;
   objects: Map<string, { bytes: Buffer; mimeType: string }>;

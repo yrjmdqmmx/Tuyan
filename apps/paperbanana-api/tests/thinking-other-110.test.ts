@@ -1,3 +1,6 @@
+import { assertRemoved } from './helpers/catalog-retirements.js'
+// @ts-ignore Independent catalog fixture validation.
+import { STATIC_MODEL_REGISTRY as catalog } from '../../web/src/lib/staticModelCatalog.js'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import sharp from 'sharp'
@@ -34,16 +37,33 @@ test('exact Fireworks tiers serialize without inventing defaults, switches, budg
 })
 
 test('real Fireworks adapter functions send only allowlisted effort via stubbed text and vision requests', async () => {
-  const runtime: any = await createRefineRuntime()
+  const liveCases = [cases[0], { id: 'accounts/fireworks/models/kimi-k3', efforts: ['none', 'low', 'high', 'max'] }]
+  for (const item of liveCases) {
+    const model = catalog.fireworks.models.find((row: any) => row.id === item.id)
+    assert.ok(model)
+    assert.deepEqual(model.roles, ['main', 'vision'])
+    assert.equal(model.protocol, 'openai-chat-completions')
+  }
+  assertRemoved('fireworks', cases[1].id)
+  const runtime: any = await createRefineRuntime({ startServer: false })
   const png = await sharp({ create: { width: 120, height: 80, channels: 3, background: '#9a9' } }).png().toBuffer()
-  let snapshot: any, captured: any[] = []
+  let snapshot: any, captured: any[] = [], workflowCalls = 0, records = 0
   try {
-    runtime.legacy.configureProviderWorkflow({ ...runtime.workflow, active: () => true, key: async () => 'fixture-key', call: async (_d: any, fn: any) => fn(), thinking: () => snapshot, record: async () => {} })
+    runtime.legacy.configureProviderWorkflow({ ...runtime.workflow, active: () => true, key: async () => 'fixture-key', call: async (_d: any, fn: any) => { workflowCalls++; return fn() }, thinking: () => snapshot, record: async () => { records++ } })
     runtime.legacy.configureRuntimeFetch(async (url: any, init: any) => {
       captured.push({ url, body: JSON.parse(init.body) })
       return new Response(JSON.stringify({ choices: [{ message: { content: 'Visible fixture', reasoning_content: 'Private fixture reasoning' }, finish_reason: 'stop' }] }), { headers: { 'Content-Type': 'application/json' } })
     })
-    for (const item of cases) for (const role of ['main', 'vision'] as const) for (const effort of [...item.efforts, undefined]) {
+    for (const role of ['main', 'vision'] as const) {
+      await assert.rejects(role === 'main'
+        ? runtime.legacy.callTextModel('fireworks', cases[1].id, 'fixture-key', 'system', 'user', [], { thinkingRole: 'main' })
+        : runtime.legacy.callVisionModel('fireworks', cases[1].id, 'fixture-key', 'method', 'caption', [{ url: `data:image/png;base64,${png.toString('base64')}`, mimeType: 'image/png' }]),
+      { businessCode: 'MODEL_UNAVAILABLE', requestState: 'not_sent' })
+    }
+    assert.equal(captured.length, 0)
+    assert.equal(workflowCalls, 0)
+    assert.equal(records, 0)
+    for (const item of liveCases) for (const role of ['main', 'vision'] as const) for (const effort of [...item.efforts, undefined]) {
       snapshot = compileThinkingSelection({ ...identity(item.id), options: effort === undefined ? {} : { effort } }, role)
       captured = []
       const answer = role === 'main'

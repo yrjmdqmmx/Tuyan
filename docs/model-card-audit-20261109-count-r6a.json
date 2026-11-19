@@ -1,0 +1,5848 @@
+{
+  "base": {
+    "commit": "c7b6a2fc",
+    "counts": {
+      "staticRegistry": 1125,
+      "mockRegistry": 1122,
+      "catalogVisible": 923,
+      "pickerSelectable": 884
+    },
+    "knownFields": {
+      "inputModalities": 746,
+      "outputModalities": 327,
+      "totalContextTokens": 224,
+      "maxOutputTokens": 74
+    },
+    "knownFieldScopes": {
+      "mockRegistry": {
+        "inputModalities": 1032,
+        "outputModalities": 968,
+        "totalContextTokens": 534,
+        "maxOutputTokens": 74
+      },
+      "catalogVisible": {
+        "inputModalities": 869,
+        "outputModalities": 819,
+        "totalContextTokens": 411,
+        "maxOutputTokens": 68
+      }
+    }
+  },
+  "head": {
+    "commit": "5798720c",
+    "counts": {
+      "staticRegistry": 1064,
+      "mockRegistry": 1061,
+      "catalogVisible": 919,
+      "pickerSelectable": 878
+    },
+    "knownFields": {
+      "inputModalities": 791,
+      "outputModalities": 495,
+      "totalContextTokens": 350,
+      "maxOutputTokens": 209
+    },
+    "knownFieldScopes": {
+      "mockRegistry": {
+        "inputModalities": 997,
+        "outputModalities": 967,
+        "totalContextTokens": 519,
+        "maxOutputTokens": 209
+      },
+      "catalogVisible": {
+        "inputModalities": 868,
+        "outputModalities": 838,
+        "totalContextTokens": 412,
+        "maxOutputTokens": 181
+      }
+    }
+  },
+  "modalities": {
+    "cards": 345,
+    "fields": 351,
+    "byProvider": {
+      "zhipu": 2,
+      "siliconflow": 20,
+      "anthropic": 10,
+      "recraft": 14,
+      "xai": 10,
+      "bailian": 28,
+      "openai": 20,
+      "ark": 4,
+      "bfl": 10,
+      "stability": 5,
+      "ideogram": 3,
+      "minimax": 1,
+      "mistral": 11,
+      "together": 13,
+      "fal": 16,
+      "replicate": 45,
+      "tokendance": 8,
+      "runware": 93,
+      "tokenhub": 15,
+      "sensenova": 4,
+      "qianfan": 7,
+      "iflytek": 6
+    },
+    "textOnlyFixed": 41,
+    "textOnlyByProvider": {
+      "xai": 8,
+      "bailian": 18,
+      "fal": 14,
+      "tokendance": 1
+    },
+    "downgradedCards": 9,
+    "downgradedFields": 13,
+    "downgradedByProvider": {
+      "xai": 1,
+      "bailian": 2,
+      "together": 1,
+      "fal": 4,
+      "tokendance": 1
+    },
+    "changes": [
+      {
+        "key": "zhipu/glm-5v-turbo",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "zhipu/glm-4.6v",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen-Image-Edit-2509",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen-Image-Edit",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3.6-27B",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3.6-35B-A3B",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3.5-397B-A17B",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3.5-4B",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3.5-9B",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/deepseek-ai/DeepSeek-V4-Flash",
+        "field": "inputModalities",
+        "before": [
+          "text",
+          "image"
+        ],
+        "after": [],
+        "provenance": null
+      },
+      {
+        "key": "siliconflow/moonshotai/Kimi-K2.7-Code",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Pro/moonshotai/Kimi-K2.6",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/zai-org/GLM-4.5V",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Kwai-Kolors/Kolors",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3-Omni-30B-A3B-Instruct",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3-Omni-30B-A3B-Thinking",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3-VL-30B-A3B-Instruct",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3-VL-30B-A3B-Thinking",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3-VL-32B-Instruct",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3-VL-32B-Thinking",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3-VL-8B-Instruct",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3-VL-8B-Thinking",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "anthropic/claude-opus-5",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "anthropic/claude-sonnet-5",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "anthropic/claude-fable-5",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "anthropic/claude-opus-4-8",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "anthropic/claude-opus-4-7",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "anthropic/claude-sonnet-4-6",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "anthropic/claude-opus-4-6",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "anthropic/claude-opus-4-5-20251101",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "anthropic/claude-sonnet-4-5-20250929",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "anthropic/claude-haiku-4-5-20251001",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv4_1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv4_1_pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv4_1_pro_vector",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv4_1_utility",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv4_1_utility_pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv4_1_utility_pro_vector",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv4_1_utility_vector",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv4_1_vector",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv4",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv4_pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv4_pro_vector",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv4_vector",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "recraft/recraftv3_vector",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "xai/grok-4.7",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "channel"
+      },
+      {
+        "key": "xai/grok-4.6",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "channel"
+      },
+      {
+        "key": "xai/grok-4.5",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "channel"
+      },
+      {
+        "key": "xai/grok-4.3",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "channel"
+      },
+      {
+        "key": "xai/grok-4.20-0309-non-reasoning",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "channel"
+      },
+      {
+        "key": "xai/grok-4.20-0309-reasoning",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "channel"
+      },
+      {
+        "key": "xai/grok-4.20-multi-agent-0309",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "channel"
+      },
+      {
+        "key": "xai/grok-imagine-image-2.0",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "xai/grok-imagine-image",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "xai/grok-build-0.1",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "channel"
+      },
+      {
+        "key": "bailian/deepseek-v4.1-flash",
+        "field": "inputModalities",
+        "before": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/ZHIPU/GLM-5.3-Flash",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/qwen3.8-flash",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image",
+          "video"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "bailian/qwen-image-3.0",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/qwen-image-3.0-pro",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/kimi/kimi-k2.5",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/qwen-image-2.0-pro-2026-06-22",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/qwen-image-2.0",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "channel"
+      },
+      {
+        "key": "bailian/qwen-image-2.0-2026-03-03",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/qwen-image-2.0-pro",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "channel"
+      },
+      {
+        "key": "bailian/qwen-image-2.0-pro-2026-03-03",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/qwen-image-2.0-pro-2026-04-22",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/qwen3.7-max-2026-06-08",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image",
+          "video"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "bailian/qwen3.6-27b",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/qwen3.6-35b-a3b",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/qwen3.5-397b-a17b",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/wan2.7-image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/wan2.7-image-pro",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/wan2.6-image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "channel"
+      },
+      {
+        "key": "bailian/wan2.6-image",
+        "field": "outputModalities",
+        "before": [
+          "image"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "channel"
+      },
+      {
+        "key": "bailian/wan2.5-i2i-preview",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/kling/kling-v3-image-generation",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/vidu/vidu-image-lite_reference2image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/vidu/vidu-image-pro_reference2image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/vidu/vidu-image_reference2image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/vidu/viduq2-fast_reference2image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/vidu/viduq2-pro_reference2image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/vidu/viduq3-fast_reference2image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bailian/wanx2.1-imageedit",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "channel"
+      },
+      {
+        "key": "openai/gpt-image-2.5-flare-2026-09-08",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-image-2.5-sunburst-2026-09-08",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-5.2-2025-12-11",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-5.1-2025-11-13",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-5-2025-08-07",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-5-mini-2025-08-07",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-5-nano-2025-08-07",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-4.1-2025-04-14",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-4.1-mini-2025-04-14",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-4.1-nano-2025-04-14",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-4o-2024-05-13",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-4o-2024-08-06",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-4o-2024-11-20",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-4o-mini-2024-07-18",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/gpt-4-turbo-2024-04-09",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/o1-2024-12-17",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/o1-pro-2025-03-19",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/o3-2025-04-16",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/o3-pro-2025-06-10",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "openai/o4-mini-2025-04-16",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "ark/deepseek-v4-1-flash-260910",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "ark/doubao-seedream-4-5-251128",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "ark/doubao-seedream-4-0-250828",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "ark/glm-5-3-flash-260828",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bfl/flux-2-flex",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bfl/flux-2-klein-4b",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bfl/flux-2-klein-9b",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bfl/flux-2-klein-9b-preview",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bfl/flux-2-max",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bfl/flux-2-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bfl/flux-2-pro-preview",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bfl/flux-kontext-max",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bfl/flux-kontext-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "bfl/flux-pro-1.1-ultra",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "stability/sd3.5-flash",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "stability/sd3.5-large",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "stability/sd3.5-large-turbo",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "stability/sd3.5-medium",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "stability/stable-image-ultra",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "ideogram/ideogram-v4",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "ideogram/ideogram-v3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "ideogram/ideogram-edit",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "minimax/MiniMax-M3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "mistral/mistral-medium-3-5",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "mistral/mistral-medium-3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "mistral/ministral-14b-2512",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "mistral/ministral-14b-latest",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "mistral/ministral-3b-2512",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "mistral/ministral-3b-latest",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "mistral/ministral-8b-2512",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "mistral/ministral-8b-latest",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "mistral/mistral-large-2512",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "mistral/mistral-medium-latest",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "mistral/mistral-small-2603",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "together/MiniMaxAI/MiniMax-M3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "together/Qwen/Qwen-Image-2.0",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [],
+        "provenance": null
+      },
+      {
+        "key": "together/Qwen/Qwen-Image-2.0-Pro",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [],
+        "provenance": null
+      },
+      {
+        "key": "together/Qwen/Qwen3.8-Flash",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image",
+          "video"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "together/Qwen/Qwen3.5-9B",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "together/Wan-AI/Wan2.6-image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [],
+        "provenance": null
+      },
+      {
+        "key": "together/Wan-AI/Wan2.6-image",
+        "field": "outputModalities",
+        "before": [
+          "image"
+        ],
+        "after": [],
+        "provenance": null
+      },
+      {
+        "key": "together/black-forest-labs/FLUX.2-dev",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "together/black-forest-labs/FLUX.2-flex",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "together/black-forest-labs/FLUX.2-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "together/deepseek-ai/DeepSeek-V4.1-Flash",
+        "field": "inputModalities",
+        "before": [
+          "text",
+          "image"
+        ],
+        "after": [],
+        "provenance": null
+      },
+      {
+        "key": "together/moonshotai/Kimi-K3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "together/black-forest-labs/FLUX.1-kontext-max",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "together/black-forest-labs/FLUX.1-kontext-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/bytedance/seedream/v5/pro/text-to-image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/fal-ai/bytedance/seedream/v5/lite/edit",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/fal-ai/flux-2-pro",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/fal-ai/flux-pro/v1.1-ultra",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/fal-ai/nano-banana-2",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image",
+          "video",
+          "file"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "fal/fal-ai/nano-banana-2",
+        "field": "outputModalities",
+        "before": [
+          "image"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "fal/google/nano-banana-2-lite",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image",
+          "video",
+          "file"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "fal/google/nano-banana-2-lite",
+        "field": "outputModalities",
+        "before": [
+          "image"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "fal/fal-ai/nano-banana-pro",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/fal-ai/nano-banana-pro",
+        "field": "outputModalities",
+        "before": [
+          "image"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "fal/fal-ai/nano-banana",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/fal-ai/nano-banana",
+        "field": "outputModalities",
+        "before": [
+          "image"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "fal/openai/gpt-image-2.5/flare/text-to-image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/openai/gpt-image-2",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/xai/grok-imagine-image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/xai/grok-imagine-image/quality/text-to-image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "fal/meta/muse-image/text-to-image",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/alibaba/qwen-image-3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/alibaba/qwen-image-3-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/black-forest-labs/flux-2-flex",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/black-forest-labs/flux-2-klein-4b",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/black-forest-labs/flux-2-max",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/black-forest-labs/flux-2-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/black-forest-labs/flux-kontext-dev",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/black-forest-labs/flux-kontext-max",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/black-forest-labs/flux-kontext-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/bytedance/seedream-5-lite",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/bytedance/seedream-4.5",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/bytedance/seedream-4",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/openai/gpt-image-2.5-flare",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/openai/gpt-image-2.5-sunburst",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/openai/gpt-image-2",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/openai/gpt-image-1.5",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/prunaai/flux-kontext-fast",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/black-forest-labs/flux-dev",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/black-forest-labs/flux-dev-lora",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/qwen/qwen-image",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/qwen/qwen-image-edit",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/qwen/qwen-image-edit-plus",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/stability-ai/stable-diffusion-3.5-large",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/stability-ai/stable-diffusion-3.5-large-turbo",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/stability-ai/stable-diffusion-3.5-medium",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/stability-ai/sdxl",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/wan-video/wan-2.7-image",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/wan-video/wan-2.7-image-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/xai/grok-imagine-image",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/xai/grok-imagine-image-2",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/adirik/realvisxl-v3.0-turbo",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/bria/fibo",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/bria/fibo-edit",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/bytedance/bagel",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/datacte/proteus-v0.2",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/datacte/proteus-v0.3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/fofr/latent-consistency-model",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/fofr/sdxl-emoji",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/lucataco/omnigen2",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/lucataco/open-dalle-v1.1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/lucataco/ssd-1b",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/playgroundai/playground-v2.5-1024px-aesthetic",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/prunaai/p-image-edit",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/sourceful/riverflow-2.0-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "replicate/zsxkib/step1x-edit",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokendance/deepseek-v4.1-flash",
+        "field": "inputModalities",
+        "before": [
+          "text",
+          "image"
+        ],
+        "after": [],
+        "provenance": null
+      },
+      {
+        "key": "tokendance/deepseek-v4-flash",
+        "field": "inputModalities",
+        "before": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "text"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "tokendance/glm-5.3-flash",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokendance/glm-5v-turbo",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokendance/glm-4.6v",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokendance/minimax-m3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokendance/qwen3.8-flash",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "after": [
+          "text",
+          "image",
+          "video"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "tokendance/seed-2.0-code",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/openai:gpt-image@2.5-flare",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/openai:gpt-image@2.5-sunburst",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/xai:grok-imagine@image-2.0",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/alibaba:qwen-image@3.0",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/alibaba:qwen-image@3.0-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/meta:muse@image",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/rundiffusion:300@100",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/anthropic:claude@fable-5",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/sourceful:riverflow-2.5@fast",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/sourceful:riverflow-2.5@pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/ideogram:4@remix",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/minimax:m3@0",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/anthropic:claude@opus-4.8",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/google:gemini@3.5-flash",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/xai:grok-imagine@image-quality",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/luma:uni@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/luma:uni@1-max",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/xai:grok@4.3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/rundiffusion:200@100",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/openai:gpt@5.5",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/openai:gpt-image@2",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/anthropic:claude@opus-4.7",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/imagineart:2.0@0",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/google:gemma@4-31b",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/alibaba:wan@2.7-image",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/alibaba:wan@2.7-image-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:400@6",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/openai:gpt@5.4-mini",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/openai:gpt@5.4-nano",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/openai:gpt@5.4",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/openai:gpt@5.4-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/google:gemini@3.1-flash-lite",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/anthropic:claude@sonnet-4.6",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/alibaba:qwen-image@2.0",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/alibaba:qwen-image@2.0-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/klingai:kling-image@3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/klingai:kling-image@o3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/sourceful:riverflow-2.0@fast",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/sourceful:riverflow-2.0@pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/xai:grok-imagine@image",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:z-image@0",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:400@2",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/bria:21@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:400@3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:400@4",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:400@5",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/bria:20@3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/alibaba:qwen-image@2512",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/alibaba:wan@2.6-image",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/bfl:7@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/openai:4@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/bytedance:seedream@4.5",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/klingai:kling-image@o1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/bfl:5@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:kandinsky-5.0-image-lite@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:z-image@turbo",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/alibaba:qwen-image-edit@2511",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/bfl:6@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:400@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/prunaai:2@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/bria:20@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/anthropic:claude@haiku-4.5",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:108@22",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/bria:11@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:111@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/bytedance:5@0",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:108@20",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runway:4@2",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/openai:gpt@5-mini",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/openai:gpt@5-nano",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:108@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:107@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/bfl:3@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/bfl:4@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:106@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:5@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runway:4@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/ideogram:4@3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/ideogram:4@2",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/openai:1@2",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/vidu:q1@image",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/ideogram:4@5",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/openai:1@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/rundiffusion:110@101",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/rundiffusion:120@100",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/rundiffusion:130@100",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/ideogram:2@2",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:102@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/bfl:1@2",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/ideogram:3@2",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:100@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/runware:101@1",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "runware/civitai:101055@128078",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokenhub/deepseek-v4-flash",
+        "field": "inputModalities",
+        "before": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "text"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "tokenhub/deepseek/deepseek-v4-flash",
+        "field": "inputModalities",
+        "before": [
+          "text",
+          "image"
+        ],
+        "after": [],
+        "provenance": null
+      },
+      {
+        "key": "tokenhub/glm-5.3-flash",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokenhub/glm-5v-turbo",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokenhub/kimi-k3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokenhub/kimi-k2.7-code",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokenhub/kimi-k2.6",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokenhub/minimax-m3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokenhub/deepseek/deepseek-flash",
+        "field": "inputModalities",
+        "before": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokenhub/hy-image-v3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokenhub/hy-image-v3.5-preview",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokenhub/vidu-image-q2",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokenhub/wand-vega-image-flash",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokenhub/wand-vega-image-lite",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "tokenhub/wand-vega-image-pro",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "sensenova/deepseek-v4-flash",
+        "field": "inputModalities",
+        "before": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "text"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "sensenova/kimi-k3",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "sensenova/sensenova-u1.5-fast",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "sensenova/sensenova-u1.5-lite",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "qianfan/deepseek-v4.1-flash",
+        "field": "inputModalities",
+        "before": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "qianfan/deepseek-v4-flash",
+        "field": "inputModalities",
+        "before": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "text"
+        ],
+        "provenance": "catalog"
+      },
+      {
+        "key": "qianfan/glm-5.3-flash",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "qianfan/qwen-image-edit",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "qianfan/qwen3.5-397b-a17b",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "qianfan/deepseek-flash",
+        "field": "inputModalities",
+        "before": [
+          "text",
+          "image"
+        ],
+        "after": [],
+        "provenance": null
+      },
+      {
+        "key": "qianfan/ernie-5.0-thinking-preview",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "iflytek/xop3qwen32bvl",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "iflytek/xopqwen35397b",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "iflytek/xopqwen36v35b",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "iflytek/xopkimik25",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "iflytek/xopkimik26",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      },
+      {
+        "key": "iflytek/xopkimik27code",
+        "field": "inputModalities",
+        "before": [],
+        "after": [
+          "image"
+        ],
+        "provenance": "product"
+      }
+    ],
+    "downgrades": [
+      {
+        "key": "xai/grok-4.20-multi-agent-0309",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "main": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "text",
+          "image"
+        ]
+      },
+      {
+        "key": "bailian/qwen3.8-flash",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "main": [
+          "text",
+          "image",
+          "video"
+        ],
+        "after": [
+          "text",
+          "image",
+          "video"
+        ]
+      },
+      {
+        "key": "bailian/qwen3.7-max-2026-06-08",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "main": [
+          "text",
+          "image",
+          "video"
+        ],
+        "after": [
+          "text",
+          "image",
+          "video"
+        ]
+      },
+      {
+        "key": "together/Qwen/Qwen3.8-Flash",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "main": [
+          "text",
+          "image",
+          "video"
+        ],
+        "after": [
+          "text",
+          "image",
+          "video"
+        ]
+      },
+      {
+        "key": "fal/fal-ai/nano-banana-2",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "main": [
+          "text",
+          "image",
+          "video",
+          "file"
+        ],
+        "after": [
+          "text",
+          "image",
+          "video",
+          "file"
+        ]
+      },
+      {
+        "key": "fal/fal-ai/nano-banana-2",
+        "field": "outputModalities",
+        "before": [
+          "image"
+        ],
+        "main": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "text",
+          "image"
+        ]
+      },
+      {
+        "key": "fal/google/nano-banana-2-lite",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "main": [
+          "text",
+          "image",
+          "video",
+          "file"
+        ],
+        "after": [
+          "text",
+          "image",
+          "video",
+          "file"
+        ]
+      },
+      {
+        "key": "fal/google/nano-banana-2-lite",
+        "field": "outputModalities",
+        "before": [
+          "image"
+        ],
+        "main": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "text",
+          "image"
+        ]
+      },
+      {
+        "key": "fal/fal-ai/nano-banana-pro",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "main": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "text",
+          "image"
+        ]
+      },
+      {
+        "key": "fal/fal-ai/nano-banana-pro",
+        "field": "outputModalities",
+        "before": [
+          "image"
+        ],
+        "main": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "text",
+          "image"
+        ]
+      },
+      {
+        "key": "fal/fal-ai/nano-banana",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "main": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "text",
+          "image"
+        ]
+      },
+      {
+        "key": "fal/fal-ai/nano-banana",
+        "field": "outputModalities",
+        "before": [
+          "image"
+        ],
+        "main": [
+          "text",
+          "image"
+        ],
+        "after": [
+          "text",
+          "image"
+        ]
+      },
+      {
+        "key": "tokendance/qwen3.8-flash",
+        "field": "inputModalities",
+        "before": [
+          "text"
+        ],
+        "main": [
+          "text",
+          "image",
+          "video"
+        ],
+        "after": [
+          "text",
+          "image",
+          "video"
+        ]
+      }
+    ]
+  },
+  "tokens": {
+    "cards": 126,
+    "fields": 157,
+    "labelFields": 145,
+    "changes": [
+      {
+        "key": "deepseek/deepseek-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "channel"
+      },
+      {
+        "key": "deepseek/deepseek-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "channel"
+      },
+      {
+        "key": "deepseek/deepseek-v4-flash-vision-exp",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "channel"
+      },
+      {
+        "key": "deepseek/deepseek-v4-flash-vision-exp",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "channel"
+      },
+      {
+        "key": "deepseek/deepseek-v4-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "channel"
+      },
+      {
+        "key": "deepseek/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "channel"
+      },
+      {
+        "key": "deepseek/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "channel"
+      },
+      {
+        "key": "deepseek/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "channel"
+      },
+      {
+        "key": "zhipu/glm-4.7-flashx",
+        "field": "totalContextTokens",
+        "before": 200000,
+        "after": "200K",
+        "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+        "provenance": "catalog"
+      },
+      {
+        "key": "zhipu/glm-4.6v-flash",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.6v-flash",
+        "provenance": "catalog"
+      },
+      {
+        "key": "zhipu/glm-4.6v-flashx",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.6v",
+        "provenance": "catalog"
+      },
+      {
+        "key": "zhipu/glm-4.5-airx",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5",
+        "provenance": "catalog"
+      },
+      {
+        "key": "zhipu/glm-4.5-flash",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.5-flash",
+        "provenance": "catalog"
+      },
+      {
+        "key": "zhipu/glm-4.1v-thinking-flash",
+        "field": "totalContextTokens",
+        "before": 64000,
+        "after": "64K",
+        "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.1v-thinking-flash",
+        "provenance": "catalog"
+      },
+      {
+        "key": "zhipu/glm-4.1v-thinking-flashx",
+        "field": "totalContextTokens",
+        "before": 64000,
+        "after": "64K",
+        "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.1v-thinking",
+        "provenance": "catalog"
+      },
+      {
+        "key": "zhipu/glm-4-flash-250414",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+        "provenance": "catalog"
+      },
+      {
+        "key": "zhipu/glm-4-flashx-250414",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+        "provenance": "catalog"
+      },
+      {
+        "key": "zhipu/glm-4-long",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4-long",
+        "provenance": "catalog"
+      },
+      {
+        "key": "zhipu/glm-4v-flash",
+        "field": "totalContextTokens",
+        "before": 16000,
+        "after": "16K",
+        "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4v-flash",
+        "provenance": "catalog"
+      },
+      {
+        "key": "siliconflow/XingChenAGI/Xing4.0-29B",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B",
+        "provenance": "catalog"
+      },
+      {
+        "key": "siliconflow/tencent/Hy4-preview",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://huggingface.co/tencent/Hy4-preview",
+        "provenance": "catalog"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen3.8-27B",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": null,
+        "sourceUrl": null,
+        "provenance": null
+      },
+      {
+        "key": "siliconflow/deepseek-ai/DeepSeek-V4-Flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "siliconflow/deepseek-ai/DeepSeek-V4-Flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "siliconflow/deepseek-ai/DeepSeek-V4-Pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "siliconflow/deepseek-ai/DeepSeek-V4-Pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "siliconflow/stepfun-ai/Step-3.5-Flash",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+        "provenance": "vendor"
+      },
+      {
+        "key": "siliconflow/THUDM/GLM-4-32B-0414",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://github.com/zai-org/GLM-4/blob/main/README.md",
+        "provenance": "catalog"
+      },
+      {
+        "key": "siliconflow/THUDM/GLM-4-9B-0414",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://github.com/zai-org/GLM-4/blob/main/README.md",
+        "provenance": "catalog"
+      },
+      {
+        "key": "siliconflow/THUDM/GLM-Z1-9B-0414",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://github.com/zai-org/GLM-4/blob/main/README.md",
+        "provenance": "catalog"
+      },
+      {
+        "key": "bailian/deepseek-v4.1-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "bailian/deepseek-v4.1-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "bailian/kimi-k3",
+        "field": "totalContextTokens",
+        "before": 262144,
+        "after": 1000000,
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+        "provenance": "channel"
+      },
+      {
+        "key": "bailian/kimi-k3",
+        "field": "maxOutputTokens",
+        "before": 16384,
+        "after": 1048576,
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/kimi-k3",
+        "provenance": "channel"
+      },
+      {
+        "key": "bailian/ZHIPU/GLM-5.3",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": null,
+        "sourceUrl": null,
+        "provenance": null
+      },
+      {
+        "key": "bailian/MiniMax/MiniMax-M3",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": null,
+        "sourceUrl": null,
+        "provenance": null
+      },
+      {
+        "key": "bailian/ZHIPU/GLM-5.3-FlashX",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+        "provenance": "catalog"
+      },
+      {
+        "key": "bailian/ZHIPU/GLM-5.2",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": null,
+        "sourceUrl": null,
+        "provenance": null
+      },
+      {
+        "key": "bailian/deepseek-v4-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "bailian/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "bailian/glm-5.2-fast-preview",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": "1M",
+        "sourceUrl": "https://www.qianwenai.com/models/glm-5.2-fast-preview",
+        "provenance": "channel"
+      },
+      {
+        "key": "bailian/glm-5.2-fast-preview",
+        "field": "maxOutputTokens",
+        "before": 131072,
+        "after": "131K",
+        "sourceUrl": "https://www.qianwenai.com/models/glm-5.2-fast-preview",
+        "provenance": "channel"
+      },
+      {
+        "key": "bailian/ZHIPU/GLM-5.1",
+        "field": "totalContextTokens",
+        "before": 202745,
+        "after": null,
+        "sourceUrl": null,
+        "provenance": null
+      },
+      {
+        "key": "bailian/kimi/kimi-k3",
+        "field": "totalContextTokens",
+        "before": 262144,
+        "after": null,
+        "sourceUrl": null,
+        "provenance": null
+      },
+      {
+        "key": "bailian/kimi/kimi-k3",
+        "field": "maxOutputTokens",
+        "before": 16384,
+        "after": null,
+        "sourceUrl": null,
+        "provenance": null
+      },
+      {
+        "key": "bailian/kimi/kimi-k2.7-code",
+        "field": "totalContextTokens",
+        "before": 262144,
+        "after": null,
+        "sourceUrl": null,
+        "provenance": null
+      },
+      {
+        "key": "bailian/kimi/kimi-k2.6",
+        "field": "totalContextTokens",
+        "before": 262144,
+        "after": null,
+        "sourceUrl": null,
+        "provenance": null
+      },
+      {
+        "key": "bailian/stepfun/step-3.7-flash",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+        "provenance": "vendor"
+      },
+      {
+        "key": "bailian/qwen-max",
+        "field": "totalContextTokens",
+        "before": 32768,
+        "after": "32k",
+        "sourceUrl": "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "provenance": "channel"
+      },
+      {
+        "key": "bailian/xiaomi/mimo-v2.5-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "provenance": "vendor"
+      },
+      {
+        "key": "ark/doubao-seed-2-1-pro-260628",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "provenance": "catalog"
+      },
+      {
+        "key": "ark/doubao-seed-2-1-pro-260915",
+        "field": "totalContextTokens",
+        "before": 1024000,
+        "after": "1024K",
+        "sourceUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "provenance": "catalog"
+      },
+      {
+        "key": "ark/doubao-seed-2-1-turbo-260628",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "provenance": "catalog"
+      },
+      {
+        "key": "ark/doubao-seed-2-0-code-preview-260215",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "provenance": "catalog"
+      },
+      {
+        "key": "ark/doubao-seed-2-0-lite-260215",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "provenance": "catalog"
+      },
+      {
+        "key": "ark/doubao-seed-2-0-lite-260428",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "provenance": "catalog"
+      },
+      {
+        "key": "ark/doubao-seed-2-0-mini-260215",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "provenance": "catalog"
+      },
+      {
+        "key": "ark/doubao-seed-2-0-mini-260428",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "provenance": "catalog"
+      },
+      {
+        "key": "ark/doubao-seed-2-0-pro-260215",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "provenance": "catalog"
+      },
+      {
+        "key": "ark/doubao-seed-1-8-251228",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://docs.volcengine.com/docs/ark/bytedance-seed-1-8?lang=zh",
+        "provenance": "catalog"
+      },
+      {
+        "key": "ark/doubao-seed-code-preview-251028",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://docs.volcengine.com/docs/ark/model-release-announcement-2025?lang=en",
+        "provenance": "catalog"
+      },
+      {
+        "key": "ark/doubao-seed-evolving",
+        "field": "totalContextTokens",
+        "before": 1024000,
+        "after": "1024K",
+        "sourceUrl": "https://www.volcengine.com/docs/82379/1330310",
+        "provenance": "catalog"
+      },
+      {
+        "key": "mistral/codestral-2508",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://docs.mistral.ai/models/codestral-25-08",
+        "provenance": "catalog"
+      },
+      {
+        "key": "mistral/codestral-latest",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://docs.mistral.ai/models/codestral-25-08",
+        "provenance": "catalog"
+      },
+      {
+        "key": "together/Qwen/Qwen3.8-2.4T-A95B",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": null,
+        "sourceUrl": null,
+        "provenance": null
+      },
+      {
+        "key": "together/deepseek-ai/DeepSeek-V4.1-Flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "together/deepseek-ai/DeepSeek-V4.1-Flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "together/Prism-ML/Ternary-Bonsai-27B",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262K",
+        "sourceUrl": "https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf",
+        "provenance": "catalog"
+      },
+      {
+        "key": "together/meta-llama/Llama-3.3-70B-Instruct-Turbo",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://www.together.ai/models/llama-3-3-70b",
+        "provenance": "catalog"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/glm-5p3",
+        "field": "totalContextTokens",
+        "before": 1040000,
+        "after": "1040k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/glm-5p3",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/glm-5p3-flash",
+        "field": "totalContextTokens",
+        "before": 1040000,
+        "after": "1040k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/glm-5p3-flash",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/kimi-k3",
+        "field": "totalContextTokens",
+        "before": 1040000,
+        "after": "1040k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/kimi-k3",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/kimi-k2p5",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/kimi-k2p5",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/minimax-m3",
+        "field": "totalContextTokens",
+        "before": 512000,
+        "after": "512k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/minimax-m3",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/qwen3-8b",
+        "field": "totalContextTokens",
+        "before": 40900,
+        "after": "40.9k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/qwen3-8b",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/deepseek-v4p1-flash",
+        "field": "totalContextTokens",
+        "before": 1040000,
+        "after": "1040k",
+        "sourceUrl": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/deepseek-v4p1-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/gemma-4-31b-it",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/gemma-4-31b-it",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/gpt-oss-120b",
+        "field": "totalContextTokens",
+        "before": 131000,
+        "after": "131k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/gpt-oss-120b",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/kimi-k3p1-pro",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": "1040k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/kimi-k3p1-pro",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/nvidia-nemotron-3-nano-omni-30b-a3b",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/qwen3-omni-30b-a3b-instruct",
+        "field": "totalContextTokens",
+        "before": 65500,
+        "after": "65.5k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct",
+        "provenance": "channel"
+      },
+      {
+        "key": "fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k",
+        "sourceUrl": "https://fireworks.ai/models/fireworks/step-3p7-flash-nvfp4",
+        "provenance": "channel"
+      },
+      {
+        "key": "tokendance/deepseek-v4.1-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokendance/deepseek-v4-flash-vision-exp",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokendance/deepseek-v4-flash-vision-exp",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokendance/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokendance/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokendance/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokendance/step-5-preview",
+        "field": "maxOutputTokens",
+        "before": 64000,
+        "after": "64k",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/step-5-preview",
+        "provenance": "vendor"
+      },
+      {
+        "key": "runware/google:gemini@3.1-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://runware.ai/docs/models/google-gemini-3-1-pro",
+        "provenance": "catalog"
+      },
+      {
+        "key": "runware/google:gemini@3-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://runware.ai/docs/models/google-gemini-3-flash",
+        "provenance": "catalog"
+      },
+      {
+        "key": "tokenhub/deepseek/deepseek-v4-flash-vision-exp",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokenhub/deepseek/deepseek-v4-flash-vision-exp",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokenhub/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokenhub/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokenhub/deepseek-v4-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokenhub/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokenhub/deepseek/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokenhub/deepseek/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokenhub/deepseek/deepseek-v4-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokenhub/deepseek/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokenhub/glm-5.3-flashx",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+        "provenance": "catalog"
+      },
+      {
+        "key": "tokenhub/hy4-preview",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://huggingface.co/tencent/Hy4-preview",
+        "provenance": "catalog"
+      },
+      {
+        "key": "tokenhub/deepseek/deepseek-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokenhub/deepseek/deepseek-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokenhub/hunyuan-t1-vision-20250916",
+        "field": "totalContextTokens",
+        "before": 40000,
+        "after": "40K",
+        "sourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+        "provenance": "catalog"
+      },
+      {
+        "key": "tokenhub/hy-vision-2.0-instruct",
+        "field": "totalContextTokens",
+        "before": 44000,
+        "after": "44K",
+        "sourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+        "provenance": "catalog"
+      },
+      {
+        "key": "tokenhub/mimo-v2.5-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "provenance": "vendor"
+      },
+      {
+        "key": "tokenhub/youtu-vita",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+        "provenance": "catalog"
+      },
+      {
+        "key": "xiaomi/mimo-v2.6-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "provenance": "channel"
+      },
+      {
+        "key": "xiaomi/mimo-v2.6-flash",
+        "field": "maxOutputTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "provenance": "channel"
+      },
+      {
+        "key": "xiaomi/mimo-v2.6-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "provenance": "channel"
+      },
+      {
+        "key": "xiaomi/mimo-v2.6-pro",
+        "field": "maxOutputTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "provenance": "channel"
+      },
+      {
+        "key": "xiaomi/mimo-v2.6-pro-ultraspeed",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "provenance": "channel"
+      },
+      {
+        "key": "xiaomi/mimo-v2.6-pro-ultraspeed",
+        "field": "maxOutputTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "provenance": "channel"
+      },
+      {
+        "key": "sensenova/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "sensenova/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "sensenova/deepseek-v4-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "sensenova/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "stepfun/step-5-preview",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+        "provenance": "channel"
+      },
+      {
+        "key": "stepfun/step-5-preview",
+        "field": "maxOutputTokens",
+        "before": 64000,
+        "after": "64k",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/step-5-preview",
+        "provenance": "channel"
+      },
+      {
+        "key": "stepfun/step-3.7-flash",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+        "provenance": "channel"
+      },
+      {
+        "key": "stepfun/step-3.5-flash",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+        "provenance": "channel"
+      },
+      {
+        "key": "stepfun/step-3.5-flash-2603",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+        "provenance": "channel"
+      },
+      {
+        "key": "stepfun/step-1o-turbo-vision",
+        "field": "totalContextTokens",
+        "before": 32000,
+        "after": "32K",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/list",
+        "provenance": "channel"
+      },
+      {
+        "key": "qianfan/deepseek-v4.1-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "qianfan/deepseek-v4.1-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "qianfan/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "qianfan/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "qianfan/deepseek-v4-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "qianfan/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "qianfan/deepseek-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "qianfan/deepseek-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "provenance": "vendor"
+      },
+      {
+        "key": "qianfan/deepseek-ocr",
+        "field": "totalContextTokens",
+        "before": 8000,
+        "after": "8K",
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "provenance": "catalog"
+      },
+      {
+        "key": "qianfan/ernie-4.5-turbo-128k",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "provenance": "catalog"
+      },
+      {
+        "key": "qianfan/ernie-4.5-turbo-20260402",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "provenance": "catalog"
+      },
+      {
+        "key": "qianfan/ernie-4.5-turbo-32k",
+        "field": "totalContextTokens",
+        "before": 32000,
+        "after": "32K",
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "provenance": "catalog"
+      },
+      {
+        "key": "qianfan/ernie-4.5-turbo-vl",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "provenance": "catalog"
+      },
+      {
+        "key": "qianfan/ernie-4.5-turbo-vl-32k",
+        "field": "totalContextTokens",
+        "before": 32000,
+        "after": "32K",
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "provenance": "catalog"
+      },
+      {
+        "key": "qianfan/ernie-5.0",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "provenance": "catalog"
+      },
+      {
+        "key": "qianfan/ernie-5.0-thinking-exp",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "provenance": "catalog"
+      },
+      {
+        "key": "qianfan/ernie-5.0-thinking-latest",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "provenance": "catalog"
+      },
+      {
+        "key": "qianfan/ernie-5.1",
+        "field": "totalContextTokens",
+        "before": 128000,
+        "after": "128K",
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "provenance": "catalog"
+      },
+      {
+        "key": "qianfan/internvl3-38b",
+        "field": "totalContextTokens",
+        "before": 32000,
+        "after": "32K",
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "provenance": "catalog"
+      },
+      {
+        "key": "qianfan/qianfan-ocr",
+        "field": "totalContextTokens",
+        "before": 32000,
+        "after": "32K",
+        "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "provenance": "catalog"
+      },
+      {
+        "key": "iflytek/spark-x2.5",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256k",
+        "sourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "provenance": "catalog"
+      },
+      {
+        "key": "iflytek/spark-x2.5-1.7b",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "provenance": "catalog"
+      },
+      {
+        "key": "iflytek/spark-x2.5-4b",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M",
+        "sourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "provenance": "catalog"
+      },
+      {
+        "key": "iflytek/xsparkx2",
+        "field": "totalContextTokens",
+        "before": 192000,
+        "after": "192k",
+        "sourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "provenance": "catalog"
+      },
+      {
+        "key": "iflytek/xsparkx2flash",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256k",
+        "sourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "provenance": "catalog"
+      },
+      {
+        "key": "antling/Ling-3.0-flash-VL",
+        "field": "totalContextTokens",
+        "before": 262144,
+        "after": "256K",
+        "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "provenance": "channel"
+      },
+      {
+        "key": "antling/Ling-3.0-flash",
+        "field": "totalContextTokens",
+        "before": 262144,
+        "after": "256K",
+        "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "provenance": "channel"
+      },
+      {
+        "key": "antling/Ling-3.1-flash",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": "1M",
+        "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "provenance": "channel"
+      },
+      {
+        "key": "antling/Ling-3.2-flash",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": "1M",
+        "sourceUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "provenance": "channel"
+      }
+    ],
+    "sourceChanges": [
+      {
+        "location": "pairs/bailian/MiniMax/MiniMax-M3",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": null
+      },
+      {
+        "location": "pairs/bailian/ZHIPU/GLM-5.1",
+        "field": "totalContextTokens",
+        "before": 202745,
+        "after": null
+      },
+      {
+        "location": "pairs/bailian/ZHIPU/GLM-5.2",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": null
+      },
+      {
+        "location": "pairs/bailian/ZHIPU/GLM-5.3",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": null
+      },
+      {
+        "location": "pairs/bailian/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/bailian/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/bailian/deepseek-v4-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/bailian/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/bailian/deepseek-v4.1-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/bailian/deepseek-v4.1-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/bailian/glm-5.2-fast-preview",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/bailian/glm-5.2-fast-preview",
+        "field": "maxOutputTokens",
+        "before": 131072,
+        "after": "131K"
+      },
+      {
+        "location": "pairs/bailian/kimi-k3",
+        "field": "totalContextTokens",
+        "before": 262144,
+        "after": 1000000
+      },
+      {
+        "location": "pairs/bailian/kimi-k3",
+        "field": "maxOutputTokens",
+        "before": 16384,
+        "after": 1048576
+      },
+      {
+        "location": "pairs/bailian/kimi/kimi-k2.6",
+        "field": "totalContextTokens",
+        "before": 262144,
+        "after": null
+      },
+      {
+        "location": "pairs/bailian/kimi/kimi-k2.7-code",
+        "field": "totalContextTokens",
+        "before": 262144,
+        "after": null
+      },
+      {
+        "location": "pairs/bailian/kimi/kimi-k3",
+        "field": "totalContextTokens",
+        "before": 262144,
+        "after": null
+      },
+      {
+        "location": "pairs/bailian/kimi/kimi-k3",
+        "field": "maxOutputTokens",
+        "before": 16384,
+        "after": null
+      },
+      {
+        "location": "pairs/bailian/qwen-max",
+        "field": "totalContextTokens",
+        "before": 32768,
+        "after": "32k"
+      },
+      {
+        "location": "pairs/bailian/stepfun/step-3.7-flash",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K"
+      },
+      {
+        "location": "pairs/bailian/xiaomi/mimo-v2.5-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/deepseek/deepseek-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/deepseek/deepseek-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/deepseek/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/deepseek/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/deepseek/deepseek-v4-flash-vision-exp",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/deepseek/deepseek-v4-flash-vision-exp",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/deepseek/deepseek-v4-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/deepseek/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
+        "field": "totalContextTokens",
+        "before": 1040000,
+        "after": "1040k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/deepseek-v4-flash-vision-exp",
+        "field": "totalContextTokens",
+        "before": 1040000,
+        "after": "1040k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/deepseek-v4-flash-vision-exp",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/deepseek-v4-pro-0813",
+        "field": "totalContextTokens",
+        "before": 1040000,
+        "after": "1040k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/deepseek-v4-pro-0813",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/deepseek-v4p1-flash",
+        "field": "totalContextTokens",
+        "before": 1040000,
+        "after": "1040k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/deepseek-v4p1-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/gemma-4-31b-it",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/glm-5p2",
+        "field": "totalContextTokens",
+        "before": 1040000,
+        "after": "1040k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/glm-5p3",
+        "field": "totalContextTokens",
+        "before": 1040000,
+        "after": "1040k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/glm-5p3-flash",
+        "field": "totalContextTokens",
+        "before": 1040000,
+        "after": "1040k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/gpt-oss-120b",
+        "field": "totalContextTokens",
+        "before": 131000,
+        "after": "131k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/kimi-k2p5",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/kimi-k2p6",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/kimi-k2p7-code",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/kimi-k3",
+        "field": "totalContextTokens",
+        "before": 1040000,
+        "after": "1040k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/minimax-m3",
+        "field": "totalContextTokens",
+        "before": 512000,
+        "after": "512k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/muse-glimmer-30b",
+        "field": "totalContextTokens",
+        "before": 131000,
+        "after": "131k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/qwen3-8b",
+        "field": "totalContextTokens",
+        "before": 40900,
+        "after": "40.9k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/qwen3-omni-30b-a3b-instruct",
+        "field": "totalContextTokens",
+        "before": 65500,
+        "after": "65.5k"
+      },
+      {
+        "location": "pairs/fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4",
+        "field": "totalContextTokens",
+        "before": 262000,
+        "after": "262k"
+      },
+      {
+        "location": "pairs/qianfan/deepseek-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/qianfan/deepseek-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/qianfan/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/qianfan/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/qianfan/deepseek-v4-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/qianfan/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/qianfan/deepseek-v4.1-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/qianfan/deepseek-v4.1-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/sensenova/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/sensenova/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/sensenova/deepseek-v4-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/sensenova/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/siliconflow/Qwen/Qwen3.8-27B",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": null
+      },
+      {
+        "location": "pairs/siliconflow/deepseek-ai/DeepSeek-V4-Flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/siliconflow/deepseek-ai/DeepSeek-V4-Flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/siliconflow/deepseek-ai/DeepSeek-V4-Pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/siliconflow/deepseek-ai/DeepSeek-V4-Pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/siliconflow/stepfun-ai/Step-3.5-Flash",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K"
+      },
+      {
+        "location": "pairs/stepfun/step-1o-turbo-vision",
+        "field": "totalContextTokens",
+        "before": 32000,
+        "after": "32K"
+      },
+      {
+        "location": "pairs/stepfun/step-3.5-flash",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K"
+      },
+      {
+        "location": "pairs/stepfun/step-3.5-flash-2603",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K"
+      },
+      {
+        "location": "pairs/stepfun/step-3.7-flash",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K"
+      },
+      {
+        "location": "pairs/stepfun/step-5-preview",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/stepfun/step-5-preview",
+        "field": "maxOutputTokens",
+        "before": 64000,
+        "after": "64k"
+      },
+      {
+        "location": "pairs/together/Qwen/Qwen3.8-2.4T-A95B",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": null
+      },
+      {
+        "location": "pairs/together/deepseek-ai/DeepSeek-V4.1-Flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/together/deepseek-ai/DeepSeek-V4.1-Flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/tokendance/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/tokendance/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/tokendance/deepseek-v4-flash-vision-exp",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/tokendance/deepseek-v4-flash-vision-exp",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/tokendance/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/tokendance/deepseek-v4.1-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/tokendance/mimo-v2.5-tts",
+        "field": "maxOutputTokens",
+        "before": 8000,
+        "after": "8K"
+      },
+      {
+        "location": "pairs/tokendance/mimo-v2.5-tts-voiceclone",
+        "field": "maxOutputTokens",
+        "before": 8000,
+        "after": "8K"
+      },
+      {
+        "location": "pairs/tokendance/mimo-v2.5-tts-voicedesign",
+        "field": "maxOutputTokens",
+        "before": 8000,
+        "after": "8K"
+      },
+      {
+        "location": "pairs/tokendance/step-5-preview",
+        "field": "maxOutputTokens",
+        "before": 64000,
+        "after": "64k"
+      },
+      {
+        "location": "pairs/tokenhub/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/tokenhub/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/tokenhub/deepseek-v4-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/tokenhub/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/tokenhub/deepseek/deepseek-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/tokenhub/deepseek/deepseek-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/tokenhub/deepseek/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/tokenhub/deepseek/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/tokenhub/deepseek/deepseek-v4-flash-vision-exp",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/tokenhub/deepseek/deepseek-v4-flash-vision-exp",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/tokenhub/deepseek/deepseek-v4-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/tokenhub/deepseek/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "pairs/tokenhub/mimo-v2.5-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.5",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.5-asr",
+        "field": "totalContextTokens",
+        "before": 8000,
+        "after": "8k"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.5-asr",
+        "field": "maxOutputTokens",
+        "before": 2000,
+        "after": "2k"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.5-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.5-tts",
+        "field": "totalContextTokens",
+        "before": 8000,
+        "after": "8K"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.5-tts",
+        "field": "maxOutputTokens",
+        "before": 8000,
+        "after": "8K"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.5-tts-voiceclone",
+        "field": "totalContextTokens",
+        "before": 8000,
+        "after": "8K"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.5-tts-voiceclone",
+        "field": "maxOutputTokens",
+        "before": 8000,
+        "after": "8K"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.5-tts-voicedesign",
+        "field": "totalContextTokens",
+        "before": 8000,
+        "after": "8K"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.5-tts-voicedesign",
+        "field": "maxOutputTokens",
+        "before": 8000,
+        "after": "8K"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.6-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.6-flash",
+        "field": "maxOutputTokens",
+        "before": 128000,
+        "after": "128K"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.6-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.6-pro",
+        "field": "maxOutputTokens",
+        "before": 128000,
+        "after": "128K"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.6-pro-ultraspeed",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "pairs/xiaomi/mimo-v2.6-pro-ultraspeed",
+        "field": "maxOutputTokens",
+        "before": 128000,
+        "after": "128K"
+      },
+      {
+        "location": "canonical/deepseek-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "canonical/deepseek-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "canonical/deepseek-v4-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "canonical/deepseek-v4-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "canonical/deepseek-v4-flash-vision-exp",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "canonical/deepseek-v4-flash-vision-exp",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "canonical/deepseek-v4-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "canonical/deepseek-v4-pro",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "canonical/deepseek-v4.1-flash",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "canonical/deepseek-v4.1-flash",
+        "field": "maxOutputTokens",
+        "before": 393216,
+        "after": "384K"
+      },
+      {
+        "location": "canonical/mimo-v2.5-pro",
+        "field": "totalContextTokens",
+        "before": 1000000,
+        "after": "1M"
+      },
+      {
+        "location": "canonical/mimo-v2.5-tts",
+        "field": "maxOutputTokens",
+        "before": 8000,
+        "after": "8K"
+      },
+      {
+        "location": "canonical/mimo-v2.5-tts-voiceclone",
+        "field": "maxOutputTokens",
+        "before": 8000,
+        "after": "8K"
+      },
+      {
+        "location": "canonical/mimo-v2.5-tts-voicedesign",
+        "field": "maxOutputTokens",
+        "before": 8000,
+        "after": "8K"
+      },
+      {
+        "location": "canonical/step-3.5-flash",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K"
+      },
+      {
+        "location": "canonical/step-3.7-flash",
+        "field": "totalContextTokens",
+        "before": 256000,
+        "after": "256K"
+      },
+      {
+        "location": "canonical/step-5-preview",
+        "field": "maxOutputTokens",
+        "before": 64000,
+        "after": "64k"
+      },
+      {
+        "location": "claims/1",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": "1040k"
+      },
+      {
+        "location": "supplement/antling/Ling-3.2-flash",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": "1M"
+      },
+      {
+        "location": "supplement/antling/Ling-3.1-flash",
+        "field": "totalContextTokens",
+        "before": 1048576,
+        "after": "1M"
+      },
+      {
+        "location": "supplement/antling/Ling-3.0-flash-VL",
+        "field": "totalContextTokens",
+        "before": 262144,
+        "after": "256K"
+      },
+      {
+        "location": "supplement/antling/Ling-3.0-flash",
+        "field": "totalContextTokens",
+        "before": 262144,
+        "after": "256K"
+      }
+    ]
+  },
+  "image": {
+    "cards": 437,
+    "nowShowing": [
+      "gemini/gemini-nano-banana-2.1",
+      "gemini/gemini-3.1-flash-lite-image",
+      "gemini/gemini-3.1-flash-image",
+      "gemini/gemini-3-pro-image",
+      "gemini/gemini-2.5-flash-image",
+      "together/google/gemini-3-pro-image",
+      "together/google/flash-image-2.5",
+      "together/google/flash-image-3.1",
+      "together/google/flash-image-3.1-lite",
+      "fal/fal-ai/nano-banana-2",
+      "fal/google/nano-banana-2-lite",
+      "fal/fal-ai/nano-banana-pro",
+      "fal/fal-ai/nano-banana",
+      "fal/google/nano-banana-2.1",
+      "replicate/google/nano-banana-2",
+      "replicate/google/nano-banana-2-lite",
+      "replicate/google/nano-banana-pro",
+      "replicate/google/nano-banana",
+      "replicate/google/nano-banana-2.1",
+      "runware/google:nano-banana@2.1",
+      "runware/google:nano-banana@2-lite",
+      "runware/google:4@3",
+      "runware/google:4@2",
+      "runware/google:4@1"
+    ],
+    "notApplicable": 410,
+    "byProvider": {
+      "gemini": 5,
+      "together": 4,
+      "fal": 5,
+      "replicate": 5,
+      "runware": 5
+    }
+  },
+  "conflicts": {
+    "total": 85,
+    "verified": 49,
+    "fallback": 36
+  },
+  "miniprogram": {
+    "source": 1564369,
+    "runtime": 1141228,
+    "media": 189978,
+    "mainSource": 1570043,
+    "limit": 1572864
+  },
+  "verification": {
+    "scripts": {
+      "passed": 28,
+      "failed": 0
+    },
+    "webModelThinkingCatalog": {
+      "passed": 179,
+      "failed": 0
+    },
+    "miniprogram": {
+      "passed": 128,
+      "failed": 0
+    },
+    "affectedCore": {
+      "passed": 10,
+      "failed": 0
+    },
+    "miniBuild": true,
+    "coreTypecheck": true,
+    "miniTypecheck": true,
+    "webBuild": true,
+    "catalogCheck": true,
+    "referenceUploadCheck": true,
+    "auditCheck": true,
+    "browser": "Browser plugin not available; pnpm exec playwright --version: command not found. No dependencies installed or real-browser screenshots claimed."
+  }
+}

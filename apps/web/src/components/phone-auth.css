@@ -17,7 +17,7 @@
 .phone-auth-methods button:focus-visible { outline:2px solid #315e4e; outline-offset:4px; border-radius:2px; }
 .phone-code-form { display:flex; flex-direction:column; gap:18px; }
 .phone-code-form .field { display:flex; flex-direction:column; gap:8px; margin:0; }
-.phone-code-form .field>span,.phone-code-field>label { color:#58675c; font-size:13px; font-weight:500; }
+.phone-code-form .field > :is(span, label),.phone-code-field>label { color:#58675c; font-size:13px; font-weight:500; }
 .phone-number-input,.phone-code-row { display:flex; align-items:center; min-width:0; border:1px solid #dce2db; border-radius:10px; background:#fff; }
 .phone-number-input { gap:12px; padding-left:14px; }
 .phone-number-input>span { flex-shrink:0; color:#66766a; font-size:14px; font-weight:500; padding-right:12px; border-right:1px solid #e5e9e2; }

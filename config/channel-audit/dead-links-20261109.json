@@ -1,0 +1,114 @@
+[
+  {
+    "url": "https://replicate.com/google/imagen-3/api/schema",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "replicate/google/imagen-3"
+    ]
+  },
+  {
+    "url": "https://replicate.com/google/imagen-3",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "replicate/google/imagen-3"
+    ]
+  },
+  {
+    "url": "https://replicate.com/google/imagen-3-fast/api/schema",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "replicate/google/imagen-3-fast"
+    ]
+  },
+  {
+    "url": "https://replicate.com/google/imagen-3-fast",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "replicate/google/imagen-3-fast"
+    ]
+  },
+  {
+    "url": "https://replicate.com/google/imagen-4/api/schema",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "replicate/google/imagen-4"
+    ]
+  },
+  {
+    "url": "https://replicate.com/google/imagen-4",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "replicate/google/imagen-4"
+    ]
+  },
+  {
+    "url": "https://replicate.com/google/imagen-4-fast/api/schema",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "replicate/google/imagen-4-fast"
+    ]
+  },
+  {
+    "url": "https://replicate.com/google/imagen-4-fast",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "replicate/google/imagen-4-fast"
+    ]
+  },
+  {
+    "url": "https://replicate.com/google/imagen-4-ultra/api/schema",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "replicate/google/imagen-4-ultra"
+    ]
+  },
+  {
+    "url": "https://replicate.com/google/imagen-4-ultra",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "replicate/google/imagen-4-ultra"
+    ]
+  },
+  {
+    "url": "https://runware.ai/docs/models/openai-gpt-image-1/schema.json",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "runware/openai:1@1"
+    ]
+  },
+  {
+    "url": "https://runware.ai/docs/models/openai-gpt-image-1",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "runware/openai:1@1"
+    ]
+  },
+  {
+    "url": "https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "runware/xai:grok-imagine@image-quality"
+    ]
+  },
+  {
+    "url": "https://runware.ai/docs/models/xai-grok-imagine-image-quality",
+    "status": 404,
+    "checkedAt": "2026-11-09",
+    "cards": [
+      "runware/xai:grok-imagine@image-quality"
+    ]
+  }
+]

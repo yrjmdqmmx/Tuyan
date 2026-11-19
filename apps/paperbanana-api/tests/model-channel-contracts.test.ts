@@ -1,3 +1,4 @@
+import { assertRemoved } from './helpers/catalog-retirements.js'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import test from 'node:test'
@@ -82,10 +83,10 @@ test('catalog lifecycle and regional corrections are present without advertising
   const get = (provider: string, id: string) => STATIC_MODEL_REGISTRY[provider].models.find((m: any) => m.id===id)
   assert.equal(get('openai','o3-pro').protocol,'openai-responses')
   assert.equal(get('openai','o3-pro').expirationDate,'2026-12-11')
-  assert.equal(get('openai','gpt-4').roles.includes('vision'),false)
+  assertRemoved('openai','gpt-4')
   assert.equal(get('siliconflow','Qwen/Qwen3.5-397B-A17B').expirationDate,'2026-09-11')
   assert.equal(get('together','Qwen/Qwen3.5-397B-A17B'),undefined)
-  assert.equal(get('bailian','qwen-image-edit').capabilities.requiresSourceImage,true)
+  assertRemoved('bailian','qwen-image-edit')
   assert.equal(get('fireworks','accounts/fireworks/models/minimax-m3').roles.includes('vision'),false)
   assert.equal(get('fireworks','accounts/fireworks/models/kimi-k3').roles.includes('vision'),true)
   assert.equal(get('gemini','imagen-4.0-generate-001'),undefined)

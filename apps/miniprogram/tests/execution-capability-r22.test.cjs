@@ -1,0 +1,16 @@
+const test = require('node:test')
+const assert = require('node:assert/strict')
+
+test('R22 Mini static/live normalizers, upload policy, settings and index reference decisions equal frozen main', async () => {
+  const { coreProducts, executionRegistry, miniProducts, staticMiniRegistry, miniDecisions } = await import('../../../test-support/execution-capability.mjs')
+  const {batchExecutionFixture} = await import('../../../test-support/retirement-evidence.mjs')
+  const fixture = batchExecutionFixture()
+  const mini = miniProducts(), { registry } = await coreProducts()
+  const staticRegistry = staticMiniRegistry(mini, registry.providers.openrouter)
+  assert.deepEqual(executionRegistry(mini.catalog), fixture.mini)
+  assert.deepEqual(executionRegistry(staticRegistry), fixture.miniNormalizedStatic)
+  assert.deepEqual(executionRegistry(mini.normalize(registry)), fixture.miniNormalizedLive)
+  assert.deepEqual(JSON.parse(JSON.stringify(mini.inputPolicy)), fixture.miniInputPolicy)
+  assert.deepEqual(await miniDecisions(mini, staticRegistry), fixture.miniStaticDecisions)
+  assert.deepEqual(await miniDecisions(mini, registry), fixture.miniLiveDecisions)
+})

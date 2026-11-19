@@ -6,6 +6,7 @@ import path from 'node:path'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import vm from 'node:vm'
+import { miniModelCatalog } from './lib/mini-model-catalog.mjs'
 import { packModelCatalog } from './lib/pack-model-catalog.mjs'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
@@ -34,7 +35,7 @@ test('packing preserves Unicode, primitive values, object order and independent 
   const value = {
     modelB:{...shared,label:'科学图研模型🌏版本 B',url:'https://example.org/models/science/B'},
     modelA:{...shared,label:'科学图研模型🌏版本 A',url:'https://example.org/models/science/A'},
-    empty:'', literalNumbers:[0,-1,1.25], numericKeys:{10:'ten',2:'two'},
+    empty:'', numericReferenceLookalikes:['~1.a.0','~','~~模型'], literalNumbers:[0,-1,1.25], numericKeys:{10:'ten',2:'two'},
   }
   const {restored} = verify(value)
   restored.modelA.roles.push('fixture-change')
@@ -44,10 +45,35 @@ test('packing preserves Unicode, primitive values, object order and independent 
   for (const primitive of [null,true,false,0,-12,1.25,'']) verify(primitive)
 })
 
+test('similar nested records round-trip without cyclic bases or shared mutable fields', () => {
+  let child = null
+  const records = []
+  for (let i = 0; i < 30; i++) {
+    child = { name: `模型 ${i}`, child, enabled: true }
+    records.push({ name: `模型 ${i}`, child, enabled: true, roles: ['main', 'vision'], limits: { images: 3, tokens: 8192 } })
+  }
+  const { restored } = verify(records)
+  restored[1].child.name = 'changed'
+  assert.equal(restored[2].child.child.name, '模型 1')
+})
+
+test('the decoder still accepts the previous packed format', () => {
+  const legacy = { root: 0, nodes: [[2, 1, 2, 3], [1, 4, 5], 'legacy', [4, '1.6.6'], 'id', 'roles', 'vision'] }
+  assert.deepEqual(unpackModelCatalog(legacy), { id: 'legacy', roles: ['vision', 'vision'] })
+})
+
+test('positional array deltas round-trip nested arrays with independent ownership', () => {
+  const rows = Array.from({length: 24}, (_, i) => [null, false, {name:'相同🌏'}, ...Array.from({length:30}, (_, j) => j === 15 ? i : j)])
+  const {packed, restored} = verify(rows)
+  assert.ok(packed.nodes.some(node => typeof node === 'string' && node.startsWith('^')))
+  restored[0][2].name = 'changed'
+  assert.equal(restored[1][2].name, '相同🌏')
+})
+
 test('the full catalog round-trips through the shipped decoder and stays below the unchanged package budget', () => {
   const source = fs.readFileSync(path.join(root,'apps/web/src/lib/staticModelCatalog.js'),'utf8').replace(/export const /g,'const ')
   const value = vm.runInNewContext(source + ';({channels:EXTENDED_MODEL_CHANNELS,registry:STATIC_MODEL_REGISTRY})')
-  const {packed} = verify(value)
+  const {packed} = verify(miniModelCatalog(value))
   const packageRoot = path.join(root,'apps/miniprogram/miniprogram')
   const dataFile = path.join(packageRoot,'utils/static-model-catalog-data.js')
   function bytes(dir) {
@@ -67,4 +93,21 @@ test('shared presentation metadata remains lossless with the existing shipped co
   const {restored} = verify(original)
   assert.deepEqual(restored, original)
   assert.deepEqual(require('../apps/miniprogram/miniprogram/utils/model-presentation-data.js'), original)
+})
+
+test('Mini evidence projection preserves every execution and selection constraint',()=>{
+  const source = fs.readFileSync(path.join(root,'apps/web/src/lib/staticModelCatalog.js'),'utf8').replace(/export const /g,'const ')
+  const full = JSON.parse(JSON.stringify(vm.runInNewContext(source+';({channels:EXTENDED_MODEL_CHANNELS,registry:STATIC_MODEL_REGISTRY})')))
+  const mini = miniModelCatalog(full)
+  assert.deepEqual(mini.channels,full.channels)
+  for(const [channel,provider] of Object.entries(full.registry)) {
+    assert.deepEqual(mini.registry[channel].defaults,provider.defaults)
+    assert.equal(mini.registry[channel].models.length,provider.models.length)
+    provider.models.forEach((model,index)=>{
+      const result=mini.registry[channel].models[index]
+      for(const key of ['id','roles','selectable','disabledReason','requiresEntitlement','entitlement','regions','roleReasons','protocol','expirationDate','expirationAt','releaseOrder']) assert.deepEqual(result[key],model[key],channel+'/'+model.id+'/'+key)
+      const caps={...model.capabilities};delete caps.sizeSourceUrls;delete caps.sizeReviewedAt
+      assert.deepEqual(result.capabilities,caps,channel+'/'+model.id+'/capabilities')
+    })
+  }
 })

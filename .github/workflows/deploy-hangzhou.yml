@@ -25,25 +25,7 @@ jobs:
           node-version: 24
           cache: pnpm
       - name: Install system plotting and Office runtimes for actual file tests
-        run: |
-          # The runner's Azure mirror repeatedly stalled large Office/font downloads.
-          # Keep its official Ubuntu archive/security fallbacks and normal signatures.
-          if [ -f /etc/apt/apt-mirrors.txt ]; then
-            sudo sed -i '/azure\.archive\.ubuntu\.com/d' /etc/apt/apt-mirrors.txt
-          fi
-          apt_options=(-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30)
-          sudo apt-get "${apt_options[@]}" update -qq
-          sudo apt-get "${apt_options[@]}" install -y acl python3-venv fonts-noto-cjk libreoffice-impress libreoffice-writer
-          /usr/bin/python3 -m venv "$RUNNER_TEMP/plot-venv"
-          "$RUNNER_TEMP/plot-venv/bin/python" -m pip install -r apps/plot-worker/requirements.txt
-          # Linux RLIMIT_NPROC counts all threads for a UID. Keep real plot
-          # children separate from the runner/pnpm/Node processes, retaining 64.
-          sudo useradd --system --no-create-home tuyan-plot-qa
-          sudo setfacl -m u:tuyan-plot-qa:--x /home/runner /home/runner/work "$RUNNER_TEMP" "$GITHUB_WORKSPACE" "$(dirname "$GITHUB_WORKSPACE")"
-          printf '#!/bin/sh\nexec sudo -n -u tuyan-plot-qa --preserve-env=PYTHONPATH "%s" "$@"\n' "$RUNNER_TEMP/plot-venv/bin/python" > "$RUNNER_TEMP/plot-python"
-          chmod 755 "$RUNNER_TEMP/plot-python"
-          echo "TUYAN_QA_PYTHON=$RUNNER_TEMP/plot-python" >> "$GITHUB_ENV"
-          echo "TUYAN_QA_EVIDENCE_DIR=$RUNNER_TEMP/tuyan-qa-evidence" >> "$GITHUB_ENV"
+        run: bash .github/scripts/setup-core-test-runtimes.sh
       - name: Preflight actual scrubbed Python subprocess and PNG/SVG outputs
         run: PYTHONPATH="$PWD/apps/plot-worker" "$TUYAN_QA_PYTHON" deploy/hangzhou/plot-smoke.py
       - run: pnpm install --frozen-lockfile
@@ -216,11 +198,13 @@ jobs:
         if: always()
         run: rm -f "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
   pages:
-    # Publish the same verified revision only after Hangzhou is healthy.
+    # www.paperbanana.asia is retired (#253): after Hangzhou is healthy, republish the
+    # static redirect to tuyansci.cn instead of the full web app, so a production
+    # release can never overwrite the redirect site with a duplicate of the app.
     needs: deploy
     if: github.repository == 'yrjmdqmmx/Tuyan' && github.ref == 'refs/heads/codex/hangzhou-production'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     permissions:
       contents: read
       pages: write
@@ -233,29 +217,10 @@ jobs:
       url: ${{ steps.publish.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.28.2
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --filter @paperbanana/web... --frozen-lockfile
-      - name: Build legacy domain with its existing authentication origin
-        run: pnpm --filter @paperbanana/web build
-        env:
-          VITE_API_BASE: https://api.paperbanana.asia
-          VITE_AUTH_ENABLED: 'true'
-          VITE_AUTH_REQUIRED: 'true'
-          VITE_AUTH_BASE: https://api.paperbanana.asia
-          VITE_BASE_PATH: /
-          VITE_PUBLIC_LEADERBOARD_ENABLED: 'true'
-      - name: Record matching source version
-        run: node -e 'require("fs").writeFileSync("apps/web/dist/version.json", JSON.stringify({revision:process.env.GITHUB_SHA,target:"GitHub Pages"}))'
-      - name: Verify Pages Skill distribution
-        run: node scripts/verify-agent-distribution.mjs apps/web/dist
+      - name: Check legacy domain redirect site
+        run: bash deploy/legacy-redirect/check-site.sh
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: apps/web/dist
+          path: deploy/legacy-redirect/site
       - id: publish
         uses: actions/deploy-pages@v4

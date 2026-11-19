@@ -1,3 +1,4 @@
+import ControlField from './ControlField.jsx';
 import {useId, useMemo, useState, useEffect, useRef, useLayoutEffect} from 'react'
 import {Check, ChevronDown, Search, Shapes, X, Expand} from 'lucide-react'
 import AccessibleDialog from './AccessibleDialog'
@@ -30,7 +31,7 @@ export default function FigureTypePicker({value, onChange, coverage=REFERENCE_CO
   <p>{selected?.definition||(value?'这是历史大类，请选择本次要绘制的具体图型。':'请选择具体图型，再在绘图要求中补充内容与布局。')}</p>
   <AccessibleDialog open={open} onClose={()=>setOpen(false)} labelledBy={title} describedBy={description} className="figure-type-dialog" backdropClassName="figure-picker-backdrop">
    <header className="figure-picker-head"><div><span>图研 · 科研图型</span><h2 id={title}>选择信息图类别</h2><p id={description}>点击图片认识图型，点击名称选择。预览用于说明结构，不代表生成效果。</p></div><button type="button" aria-label="关闭图类选择" onClick={()=>setOpen(false)}><X size={20}/></button></header>
-   <label className="figure-picker-search"><Search size={18}/><input data-autofocus aria-label="搜索图类" type="search" value={query} onChange={e=>{setQuery(e.target.value);setPage(1)}} placeholder="搜索中文、英文或别名，例如：箱线 / box / PCA"/></label>
+   <ControlField className="figure-picker-search" label={<Search size={18}/>}><input data-autofocus aria-label="搜索图类" type="search" value={query} onChange={e=>{setQuery(e.target.value);setPage(1)}} placeholder="搜索中文、英文或别名，例如：箱线 / box / PCA"/></ControlField>
    <div className="figure-picker-body">
     <nav ref={navRef} className="figure-group-nav" aria-label="图类大类">{FIGURE_GROUPS.map(g=><button key={g.id} type="button" aria-pressed={!query&&group===g.id} onClick={()=>{setGroup(g.id);setQuery('');setPage(1)}}><span>{g.label}</span><small>{FIGURE_TYPES.filter(t=>t.group===g.id).length}</small></button>)}</nav>
     <div ref={resultsRef} className="figure-picker-results"><div className="figure-picker-count" aria-live="polite">{query?`“${query}” 的搜索结果`:FIGURE_GROUPS.find(g=>g.id===group)?.label} · {matches.length} 种</div>

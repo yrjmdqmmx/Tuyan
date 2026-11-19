@@ -1,5 +1,12 @@
 # AGENTS.md
 
+## 开发分支约定（2026-11-09 更新）
+
+- `main` 是统一开发基线；本次将 `codex/hangzhou-production` 的已有提交合并回 `main`，保留两边历史。后续开发先同步最新 `origin/main`，功能分支从它创建，完成后通过 PR 合回 `main`。
+- `main` 保留必须通过 PR、禁止强推和删除的保护规则。不要直接向旧生产分支积累新功能，也不要用旧工作树覆盖新的 `main`。
+- `codex/hangzhou-production` 继续作为现有杭州发布入口；本次不迁移自动部署触发器。生产发布仍需单独授权，获准后从已验收的 `main` 同步发布。合并进 `main` 只触发普通 CI，不代表已经部署。
+- 多会话现有分支、未提交改动及未合并成果先保留；逐项检查后再迁入 `main`，不得自动重置、清理或批量合并。
+
 ## 当前生产位置（2026-10-18 更新）
 
 2026-10-18 分渠道线路已部署：国内入口与 Fireworks 从杭州直连；OpenRouter、xAI、Novita、Stability、Together、Ideogram、Runware API、Mistral、BFL 三个入口、fal、Recraft、Replicate、MiniMax 国际共 16 个精确主机走新增香港受控代理（10.78.0.1:3128）；OpenAI / Anthropic / Gemini / Bedrock 等其余既有海外目标保留新加坡。SG 代理 DNS 已修正。禁止因网络超时自动换线重发付费请求。零推理测试不证明账户权益或模型质量；见[线路发布记录](docs/operations/provider-routing-rollout-20261018/report.md)。

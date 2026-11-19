@@ -1,3 +1,352 @@
+## 2026-11-18 · 补齐静态型号版本证据（未发布）
+
+- [x] Shared / Core：补齐 46 个精确渠道型号的版本审计。硅基流动 `deepseek-ai/DeepSeek-V4.1-Flash` 的 10 月 21 日同 ID 升级公告对应 `deepseek-v4.1-flash-1017`。其余 45 项保留 `unconfirmed` 与空目标；另有 10 项已有记录将未知目标统一为 `ModelVersion.id` 约定的空字符串。
+- [x] Web / 小程序 / Gateway：用目录生成器同步 1,033 个型号，并校验两端选择器名称、归一化后的版本和网关返回。旧配置继续使用原调用 ID。9 月的 760 项身份和能力基线及 11 月退役批次的原始哈希仍有独立断言。
+
+## 2026-11-18 · 我的模型保留退役型号的厂商分组（未发布）
+
+- [x] Shared / Core / Gateway：修正 8 个 OpenAI 别名的显示名。退役记录可选的 `developer` 使用现有厂商 ID，仅补齐无法由渠道和精确型号推导的记录。目录仍为 1,033 个型号，退役表 99 条。
+- [x] Web：我的模型按原渠道和厂商显示退役提示，标签、筛选和列表计数都包含已保存的退役记录；改选沿用现有确认流程。
+- [x] 小程序：已保存预设和选择器使用相同名称；打开选择器时，如原厂商仍有可选型号则保留该厂商。退役型号仅显示提示。
+
+## 2026-11-18 · PR #251 合入模型退役第一批（未发布）
+
+- [x] Shared / Core / Gateway：保留 99 条移除记录和 10 条精确截止公告。模型卡继续采用渠道模态证据。公告成为首链接时，可选字段 `cardSpecifications.specificationSourceUrl` 给出次位规格资料，供小程序展示。
+- [x] Web / 小程序：1,033 个静态身份；规格弹窗保留资料标题和渠道链接，Web 卡片页脚链接无 title。TokenDance 的变更记录与原有下线资料并存。旧配置按原身份提示改选。
+
+## 2026-11-17 · 模型退役第一批（本地，未发布）
+
+- [x] Shared / Core：依操作方 2026-11-17 复读证据，从源目录移除 OpenAI 20、SiliconFlow 8、Ant Ling 3 个精确身份；移除表 68 → 99，保留原显示名与既有推荐。完整来源/读取日期见 `config/channel-audit/retirements-20261117.json`；31 项外的型号和默认值不变。
+- [x] 将下线：10 项保留可选，MiniMax 4、OpenAI 1、TokenDance 1 新增公告，百炼 4 项更新来源和 2027-01-19 10:00 UTC+8 精确时间；日期单独给出的公告沿用既有 UTC 日界线。Gemini 2.5 两项与 51 个禁止触碰的候选仅列 TODO。
+- [x] Web / 小程序 / Gateway：同步生成目录与审计数据，旧模型库和预设原样保留并显示“原型号已不可用，请重新选择”；新增绑定/执行沿用 MODEL_UNAVAILABLE / not_sent。增加固定时钟的旧引用保存、重开、提示和日期边界回归；无 UI 组件或持久化逻辑改动。
+- [x] 协作边界：目录版本沿用 v43；无新增 action、请求字段、价格、权限或部署变更。PR #251 同改生成目录，后合并者须合入另一 PR 后重新生成。小程序仍暂停发布。
+
+## 2026-11-10 · R31 Phase I14: immutable historical report checks (not deployed)
+
+- [x] Scripts / historical reports: default R10/R12 checks verify current display projections against the independently captured `bdcc2baf` values, then apply exact hashed patches to the `52e0f161` presentation. All three report artifacts remain byte-identical to main; no historical report was regenerated.
+- [x] Regression / ledger: new scripts tests run both checks without Git and reject unreviewed sources, icon states, URL classifications, identities/order and unchanged-row drift. The local `full.sh` includes R10/R12 and the omitted standalone maintenance checks; main-failing `sync-workflow` and argument-dependent distribution sync are excluded. R11's baseline-dependent default remains unchanged; its explicit frozen check passes. [Cause, scope and validation](docs/model-modality-audit-20261109.md#r31-phase-i14).
+- [x] Validation: **95/95 scripts tests** and **24/24 listed maintenance checks** pass, including `report-changed-tests --check`; historical artifacts and starting HEAD remain unchanged. [Validation record](docs/model-modality-r31-i14-validation.json).
+- [x] Web / Mini / Core / Gateway: no product code, display data, generated catalog, execution contract, saved setting or deployment change; no client follow-up needed.
+
+## 2026-11-10 · R31 Phase I13: narrow primary-link priority and shared specification titles (not deployed)
+
+- [x] Shared / Web / Mini / Core / Gateway: **82** I12 decisions reviewed individually: **15 kept**, **61 restored**, **6 validated Alibaba model pages**. Keep only same-channel sibling → own endpoint; vendor/list/notice links otherwise return to pre-I12 priority. No new Hugging Face primary. [Decisions and evidence](docs/model-card-primary-links-r31.md).
+- [x] Shared titles / UI: **four** source URLs receive acronym casing fixes, including verified Bonsai **GGUF**; the formatter and title generator preserve standard acronym casing. Shared specification dialogs use **模型规格** for channel and direct/vendor cards on Web/Mini. Verification data retained; Mini dates remain undisplayed. Execution fields, picker names, action/env/routing and saved settings unchanged.
+- [x] Regression / review: all 1,064 cards, all 82 decisions, all 15 Option-A URLs, Web/Mini primary/title parity, strict validator rejection cases and I10 one-title-per-URL checks. Historical reports preserved through exact source-only patches; expectations ledger updated. M12 prepares ten PNGs at 1280/390 DPR 2, syntax checked, **not run**. [R31 audit](docs/model-modality-audit-20261109.md#r31-phase-i13).
+- [x] Final full validation: **1,856/1,856 tests**, all requested builds/types, six workspace checks and **16 maintenance checks** pass. Mini **1,566,504 / 1,572,864 bytes**, **6,360 remaining**. [I13 validation record](docs/model-modality-r31-i13-validation.json). No Git writes or deployment.
+
+## 2026-11-10 · R30 Phase I12: plain evidence dialogs, numeric absence and own-model links (not deployed)
+
+- [x] Shared / Web / Mini: specification dialogs contain the eight R29 status sentences plus numeric specifications. Removed date/provenance/unverified rows: Web **4,500**, Mini **3,843**. Web source-link date hovers remain. Numeric absence is **未公布** in **584 fields per client**; not-applicable stays **不适用**; zero catalog numeric facts are unsupported. Keep the plain card label **源自原厂**; remove Mini-only catalog/product jargon. Event dates use 年/月/日 text. Raw evidence and stored configurations are unchanged.
+- [x] Shared sources / generated Mini: **82 primary links**, including all **15 Option-A** cards, now prioritize an existing own-model page. Exact image-input edit citations remain in dialogs. Core/Gateway use the same source ranking; execution fields, model identities, actions, env and routing are unchanged. [Rules, counts and complete URL list](docs/model-modality-audit-20261109.md#r30-phase-i12).
+- [x] Regression / review preparation: all 1,064 rendered Web dialogs and compiled Mini cards; status parity, numeric absence, source-hover dates, exact source changes, preserved historical reports and updated expectation ledger. The sole conditional card is `together/Prism-ML/Ternary-Bonsai-27B`, image input, `支持图像输入（需启用视觉组件）`. M11 prepares twelve 1280/390 DPR-2 shots with a temporary overlay; syntax checked, **not run**.
+- [x] Final validation: **1,851/1,851 tests**, Web/Mini/Core builds, Core TypeScript, six workspace checks and **14 maintenance checks** pass. Mini **1,565,912 / 1,572,864 bytes**, **6,952 remaining**; original ceilings and execution/name locks unchanged. [I12 validation](docs/model-modality-r30-i12-validation.json). No Git writes or deployment.
+
+## 2026-11-10 · R29 Phase I11: full modality status sentences (not deployed)
+
+- [x] Shared / Web / Mini: one runtime-generated sentence for each modality + direction, identical in hover, accessible text and dialog status. Supported/conditional stays dark; other states retain one grey. All R27/R28 short status/attribution wording below is superseded by [I11](docs/model-modality-audit-20261109.md#r29-phase-i11). Source titles and verification dates remain in source surfaces; I10 URL-wide titles and locale cleanup remain.
+- [x] Shared / Mini: a tiny generated lookup retains the single catalog qualifier `图像（需视觉组件）` → `需启用视觉组件`. Other fixture mappings and the safe custom fallback are documented. Mini no longer bundles unused tooltip quote data. Web omits twelve legacy fifth file icons; underlying facts remain untouched. All clients now show four modalities in each direction; no execution, model names, action, env, routing or saved-setting changes.
+- [x] Regression: all 1,064 cards × 8 icons per client; exact sentence patterns/state mapping, no source/site/provider/raw-note/date in hover/aria, Web DOM and compiled Mini tap parity, source single-title and conditional-label scans. Historical reports remain exact through independently checked presentation projection; changed expectations are ledgered.
+- [x] Validation / capture preparation: **1,847/1,847 tests**, all requested builds/types, six workspace checks and **13 maintenance checks** pass. Mini **1,565,905 / 1,572,864 bytes**, **6,959 remaining**; original guards unchanged. [Validation](docs/model-modality-r29-i11-validation.json). M10 prepares fourteen 1280/390 DPR-2 shots, with a temporary screenshot-only title overlay and hover/aria/dialog manifest; syntax/identities checked, **not run**. No Git writes or deployment.
+
+## 2026-11-10 · R29 Phase I10: one visible source title per URL (not deployed)
+
+- [x] Shared / Web / Mini: URL-wide titles replace per-card/list-context variations. Fal API pages always use `渠道资料 · fal · <endpoint name> API 文档`; edit/variant endpoints retain their identity. Vendor/channel ownership controls the prefix; retirement labels and separate fact provenance remain. No execution, name, action, env, saved-setting or routing changes.
+- [x] Evidence / regression: 1,064 cards per client, 1,088 URLs, every footer/field/dialog/retirement surface; 353 title conflicts resolved. Exact before/after counts and every changed URL are in the [R29 title report](docs/model-card-source-titles-r24.md#r29-title-unification). Full Web/Mini formatter parity, strict title scans and exact title-only presentation patches. Changed expectations recorded in the ledger.
+- [x] Locales: removed the one unused Web conditional-support translation; Web/Mini/scripts reject Chinese/English labels and corresponding keys in locales and UI. Conditional data state and dark support presentation remain.
+- [x] Validation: **1,843/1,843 tests**, Web/Mini/Core builds, Core types and all **13 maintenance checks** pass. Mini **1,568,548 / 1,572,864 bytes**, **4,316 remaining**; both original size guards and frozen execution tests are unchanged. [Results](docs/model-modality-r29-i10-validation.json).
+- [x] Review: M10 recipe and plan prepared at 1280/390, DPR 2 for both, with per-URL dialog title checks and output manifest; not run. [Audit](docs/model-modality-audit-20261109.md#r29-phase-i10).
+
+## 2026-11-10 · R28 Phase I9: founder fixes for unknown icons, fal sources and conditional support (not deployed)
+
+- [x] Shared / Web / Mini: unknown/unlisted tooltip `未标注 · explanation`; accessible `<modality>：未标注 · explanation`. Unsupported wording is unchanged. Conditional remains in data but displays dark `支持`, with `支持（条件：qualifier） · attribution` in tooltip/dialog.
+- [x] Evidence / projections: 61 fal catalog fields moved to 36 freshly validated human API pages; 0 kept. Exact status, times, hashes and schema quotes are in [R28 review](config/channel-audit/review-r28-20261110.json). All fal field titles use shared data, including secondary Mini source copies. JSON catalog links remain hidden; fallback attribution is plain `渠道资料 · fal 模型目录`. Core/Gateway consume regenerated display evidence; no execution, names, action, env or routing change.
+- [x] Regression / review: all 1,064 cards, all 196 fal fields, Kimi example, conditional custom fixtures and frozen execution locks; ledger updated. Mini pagination uses indexed batches to preserve the unchanged 128 KiB update limit. [Audit and validation](docs/model-modality-audit-20261109.md#r28-phase-i9).
+- [x] Validation: **1,825/1,825 tests**, all required builds/types and **13 maintenance checks** pass. Mini source **1,555,658 / 1,572,864 bytes**, **17,206 remaining**; original size guards and execution locks unchanged. [Results](docs/model-modality-r28-i9-validation.json).
+- [x] Screenshots: M9 recipe and manifest prepared at 1280/390 (mobile DPR 2), not run; native-title capture limits documented. No Git writes or deployment.
+
+## 2026-11-10 · R27 Phase I8: R2 modality icon simplification (not deployed)
+
+- [x] Shared / Web / Mini: supported/conditional = solid dark glyph; unsupported, unknown and unlisted = the same solid grey glyph (R28 supersedes the original I8 conditional mapping). Removed strikes, question badges, dashed treatment and asterisks. Short labels are `支持` / `暂不支持` / `未标注`. Conditional now uses dark `支持`; `支持（条件：original qualifier） · attribution` appears in tooltip/dialog (R28 I9).
+- [x] Evidence / execution: channel exclusions add `此渠道未开放该模态。`; vendor exclusions add `原厂资料标明不支持。`; existing attribution, quotes, sources, dates and unknown wording remain. States, `data-state`, `is-*` classes, names and execution fields stay unchanged. All 15 decision-A image inputs remain dark solid `支持`. Core / Gateway require no contract changes.
+- [x] Regression / review: new all-1,064-card tests per client cover exact label/evidence mapping, identical grey glyphs and modal contents; frozen pre-I8 presentations allow no other field changes. Existing tests and the [ledger](docs/model-modality-changed-tests.md) record `founder: grey is enough (R2, 2026-11-10)`. [Mapping and conditional decision](docs/model-modality-audit-20261109.md#r27-phase-i8).
+- [x] Validation: **1,818/1,818 tests**, Web/Mini/Core builds, explicit Core TypeScript, six workspace checks and all **13 maintenance checks** pass. Mini source **1,564,312 / 1,572,864 bytes**, **8,552 remaining** (−718); both original byte guards remain unchanged. [Commands and results](docs/model-modality-r27-i8-validation.json).
+- [x] Screenshot preparation: `.audit-input/r24/shots-m8.mjs` plus manifest prepare eight 1280/390 images; **not run**. No Git writes or deployment; native Mini acceptance/deployment retains its existing boundary.
+
+## 2026-11-10 · R27 Phase I7: founder decision A on 15 direct-edit image inputs (not deployed)
+
+- [x] Evidence / shared: **创始人已决定 A**, decision date **2026-11-10**. All **14 fal + 1 Ideogram** edit/remix documents returned HTTP 200 with the original verbatim quotes; exact timestamps in UTC and Asia/Shanghai, body hashes and per-model status are stored in the [dated review](config/channel-audit/review-r27-20261110.json) and [decision record](docs/model-modality-image-input-decision.md). Original decision table retained; zero unverified restorations.
+- [x] Web / Mini / Core / Gateway: review data restores image input **支持** with channel provenance, the configured edit documentation and the actual re-verification date. Plain source titles say “编辑接口”; the founder note remains internal. Ideogram keeps the exact Markdown quote URL in its input fact and opens the separately verified HTML page. Six prior output citations survive Mini compaction unchanged. No execution capability, request identity, action, environment or routing change.
+- [x] Regression / review: [all-card comparison](docs/model-modality-r27-i7-card-diff.json) checks **1,064 cards per client: exactly 15 changed, 1,049 identical**, allowing only image input and its source/date presentation. All picker names equal main; frozen execution tests and fixtures are unchanged. New Web dialog and compiled Mini modal/copy tests cover all 15. Historical Phase 2 reports remain frozen; changed expectations and all 15 literal R9 source rows are recorded in the [ledger](docs/model-modality-changed-tests.md).
+- [x] Validation: **1808/1808 tests**, Web/Mini/Core builds, six workspace checks, explicit Core TypeScript and all **13 maintenance checks** pass. Mini source **1,565,030 / 1,572,864 bytes**, **7,834 remaining**; both original size guards remain unchanged. [Commands and results](docs/model-modality-r27-i7-validation.json).
+- [x] Screenshot preparation: `.audit-input/r24/shots-m7.mjs` and manifest select `fal/fal-ai/flux-2-pro` input-modality evidence at 1280/390, with `desktop|mobile-81-modality-dialog-fal-flux-2-pro-m7.png`; syntax checked, **not run**. No Git writes or deployment; Mini deployment remains paused.
+
+## 2026-11-10 · R26 Phase I6: verified retirement sources and simpler evidence dialogs (not deployed)
+
+- [x] Evidence / shared: audited all **1,064 cards per client** and every displayed retirement badge. All seven name exact model IDs in freshly fetched public documentation. Bailian `qwen3.5-397b-a17b` now cites notice **118728**, date **2027-01-19**; six other badge sources remain verified. Qianfan's same ID has no badge. No exceptions or removals. [Quotes, hashes and fetch times](docs/model-card-qwen35plus-evidence-r24.md#r26-retirement-source-audit), [review data](config/channel-audit/review-r26-20261110.json).
+- [x] Web / Mini: one top verification date; differing known-field dates appear inline with field provenance; unknown fields/icons carry no verification date. The same plain conflict wording appears on 66 cards in each client. Offline tests scan all dialogs, source rows and badges. A curated capture override removes the promotional Doubao title; strict scans reject promotional text, emoji and prices. [Title/date report](docs/model-card-source-titles-r24.md#r26-i6).
+- [x] Core / Gateway / Mini: display-only `cardSpecifications.verifiedAt` carries the card's existing verification date into live Mini dialogs; conflict copy follows the same reviewed rule in live projections. Lifecycle display citations remain separate from execution notices. No spec values, model names, capabilities, request IDs, action, env, routing or deferred image-input decisions changed.
+- [x] Mini: generated registry JS is compacted before adding metadata; unchanged TypeScript behavior and both original byte guards remain covered. The staged build preflights output before installing it.
+- [x] Screenshot preparation: `.audit-input/r24/shots-m6.mjs` and manifest select Bailian `qwen3.5-397b-a17b` source and retirement dialogs at 1280/390; syntax checked, **not run**.
+- [x] Validation: **1810 tests**, all three builds, six workspace checks, explicit Core TypeScript, all **12 maintenance checks** and the changed-test ledger pass. Mini source **1,562,992 / 1,572,864 bytes**, **9,872 remaining**. [Final commands/logs](docs/model-modality-r26-i6-validation.json), [audit](docs/model-modality-audit-20261109.md#r26-phase-i6). No Git writes; Mini deployment remains paused.
+
+## 2026-11-10 · R25 Phase I5: sourced retirement badges and captured titles (not deployed)
+
+- [x] Evidence / shared: public notice [118728](https://www.aliyun.com/notice/118728) loads a public page-entry JSON payload naming **qwen3.5-plus**, **qwen3.5-plus-2026-02-15** and **qwen3.5-plus-2026-04-20**, with **2027-01-19** retirement. Keep all three badges and cite that verified notice. The generic depreciation page remains excluded from specification facts. [Exact quotes, HTTP status, UTC/Shanghai times and SHA-256](docs/model-card-qwen35plus-evidence-r24.md#r25-phase-i5).
+- [x] Web / Mini / Core / Gateway: optional display-only `lifecycleSourceUrl` and `excludedSources` travel through card projections. Badge dialogs/copy actions use the retirement source; specification rows retain their own links. Source-less/excluded display badges are suppressed. Saved Web role badges use the same sourced dialog. All 1,064 cards per client are scanned; seven badges have valid sources. No execution notice, cutoff, capability, request ID, action, env or routing change.
+- [x] Titles / copy: six of 20 numeric-document URLs resolved from public HTML/embedded current-page titles; 14 documented unfetchable URLs retain IDs. New notice title also captured. Source-only `Bailian hosted` / `Free` qualifiers are translated, date labels use `：`, and strict scans enforce all three rules. Full before/after lists and the exact allow-list: [R25 I5 report](docs/model-card-source-titles-r24.md#r25-i5). Picker names and the 15 deferred image-input decisions are unchanged.
+- [x] Mini: compacted captured-title keys before adding display metadata. Source **1,568,100 / 1,572,864 bytes**, **4,764 remaining**; the older 1,569,427-byte guard is unchanged and passes. Generated sources come from the existing sync scripts; no oversized source package or compiler staging output was installed.
+- [x] Review: changed expectations, both revised R9 literal objects, source inventories and new follow-up comparisons are in the [ledger](docs/model-modality-changed-tests.md). Screenshot script `.audit-input/r24/shots-m5.mjs` and manifest prepare the source and separate retirement dialogs at 1280/390 (four images); syntax checked, **not run**.
+- [x] Validation: **1803 tests**, all three builds, six workspace checks, explicit Core TypeScript, all **12 maintenance checks**, and the changed-test ledger pass. [Exact commands and logs](docs/model-modality-r25-i5-validation.json), [audit](docs/model-modality-audit-20261109.md#r25-phase-i5). No Git writes; network limited to public unauthenticated documentation GETs and the notice assets/data referenced by the page. Mini deployment and native visual acceptance retain their existing boundary.
+
+## 2026-11-10 · R24 Phase I4: verified specification and retirement sources (not deployed)
+
+- [x] Evidence / shared: applied the operator's 2026-11-10 real-browser findings. `tokendance/qwen3.5-plus` keeps **65,536**, now cites the exact [Bailian specification](https://help.aliyun.com/zh/model-studio/qwen3-5-plus) as **原厂规格**, with field date **2026-11-10**. Its separate retirement citation is [TokenDance llms-full.txt](https://tokendance.space/llms-full.txt), dated **2027-01-19**; the generic Bailian retirement page is no longer a public source on that card. [Review, eight curl captures and quotes](docs/model-card-qwen35plus-evidence-r24.md#real-browser-verification-2026-11-10).
+- [x] Web / Mini: both evidence dialogs show **沿用百炼同一 API ID 的原厂记录；TokenDance 模型页未标注最大输出** and the dated retirement label. The exact human-readable TokenDance text document is permitted by the machine-link filter. Both Qwen Image Edit cards now show **未知** for unsupported context/output limits. Three unsupported Bailian lifecycle anchors are removed at the display boundary; execution records/cutoffs remain unchanged.
+- [x] Core / Gateway / generated projections: separate display-only `cardSpecifications.retirementSources` from vendor specification sources; preserve reviewed field URLs/dates through Mini compaction. Canonical review data regenerates through existing audit/catalog/card scripts. No action, environment, routing, request identity or execution-capability change.
+- [x] Same-pattern review: **1,064 cards per client**, **19 field citations / eight cards** examined. Thirteen Qwen3.5 facts re-sourced, four unsupported image-token N/A claims cleared to unknown/null, two MiMo text-input citations retained with their exact supporting quote. Final scan: **two supported exceptions, zero unsupported retirement/spec citations**; zero missing vendor links or title/copy findings. All names, four execution locks and the 15 deferred image-input decisions match the reviewed main baseline.
+- [x] Mini / review: **1,566,769 / 1,572,864 bytes**, **6,095 remaining**; both original size guards stay unchanged. Prior expectation changes are recorded in the [ledger](docs/model-modality-changed-tests.md), with its check green. I2/I3 reports remain frozen; I4 appends the new source inventory.
+- [x] Validation: **1,793 tests**, Web/Mini/Core builds, six workspace checks, explicit Core TypeScript and all **12 maintenance checks** pass. [Commands and logs](docs/model-modality-r24-i4-validation.json), [audit](docs/model-modality-audit-20261109.md#r24-phase-i4). No Git writes; network only public unauthenticated documentation GETs. Mini deployment and native visual acceptance remain under their existing boundary.
+
+## 2026-11-09 · R24 Phase I3: operator browser follow-up (not deployed)
+
+- [x] Web: evidence-dialog and card-bottom anchors now outrank the later workspace link reset without `!important`. The new regression parses shipped CSS in import order and computes specificity/source order, including hover/focus-visible and reversed stylesheet order. Existing accent tokens and external-link icons remain. Mini global/component WXSS checks confirm the copy button and hint keep their existing accent.
+- [x] Shared / Web / Mini: replace counter/format label qualifiers with captured page names or meaningful namespace/operation/site/language distinctions. Public GET captures resolve Qianfan pricing/legacy entry and Volcengine's numeric model-list page. Hide 43 Web Markdown duplicates plus one raw machine row; preserve HTML access through 44 URL replacements on each client. No action/env/routing or execution changes.
+- [x] Source review: all **1,064 cards per client**, **2,450 Web / 1,103 Mini source rows**, and seven notices; strict findings Web **318 → 0**, Mini **44 → 0**. **310 Web + 77 Mini** changed row instances are listed in the appended [I3 report](docs/model-card-source-titles-r24.md#r24-phase-i3) and JSON. Vendor attribution remains **65 cards / 166 fields per client, 0 missing links**; names, four execution locks, 65,536 and the 15-model image-input decision remain unchanged.
+- [x] Mini: **1,564,737 / 1,572,864 bytes**, **8,127 remaining**; both existing byte guards are unchanged. I3 expectations, all 44 updated R9 literal objects, and the adapted local audit harness are recorded in the [ledger](docs/model-modality-changed-tests.md). [Audit and validation](docs/model-modality-audit-20261109.md#r24-phase-i3).
+- [x] Final validation: **1,783 tests**, three builds, six workspace checks, explicit Core TypeScript (**0 errors**), and all **12 maintenance checks** pass. [Commands, counts and logs](docs/model-modality-r24-i3-validation.json).
+- [ ] Operator: real-browser/native visual acceptance remains pending; this phase proves the CSS cascade offline. Mini deployment stays paused. No Git writes, secrets, paid/inference calls, deployment, Docker/image builds or other-worktree work. Network was limited to public unauthenticated documentation GETs; sync-agent-knowledge and sync-workflow remain untouched.
+
+## 2026-11-09 · R24 Phase I2: PM third review (not deployed)
+
+- [x] Shared / Web / Mini: source titles use role · curated site · readable page. Captured site suffixes, Qianfan opaque IDs, DeepSeek news fragments and source-only slugs are corrected; all URLs, ordering, roles and picker names are preserved. Strict all-card scan: Web **523 → 0**, Mini **341 → 0** findings; **365 + 239** changed titles. [Complete changes and rule](docs/model-card-source-titles-r24.md), [machine-readable inventory](docs/model-card-source-titles-r24.json). The earlier R23 zero claim is explicitly corrected.
+- [x] Web / Mini: evidence links reuse existing accents/icons; Mini source rows show a copy hint. Unknown modalities retain available source attribution; absent sources say 暂无官方资料. Public conflict copy and unique dialog lines replace contradictory/internal/duplicate text. Web copy findings **1,858 → 0**; Mini **0 → 0**. DOM and compiled-client tests cover all **1,064 cards per client**, every source/copy row, modality tooltip and notice dialog.
+- [x] Mini / tooling: source **1,563,042 / 1,572,864 bytes**, **9,822 remaining**. Existing esbuild compaction plus staged compilation prevent oversized intermediate output; both original byte guards remain unchanged. No execution/API/action/env/routing changes; qwen3.5-plus 65,536 and the founder's 15-model image-input decision stay intact.
+- [x] Review: changed expectations and all 84 revised R9 literal titles are recorded in the ledger. [Audit and validation](docs/model-modality-audit-20261109.md#r24-phase-i2). Screenshot recipe `.audit-input/r24/shots-m4.mjs` prepared for four 1280/390 source-dialog shots, with optional count selectors; syntax/identities checked, not executed.
+- [x] Final validation: **1,777 tests**, three builds, six workspace checks, explicit Core TypeScript (**0 errors**) and all **12 maintenance checks** pass. The staged-build guard rejects oversized temporary compiler output without writing source files. [Commands, exit codes and logs](docs/model-modality-r24-i2-validation.json).
+- [ ] Operator: browser/native visual acceptance and the I1 real-browser vendor verification remain pending; Mini deployment remains paused. No Git writes, network, secrets, paid/inference calls, deploy, Docker/image builds or other-worktree work; sync-agent-knowledge and sync-workflow untouched.
+
+## 2026-11-09 · R24 Phase I1: PM third review (not deployed)
+
+- [x] Shared / Core: accurate `card-presentation.d.mts` and optional `AuditFact.sourceUrls` typing; nullable URL narrowing without new casts or suppression. Core typecheck passes. The offline Docker COPY-layout check now verifies that the declaration accompanies the module in both Core and benchmark build contexts.
+- [x] Web / Mini: preserve specific source roles, including 下线公告 on the three reported vendor notice links. All 1,064 cards per client scan cleanly: 51 Web / 19 Mini retirement rows; exactly seven historical hints. Historical IDs derive from captured `verified:false` pages; Mini reuses existing catalog/audit URLs with a generation-time parity guard. Synthetic historical fixtures also receive the hint; unknown remains unknown.
+- [x] Review / evidence: R9 uses 297 frozen literal URL/label objects; R10 uses the literal Kimi K3 title. All changed existing expectations and their reasons are in the ledger. Public documentation GETs distinguish the current retirement-mechanism source from the model-specific vendor page containing 65536. The number and all source URLs remain unchanged. [Audit and pending browser verification](docs/model-modality-audit-20261109.md#r24-phase-i1), [validation](docs/model-modality-r24-validation.json).
+- [x] Mini: source remains **1,569,424 / 1,572,864 bytes**; **3,440 bytes remaining**. Existing stricter size assertion stays unchanged. Quote IDs reuse the existing catalog losslessly, preserving full wording and dates. No action/env/routing/execution changes; all picker names and the founder's 15-model decision remain intact.
+- [x] Final validation: Web **1,485/1,485**, Mini **173/173**, scripts **58/58**, API **33/33**, Core **7/7**, Gateway **5/5**, two name/image-input invariants, all three builds, six workspace check scripts and all **11 maintenance checks** pass. All four execution locks still equal main.
+- [ ] Operator: real-browser verification of the TokenDance shell and the two vendor attribution pages remains pending; native WeChat rendering remains unverified and Mini deployment remains paused. No Git writes, secrets, inference/paid calls, deployment, Docker/image builds or other-worktree access. Network was limited to eight public unauthenticated documentation GETs; `sync-agent-knowledge` and `sync-workflow` remain untouched.
+
+## 2026-11-09 · R23 Phase H (verification; not deployed)
+
+- [x] Shared / Web / Mini: review items 1–7 pass at `7cb520a9`, with no product behavior or execution-contract changes. All 1,064 cards per client were checked: 65 vendor-attributed cards / 166 fields, zero missing vendor URLs, zero duplicate URLs/labels, zero title findings, and all picker names identical to main. Mini retains its existing source copy-dialog interaction. [Verification](docs/model-modality-r23-verification.md), [exact counts and test evidence](docs/model-modality-r23-verification.json).
+- [x] Mini / test infrastructure: required-provider rejection is byte-identical to main; the missing-channel regression passes. Ledger checks pass with `core.abbrev=7` and `12`. Gzip fixture is 578,207 bytes, deterministic with mtime 0, saving 12,960,201 bytes against the `42ee9ffd` fixture blob. All four execution locks and all 15 image-input decision rows match their baselines.
+- [x] Validation: Web 1,483/1,483, Mini 172/172, scripts 58/58, API 33/33, targeted Core 4/4, Gateway 2/2, and six new audit-only assertions pass (1,758 total). Web/Mini/Core builds and all 11 requested maintenance checks pass. Mini source is 1,569,424 / 1,572,864 bytes, with 3,440 bytes remaining. No product fixes, pre-existing test changes or ledger edits were needed.
+- [x] Screenshot preparation: `.audit-input/r23/shots-m3.mjs` and its manifest specify 30 images at widths 1280/390: the focal qwen3.6-plus dialog plus 14 sample cards across eight channels. Syntax and all 15 selected cards were verified offline; exact operator startup commands are in the script comment.
+- [ ] Operator: run the screenshot script and localhost-dependent Core/Gateway full suites. Browser screenshots and native WeChat rendering remain unverified; Mini deployment remains paused. No Git writes, network, secrets, paid calls, deployment, image builds or other-worktree changes; `sync-agent-knowledge` and `sync-workflow` remain untouched.
+
+## 2026-11-09 · R23 Phase F3: catalog-backed source version punctuation (not deployed)
+
+- [x] Shared / Web / Mini: separator-normalized model IDs/names restore dotted source-title versions on own, family and general/quickstart pages. Curated casing, real hyphens and BFL brackets are preserved; Mini reuses its existing catalog. Display-only metadata, with no action/env/routing/execution contract changes.
+- [x] Web / Mini: all **1,064 cards per client**, **2,494 Web / 1,103 Mini source rows** and seven Web lifecycle dialogs scan with **0 findings**. Complete changes vs `1dcd8b13`: **2,198 Web + 973 Mini + 3 lifecycle titles**. F3 adds 59 Web / 48 Mini corrections vs Phase F. Stability `35` is explicitly confirmed as **3.5**. [Complete inventory and F3 cases](docs/model-card-source-titles-r23.md#r23-f3-corrections).
+- [x] Review: 19 extra shared/compiled-client title cases; three follow-up ledger entries against `fd29cf36`; ledger/checks green, 0 flagged. All names, ordered URLs, roles, historical hints and four execution locks are preserved.
+- [x] Mini: **1,569,424 / 1,572,864 bytes**, **3,440 bytes remaining**; the unchanged older 1,569,427-byte guard also passes. Generated CommonJS/declaration compaction preserves exports/types; no features or evidence removed.
+- [x] Validation: Web **1,483/1,483**, Mini **172/172**, scripts **58/58**, API **33/33**, targeted Core **4/4** and Gateway **2/2**; both builds and all **11 requested maintenance checks** pass. [Audit](docs/model-modality-audit-20261109.md#r23-phase-f3), [validation record](docs/model-modality-r23f3-validation.json).
+- [ ] Existing boundary: browser screenshots/native WeChat rendering remain unverified; Mini deployment remains paused. No Git writes, network, secrets, paid calls, deployment, image builds or other-worktree changes. `sync-agent-knowledge` and `sync-workflow` are untouched.
+
+## 2026-11-09 · R23 Phase F: readable source titles and historical hints (not deployed)
+
+- [x] Shared / Web / Mini: source-link subjects prefer the unchanged curated card name, then captured page titles, then readable paths with numeric separators preserved. Roles, ordered URLs and deduplication are retained. All 1,064 names and execution capabilities remain identical to main; no action/env/provider-routing contract changes.
+- [x] Web / Mini: scan all 1,064 cards per client, 2,494 Web source rows, 1,103 Mini copy dialogs and seven Web lifecycle dialogs. Changed titles: Web 2,193, Mini 969, lifecycle dialogs 3; zero unresolved heuristic findings. Exactly seven historical TokenDance IDs show 渠道页无此型号 in tooltips/dialogs; other unknown hints are unchanged. [Full before/after inventory](docs/model-card-source-titles-r23.md).
+- [x] Mini: compile captured-title metadata against referenced sources and compact this PR's generated helpers; source **1,568,946 / 1,572,864 bytes**, 3,918 bytes remaining. The older 1,569,427-byte guard also passes. No features or pre-existing main code paths removed; no budget changes.
+- [x] Review: 14 assertion blocks in 10 files recorded in the ledger; frozen source inventory, compressed execution fixture, all four execution locks, names, verified links, vendor provenance, icons and display order remain covered.
+- [x] Validation: Web 1,482/1,482, Mini 171/171, scripts 58/58, API 33/33, targeted Core 4/4 and Gateway 2/2; both builds, ten requested maintenance checks and the new title-report check pass. [Phase F audit](docs/model-modality-audit-20261109.md#r23-phase-f).
+- [ ] Existing browser/native boundary: screenshots and native WeChat rendering remain unverified; Mini deployment stays paused. No Git writes, network, secrets, paid calls, deployment, image builds or other-worktree work; `sync-agent-knowledge` and `sync-workflow` are untouched.
+
+## 2026-11-09 · R23 Phase E: vendor evidence, registry validation and stable test artifacts (not deployed)
+
+- [x] Shared / Core / Gateway: display-only `cardSpecifications.vendorSources` carries deduplicated human vendor evidence; verified TokenDance pages remain first. API/OpenAPI/JSON/YAML/Swagger machine links are filtered. Execution fields, actions, environment variables and picker identities are unchanged.
+- [x] Web / Mini: every vendor-attributed field has its vendor URL in the rendered evidence/copy dialog across 1,064 cards; missing-link cards Web 14 → 0, Mini 37 → 0. Both clients show 0 machine links; descriptive roles, notice priorities, icons and provenance remain. Mini required-provider validation is restored exactly to main; phase-2 tests supply contract-valid offline fixtures.
+- [x] Test infrastructure: content-based ledger hashes pass with core.abbrev 7 and 12. The unchanged execution oracle is gzip-compressed to 578,207 bytes; all four locks still compare 1,064 models, and history-free tests/maintenance skips are retained. The changed-test ledger records each revised expectation.
+- [x] Mini: source 1,569,099 / 1,572,864 bytes; the older 1,569,427-byte guard also passes. Generated audit-helper JS is compacted alongside the picker; readable TS remains.
+- [x] Validation: Web 1,479/1,479, Mini 168/168, scripts 56/56, shared API 33/33, Core 4/4 and Gateway 2/2; both client builds and all ten requested maintenance checks pass. Results and file-byte delta: [R23 Phase E](docs/model-modality-audit-20261109.md#r23-phase-e).
+- [ ] Existing browser/native boundary: local server binding fails with EPERM at 127.0.0.1:5183; browser screenshots and native WeChat rendering remain unverified. No Git writes, network, paid calls, secrets, deploy, image builds or other-worktree work; Mini deployment remains paused. `sync-agent-knowledge` and `sync-workflow` are untouched.
+
+## 2026-11-09 · R22 Phase D: history-independent CI tests (not deployed)
+
+- [x] Shared test infrastructure / Core / Gateway: execution tests use committed baseline metadata/defaults and the unchanged 1,064-model execution oracle. The oracle is losslessly minified; no runtime execution, API/action/env, registry identity or reference-image decision changes.
+- [x] Web / Mini: historical card tests read a 334,238-byte lossless archive of 18 exact commit/path sources. Current card, picker-name, verified-link, icon and all four execution assertions remain intact.
+- [x] Maintenance / review: generators and historical reports probe commit availability and explicitly skip their history-dependent `--check` work when unavailable; full history still verifies every original byte/output/diff. The changed-test ledger remains unchanged and its frozen inventory/content/review checks still run without history.
+- [x] Validation: both runs pass Web 1,477/1,477, Mini 166/166, scripts 54/54, shared API 33/33 and all four execution locks; zero Git-history failures. Full-history maintenance checks pass, unavailable-history skips are explicit, and the temporary copy was deleted. Core/Gateway retain socket, missing-LibreOffice and expired-date failures; five unchanged root assertions also fail. Every failure and the simulation-only dependency-link follow-up are listed in [R22 Phase D](docs/model-modality-audit-20261109.md#r22-phase-d) and its validation JSON.
+- [ ] Existing environment boundary: localhost binding remains restricted in this sandbox; affected integration tests require an environment that permits it. Earlier browser/native WeChat acceptance remains outstanding. No Git writes, external network, secrets, paid calls, deployment, image builds or other-worktree work; Mini deployment remains paused.
+
+## 2026-11-09 · R22 Phase C: distinct modality states and evidence (not deployed)
+
+- [x] Shared display / Web / Mini: one presentation helper now distinguishes supported, excluded and unknown modalities without colour. Channel-derived exclusions say 渠道未开放; explicit model/vendor exclusions retain 不支持. Unknown stays unknown. Web uses existing Lucide glyphs and site colour tokens; Mini embeds the same four Lucide glyphs in WXSS. Both use a strike for exclusion and a question mark plus dashed treatment for uncertainty, with no legend row.
+- [x] Evidence / interaction: original TokenDance architecture wording (67 exact pages, 2026-11-09) and Bailian table quotes (34 Phase 2 identities plus Kimi K3 from R10) feed tooltips and the existing evidence dialogs. Bailian quotes are keyed by page plus exact model ID so shared-page variants cannot overwrite one another. Keyboard/touch can open Web evidence even without a source link; Mini icon taps open a modal without selecting the model.
+- [x] Integration / invariants: no execution capability, API/action/env, registry identity/name, source selection, vendor provenance or raw evidence changes. All four execution locks, 1,064 picker names, verified TokenDance links and source deduplication remain covered. The Mini build compacts only generated picker JavaScript after tsc; readable TypeScript and both existing byte ceilings are retained.
+- [x] Tests / review: Web/Mini state and evidence tests, shared-helper parity across 1,064 identities, non-colour structure and active-background contrast checks added; minimum distinguishing-mark contrast **4.26:1**. The changed-test ledger records the presentation updates in five main-existing test files, two branch-introduced expectations against `2550c736`, and the Mini build-script change. Full results and exact package bytes: [R22 Phase C](docs/model-modality-audit-20261109.md#r22-phase-c).
+- [x] Final validation: Web **1,477/1,477**, Mini **166/166**, scripts **50/50**, Core **7/7**, Gateway **5/5**; both client builds, Core build/typecheck and **17** generation/report/layout checks pass. Mini source **1,568,957 / 1,572,864 bytes**; the older **1,569,427-byte** test also passes. [Validation record](docs/model-modality-r22c-validation.json).
+- [ ] Visual/native boundary: offline Playwright Chrome still aborts with SIGABRT / kill EPERM. The 1280/390 and compact-dialog checks verify DOM/CSS structure and interaction, not browser screenshots; native WeChat rendering remains unverified. Mini deployment remains paused; no production work is part of this change.
+
+## 2026-11-10 · R22 Phase B: verified links, source labels and Docker imports (not deployed)
+
+- [x] Shared / Core: card rules and generated data now live within `packages/api/src`; no card import reaches into Web/config in a container. Actual Docker COPY layouts resolve 4 Core bundles, 16 benchmark-image bundles and Gateway local imports without Docker/image builds. Generated data is guarded by `sync-card-display.mjs --check`.
+- [x] Web / Mini / Gateway: all 74 TokenDance pages captured as HTML + portal JSON + actual SPA DOM/text; 67 real pages are allowlisted with date/hash, seven “Model not found” pages use original main vendor links. Sources use descriptive subjects and canonical-URL dedupe; Web dialog repeats no link rows, Mini retains its primary-source copy dialog. No-link fallback shows 官方文档待确认.
+- [x] Display / execution separation: text/image/video/audio order is display-only; 20 vendor-only token fields on 18 TokenDance cards visibly show 源自原厂, and 63 unknown token fields remain unknown. The 视觉理解 tag remains tied to execution roles. All four execution locks and all 1,064 picker names still equal main; no API/action/env or execution integration is added.
+- [x] Validation: Web 1,472/1,472; Mini 163/163; scripts 48/48; Core 7/7; Gateway 5/5; both client builds, Core build/typecheck and 17 applicable generation/report/layout checks pass. Mini source **1,564,986 / 1,572,864 bytes** (7,878 remaining), with the older stricter size test preserved. Historical evidence/reports and Phase A review decisions remain intact; [Phase B report](docs/model-modality-audit-20261109.md#r22-phase-b), [counts](docs/model-modality-r22b-results.json), [validation](docs/model-modality-r22b-validation.json), and [expectation ledger](docs/model-modality-changed-tests.md) describe the changes.
+- [ ] Existing environment/scope boundaries: Chrome launch is blocked by SIGABRT/EPERM (actual SPA DOM/text was captured in JSDOM); browser visual/native WeChat checks and older socket-suite EPERM follow-ups remain. Unrelated `sync-workflow --check` drift is unchanged from Phase A; independent-repository distribution checking needs another checkout and was not attempted beyond its usage guard. No Git writes, paid/inference calls, secrets, deployment, other-worktree access, or image builds. Mini deployment remains paused.
+
+## 2026-11-09 · R22 Phase A: execution parity and changed-test review (not deployed)
+
+- [x] Shared / Core: channel modality reviews now affect display specifications only. Removed the top-level enrichment override and isolated catalog normalization from display overlays. All execution fields and reference-image decisions match frozen main `8c456709`; the offline comparison restored 54 fields across 47 registry models and normalization parity for 113 identities.
+- [x] Gateway / Web / Mini-program: independent tests compare capability output to the frozen main fixture. Gateway relays unchanged capability; Web checks static/live vision and refine decisions; Mini checks decoded catalogs, normalization, upload policy and the actual settings/index reference decisions. All 1,064 static picker names, channel icons, links and provenance remain covered. No new API/action/env integration is required.
+- [x] Review / validation: [complete expectation inventory](docs/model-modality-changed-tests.md) covers 14 pre-existing test files, 68 assertion/input changes and 615 semantic changes in one consumed audit fixture. One broad R6A exemption was removed and original retention restored outside 12 exact schema cases; no unresolved flagged expectations. Web 1,467/1,467, Mini 160/160, scripts 43/43, both client builds, Core typecheck and six generator/report checks pass. Mini source remains 1,569,244 / 1,572,864 bytes.
+- [ ] Environment-only validation: broader Core run has 60 passes / 19 localhost `listen EPERM` failures; Gateway has 203 passes / 87 identical binding failures / 1 skip. The six touched/new Core tests and all four new endpoint-specific parity tests pass. Every affected test is listed in [R22 Phase A](docs/model-modality-audit-20261109.md#r22-phase-a). Re-run socket integration in an environment that permits localhost binding. Mini deployment remains paused. No git writes, network, secrets, paid calls, deployment or container image builds were used.
+
+## 2026-11-09 · R21 Phase 3：恢复 Web 显示名与来源断言（未发布）
+
+- [x] 目录生成 / Web：静态规格补全不再复制 `resolvedModel` 名称覆盖；`modelCardName` 恢复 `8c456709` / `d1fe6ff6` 的名称规则，模态解析仍使用完整对象。31 渠道 / 1,064 个选择器标题与旧基线一致，保留完整 live 对象的显式版本名。无 API、action、env、模型 ID、角色或执行契约变更。
+- [x] Web：百炼仅 MiniMax M3.1 Flash / MiMo Ultraspeed 两个精确渠道表格改期望为“渠道”；带日期的 DeepSeek ID 仍为“图研既有核实”，其余事实断言保留。原版本标签测试未改，已有 TokenDance 测试改动保留；全量 1,466/1,466、构建、scripts 42/42 与四项生成/报告检查通过。
+- [x] 小程序 / Core / Gateway：无新增接入待办；小程序生成物未变，159/159、源码 1,569,244 bytes，原上限 1,572,864 不变。详细验收见 [Phase 3](docs/model-modality-audit-20261109.md#phase-3--full-suite-web-regressions)。无 Git 写命令、网络、付费调用或发布。
+
+## 2026-11-09 · R21 Phase 2：渠道模态与完整模型展示（未发布）
+
+按 2 → 1 → 3 → 4 完成；仅公开官方文档/型号页无认证 GET，无 Git 写命令、其他工作树写入、登录、推理/付费调用或部署。逐项引文、HTTP 状态和复现命令见 [Phase 2](docs/model-modality-audit-20261109.md#phase-2)。
+
+- [x] Shared / Core：版本化证据覆盖百炼原 20 / 完整 34 卡、68 个表格字段；27 卡 / 30 项误导模态复核为 2 支持、28 未知。渠道表格优先，未知仅遮蔽被复核模态；原厂归档与执行能力不改。完整 registry 增加可选展示投影 `cardSpecifications`（fields/sourceUrl/sourceLabel/note）。
+- [x] Gateway：生成事实同步，原样转发全部 1,061 个完整对象及展示投影，无新增 action/env/路由。
+- [x] Web：统一精确 ID 解析完整 live/static 对象；目录、模型库、选择器和历史 ID 回退均覆盖。完整 Core 对象与 ID 解析的首链接/模态差异 659 → 0；使用同一 registry 的四字段差异 0。
+- [x] 小程序：normalizer 保留完整展示投影，picker 优先使用；离线投影从完整静态规格生成，包体使用无损编码。159/159、build/check 通过；源码 1,569,244 bytes，原 1,572,864 上限不变，余 3,620；继续暂停发布。
+- [x] 七条死链：5 Replicate Imagen + 2 Runware 全部保留，渠道 availability 均 unverified；404/目录静默不作下线证据，同级 Grok AIR 不替代 quality 身份；既有原厂可见链接保留。
+- [x] 验收：Core 35/35、Gateway 17/17、脚本 42/42；Web 定向 121/122，唯一失败为 d1fe6ff6 已有 TokenDance 来源标签旧期望，原断言未改。Web/Core build、Core/Mini 类型检查与生成/同步/历史冻结报告通过；Core Docker COPY 已补齐展示模块及 JSON，并校验完整打包依赖图；sync-workflow 保留任务允许的既有漂移。各端新增契约接入已完成。
+- [ ] 外部边界：七型号真实渠道在列/账号权益、既有实屏/微信原生扫描和生产验收未进行；只读公开文档不能替代上述验收。既有 Web 标签期望失败与 workflow 漂移仍记录在报告中。
+
+## 2026-11-09 · R21 P1：TokenDance 渠道模态优先（未发布）
+
+仅使用操作方已捕获的公开快照；无网络、推理/付费调用、Git 写操作、部署或其他工作树写入。新证据 `tokendance-catalog-snapshot-20261109b.json` 保留旧快照；119 个目录 ID、119 个门户 200，目录新增/缺失均 0，协议集合仅 kimi-k3 新增两项（不启用执行协议）。
+
+- [x] Shared / Core：全部 74 个接入身份按渠道证据解析；67 卡 / 134 模态字段引用精确 TokenDance 型号页及 2026-11-09，7 个无本轮门户数据身份的 14 字段未知。精确规格、目录合并与 Core 完整对象阻止原厂并集回填；原厂归档、角色、协议、执行/计费权限不变。可选展示字段 `specifications.modalityFacts` / `specificModelSpecifications.modalityFacts` 记录逐字段来源。
+- [x] Gateway：生成审计事实同步，转发 Core 完整对象；无新增 action、env 或网关路由。
+- [x] Web：渠道明确列表优先；Qwen3.6 Plus 图像/视频不支持，Kimi K3.1 Pro 图像/视频、MiniMax M3.1 Flash 图像、DeepSeek V4.1 Flash 1017 图像支持；74 卡首链接统一型号页，`/portal/api/` 禁止可见。历史页面无当前捕获不等于下线。
+- [x] 小程序：同一事实与排除/未知规则，运行时角色下限不得补回；附加字段复用目录顺序压缩，源码 1,569,288 bytes（原上限 1,572,864 不变，余 3,576）。全量 157/157、预算及旧 R15 更严体积测试通过；暂停发布状态不变。
+- [x] 验收：完整 Core 对象 + React 74/74、门户匹配 67/67、原 54 卡错误归因修正为 49 渠道确认 / 5 未知；Web 专项 116/116、Gateway 9/9、脚本 24/24、Core 离线 70/70（含 R21 3/3），类型检查、生成漂移检查与 Web/小程序构建通过；Core 扩展套件 86/89，3 项本地监听被沙箱 `listen EPERM` 阻挡，未削弱断言。历史 R10/R11/R12 报告支持只读归档代码复算，旧证据不改写。
+- [ ] 外部验收沿用：3 项 Core socket 集成测试需允许 localhost 监听的环境；Browser/Playwright 与微信原生扫描未完成。无线上验证或发布。本轮详细差异、逐卡 148 字段对照与复现命令见 [R21 审计](docs/model-modality-audit-20261109.md)。
+
+- [x] 2026-11-09 · 模型卡 R17（未发布）：#245 标签范围保留 45 / 移出 134，42 MOVE 文件恢复 pre-R15、2 共享 CSS 仅留模型配置规则；原生 ControlField 使用独立 label/htmlFor，MenuSelect 保留非点击标题；Shared/Core/Gateway/Web/小程序已接入“失败不能抹掉已审缺席”，七项从结构化审计持续隐藏，empty/timeout 为 65 张置灰卡、74 历史身份及保存选择保留，各端无新增待办；Web 专项 216/216、全量 1419/1431（12 失败与已有清单逐名一致）、Core 43/43、Gateway 13/13、小程序 154/154、scripts 18/18，生成/双 sync --check/构建通过；小程序源码 1,569,387 bytes，原 1,572,864 上限未改；未运行 Git 写命令、付费调用或访问其他工作树，详见 [R17 验收](docs/model-card-audit-20261109.md#r17范围拆分原生标签关联与失败态审计缺席当前验收)。
+- [x] 2026-11-09 · 模型卡 R16（未发布）：Web 紧凑目录/选择器共用页脚换行，来源先独占一行、提示与按钮成组；域名单行省略并保留完整 URL title，桌面/移动 DOM/CSS 回归 7/7；Web 全量 1403/1415，12 个失败与修改前逐名一致，构建通过；小程序源码 1,569,166 bytes、原 1,572,864 上限不变，预算 2/2；实屏受监听/Playwright EPERM 限制，未运行 Git 写命令或付费调用，无共享契约待办。
+- [x] 2026-11-09 · 模型卡 R15（未发布）：Web 179 处字段拆开标题与控件、普通预设纵排全宽/8px；双端失效型号不拆行，≤480px 改选另起一行左对齐/8px；198+1 处 label 审计与显式例外、DOM/CSS 回归完成；Web 专项 124/124、全量 1396/1408，12 失败逐名在 R14 复现，小程序 151/151，双端构建/生成检查通过；源码 1,569,166 bytes（−261），原上限不变；保留 R14 与用户配置，无共享契约待办，实屏/原生验收沿用，详见 [R15 验收](docs/model-card-audit-20261109.md#r15模型配置标签间距与移动端失效提示当前验收)。
+- [x] 2026-11-09 · 模型卡 R14（未发布）：Shared/Core/Gateway/Web/小程序已接入 catalogPresence listed/absent/unverified；TokenDance empty/timeout/all_invalid 保留置灰与“暂时无法确认”，仅完整非空有效目录确认缺席，渠道和保存选择保留；119 条公开快照供计数/预览共用，test-support 三模式默认 snapshot；main/head 可见 988/984、可选 949/943；Core 66、Gateway 10、Web 170、小程序 147、scripts 39 项通过，生成/双 sync/构建通过；小程序源码 1,569,427 bytes，原上限不变；各端无新增接入待办，实屏/原生验收沿用，详见 [R14 验收](docs/model-card-audit-20261109.md#r14tokendance-空目录与结构化在列状态当前验收)。
+- [x] 2026-11-09 · 模型卡 R13B（未发布）：保留 R13；Shared/Core/Gateway/Web/小程序统一公告来源标签，完整/静态首链接“下线公告”8→16 / 8→34，优先级不变；TokenDance DeepSeek V3-0324 改用原厂发布页，397 卡 / 374 URL 全部 200（操作方证据）；Web 118/118、scripts 37/37、小程序 142/142、Core 11/11、Gateway 6/6，生成/双 sync --check/双端构建通过；源码 1,567,342 bytes（本轮 −11），原上限不变；各端无新增待办，详见 [R13B 验收](docs/model-card-audit-20261109.md#r13b公告标签与-deepseek-v3-0324-来源当前验收)。
+- [x] 2026-11-09 · 模型卡 R13（未发布）：Shared/Core/Gateway/Web/小程序仅同步 7 卡原厂来源（6 原厂规格 / 1 下线公告）及 14 URL 死链过滤，渠道未移除；397 卡 / 374 URL 全部 200、404 例外为空，旧证据与下一 PR 核实清单保留；Web 115/115、scripts 36/36、小程序 141/141、Core 9/9、Gateway 6/6，生成/双 sync --check/双端构建通过；小程序源码 1,567,353 bytes（−229），原上限未改；各端无新增接入待办，详见 [R13 验收](docs/model-card-audit-20261109.md#r13仅修复七个可见死链当前验收)。
+- [x] 2026-11-09 · 模型卡 R12D（未发布）：仅文档/测试回填最终 397 卡、374 URL 的 HTTP 证据（367 URL 200、7 URL 404，均为 HTML）；7 项因原链接也 404/API 保留，待 PM/下一 PR；R11 46 条 ID-only 检查已替代，卡片链接/事实/UI 与运行时契约不变，各端无新增接入待办；Web 112/112、scripts 35/35、R12 清单 --check 通过，详见 [R12D 验收](docs/model-card-audit-20261109.md#r12d最终链接-http-检查当前验收)。
+- [x] 2026-11-09 · 模型卡 R12C（未发布）：Shared/Core/Gateway/Web/小程序同步精确 API/JSON 识别与同型号链接，TokenDance 74 条证据（67 渠道页/7 原厂回退），全目录具体程度回归及 9 型号例外已列明；R8→最终 397 项、R11 计数和 27 卡/30 项不变；Web 163/163、scripts 35/35、小程序 140/140、Core 8/8、Gateway 6/6，生成/双 sync/构建通过；源码 1,567,582 bytes、原上限不变；运行时合同不变，各端无新增接入待办，HTTP 回填/原生扫描沿用，详见 [R12C 验收](docs/model-card-audit-20261109.md#r12c恢复模型专属链接与精确-api-识别当前验收)。
+- [x] 2026-11-09 · 模型卡 R12/R12B（未发布）：Shared/Core/Gateway/Web/小程序同步来源补录与首链接规则（下线公告优先、过滤 API/JSON、渠道具体页优先）；38 个 TokenDance 页有渲染证据，467 项最终变化待操作方 HTTP 回填；R11 计数与 27 卡/30 项清单不变；Web 159/159、scripts 35/35、小程序 140/140，生成/双 sync/构建通过，源码 1,569,251 bytes、余 3,613；运行时执行合同不变，各端无新增接入待办，详见 [R12 验收](docs/model-card-audit-20261109.md#r12--r12b首链接规则与小程序包体当前验收)。
+- [x] 2026-11-09 · 模型卡 R11（未发布）：46 链接均 200、无回退；审计改用完整 Core 对象及两侧原卡片代码，27 卡/30 模态差异仅列出；Web 134/134、scripts 35/35、小程序 138/138，生成/双 sync/构建通过，源码 1,568,676 bytes；运行时事实与契约不变，各端无新增待办，详见 [R11 验收](docs/model-card-audit-20261109.md#r11链接证据完整-core-对象计数与模态待复核清单当前验收)。
+- [x] 2026-11-09 · 模型卡 R10（未发布）：Shared/Core/Gateway/Web/小程序同步百炼 kimi-k3 官方模态排除与渠道来源；小程序显示名回退、Web 改选正文 14px 完成；Web 131/131、小程序 138/138、生成/构建/双 sync 通过，源码 1,568,676 bytes；各端无新增待办，详见 [R10 验收](docs/model-card-audit-20261109.md#r10渠道明确排除完整-registry-回归与改选正文当前验收)。
+- [x] 2026-11-09 · 模型卡 R9（未发布）：各端同步名称去备注，小米原名保留；Web 渠道来源优先影响 46 卡；测试/构建/双 sync 结果及 1,567,915 bytes 包体见 [R9 验收](docs/model-card-audit-20261109.md#r9显示名清理与渠道来源优先当前验收)，各端无新增接入待办。
+- [x] 2026-11-09 · 模型卡 R8（未发布）：Shared/Core/Gateway/Web/小程序同步 68 项 main 原显示名与 MODEL_UNAVAILABLE 新文案，机器字段不变；修复选择/改选样式、确认弹层高度和 K/M 单位；仅百炼 kimi-k3 规格纠正，硅基窗口缺项文档统一。定向 Web 95/95、小程序 134/134、API 8/8、Gateway 6/6、scripts 30/30，生成/双 sync --check 与双端 build 通过；Web 全量 1356/1368 的 12 失败在 942f6078 同环境逐名复现。源码 1,568,055 bytes，原上限 1,572,864 不变；各端无接入待办。只读 Git，无真实/付费调用或部署；实屏/原生扫描待办沿用。详见 [R8 验收](docs/model-card-audit-20261109.md#r8pm-小项修正当前验收)。
+- [x] 2026-11-09 · 模型卡 R7（未发布）：Web / 小程序失效提示统一加“原型号短名：”，含单型号与无推荐项；后端 MODEL_UNAVAILABLE 文案不变。Web 定向 135/135、小程序 132/132、生成器 7/7，双端 build、目录/参考上传 sync --check 通过；小程序源码 1,564,328 bytes，原 1,572,864 上限不变；仅本地修改，未运行 Git 写命令。
+## 2026-11-09 · 模型卡 R6B：界面修正（未发布）
+
+基于 R6A `b418f1f7`，保留数据事实和任意角色空默认；只读 Git，无真实/付费模型调用或部署。
+
+- [x] Web / 小程序：九张带限定语的窗口将 tokens 放在注释前；未知模态去问号并保留灰色/未知语义。短替代名、统一“原型号已不可用，请重新选择。推荐：…”及次级改选按钮同步；取消和角色隔离保持。
+- [x] Web：失效通知与空状态互斥；来源/下线弹层按内容高度、来源显示域名；卡片顶部对齐、标题最多两行和完整 title、元数据不换行、连接 ID 移到悬停。Core / Gateway 无接入待办，无 API、action、env 或执行合同变化。
+- [x] 验证：Web 定向 205/205，全量 1345/1357，12 个失败均在 b418f1f7 同环境复现（失败文件对照 20/32）；小程序 130/130、build/check，Web build、scripts 28/28、目录/参考上传/审计 --check 通过。
+- [x] 包体：源码 **1,564,174**，runtime **1,141,303**，媒体 **189,978 bytes**；比 R6A 源码少 195，原 **1,572,864** 上限未改，余 8,690；生成 .js 与 .ts 一致。详见 [R6B 验收](docs/model-card-audit-20261109.md#r6b界面修正当前验收)。
+- [ ] 外部实屏：Browser 插件未提供、Playwright 命令不存在；1280/390 截图、相对 main 卡片像素高度与微信原生扫描仍待验收，小程序继续暂停发布。
+
+## 2026-11-09 · 模型卡 R6A / R6A2：模态、官方单位与 token 展示（未发布）
+
+继续保留工作区已有修改；只读 Git，未提交/推送/部署，无真实或付费模型调用。此条覆盖下方旧轮次规格和计数结论，任意角色可空默认的 H 决策不变。
+
+- [x] Shared / Core / Web：显示事实允许整数或官方 K/k/M 字符串；字段来源补充 product（图研输入要求）。模态并集及角色/操作的图像输入下限覆盖全静态 1064 张卡；345 卡/351 字段修正，41 张错误仅文本修复，恢复 main 9 卡/13 字段退化。适配器、角色、额度、价格与权限不变。
+- [x] 单位 / 冲突：126 卡/157 个 token 字段变化（145 标签），142 处源字段修改；300 个原输入正整数字段有逐值复核决定。85 项冲突均有“官方原文”/缺证说明：49 项支持，36 项回退。第三方 DeepSeek 图像支持不再借原厂页面认定；详见 [单位清单](docs/model-card-audit-20261109-units.md) / [冲突表](docs/model-card-audit-20261109-conflicts.md)。
+- [x] Web / 小程序：24 张 Gemini 图像卡恢复最大输出；410 张纯图像卡仍不适用。共享运行时模态合并，全目录四字段 value/state/provenance 对照通过；Web 来源详情与小程序显示区分产品输入要求。未用输入上限冒充总窗口。
+- [x] Gateway / 生成：同步派生审计模块，未增加 API、action、env 或权限字段，无其他端接入待办。小程序 payload 复用 pack/delta、registry 模态引用、运行时角色推导与行来源引用；保留界面与执行约束，移除未显示元数据。
+- [x] API 回归：当前 qwen3.8-flash 同一协议路径，main/vision × true/false/省略 6 次端到端序列化断言恢复；当前 Omni 的 text-only streaming 与禁止开关、旧 ID 零传输拒绝继续覆盖。受影响 3 文件 10/10，Core check 通过。
+- [x] 验证：scripts 28/28、Web 模型/目录/思考 179/179、小程序 128/128；小程序 build/check、Web build、审计/目录/参考上传生成与 --check 通过。非全量 Core/Web/Gateway 运行。
+- [x] 包体：源码 **1,564,369**、runtime **1,141,228**、媒体 **189,978 bytes**；比 main 少 **5,674**，低于原 **1,572,864** 上限 **8,495**。预算及预算测试不变，`.js` 已由 `.ts` 编译。
+
+同一当前规则解析两根；各项按“main → head”，顺序为输入/输出/上下文/最大输出：
+
+| 分母 | 总数 main → head | 已知输入 | 已知输出 | 已知上下文 | 已知最大输出 |
+| --- | --- | --- | --- | --- | --- |
+| 静态目录 | 1125 → 1064 | 746 → 791 | 327 → 495 | 224 → 350 | 74 → 209 |
+| 可见目录 | 923 → 919 | 869 → 868 | 819 → 838 | 411 → 412 | 68 → 181 |
+| 完整 mock registry | 1122 → 1061 | 1032 → 997 | 968 → 967 | 534 → 519 | 74 → 209 |
+
+静态 1125 → 1064，mock 1122 → 1061，可见 923 → 919，可选 884 → 878，将下线 7。逐渠道模态计数、单位逐值清单及限制见 [当前验收](docs/model-card-audit-20261109.md#r6a--r6a2数据阻塞项完成当前验收) / [R6A 计数](docs/model-card-audit-20261109-count-r6a.json)。
+
+- [ ] 外部验收：本环境 Browser 插件/Playwright 不可用，真实浏览器截图、微信原生扫描未完成；小程序继续暂停发布，生产发布仍需另行授权。
+
+## 2026-11-09 · 模型卡 R5：全量 Core 新增 19 项回归修复（未发布）
+
+R4 定向测试结论不代表全量 Core；操作方提供的沙箱外对比为 main `c7b6a2fc` 1580/13/1、R5 前 head 1567/32/1（通过/失败/跳过）。本轮按日志实际文件定位并修复 19 个新增失败，保留全部既有未提交修改，未运行 Git 写命令。
+
+- [x] Shared / Core / Web：`config/thinking-audit/{domestic,global}.json` 为七个新增精确身份补齐 unconfirmed / 空 controls disposition；`thinking-contracts.test.ts` 保留全目录每角色/协议唯一登记断言，并验证默认空 wire、非法思考控制拒绝和 OpenAI 2.6 两图像型号继续因尺寸合同缺失而禁用。已生成 Core/Web thinking 数据与 support.csv；无 API、价格、计费或权限变更。
+- [x] 历史快照：`helpers/catalog-retirements.ts` 固定枚举 68 个移除身份及 stopDate/source；`catalog-20261016/19/26.test.ts` 保留存续型号/默认的原断言，精确核对 1125 − 68 + 7 = 1064，只将已移除的 StepFun image 默认改为空。10/26 生命周期测试从移除证据读取小米日期并验证动态目录缺席、零传输拒绝。
+- [x] v24 合同：`official-catalog-v24.test.ts` 的 StepFun 集合与角色总数逐项减去两条移除记录；退役日期/北京时间零点转查原审计及移除表；LongCat-2.5 由后续精确身份测试覆盖。`official-image-size-v24.test.ts` 核对 Step 缺席与日期来源，保留存续型号全部 504 个尺寸组合及原覆盖门槛；`model-channel-contracts.test.ts` 的百炼 qwen-image-edit 改为缺席和退役证据断言。
+- [x] 当前/历史集合：`official-text-channels.test.ts` 保留原 MaaS 清单并独立核对 LongCat-2.5 合同；`channels-v381.test.ts` 增列 Ling-3.1/3.2 与 LongCat-2.5，保留旧默认、角色与 Preview 断言；`frontier-refresh.test.ts` 仅对齐 v43，五同步/五 Batch 边界不变。
+- [x] 适配器夹具：`thinking-bailian-console-54.test.ts` 使用当前 Qwen3.5 Omni，原 SSE/双角色/省略未知字段断言保留；旧快照的布尔序列化断言仍在，当前不支持的开关明确拒绝。`thinking-other-110.test.ts` 用在库 Kimi K3 及其已审核 effort 替代 muse；两文件都验证旧 ID 在传输、工作流和计费记录前报 MODEL_UNAVAILABLE。
+- [x] 恢复：`refine-controls.test.ts` 两个 StepFun fixture 换用共用同步官方图像 adapter/checkpoint/计费路径的 SenseNova Fast；lost-submit 不可重投、download 可恢复、一次提交/计费、同 jobId 和规划复用断言全部保留。使用有效所属原图补测 Step 旧 ID 拒绝且零提供商调用/执行记录。
+- [x] 本地验证：13 文件逐个执行原命令，141 通过 / 32 个 listen EPERM / 0 跳过；五个受阻文件再用临时内存 HTTP shim 执行原服务器中间件和全部断言，42/42，加上八个无需监听文件 131/131，共 173/173，覆盖全部 19 项。Web 模型测试 180/180，Core check、目录/参考上传/thinking/审计生成器 --check 通过；根目录 head 56/3、main 49/3，同名三项旧快照失败，精确差异见报告。
+- [x] 小程序：全套 127/127、build 和预算复验通过；源码 1,571,089、runtime 1,148,153、媒体 189,978 bytes，原 1,572,864 源码上限未提高，余 1,775 bytes；暂停发布不变。本轮无额外客户端契约接入待办。
+- [ ] 外部全量复核：临时内存 HTTP 验证不代表真实 socket 或沙箱外全量已通过；操作方仍需重跑完整 Core。详见 [R5 逐测试修复与验证](docs/model-card-audit-20261109.md#r5修复全量-core-新增的-19-项回归)。没有真实/付费模型请求或部署。
+
+## 2026-11-09 · 模型卡 R4：既有规格回退、保存兼容与离线生成（main c7b6a2fc，未发布）
+
+第三轮 1–6 已在 `00d04cee`，main 已于 `fe5a764d` 合入；本轮仅保留未提交修改，未运行 Git 写命令。下方旧轮次测试数字为历史记录，当前验收以本条为准。
+
+- [x] Shared / Core：规格缺项逐字段回退到已核实目录/精确型号配置，标记 `catalog` / 图研既有核实；审计优先，85 项差异逐值保留来源。未知模态不等于不支持，qwen3.8-max 恢复文本/图像/视频；Ling 视频来源补入数据；百炼 Kimi 可疑最大输出为 null，并阻止回退。适配器、请求额度、价格与权限不变。
+- [x] Core：顶层/优化请求与自定义 API / TokenDance 预检统一返回 MODEL_UNAVAILABLE、400、中文替代提示和 not_sent；提供商调用前停止。新增审计/HTTP 预检 7/7，HTTP 新测试无监听地执行真实 Express 中间件。
+- [x] Gateway / Web 模型库：PUT `/api/model-library` 增加可选 `intent`（save / import / add）。无服务端存档的首次同步及显式 import 保留历史身份；用户添加使用 add 并拒绝移除 ID；普通更新继续核对新身份。调用时仍独立检查可用性。Gateway 和 Web hook 覆盖首次同步、导入、拒绝新增及原样往返。
+- [x] Web：恢复选择器思考状态与连接说明，我的模型展示连接名 · ID；确认替换只改当前角色，原库条目状态不变。第三轮空默认、日期边界、K/M 精确详情、具名筛选提示、移除槽和标题徽标全部复验。静态/可见目录四项已知数均不下降；完整 mock registry 的输入/输出/上下文净减 7/1/15 均来自明确删除的旧型号，逐 ID 已列明，无存续型号规格退化。
+- [x] 小程序：保留 availabilityNotes、来源标签和同义未知模态；保留 main 所有角色可空默认规则。127/127、build/check 通过，源码 1,571,089 bytes（main 1,570,043，原上限 1,572,864）；运行产物 1,148,153，媒体 189,978 bytes。暂停发布状态不变。
+- [x] 生成器 / 包体：默认从 `config/channel-audit/input-20261109.json` 离线生成，无需私有输入目录；目录/参考上传/生成器 --check 全通过，生成器+codec+Gateway audit 17/17。Web modelAudit raw/gzip 86,295/13,408 → 57,528/8,445 bytes，构建块 5,480,897/796,857 → 5,459,168/794,198 bytes。
+- [x] 基线 / 测试：静态 1125→1064、mock 1122→1061、目录 923→919、可选 884→878，将下线 7。可见卡片已知输入/输出/上下文/最大输出 834/819/411/45 → 847/838/412/159。Web 1334/1346，12 个失败均在 main 复现（main 1310/1324，另有 2 个只读基线构建输出受限）；定向 82/82；Core 主回归两端同为 193/194，xAI 到期样本失败相同；根目录两端 33/36，3 个旧快照失败相同。当前沙箱 Gateway head 190/87/1、main 185/87/1（通过/失败/跳过），87 项都是相同监听限制；不能与任务提供的此前沙箱外 275/0/1 混写。上述定向范围未发现新增失败；后续全量发现的 19 项回归见顶部 R5。
+- [x] 证据 / 地区：百炼 57 个删除 ID 在 main 均只配置 cn-beijing，全部保留删除，无国际恢复/待确认项。详见 [R4 验收](docs/model-card-audit-20261109.md)、[差异](docs/model-card-audit-20261109-conflicts.md)、[地区](docs/model-card-audit-20261109-regions.md)、[计数](docs/model-card-audit-20261109-count-r3.json)。
+- [ ] 外部实屏与微信原生扫描：1280 / 390 实屏未在本沙箱完成；[13 条本地夹具与截图路径](docs/model-card-audit-20261109-preview.md)覆盖 4/5/6、Ling 视频卡、规格回退与多连接。无部署，无真实/付费提供商请求；生产授权另行处理。
+
+## 2026-11-09 · 模型卡第三轮：空默认、Ant Ling 下线与移除引用提示（本地 v43，未发布）
+
+- [x] Core / shared / 目录：版本化 `config/channel-audit/deprecations-addendum-20261109.json` 纳入普通同步；antling 的 Ling-2.6-1T / Ling-2.6-flash / Ring-2.6-1T 保留至 2026-11-15 00:00 (UTC+8)，精确替代 Ling-3.1-flash；scheduled 4 → 7，总目录 1064 不变。到期前/后边界沿用 MODEL_UNAVAILABLE / not_sent，无新 action、请求字段、价格或权限变更。四个更早退役 Ling 型号均不在目录。
+- [x] Gateway：三项到期前可加入，到期后禁止新增，既有绑定仍可原样往返；公共预览夹具扩至 12 条，三条旧身份不改存储。
+- [x] Web：StepFun 默认绘图保持空并显示“此连接暂无默认绘图模型”；移除槽为“请选择”+单句 helper +显式“改选”确认，仅改当前角色引用；我的模型按渠道/厂商显示具名提示，多项合为一个可展开通知。将下线徽标移至标题，API ID 保持完整内容与可换行布局。
+- [x] Web / 小程序：复用生产 `formatContextLimit` 十进制 K/M 格式和原有舍入标识，精确整数/完整 URL 保留在悬停或点击详情；小程序空槽和显式替换同步，源码 1,565,894 bytes，仍低于原 1.5 MiB。
+- [x] 验证 / 文档：同步及证据再生成通过；生成器/codec/Gateway 13/13；Core 204/205（1 个已记录到期基线失败）、check 通过；小程序 126/126、check/build 通过；Web 1329/1341（12 个已记录基线失败）、定向 32/32、build 通过。计数 1064 / 1061 / 919 / 878，scheduled 7。详见 [第三轮验收](docs/model-card-audit-20261109.md)、[计数 JSON](docs/model-card-audit-20261109-count-r3.json)、[截图夹具](docs/model-card-audit-20261109-preview.md)。
+- [ ] 外部实屏验收：沙箱 Chrome 退出 134，localhost listen EPERM；1280 / 390 实屏和微信原生包扫描仍待可用环境。小程序保持暂停；本轮没有 commit、push、merge、部署或真实/付费提供商请求。
+
+## 2026-11-09 · 模型卡第二轮：物理删除旧型号、紧凑卡片与离线计数（本地 v43，未发布）
+
+本条为第二轮历史记录，覆盖下方第一轮方案；当前 PR 基线已统一为 main `c7b6a2fc`，以顶部 R4 双根比较为准。
+
+- [x] Core / shared / 目录：从源配置和旧静态声明删除 61 个已下线 + 7 个 Fireworks serverless 型号，生成目录 1064 项；账号目录合并也不能重新引入。`config/removed-models.json` 仅留精确身份与消息证据，调用前统一返回 `MODEL_UNAVAILABLE`、中文替代提示与 `requestState=not_sent`。4 个将下线型号保留，其他渠道同名模型不变。
+- [x] Gateway：禁止新增已移除身份；已有模型库、预设、任务不迁移/删改。7 条预览库记录原样往返仍为 7，相关审计测试 3/3。
+- [x] Web：目录、我的模型及选择器复用紧凑卡片，规格只有输入/输出/上下文/最大输出四行；一个命名来源承载 date/provenance/unknown/lifecycle 的可访问 tooltip，触屏用既有对话框。已移除引用仅显示空槽提示，无卡片、旧状态或切换动作；将下线确认保留取消按钮。
+- [x] 规格 / 生成器：Ling 五项严格采用 `config/channel-audit/model-audit-supplement-20261109.json` 的已知/未知模态和原生窗口，最大输出未知，不推断共享窗口；普通同步不依赖 `.audit-input/`。Fireworks 建议须同时满足通告、Serverless Supported、精确可选 ID。
+- [x] 小程序：同步删除和空槽行为，只打包显示必需审计字段及现有选择/执行约束；恢复 1.5 MiB 原预算，123/123 测试及类型/构建通过。仍暂停发布。
+- [x] 验证 / 文档：只读 `scripts/count-model-catalog.mjs` 在 head/base 都运行，静态 1125 → 1064，目录 923 → 919（57 项原已隐藏）；完整删除明细、每渠道计数、所有测试结果与精确本地夹具见 [第二轮验收](docs/model-card-audit-20261109.md) / [截图路径](docs/model-card-audit-20261109-preview.md)。此前 Web 12 个基线失败、Core 1 个到期失败；Gateway 旧沙箱为 188 通过 / 87 个 listen EPERM / 1 跳过，任务提供的沙箱外真实运行为 275 通过 / 0 失败 / 1 跳过。当前 main 对照与 R4 结果见顶部；未进行真实或付费模型调用。
+- [x] Owner 决策（第三轮完成）：StepFun 绘图默认继续留空并显示角色 helper；Ant Ling 3 个在库型号纳入 2026-11-15 00:00 UTC+8 将下线规则，替代 Ling-3.1-flash，见顶部第三轮记录。
+- [ ] 外部验收：沙箱 `listen EPERM` / Chrome 退出 134，尚无桌面 1280 / 移动 390 实屏及微信原生包扫描。生产 1408 缺同一时点 registry 快照，不能逐 ID 分摊与本地 919 的 489 差额。本轮没有 commit、push、merge、部署。
+
+## 2026-11-09 · 模型卡审计规格与生命周期（第一轮历史，已由上方第二轮覆盖）
+
+- [x] Core / shared：增补 `auditChannel` / `auditSpecifications` / `auditLifecycle`；精确渠道+ID、逐值 provenance/source/date、null 与明确不支持分开。61 已下架、4 将下线、7 Fireworks serverless 渠道不可用；新任务在提供商传输前返回 `MODEL_RETIRED` / `MODEL_CHANNEL_UNAVAILABLE` 与替代建议。日期 UTC 驱动，未核实不改变原可用性。
+- [x] 目录：只新增 7 个允许型号；antling 两个 Ling ID 已由证据确认，五个文本型号复用原适配器；OpenAI 两个 2.6 图像型号缺少输出尺寸契约，收录但禁用。保留 Preview、默认值、原定价和权限。静态目录 1,132 项中 667 未核实。
+- [x] Web：既有目录/选择器/我的模型/预设展示独立四项规格、来源及状态；退休条目从新选择隐藏，已保存身份保留；仅显式确认才切换同渠道精确替代型号。桌面 ≥1280 三列、窄屏单列，完整中文/新增英文文案。
+- [x] Gateway：模型库拒绝新增退休或渠道不可用身份，已有条目允许原样保存，不自动改写预设和历史。
+- [x] 小程序：同步 v43 目录、审计数据和选择器，保留当前旧选择并提供确认切换；离线规格压缩复用现有 codec，122 项测试通过。小程序仍暂停发布。
+- [x] 本地验证 / 文档：生成器、模拟传输、相关 UI/Gateway 测试、类型检查与 Web 构建完成；Web 12 项既有失败、Core 1 项既有到期失败均已基线复现。数据来源、计数分母、预览方式与测试边界见 [验收说明](docs/model-card-audit-20261109.md)。没有真实或付费模型调用。
+- [ ] 后续验收 / 发布：沙箱不支持本地监听且 Chrome 启动失败，1280/390 实屏验收及微信原生包扫描未完成；生产发布需要另行授权，本轮不推送、合并、部署。
+
+## 2026-11-09 · main 模型目录及参考图派生文件同步
+
+- [x] Shared / Web / Core：共享源 `packages/api/src/reference-upload.ts` 和现有 Web 输出保持不变；沿用已存在的 10 张、单张 10,000,000 字节、合计 100,000,000 字节及 SVG 10,000,000 字节平台限制，不修改模型调用或上传 API。
+- [x] 小程序仓库一致性：同步现有 v42 目录、展示元数据、策略 TS/JS 和精确型号策略映射；允许服务端已有的空默认型号，保留用户显式选择，不自动替换成其他型号。边界回归保留模型自身更严格的张数限制，并验证服务端更低总量限制、超限文件保留及精修上传生命周期。此项不代表恢复小程序发布。
+- [x] 生成器 / CI：保留 Core 原有任务阶段记录包装；同步目录 TS 和 JS 版本。扩展本地目录无损编码，以有界记录差量压缩维持原有 1.5 MiB 源码包预算；解码器兼容旧格式，生成数据与解码器必须一起更新。Web / Gateway / Core 无 API 适配待办。
+- [x] 文档：重新生成参考图模型矩阵，与仓库已有目录 v42 一致；属于静态策略同步，不是新增官方审核、模型权益或真实推理证据。
+- [ ] 小程序仍暂停：恢复前仍须完成杭州 OSS 域名、真实设备及现有跨端待办验收。本次不部署、不发起真实模型调用。
+
 ## 2026-11-04 · 短信登录验收补齐（本地分支，默认关闭）
 
 - [x] Gateway：复用既有 `/api/auth/phone/{status,challenge,send-code,verify}`、Better Auth 用户/身份/会话和 Mongo 事务；新增规范变量 `SMS_LOGIN_ENABLED`、`ALIYUN_SMS_ACCESS_KEY_ID/ACCESS_KEY_SECRET/SIGN_NAME/TEMPLATE_CODE`，旧 `AUTH_SMS_ENABLED` / `ALIBABA_SMS_*` 仅在对应新变量缺失时兼容。保留 `AUTH_SMS_DELIVERY_ENABLED=false` 独立发送开关及全站额度，关闭变更接口返回 404 `PHONE_DISABLED`。
