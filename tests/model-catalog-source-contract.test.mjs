@@ -7,6 +7,10 @@ import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { STATIC_MODEL_REGISTRY, STATIC_MODEL_REGISTRY_VERSION } from '../apps/web/src/lib/staticModelCatalog.js'
 import { miniModelCatalog } from '../scripts/lib/mini-model-catalog.mjs'
+import { historicalModels, laterDisabled } from '../test-support/model-catalog-history.mjs'
+import removed from '../config/removed-models.json' with {type:'json'}
+import versions from '../config/model-version-audit.json' with {type:'json'}
+import tokenDance from '../config/tokendance/catalog.json' with {type:'json'}
 import { PROVIDERS } from '../apps/web/src/constants.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -15,10 +19,29 @@ const mini = require('../apps/miniprogram/miniprogram/utils/static-model-catalog
 const audit = JSON.parse(fs.readFileSync(path.join(root, 'config/model-catalog-audit.json'), 'utf8'))
 const current = JSON.parse(fs.readFileSync(path.join(root, 'config/model-catalog-updates.json'), 'utf8'))
 const channels = ['cn', 'runware'].flatMap(name => JSON.parse(fs.readFileSync(path.join(root, `config/channel-audit/${name}-directory.json`), 'utf8')))
+const runwareContracts = JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/runware-contracts.json'), 'utf8'))
 
 const officialContracts = JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/official-contracts.json'), 'utf8'))
 const refreshContracts = { ...JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/frontier-refresh-contracts.json'), 'utf8')), ...JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/v381-contracts.json'), 'utf8')) }
 const officialAudits = Object.fromEntries(['xai', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat'].map(provider => [provider, JSON.parse(fs.readFileSync(path.join(root, `config/channel-audit/v24/${provider}.json`), 'utf8'))]))
+
+const laterContracts = Object.assign({}, ...['20261009','20261016','20261019','20261026','20261109'].map(date =>
+  JSON.parse(fs.readFileSync(path.join(root, `config/channel-audit/catalog-${date}-contracts.json`), 'utf8'))))
+
+function assertLaterAddition(provider, model) {
+  const key = provider+'/'+model.id
+  const version = versions.models.find(row => row.channel === provider && row.apiModelId === model.id)
+  assert.ok(version && version.checkedAt > audit.auditDate, key)
+  assert.match(version.sourceUrls[0], /^https:\/\//, key)
+  const contract = laterContracts[key]
+  const entry = provider === 'tokendance' ? tokenDance.models.find(m => m.id === model.id)
+    : current.providers[provider].find(m => m.id === model.id)
+  assert.ok(entry, key)
+  const roles = contract?.roles ?? (provider === 'tokendance' ? entry.roles.filter(role => role !== 'optimize') : entry.roles)
+  assert.deepEqual(model.roles, roles, key)
+  assert.match(contract?.source ?? entry.sourceUrl ?? entry.metadata.officialSourceUrl, /^https:\/\//, key)
+  assert.equal(model.verified, false, key)
+}
 
 function assertOfficialEvidence(provider, model) {
   const reviewed = officialAudits[provider]?.models.find(row => row.id === model.id)
@@ -71,22 +94,43 @@ test('every original audit row has an explicit implementation or exclusion decis
       assertOfficialEvidence(row.provider, model)
       continue
     }
-    if (['added', 'covered', 'alias'].includes(row.decision)) assert.equal(model?.selectable, true, `${row.provider}/${row.id}`)
-    else if (row.decision === 'disabled') assert.equal(model?.selectable, false, `${row.provider}/${row.id}`)
-    else { assert.equal(row.decision, 'excluded'); assert.equal(model?.selectable === true, false, `${row.provider}/${row.id} exclusion contradicts catalog`) }
+    const key = row.provider+'/'+row.resolvedId
+    const original = historicalModels[row.provider]?.models.find(m => m.id === row.resolvedId)
+    if (row.decision === 'excluded') {
+      assert.notEqual(original?.selectable, true, key)
+      assert.notEqual(model?.selectable, true, key)
+      continue
+    }
+    assert.ok(['added','covered','alias','disabled'].includes(row.decision), key)
+    assert.equal(original?.selectable, row.decision !== 'disabled', key)
+    if (Object.hasOwn(removed, key)) {
+      assert.equal(model, undefined, key)
+      assert.ok(removed[key].displayName && removed[key].stopDate, key)
+      assert.match(removed[key].sourceUrl, /^https:\/\//, key)
+    } else {
+      assert.equal(model?.selectable, laterDisabled.has(key) ? false : original.selectable, key)
+    }
   }
   for (const [provider, registry] of Object.entries(STATIC_MODEL_REGISTRY)) {
     assert.equal(new Set(registry.models.map((m) => m.id)).size, registry.models.length)
     for (const model of registry.models) {
       if (!model.selectable) {
-        assert.ok(model.disabledReason && model.lifecycleSourceUrl, `${provider}/${model.id} needs an official retirement reason`)
-        assert.ok(audit.latestUpdate.removedFromSelection.includes(`${provider}/${model.id}`))
+        const key = provider+'/'+model.id
+        assert.ok(model.disabledReason, key)
+        if (audit.latestUpdate.removedFromSelection.includes(key)) {
+          assert.match(model.lifecycleSourceUrl, /^https:\/\//, key)
+        } else {
+          const decision = current.lifecycle[provider]?.[model.id] ?? current.providers[provider]?.find(m => m.id === model.id)?.metadata
+          assert.equal(decision?.selectable, false, key)
+          assert.equal(model.disabledReason, decision.disabledReason, key)
+          assert.match(decision.lifecycleSourceUrl || decision.catalogRemoval?.sourceUrl || decision.officialSourceUrl, /^https:\/\//, key)
+        }
       }
       const previous = audit.decisions.some((row) => row.provider === provider && row.resolvedId === model.id)
       const added = channels.find(row => row.channel === provider && row.apiModelId === model.id)
       const official = officialContracts[provider + '/' + model.id]
       const refresh = refreshContracts[provider + '/' + model.id]
-      assert.ok(previous || added || official || refresh, `${provider}/${model.id} lacks audit evidence`)
+      if (!previous && !added && !official && !refresh) assertLaterAddition(provider, model)
       if (refresh) {
         assert.deepEqual(refresh.roles, model.roles)
         assert.equal(refresh.realInference, false)
@@ -95,8 +139,24 @@ test('every original audit row has an explicit implementation or exclusion decis
         assert.match(refresh.source, /^https:\/\//)
       }
       if (official) assertOfficialEvidence(provider, model)
-      if (added) {
-        assert.equal(added.after, '适配链路已完成但真实调用未验证')
+      if (provider === 'xiaomi' && model.id === 'mimo-v2.6-pro-ultraspeed') {
+        assert.equal(added.after, '尚未登记')
+        assert.deepEqual(added.roles, [])
+        assertLaterAddition(provider, model)
+        assert.deepEqual(model.roles, ['main','vision'])
+        assert.match(model.availabilityNotes, /需厂商单独开通/)
+      } else if (added) {
+        if (provider === 'runware' && added.checkedAt === '2026-10-09') {
+          const contract = runwareContracts['runware/'+model.id]
+          assert.equal(added.after, '待自动化验证')
+          assert.match(added.schemaSha256, /^[a-f0-9]{64}$/)
+          assert.equal(contract.schemaSha256, added.schemaSha256)
+          assert.equal(contract.schemaSource, added.schemaSource)
+          assert.deepEqual(contract.roles, model.roles)
+          assert.equal(model.verified, false)
+        } else {
+          assert.equal(added.after, '适配链路已完成但真实调用未验证')
+        }
         assert.deepEqual(added.roles, model.roles)
         assert.match(added.source, /^https:\/\//)
         assert.ok(added.decision.length > 10)

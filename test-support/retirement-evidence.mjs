@@ -4,6 +4,7 @@ import prior from '../config/channel-audit/review-r26-20261110.json' with {type:
 import {verifiedRetirement as verifiedCapture} from '../scripts/lib/model-evidence-r26.mjs'
 import addendum from '../config/channel-audit/deprecations-addendum-20261109.json' with {type:'json'}
 import {modelRows, readExecutionFixture} from './execution-capability.mjs'
+import {correctedVersions} from './catalog-version-review.mjs'
 const keyOf = row => row.provider+'/'+row.id
 export const retiredKeys = new Set(batch.remove.map(keyOf))
 export function verifiedRetirement(key, source, stopDate) {
@@ -28,6 +29,8 @@ export function batchExecutionFixture() {
     for (const [provider, entry] of Object.entries(fixture[name])) {
       entry.models = entry.models.filter(model => !retiredKeys.has(provider+'/'+model.id))
       for (const model of entry.models) {
+        const version = correctedVersions.get(provider+'/'+model.id)
+        if (version) model.version = version
         const notice = notices.get(provider+'/'+model.id)
         if (notice && Object.hasOwn(model,'auditLifecycle')) model.auditLifecycle = notice
       }

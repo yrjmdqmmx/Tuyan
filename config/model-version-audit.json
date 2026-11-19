@@ -25899,7 +25899,7 @@
       "apiModelId": "gpt-6.1-sol",
       "displayName": "GPT-6.1 Sol",
       "kind": "unconfirmed",
-      "versionId": null,
+      "versionId": "",
       "checkedAt": "2026-10-09",
       "sourceUrls": [
         "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
@@ -25912,7 +25912,7 @@
       "apiModelId": "claude-sonnet-5-5",
       "displayName": "Claude Sonnet 5.5",
       "kind": "unconfirmed",
-      "versionId": null,
+      "versionId": "",
       "checkedAt": "2026-10-09",
       "sourceUrls": [
         "https://platform.claude.com/docs/en/models/sonnet-5-5/overview"
@@ -25925,7 +25925,7 @@
       "apiModelId": "claude-haiku-5-5",
       "displayName": "Claude Haiku 5.5",
       "kind": "unconfirmed",
-      "versionId": null,
+      "versionId": "",
       "checkedAt": "2026-10-09",
       "sourceUrls": [
         "https://platform.claude.com/docs/en/models/haiku-5-5/overview"
@@ -25938,7 +25938,7 @@
       "apiModelId": "mistral-large-4",
       "displayName": "Mistral Large 4",
       "kind": "unconfirmed",
-      "versionId": null,
+      "versionId": "",
       "checkedAt": "2026-10-09",
       "sourceUrls": [
         "https://docs.mistral.ai/models/mistral-large-4-0"
@@ -25951,7 +25951,7 @@
       "apiModelId": "gemini-nano-banana-2.1",
       "displayName": "Nano Banana 2.1",
       "kind": "unconfirmed",
-      "versionId": null,
+      "versionId": "",
       "checkedAt": "2026-10-09",
       "sourceUrls": [
         "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
@@ -25964,7 +25964,7 @@
       "apiModelId": "recraftv4_1_flash",
       "displayName": "Recraft V4.1 Flash",
       "kind": "unconfirmed",
-      "versionId": null,
+      "versionId": "",
       "checkedAt": "2026-10-09",
       "sourceUrls": [
         "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash"
@@ -25977,7 +25977,7 @@
       "apiModelId": "doubao-seedream-5-0-flash-260915",
       "displayName": "Seedream 5.0 Flash (260915)",
       "kind": "unconfirmed",
-      "versionId": null,
+      "versionId": "",
       "checkedAt": "2026-10-09",
       "sourceUrls": [
         "https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh"
@@ -26610,7 +26610,8 @@
         "https://help.aliyun.com/zh/model-studio/rate-limit"
       ],
       "idEvidence": "exact-wire-selector",
-      "notes": "WorkspaceId 地区接口精确 ID；目录与文本离线合同已核对，不代表固定权重、账户开通或真实推理已验证。"
+      "notes": "WorkspaceId 地区接口精确 ID；目录与文本离线合同已核对，不代表固定权重、账户开通或真实推理已验证。",
+      "versionId": ""
     },
     {
       "channel": "bailian",
@@ -26624,7 +26625,8 @@
         "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash"
       ],
       "idEvidence": "exact-wire-selector",
-      "notes": "WorkspaceId 地区接口精确 ID；目录与文本离线合同已核对，不代表固定权重、账户开通或真实推理已验证。"
+      "notes": "WorkspaceId 地区接口精确 ID；目录与文本离线合同已核对，不代表固定权重、账户开通或真实推理已验证。",
+      "versionId": ""
     },
     {
       "channel": "bailian",
@@ -26638,7 +26640,631 @@
         "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed"
       ],
       "idEvidence": "exact-wire-selector",
-      "notes": "WorkspaceId 地区接口精确 ID；目录与文本离线合同已核对，不代表固定权重、账户开通或真实推理已验证。"
+      "notes": "WorkspaceId 地区接口精确 ID；目录与文本离线合同已核对，不代表固定权重、账户开通或真实推理已验证。",
+      "versionId": ""
+    },
+    {
+      "channel": "siliconflow",
+      "apiModelId": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "displayName": "DeepSeek V4.1 Flash",
+      "kind": "rolling",
+      "versionId": "deepseek-v4.1-flash-1017",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://docs.siliconflow.cn/docs/release-notes/overview"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道公告确认同一 API ID 于 2026-10-21 升级至 1017。"
+    },
+    {
+      "channel": "siliconflow",
+      "apiModelId": "zai-org/GLM-5.3-Flash",
+      "displayName": "GLM 5.3 Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://www.siliconflow.cn/models",
+        "https://docs.siliconflow.cn/cn/api-reference/chat-completions/chat-completions"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "gemini",
+      "apiModelId": "gemini-4-argon",
+      "displayName": "Gemini 4 Argon",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-19",
+      "sourceUrls": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+        "https://ai.google.dev/gemini-api/docs/generate-content/thinking",
+        "https://ai.google.dev/gemini-api/docs/pricing"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "bailian",
+      "apiModelId": "qwen-image-2.1-pro",
+      "displayName": "Qwen Image 2.1 Pro",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "bailian",
+      "apiModelId": "qwen-image-2.1-turbo",
+      "displayName": "Qwen Image 2.1 Turbo",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "openai",
+      "apiModelId": "gpt-image-2.6-flare",
+      "displayName": "GPT Image 2.6 Flare",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-11-09",
+      "sourceUrls": [
+        "https://developers.openai.com/api/docs/models/gpt-image-2.6-flare"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "openai",
+      "apiModelId": "gpt-image-2.6-sunburst",
+      "displayName": "GPT Image 2.6 Sunburst",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-11-09",
+      "sourceUrls": [
+        "https://developers.openai.com/api/docs/models/gpt-image-2.6-sunburst"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "bfl",
+      "apiModelId": "flux-3-image",
+      "displayName": "FLUX 3 Image",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://api.bfl.ai/openapi.json"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "bfl",
+      "apiModelId": "flux-3-image-klein",
+      "displayName": "FLUX.3 Image Klein",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://api.bfl.ai/openapi.json"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "ideogram",
+      "apiModelId": "ideogram-4-5",
+      "displayName": "Ideogram 4.5",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5",
+        "https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "together",
+      "apiModelId": "meta-models/Muse-Spark-Open-816B-A42B",
+      "displayName": "Muse Spark Open 816B A42B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://docs.together.ai/docs/serverless/models"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "together",
+      "apiModelId": "nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+      "displayName": "NVIDIA Nemotron 3.5 Super VL",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://docs.together.ai/docs/serverless/models"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "together",
+      "apiModelId": "reflection/Beam-1.0-501B-A23B",
+      "displayName": "Reflection Beam 1.0 501B A23B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-19",
+      "sourceUrls": [
+        "https://docs.together.ai/docs/serverless/models"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "fireworks",
+      "apiModelId": "accounts/fireworks/models/deepseek-v4p1-flash-1017",
+      "displayName": "DeepSeek V4.1 Flash 1017",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-19",
+      "sourceUrls": [
+        "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash-1017",
+        "https://fireworks.ai/models"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "fireworks",
+      "apiModelId": "accounts/fireworks/models/kimi-k3p1-pro",
+      "displayName": "Kimi K3.1 Pro",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-11-09",
+      "sourceUrls": [
+        "https://fireworks.ai/models/fireworks/kimi-k3p1-pro"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "fireworks",
+      "apiModelId": "accounts/fireworks/models/muse-spark-open",
+      "displayName": "Muse Spark Open",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://fireworks.ai/models/fireworks/muse-spark-open"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "fal",
+      "apiModelId": "blackforestlabs/flux-3/klein/base/text-to-image",
+      "displayName": "FLUX.3 Klein Base",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+        "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "fal",
+      "apiModelId": "blackforestlabs/flux-3/klein/text-to-image",
+      "displayName": "FLUX.3 Klein",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+        "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "fal",
+      "apiModelId": "google/nano-banana-2.1",
+      "displayName": "Nano Banana 2.1",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://fal.ai/models/google/nano-banana-2.1/api",
+        "https://fal.ai/models/google/nano-banana-2.1/edit/api"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "fal",
+      "apiModelId": "krea/v3/text-to-image",
+      "displayName": "Krea 3",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-19",
+      "sourceUrls": [
+        "https://fal.ai/models/krea/v3/text-to-image/api",
+        "https://fal.ai/models/krea/v3/edit/api"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "tokendance",
+      "apiModelId": "deepseek-v4.1-flash-1017",
+      "displayName": "DeepSeek V4.1 Flash 1017",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-19",
+      "sourceUrls": [
+        "https://tokendance.space/gateway/v1/models"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "tokendance",
+      "apiModelId": "ling-3.1-flash",
+      "displayName": "Ling 3.1 Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://tokendance.space/models/ling-3.1-flash",
+        "https://tokendance.space/portal/api/models/ling-3.1-flash",
+        "https://tokendance.space/docs/protocol-openai-chat-completions.md",
+        "https://tokendance.space/portal/api/models/ling-3.1-flash/endpoints/stats?window=30m"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "tokendance",
+      "apiModelId": "mimo-v2.6-flash",
+      "displayName": "Mimo-V2.6-Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://tokendance.space/models/mimo-v2.6-flash",
+        "https://tokendance.space/portal/api/models/mimo-v2.6-flash",
+        "https://tokendance.space/docs/protocol-openai-chat-completions.md"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "tokendance",
+      "apiModelId": "mimo-v2.6-pro",
+      "displayName": "Mimo-V2.6-Pro",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://tokendance.space/models/mimo-v2.6-pro",
+        "https://tokendance.space/portal/api/models/mimo-v2.6-pro",
+        "https://tokendance.space/docs/protocol-openai-chat-completions.md"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "tokendance",
+      "apiModelId": "mimo-v2.6-ultraspeed",
+      "displayName": "MiMo-V2.6-Pro-UltraSpeed",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://tokendance.space/models/mimo-v2.6-ultraspeed",
+        "https://tokendance.space/portal/api/models/mimo-v2.6-ultraspeed",
+        "https://tokendance.space/docs/protocol-openai-chat-completions.md"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bfl:flux@3-image-klein",
+      "displayName": "FLUX 3 Image Klein",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-3-image-klein",
+        "https://runware.ai/docs/models/bfl-flux-3-image-klein/schema.json"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bfl:flux@3-image-klein-base",
+      "displayName": "FLUX 3 Image Klein Base",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-3-image-klein-base",
+        "https://runware.ai/docs/models/bfl-flux-3-image-klein-base/schema.json"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "alibaba:qwen-image@2.1-turbo",
+      "displayName": "Qwen-Image-2.1-Turbo",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo",
+        "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo/schema.json"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "google:nano-banana@2.1",
+      "displayName": "Runware - Nano Banana 2.1",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/google-nano-banana-2-1"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bfl:flux@3-image",
+      "displayName": "Runware - FLUX 3 Image",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-3-image"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "ideogram:4.5@0",
+      "displayName": "Runware - Ideogram 4.5",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-4-5"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "ideogram:4.5@precise-edit",
+      "displayName": "Runware - Ideogram 4.5 Precise Edit",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-4-5-precise-edit"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bytedance:seedream@5.0-flash",
+      "displayName": "Runware - Seedream 5.0 Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bytedance-seedream-5-0-flash"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "recraft:v4.1@flash",
+      "displayName": "Runware - Recraft V4.1 Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/recraft-v4-1-flash"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "alibaba:qwen-image@2.1-pro",
+      "displayName": "Runware - Qwen-Image-2.1-Pro",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek-v4.1-flash",
+      "displayName": "DeepSeek V4.1 Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051",
+        "https://cloud.tencent.com/document/product/1823/130079"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "hy4",
+      "displayName": "HY4",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-11-09",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132252"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "step-5-preview",
+      "displayName": "Step 5 Preview",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051",
+        "https://cloud.tencent.com/document/product/1823/130079"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "mimo-v2.6-flash",
+      "displayName": "MiMo V2.6 Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051",
+        "https://cloud.tencent.com/document/product/1823/130079"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "mimo-v2.6-pro",
+      "displayName": "MiMo V2.6 Pro",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051",
+        "https://cloud.tencent.com/document/product/1823/130079"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "xiaomi",
+      "apiModelId": "mimo-v2.6-pro-ultraspeed",
+      "displayName": "MiMo V2.6 Pro Ultraspeed",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-16",
+      "sourceUrls": [
+        "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "sensenova",
+      "apiModelId": "deepseek-flash",
+      "displayName": "DeepSeek V4.1 Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "deepseek-v4.1-flash-1017",
+      "displayName": "DeepSeek V4.1 Flash 1017",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-10-19",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "longcat",
+      "apiModelId": "LongCat-2.5",
+      "displayName": "LongCat 2.5",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-11-09",
+      "sourceUrls": [
+        "https://longcat.chat/platform/docs/change-log"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "antling",
+      "apiModelId": "Ling-3.1-flash",
+      "displayName": "Ling-3.1-flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-11-09",
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "antling",
+      "apiModelId": "Ling-3.2-flash",
+      "displayName": "Ling-3.2-flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-11-09",
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
     }
   ],
   "baselineCommit": "ec24b730282c820881e206986df1f48b7dd98215",

@@ -266,6 +266,12 @@
       "diffSha256": "ee71990c2c6e46fc955260bee48601b8c9ded4b2e0c04e513144ee49300a4576"
     },
     {
+      "file": "deploy/hk-single-host/tests/mongo-index-migration-integration-contract.test.mjs",
+      "comparisonBase": "8c456709",
+      "contentSha256": "1a78a31f69aa9f778cd6f8666916f25b3273a5af5e007b9b7f755a1f2cc6ac02",
+      "diffSha256": "b74c785da86bca1d0002e5b1ca8d7c102291a39321dfc574005ed03c7646e77e"
+    },
+    {
       "file": "scripts/generate-model-audit.test.mjs",
       "comparisonBase": "8c456709",
       "contentSha256": "7e2784ef1d3e87af1acfcbd78e71a033d3da51896e6a6678668aab0121eb5a65",
@@ -282,6 +288,18 @@
       "comparisonBase": "8c456709",
       "contentSha256": "cede4810d853c8a88151b5534fd8a136163a258ca0b3c1ca2c99dafc07044c36",
       "diffSha256": "5ad8fe8b3a4b737eabc43e4ed60f72302bb0054d537ec29d9a0d4f90dd9e980c"
+    },
+    {
+      "file": "tests/model-catalog-source-contract.test.mjs",
+      "comparisonBase": "8c456709",
+      "contentSha256": "a6a035347e4edc13709dd4b300c12b3f0baf7c54e75d67ab4d527ae52b334c75",
+      "diffSha256": "8f8acd430fec4a0154b0da6aa83e33efd7b53edb3ffa31edf5e85f859c03b8a5"
+    },
+    {
+      "file": "tests/model-version-contract.test.mjs",
+      "comparisonBase": "8c456709",
+      "contentSha256": "b7a9de7a9b2488765a6142047c963c8a54189208aba7569af188299f1098670e",
+      "diffSha256": "5fa5b57325600f616f0cbf6477fc83cdb68107df884d90417509e4e17c6b7ec9"
     }
   ],
   "fixtures": [
@@ -330,8 +348,8 @@
     {
       "file": "config/model-version-audit.json",
       "comparisonBase": "8c456709",
-      "contentSha256": "5ed14f6f1fcdd9434dfa0f269df8b33e9261ec58343839a2025884f3a12a8e07",
-      "diffSha256": "6bde6554675b5e78a3910c87bbf2ac766341abd2f80ef7a8dcf88afe9fa2c04c"
+      "contentSha256": "8f9a4ade24de5f97a2ccc59291d7d51dcd6910fc39fe649d15625f9cc8f31f53",
+      "diffSha256": "3f771f601c843779be5de619bac7eeee8ee1b0d0cb0a76cc342cfbbebdde1c5b"
     },
     {
       "file": "config/removed-models.json",
@@ -560,8 +578,8 @@
     {
       "file": "scripts/report-changed-tests.mjs",
       "comparisonBase": "105744a9",
-      "contentSha256": "488a1afac7ae19b3b0840014e3f5030ddaf8266e6a7f79c205278fecf3e95c64",
-      "diffSha256": "054a7e76d894852431e326375cbe6ea1424304c0a07fdb8e911151fe0fb3a098"
+      "contentSha256": "1e195ea024bc89220eb79b9436036ccc1f0e9e66b13b7a3f512ef456fd53093f",
+      "diffSha256": "51429310dccad85158c4f2e24b53bea0937c97974d547ce31c5ccf3b3276e286"
     },
     {
       "file": "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs",
@@ -820,6 +838,30 @@
       "comparisonBase": "bf866c9b",
       "contentSha256": "5726f50c03b9de13609866092db2f5430882800a8cf2e545153d6a7355ce77e8",
       "diffSha256": "47e0c993d7203433f452d3668eb5c15c9c7871b4fbf3c2a4af03e4f85f5fc710"
+    },
+    {
+      "file": "scripts/model-retirements-20261117.test.mjs",
+      "comparisonBase": "57bc2ad0",
+      "contentSha256": "f5238d0c83ffbc05e9661e4fc32d209e4da4290553e4c2b2316de4d4a27a08f9",
+      "diffSha256": "dbc185bb4611dcbf802c0026d3934e5a3c6d2ec73619f6cdcc12d226b8f96021"
+    },
+    {
+      "file": "test-support/retirement-evidence.mjs",
+      "comparisonBase": "57bc2ad0",
+      "contentSha256": "056fd32f913165b4ad12bc6a83e6d2de10190812b1e2d462492b98984c276a42",
+      "diffSha256": "ab0eb4d86757fedb23a0f18ab5a4a65f152c3a458cb0afe69883fb021884bfc0"
+    },
+    {
+      "file": "test-support/retirement-projections.mjs",
+      "comparisonBase": "57bc2ad0",
+      "contentSha256": "a72377ad3b66a08dc094621eaed61870f020d99390e1a3d4d853691d13cb0ae5",
+      "diffSha256": "7d412825a37e20305281cf42e9fef70b2a17868af4f7856c1abd88a8795caca2"
+    },
+    {
+      "file": "scripts/freeze-retirement-projections.mjs",
+      "comparisonBase": "57bc2ad0",
+      "contentSha256": "e4fbfe39bc81280fc969832149c6418c1e53ff0264c0be5bff97b61415782e4d",
+      "diffSha256": "f6ff6b4519b56128368c0b7cba2d46b93eceb5faa299fc43090d5c810ca3a19e"
     }
   ]
 }
