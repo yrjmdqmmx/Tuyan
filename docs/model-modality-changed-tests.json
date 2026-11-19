@@ -1,11 +1,11 @@
 {
   "base": "8c456709",
   "counts": {
-    "files": 42,
-    "assertionAndFixtureInputChanges": 348,
-    "consumedJsonFixtures": 9,
-    "semanticFixtureChanges": 897,
-    "justified": 1244,
+    "files": 50,
+    "assertionAndFixtureInputChanges": 374,
+    "consumedJsonFixtures": 10,
+    "semanticFixtureChanges": 954,
+    "justified": 1327,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -37,7 +37,8 @@
     "R30 Phase I12: all 1064 rendered Web dialogs and compiled Mini cards enforce plain R29 statuses and numeric 未公布 (584 each, no unsupported numeric catalog facts), no verification dates outside source-link hover, and own-model primaries (82 cards, all 15 Option-A). Raw fields, execution locks, picker names, login files and byte ceilings remain unchanged. Event dates use Chinese 年/月/日 spelling; Mini-only provenance jargon is removed. Exact hashed presentation patches preserve prior audit reports; new regression suites independently enforce the PM decisions.",
     "R31 Phase I13: all 82 I12 primary changes individually reviewed (15 kept, 61 restored, 6 validated Alibaba pages); four source title casing fixes; shared 模型规格 dialog title on Web/Mini. Existing R30 own-page-for-every-card assertion is superseded by the narrow PM rule, with all Option-A checks retained. Historical I12 fixtures and reports remain unchanged via exact hashed source-only patches. Full-catalog primary parity, no new HF primaries, strict identity/value evidence, URL-wide titles and unchanged execution/picker/size invariants are tested.",
     "R31 Phase I14: no existing test expectation or historical R10/R12 artifact changes. New scripts tests run both default --check commands with Git disabled, pin all three output artifacts to independently read 52e0f161 SHA-256 values, and reject unreviewed URL, icon state, source classification, identity/order and unchanged-row drift. Exact display projections captured independently from 52e0f161 and reviewed HEAD bdcc2baf verify the live inputs before restoring historical report inputs; the compressed fixture and both complete projections are hashed. R11 default remains baseline-worktree-dependent and fails on this branch; its explicit frozen-main/frozen-head regression passes. The local full.sh list includes R10/R12 and every standalone main-passing maintenance check, excluding environment-dependent R11, argument-requiring distribution sync and main-failing sync-workflow. Product code, display data, catalog outputs, execution locks, picker names, login files and size limits are untouched.",
-    "November 17 batch. Live scans cover 1,033 static or 1,030 captured-provider models. Historical report projections recover the reviewed November 9 inputs with exact hash checks. The execution oracle retains the 1,064-model archive and applies only the 31 removals and ten sourced lifecycle changes for live comparisons."
+    "November 17 batch. Live scans cover 1,033 static or 1,030 captured-provider models. Historical report projections recover the reviewed November 9 inputs with exact hash checks. The execution oracle retains the 1,064-model archive and applies only the 31 removals and ten sourced lifecycle changes for live comparisons.",
+    "Core CI and Hangzhou verification covers the account-deletion fixture merged in PR #258, two time-scoped catalog fixtures, the real plotting interpreter, the test-file concurrency limit and the failure-stack byte budget. Both Node workflows provision the real Office converter and plot worker."
   ],
   "files": [
     {
@@ -5290,9 +5291,43 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 4242,
+          "old": "Import the entire esbuild fixture via a base64 module URL",
+          "new": "Import identical bundled code from a private temporary .mjs file",
+          "reason": "Node repeats a module URL on every error frame in the CI failure recap.",
+          "evidence": [
+            "apps/paperbanana-api/tests/core-composition.test.ts"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 6525,
+          "old": "(absent)",
+          "new": "Reject a non-object modelRoutes, keep the named bundle frame and cap the stack at 8 KiB",
+          "reason": "Catch the original megabyte-per-frame failure without dumping the stack if the bound is violated.",
+          "evidence": [
+            "apps/paperbanana-api/tests/core-composition.test.ts"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 6538,
+          "old": "Use the wall clock when submitting all three xAI requests",
+          "new": "Use 2026-10-31T12:00:00Z for the historical xAI WebP requests",
+          "reason": "The image fixture expired on November 2. All three wire payloads must still decode to 1 x 1 PNG.",
+          "evidence": [
+            "apps/paperbanana-api/runtime/handler.ts",
+            "apps/paperbanana-api/tests/core-composition.test.ts"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "cc27d86641e0591a13fe83a5e76c62066758ccf808af1f3f3862845c427ee87a"
+      "diffSha256": "4ff8069e6ac381c5ca81c8bbdb905c34a2afb69ca6a60b0221298174f70c9d62"
     },
     {
       "file": "apps/paperbanana-api/tests/helpers/catalog-retirements.ts",
@@ -5587,6 +5622,351 @@
         }
       ],
       "diffSha256": "ce8cddc33e4602946501e9a013e3be4cc11a5074f73a49d80082fd4ff4e1e020"
+    },
+    {
+      "file": "apps/auth-gateway/tests/integration/account-lifecycle.mjs",
+      "changes": [
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 86,
+          "old": "Only job result keys in the fake bucket",
+          "new": "Also seed an account image key derived by Core",
+          "reason": "Exercise deletion of the same user prefix as production.",
+          "evidence": [
+            "apps/paperbanana-api/src/image-library.ts",
+            "apps/paperbanana-api/runtime/handler.ts",
+            "apps/auth-gateway/tests/integration/account-lifecycle.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 95,
+          "old": "Deletion VM omitted db and owner-scoped cleanup services",
+          "new": "Bind db, accountImagePrefix, imageLibrary.deleteOwner and materialFilesService.deleteOwner",
+          "reason": "The extracted Core functions must reach the intended simulated object-store failure.",
+          "evidence": [
+            "apps/paperbanana-api/src/image-library.ts",
+            "apps/paperbanana-api/runtime/handler.ts",
+            "apps/auth-gateway/tests/integration/account-lifecycle.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 156,
+          "old": "(absent)",
+          "new": "interrupted.phase === 'objects'",
+          "reason": "Check the phase where the simulated outage occurred.",
+          "evidence": [
+            "apps/paperbanana-api/src/image-library.ts",
+            "apps/paperbanana-api/runtime/handler.ts",
+            "apps/auth-gateway/tests/integration/account-lifecycle.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 157,
+          "old": "(absent)",
+          "new": "interrupted.lastErrorCode === 'ACCOUNT_DELETION_OBJECTS_FAILED'",
+          "reason": "Distinguish the injected failure from a broken fixture binding.",
+          "evidence": [
+            "apps/paperbanana-api/src/image-library.ts",
+            "apps/paperbanana-api/runtime/handler.ts",
+            "apps/auth-gateway/tests/integration/account-lifecycle.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 158,
+          "old": "(absent)",
+          "new": "Exact interrupted inventory contains the account image and old job result",
+          "reason": "Protect the other job while checking both owned objects.",
+          "evidence": [
+            "apps/paperbanana-api/src/image-library.ts",
+            "apps/paperbanana-api/runtime/handler.ts",
+            "apps/auth-gateway/tests/integration/account-lifecycle.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 163,
+          "old": "(absent)",
+          "new": "businessDone.phase === 'awaiting_auth'",
+          "reason": "Verify the retry finished business-side cleanup before auth deletion.",
+          "evidence": [
+            "apps/paperbanana-api/src/image-library.ts",
+            "apps/paperbanana-api/runtime/handler.ts",
+            "apps/auth-gateway/tests/integration/account-lifecycle.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 172,
+          "old": "(absent)",
+          "new": "Both owner cleanup services called for userId in order",
+          "reason": "Observe the image and material cleanup hooks on retry.",
+          "evidence": [
+            "apps/paperbanana-api/src/image-library.ts",
+            "apps/paperbanana-api/runtime/handler.ts",
+            "apps/auth-gateway/tests/integration/account-lifecycle.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "8179b6b1a5d04e496d58628c0117be3b817c944416c3867516ed3b630155148e"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/diagram-topology-runtime.test.ts",
+      "changes": [
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 23,
+          "old": "Run the real renderer with TUYAN_QA_PYTHON or a developer-specific absolute path",
+          "new": "Run the same bridge with TUYAN_QA_PYTHON or the activated python3",
+          "reason": "Preserve source, viewport, correction budget and readability assertions for composite and fixed bars.",
+          "evidence": [
+            "apps/paperbanana-api/tests/helpers/plot-worker.ts",
+            "scripts/figures/render-json.py",
+            ".github/scripts/setup-core-test-runtimes.sh"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "380370ba5a02a5c5cfd520868c9f16bf018bf7424bd4f885de263dd72e2833fe"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/figure-composite-runtime.test.ts",
+      "changes": [
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 29,
+          "old": "Run the real renderer with TUYAN_QA_PYTHON or a developer-specific absolute path",
+          "new": "Run the same bridge with TUYAN_QA_PYTHON or the activated python3",
+          "reason": "Retain actual numeric marks, editable vector assembly and per-panel reference checks.",
+          "evidence": [
+            "apps/paperbanana-api/tests/helpers/plot-worker.ts",
+            "scripts/figures/render-json.py",
+            ".github/scripts/setup-core-test-runtimes.sh"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "2454b391dc67e3223168776cece2519b348f8e087b4861f4c0e189c0e4e20987"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/figure-data-matrix.test.ts",
+      "changes": [
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 22,
+          "old": "Run the real renderer with TUYAN_QA_PYTHON or a developer-specific absolute path",
+          "new": "Run the same bridge with TUYAN_QA_PYTHON or the activated python3",
+          "reason": "Retain real PNG and SVG renders for all 63 types, numeric checks, same-scene and deterministic hashes.",
+          "evidence": [
+            "apps/paperbanana-api/tests/helpers/plot-worker.ts",
+            "scripts/figures/render-json.py",
+            ".github/scripts/setup-core-test-runtimes.sh"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "11505c95a19869cb490038ccda18b8c8b213fffd169d6253eb6660134214038e"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/refine-controls.test.ts",
+      "changes": [
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 34,
+          "old": "Validate HyImage 3.0 against the wall clock",
+          "new": "Validate the tokenhub fixture at 2026-10-31T12:00:00Z",
+          "reason": "Keep the HyImage 3.0 synchronous wire, source/reference pixels, usage and metadata assertions. Its catalog cutoff is November 12.",
+          "evidence": [
+            "apps/paperbanana-api/runtime/handler.ts",
+            "apps/paperbanana-api/tests/refine-controls.test.ts"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 114,
+          "old": "Validate HyImage 3.0 against the wall clock",
+          "new": "Validate the tokenhub fixture at 2026-10-31T12:00:00Z",
+          "reason": "Keep both lost-submit and download recovery scenarios and the exact single-submission assertion. Its catalog cutoff is November 12.",
+          "evidence": [
+            "apps/paperbanana-api/runtime/handler.ts",
+            "apps/paperbanana-api/tests/refine-controls.test.ts"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "fb26148852239aa9c090e7ea5daaa4a0ef1b4a2e606cc527ba17eeef010ea8f6"
+    },
+    {
+      "file": "tests/model-catalog-source-contract.test.mjs",
+      "diffSha256": "8f8acd430fec4a0154b0da6aa83e33efd7b53edb3ffa31edf5e85f859c03b8a5",
+      "changes": [
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 98,
+          "old": "Each original add, coverage or alias decision must still be selectable.",
+          "new": "Check every original decision against its historical identity, then verify its exact current state.",
+          "reason": "The September decisions describe the 760-row catalog. The November removals and October admission decisions now apply to specific identities. The xAI adapter exception retains its official audit.",
+          "evidence": [
+            "test-support/fixtures/model-identities-ec24b73.json.gz",
+            "config/removed-models.json",
+            "config/channel-audit/retirements-20261117.json",
+            "docs/model-catalog/2026-10-19-evidence.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 120,
+          "old": "Every disabled model cites a September retirement.",
+          "new": "Require the original source for September retirements and the exact later decision, reason and HTTPS source for later disabled models.",
+          "reason": "A disabled card may record a provider cutoff, a paused route, missing size evidence, or a video-only endpoint. Each is traceable to the reviewed source.",
+          "evidence": [
+            "config/model-catalog-updates.json",
+            "docs/model-catalog/2026-10-09-adaptation.md",
+            "docs/model-catalog/2026-10-31-release.md"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 133,
+          "old": "All additions must appear in the directories and contracts through v3.8.1.",
+          "new": "For later additions verify exact dated version evidence, an audited role contract or source row, HTTPS provenance, and unverified inference status.",
+          "reason": "The October and November reviews added new exact channel IDs. The original official and refresh assertions still apply to the models they cover.",
+          "evidence": [
+            "config/model-version-audit.json",
+            "config/channel-audit/catalog-20261109-contracts.json",
+            "config/model-catalog-updates.json",
+            "config/tokendance/catalog.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 142,
+          "old": "MiMo UltraSpeed was still unregistered.",
+          "new": "Check the September decision and the October main/vision adaptation with its custom entitlement note.",
+          "reason": "The October 16 review requires separate provisioning.",
+          "evidence": [
+            "config/channel-audit/cn-directory.json",
+            "docs/model-catalog/2026-10-16-update.md"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 149,
+          "old": "All Runware rows have the September adaptation status string.",
+          "new": "For October 9 entries verify the pending automation status and compare each schema hash, URL and role with the executable contract.",
+          "reason": "All seven October Runware rows distinguish their documented schema from inference verification.",
+          "evidence": [
+            "config/channel-audit/runware-directory.json",
+            "config/channel-audit/runware-contracts.json"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ]
+    },
+    {
+      "file": "tests/model-version-contract.test.mjs",
+      "diffSha256": "5fa5b57325600f616f0cbf6477fc83cdb68107df884d90417509e4e17c6b7ec9",
+      "changes": [
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 47,
+          "old": "Subtract listed later additions and hash the assumed 760 remaining models.",
+          "new": "Verify the original SHA-256 and compare defaults and projected fields for each historical ID. Lock the exact 92 removed keys and 668 survivors.",
+          "reason": "64 initial removals intersect the baseline and 28 further intersections come from #254. The 17 subsequent admission changes include the Replicate video schema. All previous refine controls checks remain.",
+          "evidence": [
+            "test-support/fixtures/model-identities-ec24b73.json.gz",
+            "config/removed-models.json",
+            "config/channel-audit/retirements-20261117.json",
+            "docs/model-catalog/2026-10-19-evidence.json",
+            "docs/model-catalog/2026-10-09-adaptation.md"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 84,
+          "old": "Require a raw directory display name in every picker.",
+          "new": "Require the exact raw name to equal the presented name plus the two reviewed TokenDance vendor prefixes. Enforce unique audit keys, string targets and dated sources.",
+          "reason": "TokenDance preserves the directory names for Kimi and MiniMax. Presentation strips the vendor prefix. Every static model must still carry its full audited version on Web and Mini.",
+          "evidence": [
+            "config/model-version-audit.json",
+            "packages/types/src/model-presentation.ts",
+            "config/tokendance/catalog.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 104,
+          "old": "Hosted Bailian DeepSeek Pro must say pending in the label.",
+          "new": "Check the clean label, unconfirmed kind and exact Bailian version ID. Check the SiliconFlow alias against its own upgrade notice.",
+          "reason": "1555d077 removed the pending-version note from picker names. The separate SiliconFlow review documents the October 21 same-ID move to 1017.",
+          "evidence": [
+            "config/model-version-audit.json",
+            "config/model-specifications.json",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 129,
+          "old": "Read the unconfirmed GPT-4 1106 preview version from the live catalog.",
+          "new": "Check its pre-retirement ID, kind and label from the frozen registry, its exact current absence, name, source, stop date and empty replacement, plus a live unconfirmed OpenAI ID.",
+          "reason": "PR #254 retired the exact preview ID. PR #259 preserved its exact display identity. The rolling and fixed examples remain live.",
+          "evidence": [
+            "config/channel-audit/retirements-20261117.json",
+            "config/removed-models.json",
+            "test-support/fixtures/execution-capability-8c456709.json.gz"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 146,
+          "old": "chat-latest detail says its specific version is pending.",
+          "new": "Assert the full rolling description, unknown target and review date.",
+          "reason": "The R9 presentation change in 1555d077 uses 具体版本未知 for an unknown target. The empty ID still forbids inferring a snapshot.",
+          "evidence": [
+            "packages/types/src/model-presentation.ts",
+            "apps/web/tests/model-audit-r9.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ]
+    },
+    {
+      "file": "deploy/hk-single-host/tests/mongo-index-migration-integration-contract.test.mjs",
+      "diffSha256": "b74c785da86bca1d0002e5b1ca8d7c102291a39321dfc574005ed03c7646e77e",
+      "changes": [
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 33,
+          "old": "push and pull_request are adjacent in the workflow.",
+          "new": "Check unrestricted pull requests, push with the single Hangzhou branch exclusion, and the harness command inside the migration job.",
+          "reason": "6632fe7c split ordinary CI from the verified production push workflow. The original adjacency check failed before inspecting the job.",
+          "evidence": [
+            ".github/workflows/ci.yml",
+            "deploy/hk-single-host/tests/run-mongo-index-migration-integration.sh"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ]
     }
   ],
   "fixtures": [
@@ -27894,9 +28274,625 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27244,
+          "old": "antling/Ling-3.1-flash — Version audit row absent",
+          "new": "antling/Ling-3.1-flash — unconfirmed, (empty), 2026-11-09, https://developer.ant-ling.com/zh-CN/docs/api-reference/",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/channel-audit/catalog-20261109-contracts.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27257,
+          "old": "antling/Ling-3.2-flash — Version audit row absent",
+          "new": "antling/Ling-3.2-flash — unconfirmed, (empty), 2026-11-09, https://developer.ant-ling.com/zh-CN/docs/api-reference/",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/channel-audit/catalog-20261109-contracts.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26689,
+          "old": "bailian/qwen-image-2.1-pro — Version audit row absent",
+          "new": "bailian/qwen-image-2.1-pro — unconfirmed, (empty), 2026-10-16, https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26702,
+          "old": "bailian/qwen-image-2.1-turbo — Version audit row absent",
+          "new": "bailian/qwen-image-2.1-turbo — unconfirmed, (empty), 2026-10-16, https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26741,
+          "old": "bfl/flux-3-image — Version audit row absent",
+          "new": "bfl/flux-3-image — unconfirmed, (empty), 2026-10-09, https://api.bfl.ai/openapi.json",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26754,
+          "old": "bfl/flux-3-image-klein — Version audit row absent",
+          "new": "bfl/flux-3-image-klein — unconfirmed, (empty), 2026-10-16, https://api.bfl.ai/openapi.json",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26860,
+          "old": "fal/blackforestlabs/flux-3/klein/base/text-to-image — Version audit row absent",
+          "new": "fal/blackforestlabs/flux-3/klein/base/text-to-image — unconfirmed, (empty), 2026-10-16, https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26874,
+          "old": "fal/blackforestlabs/flux-3/klein/text-to-image — Version audit row absent",
+          "new": "fal/blackforestlabs/flux-3/klein/text-to-image — unconfirmed, (empty), 2026-10-16, https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26888,
+          "old": "fal/google/nano-banana-2.1 — Version audit row absent",
+          "new": "fal/google/nano-banana-2.1 — unconfirmed, (empty), 2026-10-09, https://fal.ai/models/google/nano-banana-2.1/api",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26902,
+          "old": "fal/krea/v3/text-to-image — Version audit row absent",
+          "new": "fal/krea/v3/text-to-image — unconfirmed, (empty), 2026-10-19, https://fal.ai/models/krea/v3/text-to-image/api",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26820,
+          "old": "fireworks/accounts/fireworks/models/deepseek-v4p1-flash-1017 — Version audit row absent",
+          "new": "fireworks/accounts/fireworks/models/deepseek-v4p1-flash-1017 — unconfirmed, (empty), 2026-10-19, https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash-1017",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26834,
+          "old": "fireworks/accounts/fireworks/models/kimi-k3p1-pro — Version audit row absent",
+          "new": "fireworks/accounts/fireworks/models/kimi-k3p1-pro — unconfirmed, (empty), 2026-11-09, https://fireworks.ai/models/fireworks/kimi-k3p1-pro",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-catalog-updates.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26847,
+          "old": "fireworks/accounts/fireworks/models/muse-spark-open — Version audit row absent",
+          "new": "fireworks/accounts/fireworks/models/muse-spark-open — unconfirmed, (empty), 2026-10-16, https://fireworks.ai/models/fireworks/muse-spark-open",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26674,
+          "old": "gemini/gemini-4-argon — Version audit row absent",
+          "new": "gemini/gemini-4-argon — unconfirmed, (empty), 2026-10-19, https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26767,
+          "old": "ideogram/ideogram-4-5 — Version audit row absent",
+          "new": "ideogram/ideogram-4-5 — unconfirmed, (empty), 2026-10-09, https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27231,
+          "old": "longcat/LongCat-2.5 — Version audit row absent",
+          "new": "longcat/LongCat-2.5 — unconfirmed, (empty), 2026-11-09, https://longcat.chat/platform/docs/change-log",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/channel-audit/catalog-20261109-contracts.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26715,
+          "old": "openai/gpt-image-2.6-flare — Version audit row absent",
+          "new": "openai/gpt-image-2.6-flare — unconfirmed, (empty), 2026-11-09, https://developers.openai.com/api/docs/models/gpt-image-2.6-flare",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-catalog-updates.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26728,
+          "old": "openai/gpt-image-2.6-sunburst — Version audit row absent",
+          "new": "openai/gpt-image-2.6-sunburst — unconfirmed, (empty), 2026-11-09, https://developers.openai.com/api/docs/models/gpt-image-2.6-sunburst",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-catalog-updates.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27218,
+          "old": "qianfan/deepseek-v4.1-flash-1017 — Version audit row absent",
+          "new": "qianfan/deepseek-v4.1-flash-1017 — unconfirmed, (empty), 2026-10-19, https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27110,
+          "old": "runware/alibaba:qwen-image@2.1-pro — Version audit row absent",
+          "new": "runware/alibaba:qwen-image@2.1-pro — unconfirmed, (empty), 2026-10-09, https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27018,
+          "old": "runware/alibaba:qwen-image@2.1-turbo — Version audit row absent",
+          "new": "runware/alibaba:qwen-image@2.1-turbo — unconfirmed, (empty), 2026-10-16, https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27045,
+          "old": "runware/bfl:flux@3-image — Version audit row absent",
+          "new": "runware/bfl:flux@3-image — unconfirmed, (empty), 2026-10-09, https://runware.ai/docs/models/bfl-flux-3-image",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26990,
+          "old": "runware/bfl:flux@3-image-klein — Version audit row absent",
+          "new": "runware/bfl:flux@3-image-klein — unconfirmed, (empty), 2026-10-16, https://runware.ai/docs/models/bfl-flux-3-image-klein",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27004,
+          "old": "runware/bfl:flux@3-image-klein-base — Version audit row absent",
+          "new": "runware/bfl:flux@3-image-klein-base — unconfirmed, (empty), 2026-10-16, https://runware.ai/docs/models/bfl-flux-3-image-klein-base",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27084,
+          "old": "runware/bytedance:seedream@5.0-flash — Version audit row absent",
+          "new": "runware/bytedance:seedream@5.0-flash — unconfirmed, (empty), 2026-10-09, https://runware.ai/docs/models/bytedance-seedream-5-0-flash",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27032,
+          "old": "runware/google:nano-banana@2.1 — Version audit row absent",
+          "new": "runware/google:nano-banana@2.1 — unconfirmed, (empty), 2026-10-09, https://runware.ai/docs/models/google-nano-banana-2-1",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27058,
+          "old": "runware/ideogram:4.5@0 — Version audit row absent",
+          "new": "runware/ideogram:4.5@0 — unconfirmed, (empty), 2026-10-09, https://runware.ai/docs/models/ideogram-4-5",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27071,
+          "old": "runware/ideogram:4.5@precise-edit — Version audit row absent",
+          "new": "runware/ideogram:4.5@precise-edit — unconfirmed, (empty), 2026-10-09, https://runware.ai/docs/models/ideogram-4-5-precise-edit",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27097,
+          "old": "runware/recraft:v4.1@flash — Version audit row absent",
+          "new": "runware/recraft:v4.1@flash — unconfirmed, (empty), 2026-10-09, https://runware.ai/docs/models/recraft-v4-1-flash",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27205,
+          "old": "sensenova/deepseek-flash — Version audit row absent",
+          "new": "sensenova/deepseek-flash — unconfirmed, (empty), 2026-10-09, https://platform.sensenova.cn/docs",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26647,
+          "old": "siliconflow/deepseek-ai/DeepSeek-V4.1-Flash — Version audit row absent",
+          "new": "siliconflow/deepseek-ai/DeepSeek-V4.1-Flash — rolling, deepseek-v4.1-flash-1017, 2026-10-26, https://docs.siliconflow.cn/docs/release-notes/overview",
+          "reason": "The exact channel upgrade notice records a same-ID switch to the 1017 target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26660,
+          "old": "siliconflow/zai-org/GLM-5.3-Flash — Version audit row absent",
+          "new": "siliconflow/zai-org/GLM-5.3-Flash — unconfirmed, (empty), 2026-10-16, https://www.siliconflow.cn/models",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26781,
+          "old": "together/meta-models/Muse-Spark-Open-816B-A42B — Version audit row absent",
+          "new": "together/meta-models/Muse-Spark-Open-816B-A42B — unconfirmed, (empty), 2026-10-16, https://docs.together.ai/docs/serverless/models",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26794,
+          "old": "together/nvidia/NVIDIA-Nemotron-3.5-Super-VL — Version audit row absent",
+          "new": "together/nvidia/NVIDIA-Nemotron-3.5-Super-VL — unconfirmed, (empty), 2026-10-16, https://docs.together.ai/docs/serverless/models",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26807,
+          "old": "together/reflection/Beam-1.0-501B-A23B — Version audit row absent",
+          "new": "together/reflection/Beam-1.0-501B-A23B — unconfirmed, (empty), 2026-10-19, https://docs.together.ai/docs/serverless/models",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26916,
+          "old": "tokendance/deepseek-v4.1-flash-1017 — Version audit row absent",
+          "new": "tokendance/deepseek-v4.1-flash-1017 — unconfirmed, (empty), 2026-10-19, https://tokendance.space/gateway/v1/models",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26929,
+          "old": "tokendance/ling-3.1-flash — Version audit row absent",
+          "new": "tokendance/ling-3.1-flash — unconfirmed, (empty), 2026-10-09, https://tokendance.space/models/ling-3.1-flash",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26945,
+          "old": "tokendance/mimo-v2.6-flash — Version audit row absent",
+          "new": "tokendance/mimo-v2.6-flash — unconfirmed, (empty), 2026-10-09, https://tokendance.space/models/mimo-v2.6-flash",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26960,
+          "old": "tokendance/mimo-v2.6-pro — Version audit row absent",
+          "new": "tokendance/mimo-v2.6-pro — unconfirmed, (empty), 2026-10-09, https://tokendance.space/models/mimo-v2.6-pro",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26975,
+          "old": "tokendance/mimo-v2.6-ultraspeed — Version audit row absent",
+          "new": "tokendance/mimo-v2.6-ultraspeed — unconfirmed, (empty), 2026-10-09, https://tokendance.space/models/mimo-v2.6-ultraspeed",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27123,
+          "old": "tokenhub/deepseek-v4.1-flash — Version audit row absent",
+          "new": "tokenhub/deepseek-v4.1-flash — unconfirmed, (empty), 2026-10-16, https://cloud.tencent.com/document/product/1823/130051",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27137,
+          "old": "tokenhub/hy4 — Version audit row absent",
+          "new": "tokenhub/hy4 — unconfirmed, (empty), 2026-11-09, https://cloud.tencent.com/document/product/1823/132252",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/channel-audit/catalog-20261109-contracts.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27164,
+          "old": "tokenhub/mimo-v2.6-flash — Version audit row absent",
+          "new": "tokenhub/mimo-v2.6-flash — unconfirmed, (empty), 2026-10-16, https://cloud.tencent.com/document/product/1823/130051",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27178,
+          "old": "tokenhub/mimo-v2.6-pro — Version audit row absent",
+          "new": "tokenhub/mimo-v2.6-pro — unconfirmed, (empty), 2026-10-16, https://cloud.tencent.com/document/product/1823/130051",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27150,
+          "old": "tokenhub/step-5-preview — Version audit row absent",
+          "new": "tokenhub/step-5-preview — unconfirmed, (empty), 2026-10-16, https://cloud.tencent.com/document/product/1823/130051",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 27192,
+          "old": "xiaomi/mimo-v2.6-pro-ultraspeed — Version audit row absent",
+          "new": "xiaomi/mimo-v2.6-pro-ultraspeed — unconfirmed, (empty), 2026-10-16, https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+          "reason": "The dated channel review identifies the API ID and gives no finer fixed snapshot or rolling target.",
+          "evidence": [
+            "config/model-specifications.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 25924,
+          "old": "anthropic/claude-haiku-5-5 — versionId null",
+          "new": "anthropic/claude-haiku-5-5 — unconfirmed, (empty), 2026-10-09, https://platform.claude.com/docs/en/models/haiku-5-5/overview",
+          "reason": "ModelVersion.id is a string. Mini already normalized the unknown target to an empty string.",
+          "evidence": [
+            "packages/types/src/model-presentation.ts"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 25911,
+          "old": "anthropic/claude-sonnet-5-5 — versionId null",
+          "new": "anthropic/claude-sonnet-5-5 — unconfirmed, (empty), 2026-10-09, https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
+          "reason": "ModelVersion.id is a string. Mini already normalized the unknown target to an empty string.",
+          "evidence": [
+            "packages/types/src/model-presentation.ts"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 25976,
+          "old": "ark/doubao-seedream-5-0-flash-260915 — versionId null",
+          "new": "ark/doubao-seedream-5-0-flash-260915 — unconfirmed, (empty), 2026-10-09, https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh",
+          "reason": "ModelVersion.id is a string. Mini already normalized the unknown target to an empty string.",
+          "evidence": [
+            "packages/types/src/model-presentation.ts"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 25950,
+          "old": "gemini/gemini-nano-banana-2.1 — versionId null",
+          "new": "gemini/gemini-nano-banana-2.1 — unconfirmed, (empty), 2026-10-09, https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+          "reason": "ModelVersion.id is a string. Mini already normalized the unknown target to an empty string.",
+          "evidence": [
+            "packages/types/src/model-presentation.ts"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 25937,
+          "old": "mistral/mistral-large-4 — versionId null",
+          "new": "mistral/mistral-large-4 — unconfirmed, (empty), 2026-10-09, https://docs.mistral.ai/models/mistral-large-4-0",
+          "reason": "ModelVersion.id is a string. Mini already normalized the unknown target to an empty string.",
+          "evidence": [
+            "packages/types/src/model-presentation.ts"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 25898,
+          "old": "openai/gpt-6.1-sol — versionId null",
+          "new": "openai/gpt-6.1-sol — unconfirmed, (empty), 2026-10-09, https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+          "reason": "ModelVersion.id is a string. Mini already normalized the unknown target to an empty string.",
+          "evidence": [
+            "packages/types/src/model-presentation.ts"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 25963,
+          "old": "recraft/recraftv4_1_flash — versionId null",
+          "new": "recraft/recraftv4_1_flash — unconfirmed, (empty), 2026-10-09, https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash",
+          "reason": "ModelVersion.id is a string. Mini already normalized the unknown target to an empty string.",
+          "evidence": [
+            "packages/types/src/model-presentation.ts"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26617,
+          "old": "bailian/MiniMax/MiniMax-M3.1-Flash — versionId omitted",
+          "new": "bailian/MiniMax/MiniMax-M3.1-Flash — unconfirmed, (empty), 2026-10-26, https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+          "reason": "ModelVersion.id is a string. Mini already normalized the unknown target to an empty string.",
+          "evidence": [
+            "packages/types/src/model-presentation.ts"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26601,
+          "old": "bailian/deepseek-v4.1-flash-1017 — versionId omitted",
+          "new": "bailian/deepseek-v4.1-flash-1017 — unconfirmed, (empty), 2026-10-26, https://help.aliyun.com/zh/model-studio/deepseek-api",
+          "reason": "ModelVersion.id is a string. Mini already normalized the unknown target to an empty string.",
+          "evidence": [
+            "packages/types/src/model-presentation.ts"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 26632,
+          "old": "bailian/xiaomi/mimo-v2.6-pro-ultraspeed — versionId omitted",
+          "new": "bailian/xiaomi/mimo-v2.6-pro-ultraspeed — unconfirmed, (empty), 2026-10-26, https://help.aliyun.com/zh/model-studio/mimo",
+          "reason": "ModelVersion.id is a string. Mini already normalized the unknown target to an empty string.",
+          "evidence": [
+            "packages/types/src/model-presentation.ts"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "6bde6554675b5e78a3910c87bbf2ac766341abd2f80ef7a8dcf88afe9fa2c04c"
+      "diffSha256": "3f771f601c843779be5de619bac7eeee8ee1b0d0cb0a76cc342cfbbebdde1c5b"
     },
     {
       "file": "config/removed-models.json",
@@ -28726,6 +29722,24 @@
         }
       ],
       "diffSha256": "da9b6662cb5bcd3a779ba0ffca92ac1ed7c7143bd8cf07dfdf609db24db4c879"
+    },
+    {
+      "file": "apps/paperbanana-api/package.json",
+      "changes": [
+        {
+          "phase": "Core CI and Hangzhou verification",
+          "line": 10,
+          "pointer": "/scripts/test",
+          "old": "node --import tsx --test tests/*.test.ts",
+          "new": "node --import tsx --test --test-concurrency=2 tests/*.test.ts",
+          "reason": "Bound concurrent test files and their bundled runtimes and child processes on workstations and shared runners.",
+          "evidence": [
+            "apps/paperbanana-api/package.json"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "8474256dd2f24a74ca37e40ed99f772c2524a70b271f165d61f4f11c4b9a7ebd"
     }
   ],
   "followupChanges": [
@@ -36050,9 +37064,21 @@
             "scripts/primary-links-r31.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 62,
+          "old": "Follow-up comparison commits through bf866c9b",
+          "new": "Allow the PR #260 parent 57bc2ad0 for the two existing retirement tests and fixtures",
+          "reason": "The two retirement checks were introduced after the R22 baseline. The new comparison pins their actual prior blobs.",
+          "evidence": [
+            "scripts/model-retirements-20261117.test.mjs",
+            "test-support/retirement-evidence.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "054a7e76d894852431e326375cbe6ea1424304c0a07fdb8e911151fe0fb3a098"
+      "diffSha256": "51429310dccad85158c4f2e24b53bea0937c97974d547ce31c5ccf3b3276e286"
     },
     {
       "file": "apps/miniprogram/tests/model-icon-simplify-r27.test.cjs",
@@ -38412,6 +39438,84 @@
         }
       ],
       "diffSha256": "47e0c993d7203433f452d3668eb5c15c9c7871b4fbf3c2a4af03e4f85f5fc710"
+    },
+    {
+      "file": "scripts/model-retirements-20261117.test.mjs",
+      "comparisonBase": "57bc2ad0",
+      "diffSha256": "dbc185bb4611dcbf802c0026d3934e5a3c6d2ec73619f6cdcc12d226b8f96021",
+      "changes": [
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 25,
+          "old": "All live catalog fields match the November retirement snapshot.",
+          "new": "Lock the complete corrected catalog and restore only 56 exact prior version fields for all original November aggregate and protected-row hashes.",
+          "reason": "46 missing versions and ten missing or null version IDs have reviewed metadata. Both old full-catalog hashes and all protected hashes remain in force.",
+          "evidence": [
+            "test-support/fixtures/catalog-version-before-57bc2ad0.json",
+            "config/model-version-audit.json",
+            "test-support/model-retirements-20261117-baseline.json"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ]
+    },
+    {
+      "file": "test-support/retirement-evidence.mjs",
+      "comparisonBase": "57bc2ad0",
+      "diffSha256": "ab0eb4d86757fedb23a0f18ab5a4a65f152c3a458cb0afe69883fb021884bfc0",
+      "changes": [
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 32,
+          "old": "Frozen execution projections contain 46 absent versions and ten inconsistent unknown IDs.",
+          "new": "Apply only the reviewed version property for those 56 registry identities in each of the five Core, Web and Mini projections.",
+          "reason": "The immutable R22 fixture still guards every other field and reference decision. The reverse projection also verifies the original retirement hashes.",
+          "evidence": [
+            "test-support/fixtures/catalog-version-before-57bc2ad0.json",
+            "config/model-version-audit.json",
+            "test-support/fixtures/execution-capability-8c456709.json.gz"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ]
+    },
+    {
+      "file": "test-support/retirement-projections.mjs",
+      "comparisonBase": "57bc2ad0",
+      "changes": [
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 15,
+          "old": "Compare current rendered cards directly to the retirement and modality reports.",
+          "new": "Check the exact current Mini version label and detail for the 46 formerly absent versions, then restore their historical text for full-card comparisons.",
+          "reason": "Archived R27–R31 assertions lock dated full-card presentations. This keeps every other field live and preserves their original hashes.",
+          "evidence": [
+            "test-support/catalog-version-review.mjs",
+            "test-support/fixtures/retirement-projections-20261117.json.gz"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "7d412825a37e20305281cf42e9fef70b2a17868af4f7856c1abd88a8795caca2"
+    },
+    {
+      "file": "scripts/freeze-retirement-projections.mjs",
+      "comparisonBase": "57bc2ad0",
+      "changes": [
+        {
+          "phase": "November 18 catalog contract reconciliation",
+          "line": 45,
+          "old": "Capture the live cards directly for the retirement batch.",
+          "new": "Check and project the 46 corrected version details before reproducing the original retirement fixture.",
+          "reason": "The bf866c9b capture and the frozen batch bytes still reproduce exactly.",
+          "evidence": [
+            "test-support/catalog-version-review.mjs",
+            "test-support/fixtures/retirement-projections-20261117.json.gz"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "f6ff6b4519b56128368c0b7cba2d46b93eceb5faa299fc43090d5c810ca3a19e"
     }
   ]
 }

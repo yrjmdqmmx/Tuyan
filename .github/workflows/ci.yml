@@ -56,6 +56,8 @@ jobs:
         run: apps/paperbanana-api/tests/integration/run-admin-operations.sh
       - name: TokenDance encrypted recovery and payments with disposable Mongo
         run: bash apps/paperbanana-api/tests/integration/run-tokendance.sh
+      - name: Install real plot and Office runtimes for Core tests
+        run: bash .github/scripts/setup-core-test-runtimes.sh
       - run: pnpm --filter @paperbanana/paperbanana-api test
       - run: pnpm --filter @paperbanana/paperbanana-api check
       - run: pnpm --filter @paperbanana/paperbanana-api build

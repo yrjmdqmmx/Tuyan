@@ -30,9 +30,14 @@ test('MongoDB 8 benchmark index migration has an executable hermetic integration
 test('pull request and push CI execute the MongoDB 8 benchmark index migration harness', () => {
   const workflow = readRepository('.github/workflows/ci.yml');
 
-  assert.match(workflow, /on:\s*\n\s*push:\s*\n\s*pull_request:/);
-  assert.match(workflow, /mongo-index-migration:/);
-  assert.match(workflow, /run-mongo-index-migration-integration\.sh/);
+  const triggers = workflow.match(/^on:\n((?:  [^\n]*\n)+)/m)?.[1];
+  assert.ok(triggers);
+  assert.match(triggers, /^  push:\n    branches-ignore: \[codex\/hangzhou-production\]\n(?!    )/m);
+  assert.match(triggers, /^  pull_request:\n(?!    )/m);
+  const job = workflow.match(/^  mongo-index-migration:\n((?:    [^\n]*\n)+)/m)?.[1];
+  assert.ok(job);
+  assert.doesNotMatch(job, /^    if:/m);
+  assert.match(job, /^        run: deploy\/hk-single-host\/tests\/run-mongo-index-migration-integration\.sh$/m);
 });
 
 test('integration harness does not expand an empty array under Bash 3.2 nounset', () => {

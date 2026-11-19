@@ -6,11 +6,13 @@ import { STATIC_MODEL_REGISTRY as catalog } from '../apps/web/src/lib/staticMode
 import { MODEL_AUDIT_DATA, removedModel, auditedModelLifecycle } from '../apps/web/src/lib/modelAudit.js';
 import { modelDeveloper } from '../apps/web/src/lib/modelPresentation.js';
 import miniAudit from '../apps/miniprogram/miniprogram/utils/model-audit.js';
+import { catalogBeforeVersionReview } from '../test-support/catalog-version-review.mjs';
 const read = file => JSON.parse(fs.readFileSync(new URL('../' + file, import.meta.url), 'utf8'));
 const batch = read('config/channel-audit/retirements-20261117.json');
 const baseline = read('test-support/model-retirements-20261117-baseline.json');
 const hash = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const removals = new Set(batch.remove.map(row => row.provider + '/' + row.id));
+const retirementCatalog = catalogBeforeVersionReview(catalog);
 
 test('batch 1 removes exactly 31 catalog identities and preserves every surviving static model and default', () => {
   assert.equal(batch.remove.length, 31);
@@ -20,9 +22,10 @@ test('batch 1 removes exactly 31 catalog identities and preserves every survivin
   assert.equal(Object.values(catalog).reduce((sum, p) => sum + p.models.length, 0), 1033);
   // Main's static catalog omitted the display-only specification. Keep its exact hash
   // and independently lock the complete merged catalog to the surviving #251 rows.
-  assert.equal(hash(catalog), 'acadc122db56fde4ecddb2dfb9d9b16caac5a2f2ef063395711ddc653b8b81be');
+  assert.equal(hash(catalog), '009e4d21d27462aa062c53fcac0fab3dd98102115428e13a2ac1ab21ed90a9f5');
+  assert.equal(hash(retirementCatalog), 'acadc122db56fde4ecddb2dfb9d9b16caac5a2f2ef063395711ddc653b8b81be');
   const mainModel = ({specificModelSpecifications, ...model}) => model;
-  const retained = Object.fromEntries(Object.entries(catalog).map(([p, value]) => [p, { ...value, models: value.models.filter(m => !removals.has(p + '/' + m.id)).map(mainModel) }]));
+  const retained = Object.fromEntries(Object.entries(retirementCatalog).map(([p, value]) => [p, { ...value, models: value.models.filter(m => !removals.has(p + '/' + m.id)).map(mainModel) }]));
   assert.equal(hash(retained), baseline.survivingCatalogSha256);
   const source = read('config/model-catalog-updates.json'), versions = read('config/model-version-audit.json'), sizes = read('config/image-size-contracts.json');
   for (const row of batch.remove) {
@@ -62,7 +65,7 @@ test('batch 1 leaves all 51 protected candidates and their notices unchanged', (
   assert.equal(baseline.protected.length, 51);
   for (const row of baseline.protected) {
     const key = row.provider + '/' + row.id;
-    assert.equal(hash(catalog[row.provider]?.models.filter(m => m.id === row.id).map(({specificModelSpecifications,...model}) => model)[0] ?? null), row.staticSha256, key);
+    assert.equal(hash(retirementCatalog[row.provider]?.models.filter(m => m.id === row.id).map(({specificModelSpecifications,...model}) => model)[0] ?? null), row.staticSha256, key);
     assert.deepEqual(MODEL_AUDIT_DATA.notices[key] ?? null, row.notice, key);
     assert.equal(MODEL_AUDIT_DATA.removed[key], undefined, key);
   }

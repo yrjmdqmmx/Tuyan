@@ -29,7 +29,9 @@ test('model controls distinguish image slots, mask combinations, native structur
   assert.match(refineInputIssue(refineControlsFor('runware','alibaba:qwen-image-edit@2511'),{version:1,references:[ref,ref,ref]}),/2 张/)
 })
 
-for (const [provider,model] of [['fal','bria/fibo-edit-1.5/edit'],['replicate','qwen/qwen-image-edit-plus'],['runware','alibaba:qwen-image-edit@2511'],['tokenhub','hy-image-v3']]) test(`${provider} sends source and auxiliary bytes to final image model and freezes metadata`,async()=>{
+for (const [provider,model] of [['fal','bria/fibo-edit-1.5/edit'],['replicate','qwen/qwen-image-edit-plus'],['runware','alibaba:qwen-image-edit@2511'],['tokenhub','hy-image-v3']]) test(`${provider} sends source and auxiliary bytes to final image model and freezes metadata`,async(t)=>{
+  // Exercise the original HyImage 3.0 wire and recovery contract before its cutoff.
+  if (provider==='tokenhub') t.mock.method(Date, 'now', () => Date.parse('2026-10-31T12:00:00Z'))
   const f=await createRefineRuntime({tokenDance:true})
   try {
     const source=await upload(f), ref=await upload(f,await sharp(f.image).negate().png().toBuffer())
@@ -107,7 +109,9 @@ test('refining an owned historical image freezes its orientation-corrected pixel
   } finally {await f.close()}
 })
 
-for (const [provider,model,scenario,resumable] of [['runware','alibaba:qwen-image-edit@2511','lost-submit',true],['tokenhub','hy-image-v3','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','download',true],['tokenhub','hy-image-v3','download',true],['sensenova','sensenova-u1.5-lite','lost-submit',false],['sensenova','sensenova-u1.5-lite','download',true],['qianfan','qwen-image-edit','lost-submit',false],['qianfan','qwen-image-edit','download',true],['sensenova','sensenova-u1.5-fast','lost-submit',false],['sensenova','sensenova-u1.5-fast','download',true]] as const) test(`${provider}${model==='sensenova-u1.5-fast'?'/'+model:''} ${scenario}: recovery never repeats billed submission`,async()=>{
+for (const [provider,model,scenario,resumable] of [['runware','alibaba:qwen-image-edit@2511','lost-submit',true],['tokenhub','hy-image-v3','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','download',true],['tokenhub','hy-image-v3','download',true],['sensenova','sensenova-u1.5-lite','lost-submit',false],['sensenova','sensenova-u1.5-lite','download',true],['qianfan','qwen-image-edit','lost-submit',false],['qianfan','qwen-image-edit','download',true],['sensenova','sensenova-u1.5-fast','lost-submit',false],['sensenova','sensenova-u1.5-fast','download',true]] as const) test(`${provider}${model==='sensenova-u1.5-fast'?'/'+model:''} ${scenario}: recovery never repeats billed submission`,async(t)=>{
+  // Exercise the original HyImage 3.0 wire and recovery contract before its cutoff.
+  if (provider==='tokenhub') t.mock.method(Date, 'now', () => Date.parse('2026-10-31T12:00:00Z'))
   // SenseNova Fast uses the same callOfficialImageChannel synchronous checkpoint,
   // download and billing path as the physically removed Step 2x fixture.
   const f=await createRefineRuntime({tokenDance:true})

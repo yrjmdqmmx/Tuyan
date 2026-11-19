@@ -7,6 +7,7 @@ import { createHash } from 'node:crypto'
 import { gzipSync } from 'node:zlib'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import batch from '../config/channel-audit/retirements-20261117.json' with { type: 'json' }
+import { cardsBeforeVersionReview } from '../test-support/catalog-version-review.mjs'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const baseline = 'bf866c9ba4138e45019910b9b6ad947b4f3740f9'
@@ -38,6 +39,7 @@ async function capture(directory) {
 const archive = process.argv.slice(2).find(arg => !arg.startsWith('--'))
 if (!archive) throw Error('Expected path to extracted bf866c9b archive')
 const prior = await capture(path.resolve(archive)), current = await capture(root)
+current.cards = cardsBeforeVersionReview(current.cards)
 assert.equal(hash(prior), '71dacbbacf9ace8889a250a74e0dc9c99720d19b8058dffa1019c31f6fe1cb28',
   'The supplied archive must reproduce the independently captured bf866c9b presentation')
 const scopes = {}, sources = {web:{}, mini:{}}

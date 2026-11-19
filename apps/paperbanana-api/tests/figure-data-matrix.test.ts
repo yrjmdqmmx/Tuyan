@@ -1,21 +1,12 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {spawn} from 'node:child_process'
+import {renderPlot} from './helpers/plot-worker.js'
 import {readFile,writeFile,mkdir} from 'node:fs/promises'
 import {createRefineRuntime} from '../../../test-support/refine-runtime.mjs'
 import {DETERMINISTIC_PLOT_TYPES} from '../../../packages/figure-taxonomy/src/plot.js'
 import {retrieveFigureCandidates} from '../../../packages/figure-taxonomy/src/library.js'
 import {TAXONOMY_VERSION} from '../../../packages/figure-taxonomy/src/index.js'
 const root=process.env.TUYAN_QA_EVIDENCE_DIR || '../../docs/infographic-v400/completion/evidence'
-const python=process.env.TUYAN_QA_PYTHON || '/Users/a1-6/.cache/tuyan-figure-qa-20261010/bin/python'
-export function actualWorker(wire:any):Promise<any>{
- return new Promise((resolve,reject)=>{
-  const child=spawn(python,['../../scripts/figures/render-json.py']),parts:Buffer[]=[],errors:Buffer[]=[]
-  child.stdout.on('data',d=>parts.push(d));child.stderr.on('data',d=>errors.push(d));child.on('error',reject)
-  child.on('close',code=>{try{if(code)throw new Error(Buffer.concat(errors).toString());resolve(JSON.parse(Buffer.concat(parts).toString()))}catch(e){reject(e)}})
-  child.stdin.end(JSON.stringify(wire))
- })
-}
 test('63 typed data routes × PNG/SVG use actual program worker; mocks only replace model planning and visual opinions',async()=>{
  const r=await createRefineRuntime(),prior=process.env.PLOT_WORKER_URL;process.env.PLOT_WORKER_URL='http://plot-fixture.invalid'
  const matrix:any[]=[];await mkdir(root+'/data-core',{recursive:true})
@@ -28,7 +19,7 @@ test('63 typed data routes × PNG/SVG use actual program worker; mocks only repl
     r.legacy.configureRuntimeFetch(async(url:any,init:any={})=>{
      if(String(url).endsWith('/models'))return Response.json({data:[]})
      const wire=JSON.parse(String(init.body))
-     if(String(url).endsWith('/render')){actual=await actualWorker(wire);assert.equal(actual.ok,true,JSON.stringify({typeId,error:actual.error}));return Response.json(actual)}
+     if(String(url).endsWith('/render')){actual=await renderPlot(wire);assert.equal(actual.ok,true,JSON.stringify({typeId,error:actual.error}));return Response.json(actual)}
      assert.ok(!String(url).includes('/images/'),'Numerical data must never use image generation')
      const serialized=JSON.stringify(wire),review=serialized.includes('Decide whether the current candidate')
      const parts=[...(Array.isArray(wire.input)?wire.input:[]),...(wire.messages||[])].flatMap((m:any)=>Array.isArray(m.content)?m.content:[])

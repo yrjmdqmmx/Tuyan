@@ -59,7 +59,7 @@ for (const file of [...review.files, ...review.fixtures]) {
 }
 // Follow-up review also covers expectations introduced on this feature branch.
 for (const file of review.followupChanges || []) {
-  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13', 'fd29cf36', '4e18513c', 'cd72eace', '9a7128d6', 'f8ff7648', 'd29097c0', '6864824a', 'd1c63994', '105744a9', '7858d7a4', '997585e2', '873fc7fd', '588f1d67', '702175ea', 'bf866c9b'].includes(file.comparisonBase))
+  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13', 'fd29cf36', '4e18513c', 'cd72eace', '9a7128d6', 'f8ff7648', 'd29097c0', '6864824a', 'd1c63994', '105744a9', '7858d7a4', '997585e2', '873fc7fd', '588f1d67', '702175ea', 'bf866c9b', '57bc2ad0'].includes(file.comparisonBase))
   verifyFile(file, inventory.followupChanges)
   assert.ok(file.changes.length)
   for (const row of file.changes) {
