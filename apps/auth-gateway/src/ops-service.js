@@ -1,6 +1,6 @@
 import { open } from 'node:fs/promises';
 import { opsCount, opsNumber, opsTimestamp, projectCounts, JOB_STATES, FAILURE_CATEGORIES,
-  FAILURE_STAGES, REQUEST_STATES, parseOpsQuery } from '../../../packages/api/src/ops-read-contract.mjs';
+  FAILURE_STAGES, REQUEST_STATES, parseOpsQuery, projectFeedbackItem, FEEDBACK_WINDOW_LIMIT } from '../../../packages/api/src/ops-read-contract.mjs';
 
 const missing = () => ({ available: false, reason: 'source_unavailable' });
 const sum = values => values.every(value => value !== null) ? values.reduce((a, b) => a + b, 0) : null;
@@ -86,6 +86,15 @@ export function createOpsService({ accounts, coreRead, hostSnapshotFile, nowMs =
         successRate: 'succeeded / (succeeded + failed); null when no ended jobs. Not provider billing or revenue.',
         consistency: 'Sources sampled separately; not a cross-database transactional snapshot.',
       } };
+    }
+    if (kind === 'feedback') {
+      const feedback = await rawPromise.then(raw => {
+        if (!opsTimestamp(raw?.sampledAt) || !Array.isArray(raw.items) || raw.items.length > FEEDBACK_WINDOW_LIMIT) return missing();
+        const items = raw.items.map(projectFeedbackItem).filter(Boolean);
+        return { available: true, sampledAt: opsTimestamp(raw.sampledAt), count: items.length, truncated: raw.truncated === true, items,
+          nextFrom: items.length ? items[items.length - 1].createdAt : null };
+      }).catch(missing);
+      return { ...result, feedback, definitions: { feedback: 'Retained feedback records created in [from,to), oldest first, at most 100 (truncated=true means continue from nextFrom; records sharing that millisecond may repeat, dedupe by id). Ids and closed enums only; message, contact and user stay in Core.' } };
     }
     const failures = await rawPromise.then(raw => {
       const categories = projectCounts(raw.categories, FAILURE_CATEGORIES), stages = projectCounts(raw.stages, FAILURE_STAGES);

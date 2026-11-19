@@ -10,7 +10,11 @@ class SafetyTests(unittest.TestCase):
   records=json.dumps([{'id':'grokbot','sha256':'a'*64,'scopes':['overview:read','health:read'],'expiresAt':'2027-01-01T00:00:00.000Z'}],separators=(',',':'))
   settings={'TUYAN_OPS_AGENT_ENABLED':'true','TUYAN_OPS_AGENT_TOKENS':records,'TUYAN_OPS_HOST_SNAPSHOT_FILE':r.AGENT_HOST_FILE,'PAPERBANANA_OPERATIONS_TOKEN':'b'*64}
   m=manifest();m['services']={'cn-gateway':{'env':settings}};r.validate(m)
-  for service,key,value in [('gateway','TUYAN_OPS_AGENT_ENABLED','true'),('core','TUYAN_OPS_AGENT_TOKENS',records),('cn-gateway','TUYAN_OPS_AGENT_ENABLED','yes'),('cn-gateway','TUYAN_OPS_HOST_SNAPSHOT_FILE','/etc/shadow'),('cn-gateway','TUYAN_OPS_AGENT_TOKENS',records.replace('overview:read','admin:write')),('cn-gateway','TUYAN_OPS_AGENT_TOKENS',records+'\nSECRET=x')]:
+  feedback=records.replace('"health:read"]','"health:read","feedback:read","failures:read"]')
+  m=manifest();m['services']={'cn-gateway':{'env':{'TUYAN_OPS_AGENT_TOKENS':feedback}}};r.validate(m)
+  events={'TUYAN_OPS_EVENTS_ENABLED':'true','TUYAN_OPS_EVENTS_URL':'https://hooks.example.invalid/routine/abc_123?token=x-y','TUYAN_OPS_EVENTS_SECRET':'s'*48,'TUYAN_OPS_EVENTS_SOURCE':'hz'}
+  m=manifest();m['services']={'cn-gateway':{'env':events}};r.validate(m)
+  for service,key,value in [('cn-gateway','TUYAN_OPS_AGENT_TOKENS',records.replace('"health:read"]','"health:read","health:read"]')),('gateway','TUYAN_OPS_EVENTS_ENABLED','true'),('cn-gateway','TUYAN_OPS_EVENTS_ENABLED','yes'),('cn-gateway','TUYAN_OPS_EVENTS_URL','http://hooks.example.invalid/x'),('cn-gateway','TUYAN_OPS_EVENTS_URL','https://u:p@hooks.example.invalid/x'),('cn-gateway','TUYAN_OPS_EVENTS_URL','https://hooks.example.invalid/x\nSECRET=y'),('cn-gateway','TUYAN_OPS_EVENTS_SECRET','short'),('cn-gateway','TUYAN_OPS_EVENTS_SECRET','x'*40+'$'),('cn-gateway','TUYAN_OPS_EVENTS_SOURCE','Bad'),('gateway','TUYAN_OPS_AGENT_ENABLED','true'),('core','TUYAN_OPS_AGENT_TOKENS',records),('cn-gateway','TUYAN_OPS_AGENT_ENABLED','yes'),('cn-gateway','TUYAN_OPS_HOST_SNAPSHOT_FILE','/etc/shadow'),('cn-gateway','TUYAN_OPS_AGENT_TOKENS',records.replace('overview:read','admin:write')),('cn-gateway','TUYAN_OPS_AGENT_TOKENS',records+'\nSECRET=x')]:
    m=manifest();m['services']={service:{'env':{key:value}}}
    with self.assertRaises(ValueError):r.validate(m)
   text='services:\n  auth-gateway:\n    volumes:\n      - /opt/paperbanana/control:/opt/paperbanana/control:ro\n'

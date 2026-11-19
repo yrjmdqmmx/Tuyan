@@ -121,6 +121,7 @@ async function withApp({
   appConfig = config(),
   isMaintenance = () => false,
   logger = { info() {}, warn() {}, error() {} },
+  opsEvents,
 }, run) {
   const accountDeletion = createAccountDeletionService({ auth, backend, store: createDeletionStore(memoryDb().collection('operations')), isMaintenance, logger });
   const app = createApp({
@@ -132,6 +133,7 @@ async function withApp({
     nowSeconds: () => 1_800_000_000,
     randomBytes: () => Buffer.alloc(32, 5),
     logger,
+    opsEvents,
   });
   const server = app.listen(0, '127.0.0.1');
   await once(server, 'listening');
@@ -1213,4 +1215,33 @@ test('production requires login before any task, upload, export or paid helper c
     const expired = await post(baseUrl,{action:'createJob'},{cookie:'__Host-paperbanana_guest=old-cookie; better-auth.session_token=expired'});
     assert.equal(expired.status,401);
   });
+});
+
+test('passive ops events: feedback emits only its stored id; captured 5xx emits a coarse area; disabled by default', async () => {
+  const events = [];
+  const opsEvents = { enabled: true, emit: (type, fields) => events.push([type, fields]) };
+  const backend = fakeBackend(async (body) => {
+    if (body.action === 'submitFeedback') return { status: 200, data: { code: 0, ok: true, id: 'feedback-abc123' } };
+    if (body.action === 'referenceLibrary') throw Object.assign(new Error('core exploded with PRIVATE_SENTINEL'), { code: 'CORE_DOWN' });
+    return { status: 200, data: { code: 0, ok: true } };
+  });
+  await withApp({ backend, opsEvents }, async ({ baseUrl }) => {
+    const feedback = await post(baseUrl, { action: 'submitFeedback', message: 'PRIVATE_SENTINEL message', contact: 'PRIVATE_SENTINEL@example.com', platform: 'web' });
+    assert.equal(feedback.status, 200);
+    const failed = await post(baseUrl, { action: 'referenceLibrary' });
+    assert.ok(failed.status >= 500);
+  });
+  assert.deepEqual(events[0], ['feedback.created', { feedbackId: 'feedback-abc123' }]);
+  assert.equal(events[1][0], 'error.captured');
+  assert.equal(events[1][1].area, 'paperbanana-api.referenceLibrary');
+  assert.equal(events[1][1].code, 'CORE_DOWN');
+  assert.doesNotMatch(JSON.stringify(events), /PRIVATE_SENTINEL/);
+  assert.equal(events.length, 2);
+
+  // Rejected feedback never emits, and the default (no TUYAN_OPS_EVENTS_ENABLED) is a no-op emitter.
+  events.length = 0;
+  await withApp({ backend: fakeBackend(async () => ({ status: 429, data: { code: 429 } })), opsEvents }, async ({ baseUrl }) => {
+    assert.equal((await post(baseUrl, { action: 'submitFeedback', message: 'x', platform: 'web' })).status, 429);
+  });
+  assert.equal(events.length, 0);
 });

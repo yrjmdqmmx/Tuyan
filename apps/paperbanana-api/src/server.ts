@@ -49,7 +49,7 @@ type AppDependencies = {
   readinessProbe: ReadinessProbe
   healthSnapshot: () => Readiness
   operationsSnapshot?: () => unknown | Promise<unknown>
-  operationsRead?: (kind: 'overview' | 'failures', input: unknown) => Promise<unknown>
+  operationsRead?: (kind: 'overview' | 'failures' | 'feedback', input: unknown) => Promise<unknown>
   config: AppConfig
   logger: ServiceLogger
   adminOperations?: { handle(body: Record<string, unknown>, isAdmin: boolean): Promise<Record<string, unknown>> }
@@ -219,7 +219,7 @@ export function createApp({
     catch { return response.status(503).json({ error: 'Operations snapshot unavailable' }) }
   })
 
-  for (const kind of ['overview', 'failures'] as const) {
+  for (const kind of ['overview', 'failures', 'feedback'] as const) {
     app.get(`/internal/operations/${kind}`, async (request, response) => {
       response.set('Cache-Control', 'no-store')
       for (const header of Object.keys(corsHeaders)) response.removeHeader(header)

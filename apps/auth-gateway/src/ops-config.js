@@ -18,7 +18,7 @@ export function loadOpsConfig(env = process.env) {
       || typeof token.id !== 'string' || !/^[a-zA-Z0-9_-]{1,40}$/.test(token.id)
       || typeof token.sha256 !== 'string' || !/^[0-9a-f]{64}$/.test(token.sha256)
       || ids.has(token.id) || hashes.has(token.sha256) || protectedHashes.includes(token.sha256)
-      || !Array.isArray(token.scopes) || !token.scopes.length || token.scopes.length > 3
+      || !Array.isArray(token.scopes) || !token.scopes.length || token.scopes.length > OPS_KINDS.length
       || token.scopes.some(scope => !OPS_KINDS.map(kind => `${kind}:read`).includes(scope))
       || typeof token.expiresAt !== 'string' || !Number.isFinite(Date.parse(token.expiresAt))) invalid();
     ids.add(token.id); hashes.add(token.sha256);

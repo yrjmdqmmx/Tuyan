@@ -24,6 +24,12 @@
       "operationId": "tuyan_ops_health",
       "summary": "Read partial Core and existing host observations; check stale/available flags",
       "responses": { "200": { "$ref": "#/components/responses/aggregate" }, "400": { "description": "No query parameters allowed" }, "401": { "description": "Missing, invalid or expired service credential" }, "403": { "description": "Missing health:read scope or browser origin" }, "429": { "description": "Rate limit; respect Retry-After" }, "503": { "description": "Reader busy; retry later" } }
+    } },
+    "/api/agent-ops/feedback": { "get": {
+      "operationId": "tuyan_ops_feedback",
+      "summary": "Read user feedback created in the window: id, createdAt, category, platform, status only; oldest first, at most 100 (continue from nextFrom when truncated)",
+      "parameters": [{ "$ref": "#/components/parameters/from" }, { "$ref": "#/components/parameters/to" }],
+      "responses": { "200": { "$ref": "#/components/responses/aggregate" }, "400": { "description": "Invalid window or extra query fields" }, "401": { "description": "Missing, invalid or expired service credential" }, "403": { "description": "Missing feedback:read scope or browser origin" }, "429": { "description": "Rate limit; respect Retry-After" }, "503": { "description": "Reader busy; retry later" } }
     } }
   },
   "components": {

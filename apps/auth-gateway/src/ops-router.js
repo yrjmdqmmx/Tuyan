@@ -10,6 +10,7 @@ const descriptions = {
   overview: 'Read aggregate retained-account and Core-job counts. Optional UTC time window, maximum 90 days; defaults to the last 24 hours ending at the current minute. Not DAU, revenue or lifetime totals.',
   failures: 'Read failed-job counts by fixed category, stage and request state. Same createdAt window as overview. No job records or free-text errors.',
   health: 'Read selected Core process/database and existing Hangzhou host observations. Missing and stale sources are explicit; this is not an all-services readiness guarantee.',
+  feedback: 'Read user feedback (站内留言) created in a UTC window, oldest first, at most 100: id, createdAt, category, platform, status only. Never message text, contact or user. Poll with from = last seen createdAt to catch up after missed events; read the message itself in the admin console.',
 };
 function errorStatus(error) { return error instanceof OpsQueryError ? 400 : error?.status === 503 ? 503 : 500; }
 function errorMessage(error) { return error instanceof OpsQueryError ? error.message : error?.status === 503 ? 'Operations reader busy; retry later' : 'Operations reader unavailable'; }
@@ -90,7 +91,7 @@ export function createOpsRouter({ config = { enabled: false }, accounts, coreUrl
       if (!response.headersSent) response.status(500).json({ jsonrpc: '2.0', error: { code: -32603, message: 'Operations MCP unavailable' }, id: null });
     }
   });
-  router.all(['/overview', '/failures', '/health', '/mcp'], (_request, response) => response.sendStatus(405));
+  router.all([...OPS_KINDS.map(kind => `/${kind}`), '/mcp'], (_request, response) => response.sendStatus(405));
   router.use((_request, response) => response.sendStatus(404));
   router.use((error, _request, response, _next) => {
     response.status(error?.type === 'entity.too.large' ? 413 : 400).json({ error: 'Invalid operations request body' });

@@ -218,3 +218,13 @@ test('new gateway can use exact Hangzhou account origin while old gateway stays 
   }
   assert.equal(loadGatewayConfig(validEnv()).authEmail.resetPasswordUrl, 'https://www.paperbanana.asia/account/reset-password.html');
 });
+
+test('passive ops events are disabled unless explicitly enabled with an https URL and a distinct secret', () => {
+  assert.deepEqual(loadGatewayConfig(validEnv()).opsEvents, { enabled: false });
+  const secret = 'ops-events-fixture-secret-with-32-bytes-plus';
+  assert.deepEqual(loadGatewayConfig(validEnv({ TUYAN_OPS_EVENTS_ENABLED: 'true', TUYAN_OPS_EVENTS_URL: 'https://hooks.example.invalid/t', TUYAN_OPS_EVENTS_SECRET: secret })).opsEvents,
+    { enabled: true, url: 'https://hooks.example.invalid/t', secret, source: 'gateway' });
+  assert.throws(() => loadGatewayConfig(validEnv({ TUYAN_OPS_EVENTS_ENABLED: 'true', TUYAN_OPS_EVENTS_URL: 'https://hooks.example.invalid/t' })));
+  assert.throws(() => loadGatewayConfig(validEnv({ TUYAN_OPS_EVENTS_ENABLED: 'true', TUYAN_OPS_EVENTS_URL: 'https://hooks.example.invalid/t',
+    TUYAN_OPS_EVENTS_SECRET: 'better-auth-secret-with-at-least-32-bytes' })));
+});

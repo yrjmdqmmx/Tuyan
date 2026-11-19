@@ -228,3 +228,38 @@ test('actual Gateway mounts private ops before public CORS/auth and keeps public
     assert.equal(response.status, 200); assert.ok(text.includes('tuyan.get_workflow_bundle')); assert.equal(text.includes('tuyan_ops_'), false);
   } finally { await new Promise(resolve => server.close(resolve)); }
 });
+
+test('feedback window needs its own scope and returns only ids, timestamps and closed enums', async () => {
+  const feedbackToken = { ...fixtureConfig().tokens[0], scopes: ['health:read', 'feedback:read'] };
+  const feedbackCalls = [];
+  const coreFeedback = async (kind, input) => { feedbackCalls.push([kind, input]); return kind === 'feedback' ? { sampledAt, truncated: false, items: [
+    { id: 'feedback-a1', createdAt: '2026-11-01T10:00:00.000Z', category: 'bug', platform: 'web', status: 'new', message: 'PRIVATE_SENTINEL', contact: 'PRIVATE_SENTINEL' },
+    { id: 'feedback-b2', createdAt: '2026-11-01T11:00:00.000Z', category: 'PRIVATE_SENTINEL', platform: 'ios', status: 'new', userId: 'PRIVATE_SENTINEL' },
+    { id: 'PRIVATE_SENTINEL', createdAt: '2026-11-01T11:30:00.000Z' },
+  ] } : coreRead(kind); };
+  await withRouter(async ({ url }) => {
+    const response = await fetch(`${url}/feedback?from=2026-11-01T00:00:00.000Z&to=2026-11-01T12:00:00.000Z`, { headers });
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    assert.equal(body.operation, 'feedback');
+    assert.deepEqual(body.feedback.items, [
+      { id: 'feedback-a1', createdAt: '2026-11-01T10:00:00.000Z', category: 'bug', platform: 'web', status: 'new' },
+      { id: 'feedback-b2', createdAt: '2026-11-01T11:00:00.000Z', category: 'unknown', platform: 'ios', status: 'new' },
+    ]);
+    assert.equal(body.feedback.nextFrom, '2026-11-01T11:00:00.000Z');
+    assert.equal(JSON.stringify(body).includes('PRIVATE_SENTINEL'), false);
+    assert.deepEqual(feedbackCalls[0], ['feedback', { from: '2026-11-01T00:00:00.000Z', to: '2026-11-01T12:00:00.000Z' }]);
+    assert.equal((await fetch(`${url}/feedback?after=x`, { headers })).status, 400);
+    assert.equal((await fetch(`${url}/feedback`, { headers, method: 'POST' })).status, 405);
+    assert.equal((await fetch(`${url}/overview`, { headers })).status, 403);
+    const listing = await (await rpc(url, 'tools/list')).json();
+    assert.deepEqual(listing.result.tools.map(tool => tool.name), ['tuyan_ops_health', 'tuyan_ops_feedback']);
+  }, { config: fixtureConfig({ tokens: [feedbackToken] }), coreRead: coreFeedback });
+  // Existing three-scope credentials do not gain the feedback window.
+  await withRouter(async ({ url }) => {
+    assert.equal((await fetch(`${url}/feedback`, { headers })).status, 403);
+  });
+  const env = { TUYAN_OPS_AGENT_ENABLED: 'true', PAPERBANANA_OPERATIONS_TOKEN: internalToken,
+    TUYAN_OPS_AGENT_TOKENS: JSON.stringify([{ ...feedbackToken, scopes: ['overview:read', 'failures:read', 'health:read', 'feedback:read'] }]) };
+  assert.equal(loadOpsConfig(env).tokens[0].scopes.length, 4);
+});
