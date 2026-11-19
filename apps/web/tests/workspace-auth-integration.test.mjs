@@ -60,7 +60,7 @@ test('existing login form refreshes authoritative identity, settings open in pla
   assert.equal(container.querySelectorAll('[role=dialog]').length, 0);
   assert.equal(JSON.stringify(window.localStorage).includes(identity.user.id), false);
 });
-test('settings requested while signed out resumes after login without navigating away', async () => {
+test('settings requested while signed out never auto-opens the deletion dialog after login', async () => {
   const user = userEvent.setup(); render(React.createElement(Harness, { client: clientFixture() }));
   await user.click(await screen.findByRole('button', { name: '登录图研', exact: true }));
   await user.click(screen.getByRole('menuitem', { name: '账户设置' }));
@@ -68,7 +68,10 @@ test('settings requested while signed out resumes after login without navigating
   await user.type(screen.getByLabelText('邮箱'), identity.user.email);
   await user.type(screen.getByLabelText('密码'), 'fixture-password');
   await user.click(screen.getByRole('button', { name: '登录', exact: true }));
-  assert.ok(await screen.findByRole('dialog', { name: '账号与隐私' }));
+  await screen.findByRole('button', { name: '账户与设置' });
+  await new Promise(r=>setTimeout(r,50));
+  assert.equal(screen.queryByRole('dialog', { name: '账号与隐私' }), null);
+  assert.equal(screen.queryByText('永久删除账号'), null);
 });
 test('logout failure preserves account; confirmed retry signs out', async () => {
   const client = clientFixture(identity); client.failSignOut({ code: 'NETWORK_ERROR' });
