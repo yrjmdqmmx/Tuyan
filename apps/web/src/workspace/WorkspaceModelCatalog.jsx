@@ -29,13 +29,18 @@ export function catalogRows(registry, { provider = '', developer = '', role = ''
 }
 
 // Keep the saved identity and connection even when multiple connections use the same model.
-export function libraryRows(library, registry) {
-  return library.models.filter(entry => !libraryModelMissingFromCatalog(entry, library, registry)).map(entry => {
+export function libraryRows(library, registry, { includeRemoved = false } = {}) {
+  return library.models.filter(entry => !libraryModelMissingFromCatalog(entry, library, registry, { includeRemoved })).map(entry => {
     const connection = library.connections.find(item => item.id === entry.connectionId);
     const provider = connection?.provider || 'custom';
     const model = entry.custom
       ? universalModelEntry({ accessProvider: 'custom', modelId: entry.modelId, custom: { ...entry.custom, ...connection?.custom } })
       : registry?.providers?.[provider]?.models?.find(item => item.id === entry.modelId);
+    const notice = includeRemoved && removedModel(provider, entry.modelId);
+    if (notice) {
+      const identity = { id: entry.modelId, vendorId: notice.developer, vendor: model?.vendorId || model?.vendor };
+      return { provider, model: identity, entry, connection, notice };
+    }
     return { provider, model: withModelAudit(provider, model || { id: entry.modelId, roles: [] }), entry, connection };
   });
 }
@@ -56,41 +61,35 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
   const [limit, setLimit] = useState(PAGE_SIZE), [adding, setAdding] = useState(null), [connectionId, setConnectionId] = useState('');
   const [saveError, setSaveError] = useState('');
   const saved = mode === 'library';
-  const removedRows = saved ? library.models.flatMap(entry => {
-    const connection = library.connections.find(c => c.id === entry.connectionId), id = connection?.provider;
-    const notice = removedModel(id, entry.modelId);
-    return notice ? [{ provider: id, model: registry?.providers?.[id]?.models?.find(m => m.id === entry.modelId) || { id: entry.modelId }, entry, connection, notice }] : [];
-  }) : [];
   const scrollRef = useRef(null);
-  const allRows = useMemo(() => saved ? libraryRows(library, registry) : catalogRows(registry), [saved, library, registry]);
-  // Catalog facets share the selected role; saved-library behavior stays unchanged.
-  const roleRows = useMemo(() => saved || !role ? allRows : allRows.filter(row => row.model.roles?.includes(role)), [allRows, saved, role]);
-  const facetRows = [...roleRows, ...removedRows];
+  const catalog = useMemo(() => saved ? [] : catalogRows(registry), [saved, registry]);
+  const catalogFacets = useMemo(() => role ? catalog.filter(row => row.model.roles?.includes(role)) : catalog, [catalog, role]);
+  const facetRows = saved ? libraryRows(library, registry, { includeRemoved: true }) : catalogFacets;
   const providers = orderModelChannels([...new Set([...facetRows.map(row => row.provider), ...(!saved && registry?.catalogHealth?.tokendance ? ['tokendance'] : [])])]);
-  const channelCounts = useMemo(() => roleRows.reduce((counts, row) => {
+  const channelCounts = useMemo(() => facetRows.reduce((counts, row) => {
     counts[row.provider] = (counts[row.provider] || 0) + 1;
     return counts;
-  }, {}), [roleRows]);
+  }, {}), [facetRows]);
   const providerId = providers.includes(provider) ? provider : providers.find(id => channelCounts[id]) || providers[0] || '';
-  const channelRows = useMemo(() => roleRows.filter(row => row.provider === providerId), [roleRows, providerId]);
+  const channelRows = useMemo(() => facetRows.filter(row => row.provider === providerId), [facetRows, providerId]);
   const developers = useMemo(() => {
     const groups = new Map();
-    for (const row of [...channelRows, ...removedRows.filter(row => row.provider === providerId)]) {
+    for (const row of channelRows) {
       const identity = modelDeveloper(row.provider, row.model);
       if (!groups.has(identity.id)) groups.set(identity.id, { ...identity, count: 0 });
-      if (!row.notice) groups.get(identity.id).count++;
+      const group = groups.get(identity.id);
+      group.count++;
+      if (row.notice) group.hasNotice = true;
     }
     return [...groups.values()];
-  }, [channelRows, library, registry, providerId]);
-  const activeDeveloper = developers.find(item => item.id === developer) || developers[0];
+  }, [channelRows]);
+  const activeDeveloper = developers.find(item => item.id === developer) || developers.find(item => item.hasNotice) || developers[0];
   const developerId = activeDeveloper?.id || '';
-  const removedHints = removedRows.filter(row => row.provider === providerId && (!developerId || modelDeveloper(row.provider, row.model).id === developerId)).map(row => {
-    return { ...row, id: row.entry.id };
-  });
+  const removedHints = channelRows.filter(row => row.notice && modelDeveloper(row.provider, row.model).id === developerId);
   useEffect(() => {
     if (!saved) { setProvider(providerId); setDeveloper(developerId); }
   }, [saved, providerId, developerId]);
-  const rows = useMemo(() => channelRows.filter(row => matchesRow(row, { developer: developerId, role, query }, registry)), [channelRows, registry, developerId, role, query]);
+  const rows = useMemo(() => channelRows.filter(row => !row.notice && matchesRow(row, { developer: developerId, role, query }, registry)), [channelRows, registry, developerId, role, query]);
   useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, [providerId, developerId, role, query]);
   function chooseProvider(id) {
     setProvider(id);
@@ -124,10 +123,10 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
         <ControlField className="tw-catalog-search" label={<Search size={18}/>}><input aria-label={saved ? '搜索已添加模型' : '搜索模型目录'} placeholder={saved ? '搜索型号、厂商或连接名称' : '搜索模型名称、ID 或厂商'} value={query} onChange={e => { setQuery(e.target.value); setLimit(PAGE_SIZE); }}/></ControlField>
         <WorkspaceRoleFilter value={role} onChange={value => { setRole(value); setLimit(PAGE_SIZE); }}/>
       </div>
-      <div className="tw-catalog-caption"><span>{providerId ? channelName(providerId, registry) : '模型目录'}{activeDeveloper && ` / ${activeDeveloper.label}`} <strong>{rows.length}</strong> 个型号</span>{saved ? <button className="tw-text-button" onClick={onBrowse}><Plus size={14}/>从目录添加</button> : <span>同一模型在不同渠道分别列出</span>}</div>
+      <div className="tw-catalog-caption"><span>{providerId ? channelName(providerId, registry) : '模型目录'}{activeDeveloper && ` / ${activeDeveloper.label}`} <strong>{rows.length + removedHints.length}</strong> 个型号</span>{saved ? <button className="tw-text-button" onClick={onBrowse}><Plus size={14}/>从目录添加</button> : <span>同一模型在不同渠道分别列出</span>}</div>
       <div className="tw-catalog-scroll" ref={scrollRef} tabIndex={0} aria-label={saved ? '已添加模型卡片' : '模型目录卡片'}>
       {removedHints.length === 1 && <div className="tw-info model-unavailable-notice" role="status"><ModelUnavailableText provider={removedHints[0].provider} modelId={removedHints[0].model.id}/><ModelReplacement provider={removedHints[0].provider} modelId={removedHints[0].model.id} entry={removedHints[0].entry} models={models}/></div>}
-      {removedHints.length > 1 && <details className="tw-info" key={`${providerId}:${developerId}`}><summary>{removedHints.length} 个已保存型号已不可用</summary>{removedHints.map(hint => <div className="model-unavailable-notice" key={hint.id} title={`${hint.connection.label} · ${hint.model.id}`}><ModelUnavailableText as="p" provider={hint.provider} modelId={hint.model.id}/><ModelReplacement provider={hint.provider} modelId={hint.model.id} entry={hint.entry} models={models}/></div>)}</details>}
+      {removedHints.length > 1 && <details className="tw-info" key={`${providerId}:${developerId}`}><summary>{removedHints.length} 个已保存型号已不可用</summary>{removedHints.map(hint => <div className="model-unavailable-notice" key={hint.entry.id} title={`${hint.connection.label} · ${hint.model.id}`}><ModelUnavailableText as="p" provider={hint.provider} modelId={hint.model.id}/><ModelReplacement provider={hint.provider} modelId={hint.model.id} entry={hint.entry} models={models}/></div>)}</details>}
       <div className="tw-catalog-grid">
         {rows.slice(0, limit).map(({ provider: id, model, entry, connection: savedConnection }) => {
           const added = library.models.filter(m => m.modelId === model.id && library.connections.some(c => c.id === m.connectionId && c.provider === id)).length;
@@ -147,7 +146,7 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
           </article>;
         })}
       </div>
-      {!rows.length && !removedHints.length && <div className="tw-catalog-empty"><Search size={25}/><h3>{saved && !allRows.length ? '还没有添加模型' : registry ? '没有匹配的模型' : registryStatus==='loading' ? '正在准备模型目录' : '暂时无法读取模型目录'}</h3><p>{saved && !allRows.length ? '从模型目录添加后，可在这里查看规格、筛选和管理。' : registry ? '试试精确型号，或调整渠道、厂商与角色。' : registryStatus==='loading' ? '读取完成后将显示当前服务的模型列表。' : '可点击刷新目录重试，已有连接与模型仍保留。'}</p>{registry && <button onClick={() => { setRole(''); setQuery(''); setLimit(PAGE_SIZE); }}>清除筛选</button>}</div>}
+      {!rows.length && !removedHints.length && <div className="tw-catalog-empty"><Search size={25}/><h3>{saved && !facetRows.length ? '还没有添加模型' : registry ? '没有匹配的模型' : registryStatus==='loading' ? '正在准备模型目录' : '暂时无法读取模型目录'}</h3><p>{saved && !facetRows.length ? '从模型目录添加后，可在这里查看规格、筛选和管理。' : registry ? '试试精确型号，或调整渠道、厂商与角色。' : registryStatus==='loading' ? '读取完成后将显示当前服务的模型列表。' : '可点击刷新目录重试，已有连接与模型仍保留。'}</p>{registry && <button onClick={() => { setRole(''); setQuery(''); setLimit(PAGE_SIZE); }}>清除筛选</button>}</div>}
       {rows.length > limit && <button className="tw-catalog-more" onClick={() => setLimit(limit + PAGE_SIZE)}>继续显示 {Math.min(PAGE_SIZE, rows.length - limit)} 个型号 <ChevronDown size={15}/></button>}
       </div>
     </div>

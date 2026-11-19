@@ -28,7 +28,7 @@ export function WorkspaceModelManager({ models, onSignIn, health, onUseApi, init
   const [connectionId, setConnectionId] = useState(''), [role, setRole] = useState('main'), [tab, setTab] = useState(['library','connections'].includes(initialView) ? initialView : 'catalog');
   const [catalogRole, setCatalogRole] = useState('');
   const connection = library.connections.find(c => c.id === connectionId && !c.disabled);
-  const visibleModels = library.models.filter(entry => !libraryModelMissingFromCatalog(entry, library, registry));
+  const visibleModels = library.models.filter(entry => !libraryModelMissingFromCatalog(entry, library, registry, { includeRemoved: true }));
   const providers = orderModelChannels([...new Set([...Object.keys(registry?.providers || {}), 'custom'])]);
   const [editingCustom,setEditingCustom]=useState(null);
   const [channelOpen,setChannelOpen]=useState(false), [apiSetup,setApiSetup]=useState(initialView === 'api');

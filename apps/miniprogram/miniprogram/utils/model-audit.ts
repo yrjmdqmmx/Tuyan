@@ -37,7 +37,7 @@ export function auditedModelSpecs(channel: string, id: string) {
 export function removedModel(channel: string, id: string, now = Date.now()) {
   const key = channel + '/' + String(id).trim()
   const removed = MODEL_AUDIT_DATA.removed?.[key]
-  if (removed) return removed as { displayName: string; replacementDisplayName?: string; stopDate: string; replacementApiId: string | null; sourceUrl: string }
+  if (removed) return removed as { displayName: string; developer?: string; replacementDisplayName?: string; stopDate: string; replacementApiId: string | null; sourceUrl: string }
   const notice = MODEL_AUDIT_DATA.notices[key]
   return notice && now >= Date.parse(notice.stopDate)
     ? { ...notice, replacementApiId: notice.replacement } : null

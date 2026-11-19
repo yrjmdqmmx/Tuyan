@@ -81,7 +81,10 @@ Component({
       const activeProvider = providerCards.some(item => item.id === selectedProvider) ? selectedProvider : ''
       const vendorCards = activeProvider ? this.vendorsFor(activeProvider) : []
       const selected = this.compatibleModels(activeProvider).find(model => model.id === selectedModel)
-      const activeVendor = selected ? modelDeveloper(activeProvider, selected).label : ''
+      const original = removed && registry?.providers[selectedProvider]?.models.find(model => model.id === selectedModel)
+      const savedModel = selected || (removed && { id: selectedModel, vendorId: removed.developer, vendor: original?.vendorId || original?.vendor })
+      const savedVendor = savedModel && modelDeveloper(selectedProvider, savedModel).label
+      const activeVendor = vendorCards.find(item => item.vendor === savedVendor)?.vendor || ''
       this.setData({
         step: 'providers', roleLabel: roleLabel(normalizeRole(this.properties.role)), providerCards, vendorCards,
         activeProvider, activeProviderLabel: activeProvider ? PROVIDER_LABELS[activeProvider] : '', activeVendor,

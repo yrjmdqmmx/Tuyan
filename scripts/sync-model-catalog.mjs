@@ -381,7 +381,7 @@ data.rows = Object.fromEntries(models.map(([key, model], index) => {
   }
   return [key, row]
 }))
-data.removed = Object.fromEntries(Object.entries(data.removed).map(([key, [replacementApiId, displayName, replacementDisplayName]]) => [key, {replacementApiId, displayName, replacementDisplayName}]))
+data.removed = Object.fromEntries(Object.entries(data.removed).map(([key, [replacementApiId, displayName, replacementDisplayName, developer]]) => [key, {replacementApiId, displayName, replacementDisplayName, developer}]))
 module.exports = data
 `, { minify: true, target: 'es2019' }).code}`)
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/static-model-catalog-data.js'),

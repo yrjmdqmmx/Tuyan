@@ -4,8 +4,8 @@
     "files": 42,
     "assertionAndFixtureInputChanges": 348,
     "consumedJsonFixtures": 9,
-    "semanticFixtureChanges": 895,
-    "justified": 1242,
+    "semanticFixtureChanges": 897,
+    "justified": 1244,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -5629,7 +5629,7 @@
     },
     {
       "file": "config/model-audit.generated.json",
-      "diffSha256": "43117421da967cc92fbda197471e45e165e0e475c29676a9dd81d0c9703beccd",
+      "diffSha256": "1a050fa4bd7d94589bcc88f151f9f54e30dea639658d435dce746efcf6ec812c",
       "changes": [
         {
           "line": 2,
@@ -26072,6 +26072,21 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "051b5b7b",
+          "phase": "November 18 saved-model notices",
+          "old": "Eight OpenAI aliases included the resolved snapshot suffix. Removed rows omitted developer IDs.",
+          "new": "The eight aliases keep their own names. Seventy-six exact rows carry a developer ID where the presentation rules lack one.",
+          "reason": "The saved notice must identify the original API ID under its developer. All 99 rows still block new selections.",
+          "evidence": [
+            "config/removed-models.json",
+            "scripts/model-retirements-20261117.test.mjs",
+            "apps/web/tests/model-retirements-20261117.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -28477,9 +28492,24 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "oldLine": 1,
+          "comparisonBase": "051b5b7b",
+          "phase": "November 18 saved-model notices",
+          "old": "Eight OpenAI aliases included the resolved snapshot suffix. Removed rows omitted developer IDs.",
+          "new": "The eight aliases keep their own names. Seventy-six exact rows carry a developer ID where the presentation rules lack one.",
+          "reason": "The saved notice must identify the original API ID under its developer. All 99 rows still block new selections.",
+          "evidence": [
+            "config/removed-models.json",
+            "scripts/model-retirements-20261117.test.mjs",
+            "apps/web/tests/model-retirements-20261117.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "61a9ab76d35e4cec6b236df228619fe147402e0051c3883345fffb40871b85bc"
+      "diffSha256": "4e4ec7db165b48174e86f92e0353ac1de20f8ca9e94b6c108619fc3a8653bece"
     },
     {
       "file": "docs/reference-upload/model-matrix.json",

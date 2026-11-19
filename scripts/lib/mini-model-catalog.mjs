@@ -97,7 +97,11 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
   // Reuse the static catalog's exact identities instead of shipping each ID twice.
   const keys = Object.entries(providers).flatMap(([channel, provider]) => provider.models.map(model => channel + '/' + model.id))
   // Unverified flags and tombstone evidence are not read by the Mini UI.
-  const removed = Object.fromEntries(Object.entries(data.removed).map(([key, value]) => [key, [value.replacementApiId, value.displayName, value.replacementDisplayName || null]]))
+  const removed = Object.fromEntries(Object.entries(data.removed).map(([key, value]) => {
+    const fields = [value.replacementApiId, value.displayName, value.replacementDisplayName || null]
+    if (value.developer) fields.push(value.developer)
+    return [key, fields]
+  }))
   // Optional details share the existing row identity; slot 5 stays the source label.
   const detailRows = keys.map(key => details[key] ? [...rows[key].slice(0, 5), rows[key][5] || null, details[key]] : rows[key] || null)
   return { verifiedAt: data.verifiedAt, fields: data.fields, facts, sources: compactSources, sourceTemplates, rows: detailRows, details: {}, notices: data.notices, removed }
