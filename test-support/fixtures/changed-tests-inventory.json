@@ -2,6 +2,12 @@
   "base": "8c456709",
   "files": [
     {
+      "file": "apps/auth-gateway/tests/integration/account-lifecycle.mjs",
+      "comparisonBase": "8c456709",
+      "contentSha256": "e8000308388b8a83fc038eab4b12561df06964a833526c54a601e3fd7a9f3748",
+      "diffSha256": "8179b6b1a5d04e496d58628c0117be3b817c944416c3867516ed3b630155148e"
+    },
+    {
       "file": "apps/auth-gateway/tests/model-audit.test.js",
       "comparisonBase": "8c456709",
       "contentSha256": "89f2a3f48b2938ceb24260ba12059fbfdbb9252a10da5326d25e986443e23c99",
@@ -64,8 +70,26 @@
     {
       "file": "apps/paperbanana-api/tests/core-composition.test.ts",
       "comparisonBase": "8c456709",
-      "contentSha256": "9cdc5b2cb13492b8314578fe59eca33e8f1d0926a98493fdb0bed5d34b158a3d",
-      "diffSha256": "cc27d86641e0591a13fe83a5e76c62066758ccf808af1f3f3862845c427ee87a"
+      "contentSha256": "e45f2346d2be6176f52466d75dd5f5a8ea7e8ec8590f957fff3fd8aa598637f0",
+      "diffSha256": "4ff8069e6ac381c5ca81c8bbdb905c34a2afb69ca6a60b0221298174f70c9d62"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/diagram-topology-runtime.test.ts",
+      "comparisonBase": "8c456709",
+      "contentSha256": "1e9a5eea66e50903bf1fc3e695fc6b36b3e4a5b07fb4fa28eb42a9c452a0ecc2",
+      "diffSha256": "380370ba5a02a5c5cfd520868c9f16bf018bf7424bd4f885de263dd72e2833fe"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/figure-composite-runtime.test.ts",
+      "comparisonBase": "8c456709",
+      "contentSha256": "9165086735d918d6b1c2e7aee315eb18bdbd2a71de4d4c1673fb09aac0a8aa5f",
+      "diffSha256": "2454b391dc67e3223168776cece2519b348f8e087b4861f4c0e189c0e4e20987"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/figure-data-matrix.test.ts",
+      "comparisonBase": "8c456709",
+      "contentSha256": "d6658623149217afcd72b06a0f4867c5582fd1f63cf0c42e1b06cac518391b7b",
+      "diffSha256": "11505c95a19869cb490038ccda18b8c8b213fffd169d6253eb6660134214038e"
     },
     {
       "file": "apps/paperbanana-api/tests/helpers/catalog-retirements.ts",
@@ -102,6 +126,12 @@
       "comparisonBase": "8c456709",
       "contentSha256": "2cfd9500b31eee9f4ebee1d2574a9c36281beed0de79848ef0ded1ca3701d324",
       "diffSha256": "f7d4ecd8f514581c4cf741c2bb507caf966fe03bc8a8ed70cdac4f6c95fe2551"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/refine-controls.test.ts",
+      "comparisonBase": "8c456709",
+      "contentSha256": "bd9c232701ae5651628d6c6462997c1244ee3bc0c03c15525ed8fb78c72c2d67",
+      "diffSha256": "fb26148852239aa9c090e7ea5daaa4a0ef1b4a2e606cc527ba17eeef010ea8f6"
     },
     {
       "file": "apps/paperbanana-api/tests/thinking-workflow.test.ts",
@@ -260,6 +290,12 @@
       "comparisonBase": "8c456709",
       "contentSha256": "de31b355c3d5d63a8f2b327f8bffdfb27f47b3e5c15fa0d48cc343a2a77c03d5",
       "diffSha256": "76a5418e12f3d77841c3cee2c287f0450a01cf40f862a2276a1a6c4a0d2d847d"
+    },
+    {
+      "file": "apps/paperbanana-api/package.json",
+      "comparisonBase": "8c456709",
+      "contentSha256": "bcb37823a15e88668c92dfddcad2e039b7eea4c03247d93eddbb786bccd2da99",
+      "diffSha256": "8474256dd2f24a74ca37e40ed99f772c2524a70b271f165d61f4f11c4b9a7ebd"
     },
     {
       "file": "config/channel-audit/deprecations-addendum-20261109.json",

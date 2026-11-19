@@ -3,8 +3,9 @@ import {FIGURE_TYPES} from '../../../packages/figure-taxonomy/src/index.js'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
+import { tmpdir } from 'node:os'
 import test from 'node:test'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 import { build } from 'esbuild'
 import sharp from 'sharp'
@@ -4233,8 +4234,15 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
           },
         }],
       })
-      const source = result.outputFiles[0].text
-      return import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`) as Promise<LegacyPolicyModule>
+      // Node includes the module URL in every stack frame, including its failure recap.
+      const directory = await fs.promises.mkdtemp(path.join(tmpdir(), 'tuyan-core-test-'))
+      const bundlePath = path.join(directory, 'core-entry.mjs')
+      try {
+        await fs.promises.writeFile(bundlePath, result.outputFiles[0].contents)
+        return await import(pathToFileURL(bundlePath).href) as LegacyPolicyModule
+      } finally {
+        await fs.promises.rm(directory, { recursive: true, force: true })
+      }
     })()
   }
   return legacyPromise
@@ -6512,7 +6520,22 @@ test('Bailian scheduled retirement follows the official Beijing midnight boundar
   } finally { Date.now = now }
 })
 
-test('xAI normalizes WebP references to supported PNG for planning, vision and image editing', async () => {
+test('Core bundle errors retain useful frames within the CI failure report budget', async () => {
+  const legacy = await loadLegacy()
+  assert.throws(
+    () => legacy.resolveModelRouting({ modelRoutes: [] }),
+    (error: Error) => {
+      assert.match(error.message, /modelRoutes must be an object/)
+      const stack = error.stack || ''
+      assert.ok(Buffer.byteLength(stack) < 8192, 'a single bundled error stack exceeds 8 KiB')
+      assert.match(stack, /core-entry\.mjs:\d+:\d+/)
+      return true
+    },
+  )
+})
+
+test('xAI normalizes WebP references to supported PNG for planning, vision and image editing', async (t) => {
+  t.mock.method(Date, 'now', () => Date.parse('2026-10-31T12:00:00Z'))
   const legacy = await loadLegacy()
   const images = [{ url: `data:image/webp;base64,${onePixelWebpBase64}`, mimeType: 'image/webp' }]
   const bodies: any[] = []
