@@ -10,6 +10,8 @@ import { stripTypeScriptTypes } from 'node:module';
 import { createAuthRuntime } from '../../src/auth.js';
 import { createAccountVerification } from '../../src/account-verification.js';
 import { createAccountDeletionService } from '../../src/account-deletion.js';
+// Core's real key derivation, so the fixture tracks handler.ts instead of a copy.
+import { accountImagePrefix } from '../../../paperbanana-api/src/image-library.ts';
 
 const uri = process.env.ACCOUNT_LIFECYCLE_TEST_MONGO_URI || '';
 if (!/^mongodb:\/\/127\.0\.0\.1:\d+\//.test(uri)) throw new Error('A disposable loopback-only Mongo URI is required');
@@ -81,10 +83,18 @@ try {
     const end = remaining.slice(1).search(/\n(?:export )?(?:async )?function |\n(?:export )?(?:const|let|type) /);
     return remaining.slice(0, end < 0 ? undefined : end + 1).replace(/^export /, '');
   });
-  const files = new Set(['old-job/result.png', 'new-job/result.png']);
+  const accountImageKey = `${accountImagePrefix(userId)}library.png`;
+  const files = new Set(['old-job/result.png', 'new-job/result.png', accountImageKey]);
   let failStorage = true;
+  // Module-level Core dependencies referenced by the extracted deletion
+  // functions. A missing binding is a ReferenceError that deleteAccount turns
+  // into an endless ACCOUNT_DELETION_RETRY_SCHEDULED, so keep this list in
+  // sync with handler.ts (the phase assertion below catches drift early).
+  const ownerCleanup = [];
   const context = vm.createContext({
-    Date, console, accountDeletions: db.collection('paperbanana_account_deletions'), jobs: business,
+    Date, console, accountDeletions: db.collection('paperbanana_account_deletions'), jobs: business, db, accountImagePrefix,
+    imageLibrary: { deleteOwner: async (owner) => { ownerCleanup.push(['imageLibrary', owner]); } },
+    materialFilesService: { deleteOwner: async (owner) => { ownerCleanup.push(['materialFiles', owner]); } },
     feedback: db.collection('feedback'), referenceUploadState: db.collection('paperbanana_reference_upload_state'),
     jobAdmission: { freezeOwners() {} }, bucketName: 'local-fake', randomId: randomUUID,
     referenceUploadStateRetentionMs: 86400000, deleteAdditionalAccountData: async () => {},
@@ -140,9 +150,17 @@ try {
   assert.equal((await service().request(userId)).status, 202);
   assert.ok(await db.collection('user').findOne({ _id: user._id }));
   assert.equal(await business.countDocuments({}), 2);
+  // The first attempt must stop at the simulated OSS outage after a complete
+  // inventory, not earlier (e.g. on a fixture binding Core no longer matches).
+  const interrupted = await db.collection('paperbanana_account_deletions').findOne({ _id: `user:${userId}` });
+  assert.equal(interrupted.phase, 'objects');
+  assert.equal(interrupted.lastErrorCode, 'ACCOUNT_DELETION_OBJECTS_FAILED');
+  assert.deepEqual([...interrupted.objectKeys].sort(), [accountImageKey, 'old-job/result.png'].sort());
   failStorage = false;
   await db.collection('accountDeletionOperations').updateOne({ _id: userId }, { $set: { nextAttemptAt: new Date(0) } });
   await service().tick();
+  const businessDone = await db.collection('paperbanana_account_deletions').findOne({ _id: `user:${userId}` });
+  assert.equal(businessDone.phase, 'awaiting_auth', `Core deletion stalled: ${businessDone.lastErrorCode}`);
   assert.equal(await db.collection('user').countDocuments({}), 0);
   assert.equal(await db.collection('session').countDocuments({}), 0);
   assert.equal(await db.collection('account').countDocuments({}), 0);
@@ -151,6 +169,7 @@ try {
   assert.equal((await runtime.deletionStore.get(userId)).phase, 'ack');
   assert.equal(await business.countDocuments({}), 1);
   assert.deepEqual([...files], ['new-job/result.png']);
+  assert.deepEqual(ownerCleanup, [['imageLibrary', userId], ['materialFiles', userId]]);
   failAck = false;
   await db.collection('accountDeletionOperations').updateOne({ _id: userId }, { $set: { nextAttemptAt: new Date(0) } });
   await service().tick();
