@@ -108,7 +108,7 @@ cp -R Tuyan-Skill/tuyan-scientific-figure ~/.agents/skills/tuyan-scientific-figu
 安装 MCP（使用托管端点，不需要克隆 MCP 仓库）：
 
 ```bash
-codex mcp add tuyan --url https://api.paperbanana.asia/mcp
+codex mcp add tuyan --url https://tuyansci.cn/mcp
 codex mcp list
 ```
 
@@ -126,7 +126,7 @@ openclaw skills install ./Tuyan-Skill/tuyan-scientific-figure \
   --as tuyan-scientific-figure
 
 openclaw mcp add tuyan \
-  --url https://api.paperbanana.asia/mcp \
+  --url https://tuyansci.cn/mcp \
   --transport streamable-http \
   --include 'tuyan.get_workflow_bundle'
 
@@ -139,11 +139,11 @@ openclaw mcp probe tuyan --json
 <summary>Hermes Agent 标准接入方式</summary>
 
 ```bash
-hermes skills search https://paperbanana.asia --source well-known
+hermes skills search https://tuyansci.cn --source well-known
 hermes skills install \
-  well-known:https://paperbanana.asia/.well-known/skills/tuyan-scientific-figure
+  well-known:https://tuyansci.cn/.well-known/skills/tuyan-scientific-figure
 
-hermes mcp add tuyan --url https://api.paperbanana.asia/mcp
+hermes mcp add tuyan --url https://tuyansci.cn/mcp
 hermes mcp test tuyan
 ```
 
