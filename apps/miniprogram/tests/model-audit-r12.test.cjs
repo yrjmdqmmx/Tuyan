@@ -92,7 +92,7 @@ test('R13 compiled picker shows all seven vendor replacements and no catalog car
     for (const source of presented.specSources) assert.ok(!deadUrls.has(source.url), channel + '/' + model.id)
     assert.ok(!deadUrls.has(auditedModelSpecs(channel, model.id).sourceUrl))
   }
-  assert.equal(cards, 1033)
+  assert.equal(cards, 1032)
 })
 
 test('R13B pre-phase-2 static notice priorities and all 34 visible notices remain reproducible', async () => {
@@ -144,6 +144,6 @@ test('R13B compiled picker resolves full-model source priorities and retains not
       }
     }
   }
-  assert.equal(notices, 20)
+  assert.equal(notices, 17)
   assert.deepEqual(appendedNotices.sort(), ['bailian/qwen3.5-plus', 'bailian/qwen3.5-plus-2026-02-15', 'bailian/qwen3.5-plus-2026-04-20', 'tokendance/qwen3.5-plus', 'tokendance/qwen3.5-plus'].sort())
 })

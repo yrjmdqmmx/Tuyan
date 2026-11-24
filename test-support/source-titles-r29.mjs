@@ -45,7 +45,7 @@ export function titleMap(surfaces, client) {
   }
   return map
 }
-export function assertUnifiedTitles(surfaces, cardCount = 1033) {
+export function assertUnifiedTitles(surfaces, cardCount = 1032) {
   const maps = Object.fromEntries(['web', 'mini'].map(client => [client, titleMap(surfaces, client)]))
   for (const [url, titles] of titleMap(surfaces)) {
     assert.equal(titles.size, 1, url + ': ' + [...titles].join(' / '))

@@ -17,9 +17,9 @@ const registry={providers:STATIC_MODEL_REGISTRY};
 const library={connections:[{id:'c',provider:'xiaomi',label:'小米连接',hasCredential:true}],models:[{id:'old',connectionId:'c',modelId:'mimo-v2.5'}]};
 const setup=()=>({registry,library:structuredClone(library),ready:true,busy:false,registryStatus:'ready',save:async()=>true});
 
-test('all 99 removed identities, including seven serverless-only retirements are hidden from catalog, removed from cards while saved data stays unchanged',()=>{
+test('all 103 removed identities, including seven serverless-only retirements are hidden from catalog, removed from cards while saved data stays unchanged',()=>{
   const now=Date.parse('2026-11-09'),visible=new Set(catalogRows(registry).map(row=>row.provider+'/'+row.model.id));
-  assert.equal(Object.keys(MODEL_AUDIT_DATA.removed).length,99);
+  assert.equal(Object.keys(MODEL_AUDIT_DATA.removed).length,103);
   for(const key of Object.keys(MODEL_AUDIT_DATA.removed)){
     const split=key.indexOf('/'),provider=key.slice(0,split),modelId=key.slice(split+1);
     if(!removedModel(provider,modelId,now))continue;
@@ -68,7 +68,7 @@ test('saved presets still show lifecycle and replacement when their library bind
       assert.equal(notice.textContent, 'MiMo-v2.5：原型号已不可用，请重新选择。推荐：MiMo-V2.6-Flash');
       assert.deepEqual([...notice.querySelectorAll('.model-name-nowrap')].map(node=>node.textContent), ['MiMo-v2.5',replacement]);
     }
-    else assert.match(screen.getByText('将下线').title,/2027年01月19日.*Qwen3.8 Flash/);
+    else assert.match(screen.getByText(/^将下线 /).title,/2027年01月19日.*Qwen3.8 Flash/);
     assert.deepEqual(draft,before);view.unmount();
   }
 });

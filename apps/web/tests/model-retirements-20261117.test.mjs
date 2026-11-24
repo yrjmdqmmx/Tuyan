@@ -9,9 +9,9 @@ import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js';
 import { auditedModelLifecycle, removedModel } from '../src/lib/modelAudit.js';
 import batch from '../../../config/channel-audit/retirements-20261117.json' with { type: 'json' };
 
-beforeEach(t => t.mock.method(Date, 'now', () => Date.parse('2026-11-17T12:00:00+08:00')));
+beforeEach(t => t.mock.method(Date, 'now', () => Date.parse('2026-11-24T12:00:00+08:00')));
 afterEach(cleanup);
-for (const [provider, modelId] of [['openai', 'o1'], ['antling', 'Ling-2.6-1T']]) {
+for (const [provider, modelId] of [['openai', 'o1'], ['antling', 'Ling-2.6-1T'], ...['MiniMax-M2.5','MiniMax-M2.5-highspeed','MiniMax-M2.7','MiniMax-M2.7-highspeed'].map(id => ['minimax',id])]) {
   test(`batch 1 saved ${provider}/${modelId} preset survives reopening and shows unavailable guidance`, () => {
     const preset = { name: 'Saved research preset', models: { main: { libraryModelId: 'old', connectionId: 'c', accessProvider: provider, modelId } } };
     const library = { connections: [{ id: 'c', provider, label: 'Saved connection', hasCredential: true }], models: [{ id: 'old', connectionId: 'c', modelId }] };
@@ -88,8 +88,8 @@ test('a library containing only o1 opens on its notice and counts one saved mode
   assert.match(container.querySelector('.tw-catalog-caption').textContent, /OpenAI \/ OpenAI 1 个型号/);
   assert.equal(screen.queryByText('还没有添加模型'), null);
 });
-test('batch 1 ten upcoming models remain listed and selectable until their explicit deadline', t => {
-  for (const row of batch.upcoming) {
+test('batch 1 remaining upcoming models remain listed and selectable until their explicit deadline', t => {
+  for (const row of batch.upcoming.filter(row => row.provider !== 'minimax')) {
     const { provider, id } = row, stop = Date.parse(row.time || row.date);
     const model = STATIC_MODEL_REGISTRY[provider].models.find(model => model.id === id);
     assert.ok(model, provider + '/' + id);

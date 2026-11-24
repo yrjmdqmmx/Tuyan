@@ -175,7 +175,7 @@ test('R12C every full/static card preserves R11 specificity with exact, reasoned
   const actualExceptions = []
   assert.equal(before.staticRows.length, 1064)
   for (const [scope, originals] of [['full', before.rows], ['static', before.staticRows]]) for (const row of originals) {
-    if (batch1.remove.some(item => item.provider === row.channel && item.id === row.modelId)) {
+    if (MODEL_AUDIT_DATA.removed[row.channel + '/' + row.modelId]) {
       assert.ok(MODEL_AUDIT_DATA.removed[row.channel + '/' + row.modelId]);
       continue;
     }
@@ -183,7 +183,7 @@ test('R12C every full/static card preserves R11 specificity with exact, reasoned
       || STATIC_MODEL_REGISTRY[row.channel].models.find(m => m.id === row.modelId)
     const card = modelCardSpecifications(row.channel, entry), finalUrl = card.sources[0], key = scope + '/' + row.channel + '/' + row.modelId
     assert.ok(finalUrl && !isApiSource(finalUrl, MODEL_AUDIT_DATA.sourceChecks), key)
-    const updated = batchNotice(row.channel, row.modelId);
+    const updated = row.channel === 'gemini' && row.modelId === 'gemini-3.1-flash-lite' ? {source:'https://ai.google.dev/gemini-api/docs/deprecations'} : batchNotice(row.channel, row.modelId);
     if (updated) {
       assert.ok(card.sources.includes(updated.source), key + ': sourced retirement may replace a model page');
       continue;
@@ -214,7 +214,7 @@ test('R12C an endpoint replacement prefers same-host model documentation, then v
   }
 })
 test('R12 final changed fixture exactly covers R8 differences using full objects and static-only identities', () => {
-  assert.equal(models.size, 1064); assert.equal(before.rows.length, 1064)
+  assert.equal(models.size, 1067); assert.equal(before.rows.length, 1064)
   assert.deepEqual(expectedR21Changes, changedLinksFromR8())
   assert.ok(final.every(row => !Object.hasOwn(row, 'status')), 'HTTP evidence lives in the separate R12D fixture')
 })

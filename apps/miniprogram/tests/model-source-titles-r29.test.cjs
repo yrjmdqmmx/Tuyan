@@ -1,6 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict')
 const {loadComponent}=require('./helpers/component.cjs')
-test('R29 all 1033 compiled Mini cards: footer/copy, modality and retirement dialogs share one URL title with Web',async()=>{
+test('R29 all 1032 compiled Mini cards: footer/copy, modality and retirement dialogs share one URL title with Web',async()=>{
   const {currentTitlePresentations}=await import('../../../test-support/source-title-report-r29.mjs')
   const {sourceSurfaces,assertUnifiedTitles}=await import('../../../test-support/source-titles-r29.mjs')
   const rows=await currentTitlePresentations();let modal

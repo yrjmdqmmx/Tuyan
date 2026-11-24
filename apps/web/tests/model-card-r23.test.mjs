@@ -24,7 +24,7 @@ test('R23 machine endpoints are filtered while human API documentation remains v
   assert.equal(screen.queryByRole('link'), null)
 })
 
-test('R23 every vendor field on all 1033 Web cards has its vendor href in the dialog; every visible source is human', t => {
+test('R23 every vendor field on all 1032 Web cards has its vendor href in the dialog; every visible source is human', t => {
   let cards=0, vendorFields=0
   const offending=[], apiLinks=[]
   for (const [provider, entry] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
@@ -52,7 +52,7 @@ test('R23 every vendor field on all 1033 Web cards has its vendor href in the di
     }
     cards++;cleanup()
   }
-  assert.equal(cards,1033);assert.ok(vendorFields>20)
+  assert.equal(cards,1032);assert.ok(vendorFields>20)
   assert.deepEqual(offending,[]);assert.deepEqual(apiLinks,[])
   t.diagnostic(JSON.stringify({cards,vendorFields,offendingCards:new Set(offending).size,visibleApiLinks:apiLinks.length}))
 })

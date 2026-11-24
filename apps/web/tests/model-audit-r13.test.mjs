@@ -79,7 +79,7 @@ test('R13 exactly seven cards render verified vendor links in full/static and no
 })
 
 test('R13 catalog-wide visible and secondary sources never contain any known dead URL', () => {
-  assert.equal(all.length, 2094)
+  assert.equal(all.length, 2093)
   assert.equal(deadLinks.length, 14)
   assert.equal(new Set(deadLinks.map(row => row.url)).size, 14)
   for (const row of deadLinks) {
@@ -151,7 +151,7 @@ test('R13B catalog-wide notice links are labelled 下线公告 regardless of cha
       }
     }
   }
-  assert.equal(visible, 61, 'notice primaries across the historical full registry and the surviving static cards')
+  assert.equal(visible, 59, 'notice primaries across the historical full registry and the surviving static cards')
   const ordinary = modelCardSources({ channel: 'unknown', audit: {}, fields: {}, model: { officialSourceUrl: 'https://example.test/notice/118177' } })
   assert.equal(modelSourceName(ordinary, ordinary.sources[0]), '官方文档')
 })

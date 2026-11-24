@@ -6,7 +6,7 @@ import {sourceSurfaces, assertUnifiedTitles, titleIdentity} from '../test-suppor
 import {restoreR29Titles} from '../test-support/source-title-history-r29.mjs'
 import {visibleSourceTitle, sourceTitleKey} from '../packages/api/src/card-presentation.mjs'
 import {assertNoConditionalLabels, conditionalLabel} from '../test-support/conditional-labels-r29.mjs'
-test('R29 all 1033 cards: one strict title per URL on all surfaces, full Web/Mini formatter parity, exact title-only delta', async () => {
+test('R29 all 1032 cards: one strict title per URL on all surfaces, full Web/Mini formatter parity, exact title-only delta', async () => {
   const report = await buildR29TitleReport()
   const rows = await currentTitlePresentations(), surfaces = sourceSurfaces(rows)
   assertUnifiedTitles(surfaces)

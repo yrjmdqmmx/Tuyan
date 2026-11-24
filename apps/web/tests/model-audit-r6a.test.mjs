@@ -45,7 +45,7 @@ test('the pre-phase-2 static baseline still retains every previously supported m
 
 test('every static card retains main supported modalities and all product image-input requirements', () => {
   assert.equal(baseline.commit, 'c7b6a2fc')
-  assert.equal(rows.length, 1033)
+  assert.equal(rows.length, 1032)
   for (const { provider, model } of rows) {
     const key = provider + '/' + model.id, before = structuredClone(model)
     const card = modelCardSpecifications(provider, model), caps = model.capabilities || {}
@@ -90,7 +90,7 @@ test('Mini runtime projection agrees with Web for all four fields across the who
   for (const { provider, model } of rows) {
     const card = modelCardSpecifications(provider, model)
     const web = card.fields
-    const noticePrimary = batch.upcoming.some(row => row.provider === provider && row.id === model.id && row.source === card.sources[0])
+    const noticePrimary = card.lifecycle?.sourceUrl === card.sources[0] && Boolean(card.lifecycle)
     const small = mini.auditedModelSpecs(provider, model.id).fields
     for (const field of Object.keys(web)) {
       assert.deepEqual(small[field].value, web[field].value, provider + '/' + model.id + '/' + field)

@@ -1,6 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
+import { publicExecutionFailure } from '../../../packages/api/src/execution-errors.js'
 import { removedModel, auditedModelLifecycle, auditedModelSpecs, assertAuditedModelAvailable } from '../../../packages/api/src/model-audit.js'
 import { createRefineRuntime } from '../../../test-support/refine-runtime.mjs'
 
@@ -100,11 +101,11 @@ test('optimization returns the removed-model 400 and hint before registry or pro
 })
 
 test('batch 1 removed identities retain evidence and reject saved routes before transport', async t => {
-  t.mock.method(Date, 'now', () => Date.parse('2026-11-17T12:00:00+08:00'))
+  t.mock.method(Date, 'now', () => Date.parse('2026-11-24T12:00:00+08:00'))
   const runtime:any = await createRefineRuntime({startServer:false}); let calls = 0
   try {
     runtime.legacy.configureRuntimeFetch(async () => { calls++; throw Error('No transport for removed models') })
-    for (const [provider, id] of [['openai','o1'], ['antling','Ling-2.6-1T'], ['antling','Ling-2.6-flash'], ['antling','Ring-2.6-1T'], ['siliconflow','Pro/zai-org/GLM-5.1']]) {
+    for (const [provider, id] of [['openai','o1'], ['antling','Ling-2.6-1T'], ['antling','Ling-2.6-flash'], ['antling','Ring-2.6-1T'], ['siliconflow','Pro/zai-org/GLM-5.1'], ...['MiniMax-M2.5','MiniMax-M2.5-highspeed','MiniMax-M2.7','MiniMax-M2.7-highspeed'].map(id=>['minimax',id])]) {
       assert.equal(auditedModelLifecycle(provider,id),null)
       const removed = removedModel(provider,id)
       assert.ok(removed)
@@ -114,5 +115,43 @@ test('batch 1 removed identities retain evidence and reject saved routes before 
     }
     await assert.rejects(runtime.legacy.callImageModel('openai','gpt-image-1','fixture','prompt','1:1'), (e:any) => e.businessCode === 'MODEL_UNAVAILABLE' && e.requestState === 'not_sent')
     assert.equal(calls,0)
+  } finally { await runtime.close() }
+})
+
+test('Zhipu legal chat sends text and image and explains model authorization errors', async () => {
+  const runtime:any = await createRefineRuntime({startServer:false})
+  const model = 'glm-5.3-flashx-legal'
+  try {
+    for (const [status, code, message, expected] of [
+      [401, 1000, 'invalid', /身份验证失败/], [403, 1220, 'denied', /服务商模型权限/],
+      [200, 1311, 'denied', /服务商模型权限/], [400, 1220, 'denied', /服务商模型权限/],
+      [400, 1314, 'denied', /服务商模型权限/], [400, 1315, 'denied', /服务商模型权限/],
+      [429, 1113, '账户已欠费', /欠费/],
+      [400, 1211, '模型不存在', /模型不存在/], [400, 1261, 'Prompt 超长', /超长/],
+    ] as const) {
+      let submissions = 0
+      runtime.legacy.configureRuntimeFetch(async (url:string, init:RequestInit) => {
+        submissions++
+        assert.match(url, /\/chat\/completions$/)
+        const body = JSON.parse(String(init.body))
+        assert.equal(body.model, model)
+        assert.deepEqual(body.messages[1].content.map((part:any) => part.type), ['text','image_url'])
+        assert.notEqual(body.thinking?.type, 'disabled')
+        return Response.json({error:{code,message}}, {status})
+      })
+      await assert.rejects(runtime.legacy.callTextModel('zhipu',model,'fixture','system','prompt',[{url:'https://asset.invalid/fixture.png',mimeType:'image/png'}]), (error: any) => {
+        assert.match(error.message, expected)
+        if (status === 401 || message === 'denied') {
+          const failure = publicExecutionFailure(error)
+          assert.equal(failure.category, 'permission')
+          assert.equal(failure.requestState, 'rejected')
+          assert.match(failure.message, expected)
+          assert.match(failure.suggestion, /联系管理员/)
+          assert.equal(error.retryable, false)
+        } else assert.equal(error.status, status)
+        return true
+      })
+      assert.equal(submissions,1)
+    }
   } finally { await runtime.close() }
 })

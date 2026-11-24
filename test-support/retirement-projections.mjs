@@ -9,19 +9,37 @@ const bytes = fs.readFileSync(new URL('./fixtures/retirement-projections-2026111
 assert.equal(hash(bytes), '3f7a5c02f553cd9246c2584c8dd8a76e567775dd668818a698c059f3388b3ee0')
 const {scopes, sources} = JSON.parse(gunzipSync(bytes))
 
+const november24 = JSON.parse(gunzipSync(fs.readFileSync(new URL('./fixtures/catalog-projections-20261124.json.gz', import.meta.url))))
+export const november24Projection = (scope, key) => november24[scope].find(row => row.key === key)
+export function beforeNovember24(scope, rows) {
+  return restoreBatch({...rows}, november24[scope])
+}
+
+export function catalogBeforeNovember24(catalog) {
+  const models = Object.fromEntries(Object.entries(catalog).flatMap(([provider,entry]) => entry.models.map(model => [provider+'/'+model.id, model])))
+  const before = Object.entries(beforeNovember24('catalog',models))
+  return Object.fromEntries(Object.entries(catalog).map(([provider,entry]) =>
+    [provider, {...entry, models:before.filter(([key]) => key.startsWith(provider+'/')).map(([,model]) => model)}]))
+}
+
 export function beforeRetirements(scope, rows) {
+  rows = beforeNovember24(scope, rows)
   const {patches, rows:count} = scopes[scope]
   assert.equal(Object.keys(rows).length, count, scope + ' historical identity count drift')
   const previous = scope === 'cards' ? cardsBeforeVersionReview(rows) : {...rows}
+  return restoreBatch(previous, patches)
+}
+
+function restoreBatch(copy, patches) {
   const missing = []
   for (const {key, before, afterSha256, index} of patches) {
-    const actual = previous[key] ?? null
+    const actual = copy[key] ?? null
     assert.equal(hash(JSON.stringify(actual)), afterSha256, key + ' unreviewed current presentation drift')
     if (actual === null) missing.push([index, key, before])
-    else if (before === null) delete previous[key]
-    else previous[key] = structuredClone(before)
+    else if (before === null) delete copy[key]
+    else copy[key] = structuredClone(before)
   }
-  const entries = Object.entries(previous)
+  const entries = Object.entries(copy)
   for (const [index, key, value] of missing) entries.splice(index, 0, [key, structuredClone(value)])
   return Object.fromEntries(entries)
 }

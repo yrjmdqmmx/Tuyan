@@ -8,7 +8,7 @@ let definition,modal,clipboard
 const context={Component(value){definition=value},exports:{},require:createRequire(filename),wx:{showModal(value){modal=value},setClipboardData(value){clipboard=value.data}}}
 vm.runInNewContext(fs.readFileSync(filename,'utf8')+'\nthis.present=presentModel',context,{filename})
 
-test('R23 all 1033 compiled Mini cards link vendor fields and expose no machine source in rows or copy dialogs',async t=>{
+test('R23 all 1032 compiled Mini cards link vendor fields and expose no machine source in rows or copy dialogs',async t=>{
  const {expectedHumanUrl}=await import('../../../test-support/source-links-i3-r24.mjs')
  const {isApiSource}=await import('../../../packages/api/src/model-card-sources.mjs')
  const {sourceIdentity}=await import('../../../packages/api/src/card-presentation.mjs')
@@ -33,6 +33,6 @@ test('R23 all 1033 compiled Mini cards link vendor fields and expose no machine 
   if(key==='stability/sd3.5-flash')assert.equal(card.specSources[0].url,'https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1sd3/post')
   cards++
  }
- assert.equal(cards,1033);assert.ok(vendorFields>20);assert.deepEqual(offending,[]);assert.deepEqual(apiLinks,[])
+ assert.equal(cards,1032);assert.ok(vendorFields>20);assert.deepEqual(offending,[]);assert.deepEqual(apiLinks,[])
  t.diagnostic(JSON.stringify({cards,vendorFields,offendingCards:new Set(offending).size,visibleApiLinks:apiLinks.length}))
 })

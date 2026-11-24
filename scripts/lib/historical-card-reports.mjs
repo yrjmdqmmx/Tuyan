@@ -22,6 +22,7 @@ export function historicalCardRows(scope, rows) {
       ['https://developers.openai.com/api/docs/deprecations', 2],
       ['https://docs.siliconflow.cn/docs/release-notes/overview', 1],
       ['https://platform.minimax.io/docs/faq/models', 1],
+      ['https://ai.google.dev/gemini-api/docs/deprecations', 2],
     ])
     assert.equal(rows.length, review.rows + added.size, scope + ' historical identity count drift')
     assert.deepEqual(rows.map(row => row.key), rows.map(row => row.key).sort(), scope + ' unreviewed current presentation drift')

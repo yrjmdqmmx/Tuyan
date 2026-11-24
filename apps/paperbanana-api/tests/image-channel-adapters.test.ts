@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+import {resolveImageSize} from '../../../packages/types/src/image-size-contract.js'
 import test from 'node:test'
 import { callExtendedImageChannel, type ImageChannelInput, type ImageChannelTransport } from '../../../packages/api/src/image-channel-adapters.js'
 const png='fixture-image-bytes'
@@ -319,4 +321,29 @@ test('fal completed with an explicit error is terminal, not a successful result 
  await assert.rejects(callExtendedImageChannel(asyncInput('fal'),f.io),(e:any)=>e.terminal===true)
  await assert.rejects(callExtendedImageChannel(asyncInput('fal'),f.io),(e:any)=>e.terminal===true)
  assert.equal(f.calls.filter(x=>x.init.method==='POST').length,1)
+})
+
+test('fal GPT Image 2.6 submits legal pixel sizes for UI tiers and returns images[0].url', async () => {
+  const contracts = JSON.parse(readFileSync(new URL('../../../config/image-size-contracts.json', import.meta.url), 'utf8'))
+  for (const variant of ['flare','sunburst']) {
+    const model = `openai/gpt-image-2.6/${variant}/text-to-image`
+    const route = contracts.routes['fal/'+model]
+    const profile = contracts.profiles[route.generation]
+    assert.equal(route.editing, null)
+    assert.throws(() => resolveImageSize(profile,'4:1','4K'))
+    for (const [aspectRatio,resolution] of [['auto','1K'],['3:1','4K'],['9:16','2K'],['16:9','4K'],['1:3','1K']]) {
+      const size = resolveImageSize(profile,aspectRatio,resolution)
+      const {calls,io} = fixture((url,init) => init.method === 'POST' ? Response.json({request_id:'fixture'})
+        : Response.json(url.endsWith('/status') ? {status:'COMPLETED'} : {images:[{url:'https://asset.invalid/output.png'}]}))
+      assert.equal(await callExtendedImageChannel({...defaults, provider:'fal',model,aspectRatio,resolution,size},io),png)
+      assert.equal(calls[0].url,'https://queue.fal.run/'+model)
+      const body = JSON.parse(String(calls[0].init.body))
+      const {width,height} = body.image_size
+      assert.deepEqual([width,height],[size.width,size.height])
+      assert.ok(width%16===0 && height%16===0 && Math.max(width,height)<=3840)
+      assert.ok(Math.max(width,height)<=3*Math.min(width,height) && width*height>=655360 && width*height<=8294400)
+      assert.equal(body.output_format,'png')
+      assert.equal(calls.at(-1)?.url,'https://asset.invalid/output.png')
+    }
+  }
 })

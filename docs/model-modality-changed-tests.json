@@ -1,11 +1,11 @@
 {
   "base": "8c456709",
   "counts": {
-    "files": 50,
-    "assertionAndFixtureInputChanges": 374,
-    "consumedJsonFixtures": 10,
-    "semanticFixtureChanges": 954,
-    "justified": 1327,
+    "files": 52,
+    "assertionAndFixtureInputChanges": 388,
+    "consumedJsonFixtures": 12,
+    "semanticFixtureChanges": 963,
+    "justified": 1350,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -120,7 +120,7 @@
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r12.test.cjs",
-      "diffSha256": "b4021193f43b3dee0a55b14a47596b67a0658d494c3a622ab3b17ad6482e0a75",
+      "diffSha256": "6d9b68ad990971067040ddaeb815ea4e5d377e22f9e9a031d8df02033b5d3490",
       "changes": [
         {
           "line": 105,
@@ -878,6 +878,19 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 95,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -1377,7 +1390,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r12.test.mjs",
-      "diffSha256": "6c11e5030e83ec454fd39500ca8ddfb15317f3a26b26eba0908984173f8ebd9f",
+      "diffSha256": "94be7b5d58fcec799e702a3ce4c62a98aea6150487947f0f61e50afec7d47f01",
       "changes": [
         {
           "line": 85,
@@ -1979,12 +1992,25 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 178,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/web/tests/model-audit-r13.test.mjs",
-      "diffSha256": "ddafc198512e832eb764633183e0c8ef75c8aaaab3d6e7f6ead2ae586083024b",
+      "diffSha256": "d715164ccefe1b20c0bde2ed96e83ccd62f122c490571859195782a3292103e2",
       "changes": [
         {
           "line": 40,
@@ -2528,6 +2554,19 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 82,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -2687,7 +2726,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r6a.test.mjs",
-      "diffSha256": "b7f61317cdc12ebbcc7b63d94abc32219fbc13fd84cfb7adbe96363af8519ef4",
+      "diffSha256": "9ade2d50733588603cb3824c9b9ed3cff51e5469d2090d37aa524e42f21025fb",
       "changes": [
         {
           "line": 35,
@@ -3083,6 +3122,19 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 48,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -3284,7 +3336,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r8.test.mjs",
-      "diffSha256": "a1ec197e56400c18360bfbf0523608f75c8852b61cd2447f13cfefdf16b79f9e",
+      "diffSha256": "d9508afd864fd726c07b2689a5ded3861d17c97cd49f334651cd17cd83f10dcb",
       "changes": [
         {
           "line": 94,
@@ -3363,6 +3415,19 @@
           "evidence": [
             "config/channel-audit/retirements-20261117.json",
             "scripts/model-retirements-20261117.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 80,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -3969,9 +4034,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 20,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "9fe05da22e25ca7d24f8f51ba568e3343bea75f2f8826aab10a94338b0aa61e7"
+      "diffSha256": "616e933d0f9a20bdb33486cdfb42cefa38dfcf7d8d388203d20419d01da63467"
     },
     {
       "file": "apps/web/tests/model-card-footer-r16.test.mjs",
@@ -4141,9 +4219,22 @@
             "apps/web/src/components/ModelSpecifications.jsx"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 31,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Ellipsis on the source title",
+          "new": "Allow the title to wrap inside a narrow card while keeping the source label and icon together.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "c0a3abf9d0013db1db4a76cd2fa458edf4383d9008a981b89912c251753144fe"
+      "diffSha256": "38dbdf10490dcf14a2c4c9a9272b1a6fb30a30709717773ec70e903854138141"
     },
     {
       "file": "apps/web/tests/model-picker-unavailable.test.mjs",
@@ -5113,9 +5204,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 89,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "eeafad893cb8c0c012c969728ff88f56c699fa6149f13230e21c396e2df8dfd9"
+      "diffSha256": "eafa2e0f765e4533abcd5bc31e6880a0500b841b36a99aa4f2335bc8e1dc3fd4"
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r8.test.cjs",
@@ -5133,9 +5237,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 74,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "2d107eda050522452475a3ac59e7506bd3735c811c25740421196b9d7be5fc23"
+      "diffSha256": "25059e8c5d235582915ccdf04f0656308076320d6408718c1cdbd3c660508250"
     },
     {
       "file": "apps/paperbanana-api/tests/catalog-retirement-followup.test.ts",
@@ -5345,9 +5462,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 138,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "48be5bd884f8548f805e09db5614f1cb9b968bd4fbdc5f6c605c40de606efd65"
+      "diffSha256": "594882218b71f5b31c8fa6e0fb6f8bce4d71d0499b76b4f1921b0c25d3d712dd"
     },
     {
       "file": "apps/paperbanana-api/tests/model-audit-r13.test.ts",
@@ -5455,9 +5585,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 4,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "b2a744b3e63ce3d8cc685f7203974a4c1944e577c999e4eff1d88608c8363a58"
+      "diffSha256": "ee9be561082b5a14f81521ad4f1e476f0d2833fb2691c0f031e14326b2c6a9be"
     },
     {
       "file": "apps/paperbanana-api/tests/model-channel-contracts.test.ts",
@@ -5619,9 +5762,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 38,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ce8cddc33e4602946501e9a013e3be4cc11a5074f73a49d80082fd4ff4e1e020"
+      "diffSha256": "65ca4dc1e1291b82fcd96f81c6a362b502d2935f814cd65b90a5f9d35283c13a"
     },
     {
       "file": "apps/auth-gateway/tests/integration/account-lifecycle.mjs",
@@ -5967,6 +6123,44 @@
           "verdict": "JUSTIFIED"
         }
       ]
+    },
+    {
+      "file": "apps/paperbanana-api/tests/catalog-20261031.test.ts",
+      "changes": [
+        {
+          "line": 69,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "acfeb1cc4463801836c5e3c81c89e33692bf36e186ce3ecc95c40314d7381c82"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/image-channel-adapters.test.ts",
+      "changes": [
+        {
+          "line": 2,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Earlier image endpoint inventory",
+          "new": "Two additional text-to-image endpoints using the existing pixel profile and generation-only routes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "f1fe6675c7c34152f12f7f6ab6fb0a83f5784b2cf029d2dfbcea34bb73854b8e"
     }
   ],
   "fixtures": [
@@ -6009,7 +6203,7 @@
     },
     {
       "file": "config/model-audit.generated.json",
-      "diffSha256": "1a050fa4bd7d94589bcc88f151f9f54e30dea639658d435dce746efcf6ec812c",
+      "diffSha256": "1c5aebea9cc927888d4f6ce57f938b333546f70396490cfe7728719bec77a828",
       "changes": [
         {
           "line": 2,
@@ -26467,6 +26661,19 @@
             "apps/web/tests/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -26784,9 +26991,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 4,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "4aeab93ddad2b69fe2f328a3693685a504269725106d02cbdf7b42310d5b693c"
+      "diffSha256": "e7aa72698b9dd7b7df33c31c75b6712a38994de99c78726bce1c6fda37e3b502"
     },
     {
       "file": "config/channel-audit/v381-contracts.json",
@@ -26860,9 +27080,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 12586,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Earlier image endpoint inventory",
+          "new": "Two additional text-to-image endpoints using the existing pixel profile and generation-only routes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "4f056027d515b4b23d95658e7d6df35781e481217a03db68c3f36a7d967cf2ce"
+      "diffSha256": "e25027a9cf52e52b99cfc6da0074dee0206061e829a3ae69ca9234136585a0da"
     },
     {
       "file": "config/model-catalog-updates.json",
@@ -27447,9 +27680,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 693,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "af9af883ff939290d7c4aef8843f420a9a6a83775a4d194c3b94407d22afe47f"
+      "diffSha256": "d1a13b86ed42ef9827a21c652c477443e337503fa15ff0f02b7343b97991be08"
     },
     {
       "file": "config/model-version-audit.json",
@@ -28890,9 +29136,22 @@
             "packages/types/src/model-presentation.ts"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 8703,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "3f771f601c843779be5de619bac7eeee8ee1b0d0cb0a76cc342cfbbebdde1c5b"
+      "diffSha256": "7d49ed04caf91491052df60d8cdeee6db8a0f6a2d0e5a38af06d5c3d8957d210"
     },
     {
       "file": "config/removed-models.json",
@@ -29503,9 +29762,22 @@
             "apps/web/tests/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 735,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "4e4ec7db165b48174e86f92e0353ac1de20f8ca9e94b6c108619fc3a8653bece"
+      "diffSha256": "f8227104c34cf6067352bf0dcda1eee0b2a262f5d84758718f9cf1c71e9262a6"
     },
     {
       "file": "docs/reference-upload/model-matrix.json",
@@ -29719,9 +29991,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 206,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "da9b6662cb5bcd3a779ba0ffca92ac1ed7c7143bd8cf07dfdf609db24db4c879"
+      "diffSha256": "e20cd73a909febd0f79bbeca2eb3a59eb0ec0a13bb05b128e9b3ba3255a99179"
     },
     {
       "file": "apps/paperbanana-api/package.json",
@@ -29740,6 +30025,44 @@
         }
       ],
       "diffSha256": "8474256dd2f24a74ca37e40ed99f772c2524a70b271f165d61f4f11c4b9a7ebd"
+    },
+    {
+      "file": "config/image-channel-routes.json",
+      "changes": [
+        {
+          "line": 4816,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Earlier image endpoint inventory",
+          "new": "Two additional text-to-image endpoints using the existing pixel profile and generation-only routes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "892f9dc2abc02800f6c869e73bce6346575fbea495e468a2c71dc857ca63bf38"
+    },
+    {
+      "file": "config/model-channel-schemas.json",
+      "changes": [
+        {
+          "line": 24695,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "754cd68cd017c8200cc8d5ff11ad981c5de9a1621ba7d74b37137e0c0b5f9f65"
     }
   ],
   "followupChanges": [
@@ -29814,7 +30137,7 @@
     {
       "file": "apps/web/tests/model-card-r22b.test.mjs",
       "comparisonBase": "2550c736",
-      "diffSha256": "60bb9e925432014d609d4838eea634208b93b10859cb55ebef16d63649930b6a",
+      "diffSha256": "58d3b25cd1a21ade3328581bb72040ad3a66415e05499483ec93f1cfcaa72f55",
       "changes": [
         {
           "phase": "R22 Phase C",
@@ -29935,6 +30258,19 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 35,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -30011,9 +30347,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 32,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "e7e7370e25fcc2cfbb3c96770e3cea829dcd0fb4f9c383282bd972309c3fcd87"
+      "diffSha256": "268cfd5096f63d22a0cd0570c18bfaf2e5c8fb267c0e58138980bf7aad6a5964"
     },
     {
       "file": "apps/web/tests/model-modality-phase2.test.mjs",
@@ -30091,14 +30440,27 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 39,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "d039b84b1729d1ea9434e1d99fe8895e96d99d730814748e6c314e75f30d6b3b"
+      "diffSha256": "b71a282503f999812acd4713e7a86fe0f611b6a314a30a3a1b7d5fc92f60e9cf"
     },
     {
       "file": "apps/miniprogram/tests/model-card-r22b.test.cjs",
       "comparisonBase": "1dcd8b13",
-      "diffSha256": "9ce554a7080fdd2fc78b959a08e0cfe0c09cfc2f2064947317db116ca01857bc",
+      "diffSha256": "fd3632a090cf07120fb0564c8247949754a6ccc98beb6b99801dcbf376d12d5e",
       "changes": [
         {
           "line": 19,
@@ -30156,6 +30518,19 @@
           "evidence": [
             "config/channel-audit/retirements-20261117.json",
             "scripts/model-retirements-20261117.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 14,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -30477,7 +30852,7 @@
     {
       "file": "apps/web/tests/model-card-source-titles-r23.test.mjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "60dad2ee97c200dbb75b1a18113db60f8280ce59c74843c4b3e2b562845cae8f",
+      "diffSha256": "634e279611fce177bc33b7e00961db906eb632c5cc5c20eb5b46315403646d6d",
       "changes": [
         {
           "line": 25,
@@ -30668,13 +31043,26 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Source rows for the November 17 catalog",
+          "new": "Check current names and sources including the dedicated Gemini notice and the three new model pages.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "7d3e1897f8aaf8b67a9ab912404f9b494b98aa479889777bb15fb6a398748f11",
+      "diffSha256": "9df7e6176707ee0164935256869db6263530071d9e38630b6f37867ee02b1a52",
       "changes": [
         {
           "line": 16,
@@ -30835,6 +31223,19 @@
           "evidence": [
             "config/channel-audit/retirements-20261117.json",
             "scripts/model-retirements-20261117.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 25,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Source rows for the November 17 catalog",
+          "new": "Check current names and sources including the dedicated Gemini notice and the three new model pages.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -31121,14 +31522,27 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 11,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "4fa14314f2b631dd1636e7c9574c8792ee445552ab481f7ce7127f57164c8696"
+      "diffSha256": "179245ee7d4cfe3cc34456e9138a5da92f423a28a83ac10496b99c618bc39f53"
     },
     {
       "file": "apps/web/tests/model-card-r23.test.mjs",
       "comparisonBase": "4e18513c",
-      "diffSha256": "819bc8b23fdd39c670b30a27999e0af1e72d469e4986394f9778a12328b363b9",
+      "diffSha256": "42fcb17c0bbcc9947a65788bf39c92f2a0cabf6a1f8563f3ad496dc03f79ae0f",
       "changes": [
         {
           "phase": "R24 Phase I1",
@@ -31195,6 +31609,19 @@
           "evidence": [
             "config/channel-audit/retirements-20261117.json",
             "scripts/model-retirements-20261117.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 27,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -34118,9 +34545,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 4,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "a83eafabe859716522bdefe48895625f6adfb85d37cb56c1b2afbf247e9ec285"
+      "diffSha256": "c60e09258b24adb177be1db04eb9b0e5c72ed8173fd8b414552909712f8f9ebd"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
@@ -34276,9 +34716,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 17,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "a76b732c585759063be72ff0d0ea29dad6eae06883db890f9f91461b358f811c"
+      "diffSha256": "0871f303191cb0dfb9492cdccb621f2f74211aa4f0777b2d4b5a25f35301f9d7"
     },
     {
       "file": "scripts/source-titles-r24.test.mjs",
@@ -34536,9 +34989,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 12,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "136ac2ffd57397f7a50ce59093329551b86b8bb4c06d3a5306c3e77eafadaae8"
+      "diffSha256": "4d0a1a6b5a6e9203c16c46cf546db1cd9e2e61aa8c5d0d780b415cd278b98419"
     },
     {
       "file": "apps/web/tests/model-card-r24.test.mjs",
@@ -34663,9 +35129,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 35,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "30242c95c14a45337e6204ce08edb567fd2b4d8424513f35cd33dc3d587e7a0d"
+      "diffSha256": "6792656a50e5c4e4a24463d414a9e6ad4574a2708030ae885f0c4ad121cb5406"
     },
     {
       "file": "test-support/fixtures/model-card-r24.json",
@@ -34875,9 +35354,22 @@
             "scripts/model-pm-r30.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Source rows for the November 17 catalog",
+          "new": "Check current names and sources including the dedicated Gemini notice and the three new model pages.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "45b33621e2534d8194ea63557037b0964632158df4229d5aa7d323666cb7e137"
+      "diffSha256": "093262de0a46332c8556c3899b8d35b2267fb3a458753828465690b523b52ef5"
     },
     {
       "file": "test-support/source-review-r24.mjs",
@@ -35021,9 +35513,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 12,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "e54bec24840b1089c7a703bef7e1e482cef6e3f0d4524901e399483d3c1f2311"
+      "diffSha256": "045bc48f5152b6f021ccea54880789b349b524677b25174b7ee1780dc5bfeffd"
     },
     {
       "file": "apps/web/tests/model-card-i4-r24.test.mjs",
@@ -35261,9 +35766,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 8,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "e71b8d6aa9c2e3ad0386579a1bcedee3bbc8b0cb26adca50c1740645297c32da"
+      "diffSha256": "0d8a7e506c2dd8426530606880a4920abf386ff125c0802caffd2292e7d300fe"
     },
     {
       "file": "apps/web/tests/model-card-i5-r25.test.mjs",
@@ -35389,9 +35907,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 15,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "cc971ec89f8f6e562e29499fd987ad82c8e04167c9b9311ca8253302e4128d03"
+      "diffSha256": "fecb58c84f536b9de5e3bb470716cd1a66e5bb4d09ac3be45809d186cd3ab3a5"
     },
     {
       "file": "scripts/model-evidence-i5-r25.test.mjs",
@@ -36727,9 +37258,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 12,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "c7afb0405849757603b7a0f48b7f4f8a798f71a3fdbdd31836f82911e265ede3"
+      "diffSha256": "ddf9f3ec2912344c8ad5c9ee6b83d31a4612511a245bc8c913a22708743ec371"
     },
     {
       "file": "test-support/image-input-r27.mjs",
@@ -37281,9 +37825,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 4,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "d0edb94c2665631bb6862020a02ab8fc30b98afa2c0fb7db205bfb9f266858e2"
+      "diffSha256": "ad2921f18dfbeb5443555b451f3d7900cf3aedf1b1fa7c9288ce3970ff71e8d2"
     },
     {
       "file": "apps/web/tests/model-icon-simplify-r27.test.mjs",
@@ -37624,9 +38181,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 10,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "bd57450218cf92a91409f13eacba96cca347642cb7a3d81617034f5d2a17a458"
+      "diffSha256": "ab3141c831e74adaaca7804273ead1760ad3336d28ade080087630088aa3d6b1"
     },
     {
       "file": "test-support/icon-simplify-r27.mjs",
@@ -38195,9 +38765,22 @@
             "scripts/model-pm-r30.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 31,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Source rows for the November 17 catalog",
+          "new": "Check current names and sources including the dedicated Gemini notice and the three new model pages.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "acbef53b8cabf9084baffce1346fee863f5994059f1d560b885d75bb02b8987c"
+      "diffSha256": "ffa98cb31cd0254463d63011f06f3f87189041b5daf8425491c7d40d32e245f8"
     },
     {
       "file": "test-support/founder-fixes-r28.mjs",
@@ -38269,9 +38852,22 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "e22656aa4d22767304efc9c8ffdcfefd252c4d2e461798d8d09326f1e8d5902b"
+      "diffSha256": "b197b7ec648458480610b2a37d56d56137a6e1407dcccb848523d2c77d8335e0"
     },
     {
       "file": "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs",
@@ -38395,9 +38991,22 @@
             "scripts/status-sentences-r29.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "e6d2d5b47efe06597fa7710facce5e307c464f75290bad9853a57dc06c33cf50"
+      "diffSha256": "c42ea1ea1d83bfacb9679aa069ce10f759989afd8d094f5be63fa93cc2c44897"
     },
     {
       "file": "test-support/source-title-history-r29.mjs",
@@ -38604,9 +39213,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 29,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Source rows for the November 17 catalog",
+          "new": "Check current names and sources including the dedicated Gemini notice and the three new model pages.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "be9bf8c3da7a0466bacd827d533402e8f571eabbf39b264b82d2e4d26134cb26"
+      "diffSha256": "88e3360b00f017ddbbeee24fdf6482507e69f7549f0e227b6cd2f4e241c6f799"
     },
     {
       "file": "test-support/dialog-dates-r26.mjs",
@@ -38664,9 +39286,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 3,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "518bee442da6e9fda59ee80600815d00bef8a6a38149cb314974c439acdd78f5"
+      "diffSha256": "0a8fe820e7884b4644da8da8773f9e62ba3fcdecb5f453e611dddce9cf18b5eb"
     },
     {
       "file": "apps/web/tests/model-pm-r30.test.mjs",
@@ -38727,9 +39362,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 10,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "88ac93e31747e593a0bccee3e8b8c9d1545a1fde8f02fb61e55a7c32872f36da"
+      "diffSha256": "1b0ef5d7ebf6ff33fd3603d48273ed06e49410efd2583f3314cd020481b93d14"
     },
     {
       "file": "scripts/model-pm-r30.test.mjs",
@@ -38764,9 +39412,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 8,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "7b884008f01284c98be68c1d78526ee84cd774d018b583083f2e032dcf128bc4"
+      "diffSha256": "bbbf2e8b18c0902d2e259f73f0fb711cad0d309876aafb20ac426ae5bd9994d3"
     },
     {
       "file": "test-support/pm-decisions-r30.mjs",
@@ -38819,9 +39480,22 @@
             "scripts/primary-links-r31.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 21,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "edd46bda45d9a2cb97612eca6039ea50728982a9154452f8f3efbcd07f9dccd7"
+      "diffSha256": "0a69d76053586048302bfad1afa2b0020707159192f983431af311ee2062e815"
     },
     {
       "file": "apps/auth-gateway/tests/execution-capability-r22.test.js",
@@ -38945,9 +39619,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 9,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "3705beca058e107e5e6a95edb4b4e86d30630c03718bd1f43729514df2607b03"
+      "diffSha256": "03567e2a721c2b148bacd754097a887c97cc645773f215100c1e41e51909e76f"
     },
     {
       "file": "apps/miniprogram/tests/execution-capability-r22.test.cjs",
@@ -38987,9 +39674,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 3,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Source rows for the November 17 catalog",
+          "new": "Check current names and sources including the dedicated Gemini notice and the three new model pages.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "791f0b2c5d9385a2dee535e9409f7e8418b970ee45c7e4c89d102d69b269dbf1"
+      "diffSha256": "1e90912855ac9d8567226eb77a214b68ad33e2f52b8e2aeed701a4a2491c21e2"
     },
     {
       "file": "apps/miniprogram/tests/status-sentences-r29.test.cjs",
@@ -39008,9 +39708,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 3,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "4a1c5f31b183eae7f98a1014856859f9b05d39b8dbf8b703012fe2c08605cc83"
+      "diffSha256": "c8fb5c6270f1a8c18afbff6abff37a2e6b562d6886698c8ff408d128c8705a8c"
     },
     {
       "file": "apps/paperbanana-api/tests/execution-capability-r22.test.ts",
@@ -39099,9 +39812,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 28,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "07c0a4952123095861e13ab479e0f150669edf090843de2a6e68b8bdff3ccec1"
+      "diffSha256": "057a1044c2a1599045e5b896534b981897fa1f0a38555fcd5f1fe5135356f919"
     },
     {
       "file": "apps/web/tests/execution-capability-r22.test.mjs",
@@ -39211,9 +39937,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "b52ee5e5b910f22f8b97c325b4b667533a563ddde42dd37be635993af545852e"
+      "diffSha256": "33f52ef9bf25197aa9f23ecf29b8b5f1793ee281dcdc740337eeccf95c57191a"
     },
     {
       "file": "apps/web/tests/model-source-titles-r29.test.mjs",
@@ -39232,9 +39971,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 10,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Source rows for the November 17 catalog",
+          "new": "Check current names and sources including the dedicated Gemini notice and the three new model pages.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "428e83b933aba652d0759df66050ebc25c05c09c5230f17849173568f58ab1fb"
+      "diffSha256": "015f02af4a47e6153da713145e3a641e6e56dc7e526968d61951b76687989353"
     },
     {
       "file": "apps/web/tests/status-sentences-r29.test.mjs",
@@ -39253,9 +40005,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 9,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "48310d157d4f94abd3123cb77e2310674598fbeface8effb147cee3540dc45db"
+      "diffSha256": "34261fc1a64cac3439df2a51c1c2f35b548809f576bd3b1373d83e27bda2e883"
     },
     {
       "file": "scripts/frozen-history.test.mjs",
@@ -39274,9 +40039,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 46,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "d825c9278ee510f3762b8b4df73400403a87cbe26be76006c1cae3758b86c35e"
+      "diffSha256": "25d242701c77c00e34e9d740fd3cee9e7050db1f54a484105ede5721c1f9ba85"
     },
     {
       "file": "scripts/historical-card-reports.test.mjs",
@@ -39393,9 +40171,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 17,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Source rows for the November 17 catalog",
+          "new": "Check current names and sources including the dedicated Gemini notice and the three new model pages.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f0ef80f3fa7e59de010c63319f6662e80bd3ff5360bb3f6d3996b2ddad9bb424"
+      "diffSha256": "3e7e80ec2f413ae91b36410712409071048df40e50cc75c6d5f3b2c1992c0750"
     },
     {
       "file": "scripts/source-titles-r29.test.mjs",
@@ -39414,9 +40205,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 9,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Source rows for the November 17 catalog",
+          "new": "Check current names and sources including the dedicated Gemini notice and the three new model pages.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f5a6bfc1fe165cec3aae15a922c7f1a8a3e2e533cc26af29d01e845cad23cb40"
+      "diffSha256": "518b44625463e650a8b61a7211cbff40ae13b5a29d40d91fd682baf90a9c2ab7"
     },
     {
       "file": "scripts/status-sentences-r29.test.mjs",
@@ -39435,14 +40239,27 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 8,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "Catalog and card expectations at 686e4123",
+          "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "47e0c993d7203433f452d3668eb5c15c9c7871b4fbf3c2a4af03e4f85f5fc710"
+      "diffSha256": "f1eaa7bc09f05b326f7674e74a75c62a690a1090e8683b53ed8e5227f9ef4227"
     },
     {
       "file": "scripts/model-retirements-20261117.test.mjs",
       "comparisonBase": "57bc2ad0",
-      "diffSha256": "dbc185bb4611dcbf802c0026d3934e5a3c6d2ec73619f6cdcc12d226b8f96021",
+      "diffSha256": "0dd6496cd7871324be4b47987762429b3827961d9db33534cbdc9869b8f4c683",
       "changes": [
         {
           "phase": "November 18 catalog contract reconciliation",
@@ -39456,13 +40273,26 @@
             "test-support/model-retirements-20261117-baseline.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "test-support/retirement-evidence.mjs",
       "comparisonBase": "57bc2ad0",
-      "diffSha256": "ab0eb4d86757fedb23a0f18ab5a4a65f152c3a458cb0afe69883fb021884bfc0",
+      "diffSha256": "b5b9b97ad3e2e3271b3c9bd598585919e07ed78985243a5015353c0a0e32c375",
       "changes": [
         {
           "phase": "November 18 catalog contract reconciliation",
@@ -39474,6 +40304,19 @@
             "test-support/fixtures/catalog-version-before-57bc2ad0.json",
             "config/model-version-audit.json",
             "test-support/fixtures/execution-capability-8c456709.json.gz"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 3,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -39494,9 +40337,22 @@
             "test-support/fixtures/retirement-projections-20261117.json.gz"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 12,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "7d412825a37e20305281cf42e9fef70b2a17868af4f7856c1abd88a8795caca2"
+      "diffSha256": "6b970654965c77e34f0ad4903262caf685f85deb884351e941a54f646a5f3b62"
     },
     {
       "file": "scripts/freeze-retirement-projections.mjs",
@@ -39513,9 +40369,22 @@
             "test-support/fixtures/retirement-projections-20261117.json.gz"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 10,
+          "comparisonBase": "686e4123",
+          "phase": "November 24 model catalog",
+          "old": "November 17 lifecycle and evidence expectations",
+          "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f6ff6b4519b56128368c0b7cba2d46b93eceb5faa299fc43090d5c810ca3a19e"
+      "diffSha256": "e436891ce1eaabd828847ecf870f2f6d11b8dc05af5c91959efc2c4cd861a273"
     }
   ]
 }

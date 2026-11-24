@@ -5,12 +5,13 @@ const { STATIC_MODEL_REGISTRY } = require('../miniprogram/utils/static-model-cat
 const { removedModel, auditedModelLifecycle } = require('../miniprogram/utils/model-audit.js');
 const batch = require('../../../config/channel-audit/retirements-20261117.json');
 for (const [provider, modelId, developer, hint, replacement] of [
+  ...['MiniMax-M2.5','MiniMax-M2.5-highspeed','MiniMax-M2.7','MiniMax-M2.7-highspeed'].map(id => ['minimax',id,'MiniMax',id.replace('MiniMax-', 'MiniMax ')+'：原型号已不可用，请重新选择。','']),
   ['openai', 'o1', 'OpenAI', 'o1：原型号已不可用，请重新选择。', ''],
   ['antling', 'Ling-2.6-1T', '蚂蚁集团', 'Ling 2.6-1T：原型号已不可用，请重新选择。推荐：Ling-3.1-flash', 'Ling-3.1-flash'],
   ['siliconflow', 'zai-org/GLM-4.5V', '智谱', 'GLM-4.5V：原型号已不可用，请重新选择。', ''],
 ]) {
   test(`batch 1 mini saved ${provider}/${modelId} preset is retained with unavailable guidance`, t => {
-    t.mock.method(Date, 'now', () => Date.parse('2026-11-17T12:00:00+08:00'));
+    t.mock.method(Date, 'now', () => Date.parse('2026-11-24T12:00:00+08:00'));
     const store = require('../miniprogram/utils/model-registry-store.js').getModelRegistryState();
     const previous = store.registry; store.registry = { providers: STATIC_MODEL_REGISTRY };
     t.after(() => { store.registry = previous; });
@@ -58,11 +59,32 @@ test('mini opens with the saved notice even when there are no selectable models'
 });
 
 test('batch 1 mini upcoming deadlines match exact UTC or UTC+8 instants', () => {
-  for (const row of batch.upcoming) {
+  for (const row of batch.upcoming.filter(row => row.provider !== 'minimax')) {
     const stop = Date.parse(row.time || row.date);
     assert.ok(STATIC_MODEL_REGISTRY[row.provider].models.find(m => m.id === row.id));
     assert.equal(removedModel(row.provider, row.id, stop - 1), null);
     assert.equal(auditedModelLifecycle(row.provider, row.id, stop - 1).label, '将下线');
     assert.equal(removedModel(row.provider, row.id, stop).stopDate, row.time || row.date);
   }
+});
+
+test('Mini selectable Gemini routing notes and dated retirement use the Shanghai deadline', async t => {
+  const {normalizeModelRegistry} = require('../miniprogram/utils/model-registry.js');
+  const provider = 'gemini', id = 'gemini-3.1-flash-lite';
+  const stop = Date.parse('2027-05-07T00:00:00+08:00');
+  const clock = t.mock.method(Date,'now',() => stop-1);
+  const {coreProducts} = await import('../../../test-support/execution-capability.mjs');
+  const normalized = normalizeModelRegistry((await coreProducts()).registry);
+  for (const registry of [STATIC_MODEL_REGISTRY,normalized.providers]) {
+    for (const [alias,target] of [['gemini-2.5-pro','gemini-3.8-flash'],['gemini-2.5-flash','gemini-3.5-flash-lite']]) {
+      const model = registry.gemini.models.find(m => m.id === alias);
+      assert.ok(model.routingNotice.text.includes(target));
+      assert.equal(model.routingNotice.sourceUrl,'https://ai.google.dev/gemini-api/docs/deprecations');
+      assert.equal(removedModel(provider,alias),null);
+    }
+  }
+  assert.equal(auditedModelLifecycle(provider,id).stopDate,'2027-05-07T00:00:00+08:00');
+  clock.mock.mockImplementation(() => stop);
+  assert.equal(auditedModelLifecycle(provider,id),null);
+  assert.ok(removedModel(provider,id));
 });

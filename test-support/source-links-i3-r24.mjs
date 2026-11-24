@@ -1,4 +1,4 @@
-import {batchSourceRows} from './retirement-projections.mjs'
+import {november24Projection,batchSourceRows} from './retirement-projections.mjs'
 import {currentI12Sources} from './pm-decisions-r30.mjs'
 import {expectedR28} from './founder-fixes-r28.mjs'
 import {r29SourceRows} from './source-title-history-r29.mjs'
@@ -10,7 +10,10 @@ import pairs from './fixtures/source-links-i3-r24.json' with {type:'json'}
 export const expectedHumanUrl=url=>Object.hasOwn(pairs,url)?pairs[url]:url
 import evidence from './fixtures/source-evidence-i4-r24.json' with {type:'json'}
 import followup from './fixtures/source-evidence-i5-r25.json' with {type:'json'}
+export const currentSourceReview = (baseline, key, client) => baseline.find(row=>row.card===key) || november24Projection(client,key)?.after
 export const expectedHumanRows=(rows,card,client='web',includeR28=true)=>{
+ const changed = november24Projection(client,card)
+ if (includeR28 && changed?.after) return changed.after.rows
  const current = value => includeR28 ? batchSourceRows(client,card,currentI12Sources(r29SourceRows(value),card,client)) : value
  if(includeR28 && client==='mini' && card.startsWith('fal/'))return current(expectedR28[card].mini.card.specSources)
  const correction=i7[client]?.find(row=>row.card===card) || i6[client]?.find(row=>row.card===card) || followup[client]?.find(row=>row.card===card) || evidence[client]?.find(row=>row.card===card)

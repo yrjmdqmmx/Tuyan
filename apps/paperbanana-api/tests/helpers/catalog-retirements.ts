@@ -135,6 +135,7 @@ const retirementGroups = [
   },
 ]
 retirementGroups.push(...read('channel-audit/retirements-20261117').remove.map((row: any) => ({ stopDate: row.provider === 'antling' ? '2026-11-15T00:00:00+08:00' : row.date, sourceUrl: row.source, keys: [row.provider + '/' + row.id] })))
+retirementGroups.push(...read('channel-audit/retirements-20261124').remove.map((row: any) => ({stopDate:row.date,sourceUrl:row.source,keys:[row.provider+'/'+row.id]})))
 export const removedKeys = retirementGroups.flatMap(group => group.keys)
 export function assertRemoved(provider: string, id: string) {
   const key = provider + '/' + id
@@ -172,7 +173,7 @@ export function assertCatalogDelta() {
       assert.match(row.disabledReason, /输出尺寸契约/, key)
     }
   }
-  assert.equal(Object.values(catalog).reduce((n: number, p: any) => n + p.models.length, 0), 1125 - removedKeys.length + addedKeys.length)
+  assert.equal(Object.values(catalog).reduce((n: number, p: any) => n + p.models.length, 0), 1125 - removedKeys.length + addedKeys.length + 3)
 }
 
 export function assertSurvivingDefaults(provider: string, defaults: any) {

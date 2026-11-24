@@ -1,4 +1,4 @@
-import {expectedHumanRows} from '../../../test-support/source-links-i3-r24.mjs'
+import {currentSourceReview,expectedHumanRows} from '../../../test-support/source-links-i3-r24.mjs'
 import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
 import React from 'react'
@@ -38,11 +38,11 @@ test('R23F3 known model punctuation survives general/quickstart slugs and genuin
   assert.equal(modelSourceRows(card).find(row => row.url.endsWith('/stable-diffusion-35')).label, '官方文档 · Stability · Stable Diffusion 3.5')
 })
 
-test('R23F all 1033 rendered Web cards and evidence/notice dialogs pass the title scan without changing URLs or names', t => {
+test('R23F all 1032 rendered Web cards and evidence/notice dialogs pass the title scan without changing URLs or names', t => {
   const cards = []; let renderedRows = 0, notices = 0
   for (const [provider, entry] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
     const data = modelCardSpecifications(provider, model), rows = modelSourceRows(data), card = provider + '/' + model.id
-    const old = titleBaseline.web.find(row => row.card === card)
+    const old = currentSourceReview(titleBaseline.web,card,'web')
     assert.equal(data.sourceModel.displayName, old.name, card)
     assert.deepEqual(rows.map(row => row.url), expectedHumanRows(old.rows,card,'web').map(row => row.url), card)
     assert.equal(new Set(rows.map(row => row.label)).size, rows.length, card)
@@ -50,7 +50,7 @@ test('R23F all 1033 rendered Web cards and evidence/notice dialogs pass the titl
     const {container} = render(React.createElement(ModelSpecifications, {provider, model, compactSources:true}))
     assert.equal(container.querySelector('.model-spec-sources[title], .model-spec-sources [title]'), null, card)
     if (rows.length) {
-      const link = screen.getByRole('link')
+      const link = screen.getByRole('link',{name:rows[0].label})
       assert.equal(link.textContent, rows[0].label)
       assert.equal(link.getAttribute('aria-label'), rows[0].label, card)
     }
@@ -70,7 +70,7 @@ test('R23F all 1033 rendered Web cards and evidence/notice dialogs pass the titl
       notices++; cleanup()
     }
   }
-  assert.equal(cards.length, 1033); assert.ok(renderedRows > 1033); assert.ok(notices > 0)
+  assert.equal(cards.length, 1032); assert.ok(renderedRows > 1032); assert.ok(notices > 0)
   assert.deepEqual(scanTitles(cards), [])
   t.diagnostic(JSON.stringify({cards:cards.length,renderedRows,notices,suspicious:0}))
 })
