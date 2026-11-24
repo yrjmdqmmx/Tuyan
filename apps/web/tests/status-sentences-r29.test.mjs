@@ -6,7 +6,7 @@ import {ModelSpecifications} from '../src/components/ModelSpecifications.jsx'
 import {STATIC_MODEL_REGISTRY} from '../src/lib/staticModelCatalog.js'
 import {imageInputPresentations} from '../../../test-support/image-input-r27.mjs'
 import {assertAllSentences,obsoleteVisibleStatus} from '../../../test-support/status-sentences-r29.mjs'
-test('R29 I11 every rendered icon hover equals aria and its complete dialog status line on all 1032 cards', async () => {
+test('R29 I11 every rendered icon hover equals aria and its complete dialog status line on all 981 cards', async () => {
   const rows = await imageInputPresentations()
   assertAllSentences(rows)
   for (const [provider, entry] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of entry.models) {

@@ -105,7 +105,7 @@ test('batch 1 removed identities retain evidence and reject saved routes before 
   const runtime:any = await createRefineRuntime({startServer:false}); let calls = 0
   try {
     runtime.legacy.configureRuntimeFetch(async () => { calls++; throw Error('No transport for removed models') })
-    for (const [provider, id] of [['openai','o1'], ['antling','Ling-2.6-1T'], ['antling','Ling-2.6-flash'], ['antling','Ring-2.6-1T'], ['siliconflow','Pro/zai-org/GLM-5.1'], ...['MiniMax-M2.5','MiniMax-M2.5-highspeed','MiniMax-M2.7','MiniMax-M2.7-highspeed'].map(id=>['minimax',id])]) {
+    for (const [provider, id] of [['openai','o1'], ['antling','Ling-2.6-1T'], ['antling','Ling-2.6-flash'], ['antling','Ring-2.6-1T'], ['siliconflow','Pro/zai-org/GLM-5.1'], ['ark', 'doubao-seed-1-6-250615'], ['bailian', 'qwen3-max'], ['runware', 'openai:1@1'], ...['MiniMax-M2.5','MiniMax-M2.5-highspeed','MiniMax-M2.7','MiniMax-M2.7-highspeed'].map(id=>['minimax',id])]) {
       assert.equal(auditedModelLifecycle(provider,id),null)
       const removed = removedModel(provider,id)
       assert.ok(removed)

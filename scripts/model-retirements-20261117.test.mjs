@@ -20,8 +20,8 @@ test('batch 1 removes exactly 31 catalog identities and preserves every survivin
   assert.equal(batch.remove.length, 31);
   assert.equal(removals.size, 31);
   assert.deepEqual(Object.fromEntries(['openai', 'siliconflow', 'antling'].map(p => [p, batch.remove.filter(r => r.provider === p).length])), { openai: 20, siliconflow: 8, antling: 3 });
-  assert.equal(Object.keys(MODEL_AUDIT_DATA.removed).length, 103);
-  assert.equal(Object.values(catalog).reduce((sum, p) => sum + p.models.length, 0), 1032);
+  assert.equal(Object.keys(MODEL_AUDIT_DATA.removed).length, 154);
+  assert.equal(Object.values(catalog).reduce((sum, p) => sum + p.models.length, 0), 981);
   // Main's static catalog omitted the display-only specification. Keep its exact hash
   // and independently lock the complete merged catalog to the surviving #251 rows.
   assert.equal(hash(november17Catalog), '009e4d21d27462aa062c53fcac0fab3dd98102115428e13a2ac1ab21ed90a9f5');
@@ -65,16 +65,25 @@ test('removed names identify the exact batch API ID and both clients retain its 
 });
 test('batch 1 leaves all 51 protected candidates and their notices unchanged', () => {
   assert.equal(baseline.protected.length, 51);
+  const review = read('config/channel-audit/retirements-20261124.json');
   for (const row of baseline.protected) {
     const key = row.provider + '/' + row.id;
     assert.equal(hash(retirementCatalog[row.provider]?.models.filter(m => m.id === row.id).map(({specificModelSpecifications,...model}) => model)[0] ?? null), row.staticSha256, key);
+    if (review.remove.some(change => change.provider === row.provider && change.id === row.id)) {
+      assert.ok(MODEL_AUDIT_DATA.removed[key], key);
+      continue;
+    }
+    if (review.upcoming.some(change => change.provider === row.provider && change.id === row.id)) {
+      assert.equal(MODEL_AUDIT_DATA.notices[key].stopDate, '2027-01-22T14:00:00+08:00');
+      continue;
+    }
     assert.deepEqual(MODEL_AUDIT_DATA.notices[key] ?? null, row.notice, key);
     assert.equal(MODEL_AUDIT_DATA.removed[key], undefined, key);
   }
 });
 test('batch 1 ten sourced notices keep UTC+8 times and evidence dates without admitting new models', () => {
   assert.equal(batch.upcoming.length, 10);
-  assert.equal(Object.keys(MODEL_AUDIT_DATA.notices).length, 7);
+  assert.equal(Object.keys(MODEL_AUDIT_DATA.notices).length, 8);
   for (const row of batch.upcoming.filter(row => row.provider !== 'minimax')) {
     const stop = Date.parse(row.time || row.date);
     const notice = auditedModelLifecycle(row.provider, row.id, stop - 1);

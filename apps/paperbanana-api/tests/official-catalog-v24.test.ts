@@ -1,4 +1,4 @@
-import { assertRemoved } from './helpers/catalog-retirements.js'
+import { assertRemoved, removedKeys } from './helpers/catalog-retirements.js'
 import { assertAuditedModelAvailable } from '../../../packages/api/src/model-audit.js'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -30,7 +30,7 @@ const auditTime = Date.parse('2026-09-22T12:00:00+08:00')
 const image = { url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB' }
 const roleSet = (roles: string[]) => [...new Set(roles.map(role => role.startsWith('image-') ? 'image' : role))].sort()
 const laterIndependentlyAudited = new Set(['LongCat-2.5', 'LongCat-2.5-Preview', 'deepseek-v4.1-flash-1017', 'spark-x2.6', 'spark-x2.6-4b']) // Later identities have independent oracles in channels-v381, official-text-channels and the weekly catalog suites.
-const removedV24 = ['stepfun/step-2x-large', 'stepfun/step-image-edit-2']
+const removedV24 = removedKeys
 const isV24 = (row: any) => !laterIndependentlyAudited.has(row.id)
 const ids = (rows: any[]) => rows.filter(isV24).map(row => row.id).sort()
 const notSent = (error: any) => error.localInputFailure === true && error.requestState === 'not_sent'
@@ -110,6 +110,11 @@ for (const provider of ['qianfan', 'sensenova', 'stepfun'] as const) {
       const source = audits[provider].models.find((model: any) => model.id === selected.id)
       const contract = AUDITED_CHANNEL_CONTRACTS[provider + '/' + selected.id]
       const input = textInput(provider, selected)
+      if (removedV24.includes(provider + '/' + selected.id)) {
+        assertRemoved(provider, selected.id)
+        assert.throws(() => assertAuditedModelAvailable(provider, selected.id), {businessCode:'MODEL_UNAVAILABLE',requestState:'not_sent'})
+        return
+      }
       const body = buildAuditedTextBody(input)
       assert.equal(body.model, source.id)
       assert.equal(contract.textEndpoint, source.request.endpoint, 'ordinary account endpoint must match the official audit')
@@ -184,6 +189,7 @@ test('Qianfan stream flags follow each official SKU, including mandatory streami
   let mandatoryStreaming = 0
   for (const selected of integrations.qianfan.models.filter((row: any) => row.roles.some((role: string) => role === 'main' || role === 'vision'))) {
     const source = audits.qianfan.models.find((row: any) => row.id === selected.id)
+    if (removedV24.includes('qianfan/' + selected.id)) {assertRemoved('qianfan', selected.id); continue}
     const body = buildAuditedTextBody(textInput('qianfan', selected))
     if (source.limits.streamOnly === true) { mandatoryStreaming++; assert.equal(body.stream, true, selected.id) }
     assert.equal(body.stream, source.request.constants.stream, selected.id)
@@ -215,7 +221,7 @@ test('September 29 and October 10 retirement gates use Beijing midnight and pres
     if (removedV24.includes(provider + '/' + selected.id)) {
       const evidence = assertRemoved(provider, selected.id)
       assert.equal(evidence.stopDate, date)
-      assert.equal(Date.parse(source.lifecycle.productSubmissionCutoff.at), cutoff)
+      if (source.lifecycle.productSubmissionCutoff) assert.equal(Date.parse(source.lifecycle.productSubmissionCutoff.at), cutoff)
       for (const instant of [cutoff - 1, cutoff, cutoff + 1, cutoff + 86400000]) {
         now = instant
         assert.throws(() => assertAuditedModelAvailable(provider, selected.id), { businessCode: 'MODEL_UNAVAILABLE', requestState: 'not_sent' })

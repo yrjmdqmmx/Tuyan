@@ -36,7 +36,7 @@ test('phase 2 full Core objects, saved IDs, library rows, picker options and Min
     for (const row of libraryRows(library, registry)) assert.deepEqual(modelCardSpecifications(channel,row.model).fields,card.fields,key+'/library')
     count++
   }
-  assert.equal(count, 1029)
+  assert.equal(count, 978)
   assert.equal(differences, 0, 'full vs ID resolution: first link and all modality icons')
   for (const row of catalogRows(registry)) assert.deepEqual(modelCardSpecifications(row.provider,row.model).fields,byKey.get(row.provider+'/'+row.model.id).fields)
   assertPhase2Facts(key => byKey.get(key))

@@ -17,6 +17,8 @@ export function beforeNovember24(scope, rows) {
 
 export function catalogBeforeNovember24(catalog) {
   const models = Object.fromEntries(Object.entries(catalog).flatMap(([provider,entry]) => entry.models.map(model => [provider+'/'+model.id, model])))
+  assert.equal(catalog.tokenhub.defaults.image, '')
+  catalog = {...catalog, tokenhub:{...catalog.tokenhub, defaults:{...catalog.tokenhub.defaults,image:'hy-image-v3'}}}
   const before = Object.entries(beforeNovember24('catalog',models))
   return Object.fromEntries(Object.entries(catalog).map(([provider,entry]) =>
     [provider, {...entry, models:before.filter(([key]) => key.startsWith(provider+'/')).map(([,model]) => model)}]))

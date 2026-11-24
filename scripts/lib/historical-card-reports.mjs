@@ -19,6 +19,14 @@ export function historicalCardRows(scope, rows) {
   const batchPolicy = []
   if (scope === 'r12Policy') {
     const added = new Map([
+      ['https://cloud.baidu.com/doc/qianfan/s/zmh4stou3', 2],
+      ['https://docs.mistral.ai/getting-started/models/', 1],
+      ['https://docs.siliconflow.cn/cn/release-notes/overview', 1],
+      ['https://docs.together.ai/docs/deprecations', 2],
+      ['https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh', 2],
+      ['https://runware.ai/docs/changelog', 2],
+      ['https://www.alibabacloud.com/zh/notice/model_studio_notice_of_retirement_for_selected_legacy_models_7d9?_p_lc=1', 2],
+      ['https://www.alibabacloud.com/zh/notice/model_studio_notice_on_the_postponed_retirement_of_selected_legacy_models_7d0?_p_lc=1', 2],
       ['https://developers.openai.com/api/docs/deprecations', 2],
       ['https://docs.siliconflow.cn/docs/release-notes/overview', 1],
       ['https://platform.minimax.io/docs/faq/models', 1],

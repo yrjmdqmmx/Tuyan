@@ -84,7 +84,7 @@ test('catalog lifecycle and regional corrections are present without advertising
   assert.equal(get('openai','o3-pro').protocol,'openai-responses')
   assert.equal(get('openai','o3-pro').expirationDate,'2026-12-11')
   assertRemoved('openai','gpt-4')
-  assert.equal(get('siliconflow','Qwen/Qwen3.5-397B-A17B').expirationDate,'2026-09-11')
+  assert.equal(assertRemoved('siliconflow','Qwen/Qwen3.5-397B-A17B').stopDate,'2026-09-11')
   assert.equal(get('together','Qwen/Qwen3.5-397B-A17B'),undefined)
   assertRemoved('bailian','qwen-image-edit')
   assert.equal(get('fireworks','accounts/fireworks/models/minimax-m3').roles.includes('vision'),false)

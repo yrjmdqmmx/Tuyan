@@ -69,22 +69,14 @@ test('Ark official EOS disables historical IDs and honors both future UTC+8 boun
  const r:any=await createRefineRuntime(),now=Date.now;let transports=0
  try{
   r.legacy.configureRuntimeFetch(async()=>{transports++;throw new Error('no network expected')})
-  const entries=Object.entries(current.lifecycle.ark) as [string,any][]
-  assert.equal(entries.length,20)
-  Date.now=()=>Date.parse('2026-10-19T00:00:00+08:00')
+  Date.now=()=>Date.parse('2026-11-25T10:00:00+08:00')
   const models=(await r.legacy.modelRegistry({provider:'ark'})).providers.ark.models
-  for(const [id,m]of entries){
-   assert.ok(catalog.ark.models.some((x:any)=>x.id===id),'retain historical ID')
-   assert.equal(models.find((x:any)=>x.id===id).selectable,m.expirationDate!=='2026-09-21')
-  }
-  await assert.rejects(r.legacy.callTextModel('ark','deepseek-v4-flash-260425','fixture','system','prompt'),(e:any)=>/官方服务已于.*到期/.test(e.message))
-  for(const id of ['doubao-seed-2-0-lite-260215','doubao-seed-2-0-mini-260215','deepseek-v4-pro-260425']){
-   const cutoff=Date.parse(current.lifecycle.ark[id].expirationAt)
-   Date.now=()=>cutoff-1
-   assert.equal((await r.legacy.modelRegistry({provider:'ark'})).providers.ark.models.find((m:any)=>m.id===id).selectable,true)
-   Date.now=()=>cutoff
-   assert.equal((await r.legacy.modelRegistry({provider:'ark'})).providers.ark.models.find((m:any)=>m.id===id).selectable,false)
-   await assert.rejects(r.legacy.callTextModel('ark',id,'fixture','system','prompt'),(e:any)=>/官方服务已于.*到期/.test(e.message))
+  const retained=models.find((m:any)=>m.id==='doubao-seed-2-0-pro-260215')
+  assert.equal(retained.selectable,true)
+  assert.equal(retained.expirationAt,'2027-01-22T14:00:00+08:00')
+  for(const id of ['deepseek-v4-flash-260425','doubao-seed-2-0-lite-260215','doubao-seed-2-0-mini-260215','deepseek-v4-pro-260425']){
+    assert.equal(models.some((m:any)=>m.id===id),false)
+    await assert.rejects(r.legacy.callTextModel('ark',id,'fixture','system','prompt'),{businessCode:'MODEL_UNAVAILABLE',requestState:'not_sent'})
   }
   assert.equal(transports,0)
  }finally{Date.now=now;await r.close()}

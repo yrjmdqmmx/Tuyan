@@ -32,7 +32,7 @@ test('R24 Web keeps retirement roles in the three reported cards and their dialo
   assert.equal(titleSourceRows([{url:fixture.noticeUrl,label:'渠道公告'}])[0].label, '下线公告 · 百炼 · 模型下线公告')
 })
 
-test('R24 Web scans all 1032 cards for retirement labels and the exact seven historical hints', t => {
+test('R24 Web scans all 981 cards for retirement labels and the exact seven historical hints', t => {
   let cards = 0, notices = 0
   const historical = historicalChannelIds(pages)
   for (const [provider, entry] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
@@ -48,7 +48,7 @@ test('R24 Web scans all 1032 cards for retirement labels and the exact seven his
     }
     cards++
   }
-  assert.equal(cards, 1032); assert.ok(notices > 3)
+  assert.equal(cards, 981); assert.ok(notices > 3)
   assert.deepEqual([...historical].sort(), fixture.historicalIds)
   assert.deepEqual([...historicalChannelIds(pages)].sort(), fixture.historicalIds)
   const missing = historicalChannelIds({...pages, ...fixture.syntheticPages})

@@ -22,7 +22,7 @@ test('R23F3 compiled Mini restores known dotted versions and preserves curated/t
  }
 })
 
-test('R23F all 1032 compiled Mini cards and copy dialogs pass the title scan; generated titles match the shared helper',async t=>{
+test('R23F all 981 compiled Mini cards and copy dialogs pass the title scan; generated titles match the shared helper',async t=>{
  const {scanTitles,titleBaseline}=await import('../../../test-support/source-titles-r23.mjs')
  const {currentSourceReview,expectedHumanRows}=await import('../../../test-support/source-links-i3-r24.mjs')
  const shared=await import('../../../packages/api/src/card-presentation.mjs')
@@ -41,7 +41,7 @@ test('R23F all 1032 compiled Mini cards and copy dialogs pass the title scan; ge
   }
   cards.push({card,name:old.name,rows})
  }
- assert.equal(cards.length,1032);assert.ok(dialogs>1032);assert.deepEqual(scanTitles(cards),[])
+ assert.equal(cards.length,981);assert.ok(dialogs>981);assert.deepEqual(scanTitles(cards),[])
  t.diagnostic(JSON.stringify({cards:cards.length,dialogs,suspicious:0}))
 })
 
@@ -60,5 +60,5 @@ test('R23F Mini icon taps show the missing-page hint for exactly seven historica
    changed++
   }else {for(const icon of unknown)assert.match(icon.tooltip,/^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/);assert.doesNotMatch(JSON.stringify(data.specRows),/渠道页无此型号/);controls++}
  }
- assert.equal(changed,7);assert.equal(controls,67)
+ assert.equal(changed,7);assert.equal(controls, 65)
 })

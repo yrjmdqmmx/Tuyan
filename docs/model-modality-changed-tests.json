@@ -1,11 +1,11 @@
 {
   "base": "8c456709",
   "counts": {
-    "files": 52,
-    "assertionAndFixtureInputChanges": 388,
-    "consumedJsonFixtures": 12,
-    "semanticFixtureChanges": 963,
-    "justified": 1350,
+    "files": 70,
+    "assertionAndFixtureInputChanges": 423,
+    "consumedJsonFixtures": 16,
+    "semanticFixtureChanges": 975,
+    "justified": 1397,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -120,7 +120,7 @@
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r12.test.cjs",
-      "diffSha256": "6d9b68ad990971067040ddaeb815ea4e5d377e22f9e9a031d8df02033b5d3490",
+      "diffSha256": "469f0a432ab2b06b6c65967417283d025973dfbad962433987d6d557ae2f5334",
       "changes": [
         {
           "line": 105,
@@ -891,6 +891,19 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -1390,7 +1403,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r12.test.mjs",
-      "diffSha256": "94be7b5d58fcec799e702a3ce4c62a98aea6150487947f0f61e50afec7d47f01",
+      "diffSha256": "3ec917dcbf623094f53cdb7fb125c5a33bbcf86e4b77ebbf324b6dec17e3a5a8",
       "changes": [
         {
           "line": 85,
@@ -2005,12 +2018,25 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 92,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/web/tests/model-audit-r13.test.mjs",
-      "diffSha256": "d715164ccefe1b20c0bde2ed96e83ccd62f122c490571859195782a3292103e2",
+      "diffSha256": "fc10fdeb64a20209a36023e434ba67c39db17862cbe77cd0cca8d50b583808b3",
       "changes": [
         {
           "line": 40,
@@ -2567,6 +2593,19 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 53,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -2726,7 +2765,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r6a.test.mjs",
-      "diffSha256": "9ade2d50733588603cb3824c9b9ed3cff51e5469d2090d37aa524e42f21025fb",
+      "diffSha256": "a1eac794e726dfbf9bac23821b012ba98c36fe411a90d1d9c5aa1a6b21bc9325",
       "changes": [
         {
           "line": 35,
@@ -3135,6 +3174,19 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 48,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -3336,7 +3388,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r8.test.mjs",
-      "diffSha256": "d9508afd864fd726c07b2689a5ded3861d17c97cd49f334651cd17cd83f10dcb",
+      "diffSha256": "5c49ce612ee1b126dc25cc0bd1cfaa2d466dc5a3b5b5afb8bd45c3c135086389",
       "changes": [
         {
           "line": 94,
@@ -3424,6 +3476,19 @@
           "phase": "November 24 model catalog",
           "old": "November 17 lifecycle and evidence expectations",
           "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 80,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
           "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
           "evidence": [
             "config/channel-audit/retirements-20261124.json",
@@ -4047,9 +4112,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 22,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "616e933d0f9a20bdb33486cdfb42cefa38dfcf7d8d388203d20419d01da63467"
+      "diffSha256": "da3a1ca92f218bc4dfccc849dbc7eecb818a95fc0e5f1acc7c34295c9ee270b9"
     },
     {
       "file": "apps/web/tests/model-card-footer-r16.test.mjs",
@@ -4928,9 +5006,22 @@
             "scripts/primary-links-r31.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 78,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "08c99eff8310443ad0af70bf8e6daef8dc69e9c7a85793f0db2075248874dd72"
+      "diffSha256": "53cc9efbfea89dcd7e833211ab11a55f8118ddc17364ac9c767216eaf3423eb3"
     },
     {
       "file": "apps/web/tests/workspace-model-catalog.test.mjs",
@@ -5217,9 +5308,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 89,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The saved-reference and lifecycle cases reflect the earlier retirement batches.",
+          "new": "Preserve exact historical IDs and validate reselection or admission using the November 25 Shanghai clock.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "eafa2e0f765e4533abcd5bc31e6880a0500b841b36a99aa4f2335bc8e1dc3fd4"
+      "diffSha256": "f11fd96cd08cda5fdc968685f7bc0b97d3f7c52d69c10aac839fec3a3ff833b3"
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r8.test.cjs",
@@ -5250,9 +5354,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 74,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "25059e8c5d235582915ccdf04f0656308076320d6408718c1cdbd3c660508250"
+      "diffSha256": "dec29f2bf1cf3ca5038aad39096d07d4ab25ed3e1b6bd8f1ec0e7bf00d56f2e2"
     },
     {
       "file": "apps/paperbanana-api/tests/catalog-retirement-followup.test.ts",
@@ -5442,9 +5559,22 @@
             "apps/paperbanana-api/tests/core-composition.test.ts"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 164,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "Selected wire and recovery cases used image routes that are now physically removed.",
+          "new": "Use supported image routes for positive transport tests and assert rejection, idempotent recovery or the exact available size as applicable.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "4ff8069e6ac381c5ca81c8bbdb905c34a2afb69ca6a60b0221298174f70c9d62"
+      "diffSha256": "1562e7e701f0307571be8bef7d7c590ba56f3de182d5b7da4d820f853ba4e80b"
     },
     {
       "file": "apps/paperbanana-api/tests/helpers/catalog-retirements.ts",
@@ -5475,9 +5605,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 138,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The exact-set oracle included the previous removal batches.",
+          "new": "Compare removed IDs, source URLs, cutoff dates and executable contracts to the dated removal ledger.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "594882218b71f5b31c8fa6e0fb6f8bce4d71d0499b76b4f1921b0c25d3d712dd"
+      "diffSha256": "5e4210eca0caf80c0d10fdb6515deec4549fb6dab91eee14f7f1ff7a8b246508"
     },
     {
       "file": "apps/paperbanana-api/tests/model-audit-r13.test.ts",
@@ -5495,9 +5638,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 13,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "2bc2f418eecdb13d1c79cad196768eb69ad1c27d2c89a2ddf8834611feb0d0d3"
+      "diffSha256": "e994263f5227748a52364b414e877ccdc104edf2ddbb7e20be29948adcd3e3b8"
     },
     {
       "file": "apps/paperbanana-api/tests/model-audit.test.ts",
@@ -5598,9 +5754,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 108,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The saved-reference and lifecycle cases reflect the earlier retirement batches.",
+          "new": "Preserve exact historical IDs and validate reselection or admission using the November 25 Shanghai clock.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ee9be561082b5a14f81521ad4f1e476f0d2833fb2691c0f031e14326b2c6a9be"
+      "diffSha256": "d67660efeaaf0a08fc86255801810a2a23fb915e700866fc75d56ea18f1d17ab"
     },
     {
       "file": "apps/paperbanana-api/tests/model-channel-contracts.test.ts",
@@ -5618,9 +5787,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 87,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "3843cc1d4adbbdb443212e10e2fdc21664f7f4ef78b80ca632ef2cb0a4fa3b26"
+      "diffSha256": "6428c63657e6b0fffb09d0d9a6efc982440f9c0038c845670ed9de7424f2582e"
     },
     {
       "file": "apps/paperbanana-api/tests/model-picker-contract.test.ts",
@@ -5775,9 +5957,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 38,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "65ca4dc1e1291b82fcd96f81c6a362b502d2935f814cd65b90a5f9d35283c13a"
+      "diffSha256": "f6e2e208432aa0416aa20181c853a93d4043a9cdebd0673b6d49bc050019cb08"
     },
     {
       "file": "apps/auth-gateway/tests/integration/account-lifecycle.mjs",
@@ -5959,9 +6154,22 @@
             "apps/paperbanana-api/tests/refine-controls.test.ts"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 32,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "Selected wire and recovery cases used image routes that are now physically removed.",
+          "new": "Use supported image routes for positive transport tests and assert rejection, idempotent recovery or the exact available size as applicable.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "fb26148852239aa9c090e7ea5daaa4a0ef1b4a2e606cc527ba17eeef010ea8f6"
+      "diffSha256": "60360d1124716bbe3e779a9c52d9ce7c49004a12d22f11f1cd5d6b714615eb0a"
     },
     {
       "file": "tests/model-catalog-source-contract.test.mjs",
@@ -6158,9 +6366,364 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 247,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "Selected wire and recovery cases used image routes that are now physically removed.",
+          "new": "Use supported image routes for positive transport tests and assert rejection, idempotent recovery or the exact available size as applicable.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f1fe6675c7c34152f12f7f6ab6fb0a83f5784b2cf029d2dfbcea34bb73854b8e"
+      "diffSha256": "f5d215733c11e31f2dac03c832c0eb88b8faf474fdde024a32e45f1a12db429b"
+    },
+    {
+      "file": "apps/auth-gateway/tests/tokendance-catalog.test.js",
+      "changes": [
+        {
+          "line": 44,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The current TokenDance catalog included both MiMo 2.5 identities.",
+          "new": "Remove the two registered identities while retaining archived discovery responses and the original evidence hashes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "06eb530f2b142b88bc1da76a2c7e85f7ee2901256e2dbf2a442aa1237e328287"
+    },
+    {
+      "file": "apps/miniprogram/tests/tokendance-catalog-r14.test.cjs",
+      "changes": [
+        {
+          "line": 53,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The current TokenDance catalog included both MiMo 2.5 identities.",
+          "new": "Remove the two registered identities while retaining archived discovery responses and the original evidence hashes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "09d9c674da563c4b80d995e7bbed699bdf242f1bb63e5c9085988b3d06e09c97"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/catalog-20261009.test.ts",
+      "changes": [
+        {
+          "line": 24,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "0e04d0199770fa39f3ec24b375069e4e70b21fda6dec03bf7c1a28dadc071583"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/catalog-20261019.test.ts",
+      "changes": [
+        {
+          "line": 72,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "e57ca671c108351d88b7358f2bb969860ac1fdcc347c0086e8cecda1a96811b1"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/catalog-20261026.test.ts",
+      "changes": [
+        {
+          "line": 57,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "1820b6df65dba97732cbf9d46a4a705b0a8b9f131283dd24a7f99adab7edc1a9"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/catalog-followup-20261009.test.ts",
+      "changes": [
+        {
+          "line": 96,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "583ba69dea4dd85d77dfdc2a0103f3aec2e417159cffb670516382ffdb8bedfd"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/official-catalog-v24.test.ts",
+      "changes": [
+        {
+          "line": 1,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The exact-set oracle included the previous removal batches.",
+          "new": "Compare removed IDs, source URLs, cutoff dates and executable contracts to the dated removal ledger.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "bbfdb7c5c44ec33d82440880b2b2a62b61a3ae3e00855e4a88aa5c0a92cd16a0"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/replicate-followup-20261009.test.ts",
+      "changes": [
+        {
+          "line": 78,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "f417407db5612a7f385b565a2c31828c1c73ad4cef26f553643276ce79f55330"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/thinking-bailian-qianfan-57.test.ts",
+      "changes": [
+        {
+          "line": 68,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "Retirement candidates still had per-role thinking profiles.",
+          "new": "Require absent profiles for reviewed removals and preserve thinking controls and wire assertions for surviving routes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "a52a4f47ff1039561815a5f582e2978e8013c16769f9a52cb2aff658aa912f4e"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/thinking-remaining-175.test.ts",
+      "changes": [
+        {
+          "line": 75,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "Retirement candidates still had per-role thinking profiles.",
+          "new": "Require absent profiles for reviewed removals and preserve thinking controls and wire assertions for surviving routes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "9977489014d2e0e4657b08d2bc6733032f5e313b3fb52de32639e944549db34c"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/thinking-remaining-193.test.ts",
+      "changes": [
+        {
+          "line": 78,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "Retirement candidates still had per-role thinking profiles.",
+          "new": "Require absent profiles for reviewed removals and preserve thinking controls and wire assertions for surviving routes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "eee216d84ee977989bd9133fec11fdc85782afc9f1df5715310f695b8cf9e20a"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/thinking-remaining-205.test.ts",
+      "changes": [
+        {
+          "line": 52,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "Retirement candidates still had per-role thinking profiles.",
+          "new": "Require absent profiles for reviewed removals and preserve thinking controls and wire assertions for surviving routes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "a8db5108ced47656f6e5679d931738ac0cbefa657b76a722cde67d6a8469d925"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/thinking-remaining-316.test.ts",
+      "changes": [
+        {
+          "line": 23,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "Retirement candidates still had per-role thinking profiles.",
+          "new": "Require absent profiles for reviewed removals and preserve thinking controls and wire assertions for surviving routes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "c7f8c1a20ebc84d35860d8b9c69725cf0962f425582097781ce00a0db89ff53b"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/thinking-siliconflow-followup.test.ts",
+      "changes": [
+        {
+          "line": 52,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "Retirement candidates still had per-role thinking profiles.",
+          "new": "Require absent profiles for reviewed removals and preserve thinking controls and wire assertions for surviving routes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "61c97f915461991c8757ccadd7ea6bb3eba9154adc19990cf421e1854ea3b682"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/tokendance-r14.test.ts",
+      "changes": [
+        {
+          "line": 20,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The current TokenDance catalog included both MiMo 2.5 identities.",
+          "new": "Remove the two registered identities while retaining archived discovery responses and the original evidence hashes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "69da303193a7315329fda2c94cc8a9e0560414b0276fa6df8813e936e342d475"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/tokendance-reconciliation.test.ts",
+      "changes": [
+        {
+          "line": 46,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The current TokenDance catalog included both MiMo 2.5 identities.",
+          "new": "Remove the two registered identities while retaining archived discovery responses and the original evidence hashes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "fd2b6fbabae9002ee9824fb317a82ed14537c57c55b3e9048a3edf3d59e1e6ed"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/tokendance.test.ts",
+      "changes": [
+        {
+          "line": 19,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The current TokenDance catalog included both MiMo 2.5 identities.",
+          "new": "Remove the two registered identities while retaining archived discovery responses and the original evidence hashes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "c7bf3a38bd053b8c48d8863e83edefec44c8d586956c012001f95f5d7c5767c8"
+    },
+    {
+      "file": "test-support/refine-runtime.mjs",
+      "changes": [
+        {
+          "line": 169,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "Selected wire and recovery cases used image routes that are now physically removed.",
+          "new": "Use supported image routes for positive transport tests and assert rejection, idempotent recovery or the exact available size as applicable.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "41dd1a2e45906739ddef96c71c88e8c217dc096950feeb346249622f2268c152"
     }
   ],
   "fixtures": [
@@ -6203,7 +6766,7 @@
     },
     {
       "file": "config/model-audit.generated.json",
-      "diffSha256": "1c5aebea9cc927888d4f6ce57f938b333546f70396490cfe7728719bec77a828",
+      "diffSha256": "61efa0a1b637774bc9bc7013387acc671ed0824df590007c3fc73329db23002d",
       "changes": [
         {
           "line": 2,
@@ -26674,6 +27237,19 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The consumed fixture contained the registration, evidence or generated projections used before this review.",
+          "new": "Reflect the dated removals or corrected notice in the consumed fixture, preserving surviving identities and evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -27004,9 +27580,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 81,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The consumed fixture contained the registration, evidence or generated projections used before this review.",
+          "new": "Reflect the dated removals or corrected notice in the consumed fixture, preserving surviving identities and evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "e7aa72698b9dd7b7df33c31c75b6712a38994de99c78726bce1c6fda37e3b502"
+      "diffSha256": "a5957e2397036444bde5ae40c22b9894f7440b9506147a1ee54724a51897998a"
     },
     {
       "file": "config/channel-audit/v381-contracts.json",
@@ -27093,9 +27682,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 7536,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The consumed fixture contained the registration, evidence or generated projections used before this review.",
+          "new": "Reflect the dated removals or corrected notice in the consumed fixture, preserving surviving identities and evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "e25027a9cf52e52b99cfc6da0074dee0206061e829a3ae69ca9234136585a0da"
+      "diffSha256": "a331c51d563a345c4c9e68f71ed57199c56c8382768dd11513b1db8d233a5e81"
     },
     {
       "file": "config/model-catalog-updates.json",
@@ -27693,9 +28295,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 761,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The consumed fixture contained the registration, evidence or generated projections used before this review.",
+          "new": "Reflect the dated removals or corrected notice in the consumed fixture, preserving surviving identities and evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "d1a13b86ed42ef9827a21c652c477443e337503fa15ff0f02b7343b97991be08"
+      "diffSha256": "974e4c9537e2afbacce6dfa667c906bad1ba0c39380dca210348b9bd66dfc9a5"
     },
     {
       "file": "config/model-version-audit.json",
@@ -29149,9 +29764,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 3856,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The consumed fixture contained the registration, evidence or generated projections used before this review.",
+          "new": "Reflect the dated removals or corrected notice in the consumed fixture, preserving surviving identities and evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "7d49ed04caf91491052df60d8cdeee6db8a0f6a2d0e5a38af06d5c3d8957d210"
+      "diffSha256": "20730c7f8169857433832d5917e57d8d8b952d9174906d62114afbee99166491"
     },
     {
       "file": "config/removed-models.json",
@@ -29775,9 +30403,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 767,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The consumed fixture contained the registration, evidence or generated projections used before this review.",
+          "new": "Reflect the dated removals or corrected notice in the consumed fixture, preserving surviving identities and evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f8227104c34cf6067352bf0dcda1eee0b2a262f5d84758718f9cf1c71e9262a6"
+      "diffSha256": "5eb41f826c14f4f5cc585f0b73c74641b856b49050b7a55b6b48c7be8da8a024"
     },
     {
       "file": "docs/reference-upload/model-matrix.json",
@@ -30004,9 +30645,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1899,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "e20cd73a909febd0f79bbeca2eb3a59eb0ec0a13bb05b128e9b3ba3255a99179"
+      "diffSha256": "14a0bf97c0f88fb309ab19d3860f3484850ee8cff4dc4554d62913e44bc48bf9"
     },
     {
       "file": "apps/paperbanana-api/package.json",
@@ -30041,9 +30695,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 3118,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The consumed fixture contained the registration, evidence or generated projections used before this review.",
+          "new": "Reflect the dated removals or corrected notice in the consumed fixture, preserving surviving identities and evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "892f9dc2abc02800f6c869e73bce6346575fbea495e468a2c71dc857ca63bf38"
+      "diffSha256": "fbfa531d87335ab127d4ec5cf0af73f30dbc766a2dfc783febbcfbf4a93ec584"
     },
     {
       "file": "config/model-channel-schemas.json",
@@ -30063,6 +30730,82 @@
         }
       ],
       "diffSha256": "754cd68cd017c8200cc8d5ff11ad981c5de9a1621ba7d74b37137e0c0b5f9f65"
+    },
+    {
+      "file": "config/channel-audit/model-audit-supplement-20261109.json",
+      "changes": [
+        {
+          "line": 310,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The consumed fixture contained the registration, evidence or generated projections used before this review.",
+          "new": "Reflect the dated removals or corrected notice in the consumed fixture, preserving surviving identities and evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "e763c82430766121599064e4586160de71b6c305180b94fb0085a2335e530155"
+    },
+    {
+      "file": "config/channel-audit/official-contracts.json",
+      "changes": [
+        {
+          "line": 1596,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The consumed fixture contained the registration, evidence or generated projections used before this review.",
+          "new": "Reflect the dated removals or corrected notice in the consumed fixture, preserving surviving identities and evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "8bfb98c6853fa0157906f87e7f439e16d145d01bfd4d287ce2ade0f837e8a080"
+    },
+    {
+      "file": "config/channel-audit/runware-contracts.json",
+      "changes": [
+        {
+          "line": 13597,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The consumed fixture contained the registration, evidence or generated projections used before this review.",
+          "new": "Reflect the dated removals or corrected notice in the consumed fixture, preserving surviving identities and evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "b06ab6e972f8ff78766279b746349e67230cdf1efb06f4ad3cdd9b1c7a4414c4"
+    },
+    {
+      "file": "config/tokendance/catalog.json",
+      "changes": [
+        {
+          "line": 1201,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The current TokenDance catalog included both MiMo 2.5 identities.",
+          "new": "Remove the two registered identities while retaining archived discovery responses and the original evidence hashes.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "6cbf1aee444de5b30fbe5cfa0a8ee57b2c65a542a98f7fe912ed178f3637f0fc"
     }
   ],
   "followupChanges": [
@@ -30137,7 +30880,7 @@
     {
       "file": "apps/web/tests/model-card-r22b.test.mjs",
       "comparisonBase": "2550c736",
-      "diffSha256": "58d3b25cd1a21ade3328581bb72040ad3a66415e05499483ec93f1cfcaa72f55",
+      "diffSha256": "3a2bf5f8b869fe566e1ef184562079b5ccaa49ff37cc3180fb22f501c85f950e",
       "changes": [
         {
           "phase": "R22 Phase C",
@@ -30271,6 +31014,19 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 35,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -30360,9 +31116,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 32,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The original evidence includes removed models in current counts and masks.",
+          "new": "Separate active records from dated evidence while retaining malformed-evidence assertions and live parity checks.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "268cfd5096f63d22a0cd0570c18bfaf2e5c8fb267c0e58138980bf7aad6a5964"
+      "diffSha256": "d3fcb78132f0e4e90f211834bdd9a9d03107c8cf4587904b6730dcce498e47b7"
     },
     {
       "file": "apps/web/tests/model-modality-phase2.test.mjs",
@@ -30453,14 +31222,27 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 39,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The original evidence includes removed models in current counts and masks.",
+          "new": "Separate active records from dated evidence while retaining malformed-evidence assertions and live parity checks.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "b71a282503f999812acd4713e7a86fe0f611b6a314a30a3a1b7d5fc92f60e9cf"
+      "diffSha256": "49be25c7c6d55f8eaed99dac208110afcac68db4a6663bac4bbd7b9b8d480da2"
     },
     {
       "file": "apps/miniprogram/tests/model-card-r22b.test.cjs",
       "comparisonBase": "1dcd8b13",
-      "diffSha256": "fd3632a090cf07120fb0564c8247949754a6ccc98beb6b99801dcbf376d12d5e",
+      "diffSha256": "29cf555aa0a2fb8f0c3df7bc9b5dd41749fda49d014e1fe6146e8dd5414fb52e",
       "changes": [
         {
           "line": 19,
@@ -30527,6 +31309,19 @@
           "phase": "November 24 model catalog",
           "old": "Catalog and card expectations at 686e4123",
           "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 14,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
           "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
           "evidence": [
             "config/channel-audit/retirements-20261124.json",
@@ -30852,7 +31647,7 @@
     {
       "file": "apps/web/tests/model-card-source-titles-r23.test.mjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "634e279611fce177bc33b7e00961db906eb632c5cc5c20eb5b46315403646d6d",
+      "diffSha256": "a2ee205a834a09dff2c09a4a89727b57f5283908fb7338a155936ac92dc894a2",
       "changes": [
         {
           "line": 25,
@@ -31056,13 +31851,26 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 41,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "9df7e6176707ee0164935256869db6263530071d9e38630b6f37867ee02b1a52",
+      "diffSha256": "065df98049d0798371b38c6202258ae911474ef094f24278b4d9b9d672a9cd22",
       "changes": [
         {
           "line": 16,
@@ -31238,6 +32046,19 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 25,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -31401,7 +32222,7 @@
     {
       "file": "apps/paperbanana-api/tests/model-modality-r21.test.ts",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "f6dfd06942bc0b30e08cf14d54f457f838161087186c3b975b0e1953cfb5fb23",
+      "diffSha256": "f5de10662c9081a463d06afce6675dd6e22ca84174ff9a48ebb086cde2a1bffa",
       "changes": [
         {
           "phase": "R23 Phase H2",
@@ -31444,6 +32265,19 @@
             "docs/model-modality-audit-20261109.md#r29-phase-i10",
             "apps/web/tests/model-source-titles-r29.test.mjs",
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 33,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -31535,14 +32369,27 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 11,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "179245ee7d4cfe3cc34456e9138a5da92f423a28a83ac10496b99c618bc39f53"
+      "diffSha256": "6a0fccdcdb7cc0199bdeca4f98fc1ef2e0551943f40dab59c96e890297a669f6"
     },
     {
       "file": "apps/web/tests/model-card-r23.test.mjs",
       "comparisonBase": "4e18513c",
-      "diffSha256": "42fcb17c0bbcc9947a65788bf39c92f2a0cabf6a1f8563f3ad496dc03f79ae0f",
+      "diffSha256": "75e96e36a9b58ea777ac5d49b0b9798eee16290c731a80674adfa4b9e6478ae1",
       "changes": [
         {
           "phase": "R24 Phase I1",
@@ -31618,6 +32465,19 @@
           "phase": "November 24 model catalog",
           "old": "Catalog and card expectations at 686e4123",
           "new": "Static scope moves from 1033 to 1032 models and the mocked live scope from 1030 to 1029. Reviewed historical projections retain their original comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 27,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
           "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
           "evidence": [
             "config/channel-audit/retirements-20261124.json",
@@ -34558,9 +35418,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 17,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "c60e09258b24adb177be1db04eb9b0e5c72ed8173fd8b414552909712f8f9ebd"
+      "diffSha256": "b3c92012b03cf4fe7f8f97218e25c9c1d7cc6a77acccb8e3974e4924d07ac800"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
@@ -34729,9 +35602,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 17,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "0871f303191cb0dfb9492cdccb621f2f74211aa4f0777b2d4b5a25f35301f9d7"
+      "diffSha256": "f4d14b2decf05b9942a8df77fe88d55c7bd76e6926226b1db9f1e71bba85d4af"
     },
     {
       "file": "scripts/source-titles-r24.test.mjs",
@@ -35002,9 +35888,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 12,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "4d0a1a6b5a6e9203c16c46cf546db1cd9e2e61aa8c5d0d780b415cd278b98419"
+      "diffSha256": "67c4d85f79d53a01697b1249996c40961d6d5dd92df366d6286c69f5f239ce31"
     },
     {
       "file": "apps/web/tests/model-card-r24.test.mjs",
@@ -35142,9 +36041,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 35,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "6792656a50e5c4e4a24463d414a9e6ad4574a2708030ae885f0c4ad121cb5406"
+      "diffSha256": "77e4c52d47dd408d1944eeebc544365123699a1159c3348cbf56cd1ac812e609"
     },
     {
       "file": "test-support/fixtures/model-card-r24.json",
@@ -35526,9 +36438,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 12,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "045bc48f5152b6f021ccea54880789b349b524677b25174b7ee1780dc5bfeffd"
+      "diffSha256": "ef4154c0fb813d2fc54c056589ea51aedf5b9af71f20b85e1a72aee8edf88281"
     },
     {
       "file": "apps/web/tests/model-card-i4-r24.test.mjs",
@@ -35779,9 +36704,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 8,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "0d8a7e506c2dd8426530606880a4920abf386ff125c0802caffd2292e7d300fe"
+      "diffSha256": "5aa0c41fb9281b895d8f503223202fd7939f72658cee3ebac5c6a1c6ddac46b6"
     },
     {
       "file": "apps/web/tests/model-card-i5-r25.test.mjs",
@@ -35920,9 +36858,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 15,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "fecb58c84f536b9de5e3bb470716cd1a66e5bb4d09ac3be45809d186cd3ab3a5"
+      "diffSha256": "f9be7fab489567eb55f252a6fd3feb99596d8a7ff11346de87a4acdab7f3675c"
     },
     {
       "file": "scripts/model-evidence-i5-r25.test.mjs",
@@ -35959,9 +36910,22 @@
             "apps/miniprogram/tests/model-source-titles-r29.test.cjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 24,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "a94d783f081485bee2ba27f0a769df5a11c1f05378550fbf5930a10dac5c4bcd"
+      "diffSha256": "140fe2f58c3a21f7bdabed9165e2aa63503f4b5f21ee1246db4745dc2b09c2aa"
     },
     {
       "file": "test-support/phase2-modality.mjs",
@@ -35981,9 +36945,22 @@
             "test-support/fixtures/source-evidence-i7-r27.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The original evidence includes removed models in current counts and masks.",
+          "new": "Separate active records from dated evidence while retaining malformed-evidence assertions and live parity checks.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "c6288c8d66e8064467a7744633617728c062dd2b57fd57a90c2f02835e98d55c"
+      "diffSha256": "d1f0bcb79d893e481afd77990c5e352dd4090f7fc842638c88925365f2d89ef3"
     },
     {
       "file": "test-support/phase2-modality.d.mts",
@@ -37271,9 +38248,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 12,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ddf9f3ec2912344c8ad5c9ee6b83d31a4612511a245bc8c913a22708743ec371"
+      "diffSha256": "53d4371f6d23c61b3dfa3a16cf5e9bab8c07ff0c8af9190cb6f85004f5f6d5d2"
     },
     {
       "file": "test-support/image-input-r27.mjs",
@@ -37838,9 +38828,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 4,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ad2921f18dfbeb5443555b451f3d7900cf3aedf1b1fa7c9288ce3970ff71e8d2"
+      "diffSha256": "f256e38fe26daf2bb0f8acdf2df61e72a13ec75cace82dab4d41969a657019f7"
     },
     {
       "file": "apps/web/tests/model-icon-simplify-r27.test.mjs",
@@ -38194,9 +39197,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 19,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ab3141c831e74adaaca7804273ead1760ad3336d28ade080087630088aa3d6b1"
+      "diffSha256": "0cf817c9ec10782e115ee1323a201a384b3b8cffad4116b448cba27c481c4bce"
     },
     {
       "file": "test-support/icon-simplify-r27.mjs",
@@ -38778,9 +39794,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 31,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ffa98cb31cd0254463d63011f06f3f87189041b5daf8425491c7d40d32e245f8"
+      "diffSha256": "40e8b0266cabe5a9d5cdbf6194b9340f5d3c287c1c9f686035a0a6ba4caaac06"
     },
     {
       "file": "test-support/founder-fixes-r28.mjs",
@@ -38865,9 +39894,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 26,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "b197b7ec648458480610b2a37d56d56137a6e1407dcccb848523d2c77d8335e0"
+      "diffSha256": "ac12b8700e8884479085c03b1a1e109c1f2ad2fd6739a89b221e8ff792622ef7"
     },
     {
       "file": "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs",
@@ -39226,9 +40268,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 29,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "88e3360b00f017ddbbeee24fdf6482507e69f7549f0e227b6cd2f4e241c6f799"
+      "diffSha256": "d02498f2394c01c5502de82beae4f30b1cc4aa7ec19f2da497cb57ae004c0ea5"
     },
     {
       "file": "test-support/dialog-dates-r26.mjs",
@@ -39299,9 +40354,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 3,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The live catalog contained 1,032 cards and 558 unpublished token limits.",
+          "new": "Check all 981 cards and 495 unpublished limits; compare the archived review at its original scope.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "0a8fe820e7884b4644da8da8773f9e62ba3fcdecb5f453e611dddce9cf18b5eb"
+      "diffSha256": "1903c9bcc65d4c90e9ae6f6254ff423199489a29899eb289b89203b6cba03a87"
     },
     {
       "file": "apps/web/tests/model-pm-r30.test.mjs",
@@ -39375,9 +40443,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 10,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The live catalog contained 1,032 cards and 558 unpublished token limits.",
+          "new": "Check all 981 cards and 495 unpublished limits; compare the archived review at its original scope.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "1b0ef5d7ebf6ff33fd3603d48273ed06e49410efd2583f3314cd020481b93d14"
+      "diffSha256": "44aca02bc7457b62c26f5fbb87b8a07f116dd7998d2053685a3c86c528cd664a"
     },
     {
       "file": "scripts/model-pm-r30.test.mjs",
@@ -39425,9 +40506,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 8,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The live catalog contained 1,032 cards and 558 unpublished token limits.",
+          "new": "Check all 981 cards and 495 unpublished limits; compare the archived review at its original scope.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "bbbf2e8b18c0902d2e259f73f0fb711cad0d309876aafb20ac426ae5bd9994d3"
+      "diffSha256": "76d05305cbb06de7fccfe8cb1d314b86a250b0e672fa47e2554b3bec88662ae7"
     },
     {
       "file": "test-support/pm-decisions-r30.mjs",
@@ -39493,9 +40587,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 21,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The live catalog contained 1,032 cards and 558 unpublished token limits.",
+          "new": "Check all 981 cards and 495 unpublished limits; compare the archived review at its original scope.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "0a69d76053586048302bfad1afa2b0020707159192f983431af311ee2062e815"
+      "diffSha256": "a5742d4c4df3d190ac6c384d58d0087869ca620ac404900520633e216bb88acb"
     },
     {
       "file": "apps/auth-gateway/tests/execution-capability-r22.test.js",
@@ -39632,9 +40739,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 9,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The original evidence includes removed models in current counts and masks.",
+          "new": "Separate active records from dated evidence while retaining malformed-evidence assertions and live parity checks.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "03567e2a721c2b148bacd754097a887c97cc645773f215100c1e41e51909e76f"
+      "diffSha256": "33301aca305d96f1c008ba279d598ec40fe0115cc5a2d229ae7b2283b9b4fee3"
     },
     {
       "file": "apps/miniprogram/tests/execution-capability-r22.test.cjs",
@@ -39687,9 +40807,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 3,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "1e90912855ac9d8567226eb77a214b68ad33e2f52b8e2aeed701a4a2491c21e2"
+      "diffSha256": "330e52065262b531366d706c63b3700c050238628630ef30ca5f6b4adfd69fca"
     },
     {
       "file": "apps/miniprogram/tests/status-sentences-r29.test.cjs",
@@ -39721,9 +40854,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 3,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "c8fb5c6270f1a8c18afbff6abff37a2e6b562d6886698c8ff408d128c8705a8c"
+      "diffSha256": "429f2201ad36dc8509ce4ba2b3447e07144d67a52bc2d437c0d7dcbbaa0f96ae"
     },
     {
       "file": "apps/paperbanana-api/tests/execution-capability-r22.test.ts",
@@ -39825,9 +40971,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 28,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The original evidence includes removed models in current counts and masks.",
+          "new": "Separate active records from dated evidence while retaining malformed-evidence assertions and live parity checks.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "057a1044c2a1599045e5b896534b981897fa1f0a38555fcd5f1fe5135356f919"
+      "diffSha256": "4728a3d8fca287a7472908853116d5bc256d04e59171f91b49be9ef11d73a67c"
     },
     {
       "file": "apps/web/tests/execution-capability-r22.test.mjs",
@@ -39950,9 +41109,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 32,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "33f52ef9bf25197aa9f23ecf29b8b5f1793ee281dcdc740337eeccf95c57191a"
+      "diffSha256": "ac5bc838d8aaa4d5c7acfebf2ba40b10bed2274df59e2022783d54154f7f7ffc"
     },
     {
       "file": "apps/web/tests/model-source-titles-r29.test.mjs",
@@ -39984,9 +41156,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 10,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "015f02af4a47e6153da713145e3a641e6e56dc7e526968d61951b76687989353"
+      "diffSha256": "6bbbfa6c2cdc71b390c59c6224683f8eca3cfe406c81f3c1ba3bf21cad4aa77e"
     },
     {
       "file": "apps/web/tests/status-sentences-r29.test.mjs",
@@ -40018,9 +41203,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 9,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "34261fc1a64cac3439df2a51c1c2f35b548809f576bd3b1373d83e27bda2e883"
+      "diffSha256": "0a0a0ab4f14a02467643b6499f066d1bce955f4358fec85fd29fa89d68445c9d"
     },
     {
       "file": "scripts/frozen-history.test.mjs",
@@ -40052,9 +41250,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 46,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "25d242701c77c00e34e9d740fd3cee9e7050db1f54a484105ede5721c1f9ba85"
+      "diffSha256": "a2d12da8abcee40f227ef144cd04f3c5941cd51786b4bd55b3b4e3547ba91162"
     },
     {
       "file": "scripts/historical-card-reports.test.mjs",
@@ -40184,9 +41395,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 17,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "3e7e80ec2f413ae91b36410712409071048df40e50cc75c6d5f3b2c1992c0750"
+      "diffSha256": "19582bd39a6e27d22b4c6eb661121bf679a2bf3aa485670a7f858b9ba7401a36"
     },
     {
       "file": "scripts/source-titles-r29.test.mjs",
@@ -40218,9 +41442,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 9,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "518b44625463e650a8b61a7211cbff40ae13b5a29d40d91fd682baf90a9c2ab7"
+      "diffSha256": "8f1ffc3d975dc9d063ac2496036ee74e16b2452a03c93f1ee1366f3eae4f9101"
     },
     {
       "file": "scripts/status-sentences-r29.test.mjs",
@@ -40252,14 +41489,27 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 8,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f1eaa7bc09f05b326f7674e74a75c62a690a1090e8683b53ed8e5227f9ef4227"
+      "diffSha256": "b37af2e039c9be519aa59d903cbc9ee1eaf273fcb9207145cf69c499643b486e"
     },
     {
       "file": "scripts/model-retirements-20261117.test.mjs",
       "comparisonBase": "57bc2ad0",
-      "diffSha256": "0dd6496cd7871324be4b47987762429b3827961d9db33534cbdc9869b8f4c683",
+      "diffSha256": "f0b8ef1d99d593d71dd5298f7f3ba785453efba26fef2ab911d6f45e832e1190",
       "changes": [
         {
           "phase": "November 18 catalog contract reconciliation",
@@ -40286,13 +41536,26 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 23,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The saved-reference and lifecycle cases reflect the earlier retirement batches.",
+          "new": "Preserve exact historical IDs and validate reselection or admission using the November 25 Shanghai clock.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "test-support/retirement-evidence.mjs",
       "comparisonBase": "57bc2ad0",
-      "diffSha256": "b5b9b97ad3e2e3271b3c9bd598585919e07ed78985243a5015353c0a0e32c375",
+      "diffSha256": "d1783d83dfb64a8d443c66b7dead4cad6a4c45d8636df4d4150c66a7112fec28",
       "changes": [
         {
           "phase": "November 18 catalog contract reconciliation",
@@ -40313,6 +41576,19 @@
           "phase": "November 24 model catalog",
           "old": "November 17 lifecycle and evidence expectations",
           "new": "Four additional MiniMax tombstones, two retained Gemini aliases, one scheduled Gemini shutdown and three new selectable IDs.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 31,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
           "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
           "evidence": [
             "config/channel-audit/retirements-20261124.json",
@@ -40350,9 +41626,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 20,
+          "comparisonBase": "18718cae",
+          "phase": "November 24 expired-entry review",
+          "old": "The test or evidence fixture describes the catalog before the November 24 review.",
+          "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "6b970654965c77e34f0ad4903262caf685f85deb884351e941a54f646a5f3b62"
+      "diffSha256": "c3f49bbe713d78800198156ba05518bb1efd98d659d5f04d8d84b42a05aa677d"
     },
     {
       "file": "scripts/freeze-retirement-projections.mjs",

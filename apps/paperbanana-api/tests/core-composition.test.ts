@@ -161,7 +161,7 @@ test('built Ark callImageModel preserves a real 401 JSON response status for the
   legacy.configureRuntimeFetch(async () => Response.json({ error: { message: 'ark request rejected' } }, { status: 401 }))
   try {
     await assert.rejects(
-      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9', '', '2K'),
+      legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', 'key', 'diagram', '16:9', '', '2K'),
       (error: any) => error.status === 401 && error.message === 'ark request rejected',
     )
   } finally {
@@ -1462,7 +1462,7 @@ test('mixed create and direct refine route Ark stages without substituting model
   })
   const routes = {
     main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
-    image: { accessProvider: 'ark', modelId: 'doubao-seedream-4-0-250828' },
+    image: { accessProvider: 'ark', modelId: 'doubao-seedream-5-0-flash-260915' },
     vision: { accessProvider: 'ark', modelId: 'doubao-seed-2-0-lite-260428' },
   }
   const invoke = (body: Record<string, unknown>) => invokeTrusted(legacy, {
@@ -1479,7 +1479,7 @@ test('mixed create and direct refine route Ark stages without substituting model
     await legacy.drainJobAdmission()
     assert.deepEqual(calls.map((call) => [call.url, call.model, call.authorization]), [['https://api.openai.com/v1/chat/completions','gpt-5.6-sol','Bearer main-stage-secret'],[
       'https://ark.cn-beijing.volces.com/api/v3/images/generations',
-      'doubao-seedream-4-0-250828',
+      'doubao-seedream-5-0-flash-260915',
       'Bearer ark-stage-secret',
     ]])
 
@@ -1487,19 +1487,19 @@ test('mixed create and direct refine route Ark stages without substituting model
     const refined = await invoke({
       action: 'refineImage', provider: 'openai', configurationMode: 'advanced', apiKeys: { ark: 'ark-stage-secret', openai: 'main-stage-secret' },
       sourceImageObjectKey: 'owned/ark-source.png', editInstruction: 'Improve hierarchy without changing content.',
-      imageSize: '4K',
+      imageSize: '2K',
       modelRoutes: routes,
     })
     assert.equal(refined.code, 0, JSON.stringify(refined))
     assert.equal(refined.refineCapability.mode, 'direct-edit')
     await legacy.drainJobAdmission()
-    assert.equal(state.inserts.at(-1).imageSize, '4K')
+    assert.equal(state.inserts.at(-1).imageSize, '2K')
     assert.deepEqual(calls.map((call) => [call.url, call.model, call.authorization]), [
       ['https://ark.cn-beijing.volces.com/api/v3/chat/completions','doubao-seed-2-0-lite-260428','Bearer ark-stage-secret'],
       ['https://api.openai.com/v1/chat/completions','gpt-5.6-sol','Bearer main-stage-secret'],
       [
         'https://ark.cn-beijing.volces.com/api/v3/images/generations',
-        'doubao-seedream-4-0-250828',
+        'doubao-seedream-5-0-flash-260915',
         'Bearer ark-stage-secret',
       ],
     ])
@@ -1673,46 +1673,20 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
     'doubao-seed-2-0-lite-260428',
     'doubao-seed-2-0-mini-260428',
     'doubao-seed-2-0-pro-260215',
-    'doubao-seed-2-0-lite-260215',
-    'doubao-seed-2-0-mini-260215',
-    'doubao-seed-2-0-code-preview-260215',
     'glm-5-2-260617',
     'deepseek-v4-pro-ga-260813',
     'deepseek-v4-flash-ga-260731',
-    'deepseek-v4-pro-260425',
-    'deepseek-v4-flash-260425',
     'doubao-seedream-5-0-pro-260628',
-    'doubao-seedream-5-0-260128',
-    'doubao-seedream-4-5-251128',
-    'doubao-seedream-4-0-250828',
-    'doubao-seed-1-8-251228',
-    'doubao-seed-code-preview-251028',
-    'doubao-seed-1-6-flash-250828',
-    'doubao-seed-1-6-vision-250815',
-    'doubao-seed-1-6-250615',
-    'doubao-seed-1-6-251015',
-    'doubao-seed-1-6-flash-250615',
-    'doubao-1-5-pro-32k-250115',
-    'doubao-1-5-lite-32k-250115',
-    'glm-4-7-251222',
-    'doubao-1-5-vision-pro-32k-250115',
   ]))
   assert.deepEqual(arkModels.get('doubao-seed-2-1-pro-260628')?.roles, ['main', 'vision'])
   assert.equal(arkModels.get('doubao-seed-2-1-pro-260628')?.recommended, true)
   assert.equal(arkModels.get('doubao-seed-evolving')?.lifecycle, 'unknown')
-  assert.equal(arkModels.get('doubao-seed-2-0-code-preview-260215')?.lifecycle, 'legacy')
   assert.equal(arkModels.get('doubao-seed-character-260628'), undefined)
   assert.equal(arkModels.get('doubao-seed-translation-250915'), undefined)
   assert.deepEqual(arkModels.get('glm-5-2-260617')?.roles, ['main'])
   assert.deepEqual(arkModels.get('deepseek-v4-pro-ga-260813')?.roles, ['main'])
   assert.deepEqual(arkModels.get('doubao-seedream-5-0-pro-260628')?.capabilities.resolutions, ['1K', '2K'])
   assert.equal(arkModels.get('doubao-seedream-5-0-pro-260628')?.recommended, true)
-  assert.deepEqual(arkModels.get('doubao-seedream-5-0-260128')?.capabilities.resolutions, ['2K', '4K'])
-  assert.deepEqual(arkModels.get('doubao-seedream-4-5-251128')?.capabilities.outputFormats, ['png'])
-  assert.deepEqual(arkModels.get('doubao-seedream-4-0-250828')?.roles, ['image'])
-  assert.equal(arkModels.get('doubao-seedream-4-0-250828')?.capabilities.imageEditMode, 'direct-edit')
-  assert.equal(arkModels.get('doubao-seedream-4-0-250828')?.capabilities.imageEditing, true)
-  assert.deepEqual(arkModels.get('doubao-seedream-4-0-250828')?.capabilities.outputFormats, ['png'])
   for (const model of arkModels.values()) {
     assert.equal(model.verified, false)
     assert.ok(['unverified', 'catalog'].includes(model.verificationState))
@@ -1752,9 +1726,6 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
     },
     ark: {
       'doubao-seedream-5-0-pro-260628': ['1K', '2K'],
-      'doubao-seedream-5-0-260128': ['2K', '4K'],
-      'doubao-seedream-4-5-251128': ['2K', '4K'],
-      'doubao-seedream-4-0-250828': ['1K', '2K', '4K'],
     },
   } as const
 
@@ -1808,8 +1779,8 @@ test('Ark text, vision, and image generation use the exact CN data plane with be
       }]),
       'ok-2',
     )
-    const generated = await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', secret, 'diagram', '16:9', '', '2K')
-    const edited = await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', secret, 'edit diagram', '16:9', 'data:image/png;base64,YQ==', '2K')
+    const generated = await legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', secret, 'diagram', '16:9', '', '2K')
+    const edited = await legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', secret, 'edit diagram', '16:9', 'data:image/png;base64,YQ==', '2K')
     assert.equal(Buffer.from(generated, 'base64').subarray(0, 8).toString('hex'), '89504e470d0a1a0a')
     assert.equal(Buffer.from(edited, 'base64').subarray(0, 8).toString('hex'), '89504e470d0a1a0a')
   } finally {
@@ -1834,7 +1805,7 @@ test('Ark text, vision, and image generation use the exact CN data plane with be
     { type: 'image_url', image_url: { url: 'data:image/png;base64,YQ==' } },
   ])
   assert.deepEqual(calls[2].body, {
-    model: 'doubao-seedream-4-0-250828',
+    model: 'doubao-seedream-5-0-flash-260915',
     prompt: 'diagram',
     size: '2720x1530',
     sequential_image_generation: 'disabled',
@@ -1842,7 +1813,7 @@ test('Ark text, vision, and image generation use the exact CN data plane with be
     response_format: 'b64_json',
   })
   assert.deepEqual(calls[3].body, {
-    model: 'doubao-seedream-4-0-250828',
+    model: 'doubao-seedream-5-0-flash-260915',
     prompt: 'edit diagram',
     image: ['data:image/png;base64,YQ=='],
     size: '2720x1530',
@@ -1872,8 +1843,8 @@ test('Ark current models disable default thinking and use model-specific Seedrea
     assert.equal(calls.length, 0, 'unsupported Ark sizes must fail before dispatch')
     await legacy.callTextModel('ark', 'doubao-seed-2-1-pro-260628', 'key', 'system', 'user')
     await legacy.callImageModel('ark', 'doubao-seedream-5-0-pro-260628', 'key', 'pro image', '16:9', '', '1K')
-    await legacy.callImageModel('ark', 'doubao-seedream-5-0-lite-260128', 'key', 'canonical alias', 'auto', '', '4K')
-    await legacy.callImageModel('ark', 'doubao-seedream-4-5-251128', 'key', '4.5 image', 'auto', '', '2K')
+    await assert.rejects(legacy.callImageModel('ark', 'doubao-seedream-5-0-lite-260128', 'key', 'retired alias', 'auto', '', '4K'))
+    await legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', 'key', 'flash image', 'auto', '', '2K')
   } finally {
     legacy.configureRuntimeFetch()
   }
@@ -1886,16 +1857,8 @@ test('Ark current models disable default thinking and use model-specific Seedrea
     response_format: 'b64_json',
   })
   assert.deepEqual(calls[2].body, {
-    model: 'doubao-seedream-5-0-260128',
-    prompt: 'canonical alias',
-    size: '4K',
-    sequential_image_generation: 'disabled',
-    stream: false,
-    response_format: 'b64_json',
-  })
-  assert.deepEqual(calls[3].body, {
-    model: 'doubao-seedream-4-5-251128',
-    prompt: '4.5 image',
+    model: 'doubao-seedream-5-0-flash-260915',
+    prompt: 'flash image',
     size: '2K',
     sequential_image_generation: 'disabled',
     stream: false,
@@ -1910,7 +1873,7 @@ test('modelCapability accepts Ark while unknown IDs and wrong route roles remain
     request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
   })
   const capability = await invokeTrusted(legacy, context({
-    action: 'modelCapability', provider: 'ark', model: 'doubao-seedream-4-0-250828',
+    action: 'modelCapability', provider: 'ark', model: 'doubao-seedream-5-0-flash-260915',
   }))
   assert.equal(capability.code, 0)
   assert.equal(capability.status, 'unknown', 'image editing support does not imply a text model vision role')
@@ -1959,32 +1922,32 @@ test('Ark image generation rejects URL-only output, invalid base64, and oversize
   })
   try {
     await assert.rejects(
-      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', 'key', 'diagram', '16:9'),
       /did not return image data/,
     )
     assert.equal(calls, 1, 'URL-only results must not trigger a CDN fetch')
     await assert.rejects(
-      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', 'key', 'diagram', '16:9'),
       /invalid base64 data/,
     )
     await assert.rejects(
-      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', 'key', 'diagram', '16:9'),
       /invalid base64 data/,
     )
     await assert.rejects(
-      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', 'key', 'diagram', '16:9'),
       /invalid base64 data/,
     )
     await assert.rejects(
-      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', 'key', 'diagram', '16:9'),
       /invalid or oversized JPEG dimensions/,
     )
     await assert.rejects(
-      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', 'key', 'diagram', '16:9'),
       /invalid or oversized JPEG dimensions/,
     )
     await assert.rejects(
-      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', 'key', 'diagram', '16:9'),
       /Ark image response exceeds/,
     )
   } finally {
@@ -2058,7 +2021,7 @@ test('providerAccountCatalog truthfully uses only bounded Ark inference smoke pr
       probes: [
         { role: 'main', modelId: 'doubao-seed-2-0-mini-260428' },
         { role: 'main', modelId: 'doubao-seed-2-0-mini-260428' },
-        { role: 'image', modelId: 'doubao-seedream-4-0-250828' },
+        { role: 'image', modelId: 'doubao-seedream-5-0-flash-260915' },
       ],
     })
     assert.equal(unconfirmed.code, 0, JSON.stringify(unconfirmed))
@@ -2080,7 +2043,7 @@ test('providerAccountCatalog truthfully uses only bounded Ark inference smoke pr
         accountAvailable: true, verifiedBy: 'inference-smoke',
       },
       {
-        role: 'image', modelId: 'doubao-seedream-4-0-250828', state: 'paid-probe-required',
+        role: 'image', modelId: 'doubao-seedream-5-0-flash-260915', state: 'paid-probe-required',
         accountAvailable: false, verifiedBy: undefined,
       },
     ])
@@ -2093,7 +2056,7 @@ test('providerAccountCatalog truthfully uses only bounded Ark inference smoke pr
       action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: secret }, confirmPaidImageProbe: true,
       probes: [
         { role: 'vision', modelId: 'doubao-seed-2-0-lite-260428' },
-        { role: 'image', modelId: 'doubao-seedream-5-0-260128' },
+        { role: 'image', modelId: 'doubao-seedream-5-0-flash-260915' },
       ],
     })
     assert.deepEqual(confirmed.probeResults.map((result: any) => [result.role, result.state, result.verifiedBy]), [
@@ -2114,7 +2077,7 @@ test('providerAccountCatalog truthfully uses only bounded Ark inference smoke pr
     assert.ok(visionProbeImage.readUInt32BE(20) >= 14, 'Ark vision probe must meet the provider minimum height')
     assert.equal(calls[1].body.max_tokens, 8)
     assert.equal(calls[2].body.response_format, 'b64_json')
-    assert.equal(calls[2].body.size, '2K')
+    assert.equal(calls[2].body.size, '1K')
     assert.equal(calls[2].body.sequential_image_generation, 'disabled')
     assert.equal(calls[2].body.stream, false)
     assert.equal(calls.some((call) => /ListModelActivations|openapi\.volcengine/i.test(call.url)), false)
@@ -2143,7 +2106,7 @@ test('providerAccountCatalog bounds probes and reports unknown, wrong-role, miss
       probes: [
         { role: 'main', modelId: 'doubao-seed-2-0-mini-260428' },
         { role: 'vision', modelId: 'doubao-seed-2-0-mini-260428' },
-        { role: 'image', modelId: 'doubao-seedream-4-0-250828' },
+        { role: 'image', modelId: 'doubao-seedream-5-0-flash-260915' },
         { role: 'main', modelId: 'doubao-seed-2-0-lite-260428' },
       ],
     })
@@ -2154,7 +2117,7 @@ test('providerAccountCatalog bounds probes and reports unknown, wrong-role, miss
       action: 'providerAccountCatalog', provider: 'ark', apiKeys: {},
       probes: [
         { role: 'main', modelId: 'unknown-ark-model' },
-        { role: 'main', modelId: 'doubao-seedream-4-0-250828' },
+        { role: 'main', modelId: 'doubao-seedream-5-0-flash-260915' },
         { role: 'vision', modelId: 'doubao-seed-2-0-mini-260428' },
       ],
     })
@@ -2233,7 +2196,7 @@ test('providerAccountCatalog performs exactly one bounded dispatch per logical p
         probes: [
           { role: 'main', modelId: 'doubao-seed-2-0-mini-260428' },
           { role: 'vision', modelId: 'doubao-seed-2-0-lite-260428' },
-          { role: 'image', modelId: 'doubao-seedream-4-0-250828' },
+          { role: 'image', modelId: 'doubao-seedream-5-0-flash-260915' },
         ],
       },
       headers: {}, response: { setHeader() {}, status() {} },
@@ -5091,7 +5054,7 @@ test('Ark-normalized PNG bytes retain PNG content type and extension through res
   delete process.env.PAPERBANANA_STRICT_OBJECT_STORAGE
   try {
     legacy.configureRuntimeFetch(async () => Response.json({ data: [{ b64_json: jpegBase64 }] }))
-    const pngBase64 = await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9')
+    const pngBase64 = await legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', 'key', 'diagram', '16:9')
     assert.equal(Buffer.from(pngBase64, 'base64').subarray(0, 8).toString('hex'), '89504e470d0a1a0a')
     state.ossWriteMode = 'success'
     state.ossWrites = []
@@ -5171,9 +5134,6 @@ test('v14 static image registry exposes exact canonical generation and refinemen
     },
     ark: {
       'doubao-seedream-5-0-pro-260628': allImageAspectRatios,
-      'doubao-seedream-5-0-260128': allImageAspectRatios,
-      'doubao-seedream-4-5-251128': allImageAspectRatios,
-      'doubao-seedream-4-0-250828': allImageAspectRatios,
     },
   } as const
 
@@ -5412,10 +5372,10 @@ test('static adapters encode exact supported ratios and delegate auto without si
     await legacy.callImageModel('bailian', 'wan2.7-image-pro', 'key', 'extreme', '1:4', '', '2K')
     await legacy.callImageModel('bailian', 'wan2.7-image-pro', 'key', 'default', 'auto', '', '2K')
     await legacy.callImageModel('bailian', 'z-image-turbo', 'key', 'documented ultrawide', '21:9', '', '2K')
-    await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'wide', '16:9', '', '2K')
-    await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'default', 'auto', '', '2K')
+    await legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', 'key', 'wide', '16:9', '', '2K')
+    await legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', 'key', 'default', 'auto', '', '2K')
     await legacy.callImageModel('bailian', 'qwen-image-2.0-pro', 'key', 'newly supported', '4:1', '', '2K')
-    await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'newly supported', '4:3', '', '2K')
+    await legacy.callImageModel('ark', 'doubao-seedream-5-0-flash-260915', 'key', 'newly supported', '4:3', '', '2K')
     await assert.rejects(
       legacy.callImageModel('openai', 'gpt-image-2', 'key', 'invalid', '999:1'),
       /Unsupported aspect ratio/,
@@ -6503,20 +6463,20 @@ test('channel extensions: runtime dispatches every new selectable image option u
   } finally {legacy.configureRuntimeFetch()}
 })
 
-test('Bailian scheduled retirement follows the official Beijing midnight boundary', async () => {
+test('Bailian scheduled retirement follows the official Beijing 10:00 boundary', async () => {
   const legacy = await loadLegacy()
   const now = Date.now
   const inspect = async () => {
     const result = await invokeTrusted(legacy, { request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'bailian' }, headers: {}, response: { setHeader() {}, status() {} } })
-    return result.providers.bailian.models.find((model: any) => model.id === 'qwen-turbo')
+    return result.providers.bailian.models.find((model: any) => model.id === 'qwen3.5-plus')
   }
   try {
-    Date.now = () => Date.parse('2026-10-09T15:59:59.999Z')
+    Date.now = () => Date.parse('2027-01-19T09:59:59.999+08:00')
     assert.equal((await inspect()).selectable, true)
-    Date.now = () => Date.parse('2026-10-09T16:00:00Z')
+    Date.now = () => Date.parse('2027-01-19T10:00:00+08:00')
     const retired = await inspect()
     assert.equal(retired.selectable, false)
-    assert.match(retired.disabledReason, /2026-10-10/)
+    assert.match(retired.disabledReason, /原型号已不可用，请重新选择/)
   } finally { Date.now = now }
 })
 
@@ -6547,7 +6507,7 @@ test('xAI normalizes WebP references to supported PNG for planning, vision and i
   try {
     await legacy.callTextModel('xai', 'grok-build-0.1', 'fixture', 'system', 'describe', images)
     await legacy.callVisionModel('xai', 'grok-4.6', 'fixture', 'method', 'caption', images)
-    await legacy.callImageModel('xai', 'grok-imagine-image-quality', 'fixture', 'edit figure', '1:1', images[0].url, '1K', true)
+    await legacy.callImageModel('xai', 'grok-imagine-image', 'fixture', 'edit figure', '1:1', images[0].url, '1K', true)
     for (const body of bodies) {
       const url = body.image?.url || body.input[0].content[1].image_url
       assert.match(url, /^data:image\/png;base64,/)
@@ -6705,6 +6665,11 @@ test('September retirement retains exact defaults and identities but refuses tra
       }
       for (const id of ids) {
         const model = result.providers[provider].models.find((m:any) => m.id === id)
+        if (provider === 'siliconflow') {
+          assert.equal(model, undefined)
+          await assert.rejects(legacy.callTextModel(provider, id, 'unused', 'system', 'user'), {businessCode:'MODEL_UNAVAILABLE',requestState:'not_sent'})
+          continue
+        }
         assert.equal(model.selectable, false, id)
         assert.ok(model.disabledReason, id)
         await assert.rejects(legacy.callTextModel(provider, id, 'unused', 'system', 'user'), /停用|到期/)

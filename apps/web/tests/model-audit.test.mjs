@@ -19,7 +19,7 @@ const setup=()=>({registry,library:structuredClone(library),ready:true,busy:fals
 
 test('all 103 removed identities, including seven serverless-only retirements are hidden from catalog, removed from cards while saved data stays unchanged',()=>{
   const now=Date.parse('2026-11-09'),visible=new Set(catalogRows(registry).map(row=>row.provider+'/'+row.model.id));
-  assert.equal(Object.keys(MODEL_AUDIT_DATA.removed).length,103);
+  assert.equal(Object.keys(MODEL_AUDIT_DATA.removed).length,154);
   for(const key of Object.keys(MODEL_AUDIT_DATA.removed)){
     const split=key.indexOf('/'),provider=key.slice(0,split),modelId=key.slice(split+1);
     if(!removedModel(provider,modelId,now))continue;

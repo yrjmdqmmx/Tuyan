@@ -49,7 +49,9 @@ test('new TokenHub contracts cannot leak into adjacent IDs, protocols or roles',
 test('TokenHub image schema classification does not rewrite prompt optimization, search or image settings', () => {
   for (const modelId of ['hy-image-v3', 'hy-image-v3.5-preview', 'wand-vega-image-lite', 'wand-vega-image-flash', 'wand-vega-image-pro', 'vidu-image-q2', 'seedream-image-v5.0-lite', 'seedream-image-v5.0-pro']) {
     const selection = { provider: 'tokenhub', modelId, protocol: 'provider-images', options: {} }
-    assert.equal(thinkingProfile('tokenhub', modelId, 'image', 'provider-images').status, 'unsupported')
+    const profile = thinkingProfile('tokenhub', modelId, 'image', 'provider-images')
+    if (['hy-image-v3', 'seedream-image-v5.0-lite'].includes(modelId)) assert.equal(profile, undefined)
+    else assert.equal(profile.status, 'unsupported')
     const body = { model: modelId, prompt: 'offline fixture', size: '1024x1024', revise: true, optimize_prompt_options: { mode: 'standard' }, use_search_tool: { value: false } }
     assert.deepEqual(applyThinkingSnapshot(body, compileThinkingSelection(selection, 'image')), body)
     for (const options of [{ mode: true }, { effort: 'high' }, { budget: 1024 }]) assert.throws(() => compileThinkingSelection({ ...selection, options: options as any }, 'image'))

@@ -50,7 +50,7 @@ for (const mode of ['empty','timeout','snapshot']) test(`R17 compiled mini Core-
     providers.tokendance=response.providers.tokendance
     const wire={...response,providers},before=JSON.stringify(wire)
     const registry=normalizeModelRegistry(wire),models=registry.providers.tokendance.models
-    assert.equal(models.length,74)
+    assert.equal(models.length, 72)
     const visible=new Map()
     for(const role of ['main','image','vision']){
       const partition=partitionRegistryModels(models,{role})

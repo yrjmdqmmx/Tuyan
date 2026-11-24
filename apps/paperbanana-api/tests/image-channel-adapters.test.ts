@@ -244,17 +244,23 @@ test('MiniMax binds each region to its endpoint and keeps image-01-live fixed an
 })
 
 test('new native channels require a durable journal; partial TokenHub checkpoints never resubmit',async()=>{
-  for(const [provider,model] of [['tokenhub','hy-image-v3'],['runware','alibaba:qwen-image@2512']]) {
+  for(const [provider,model] of [['tokenhub','hy-image-v3.5-preview'],['runware','alibaba:qwen-image@2512']]) {
     const {io,calls}=fixture(()=>Response.json({}))
     delete io.pending;delete io.checkpoint
     await assert.rejects(callExtendedImageChannel({...defaults,provider,model},io),/持久任务/)
     assert.equal(calls.length,0)
   }
   const {io,calls}=fixture(()=>Response.json({}))
-  let pending:any={provider:'tokenhub',model:'hy-image-v3',taskId:'already-submitted'}
+  let pending:any={provider:'tokenhub',model:'hy-image-v3.5-preview',taskId:'already-submitted'}
   io.pending=async()=>pending;io.checkpoint=async value=>{pending=value}
-  await assert.rejects(callExtendedImageChannel({...defaults,provider:'tokenhub',model:'hy-image-v3'},io),/未重新提交/)
-  assert.equal(calls.length,0);assert.equal(pending.failed,true)
+  const original = structuredClone(pending)
+  for (let attempt = 0; attempt < 2; attempt++) {
+    await assert.rejects(callExtendedImageChannel({...defaults,provider:'tokenhub',model:'hy-image-v3.5-preview'},io), {
+      terminal:true, requestState:'unknown', uncertain:true, recoveryAction:'stop',
+    })
+  }
+  assert.equal(calls.length,0)
+  assert.deepEqual(pending,original)
 })
 
 test('Runware generation has native task fields and polls through rate limits without re-submission',async()=>{

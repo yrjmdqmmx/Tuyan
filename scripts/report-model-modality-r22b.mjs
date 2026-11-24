@@ -23,13 +23,13 @@ const {modelSourceName:oldSourceName}=await productBundle("export { modelSourceN
 const current=Object.entries(catalogBeforeNovember24(STATIC_MODEL_REGISTRY)).flatMap(([channel,p])=>p.models.map(model=>({channel,model,card:card(channel,model)})))
 assert.equal(current.length,1033)
 const full=Object.entries(registry.providers).flatMap(([channel,p])=>p.models.map(model=>({channel,model,card:card(channel,model)})))
-assert.equal(full.length,1029)
+assert.equal(full.length,978)
 for(const row of full){assert.equal(row.card.sources[0],card(row.channel,{id:row.model.id}).sources[0]);assert.deepEqual(row.card.fields,row.model.cardSpecifications.fields)}
 assertReviewedLinks(id=>card('tokendance',{id}))
 const {modelCardName,presentRegistryModel}=await productBundle("export { modelCardName } from './apps/web/src/lib/modelCardSpecifications.js'; export { presentRegistryModel } from './apps/web/src/lib/modelPresentation.js'")
 const names=JSON.parse(fs.readFileSync(root+'apps/web/tests/fixtures/model-picker-names-8c456709.json')).names
 for(const row of current)assert.equal(modelCardName(row.channel,presentRegistryModel(row.channel,row.model)),names[row.channel][row.model.id])
-const counts={staticCards:current.length,fullCoreCards:full.length + 4 - 3,unchangedPickerNames:current.length,verifiedPages:67,historicalFallbacks:7,missingFallbacks:0,sourceRowsBefore:0,sourceRowsAfter:0,duplicateUrlRowsBefore:0,duplicateUrlRowsAfter:0,duplicateLabelsBefore:0,duplicateLabelsAfter:0,vendorTokenFields:0,vendorTokenCards:0,unknownTokenFields:0}
+const counts={staticCards:current.length,fullCoreCards:full.length + 55 - 3,unchangedPickerNames:current.length,verifiedPages:67,historicalFallbacks:7,missingFallbacks:0,sourceRowsBefore:0,sourceRowsAfter:0,duplicateUrlRowsBefore:0,duplicateUrlRowsAfter:0,duplicateLabelsBefore:0,duplicateLabelsAfter:0,vendorTokenFields:0,vendorTokenCards:0,unknownTokenFields:0}
 const vendor=[], links=[]
 for(const row of current){
  const prior=before(row.channel,row.model), key=row.channel+'/'+row.model.id, rows=restoreI12Sources(previousBatchSources('web',key,november24Projection('web',key)?.before?.rows || modelSourceRows(row.card)),key,'web')
@@ -39,9 +39,10 @@ for(const row of current){
  counts.duplicateLabelsBefore+=prior.sources.length-new Set(prior.sources.map(url=>oldSourceName(prior,url)+' · '+new URL(url).hostname)).size
  counts.duplicateLabelsAfter+=rows.length-new Set(rows.map(r=>r.label)).size
  if(row.channel==='tokendance'){
-  const fields=['totalContextTokens','maxOutputTokens'].filter(key=>row.card.fields[key].provenance==='vendor'&&row.card.fields[key].state==='known')
+  const facts = november24Projection('cards',key)?.before?.web.data.fields || row.card.fields
+  const fields=['totalContextTokens','maxOutputTokens'].filter(key=>facts[key].provenance==='vendor'&&facts[key].state==='known')
   counts.vendorTokenFields+=fields.length;counts.vendorTokenCards+=fields.length>0
-  counts.unknownTokenFields+=['totalContextTokens','maxOutputTokens'].filter(key=>row.card.fields[key].state==='unknown').length
+  counts.unknownTokenFields+=['totalContextTokens','maxOutputTokens'].filter(key=>facts[key].state==='unknown').length
   if(fields.length)vendor.push({id:row.model.id,fields:Object.fromEntries(fields.map(key=>[key,row.card.fields[key]]))})
   const page=evidence.pages.find(p=>p.id===row.model.id)
   links.push({id:row.model.id,checkedAt:page.checkedAt,verified:page.verified,result:page.result,evidenceSha256:page.evidenceSha256,source:rows[0]||null})

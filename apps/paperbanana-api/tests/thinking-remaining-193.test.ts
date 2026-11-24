@@ -75,8 +75,11 @@ test('image classification preserves optimization parameters and retired IDs rem
   }
   for (const [provider, model, role, protocol] of [['stepfun', 'step-2x-large', 'image', 'stepfun-images-json'], ['stepfun', 'step-image-edit-2', 'image', 'stepfun-images-multipart'], ['mistral', 'labs-leanstral-1-5', 'main', 'openai-chat-completions']]) {
     const p = thinkingProfile(provider, model, role, protocol)
-    assert.equal(p.statusReason, 'catalog-retired')
-    assert.deepEqual(p.controls, [])
+    if (provider === 'mistral') assert.equal(p, undefined)
+    else {
+      assert.equal(p.statusReason, 'catalog-retired')
+      assert.deepEqual(p.controls, [])
+    }
     assert.throws(() => select(provider, model, { mode: true }, role, protocol))
   }
 })

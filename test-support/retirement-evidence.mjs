@@ -28,8 +28,13 @@ export function batchExecutionFixture() {
   }))
   for (const name of ['core','web','mini','miniNormalizedStatic','miniNormalizedLive']) {
     for (const [provider, entry] of Object.entries(fixture[name])) {
+      if (provider === 'tokenhub' && entry.defaults) entry.defaults.image = ''
       entry.models = entry.models.filter(model => !retiredKeys.has(provider+'/'+model.id))
       for (const model of entry.models) {
+        if (provider === 'ark' && model.id === 'doubao-seed-2-0-pro-260215') Object.assign(model, {
+          expirationDate: '2027-01-22', expirationAt: '2027-01-22T14:00:00+08:00',
+          availabilityNotes: '方舟公告：服务截止 2027-01-22 14:00（UTC+8）。',
+        })
         const version = correctedVersions.get(provider+'/'+model.id)
         if (version) model.version = version
         const notice = notices.get(provider+'/'+model.id)

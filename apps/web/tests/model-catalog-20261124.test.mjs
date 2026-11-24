@@ -54,3 +54,20 @@ test('new catalog cards expose adapter inputs and sourced output limits', () => 
     if (provider==='fal') assert.deepEqual([card.context,card.maxOutput],['不适用','不适用'])
   }
 })
+
+test('Ark Seed 2.0 Pro remains selectable on November 25 with the corrected January 22 badge', t => {
+  t.after(cleanup)
+  const id = 'doubao-seed-2-0-pro-260215'
+  const clock = t.mock.method(Date, 'now', () => Date.parse('2026-11-25T10:00:00+08:00'))
+  const lifecycle = auditedModelLifecycle('ark', id)
+  const model = catalog.ark.models.find(row => row.id === id)
+  assert.equal(model.selectable, true)
+  assert.equal(model.expirationAt, '2027-01-22T14:00:00+08:00')
+  assert.equal(removedModel('ark', id), null)
+  const view = render(React.createElement(ModelLifecycleBadge, {provider:'ark', modelId:id, lifecycle}))
+  assert.equal(view.getByRole('button').textContent, '将下线 2027-01-22')
+  clock.mock.mockImplementation(() => Date.parse(model.expirationAt) - 1)
+  assert.equal(removedModel('ark', id), null)
+  clock.mock.mockImplementation(() => Date.parse(model.expirationAt))
+  assert.equal(removedModel('ark', id).stopDate, model.expirationAt)
+})

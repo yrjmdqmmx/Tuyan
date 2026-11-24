@@ -14,7 +14,7 @@ import {validatedPrimaryPages} from './lib/primary-links-r31.mjs'
 import {visibleSourceTitle,sourceAcronyms} from '../packages/api/src/card-presentation.mjs'
 import {siblingEndpoint} from '../packages/api/src/model-card-sources.mjs'
 import {sourceSurfaces,assertUnifiedTitles} from '../test-support/source-titles-r29.mjs'
-test('R31 all 82 decisions match generated Web/Mini; all 1032 retain only authorized primary and source changes',async()=>{
+test('R31 all 82 decisions match generated Web/Mini; all 981 retain only authorized primary and source changes',async()=>{
  const live=await imageInputPresentations(),rows=beforeRetirements('cards',live),old=restoreI12(rows),i12=restoreI13(rows)
  const decisions=[...report.kept,...report.restored,...report.bailianOfficialPages]
  assert.deepEqual(decisions.map(r=>r.key).sort(),prior.primaryLinks.map(r=>r.key).sort())

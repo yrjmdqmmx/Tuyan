@@ -77,7 +77,7 @@ test('R8 every rendered catalog card has uppercase token units while stored labe
     }
     view.unmount(); count++
   }
-  assert.equal(count, 1032); assert.ok(lowercaseSources > 0)
+  assert.equal(count, 981); assert.ok(lowercaseSources > 0)
 })
 
 test('R8 Bailian Kimi K3 keeps its exact evidence and R21 resolves SiliconFlow full registry specifications', () => {

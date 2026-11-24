@@ -166,7 +166,10 @@ export async function createRefineRuntime({ port = 0, startServer = true, provid
       if(channelFailure==='pending')return Response.json({state:'processing',status:'in_progress'});
       return Response.json({state:'success',status:'completed',creations:[{url:'https://fixture-assets.example.org/image.png'}],data:[{url:'https://fixture-assets.example.org/image.png'}],tokenhub_usage:{total_tokens:18000}});
     }
-    if(url.includes('/v35-generation'))return Response.json({choices:[{delta:{image:{url:'https://fixture-assets.example.org/image.png'}}}],tokenhub_usage:{total_tokens:12345}});
+    if (url.includes('/v35-generation')) {
+      if (channelFailure === 'lost-submit') throw new Error('fixture lost synchronous result');
+      return Response.json({choices:[{delta:{image:{url:'https://fixture-assets.example.org/image.png'}}}],tokenhub_usage:{total_tokens:12345}});
+    }
     if (url.startsWith('https://tokenhub.tencentmaas.com/')) {
       if (channelFailure === 'lost-submit') throw new Error('fixture lost synchronous result');
       return Response.json({id:'fixture-tokenhub-image',request_id:'fixture-tokenhub-request',tokenhub_usage:{total_tokens:4000},data:[{url:'https://fixture-assets.example.org/image.png'}]});

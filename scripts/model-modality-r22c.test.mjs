@@ -9,7 +9,7 @@ const require = createRequire(import.meta.url)
 const mini = require('../apps/miniprogram/miniprogram/utils/card-presentation.js')
 const read = file => fs.readFileSync(new URL('../' + file, import.meta.url), 'utf8')
 
-test('R22C shared and generated Mini presentation agree across all 1032 identities and preserve captured quotes', () => {
+test('R22C shared and generated Mini presentation agree across all 981 identities and preserve captured quotes', () => {
   const snapshot = JSON.parse(read('config/channel-audit/tokendance-catalog-snapshot-20261109b.json'))
   const tables = JSON.parse(read('config/channel-audit/model-modality-phase2-20261109.json')).tables
   let count = 0
@@ -34,7 +34,7 @@ test('R22C shared and generated Mini presentation agree across all 1032 identiti
     }
     count++
   }
-  assert.equal(count, 1032)
+  assert.equal(count, 981)
 })
 
 test('R22C solid grey glyphs exceed 3:1 on active card/dialog backgrounds', () => {

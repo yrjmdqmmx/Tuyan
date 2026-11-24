@@ -89,6 +89,7 @@ test('R22B all 74 cards require rendered pages and retain seven main vendor fall
     assert.equal(row.status, 200)
     assert.equal(row.url, 'https://tokendance.space/models/' + row.modelId)
     const entry = model('tokendance', row.modelId)
+    if (MODEL_AUDIT_DATA.removed['tokendance/' + row.modelId]) continue
     const link = MODEL_AUDIT_DATA.details['tokendance/' + row.modelId].sourceLinks[0]
     if (row.rendersModel) {
       assert.deepEqual([link.url, link.scope, link.kind, link.checkedAt], [row.url, 'channel', 'model-page', '2026-11-09'])
@@ -273,6 +274,10 @@ test('R12D links retain current DOM coverage with the explicit R21 TokenDance pa
   for (const row of linkChecks) {
     const entry = models.get(row.channel + '/' + row.modelId)
     const card = modelCardSpecifications(row.channel, entry)
+    if (MODEL_AUDIT_DATA.removed[row.channel + '/' + row.modelId]) {
+      assert.ok(!STATIC_MODEL_REGISTRY[row.channel].models.some(model => model.id === row.modelId))
+      continue
+    }
     const expected = MODEL_AUDIT_DATA.removed[row.channel + '/' + row.modelId]?.sourceUrl || r21Url(row)
     assertLink(row.channel, entry, expected, modelSourceName(card, expected))
   }
