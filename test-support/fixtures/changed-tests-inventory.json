@@ -442,14 +442,14 @@
     {
       "file": "tests/model-catalog-source-contract.test.mjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "a6a035347e4edc13709dd4b300c12b3f0baf7c54e75d67ab4d527ae52b334c75",
-      "diffSha256": "8f8acd430fec4a0154b0da6aa83e33efd7b53edb3ffa31edf5e85f859c03b8a5"
+      "contentSha256": "4078b0660d82bc638968efcf99b8885296ab4c135bd911a634b2a705fb3e4d3b",
+      "diffSha256": "451adc259b6018d6c681db1a3e85db8ba612e69e1f547e9bf9370a59010ae131"
     },
     {
       "file": "tests/model-version-contract.test.mjs",
       "comparisonBase": "8c456709",
-      "contentSha256": "b7a9de7a9b2488765a6142047c963c8a54189208aba7569af188299f1098670e",
-      "diffSha256": "5fa5b57325600f616f0cbf6477fc83cdb68107df884d90417509e4e17c6b7ec9"
+      "contentSha256": "0f87776db50f8ea7ee4a5de0ffa88bf6313ac2578aeea21f87e72f66859bb839",
+      "diffSha256": "eca42c1ef1593625c9e849ec7f88cbc884b67d49ced99e580de2a51290b61f7c"
     }
   ],
   "fixtures": [

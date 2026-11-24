@@ -2,10 +2,10 @@
   "base": "8c456709",
   "counts": {
     "files": 75,
-    "assertionAndFixtureInputChanges": 441,
+    "assertionAndFixtureInputChanges": 445,
     "consumedJsonFixtures": 16,
     "semanticFixtureChanges": 983,
-    "justified": 1423,
+    "justified": 1427,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -6329,8 +6329,21 @@
     },
     {
       "file": "tests/model-catalog-source-contract.test.mjs",
-      "diffSha256": "8f8acd430fec4a0154b0da6aa83e33efd7b53edb3ffa31edf5e85f859c03b8a5",
+      "diffSha256": "451adc259b6018d6c681db1a3e85db8ba612e69e1f547e9bf9370a59010ae131",
       "changes": [
+        {
+          "phase": "November 24 root historical contracts",
+          "line": 190,
+          "old": "Look up the September review's six retirements and twenty additions in the live catalog.",
+          "new": "Check those same identities and fields against the reviewed pre-November-24 projection; keep the defaults check live.",
+          "reason": "September selection and verification states describe those models before their later removal, not present-day availability.",
+          "evidence": [
+            "config/model-catalog-review-20260921.json",
+            "test-support/retirement-projections.mjs",
+            "test-support/fixtures/catalog-projections-20261124.json.gz"
+          ],
+          "verdict": "JUSTIFIED"
+        },
         {
           "phase": "November 18 catalog contract reconciliation",
           "line": 98,
@@ -6400,8 +6413,44 @@
     },
     {
       "file": "tests/model-version-contract.test.mjs",
-      "diffSha256": "5fa5b57325600f616f0cbf6477fc83cdb68107df884d90417509e4e17c6b7ec9",
+      "diffSha256": "eca42c1ef1593625c9e849ec7f88cbc884b67d49ced99e580de2a51290b61f7c",
       "changes": [
+        {
+          "phase": "November 24 root historical contracts",
+          "line": 21,
+          "old": "Clone the live registry as input to the 760-identity contract and its refine-control checks.",
+          "new": "Reverse only the reviewed November 24 deltas on the clone before checking defaults, roles, capabilities and the original snapshot digest.",
+          "reason": "The live registry no longer contains some historical refinement examples; the projection verifies the current state before restoring their prior fields.",
+          "evidence": [
+            "test-support/retirement-projections.mjs",
+            "test-support/fixtures/catalog-projections-20261124.json.gz"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 24 root historical contracts",
+          "line": 60,
+          "old": "Treat every key in today's removed-model ledger as already removed at the earlier checkpoint.",
+          "new": "Exclude only the November 24 batch when identifying earlier removals; still check the 668 survivors and the digest of the exact 92 earlier removals.",
+          "reason": "Applying today's ledger to yesterday's snapshot would exempt newly retired identities from their historical field checks.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "test-support/fixtures/model-identities-ec24b73.json.gz"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "November 24 root historical contracts",
+          "line": 173,
+          "old": "No root version-contract test linked every newly removed identity to its current evidence.",
+          "new": "For all 68 distinct retirements, check live absence, dated evidence, source and stop date in the removal ledger, and equality with the shipped audit entry.",
+          "reason": "Restoring historical fixtures must not hide a reintroduced identity or an absent or inconsistent removal record.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "config/removed-models.json"
+          ],
+          "verdict": "JUSTIFIED"
+        },
         {
           "phase": "November 18 catalog contract reconciliation",
           "line": 47,
