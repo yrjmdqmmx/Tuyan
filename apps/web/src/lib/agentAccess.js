@@ -1,5 +1,5 @@
 // Stable, machine-readable document published by publish-agent-skills.mjs.
-export const AGENT_INSTALLATION_URL = 'https://www.paperbanana.asia/.well-known/skills/tuyan-scientific-figure/references/client-installation.md';
+export const AGENT_INSTALLATION_URL = 'https://tuyansci.cn/.well-known/skills/tuyan-scientific-figure/references/client-installation.md';
 export const AGENT_SKILL_URL = 'https://github.com/yrjmdqmmx/Tuyan-Skill';
 export const AGENT_MCP_URL = 'https://github.com/yrjmdqmmx/Tuyan-MCP';
 

@@ -22,6 +22,7 @@ test('copies the complete public prompt and reports copy only, with readable man
   const prompt = screen.getByRole('textbox', { name: '接入口令' });
   assert.equal(prompt.value, AGENT_CONNECTION_PROMPT);
   assert.equal(prompt.readOnly, true);
+  assert.equal(AGENT_INSTALLATION_URL, 'https://tuyansci.cn/.well-known/skills/tuyan-scientific-figure/references/client-installation.md');
   assert.equal(screen.getByRole('link', { name: '官方接入说明' }).href, AGENT_INSTALLATION_URL);
   fireEvent.click(screen.getByRole('button', { name: '复制接入口令' }));
   await waitFor(() => assert.match(screen.getByRole('status').textContent, /口令已复制/u));

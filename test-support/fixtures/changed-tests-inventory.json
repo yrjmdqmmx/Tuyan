@@ -244,8 +244,8 @@
     {
       "file": "apps/paperbanana-api/tests/thinking-siliconflow-followup.test.ts",
       "comparisonBase": "8c456709",
-      "contentSha256": "32e08146949a4e2ad4d54d50a866689b25374f5df62fd0b382c253bf5e0dc0d9",
-      "diffSha256": "61c97f915461991c8757ccadd7ea6bb3eba9154adc19990cf421e1854ea3b682"
+      "contentSha256": "b228665d543528fc0c152f514426b481e9909c55713aad41f41d99c51d92ad90",
+      "diffSha256": "05779e5bf780dfeea4c5975290db3ebe0777c02f3e549c460a49df1c13e8c347"
     },
     {
       "file": "apps/paperbanana-api/tests/thinking-workflow.test.ts",
@@ -270,6 +270,12 @@
       "comparisonBase": "8c456709",
       "contentSha256": "baa4742bc1d4f36d678c49fe9ac6732f6fafb9673188d2c398fd9f7925c29898",
       "diffSha256": "c7bf3a38bd053b8c48d8863e83edefec44c8d586956c012001f95f5d7c5767c8"
+    },
+    {
+      "file": "apps/web/tests/agent-connection-dialog.test.mjs",
+      "comparisonBase": "8c456709",
+      "contentSha256": "9e18a8414b4a6ff6289ea1e6d1bf3f74d20cd74df7a600ac7f85a32da35e45bb",
+      "diffSha256": "a1085f29a7adbdb2c43838c4a3d18db2944203b400c03f3788cae80a185d165a"
     },
     {
       "file": "apps/web/tests/bailian-multimodal.test.mjs",
@@ -420,6 +426,12 @@
       "comparisonBase": "8c456709",
       "contentSha256": "cede4810d853c8a88151b5534fd8a136163a258ca0b3c1ca2c99dafc07044c36",
       "diffSha256": "5ad8fe8b3a4b737eabc43e4ed60f72302bb0054d537ec29d9a0d4f90dd9e980c"
+    },
+    {
+      "file": "skills/tuyan-scientific-figure/tests/skill.test.mjs",
+      "comparisonBase": "8c456709",
+      "contentSha256": "e203e0eaaa6e2aa428bc69b3460b5866f9a5dfad2c5b166e881e0196f5f3a87a",
+      "diffSha256": "06a7c398ff3396a66b1af0d2040d6f1601ee111c1bd9b2d29ea9b6efd9310af9"
     },
     {
       "file": "test-support/refine-runtime.mjs",

@@ -14,6 +14,12 @@
 - [x] Web / 小程序：展示现有规格、最大输出与带日期的下线标记。Gemini 2.5 Pro / Flash 的可选字段 `routingNotice` 含 `text` 与 `sourceUrl`，说明 12 月 1 日后的 Google 转发与计费；保留调用 ID。Gemini 3.1 Flash-Lite 通过现有截止机制登记 2027-05-07。
 - [x] Gateway / 已保存配置：保留四个 MiniMax 原身份和厂商分组，提示重新选择；新增绑定与执行沿用 MODEL_UNAVAILABLE。其余渠道的同名型号保持原状态。
 
+## 2026-11-24 · 公开科研 MCP 和 Skill 安装入口迁至 tuyansci.cn
+
+- [x] 杭州入口 / Gateway：公开 MCP 使用 `https://tuyansci.cn/mcp`，旧 API 域名继续提供兼容。两个入口已验证握手、工具列表、知识清单和同一工作流调用；知识版本维持 1.2.1。
+- [x] Web / Skill：接入口令、安装指南、Codex / OpenClaw / Hermes 示例和独立仓库分发模板改用新域名。Skill 索引为 `https://tuyansci.cn/.well-known/skills/index.json`。
+- [ ] 既有第三方客户端：将已保存的 MCP 地址更新后重新连接。小程序、Core 和私有运营 MCP 无接口调整。
+
 ## 2026-11-18 · 补齐静态型号版本证据（未发布）
 
 - [x] Shared / Core：补齐 46 个精确渠道型号的版本审计。硅基流动 `deepseek-ai/DeepSeek-V4.1-Flash` 的 10 月 21 日同 ID 升级公告对应 `deepseek-v4.1-flash-1017`。其余 45 项保留 `unconfirmed` 与空目标；另有 10 项已有记录将未知目标统一为 `ModelVersion.id` 约定的空字符串。
