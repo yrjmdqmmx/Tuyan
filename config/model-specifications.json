@@ -627,28 +627,6 @@
       }
     },
     {
-      "provider": "xai",
-      "modelId": "grok-imagine-image-quality",
-      "protocol": "provider-images",
-      "specifications": {
-        "version": 1,
-        "checkedAt": "2026-10-09",
-        "sourceUrls": [
-          "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2"
-        ],
-        "officialInputModalities": [
-          "text",
-          "image"
-        ],
-        "officialOutputModalities": [
-          "image"
-        ],
-        "notes": [
-          "2026-11-02 原模型退役，渠道将旧 ID 转到 grok-imagine-image-2.0 的 low quality；图研不静默改写 ID。"
-        ]
-      }
-    },
-    {
       "provider": "runware",
       "modelId": "recraft:v4.1@flash",
       "protocol": "provider-images",

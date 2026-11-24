@@ -7534,27 +7534,6 @@
       "alignment": 1,
       "auto": "square"
     },
-    "tokenhub/seedream-image-v5.0-lite": {
-      "mode": "pixels",
-      "tiers": {
-        "2K": {
-          "targetPixels": 4194304
-        },
-        "3K": {
-          "targetPixels": 9437184
-        },
-        "4K": {
-          "targetPixels": 16777216
-        }
-      },
-      "minSide": 256,
-      "maxSide": 16383,
-      "minPixels": 3686400,
-      "maxPixels": 16777216,
-      "maxRatio": 16,
-      "alignment": 1,
-      "auto": "square"
-    },
     "runware:imagineart20-gen": {
       "mode": "table",
       "tiers": {
@@ -8551,15 +8530,6 @@
       ],
       "notes": "Channel-specific fixed allowlist retained pending expanded public schema; native Qwen/Z-Image capabilities are not inherited."
     },
-    "siliconflow/baidu/ERNIE-Image-Turbo": {
-      "generation": "siliconflow-baidu-ERNIE-Image-Turbo",
-      "editing": "siliconflow-baidu-ERNIE-Image-Turbo",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://docs.siliconflow.cn/docs/api/images-generations-post"
-      ],
-      "notes": "Channel-specific fixed allowlist retained pending expanded public schema; native Qwen/Z-Image capabilities are not inherited."
-    },
     "siliconflow/Tongyi-MAI/Z-Image": {
       "generation": "siliconflow-Tongyi-MAI-Z-Image",
       "editing": "siliconflow-Tongyi-MAI-Z-Image",
@@ -9133,33 +9103,6 @@
       ],
       "notes": "Official custom-pixel mode. Previous 2048x1152 was below the 3686400 minimum for 4.5/5.0 lite; auto preserves native resolution tiers."
     },
-    "ark/doubao-seedream-5-0-260128": {
-      "generation": "ark45",
-      "editing": "ark45",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://docs.volcengine.com/docs/82379/1541523?lang=zh"
-      ],
-      "notes": "Official custom-pixel mode. Previous 2048x1152 was below the 3686400 minimum for 4.5/5.0 lite; auto preserves native resolution tiers."
-    },
-    "ark/doubao-seedream-4-5-251128": {
-      "generation": "ark45",
-      "editing": "ark45",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://docs.volcengine.com/docs/82379/1541523?lang=zh"
-      ],
-      "notes": "Official custom-pixel mode. Previous 2048x1152 was below the 3686400 minimum for 4.5/5.0 lite; auto preserves native resolution tiers."
-    },
-    "ark/doubao-seedream-4-0-250828": {
-      "generation": "ark4",
-      "editing": "ark4",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://docs.volcengine.com/docs/82379/1541523?lang=zh"
-      ],
-      "notes": "Official custom-pixel mode. Previous 2048x1152 was below the 3686400 minimum for 4.5/5.0 lite; auto preserves native resolution tiers."
-    },
     "bfl/flux-2-pro": {
       "generation": "bflFlux2",
       "editing": "bflFlux2",
@@ -9495,24 +9438,6 @@
         "https://developer.ideogram.ai/api-reference/legacy-endpoints/generate"
       ],
       "notes": "官方 Legacy Generate 接口仍列出；本轮接入生成，精修使用识图后重绘。"
-    },
-    "xai/grok-imagine-image-quality": {
-      "generation": "xai-grok-imagine-image",
-      "editing": "xai-grok-imagine-image",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://docs.x.ai/docs/models/grok-imagine-image-quality"
-      ],
-      "notes": "直接编辑。"
-    },
-    "bailian/qwen-image": {
-      "generation": "bailianQwenLegacyGen",
-      "editing": "bailianQwenLegacyGen",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://help.aliyun.com/zh/model-studio/qwen-image-api"
-      ],
-      "notes": "北京渠道仍服务至 2026-10-10；旧生成固定五档尺寸，旧编辑使用独立限制。"
     },
     "fal/alibaba/qwen-image-3/text-to-image": {
       "generation": "fal_alibaba_qwen-image-3_text-to-image_pixels_reviewed",
@@ -11077,15 +11002,6 @@
       ],
       "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
     },
-    "tokenhub/hy-image-v3": {
-      "generation": "tokenhubHyImage3",
-      "editing": "tokenhubHyImage3",
-      "reviewedAt": "2026-09-22",
-      "sources": [
-        "https://cloud.tencent.com/document/product/1823/135745"
-      ],
-      "notes": "按精确型号限制输出；auto 在这些像素接口为默认方形，不表示保留原比例。"
-    },
     "runware/openai:gpt-image@2.5-flare": {
       "generation": "runware:openai-gpt-image-2-5-flare",
       "editing": "runware:openai-gpt-image-2-5-flare",
@@ -11323,16 +11239,6 @@
       "sources": [
         "https://runware.ai/docs/models/recraft-v4-1-utility-pro",
         "https://runware.ai/docs/models/recraft-v4-1-utility-pro/schema.json"
-      ],
-      "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
-    },
-    "runware/xai:grok-imagine@image-quality": {
-      "generation": "runware:xai-grok-imagine-image-quality",
-      "editing": "runware:xai-grok-imagine-image-quality",
-      "reviewedAt": "2026-09-22",
-      "sources": [
-        "https://runware.ai/docs/models/xai-grok-imagine-image-quality",
-        "https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json"
       ],
       "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
     },
@@ -11835,16 +11741,6 @@
       ],
       "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
     },
-    "runware/google:4@1": {
-      "generation": "runware:google-nano-banana",
-      "editing": "runware:google-nano-banana",
-      "reviewedAt": "2026-09-22",
-      "sources": [
-        "https://runware.ai/docs/models/google-nano-banana",
-        "https://runware.ai/docs/models/google-nano-banana/schema.json"
-      ],
-      "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
-    },
     "runware/runware:108@20": {
       "generation": null,
       "editing": "runware:alibaba-qwen-image-edit",
@@ -12032,16 +11928,6 @@
       "sources": [
         "https://runware.ai/docs/models/ideogram-3-0-replace-background",
         "https://runware.ai/docs/models/ideogram-3-0-replace-background/schema.json"
-      ],
-      "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
-    },
-    "runware/openai:1@1": {
-      "generation": "runware:openai-gpt-image-1",
-      "editing": "runware:openai-gpt-image-1",
-      "reviewedAt": "2026-09-22",
-      "sources": [
-        "https://runware.ai/docs/models/openai-gpt-image-1",
-        "https://runware.ai/docs/models/openai-gpt-image-1/schema.json"
       ],
       "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
     },
@@ -12233,15 +12119,6 @@
     "tokenhub/seedream-image-v5.0-pro": {
       "generation": "tokenhub/seedream-image-v5.0-pro",
       "editing": "tokenhub/seedream-image-v5.0-pro",
-      "reviewedAt": "2026-09-22",
-      "sources": [
-        "https://cloud.tencent.com/document/product/1823/136609"
-      ],
-      "notes": "TokenHub 独立型号接口；Vidu 1K 选项对应原生1080p，具体像素由渠道决定。"
-    },
-    "tokenhub/seedream-image-v5.0-lite": {
-      "generation": "tokenhub/seedream-image-v5.0-lite",
-      "editing": "tokenhub/seedream-image-v5.0-lite",
       "reviewedAt": "2026-09-22",
       "sources": [
         "https://cloud.tencent.com/document/product/1823/136609"

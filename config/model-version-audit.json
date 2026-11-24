@@ -3856,34 +3856,6 @@
     },
     {
       "channel": "siliconflow",
-      "apiModelId": "MiniMaxAI/MiniMax-M2.5",
-      "displayName": "MiniMax-M2.5",
-      "kind": "unconfirmed",
-      "versionId": "MiniMaxAI/MiniMax-M2.5",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.siliconflow.cn/docs/release-notes/overview"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "MiniMax-M2.5"
-    },
-    {
-      "channel": "siliconflow",
-      "apiModelId": "Pro/MiniMaxAI/MiniMax-M2.5",
-      "displayName": "MiniMax-M2.5",
-      "kind": "unconfirmed",
-      "versionId": "Pro/MiniMaxAI/MiniMax-M2.5",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.siliconflow.cn/docs/release-notes/overview"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "MiniMax-M2.5"
-    },
-    {
-      "channel": "siliconflow",
       "apiModelId": "Qwen/Qwen-Image-Edit-2509",
       "displayName": "Qwen-Image-Edit-2509",
       "kind": "unconfirmed",
@@ -3979,20 +3951,6 @@
       "idEvidence": "exact-id",
       "notes": "公开模型目录嵌入数据的 modelName 字段逐 ID 匹配；具体 SKU 已确认，更细快照或固定性未公开。",
       "previousDisplayName": "Qwen3.5-35B-A3B"
-    },
-    {
-      "channel": "siliconflow",
-      "apiModelId": "Qwen/Qwen3.5-397B-A17B",
-      "displayName": "Qwen3.5-397B-A17B",
-      "kind": "unconfirmed",
-      "versionId": "Qwen/Qwen3.5-397B-A17B",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.siliconflow.cn/docs/release-notes/overview"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "Qwen3.5-397B-A17B"
     },
     {
       "channel": "siliconflow",
@@ -4458,20 +4416,6 @@
     },
     {
       "channel": "siliconflow",
-      "apiModelId": "baidu/ERNIE-Image-Turbo",
-      "displayName": "ERNIE-Image-Turbo",
-      "kind": "unconfirmed",
-      "versionId": "baidu/ERNIE-Image-Turbo",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://www.siliconflow.cn/models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "ERNIE-Image-Turbo"
-    },
-    {
-      "channel": "siliconflow",
       "apiModelId": "deepseek-ai/DeepSeek-R1",
       "displayName": "DeepSeek-R1",
       "kind": "unconfirmed",
@@ -4511,20 +4455,6 @@
       "idEvidence": "exact-id",
       "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
       "previousDisplayName": "LongCat-2.0"
-    },
-    {
-      "channel": "siliconflow",
-      "apiModelId": "nex-agi/Nex-N2-Pro",
-      "displayName": "Nex-N2-Pro",
-      "kind": "unconfirmed",
-      "versionId": "nex-agi/Nex-N2-Pro",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.siliconflow.cn/docs/release-notes/overview"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "Nex-N2-Pro"
     },
     {
       "channel": "anthropic",
@@ -5019,21 +4949,6 @@
       "idEvidence": "exact-id",
       "notes": "xAI 官方说明无日期名称为最新稳定版别名；日期快照目标未公开确认。",
       "previousDisplayName": "Grok-imagine-image"
-    },
-    {
-      "channel": "xai",
-      "apiModelId": "grok-imagine-image-quality",
-      "displayName": "Grok-imagine-image-quality",
-      "kind": "rolling",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.x.ai/docs/models/grok-imagine-image-quality",
-        "https://docs.x.ai/developers/models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "xAI 官方说明无日期名称为最新稳定版别名；日期快照目标未公开确认。",
-      "previousDisplayName": "Grok-imagine-image-quality"
     },
     {
       "channel": "xai",
@@ -5893,20 +5808,6 @@
     },
     {
       "channel": "bailian",
-      "apiModelId": "qwen-image",
-      "displayName": "Qwen-image",
-      "kind": "unconfirmed",
-      "versionId": "qwen-image",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://help.aliyun.com/zh/model-studio/qwen-image-api"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "Qwen-image"
-    },
-    {
-      "channel": "bailian",
       "apiModelId": "qwen3.7-max",
       "displayName": "Qwen3.7-max",
       "kind": "unconfirmed",
@@ -6268,62 +6169,6 @@
       "idEvidence": "exact-id",
       "notes": "该渠道具体型号页将此精确 ID 列在快照版本下。",
       "previousDisplayName": "Qwen3.5-plus-2026-04-20"
-    },
-    {
-      "channel": "bailian",
-      "apiModelId": "qwen3-max",
-      "displayName": "Qwen3-max",
-      "kind": "unconfirmed",
-      "versionId": "qwen3-max",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://help.aliyun.com/zh/model-studio/model-pricing"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "Qwen3-max"
-    },
-    {
-      "channel": "bailian",
-      "apiModelId": "qwen3-max-2025-09-23",
-      "displayName": "Qwen3-max-2025-09-23",
-      "kind": "fixed",
-      "versionId": "qwen3-max-2025-09-23",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://help.aliyun.com/zh/model-studio/newly-released-models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "该渠道具体型号页将此精确 ID 列在快照版本下。",
-      "previousDisplayName": "Qwen3-max-2025-09-23"
-    },
-    {
-      "channel": "bailian",
-      "apiModelId": "qwen3-max-2026-01-23",
-      "displayName": "Qwen3-max-2026-01-23",
-      "kind": "fixed",
-      "versionId": "qwen3-max-2026-01-23",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://help.aliyun.com/zh/model-studio/newly-released-models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "该渠道具体型号页将此精确 ID 列在快照版本下。",
-      "previousDisplayName": "Qwen3-max-2026-01-23"
-    },
-    {
-      "channel": "bailian",
-      "apiModelId": "qwen3-max-preview",
-      "displayName": "Qwen3-max-preview",
-      "kind": "unconfirmed",
-      "versionId": "qwen3-max-preview",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://help.aliyun.com/zh/model-studio/model-pricing"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "Qwen3-max-preview"
     },
     {
       "channel": "bailian",
@@ -6705,20 +6550,6 @@
     },
     {
       "channel": "bailian",
-      "apiModelId": "qwen-turbo",
-      "displayName": "Qwen-turbo",
-      "kind": "unconfirmed",
-      "versionId": "qwen-turbo",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://help.aliyun.com/zh/model-studio/model-pricing"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "Qwen-turbo"
-    },
-    {
-      "channel": "bailian",
       "apiModelId": "qwen3-coder-flash",
       "displayName": "Qwen3-coder-flash",
       "kind": "unconfirmed",
@@ -6744,20 +6575,6 @@
       "idEvidence": "exact-id",
       "notes": "该渠道具体型号页将此精确 ID 列在快照版本下。",
       "previousDisplayName": "Qwen3-coder-flash-2025-07-28"
-    },
-    {
-      "channel": "bailian",
-      "apiModelId": "qwen3-coder-next",
-      "displayName": "Qwen3-coder-next",
-      "kind": "unconfirmed",
-      "versionId": "qwen3-coder-next",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://help.aliyun.com/zh/model-studio/model-pricing"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "Qwen3-coder-next"
     },
     {
       "channel": "bailian",
@@ -7629,20 +7446,6 @@
     },
     {
       "channel": "ark",
-      "apiModelId": "deepseek-v4-flash-260425",
-      "displayName": "DeepSeek-V4-Flash-260425",
-      "kind": "unconfirmed",
-      "versionId": "deepseek-v4-flash-260425",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
-      ],
-      "idEvidence": "official-indexed-id",
-      "notes": "从官方发布公告的搜索索引核对精确 ID；直接 HTTP 返回 JS 外壳。此日期型号的固定性承诺仍待确认。",
-      "previousDisplayName": "DeepSeek V4 Flash"
-    },
-    {
-      "channel": "ark",
       "apiModelId": "deepseek-v4-flash-ga-260731",
       "displayName": "DeepSeek-V4-Flash-ga-260731",
       "kind": "unconfirmed",
@@ -7654,20 +7457,6 @@
       "idEvidence": "official-indexed-id",
       "notes": "从官方发布公告的搜索索引核对精确 ID；直接 HTTP 返回 JS 外壳。此日期型号的固定性承诺仍待确认。",
       "previousDisplayName": "DeepSeek V4 Flash GA"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "deepseek-v4-pro-260425",
-      "displayName": "DeepSeek-V4-Pro-260425",
-      "kind": "unconfirmed",
-      "versionId": "deepseek-v4-pro-260425",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
-      ],
-      "idEvidence": "official-indexed-id",
-      "notes": "从官方发布公告的搜索索引核对精确 ID；直接 HTTP 返回 JS 外壳。此日期型号的固定性承诺仍待确认。",
-      "previousDisplayName": "DeepSeek V4 Pro"
     },
     {
       "channel": "ark",
@@ -7727,34 +7516,6 @@
     },
     {
       "channel": "ark",
-      "apiModelId": "doubao-seed-2-0-code-preview-260215",
-      "displayName": "Doubao Seed 2.0 Code Preview · 260215",
-      "kind": "unconfirmed",
-      "versionId": "doubao-seed-2-0-code-preview-260215",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
-      ],
-      "idEvidence": "official-indexed-id",
-      "notes": "从官方发布公告的搜索索引核对精确 ID；直接 HTTP 返回 JS 外壳。此日期型号的固定性承诺仍待确认。",
-      "previousDisplayName": "Doubao Seed 2.0 Code Preview"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "doubao-seed-2-0-lite-260215",
-      "displayName": "Doubao Seed 2.0 Lite · 260215",
-      "kind": "unconfirmed",
-      "versionId": "doubao-seed-2-0-lite-260215",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
-      ],
-      "idEvidence": "official-indexed-id",
-      "notes": "从官方发布公告的搜索索引核对精确 ID；直接 HTTP 返回 JS 外壳。此日期型号的固定性承诺仍待确认。",
-      "previousDisplayName": "Doubao Seed 2.0 Lite (2026-02)"
-    },
-    {
-      "channel": "ark",
       "apiModelId": "doubao-seed-2-0-lite-260428",
       "displayName": "Doubao Seed 2.0 Lite · 260428",
       "kind": "unconfirmed",
@@ -7766,20 +7527,6 @@
       "idEvidence": "official-indexed-id",
       "notes": "从官方发布公告的搜索索引核对精确 ID；直接 HTTP 返回 JS 外壳。此日期型号的固定性承诺仍待确认。",
       "previousDisplayName": "Doubao Seed 2.0 Lite"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "doubao-seed-2-0-mini-260215",
-      "displayName": "Doubao Seed 2.0 Mini · 260215",
-      "kind": "unconfirmed",
-      "versionId": "doubao-seed-2-0-mini-260215",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
-      ],
-      "idEvidence": "official-indexed-id",
-      "notes": "从官方发布公告的搜索索引核对精确 ID；直接 HTTP 返回 JS 外壳。此日期型号的固定性承诺仍待确认。",
-      "previousDisplayName": "Doubao Seed 2.0 Mini (2026-02)"
     },
     {
       "channel": "ark",
@@ -7811,146 +7558,6 @@
     },
     {
       "channel": "ark",
-      "apiModelId": "doubao-seed-1-8-251228",
-      "displayName": "doubao-seed-1-8-251228",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/82379/1330310"
-      ],
-      "idEvidence": "unconfirmed",
-      "notes": "本轮公开来源未能逐字确认此渠道 ID 或页面只返回外壳；保留原配置，版本待确认，不作为下架依据。",
-      "previousDisplayName": "doubao-seed-1-8-251228"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "doubao-seed-1-6-250615",
-      "displayName": "doubao-seed-1-6-250615",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/82379/1330310"
-      ],
-      "idEvidence": "unconfirmed",
-      "notes": "本轮公开来源未能逐字确认此渠道 ID 或页面只返回外壳；保留原配置，版本待确认，不作为下架依据。",
-      "previousDisplayName": "doubao-seed-1-6-250615"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "doubao-seed-1-6-251015",
-      "displayName": "doubao-seed-1-6-251015",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/82379/1330310"
-      ],
-      "idEvidence": "unconfirmed",
-      "notes": "本轮公开来源未能逐字确认此渠道 ID 或页面只返回外壳；保留原配置，版本待确认，不作为下架依据。",
-      "previousDisplayName": "doubao-seed-1-6-251015"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "doubao-seed-1-6-flash-250615",
-      "displayName": "doubao-seed-1-6-flash-250615",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/82379/1330310"
-      ],
-      "idEvidence": "unconfirmed",
-      "notes": "本轮公开来源未能逐字确认此渠道 ID 或页面只返回外壳；保留原配置，版本待确认，不作为下架依据。",
-      "previousDisplayName": "doubao-seed-1-6-flash-250615"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "doubao-seed-1-6-flash-250828",
-      "displayName": "doubao-seed-1-6-flash-250828",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/82379/1330310"
-      ],
-      "idEvidence": "unconfirmed",
-      "notes": "本轮公开来源未能逐字确认此渠道 ID 或页面只返回外壳；保留原配置，版本待确认，不作为下架依据。",
-      "previousDisplayName": "doubao-seed-1-6-flash-250828"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "doubao-seed-1-6-vision-250815",
-      "displayName": "doubao-seed-1-6-vision-250815",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/82379/1330310"
-      ],
-      "idEvidence": "unconfirmed",
-      "notes": "本轮公开来源未能逐字确认此渠道 ID 或页面只返回外壳；保留原配置，版本待确认，不作为下架依据。",
-      "previousDisplayName": "doubao-seed-1-6-vision-250815"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "doubao-1-5-lite-32k-250115",
-      "displayName": "doubao-1-5-lite-32k-250115",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/82379/1330310"
-      ],
-      "idEvidence": "unconfirmed",
-      "notes": "本轮公开来源未能逐字确认此渠道 ID 或页面只返回外壳；保留原配置，版本待确认，不作为下架依据。",
-      "previousDisplayName": "doubao-1-5-lite-32k-250115"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "doubao-1-5-pro-32k-250115",
-      "displayName": "doubao-1-5-pro-32k-250115",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/82379/1330310"
-      ],
-      "idEvidence": "unconfirmed",
-      "notes": "本轮公开来源未能逐字确认此渠道 ID 或页面只返回外壳；保留原配置，版本待确认，不作为下架依据。",
-      "previousDisplayName": "doubao-1-5-pro-32k-250115"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "doubao-1-5-vision-pro-32k-250115",
-      "displayName": "doubao-1-5-vision-pro-32k-250115",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/82379/1330310"
-      ],
-      "idEvidence": "unconfirmed",
-      "notes": "本轮公开来源未能逐字确认此渠道 ID 或页面只返回外壳；保留原配置，版本待确认，不作为下架依据。",
-      "previousDisplayName": "doubao-1-5-vision-pro-32k-250115"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "doubao-seedream-5-0-260128",
-      "displayName": "Doubao Seedream 5.0 · 260128",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/82379/1824121?lang=zh"
-      ],
-      "idEvidence": "unconfirmed",
-      "notes": "本轮公开来源未能逐字确认此渠道 ID 或页面只返回外壳；保留原配置，版本待确认，不作为下架依据。",
-      "previousDisplayName": "Doubao Seedream 5.0"
-    },
-    {
-      "channel": "ark",
       "apiModelId": "doubao-seedream-5-0-pro-260628",
       "displayName": "Doubao Seedream 5.0 Pro · 260628",
       "kind": "unconfirmed",
@@ -7962,34 +7569,6 @@
       "idEvidence": "official-indexed-id",
       "notes": "从官方发布公告的搜索索引核对精确 ID；直接 HTTP 返回 JS 外壳。此日期型号的固定性承诺仍待确认。",
       "previousDisplayName": "Doubao Seedream 5.0 Pro"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "doubao-seedream-4-5-251128",
-      "displayName": "Doubao Seedream 4.5 · 251128",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/82379/1824121?lang=zh"
-      ],
-      "idEvidence": "unconfirmed",
-      "notes": "本轮公开来源未能逐字确认此渠道 ID 或页面只返回外壳；保留原配置，版本待确认，不作为下架依据。",
-      "previousDisplayName": "Doubao Seedream 4.5"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "doubao-seedream-4-0-250828",
-      "displayName": "Doubao Seedream 4.0 · 250828",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://api.volcengine.com/api-docs/view?action=ImageGenerations&serviceCode=ark&version=2024-01-01"
-      ],
-      "idEvidence": "unconfirmed",
-      "notes": "本轮公开来源未能逐字确认此渠道 ID 或页面只返回外壳；保留原配置，版本待确认，不作为下架依据。",
-      "previousDisplayName": "Doubao Seedream 4.0"
     },
     {
       "channel": "ark",
@@ -8021,20 +7600,6 @@
     },
     {
       "channel": "ark",
-      "apiModelId": "doubao-seed-code-preview-251028",
-      "displayName": "doubao-seed-code-preview-251028",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/82379/1330310"
-      ],
-      "idEvidence": "unconfirmed",
-      "notes": "本轮公开来源未能逐字确认此渠道 ID 或页面只返回外壳；保留原配置，版本待确认，不作为下架依据。",
-      "previousDisplayName": "doubao-seed-code-preview-251028"
-    },
-    {
-      "channel": "ark",
       "apiModelId": "doubao-seed-evolving",
       "displayName": "Doubao Seed Evolving",
       "kind": "rolling",
@@ -8046,20 +7611,6 @@
       "idEvidence": "official-indexed-id",
       "notes": "公告明确每周动态更新、统一 ID 始终获取最新版本；未公布可核验的当前快照 ID。",
       "previousDisplayName": "Doubao Seed Evolving"
-    },
-    {
-      "channel": "ark",
-      "apiModelId": "glm-4-7-251222",
-      "displayName": "GLM-4-7-251222",
-      "kind": "unconfirmed",
-      "versionId": "glm-4-7-251222",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
-      ],
-      "idEvidence": "official-indexed-id",
-      "notes": "从官方发布公告的搜索索引核对精确 ID；直接 HTTP 返回 JS 外壳。此日期型号的固定性承诺仍待确认。",
-      "previousDisplayName": "GLM-4-7-251222"
     },
     {
       "channel": "bfl",
@@ -8818,21 +8369,6 @@
     },
     {
       "channel": "mistral",
-      "apiModelId": "zai-glm-5-2",
-      "displayName": "zai-glm-5-2",
-      "kind": "unconfirmed",
-      "versionId": "zai-glm-5-2",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.mistral.ai/models/zai-glm-5-2",
-        "https://docs.mistral.ai/inference/model-lifecycle"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "已确认渠道具体型号 ID；Mistral 自有模型的命名承诺不延伸到第三方智谱托管版本。",
-      "previousDisplayName": "zai-glm-5-2"
-    },
-    {
-      "channel": "mistral",
       "apiModelId": "codestral-2508",
       "displayName": "codestral-2508",
       "kind": "fixed",
@@ -8860,21 +8396,6 @@
       "idEvidence": "exact-id",
       "notes": "该具体型号卡的 names 列表给出主 ID 与别名关系；结合官方命名规则。",
       "previousDisplayName": "codestral-latest"
-    },
-    {
-      "channel": "mistral",
-      "apiModelId": "labs-leanstral-1-5",
-      "displayName": "labs-leanstral-1-5",
-      "kind": "unconfirmed",
-      "versionId": "labs-leanstral-1-5",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.mistral.ai/models/leanstral-1-5",
-        "https://docs.mistral.ai/inference/model-lifecycle"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "Labs 具体型号已确认，但实验版不承诺固定权重。",
-      "previousDisplayName": "labs-leanstral-1-5"
     },
     {
       "channel": "mistral",
@@ -9316,20 +8837,6 @@
       "idEvidence": "exact-id",
       "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
       "previousDisplayName": "DeepSeek V4 Pro 0813"
-    },
-    {
-      "channel": "together",
-      "apiModelId": "deepseek-ai/DeepSeek-V4-Flash-0731",
-      "displayName": "DeepSeek-V4-Flash-0731",
-      "kind": "unconfirmed",
-      "versionId": "deepseek-ai/DeepSeek-V4-Flash-0731",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://docs.together.ai/docs/serverless/models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "DeepSeek-V4-Flash-0731"
     },
     {
       "channel": "together",
@@ -14034,34 +13541,6 @@
       "idEvidence": "exact-id",
       "notes": "精确 SKU 与渠道 name 已核对；未公开更细日期快照或滚动目标，不采用原厂的别名映射。",
       "previousDisplayName": "LongCat-2.0"
-    },
-    {
-      "channel": "tokendance",
-      "apiModelId": "mimo-v2.5",
-      "displayName": "MiMo-V2.5",
-      "kind": "unconfirmed",
-      "versionId": "MiMo-V2.5",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://tokendance.space/gateway/v1/models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "精确 SKU 与渠道 name 已核对；未公开更细日期快照或滚动目标，不采用原厂的别名映射。",
-      "previousDisplayName": "MiMo-V2.5"
-    },
-    {
-      "channel": "tokendance",
-      "apiModelId": "mimo-v2.5-pro",
-      "displayName": "MiMo-V2.5-Pro",
-      "kind": "unconfirmed",
-      "versionId": "MiMo-V2.5-Pro",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://tokendance.space/gateway/v1/models"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "精确 SKU 与渠道 name 已核对；未公开更细日期快照或滚动目标，不采用原厂的别名映射。",
-      "previousDisplayName": "MiMo-V2.5-Pro"
     },
     {
       "channel": "tokendance",
@@ -21914,19 +21393,6 @@
       "notes": "型号版本明确；服务端构建与账户权限未验证。"
     },
     {
-      "channel": "tokenhub",
-      "apiModelId": "hy-image-v3",
-      "displayName": "HyImage 3.0",
-      "kind": "rolling",
-      "versionId": "3.0",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.tencent.com/document/product/1823/135745"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "型号版本明确；服务端构建与账户权限未验证。"
-    },
-    {
       "channel": "xiaomi",
       "apiModelId": "mimo-v2.6-pro",
       "displayName": "MiMo-V2.6-Pro",
@@ -22364,19 +21830,6 @@
       "checkedAt": "2026-09-22",
       "sourceUrls": [
         "https://runware.ai/docs/models/recraft-v4-1-utility-pro"
-      ],
-      "idEvidence": "official-doc",
-      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
-    },
-    {
-      "channel": "runware",
-      "apiModelId": "xai:grok-imagine@image-quality",
-      "displayName": "Grok Imagine Image Quality",
-      "kind": "unconfirmed",
-      "versionId": "xai:grok-imagine@image-quality",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://runware.ai/docs/models/xai-grok-imagine-image-quality"
       ],
       "idEvidence": "official-doc",
       "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
@@ -23228,19 +22681,6 @@
     },
     {
       "channel": "runware",
-      "apiModelId": "google:4@1",
-      "displayName": "Nano Banana",
-      "kind": "unconfirmed",
-      "versionId": "google:4@1",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://runware.ai/docs/models/google-nano-banana"
-      ],
-      "idEvidence": "official-doc",
-      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
-    },
-    {
-      "channel": "runware",
       "apiModelId": "runware:108@20",
       "displayName": "Qwen-Image-Edit",
       "kind": "unconfirmed",
@@ -23508,19 +22948,6 @@
       "checkedAt": "2026-09-22",
       "sourceUrls": [
         "https://runware.ai/docs/models/ideogram-3-0-replace-background"
-      ],
-      "idEvidence": "official-doc",
-      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
-    },
-    {
-      "channel": "runware",
-      "apiModelId": "openai:1@1",
-      "displayName": "GPT Image 1",
-      "kind": "unconfirmed",
-      "versionId": "openai:1@1",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://runware.ai/docs/models/openai-gpt-image-1"
       ],
       "idEvidence": "official-doc",
       "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
@@ -23982,19 +23409,6 @@
     },
     {
       "channel": "tokenhub",
-      "apiModelId": "glm-5v-turbo",
-      "displayName": "GLM-5V-Turbo（2026-10-30下线）",
-      "kind": "unconfirmed",
-      "versionId": "glm-5v-turbo",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.tencent.com/document/product/1823/132061"
-      ],
-      "idEvidence": "official-doc",
-      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
-    },
-    {
-      "channel": "tokenhub",
       "apiModelId": "glm-5-turbo",
       "displayName": "GLM-5-Turbo（2026-10-08下线）",
       "kind": "unconfirmed",
@@ -24090,19 +23504,6 @@
       "displayName": "MiniMax-M3",
       "kind": "unconfirmed",
       "versionId": "minimax-m3",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.tencent.com/document/product/1823/132246"
-      ],
-      "idEvidence": "official-doc",
-      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
-    },
-    {
-      "channel": "tokenhub",
-      "apiModelId": "minimax-m2.7",
-      "displayName": "MiniMax-M2.7",
-      "kind": "unconfirmed",
-      "versionId": "minimax-m2.7",
       "checkedAt": "2026-09-22",
       "sourceUrls": [
         "https://cloud.tencent.com/document/product/1823/132246"
@@ -24220,19 +23621,6 @@
       "displayName": "Seedream-image-v5.0-pro",
       "kind": "unconfirmed",
       "versionId": "seedream-image-v5.0-pro",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.tencent.com/document/product/1823/136609"
-      ],
-      "idEvidence": "official-doc",
-      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
-    },
-    {
-      "channel": "tokenhub",
-      "apiModelId": "seedream-image-v5.0-lite",
-      "displayName": "Seedream-image-v5.0-lite",
-      "kind": "unconfirmed",
-      "versionId": "seedream-image-v5.0-lite",
       "checkedAt": "2026-09-22",
       "sourceUrls": [
         "https://cloud.tencent.com/document/product/1823/136609"
@@ -24682,41 +24070,6 @@
     },
     {
       "channel": "qianfan",
-      "apiModelId": "deepseek-v4-flash",
-      "displayName": "DeepSeek-V4-Flash",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/6m8r1x5hz"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "deepseek-v3.2",
-      "displayName": "DeepSeek-V3.2",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/6m8r1x5hz",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/Imkdq47r5"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
       "apiModelId": "internvl3-38b",
       "displayName": "InternVL3-38B",
       "kind": "unconfirmed",
@@ -24734,36 +24087,6 @@
     },
     {
       "channel": "qianfan",
-      "apiModelId": "ernie-x1.1-preview",
-      "displayName": "ERNIE-X1.1-Preview",
-      "kind": "rolling",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "ernie-x1.1",
-      "displayName": "ERNIE-X1.1",
-      "kind": "rolling",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
       "apiModelId": "deepseek-flash",
       "displayName": "DeepSeek-V4.1-flash",
       "kind": "unconfirmed",
@@ -24774,23 +24097,6 @@
         "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
         "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
         "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "deepseek-v3.2-think",
-      "displayName": "DeepSeek-V3.2-Think",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/Imkdq47r5"
       ],
       "idEvidence": "exact-id",
       "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
@@ -24932,38 +24238,6 @@
         "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
         "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv",
         "https://cloud.baidu.com/doc/qianfan-docs/s/6m8r1x5hz"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "glm-5",
-      "displayName": "GLM-5",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/6m8r1x5hz"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "kimi-k2.6",
-      "displayName": "Kimi-K2.6",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
       ],
       "idEvidence": "exact-id",
       "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"

@@ -49,16 +49,6 @@
     "checkedAt": "2026-09-22",
     "source": "https://docs.x.ai/developers/rest-api-reference/inference/images"
   },
-  "xai/grok-imagine-image-quality": {
-    "version": 1,
-    "maxImages": 3,
-    "sourceCounts": true,
-    "mask": false,
-    "maskWithReferences": false,
-    "structured": null,
-    "checkedAt": "2026-09-22",
-    "source": "https://docs.x.ai/developers/rest-api-reference/inference/images"
-  },
   "ideogram/ideogram-4-5": {
     "version": 1,
     "maxImages": 1,

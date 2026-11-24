@@ -78,6 +78,17 @@
       "inTuyanCatalog": true,
       "displayName": "Gemini 3.1 Flash-Lite",
       "replacementDisplayName": "Gemini 3.5 Flash-Lite"
+    },
+    {
+      "channel": "ark",
+      "apiModelId": "doubao-seed-2-0-pro-260215",
+      "stopDate": "2027-01-22T14:00:00+08:00",
+      "replacement": null,
+      "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "scheduled": true,
+      "inTuyanCatalog": true,
+      "displayName": "Doubao Seed 2.0 Pro · 260215",
+      "replacementDisplayName": null
     }
   ],
   "alreadyRetiredOnOfficialPage": [

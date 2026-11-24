@@ -7974,42 +7974,6 @@
       }
     },
     {
-      "id": "global:xai:grok-imagine-image-quality",
-      "provider": "xai",
-      "modelIds": [
-        "grok-imagine-image-quality"
-      ],
-      "roles": [
-        "image"
-      ],
-      "protocols": [
-        "provider-images"
-      ],
-      "status": "unsupported",
-      "controls": [],
-      "requestMappings": [],
-      "constraints": [],
-      "conflicts": [],
-      "notes": [
-        "No documented controllable thinking parameter for this non-reasoning or image identity."
-      ],
-      "sourceUrls": [
-        "https://docs.x.ai/docs/models/grok-imagine-image-quality",
-        "https://docs.x.ai/developers/model-capabilities/text/reasoning"
-      ],
-      "checkedAt": "2026-09-22",
-      "clearFields": [],
-      "dropSamplingWhenThinking": false,
-      "operations": [
-        "generation",
-        "editing"
-      ],
-      "transport": {
-        "modelIdentity": "body.model (Gemini GenerateContent uses URL model)",
-        "bodyRoot": "root"
-      }
-    },
-    {
       "id": "global:xai:grok-build-0.1",
       "provider": "xai",
       "modelIds": [
@@ -8225,41 +8189,6 @@
       "statusReason": "minimal-reasoning-output"
     },
     {
-      "id": "global:mistral:zai-glm-5-2",
-      "provider": "mistral",
-      "modelIds": [
-        "zai-glm-5-2"
-      ],
-      "roles": [
-        "main"
-      ],
-      "protocols": [
-        "openai-chat-completions"
-      ],
-      "status": "unconfirmed",
-      "controls": [],
-      "requestMappings": [],
-      "constraints": [],
-      "conflicts": [],
-      "notes": [
-        "Exact ID documentation does not bind a configurable reasoning parameter; do not infer hosted third-party support or alias equivalence from family name."
-      ],
-      "sourceUrls": [
-        "https://docs.mistral.ai/models/zai-glm-5-2",
-        "https://docs.mistral.ai/studio/conversations/reasoning"
-      ],
-      "checkedAt": "2026-09-22",
-      "clearFields": [],
-      "dropSamplingWhenThinking": false,
-      "operations": [
-        "text"
-      ],
-      "transport": {
-        "modelIdentity": "body.model (Gemini GenerateContent uses URL model)",
-        "bodyRoot": "root"
-      }
-    },
-    {
       "id": "global:mistral:codestral-2508",
       "provider": "mistral",
       "modelIds": [
@@ -8328,42 +8257,6 @@
         "modelIdentity": "body.model (Gemini GenerateContent uses URL model)",
         "bodyRoot": "root"
       }
-    },
-    {
-      "id": "global:mistral:labs-leanstral-1-5",
-      "provider": "mistral",
-      "modelIds": [
-        "labs-leanstral-1-5"
-      ],
-      "roles": [
-        "main"
-      ],
-      "protocols": [
-        "openai-chat-completions"
-      ],
-      "status": "unconfirmed",
-      "controls": [],
-      "requestMappings": [],
-      "constraints": [],
-      "conflicts": [],
-      "notes": [
-        "渠道型号页明确 API name=labs-leanstral-1-5，标注退役日期 2026-09-30，已过期；页面状态文字仍为 Deprecated，保留该差异。不开放当前思考控件，不改目录生命周期或替换型号。"
-      ],
-      "sourceUrls": [
-        "https://docs.mistral.ai/models/leanstral-1-5",
-        "https://docs.mistral.ai/inference/model-lifecycle"
-      ],
-      "checkedAt": "2026-10-17",
-      "clearFields": [],
-      "dropSamplingWhenThinking": false,
-      "operations": [
-        "text"
-      ],
-      "transport": {
-        "modelIdentity": "body.model (Gemini GenerateContent uses URL model)",
-        "bodyRoot": "root"
-      },
-      "statusReason": "catalog-retired"
     },
     {
       "id": "global:mistral:ministral-14b-2512",
@@ -9530,70 +9423,6 @@
       "checkedAt": "2026-09-22",
       "clearFields": [
         "reasoning.enabled"
-      ],
-      "dropSamplingWhenThinking": false,
-      "operations": [
-        "text"
-      ],
-      "transport": {
-        "modelIdentity": "body.model (Gemini GenerateContent uses URL model)",
-        "bodyRoot": "root"
-      }
-    },
-    {
-      "id": "global:together:deepseek-ai/DeepSeek-V4-Flash-0731",
-      "provider": "together",
-      "modelIds": [
-        "deepseek-ai/DeepSeek-V4-Flash-0731"
-      ],
-      "roles": [
-        "main"
-      ],
-      "protocols": [
-        "openai-chat-completions"
-      ],
-      "status": "supported",
-      "controls": [
-        {
-          "key": "effort",
-          "label": "思考强度",
-          "type": "enum",
-          "field": "reasoning_effort",
-          "default": null,
-          "values": [
-            "low",
-            "high",
-            "max"
-          ]
-        }
-      ],
-      "requestMappings": [
-        {
-          "key": "effort",
-          "field": "reasoning_effort",
-          "encoding": "identity",
-          "wireValues": [
-            "low",
-            "high",
-            "max"
-          ]
-        }
-      ],
-      "constraints": {
-        "neverIncreaseOutputBudget": true
-      },
-      "conflicts": [],
-      "notes": [
-        "Together 精确型号页规定 reasoning_effort：['low', 'high', 'max']。按型号专页细化通用 Chat schema 的 low/medium/high 枚举；不推导其他型号。",
-        "未选强度不发参数；不把示例、评测的最大档位设为默认，不改变 max_tokens、采样或思考开关。 未找到明确的接口默认档位。"
-      ],
-      "sourceUrls": [
-        "https://www.together.ai/models/deepseek-v4-flash-0731",
-        "https://docs.together.ai/reference/chat-completions.md"
-      ],
-      "checkedAt": "2026-10-17",
-      "clearFields": [
-        "reasoning_effort"
       ],
       "dropSamplingWhenThinking": false,
       "operations": [
@@ -19217,41 +19046,6 @@
       }
     },
     {
-      "id": "global:runware:xai:grok-imagine@image-quality",
-      "provider": "runware",
-      "modelIds": [
-        "xai:grok-imagine@image-quality"
-      ],
-      "roles": [
-        "image"
-      ],
-      "protocols": [
-        "provider-images"
-      ],
-      "status": "unsupported",
-      "controls": [],
-      "requestMappings": [],
-      "constraints": [],
-      "conflicts": [],
-      "notes": [
-        "Full exact Runware model parameter page exposes no thinking/thinkingLevel control; do not infer one from the underlying vendor."
-      ],
-      "sourceUrls": [
-        "https://runware.ai/docs/models/xai-grok-imagine-image-quality"
-      ],
-      "checkedAt": "2026-09-22",
-      "clearFields": [],
-      "dropSamplingWhenThinking": false,
-      "operations": [
-        "generation",
-        "editing"
-      ],
-      "transport": {
-        "modelIdentity": "array task.model AIR ID",
-        "bodyRoot": "settings"
-      }
-    },
-    {
       "id": "global:runware:luma:uni@1",
       "provider": "runware",
       "modelIds": [
@@ -21903,41 +21697,6 @@
       }
     },
     {
-      "id": "global:runware:google:4@1",
-      "provider": "runware",
-      "modelIds": [
-        "google:4@1"
-      ],
-      "roles": [
-        "image"
-      ],
-      "protocols": [
-        "provider-images"
-      ],
-      "status": "unsupported",
-      "controls": [],
-      "requestMappings": [],
-      "constraints": [],
-      "conflicts": [],
-      "notes": [
-        "Full exact Runware model parameter page exposes no thinking/thinkingLevel control; do not infer one from the underlying vendor."
-      ],
-      "sourceUrls": [
-        "https://runware.ai/docs/models/google-nano-banana"
-      ],
-      "checkedAt": "2026-09-22",
-      "clearFields": [],
-      "dropSamplingWhenThinking": false,
-      "operations": [
-        "generation",
-        "editing"
-      ],
-      "transport": {
-        "modelIdentity": "array task.model AIR ID",
-        "bodyRoot": "settings"
-      }
-    },
-    {
       "id": "global:runware:runware:108@20",
       "provider": "runware",
       "modelIds": [
@@ -22686,41 +22445,6 @@
       ],
       "sourceUrls": [
         "https://runware.ai/docs/models/ideogram-3-0-replace-background"
-      ],
-      "checkedAt": "2026-09-22",
-      "clearFields": [],
-      "dropSamplingWhenThinking": false,
-      "operations": [
-        "generation",
-        "editing"
-      ],
-      "transport": {
-        "modelIdentity": "array task.model AIR ID",
-        "bodyRoot": "settings"
-      }
-    },
-    {
-      "id": "global:runware:openai:1@1",
-      "provider": "runware",
-      "modelIds": [
-        "openai:1@1"
-      ],
-      "roles": [
-        "image"
-      ],
-      "protocols": [
-        "provider-images"
-      ],
-      "status": "unsupported",
-      "controls": [],
-      "requestMappings": [],
-      "constraints": [],
-      "conflicts": [],
-      "notes": [
-        "Full exact Runware model parameter page exposes no thinking/thinkingLevel control; do not infer one from the underlying vendor."
-      ],
-      "sourceUrls": [
-        "https://runware.ai/docs/models/openai-gpt-image-1"
       ],
       "checkedAt": "2026-09-22",
       "clearFields": [],

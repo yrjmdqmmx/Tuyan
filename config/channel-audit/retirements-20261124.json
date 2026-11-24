@@ -33,6 +33,442 @@
       "source": "https://platform.minimax.io/docs/faq/models",
       "evidence_read": "2026-11-23",
       "evidence": "https://platform.minimax.io/docs/release-notes/models.md"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "MiniMaxAI/MiniMax-M2.5",
+      "date": "2026-09-11",
+      "source": "https://docs.siliconflow.cn/cn/release-notes/overview",
+      "evidence_read": "2026-11-24",
+      "evidence": "更新公告 2026.09.03: 平台将于 2026-09-11 下线"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "Pro/MiniMaxAI/MiniMax-M2.5",
+      "date": "2026-09-11",
+      "source": "https://docs.siliconflow.cn/cn/release-notes/overview",
+      "evidence_read": "2026-11-24",
+      "evidence": "更新公告 2026.09.03: 平台将于 2026-09-11 下线"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "Qwen/Qwen3.5-397B-A17B",
+      "date": "2026-09-11",
+      "source": "https://docs.siliconflow.cn/cn/release-notes/overview",
+      "evidence_read": "2026-11-24",
+      "evidence": "更新公告 2026.09.03: 平台将于 2026-09-11 下线"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "baidu/ERNIE-Image-Turbo",
+      "date": "2026-09-30",
+      "source": "https://docs.siliconflow.cn/cn/release-notes/overview",
+      "evidence_read": "2026-11-24",
+      "evidence": "更新公告 2026.09.28: 平台将于 2026-09-30 下线"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "nex-agi/Nex-N2-Pro",
+      "date": "2026-09-11",
+      "source": "https://docs.siliconflow.cn/cn/release-notes/overview",
+      "evidence_read": "2026-11-24",
+      "evidence": "更新公告 2026.09.03: 平台将于 2026-09-11 下线"
+    },
+    {
+      "provider": "xai",
+      "id": "grok-imagine-image-quality",
+      "date": "2026-11-02",
+      "source": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2",
+      "evidence_read": "2026-11-24",
+      "evidence": "Slug retired Nov 2, 2026; requests now served by grok-imagine-image-2.0 at quality low (redirect, priced differently)"
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen-image",
+      "date": "2026-10-10",
+      "source": "https://www.alibabacloud.com/zh/notice/model_studio_notice_of_retirement_for_selected_legacy_models_7d9?_p_lc=1",
+      "evidence_read": "2026-11-24",
+      "evidence": "Model Studio notice (Jul 10, 2026) lists qwen-image, EOS 2026-10-10",
+      "time": "2026-10-10T00:00:00+08:00"
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3-max",
+      "date": "2026-10-10",
+      "source": "https://www.alibabacloud.com/zh/notice/model_studio_notice_on_the_postponed_retirement_of_selected_legacy_models_7d0?_p_lc=1",
+      "evidence_read": "2026-11-24",
+      "evidence": "Model Studio notice (Jul 06, 2026) lists exact ID, EOS 2026-10-10; index page https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "time": "2026-10-10T00:00:00+08:00"
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3-max-2025-09-23",
+      "date": "2026-10-10",
+      "source": "https://www.alibabacloud.com/zh/notice/model_studio_notice_on_the_postponed_retirement_of_selected_legacy_models_7d0?_p_lc=1",
+      "evidence_read": "2026-11-24",
+      "evidence": "Model Studio notice (Jul 06, 2026) lists exact ID, EOS 2026-10-10; index page https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "time": "2026-10-10T00:00:00+08:00"
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3-max-2026-01-23",
+      "date": "2026-10-10",
+      "source": "https://www.alibabacloud.com/zh/notice/model_studio_notice_on_the_postponed_retirement_of_selected_legacy_models_7d0?_p_lc=1",
+      "evidence_read": "2026-11-24",
+      "evidence": "Model Studio notice (Jul 06, 2026) lists exact ID, EOS 2026-10-10; index page https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "time": "2026-10-10T00:00:00+08:00"
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3-max-preview",
+      "date": "2026-10-10",
+      "source": "https://www.alibabacloud.com/zh/notice/model_studio_notice_on_the_postponed_retirement_of_selected_legacy_models_7d0?_p_lc=1",
+      "evidence_read": "2026-11-24",
+      "evidence": "Model Studio notice (Jul 06, 2026) lists exact ID, EOS 2026-10-10; index page https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "time": "2026-10-10T00:00:00+08:00"
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen-turbo",
+      "date": "2026-10-10",
+      "source": "https://www.alibabacloud.com/zh/notice/model_studio_notice_on_the_postponed_retirement_of_selected_legacy_models_7d0?_p_lc=1",
+      "evidence_read": "2026-11-24",
+      "evidence": "Model Studio notice (Jul 06, 2026) lists exact ID, EOS 2026-10-10; index page https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "time": "2026-10-10T00:00:00+08:00"
+    },
+    {
+      "provider": "bailian",
+      "id": "qwen3-coder-next",
+      "date": "2026-10-10",
+      "source": "https://www.alibabacloud.com/zh/notice/model_studio_notice_on_the_postponed_retirement_of_selected_legacy_models_7d0?_p_lc=1",
+      "evidence_read": "2026-11-24",
+      "evidence": "Model Studio notice (Jul 06, 2026) lists exact ID, EOS 2026-10-10; index page https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "time": "2026-10-10T00:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "deepseek-v4-flash-260425",
+      "date": "2026-09-21",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 9 (第九批) EOS 2026-09-21 14:00 UTC+8",
+      "time": "2026-09-21T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "deepseek-v4-pro-260425",
+      "date": "2026-11-24",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 10 (第十批) EOS 2026-11-24 14:00 UTC+8 (today; PR must not be merged/deployed before 14:00 UTC+8)",
+      "time": "2026-11-24T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-2-0-code-preview-260215",
+      "date": "2026-11-24",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 10 (第十批) EOS 2026-11-24 14:00 UTC+8 (today; PR must not be merged/deployed before 14:00 UTC+8)",
+      "time": "2026-11-24T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-2-0-lite-260215",
+      "date": "2026-10-22",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 10 (第十批) model-specific EOS 2026-10-22 14:00 UTC+8",
+      "time": "2026-10-22T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-2-0-mini-260215",
+      "date": "2026-10-22",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 10 (第十批) model-specific EOS 2026-10-22 14:00 UTC+8",
+      "time": "2026-10-22T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-1-8-251228",
+      "date": "2026-09-21",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 9 (第九批) EOS 2026-09-21 14:00 UTC+8",
+      "time": "2026-09-21T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-1-6-250615",
+      "date": "2026-09-21",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 9 (第九批) EOS 2026-09-21 14:00 UTC+8",
+      "time": "2026-09-21T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-1-6-251015",
+      "date": "2026-09-21",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 9 (第九批) EOS 2026-09-21 14:00 UTC+8",
+      "time": "2026-09-21T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-1-6-flash-250615",
+      "date": "2026-09-21",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 9 (第九批) EOS 2026-09-21 14:00 UTC+8",
+      "time": "2026-09-21T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-1-6-flash-250828",
+      "date": "2026-09-21",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 9 (第九批) EOS 2026-09-21 14:00 UTC+8",
+      "time": "2026-09-21T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-1-6-vision-250815",
+      "date": "2026-09-21",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 9 (第九批) EOS 2026-09-21 14:00 UTC+8",
+      "time": "2026-09-21T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-1-5-lite-32k-250115",
+      "date": "2026-09-21",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 9 (第九批) EOS 2026-09-21 14:00 UTC+8",
+      "time": "2026-09-21T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-1-5-pro-32k-250115",
+      "date": "2026-09-21",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 9 (第九批) EOS 2026-09-21 14:00 UTC+8",
+      "time": "2026-09-21T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-1-5-vision-pro-32k-250115",
+      "date": "2026-09-21",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 9 (第九批) EOS 2026-09-21 14:00 UTC+8",
+      "time": "2026-09-21T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seedream-5-0-260128",
+      "date": "2026-11-24",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 10 (第十批) EOS 2026-11-24 14:00 UTC+8 (today; PR must not be merged/deployed before 14:00 UTC+8)",
+      "time": "2026-11-24T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seedream-4-5-251128",
+      "date": "2026-11-24",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 10 (第十批) EOS 2026-11-24 14:00 UTC+8 (today; PR must not be merged/deployed before 14:00 UTC+8)",
+      "time": "2026-11-24T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seedream-4-0-250828",
+      "date": "2026-11-24",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 10 (第十批) EOS 2026-11-24 14:00 UTC+8 (today; PR must not be merged/deployed before 14:00 UTC+8)",
+      "time": "2026-11-24T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-code-preview-251028",
+      "date": "2026-09-21",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 9 (第九批) EOS 2026-09-21 14:00 UTC+8",
+      "time": "2026-09-21T14:00:00+08:00"
+    },
+    {
+      "provider": "ark",
+      "id": "glm-4-7-251222",
+      "date": "2026-09-21",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 9 (第九批) EOS 2026-09-21 14:00 UTC+8",
+      "time": "2026-09-21T14:00:00+08:00"
+    },
+    {
+      "provider": "mistral",
+      "id": "zai-glm-5-2",
+      "date": "2026-10-31",
+      "source": "https://docs.mistral.ai/getting-started/models/",
+      "evidence_read": "2026-11-24",
+      "evidence": "Deprecated & retired table: retirement 10/31/2026"
+    },
+    {
+      "provider": "mistral",
+      "id": "labs-leanstral-1-5",
+      "date": "2026-09-30",
+      "source": "https://docs.mistral.ai/getting-started/models/",
+      "evidence_read": "2026-11-24",
+      "evidence": "Deprecated & retired table: retirement 9/30/2026"
+    },
+    {
+      "provider": "together",
+      "id": "deepseek-ai/DeepSeek-V4-Flash-0731",
+      "date": "2026-10-22",
+      "source": "https://docs.together.ai/docs/deprecations",
+      "evidence_read": "2026-11-24",
+      "evidence": "Deprecations table removal date 2026-10-22 (catalog had 2026-09-29; official date differs, use 2026-10-22)"
+    },
+    {
+      "provider": "tokendance",
+      "id": "mimo-v2.5",
+      "date": "2026-10-21",
+      "source": "https://tokendance.space/docs/changelog.md",
+      "evidence_read": "2026-11-24",
+      "evidence": "changelog id 20260929-mimo-v25-retirements effective_at 2026-10-21T10:00:00+08:00",
+      "time": "2026-10-21T10:00:00+08:00"
+    },
+    {
+      "provider": "tokendance",
+      "id": "mimo-v2.5-pro",
+      "date": "2026-10-21",
+      "source": "https://tokendance.space/docs/changelog.md",
+      "evidence_read": "2026-11-24",
+      "evidence": "changelog id 20260929-mimo-v25-retirements effective_at 2026-10-21T10:00:00+08:00",
+      "time": "2026-10-21T10:00:00+08:00"
+    },
+    {
+      "provider": "runware",
+      "id": "xai:grok-imagine@image-quality",
+      "date": "2026-11-02",
+      "source": "https://runware.ai/docs/changelog",
+      "evidence_read": "2026-11-24",
+      "evidence": "Changelog: after Nov 2, 2026 requests return an error"
+    },
+    {
+      "provider": "runware",
+      "id": "google:4@1",
+      "date": "2026-10-02",
+      "source": "https://runware.ai/docs/changelog",
+      "evidence_read": "2026-11-24",
+      "evidence": "Changelog: after Oct 2, 2026 requests using google:4@1 return an error"
+    },
+    {
+      "provider": "runware",
+      "id": "openai:1@1",
+      "date": "2026-10-23",
+      "source": "https://runware.ai/docs/changelog",
+      "evidence_read": "2026-11-24",
+      "evidence": "Changelog: after Oct 23, 2026 requests using openai:1@1 return an error"
+    },
+    {
+      "provider": "tokenhub",
+      "id": "glm-5v-turbo",
+      "date": "2026-10-30",
+      "source": "https://cloud.tencent.com/document/product/1823/130051",
+      "evidence_read": "2026-11-24",
+      "evidence": "Official model list (updated 2026-11-17) labels 'GLM-5V-Turbo（2026-10-30下线）'"
+    },
+    {
+      "provider": "tokenhub",
+      "id": "minimax-m2.7",
+      "date": "2026-11-17",
+      "source": "https://cloud.tencent.com/document/product/1823/130051",
+      "evidence_read": "2026-11-24",
+      "evidence": "Official model list labels 'MiniMax-M2.7 (2026-11-17下线)'"
+    },
+    {
+      "provider": "tokenhub",
+      "id": "hy-image-v3",
+      "date": "2026-11-12",
+      "source": "https://cloud.tencent.com/document/product/1823/130051",
+      "evidence_read": "2026-11-24",
+      "evidence": "Official model list labels 'Hy-Image-3.0（2026-11-12 下线）'"
+    },
+    {
+      "provider": "tokenhub",
+      "id": "seedream-image-v5.0-lite",
+      "date": "2026-11-24",
+      "source": "https://cloud.tencent.com/document/product/1823/130051",
+      "evidence_read": "2026-11-24",
+      "evidence": "Official model list labels 'Seedream-Image-v5.0-lite（2026-11-24 下线）' (today)"
+    },
+    {
+      "provider": "qianfan",
+      "id": "deepseek-v4-flash",
+      "date": "2026-09-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "完整模型退役历史记录: DeepSeek-V4-Flash 退役 2026-09-29"
+    },
+    {
+      "provider": "qianfan",
+      "id": "deepseek-v3.2",
+      "date": "2026-09-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "完整模型退役历史记录: DeepSeek-V3.2 退役 2026-09-29"
+    },
+    {
+      "provider": "qianfan",
+      "id": "deepseek-v3.2-think",
+      "date": "2026-09-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "完整模型退役历史记录: DeepSeek-V3.2-Think 退役 2026-09-29"
+    },
+    {
+      "provider": "qianfan",
+      "id": "glm-5",
+      "date": "2026-09-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "完整模型退役历史记录: GLM-5 退役 2026-09-29"
+    },
+    {
+      "provider": "qianfan",
+      "id": "kimi-k2.6",
+      "date": "2026-09-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "完整模型退役历史记录: Kimi-K2.6 退役 2026-09-29"
+    },
+    {
+      "provider": "qianfan",
+      "id": "ernie-x1.1",
+      "date": "2026-09-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "完整模型退役历史记录: ERNIE-X1.1 退役 2026-09-29"
+    },
+    {
+      "provider": "qianfan",
+      "id": "ernie-x1.1-preview",
+      "date": "2026-09-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "完整模型退役历史记录: ERNIE-X1.1-Preview 退役 2026-09-29"
     }
   ],
   "upcoming": [
@@ -43,6 +479,15 @@
       "time": "2027-05-07T00:00:00+08:00",
       "source": "https://ai.google.dev/gemini-api/docs/deprecations",
       "evidence_read": "2026-11-23"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-2-0-pro-260215",
+      "date": "2027-01-22",
+      "source": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "evidence_read": "2026-11-24",
+      "evidence": "Ark batch 10 lists a model-specific EOS 2027-01-22 14:00 UTC+8 for this ID; catalog currently says 2026-11-24 -> correct the retirement date, keep selectable (will show 将下线)",
+      "time": "2027-01-22T14:00:00+08:00"
     }
   ]
 }

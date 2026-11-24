@@ -3116,33 +3116,6 @@
       "maxPromptLength": 32000
     }
   },
-  "tokenhub/hy-image-v3": {
-    "generation": {
-      "endpoint": "/v1/wand/hunyuan-image/v3-generation",
-      "promptField": "prompt",
-      "sizeMode": "string",
-      "sizeField": "size",
-      "maxPromptLength": 8192,
-      "constants": {
-        "model": "hy-image-v3",
-        "revise": false
-      }
-    },
-    "editing": {
-      "endpoint": "/v1/wand/hunyuan-image/v3-generation",
-      "promptField": "prompt",
-      "sizeMode": "string",
-      "sizeField": "size",
-      "maxPromptLength": 8192,
-      "constants": {
-        "model": "hy-image-v3",
-        "revise": false
-      },
-      "sourceField": "images",
-      "sourceArray": true,
-      "sourceEncoding": "base64"
-    }
-  },
   "runware/openai:gpt-image@2.5-flare": {
     "generation": {
       "endpoint": "/v1",
@@ -3364,18 +3337,6 @@
       "endpoint": "/v1",
       "sizeMode": "dimensions",
       "maxPromptLength": 10000
-    }
-  },
-  "runware/xai:grok-imagine@image-quality": {
-    "generation": {
-      "endpoint": "/v1",
-      "sizeMode": "dimensions",
-      "maxPromptLength": 200000
-    },
-    "editing": {
-      "endpoint": "/v1",
-      "sizeMode": "dimensions",
-      "maxPromptLength": 200000
     }
   },
   "runware/luma:uni@1": {
@@ -3913,18 +3874,6 @@
       "maxPromptLength": 3000
     }
   },
-  "runware/google:4@1": {
-    "generation": {
-      "endpoint": "/v1",
-      "sizeMode": "dimensions",
-      "maxPromptLength": 3000
-    },
-    "editing": {
-      "endpoint": "/v1",
-      "sizeMode": "dimensions",
-      "maxPromptLength": 3000
-    }
-  },
   "runware/runware:108@20": {
     "editing": {
       "endpoint": "/v1",
@@ -4081,18 +4030,6 @@
       "endpoint": "/v1",
       "sizeMode": "none",
       "maxPromptLength": 2000
-    }
-  },
-  "runware/openai:1@1": {
-    "generation": {
-      "endpoint": "/v1",
-      "sizeMode": "dimensions",
-      "maxPromptLength": 32000
-    },
-    "editing": {
-      "endpoint": "/v1",
-      "sizeMode": "dimensions",
-      "maxPromptLength": 32000
     }
   },
   "runware/rundiffusion:110@101": {
@@ -4284,18 +4221,6 @@
     }
   },
   "tokenhub/seedream-image-v5.0-pro": {
-    "generation": {
-      "endpoint": "/v1/wand/",
-      "sizeMode": "none",
-      "maxPromptLength": 600
-    },
-    "editing": {
-      "endpoint": "/v1/wand/",
-      "sizeMode": "none",
-      "maxPromptLength": 600
-    }
-  },
-  "tokenhub/seedream-image-v5.0-lite": {
     "generation": {
       "endpoint": "/v1/wand/",
       "sizeMode": "none",
