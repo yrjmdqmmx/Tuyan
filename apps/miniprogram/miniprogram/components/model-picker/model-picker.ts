@@ -192,6 +192,8 @@ function presentModel(model: RegistryModel, selectedProvider: unknown, selectedM
   })
   return {
     disabled: model.selectionDisabled, disabledReason: model.selectionDisabledReason,
+    ...(model.routingNotice && {routingNotice: model.routingNotice}),
+    ...(lifecycle && {retirementDate: lifecycle.stopDate.slice(0, 10)}),
     scheduled: lifecycle?.state === 'scheduled',
     retirementMessage:lifecycle ? readableEventDates(lifecycle.message) : '',
     retirementSource: lifecycle ? titleSourceRows([{url:lifecycle.sourceUrl,label:'下线公告'}])[0] : null,
