@@ -1,3 +1,9 @@
+## 2026-11-24 · 公开科研 MCP 和 Skill 安装入口迁至 tuyansci.cn
+
+- [x] 杭州入口 / Gateway：公开 MCP 使用 `https://tuyansci.cn/mcp`，旧 API 域名继续提供兼容。两个入口已验证握手、工具列表、知识清单和同一工作流调用；知识版本维持 1.2.1。
+- [x] Web / Skill：接入口令、安装指南、Codex / OpenClaw / Hermes 示例和独立仓库分发模板改用新域名。Skill 索引为 `https://tuyansci.cn/.well-known/skills/index.json`。
+- [ ] 既有第三方客户端：将已保存的 MCP 地址更新后重新连接。小程序、Core 和私有运营 MCP 无接口调整。
+
 ## 2026-11-18 · 补齐静态型号版本证据（未发布）
 
 - [x] Shared / Core：补齐 46 个精确渠道型号的版本审计。硅基流动 `deepseek-ai/DeepSeek-V4.1-Flash` 的 10 月 21 日同 ID 升级公告对应 `deepseek-v4.1-flash-1017`。其余 45 项保留 `unconfirmed` 与空目标；另有 10 项已有记录将未知目标统一为 `ModelVersion.id` 约定的空字符串。
