@@ -121,6 +121,6 @@ test('client guide provides standard Codex, OpenClaw, and Hermes setup without a
   assert.match(text, /\.agents\/skills/);
   assert.match(text, /openclaw skills install/);
   assert.match(text, /hermes skills install/);
-  assert.match(text, /hermes mcp add.*--url https:\/\/api\.paperbanana\.asia\/mcp/s);
+  assert.match(text, /hermes mcp add.*--url https:\/\/tuyansci\.cn\/mcp/s);
   assert.match(text, /not.*end-to-end.*validated/is);
 });
